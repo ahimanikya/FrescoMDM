@@ -1,0 +1,54 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+package com.sun.mdm.index.report;
+
+/**
+ * Confifugration class for Update Report
+ * @author  dcidon
+ */
+public class UpdateReportConfig extends MultirowReportConfig2 {
+
+    //  system code
+    private String mSystemCode;
+    
+    // Creates a new instance of UpdateReportConfig 
+    public UpdateReportConfig() {
+    }
+       
+    /** Sets the system code.
+     *
+     * @param systemCode  New value for system code.
+     */
+    public void setSystemCode(String systemCode) {
+        mSystemCode = systemCode;
+    }
+    
+    /** Gets the system code.
+     *
+     * @return system code.
+     */
+    public String getSystemCode() {
+        return mSystemCode;
+    }
+    
+}

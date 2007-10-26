@@ -1,0 +1,471 @@
+drop table $<prefix>_system cascade constraints
+/
+
+drop table $<prefix>_enterprise cascade constraints
+/
+
+drop table $<prefix>_system_object cascade constraints
+/
+
+drop table $<prefix>_s_transaction cascade constraints
+/
+
+drop table $<prefix>_group cascade constraints
+/
+
+drop table $<prefix>_transaction cascade constraints
+/
+
+drop table $<prefix>_local_id cascade constraints
+/
+
+drop table $<prefix>_merge_trans cascade constraints
+/
+
+drop table $<prefix>_comment cascade constraints
+/
+
+drop table $<prefix>_s_merge_trans cascade constraints
+/
+
+drop table $<prefix>_duplicate cascade constraints
+/
+
+drop table $<prefix>_es_transaction cascade constraints
+/
+
+drop table $<prefix>_assumed_match cascade constraints
+/
+
+drop table $<prefix>_seq cascade constraints
+/
+
+drop table $<prefix>_s_seq cascade constraints
+/
+
+drop table $<prefix>_audit cascade constraints
+/
+
+drop table $<prefix>_group_person cascade constraints
+/
+
+create table $<prefix>_system
+(
+    system_id             varchar2(8)            not null,
+    description           varchar2(50)           not null,
+    status                char                   not null,
+    id_length             integer                not null,
+    id_mask               varchar2(40)           null    ,
+    format                varchar2(40)           null    ,
+    less_allowed          char                   default 'Y' not null
+        constraint ck_$<prefix>_system1 check (less_allowed in ('Y','N')),
+    minimum_length        integer                null    ,
+    create_date           date                   not null,
+    create_by             varchar2(20)           not null,
+    update_date           date                   null    ,
+    update_by             varchar2(20)           null    ,
+    constraint pk_$<prefix>_system primary key (system_id)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table $<prefix>_enterprise
+(
+    eid                   varchar2(15)           not null,
+    status                varchar2(8)            not null,
+    constraint pk_$<prefix>_enterprise primary key (eid)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table $<prefix>_system_object
+(
+    sid                   number(15)             not null,
+    system_id             varchar2(8)            not null,
+    local_id              varchar2(30)           not null,
+    constraint pk_$<prefix>_system_object primary key (sid)
+        using index
+     tablespace $<index>,
+    constraint ak_$<prefix>_local1 unique (system_id, local_id)
+        using index
+        tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table $<prefix>_s_transaction
+(
+    transaction_no        number(15)             not null,
+    sid                   number(15)             not null,
+    primary_source        varchar2(8)            null    ,
+    secondary_source      varchar2(8)            null    ,
+    update_system         varchar2(8)            not null,
+    update_function       varchar2(8)            not null,
+    update_date           date                   not null,
+    update_by             varchar2(20)           not null,
+    delta                 long varchar           not null,
+    constraint pk_$<prefix>_s_transaction primary key (transaction_no)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create index $<prefix>_s_transaction2 on $<prefix>_s_transaction (sid asc)
+tablespace $<index>
+/
+
+create table $<prefix>_group
+(
+    group_id              number(15)             not null,
+    group_def_id          number(15)             not null,
+    description           varchar2(40)           not null,
+    status                varchar2(8)            not null,
+    create_date           date                   not null,
+    create_by             varchar2(20)           not null,
+    constraint pk_$<prefix>_group primary key (group_id)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create index $<prefix>_group1 on $<prefix>_group (group_def_id asc)
+tablespace $<index>
+/
+
+create table $<prefix>_transaction
+(
+    transaction_no        number(15)             not null,
+    eid                   varchar2(15)           not null,
+    primary_source        varchar2(8)            null    ,
+    secondary_source      varchar2(8)            null    ,
+    delta                 long varchar           null    ,
+    update_system         varchar2(8)            not null,
+    update_function       varchar2(8)            not null,
+    update_date           date                   not null,
+    update_by             varchar2(20)           not null,
+    constraint pk_$<prefix>_transaction primary key (transaction_no)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create index $<prefix>_transaction2 on $<prefix>_transaction (eid asc)
+tablespace $<index>
+/
+
+create table $<prefix>_local_id
+(
+    local_id_id           number(15)             not null,
+    sid                   number(15)             null    ,
+    eid                   varchar2(15)           not null,
+    status                char                   default 'Y' not null
+        constraint ck_$<prefix>_local_id1 check (status in ('Y','N')),
+    transaction_no        number(15)             null    ,
+    constraint pk_$<prefix>_local_id primary key (local_id_id)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create index $<prefix>_local_id1 on $<prefix>_local_id (sid asc)
+tablespace $<index>
+/
+
+create index $<prefix>_local_id2 on $<prefix>_local_id (eid asc, sid asc)
+tablespace $<index>
+/
+
+create index $<prefix>_local_id3 on $<prefix>_local_id (transaction_no asc)
+tablespace $<index>
+/
+
+create table $<prefix>_merge_trans
+(
+    merge_trans_id        number(15)             not null,
+    eid                   varchar2(15)           not null,
+    eid_from              varchar2(15)           not null,
+    merge_no              number(15)             not null,
+    merge_from_no         number(15)             not null,
+    unmerge_no            number(15)             null    ,
+    unmerge_from_no       number(15)             null    ,
+    constraint pk_$<prefix>_merge_trans primary key (merge_trans_id)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create index $<prefix>_merge_trans1 on $<prefix>_merge_trans (merge_no asc)
+tablespace $<index>
+/
+
+create table $<prefix>_comment
+(
+    comment_id            number(15)             not null,
+    eid                   varchar2(15)           not null,
+    type                  varchar2(8)            not null,
+    timestamp             date                   not null,
+    comment_text          long                   null    ,
+    constraint pk_$<prefix>_comment primary key (comment_id)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create index $<prefix>_comment1 on $<prefix>_comment (eid asc)
+tablespace $<index>
+/
+
+create table $<prefix>_s_merge_trans
+(
+    merge_trans_id        number(15)             not null,
+    sid                   number(15)             not null,
+    sid_from              number(15)             not null,
+    merge_no              number(15)             not null,
+    merge_from_no         number(15)             not null,
+    unmerge_no            number(15)             null    ,
+    unmerge_from_no       number(15)             null    ,
+    constraint pk_$<prefix>_s_merge_trans primary key (merge_trans_id)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create index $<prefix>_s_merge_trans1 on $<prefix>_s_merge_trans (sid asc, merge_no asc)
+tablespace $<index>
+/
+
+create table $<prefix>_duplicate
+(
+    duplicate_id          number(15)             not null,
+    eid                   varchar2(15)           not null,
+    eid_other             varchar2(15)           not null,
+    weight                float                  not null,
+    threshold             float                  null    ,
+    description           varchar2(30)           null    ,
+    resolved              varchar2(8)            not null,
+    resolve_comment       varchar2(40)           null    ,
+    transaction_no        number(15)             not null,
+    constraint pk_$<prefix>_duplicate primary key (duplicate_id)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create index $<prefix>_duplicate1 on $<prefix>_duplicate (eid asc)
+tablespace $<index>
+/
+
+create index $<prefix>_duplicate2 on $<prefix>_duplicate (eid_other asc)
+tablespace $<index>
+/
+
+create index $<prefix>_duplicate3 on $<prefix>_duplicate (transaction_no asc)
+tablespace $<index>
+/
+
+create table $<prefix>_es_transaction
+(
+    es_transaction_no     number(15)             not null,
+    transaction_no        number(15)             not null,
+    s_transaction_no      number(15)             not null,
+    constraint pk_$<prefix>_es_transaction primary key (es_transaction_no)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create index $<prefix>_es_transaction1 on $<prefix>_es_transaction (transaction_no asc)
+tablespace $<index>
+/
+
+create index $<prefix>_es_transaction2 on $<prefix>_es_transaction (s_transaction_no asc)
+tablespace $<index>
+/
+
+create table $<prefix>_assumed_match
+(
+    assumed_match_id      number(15)             not null,
+    eid                   varchar2(15)           not null,
+    weight                float                  not null,
+    transaction_no        number(15)             not null,
+    prev_transaction_no   number(15)             not null,
+    constraint pk_$<prefix>_assumed_match primary key (assumed_match_id)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create index $<prefix>_assumed_match1 on $<prefix>_assumed_match (eid asc)
+tablespace $<index>
+/
+
+create index $<prefix>_assumed_match2 on $<prefix>_assumed_match (transaction_no asc)
+tablespace $<index>
+/
+
+create table $<prefix>_seq
+(
+    table_name            varchar2(30)           not null,
+    seq_no                number(15)             not null,
+    constraint pk_$<prefix>_seq primary key (table_name)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table $<prefix>_s_seq
+(
+    table_name            varchar2(30)           not null,
+    seq_no                number(15)             not null,
+    constraint pk_$<prefix>_s_seq primary key (table_name)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table $<prefix>_audit
+(
+    audit_id              number(15)             not null,
+    eid                   varchar2(15)           not null,
+    eid_aux               varchar2(15)           null    ,
+    function              varchar2(8)            not null,
+    detail                varchar2(120)          null    ,
+    create_date           date                   not null,
+    create_by             varchar2(20)           not null,
+    constraint pk_$<prefix>_audit primary key (audit_id)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create index $<prefix>_audit_1 on $<prefix>_audit (eid asc)
+tablespace $<index>
+/
+
+create table $<prefix>_group_person
+(
+    group_person_id       number(15)             not null,
+    group_id              number(15)             not null,
+    eid                   varchar2(15)           not null,
+    code                  varchar2(8)            not null,
+    status                varchar2(8)            not null,
+    create_date           date                   not null,
+    create_by             varchar2(20)           not null,
+    constraint pk_$<prefix>_group_person primary key (group_person_id)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create index $<prefix>_group_person1 on $<prefix>_group_person (group_id asc)
+tablespace $<index>
+/
+
+alter table $<prefix>_system_object
+    add constraint fk_$<prefix>_local1 foreign key  (system_id)
+       references $<prefix>_system (system_id)
+/
+
+alter table $<prefix>_s_transaction
+    add constraint fk_$<prefix>_s_transaction1 foreign key  (sid)
+       references $<prefix>_system_object (sid)
+/
+
+alter table $<prefix>_group
+    add constraint fk_e_$<prefix>_group_1 foreign key  (group_def_id)
+       references stc_group_def (group_def_id)
+/
+
+alter table $<prefix>_transaction
+    add constraint fk_$<prefix>_transaction1 foreign key  (update_system)
+       references $<prefix>_system (system_id)
+/
+
+alter table $<prefix>_transaction
+    add constraint fk_$<prefix>_transaction2 foreign key  (eid)
+       references $<prefix>_enterprise (eid)
+/
+
+alter table $<prefix>_local_id
+    add constraint fk_$<prefix>_local_id2 foreign key  (sid)
+       references $<prefix>_system_object (sid)
+/
+
+alter table $<prefix>_local_id
+    add constraint fk_$<prefix>_local_id1 foreign key  (eid)
+       references $<prefix>_enterprise (eid)
+/
+
+alter table $<prefix>_merge_trans
+    add constraint fk_$<prefix>_merge_trans1 foreign key  (eid)
+       references $<prefix>_enterprise (eid)
+/
+
+alter table $<prefix>_comment
+    add constraint fk_$<prefix>_comment1 foreign key  (eid)
+       references $<prefix>_enterprise (eid)
+/
+
+alter table $<prefix>_duplicate
+    add constraint fk_e_$<prefix>_duplicate_1 foreign key  (eid)
+       references $<prefix>_enterprise (eid)
+/
+
+alter table $<prefix>_es_transaction
+    add constraint fk_$<prefix>_es_transaction2 foreign key  (s_transaction_no)
+       references $<prefix>_s_transaction (transaction_no)
+/
+
+alter table $<prefix>_es_transaction
+    add constraint fk_$<prefix>_es_transaction1 foreign key  (transaction_no)
+       references $<prefix>_transaction (transaction_no)
+/
+
+alter table $<prefix>_assumed_match
+    add constraint fk_$<prefix>_assumed_match1 foreign key  (transaction_no)
+       references $<prefix>_transaction (transaction_no)
+/
+
+alter table $<prefix>_assumed_match
+    add constraint fk_$<prefix>_assumed_match2 foreign key  (eid)
+       references $<prefix>_enterprise (eid)
+/
+
+alter table $<prefix>_audit
+    add constraint fk_e_$<prefix>_audit_1 foreign key  (eid)
+       references $<prefix>_enterprise (eid)
+/
+
+alter table $<prefix>_group_person
+    add constraint fk_e_$<prefix>_group_person2 foreign key  (group_id)
+       references $<prefix>_group (group_id)
+/
+
+alter table $<prefix>_group_person
+    add constraint fk_$<prefix>_group_person1 foreign key  (eid)
+       references $<prefix>_enterprise (eid)
+/
+
+alter table psn_s_merge_trans
+    add constraint fk_$<prefix>_s_merge_trans1 foreign key  (sid)
+       references $<prefix>_system_object (sid)
+/
+

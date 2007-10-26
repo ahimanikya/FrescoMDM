@@ -1,0 +1,368 @@
+[SBYNTAG:DEFINE:nodelist()]
+CREATE TABLE SBYN_SYSTEMS
+(
+    SYSTEMCODE		varchar(20)	NOT NULL,
+    DESCRIPTION		varchar(50)	NOT NULL,
+    STATUS		char		NOT NULL,
+    ID_LENGTH		numeric(38)		NOT NULL,
+    FORMAT		varchar(60)	NULL    ,
+    INPUT_MASK		varchar(60)	NULL    ,
+    VALUE_MASK		varchar(60)	NULL    ,
+    CREATE_DATE		datetime		NOT NULL,
+    CREATE_USERID	varchar(20)	NOT NULL,
+    UPDATE_DATE		datetime		NULL    ,
+    UPDATE_USERID	varchar(20)	NULL    ,
+    CONSTRAINT PK_SBYN_SYSTEM PRIMARY KEY (SYSTEMCODE)
+)
+GO
+
+CREATE TABLE SBYN_USER_CODE
+(
+    CODE_LIST		varchar(20)	NOT NULL,
+    CODE			varchar(20)	NOT NULL,
+    DESCR			varchar(50)	NOT NULL,
+    FORMAT			varchar(60)	NULL    ,
+    INPUT_MASK		varchar(60)	NULL    ,
+    VALUE_MASK		varchar(60)	NULL    ,
+    CONSTRAINT PK_SBYN_USER_CODE PRIMARY KEY (CODE_LIST, CODE)
+)
+GO
+
+CREATE TABLE SBYN_SYSTEMOBJECT (
+    SYSTEMCODE varchar(20),
+    LID varchar(25),
+    CHILDTYPE varchar(20),
+    CREATEUSER varchar(30),
+    CREATEFUNCTION varchar(20),
+    CREATEDATE datetime,
+    UPDATEUSER varchar(30),
+    UPDATEFUNCTION varchar(20),
+    UPDATEDATE datetime,
+    STATUS varchar(15),
+    CONSTRAINT PK_SBYNSYSTEMOBJECT PRIMARY KEY(SYSTEMCODE, LID))
+GO	
+
+ALTER TABLE SBYN_SYSTEMOBJECT ADD CONSTRAINT FK_SYSTEMOBJECT_SYSTEMCODE FOREIGN KEY (SYSTEMCODE) REFERENCES SBYN_SYSTEMS(SYSTEMCODE)
+GO
+
+CREATE TABLE SBYN_SYSTEMSBR (
+    EUID varchar(20),
+    CHILDTYPE varchar(20),
+    CREATESYSTEM varchar(20),
+    CREATEUSER varchar(30),
+    CREATEFUNCTION varchar(20),
+    CREATEDATE datetime,
+    UPDATESYSTEM varchar(20),
+    UPDATEUSER varchar(30),
+    UPDATEFUNCTION varchar(20),
+    UPDATEDATE datetime,
+    STATUS varchar(15),
+    REVISIONNUMBER numeric(38),
+    CONSTRAINT PK_SBYNSYSTEMSBR PRIMARY KEY(EUID))
+GO      
+
+CREATE TABLE SBYN_OVERWRITE (
+    EUID varchar(20),
+    PATH varchar(200),
+    TYPE varchar(20),
+    INTEGERDATA numeric(38),
+    BOOLEANDATA numeric(38),
+    STRINGDATA varchar(200),
+    BYTEDATA char(2),
+    LONGDATA varchar(max),
+    DATEDATA datetime,
+    FLOATDATA numeric(38, 4),
+    TIMESTAMPDATA datetime,
+    CONSTRAINT PK_SBROVERWRITE PRIMARY KEY(EUID, PATH))
+GO	
+
+ALTER TABLE SBYN_OVERWRITE ADD CONSTRAINT FK_SYSTEMSBR_EUID FOREIGN KEY (EUID) REFERENCES SBYN_SYSTEMSBR(EUID)
+GO
+
+CREATE TABLE SBYN_ENTERPRISE (
+    SYSTEMCODE varchar(20),
+    LID varchar(25),
+    EUID varchar(20),
+    CONSTRAINT PK_ENTERPRISE PRIMARY KEY(SYSTEMCODE, LID, EUID))
+GO	
+
+ALTER TABLE SBYN_ENTERPRISE ADD CONSTRAINT FK_ENTERPRISE_SYSTEMCODE_LID FOREIGN KEY (SYSTEMCODE, LID) REFERENCES SBYN_SYSTEMOBJECT(SYSTEMCODE, LID)
+GO
+ALTER TABLE SBYN_ENTERPRISE ADD CONSTRAINT FK_ENTERPRISE_EUID FOREIGN KEY (EUID) REFERENCES SBYN_SYSTEMSBR(EUID)
+GO
+
+CREATE TABLE SBYN_TRANSACTION (
+    TRANSACTIONNUMBER varchar(20),
+    LID1 varchar(25),
+    LID2 varchar(25),
+    EUID1 varchar(20),
+    EUID2 varchar(20),
+    OPERATION varchar(20),
+    SYSTEMUSER varchar(30),
+    TIMESTAMP datetime,
+    DELTA varbinary(max),
+    SYSTEMCODE varchar(20),
+    LID varchar(25),
+    EUID varchar(20),
+    CONSTRAINT PK_TRANSACTION PRIMARY KEY(TRANSACTIONNUMBER))
+GO	
+
+ALTER TABLE SBYN_TRANSACTION ADD CONSTRAINT AK_TRANSACTION UNIQUE (EUID, EUID2, TRANSACTIONNUMBER)
+GO
+
+CREATE TABLE SBYN_ASSUMEDMATCH (
+    ASSUMEDMATCHID varchar(20),
+    EUID varchar(20),
+    SYSTEMCODE varchar(20),
+	LID varchar(25),
+    WEIGHT varchar(20),
+    TRANSACTIONNUMBER varchar(20),
+    CONSTRAINT PK_ASSUMEDMATCH PRIMARY KEY (ASSUMEDMATCHID))
+GO    
+    
+
+ALTER TABLE SBYN_ASSUMEDMATCH ADD CONSTRAINT FK_AM_TRANSACTIONNUMBER FOREIGN KEY (TRANSACTIONNUMBER) REFERENCES SBYN_TRANSACTION(TRANSACTIONNUMBER)
+GO
+
+CREATE TABLE SBYN_POTENTIALDUPLICATES (
+    POTENTIALDUPLICATEID varchar(20),
+    WEIGHT varchar(20),
+    TYPE varchar(15),
+    DESCRIPTION varchar(120),
+    STATUS varchar(15),
+    HIGHMATCHFLAG varchar(15),
+    RESOLVEDUSER varchar(30),
+    RESOLVEDDATE datetime,
+    RESOLVEDCOMMENT varchar(120),
+    EUID2 varchar(20),
+    TRANSACTIONNUMBER varchar(20),
+    EUID1 varchar(20),
+    CONSTRAINT PK_POTENTIALDUPLICATES PRIMARY KEY(POTENTIALDUPLICATEID))
+GO	
+
+CREATE TABLE SBYN_AUDIT (
+    AUDIT_ID varchar(20) NOT NULL,
+    PRIMARY_OBJECT_TYPE varchar(20) ,
+    EUID varchar(20) ,
+    EUID_AUX varchar(20),
+    OPERATION varchar(32) NOT NULL,
+    DETAIL varchar(120),
+    CREATE_DATE datetime NOT NULL,
+    CREATE_BY varchar(20) NOT NULL,
+    CONSTRAINT PK_SBYN_AUDIT PRIMARY KEY(AUDIT_ID))
+GO	
+
+
+CREATE TABLE SBYN_MERGE (
+    MERGE_ID varchar(20) NOT NULL,
+    KEPT_EUID varchar(20) NOT NULL,
+    MERGED_EUID varchar(20),
+    MERGE_TRANSACTIONNUM varchar(20) NOT NULL,
+    UNMERGE_TRANSACTIONNUM varchar(20),
+    CONSTRAINT PK_SBYN_MERGE PRIMARY KEY(MERGE_ID))
+GO    
+
+ALTER TABLE SBYN_MERGE ADD CONSTRAINT FK_SBYN_MERGE FOREIGN KEY (KEPT_EUID, MERGED_EUID, MERGE_TRANSACTIONNUM) REFERENCES SBYN_TRANSACTION(EUID, EUID2, TRANSACTIONNUMBER)
+GO
+
+CREATE TABLE SBYN_APPL
+(
+    APPL_ID                  numeric(10)            NOT NULL,
+    CODE                     varchar(8)             NOT NULL,
+    DESCR                    varchar(30)            NOT NULL,
+    READ_ONLY                char(1)                DEFAULT 'N' NOT NULL
+        CONSTRAINT CHK_SBYN_APPL CHECK (READ_ONLY IN ('Y','N')),
+    CREATE_DATE              datetime               NOT NULL,
+    CREATE_USERID            varchar(20)            NOT NULL,
+    CONSTRAINT PK_UP_SBYN_APPL PRIMARY KEY (APPL_ID)
+)
+GO
+
+CREATE UNIQUE INDEX SBYN_APPL_IDX1 ON SBYN_APPL (CODE ASC)
+GO
+
+CREATE TABLE SBYN_COMMON_HEADER
+(
+    COMMON_HEADER_ID         numeric(10)            NOT NULL,
+    APPL_ID                  numeric(10)            NOT NULL,
+    CODE                     varchar(8)             NOT NULL,
+    DESCR                    varchar(50)            NOT NULL,
+    READ_ONLY                char(1)                DEFAULT 'N' NOT NULL,
+    MAX_INPUT_LEN            numeric(10)            DEFAULT 1 NOT NULL,
+    TYP_TABLE_CODE           varchar(3)             NOT NULL,
+    CREATE_DATE              datetime               NOT NULL,
+    CREATE_USERID            varchar(20)            NOT NULL,
+    CONSTRAINT PK_SBYN_COMMON_HEADER PRIMARY KEY (COMMON_HEADER_ID)
+)
+GO
+
+CREATE INDEX FK_SBYN_COMMON_HEADER ON SBYN_COMMON_HEADER (APPL_ID ASC)
+GO
+CREATE UNIQUE INDEX SBYN_COMMOM_HEADER_IDX1 ON SBYN_COMMON_HEADER (APPL_ID ASC, CODE ASC)
+GO
+
+CREATE TABLE SBYN_COMMON_DETAIL
+(
+    COMMON_DETAIL_ID         numeric(10)            NOT NULL
+        CONSTRAINT CHK_COMMON_DETAIL_ID CHECK (COMMON_DETAIL_ID >= 0),
+    COMMON_HEADER_ID         numeric(10)            NOT NULL,
+    CODE                     varchar(20)            NOT NULL,
+    DESCR                    varchar(50)            NOT NULL,
+    READ_ONLY                char(1)                DEFAULT 'N' NOT NULL
+        CONSTRAINT CHK_SBYN_COMMON_DETAIL CHECK (READ_ONLY IN ('Y','N')),
+    CREATE_DATE              datetime               NOT NULL,
+    CREATE_USERID            varchar(20)            NOT NULL,
+    CONSTRAINT PK_SBYN_COMMON_DETAIL PRIMARY KEY (COMMON_DETAIL_ID)
+)
+GO
+
+CREATE UNIQUE INDEX SBYN_COMMOM_DETAIL_IDX1 ON SBYN_COMMON_DETAIL (COMMON_HEADER_ID ASC, CODE ASC)
+GO
+
+ALTER TABLE SBYN_COMMON_DETAIL
+    ADD CONSTRAINT FK_COMM_DET_COMM_HEAD FOREIGN KEY  (COMMON_HEADER_ID)
+       REFERENCES SBYN_COMMON_HEADER (COMMON_HEADER_ID)
+GO
+
+CREATE INDEX SBYN_ENTERPRISE1 on SBYN_ENTERPRISE (EUID ASC)
+GO
+CREATE INDEX SBYN_TRANSACTION1 on SBYN_TRANSACTION (TIMESTAMP ASC)
+GO
+CREATE INDEX SBYN_TRANSACTION2 on SBYN_TRANSACTION (OPERATION ASC)
+GO
+CREATE INDEX SBYN_TRANSACTION3 on SBYN_TRANSACTION (TIMESTAMP ASC, TRANSACTIONNUMBER ASC)
+GO
+CREATE INDEX SBYN_ASSUMEDMATCH1 on SBYN_ASSUMEDMATCH (EUID ASC)
+GO
+CREATE INDEX SBYN_POTENTIALDUPLICATES1 on SBYN_POTENTIALDUPLICATES (EUID1 ASC)
+GO
+CREATE INDEX SBYN_POTENTIALDUPLICATES2 on SBYN_POTENTIALDUPLICATES (EUID2 ASC)
+GO
+CREATE INDEX SBYN_AUDIT1 on SBYN_AUDIT (EUID ASC)
+GO
+CREATE INDEX SBYN_AUDIT2 on SBYN_AUDIT (CREATE_DATE ASC)
+GO
+CREATE INDEX SBYN_MERGE1 on SBYN_MERGE (KEPT_EUID ASC)
+GO
+
+[SBYNTAG:DEFINE:rootnode,fieldnames(),fieldtypes(),keys]
+CREATE TABLE SBYN_[sbyntag:rootnode.toUpperCase] (
+	SYSTEMCODE varchar(20),
+	LID varchar(25),
+	[sbyntag:rootnode.toUpperCase]ID varchar(20),
+[SBYNTAG:PARAM-BEGIN]	
+	[sbyntag:fieldnames().toUpperCase] [sbyntag:fieldtypes()],
+[SBYNTAG:PARAM-SQLSERVER-END]
+    CONSTRAINT PK_[sbyntag:rootnode.toUpperCase] PRIMARY KEY ([sbyntag:rootnode.toUpperCase]ID))
+GO		
+
+ALTER TABLE SBYN_[sbyntag:rootnode.toUpperCase] ADD CONSTRAINT FK_[sbyntag:rootnode.toUpperCase]_SYSTEMCODE_LID FOREIGN KEY (SYSTEMCODE, LID) REFERENCES SBYN_SYSTEMOBJECT(SYSTEMCODE, LID)
+GO
+ALTER TABLE SBYN_[sbyntag:rootnode.toUpperCase] ADD CONSTRAINT U_[sbyntag:rootnode.toUpperCase] UNIQUE (SYSTEMCODE, LID[sbyntag:keys.toUpperCase])
+GO
+
+CREATE TABLE SBYN_[sbyntag:rootnode.toUpperCase]SBR (
+	EUID varchar(20),
+	[sbyntag:rootnode.toUpperCase]ID varchar(20),
+[SBYNTAG:PARAM-BEGIN]	
+	[sbyntag:fieldnames().toUpperCase] [sbyntag:fieldtypes()],
+[SBYNTAG:PARAM-SQLSERVER-END]
+    CONSTRAINT PK_[sbyntag:rootnode.toUpperCase]SBR PRIMARY KEY ([sbyntag:rootnode.toUpperCase]ID))
+GO		
+	
+ALTER TABLE SBYN_[sbyntag:rootnode.toUpperCase]SBR ADD CONSTRAINT FK_[sbyntag:rootnode.toUpperCase]SBR_EUID FOREIGN KEY (EUID) REFERENCES SBYN_SYSTEMSBR(EUID)
+GO
+ALTER TABLE SBYN_[sbyntag:rootnode.toUpperCase]SBR ADD CONSTRAINT U_[sbyntag:rootnode.toUpperCase]SBR UNIQUE (EUID[sbyntag:keys.toUpperCase])
+GO
+
+[SBYNTAG:DEFINE:()pname,sname,fieldnames(),fieldtypes(),keys]
+CREATE TABLE SBYN_[sbyntag:sname.toUpperCase] (
+	[sbyntag:pname.toUpperCase]ID varchar(20),
+	[sbyntag:sname.toUpperCase]ID varchar(20),
+[SBYNTAG:PARAM-BEGIN]
+	[sbyntag:fieldnames().toUpperCase] [sbyntag:fieldtypes()],
+[SBYNTAG:PARAM-SQLSERVER-END]
+    CONSTRAINT PK_[sbyntag:sname.toUpperCase] PRIMARY KEY ([sbyntag:sname.toUpperCase]ID))
+GO		
+
+ALTER TABLE SBYN_[sbyntag:sname.toUpperCase] ADD CONSTRAINT FK_[sbyntag:sname.toUpperCase]_[sbyntag:pname.toUpperCase]ID FOREIGN KEY ([sbyntag:pname.toUpperCase]ID) REFERENCES SBYN_[sbyntag:pname.toUpperCase]([sbyntag:pname.toUpperCase]ID)
+GO
+ALTER TABLE SBYN_[sbyntag:sname.toUpperCase] ADD CONSTRAINT U_[sbyntag:sname.toUpperCase] UNIQUE ([sbyntag:pname.toUpperCase]ID[sbyntag:keys.toUpperCase])
+GO
+
+CREATE TABLE SBYN_[sbyntag:sname.toUpperCase]SBR (
+	[sbyntag:pname.toUpperCase]ID varchar(20),
+	[sbyntag:sname.toUpperCase]ID varchar(20),
+[SBYNTAG:PARAM-BEGIN]
+	[sbyntag:fieldnames().toUpperCase] [sbyntag:fieldtypes()],
+[SBYNTAG:PARAM-SQLSERVER-END]
+    CONSTRAINT PK_[sbyntag:sname.toUpperCase]SBR PRIMARY KEY ([sbyntag:sname.toUpperCase]ID))
+GO
+
+ALTER TABLE SBYN_[sbyntag:sname.toUpperCase]SBR ADD CONSTRAINT FK_[sbyntag:sname.toUpperCase]SBR_[sbyntag:pname.toUpperCase]ID FOREIGN KEY ([sbyntag:pname.toUpperCase]ID) REFERENCES SBYN_[sbyntag:pname.toUpperCase]SBR([sbyntag:pname.toUpperCase]ID)
+GO
+ALTER TABLE SBYN_[sbyntag:sname.toUpperCase]SBR ADD CONSTRAINT U_[sbyntag:sname.toUpperCase]SBR UNIQUE ([sbyntag:pname.toUpperCase]ID[sbyntag:keys.toUpperCase])
+GO
+
+[SBYNTAG:DEFINE:nodelist(),systemcode()]
+CREATE TABLE SBYN_SEQ_TABLE (
+	SEQ_NAME varchar(20),
+	SEQ_COUNT numeric(38))
+GO	
+
+ALTER TABLE SBYN_SEQ_TABLE ADD CONSTRAINT U_SEQ_NAME UNIQUE (SEQ_NAME)
+GO
+
+
+
+CREATE PROCEDURE SEQMGR
+    @seq_name_in varchar(30), 
+    @chunk_size_in int,
+    @seq_num_out int output
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON
+
+    -- Update sequence number
+    update SBYN_SEQ_TABLE set SEQ_COUNT = SEQ_COUNT + @chunk_size_in where SEQ_NAME = @seq_name_in
+
+    -- if error return -1
+    if @@error = 0
+        select @seq_num_out = SEQ_COUNT - @chunk_size_in from SBYN_SEQ_TABLE where SEQ_NAME = @seq_name_in
+    else
+	select @seq_num_out = -1
+END
+GO
+
+INSERT INTO SBYN_SEQ_TABLE VALUES ('EUID', 0)
+GO
+INSERT INTO SBYN_SEQ_TABLE VALUES ('POTENTIALDUPLICATE', 0)
+GO
+INSERT INTO SBYN_SEQ_TABLE VALUES ('TRANSACTIONNUMBER', 0)
+GO
+INSERT INTO SBYN_SEQ_TABLE VALUES ('ASSUMEDMATCH', 0)
+GO
+INSERT INTO SBYN_SEQ_TABLE VALUES ('AUDIT', 0)
+GO
+INSERT INTO SBYN_SEQ_TABLE VALUES ('MERGE', 0)
+GO
+INSERT INTO SBYN_SEQ_TABLE VALUES ('SBYN_APPL', 2)
+GO
+INSERT INTO SBYN_SEQ_TABLE VALUES ('SBYN_COMMON_HEADER', 1)
+GO
+INSERT INTO SBYN_SEQ_TABLE VALUES ('SBYN_COMMON_DETAIL', 1)
+GO
+[SBYNTAG:REP-BEGIN]
+INSERT INTO SBYN_SEQ_TABLE VALUES ('[sbyntag:nodelist().toUpperCase]', 0)
+GO
+INSERT INTO SBYN_SEQ_TABLE VALUES ('[sbyntag:nodelist().toUpperCase]SBR', 0)
+GO
+[SBYNTAG:REP-END]
+
+INSERT INTO SBYN_APPL (APPL_ID, CODE, DESCR, READ_ONLY, CREATE_DATE, CREATE_USERID) 
+VALUES (1, 'EV', 'eView5.1', 'Y', getdate(), user)
+GO
+
+COMMIT

@@ -1,0 +1,186 @@
+create table stc_table_seq
+(
+    table_name            varchar2(30)           not null,
+    seq_no                number(15)             not null,
+    constraint pk_stc_table_seq primary key (table_name)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table stc_group_def
+(
+    group_def_id          number(15)             not null,
+    group_code            varchar2(20)           not null,
+    description           varchar2(40)           not null,
+    create_date           date                   not null,
+    create_by             varchar2(20)           not null,
+    constraint pk_stc_group_def primary key (group_def_id)
+        using index
+     tablespace $<index>,
+    constraint ak_stc_group_def1 unique (group_code)
+        using index
+        tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table stc_appl
+(
+    appl_id               number(15)             not null,
+    code                  varchar2(8)            not null,
+    descr                 varchar2(40)           not null,
+    prefix                varchar2(3)            not null,
+    read_only             char                   default 'N' not null
+        constraint ck_stc_appl1 check (read_only in ('Y','N')),
+    create_date           date                   not null,
+    create_userid         varchar2(20)           not null,
+    constraint pk_stc_appl primary key (appl_id)
+)
+tablespace $<data>
+/
+
+create unique index stc_appl1 on stc_appl (code asc)
+tablespace $<index>
+/
+
+create table stc_common_header
+(
+    common_header_id      number(15)             not null,
+    appl_id               number(15)             not null,
+    code                  varchar2(8)            not null,
+    descr                 varchar2(40)           not null,
+    read_only             char                   not null,
+    max_input_len         integer                default 1 not null,
+    create_date           date                   not null,
+    create_userid         varchar2(20)           not null,
+    constraint pk_stc_common_header primary key (common_header_id)
+        using index
+     tablespace $<index>,
+    constraint ak_stc_common_header1 unique (appl_id, code)
+        using index
+        tablespace $<index>
+)
+tablespace $<data>
+/
+
+create index fk_stc_common_header1 on stc_common_header (appl_id asc)
+tablespace $<index>
+/
+
+create table stc_table
+(
+    table_id              number(15)             not null,
+    table_name            varchar2(30)           not null,
+    appl_id               number(15)             not null,
+    create_date           date                   not null,
+    create_by             varchar2(20)           not null,
+    constraint pk_stc_table primary key (table_id)
+        using index
+     tablespace $<index>,
+    constraint ak_stc_table1 unique (table_name)
+        using index
+        tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table stc_group_def_detail
+(
+    group_def_detail_id   number(15)             not null,
+    group_def_id          number(15)             null    ,
+    code                  varchar2(8)            not null,
+    description           varchar2(40)           not null,
+    create_date           date                   not null,
+    create_by             varchar2(20)           not null,
+    constraint pk_stc_group_def_detail primary key (group_def_detail_id)
+        using index
+     tablespace $<index>,
+    constraint ak_stc_group_def_detail1 unique (group_def_id, code)
+        using index
+        tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table stc_table_column
+(
+    table_column_id       number(15)             not null,
+    table_id              number(15)             not null,
+    column_name           varchar2(30)           not null,
+    required              char                   default 'Y' not null
+        constraint ck_stc_table_column1 check (required in ('Y','N')),
+    read_only             char                   default 'Y' not null
+        constraint ck_stc_table_column2 check (read_only in ('Y','N')),
+    generated             char                   default 'Y' not null
+        constraint ck_stc_table_column3 check (generated in ('Y','N')),
+    constraint pk_stc_table_column primary key (table_column_id)
+        using index
+     tablespace $<index>,
+    constraint ak_stc_table_column1 unique (table_id, column_name)
+        using index
+        tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table stc_common_detail
+(
+    common_detail_id      number(15)             not null,
+    common_header_id      number(15)             not null,
+    code                  varchar2(8)            not null,
+    descr                 varchar2(40)           not null,
+    read_only             char                   default 'N' not null
+        constraint ck_stc_common_detail check (read_only in ('Y','N')),
+    create_date           date                   not null,
+    create_userid         varchar2(20)           not null,
+    constraint pk_stc_common_detail primary key (common_detail_id)
+        using index
+     tablespace $<index>,
+    constraint ak_stc_comm_detail_1 unique (common_header_id, code)
+        using index
+        tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table stc_zip
+(
+    zip_code     varchar2(8)            not null,
+    zip_ext      varchar2(8)            null    ,
+    city         varchar2(30)           not null,
+    state        varchar2(10)           not null,
+    county       varchar2(20)           null    ,
+    create_date  date                   not null,
+    constraint pk_stc_zip primary key (zip_code, city, state)
+        using index
+        tablespace $<index>
+)
+tablespace $<data>
+/
+
+alter table stc_group_def_detail
+    add constraint fk_stc_group_ref_detail1 foreign key  (group_def_id)
+       references stc_group_def (group_def_id)
+/
+
+alter table stc_table_column
+    add constraint fk_stc_table_column1 foreign key  (table_id)
+       references stc_table (table_id)
+/
+
+alter table stc_common_detail
+    add constraint fk_stc_common_detail1 foreign key  (common_header_id)
+       references stc_common_header (common_header_id)
+/
+
+alter table stc_common_header
+    add constraint fk_stc_common_header1 foreign key  (appl_id)
+       references stc_appl (appl_id)
+/
+
+alter table stc_table
+    add constraint fk_stc_table1 foreign key  (appl_id)
+       references stc_appl (appl_id)
+/

@@ -1,0 +1,330 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+package com.sun.mdm.index.ops;
+
+import com.sun.mdm.index.objects.MergeObject;
+import com.sun.mdm.index.objects.exception.ObjectException;
+import com.sun.mdm.index.ops.exception.OPSException;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import java.util.ArrayList;
+
+import com.sun.mdm.index.util.LogUtil;
+import com.sun.mdm.index.util.Logger;
+
+/**
+ * @author gzheng
+ * OPS class for TransactionLog objects
+ */
+public final class MergeObjectDB extends ObjectPersistenceService {
+    private static String mInsertString;
+    private static String mUpdateString;
+    private static String mUpdateString2;   // handles unmerges with transaction ID
+    private static String mUpdateString3;   // handles LID unmerges within the same EUID
+    private static String mUpdateString4;   // handles EUID merges
+    
+    static {
+        mInsertString =
+              "       insert into sbyn_merge         \n" 
+            + "       ( \n" 
+            + "               merge_id, \n" 
+            + "               kept_euid, \n" 
+            + "               merged_euid, \n" 
+            + "               merge_transactionnum, \n" 
+            + "               unmerge_transactionnum \n" 
+            + "       ) \n" 
+            + "       values \n" 
+            + "       ( \n" 
+            + "               ?, \n" 
+            + "               ?, \n" 
+            + "               ?, \n" 
+            + "               ?, \n" 
+            + "               ?  \n" 
+            + "       ) \n";
+
+        mUpdateString =
+              "       update sbyn_merge         \n" 
+            + "       set \n" 
+            + "               unmerge_transactionnum = ? \n" 
+            + "       where \n" 
+            + "               unmerge_transactionnum IS NULL and \n"
+            + "               kept_euid = ? and \n"
+            + "               merged_euid = ? \n";
+        mUpdateString2 =
+              "       update sbyn_merge         \n" 
+            + "       set \n" 
+            + "               unmerge_transactionnum = ? \n" 
+            + "       where \n" 
+            + "               unmerge_transactionnum IS NULL and \n"
+            + "               merge_transactionnum = ? \n";  
+        mUpdateString3 =
+              "       update sbyn_merge         \n" 
+            + "       set \n" 
+            + "               unmerge_transactionnum = ? \n" 
+            + "       where \n" 
+            + "               unmerge_transactionnum IS NULL and \n"
+            + "               merge_transactionnum = ? and \n"
+            + "               kept_euid = ? \n";
+        mUpdateString4 =
+              "       update sbyn_merge         \n" 
+            + "       set \n" 
+            + "               unmerge_transactionnum = ? \n" 
+            + "       where \n" 
+            + "               unmerge_transactionnum IS NULL and \n"
+            + "               merge_transactionnum = ? and \n"
+            + "               kept_euid = ? and \n"
+            + "               merged_euid = ? \n";
+
+    }
+
+    private final Logger mLogger = LogUtil.getLogger(this);
+    
+    
+    /**
+     * default constructor
+     *
+     * @throws OPSException if an error occurs.
+     */
+    public MergeObjectDB() throws OPSException {
+        super();
+    }
+
+
+    /**
+     * Persists a MergeObject into database
+     *
+     * @param conn JDBC connection.
+     * @param mObj MergeObject to persist.
+     * @throws OPSException if an error occurs.
+     */
+    public void create(Connection conn, MergeObject mObj)
+        throws OPSException {
+        // executes insert SQL statement
+        PreparedStatement stmt = null;
+        try {
+            stmt = getStatement(mInsertString, conn);
+            setParam(stmt, 1, "String", mObj.getMergeID());
+            setParam(stmt, 2, "String", mObj.getKeptEUID());
+            setParam(stmt, 3, "String", mObj.getMergedEUID());
+            setParam(stmt, 4, "String", mObj.getMergeTransactionNumber());
+            setParam(stmt, 5, "String", mObj.getUnMergeTransactionNumber());
+
+            stmt.executeUpdate();
+        } catch (ObjectException e) {
+            throw new OPSException(e.getMessage());
+        } catch (SQLException e) {
+            String sqlErr = e.getMessage();
+            ArrayList params = new ArrayList();
+
+            try {
+                params = addobject(params, mObj.getMergeID());                  
+                params = addobject(params, mObj.getKeptEUID());                 
+                params = addobject(params, mObj.getMergedEUID());               
+                params = addobject(params, mObj.getMergeTransactionNumber());   
+                params = addobject(params, mObj.getUnMergeTransactionNumber()); 
+
+                String sql = sql2str(mInsertString, params);
+                throw new OPSException(sql + e.getMessage());
+            } catch (ObjectException oe) {
+                throw new OPSException(oe.getMessage() + sqlErr);
+            }
+        } finally {
+        	try {
+        		if (stmt != null) {
+            		stmt.close();
+            	}
+            } catch (SQLException e) {
+            	throw new OPSException("failed to close statement");
+            }
+        }
+    }
+
+
+    /**
+     * Updates an existing MergeObject
+     *
+     * @param conn JDBC connection.
+     * @param unmergetn Unmerge transaction number.
+     * @param originalTransactionID Original transaction ID of the merge.
+     * @throws OPSException if an error occurs.
+     */
+    
+    public void update(Connection conn, String unmergetn, String originalTransactionID)
+        throws OPSException {
+        // executes update SQL statement
+        PreparedStatement stmt = null;
+        try {
+            stmt = getStatement(mUpdateString2, conn);
+            setParam(stmt, 1, "String", unmergetn);
+            setParam(stmt, 2, "String", originalTransactionID);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            mLogger.error("SQL Error", e);
+            String sqlerr = e.getMessage();
+
+            ArrayList params = new ArrayList();
+            params = addobject(params, unmergetn);                 
+            params = addobject(params, originalTransactionID);
+            
+            String sql = sql2str(mUpdateString2, params);
+
+            throw new OPSException(sql + e.getMessage());
+        } catch (OPSException e) {
+            mLogger.error("OPS Error", e);
+            throw e;
+        } finally {
+        	try {
+        		if (stmt != null) {
+            		stmt.close();
+            	}
+            } catch (SQLException e) {
+            	throw new OPSException("failed to close statement");
+            }
+        }
+    }
+    
+    /**
+     * Updates an existing MergeObject.
+     *
+     * @param conn JDBC connection.
+     * @param unmergetn Unmerge transaction number.
+     * @param kepteuid Kept euid.
+     * @param mergedeuid Merged euid.
+     * @throws OPSException if an error occurs.
+     */
+    
+    public void update(Connection conn, String unmergetn, 
+                       String kepteuid, String mergedeuid)
+        throws OPSException {
+        // executes update SQL statement
+        PreparedStatement stmt = null;
+        try {
+            update(conn, null, unmergetn, kepteuid, mergedeuid);
+        } catch (OPSException e) {
+            mLogger.error("OPS Error", e);
+            throw e;
+        } finally {
+        	try {
+        		if (stmt != null) {
+            		stmt.close();
+            	}
+            } catch (SQLException e) {
+            	throw new OPSException("failed to close statement");
+            }
+        }
+    }
+    
+    /**
+     * Updates an existing MergeObject.
+     *
+     * @param conn JDBC connection.
+     * @param mergetn Original transaction number of the merge.
+     * @param unmergetn Unmerge transaction number.
+     * @param kepteuid Kept euid.
+     * @param mergedeuid Merged euid.
+     * @throws OPSException if an error occurs.
+     */
+    
+    public void update(Connection conn, String mergetn, String unmergetn,  
+                       String kepteuid, String mergedeuid)
+        throws OPSException {
+        // executes update SQL statement
+        PreparedStatement stmt = null;
+        boolean lidUnmergeFlag = false; 
+        boolean euidMergeTransNumFlag = false;
+        try {
+            if (mergedeuid != null) {
+                if (mergetn == null) {
+                    stmt = getStatement(mUpdateString, conn);
+                    setParam(stmt, 1, "String", unmergetn);
+                    setParam(stmt, 2, "String", kepteuid);
+                    setParam(stmt, 3, "String", mergedeuid);
+                } else {
+                    euidMergeTransNumFlag = true;
+                    stmt = getStatement(mUpdateString4, conn);
+                    setParam(stmt, 1, "String", unmergetn);
+                    setParam(stmt, 2, "String", mergetn);
+                    setParam(stmt, 3, "String", kepteuid);
+                    setParam(stmt, 4, "String", mergedeuid);
+                }
+            } else {
+                if (mergetn == null) {
+                    String mesg = "OPS Error: mergetn of the LID merge is null";
+                    mLogger.error(mesg);
+                    throw new OPSException(mesg);
+                }
+                lidUnmergeFlag = true;
+                stmt = getStatement(mUpdateString3, conn);
+                setParam(stmt, 1, "String", unmergetn);
+                setParam(stmt, 2, "String", mergetn);
+                setParam(stmt, 3, "String", kepteuid);
+            }
+            
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            mLogger.error("SQL Error", e);
+
+            String sqlerr = e.getMessage();
+
+            ArrayList params = new ArrayList();
+
+            if (lidUnmergeFlag == false) {
+                if (euidMergeTransNumFlag == false) {
+                    params = addobject(params, unmergetn);                 
+                    params = addobject(params, kepteuid);
+                    params = addobject(params, mergedeuid);
+                    String sql = sql2str(mUpdateString, params);
+                    throw new OPSException(sql + e.getMessage());
+                } else {
+                    params = addobject(params, unmergetn);                 
+                    params = addobject(params, mergetn);                 
+                    params = addobject(params, kepteuid);
+                    params = addobject(params, mergedeuid);
+                    String sql = sql2str(mUpdateString4, params);
+                    throw new OPSException(sql + e.getMessage());
+                }
+            } else {
+                params = addobject(params, unmergetn);                 
+                params = addobject(params, mergetn);
+                params = addobject(params, kepteuid);
+            
+                String sql = sql2str(mUpdateString3, params);
+                throw new OPSException(sql + e.getMessage());
+            }
+        } catch (OPSException e) {
+            mLogger.error("OPS Error", e);
+            throw e;
+        } finally {
+        	try {
+        		if (stmt != null) {
+            		stmt.close();
+            	}
+            } catch (SQLException e) {
+            	throw new OPSException("failed to close statement");
+            }
+        }
+    }
+}

@@ -1,0 +1,144 @@
+<header>
+
+-- declare table variable to hold 
+-- user specified code list
+
+declare @codelist table(
+    objtype varchar(1) not null, 
+    code varchar(8) not null,
+    descr varchar(50) not null
+)
+
+-- declare cursor to loop
+-- through the code list
+
+declare c1 cursor
+for
+select * from @codelist
+
+-- temporary variables
+
+declare @v_objtype varchar(1),
+              @v_code varchar(8),
+              @v_descr varchar(50),
+              @v_appl_id int,
+              @v_header_seq int,
+              @v_detail_seq int,
+              @v_date datetime
+
+begin
+
+</header>
+<repeat>
+
+    -- **** $<module-comment>   ****
+    insert into @codelist values('L', '$<module>', '$<module-description>')
+    insert into @codelist values('V', '$<code>', '$<code-description>')
+
+</repeat>
+<trailer>
+
+    select @v_date = getdate()
+    select @v_appl_id = APPL_ID from SBYN_APPL where code = 'EV';
+    if @v_appl_id is null or @@error <> 0
+    begin
+        print 'ERROR: APPL_ID not found for EV.'
+        goto abort
+    end
+
+    -- remove values of the codelist that matches the application id
+    delete from SBYN_COMMON_DETAIL where COMMON_HEADER_ID in 
+        (select  COMMON_HEADER_ID from SBYN_COMMON_HEADER
+        where APPL_ID = @v_appl_id)
+
+    -- remove header info that matches the application id
+    delete from SBYN_COMMON_HEADER 
+    where APPL_ID = @v_appl_id    
+
+    update SBYN_SEQ_TABLE set SEQ_COUNT = SEQ_COUNT + 1 
+    where SEQ_NAME = 'SBYN_COMMON_HEADER'
+
+    select @v_header_seq = SEQ_COUNT - 1 from SBYN_SEQ_TABLE 
+    where SEQ_NAME = 'SBYN_COMMON_HEADER'
+
+    update SBYN_SEQ_TABLE set SEQ_COUNT = SEQ_COUNT + 1 
+    where SEQ_NAME = 'SBYN_COMMON_DETAIL'
+
+    select @v_detail_seq  = SEQ_COUNT - 1 from SBYN_SEQ_TABLE 
+    where SEQ_NAME = 'SBYN_COMMON_DETAIL'
+
+    -- loop through the codelist and populate 
+    -- SBYN_COMMON_DETAIL and SBYN_COMMON_DETAIL
+
+    open c1
+
+    fetch next from c1 into @v_objtype, @v_code, @v_descr
+
+    while @@FETCH_STATUS = 0
+    begin
+
+        if @v_objtype = 'L'
+        begin
+
+            insert into SBYN_COMMON_HEADER (COMMON_HEADER_ID, 
+                                            APPL_ID, 
+                                            CODE, 
+                                            DESCR, 
+                                            READ_ONLY, 
+                                            MAX_INPUT_LEN, 
+                                            TYP_TABLE_CODE, 
+                                            CREATE_DATE,
+                                            CREATE_USERID)
+            values (@v_header_seq, 
+                    @v_appl_id, 
+                    @v_code, 
+                    @v_descr, 
+                    'Y', 
+                    8, 
+                    'XX', 
+                    @v_date, 
+                    system_user );
+
+            select @v_header_seq = @v_header_seq + 1;
+
+        end
+        else
+        begin
+
+            insert into SBYN_COMMON_DETAIL(common_detail_id, 
+                                            COMMON_HEADER_ID, 
+                                            CODE, 
+                                            DESCR, 
+                                            READ_ONLY, 
+                                            CREATE_DATE, 
+                                            CREATE_USERID)
+            values (@v_detail_seq, 
+                    @v_header_seq-1, 
+                    @v_code , 
+                    @v_descr, 
+                    'N', 
+                    @v_date, 
+                    system_user )
+
+            select @v_detail_seq = @v_detail_seq + 1
+
+        end
+
+        fetch next from c1 into @v_objtype, @v_code, @v_descr
+    end
+
+    close c1
+    deallocate c1
+
+    update SBYN_SEQ_TABLE set SEQ_COUNT = @v_header_seq
+    where SEQ_NAME = 'SBYN_COMMON_HEADER'
+
+    update SBYN_SEQ_TABLE set SEQ_COUNT = @v_detail_seq
+    where SEQ_NAME = 'SBYN_COMMON_DETAIL'
+
+commit
+abort:
+end
+go
+
+</trailer>

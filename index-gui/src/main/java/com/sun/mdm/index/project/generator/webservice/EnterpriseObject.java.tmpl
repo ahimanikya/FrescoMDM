@@ -1,0 +1,292 @@
+[SBYNTAG:DEFINE:objname]
+<!--
+ # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ #
+ # Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ #
+ # The contents of this file are subject to the terms of the Common 
+ # Development and Distribution License ("CDDL")(the "License"). You 
+ # may not use this file except in compliance with the License.
+ #
+ # You can obtain a copy of the License at
+ # https://open-dm-mi.dev.java.net/cddl.html
+ # or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ # specific language governing permissions and limitations under the  
+ # License.  
+ #
+ # When distributing the Covered Code, include this CDDL Header Notice 
+ # in each file and include the License file at
+ # open-dm-mi/bootstrap/legal/license.txt.
+ # If applicable, add the following below this CDDL Header, with the 
+ # fields enclosed by brackets [] replaced by your own identifying 
+ # information: "Portions Copyrighted [year] [name of copyright owner]"
+-->
+
+package com.sun.mdm.index.webservice;
+
+import java.util.*;
+import com.sun.mdm.index.objects.*;
+import com.sun.mdm.index.objects.exception.*;
+import com.sun.mdm.index.webservice.EnterpriseObjectBean;
+import com.sun.mdm.index.webservice.SystemObjectBean;
+import com.sun.mdm.index.webservice.SBRObjectBean;
+
+/**
+ * Enterprise[sbyntag:objname] value object
+ * @author 
+ * @version
+ */
+public class Enterprise[sbyntag:objname] implements EnterpriseObjectBean{
+     public static final int version = 1;
+ 
+     private EnterpriseObject meo;
+     private SBR[sbyntag:objname] msbr;
+     private System[sbyntag:objname][] mSystem[sbyntag:objname]s;
+     
+     public Enterprise[sbyntag:objname]() {
+     }
+     
+     protected Enterprise[sbyntag:objname](EnterpriseObject eo) throws ObjectException {
+        meo = eo;
+        msbr = new SBR[sbyntag:objname](eo.getSBR());
+        pSetSystem[sbyntag:objname]s();        
+     }
+    /**
+     * Getter for EUID attribute of the EnterpriseObject object
+     *
+     * @exception ObjectException ObjectException
+     * @return String
+     */
+    public String getEUID() throws ObjectException {
+       return meo.getEUID();
+       
+    }
+
+    /**
+     * Getter for SBR attribute of the EnterprisePerson object
+     *
+     * @return SBR
+     */
+    public SBR[sbyntag:objname] getSBR[sbyntag:objname]() {
+        return msbr; 
+    }
+
+    public SBRObjectBean pGetSBRObjectBean() {
+        return getSBR[sbyntag:objname]();
+    }
+    
+    /**
+     * Getter for Status attribute of the EnterpriseObject object
+     *
+     * @exception ObjectException ObjectException
+     * @return String
+     */
+    public String getStatus() throws ObjectException {
+      return meo.getStatus();
+    }
+
+    /**
+     * Getter for SystemObject attribute of the EnterpriseObject object
+     *
+     * @param system SystemCode
+     * @param lid LocalID
+     * @exception ObjectException ObjectException
+     * @return SystemObject
+     */
+    public System[sbyntag:objname] pGetSystem[sbyntag:objname](String system, String lid)
+        throws ObjectException {
+        SystemObject so = meo.getSystemObject(system, lid);
+        return new System[sbyntag:objname](so);
+    }
+    
+    
+    /**
+     * Getter for SystemObject attribute of the EnterpriseObject object
+     *
+     * @param system SystemCode
+     * @param lid LocalID
+     * @exception ObjectException ObjectException
+     * @return SystemObjectBean
+     */
+    public SystemObjectBean pGetSystemObjectBean(String system, String lid)
+        throws ObjectException {
+        return pGetSystem[sbyntag:objname](system, lid);
+    }
+            
+    /**
+     * Getter for SystemObjects attribute of the EnterpriseObject object
+     *
+     * @return Collection of SystemObject(s)
+     */
+    public System[sbyntag:objname][] getSystem[sbyntag:objname]() {
+       return mSystem[sbyntag:objname]s;
+    }
+    
+    public System[sbyntag:objname] getSystem[sbyntag:objname](int index) {
+       return mSystem[sbyntag:objname]s[index];
+    }
+    
+
+    /**
+     * Get SystemObject count, used for JCE for loop
+     * @return number of SystemObject records
+     */    
+    public int countSystem[sbyntag:objname]() {
+       return mSystem[sbyntag:objname]s.length;
+    }
+    
+    /**
+     * Get SystemObject count
+     * @return number of SystemObject records
+     */
+    public int getSystem[sbyntag:objname]Count() {
+       return countSystem[sbyntag:objname]();
+    }
+
+
+    /**
+     * Getter for SystemObjects attribute of the EnterpriseObject object
+     *
+     * @return Collection of SystemObject(s)
+     */
+    public SystemObjectBean[] pGetSystemObjectBean() {
+       return getSystem[sbyntag:objname]();
+    }
+    
+    /**
+     * Getter for ith SystemObjectBean
+     * @param index index of SystemObjectBean
+     * @return SystemObjectBean
+     */
+    public SystemObjectBean pGetSystemObjectBean(int index) {
+       return getSystem[sbyntag:objname](index);
+    }
+    
+    /**
+     * Setter for EUID attribute of the EnterpriseObject object
+     *
+     * @param euid EUID
+     * @exception ObjectException ObjectException
+     */
+    public void setEUID(String euid) throws ObjectException {
+      meo.setEUID(euid);
+    }
+
+    /**
+     * Setter for Status attribute of the EnterpriseObject object
+     *
+     * @param status String
+     * @exception ObjectException ObjectException
+     */
+    public void setStatus(String status) throws ObjectException {
+       // Do nothing. Just make it Bean compliant.
+    }
+
+    /**
+     * Setter for SBR attribute of the EnterpriseObject object
+     *
+     * @param sbr SBR
+     * @exception ObjectException ObjectException
+     */
+   public void setSBR[sbyntag:objname](SBR[sbyntag:objname] sbr) throws ObjectException {  
+       // Do nothing. Just make it Bean compliant.
+   }
+
+    /**
+     * Adds a feature to the SystemObject attribute of the EnterpriseObject
+     * object
+     *
+     * @param obj The feature to be added to the SystemObject attribute
+     * @exception ObjectException ObjectException
+     */
+    /*
+    public void setSystem[sbyntag:objname](System[sbyntag:objname] system[sbyntag:objname]) throws ObjectException {
+        SystemObject so = system[sbyntag:objname].pGetSystemObject();
+        meo.addSystemObject(so);        
+        pSetSystem[sbyntag:objname]s();
+    }
+    */
+    public void setSystem[sbyntag:objname](System[sbyntag:objname][] system[sbyntag:objname]s) throws ObjectException {
+        pSetSystem[sbyntag:objname]s(system[sbyntag:objname]s);
+    }
+
+    /**
+     * Adds a feature to the SystemObjects attribute of the EnterpriseObject
+     * object
+     *
+     * @param systemobjs The feature to be added to the SystemObjects attribute
+     * @exception ObjectException ObjectException
+     */
+    public void pSetSystem[sbyntag:objname]s(System[sbyntag:objname][] system[sbyntag:objname]s) throws ObjectException {
+      Collection systems = new ArrayList();
+      for (int i = 0; i < system[sbyntag:objname]s.length; i++) {
+        systems.add(system[sbyntag:objname]s[i].pGetSystemObject());
+      }
+      meo.addSystemObjects(systems);    
+      pSetSystem[sbyntag:objname]s(); 
+    }
+
+    public void setSystem[sbyntag:objname]Count(int count) {
+        // Do nothing. Just to make it Bean compliant.
+    }  
+
+    /**
+     * Removes a SystemObject from EnterpriseObject
+     *
+     * @param system SystemCode
+     * @param lid LocalID
+     * @exception ObjectException ObjectException
+     */
+    public void removeSystemObject(String system, String lid) throws ObjectException {
+       meo.removeSystemObject(system, lid);       
+    }
+
+    /**
+     * mark a SystemObject from EnterpriseObject for deletion
+     *
+     * @param system SystemCode
+     * @param lid LocalID
+     * @exception ObjectException ObjectException
+     */
+    public void deleteSystemObject(String system, String lid) throws ObjectException {
+       meo.deleteSystemObject(system, lid);  
+    }
+
+    /**
+     * Removes a SystemObject from EnterpriseObject
+     *
+     * @param system SystemCode
+     * @param lid LocalID
+     * @exception ObjectException ObjectException
+     */
+    public void removeSystemObjectBean(String system, String lid) throws ObjectException {
+       removeSystemObject(system, lid);
+    }
+
+    /**
+     * mark a SystemObject from EnterpriseObject for deletion
+     *
+     * @param system SystemCode
+     * @param lid LocalID
+     * @exception ObjectException ObjectException
+     */
+    public void deleteSystemObjectBean(String system, String lid) throws ObjectException {
+       deleteSystemObject(system, lid);
+    }
+    
+    public EnterpriseObject pGetEnterpriseObject() {
+      return meo;
+    }
+
+    private void pSetSystem[sbyntag:objname]s() throws ObjectException {
+      Collection systems = meo.getSystemObjects();
+      int size = systems.size();
+      mSystem[sbyntag:objname]s = new System[sbyntag:objname][size];
+      Iterator iterator = systems.iterator();
+      for (int i = 0; iterator.hasNext(); i++  ) {
+        SystemObject so = (SystemObject) iterator.next();
+        mSystem[sbyntag:objname]s[i] = new System[sbyntag:objname](so);
+      }
+    }
+     
+}

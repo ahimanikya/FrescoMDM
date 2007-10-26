@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<project>
+  <parent>
+    <artifactId>open-dm-mi</artifactId>
+    <groupId>mural</groupId>
+    <version>1.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>mural</groupId>
+  <artifactId>report</artifactId>
+  <name>report</name>
+  <version>${mural.currentVersion}</version>
+  <url>http://maven.apache.org</url>
+  <build>
+    <finalName>report</finalName>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>config/**</exclude>
+          <exclude>ReportClient.bat</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <plugins>
+	    <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-compiler-plugin</artifactId>
+	      <configuration>
+	        <source>1.5</source>
+	        <target>1.5</target>
+	      </configuration>
+	    </plugin>
+	    <!--plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>install-to-netbeans</id>
+            <phase>package</phase>
+            <goals><goal>run</goal></goals>
+            <configuration>
+              <tasks>
+                  <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+                    <classpath refid="maven.dependency.classpath"/>
+                  </taskdef>
+                  <property name="install.dir" value="${mural.install.dir}" />
+                  <available file="${install.dir}" type="dir" property="install.dir.present"/>
+                  <if>
+                    <isset property="install.dir.present" />
+                    <then> 
+		                  <copy todir="${install.dir}/modules/ext/eview/repository/report/lib">
+								        <fileset dir="${project.build.directory}">
+								            <include name="com-sun-eview-report.jar"/>                    
+								        </fileset>
+									    </copy>
+									    <copy todir="${install.dir}/modules/ext/eview/repository/report">
+									      <fileset dir="${project.build.sourceDirectory}/main/resources"/>
+									    </copy>                      
+                    </then>
+                  </if>
+              </tasks>
+            </configuration>
+          </execution>
+          <execution>
+	          <id>make-mural-zip</id>
+	          <phase>package</phase>
+	            <goals><goal>run</goal></goals>
+	            <configuration>
+	              <tasks>
+                  <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+                    <classpath refid="maven.dependency.classpath"/>
+                  </taskdef>
+									<property name="install.dir" value="${mural.install.dir}" />
+                  <available file="${install.dir}" type="dir" property="install.dir.present"/>
+                  <if>
+                    <isset property="install.dir.present" />
+                    <then>
+		                  <copy todir="${basedir}/../bld/ziptmp/soa1">
+									      <fileset dir="${install.dir}">
+									      	<include name="config/Modules/com-sun-mdm-index-project.xml"/>
+									      	<include name="update_tracking/com-sun-mdm-index-project.xml"/>
+									      	<include name="modules/com-sun-mdm-index-project.jar"/>
+									      	<include name="modules/ext/eview/**"/>
+									      </fileset>
+									    </copy>
+									    <zip destfile="${basedir}/../bld/mural-netbeans.zip" basedir="${basedir}/../bld/ziptmp"/>
+									    <delete dir="${basedir}/../bld/ziptmp" />                 
+                    </then>
+                  </if>                  
+                </tasks>
+	            </configuration>
+	          </execution>
+        </executions>
+      </plugin-->
+	  </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ant-contrib</groupId>
+      <artifactId>ant-contrib</artifactId>
+      <version>1.0b2</version>
+      <scope>provided</scope>
+  </dependency>
+    <dependency>
+      <groupId>mural</groupId>
+      <artifactId>index-core</artifactId>
+      <version>${mural.currentVersion}</version>
+    </dependency>
+  </dependencies>
+</project>

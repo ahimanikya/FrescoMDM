@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ #
+ # Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ #
+ # The contents of this file are subject to the terms of the Common 
+ # Development and Distribution License ("CDDL")(the "License"). You 
+ # may not use this file except in compliance with the License.
+ #
+ # You can obtain a copy of the License at
+ # https://open-dm-mi.dev.java.net/cddl.html
+ # or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ # specific language governing permissions and limitations under the  
+ # License.  
+ #
+ # When distributing the Covered Code, include this CDDL Header Notice 
+ # in each file and include the License file at
+ # open-dm-mi/bootstrap/legal/license.txt.
+ # If applicable, add the following below this CDDL Header, with the 
+ # fields enclosed by brackets [] replaced by your own identifying 
+ # information: "Portions Copyrighted [year] [name of copyright owner]"
+-->
+
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.1//EN" "http://www.netbeans.org/dtds/filesystem-1_1.dtd">
+<!-- Refer to the API Support documentation for hints on what this means. -->
+<!-- (Try browsing under this node and modifying things!) -->
+<!-- The Modules API has a full description on how to use layers. -->
+
+<filesystem>
+    <folder name="SeeBeyondModules">
+        <folder name="eView"> <!-- module name -->
+            <folder name="eView.ObjectInstance">  <!-- PE type name -->
+                <file name="Actions">
+                    <attr name="New" stringvalue="com.sun.mdm.index.ede.action.NewObjectInstanceAction"/>
+                    <!-- other actions for this PE type -->
+                </file>
+            </folder>
+        </folder>
+    </folder>
+</filesystem>

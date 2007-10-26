@@ -1,0 +1,361 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+package com.sun.mdm.index.page;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Comparator;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import com.sun.mdm.index.master.search.transaction.TransactionSearchObject;
+import com.sun.mdm.index.master.search.transaction.TransactionSummary;
+import com.sun.mdm.index.objects.TransactionObject;
+import com.sun.mdm.index.objects.EnterpriseObjectHistory;
+import com.sun.mdm.index.ops.RecreateResult;
+import com.sun.mdm.index.ops.TransactionMgr;
+import com.sun.mdm.index.ops.TransactionMgrFactory;
+import com.sun.mdm.index.util.LogUtil;
+import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.ConnectionUtil;
+/**
+ * Adapter for transaction summaries
+ * @author cychow
+ */
+public class TransactionPageAdapter implements PageAdapter, java.io.Serializable {
+    
+    /** Used to indicate forward traversal
+     */    
+    private static final int FORWARD = 1;
+    
+    /** Used to indicate reverse traversal
+     */    
+    private static final int REVERSE = 2;
+
+    /** Current row position
+     */    
+    private int mPosition = 0;
+    
+    /** Transaction summaries that have already been loaded
+     */    
+    private TransactionSummary[] mObjArray = null;
+    
+    /** Number of elements in data source
+     */    
+    private final int mNumElements;
+    
+    /** Page size
+     */    
+    private final int mPageSize;
+    
+    /** Forward only mode 
+     */ 
+    private boolean mForwardOnly = false;     
+    
+    /** Handle to transaction manager
+     */    
+    private transient TransactionMgr mTrans;
+
+    private transient  Logger mLogger = LogUtil.getLogger(this);
+
+    /** Creates a new instance of TransactionPageAdapter
+     *
+     * @param transArray Array of transaction objects
+     * @param searchObj Search Object
+     * @exception PageException An error occured.
+     */
+    public TransactionPageAdapter(TransactionObject[] transArray, 
+        TransactionSearchObject searchObj) throws PageException {
+        try {
+            mPageSize = searchObj.getPageSize();
+            mNumElements = (transArray.length > searchObj.getMaxElements()  
+                ? searchObj.getMaxElements() : transArray.length);
+
+            mTrans = TransactionMgrFactory.getInstance();
+
+            mObjArray = new TransactionSummary[mNumElements];
+
+            // Create TransactionSummary for each transaction object
+            for (int i = 0, len = mNumElements; i < len; i++) {
+                TransactionObject transObj = (TransactionObject) transArray[i];
+                TransactionSummary transSummary = 
+                    new TransactionSummary(transObj);
+                // default value of the valid transaction flag
+                transSummary.setValidTransaction(true);
+                mObjArray[i] = transSummary;
+            }
+        } catch (Exception e) {
+            throw new PageException(e);
+        }
+    }
+
+    
+    /** See PageAdapter
+     * @param index See PageAdapter
+     * @exception PageException See PageAdapter
+     */
+    public void setCurrentPosition(int index)
+        throws PageException {
+        if ((index < 0) || (index >= mNumElements)) {
+            throw new PageException("Index out of bounds: " + index);
+        }
+        mPosition = index;
+    }
+
+    /** Set the forward only mode that will clear all the DataPage objects of 
+     * of a given loaded page i when we start reading/loading the next page i+1.
+     * 
+     * @param forwardOnly the 
+     */
+    public void setReadForwardOnly(boolean forwardOnly) 
+        throws PageException {
+        mForwardOnly = forwardOnly;
+    }         
+    /**
+     * When the stateful session bean activates, it will first call this method.
+     */
+    public void activate() {
+    }
+
+    /**
+     * When the stateful session bean is removed, it will first call this
+     * method.
+     */
+    public void close() {
+    }
+
+
+    /** Get a count of all the objects in the data source
+     *
+     * @exception PageException See PageAdapter
+     * @return See PageAdapter
+     */
+    public int count()
+        throws PageException {
+        return mNumElements;
+    }
+
+
+    /** Indicate if there is another object
+     *
+     * @exception PageException See PageAdapter
+     * @return See PageAdapter
+     */
+    public boolean hasNext()
+        throws PageException {
+        return (mPosition < mNumElements);
+    }
+
+
+    /**
+     * After the timeout period has expired, this method is called to allow the
+     * data source to perform resource conservation activities.
+     */
+    public void idleTimeOut() {
+    }
+
+
+    /** See PageAdapter
+     * @exception PageException See PageAdapter
+     * @return See PageAdapter
+     */
+    public Object next()
+        throws PageException {
+        if (mPosition == mNumElements) {
+            throw new PageException("No more elements");
+        } else {
+            if (mForwardOnly && mPosition > 0 && (mPosition%mPageSize == 0)) {   
+                clearPageSizeCache();
+            }               
+            loadRows(FORWARD);
+            return mObjArray[mPosition++];
+        }
+    }
+
+
+    /**
+     * When the stateful session bean passivates, it will first call this method
+     * on the data source. If there are any resources that must be freed prior
+     * to passivation, this is the time to do it.
+     */
+    public void passivate() {
+    }
+
+
+    /** See PageAdapter
+     * @exception PageException See PageAdapter
+     * @return See PageAdapter
+     */
+    public Object prev()
+        throws PageException {
+        if (mPosition == -1) {
+            throw new PageException("Already at beginning of iterator");
+        } else {
+            loadRows(REVERSE);
+            return mObjArray[mPosition--];
+        }
+    }
+
+
+    /** See PageAdapter
+     * @param c See PageAdapter
+     * @exception PageException Sort array based on comparator
+     */
+    public void sort(Comparator c)
+        throws PageException {
+        setCurrentPosition(0);
+        Arrays.sort(mObjArray, c);
+    }
+
+    /** See PageAdapter
+     * @param c See PageAdapter
+     * @exception PageException Sort array based on comparator
+     */
+    public void sortSummary(Comparator c)
+        throws PageException {
+         setCurrentPosition(0);
+         Arrays.sort(mObjArray, c);
+    }
+    
+    /** lear local cache of the previous page
+     */  
+    private void clearPageSizeCache() throws PageException { 
+        
+        int startPosition = mPosition - mPageSize; 
+        int endPosition = mPosition -1;
+        if (startPosition < 0) {
+            startPosition = 0;
+        }    
+        for (int i = startPosition; i <= endPosition; i++) {
+             mObjArray[i].setEnterpriseObjectHistory(null);
+        }        
+    } 
+    
+    /** Get JDBC connection
+     * @throws PageException An error occured
+     * @return JDBC connection
+     */    
+    private Connection getConnection()
+        throws PageException {
+        Connection con = null;
+        try {
+            con = ConnectionUtil.getConnection();
+        } catch (Exception e) {
+            throw new PageException(e);
+        }
+        return con;
+    }
+
+
+    /** Ensure page data is loaded for the current row position. In addition 
+     * load rows in vicinity of this row.
+     *
+     * @param direction FORWARD or REVERSE
+     * @exception PageException An error occured
+     */
+    private void loadRows(int direction)
+        throws PageException {
+    	initLogger();
+        Connection con = null;
+        if (mObjArray[mPosition].getEnterpriseObjectHistory() == null) {
+            // Determine start and end indexes of records to load
+            int startIndex;
+            int endIndex;
+            switch (direction) {
+            case FORWARD:
+                startIndex = mPosition;
+                endIndex = mPosition + mPageSize - 1;
+                if (endIndex >= mNumElements) {
+                    endIndex = mNumElements - 1;
+                }
+                break;
+            case REVERSE:
+                startIndex = mPosition - mPageSize + 1;
+                if (startIndex < 0) {
+                    startIndex = 0;
+                }
+                endIndex = mPosition;
+                break;
+            default:
+                throw new PageException("Invalid direction: " + direction);
+            }
+            // Load EnterpriseObjectHistory record for each TransactionSummary 
+            // in object array
+            try {
+                con = getConnection();
+                mTrans = TransactionMgrFactory.getInstance();
+                for (int i = startIndex; i <= endIndex; i++) {
+                    TransactionSummary summaryObj = 
+                        (TransactionSummary) mObjArray[i];
+                    TransactionObject transObj = 
+                        summaryObj.getTransactionObject();
+                    String transNumber = transObj.getTransactionNumber();
+                    RecreateResult history = null;
+                    boolean validTransaction = true;
+                    try  {
+                        history = mTrans.recreateObject(con, transNumber);
+                    }  catch  (Exception e)  {
+                        //  Create an empty RecreateResult object if an error was
+                        //  encountered.  This is dealt with in SearchResultForm.java
+                        //  for the GUI.  Otherwise, it must be handled by a 
+                        //  user-defined API.
+                        history = new RecreateResult();
+                        mLogger.error("Invalid Transaction Log. Transaction ID: " 
+                                + transNumber);
+                        // flag this transaction as invalid
+                        validTransaction = false;
+                    }
+                    summaryObj.setEnterpriseObjectHistory(new EnterpriseObjectHistory(history));
+                    summaryObj.setValidTransaction(validTransaction);
+                }
+            } catch (Exception e) {
+                throw new PageException(e);
+            } finally {
+                if (con != null) {
+                    releaseConnection(con);
+                }
+            }
+        }
+    }
+
+    /** Release JDBC connection
+     * @param con JDBC connection
+     */    
+    private void releaseConnection(Connection con) {
+    	initLogger();
+        try {
+            con.close();
+        } catch (SQLException e) {
+        	
+            mLogger.error("Exception", e);
+        }
+    }
+    
+    private void initLogger() {
+    
+    	if ( mLogger == null) {
+      	  mLogger = LogUtil.getLogger(this);
+      	}
+    }
+   
+}

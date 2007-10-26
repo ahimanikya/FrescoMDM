@@ -1,0 +1,84 @@
+<header>
+create or replace type tCode as object (
+  type varchar2(1),
+  code  varchar2(8),
+  descr varchar2(50) 
+);
+/  
+declare
+    v_appl_id		integer;
+    v_header_seq	integer;
+    v_detail_seq	integer;
+    v_date		    varchar2(10);
+    v_user          varchar2(20);
+    v_idx           integer;
+
+    TYPE tCodeList IS TABLE OF tCode;
+    
+    codes tCodeList := tCodeList(
+</header>
+<repeat>
+        -- ****     $<module-comment>   ****
+        tCode('L', '$<module>', '$<module-description>'),
+        tCode('V', '$<code>', '$<code-description>'),
+</repeat>
+<trailer>
+    );
+
+begin
+
+    select TO_CHAR(sysdate, 'MM/DD/YYYY') into v_date from dual;
+    select user into v_user from dual;
+    
+    select appl_id into v_appl_id from sbyn_appl where code = 'EV';
+    if SQL%NOTFOUND then
+        dbms_output.put_line('ERROR: appl_id not found for EV.');
+        goto abort;
+    end if;
+
+    delete from sbyn_common_detail where common_header_id in 
+        (select common_header_id from sbyn_common_header
+        where appl_id = v_appl_id);
+
+    delete from sbyn_common_header 
+    where appl_id = v_appl_id;
+
+    update sbyn_seq_table set seq_count = seq_count + 1 
+    where seq_name = 'SBYN_COMMON_HEADER';
+
+    select seq_count - 1 into v_header_seq from sbyn_seq_table 
+    where seq_name = 'SBYN_COMMON_HEADER';
+
+    update sbyn_seq_table set seq_count = seq_count + 1 
+    where seq_name = 'SBYN_COMMON_DETAIL';
+
+    select seq_count - 1 into v_detail_seq from sbyn_seq_table 
+    where seq_name = 'SBYN_COMMON_DETAIL';
+
+    v_idx := codes.FIRST;
+    WHILE v_idx <= codes.LAST LOOP
+        IF codes(v_idx).type = 'L' THEN
+            insert into sbyn_common_header (common_header_id, appl_id, code, descr, read_only, max_input_len, typ_table_code, create_date, create_userid)
+            values (v_header_seq, v_appl_id, codes(v_idx).code, codes(v_idx).descr , 'Y', 8, 'XX', TO_DATE(v_date, 'MM/DD/YYYY'), v_user );
+            v_header_seq := v_header_seq + 1;
+        ELSE
+            insert into sbyn_common_detail (common_detail_id, common_header_id, code, descr, read_only, create_date, create_userid)
+            values (v_detail_seq, v_header_seq-1, codes(v_idx).code , codes(v_idx).descr, 'N', TO_DATE(v_date, 'MM/DD/YYYY'), v_user );
+            v_detail_seq := v_detail_seq + 1;
+        END IF;
+        v_idx := codes.NEXT(v_idx);
+    END LOOP;
+
+    update sbyn_seq_table set seq_count =  v_header_seq
+    where seq_name = 'SBYN_COMMON_HEADER';
+
+    update sbyn_seq_table set seq_count =  v_detail_seq
+    where seq_name = 'SBYN_COMMON_DETAIL';
+
+    commit;
+
+<<abort>>
+    rollback;
+end;
+/
+</trailer>

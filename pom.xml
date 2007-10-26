@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>mural</groupId>
+
+	<artifactId>open-dm-mi</artifactId>
+
+	<packaging>pom</packaging>
+
+	<version>1.0</version>
+	<name>open-dm-mi</name>
+	<url>http://maven.apache.org</url>
+	<modules>
+
+		<module>index-core</module>
+		<module>report</module>
+		<module>index-gui</module>
+	</modules>
+	<properties>
+		<mural.currentVersion>1.0</mural.currentVersion>
+		<localRepository>${maven.repo.local}</localRepository>
+		<netbeans.version>RELEASE60-BETA1</netbeans.version>
+		<netbeans.cluster>soa1</netbeans.cluster>
+	</properties>
+	<repositories>
+		<repository>
+			<id>download-java-net-legacy-repository</id>
+			<name>download.java.net Maven 1.x repository</name>
+			<url>http://download.java.net/maven/1</url>
+			<layout>legacy</layout>
+			<releases> 
+				<enabled>true</enabled> 
+			</releases>
+			<snapshots> 
+				<enabled>true</enabled> 
+			</snapshots>
+		</repository>    
+      
+		<repository>
+			<id>ws-zones</id>
+			<name>ws.zones maven repository</name>
+			<url>http://ws.zones.apache.org/repository/</url>
+			<layout>legacy</layout>
+		</repository>
+    <repository>
+            <id>netbeans</id>
+            <name>repository hosting netbeans.org api artifacts</name>
+            <url>http://deadlock.netbeans.org/maven2/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
+	</repositories>
+
+</project>

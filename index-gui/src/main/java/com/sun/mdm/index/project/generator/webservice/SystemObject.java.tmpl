@@ -1,0 +1,244 @@
+[SBYNTAG:DEFINE:objname]
+<!--
+ # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ #
+ # Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ #
+ # The contents of this file are subject to the terms of the Common 
+ # Development and Distribution License ("CDDL")(the "License"). You 
+ # may not use this file except in compliance with the License.
+ #
+ # You can obtain a copy of the License at
+ # https://open-dm-mi.dev.java.net/cddl.html
+ # or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ # specific language governing permissions and limitations under the  
+ # License.  
+ #
+ # When distributing the Covered Code, include this CDDL Header Notice 
+ # in each file and include the License file at
+ # open-dm-mi/bootstrap/legal/license.txt.
+ # If applicable, add the following below this CDDL Header, with the 
+ # fields enclosed by brackets [] replaced by your own identifying 
+ # information: "Portions Copyrighted [year] [name of copyright owner]"
+-->
+
+package com.sun.mdm.index.webservice;
+import com.sun.mdm.index.objects.*;
+import com.sun.mdm.index.objects.exception.*;
+import java.util.Date;
+import com.sun.mdm.index.webservice.SystemObjectBean;
+import com.sun.mdm.index.webservice.ObjectBean;
+import com.sun.mdm.index.webservice.ClearFieldObject;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * @author
+ */
+public class System[sbyntag:objname] implements SystemObjectBean{
+    private static final String DEFAULT_CLEAR_FIELD_INDICATOR = "\"\"";
+    public static final int version = 1;
+    /**
+     * active status
+     */
+    public static final String STATUS_ACTIVE = "active";
+    /**
+     * inactive status
+     */
+    public static final String STATUS_INACTIVE = "inactive";
+    /**
+     * merged status
+     */
+    public static final String STATUS_MERGED = "merged";
+
+    private SystemObject mSystemObject;
+    private [sbyntag:objname.makeClassName]Bean m[sbyntag:objname];
+    private ClearFieldObject mClearFieldObj;
+
+    public System[sbyntag:objname]() throws ObjectException {
+       [sbyntag:objname.makeClassName]Object a[sbyntag:objname] = new [sbyntag:objname.makeClassName]Object();
+       mClearFieldObj = new ClearFieldObject(DEFAULT_CLEAR_FIELD_INDICATOR);
+       mSystemObject = new SystemObject();       
+       mSystemObject.setStatus("active");
+       mSystemObject.setChildType("[sbyntag:objname]"); 
+       mSystemObject.setObject(a[sbyntag:objname]);
+       m[sbyntag:objname] = new [sbyntag:objname.makeClassName]Bean(a[sbyntag:objname], mClearFieldObj);
+    }
+
+
+    protected System[sbyntag:objname](SystemObject so) throws ObjectException {
+      mSystemObject = so; 
+      mClearFieldObj = new ClearFieldObject(DEFAULT_CLEAR_FIELD_INDICATOR);
+      m[sbyntag:objname] = new [sbyntag:objname.makeClassName]Bean(([sbyntag:objname.makeClassName]Object)so.getObject(), mClearFieldObj);
+    }
+
+    /**
+     * @return Object clear field indicator
+     */    
+    public Object getClearFieldIndicator() {
+       return mClearFieldObj.getClearFieldIndicator();
+    }
+ 
+    /**
+     * @exception ObjectException object exception
+     * @return String lid
+     */
+    public String getLocalId() throws ObjectException {
+       return mSystemObject.getLID(); 
+    }
+
+    /**
+     * @exception ObjectException object exception
+     * @return String system code
+     */
+    public String getSystemCode() throws ObjectException {
+       return mSystemObject.getSystemCode();
+    }
+
+    /**
+     * @return [sbyntag:objname.makeClassName]Bean 
+     */
+    public [sbyntag:objname.makeClassName]Bean get[sbyntag:objname.makeClassName]() {
+       return m[sbyntag:objname];
+    }
+
+    /**
+     * Getter for ObjectBean
+     * @return ObjectBean 
+     */
+    public ObjectBean pGetObjectBean() {
+       return get[sbyntag:objname.makeClassName]();
+    } 
+    
+
+    public String getStatus() throws ObjectException {
+       return mSystemObject.getStatus(); 
+    }
+
+
+  /**
+     * @exception ObjectException object exception
+     * @return DAte create date time
+     */
+    public Date getCreateDateTime() throws ObjectException {
+        return mSystemObject.getCreateDateTime();
+    }
+
+    /**
+     * @exception ObjectException object exception
+     * @return String create function
+     */
+    public String getCreateFunction() throws ObjectException {
+     return mSystemObject.getCreateFunction();
+    }
+
+    /**
+     * @exception ObjectException object exception
+     * @return String create user
+     */
+    public String getCreateUser() throws ObjectException {
+        return mSystemObject.getCreateUser();
+    }
+
+    /**
+     * @exception ObjectException object exception
+     * @return String update user
+     */
+    public String getUpdateUser() throws ObjectException {
+        return mSystemObject.getUpdateUser();
+    }
+
+    /**
+     * @param value clear field indicator
+     */    
+    public void setClearFieldIndicator(Object value) {
+       mClearFieldObj.setClearFieldIndicator(value);
+    }
+    
+ 
+    /**
+     * @param lid LID
+     * @exception ObjectException object exception
+     * @todo Document: Setter for LID attribute of the SystemObject object
+     */
+    public void setLocalId(String lid) throws ObjectException {
+       mSystemObject.setLID(lid);
+    }
+
+    /**
+     * @param system system code
+     * @exception ObjectException object exception
+     * @todo Document: Setter for SystemCode attribute of the SystemObject
+     *      object
+     */
+    public void setSystemCode(String system) throws ObjectException {
+       mSystemObject.setSystemCode(system);
+    }
+
+   /**
+     * @param status status
+     * @exception ObjectException object exception
+     * @todo Document: Setter for Status attribute of the SystemObject object
+     */
+    public void setStatus(String status) throws ObjectException {
+       mSystemObject.setStatus(status);
+    }
+
+    /**
+     * @param createdatetime create date time
+     * @exception ObjectException object exception
+     * @todo Document: Setter for CreateDateTime attribute of the SystemObject
+     *      object
+     */
+    public void setCreateDateTime(Date createdatetime)
+        throws ObjectException {
+        mSystemObject.setCreateDateTime(createdatetime);
+        mSystemObject.setUpdateDateTime(createdatetime);
+    }
+
+    /**
+     * @param createfunction create function
+     * @exception ObjectException object exception
+     * @todo Document: Setter for CreateFunction attribute of the SystemObject
+     *      object
+     */
+    public void setCreateFunction(String createfunction)
+        throws ObjectException {
+       mSystemObject.setCreateFunction(createfunction);
+    }
+
+    /**
+     * @param createuser create user
+     * @exception ObjectException object exception
+     * @todo Document: Setter for CreateUser attribute of the SystemObject
+     *      object
+     */
+    public void setCreateUser(String createuser) throws ObjectException {
+        mSystemObject.setCreateUser(createuser);
+    }
+
+
+
+    /**
+     * @param obj object
+     * @exception ObjectException object exception
+     * @todo Document: Setter for Object attribute of the SystemObject object
+     */
+    public void set[sbyntag:objname.makeClassName]([sbyntag:objname.makeClassName]Bean a[sbyntag:objname]) throws ObjectException {
+      m[sbyntag:objname] = a[sbyntag:objname];
+      mSystemObject.setObject(a[sbyntag:objname].pGetObject());
+    }
+
+
+    /**
+     * @param updateuser update user
+     * @exception ObjectException object exception
+     */
+    public void setUpdateUser(String updateuser) throws ObjectException {
+      mSystemObject.setUpdateUser(updateuser);
+    }
+
+    public SystemObject pGetSystemObject() {
+      return mSystemObject;
+    }
+    
+}

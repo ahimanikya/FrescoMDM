@@ -1,0 +1,23 @@
+[SBYNTAG:DEFINE:objname,blockdefinition()]
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="sbyn:SeeBeyond/eView/schema/query.xsd">
+	<QueryBuilderConfig module-name="QueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.querybuilder.QueryBuilderConfiguration">
+		<query-builder name="ALPHA-SEARCH" class="com.sun.mdm.index.querybuilder.BasicQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.querybuilder.KeyValueConfiguration" standardize="false" phoneticize="false">
+			<config>
+				<option key="UseWildcard" value="true"/>
+			</config>
+		</query-builder>
+		<query-builder name="PHONETIC-SEARCH" class="com.sun.mdm.index.querybuilder.BasicQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.querybuilder.KeyValueConfiguration" standardize="true" phoneticize="true">
+			<config>
+				<option key="UseWildcard" value="false"/>
+			</config>
+		</query-builder>
+		<query-builder name="BLOCKER-SEARCH" class="com.sun.mdm.index.querybuilder.BlockerQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.blocker.BlockerConfig" standardize="true" phoneticize="true">
+			<config>
+[SBYNTAG:REP-BEGIN]    
+[sbyntag:blockdefinition()]
+[SBYNTAG:REP-END]
+			</config>
+		</query-builder>
+	</QueryBuilderConfig>
+</Configuration>

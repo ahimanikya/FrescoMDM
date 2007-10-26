@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+      <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+        <EtchetBorder/>
+      </Border>
+    </Property>
+  </Properties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="2"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <EmptySpace min="8" pref="8" max="8" attributes="0"/>
+              <Component id="jLabelProbabilityType" min="-2" pref="90" max="-2" attributes="0"/>
+              <Component id="jComboBoxProbabilityType" min="-2" pref="280" max="-2" attributes="0"/>
+              <EmptySpace min="10" pref="10" max="10" attributes="0"/>
+              <Component id="jLabelDuplicateThreshold" min="-2" pref="120" max="-2" attributes="0"/>
+              <Component id="jTextFieldDuplicateThreshold" min="-2" pref="60" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace min="388" pref="388" max="388" attributes="0"/>
+              <Component id="jLabelMatchThreshold" min="-2" pref="120" max="-2" attributes="0"/>
+              <Component id="jTextFieldMatchThreshold" min="-2" pref="60" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace min="8" pref="8" max="8" attributes="0"/>
+              <Component id="jPanel2" min="-2" pref="560" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace min="8" pref="8" max="8" attributes="0"/>
+              <Component id="jPanel1" min="-2" pref="560" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <EmptySpace min="8" pref="8" max="8" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabelProbabilityType" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="jComboBoxProbabilityType" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelDuplicateThreshold" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="jTextFieldDuplicateThreshold" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="8" pref="8" max="8" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabelMatchThreshold" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="jTextFieldMatchThreshold" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <Component id="jPanel2" min="-2" pref="220" max="-2" attributes="0"/>
+              <EmptySpace min="10" pref="10" max="10" attributes="0"/>
+              <Component id="jPanel1" min="-2" pref="330" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="jLabelProbabilityType">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="LBL_Probability_Type" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="jComboBoxProbabilityType">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelDuplicateThreshold">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="LBL_DuplicateThreshold" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelMatchThreshold">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="LBL_MatchThreshold" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldDuplicateThreshold">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="onDuplicateThresholdKeyReleased"/>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="onDuplicateThresholdKeyTyped"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldMatchThreshold">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="onMatchThresholdKeyReleased"/>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="onMatchThresholdKeyTyped"/>
+      </Events>
+    </Component>
+    <Container class="javax.swing.JPanel" name="jPanel1">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Matching Rules:">
+              <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                <EtchetBorder/>
+              </Border>
+              <ResourceString PropertyName="titleX" bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="LBL_Matching_Rules" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </TitledBorder>
+          </Border>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace min="4" pref="4" max="4" attributes="0"/>
+                  <Component id="jScrollPaneMatchingRules" min="-2" pref="540" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" attributes="0">
+                  <EmptySpace min="304" pref="304" max="304" attributes="0"/>
+                  <Component id="jButtonAdd" min="-2" pref="80" max="-2" attributes="0"/>
+                  <Component id="jButtonRemove" min="-2" pref="80" max="-2" attributes="0"/>
+                  <Component id="jButtonAdvanced" min="-2" pref="80" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <Component id="jScrollPaneMatchingRules" min="-2" pref="260" max="-2" attributes="0"/>
+                  <EmptySpace min="10" pref="10" max="10" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jButtonAdd" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonRemove" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonAdvanced" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Container class="javax.swing.JScrollPane" name="jScrollPaneMatchingRules">
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+        </Container>
+        <Component class="javax.swing.JButton" name="jButtonAdd">
+          <Properties>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="LBL_Add" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onAddMatchRuleActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonRemove">
+          <Properties>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="LBL_Remove" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </Property>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onRemoveMatchRuleActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonAdvanced">
+          <Properties>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="MSG_button_Edit" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </Property>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onAdvancedMatchRuleActionPerformed"/>
+          </Events>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPanel" name="jPanel2">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Fields with Match Type Selected">
+              <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                <EtchetBorder/>
+              </Border>
+              <ResourceString PropertyName="titleX" bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="LBL_Fields_Matching_Type_Selected" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </TitledBorder>
+          </Border>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace min="4" pref="4" max="4" attributes="0"/>
+                  <Component id="jScrollPaneFieldsMatchTypeSelected" min="-2" pref="540" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Component id="jScrollPaneFieldsMatchTypeSelected" min="-2" pref="190" max="-2" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Container class="javax.swing.JScrollPane" name="jScrollPaneFieldsMatchTypeSelected">
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+        </Container>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>

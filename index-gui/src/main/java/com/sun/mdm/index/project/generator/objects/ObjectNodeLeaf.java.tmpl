@@ -1,0 +1,166 @@
+[SBYNTAG:DEFINE:objname,pname,fieldname(),fieldtypename(),fieldtype(),keylist(),nulllist()]
+package com.sun.mdm.index.objects;
+
+import java.util.*;
+import com.sun.mdm.index.objects.exception.*;
+
+public final class [sbyntag:objname.makeClassName]Object extends ObjectNode
+{
+    private static ArrayList mFieldNames;
+    private static ArrayList mFieldTypes;
+    static
+    {
+        mFieldNames = new ArrayList();
+[SBYNTAG:REP-BEGIN]    
+        mFieldNames.add("[sbyntag:fieldname()]");
+[SBYNTAG:REP-END]
+        mFieldTypes = new ArrayList();
+[SBYNTAG:REP-BEGIN]    
+        mFieldTypes.add(new Integer([sbyntag:fieldtypename()]));
+[SBYNTAG:REP-END]
+    }
+    
+    /** Creates new potentialDuplicate */
+    public [sbyntag:objname.makeClassName]Object() throws ObjectException
+    {
+        super("[sbyntag:objname]", mFieldNames, mFieldTypes);
+        mParentTag = "[sbyntag:pname]";
+        mChildTags = null;
+        mTag = "[sbyntag:objname]";
+[SBYNTAG:REP-BEGIN]
+        setKeyType("[sbyntag:fieldname()]", [sbyntag:keylist()]);
+[SBYNTAG:REP-END]
+[SBYNTAG:REP-BEGIN]
+        setNullable("[sbyntag:fieldname()]", [sbyntag:nulllist()]);
+[SBYNTAG:REP-END]
+    }
+
+    public String getObjectId() throws ObjectException
+    {
+        return (get[sbyntag:objname.makeClassName]Id());
+    }
+
+[SBYNTAG:REP-BEGIN]    
+    public [sbyntag:fieldtype()] get[sbyntag:fieldname().makeClassName]() throws ObjectException
+    {
+        try
+        {
+            return (([sbyntag:fieldtype()])getValue("[sbyntag:fieldname()]"));
+        }
+        catch (ObjectException e)
+        {
+            throw e;
+        }
+    }
+
+[SBYNTAG:REP-END]
+
+    public void setObjectId(Object value) throws ObjectException
+    {
+        set[sbyntag:objname.makeClassName]Id(value);
+    }
+
+[SBYNTAG:REP-BEGIN]    
+    public void set[sbyntag:fieldname().makeClassName](Object value) throws ObjectException
+    {
+        try
+        {
+            setValue("[sbyntag:fieldname()]", value);
+        }
+        catch(ObjectException e)
+        {
+            throw e;
+        }
+    }
+    
+[SBYNTAG:REP-END]
+    public AttributeMetaData getMetaData()
+    {
+        return null;
+    }
+
+    public String getParentTag()
+    {
+        return "[sbyntag:pname]";
+    }
+
+    
+    public ObjectNode copy() throws ObjectException
+    {
+        [sbyntag:objname.makeClassName]Object ret = null;
+        try
+        {
+            ret = new [sbyntag:objname.makeClassName]Object();
+            String tag = pGetTag ();
+            ArrayList names = pGetFieldNames ();
+            ArrayList types = getFieldTypes ();
+            ArrayList values = pGetFieldValues ();
+
+            for(int i=0; i<names.size (); i++)
+            {
+                String name = (String)names.get (i);
+                ret.setValue (name, getValue(name));
+                ret.setVisible (name, isVisible (name));
+                ret.setSearched (name, isSearched (name));
+                ret.setChanged (name, isChanged (name));
+                ret.setKeyType (name, isKeyType (name));
+            }
+            ret.setUpdateFlag ( isUpdated());
+            ret.setRemoveFlag ( isRemoved());
+            ret.setAddFlag ( isAdded());
+
+            ArrayList fieldUpdateLogs = null;
+            if ( pGetFieldUpdateLogs()!= null ){
+                fieldUpdateLogs = (ArrayList)pGetFieldUpdateLogs().clone();    
+            }
+            ret.setFieldUpdateLogs( fieldUpdateLogs );
+            ret.setKeyChangeFlag ( isKeyChanged() );
+
+            if (null != mParent)
+            {
+                ret.setParent (mParent);
+            }
+        }
+        catch (ObjectException e)
+        {
+            throw e;
+        }
+                
+        return (ObjectNode)ret;
+    } 
+    
+    public ObjectNode structCopy() throws ObjectException
+    {
+        [sbyntag:objname.makeClassName]Object ret = null;
+        try
+        {
+            ret = new [sbyntag:objname.makeClassName]Object();
+            String tag = pGetTag ();
+            ArrayList names = pGetFieldNames ();
+
+            for(int i=0; i<names.size (); i++)
+            {
+                String name = (String)names.get (i);
+                ret.setVisible (name, isVisible (name));
+                ret.setSearched (name, isSearched (name));
+                ret.setKeyType (name, isKeyType (name));
+            }
+
+            ObjectKey key = pGetKey();
+            if (key != null) {
+                ret.setKey(key);
+            }                
+
+            if (null != mParent)
+            {
+                ret.setParent (mParent);
+            }
+        }
+        catch (ObjectException e)
+        {
+            throw e;
+        }
+                
+        return (ObjectNode)ret;
+    } 
+}

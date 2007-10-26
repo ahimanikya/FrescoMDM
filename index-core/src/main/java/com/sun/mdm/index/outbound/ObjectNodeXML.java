@@ -1,0 +1,265 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+package com.sun.mdm.index.outbound;
+
+import com.sun.mdm.index.objects.ObjectField;
+import com.sun.mdm.index.objects.EnterpriseObject;
+import com.sun.mdm.index.objects.SystemObject;
+import com.sun.mdm.index.objects.SBR;
+import com.sun.mdm.index.objects.SBROverWrite;
+import com.sun.mdm.index.objects.ObjectNode;
+import com.sun.mdm.index.objects.metadata.ObjectFactory;
+import com.sun.mdm.index.objects.exception.ObjectException;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+import java.text.SimpleDateFormat;
+
+
+/**
+ * Formats ObjectNode to an xml string
+ * @author  sdua
+ */
+public class ObjectNodeXML {
+
+    private final String LINEFEED
+             = new String(System.getProperty("line.separator"));
+    private final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+
+    private SimpleDateFormat mDateFormatter = null;
+    
+    /** Creates a new instance of ObjectNodeXML
+     * @param objectNode ObjectNode that needs to be converted to xml string
+     */
+    public ObjectNodeXML() {
+        String format = ObjectFactory.getDateFormat();
+        mDateFormatter = new SimpleDateFormat(format + " HH:mm:ss");
+    }
+
+    /**
+     * Constructs the xml for the objectNode that was passed to its constructor.
+     * @param event event type
+     * @param id the id
+     * @param eo1 surviving enterprise object
+     * @param eo2 merged enterprise object
+     * @return  xml string
+     */
+    public String constructMrgXml(String event, String id, EnterpriseObject eo1, EnterpriseObject eo2) 
+    throws OutBoundException {
+        String name1 = eo1.pGetTag();
+        String name2 = eo2.pGetTag();
+        if (!name1.equalsIgnoreCase("ENTERPRISE") || !name2.equalsIgnoreCase("ENTERPRISE")) {
+            return "";
+        }
+        String outMsg = "OutMsg";
+        StringBuffer sb = new StringBuffer();
+        sb.append("<").append(outMsg).append(" Event=\"").append(event);
+        sb.append("\" ID=\"").append(id).append("\">").append(LINEFEED);
+        sb.append(sbrToXml(eo1));
+        sb.append(sbrToXml(eo2));
+        sb.append(endTag(outMsg));
+        return sb.toString();
+    }
+
+    
+    /**
+     * Constructs the xml for the objectNode that was passed to its constructor.
+     * @param event event type
+     * @param id the id
+     * @param eo an enterprise object
+     * @return  xml string
+     */
+    public String constructXml(String event, String id, EnterpriseObject eo) 
+    throws OutBoundException {
+        String name = eo.pGetTag();
+        if (!name.equalsIgnoreCase("ENTERPRISE")) {
+            return "";
+        }
+        String outMsg = "OutMsg";
+        StringBuffer sb = new StringBuffer();
+        sb.append(XML_HEADER).append(LINEFEED);
+        sb.append("<").append(outMsg).append(" Event=\"").append(event);
+        sb.append("\" ID=\"").append(id).append("\">").append(LINEFEED);
+        sb.append(sbrToXml(eo));
+        sb.append(endTag(outMsg));
+        return sb.toString();
+    }
+
+    /**
+     * Constructs an xml string for an EnterpriseObject
+     * @param eo an enterprise object
+     * @return xml string
+     */
+    private String sbrToXml(EnterpriseObject eo) throws OutBoundException {
+        StringBuffer sb = new StringBuffer();
+        sb.append("<SBR ");        
+        try {
+            sb.append("EUID=\"").append(eo.getEUID()).append("\" ");
+        } catch (ObjectException e) {
+            throw new OutBoundException(e.getMessage());
+        }
+        SBR sbr = eo.getSBR();
+        sb.append(formatSbrFields(sbr));
+        Collection sysObjs = eo.getSystemObjects();
+        if (sysObjs != null) {
+            Iterator soIterator = sysObjs.iterator();
+            while (soIterator.hasNext()) {
+                SystemObject sysObj = (SystemObject) soIterator.next();
+                sb.append("<SystemObject ");
+                try {
+                    sb.append("SystemCode=\"").append(sysObj.getSystemCode()).append("\" ");
+                    sb.append("LID=\"").append(sysObj.getLID()).append("\" ");
+                    sb.append("Status=\"").append(sysObj.getStatus()).append("\">");
+                    sb.append(LINEFEED);
+                } catch (ObjectException e) {
+                    throw new OutBoundException(e.getMessage());
+                }
+                sb.append("</SystemObject>").append(LINEFEED);
+            }
+        }
+        
+        String myPath = "Enterprise.SystemSBR";
+        ArrayList childNodes = sbr.pGetChildren();
+        for (int i = 0; (childNodes != null) && (i < childNodes.size()); i++) {
+            ObjectNode child = (ObjectNode) childNodes.get(i);
+            if (!child.pGetTag().equals("SBROverWrite")) {
+                sb.append(nodeToXml(child, myPath));
+            }
+        }
+        sb.append("</SBR>").append(LINEFEED);
+        return sb.toString();
+    }
+   
+    /**
+     * Formats the SBR object.
+     * @param sbr an SBR object
+     * @return xml string
+     */
+    private String formatSbrFields(SBR sbr) {
+        String name = sbr.pGetTag();
+        if (!name.equalsIgnoreCase("SYSTEMSBR")) {
+            return "";
+        }
+        String myPath = "Enterprise." + name;
+        String[] fldNames = null;
+        StringBuffer sb = new StringBuffer();
+        try {
+            fldNames = ObjectFactory.getFields(myPath);
+        } catch (ObjectException e) {
+        }
+        for (int i = 0; i < fldNames.length; i++) {
+            Object value = null;
+            if (fldNames[i].equals("SystemCode")) {
+                continue;
+            } else if (fldNames[i].equals("LocalID")) {
+                continue;
+            }
+            try {
+                value = sbr.getValue(fldNames[i]);
+            } catch (ObjectException e) {
+            }
+            sb.append(" ").append(fldNames[i]).append("=\"");
+            if (value != null) {
+                sb.append(convert(value));
+            }
+            sb.append("\"");
+        }
+        sb.append(">").append(LINEFEED);
+        return sb.toString();
+    }
+
+    /**
+     * Formats object is object is of type java.util.Date
+     * @param obj the object to format
+     * @return a formatted Date object if of type java.util.Date
+     */
+    private Object convert(Object obj) {
+        if (obj instanceof java.util.Date) {
+            return mDateFormatter.format((java.util.Date) obj);
+        }
+        return obj;
+    }
+    
+    /**
+     * Converts the object node into an xml string
+     * @param object node to convert
+     * @param ePath the path prefix
+     * @return xml string
+     */
+    private String nodeToXml(ObjectNode node, String ePath) throws OutBoundException {
+        
+        String myName = node.pGetTag();
+        String myPath = ePath + "." + myName;
+        String[] fldNames = null;
+        StringBuffer sb = new StringBuffer();
+        sb.append("<").append(myName);
+        try {
+            fldNames = ObjectFactory.getFields(myPath);
+        } catch (ObjectException e) {
+            throw new OutBoundException(e.getMessage());
+        }
+        // start from the 2nd field
+        for (int i = 1; i < fldNames.length; i++) {
+            Object value = null;
+            try {
+                value = node.getValue(fldNames[i]);
+            } catch (ObjectException e) {
+            }
+            sb.append(" ").append(fldNames[i]).append("=\"");
+            if (value != null) {
+                sb.append(convert(value));
+            }
+            sb.append("\"");
+        }
+        sb.append(">").append(LINEFEED);
+        
+        String[] childTypes = null;
+        try {
+            childTypes = ObjectFactory.getChildTypes(myPath);
+        } catch (ObjectException e) {
+            throw new OutBoundException(e.getMessage());
+        }
+
+        ArrayList childNodes = null;
+        for (int i = 0; childTypes != null && i < childTypes.length; i++) {
+            childNodes = node.pGetChildren(childTypes[i]);
+            for (int j = 0; childNodes != null && j < childNodes.size(); j++) {
+                ObjectNode child = (ObjectNode) childNodes.get(j);
+                sb.append(nodeToXml(child, myPath));
+            }
+        }
+        sb.append(endTag(myName));
+        return sb.toString();
+    }
+    
+    private String startTag(String name) {
+        return "<" + name + ">";
+    }
+
+    private String endTag(String name) {
+        return "</" + name + ">\n";
+    }
+
+}

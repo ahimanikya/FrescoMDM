@@ -1,0 +1,30 @@
+[SBYNTAG:DEFINE:objname,qualifiednodename,sourcefieldnames(),genfieldprefix]
+				<group standardization-type="area">
+					<unstandardized-source-fields>
+[SBYNTAG:REP-BEGIN]
+						<unstandardized-source-field-name>[sbyntag:sourcefieldnames()]</unstandardized-source-field-name>
+[SBYNTAG:REP-END]
+					</unstandardized-source-fields>
+					<standardization-targets>
+						<target-mapping>
+							<standardized-object-field-id>CN</standardized-object-field-id>
+							<standardized-target-field-name>[sbyntag:qualifiednodename].[sbyntag:genfieldprefix]City</standardized-target-field-name>
+						</target-mapping>
+						<target-mapping>
+							<standardized-object-field-id>SA</standardized-object-field-id>
+							<standardized-target-field-name>[sbyntag:qualifiednodename].[sbyntag:genfieldprefix]State</standardized-target-field-name>
+						</target-mapping>
+						<target-mapping>
+							<standardized-object-field-id>ZC</standardized-object-field-id>
+							<standardized-target-field-name>[sbyntag:qualifiednodename].[sbyntag:genfieldprefix]PostCode</standardized-target-field-name>
+						</target-mapping>
+						<target-mapping>
+							<standardized-object-field-id>Z4</standardized-object-field-id>
+							<standardized-target-field-name>[sbyntag:qualifiednodename].[sbyntag:genfieldprefix]PostExt</standardized-target-field-name>
+						</target-mapping>
+						<target-mapping>
+							<standardized-object-field-id>CC</standardized-object-field-id>
+							<standardized-target-field-name>[sbyntag:qualifiednodename].[sbyntag:genfieldprefix]Country</standardized-target-field-name>
+						</target-mapping>
+					</standardization-targets>
+				</group>

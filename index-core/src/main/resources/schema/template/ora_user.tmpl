@@ -1,0 +1,332 @@
+create table $<prefix>_aux_id_def
+(
+    aux_id_def            number(15)             not null,
+    id_type               varchar2(8)            not null,
+    id_name               varchar2(40)           not null,
+    mask                  char                   default 'Y' not null
+        constraint ck_$<prefix>_aux_id_def1 check (mask in ('Y','N')),
+    id_length             number(10)             not null,
+    format                varchar2(40)           not null,
+    variable_length       char                   default 'Y' not null
+        constraint ck_$<prefix>_aux_id_def2 check (variable_length in ('Y','N')),
+    minumim_length        number(10)             default 0 not null,
+    constraint pk_$<prefix>_aux_id_def primary key (aux_id_def)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create unique index $<prefix>_aux_id_def1 on $<prefix>_aux_id_def (id_type asc)
+tablespace $<index>
+/
+
+create table $<prefix>_s_person
+(
+    sid                   number(15)             not null,
+    last_name             varchar2(40)           not null,
+    first_name            varchar2(40)           not null,
+    middle_name           varchar2(30)           not null,
+    suffix                varchar2(10)           null    ,
+    title                 varchar2(20)           null    ,
+    dob                   date                   not null,
+    sex                   varchar2(8)            not null,
+    marital_status        varchar2(8)            not null,
+    race                  varchar2(8)            not null,
+    ethnic                varchar2(8)            not null,
+    religion              varchar2(8)            not null,
+    language              varchar2(8)            not null,
+    spouse_name           varhchar2(40)          null    ,
+    mother_maiden_name    varchar2(40)           null    ,
+    lname_phonetic_code   varchar2(30)           not null,
+    fname_phonetic_code   varchar2(30)           not null,
+    mname_phonetic_code   varchar2(30)           null    ,
+    mother_mn_phonetic    varchar2(30)           null    ,
+    class1                number(10)             null    ,
+    class2                date                   null    ,
+    class3                varchar2(20)           null    ,
+    status                varchar2(8)            not null,
+    constraint pk_$<prefix>_s_person primary key (sid)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table $<prefix>_person
+(
+    eid                   varchar2(15)           not null,
+    last_name             varchar2(40)           not null,
+    first_name            varchar2(40)           not null,
+    middle_name           varchar2(40)           null    ,
+    suffix                varchar2(10)           null    ,
+    title                 varchar2(6)            null    ,
+    dob                   date                   not null,
+    sex                   varchar2(8)            not null,
+    marital_status        varchar2(8)            not null,
+    race                  varchar2(8)            not null,
+    ethnic                varchar2(8)            not null,
+    religion              varchar2(8)            not null,
+    language              varchar2(8)            not null,
+    spouse_name           varhchar2(40)          null    ,
+    mother_maiden_name    varchar2(40)           null    ,
+    lname_phonetic_code   varchar2(8)            null    ,
+    fname_phonetic_code   varchar2(8)            null    ,
+    mname_phonetic_code   varchar2(8)            null    ,
+    mother_mn_phonetic    varchar2(8)            null    ,
+    class1                number(10)             null    ,
+    class2                date                   null    ,
+    class3                varchar2(20)           null    ,
+    status                varchar2(8)            not null,
+    transaction_no        number(15)             null    ,
+    constraint pk_$<prefix>_person primary key (eid)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table $<prefix>_alias
+(
+    alias_id              number(15)             not null,
+    eid                   varchar2(15)           not null,
+    last_name             varchar2(40)           not null,
+    first_name            varchar2(40)           not null,
+    middle_name           varchar2(40)           null    ,
+    last_name_phonetic    varchar2(8)            null    ,
+    first_name_phonetic   varchar2(8)            null    ,
+    middle_name_phonetic  varchar2(8)            null    ,
+    transaction_no        number(10)             not null,
+    constraint pk_$<prefix>_alias primary key (alias_id)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table $<prefix>_address
+(
+    address_id            number(10)             not null,
+    eid                   varchar2(15)           not null,
+    address_type          varchar2(8)            not null,
+    address1              varchar2(50)           not null,
+    address2              varchar2(50)           null    ,
+    address3              varchar2(40)           null    ,
+    address4              varchar2(40)           null    ,
+    city                  varchar2(30)           not null,
+    state_code            varchar2(10)           null    ,
+    postal_code           varchar2(10)           null    ,
+    postal_code_ext       varchar2(5)            null    ,
+    country_code          varchar2(5)            null    ,
+    house_number          varchar2(10)           null    ,
+    street_dir            varchar2(5)            null    ,
+    street_name           varchar2(30)           not null,
+    str_name_phonetic     varchar2(30)           not null,
+    street_type           varchar2(5)            null    ,
+    transaction_no        number(15)             null    ,
+    constraint pk_$<prefix>_address primary key (address_id)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table $<prefix>_phone
+(
+    phone_id              number(10)             not null,
+    eid                   varchar2(15)           not null,
+    phone_type            varchar2(8)            not null,
+    phone                 varchar2(20)           not null,
+    phone_ext             varchar2(6)            null    ,
+    transaction_no        number(15)             null    ,
+    constraint pk_$<prefix>_phone primary key (phone_id)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table $<prefix>_s_address
+(
+    address_id            number(15)             not null,
+    sid                   number(15)             not null,
+    address_type          varchar2(8)            not null,
+    address1              varchar2(50)           not null,
+    address2              varchar2(50)           null    ,
+    address3              varchar2(40)           null    ,
+    address4              varchar2(40)           null    ,
+    city                  varchar2(30)           not null,
+    state_code            varchar2(10)           null    ,
+    postal_code           varchar2(10)           null    ,
+    postal_code_ext       varchar2(5)            null    ,
+    country_code          varchar2(5)            null    ,
+    house_number          varchar2(10)           null    ,
+    street_dir            varchar2(5)            null    ,
+    street_name           varchar2(30)           not null,
+    str_name_phonetic     varchar2(30)           not null,
+    street_type           varchar2(5)            null    ,
+    constraint pk_$<prefix>_s_address primary key (address_id)
+        using index
+     tablespace $<index>,
+    constraint ak_$<prefix>_s_address1 unique (sid, address_type)
+        using index
+        tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table $<prefix>_s_phone
+(
+    phone_id              number(10)             not null,
+    sid                   number(15)             not null,
+    phone_type            varchar2(8)            not null,
+    phone                 varchar2(20)           not null,
+    phone_ext             varchar2(6)            null    ,
+    constraint pk_$<prefix>_s_phone primary key (phone_id)
+        using index
+     tablespace $<index>,
+    constraint ak_s_$<prefix>_phone1 unique (sid, phone_type)
+        using index
+        tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table $<prefix>_s_alias
+(
+    alias_id              number(15)             not null,
+    sid                   number(15)             not null,
+    last_name             varchar2(40)           not null,
+    first_name            varchar2(40)           not null,
+    middle_name           varchar2(40)           null    ,
+    last_name_phonetic    varchar2(8)            null    ,
+    first_name_phonetic   varchar2(30)           not null,
+    middle_name_phonetic  varchar2(30)           null    ,
+    constraint pk_$<prefix>_s_alias primary key (alias_id)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create index $<prefix>_s_alias1 on $<prefix>_s_alias (sid asc)
+tablespace $<index>
+/
+
+create table $<prefix>_alias_x
+(
+    alias_id              number(15)             not null,
+    x_last_name           varchar2(40)           not null,
+    x_first_name          varchar2(40)           not null,
+    x_middle_name         varchar2(40)           null    ,
+    constraint pk_$<prefix>_alias_x primary key (alias_id)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create index $<prefix>_alias_x1 on $<prefix>_alias_x (x_last_name asc, x_first_name asc)
+tablespace $<index>
+/
+
+create table $<prefix>_person_x
+(
+    eid                   varchar2(15)           not null,
+    x_last_name           varchar2(40)           not null,
+    x_first_name          varchar2(40)           not null,
+    x_middle_name         varchar2(40)           null    ,
+    x_mother_mn           varchar2(40)           null    ,
+    x_maiden              varchar2(40)           null    ,
+    constraint pk_$<prefix>_person_x primary key (eid)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create table $<prefix>_aux_id
+(
+    aux_id_id             number(15)             not null,
+    eid                   varchar2(15)           not null,
+    aux_id_def            number(15)             not null,
+    id                    varchar2(40)           not null,
+    transaction_no        number(15)             null    ,
+    constraint pk_$<prefix>_aux_id primary key (aux_id_id)
+        using index
+     tablespace $<index>
+)
+tablespace $<data>
+/
+
+create index $<prefix>_aux_id1 on $<prefix>_aux_id (eid asc)
+tablespace $<index>
+/
+
+create index $<prefix>_aux_id2 on $<prefix>_aux_id (id asc)
+tablespace $<index>
+/
+
+create index $<prefix>_aux_id3 on $<prefix>_aux_id (transaction_no asc)
+tablespace $<index>
+/
+
+alter table $<prefix>_person
+    add constraint fk_$<prefix>_person1 foreign key  (eid)
+       references $<prefix>_enterprise (eid)
+/
+
+alter table $<prefix>_alias
+    add constraint fk_$<prefix>_alias1 foreign key  (eid)
+       references $<prefix>_person (eid)
+/
+
+alter table $<prefix>_s_person
+    add constraint fk_$<prefix>_s_person1 foreign key  (sid)
+       references $<prefix>_system_object (sid)
+/
+
+alter table $<prefix>_address
+    add constraint fk_$<prefix>_address1 foreign key  (eid)
+       references $<prefix>_person (eid)
+/
+
+alter table $<prefix>_phone
+    add constraint fk_$<prefix>_phone1 foreign key  (eid)
+       references $<prefix>_person (eid)
+/
+
+alter table $<prefix>_s_address
+    add constraint fk_$<prefix>_s_address1 foreign key  (sid)
+       references $<prefix>_s_person (sid)
+/
+
+alter table $<prefix>_s_phone
+    add constraint fk_$<prefix>_s_phone1 foreign key  (sid)
+       references $<prefix>_s_person (sid)
+/
+
+alter table $<prefix>_s_alias
+    add constraint fk_$<prefix>_s_alias1 foreign key  (sid)
+       references $<prefix>_s_person (sid)
+/
+
+alter table $<prefix>_alias_x
+    add constraint fk_$<prefix>_allias_x1 foreign key  (alias_id)
+       references $<prefix>_alias (alias_id)
+/
+
+alter table $<prefix>_person_x
+    add constraint fk_$<prefix>_person_x1 foreign key  (eid)
+       references $<prefix>_person (eid)
+/
+
+alter table $<prefix>_aux_id
+    add constraint fk_$<prefix>_aux_id2 foreign key  (aux_id_def)
+       references $<prefix>_aux_id_def (aux_id_def)
+/
+
+alter table $<prefix>_aux_id
+    add constraint fk_$<prefix>_aux_id1 foreign key  (eid)
+       references $<prefix>_person (eid)
+/

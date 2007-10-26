@@ -1,0 +1,1221 @@
+[SBYNTAG:DEFINE:objname]  
+package com.sun.mdm.index.webservice;
+import com.sun.mdm.index.ejb.master.MasterController;
+import com.sun.mdm.index.ejb.master.MasterControllerLocal;
+import com.sun.mdm.index.objects.validation.exception.ValidationException;
+import com.sun.mdm.index.master.UserException;
+import com.sun.mdm.index.master.EViewException;
+import com.sun.mdm.index.master.ProcessingException;
+import com.sun.mdm.index.objects.EnterpriseObject;
+import java.util.Date;
+import com.sun.mdm.index.master.MatchColResult;
+import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Iterator;
+import javax.ejb.CreateException;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.rmi.PortableRemoteObject;
+import java.rmi.RemoteException;
+
+import com.sun.mdm.index.webservice.EnterpriseObjectBean;
+import com.sun.mdm.index.webservice.SystemObjectBean;
+import com.sun.mdm.index.webservice.SystemObjectPKBean;
+import com.sun.mdm.index.webservice.SBRObjectBean;
+import com.sun.mdm.index.webservice.ObjectBean;
+import com.sun.mdm.index.webservice.MergeObjectResult;
+import com.sun.mdm.index.webservice.SearchObjectResult;
+import com.sun.mdm.index.master.MatchResult;
+import com.sun.mdm.index.master.MergeResult;
+import com.sun.mdm.index.master.SystemDefinition;
+import com.sun.mdm.index.master.search.enterprise.EOSearchCriteria;
+import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
+import com.sun.mdm.index.master.search.enterprise.EOSearchResultIterator;
+import com.sun.mdm.index.master.search.enterprise.EOSearchResultRecord;
+import com.sun.mdm.index.master.search.merge.MergeHistoryNode;
+import com.sun.mdm.index.objects.ObjectNode;
+import com.sun.mdm.index.objects.PotentialDuplicate;
+import com.sun.mdm.index.objects.SBR;
+import com.sun.mdm.index.objects.SystemObject;
+import com.sun.mdm.index.objects.SystemObjectPK;
+import com.sun.mdm.index.objects.SystemObjectException;
+import com.sun.mdm.index.objects.TransactionObject;
+import com.sun.mdm.index.objects.exception.ObjectException;
+import com.sun.mdm.index.objects.metadata.MetaDataService;
+import com.sun.mdm.index.objects.epath.EPathArrayList;
+import com.sun.mdm.index.ops.RecreateResult;
+import com.sun.mdm.index.page.EuidPageAdapter;
+import com.sun.mdm.index.page.IteratorPageAdapter;
+import com.sun.mdm.index.page.PageAdapter;
+import com.sun.mdm.index.page.TransactionPageAdapter;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import com.sun.mdm.index.util.Constants;
+import com.sun.mdm.index.util.JNDINames;
+import  com.sun.mdm.index.objects.*;
+import com.sun.mdm.index.util.ConnectorParamReader;
+import com.sun.mdm.index.util.LogUtil;
+import com.sun.mdm.index.util.Logger;
+
+import javax.jws.WebMethod;
+// import javax.jws.Oneway;
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.ejb.EJB;
+import javax.ejb.EJBs;
+import javax.ejb.SessionContext;
+import javax.ejb.Stateless;
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
+
+import com.sun.mdm.index.ejb.page.PageData;
+import java.sql.Connection;
+
+
+/** 
+    Wrapper class to interface Eview MasterController. This invokes method of MasterController
+    which is Stateless session bean. The objects exposed in this class are Java beans that can
+    be exposed in BPEL editor or any other editor. The methods are type specific
+    to [sbyntag:objname] where methods in MasterController are not any object type specific.
+ * @author Swaranjit Dua
+ * @author jlong
+ */
+@Stateless
+@WebService
+@TransactionManagement(TransactionManagementType.CONTAINER)
+public class [sbyntag:objname.makeClassName]EJB {
+    private final static String ALPHA_SEARCH = "ALPHA-SEARCH";
+    private final static String BLOCKER_SEARCH = "BLOCKER-SEARCH";
+    private final static String PHONETIC_SEARCH = "PHONETIC-SEARCH";
+    private final static String EJBLOCAL_MASTER = "ejb/[sbyntag:objname]MasterController";
+
+    @Resource
+    private SessionContext mSessionContext;
+    
+    @EJB(beanInterface=MasterControllerLocal.class)
+    private MasterControllerLocal mMC;
+
+    private final Logger mLogger = LogUtil.getLogger(this);
+
+    private String mApplicationName = "[sbyntag:objname]";
+    
+    /**
+     * No argument constructor required by container.
+     */
+    public [sbyntag:objname.makeClassName]EJB() {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("Initializing:" + "[sbyntag:objname.makeClassName]EJB");
+        }
+    }
+    
+    /**
+     * No argument constructor required by container.
+     */
+    public [sbyntag:objname.makeClassName]EJB(String appName) {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("Initializing:" + "[sbyntag:objname.makeClassName]EJB");
+        }
+        mApplicationName = appName;
+    }
+
+    /**
+     * this is created by Junit test.
+     */
+    protected [sbyntag:objname.makeClassName]EJB(boolean flag) {        
+    }
+
+    /** 
+     * Processes the system object based on configuration options defined for
+     * the master controller and associated components in the runtime xml file.
+     * The options affect executeMatch in the following ways: a) Query Builder
+     * class and options sets for blocking b) Matching rules, Pass Controller
+     * and Block Picker classes c) Decision Maker class and options
+     *
+     * @param sysObjBean System object to process.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException A user error occured
+     * @return EUID.
+     */
+    @WebMethod 
+    public MatchColResult executeMatch(
+        @WebParam(name = "sysObjBean") System[sbyntag:objname] sysObjBean)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("[sbyntag:objname.makeClassName]EJB" + "executeMatch" + sysObjBean);
+        }
+
+        SystemObject sourceSystem = sysObjBean.pGetSystemObject();
+        MatchResult matchResult = mMC.executeMatch(sourceSystem);
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("matchResult EUID:" + matchResult.getEUID());
+        }
+
+        return new MatchColResult(matchResult);
+    }
+    
+    /** 
+     * Processes the system object in update mode.  Null fields are left unchanged.
+     *
+     * @param sysObjBean System object to process.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException A user error occured
+     * @return MatchColResult.
+     */
+    @WebMethod 
+    public MatchColResult executeMatchUpdate(
+        @WebParam(name = "sysObjBean") System[sbyntag:objname] sysObjBean)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("[sbyntag:objname.makeClassName]EJB" + "executeMatchUpdate" + sysObjBean);
+        }
+
+        SystemObject sourceSystem = sysObjBean.pGetSystemObject();
+        MatchResult matchResult = mMC.executeMatchUpdate(sourceSystem);
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("matchResult EUID:" + matchResult.getEUID());
+        }
+
+        return new MatchColResult(matchResult);
+    }    
+   
+
+    /** 
+     * Does the exact search on passed ObjectBean attribute values
+     *
+     * @param objBean The object bean contains the search criteria.
+     * @exception ProcessingException An error has occured.
+     * @throws UserException Invalid euid (null or empty string)
+     * @return SearchObjectResult[]
+     */ 
+    public SearchObjectResult[] pSearchExact(
+        ObjectBean objBean)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("psearchExact:" + objBean);
+        }
+
+        return search(objBean, ALPHA_SEARCH, true);                        
+    }
+    
+    /** 
+     * Does the exact search on passed ObjectBean attribute values
+     *
+     * @param objBean The object bean contains the search criteria.
+     * @exception ProcessingException An error has occured.
+     * @throws UserException Invalid euid (null or empty string)
+     * @return Search[sbyntag:objname]Result[]
+     */ 
+    @WebMethod
+    public Search[sbyntag:objname]Result[] searchExact(
+        @WebParam(name = "objBean") [sbyntag:objname.makeClassName]Bean objBean)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("searchExact:" + objBean);        
+        }  
+
+        return (Search[sbyntag:objname]Result[]) pSearchExact(objBean);             
+    }
+
+    /** 
+     * Does the standardized search on passed [sbyntag:objname.makeClassName]Bean attribute values
+     *
+     * @param objBean The [sbyntag:objname.makeClassName] contains the search criteria.
+     * @exception ProcessingException An error has occured.
+     * @throws UserException Invalid euid (null or empty string)
+     * @return SearchObjectResult[]
+     */ 
+    public SearchObjectResult[] pSearchPhonetic(
+        ObjectBean objBean)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("pSearchPhonetic:" + objBean);
+        }
+
+        return search(objBean, PHONETIC_SEARCH, true);            
+    }
+
+    /** 
+     * Does the standardized search on passed [sbyntag:objname.makeClassName]Bean attribute values
+     *
+     * @param objBean The [sbyntag:objname.makeClassName] contains the search criteria.
+     * @exception ProcessingException An error has occured.
+     * @throws UserException Invalid euid (null or empty string)
+     * @return Search[sbyntag:objname]Result[]
+     */ 
+    @WebMethod
+    public Search[sbyntag:objname]Result[] searchPhonetic(
+        @WebParam(name = "objBean") [sbyntag:objname.makeClassName]Bean objBean)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("SearchPhonetic:" + objBean); 
+        }
+
+        return (Search[sbyntag:objname]Result[]) pSearchPhonetic(objBean);             
+    }
+    
+    /** 
+     * Does the block search on passed [sbyntag:objname.makeClassName]Bean attribute values
+     *
+     * @param objBean The [sbyntag:objname.makeClassName] contains the search criteria.
+     * @exception ProcessingException An error has occured.
+     * @throws UserException Invalid euid (null or empty string)
+     * @return SearchObjectResult[]
+     */
+    public SearchObjectResult[] pSearchBlock(
+        ObjectBean objBean)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("pSearchBlock:" + objBean); 
+        }
+
+        return search(objBean, BLOCKER_SEARCH, true);
+    }
+
+    /** 
+     * Does the block search on passed [sbyntag:objname.makeClassName]Bean attribute values
+     *
+     * @param objBean The [sbyntag:objname.makeClassName] contains the search criteria.
+     * @exception ProcessingException An error has occured.
+     * @throws UserException Invalid euid (null or empty string)
+     * @return Search[sbyntag:objname]Result[]
+     */
+    @WebMethod
+    public Search[sbyntag:objname]Result[] searchBlock(
+        @WebParam(name = "objBean") [sbyntag:objname.makeClassName]Bean objBean)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("SearchBlock:" + objBean);   
+        }
+
+        return (Search[sbyntag:objname]Result[]) pSearchBlock(objBean);             
+    }
+    
+    /** 
+     * Return EnterpiseObject associated with EUID or null if not found.
+     *
+     * @param euid The EUID on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @throws UserException Invalid euid (null or empty string)
+     * @return EnterpriseObject for given EUID or null if not found.
+     */
+    public EnterpriseObjectBean pGetEnterpriseRecordByEUID(
+        String euid)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("pGetEnterpriseRecordByEUID:" + euid); 
+        }
+
+        EnterpriseObject eo = mMC.getEnterpriseObject(euid);
+
+        if (null == eo) {
+           return null;
+        }
+
+        return new Enterprise[sbyntag:objname](eo);
+    }
+
+    /** 
+     * Return EnterpiseObject associated with EUID or null if not found.
+     *
+     * @param euid The EUID on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @throws UserException Invalid euid (null or empty string)
+     * @return Enterprise[sbyntag:objname] for given EUID or null if not found.
+     */
+    @WebMethod
+    public Enterprise[sbyntag:objname] getEnterpriseRecordByEUID(
+        @WebParam(name = "euid") String euid)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("getEnterpriseRecordByEUID:" + euid);
+        }
+
+        return (Enterprise[sbyntag:objname]) pGetEnterpriseRecordByEUID(euid);
+    }
+
+   /** 
+     * Return EnterpriseObject associated with a system object key or null if
+     * not found.  Only active system objects can be used for the lookup.
+     *
+     * @param key The system object key on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @throws UserException Invalid key (null or empty string)
+     * @return EnterpriseObject for given key.
+     */
+    public EnterpriseObjectBean pGetEnterpriseRecordByLID(
+        String system, 
+        String localid)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("pGetEnterpriseRecordByLID:" + localid + ",system:" + system);
+        }
+
+        SystemObjectPK skey = new SystemObjectPK(system, localid);            
+        EnterpriseObject eo = mMC.getEnterpriseObject(skey);
+
+        if (null == eo) {
+            return null;
+        }
+
+        return new Enterprise[sbyntag:objname](eo);
+    }
+
+   /** 
+     * Return EnterpriseObject associated with a system object key or null if
+     * not found.  Only active system objects can be used for the lookup.
+     *
+     * @param key The system object key on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @throws UserException Invalid key (null or empty string)
+     * @return Enterprise[sbyntag:objname] for given key.
+     */
+    @WebMethod
+    public Enterprise[sbyntag:objname] getEnterpriseRecordByLID(    	
+        @WebParam(name = "system") String system, 
+        @WebParam(name = "localid") String localid)
+        throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("getEnterpriseRecordByLID:" + localid + ",system:" + system);
+        }
+
+        return (Enterprise[sbyntag:objname]) pGetEnterpriseRecordByLID(system, localid);
+    }
+
+    /** 
+     * Return SBR associated with an EUID or null if not found.
+     *
+     * @param euid The EUID on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid euid (null or empty string)
+     * @return SBR for given EUID.
+     */
+    public SBRObjectBean pGetSBR(
+        String euid)
+    throws ProcessingException, UserException, RemoteException  {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("pGetSBR EUID:" + euid);
+        }
+ 
+        SBR sbr = mMC.getSBR(euid);
+
+        if (null == sbr) {
+           return null;
+        }
+
+        return new SBR[sbyntag:objname](sbr);
+
+    }
+
+    /** 
+     * Return SBR associated with an EUID or null if not found.
+     *
+     * @param euid The EUID on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid euid (null or empty string)
+     * @return SBR[sbyntag:objname] for given EUID.
+     */    
+    @WebMethod
+    public SBR[sbyntag:objname] getSBR(
+        @WebParam(name = "euid")  String euid) 
+    throws ProcessingException, UserException, RemoteException  {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("getSBR EUID:" + euid);
+        }
+
+        return (SBR[sbyntag:objname]) pGetSBR(euid);
+
+    }
+    
+    /** 
+     * Return EUID associated with a system object key or null if not found.
+     *
+     * @param key The system object key on which to perform the action
+     * @exception ProcessingException An error has occured.
+     * @throws UserException Invalid key (nulls or empty strings)
+     * @return EUID for given key.
+     */
+    @WebMethod 
+    public String getEUID(
+         @WebParam(name = "system") String system, 
+         @WebParam(name = "localid") String localid)    
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("getEUID system:" + system + ", localid:" + localid);
+        }
+
+        SystemObjectPK skey = new SystemObjectPK(system, localid);
+
+        return mMC.getEUID(skey);
+    }
+
+
+
+
+    /** 
+     * Update the database to reflect the new values of the given modified
+     * system object.
+     *
+     * @param sysobjBean The SO to be updated.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException A user error occured
+     */
+    @WebMethod
+    // @Oneway     
+    public void updateSystemRecord(
+        @WebParam(name="sysObjBean") System[sbyntag:objname] sysObjBean)
+    throws ProcessingException, UserException, RemoteException  {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("updateSystemRecord:" + sysObjBean);
+        }
+
+        SystemObject so = sysObjBean.pGetSystemObject();                      
+        mMC.updateSystemObject(so);
+    }
+
+
+    
+   /** 
+     * Update the database to reflect the new values of the given modified
+     * enterprise object.
+     *
+     * @param eoBean The EO to be updated.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException A user error occured
+     */
+    @WebMethod 
+    // @Oneway
+    public void updateEnterpriseRecord(
+        @WebParam(name = "eoBean") Enterprise[sbyntag:objname] eoBean)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("updateEnterpriseRecord:" + eoBean);
+        }
+ 
+        EnterpriseObject eo = eoBean.pGetEnterpriseObject();       
+        mMC.updateEnterpriseObject(eo);
+    }
+    
+    
+
+
+    /** 
+     * Adds the SystemObject to the EnterpriseObject specified by EUID.
+     *
+     * @param euid The EUID on which to perform the action.
+     * @param sysObj The system object to be added.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException A user error occured
+     */
+    @WebMethod
+    // @Oneway 
+    public void addSystemRecord(
+        @WebParam(name = "euid") String euid, 
+        @WebParam(name = "sysObjBean") System[sbyntag:objname] sysObjBean)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("addSystemRecord:" + sysObjBean);
+        }
+
+        SystemObject so = sysObjBean.pGetSystemObject();    
+        mMC.addSystemObject(euid, so);
+    }
+
+
+  
+
+
+    /** 
+     * Merge the enterprise records based on the given EUID's.
+     *
+     * @param sourceEUID The EUID to be merged.
+     * @param destinationEUID The EUID to be kept.
+     * @param calculateOnly Indicate whether to commit changes to DB or just
+     * compute the MergeResult.  See Constants.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid euids
+     * @return Result of merge operation.
+     */
+    public Merge[sbyntag:objname]Result pMergeEnterpriseRecord(
+        String fromEUID, 
+        String toEUID,
+        boolean calculateOnly)
+    throws ProcessingException, UserException, RemoteException  {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("pMergeEnterpriseRecord fromEUID:" + fromEUID + ", toEUID" + toEUID );
+        }
+            
+        MergeResult mresult = mMC.mergeEnterpriseObject(fromEUID, toEUID, calculateOnly);
+
+        return new Merge[sbyntag:objname]Result(mresult);
+        
+    }
+
+    /** 
+     * Merge the enterprise records based on the given EUID's.
+     *
+     * @param sourceEUID The EUID to be merged.
+     * @param destinationEUID The EUID to be kept.
+     * @param calculateOnly Indicate whether to commit changes to DB or just
+     * compute the MergeResult.  See Constants.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid euids
+     * @return Result of merge operation.
+     */
+    @WebMethod
+    public Merge[sbyntag:objname]Result mergeEnterpriseRecord(
+        @WebParam(name = "fromEUID") String fromEUID, 
+        @WebParam(name = "toEUID") String toEUID,
+        @WebParam(name = "calculateOnly") boolean calculateOnly)
+    throws ProcessingException, UserException, RemoteException  {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("mergeEnterpriseRecord fromEUID:" + fromEUID + ", toEUID" + toEUID );
+        }
+
+        return (Merge[sbyntag:objname]Result) pMergeEnterpriseRecord(fromEUID, toEUID, calculateOnly);        
+    }
+ 
+   /** 
+     * Return SystemObject associated with a key or null if not found.
+     *
+     * @param key The system object key on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid key (null or empty string)
+     * @return SystemObject for given key or null if not found.
+     */
+    public SystemObjectBean pGetSystemRecord(
+        String system, 
+        String localid)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("pGetSystemRecord system:" + system + ", localid" + localid );
+        }
+
+        System[sbyntag:objname] s = null;
+        SystemObjectPK skey = new SystemObjectPK(system, localid);
+        SystemObject so = mMC.getSystemObject(skey);
+
+        if (null != so) {
+            s = new System[sbyntag:objname](so);
+        }
+            
+        return s;
+    }
+
+   /** 
+     * Return SystemObject associated with a key or null if not found.
+     *
+     * @param key The system object key on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid key (null or empty string)
+     * @return System[sbyntag:objname] for given key or null if not found.
+     */    
+    @WebMethod
+    public System[sbyntag:objname] getSystemRecord(
+        @WebParam(name = "system") String system, 
+        @WebParam(name = "localid") String localid)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("getSystemRecord system:" + system + ", localid" + localid );
+        }
+
+        return (System[sbyntag:objname]) pGetSystemRecord(system, localid);
+    }
+    
+    /** Lookup active system objects only for the given EUID.
+     *
+     * @param euid The EUID on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid euid 
+     * @return Array of system objects.
+     */
+    public SystemObjectBean[] pGetSystemRecords(
+        String euid)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("pGetSystemRecord EUID:" + euid );
+        }
+
+        System[sbyntag:objname][] system[sbyntag:objname]s = null;
+        SystemObject[] systemObjects = mMC.lookupSystemObjects(euid);
+
+        if (null != systemObjects) {
+            int l = systemObjects.length;
+            system[sbyntag:objname]s = new System[sbyntag:objname][l];
+            for (int i = 0; i < l; i++) {
+                system[sbyntag:objname]s[i] = new System[sbyntag:objname](systemObjects[i]); 
+            }
+        }
+        
+        return system[sbyntag:objname]s;
+    }
+
+    /** Lookup active system objects only for the given EUID.
+     *
+     * @param euid The EUID on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid euid 
+     * @return Array of System[sbyntag:objname].
+     */
+    @WebMethod
+    public System[sbyntag:objname][] getSystemRecordsByEUID(
+        @WebParam(name = "euid") String euid)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("getSystemRecordsByEUID EUID:" + euid );
+        }
+
+        return (System[sbyntag:objname][]) pGetSystemRecords(euid);
+    }
+
+    /** 
+     * Lookup system objects with the given EUID and status
+     *
+     * @param euid The EUID on which to perform the action.
+     * @param status Status filter.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid parameters
+     * @return Array of system objects.
+     */
+    public SystemObjectBean[] pGetSystemRecords(
+        String euid, 
+        String status)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("pGetSystemRecords EUID:" + euid +", status:" + status );
+        }
+
+        System[sbyntag:objname][] system[sbyntag:objname]s = null;
+        SystemObject[] systemObjects = mMC.lookupSystemObjects(euid, status);
+
+        if (null != systemObjects) {
+            int l = systemObjects.length;
+            system[sbyntag:objname]s = new System[sbyntag:objname][l];
+            for (int i = 0; i < l; i++) {
+                system[sbyntag:objname]s[i] = new System[sbyntag:objname](systemObjects[i]); 
+            }
+        }
+        
+        return system[sbyntag:objname]s;
+    }
+
+    /** 
+     * Lookup system objects with the given EUID and status
+     *
+     * @param euid The EUID on which to perform the action.
+     * @param status Status filter.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid parameters
+     * @return Array of System[sbyntag:objname].
+     */
+    @WebMethod
+    public System[sbyntag:objname][] getSystemRecordsByEUIDStatus(
+        @WebParam(name = "euid") String euid, 
+        @WebParam(name = "status") String status)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("getSystemRecordsByEUIDStatus EUID:" + euid +", status:" + status );
+        }
+        
+        return (System[sbyntag:objname][]) pGetSystemRecords(euid, status);
+    }
+
+
+   /** 
+     * Returns an array of all system object keys belonging to the given EUID.
+     *
+     * @param euid The EUID on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid euid 
+     * @return Array of system object keys.
+     */
+    public SystemObjectPKBean[] pGetLIDs(String euid)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("pGetLIDs EUID:" + euid);
+        }
+
+        System[sbyntag:objname]PK[] objNamePKArr = null;
+        SystemObjectPK[] sysObjPKArr = mMC.lookupSystemObjectPKs(euid);
+        if (null != sysObjPKArr) {
+            int count = sysObjPKArr.length;
+            objNamePKArr = new System[sbyntag:objname]PK[count];
+            for (int i = 0; i < count; i++) {
+                objNamePKArr[i] = new System[sbyntag:objname]PK(sysObjPKArr[i]);
+            }
+        }
+        
+        return objNamePKArr;
+    }
+
+   /** 
+     * Returns an array of all system object keys belonging to the given EUID.
+     *
+     * @param euid The EUID on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid euid 
+     * @return Array of System[sbyntag:objname]PK.
+     */
+    @WebMethod
+    public System[sbyntag:objname]PK[] getLIDs(
+        @WebParam(name = "euid") String euid)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("getLIDs EUID:" + euid);
+        }
+
+        return (System[sbyntag:objname]PK[]) pGetLIDs(euid);
+    }
+
+    /** 
+     * Returns an array of system object keys with the given status belonging 
+     * to the given EUID.
+     *
+     * @param euid The EUID on which to perform the action.
+     * @param status Status filter.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid euid or status
+     * @return Array of system object keys or null.
+     */
+    public SystemObjectPKBean[] pGetLIDsByStatus(
+        String euid, 
+        String status)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("pGetLIDs EUID:" + euid +", status:" + status);
+        }
+
+        System[sbyntag:objname]PK[] objNamePKArr = null;            
+        SystemObjectPK[] sysObjPKArr = mMC.lookupSystemObjectPKs(euid, status);
+        if (null != sysObjPKArr) {
+            int count = sysObjPKArr.length;
+            objNamePKArr = new System[sbyntag:objname]PK[count];
+            for (int i = 0; i < count; i++) {
+                objNamePKArr[i] = new System[sbyntag:objname]PK(sysObjPKArr[i]);
+            }
+        }
+       
+        return objNamePKArr;
+   }
+
+    /** 
+     * Returns an array of system object keys with the given status belonging 
+     * to the given EUID.
+     *
+     * @param euid The EUID on which to perform the action.
+     * @param status Status filter.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid euid or status
+     * @return Array ofSystem[sbyntag:objname]PK or null.
+     */
+    @WebMethod
+    public System[sbyntag:objname]PK[] getLIDsByStatus(
+        @WebParam(name = "euid") String euid, 
+        @WebParam(name = "status") String status)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("pGetLIDs EUID:" + euid +", status:" + status);
+        }
+
+        return (System[sbyntag:objname]PK[]) pGetLIDsByStatus(euid, status);
+    }
+    
+    
+    /** 
+     * Returns an array of system object keys with the given status belonging 
+     * to the given destination system whose EUID matches the source system 
+     * code / lid.
+     *
+     * @param sourceSystem the source system
+     * @param sourceLID the source local id
+     * @param destSystem the destination system
+     * @param status status of records in destination system to search for
+     * @exception RemoteException Remote exception
+     * @exception ProcessingException See MasterControllerEJB
+     * @exception UserException See MasterControllerEJB
+     * @return Array of system object keys or null if not found
+     */
+    public SystemObjectPKBean[] pLookupLIDs(
+        String sourceSystem, 
+        String sourceLID, 
+        String destSystem, 
+        String status)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("pLookupLIDs sourceSystem:" + sourceSystem + 
+                ", sourceLID:" + sourceLID + ", destSystem:" + destSystem + ", status:" +
+                status );
+        }
+
+        System[sbyntag:objname]PK[] objNamePKArr = null;
+        SystemObjectPK[] sysObjPKArr = mMC.lookupSystemObjectPKs(sourceSystem, sourceLID,  destSystem,  status);
+        if (null != sysObjPKArr) {
+            int count = sysObjPKArr.length;
+            objNamePKArr = new System[sbyntag:objname]PK[count];
+            for (int i = 0; i < count; i++) {
+                objNamePKArr[i] = new System[sbyntag:objname]PK(sysObjPKArr[i]);
+            }
+        }
+        
+        return objNamePKArr;    
+   }
+
+    /** 
+     * Returns an array of system object keys with the given status belonging 
+     * to the given destination system whose EUID matches the source system 
+     * code / lid.
+     *
+     * @param sourceSystem the source system
+     * @param sourceLID the source local id
+     * @param destSystem the destination system
+     * @param status status of records in destination system to search for
+     * @exception RemoteException Remote exception
+     * @exception ProcessingException See MasterControllerEJB
+     * @exception UserException See MasterControllerEJB
+     * @return Array of System[sbyntag:objname]PK or null if not found
+     */
+    @WebMethod
+    public System[sbyntag:objname]PK[] lookupLIDs(
+        @WebParam(name = "sourceSystem") String sourceSystem, 
+        @WebParam(name = "sourceLID") String sourceLID, 
+        @WebParam(name = "destSystem") String destSystem, 
+        @WebParam(name = "status") String status)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("lookupLIDs sourceSystem:" + sourceSystem + 
+                ", sourceLID:" + sourceLID + ", destSystem:" + destSystem + ", status:" +
+                status );
+        }
+
+        return (System[sbyntag:objname]PK[]) pLookupLIDs(sourceSystem, sourceLID, destSystem, status);
+    }
+            
+    
+  
+    /** 
+     * Merge the two lids for the given system.  Note that the keys may both 
+     * belong to a single EO, or may belong to two different EO's.
+     *
+     * @param systemCode The system to which these local id's belong.
+     * @param sourceLID The lid to be merged.
+     * @param destLID The lid to be kept.
+     * @param calculateOnly Indicate whether to commit changes to DB or just
+     * compute the MergeResult.  See Constants.
+     * @exception ProcessingException See MasterControllerEJB
+     * @exception RemoteException See MasterControllerEJB
+     * @exception UserException See MasterControllerEJB
+     * @return See MasterControllerEJB
+     */
+    public Merge[sbyntag:objname]Result pMergeSystemRecord(
+        String systemCode, 
+        String sourceLID,
+        String destLID, 
+        boolean calculateOnly)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("pMergeSystemRecord systemCode:" + systemCode + 
+                ", sourceLID:" + sourceLID + ", destLID:" + destLID + ", calculateOnly:" +
+                calculateOnly );
+        }
+
+        Merge[sbyntag:objname]Result mr = null;
+        MergeResult mresult = mMC.mergeSystemObject(systemCode, sourceLID,
+                destLID, calculateOnly);
+
+        return new Merge[sbyntag:objname]Result(mresult);
+   }
+  
+    /** 
+     * Merge the two lids for the given system.  Note that the keys may both 
+     * belong to a single EO, or may belong to two different EO's.
+     *
+     * @param systemCode The system to which these local id's belong.
+     * @param sourceLID The lid to be merged.
+     * @param destLID The lid to be kept.
+     * @param calculateOnly Indicate whether to commit changes to DB or just
+     * compute the MergeResult.  See Constants.
+     * @exception ProcessingException See MasterControllerEJB
+     * @exception RemoteException See MasterControllerEJB
+     * @exception UserException See MasterControllerEJB
+     * @return Merge[sbyntag:objname]Result
+     */   
+   @WebMethod
+   public Merge[sbyntag:objname]Result mergeSystemRecord(
+       @WebParam(name = "systemCode") String systemCode, 
+       @WebParam(name = "sourceLID") String sourceLID,
+       @WebParam(name = "destLID") String destLID, 
+       @WebParam(name = "calculateOnly") boolean calculateOnly)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("mergeSystemRecord systemCode:" + systemCode + 
+                ", sourceLID:" + sourceLID + ", destLID:" + destLID + ", calculateOnly:" +
+                calculateOnly );
+        }
+
+        return (Merge[sbyntag:objname]Result) pMergeSystemRecord(systemCode, sourceLID, 
+                  destLID, calculateOnly);
+   }
+
+
+ 
+
+    /** Return a deactivated system object back to active status.
+     *
+     * @param systemKey The system object key on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid key (null or empty string)
+     */
+    @WebMethod 
+    // @Oneway
+    public void activateSystemRecord(
+       @WebParam(name = "system") String system, 
+       @WebParam(name = "localid") String localid)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("activateSystemRecord system:" + system + 
+                ", localid:" + localid);
+        }
+
+        SystemObjectPK skey = new SystemObjectPK(system, localid);
+        mMC.activateSystemObject(skey);
+   }
+
+    
+    /** 
+     * Return a deactivated enterprise object back to active status.
+     *
+     * @param euid The euid on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid euid (null or empty string)
+     */
+    @WebMethod 
+    // @Oneway
+    public void activateEnterpriseRecord(
+        @WebParam(name = "euid") String euid)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("activateSystemRecord euid:" + euid);
+        }
+            
+        mMC.activateEnterpriseObject(euid);            
+   }
+    
+    
+    /** 
+     * Deactivate a system object based on the given key. Note that this 
+     * is different than deleteSystemObject in that the record is not removed
+     * from the database, only its status is changed.
+     *
+     * @param systemKey The system object key on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid key (null or empty string)
+     */
+    @WebMethod
+    // @Oneway 
+    public void deactivateSystemRecord(
+        @WebParam(name = "system") String system, 
+        @WebParam(name = "localid") String localid)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("deactivateSystemRecord system:" + system + 
+                ", localid:" + localid);
+        }
+
+        SystemObjectPK skey = new SystemObjectPK(system, localid);
+        mMC.deactivateSystemObject(skey);
+    }
+
+    
+   /** 
+     * Deactivate enterprise object based on key.
+     *
+     * @param euid The euid on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid euid (null or empty string)
+     */
+    @WebMethod
+    // @Oneway 
+    public void deactivateEnterpriseRecord(
+        @WebParam(name = "euid") String euid)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("deactivateSystemRecord euid:" + euid);
+        }
+
+        mMC.deactivateEnterpriseObject(euid);
+   }
+    
+
+    /** 
+     * Transfer system object from one enterprise object to another
+     *
+     * @param destinationEUID The EUID to transfer the SO to.
+     * @param systemKey The key of the SO to transfer.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid parameters
+     */
+    @WebMethod
+    // @Oneway 
+    public void transferSystemRecord(
+        @WebParam(name = "toEUID") String toEUID, 
+        @WebParam(name = "system") String system, 
+        @WebParam(name = "localid") String localid)
+    throws ProcessingException, UserException, RemoteException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.info("transferSystemRecord toEUID:" + toEUID + ", system:" + system +
+                ", localid:" + localid);
+        }
+ 
+        SystemObjectPK skey = new SystemObjectPK(system, localid);
+        mMC.transferSystemObject(toEUID, skey);
+    }
+ 
+    /** 
+     * Return EnterpiseObject associated with EUID or null if not found.
+     *
+     * @param euid The EUID on which to perform the action.
+     * @exception ProcessingException An error has occured.
+     * @throws UserException Invalid euid (null or empty string)
+     * @return EnterpriseObject for given EUID or null if not found.
+     */
+    private SearchObjectResult[] search(
+        ObjectBean objBean,
+        String searchId, 
+        boolean weightOption)
+    throws ProcessingException, UserException, RemoteException {
+        try {
+
+            [sbyntag:objname.makeClassName]Bean a[sbyntag:objname]Bean = ([sbyntag:objname.makeClassName]Bean) objBean;
+            EPathArrayList fields = new EPathArrayList();
+            fields.add("Enterprise.SystemSBR." + "[sbyntag:objname]" + ".EUID");
+            System[sbyntag:objname] sys[sbyntag:objname] = new System[sbyntag:objname]();
+            sys[sbyntag:objname].set[sbyntag:objname.makeClassName](a[sbyntag:objname]Bean);
+            SystemObject so = sys[sbyntag:objname].pGetSystemObject();
+
+            String path = "Enterprise.SystemSBR." + "[sbyntag:objname]";        
+            populateEPathList(fields, path); 
+        
+
+            EOSearchOptions searchOptions = new EOSearchOptions(searchId, fields);
+            searchOptions.setWeighted(weightOption);
+            EOSearchCriteria criteria = new EOSearchCriteria(so);
+
+            EOSearchResultIterator iterator = mMC.searchEnterpriseObject(criteria, searchOptions);
+            ArrayList results = new ArrayList();
+            while (iterator.hasNext()) {
+                EOSearchResultRecord resultRecord = iterator.next();
+                ObjectNode objectNode = resultRecord.getObject();
+                String euid = resultRecord.getEUID();
+                float weighted = resultRecord.getComparisonScore();
+                [sbyntag:objname.makeClassName]Bean bean = new [sbyntag:objname.makeClassName]Bean (([sbyntag:objname.makeClassName]Object)objectNode);
+                Search[sbyntag:objname]Result searchResult =  
+                    new Search[sbyntag:objname]Result(bean, euid, weighted);
+                results.add(searchResult);
+            }
+
+            int size = results.size();
+            Search[sbyntag:objname]Result[] searchBeanResults = new Search[sbyntag:objname]Result[size];
+            return (Search[sbyntag:objname]Result[])results.toArray(searchBeanResults);
+        } catch (UserException ux) {
+            throw ux;
+        } catch (ProcessingException px) {
+            throw px;
+        } catch (Exception ex) {
+            throw new ProcessingException(ex);
+        }        
+    }
+     
+
+    /** 
+     * Populate EPath list.
+     *
+     * @param fields EPath array list.
+     * @param path EPath.
+     * @exception ProcessingException An error has occured.
+     */
+    private void populateEPathList(
+        EPathArrayList fields, 
+        String path)
+    throws ProcessingException {
+        try {
+            
+            String[] keyPaths = MetaDataService.getObjectFK(path);
+            
+            String[] fieldPaths = MetaDataService.getFieldPaths(path);
+            for (int i = 0; i < fieldPaths.length; i++) {
+                String fd = fieldPaths[i];
+                boolean found = false;
+                for (int j = 0; keyPaths != null && j < keyPaths.length; j++) {
+                  String keyField = keyPaths[j];
+                  int beginIndex = keyField.indexOf('.');
+                  String keyStr = keyField.substring(beginIndex);
+                  if (fd.endsWith(keyStr)) {
+                      found = true;
+                      break;
+                  }
+                }
+                // we add field only if it not a foreign key. In other words
+                // add only object fields. Later on MetaDataService will be enhanced
+                // to provide getObjectFields() method
+                if ( found == false) {             
+                   fields.add(fd);
+                }
+            }
+            
+            String childPaths[] = MetaDataService.getChildTypePaths(path);
+            for (int i = 0; childPaths != null && i < childPaths.length; i++) {
+                String childPath = childPaths[i];
+                populateEPathList(fields, childPath);
+             }
+               
+        } catch (Exception ex) {
+            throw new ProcessingException(ex);
+        }
+    }
+}

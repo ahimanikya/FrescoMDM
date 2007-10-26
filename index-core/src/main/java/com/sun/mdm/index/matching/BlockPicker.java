@@ -1,0 +1,56 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+package com.sun.mdm.index.matching;
+
+import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
+
+/**
+ * A user extensible component to pick the next block definition to use for 
+ * the next matching pass.
+ * @author  aegloff
+ * @version $Revision: 1.1 $
+ */
+public interface BlockPicker {
+
+    /**
+     * Pick the next block ID(s) to use for the next matching pass
+     * @param inObject the SystemObject to match
+     * @param searchOptions the options used for the search. From this it is 
+     * possible to tell whether it is a weighted search or a normal match.
+     * @param previousBlockIDs the list of block IDs that have already been used
+     * in previous match passes for matching this SystemObject
+     * @param remainingBlockIDs a list of remaining block IDs that have not yet
+     * been used in previous match passes for matching this SystemObject
+     * @throws NoBlockApplicableException if no block IDs remain that are 
+     * applicable
+     * This signals the MatchEngineController that matching for this 
+     * SystemObject is complete
+     * @return the blockIDs to use for the next match pass
+     */
+    String[] pickBlock(com.sun.mdm.index.objects.SystemObject inObject, 
+                     EOSearchOptions searchOptions,
+                     java.util.ArrayList previousBlockIDs, 
+                     java.util.ArrayList remainingBlockIDs) 
+            throws NoBlockApplicableException;
+    
+}

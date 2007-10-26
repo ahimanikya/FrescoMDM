@@ -1,0 +1,78 @@
+[SBYNTAG:DEFINE:objname]
+<!--
+ # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ #
+ # Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ #
+ # The contents of this file are subject to the terms of the Common 
+ # Development and Distribution License ("CDDL")(the "License"). You 
+ # may not use this file except in compliance with the License.
+ #
+ # You can obtain a copy of the License at
+ # https://open-dm-mi.dev.java.net/cddl.html
+ # or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ # specific language governing permissions and limitations under the  
+ # License.  
+ #
+ # When distributing the Covered Code, include this CDDL Header Notice 
+ # in each file and include the License file at
+ # open-dm-mi/bootstrap/legal/license.txt.
+ # If applicable, add the following below this CDDL Header, with the 
+ # fields enclosed by brackets [] replaced by your own identifying 
+ # information: "Portions Copyrighted [year] [name of copyright owner]"
+-->
+
+package com.sun.mdm.index.webservice;
+
+import com.sun.mdm.index.objects.*;
+import com.sun.mdm.index.objects.exception.*;
+import com.sun.mdm.index.master.MergeResult;
+import com.sun.mdm.index.webservice.EnterpriseObjectMessage;
+// import com.sun.mdm.index.webservice.MergeObjectResult;
+
+/**
+ * Return value from eview[sbyntag:objname] merge related functions.
+ */
+
+public class Merge[sbyntag:objname]Result {
+    public static final int version = 1;
+    
+    private DestinationEO mDestEO;
+    private SourceEO mSourceEO;
+     
+    public Merge[sbyntag:objname]Result() {
+    }
+    
+    protected Merge[sbyntag:objname]Result(MergeResult mergeResult) {
+       mDestEO = new DestinationEO(mergeResult.getDestinationEO());
+       mSourceEO = new SourceEO(mergeResult.getSourceEO());
+    }
+
+            
+    /** 
+     * Get destination EO
+     * @return Destination EO
+     */
+    public DestinationEO getDestinationEO() {
+        return mDestEO;
+    }
+
+
+    /** 
+     * Get Source EO
+     * @return Source EO
+     */
+    public SourceEO getSourceEO() {
+        return mSourceEO;
+    }
+
+    public void setDestinationEO(DestinationEO eom) {
+        mDestEO = eom;
+    }
+
+    public void setSourceEO(SourceEO eom) {
+        mSourceEO = eom;
+    }
+
+
+}

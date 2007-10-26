@@ -1,0 +1,17 @@
+[SBYNTAG:DEFINE:objname,qualifiednodename,sourcefieldnames(),genfieldprefix,fieldname]
+				<group standardization-type="USLNAME">
+					<unnormalized-source-fields>
+[SBYNTAG:REP-BEGIN]
+						<source-mapping>
+							<unnormalized-source-field-name>[sbyntag:sourcefieldnames()]</unnormalized-source-field-name>
+							<standardized-object-field-id>LN</standardized-object-field-id>
+						</source-mapping>
+[SBYNTAG:REP-END]
+					</unnormalized-source-fields>
+					<normalization-targets>
+						<target-mapping>
+							<standardized-object-field-id>LN</standardized-object-field-id>
+							<standardized-target-field-name>[sbyntag:qualifiednodename].[sbyntag:genfieldprefix]Std</standardized-target-field-name>
+						</target-mapping>
+					</normalization-targets>
+				</group>

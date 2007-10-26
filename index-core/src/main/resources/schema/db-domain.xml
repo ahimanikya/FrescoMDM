@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ #
+ # Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ #
+ # The contents of this file are subject to the terms of the Common 
+ # Development and Distribution License ("CDDL")(the "License"). You 
+ # may not use this file except in compliance with the License.
+ #
+ # You can obtain a copy of the License at
+ # https://open-dm-mi.dev.java.net/cddl.html
+ # or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ # specific language governing permissions and limitations under the  
+ # License.  
+ #
+ # When distributing the Covered Code, include this CDDL Header Notice 
+ # in each file and include the License file at
+ # open-dm-mi/bootstrap/legal/license.txt.
+ # If applicable, add the following below this CDDL Header, with the 
+ # fields enclosed by brackets [] replaced by your own identifying 
+ # information: "Portions Copyrighted [year] [name of copyright owner]"
+-->
+
+<DatabaseDomainDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="db-domain.xsd">
+	<domains db-type="oracle">
+		<domain domain-type="domain-name" sql-type="varchar2" java-type="String" length="40"/>
+		<domain domain-type="domain-sequence" sql-type="number" java-type="BigDecimal" length="15"/>
+		<domain domain-type="domain-date" sql-type="date" java-type="Date"/>
+		<domain domain-type="domain-coded" sql-type="varchar2" java-type="String" length="8"/>
+		<domain domain-type="domain-id" sql-type="varchar2" java-type="String" length="15"/>
+		<domain domain-type="domain-system" sql-type="varchar2" java-type="String" length="20"/>
+		<domain domain-type="domain-id-long" sql-type="varchar2" java-type="String" length="25"/>
+		<domain domain-type="domain-boolean" sql-type="char" java-type="String" length="1"/>
+		<domain domain-type="domain-description" sql-type="varchar2" java-type="String" length="50"/>
+		<domain domain-type="domain-user-id" sql-type="varchar2" java-type="String" length="20"/>
+		<domain domain-type="domain-timestamp" sql-type="date" java-type="Date"/>
+		<domain domain-type="domain-soundex" sql-type="varchar2" java-type="String" length="8"/>
+		<domain domain-type="domain-string-short" sql-type="varchar2" java-type="String" length="10"/>
+		<domain domain-type="domain-string" sql-type="varchar2" java-type="String" length="20"/>
+		<domain domain-type="domain-string-long" sql-type="varchar2" java-type="String" length="40"/>
+		<domain domain-type="domain-nysiis" sql-type="varchar2" java-type="String" length="8"/>
+		<domain domain-type="domain-binary" sql-type="long" java-type="String" length="900000"/>
+		<domain domain-type="domain-number" sql-type="number" java-type="Long" length="15"/>
+		<domain domain-type="domain-name-long" sql-type="varchar2" java-type="String" length="100"/>
+	</domains>
+</DatabaseDomainDefinition>

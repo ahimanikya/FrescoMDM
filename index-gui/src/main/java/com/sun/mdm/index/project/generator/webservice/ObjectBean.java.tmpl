@@ -1,0 +1,339 @@
+[SBYNTAG:DEFINE:objname,fieldname(),fieldtype(),seclist(),primary()]
+<!--
+ # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ #
+ # Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ #
+ # The contents of this file are subject to the terms of the Common 
+ # Development and Distribution License ("CDDL")(the "License"). You 
+ # may not use this file except in compliance with the License.
+ #
+ # You can obtain a copy of the License at
+ # https://open-dm-mi.dev.java.net/cddl.html
+ # or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ # specific language governing permissions and limitations under the  
+ # License.  
+ #
+ # When distributing the Covered Code, include this CDDL Header Notice 
+ # in each file and include the License file at
+ # open-dm-mi/bootstrap/legal/license.txt.
+ # If applicable, add the following below this CDDL Header, with the 
+ # fields enclosed by brackets [] replaced by your own identifying 
+ # information: "Portions Copyrighted [year] [name of copyright owner]"
+-->
+
+package com.sun.mdm.index.webservice;
+
+import java.util.*;
+import com.sun.mdm.index.objects.exception.*;
+import com.sun.mdm.index.objects.*;
+import com.sun.mdm.index.objects.metadata.MetaDataService;
+import java.text.SimpleDateFormat;
+import java.text.ParsePosition;
+import com.sun.mdm.index.webservice.ObjectBean;
+import com.sun.mdm.index.webservice.ClearFieldObject;
+import com.sun.mdm.index.util.LogUtil;
+import com.sun.mdm.index.util.Logger;
+
+public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
+{
+    public static final int version = 1;
+    
+    private [sbyntag:objname.makeClassName]Object m[sbyntag:objname]Object; 
+    private ClearFieldObject mClearFieldObj;
+    private final Logger mLogger = LogUtil.getLogger(this.getClass().getName());
+
+
+[SBYNTAG:REP-BEGIN]    
+    private ArrayList m[sbyntag:seclist()] = new ArrayList();
+[SBYNTAG:REP-END]
+    
+    public [sbyntag:objname.makeClassName]Bean() throws ObjectException
+    { 
+       m[sbyntag:objname]Object = new [sbyntag:objname.makeClassName]Object();
+    }
+    
+    protected [sbyntag:objname.makeClassName]Bean([sbyntag:objname.makeClassName]Object a[sbyntag:objname]Object) throws ObjectException
+    { 
+       m[sbyntag:objname]Object = a[sbyntag:objname]Object;
+       int size = 0;
+       Iterator iterator = null;
+       Collection children = null;
+[SBYNTAG:REP-BEGIN]
+       iterator = null;
+       children = m[sbyntag:objname]Object.pGetChildren("[sbyntag:seclist()]");
+       if (children != null) {
+           size = children.size();
+           iterator = children.iterator();
+       }  
+                               
+       for (int i = 0; iterator != null && iterator.hasNext() ; i++) {
+              [sbyntag:seclist().makeClassName]Object oNode = ([sbyntag:seclist().makeClassName]Object)iterator.next();
+              [sbyntag:seclist().makeClassName]Bean a[sbyntag:seclist()] = new [sbyntag:seclist().makeClassName]Bean(oNode, mClearFieldObj);            
+              m[sbyntag:seclist()].add(a[sbyntag:seclist()]);          
+         }
+   
+[SBYNTAG:REP-END]
+     }    
+
+    protected [sbyntag:objname.makeClassName]Bean([sbyntag:objname.makeClassName]Object a[sbyntag:objname]Object,
+       ClearFieldObject clearFieldObj) throws ObjectException
+    { 
+       m[sbyntag:objname]Object = a[sbyntag:objname]Object;
+       mClearFieldObj = clearFieldObj;
+       int size = 0;
+       Iterator iterator = null;
+       Collection children = null;
+[SBYNTAG:REP-BEGIN]
+       iterator = null;
+       children = m[sbyntag:objname]Object.pGetChildren("[sbyntag:seclist()]");
+       if (children != null) {
+           size = children.size();
+           iterator = children.iterator();
+       }  
+                               
+       for (int i = 0; iterator != null && iterator.hasNext() ; i++) {
+              [sbyntag:seclist().makeClassName]Object oNode = ([sbyntag:seclist().makeClassName]Object)iterator.next();
+              [sbyntag:seclist().makeClassName]Bean a[sbyntag:seclist()] = new [sbyntag:seclist().makeClassName]Bean(oNode, mClearFieldObj);            
+              m[sbyntag:seclist()].add(a[sbyntag:seclist()]);          
+         }
+   
+[SBYNTAG:REP-END]
+     }
+
+[SBYNTAG:REP-BEGIN]    
+    public String get[sbyntag:fieldname().makeClassName]() throws ObjectException
+    {
+        try
+        {
+            int type = m[sbyntag:objname]Object.pGetType("[sbyntag:fieldname()]");
+            Object value = m[sbyntag:objname]Object.getValue("[sbyntag:fieldname()]");
+            return objToString(value, type);        
+        }
+        catch (ObjectException e)
+        {
+            throw e;
+        }
+    }
+
+[SBYNTAG:REP-END]
+[SBYNTAG:REP-BEGIN]    
+    public void set[sbyntag:fieldname().makeClassName](String value) throws ObjectException
+    {
+        try
+        {
+            Object clearFieldIndicator = (mClearFieldObj != null) ? mClearFieldObj.getClearFieldIndicator() : null;
+            if (value != null && clearFieldIndicator != null &&
+                value.equals(clearFieldIndicator) &&
+                m[sbyntag:objname]Object.isNullable("[sbyntag:fieldname()]")) {
+               m[sbyntag:objname]Object.clearField("[sbyntag:fieldname()]");
+            } else {
+               int type = m[sbyntag:objname]Object.pGetType("[sbyntag:fieldname()]");
+               Object val = strToObj(value, type, "[sbyntag:fieldname()]");
+          
+               m[sbyntag:objname]Object.setValue("[sbyntag:fieldname()]", val);
+            }
+        
+        }
+        catch(ObjectException e)
+        {
+            throw e;
+        }
+    }
+    
+[SBYNTAG:REP-END]
+   
+            
+[SBYNTAG:REP-BEGIN]    
+    public  [sbyntag:seclist().makeClassName]Bean[] get[sbyntag:seclist().makeClassName]()
+    {       
+        // Collection children = m[sbyntag:objname]Object.pGetChildren("[sbyntag:seclist()]");
+        // [sbyntag:seclist().makeClassName]Object[] arrChildren = new [sbyntag:seclist().makeClassName]Object[children.size()];
+        // return ([sbyntag:seclist().makeClassName]Bean[])children.toArray(arrChildren);
+           int length = m[sbyntag:seclist()].size();
+           [sbyntag:seclist().makeClassName]Bean[] arrChildren = new [sbyntag:seclist().makeClassName]Bean[length];
+           return ([sbyntag:seclist().makeClassName]Bean[] )m[sbyntag:seclist()].toArray(arrChildren);           
+    }
+
+    public  [sbyntag:seclist().makeClassName]Bean get[sbyntag:seclist().makeClassName](int i) throws ObjectException
+    {    
+      try {
+         Collection children = m[sbyntag:objname]Object.pGetChildren("[sbyntag:seclist()]");
+         int size = 0;
+         if (children != null) {
+           size = children.size();
+         }  
+     
+         if (size <= i) {                     
+            for (int j=size; j < i+1; j++) {
+              [sbyntag:seclist().makeClassName]Bean a[sbyntag:seclist()] = new [sbyntag:seclist().makeClassName]Bean(mClearFieldObj);
+              ObjectNode oNode = a[sbyntag:seclist()].getObjectNode();
+              m[sbyntag:objname]Object.addChild(oNode);
+              m[sbyntag:seclist()].add(a[sbyntag:seclist()]);
+                              
+            }
+         }
+         return ([sbyntag:seclist().makeClassName]Bean)m[sbyntag:seclist()].get(i); 
+       } catch (ObjectException ex) {
+            throw ex;
+       }
+    }
+
+
+    public int count[sbyntag:seclist().makeClassName]() {
+      return m[sbyntag:seclist()].size();
+    }
+    
+    
+    public void delete[sbyntag:seclist().makeClassName](String [sbyntag:seclist().toLowerCase]Id) 
+       throws ObjectException{
+       m[sbyntag:objname]Object.deleteChild("[sbyntag:seclist()]", [sbyntag:seclist().toLowerCase]Id);
+    }
+
+     
+[SBYNTAG:REP-END]
+
+[SBYNTAG:REP-BEGIN]    
+    public void set[sbyntag:seclist().makeClassName](int index, [sbyntag:seclist().makeClassName]Bean [sbyntag:seclist().toLowerCase])
+    {
+        try
+        {
+            m[sbyntag:objname]Object.addChild([sbyntag:seclist().toLowerCase].getObjectNode());
+            m[sbyntag:seclist()].add(index, [sbyntag:seclist().toLowerCase]);
+        }
+        catch (ObjectException ex)
+        {
+            mLogger.error(ex.getMessage(), ex);
+        }
+    }
+
+    public void set[sbyntag:seclist().makeClassName]([sbyntag:seclist().makeClassName]Bean[] [sbyntag:seclist().toLowerCase]s)
+    {
+        try
+        {
+           for (int i = 0; i < [sbyntag:seclist().toLowerCase]s.length; i++) {
+              m[sbyntag:objname]Object.addChild([sbyntag:seclist().toLowerCase]s[i].getObjectNode());
+              m[sbyntag:seclist()].add([sbyntag:seclist().toLowerCase]s);
+           }
+        }
+        catch (ObjectException ex)
+        {
+            mLogger.error(ex.getMessage(), ex);
+        }
+    }
+[SBYNTAG:REP-END]
+
+  
+
+    public ObjectNode pGetObject() {
+        return m[sbyntag:objname]Object;
+    }
+
+    /** 
+     * Getter for all children nodes
+     * @return collection of children nodes
+     */            
+    public Collection pGetChildren() {
+         ArrayList allChildren = new ArrayList();
+
+[SBYNTAG:REP-BEGIN]
+         if (m[sbyntag:seclist()].size() > 0) {
+             allChildren.add(m[sbyntag:seclist()]);
+         }
+[SBYNTAG:REP-END]             
+         return allChildren;
+    }
+    
+    /** 
+     * Getter for children of a specified type
+     * @param type Type of children to retrieve
+     * @return Arraylist of children of specified type
+     */
+    public Collection pGetChildren(String type) {
+        return m[sbyntag:objname]Object.pGetChildren(type);
+    }
+
+    /** 
+     * Getter for child types
+     * @return Arraylist of child types
+     */
+    public ArrayList pGetChildTypes() {
+        return m[sbyntag:objname]Object.getChildTags();
+    }    
+
+    /**
+     * Count of all children
+     * @return number of children
+     */
+    public int countChildren() {
+        return ((ArrayList) pGetChildren()).size();
+    }
+
+    /**
+     * Count of children of specified type
+     * @param type of children to count
+     * @return number of children of specified type
+     */
+    public int countChildren(String type) {
+        return ((ArrayList) pGetChildren(type)).size();
+    }
+
+    // Find parent which is SystemObject    
+    private SystemObject getParentSO() {
+        ObjectNode obj = m[sbyntag:objname]Object.getParent();
+        
+        while (obj != null) {
+           if (obj instanceof SystemObject) {
+              return (SystemObject) obj;
+           } else {
+              obj = obj.getParent();
+           }
+        }
+        return (SystemObject) obj;
+    }   
+                
+    static String objToString(Object value, int type) throws ObjectException {
+        if (value == null) {
+            return null;
+        } else {
+            if ( type == ObjectField.OBJECTMETA_STRING_TYPE) {
+                return (String) value;
+            }
+            else if (type == ObjectField.OBJECTMETA_DATE_TYPE) {
+               SimpleDateFormat dateFormat = new SimpleDateFormat(MetaDataService.getDateFormat());
+               return dateFormat.format(value);              
+            } else {
+                return value.toString();
+            }
+        }
+    }
+    
+    static Object strToObj(String str, int type, String fieldName) throws ObjectException {
+        if ( type == ObjectField.OBJECTMETA_STRING_TYPE) {
+            return  str;
+        } else if (str == null || str.trim().length() == 0) {
+            return null;
+        } else if (type == ObjectField.OBJECTMETA_DATE_TYPE) {
+            ParsePosition pos = new ParsePosition(0);
+            SimpleDateFormat dateFormat = new SimpleDateFormat(MetaDataService.getDateFormat());
+            Object ret = dateFormat.parse(str, pos);   
+            if ( ret == null) {
+               throw new ObjectException("Invalid Date format of" + fieldName + ",value:" + str);
+            }           
+            return ret;
+        } else if (type == ObjectField.OBJECTMETA_INT_TYPE) {                
+            return Integer.valueOf(str);              
+        } else if (type == ObjectField.OBJECTMETA_FLOAT_TYPE) {                
+            return Float.valueOf(str);              
+        } else if (type == ObjectField.OBJECTMETA_LONG_TYPE) {                
+            return Long.valueOf(str);             
+        } else if (type == ObjectField.OBJECTMETA_BOOL_TYPE) {                
+            return Boolean.valueOf(str);              
+        } else if (type == ObjectField.OBJECTMETA_CHAR_TYPE) {                
+            return (new Character(str.charAt(0)));                 
+        } else {
+            throw new ObjectException("Invalid type of" + fieldName + ",value:" + str);
+        }
+    }
+    
+}

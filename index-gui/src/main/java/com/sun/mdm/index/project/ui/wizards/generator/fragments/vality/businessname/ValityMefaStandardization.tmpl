@@ -1,0 +1,22 @@
+[SBYNTAG:DEFINE:objname,qualifiednodename,sourcefieldnames(),genfieldprefix]
+				<group standardization-type="business">
+					<unstandardized-source-fields>
+[SBYNTAG:REP-BEGIN]
+						<unstandardized-source-field-name>[sbyntag:sourcefieldnames()]</unstandardized-source-field-name>
+[SBYNTAG:REP-END]
+					</unstandardized-source-fields>
+					<standardization-targets>
+						<target-mapping>
+							<standardized-object-field-id>CN</standardized-object-field-id>
+							<standardized-target-field-name>[sbyntag:qualifiednodename].[sbyntag:genfieldprefix]Name</standardized-target-field-name>
+						</target-mapping>
+						<target-mapping>
+							<standardized-object-field-id>CT</standardized-object-field-id>
+							<standardized-target-field-name>[sbyntag:qualifiednodename].[sbyntag:genfieldprefix]Type</standardized-target-field-name>
+						</target-mapping>
+						<target-mapping>
+							<standardized-object-field-id>ST</standardized-object-field-id>
+							<standardized-target-field-name>[sbyntag:qualifiednodename].[sbyntag:genfieldprefix]StandType</standardized-target-field-name>
+						</target-mapping>
+					</standardization-targets>
+				</group>

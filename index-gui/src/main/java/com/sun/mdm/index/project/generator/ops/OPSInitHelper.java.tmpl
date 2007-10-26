@@ -1,0 +1,28 @@
+[SBYNTAG:DEFINE:objnames()]
+package com.sun.mdm.index.ops;
+
+import java.util.HashMap;
+
+[SBYNTAG:REP-BEGIN]
+import com.sun.mdm.index.ops.[sbyntag:objnames().makeClassName];
+[SBYNTAG:REP-END]
+import com.sun.mdm.index.ops.exception.*;
+
+public final class OPSInitHelper
+    implements OPSLoad
+{
+    public OPSInitHelper() {}
+    
+    public HashMap loadOPS()
+        throws OPSException
+    {
+        HashMap ret = new HashMap();
+        
+[SBYNTAG:REP-BEGIN]
+        [sbyntag:objnames().makeClassName] [sbyntag:objnames()]_handle = new [sbyntag:objnames().makeClassName]();
+        ret.put("[sbyntag:objnames()]", [sbyntag:objnames()]_handle);
+[SBYNTAG:REP-END]
+        
+        return ret;
+    }
+}

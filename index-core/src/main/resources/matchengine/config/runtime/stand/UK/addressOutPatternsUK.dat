@@ -1,0 +1,258 @@
+HN NA ST|NA ST|*                                                  // 21 HEIGHWAY COURT|BROOKLAND ROAD                       
+HN NA ST|N2 S2   
+
+BN BT|NA|NA ST|*                                                  // HYDE HOUSE|THE HYDE|EDGWARE RD|Amazon           
+BN BT|BI|NA ST               
+
+NA|NA ST|EI|*                                                     // NORTH RIDGE|RYE ROAD|HAWKHURST
+BN|NA ST|EI
+
+BN BT|WI|BN BT|*                                                  // ST ANDREWS HOUSE, NORTHSIDE|ST ANDREWS BUSINESS PARK     
+BN BT|WI|BI BY    
+                                                 
+BN BT|NA ST|NA ST|*                                               // PROTEA HOUSE|NEW BRIDGE|MARINE PARADE                    
+BN BT|NA ST|N2 S2  
+            
+HN NA ST|HN NA ST|*                                               // 21 HEIGHWAY COURT|45 BROOKLAND ROAD 
+HN NA ST|H2 N2 S2 
+         
+HN NA ST|NA ST|*                                                  // 21 HEIGHWAY COURT|BROOKLAND ROAD                         
+HN NA ST|N2 S2 
+  
+NA ST|HN NA ST|*                                                  // HEIGHWAY COURT|45 BROOKLAND ROAD                         
+BN BT|H2 N2 S2 
+
+WD WI|BN BT|NA ST|NA ST|*                                         // Room 9, PROTEA HOUSE|NEW BRIDGE|MARINE PARADE            
+WD WI|BN BT|N2 S2|NA ST 
+
+NA ST|NA ST|*                                                     // WEST PARK RD|HORTON LANE        
+NA ST|N2 S2 
+
+WD WI|EI|*                                                        // ROOM 9 WESTFIELD
+WD WI|NA
+
+BN|TB BN|*                                                        // Green Centre|University of East Angelia
+BN|BY BI
+
+HN NA ST|BN BT|*
+HN NA ST|EI EI
+
+NA ST|BN BT|*
+NA ST|BY BI
+
+HN NA ST|BN BT|EI|*
+HN NA ST|EI EI|EI
+
+NA ST|BN BT|EI|*
+NA ST|BY BI|EI
+
+HN NA ST|BN BT|EI|*
+HN NA ST|EI EI|EI
+
+BN|BN|*                                                          // THE HEALTH CENTRE|THE SQUARE
+BN|BI
+
+BN BT|BN NA ST|*                                                 // COUNTY PRACTICE|HEALTH CENTRE,MELTON ROAD
+BN BT|BI NA ST
+
+BN|BN BT|*                                                 // THE MEDICAL CENTRE|VALLEY HOUSE|ST. ANN'S WELL ROAD
+BN|BY BI
+
+BN|NA ST|HN NA ST|*                                               //                                 
+BN|NA ST|H2 N2 S2
+
+BN|HN NA ST|NA ST|*                                               //                                 
+BN|H2 N2 S2|NA ST 
+
+BN BT|BN BT|*                                                     // GRACE HOUSE|HARROVIAN BUSINESS VILLAGE|BESSBOROUGH ROAD  
+BN BT|BI BY 
+
+BN BT|BN BT|NA ST|*
+BN BT|BI BY|NA ST
+
+BN BT|BN BT|NA|*
+BN BT|BI BY|NA
+                                               
+BN BT|NA ST|NA|*                                                  // GROVE HOUSE|LANGTON BROW|THE GREEN                       
+BN BT|NA ST|N2
+
+NA|BN BT|*                                                        // HILLVIEW|FULBOURN HOSPITAL      
+BN|BI BY 
+
+HN NA ST|EI|NA SD|*                                               // 199 PETERBOROUGH ROAD|LEYTON|LONDON E10                  
+HN NA ST|EI|EI EI 
+
+BN BT|NA ST|NL PT NA|*                                            // GROVE HOUSE|LANGTON BROW|THE GREEN, ECCLESTON            
+BN BT|NA ST|N2 N2 EI 
+           
+BN BT|EI|NA ST|*                                                  // BLENHEIM HOUSE|WEST ONE|DUNCOMBE STREET                  
+BN BT|BY|NA ST
+
+BN BT|NA ST|BN BT|*                                              // KINGFISHER HOUSE|KINGFISHER WAY|HINCHINGBROOKE BUSINESS PARK 
+BN BT|NA ST|BI BY 
+           
+EI|NA ST|NA ST|*                                                  // HIGHFIELD|CLIFTONVILLE RD|OLD ROAD|HEADINGTON            
+BN|NA ST|N2 S2
+
+NA ST|EI|NA ST|*                                                  //                                 
+NA ST|EI|N2 S2
+             
+BN|HN NA ST|NA ST|*                                               // THE SURGERY|1 ARCADIAN GARDENS|BOWES PARK    
+BN|HN NA ST|N2 S2
+          
+BN BT|NA ST|NA ST|*                                               // CHELMER SURGERY|ASHTON PLACE|CHELMER VILLAGE             
+BN BT|NA ST|N2 S2
+           
+HN NA ST|NA ST|*                                                  // 1 FLANDERS COURT|LUTHER KING CLOSE                       
+HN NA ST|N2 S2
+
+EI|NA ST|*                                                        // HIGHFIELD|CLIFTONVILLE RD                                            
+BN|NA ST                                                                                                                                  
+
+HN HS NA|NA ST|*
+HN HS NA|N2 S2
+                                                                                                                                          
+EI|EI|NA ST|EI|*                                                  // Pound Lake|Lea Cross|SHROPSHIRE                                      
+BN|BN|NA ST|EI                                                                                                                            
+                                                                                                                                          
+HN HS NA ST|NA ST|*                                               // 1A Church Ter|Old Thomas Rd                                          
+HN HS NA ST|N2 S2  
+                                                                   
+HN NA|HN NA ST|*                                                  // 22 Statue Makers|5 Statue St|Poplar|LONDON              
+HN NA|H2 N2 S2                
+                                                                                                                      
+EI|NA ST|EI|EI|*                                                  //                                    
+BN|NA ST|EI|EI 
+                                                                                                                                                                                                                                                                                            
+EI|NA ST|EI|EI|EI|*                                               // Clinic|Ball Rd|Cooksville|COUNTY TYRONE            
+BN|NA ST|EI|EI|EI                                                                                                                         
+                                                                                                                                          
+HN NA|NA ST|*                                                     // 7 Wheatfields|Coughburn Green|BUCKINGHAMSHIRE                        
+HN NA|N2 S2                                                                                                                               
+                                                                                                                                          
+WI|BN|BN BT|*                                                     // Top Floor Offices|New Town Hall Building|Town Hall SQ                 
+WI|EI|BN BT         
+  
+NA ST SD|PD NA|*                                                 
+NA ST SD|N2 N2
+
+EI|NA ST|EI|*                                                     
+BN|NA ST|EI
+
+PD NA|PD NA|*                                                    // south main|west cownley|Leatherhead|Surrey
+PD NA|N2 N2
+
+NL EI|HN NA ST|EI|EI|*                                                 
+BN BN|HN NA ST|EI|EI
+
+HN NA|NA ST|EI|PD NA|*                                           // 28 The Mews|Coltman Street|Hull|East Yorkshire
+HN NA|N2 S2|EI|EI EI
+
+BX XN|EI|NA|*                                                    // PO Box 412|Karton|NORTH HUMBERSIDE
+BX XN|EI|EI
+
+EI|HN NA ST|EI|*                                                 // TWO GATES|16 WINIFRED LANE|AUGHTON
+BN|HN NA ST|EI
+ 
+HN NA NL ST|HN HS NA ST|*                                        // 8A THE RIDINGS|13A ST HELENS  ROAD|ORMSKIRK
+HN NA NA NA|H2 H2 N2 S2
+
+HN NA NL ST|HN NA ST|*                                           // 
+HN NA NA NA|H2 N2 S2
+
+EI|PT NA|EI|*                                                    // 
+EI|NA NA|EI
+
+EI|HN NA|EI|*                                                    // 
+BN|HN NA|EI
+
+HN NA NL ST|EI|EI|HN NA ST|*                                     // 5A THE RIDINGS aa bb|13 ST HELENS ROAD|ORMSKIRK
+HN NA NA NA|EI|EI|H2 N2 S2
+
+WD WI NA ST|NA ST|*                                              // FLAT 9 KEMP COURT|WHALLEY NEW ROAD|BLACKBURN
+WD WI NA ST|N2 S2
+
+NA ST BN BT|HN NA ST|*                                           // SOUTHVIEW COURT CARE HOME|41 CHURCH ROAD|BANKS
+NA ST 
+
+NA|HN NA ST|*                                                    // tHE ROCK|7 BAILEY ST
+BN|HN NA ST
+
+NA|NA|*                                                         // tHE GREEN|THE GREEN
+BN|NA
+
+HN NL ST|HN NA ST|EI|*                                        // 8A THE RIDINGS|13A ST HELENS ROAD|ORMSKIRK
+HN NA NA|H2 N2 S2|EI
+
+HN NL ST|HN NA ST|*                                             // 8A THE RIDINGS|13 ST HELENS ROAD
+HN NA NA|H2 N2 S2
+
+HN HS NL ST|HN NA ST|*                                             // 8A THE RIDINGS|13 ST HELENS ROAD
+HN HN NA NA|H2 N2 S2
+
+HN NL ST|HN NA ST|EI|*                                           // 2A THE RIDINGS|13 ST. HELENS ROAD|ORMSKIRK
+HN NA NA|H2 N2 S2|EI
+
+HN NL ST|WD WI|HN NA ST|EI|*                                     //5A THE RIDINGS BLOCK A|13 ST HELENS ROAD|ORMSKIRK
+HN NA NA|WD WI|H2 N2 S2|EI
+
+HN NL ST|WD WI|HN NA ST|*                                        //5A THE RIDINGS BLOCK A|13 ST HELENS ROAD
+HN NA NA|WD WI|H2 N2 S2
+
+NL EI|NL EI|EI|EI|*                                          // The Church|The Old Church|Blackpool|LANCASHIRE 
+BN BN|BI BI|EI|EI
+
+NL EI|NL EI|EI|EI|EI|*                                          // The Church|The Old Church|Blackpool|LANCASHIRE 
+BN BN|BI BI|EI|EI|EI
+
+BN|NL EI|EI|EI|EI|*                                          // The Church|The Old Church|Blackpool|LANCASHIRE 
+BN|BI BI|EI|EI|EI
+
+EI|HN NA ST|EI|EI|*                          
+BN|HN NA ST|EI|EI
+
+WD WI|NA ST|NA ST|*                                   //
+WD WI|NA ST|N2 S2
+
+BN BT|WI NL|BN BT|*                                          // THE LEA SURGERY|REAR OF HOMERTON HOSPITAL
+BN BT|EX EX|BI BY
+
+
+HN HS NA ST|HN NA ST|*                                       // 31B PLASHET St|34 Victor Rd
+HN HS NA ST|H2 N2 S2
+
+NA ST SD|NA ST|*                                                // Chatham Rd North|West Cowsley st
+NA ST SD|N2 S2
+
+WI WD|BN BT|BN BT|*                                           // Top floor offices|New Town Hall Building|Town Hall SQ
+WI WD|BN BT|BI BY
+
+BN BT|EI|*
+BN BT|NA
+
+BN BT|EI|EI|*
+BN BT|NA|EI
+
+EI|EI|*
+BN|EI
+
+EI|BN BT|*
+BN|BI BY
+
+EI|EI|EI|*
+BN|EI|EI
+
+EI|HN NA ST|*                                                
+BN|HN NA ST
+
+HN NA ST SD|NA ST|NA ST|*                                   // 2 RODING LANE NORTH|WOODFORD BRIDGE|WOODFORD GREEN
+HN NA ST SD|N2 S2|EI EI
+
+BN|HN NA ST|BN BT|*                                         // THE SURGERY|1 ARCADIAN GARDENS|BOWES PARK
+BN|HN NA ST|EI EI
+
+NA ST|HN NA ST|BN BT|*                                      // ASH GREEN|23 COLONIAL DRIVE|COLLINGTREE PARK
+BN BT|H2 N2 S2|EI EI
+
+EI|EI|EI|EI|*
+NA|EI|EI|EI

@@ -1,0 +1,29 @@
+[SBYNTAG:DEFINE:objname,qualifiednodename,sourcefieldnames(),genfieldprefix]
+				<group standardization-type="PersonName" domain-selector="com.sun.mdm.index.matching.impl.MultiDomainSelector">
+                                        <locale-field-name></locale-field-name>
+                                        <locale-maps>
+                                            <locale-codes>
+                                                <value>Default</value>
+                                                <locale>US</locale>
+                                            </locale-codes>
+                                        </locale-maps>
+					<unstandardized-source-fields>
+[SBYNTAG:REP-BEGIN]
+						<unstandardized-source-field-name>[sbyntag:sourcefieldnames()]</unstandardized-source-field-name>
+[SBYNTAG:REP-END]
+					</unstandardized-source-fields>
+					<standardization-targets>
+						<target-mapping>
+							<standardized-object-field-id>FirstName</standardized-object-field-id>
+							<standardized-target-field-name>[sbyntag:qualifiednodename].[sbyntag:genfieldprefix]FirstName</standardized-target-field-name>
+						</target-mapping>
+						<target-mapping>
+							<standardized-object-field-id>LastName</standardized-object-field-id>
+							<standardized-target-field-name>[sbyntag:qualifiednodename].[sbyntag:genfieldprefix]LastName</standardized-target-field-name>
+						</target-mapping>
+						<target-mapping>
+							<standardized-object-field-id>MiddleName</standardized-object-field-id>
+							<standardized-target-field-name>[sbyntag:qualifiednodename].[sbyntag:genfieldprefix]MiddleName</standardized-target-field-name>
+						</target-mapping>
+					</standardization-targets>
+				</group>
