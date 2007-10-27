@@ -121,6 +121,7 @@
 	            <goals><goal>run</goal></goals>
 	            <configuration>
 	              <tasks>
+<zip destfile="${project.build.directory}/open-dm-mi-netbeans.zip" basedir="${project.build.directory}/nbm/netbeans"/>
 	                  <taskdef resource="net/sf/antcontrib/antcontrib.properties">
 	                    <classpath refid="maven.compile.classpath"/>
 	                  </taskdef>
