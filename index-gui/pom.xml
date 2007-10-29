@@ -1,178 +1,181 @@
 <?xml version="1.0"?>
 <project>
-  <parent>
-    <artifactId>open-dm-mi</artifactId>
-    <groupId>mural</groupId>
-    <version>1.0</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <artifactId>index-gui</artifactId>
-  <name>Master Index GUI</name>
-  <packaging>nbm</packaging>
-  <url>http://maven.apache.org</url>
-  <build>
-    <finalName>open-dm-mi-${pom.version}</finalName>
-    <plugins>
-	    <plugin>
-	      <groupId>org.apache.maven.plugins</groupId>
-	      <artifactId>maven-compiler-plugin</artifactId>
-	      <configuration>
-	        <source>1.5</source>
-	        <target>1.5</target>
-	      </configuration>
-	    </plugin>
-      <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>nbm-maven-plugin</artifactId>
-          <version>RELEASE</version>
-          <extensions>true</extensions>
-      </plugin>
-      <plugin>
-        	<groupId>org.apache.maven.plugins</groupId>
-        	<artifactId>maven-antrun-plugin</artifactId>
-        	<executions>
-        		<execution>
-	            <id>copy-resource-files</id>
-	            <phase>compile</phase>
-	            <goals><goal>run</goal></goals>
-	            <configuration>
-		            <tasks>
-		            	<copy todir="${project.build.directory}/classes">
-									    <fileset dir="${basedir}/src/main/java">
-									      <exclude name="**/*.java"/>
-												<exclude name="**/EviewApplicationTemplateProject.zip"/>
-									    </fileset>
-									</copy>
-		            </tasks>          
-							</configuration>
-						</execution>
-						<execution>
-	            <id>make-anttask-jar</id>
-	            <phase>compile</phase>
-	            <goals><goal>run</goal></goals>
-	            <configuration>
-		            <tasks>
-		              <mkdir dir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview"/>
-		            	<jar jarfile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/com-sun-mdm-index-project-anttasks.jar" compress="false">
-					        	<fileset dir="${project.build.directory}/classes">
-					        		<include name="com/sun/mdm/index/project/anttasks/**/*.class"/>
-									   </fileset>
-					       	</jar>
-					       	<delete dir="${project.build.directory}/classes/com/sun/mdm/index/project/anttasks"/>
-		            </tasks>          
-							</configuration>
-						</execution>	     	            
-	          <execution>
-	            <id>copy-files-for-nbm</id>
-	            <phase>compile</phase>
-	            <goals><goal>run</goal></goals>
-	            <configuration>
-								<tasks>
-									<copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates">
-									    <fileset dir="${basedir}/src/main/java/com/sun/mdm/index/project">									      
-												<include name="EviewApplicationTemplateProject.zip"/>
-									    </fileset>
-									</copy>
-									<copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/schema">
-								    <fileset dir="${basedir}/../index-core/src/main/resources/schema">
-								      <include name="**/*.xsd"/>
-								    </fileset>
-									</copy>
-								  <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository">
-								    <fileset dir="${basedir}/../index-core/src/main/resources">
-								      <include name="edm.war"/>
-								    </fileset>
-								  </copy>
-								  <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository">
-								    <fileset dir="${basedir}/../index-core/src/main/resources/matchengine">
-								      <include name="stc_sbme.jar"/>
-								    </fileset>
-								  </copy>
-								  <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates">
-								    <fileset dir="${basedir}/../index-core/src/main/resources/matchengine/config/runtime">
-								      <include name="**/*"/>
-								    </fileset>
-								  </copy>
-								  <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository">
-								    <fileset dir="${basedir}/../index-core/target">
-								      <include name="ejb-source.zip"/>                  
-								    </fileset>
-								  </copy>
-								  <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview">
-								    <fileset dir="${basedir}/../index-core/target">
-								      <include name="index-core.jar"/>                 
-								    </fileset>
-								  </copy>
-								  <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/report/lib">
-								    <fileset dir="${basedir}/../report/target">
-								        <include name="com-sun-eview-report.jar"/>                    
-								    </fileset>
-								  </copy>
-								  <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/report">
-								    <fileset dir="${basedir}/../report/src/main/resources"/>
-								  </copy>
-								</tasks>          
-							</configuration>
-						</execution>
-						<execution>
-	            <id>install-to-netbeans</id>
-	            <phase>package</phase>
-	            <goals><goal>run</goal></goals>
-	            <configuration>
-	              <tasks>
-<zip destfile="${project.build.directory}/open-dm-mi-netbeans.zip" basedir="${project.build.directory}/nbm/netbeans"/>
-	                  <taskdef resource="net/sf/antcontrib/antcontrib.properties">
-	                    <classpath refid="maven.compile.classpath"/>
-	                  </taskdef>
-	                  <property name="install.dir" value="${env.NB_HOME}" />
-	                  <available file="${install.dir}" type="dir" property="install.dir.present"/>
-	                  <if>
-	                    <isset property="install.dir.present" />
-	                    <then> 
-			                  <copy todir="${install.dir}">
-									        <fileset dir="${project.build.directory}/nbm/netbeans">
-									            <exclude name="module_tracking.xml"/>                
-									        </fileset>
-										    </copy>                    
-	                    </then>
-	                  </if>
-	              </tasks>
-	            </configuration>
-	          </execution>
-					</executions>
-			</plugin>
-		</plugins>
-  </build>
-  <dependencies>
+    <parent>
+        <artifactId>open-dm-mi</artifactId>
+        <groupId>mural</groupId>
+        <version>1.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>index-gui</artifactId>
+    <name>Master Index GUI</name>
+    <packaging>nbm</packaging>
+    <url>http://maven.apache.org</url>
+    <build>
+        <finalName>open-dm-mi-${pom.version}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>nbm-maven-plugin</artifactId>
+                <version>RELEASE</version>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+            	<groupId>org.apache.maven.plugins</groupId>
+            	<artifactId>maven-antrun-plugin</artifactId>
+            	<executions>
+            		<execution>
+        	            <id>copy-resource-files</id>
+        	            <phase>compile</phase>
+        	            <goals><goal>run</goal></goals>
+        	            <configuration>
+        		            <tasks>
+        		            	<copy todir="${project.build.directory}/classes">
+        						    <fileset dir="${basedir}/src/main/java">
+            						    <exclude name="**/*.java"/>
+            							<exclude name="**/EviewApplicationTemplateProject.zip"/>
+        						    </fileset>
+        						</copy>
+        		            </tasks>          
+        				</configuration>
+    			    </execution>
+        			<execution>
+        	            <id>make-anttask-jar</id>
+        	            <phase>compile</phase>
+        	            <goals><goal>run</goal></goals>
+        	            <configuration>
+        		            <tasks>
+        		                <mkdir dir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview"/>
+        	            	    <jar jarfile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/com-sun-mdm-index-project-anttasks.jar" compress="false">
+        				        	<fileset dir="${project.build.directory}/classes">
+        				        		<include name="com/sun/mdm/index/project/anttasks/**/*.class"/>
+        						    </fileset>
+        				       	</jar>
+        				       	<delete dir="${project.build.directory}/classes/com/sun/mdm/index/project/anttasks"/>
+        		            </tasks>          
+        				</configuration>
+        			</execution>	     	            
+                    <execution>
+        	            <id>copy-files-for-nbm</id>
+        	            <phase>compile</phase>
+        	            <goals><goal>run</goal></goals>
+        	            <configuration>
+        					<tasks>
+        						<copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates">
+        						    <fileset dir="${basedir}/src/main/java/com/sun/mdm/index/project">									      
+        						        <include name="EviewApplicationTemplateProject.zip"/>
+        						    </fileset>
+        						</copy>
+        						<copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/schema">
+            					    <fileset dir="${basedir}/../index-core/src/main/resources/schema">
+            					        <include name="**/*.xsd"/>
+            					    </fileset>
+        						</copy>
+        					    <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository">
+            				        <fileset dir="${basedir}/../index-core/src/main/resources">
+            				            <include name="edm.war"/>
+            				        </fileset>
+        					    </copy>
+        					    <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository">
+            					    <fileset dir="${basedir}/../index-core/src/main/resources/matchengine">
+            					        <include name="stc_sbme.jar"/>
+            					    </fileset>
+        					    </copy>
+            					<copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates">
+            					    <fileset dir="${basedir}/../index-core/src/main/resources/matchengine/config/runtime">
+            					        <include name="**/*"/>
+            					    </fileset>
+            					</copy>
+        					    <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository">
+        					        <fileset dir="${basedir}/../index-core/target">
+        					            <include name="ejb-source.zip"/>                  
+        					        </fileset>
+        					    </copy>
+        					    <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview">
+        					        <fileset dir="${basedir}/../index-core/target">
+        					            <include name="index-core.jar"/>                 
+        					        </fileset>
+        					    </copy>
+        					    <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/report/lib">
+        					        <fileset dir="${basedir}/../report/target">
+        					            <include name="com-sun-eview-report.jar"/>                    
+        					        </fileset>
+        					    </copy>
+        					    <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/report">
+        					        <fileset dir="${basedir}/../report/src/main/resources"/>
+        					    </copy>
+                            </tasks>          
+        				</configuration>
+        			</execution>
+        			<execution>
+        	            <id>install-to-netbeans</id>
+        	            <phase>package</phase>
+        	            <goals><goal>run</goal></goals>
+        	            <configuration>
+        	                <tasks>
+        					    <zip 
+            						destfile="${project.build.directory}/open-dm-mi-netbeans.zip" 
+            						basedir="${project.build.directory}/nbm/netbeans"
+            						excludes="module_tracking.xml"/>  
+        	                    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+        	                        <classpath refid="maven.compile.classpath"/>
+        	                    </taskdef>
+        	                    <property name="install.dir" value="${env.NB_HOME}" />
+        	                    <available file="${install.dir}" type="dir" property="install.dir.present"/>
+        	                    <if>
+        	                        <isset property="install.dir.present" />
+            	                    <then> 
+            			                <copy todir="${install.dir}">
+                					        <fileset dir="${project.build.directory}/nbm/netbeans">
+                					            <exclude name="module_tracking.xml"/>                
+                					        </fileset>
+            						    </copy>                    
+            	                    </then>
+        	                    </if>
+        	                </tasks>
+        	            </configuration>
+        	        </execution>
+        		</executions>
+    	    </plugin>
+        </plugins>
+    </build>
+    <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>3.8.1</version>
+        <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>ant-contrib</groupId>
-      <artifactId>ant-contrib</artifactId>
-      <version>1.0b2</version>
-      <scope>provided</scope>
+        <groupId>ant-contrib</groupId>
+        <artifactId>ant-contrib</artifactId>
+        <version>1.0b2</version>
+        <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>mural</groupId>
-      <artifactId>index-core</artifactId>
-      <version>${mural.currentVersion}</version>
-      <scope>provided</scope>
+        <groupId>mural</groupId>
+        <artifactId>index-core</artifactId>
+        <version>${mural.currentVersion}</version>
+        <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>net.java.dev.swing-layout</groupId>
-      <artifactId>swing-layout</artifactId>
-      <version>1.0.2</version>
-      <scope>provided</scope>
+        <groupId>net.java.dev.swing-layout</groupId>
+        <artifactId>swing-layout</artifactId>
+        <version>1.0.2</version>
+        <scope>provided</scope>
     </dependency>
     <dependency>
-	      <groupId>org.netbeans.api</groupId>
-      	<artifactId>org-apache-tools-ant-module</artifactId>
-      	<version>${netbeans.version}</version>
+        <groupId>org.netbeans.api</groupId>
+        <artifactId>org-apache-tools-ant-module</artifactId>
+        <version>${netbeans.version}</version>
     </dependency>
     <dependency>
         <groupId>org.netbeans.api</groupId>
@@ -180,19 +183,19 @@
       	<version>${netbeans.version}</version>
     </dependency>
     <dependency>
-			<groupId>org.netbeans.api</groupId>
+    	<groupId>org.netbeans.api</groupId>
       	<artifactId>org-netbeans-modules-j2eeserver</artifactId>
       	<version>${netbeans.version}</version>			
-		</dependency>
+    	</dependency>
     <dependency>
-      <groupId>org.netbeans.api</groupId>
-      <artifactId>org-openide-windows</artifactId>
-      <version>${netbeans.version}</version>
+        <groupId>org.netbeans.api</groupId>
+        <artifactId>org-openide-windows</artifactId>
+        <version>${netbeans.version}</version>
     </dependency>
     <dependency>
-			<groupId>org.netbeans.api</groupId>
-      <artifactId>org-netbeans-modules-compapp-projects-base</artifactId>
-      <version>${netbeans.version}</version>			
-		</dependency>
-  </dependencies>
+    	<groupId>org.netbeans.api</groupId>
+        <artifactId>org-netbeans-modules-compapp-projects-base</artifactId>
+        <version>${netbeans.version}</version>			
+    	</dependency>
+    </dependencies>
 </project>
