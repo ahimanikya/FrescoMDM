@@ -35,10 +35,6 @@ import com.sun.mdm.index.util.LogUtil;
 import com.sun.mdm.index.util.Logger;
 
 
-/**
- * Decision maker configuration
- * @author dcidon
- */
 public class DecisionMakerConfiguration implements ConfigurationInfo {
 
     /** Module type name */    
@@ -59,11 +55,7 @@ public class DecisionMakerConfiguration implements ConfigurationInfo {
     /** Get an instance of the decision maker class specified in the
      * configuration.
      *
-<<<<<<< DecisionMakerConfiguration.java
      * @throws ConfigurationException if an error occured.
-=======
-     * @exception ConfigurationException An error occurred.
->>>>>>> 1.2
      * @return decision maker instance
      */
     public DecisionMaker getDecisionMaker()

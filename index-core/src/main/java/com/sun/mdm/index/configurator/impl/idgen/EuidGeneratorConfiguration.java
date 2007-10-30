@@ -55,13 +55,8 @@ public class EuidGeneratorConfiguration implements ConfigurationInfo {
 
     /** Get an instance of the EUID generator class.
      *
-<<<<<<< EuidGeneratorConfiguration.java
      * @throws ConfigurationException if an error occured.
      * @return EuidGenerator instance.
-=======
-     * @exception ConfigurationException An error occurred.
-     * @return decision maker instance
->>>>>>> 1.2
      */
     public EuidGenerator getEuidGenerator()
         throws ConfigurationException {
