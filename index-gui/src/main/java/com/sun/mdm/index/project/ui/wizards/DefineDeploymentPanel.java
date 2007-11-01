@@ -150,10 +150,12 @@ public class DefineDeploymentPanel implements WizardDescriptor.Panel {
             wiz.putProperty(Properties.PROP_MATCH_ENGINE, matchEngine);
             TemplateObjects.setMatchTypes(matchEngine);
             wiz.putProperty(Properties.PROP_DATE_FORMAT, mComponent.getDateFormat());
+            wiz.putProperty(Properties.PROP_TRANSACTION, mComponent.getTransaction());
         } catch (Exception e) {
             wiz.putProperty(Properties.PROP_DATABASE, "");
             wiz.putProperty(Properties.PROP_MATCH_ENGINE, "");
             wiz.putProperty(Properties.PROP_DATE_FORMAT, "");
+            wiz.putProperty(Properties.PROP_TRANSACTION, "");
         }
     }
 }

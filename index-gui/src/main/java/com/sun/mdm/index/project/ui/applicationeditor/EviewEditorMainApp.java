@@ -29,10 +29,6 @@ import java.util.HashMap;
 import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.util.NbBundle;
-import org.openide.windows.Mode;
-import org.openide.windows.TopComponent;
-import org.openide.windows.WindowManager;
-import org.openide.windows.Workspace;
 import org.openide.ErrorManager;
 
 import java.io.ByteArrayInputStream;
@@ -76,6 +72,7 @@ public class EviewEditorMainApp {
     private EviewApplication mEviewApplication;
     private EviewEditorMainPanel mEviewEditorMainPanel;
     private PropertiesDeploymentPanel mPropertiesDeploymentPanel;
+    private TabDeploymentPanel mTabDeploymentPanel = null;
     private TabMatchConfigPanel mTabMatchConfigPanel = null;
     private TabBlockingPanel mTabBlockingPanel = null;
     private TabStandardizationPanel mTabStandardizationPanel = null;
@@ -199,6 +196,13 @@ public class EviewEditorMainApp {
     
     public PropertiesDeploymentPanel getPropertiesDeploymentPanel() {
         return mPropertiesDeploymentPanel;
+    }
+    
+    public TabDeploymentPanel getTabDeploymentPanel() {
+        if (mTabDeploymentPanel == null) {
+            mTabDeploymentPanel = new TabDeploymentPanel(this, mEviewApplication.getMasterType(false));
+        }
+        return mTabDeploymentPanel;
     }
        
     /**

@@ -39,9 +39,11 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabelDatabase;
     private javax.swing.JLabel jLabelMatchEngine;
     private javax.swing.JLabel jLabelDateFormat;
+    private javax.swing.JLabel lblTransaction;    
     private javax.swing.JComboBox cbDatabase;
     private javax.swing.JComboBox cbMatchEngine;
     private javax.swing.JComboBox cbDateFormat;
+    private javax.swing.JComboBox jComboBoxTransactions;
 
     /**
      * Create the wizard panel and set up some basic properties.
@@ -80,10 +82,18 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
             0);
         cbMatchEngine.setSelectedIndex(0);
 
-        cbDateFormat.insertItemAt("MM/dd/yyyy", 0);
-        cbDateFormat.insertItemAt("yyyy/MM/dd", 1);
-        cbDateFormat.insertItemAt("dd/MM/yyyy", 2);
+        cbDateFormat.insertItemAt("MM/dd/yyyy", 0); // NOI18N
+        cbDateFormat.insertItemAt("yyyy/MM/dd", 1); // NOI18N
+        cbDateFormat.insertItemAt("dd/MM/yyyy", 2); // NOI18N
         cbDateFormat.setSelectedIndex(0);
+        
+        jComboBoxTransactions.insertItemAt(NbBundle.getMessage(
+                DefineDeploymentVisualPanel.class, "LBL_Transaction_Container"), 0);
+        jComboBoxTransactions.insertItemAt(NbBundle.getMessage(
+                DefineDeploymentVisualPanel.class, "LBL_Transaction_Bean"), 1);
+        jComboBoxTransactions.insertItemAt(NbBundle.getMessage(
+                DefineDeploymentVisualPanel.class, "LBL_Transaction_Local"), 2);
+        jComboBoxTransactions.setSelectedIndex(0);
         
         /*
         // Optional: provide a special description for this pane.
@@ -107,11 +117,13 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
         jLabelDatabase = new javax.swing.JLabel();
         jLabelMatchEngine = new javax.swing.JLabel();
         jLabelDateFormat = new javax.swing.JLabel();
+        lblTransaction = new javax.swing.JLabel();
 
         cbDatabase = new javax.swing.JComboBox();
         cbMatchEngine = new javax.swing.JComboBox();
         cbDateFormat = new javax.swing.JComboBox();
-
+        jComboBoxTransactions = new javax.swing.JComboBox();
+                
         setLayout(null);
 
         jLabelDatabase.setText(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
@@ -123,18 +135,25 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
         jLabelDateFormat.setText(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
                 "LBL_static_DateFormat"));
         
+        lblTransaction.setText(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
+                "LBL_static_Transaction"));
+
         add(jLabelDatabase);
         add(jLabelMatchEngine);
         add(jLabelDateFormat);
+        add(lblTransaction);
         add(cbDatabase);
         add(cbMatchEngine);
         add(cbDateFormat);
+        add(jComboBoxTransactions);
         jLabelDatabase.setBounds(0, 30, 80, 30);
         jLabelMatchEngine.setBounds(0, 65, 80, 30);
         jLabelDateFormat.setBounds(0, 100, 80, 30);
+        lblTransaction.setBounds(0, 135, 80, 30);
         cbDatabase.setBounds(90, 30, 250, 30);
         cbMatchEngine.setBounds(90, 65, 250, 30);
         cbDateFormat.setBounds(90, 100, 250, 30);
+        jComboBoxTransactions.setBounds(90, 135, 250, 30);
     }
 
     // End of variables declaration
@@ -165,8 +184,8 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
      */
     public String getMatchEngine() {
         String matchEngineName = cbMatchEngine.getSelectedItem().toString();
-        if (matchEngineName.equals("Sun Match Engine")){
-            matchEngineName = "SeeBeyond" ;
+        if (matchEngineName.equals("Sun Match Engine")){ // NOI18N
+            matchEngineName = "SeeBeyond" ; // NOI18N
         }
         return matchEngineName;
         
@@ -184,6 +203,20 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
      */
     public void setDateFormat(String dateFormat) {
         cbDateFormat.setSelectedItem(dateFormat);
+    }
+
+    /**
+     *@return Transaction
+     */
+    public String getTransaction() {
+        int i = jComboBoxTransactions.getSelectedIndex();
+        String transaction = "CONTAINER"; // NOI18N
+        if (i == 1) {
+            transaction = "BEAN"; // NOI18N
+        } else if (i == 2) {
+            transaction = "LOCAL"; // NOI18N
+        }
+        return transaction;
     }
 
     /** set view name for panel title

@@ -61,6 +61,7 @@ public class MasterWriter {
 
         String duplicateThreshold = mConfigSettings.getDuplicateThreshold();
         String matchThreshold = mConfigSettings.getMatchThreshold();
+        String transaction = mConfigSettings.getTransaction();
         
         // write the mefa with the accumulated fragments. 
         TemplateWriter mTW = null;
@@ -73,6 +74,7 @@ public class MasterWriter {
             ArrayList values = new ArrayList();
             values.add(duplicateThreshold);
             values.add(matchThreshold);
+            values.add(transaction);
             
             res = mTW.writeConstruct((String) cons.get(0), values);
         } else {

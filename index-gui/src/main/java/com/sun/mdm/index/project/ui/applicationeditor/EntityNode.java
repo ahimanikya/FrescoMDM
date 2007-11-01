@@ -65,7 +65,7 @@ public class EntityNode extends DefaultMutableTreeNode {
     static final String TAB_NORMALIZATION = NbBundle.getMessage(EntityNode.class,
             "MSG_TAB_Normalization");
     static final String TAB_PHONETICIZEDFIELDS = NbBundle.getMessage(EntityNode.class,
-            "MSG_TAB_PhoneticizedFields");   
+            "MSG_TAB_PhoneticizedFields");
     static final String TAB_APPLICATION = NbBundle.getMessage(EntityNode.class,
             "MSG_TAB_Deployment");
     static final String TAB_NAME = NbBundle.getMessage(EntityNode.class,
@@ -93,6 +93,7 @@ public class EntityNode extends DefaultMutableTreeNode {
     TabStandardizationPanel mTabStandardizationPanel;
     TabNormalizationPanel mTabNormalizationPanel;
     TabPhoneticizedFieldsPanel mTabPhoneticizedFieldsPanel;
+    TabDeploymentPanel mTabDeploymentPanel;
     TabMatchConfigPanel mTabMatchConfigPanel;
     EDMFieldDef edmFieldDef = null;
     
@@ -103,13 +104,13 @@ public class EntityNode extends DefaultMutableTreeNode {
     EviewEditorMainApp mEviewEditorMainApp;
     EviewApplication mEviewApplication;
     
-    final int TAB_DEPLOYMENT_INDEX = -1;
-    final int TAB_MATCHCONFIG_INDEX_ROOT = TAB_DEPLOYMENT_INDEX + 1;
-    final int TAB_QUERY_INDEX_ROOT = TAB_DEPLOYMENT_INDEX + 2;    
-    final int TAB_STANDARDIZATION_INDEX = TAB_DEPLOYMENT_INDEX + 3;
-    final int TAB_NORMALIZATION_INDEX = TAB_DEPLOYMENT_INDEX + 4;
-    final int TAB_PHONETICIZEDFIELDS_INDEX = TAB_DEPLOYMENT_INDEX + 5;
-
+    final int TAB_INDEX_START = -1;
+    final int TAB_MATCHCONFIG_INDEX_ROOT = TAB_INDEX_START + 1;
+    final int TAB_QUERY_INDEX_ROOT = TAB_INDEX_START + 2;    
+    final int TAB_STANDARDIZATION_INDEX = TAB_INDEX_START + 3;
+    final int TAB_NORMALIZATION_INDEX = TAB_INDEX_START + 4;
+    final int TAB_PHONETICIZEDFIELDS_INDEX = TAB_INDEX_START + 5;
+    final int TAB_DEPLOYMENT_INDEX = TAB_INDEX_START + 6;
     
     final int TAB_GENERAL_INDEX = 0;
     //final int TAB_EDM_INDEX = 1;
@@ -236,6 +237,13 @@ public class EntityNode extends DefaultMutableTreeNode {
                                
                     mTabPhoneticizedFieldsPanel = mEviewEditorMainApp.getPhoneticizedFieldsPanel();
                     mEntityProperty.addTab(TAB_PHONETICIZEDFIELDS, mTabPhoneticizedFieldsPanel);
+                               
+                    mTabDeploymentPanel = mEviewEditorMainApp.getTabDeploymentPanel();
+                    mEntityProperty.addTab(TAB_DEPLOYMENT, mTabDeploymentPanel);
+
+                    mTabMatchConfigPanel = mEviewEditorMainApp.getTabMatchConfigPanel();
+                    mEntityProperty.addTab(TAB_PHONETICIZEDFIELDS, mTabMatchConfigPanel);
+                    
                 } catch (Exception ex) {
                     mLog.severe(ex.getMessage());
                 }

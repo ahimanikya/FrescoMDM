@@ -40,6 +40,8 @@ public abstract class Properties {
     public static final String PROP_DATE_FORMAT = "MyDateFormat";
     /** Participating source systems */
     public static final String PROP_SOURCE_SYSTEMS = "MySourceSystems";
+    /** Target XA Transaction */
+    public static final String PROP_TRANSACTION = "CONTAINER";
 
     // xml content of configuration files
     /** Object definition file  */

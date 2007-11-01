@@ -1,4 +1,4 @@
-[SBYNTAG:DEFINE:duplicateThreshold,matchThreshold]
+[SBYNTAG:DEFINE:duplicateThreshold,matchThreshold,transaction]
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="sbyn:SeeBeyond/eView/schema/master.xsd">
 	<MasterControllerConfig module-name="MasterController" parser-class="com.sun.mdm.index.configurator.impl.master.MasterControllerConfiguration">
@@ -11,7 +11,7 @@
 			</query-builder>
 		</execute-match>
 		<!-- transaction could be CONTAINER, BEAN or LOCAL -->
-		<transaction>LOCAL</transaction>
+		<transaction>[sbyntag:transaction]</transaction>
 	</MasterControllerConfig>
 	<DecisionMakerConfig module-name="DecisionMaker" parser-class="com.sun.mdm.index.configurator.impl.decision.DecisionMakerConfiguration">
 		<decision-maker-class>com.sun.mdm.index.decision.impl.DefaultDecisionMaker</decision-maker-class>

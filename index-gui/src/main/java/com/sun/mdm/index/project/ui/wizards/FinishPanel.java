@@ -96,6 +96,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     String mDbName;
     String mMatchEngine;
     String mDateFormat;
+    String mTransaction;
     ArrayList mList = new ArrayList();
     final boolean bDEBUG = false;
 
@@ -222,7 +223,8 @@ public class FinishPanel implements WizardDescriptor.Panel {
         mDbName = wiz.getProperty(Properties.PROP_DATABASE).toString();
         mMatchEngine = wiz.getProperty(Properties.PROP_MATCH_ENGINE).toString();
         mDateFormat = wiz.getProperty(Properties.PROP_DATE_FORMAT).toString();
-
+        mTransaction = wiz.getProperty(Properties.PROP_TRANSACTION).toString();
+        
         mEntityTreeModel = DefineEntityVisualPanel.getTreeModel();
         mRootNode = (EntityNode) mEntityTreeModel.getRoot();
         mPrimaryNode = (EntityNode) mRootNode.getChildAt(0);
@@ -590,6 +592,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
             mConfigSettings.setPrimaryNode(primaryNodeName);
             mConfigSettings.setMatchEngine(mMatchEngine);
             mConfigSettings.setMatchEngineSeebeyond(true);
+            mConfigSettings.setTransaction(mTransaction);
             int cnt = mPrimaryNode.getChildCount();
             EntityNode currentNode = mPrimaryNode;
             Vector vec = new Vector(cnt, 1);

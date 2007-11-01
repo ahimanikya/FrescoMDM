@@ -34,6 +34,7 @@ public class ConfigSettings {
     private String[] sourceSystems;
     private String duplicateThreshold = "7.25";
     private String matchThreshold = "29.0";
+    private String transaction = "CONTAINER";
 
     /**
      * Get the name of the primary node, e.g. 'Company'
@@ -145,4 +146,21 @@ public class ConfigSettings {
     public void setMatchThreshold(String val) {
         matchThreshold = val;
     }
+    
+    /**
+     * get Transaction
+     * @return transaction
+     */
+    public String getTransaction() {
+        return transaction;
+    }
+    
+    /**
+     * Set Transaction
+     * @param val transaction
+     */
+    public void setTransaction(String val) {
+        transaction = val;
+    }
+
 }
