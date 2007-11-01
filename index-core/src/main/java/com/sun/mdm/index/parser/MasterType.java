@@ -43,6 +43,7 @@ public class MasterType {
     private final String mTagUpdateMode = "update-mode";   // Optimistic
     private final String mTagMergedRecordUpdate = "merged-record-update";  // Disabled
     private final String mTagExecuteMatch = "execute-match";
+    private final String mTagTransaction = "transaction";
     private final String mTagQueryBuilder = "query-builder";
     private final String mTagOption = "option";
     
@@ -119,12 +120,21 @@ public class MasterType {
             }
         }
     }
+
+    public void setTransaction (String transaction) {
+        mMasterControllerConfig.setTransaction(transaction);
+    }
+
+    public String getTransaction () {
+        return mMasterControllerConfig.getTransaction();
+    }
     
     class MasterControllerConfig {
         String moduleName = "MasterController";
         String parserClass = "com.sun.mdm.index.configurator.impl.master.MasterControllerConfiguration";
         String updateMode = "Pessimistic";
         String mergedRecordUpdate = "Disabled";
+        String transaction = "LOCAL"; // CONTAINER, BEAN or LOCAL
         class ExecuteMatch {
             String queryBuilderName;  // e.g. ALPHA-SEARCH, ALPHA-SEARCH, PHONETIC-SEARCH
             String optionKey = "key";
@@ -145,6 +155,14 @@ public class MasterType {
         
         public String getMergedRecordUpdate() {
             return mergedRecordUpdate;
+        }
+        
+        public String getTransaction () {
+            return transaction;
+        }
+        
+        public void setTransaction (String transaction) {
+            this.transaction = transaction;
         }
 
     }
@@ -172,6 +190,8 @@ public class MasterType {
                     mMasterControllerConfig.mergedRecordUpdate = Utils.getStrElementValue(nl.item(i));
                 } else if (mTagExecuteMatch.equals(name)) {
                     parseExecuteMatch(nl.item(i));
+                } else if (mTagTransaction.equals(name)) {
+                    mMasterControllerConfig.transaction = Utils.getStrElementValue(nl.item(i));
                 }
             }
         }
@@ -445,6 +465,7 @@ public class MasterType {
         bufSegment.append(">" + Utils.LINE);
         bufSegment.append(Utils.TAB2 + Utils.startTagNoLine(mTagUpdateMode) + mMasterControllerConfig.getUpdateMode() + Utils.endTag(mTagUpdateMode));
         bufSegment.append(Utils.TAB2 + Utils.startTagNoLine(mTagMergedRecordUpdate) + mMasterControllerConfig.getMergedRecordUpdate() + Utils.endTag(mTagMergedRecordUpdate));
+        
         bufSegment.append(Utils.TAB2 + Utils.startTag(mTagExecuteMatch));
         // @Todo --
         bufSegment.append(Utils.TAB3 + "<query-builder name=\"BLOCKER-SEARCH\">" + Utils.LINE);
@@ -453,6 +474,8 @@ public class MasterType {
         bufSegment.append(Utils.TAB3 + "</query-builder>" + Utils.LINE);
         // --
         bufSegment.append(Utils.TAB2 + Utils.endTag(mTagExecuteMatch));
+        
+        bufSegment.append(Utils.TAB2 + Utils.startTagNoLine(mTagTransaction) + mMasterControllerConfig.getTransaction() + Utils.endTag(mTagTransaction));
         bufSegment.append(Utils.TAB + "</" + mTagMasterControllerConfig + ">" + Utils.LINE);
         
         return bufSegment.toString();
