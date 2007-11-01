@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project>
     <parent>
         <artifactId>open-dm-mi</artifactId>
@@ -40,8 +40,8 @@
         		            <tasks>
         		            	<copy todir="${project.build.directory}/classes">
         						    <fileset dir="${basedir}/src/main/java">
-            						    <exclude name="**/*.java"/>
-            							<exclude name="**/EviewApplicationTemplateProject.zip"/>
+            						    <exclude name="**/*.java"></exclude>
+            							<exclude name="**/EviewApplicationTemplateProject.zip"></exclude>
         						    </fileset>
         						</copy>
         		            </tasks>          
@@ -53,13 +53,13 @@
         	            <goals><goal>run</goal></goals>
         	            <configuration>
         		            <tasks>
-        		                <mkdir dir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview"/>
+        		                <mkdir dir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview"></mkdir>
         	            	    <jar jarfile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/com-sun-mdm-index-project-anttasks.jar" compress="false">
         				        	<fileset dir="${project.build.directory}/classes">
-        				        		<include name="com/sun/mdm/index/project/anttasks/**/*.class"/>
+        				        		<include name="com/sun/mdm/index/project/anttasks/**/*.class"></include>
         						    </fileset>
         				       	</jar>
-        				       	<delete dir="${project.build.directory}/classes/com/sun/mdm/index/project/anttasks"/>
+        				       	<delete dir="${project.build.directory}/classes/com/sun/mdm/index/project/anttasks"></delete>
         		            </tasks>          
         				</configuration>
         			</execution>	     	            
@@ -71,46 +71,46 @@
         					<tasks>
         						<copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates">
         						    <fileset dir="${basedir}/src/main/java/com/sun/mdm/index/project">									      
-        						        <include name="EviewApplicationTemplateProject.zip"/>
+        						        <include name="EviewApplicationTemplateProject.zip"></include>
         						    </fileset>
         						</copy>
         						<copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/schema">
             					    <fileset dir="${basedir}/../index-core/src/main/resources/schema">
-            					        <include name="**/*.xsd"/>
+            					        <include name="**/*.xsd"></include>
             					    </fileset>
         						</copy>
         					    <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository">
             				        <fileset dir="${basedir}/../index-core/src/main/resources">
-            				            <include name="edm.war"/>
+            				            <include name="edm.war"></include>
             				        </fileset>
         					    </copy>
         					    <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository">
             					    <fileset dir="${basedir}/../index-core/src/main/resources/matchengine">
-            					        <include name="stc_sbme.jar"/>
+            					        <include name="stc_sbme.jar"></include>
             					    </fileset>
         					    </copy>
             					<copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates">
             					    <fileset dir="${basedir}/../index-core/src/main/resources/matchengine/config/runtime">
-            					        <include name="**/*"/>
+            					        <include name="**/*"></include>
             					    </fileset>
             					</copy>
         					    <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository">
         					        <fileset dir="${basedir}/../index-core/target">
-        					            <include name="ejb-source.zip"/>                  
+        					            <include name="ejb-source.zip"></include>                  
         					        </fileset>
         					    </copy>
         					    <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview">
         					        <fileset dir="${basedir}/../index-core/target">
-        					            <include name="index-core.jar"/>                 
+        					            <include name="index-core.jar"></include>                 
         					        </fileset>
         					    </copy>
         					    <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/report/lib">
         					        <fileset dir="${basedir}/../report/target">
-        					            <include name="com-sun-eview-report.jar"/>                    
+        					            <include name="com-sun-eview-report.jar"></include>                    
         					        </fileset>
         					    </copy>
         					    <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/report">
-        					        <fileset dir="${basedir}/../report/src/main/resources"/>
+        					        <fileset dir="${basedir}/../report/src/main/resources"></fileset>
         					    </copy>
                             </tasks>          
         				</configuration>
@@ -121,21 +121,18 @@
         	            <goals><goal>run</goal></goals>
         	            <configuration>
         	                <tasks>
-        					    <zip 
-            						destfile="${project.build.directory}/open-dm-mi-netbeans.zip" 
-            						basedir="${project.build.directory}/nbm/netbeans"
-            						excludes="module_tracking.xml"/>  
+        					    <zip destfile="${project.build.directory}/open-dm-mi-netbeans.zip" basedir="${project.build.directory}/nbm/netbeans" excludes="module_tracking.xml"></zip>  
         	                    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
-        	                        <classpath refid="maven.compile.classpath"/>
+        	                        <classpath refid="maven.compile.classpath"></classpath>
         	                    </taskdef>
-        	                    <property name="install.dir" value="${env.NB_HOME}" />
-        	                    <available file="${install.dir}" type="dir" property="install.dir.present"/>
+        	                    <property name="install.dir" value="${env.NB_HOME}"></property>
+        	                    <available file="${install.dir}" type="dir" property="install.dir.present"></available>
         	                    <if>
-        	                        <isset property="install.dir.present" />
+        	                        <isset property="install.dir.present"></isset>
             	                    <then> 
             			                <copy todir="${install.dir}">
                 					        <fileset dir="${project.build.directory}/nbm/netbeans">
-                					            <exclude name="module_tracking.xml"/>                
+                					            <exclude name="module_tracking.xml"></exclude>                
                 					        </fileset>
             						    </copy>                    
             	                    </then>
