@@ -20,6 +20,7 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
+ 
 package com.sun.mdm.index.ejb.master;
 
 import com.sun.mdm.index.ejb.page.PageDataRemote;
@@ -87,8 +88,7 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
     
     private final Logger mLogger = LogUtil.getLogger(this.getClass().getName());
     
-    @Resource
-    private SessionContext sessionContext;
+    private SessionContext mSessionContext;
     
     /**
      * Implementation of MasterControllerCore
@@ -101,7 +101,7 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
      */
     private boolean mIsTransactional = false;
     
-    private String transactionType = "_CMT_XA__TOKEN";
+    private String transactionType = "BMT_LOCAL";
     //if CONTAINER then CMT_XA;
     //if BEAN then BMT_XA;
     //if LOCAL them BMT_LOCAL
@@ -115,6 +115,11 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
     public MasterControllerEJB() {
     }
     
+    @Resource
+    public void setSessionContext(SessionContext sessionContext){
+    	  mSessionContext = sessionContext;
+    }
+    
     /** Create method specified in EJB 1.1 section 6.10.3
      *
      * 
@@ -126,7 +131,7 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
         mControllerImpl.setTransactionType(transactionType);
         mControllerImpl.setObjectName(objectName);
         
-        mControllerImpl.init(sessionContext);
+        mControllerImpl.init(mSessionContext);
         
               
     }

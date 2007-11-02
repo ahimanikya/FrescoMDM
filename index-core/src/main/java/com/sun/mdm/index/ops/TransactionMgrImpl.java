@@ -22,7 +22,6 @@
  */
 package com.sun.mdm.index.ops;
 
-import java.math.BigInteger;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Map;
@@ -41,15 +40,6 @@ import com.sun.mdm.index.objects.TransactionObject;
 import com.sun.mdm.index.objects.MergeObject;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.epath.EPathException;
-import com.sun.mdm.index.ops.EnterpriseDB;
-import com.sun.mdm.index.ops.OPSLoad;
-import com.sun.mdm.index.ops.RecreateResult;
-import com.sun.mdm.index.ops.SystemObjectDB;
-import com.sun.mdm.index.ops.SystemSBRDB;
-import com.sun.mdm.index.ops.TransactionLog;
-import com.sun.mdm.index.ops.TransactionObjectDB;
-import com.sun.mdm.index.ops.MergeObjectDB;
-import com.sun.mdm.index.ops.TransactionObjectList;
 import com.sun.mdm.index.ops.exception.OPSException;
 import com.sun.mdm.index.ops.exception.DataModifiedException;
 import com.sun.mdm.index.persistence.TMResult;
@@ -91,7 +81,7 @@ public class TransactionMgrImpl implements TransactionMgr {
     /** 
      * Constructor to create transaction manager
      */
-    public TransactionMgrImpl() throws Exception {
+    public TransactionMgrImpl() throws OPSException {
         mLogger.debug("TransactionMgrImpl()");
         initialize();
     }
@@ -99,18 +89,21 @@ public class TransactionMgrImpl implements TransactionMgr {
     /**
      * Initializes this class.
      */
-    private void initialize() throws Exception {
-       
-        mLogger.debug("loading entity OPS map");
-        Class opsClass = Class.forName("com.sun.mdm.index.ops.OPSInitHelper");
-        OPSLoad ops = (OPSLoad) opsClass.newInstance();
-        mOPSMap = ops.loadOPS();
-        mEnterpriseDB = new EnterpriseDB();
-        mSystemSBRDB = new SystemSBRDB();
-        mSystemObjectDB = new SystemObjectDB();
-        mTransactionObjectDB = new TransactionObjectDB();
-        mMergeObjectDB = new MergeObjectDB();
-        mLockManager = new LockManager();
+    private void initialize() throws OPSException {
+        try{
+            mLogger.debug("loading entity OPS map");
+            Class opsClass = Class.forName("com.sun.mdm.index.ops.OPSInitHelper");
+            OPSLoad ops = (OPSLoad) opsClass.newInstance();
+            mOPSMap = ops.loadOPS();
+            mEnterpriseDB = new EnterpriseDB();
+            mSystemSBRDB = new SystemSBRDB();
+            mSystemObjectDB = new SystemObjectDB();
+            mTransactionObjectDB = new TransactionObjectDB();
+            mMergeObjectDB = new MergeObjectDB();
+            mLockManager = new LockManager();
+        }catch (Exception ex){
+            throw new OPSException(ex);
+        }
     } 
    
     /**

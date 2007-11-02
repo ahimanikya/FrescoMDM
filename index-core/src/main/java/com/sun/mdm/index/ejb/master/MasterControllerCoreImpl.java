@@ -20,6 +20,7 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
+ 
 package com.sun.mdm.index.ejb.master;
 
 import java.io.InputStream;
@@ -269,7 +270,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 	 * type of transaction support
 	 */
 
-	private String transactionType = "CMT_XA";
+	private String transactionType = "BMT_LOCAL";
 	
 	
 	

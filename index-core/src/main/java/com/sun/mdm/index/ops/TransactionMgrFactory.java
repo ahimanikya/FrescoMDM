@@ -22,6 +22,8 @@
  */
 package com.sun.mdm.index.ops;
 
+import com.sun.mdm.index.ops.exception.OPSException;
+
 /**
  * Factory class to create Transaction Manager
  * 
@@ -30,10 +32,10 @@ package com.sun.mdm.index.ops;
 public class TransactionMgrFactory{
     /**
      * Get an instance of Transaction Manager.
-     * @throws Exception if an error occurred.
+     * @throws OPSException if an error occurred.
      * @return Transaction Manager instance.
      */
-    public static TransactionMgr getInstance() throws Exception {         
+    public static TransactionMgr getInstance() throws OPSException {         
         TransactionMgr transactionMgr = new TransactionMgrImpl();
         return transactionMgr;
   }        
