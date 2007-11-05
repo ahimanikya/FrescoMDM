@@ -60,7 +60,7 @@ public class ApplicationEditAction extends NodeAction {
      * @return the cookie action name
      */
     public String getName() {
-        return "Edit";
+        return NbBundle.getMessage(ApplicationEditAction.class, "MSG_Action_Edit");
     }
 
     /**

@@ -67,6 +67,8 @@ import org.openide.loaders.DataObject;
     public static final String STANDARDIZATION_ENGINE_US_FOLDER = "US"; //NOI18N   
     // eView Database Script Folder
     public static final String DATABASE_SCRIPT_FOLDER = "DatabaseScript"; //NOI18N
+    // Filter Folder
+    public static final String FILTER_FOLDER = "Filter"; //NOI18N
     // eView Custom Plug-ins Folder
     public static final String CUSTOM_PLUG_INS_FOLDER = "CustomPlug-ins"; //NOI18N
     public static final String J2EE_MODULES_FOLDER = "J2EE Modules"; //NOI18N

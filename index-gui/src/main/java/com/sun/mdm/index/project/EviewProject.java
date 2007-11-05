@@ -92,6 +92,7 @@ public class EviewProject implements Project, AntProjectListener {
 
     public static final String COMMAND_GENWSDL = "gen-wsdl";
     public static final String COMMAND_GENEVIEW = "gen-mdm-index-files";
+    public static final String COMMAND_GENLOADER = "gen-loader-zip";
     
     private final AntProjectHelper helper;
     private final PropertyEvaluator eval;

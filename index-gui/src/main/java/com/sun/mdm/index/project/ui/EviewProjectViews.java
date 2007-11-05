@@ -49,16 +49,17 @@ import org.netbeans.modules.compapp.projects.base.ui.customizer.IcanproProjectPr
 import org.netbeans.modules.compapp.projects.base.ui.IcanproLogicalViewProvider;
 
 import org.netbeans.modules.j2ee.dd.api.ejb.DDProvider;
-import org.netbeans.modules.j2ee.dd.api.ejb.EjbJar;
+//import org.netbeans.modules.j2ee.dd.api.ejb.EjbJar;
 //import org.netbeans.modules.j2ee.spi.ejbjar.EjbJarImplementation;
-import org.netbeans.api.java.classpath.ClassPath;
-import org.netbeans.spi.java.classpath.ClassPathProvider;
+//import org.netbeans.api.java.classpath.ClassPath;
+//import org.netbeans.spi.java.classpath.ClassPathProvider;
 
 import org.openide.filesystems.FileChangeListener;
 import org.openide.util.actions.SystemAction;
 import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
 import javax.swing.Action;
-import java.io.IOException;
+//import java.io.IOException;
 
 import com.sun.mdm.index.project.EviewRepository;
 
@@ -78,9 +79,11 @@ class EviewProjectViews {
         private static final String KEY_DBSCRIPT_DIR = "dbscriptDir"; // NOI18N
         private static final String KEY_STANDARDIZATION_DIR = "standardizationDir"; // NOI18N
         private static final String KEY_MATCH_ENGINE_DIR = "matchengineDir"; // NOI18N        
-        private static final String KEY_CUSTOM_PLUG_INS_DIR = "custompluginsDir"; // NOI18N        
+        private static final String KEY_CUSTOM_PLUG_INS_DIR = "custompluginsDir"; // NOI18N
+        private static final String KEY_FILTER_DIR = "filterDir"; // NOI18N        
         private static final String CONFIGURATION_FOLDER_DISPLAY_NAME = "Configuration"; //NOI18N
         private static final String MATCH_ENGINE_FOLDER_DISPLAY_NAME = "Match Engine"; //NOI18N
+        private static final String FILTER_FOLDER_DISPLAY_NAME = "Filter"; //NOI18N
         private static final String STANDARDIZATION_ENGINE_FOLDER_DISPLAY_NAME = "Standardization Engine"; //NOI18N
         private static final String DATABASE_SCRIPT_FOLDER_DISPLAY_NAME = "Database Script"; //NOI18N
         private static final String CUSTOM_PLUG_INS_FOLDER_DISPLAY_NAME = "Custom Plug-ins"; //NOI18N
@@ -124,7 +127,7 @@ class EviewProjectViews {
                 l.add(KEY_DBSCRIPT_DIR);
                 l.add(KEY_STANDARDIZATION_DIR);
                 l.add(KEY_MATCH_ENGINE_DIR);
-                l.add(KEY_CUSTOM_PLUG_INS_DIR);
+                l.add(KEY_FILTER_DIR);
             }
 
             FileObject setupFolder = getSetupFolder();
@@ -181,6 +184,19 @@ class EviewProjectViews {
                 if (matchEngineFolder != null) {
                     n = new EviewConfigurationFolderNode(MATCH_ENGINE_FOLDER_DISPLAY_NAME, DataFolder.findFolder(matchEngineFolder));                                                
                 }
+            } else if (key == KEY_FILTER_DIR) {
+                FileObject filterFolder = srcRoot.getFileObject(EviewRepository.FILTER_FOLDER);
+                if (filterFolder == null) {
+                    try {
+                        filterFolder = FileUtil.createFolder(srcRoot, FILTER_FOLDER_DISPLAY_NAME);
+                    } catch (Exception ex) {
+                        
+                    }
+                }
+                if (filterFolder != null) {
+                    n = new EviewFilterFolderNode(FILTER_FOLDER_DISPLAY_NAME, DataFolder.findFolder(filterFolder));                                                
+                }
+
             } else if (key == KEY_CUSTOM_PLUG_INS_DIR) {
                 FileObject customPluginsFolder = srcRoot.getFileObject(EviewRepository.CUSTOM_PLUG_INS_FOLDER);
                 if (customPluginsFolder != null) {
