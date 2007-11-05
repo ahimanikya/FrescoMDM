@@ -249,7 +249,7 @@ is divided into following sections:
 					</fileset>
 				</copy>
 
-				<generate-loader-zip srcdir="${src.dir}" configDir="loader-generated/loader/conf" />
+				<generate-loader-zip srcDir="${src.dir}" configDir="loader-generated/loader/conf" />
 
 				<zip destfile="loader-generated/loader.zip" basedir="loader-generated"
 					excludes="loader.zip">
