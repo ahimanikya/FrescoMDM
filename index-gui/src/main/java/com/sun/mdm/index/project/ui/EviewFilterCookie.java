@@ -25,20 +25,13 @@ package com.sun.mdm.index.project.ui;
 import org.openide.nodes.Node;
 
 
-public interface EviewCookie extends Node.Cookie {
+public interface EviewFilterCookie extends Node.Cookie {
     /**
      * DOCUMENT ME!
      *
      * @return DOCUMENT ME!
      */
-    public EviewConfigurationNode getEviewNode();
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public EviewConfigurationFolderNode getEviewFolderNode();
+    public EviewFilterFolderNode getEviewFilterFolderNode();
     
     /**
      * DOCUMENT ME!
@@ -46,4 +39,5 @@ public interface EviewCookie extends Node.Cookie {
      * @return DOCUMENT ME!
      */
     public String getEviewNodePath();
+    
 }

@@ -93,10 +93,12 @@ public class ImportFilterFileAction extends CookieAction {
                                     throw new FileNotFoundException("File: " + files[i].getName() + " not found.");
                                 }
                             }
-                            EviewFilterFolderNode filterFolderNode = (EviewFilterFolderNode) activatedNodes[0];
+                            EviewFilterCookie cookie = activatedNodes[0].getCookie(EviewFilterCookie.class);
+                            EviewFilterFolderNode filterFolderNode = cookie.getEviewFilterFolderNode();
                             FileObject filterFolder = filterFolderNode.getFileObject();
                             for (int i=0; i < files.length; i++) {
-                                FileUtil.copyFile(FileUtil.toFileObject(files[i]), filterFolder, files[i].getName());
+                                FileObject fo = FileUtil.toFileObject(files[i]);
+                                FileUtil.copyFile(fo, filterFolder, fo.getName());
                             }
                         }                          
                     } catch (Exception e) {

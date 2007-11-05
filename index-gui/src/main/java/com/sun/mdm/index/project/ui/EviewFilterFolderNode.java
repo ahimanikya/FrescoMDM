@@ -37,6 +37,7 @@ public class EviewFilterFolderNode extends EviewFolderNode {
     public EviewFilterFolderNode(String displayName, DataFolder folder) {
         super(displayName, folder);
         this.folder = folder;
+        this.getCookieSet().add(new EviewFilterFolderCookieImpl(this));                
     }
     
     @Override

@@ -22,28 +22,31 @@
  */
 package com.sun.mdm.index.project.ui;
 
-import org.openide.nodes.Node;
+class EviewFilterFolderCookieImpl implements EviewFilterCookie {
+    private EviewFilterFolderNode mEviewFilterFolderNode;
 
-
-public interface EviewCookie extends Node.Cookie {
+    /**
+     * Creates a new EviewFilterFolderCookieImpl object.
+     *
+     * @param eviewConfigurationNode DOCUMENT ME!
+     */
+    public EviewFilterFolderCookieImpl(EviewFilterFolderNode eviewFilterFolderNode) {
+        mEviewFilterFolderNode = eviewFilterFolderNode;
+    }
     /**
      * DOCUMENT ME!
      *
      * @return DOCUMENT ME!
      */
-    public EviewConfigurationNode getEviewNode();
-
+    public EviewFilterFolderNode getEviewFilterFolderNode() {
+        return mEviewFilterFolderNode;
+    }
     /**
      * DOCUMENT ME!
      *
      * @return DOCUMENT ME!
      */
-    public EviewConfigurationFolderNode getEviewFolderNode();
-    
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getEviewNodePath();
+    public String getEviewNodePath() {
+        return mEviewFilterFolderNode.getDataObject().getPrimaryFile().getPath();
+    }
 }
