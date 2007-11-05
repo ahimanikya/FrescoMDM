@@ -18,11 +18,11 @@ public class LoaderGeneratorTask extends Task {
 
 	private String configDir;
 
-	protected void setSrcDir(String srcDir) {
+	public void setSrcDir(String srcDir) {
 		this.srcDir = getProjectPath() + File.separator + srcDir;
 	}
 
-	protected void setConfigDir(String configDir) {
+	public void setConfigDir(String configDir) {
 		this.configDir = getProjectPath() + File.separator + configDir;
 	}
 
