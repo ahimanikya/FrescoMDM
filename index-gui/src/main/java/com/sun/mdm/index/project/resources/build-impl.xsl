@@ -239,12 +239,12 @@ is divided into following sections:
 
 
 				<copy todir="loader-generated/loader/lib">
-					<fileset dir="${module.install.dir}/ext/eview/">
+					<fileset dir="${{module.install.dir}}/ext/eview/">
 						<include name="*.jar" />
 					</fileset>
 				</copy>
 				<copy todir="loader-generated/loader/conf">
-					<fileset dir="${module.install.dir}/ext/eview/">
+					<fileset dir="${{module.install.dir}}/ext/eview/">
 						<include name="*.jar" />
 					</fileset>
 				</copy>
