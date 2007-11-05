@@ -1013,7 +1013,7 @@ public class QueryType {
     }
 
     
-    private String getQueryBuilderXML(QueryBuilder querybuilder) {
+    public String getQueryBuilderXML(QueryBuilder querybuilder) {
         StringBuffer bufblockDef = new StringBuffer();
         
         String qbName = querybuilder.getQueryBuilderName();

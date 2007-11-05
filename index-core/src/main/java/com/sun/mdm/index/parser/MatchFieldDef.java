@@ -1509,7 +1509,7 @@ public class MatchFieldDef {
         return bufSegment.toString();
     }
     
-    private String getMatchingConfigXML() {
+    public String getMatchingConfigXML() {
         StringBuffer bufSegment = new StringBuffer();
         bufSegment.append(Utils.TAB + "<" + mTagMatchingConfig);
         
