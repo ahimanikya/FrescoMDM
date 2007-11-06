@@ -96,6 +96,7 @@ public class MasterType {
         if (nnm != null) {
             Node tmp = nnm.getNamedItem("name");
             String queryBuilderName = tmp.getNodeValue();
+            mMasterControllerConfig.setExecuteMatchQueryBuilderName(queryBuilderName);
         }
         NodeList nl = node.getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
@@ -128,6 +129,10 @@ public class MasterType {
     public String getTransaction () {
         return mMasterControllerConfig.getTransaction();
     }
+
+    public String getExecuteMatchQueryBuilderName() {
+        return mMasterControllerConfig.executeMatch.queryBuilderName;
+    }
     
     class MasterControllerConfig {
         String moduleName = "MasterController";
@@ -135,10 +140,15 @@ public class MasterType {
         String updateMode = "Pessimistic";
         String mergedRecordUpdate = "Disabled";
         String transaction = "LOCAL"; // CONTAINER, BEAN or LOCAL
+        ExecuteMatch executeMatch = new ExecuteMatch();
         class ExecuteMatch {
             String queryBuilderName;  // e.g. ALPHA-SEARCH, ALPHA-SEARCH, PHONETIC-SEARCH
             String optionKey = "key";
-            String optionValue = "value";        
+            String optionValue = "value";           
+        }
+               
+        public void setExecuteMatchQueryBuilderName(String queryBuilderName) {
+            executeMatch.queryBuilderName = queryBuilderName;
         }
         
         public String getModuleName () {
