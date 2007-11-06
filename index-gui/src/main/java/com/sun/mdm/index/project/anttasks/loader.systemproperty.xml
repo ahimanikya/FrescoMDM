@@ -1,0 +1,68 @@
+<!-- all configuration with regard to the initial loader components
+		specific config needs to be put in like isMasterLoader... -->
+
+
+	<system>
+		<properties>
+			<property name="loaderName" value="loader1" />
+			<property name="isMasterLoader" value="true" />
+			<property name="rmiPort" value="9999" />
+			<property name="workingDir" value="/eview/loader" />
+
+			<property name="numBuckets" value="5" />
+			<property name="numThreads" value="1" />
+
+			<!-- used by euid assigner -->
+			<property name="maxNoOfBucket" value="3" />
+			<property name="totalNoOfRecords" value="200" />
+
+
+			<!-- time in milli seconds -->
+			<property name="pollInterval" value="1000" />
+			<property name="maxWaitTime" value="10000" />
+
+
+			<!-- ftp properties -->
+			<property name="ftp.server" value="sbiswas-d600" />
+			<property name="ftp.username" value="sujit" />
+			<property name="ftp.password" value="sujit" />
+
+
+
+			<!-- cluster database properties -->
+			<property name="cluster.database" value="Oracle" />
+			<property name="cluster.database.url" value="jdbc:oracle:thin:@sbiswas-acer:1521:mural" />
+			<property name="cluster.database.user" value="sujit" />
+			<property name="cluster.database.password" value="sujit" />
+			<property name="cluster.database.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
+
+			<property name="eviewDatabase" value="Oracle" />
+			<property name="eviewDatabaseUrl" value="Oracle" />
+
+
+			<!-- oracle SQL loader properties -->
+			<property name="sqlldr.userid" value="sujit/sujit@mdm.stc.com" />
+			<property name="sqlldr.record.delimiter" value="$$$" />
+
+		</properties>
+		<monitoring-control>
+			<!-- info to support standard jmx based monitoring and management 
+				this can be made part of the properties-->
+		</monitoring-control>
+		<dataObjectReader>
+
+
+			<beans>
+				<bean id="dataObjectReader"
+					class="com.sun.mdm.index.dataobject.DataObjectFileReader" singleton="false">
+					<constructor-arg type="java.lang.String"
+						value="C:/test/loader/finalInputData.txt" />
+					<constructor-arg type="boolean" value="false" />
+				</bean>
+			</beans>
+
+
+		</dataObjectReader>
+
+
+	</system>
