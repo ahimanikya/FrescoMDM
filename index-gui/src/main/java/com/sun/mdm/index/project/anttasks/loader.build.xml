@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<project name="loader" default="default" basedir=".">
+
+
+	<property name="workingDir" value="/eview/loader" />
+
+
+	<target name="default" depends="clean,generate-sqlldr-scripts">
+	</target>
+
+	<target name="generate-sqlldr-scripts">
+		<sqlldrgen />
+	</target>
+
+	<target name="clean">
+		<delete>
+			<fileset dir="${workingDir}/sqlldr">
+				<include name="*.bat" />
+				<include name="*.sh" />
+				<exclude name="loader.bat" />
+			</fileset>
+		</delete>
+		<delete>
+			<fileset dir="${workingDir}/sqlldr/control">
+				<include name="*.ctl" />
+			</fileset>
+		</delete>
+
+	</target>
+
+	<path id="loader.lib.path">
+		<fileset dir="dist" includes="loader.jar" />
+		<fileset dir="lib" includes="*.jar" />
+	</path>
+
+
+	<typedef name="sqlldrgen" classpathref="loader.lib.path" classname="com.sun.mdm.index.loader.sqlloader.LoaderGeneratorTask">
+
+	</typedef >
+
+	<!-- ================================= 
+          target: execute-scripts              
+         ================================= -->
+	<target name="execute-scripts" description="execute the oracle SQL loader scripts">
+
+		<exec dir="${workingDir}/sqlldr" failonerror="false" executable="cmd" spawn="yes">
+			<arg value="/c" />
+			<arg value="bulk_loader.bat" />
+
+		</exec>
+
+	</target>
+
+
+	<!-- ================================= 
+	          target: run-loader  
+	                      
+	         ================================= -->
+	<target name="run-loader" description="run the bulk loader">
+
+		<java classname="com.sun.mdm.index.loader.main.BulkMatcherLoader">
+			<sysproperty key="javax.xml.parsers.DocumentBuilderFactory" value="org.apache.xerces.jaxp.DocumentBuilderFactoryImpl" />
+
+			<classpath refid="run.loader.lib.path">
+			</classpath>
+		</java>
+
+	</target>
+
+	<path id="run.loader.lib.path" >
+		<fileset dir="lib" includes="*.jar" />
+	</path>
+
+
+</project>
+
