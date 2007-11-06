@@ -48,6 +48,7 @@ public class LoaderGeneratorTask extends Task {
     @Override
     public void execute() throws BuildException {
         LoaderConfig config = new LoaderConfig();
+        write(config);
         try {
             File xmlFile;
             InputSource source;
@@ -70,11 +71,10 @@ public class LoaderGeneratorTask extends Task {
             if (parameterMatchThreshold != null) {
 		matchThreshold = parameterMatchThreshold.getValue();
             }
-            String strThreshold = "<threshold-config>\n"
-				+ "    <duplicateThreshold>" + duplicateThreshold
-				+ "</duplicateThreshold>\n" + "    <matchThreshold>"
-				+ matchThreshold + "</matchThreshold>\n"
-				+ "</threshold-config>\n";
+            String strThreshold = "    <threshold-config>\n"
+				+ "        <duplicateThreshold>" + duplicateThreshold + "</duplicateThreshold>\n" 
+                                + "        <matchThreshold>" + matchThreshold + "</matchThreshold>\n"
+				+ "    </threshold-config>\n";
 
             config.setThreshold(strThreshold);
             
