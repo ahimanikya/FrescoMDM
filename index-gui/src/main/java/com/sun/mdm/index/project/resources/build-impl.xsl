@@ -233,12 +233,17 @@ is divided into following sections:
 
 
 
-			<target name="gen-loader-zip" depends="init" description="generate loader zip">
+			<target name="gen-loader-zip" depends="gen-mdm-index-files"
+				description="generate loader zip">
 				<mkdir dir="loader-generated/loader/conf" />
 				<mkdir dir="loader-generated/loader/lib" />
 
 				<copy todir="loader-generated/loader/lib">
-					<fileset dir="${{module.install.dir}}/ext/eview/">
+
+					<fileset dir="build/lib">
+						<include name="*.jar" />
+					</fileset>
+					<fileset dir="${{module.install.dir}}/ext/eview/loader">
 						<include name="*.jar" />
 					</fileset>
 				</copy>
