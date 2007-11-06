@@ -3,6 +3,14 @@
  */
 package com.sun.mdm.index.project.anttasks;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 /**
  * @author Sujit Biswas
  * 
@@ -29,6 +37,17 @@ public class LoaderConfig {
 	}
 
 	private void init() {
+		initEuidGenerator();
+		initSystemProperty();
+		
+		
+
+	}
+
+	/**
+	 * 
+	 */
+	private void initEuidGenerator() {
 		euidGenerator = "\n\t<EuidGeneratorConfig module-name=\"EuidGenerator\""
 				+ "\n\t\tparser-class=\"com.sun.mdm.index.configurator.impl.idgen.EuidGeneratorConfiguration\">"
 				+ "\n\t\t<euid-generator-class>com.sun.mdm.index.loader.euid.LoaderEuidGenerator</euid-generator-class>"
@@ -44,7 +63,32 @@ public class LoaderConfig {
 						"<parameter-value>1000</parameter-value></parameter>" +
 				"\n\t\t</parameters>"
 				+ "\n\t</EuidGeneratorConfig>";
+	}
 
+	/**
+	 * 
+	 */
+	private void initSystemProperty() {
+		InputStream ins =  this.getClass().getClassLoader().getResourceAsStream("com/sun/mdm/index/project/anttasks/loader.systemproperty.xml");
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(ins));
+		
+		StringBuilder sb = new StringBuilder();
+		
+		try {
+			while(true){
+				String line = br.readLine();
+				if(line==null)
+					break;
+				sb.append(line + "\n");
+				
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		systemProperties=sb.toString();
 	}
 
 	public String getThreshold() {

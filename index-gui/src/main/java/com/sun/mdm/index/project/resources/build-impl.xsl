@@ -237,13 +237,7 @@ is divided into following sections:
 				<mkdir dir="loader-generated/loader/conf" />
 				<mkdir dir="loader-generated/loader/lib" />
 
-
 				<copy todir="loader-generated/loader/lib">
-					<fileset dir="${{module.install.dir}}/ext/eview/">
-						<include name="*.jar" />
-					</fileset>
-				</copy>
-				<copy todir="loader-generated/loader/conf">
 					<fileset dir="${{module.install.dir}}/ext/eview/">
 						<include name="*.jar" />
 					</fileset>
@@ -253,10 +247,9 @@ is divided into following sections:
 
 				<zip destfile="loader-generated/loader.zip" basedir="loader-generated"
 					excludes="loader.zip">
-
-
-
 				</zip>
+
+				<delete dir="loader-generated/loader"></delete>
 
 			</target>
 

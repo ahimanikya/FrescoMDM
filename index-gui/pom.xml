@@ -57,6 +57,7 @@
                                 <jar jarfile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/com-sun-mdm-index-project-anttasks.jar" compress="false">
                                     <fileset dir="${project.build.directory}/classes">
                                         <include name="com/sun/mdm/index/project/anttasks/**/*.class"/>
+                                        <include name="com/sun/mdm/index/project/anttasks/**/*.xml"/>
                                     </fileset>
                                 </jar>
                                 <delete dir="${project.build.directory}/classes/com/sun/mdm/index/project/anttasks"/>
