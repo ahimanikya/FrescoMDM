@@ -28,7 +28,6 @@ import org.openide.util.HelpCtx;
 import org.openide.util.RequestProcessor;
 import org.openide.util.NbBundle;
 import org.openide.nodes.Node;
-import org.openide.nodes.FilterNode;
 import org.openide.filesystems.FileUtil;
 import org.openide.filesystems.FileObject;
 
@@ -67,7 +66,7 @@ public class ImportFilterFileAction extends CookieAction {
      * @return the cookie action name
      */
     public String getName() {
-        return NbBundle.getMessage(ImportFilterFileAction.class, "MSG_Action_Import_Filter_Files");
+        return NbBundle.getMessage(ImportFilterFileAction.class, "LBL_Action_Import_Filter_Files");
     }
     
     /**
