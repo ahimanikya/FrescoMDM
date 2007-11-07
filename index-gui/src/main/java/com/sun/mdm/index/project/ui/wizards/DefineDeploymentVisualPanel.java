@@ -146,14 +146,14 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
         add(cbMatchEngine);
         add(cbDateFormat);
         add(jComboBoxTransactions);
-        jLabelDatabase.setBounds(0, 30, 80, 30);
-        jLabelMatchEngine.setBounds(0, 65, 80, 30);
-        jLabelDateFormat.setBounds(0, 100, 80, 30);
-        lblTransaction.setBounds(0, 135, 80, 30);
-        cbDatabase.setBounds(90, 30, 250, 30);
-        cbMatchEngine.setBounds(90, 65, 250, 30);
-        cbDateFormat.setBounds(90, 100, 250, 30);
-        jComboBoxTransactions.setBounds(90, 135, 250, 30);
+        jLabelDatabase.setBounds(0, 30, 100, 30);
+        jLabelMatchEngine.setBounds(0, 65, 100, 30);
+        jLabelDateFormat.setBounds(0, 100, 100, 30);
+        lblTransaction.setBounds(0, 135, 100, 30);
+        cbDatabase.setBounds(110, 30, 250, 30);
+        cbMatchEngine.setBounds(110, 65, 250, 30);
+        cbDateFormat.setBounds(110, 100, 250, 30);
+        jComboBoxTransactions.setBounds(110, 135, 250, 30);
     }
 
     // End of variables declaration
