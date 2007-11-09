@@ -9,5 +9,5 @@ OpenIDE-Module-Localizing-Bundle: com/sun/mdm/index/project/Bundle.pro
  perties
 OpenIDE-Module-Specification-Version: 1.0
 OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
-Class-Path: ext/eview/index-core.jar
+Class-Path: ext/eview/index-core.jar ext/eview/net.java.hulp.i18n.jar ext/eview/net.java.hulp.i18ntask.jar
 

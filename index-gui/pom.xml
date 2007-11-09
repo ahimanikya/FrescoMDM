@@ -105,6 +105,12 @@
                                         <include name="index-core.jar"/>                 
                                     </fileset>
                                 </copy>
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview">
+                                    <fileset dir="${basedir}/../index-core/src/main/resources/globalization">
+                                        <include name="net.java.hulp.i18n.jar"/>                 
+                                        <include name="net.java.hulp.i18ntask.jar"/>                 
+                                    </fileset>
+                                </copy>
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/report/lib">
                                     <fileset dir="${basedir}/../report/target">
                                         <include name="com-sun-eview-report.jar"/>                    

@@ -301,7 +301,9 @@ public class EViewGeneratorTask extends Task {
         File srcDir = new File(srcPath);
         srcFileSet.setDir(srcDir);
         srcFileSet.setIncludes( "repository/stc_sbme.jar," +
-                                "index-core.jar");
+                                "index-core.jar," +
+                                "net.java.hulp.i18n.jar, " +
+                                "net.java.hulp.i18ntask.jar");
         
         Copy copy = (Copy) getProject().createTask("copy");
         copy.init();
@@ -411,7 +413,12 @@ public class EViewGeneratorTask extends Task {
         java.util.Properties properties = new java.util.Properties();
         properties.load(new FileInputStream(ejbPropertyPath));
         properties.setProperty("file.reference.index-core.jar", "../build/lib/index-core.jar");
-        properties.setProperty("javac.classpath", "${file.reference.index-core.jar}");
+        properties.setProperty("file.reference.net.java.hulp.i18ntask.jar", "../build/lib/net.java.hulp.i18ntask.jar");
+        properties.setProperty("file.reference.net.java.hulp.i18n.jar", "../build/lib/net.java.hulp.i18n.jar");
+        properties.setProperty("javac.classpath", "${file.reference.index-core.jar}:" +
+                               "${file.reference.net.java.hulp.i18n.jar}:" + 
+                               "${file.reference.net.java.hulp.i18n.jar}");
+
         properties.store(new FileOutputStream(ejbPropertyPath), null);
     }
     
