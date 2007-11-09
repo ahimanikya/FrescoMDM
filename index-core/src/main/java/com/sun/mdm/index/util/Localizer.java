@@ -31,8 +31,8 @@ import net.java.hulp.i18n.LocalizationSupport;
  */
 public class Localizer extends LocalizationSupport {
     
-    private static final String DEFAULT_PATTERN = "[A-Z][A-Z][A-Z]\\d\\d\\d: .*";
-    private static final String DEFAULT_PREFIX = "EVIEW";
+    private static final String DEFAULT_PATTERN = "([A-Z][A-Z][A-Z]\\d\\d\\d)(:)(.*)";
+    private static final String DEFAULT_PREFIX = "MDM-MI-";
     private static final String DEFAULT_BUNDLENAME = "msgs";
     private static Localizer instance = null; 
     

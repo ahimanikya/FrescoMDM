@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import com.sun.mdm.index.ejb.master.MasterController;
@@ -44,8 +46,7 @@ import com.sun.mdm.index.ops.DBAdapter;
 import com.sun.mdm.index.ops.exception.OPSException;
 import com.sun.mdm.index.page.PageAdapter;
 import com.sun.mdm.index.page.PotentialDuplicatePageAdapter;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
 import com.sun.mdm.index.util.Constants;
 import com.sun.mdm.index.util.JNDINames;
 
@@ -87,7 +88,8 @@ public class PotentialDuplicateManager {
      */    
     private final MasterController mc;
     
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
     
     /** Creates a new instance of PotDupManager
      *
@@ -216,8 +218,8 @@ public class PotentialDuplicateManager {
             noLidFlag = true;
         }
 
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("searchObj: " + obj);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Potential Duplicate Search Object is: " + obj);
         }
         try {
             if (obj.getEUIDs() != null) {
@@ -283,8 +285,8 @@ public class PotentialDuplicateManager {
                       + mNumberConversion
                       + " desc, a.EUID1 asc");
             String sqlString = sb.toString();
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("executing: " + sqlString);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("PotentialDuplicateManager: Executing SQL String: " + sqlString);
             }
             ps = con.prepareStatement(sqlString);
             for (int i = 0; i < parameters.size(); i++) {

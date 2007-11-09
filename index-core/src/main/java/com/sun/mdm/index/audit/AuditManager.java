@@ -27,6 +27,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
@@ -38,12 +39,13 @@ import com.sun.mdm.index.master.search.audit.AuditIterator;
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.page.PageAdapter;
 import com.sun.mdm.index.page.ArrayPageAdapter;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
 import com.sun.mdm.index.ops.DBAdapter;
 
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.util.JNDINames;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 
 /** Class to perform audit-related SQL operations
@@ -51,7 +53,8 @@ import com.sun.mdm.index.util.JNDINames;
  */
 public class AuditManager {
     
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
 
     /**
      * Creates a new instance of AuditManager
@@ -88,7 +91,9 @@ public class AuditManager {
             ps.setTimestamp(7, new java.sql.Timestamp(date.getTime()));
             ps.setString(8, auditObject.getCreateUser());
 
-            mLogger.debug(auditObject);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("AuditObject: " + auditObject);
+            }
 
             ps.executeUpdate();
             ps.close();
@@ -117,8 +122,8 @@ public class AuditManager {
         }
         boolean andFlag = false;
         
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("searchObj: " + obj);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("SearchObj: " + obj);
         }
 
         try {
@@ -214,8 +219,8 @@ public class AuditManager {
 
             String sqlString = sb.toString();
 
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("executing: " + sqlString);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Executing: " + sqlString);
             }
 
             ps = con.prepareStatement(sqlString);

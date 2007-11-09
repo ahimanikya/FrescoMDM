@@ -24,8 +24,8 @@ package com.sun.mdm.index.matching;
 
 import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.configurator.impl.MEFAConfiguration;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Helper class to load configured component implementation classes
@@ -34,7 +34,7 @@ import com.sun.mdm.index.util.Logger;
  */
 public class MEFAFactory {
 
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     
     /** Creates new MEFAFactory */
     public MEFAFactory() {
@@ -58,7 +58,9 @@ public class MEFAFactory {
             java.lang.Class loadedClass = Class.forName(implClassName);
             instance = loadedClass.newInstance();
         } else {
-            mLogger.debug("No implementation class configured for the MEFA component: " + componentName);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("No implementation class configured for the MEFA component: " + componentName);
+            }
         }
 
         return instance;

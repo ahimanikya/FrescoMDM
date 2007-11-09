@@ -25,13 +25,15 @@ package com.sun.mdm.index.objects.metadata;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Level;
 import com.sun.mdm.index.parser.EIndexObject;
 import com.sun.mdm.index.parser.ParserException;
 import java.io.InputStream;
 import org.xml.sax.InputSource;
 import com.sun.mdm.index.parser.Utils;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 /**
  * @author gzheng
  * meta data service class
@@ -44,8 +46,9 @@ public class MetaDataService {
     public MetaDataService() {
     }
 
-    private static final Logger LOGGER = 
-        LogUtil.getLogger("com.sun.mdm.index.objects.metadata.MetaDataService");
+    private transient static final Logger mLogger 
+        = Logger.getLogger("com.sun.mdm.index.objects.metadata.MetaDataService");
+    private transient static final Localizer mLocalizer = Localizer.get();
     
     //hash map of EIndexObject
     private static final HashMap EINDEX_OBJECTS = new HashMap();
@@ -53,7 +56,9 @@ public class MetaDataService {
     public static void registerObjectDefinition(InputStream objectDef) throws ParserException {
         EIndexObject eIndexObject = Utils.parseEIndexObject(new InputSource(objectDef));
         EINDEX_OBJECTS.put(eIndexObject.getName(), eIndexObject);
-        LOGGER.debug("**** Registered: " + eIndexObject.getName());
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Registered object: " + eIndexObject.getName());
+        }
         ObjectFactory.setObject(eIndexObject);
 
     }
@@ -69,7 +74,9 @@ public class MetaDataService {
             }
         }
         if (obj == null) {
-            LOGGER.debug("Object not registered: " + name);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Object is not registered: " + name);
+            }
         }        
     }
     
@@ -85,7 +92,9 @@ public class MetaDataService {
             ObjectFactory f = ObjectFactory.getInstance();
             ret = f.getChildTypePaths(path);
         } catch (ObjectException e) {
-            LOGGER.error("ObjectException", e);
+            mLogger.warn(mLocalizer.x("OBJ017: The child types could not be " + 
+                                      "retrieved from the path {0}: {1}", path, 
+                                      e.getMessage()));
         }
         return ret;
     }
@@ -118,7 +127,9 @@ public class MetaDataService {
      */
     public static String getColumnName(String path) {
         if (!ObjectFactory.isFieldNodePath(path)) {
-            LOGGER.debug("Path \"" + path + "\" is not of field type");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Path \"" + path + "\" is not of field type");
+            }
         }
 
         int pos = path.lastIndexOf(ObjectFactory.NODESEPARATOR);
@@ -156,7 +167,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.getFieldType(path);
         } catch (ObjectException e) {
-            LOGGER.error("ObjectException", e);
+            mLogger.warn(mLocalizer.x("OBJ018: The field type could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
         }
         return ret;
     }
@@ -173,7 +185,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.getFieldName(path);
         } catch (ObjectException e) {
-            LOGGER.error("ObjectException", e);
+            mLogger.warn(mLocalizer.x("OBJ019: The field name could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
         }
         return ret;
     }
@@ -191,7 +204,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.getFieldSize(path);
         } catch (ObjectException e) {
-            LOGGER.error("ObjectException", e);
+            mLogger.warn(mLocalizer.x("OBJ020: The field size could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
             throw e;
         }
         return ret;
@@ -208,7 +222,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.isFieldRequired(path);
         } catch (ObjectException e) {
-            LOGGER.error("ObjectException", e);
+            mLogger.warn(mLocalizer.x("OBJ021: The required field attribute could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
         }
         return ret;
     }
@@ -224,7 +239,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.isFieldUpdateable(path);
         } catch (ObjectException e) {
-            LOGGER.error("ObjectException", e);
+            mLogger.warn(mLocalizer.x("OBJ022: The updateable field attribute could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
         }
         return ret;
     }
@@ -240,7 +256,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.getUserCode(path);
         } catch (ObjectException e) {
-            LOGGER.error(e.getMessage(), e);
+            mLogger.warn(mLocalizer.x("OBJ023: The user code attribute could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
         }
         return ret;
     }
@@ -256,7 +273,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.getConstraintBy(path);
         } catch (ObjectException e) {
-            LOGGER.error(e.getMessage(), e);
+            mLogger.warn(mLocalizer.x("OBJ024: The constraint attribute could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
         }
         return ret;
     }
@@ -272,7 +290,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.getColumnType(path);
         } catch (ObjectException e) {
-            LOGGER.error("ObjectException", e);
+            mLogger.warn(mLocalizer.x("OBJ025: The column type attribute could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
         }
         return ret;
     }
@@ -346,7 +365,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.getDBTableFK(path);
         } catch (ObjectException e) {
-            LOGGER.error("ObjectException", e);
+            mLogger.warn(mLocalizer.x("OBJ026: The database foreign key attribute could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
         }
         return ret;
     }
@@ -363,7 +383,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.getParentPK(path);
         } catch (ObjectException e) {
-            LOGGER.error(e.getMessage(), e);
+            mLogger.warn(mLocalizer.x("OBJ027: The foreign key attribute could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
         }
         return ret;
     }
@@ -381,7 +402,9 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.getDBTableFK(path, parent);
         } catch (ObjectException e) {
-            LOGGER.error("ObjectException", e);
+            mLogger.warn(mLocalizer.x("OBJ028: The database foreign key attribute could not be " + 
+                                      "retrieved for the parent {0} from the path {1}\n: {2}", 
+                                      parent, path, e.getMessage()));
         }
         return ret;
     }
@@ -398,7 +421,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.getDBTableName(path);
         } catch (ObjectException e) {
-            LOGGER.error("ObjectException", e);
+            mLogger.warn(mLocalizer.x("OBJ029: The object table name attribute could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
         }
         return ret;
     }
@@ -416,7 +440,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.getPrimaryKey(path);
         } catch (ObjectException e) {
-            LOGGER.error("ObjectException", e);
+            mLogger.warn(mLocalizer.x("OBJ030: The primary key attribute could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
         }
         return ret;
     }
@@ -432,7 +457,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.getDBTablePK(path);
         } catch (ObjectException e) {
-            LOGGER.error("ObjectException", e);
+            mLogger.warn(mLocalizer.x("OBJ031: The object table primary key attribute could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
         }
         return ret;
     }
@@ -506,7 +532,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.getParentTypePath(path);
         } catch (ObjectException e) {
-            LOGGER.error("ObjectException", e);
+            mLogger.warn(mLocalizer.x("OBJ032: The full parent path attribute could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
         }
         return ret;
     }
@@ -523,7 +550,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.getSBRPath(path);
         } catch (ObjectException e) {
-            LOGGER.error("ObjectException", e);
+            mLogger.warn(mLocalizer.x("OBJ033: The SBR path attribute could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
         }
         return ret;
     }
@@ -540,7 +568,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.getObjectKeys(path);
         } catch (ObjectException e) {
-            LOGGER.error("ObjectException", e);
+            mLogger.warn(mLocalizer.x("OBJ034: The object keys attribute could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
         }
         return ret;
     }
@@ -557,7 +586,8 @@ public class MetaDataService {
         try {
             ret = ObjectFactory.getSOPath(path);
         } catch (ObjectException e) {
-            LOGGER.error("ObjectException", e);
+            mLogger.warn(mLocalizer.x("OBJ035: The SystemObject path could not be " + 
+                                      "retrieved from the path {0}: {1}", path, e.getMessage()));
         }
         return ret;
     }

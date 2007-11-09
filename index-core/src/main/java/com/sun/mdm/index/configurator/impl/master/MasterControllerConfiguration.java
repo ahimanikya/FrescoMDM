@@ -28,8 +28,10 @@ import org.w3c.dom.NodeList;
 import com.sun.mdm.index.configurator.ConfigurationInfo;
 import com.sun.mdm.index.configurator.ConfigurationException;
 import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 
 /**
@@ -44,7 +46,8 @@ public class MasterControllerConfiguration implements ConfigurationInfo {
     private boolean mPessimisticEnabled;
     private boolean mMergedRecordUpdate;
     private EOSearchOptions mSearchOptions;
-    private final Logger logger = LogUtil.getLogger(this);
+    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
     
     private String mUserLogicClass = null;
     private String mUserLogicClassGui = null;
@@ -152,7 +155,7 @@ public class MasterControllerConfiguration implements ConfigurationInfo {
                 }
             }
         }
-        logger.info("MasterControllerConfiguration: " + mSearchOptions);
+        mLogger.info(mLocalizer.x("CFG034: MasterControllerConfiguration search options are: {0}", mSearchOptions));
     }
 
 

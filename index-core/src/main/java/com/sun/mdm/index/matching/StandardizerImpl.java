@@ -26,9 +26,10 @@ import com.sun.mdm.index.configurator.impl.standardization.SystemObjectStandardi
 import com.sun.mdm.index.configurator.impl.standardization.StandardizationConfiguration;
 import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.objects.exception.ObjectException;
-
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Loads and forwards requests to the
@@ -43,7 +44,8 @@ public class StandardizerImpl implements Standardizer{
     private StandardizerAPI standardizerAPIImpl;
     private StandardizerEngineConfiguration standardizerEngineConfig;
     private StandardizationConfiguration standardizationConfig;
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     
     /**
@@ -65,7 +67,9 @@ public class StandardizerImpl implements Standardizer{
      */    
     public void initialize() 
             throws StandardizationException, InstantiationException, ClassNotFoundException, IllegalAccessException {
-        mLogger.debug("initialize()");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Initializing StandardizerImpl");
+        }
         try {
             // use StandardizerAPIHelper as factory 
             standardizerAPIImpl = new StandardizerAPIHelper().getStandardizerAPIImpl();
@@ -74,27 +78,38 @@ public class StandardizerImpl implements Standardizer{
             }
             standardizerEngineConfig = new StandardizerAPIHelper().getStandardizerEngineConfigImpl();
             if (standardizerEngineConfig == null) {
-                mLogger.debug("No StandardizerEngineConfig implementation configured.");
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("StandardizerEngineConfig implementation has not been configured");
+                }
             }            
             
             standardizerAPIImpl.initialize(standardizerEngineConfig);
         } catch (StandardizationException ex) {
-            mLogger.error("Initializing the standardization engine failed.", ex);
+            mLogger.severe(mLocalizer.x("MAT010: Initializing the standardization " + 
+                                        "engine failed: {0}", ex.getMessage()));
             throw ex;            
         } catch (InstantiationException ex) {
-            mLogger.error("Instantiating the user API implementation class failed.", ex);
+            mLogger.severe(mLocalizer.x("MAT011: StandardizerImpl failed to " + 
+                                        "instantiate the user API implementation " + 
+                                        "class failed: {0}", ex.getMessage()));
             throw ex;            
         } catch (ClassNotFoundException ex) {
-            mLogger.error("Loading the user API implementation class failed.", ex);
+            mLogger.severe(mLocalizer.x("MAT012: StandardizerImpl failed to " + 
+                                        "load the user API implementation class " + 
+                                        "failed: {0}", ex.getMessage()));
             throw ex;            
         } catch (IllegalAccessException ex) {
-            mLogger.error("Accessing the user API implementation class failed.", ex);
+            mLogger.severe(mLocalizer.x("MAT013: StandardizerImpl failed to " + 
+                                        "access the user API implementation " + 
+                                        "class failed: {0}", ex.getMessage()));
             throw ex;            
         } catch (RuntimeException ex) {
-            mLogger.error("Initialize failed.", ex);
+            mLogger.severe(mLocalizer.x("MAT014: Initialization failed for " + 
+                                        "StandardizerImpl: {0}", ex.getMessage()));
             throw ex;            
         } catch (LinkageError ex) {
-            mLogger.error("Failed to load a native library.", ex);
+            mLogger.severe(mLocalizer.x("MAT015: Failed to load a native library: {0}", 
+                                        ex.getMessage()));
             throw ex;            
         }
     }
@@ -117,9 +132,15 @@ public class StandardizerImpl implements Standardizer{
     public com.sun.mdm.index.objects.SystemObject standardize(com.sun.mdm.index.objects.SystemObject objToStandardize) 
             throws StandardizationException, ObjectException, InstantiationException {
         if (objToStandardize == null) {
-            mLogger.debug("Standardize was called on a null object, returning it unchanged.");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Standardize was called on a null object and " + 
+                             "returned it unchanged.");
+            }
         } else if (objToStandardize.getObject() == null) {
-            mLogger.debug("Standardize was called on a SystemObject containing a null object, returning it unchanged.");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Standardize was called on a SystemObject " + 
+                             "containing a null object and returned it unchanged.");
+            }
         } else {
             String objType = objToStandardize.getObject().pGetType();
             if (objType != null) {

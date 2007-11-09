@@ -40,9 +40,12 @@ import java.util.Hashtable;
 import java.util.Collections;
 import java.util.Collection;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
+import com.sun.mdm.index.util.Localizer;
 import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /** Survivor helper configuration object
  *
@@ -108,7 +111,8 @@ public class SurvivorHelperConfig implements ConfigurationInfo {
     /** DOM doc reference */    
     private Document mDoc;
     
-    private final Logger logger = LogUtil.getLogger(this);
+    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
     
 
     /** Creates new UpdateManagerConfig */
@@ -260,8 +264,8 @@ public class SurvivorHelperConfig implements ConfigurationInfo {
                     mStrategyCache.put(candidateName, sc);
                 }
             }
-            logger.info("Survivor Helper Configuration: StrategyCache:\n" + LogUtil.mapToString(mStrategyCache));
-            logger.info("Survivor Helper Configuration: FieldCache:\n" + LogUtil.mapToString(mFieldCache));
+            mLogger.info(mLocalizer.x("CFG031: Survivor Helper Configuration: StrategyCache mappings are: {0}", LogUtil.mapToString(mStrategyCache)));
+            mLogger.info(mLocalizer.x("CFG032: Survivor Helper Configuration: FieldCache mappings are: {0}", LogUtil.mapToString(mFieldCache)));
         } catch (Exception ex) {
             throw new ConfigurationException(ex);
         }

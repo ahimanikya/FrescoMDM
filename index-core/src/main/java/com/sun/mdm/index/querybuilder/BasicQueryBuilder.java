@@ -35,8 +35,8 @@ import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.metadata.MetaDataService;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Construct query by looking at which fields in the system object have been
@@ -48,7 +48,7 @@ public class BasicQueryBuilder extends QueryBuilder {
 
     private boolean useWildcard = false;
 
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     
     
     /**
@@ -81,7 +81,9 @@ public class BasicQueryBuilder extends QueryBuilder {
      */
     public QueryObject buildQueryObject(String[] ids, SearchCriteria crit, SearchOptions opts)
         throws QueryBuilderException {
-        mLogger.debug("buildQueryObject(): begin");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Starting in buildQueryObject()");
+        }
         QueryObject queryObject = new QueryObject();
         if (!ids[0].equalsIgnoreCase("SINGLE-QUERY")) {
             throw new QueryBuilderException("Invalid query id: " + ids[0]);
@@ -108,11 +110,15 @@ public class BasicQueryBuilder extends QueryBuilder {
                 //If standardization selected, filter out standardization source
                 //fields. Otherwise filter out target fields.
                 if (standardize) {
-                    mLogger.debug("buildQueryObject(): filtering standardized source fields");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("buildQueryObject(): filtering standardized source fields");
+                    }
                     filter.filterStandardizedSourceFields(objNode);
                 } else {
                     if (objectStandardized) {
-                        mLogger.debug("buildQueryObject(): filtering standardized target fields");
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("buildQueryObject(): filtering standardized target fields");
+                        }
                         filter.filterStandardizedTargetFields(objNode);
                     }
                 }
@@ -120,11 +126,15 @@ public class BasicQueryBuilder extends QueryBuilder {
                 //If phoneticization selected, filter out phoneticization source
                 //fields.  Otherwise filter target fields.
                 if (phoneticize) {
-                    mLogger.debug("buildQueryObject(): filtering phoneticized source fields");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("buildQueryObject(): filtering phoneticized source fields");
+                    }
                     filter.filterPhoneticizedSourceFields(objNode);
                 } else {
                     if (objectStandardized) {
-                        mLogger.debug("buildQueryObject(): filtering phoneticized target fields");
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("buildQueryObject(): filtering phoneticized target fields");
+                        }
                         filter.filterPhoneticizedTargetFields(objNode);
                     }
                 }
@@ -139,11 +149,15 @@ public class BasicQueryBuilder extends QueryBuilder {
                 //If standardization selected, filter out standardization source
                 //fields. Otherwise filter out target fields.
                 if (standardize) {
-                    mLogger.debug("buildQueryObject(): filtering standardized source fields");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("buildQueryObject(): filtering standardized source fields");
+                    }
                     filter.filterStandardizedSourceFields(objNode2);
                 } else {
                     if (objectStandardized) {
-                        mLogger.debug("buildQueryObject(): filtering standardized target fields");
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("buildQueryObject(): filtering standardized target fields");
+                        }
                         filter.filterStandardizedTargetFields(objNode2);
                     }
                 }
@@ -151,11 +165,15 @@ public class BasicQueryBuilder extends QueryBuilder {
                 //If phoneticization selected, filter out phoneticization source
                 //fields.  Otherwise filter target fields.
                 if (phoneticize) {
-                    mLogger.debug("buildQueryObject(): filtering phoneticized source fields");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("buildQueryObject(): filtering phoneticized source fields");
+                    }
                     filter.filterPhoneticizedSourceFields(objNode2);
                 } else {
                     if (objectStandardized) {
-                        mLogger.debug("buildQueryObject(): filtering phoneticized target fields");
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("buildQueryObject(): filtering phoneticized target fields");
+                        }
                         filter.filterPhoneticizedTargetFields(objNode2);
                     }
                 }
@@ -170,11 +188,15 @@ public class BasicQueryBuilder extends QueryBuilder {
                 //If standardization selected, filter out standardization source
                 //fields. Otherwise filter out target fields.
                 if (standardize) {
-                    mLogger.debug("buildQueryObject(): filtering standardized source fields");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("buildQueryObject(): filtering standardized source fields");
+                    }
                     filter.filterStandardizedSourceFields(objNode3);
                 } else {
                     if (objectStandardized) {
-                        mLogger.debug("buildQueryObject(): filtering standardized target fields");
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("buildQueryObject(): filtering standardized target fields");
+                        }
                         filter.filterStandardizedTargetFields(objNode3);
                     }
                 }
@@ -182,11 +204,15 @@ public class BasicQueryBuilder extends QueryBuilder {
                 //If phoneticization selected, filter out phoneticization source
                 //fields.  Otherwise filter target fields.
                 if (phoneticize) {
-                    mLogger.debug("buildQueryObject(): filtering phoneticized source fields");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("buildQueryObject(): filtering phoneticized source fields");
+                    }
                     filter.filterPhoneticizedSourceFields(objNode3);
                 } else {
                     if (objectStandardized) {
-                        mLogger.debug("buildQueryObject(): filtering phoneticized target fields");
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("buildQueryObject(): filtering phoneticized target fields");
+                        }
                         filter.filterPhoneticizedTargetFields(objNode3);
                     }
                 }
@@ -220,7 +246,9 @@ public class BasicQueryBuilder extends QueryBuilder {
         throws QueryBuilderException {
         KeyValueConfiguration keyValueConfig = (KeyValueConfiguration) info;
         try {
-            mLogger.debug("init(): UseWildcard set to " + useWildcard);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("BasicQueryBuilder.init(): useWildcard set to " + useWildcard);
+            }
             useWildcard = keyValueConfig.getBooleanValue("UseWildcard");
         } catch (Exception e) {
             throw new QueryBuilderException(e);

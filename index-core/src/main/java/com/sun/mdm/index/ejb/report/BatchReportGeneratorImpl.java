@@ -72,8 +72,7 @@ import com.sun.mdm.index.report.UpdateReportConfig;
 import com.sun.mdm.index.report.UpdateReportRow;
 import com.sun.mdm.index.util.ConnectionUtil;
 import com.sun.mdm.index.util.DateUtil;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
 import java.text.SimpleDateFormat;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -89,6 +88,9 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.logging.Level;
 import javax.ejb.SessionContext;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 
 /**
@@ -156,7 +158,8 @@ public class BatchReportGeneratorImpl{
     private ResultSet mResultSetMerge = null;
     private ResultSet mResultSetUnmerge = null;
     private ResultSet mResultSetDeactivate = null;
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     /** Path to root object
      */    
@@ -170,7 +173,7 @@ public class BatchReportGeneratorImpl{
             mQuery = com.sun.mdm.index.query.QueryManagerFactory.getInstance();
             mTrans = com.sun.mdm.index.ops.TransactionMgrFactory.getInstance();
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger("global").log(Level.SEVERE, null, ex);
+            mLogger.severe(mLocalizer.x("RPE002: Could not create an instance of BatchReportGeneratorImpl: {0}", ex.getMessage()));
         }
     }
     
@@ -527,8 +530,8 @@ public class BatchReportGeneratorImpl{
                 con.close();
             }
         } catch (SQLException e) {
-            mLogger.error("releaseConnection(): could not close JDBC connection",
-                e);
+            mLogger.warn(mLocalizer.x("RPE003: BatchReportGeneratorImpl.releaseConnection(): " +
+                                      "could not close JDBC connection: {0}", e.getMessage()));
         }
     }
 
@@ -896,7 +899,6 @@ public class BatchReportGeneratorImpl{
 		throws ReportException {
         ResultSet rs = null;
         
-        mLogger.debug(searchObj);
         StringBuffer queryStr = new StringBuffer(TRANSACTION_SELECT_CLAUSE);
         Date fromDate = searchObj.getStartDate();
         Date toDate = searchObj.getEndDate();
@@ -929,7 +931,10 @@ public class BatchReportGeneratorImpl{
             throw new ReportException(e);
         }
         queryStr.append(" order by euid, timestamp");
-        mLogger.debug("lookupTransactions() SQL: " + queryStr.toString());
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("BatchReportGeneratorImpl.lookupTransactions() SQL " +
+                         "string is: " + queryStr.toString());
+        }
         
         try {
             Statement ps = conn.createStatement();
@@ -1078,7 +1083,6 @@ public class BatchReportGeneratorImpl{
             } else if (config.getEndDate() != null) {
                 specDate = config.getEndDate();
             } else {
-                mLogger.error("Start or end date must be specified.");
                 throw new ReportException(
                     "Start or end date must be specified.");
             }
@@ -1143,7 +1147,6 @@ public class BatchReportGeneratorImpl{
             } else if (config.getEndDate() != null) {
                 specDate = config.getEndDate();
             } else {
-                mLogger.error("Start or end date must be specified.");
                 throw new ReportException(
                     "Start or end date must be specified.");
             }
@@ -1186,7 +1189,6 @@ public class BatchReportGeneratorImpl{
             } else if (config.getEndDate() != null) {
                 specDate = config.getEndDate();
             } else {
-                mLogger.error("Start or end date must be specified.");
                 throw new ReportException(
                     "Start or end date must be specified.");
             }
@@ -1216,8 +1218,6 @@ public class BatchReportGeneratorImpl{
     private Connection getConnection() throws ReportException {
         try {
             Connection con = ConnectionUtil.getConnection();
-            mLogger.debug("in getConnection(): " + con);
-
             return con;
         } catch (Exception e) {
             throw new ReportException("Failed to get JDBC connection.", e);

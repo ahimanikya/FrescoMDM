@@ -33,8 +33,9 @@ import javax.ejb.Stateful;
 
 import com.sun.mdm.index.page.PageAdapter;
 import com.sun.mdm.index.page.PageException;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Session bean to store a data result on the server and give client the data
@@ -59,7 +60,7 @@ public class PageDataEJB implements PageDataRemote{
      */      
     private boolean mForwardOnly = false;
     
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
   
 
     /**
@@ -110,9 +111,13 @@ public class PageDataEJB implements PageDataRemote{
      */
     @PreDestroy
     public void remove() {
-        mLogger.debug("ejbRemove() start");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Removing pageDateEJB.");
+        }
         mPageAdapter.close();
-        mLogger.debug("ejbRemove() done");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Finished removing pageDateEJB.");
+        }
     }
 
     

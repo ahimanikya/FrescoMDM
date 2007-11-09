@@ -29,9 +29,8 @@ import java.util.Map;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.ArrayList;
-
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.ObjectKey;
@@ -55,7 +54,7 @@ import com.sun.mdm.index.survivor.SystemFieldListMap;
 public class UnionSurvivorStrategy
 implements SurvivorStrategyInterface {
     
-    private static final Logger mLogger = LogUtil.getLogger(UnionSurvivorStrategy.class);
+    private transient static final Logger mLogger = Logger.getLogger(UnionSurvivorStrategy.class);
     
     /** Creates a new instance of UnionSurvivorStrategy */
     public UnionSurvivorStrategy() {
@@ -144,16 +143,22 @@ implements SurvivorStrategyInterface {
                     ObjectNode aNode = (ObjectNode) ao;
                     ObjectKey aKey = aNode.pGetKey();
                     if (sKey.equals(aKey)) {
-                        mLogger.debug("found element with same key in current set" + sKey);
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("Found element with same key in current set: " + sKey);
+                        }
                         // wahoo, we have a match, compare which value is newer
                         Date aDate = (Date) entry.getValue();
                         
                         if (date.compareTo(aDate) > 0) {
-                            mLogger.debug("input element is newer than existing element, overwriting");
+                            if (mLogger.isLoggable(Level.FINE)) {
+                                mLogger.fine("Input element is newer than existing element, overwriting");
+                            }
                             // if input date is newer than date of existing object
                             // put in the new one instead
                             set.remove(aNode);
-                            mLogger.debug("adding element to set : " + input);
+                            if (mLogger.isLoggable(Level.FINE)) {
+                                mLogger.fine("Adding element to set: " + input);
+                            }
                             set.put(input, date);
                             
                         }
@@ -164,17 +169,23 @@ implements SurvivorStrategyInterface {
                 }
                 // went through all the loops, but did not find any matching keys
                 // simply add it to the set.
-                mLogger.debug("adding element to set : " + input);
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Adding element to set: " + input);
+                }
                 set.put(input, date);
             } else {
                 // if object node does not have a key, don't bother checking
                 // for duplicate keys
-                mLogger.debug("adding element to set : " + input);
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Adding element to set: " + input);
+                }
                 set.put(input, date);
             }
         } else {
             // object is not object node, so no key. just add it
-            mLogger.debug("adding element to set : " + input);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Adding element to set : " + input);
+            }
             set.put(input, date);
         }
     }

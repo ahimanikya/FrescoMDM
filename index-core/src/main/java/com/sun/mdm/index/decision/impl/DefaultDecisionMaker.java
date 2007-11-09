@@ -24,6 +24,7 @@ package com.sun.mdm.index.decision.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
 import java.sql.Connection;
 import com.sun.mdm.index.decision.DecisionMaker;
 import com.sun.mdm.index.decision.DecisionMakerException;
@@ -32,9 +33,10 @@ import com.sun.mdm.index.decision.DecisionMakerStruct;
 import com.sun.mdm.index.matching.ScoreElement;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.SystemObjectPK;
-import com.sun.mdm.index.util.Logger;
-import com.sun.mdm.index.util.LogUtil;
+import com.sun.mdm.index.util.Localizer;
 import com.sun.mdm.index.ejb.master.MasterControllerCore;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Sample decision maker which chooses the highest weighted record above a
@@ -47,7 +49,8 @@ public class DefaultDecisionMaker extends DecisionMaker {
     private boolean mSameSystemMatch = false;
     private float mDuplicateThreshold;
     private float mMatchThreshold;
-    private Logger mLogger = LogUtil.getLogger(this);
+    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
 
     /**
      * Creates a new instance of DefaultDecisionMaker. Should only be called by
@@ -89,7 +92,8 @@ public class DefaultDecisionMaker extends DecisionMaker {
      */
     public void setParameter(String parameterName, Object value)
         throws DecisionMakerException {
-        mLogger.info("setParameter(): " + parameterName + ": " + value);
+        mLogger.info(mLocalizer.x("DEC001: DefaultDecisionmaker setting " +
+                                  "parameter {0} to {1}", parameterName, value));
         if (parameterName.equals("OneExactMatch")) {
             mOneExactMatch = ((Boolean) value).booleanValue();
         } else if (parameterName.equals("SameSystemMatch")) {
@@ -119,10 +123,11 @@ public class DefaultDecisionMaker extends DecisionMaker {
         try {
             Object scoreElementArray[] = list.toArray();
             ArrayList dmArrayList = new ArrayList();
-            mLogger.debug("process(): list of score elements");
             for (int i = 0; i < scoreElementArray.length; i++) {
                 ScoreElement se = (ScoreElement) scoreElementArray[i];
-                mLogger.debug(se);
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Score element: " + se);
+                }
                 float probability = (float) se.getWeight();
                 String euid = se.getEUID();
                 //TODO: set comment???
@@ -136,21 +141,28 @@ public class DefaultDecisionMaker extends DecisionMaker {
 
             // if the first record is above match threshold
             if (objArray.length > 0 && ((DecisionMakerStruct) objArray[0]).weight >= mMatchThreshold) {
-                mLogger.info("process(): first element is above or equal to match threshold: " + 
-                    ((DecisionMakerStruct) objArray[0]).weight + " >= " + mMatchThreshold);
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("process(): first element is above or equal to match threshold: " + 
+                                  ((DecisionMakerStruct) objArray[0]).weight + " >= " + mMatchThreshold);
+                }
                 // if in one exact match mode and there are more than 2 in list above dup threshold
                 if (mOneExactMatch && objArray.length > 1) {
                     // assume match if only 1 records is above match threshold (i.e. 2nd on list is less)
                     if (((DecisionMakerStruct) objArray[1]).weight < mMatchThreshold) {
-                        mLogger.info("process(): one exact match enabled and only one record above match threshold");
-                        mLogger.info("process(): assumed match found");
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("process(): one exact match enabled and only one record above match threshold.\nAssumed match found");
+                        }
                         assumedMatch = (DecisionMakerStruct) objArray[0];
                     } else {
-                        mLogger.info("process(): one exact match rule violated");
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("process(): one exact match rule violated");
+                        }
                         ((DecisionMakerStruct) objArray[0]).comment = "One Exact Match Rule Violated";
                     }
                 } else {
-                    mLogger.info("process(): one exact match disabled, selecting first record as assumed match");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("process(): one exact match disabled, selecting first record as assumed match");
+                    }
                     assumedMatch = (DecisionMakerStruct) objArray[0];
                 }
             }
@@ -163,7 +175,9 @@ public class DefaultDecisionMaker extends DecisionMaker {
                 for (int i = 0; i < systemObjectPKs.length; i++) {
                     if (systemObjectPKs[i].systemCode.equals(systemCode)) {
                         assumedMatch = null;
-                        mLogger.info("process(): same system match rule violated");
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("process(): same system match rule violated");
+                        }
                         ((DecisionMakerStruct) objArray[0]).comment = "Same System Match Rule Violated";
                         break;
                     }
@@ -175,7 +189,9 @@ public class DefaultDecisionMaker extends DecisionMaker {
                 startIndex = 1;
             }
             potentialDuplicates = new DecisionMakerStruct[objArray.length - startIndex];
-            mLogger.info("process(): potential duplicate count " + potentialDuplicates.length);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("process(): potential duplicate count " + potentialDuplicates.length);
+            }
             for (int i = 0; i < potentialDuplicates.length; i++) {
                 potentialDuplicates[i] = (DecisionMakerStruct) objArray[startIndex + i];
             }

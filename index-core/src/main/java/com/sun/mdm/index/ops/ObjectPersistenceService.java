@@ -25,6 +25,9 @@ package com.sun.mdm.index.ops;
 import com.sun.mdm.index.ops.exception.OPSException;
 import com.sun.mdm.index.ops.exception.UnsupportedDataType;
 
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -39,8 +42,6 @@ import java.sql.Timestamp;
 import java.sql.Types;
 
 import java.util.ArrayList;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 
 import com.sun.mdm.index.objects.metadata.ObjectFactory;
 
@@ -51,7 +52,6 @@ import com.sun.mdm.index.objects.metadata.ObjectFactory;
 public class ObjectPersistenceService implements java.io.Serializable {
     static final String DATEFORMAT = "yyyy-MM-dd HH:mm:ss";
     static final String DBDATEFORMAT = "yyyy-MM-dd hh24:MI:ss";
-    private static final Logger LOGGER = LogUtil.getLogger("com.sun.mdm.index.ops.ObjectPersistenceService");    
     private static final int ORACLE = 1;
     private static final int SQLSERVER = 2;
     private static final String SQLServer = "SQL Server";
@@ -59,6 +59,8 @@ public class ObjectPersistenceService implements java.io.Serializable {
     private int dbType = ORACLE;
     
     private BlobHelper mBlobHelper = null;
+    
+    private transient static final Logger mLogger = Logger.getLogger(ObjectPersistenceService.class);
     
     /**
      * Default constructor: jdbc connection is obtained here (future
@@ -425,13 +427,14 @@ public class ObjectPersistenceService implements java.io.Serializable {
      */
     public void init() throws OPSException {
     }
-        
+    
     /**
      * Message logger.
      * @param msg Message to log.
      */
     protected static void log(String msg) {
-        LOGGER.debug(msg);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine(msg);
+        }
     }
-    
 }

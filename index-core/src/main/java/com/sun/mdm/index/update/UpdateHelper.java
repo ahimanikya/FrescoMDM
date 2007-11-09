@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.ObjectNode;
@@ -32,15 +34,13 @@ import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.SystemObjectException;
 import com.sun.mdm.index.objects.exception.ObjectException;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 
 
 /**helper methods for update manager
  */
 public class UpdateHelper {
     
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     
     
     /** Creates new UpdateHelper */
@@ -149,9 +149,9 @@ public class UpdateHelper {
         ObjectNode newObj = newSO.getObject();
         ObjectNode oldObj = oldSO.getObject();
         
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("Old so :" + oldSO);
-            mLogger.debug("New so :" + newSO);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Old SystemObject:" + oldSO);
+            mLogger.fine("New SystemObject:" + newSO);
         }
         // If replace system object flag is set
         if (replaceSO) {
@@ -194,9 +194,9 @@ public class UpdateHelper {
             if (sys.equals(currSO.getSystemCode())
             && lid.equals(currSO.getLID())) {
                 
-                if (mLogger.isDebugEnabled()) {
-                    mLogger.debug("Old so :" + currSO);
-                    mLogger.debug("New so :" + newSO);
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Old SystemObject:" + currSO);
+                    mLogger.fine("New SystemObject:" + newSO);
                 }
                 updateSO(newSO, currSO, copyFlags, replaceSO);
                 return eo;

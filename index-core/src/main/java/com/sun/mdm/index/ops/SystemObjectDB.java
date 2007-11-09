@@ -26,6 +26,7 @@ import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.ops.exception.OPSException;
+import com.sun.mdm.index.util.Localizer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -35,9 +36,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
-
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * @author gzheng
@@ -49,7 +50,8 @@ public final class SystemObjectDB extends ObjectPersistenceService {
     private static String mSelectString;
     private static String mUpdateString;
 
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     
     static {
@@ -148,8 +150,8 @@ public final class SystemObjectDB extends ObjectPersistenceService {
         PreparedStatement stmt = null;
         ResultSet rset = null;
         try {
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("retrieving SystemObject(" + systemcode + ":" + lid + ")");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Retrieving SystemObject with system code: " + systemcode + ", LID: " + lid );
             }
             stmt = getStatement(mSelectString, conn);
             ArrayList alist = null;
@@ -242,8 +244,8 @@ public final class SystemObjectDB extends ObjectPersistenceService {
         // executes insert SQL statement
         PreparedStatement stmt = null;
         try {
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("creating SystemObject(" + sysobj.getSystemCode() + ":" + sysobj.getLID() + ")");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Creating SystemObject with system code: " + sysobj.getSystemCode() + ", LID: " + sysobj.getLID());
             }
 
             stmt = getStatement(mInsertString, conn);
@@ -319,7 +321,7 @@ public final class SystemObjectDB extends ObjectPersistenceService {
                 String sql = sql2str(mInsertString, params);
                 throw new OPSException(sql + e.getMessage());
             } catch (ObjectException oe) {
-                mLogger.error("error formatting sql stmt", oe);
+                mLogger.warn(mLocalizer.x("OPS010: Error occurred in formatting an SQL string: {0}", oe.getMessage()));
                 throw new OPSException(oe.getMessage() + "\n" + sqlerr);
             }
         } catch (ObjectException e) {
@@ -351,9 +353,9 @@ public final class SystemObjectDB extends ObjectPersistenceService {
         // executes delete SQL statement
         PreparedStatement stmt = null;
         try {
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("removing SystemObject(" + sysobj.getSystemCode() 
-                    + ":" + sysobj.getLID() + ")");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Removing SystemObject with system code: " + sysobj.getSystemCode() 
+                    + ", LID: " + sysobj.getLID());
             }
 
             ObjectNode child = (ObjectNode) sysobj.getObject();
@@ -411,9 +413,9 @@ public final class SystemObjectDB extends ObjectPersistenceService {
         // executes update SQL statement
         PreparedStatement stmt = null;
         try {
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("updating SystemObject(" + sysobj.getSystemCode() 
-                    + ":" + sysobj.getLID() + ")");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Updating SystemObject with system code: " + 
+                             sysobj.getSystemCode() + ", LID: " + sysobj.getLID());
             }
             if (!sysobj.isAdded()) {
                 if (sysobj.isUpdated()) {

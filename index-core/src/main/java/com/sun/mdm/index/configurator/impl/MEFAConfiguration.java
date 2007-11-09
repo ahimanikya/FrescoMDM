@@ -23,6 +23,7 @@
 package com.sun.mdm.index.configurator.impl;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
@@ -31,7 +32,9 @@ import com.sun.mdm.index.configurator.ConfigurationInfo;
 import com.sun.mdm.index.configurator.ConfigurationException;
 
 import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Handles the parsing of the Match Engine Functional Area configuration (MEFA)
@@ -51,7 +54,8 @@ public class MEFAConfiguration implements ConfigurationInfo {
 
     private String moduleName;
     private String parserClass;
-    private final Logger logger = LogUtil.getLogger(this);
+    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
     
 
     /**
@@ -266,7 +270,7 @@ public class MEFAConfiguration implements ConfigurationInfo {
             }
             componentImplClassNames.put(Components.MATCH_ENGINE_CONFIG, matcherCfgImplClass);
 
-            logger.info("MEFA Configuration:\n" + LogUtil.mapToString(componentImplClassNames));
+            mLogger.info(mLocalizer.x("CFG020: MEFA Configuration mappings are: {0}", LogUtil.mapToString(componentImplClassNames)));
             
         } catch (Exception ex) {
             throw new ConfigurationException("Failed to parse MEFA configuration:" + ex.getMessage(), ex);

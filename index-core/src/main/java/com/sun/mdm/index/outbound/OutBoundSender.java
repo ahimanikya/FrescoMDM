@@ -39,8 +39,8 @@ import javax.jms.TopicSubscriber;
 import javax.jms.TextMessage;
 
 import javax.naming.InitialContext;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 import javax.naming.NamingException;
 
 
@@ -75,7 +75,7 @@ public class OutBoundSender {
     
     /** session ready flag */
     private boolean mIsSessionReady = false;
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     
     /** Creates a new instance of OutBoundPublisher */
     public OutBoundSender(){
@@ -121,8 +121,8 @@ public class OutBoundSender {
      * @param data the data to be sent
      */
     private void send(String eventType, String data) throws OutBoundException {
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("Sending Event= " + eventType + " Data = " + data);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Sending Event= " + eventType + " Data = " + data);
         }
         
         try {
@@ -136,8 +136,8 @@ public class OutBoundSender {
                 Topic myTopic = mTopicSession.createTopic(mJndiTopic);
                 mTopicPublisher = mTopicSession.createPublisher(myTopic);
                 mIsSessionReady = true;
-                if (mLogger.isDebugEnabled()) {
-                    mLogger.debug("Topic session is ready!");
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Topic session is ready!");
                 }
             }
             TextMessage msg = mTopicSession.createTextMessage(data);
@@ -160,9 +160,9 @@ public class OutBoundSender {
             throw new OutBoundException("JNDI for outbound Topic is not specified");
         }
         
-        if (mLogger.isDebugEnabled()) {
-        mLogger.debug("JNDI for outbound ConnectionFactory = " + connectionFactoryName);
-        mLogger.debug("JNDI for outbound Topic = " + topicName);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("JNDI for outbound ConnectionFactory = " + connectionFactoryName);
+            mLogger.fine("JNDI for outbound Topic = " + topicName);
         }
         
         mJndiConnectionFactory = connectionFactoryName;
@@ -170,8 +170,8 @@ public class OutBoundSender {
         
         try {
             mInitCtx = new InitialContext();
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("Outbound: Lookup TopicConnectionFactory using " + mJndiConnectionFactory);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Outbound: Lookup TopicConnectionFactory using " + mJndiConnectionFactory);
             }
             
             mTopicConnectionFactory = (TopicConnectionFactory) mInitCtx.lookup(mJndiConnectionFactory);
@@ -181,8 +181,8 @@ public class OutBoundSender {
         
         mOutboundOn = true;
         
-        if (mLogger.isDebugEnabled()) {
-        mLogger.debug("Sender is initialized");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Sender is initialized");
         }
     }
     

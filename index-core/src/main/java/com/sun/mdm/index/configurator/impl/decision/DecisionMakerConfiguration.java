@@ -31,8 +31,10 @@ import com.sun.mdm.index.configurator.Parameter;
 import com.sun.mdm.index.configurator.ConfigurationException;
 import com.sun.mdm.index.configurator.ParameterParser;
 import com.sun.mdm.index.decision.DecisionMaker;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 
 public class DecisionMakerConfiguration implements ConfigurationInfo {
@@ -42,7 +44,8 @@ public class DecisionMakerConfiguration implements ConfigurationInfo {
 
     private Class mDecisionMakerClass;
     private Parameter[] mParameters;
-    private final Logger logger = LogUtil.getLogger(this);
+    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
 
 
     /**
@@ -119,7 +122,7 @@ public class DecisionMakerConfiguration implements ConfigurationInfo {
                     try {
                         mDecisionMakerClass = Class.forName(className);
                     } catch (Exception e) {
-                        throw new ConfigurationException("Can not load class: " 
+                        throw new ConfigurationException("Cannot load class: " 
                                 + className + ": " + e.getMessage());
                     }
                 } else if (optionName.equals("parameters")) {
@@ -129,13 +132,12 @@ public class DecisionMakerConfiguration implements ConfigurationInfo {
                     mParameters = new Parameter[size];
                     for (int j = 0; j < size; j++) {
                         mParameters[j] = (Parameter) parameterList.get(j);
+                        mLogger.info(mLocalizer.x("DEC002: DecisionMaker parameter is: {0}", mParameters[j].toString()));
                     }
                 } else {
                     throw new ConfigurationException("Unknown option: " + optionName);
                 }
             }
         }
-        logger.info("DecisionMaker Class: " + mDecisionMakerClass);
-        logger.info("DecisionMaker Parameters: " + mParameters);
     }
 }

@@ -27,8 +27,8 @@ import com.sun.mdm.index.configurator.impl.MatchEngineConfig;
 import com.sun.mdm.index.configurator.ConfigurationException;
 import com.stc.sbme.api.SbmeConfigFilesAccess;
 import com.stc.sbme.api.SbmeConfigurationException;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Class to provide the eView match engine with user configuration
@@ -97,7 +97,7 @@ public class SbmeMatcherAdapterConfig
     public static class CSConfigFileAccess implements SbmeConfigFilesAccess {
 
         private MatchEngineConfig mConfig;
-        private final Logger mLogger = LogUtil.getLogger(this);
+        private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     
         /**
          * Constructor to create instance
@@ -118,7 +118,9 @@ public class SbmeMatcherAdapterConfig
         public java.io.InputStream getConfigFileAsStream(String name) 
             throws SbmeConfigurationException {
 
-            mLogger.debug("Configuration file retrieval request: " + name);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Retrieving configuration file: " + name);
+            }
             
             java.io.ByteArrayInputStream stream = null;
                 
@@ -136,13 +138,17 @@ public class SbmeMatcherAdapterConfig
                 if (fileContents != null) {
                     fileLength = fileContents.length;
                 }
-                mLogger.debug("Size of retrieved file: " + fileLength);
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Size of retrieved file: " + fileLength);
+                }
 
             } catch (RuntimeException ex) {
                 throw new SbmeConfigurationException("Retrieving the configuration file failed: " + ex.getMessage(), ex);
             }
 
-            mLogger.debug("Bytes available from returned configuration file stream: " + stream.available());
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Bytes available from returned configuration file stream: " + stream.available());
+            }
             
             return stream;
         }

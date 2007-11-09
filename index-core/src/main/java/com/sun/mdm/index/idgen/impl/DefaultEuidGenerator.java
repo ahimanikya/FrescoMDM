@@ -27,14 +27,16 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.io.InputStream;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.index.objects.metadata.ObjectFactory;
+
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Default EUID generator.
@@ -42,7 +44,7 @@ import com.sun.mdm.index.objects.metadata.ObjectFactory;
  */
 public class DefaultEuidGenerator implements EuidGenerator {
 
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     
     private int mIdLength;
     private int mChecksumLength;
@@ -204,7 +206,9 @@ public class DefaultEuidGenerator implements EuidGenerator {
         }
         sb.append(retVal);
         
-        mLogger.debug("Checksum for " + value + " is " + sb); 
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Checksum for " + value + " is " + sb); 
+        }
         return sb.toString();
     }
     

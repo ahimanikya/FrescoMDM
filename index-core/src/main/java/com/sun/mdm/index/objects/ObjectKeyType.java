@@ -22,9 +22,9 @@
  */
 package com.sun.mdm.index.objects;
 
-import com.sun.mdm.index.util.Logger;
-import com.sun.mdm.index.util.LogUtil;
 import java.util.Iterator;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 
 /**
  *
@@ -33,7 +33,7 @@ import java.util.Iterator;
 public class ObjectKeyType implements Comparable, java.io.Serializable {
     
     // logger
-    private final Logger mLogger = LogUtil.getLogger(this.getClass().getName());
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     
         String mType;
         ObjectKey mKey;
@@ -60,8 +60,10 @@ public class ObjectKeyType implements Comparable, java.io.Serializable {
         } 
         
         public int compareTo( Object object) {
-        	mLogger.info("  this value : " + this.toString());
-        	mLogger.info("object value : " + object.toString());
+            if (mLogger.isLoggable(Level.FINE)) {
+            	mLogger.fine("Comparing ObjectKeyType value: " + this.toString());
+            	mLogger.fine("to: " + object.toString());
+            }
            
            return (this.toString()).compareTo(object.toString());	        	
         }

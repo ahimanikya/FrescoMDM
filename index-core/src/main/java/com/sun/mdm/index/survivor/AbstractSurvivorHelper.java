@@ -29,15 +29,17 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
 
+import com.sun.mdm.index.util.Localizer;
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.SystemObjectException;
 
 import com.sun.mdm.index.configurator.impl.SurvivorHelperConfig;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 
 
 /** Base helper class that provides the following utility methods on omega:
@@ -66,7 +68,8 @@ implements Cloneable, java.io.Serializable {
      */
     private SurvivorStrategyInterface mDefaultStrategy;
     
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     /** default constructor */
     public AbstractSurvivorHelper() {
@@ -83,7 +86,9 @@ implements Cloneable, java.io.Serializable {
     public void init(SurvivorHelperConfig config)
     throws StrategyCreationException, HelperCreationException {
         
-        mLogger.debug("initializing helper");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("AbstractSurvivorCalculator: initializing helper");
+        }
         
         
         // XSD spec the default must exist, so error if otherwise
@@ -92,7 +97,9 @@ implements Cloneable, java.io.Serializable {
         try {
            
             
-            mLogger.debug("default strategy class name : " + className);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("The default strategy class name is: " + className);
+            }
             
             Class strategyClass = Class.forName(className);
             Object obj = strategyClass.newInstance();
@@ -214,7 +221,8 @@ implements Cloneable, java.io.Serializable {
         } else if (mDefaultStrategy != null) {
             o = mDefaultStrategy.selectField(candidateField, fields);
         } else {
-            mLogger.fatal("No strategy found for candidate field : " + candidateField);
+            mLogger.warn(mLocalizer.x("SUR001: No strategy found for candidate " 
+                                      + "field {0}: ", candidateField));
         }
         
         return o;

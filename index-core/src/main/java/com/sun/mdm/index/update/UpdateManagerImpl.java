@@ -31,6 +31,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
 
 import com.sun.mdm.index.query.QueryHelper;
 import com.sun.mdm.index.objects.EnterpriseObject;
@@ -59,8 +62,7 @@ import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.configurator.impl.UpdateManagerConfig;
 import com.sun.mdm.index.query.QMException;
 import com.sun.mdm.index.util.Constants;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
 
 public class UpdateManagerImpl implements UpdateManager {
     static final String CHANGES_NEW = "new";
@@ -82,7 +84,8 @@ public class UpdateManagerImpl implements UpdateManager {
     
     private boolean mSkipUpdateIfNoChange;
     
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
        
     /**
      * Constructor to create update manager.
@@ -102,31 +105,31 @@ public class UpdateManagerImpl implements UpdateManager {
         
         String s = config.getEnterpriseCreatePolicy();
         mECreatePolicy = createPolicy(s);
-        mLogger.info("EnterpriseCreatePolicy=" + s);
+        mLogger.info(mLocalizer.x("UPD001: Creating EnterpriseCreatePolicy: {0}", s));
         
         s = config.getEnterpriseMergePolicy();
         mEMergePolicy = createPolicy(s);
-        mLogger.info("EnterpriseMergePolicy=" + s);
+        mLogger.info(mLocalizer.x("UPD002: EnterpriseMergePolicy: {0}", s));
 
         s = config.getEnterpriseUnmergePolicy();
         mEUnmergePolicy = createPolicy(s);
-        mLogger.info("EnterpriseUnmergePolicy=" + s);
+        mLogger.info(mLocalizer.x("UPD003: EnterpriseUnmergePolicy: {0}", s));
             
         s = config.getEnterpriseUpdatePolicy();
         mEUpdatePolicy = createPolicy(s);
-        mLogger.info("EnterpriseUpdatePolicy=" + s);
+        mLogger.info(mLocalizer.x("UPD004: EnterpriseUpdatePolicy: {0}", s));
             
         s = config.getSystemMergePolicy();
         mSMergePolicy = createPolicy(s);
-        mLogger.info("SystemMergePolicy=" + s);
+        mLogger.info(mLocalizer.x("UPD005: SystemMergePolicy: {0}", s));
             
         s = config.getSystemUnmergePolicy();
         mSUnmergePolicy = createPolicy(s);
-        mLogger.info("SystemUnmergePolicy=" + s);
+        mLogger.info(mLocalizer.x("UPD006: SystemUnmergePolicy: {0}", s));
             
         s = config.getUndoAssumePolicy();
         mUndoAssumePolicy = createPolicy(s);
-        mLogger.info("UndoAssumePolicy=" + s);           
+        mLogger.info(mLocalizer.x("UPD007: UndoAssumePolicy: {0}", s));    
            
         mSkipUpdateIfNoChange = config.getSkipUpdateIfNoChange();
         mQueryHelper = new QueryHelper();
@@ -171,8 +174,8 @@ public class UpdateManagerImpl implements UpdateManager {
             so.setUpdateFunction(SystemObject.ACTION_ADD);
             so.setCreateUser(so.getUpdateUser());
             EnterpriseObject newEO = mHelper.createEO(so);        
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("created eo in memory :" + newEO);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Created EnterpriseObject in memory :" + newEO);
             }
             
             if (mECreatePolicy != null) {
@@ -187,8 +190,9 @@ public class UpdateManagerImpl implements UpdateManager {
                 throw new UpdateException("Enterprise Object creation failed");
             }
             
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("EO before returning createEnterpriseObject(so): " + newEO);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("EnterpriseObject before returning " 
+                             + "createEnterpriseObject(so): " + newEO);
             }
             
             return new UpdateResult(tresult, newEO);
@@ -252,8 +256,8 @@ public class UpdateManagerImpl implements UpdateManager {
                 throw new UpdateException("Standardizing SBR failed: " + e.getMessage());
             }
             
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("created eo in memory :" + newEO);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Created EnterpriseObject in memory :" + newEO);
             }
             if (mECreatePolicy != null) {
                 newEO = mECreatePolicy.applyUpdatePolicy(null,  newEO);
@@ -274,8 +278,9 @@ public class UpdateManagerImpl implements UpdateManager {
                 throw new UpdateException("Enterprise Object creation failed");
             }
             
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("EO before returning createEnterpriseObject(so[]): " + newEO);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("EnterpriseObject before returning " 
+                             + "createEnterpriseObject(so[]): " + newEO);
             }
             
             return new UpdateResult(tresult, newEO);
@@ -362,7 +367,10 @@ public class UpdateManagerImpl implements UpdateManager {
                 
                 // Update the existing SO, or add it
                 if (mHelper.updateSO(so, eo, copyflag, replaceSO) == null) {
-                    mLogger.debug("Specified SO not found for EO, adding it to EO");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("Specified SystemObject not found for " 
+                        + "EnterpriseObject, adding it to EnterpriseObject.");
+                    }
                     if (so.getUpdateDateTime() == null) {
                         so.setUpdateDateTime(date);
                     }
@@ -396,11 +404,16 @@ public class UpdateManagerImpl implements UpdateManager {
                 if (countActiveSystems(eo) < 1) {
                     // no active systems
                     // deactivate source enterprise object
-                    mLogger.debug("No active SO left, deactivating EO");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("No active SystemObjects left, " 
+                                     + "deactivating EnterpriseObject.");
+                    }
                     mHelper.deactivateEO(eo, date);
                 } else {
                     // calculate SBR
-                    mLogger.debug("Recalculating SBR for EO");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("Recalculating SBR for EnterpriseObject.");
+                    }
                     mCalculator.determineSurvivor(eo);
                 }
                 
@@ -445,12 +458,14 @@ public class UpdateManagerImpl implements UpdateManager {
                     }
                 }
                         
-                if (mLogger.isDebugEnabled()) {
-                    mLogger.debug("EO before persisting : " + eo);
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("EnterpriseObject before persisting : " + eo);
                 }
                 
                 if (mSkipUpdateIfNoChange && !recordChanged) {
-                    mLogger.debug("SkipUpdateIfNoChange is true, no updates for EUID: " + euid);
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("SkipUpdateIfNoChange is true, no updates for EUID: " + euid);
+                    }
                     return new UpdateResult(TMResult.NO_CHANGE_TRANSACTION, eo);   
                 }
                 
@@ -569,11 +584,15 @@ public class UpdateManagerImpl implements UpdateManager {
             if (countActiveSystems(eo) < 1) {
                 // no active systems
                 // deactivate source enterprise object
-                mLogger.debug("No active SO left, deactivating EO");
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("No active SystemObjects left, deactivating EntepriseObject");
+                }
                 mHelper.deactivateEO(eo, date);
             } else {
                 // calculate SBR
-                mLogger.debug("Recalculating SBR for EO");
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Recalculating SBR for EntepriseObject");
+                }
                 mCalculator.determineSurvivor(eo);
             }
                         
@@ -617,12 +636,14 @@ public class UpdateManagerImpl implements UpdateManager {
                 }
             }
             
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("EO before persisting: " + eo);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("EntepriseObject before persisting: " + eo);
             }
             
             if (mSkipUpdateIfNoChange && !recordChanged) {
-            	mLogger.debug("SkipUpdateIfNoChange is true, no updates for EUID: " + euid);
+                if (mLogger.isLoggable(Level.FINE)) {
+                	mLogger.fine("SkipUpdateIfNoChange is true, no updates for EUID: " + euid);
+                }
                 return new UpdateResult(TMResult.NO_CHANGE_TRANSACTION, eo);   
             }
             
@@ -737,16 +758,24 @@ public class UpdateManagerImpl implements UpdateManager {
             // not counting QWS
             if (countActiveSystems(srcEO) < 1) {
                 if ( countInActiveSystems(srcEO) > 0 ) {
-                    mLogger.debug("Only inactive SO left, deactivate EO");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("Only inactive SystemObject(s) left, " 
+                                     + "deactivating EnterpriseObject");
+                    }
                     mHelper.deactivateEO(srcEO, date);                 
                 } else {
-                    mLogger.debug("No active or inactive SO left, remove EO");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("No active or inactive SystemObject " 
+                                     + "left, remove EnterpriseObject");
+                    }
                     srcEO.setRemoveFlag(true);
                 }
             } else {
                 // more then one active system object on enterprise object
                 // call survivor calculation on src enterprise object
-                mLogger.debug("Recalculating SBR for source EO");
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Recalculating SBR for source EnterpriseObject");
+                }
                 mCalculator.determineSurvivor(srcEO);
                 
                 srcEO.getSBR().setUpdateDateTime(date);
@@ -755,7 +784,9 @@ public class UpdateManagerImpl implements UpdateManager {
             srcEO.getSBR().setUpdateUser(user);
             
             // call survivor calculation on dest enterprise object
-            mLogger.debug("Recalculating SBR for destination EO");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Recalculating SBR for destination EnterpriseObject");
+            }
             EnterpriseObject retEO = destEO;
             mCalculator.determineSurvivor(retEO);
             
@@ -766,8 +797,6 @@ public class UpdateManagerImpl implements UpdateManager {
             // persist dest enterprise object
             TMResult r = mTransaction.lidTransfer(con, retEO, srcEO, system, lid);
             
-            //mLogger.debug("Exiting transferSystem(eo, eo, system, lid)");
-            //return new UpdateResult(r, retEO);
             return new UpdateResult(r, retEO, srcEO);
         } catch (OPSException oex) {
             throw new UpdateException(oex.getMessage(), oex);
@@ -806,16 +835,22 @@ public class UpdateManagerImpl implements UpdateManager {
             // not counting QWS
             if (countActiveSystems(srcEO) < 1) {
                 if ( countInActiveSystems(srcEO) > 0 ) {
-                    mLogger.debug("Only inactive SO left, deactivate EO");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("Only inactive SystemObject(s) left, deactivating EnterpriseObject");
+                    }
                     mHelper.deactivateEO(srcEO, date);                 
                 } else {
-                    mLogger.debug("No active or inactive SO left, remove EO");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("No active or inactive SystemObject left, removing EnterpriseObject");
+                    }
                     srcEO.setRemoveFlag(true);
                 }
             } else {
                 // more then one active system object on enterprise object
                 // call survivor calculation on src enterprise object
-                mLogger.debug("Recalculating SBR for EO");
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Recalculating SBR for EnterpriseObject");
+                }
                 mCalculator.determineSurvivor(srcEO);
                 
                 srcEO.getSBR().setUpdateDateTime(date);
@@ -909,8 +944,8 @@ public class UpdateManagerImpl implements UpdateManager {
         //because its same EO lid merge, there will always be at least 1 SO left on the EO
         //so no need to count the active SOs
         
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("before survivor calculation: " + newEO);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("EnterpriseObject before survivor calculation: " + newEO);
         }
         mCalculator.determineSurvivor(newEO);
         newEO.getSBR().setUpdateDateTime(date);
@@ -944,14 +979,12 @@ public class UpdateManagerImpl implements UpdateManager {
         }
 
         
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("after survivor calculation: " + newEO);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("EnterpriseObject after survivor calculation: " + newEO);
         }
         
         if (mSMergePolicy != null) {
-            //mLogger.debug("Applying SystemMergePolicy");
             newEO = mSMergePolicy.applyUpdatePolicy(ogEO, newEO);
-            //mLogger.debug("Done applying SystemMergePolicy");
         }
         
         try {
@@ -1018,8 +1051,8 @@ public class UpdateManagerImpl implements UpdateManager {
             
             // setStatus() causes an error message saying to use master controller
             // for now, use setValue()
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("Set system object to merged status" + mergedSO);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Set system object to merged status" + mergedSO);
             }
             
             mergedSO = (SystemObject) mergedSO.copy();
@@ -1050,8 +1083,9 @@ public class UpdateManagerImpl implements UpdateManager {
                 "EnterpriseObject does not contain the specified SystemObject");
             }
             
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("Surviving EO before survivor calc : " + newEO);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Surviving EnterpriseObject before invoking " 
+                             + " survivor calculation: " + newEO);
             }
             
             // check how many active system objects are left
@@ -1059,7 +1093,9 @@ public class UpdateManagerImpl implements UpdateManager {
             if (countActiveSystems(srcEO) < 1) {
                 // no active systems
                 // deactivate source enterprise object
-                mLogger.debug("No active SO left, deactivate EO");
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("No active SystemObject left, deactivating EnterpriseObject");
+                }
                 try {
                     String[] mlids=mQueryHelper.findAllMergedLIDs(con, lid);
                     if ((mlids != null) && (!srcEO.getEUID().equals(destEO.getEUID()))) {
@@ -1083,7 +1119,9 @@ public class UpdateManagerImpl implements UpdateManager {
             } else {
                 // more then one active system object on enterprise object
                 // call survivor calculation on src enterprise object
-                mLogger.debug("Recalculating SBR for source EO");
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Recalculating SBR for source EnterpriseObject");
+                }
                 mCalculator.determineSurvivor(srcEO);
                 srcEO.getSBR().setUpdateDateTime(date);
                 srcEO.getSBR().setUpdateFunction(SystemObject.ACTION_MERGE);
@@ -1091,15 +1129,18 @@ public class UpdateManagerImpl implements UpdateManager {
             srcEO.getSBR().setUpdateUser(user);
             
             // call SC on the new merged EO
-            mLogger.debug("Recalculating SBR for destination EO");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Recalculating SBR for destination EnterpriseObject");
+            }
             mCalculator.determineSurvivor(newEO);
             newEO.getSBR().setUpdateDateTime(date);
             newEO.getSBR().setUpdateFunction(SystemObject.ACTION_MERGE);
             newEO.getSBR().setUpdateUser(user);
             
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("Surviving EO after survivor calculation :" + newEO);
-                mLogger.debug("Merged EO : " + srcEO);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Surviving EnterpriseObject after survivor " 
+                             + "calculation:" + newEO);
+                mLogger.fine("Merged EnterpriseObject: " + srcEO);
             }
             
             if (mSMergePolicy != null) {
@@ -1171,8 +1212,9 @@ public class UpdateManagerImpl implements UpdateManager {
             
             srcEO.setRemoveFlag(true);
             
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("Surviving EO before survivor calculation :" + destEO);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Surviving EnterpriseObject before invoking " 
+                             + "survivor calculation :" + destEO);
             }
             
             EnterpriseObject retEO = destEO;
@@ -1181,8 +1223,9 @@ public class UpdateManagerImpl implements UpdateManager {
             retEO.getSBR().setUpdateFunction(SystemObject.ACTION_MERGE);
             retEO.getSBR().setUpdateUser(user);
 
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("Surviving EO after survivor calculation :" + retEO);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Surviving EnterpriseObject after survivor calculation :" 
+                             + retEO);
             }
             if (mEMergePolicy != null) {
                 retEO = mEMergePolicy.applyUpdatePolicy(ogEO, retEO);
@@ -1253,8 +1296,9 @@ public class UpdateManagerImpl implements UpdateManager {
             
             srcEO.setRemoveFlag(true);
             
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("Surviving EO before survivor calculation :" + destEO);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Surviving EnterpriseObject before invoking " 
+                             + "survivor calculation :" + destEO);
             }
             
             EnterpriseObject retEO = destEO;
@@ -1263,8 +1307,9 @@ public class UpdateManagerImpl implements UpdateManager {
             retEO.getSBR().setUpdateFunction(SystemObject.ACTION_MERGE);
             retEO.getSBR().setUpdateUser(user);
 
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("Surviving EO after survivor calculation :" + retEO);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Surviving EnterpriseObject after invoking " 
+                             + "survivor calculation :" + retEO);
             }
             if (mEMergePolicy != null) {
                 retEO = mEMergePolicy.applyUpdatePolicy(ogEO, retEO);
@@ -1865,9 +1910,9 @@ public class UpdateManagerImpl implements UpdateManager {
             //call TM to persist curDestEO and newSrcEO.
             TMResult tmr = null;
             if ((flag & Constants.FLAG_UM_CALC_ONLY) != Constants.FLAG_UM_CALC_ONLY) {
-                if (mLogger.isDebugEnabled()) {
-                    mLogger.debug("before persisting destEO", curDestEO);
-                    mLogger.debug("before persisting srcEO", newSrcEO);
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Current destination EnterpriseObject before persisting: " + curDestEO);
+                    mLogger.fine("New source EnterpriseObject before persisting" + newSrcEO);
                 }
                 tmr = mTransaction.euidUnMerge(con, transactionID, curDestEO, newSrcEO);
             }

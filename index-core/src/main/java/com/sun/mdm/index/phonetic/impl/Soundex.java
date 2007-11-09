@@ -26,8 +26,8 @@ import com.sun.mdm.index.phonetic.PhoneticEncoder;
 import com.sun.mdm.index.phonetic.PhoneticEncoderException;
 import com.stc.sbme.util.EmeUtil;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Encode a string using the Soundex algorithm.
@@ -43,7 +43,7 @@ public class Soundex implements PhoneticEncoder {
     public static final char[] US_ENGLISH_MAPPING = "01230120022455012623010202".toCharArray();    
 
     private char[] soundexMapping;
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     
     
     /**
@@ -98,8 +98,8 @@ public class Soundex implements PhoneticEncoder {
         char ch;
         StringBuffer word;
         
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("encoding: " + str);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Creating Soundex encoding for: " + str);
         }
         
         if (str == null || len == 0) {
@@ -131,8 +131,8 @@ public class Soundex implements PhoneticEncoder {
 
         String word1 = new String(out);
 
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("encoded: " + word1);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Created Soundex encoding: " + word1);
         }        
         
         return word1;

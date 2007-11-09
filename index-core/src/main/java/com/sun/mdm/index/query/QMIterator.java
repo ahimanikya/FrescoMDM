@@ -25,8 +25,6 @@ package com.sun.mdm.index.query;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 
 
 /**
@@ -41,7 +39,6 @@ public class QMIterator implements java.io.Serializable, Cloneable {
     private AssembleDescriptor massDesc;
     private String mrootObjectName;
     private SQLDescriptor[] msqlDesc;
-    private final Logger mLogger = LogUtil.getLogger(this);
 
 
     /**
@@ -124,9 +121,6 @@ public class QMIterator implements java.io.Serializable, Cloneable {
         if (!more) {
             masmEngine.close();
              QueryManagerImpl.decrementConnectionCounter();
-              if (mLogger.isDebugEnabled()) {
-           //     mLogger.debug("closeConnection counter:" + QueryManagerEJB.getConnectionCounter());
-              }
         }
 
         return more;

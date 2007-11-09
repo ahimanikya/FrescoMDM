@@ -28,9 +28,6 @@ import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 import java.util.ArrayList;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
-
 /**
  * A user extensible component to pick the next block definition to use for 
  * the next matching pass.
@@ -41,11 +38,6 @@ import com.sun.mdm.index.util.Logger;
  */
 public class SerialBlockPicker implements BlockPicker {
 
-    /**  mLogger instance
-     *
-     */
-    private final Logger mLogger = LogUtil.getLogger(this);
-    
     /** Creates new SerialBlockPicker */
     public SerialBlockPicker() {
     }

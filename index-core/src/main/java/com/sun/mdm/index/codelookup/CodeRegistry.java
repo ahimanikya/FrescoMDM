@@ -31,15 +31,17 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.logging.Level;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.Properties;
-import com.sun.mdm.index.util.Logger;
-import com.sun.mdm.index.util.LogUtil;
+import com.sun.mdm.index.util.Localizer;
 import com.sun.mdm.index.util.JNDINames;
 import com.sun.mdm.index.util.ConnectionUtil;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 
 /** Code registry
@@ -60,9 +62,8 @@ public class CodeRegistry {
     private final static String DB_PROP_KEY = "resJNDI";
     private final static String DB_PROP_FILE = "eviewdb.properties";
     private HashMap tmCodes = null;
-    private final static Logger mLogger 
-                                = LogUtil.getLogger("com.sun.mdm.index.codelookup." 
-                                                    + CodeRegistry.class.getName());
+    private final transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private final transient Localizer mLocalizer = Localizer.get();
 
     /** Creates a new instance of CodeRegistry.
      *
@@ -174,7 +175,9 @@ public class CodeRegistry {
         while (i.hasNext()) {
             String s = (String) i.next();
             Map m2 = getCodeMapByModule(s);
-            mLogger.info(m2);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("All codes" + m2);
+            }
         }
     }
 

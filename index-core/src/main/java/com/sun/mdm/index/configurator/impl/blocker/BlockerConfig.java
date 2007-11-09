@@ -35,8 +35,11 @@ import org.w3c.dom.NamedNodeMap;
 import java.util.Map;
 import java.util.Hashtable;
 import java.util.Collection;
+import java.util.logging.Level;
 import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 
 /** Blocker configuration class.
@@ -70,7 +73,8 @@ public class BlockerConfig implements ConfigurationInfo {
     /** block definitions */
     private Map definitions;
     
-    private final Logger logger = LogUtil.getLogger(this);
+    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
     
 
     /** Creates a new instance of BlockerConfig */
@@ -163,7 +167,7 @@ public class BlockerConfig implements ConfigurationInfo {
                     }
                 }
             }
-            logger.info("Block Definitions:\n" + LogUtil.mapToString(definitions));
+            mLogger.info(mLocalizer.x("CFG026: Block Definition mappings are: {0}", LogUtil.mapToString(definitions)));
         } catch (Exception ex) {
             throw new ConfigurationException(
                 "Parsing of node failed, caused by : " + ex.getMessage(), ex);

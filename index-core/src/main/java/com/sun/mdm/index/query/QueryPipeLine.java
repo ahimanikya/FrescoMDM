@@ -33,11 +33,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
-
-
-
 /**
  * Splits the QueryObject into multiple 
  * QueryObjects and invokes QueryManager to execute and 
@@ -71,7 +66,6 @@ import com.sun.mdm.index.util.Logger;
  */
 class QueryPipeLine implements AssemblerEngine {
         
-    private final Logger mLogger = LogUtil.getLogger(this);
     private AssemblerEngine assEngineDelegate;
     private int fetchSize = 1000; 
         
@@ -92,7 +86,6 @@ class QueryPipeLine implements AssemblerEngine {
       	mQueryMgr = QueryManagerFactory.getInstance();
       	
       } catch (Exception e) {
-        mLogger.error("Exception", e);
         throw new CreateException(e.getMessage());
       }
     }

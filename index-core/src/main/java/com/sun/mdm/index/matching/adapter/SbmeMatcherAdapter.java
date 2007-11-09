@@ -46,8 +46,10 @@ import com.stc.sbme.api.SbmeMatchingException;
 import com.stc.sbme.api.SbmeMatchEngineException;
 import com.stc.sbme.api.SbmeConfigFilesAccess;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * MatcherAPI implementation that allows MEFA to communicate with the
@@ -65,7 +67,8 @@ public class SbmeMatcherAdapter
     /**  mLogger instance
      *
      */
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     /** Creates new SbmeMatcherAdapter */
     public SbmeMatcherAdapter() {
@@ -164,8 +167,8 @@ public class SbmeMatcherAdapter
                         double currWeight = 
                             someWeights[objToMatchCount][blockRecCount];
                         
-                        if (mLogger.isDebugEnabled()) {                       
-                            mLogger.debug("EUID: "+ currEUID + ", weight:" + currWeight);
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("Retrieved EUID: "+ currEUID + " with weight:" + currWeight);
                         }
                         
                         // Keep the highest weight for each EUID.
@@ -222,29 +225,34 @@ public class SbmeMatcherAdapter
                 
             }
         } catch (SbmeMatchingException ex) {
-            mLogger.error("SbmeMatchingException: " + ex.getMessage());
+            mLogger.warn(mLocalizer.x("MAT016: SBME adapter encountered a matching exception: {0}", 
+                                      ex.getMessage()));
             throw new MatchingException("SbmeMatchingException: " + ex.getMessage());
         } catch (SbmeMatchEngineException ex) {
-            mLogger.error("SbmeMatchEngineException: " + ex.getMessage());
+            mLogger.warn(mLocalizer.x("MAT017: SBME adapter encountered a match engine exception: {0}", 
+                                      ex.getMessage()));
             throw new MatchingException("SbmeMatchEngineException: " + ex.getMessage());
         } catch (ParseException ex) {
-            mLogger.error("ParseException: " + ex.getMessage());
+            mLogger.warn(mLocalizer.x("MAT018: SBME adapter encountered a parsing Exception: {0}", 
+                                      ex.getMessage()));
             throw new MatchingException("ParseException: " + ex.getMessage());
         } catch (EPathException ex) {
-            mLogger.error("EPathException: Failed to match the configured fields in the SystemObject: " 
-                    + ex.getMessage());
+            mLogger.warn(mLocalizer.x("MAT019: SBME adapter failed to match the configured " + 
+                                       "fields in a SystemObject: {0}", ex.getMessage()));
             throw new MatchingException(
                 "Failed to match the configured fields in the SystemObject: " 
                     + ex.getMessage(), ex);
         } catch (QMException ex) {
-            mLogger.error("QMException: Failed to retrieve candidate(s) from database. " 
-                    + ex.getMessage());
+            mLogger.warn(mLocalizer.x("MAT020: SBME adapter encountered a QMException " + 
+                                      "and failed to retrieve candidate " + 
+                                      "record(s) from database: {0}", ex.getMessage()));
             throw new MatchingException(
                 "Failed to retrieve candidate(s) from database. " 
                     + ex.getMessage(), ex);
         } catch (ObjectException ex) {
-            mLogger.error("ObjectException: Failed to convert SystemObject to candidate format for matching. " 
-                    + ex.getMessage());
+            mLogger.warn(mLocalizer.x("MAT021: SBME adapter failed to to convert " + 
+                                      "a SystemObject to candidate format for matching: {0}", 
+                                      ex.getMessage()));
             throw new MatchingException(
                 "Failed to convert SystemObject to candidate format for matching. " 
                     + ex.getMessage(), ex);
@@ -254,8 +262,8 @@ public class SbmeMatcherAdapter
                 try {
                     tupleIter.close();
                 } catch (QMException ex) {
-                    mLogger.error("QMException: Failed to close QMIterator. " 
-                        + ex.getMessage());
+                    mLogger.warn(mLocalizer.x("MAT022: QMException: Failed to close QMIterator. ", 
+                                              ex.getMessage()));
                     throw new MatchingException("Failed to close QMIterator. " 
                         + ex.getMessage(), ex);
                 }
@@ -281,11 +289,10 @@ public class SbmeMatcherAdapter
             
             // Handle the configuration passed in.
             if (config == null) {            
-                mLogger.error("No match engine configuration " 
-                        + "class is configured for this match adapter, unable " 
-                        + "to initialize Match Engine. " 
-                        + SbmeMatcherAdapterConfig.class.getName() 
-                        + " expected.");    
+                mLogger.severe(mLocalizer.x("MAT023: No match engine configuration " 
+                        + "class is configured for this match adapter.  The " 
+                        + "Match Engine cannot be initialized: {0} expected", 
+                        SbmeMatcherAdapterConfig.class.getName()));
                 throw new MatchingException("No match engine configuration " 
                         + "class is configured for this match adapter, unable " 
                         + "to initialize Match Engine. " 
@@ -293,12 +300,11 @@ public class SbmeMatcherAdapter
                         + " expected.");                
             }
             if (!(config instanceof SbmeMatcherAdapterConfig)) {
-                mLogger.error("The configured match engine " 
+                mLogger.severe(mLocalizer.x("MAT024: The configured match engine " 
                         + "configuration class is not compatible with this " 
-                        + "match adapter. " 
-                        + SbmeMatcherAdapterConfig.class.getName() 
-                        + " expected, configured: " 
-                        + config.getClass().getName());
+                        + "match adapter: {0} expected, but configured: {1} ",
+                        SbmeMatcherAdapterConfig.class.getName(),
+                        config.getClass().getName()));
                 throw new MatchingException("The configured match engine " 
                         + "configuration class is not compatible with this " 
                         + "match adapter. " 
@@ -315,17 +321,20 @@ public class SbmeMatcherAdapter
             SbmeConfigFilesAccess cfgFilesAccess = eViewConfig.getConfigFileAccess();
             matchEngine = new SbmeMatchingEngine(cfgFilesAccess);
             matchEngine.initializeData(cfgFilesAccess);
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("Setting configuration file:" + configFileName + " for domain: " + domain);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Setting configuration file:" + configFileName + 
+                             " for domain: " + domain);
             }
             matchEngine.upLoadConfigFile(domain);
         } catch (SbmeMatchEngineException ex) {
-            mLogger.error("SbmeMatchEngineException: Failed initialize match adapter: " + ex.getMessage());
+            mLogger.severe(mLocalizer.x("MAT025: Failed to initialize the SBME match " + 
+                                        "adapter: {0}", ex.getMessage()));
             throw new MatchingException(
                 "Failed initialize match adapter, match engine reports an error: " 
                     + ex.getMessage(), ex);                        
         } catch (Exception ex) {
-            mLogger.error("Exception: Failed to initialize match adapter: " + ex.getMessage());
+            mLogger.severe(mLocalizer.x("MAT026: General failure to initialize " + 
+                                        "the SBME match adapter: {0}", ex.getMessage()));
             throw new MatchingException("Failed to initialize match adapter" 
                 + ex.getMessage(), ex);
         }
@@ -342,7 +351,8 @@ public class SbmeMatcherAdapter
             try {
                 matchEngine.shutdown();
             } catch (Exception ex) {
-                mLogger.error("Exception: Failed to shutdown match engine: " + ex.getMessage());
+                mLogger.severe(mLocalizer.x("MAT027: Failed to shutdown match " + 
+                                            "engine: {0}", ex.getMessage()));
                 throw new MatchingException(
                     "Failed to shutdown match engine: " + ex.getMessage(), ex);            
             } finally {

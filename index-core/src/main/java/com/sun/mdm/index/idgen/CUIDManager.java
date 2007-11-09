@@ -34,8 +34,6 @@ import javax.naming.InitialContext;
 import java.util.HashMap;
 import com.sun.mdm.index.configurator.impl.idgen.EuidGeneratorConfiguration;
 import com.sun.mdm.index.configurator.ConfigurationService;
-import com.sun.mdm.index.util.Logger;
-import com.sun.mdm.index.util.LogUtil;
 import com.sun.mdm.index.master.ConnectionInvalidException;
 import com.sun.mdm.index.objects.metadata.ObjectFactory;
 
@@ -48,8 +46,6 @@ import com.sun.mdm.index.objects.metadata.ObjectFactory;
  * @version 1.0
  */
 public class CUIDManager {
-    
-    private final static Logger LOGGER = LogUtil.getLogger("com.sun.mdm.index.idgen.CUIDManager");
     
     private static final int CHUNK_SIZE = 1000;
     private static final int ID_LENGTH = 20;    // for the legth of the unique ID field of tables

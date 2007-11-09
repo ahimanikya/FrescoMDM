@@ -33,8 +33,6 @@ import java.io.ObjectOutput;
 import java.io.IOException;
 
 import java.util.Date;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 
 /**
  * Object Field definition
@@ -157,7 +155,6 @@ public class ObjectField implements Externalizable  {
     private String mName;
     private int mType;
     private Object mValue;
-    private static final Logger LOGGER = LogUtil.getLogger("com.sun.mdm.index.objects.ObjectField");
 
     public ObjectField() {}
     
@@ -610,7 +607,6 @@ public class ObjectField implements Externalizable  {
                     }
                 }
             } catch (Exception e) {
-                LOGGER.error("Exception", e);
                 throw new ObjectException("Unmatched fields: " 
                     + "\n" + field1.toString() + "\n" + field2.toString() + "\n");
             }

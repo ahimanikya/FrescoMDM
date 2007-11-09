@@ -25,8 +25,6 @@ package com.sun.mdm.index.query;
 import java.util.HashSet;
 import java.util.LinkedList;
 import com.sun.mdm.index.objects.metadata.MetaDataService;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 
 
 /**
@@ -51,9 +49,6 @@ import com.sun.mdm.index.util.Logger;
     // root object name
     private String mroot;
 
-    // logger
-    private final Logger mLogger = LogUtil.getLogger(this);
-    
 
     /**
      * Creates a new instance of SingleQueryParser

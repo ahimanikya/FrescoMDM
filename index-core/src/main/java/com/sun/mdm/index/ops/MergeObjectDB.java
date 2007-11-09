@@ -25,15 +25,15 @@ package com.sun.mdm.index.ops;
 import com.sun.mdm.index.objects.MergeObject;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.ops.exception.OPSException;
+import com.sun.mdm.index.util.Localizer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
 import java.util.ArrayList;
-
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * @author gzheng
@@ -100,7 +100,8 @@ public final class MergeObjectDB extends ObjectPersistenceService {
 
     }
 
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     
     /**
@@ -182,7 +183,6 @@ public final class MergeObjectDB extends ObjectPersistenceService {
             setParam(stmt, 2, "String", originalTransactionID);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            mLogger.error("SQL Error", e);
             String sqlerr = e.getMessage();
 
             ArrayList params = new ArrayList();
@@ -190,10 +190,15 @@ public final class MergeObjectDB extends ObjectPersistenceService {
             params = addobject(params, originalTransactionID);
             
             String sql = sql2str(mUpdateString2, params);
-
+            mLogger.warn(mLocalizer.x("OPS001: MergeObjectDB could not execute " + 
+                                      "this SQL String: {0}", sql));
             throw new OPSException(sql + e.getMessage());
         } catch (OPSException e) {
-            mLogger.error("OPS Error", e);
+            mLogger.warn(mLocalizer.x("OPS002: MergeObjectDB encountered a " + 
+                                      "general OPS exception for unmerge " + 
+                                      "transaction ID = {0}, original " + 
+                                      "transaction ID = {1}: {2}", unmergetn, 
+                                      originalTransactionID, e.getMessage()));
             throw e;
         } finally {
         	try {
@@ -224,7 +229,11 @@ public final class MergeObjectDB extends ObjectPersistenceService {
         try {
             update(conn, null, unmergetn, kepteuid, mergedeuid);
         } catch (OPSException e) {
-            mLogger.error("OPS Error", e);
+            mLogger.warn(mLocalizer.x("OPS003: MergeObjectDB encountered a " + 
+                                      "general OPS exception for unmerge " + 
+                                      "transaction ID = {0}, kept EUID = {1}" + 
+                                      "merged EUID = {2}: {3}", unmergetn, 
+                                      kepteuid, mergedeuid, e.getMessage()));
             throw e;
         } finally {
         	try {
@@ -273,7 +282,8 @@ public final class MergeObjectDB extends ObjectPersistenceService {
             } else {
                 if (mergetn == null) {
                     String mesg = "OPS Error: mergetn of the LID merge is null";
-                    mLogger.error(mesg);
+                    mLogger.warn(mLocalizer.x("OPS004: merge transaction number " + 
+                                              "of the system merge is null"));
                     throw new OPSException(mesg);
                 }
                 lidUnmergeFlag = true;
@@ -285,37 +295,38 @@ public final class MergeObjectDB extends ObjectPersistenceService {
             
             stmt.executeUpdate();
         } catch (SQLException e) {
-            mLogger.error("SQL Error", e);
 
             String sqlerr = e.getMessage();
 
             ArrayList params = new ArrayList();
-
+            String sql = new String();
             if (lidUnmergeFlag == false) {
                 if (euidMergeTransNumFlag == false) {
                     params = addobject(params, unmergetn);                 
                     params = addobject(params, kepteuid);
                     params = addobject(params, mergedeuid);
-                    String sql = sql2str(mUpdateString, params);
-                    throw new OPSException(sql + e.getMessage());
+                    sql = sql2str(mUpdateString, params);
                 } else {
                     params = addobject(params, unmergetn);                 
                     params = addobject(params, mergetn);                 
                     params = addobject(params, kepteuid);
                     params = addobject(params, mergedeuid);
-                    String sql = sql2str(mUpdateString4, params);
-                    throw new OPSException(sql + e.getMessage());
+                    sql = sql2str(mUpdateString4, params);
                 }
             } else {
                 params = addobject(params, unmergetn);                 
                 params = addobject(params, mergetn);
                 params = addobject(params, kepteuid);
             
-                String sql = sql2str(mUpdateString3, params);
-                throw new OPSException(sql + e.getMessage());
+                sql = sql2str(mUpdateString3, params);
             }
+            mLogger.warn(mLocalizer.x("OPS005: MergeObjectDB: A general " + 
+                            "SQL error occurred while executing this " +
+                            "SQL instruction: {0}: {1}", sql, sqlerr));
+            throw new OPSException(sql + e.getMessage());
         } catch (OPSException e) {
-            mLogger.error("OPS Error", e);
+            mLogger.warn(mLocalizer.x("OPS006: MergeObjectDB: An OPS exception " + 
+                                      "occurred: {0}", e.getMessage()));
             throw e;
         } finally {
         	try {

@@ -32,9 +32,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Collections;
-
-import com.sun.mdm.index.util.Logger;
-import com.sun.mdm.index.util.LogUtil;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 
 import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.configurator.impl.WeightedCalculatorConfig;
@@ -60,7 +59,8 @@ public class WeightedSurvivorStrategy implements SurvivorStrategyInterface {
     /** last modified constant */
     public static final String FLD_LAST_MODIFIED = "LastModified";
     
-    private static Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.survivor.impl.WeightedSurvivorStrategy");
+    private transient static final Logger mLogger 
+                = Logger.getLogger("com.sun.mdm.index.survivor.impl.WeightedSurvivorStrategy");
     
     /** configuration object */
     private WeightedCalculatorConfig mConfig;
@@ -172,7 +172,9 @@ public class WeightedSurvivorStrategy implements SurvivorStrategyInterface {
             // get the system id(s) of the highest modified date
             Object lastKey = dateRank.lastKey();
             ArrayList list = (ArrayList) dateRank.get(lastKey);
-            mLogger.debug("processMostRecentModified - highest ranking systems:\n" + list); 
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Processing MostRecentModified - highest ranking systems:\n" + list); 
+            }
             Iterator i = list.iterator();
             
             // increment the utility of the system(s)
@@ -326,14 +328,14 @@ public class WeightedSurvivorStrategy implements SurvivorStrategyInterface {
             heap.put(score, key);
         }
         
-        mLogger.debug("total scores:");
-        mLogger.debug(heap);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("total scores:\n" + heap);
+        }
         
         if (!heap.isEmpty()) {
             Double maxScore = (Double) heap.lastKey();
             SystemFieldListMap.SystemKey maxSystemKey = 
                 (SystemFieldListMap.SystemKey) heap.get(maxScore);
-//            mLogger.info("System with max score : " + maxSystemKey);
             return getCandidateField(candidateId, fields.get(maxSystemKey));
         } else {
             return null;

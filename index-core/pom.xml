@@ -58,7 +58,7 @@
 	            <configuration>
 	              <tasks>
                         <taskdef name="i18n" classname="net.java.hulp.i18n.buildtools.I18NTask" classpath="${basedir}/src/main/resources/globalization/net.java.hulp.i18ntask.jar"/>
-                        <i18n dir="${project.build.directory}/classes" file="${basedir}/src/main/resources/globalization/messages/msgs.properties" prefix="EVIEW-" pattern="([A-Z][A-Z][A-Z]\d\d\d)(: )(.*)" />	              
+                        <i18n dir="${project.build.directory}/classes" file="${basedir}/src/main/resources/com/sun/mdm/index/util/msgs.properties" prefix="MDM-MI-" pattern="([A-Z][A-Z][A-Z]\d\d\d)(: )(.*)" />	              
 	              </tasks> 
 	            </configuration>
 	          </execution>

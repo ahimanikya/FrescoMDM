@@ -26,8 +26,10 @@ import java.util.ArrayList;
 
 import com.sun.mdm.index.query.QueryResults;
 import com.sun.mdm.index.objects.SystemObject;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Impl class for Matcher. Loads and forwards requests to the
@@ -41,7 +43,8 @@ public class MatcherImpl implements Matcher {
     
     private MatcherAPI matcherAPIImpl;
     private MatchEngineConfiguration matchEngineConfig;
-    private Logger mLogger = LogUtil.getLogger(this);
+    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
     
     /**
      * No argument constructor.
@@ -63,33 +66,43 @@ public class MatcherImpl implements Matcher {
      */
     private void initialize() 
             throws MatchingException, InstantiationException, ClassNotFoundException, IllegalAccessException {
-        mLogger.debug("initialize()");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Initializing MatcherImpl");
+        }
         try {
             // use MatcherAPIHelper as factory        
             matcherAPIImpl = new MatcherAPIHelper().getMatcherAPIImpl();
             if (matcherAPIImpl == null) {
-                throw new MatchingException("No MatcherAPI implementation configured.");
+                throw new MatchingException("MatcherAPI implementation has not been configured.");
             }
             matchEngineConfig = new MatcherAPIHelper().getMatchEngineConfigImpl();
             if (matchEngineConfig == null) {
-                mLogger.debug("No MatchEngineConfig implementation configured.");
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("MatchEngineConfig implementation has not been configured.");
+                }
             }
             
             matcherAPIImpl.initialize(matchEngineConfig);
         } catch (MatchingException ex) {
-            mLogger.error("Initializing the match engine failed.", ex);
+            mLogger.severe(mLocalizer.x("MAT001: match engine initialization failed: {0}", 
+                                        ex.getMessage()));
             throw ex;            
         } catch (InstantiationException ex) {
-            mLogger.error("Instantiating the user API implementation class failed.", ex);
+            mLogger.severe(mLocalizer.x("MAT002: Instantiating the user API " +
+                                        "implementation class failed: {0}", 
+                                        ex.getMessage()));
             throw ex;            
         } catch (ClassNotFoundException ex) {
-            mLogger.error("Loading the user API implementation class failed.", ex);
+            mLogger.severe(mLocalizer.x("MAT003: Could not load the user API " +
+                                        " implmentation class: {0}", ex.getMessage()));
             throw ex;            
         } catch (IllegalAccessException ex) {
-            mLogger.error("Accessing the user API implementation class failed.", ex);
+            mLogger.severe(mLocalizer.x("MAT004: Could not access the user API " +
+                                        " implmentation class: {0}", ex.getMessage()));
             throw ex;            
         } catch (RuntimeException ex) {
-            mLogger.error("Initialize failed.", ex);
+            mLogger.severe(mLocalizer.x("MAT005: General failure for match engine " +
+                                        "initialization: {0}", ex.getMessage()));
             throw ex;            
         }
     }    
@@ -101,7 +114,8 @@ public class MatcherImpl implements Matcher {
         	shutdown();
         	
         } catch (Throwable ex) {
-            mLogger.error("Shutting down the match engine failed.", ex);              
+            mLogger.severe(mLocalizer.x("MAT006: Shutting down the match engine failed: {0}", 
+                                        ex.getMessage()));
         }
     }
     

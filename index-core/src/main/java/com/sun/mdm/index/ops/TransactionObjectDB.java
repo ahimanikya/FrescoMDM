@@ -25,6 +25,7 @@ package com.sun.mdm.index.ops;
 import com.sun.mdm.index.objects.TransactionObject;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.ops.exception.OPSException;
+import com.sun.mdm.index.util.ConnectionUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,9 +37,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
-import com.sun.mdm.index.util.ConnectionUtil;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 
 /**
  * @author gzheng
@@ -70,7 +70,7 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
     private static String mSelectDelta = null;          // Find the delta by EUID
     private static String mOperationColumnName = null;  // Name of the operation column.
     
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
 
     /**
      * default constructor
@@ -418,7 +418,7 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
         PreparedStatement stmt = null;
         ResultSet rSet = null;
         try {
-            if (mLogger.isDebugEnabled()) {
+            if (mLogger.isLoggable(Level.FINE)) {
                 ArrayList params = new ArrayList();
                 String sql = null;
 
@@ -436,7 +436,7 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     sql = sql2str(mFindByEUID3, params);
                 }
                 params.add(euid);
-                mLogger.debug("Query String: " + sql);
+                mLogger.fine("Query String for findTransactionObject(): " + sql);
             }
 
             stmt = null;
@@ -558,12 +558,12 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
         PreparedStatement stmt = null;
         ResultSet rSet = null;
         try {
-            if (mLogger.isDebugEnabled()) {
+            if (mLogger.isLoggable(Level.FINE)) {
                 ArrayList params = new ArrayList();
                 params.add(beginTS);
                 String sql = sql2str(mFindByEUID4, params);
                 params.add(euid);
-                mLogger.debug("Query String: " + sql);
+                mLogger.fine("Query String for findTransactionObject(): " + sql);
             }
             stmt = getStatement(mFindByEUID4, conn);
             setParam(stmt, 1, "Timestamp", beginTS);
@@ -730,8 +730,9 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
             queryStr +=  "\n       order by \n" 
                      + "               " + orderBy + " \n";
             
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("TM: transaction log query string: \n" + queryStr);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("TransactionObjectDB: the transaction log query " 
+                               + "string is: \n" + queryStr);
             }
 
             queryStmt = conn.createStatement();
@@ -808,13 +809,13 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
         PreparedStatement stmt = null;
         ResultSet rSet = null;
         try {
-            if (mLogger.isDebugEnabled()) {
+            if (mLogger.isLoggable(Level.FINE)) {
                 ArrayList params = new ArrayList();
                 params.add(beginTS);
                 params.add(euid);
                 params.add(euid);
                 String sql = sql2str(mFindByEUID5, params);
-                mLogger.debug("Query String: " + sql);
+                mLogger.fine("Query String for findTransactionObjectForRecovery(): " + sql);
             }
 
             stmt = getStatement(mFindByEUID5, conn);

@@ -39,14 +39,16 @@ import com.sun.mdm.index.report.UnmergeReportConfig;
 import com.sun.mdm.index.report.UpdateReport;
 import com.sun.mdm.index.report.UpdateReportConfig;
 import com.sun.mdm.index.util.ConnectionUtil;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 
 /**
@@ -61,7 +63,8 @@ public class BatchReportGeneratorEJB implements BatchReportGeneratorRemote {
    
     static final String DATEFORMAT = "yyyy-MM-dd HH:mm:ss";
     static final String DBDATEFORMAT = "yyyy-MM-dd hh24:MI:ss";
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     private BatchReportGeneratorImpl mBatchReportGeneratorImpl;
     
     /**
@@ -106,8 +109,8 @@ public class BatchReportGeneratorEJB implements BatchReportGeneratorRemote {
                 con.close();
             }
         } catch (SQLException e) {
-            mLogger.error("releaseConnection(): could not close JDBC connection",
-                e);
+            mLogger.warn(mLocalizer.x("RPE001: BatchReportGeneratorEJB.releaseConnection(): could not " +
+                                      "close JDBC connection: {0}", e.getMessage()));
         }
     }
 
@@ -294,8 +297,6 @@ public class BatchReportGeneratorEJB implements BatchReportGeneratorRemote {
     private Connection getConnection() throws ReportException {
         try {
             Connection con = ConnectionUtil.getConnection();
-            mLogger.debug("in getConnection(): " + con);
-
             return con;
         } catch (Exception e) {
             throw new ReportException("Failed to get JDBC connection.", e);

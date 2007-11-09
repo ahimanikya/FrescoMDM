@@ -44,13 +44,15 @@ import com.stc.sbme.api.SbmeStandRecordFactory;
 import com.stc.sbme.api.SbmeStandardizationException;
 import com.stc.sbme.api.SbmeMatchEngineException;
 import com.stc.sbme.api.SbmeConfigFilesAccess;
+import com.sun.mdm.index.util.Localizer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * StandardizerAPI implementation that allows MEFA to communicate with the
@@ -74,7 +76,8 @@ public class SbmeStandardizerAdapter
     /**  mLogger instance
      *
      */
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     /** Creates new SbmeStandardizerAdapter */
     public SbmeStandardizerAdapter() {
@@ -139,16 +142,10 @@ public class SbmeStandardizerAdapter
             objToStandardize = 
                 phoneticizeFields(objToStandardize, phoneticFields);
         } catch (EPathException ex) {
-            mLogger.error("EPathException: Failed to standardize the "
-                    + "configured fields in the SystemObject: " 
-                    + ex.getMessage());
             throw new StandardizationException("StandardizationException: Failed "
                     + "to standardize the configured fields in the SystemObject: " 
                     + ex.getMessage(), ex);
         } catch (PhoneticEncoderException ex) {
-            mLogger.error("PhoneticEncoderException: Failed to create phonetic code "
-                    + "for the configured fields in the SystemObject: " 
-                    + ex.getMessage());
             throw new StandardizationException("Failed to create phonetic code "
                     + "for the configured fields in the SystemObject: " 
                     + ex.getMessage(), ex);
@@ -156,19 +153,14 @@ public class SbmeStandardizerAdapter
             // This signifies a problem with the standardization engine
             // The normal result of it not being able to standardize a record would be to return
             // null for that record, not to throw an exception
-            mLogger.error("SbmeStandardizationException: Standardization engine " 
-                    + "could not standardize the given record. " 
-                    + ex.getMessage());
             throw new StandardizationException("The Standardization engine " 
                     + "could not standardize the given record. " 
                     + ex.getMessage(), ex);
         } catch (SbmeMatchEngineException ex) {
-            mLogger.error("SbmeMatchEngineException: Failed to standardize:" + ex.getMessage());
             throw new StandardizationException(
                 "Failed to standardize, standardization engine reports an error: " 
                     + ex.getMessage(), ex);                        
         } catch (java.io.IOException ex) {
-            mLogger.error("IOException: Failed to standardize:" + ex.getMessage());
             throw new StandardizationException("The Standardization engine " 
                     + " failed to standardize the given record, an IOException was thrown. " 
                     + ex.getMessage(), ex);
@@ -241,11 +233,6 @@ public class SbmeStandardizerAdapter
             phoneticizer = new Phoneticizer();
             
             if (config == null) {            
-                mLogger.error("No standardization engine "
-                        + "configuration class is configured for this standardization " 
-                        + "adapter, unable to initialize Standardization Engine. " 
-                        + SbmeStandardizerAdapterConfig.class.getName()
-                        + " expected.");            
                 throw new StandardizationException("No standardization engine "
                         + "configuration class is configured for this standardization " 
                         + "adapter, unable to initialize Standardization Engine. " 
@@ -253,12 +240,6 @@ public class SbmeStandardizerAdapter
                         + " expected.");                
             }
             if (!(config instanceof SbmeStandardizerAdapterConfig)) {
-                mLogger.error("The configured " 
-                        + "standardization engine configuration class is not " 
-                        + "compatible with this standardization adapter. " 
-                        + SbmeStandardizerAdapterConfig.class.getName()
-                        + " expected, configured: " 
-                        + config.getClass().getName());
                 throw new StandardizationException("The configured " 
                         + "standardization engine configuration class is not " 
                         + "compatible with this standardization adapter. " 
@@ -275,12 +256,10 @@ public class SbmeStandardizerAdapter
             standardizationEngine.initializeData(cfgFilesAccess);
 
         } catch (SbmeMatchEngineException ex) {
-            mLogger.error("SbmeMatchEngineException: Failed to initialize standardizer adapter: " + ex.getMessage());
             throw new StandardizationException(
                 "Failed to initialize standardizer adapter, standardization engine reports an error: " 
                     + ex.getMessage(), ex);                                    
         } catch (Exception ex) {
-            mLogger.error("Exception: Failed to initialize standardizer adapter. " + ex.getMessage());
             throw new StandardizationException("Failed to initialize " 
                 + "standardizer adapter. " + ex.getMessage(), ex);
         }
@@ -295,10 +274,11 @@ public class SbmeStandardizerAdapter
         if (standardizationEngine != null) {
             try {
                 // TODO: add shutdown call once engine provides one
-                mLogger.debug("Shutting down standardization engine");
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Shutting down the SBME standardization engine");
+                }
                 //standardizationEngine.shutdown();
             } catch (Exception ex) {
-                mLogger.error("Failed to shutdown standardization engine: " + ex.getMessage());
                 throw new StandardizationException(
                     "Failed to shutdown standardization engine: " + ex.getMessage(), ex);
             } finally {
@@ -493,11 +473,6 @@ public class SbmeStandardizerAdapter
                 try {
                     standRec = standRecFactory.getInstance(standType);
                 } catch (IllegalArgumentException ex) {
-                    mLogger.error("The configured " 
-                            + "standardization type is invalid: " + standType
-                            + ". The standardization engine threw an exception "
-                            + "creating a record of this type."  
-                            + ex.getMessage());
                     throw new StandardizationException("The configured " 
                             + "standardization type is invalid: " + standType
                             + ". The standardization engine threw an exception "

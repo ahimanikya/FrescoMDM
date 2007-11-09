@@ -27,9 +27,11 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.HashMap;
+import java.util.logging.Level;
 import com.sun.mdm.index.objects.exception.ObjectException;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
 * The <b>SBR</b> class represents the information about an entity that is
@@ -45,7 +47,8 @@ public class SBR extends SystemObject {
    private static ArrayList mAuxNameList = null;
    private static ArrayList mAuxTypeList = null;
    // logger
-   private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
 
    static {
        mAuxNameList = new ArrayList();
@@ -603,7 +606,7 @@ public class SBR extends SystemObject {
 		   		recalculateIndex();
               }
               catch ( ObjectException e ) {
-           	      mLogger.error(e.getMessage(), e);
+           	      mLogger.warn(mLocalizer.x("OBJ014: SBR could not set the object: {0}", e.getMessage()));
               }
 
               

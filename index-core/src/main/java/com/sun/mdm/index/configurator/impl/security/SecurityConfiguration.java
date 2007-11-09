@@ -23,13 +23,15 @@
 package com.sun.mdm.index.configurator.impl.security;
 
 import java.util.Hashtable;
+import java.util.logging.Level;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import com.sun.mdm.index.configurator.ConfigurationException;
 import com.sun.mdm.index.configurator.ConfigurationInfo;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * @author jwu
@@ -44,7 +46,8 @@ public class SecurityConfiguration implements ConfigurationInfo {
     static final String TAG_SECURITYPLUGIN = "SecurityPlugInClass";
   
     private String msecurityPlugInClassName;
-       private final Logger logger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
 
 
@@ -119,7 +122,7 @@ public class SecurityConfiguration implements ConfigurationInfo {
                     }
                 }
             }
-            logger.info("SecurityConfiguration:securityPlugInClassName" + msecurityPlugInClassName);
+            mLogger.info(mLocalizer.x("CFG012: SecurityConfiguration: securityPlugInClassName is {0}", msecurityPlugInClassName));
         } catch (Exception e) {
             throw new ConfigurationException(e.getMessage());
         }

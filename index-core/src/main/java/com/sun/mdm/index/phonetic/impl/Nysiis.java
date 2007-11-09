@@ -25,8 +25,8 @@ package com.sun.mdm.index.phonetic.impl;
 import com.sun.mdm.index.phonetic.PhoneticEncoder;
 import com.sun.mdm.index.phonetic.PhoneticEncoderException;
 import com.stc.sbme.util.EmeUtil;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Encode a string using the NYSIIS algorithm.
@@ -38,7 +38,7 @@ public class Nysiis implements PhoneticEncoder {
     public static final String ENCODING_TYPE = "NYSIIS";
     StringBuffer word = null;
 
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     
     
     /** Creates new Nysiis */
@@ -85,8 +85,8 @@ public class Nysiis implements PhoneticEncoder {
         
         char ch;
         
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("encoding: " + originalWord);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Creating NYSIIS encoding for: " + originalWord);
         }
         
         if (originalWord == null) {
@@ -195,8 +195,8 @@ public class Nysiis implements PhoneticEncoder {
             word.insert(0, first);
         }
 
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("encoded: " + word);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Created NYSIIS encoding: " + word);
         }
         
         return word.toString();

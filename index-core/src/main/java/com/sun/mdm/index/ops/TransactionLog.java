@@ -48,8 +48,10 @@ import com.sun.mdm.index.objects.epath.EPathException;
 
 import java.util.StringTokenizer;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * @author gzheng
@@ -82,7 +84,8 @@ public final class TransactionLog implements Externalizable {
     private String mPath;
     private Object mValue;
 
-    private static final Logger LOGGER = LogUtil.getLogger("com.sun.mdm.index.ops.TransactionLog");
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.ops.TransactionLog");
+    private transient static final Localizer mLocalizer = Localizer.get();
     
     /**
      * default constructor
@@ -130,7 +133,7 @@ public final class TransactionLog implements Externalizable {
                 }                                
             }
         } catch (ObjectException ex) {
-            LOGGER.error("ObjectException", ex);
+            mLogger.warn(mLocalizer.x("OPS011: Encountered an error while retrieving the Key Search string: {0}", ex.getMessage()));
         }
 
         return idx;
@@ -202,9 +205,9 @@ public final class TransactionLog implements Externalizable {
                         log.setFunction(TransactionLog.FUNCTION_REMOVE);
                         log.setValue(n);
             
-                        if (LOGGER.isDebugEnabled()) {
-                            LOGGER.debug("path: " + log.getPath());
-                            LOGGER.debug("function: " + log.getFunction());
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("Log path is: " + log.getPath());
+                            mLogger.fine("Log function is: " + log.getFunction());
                         }
                         
                         if (null == ret) {
@@ -246,9 +249,9 @@ public final class TransactionLog implements Externalizable {
                         log.setFunction(TransactionLog.FUNCTION_ADD);
                         log.setValue(null);
 
-                        if (LOGGER.isDebugEnabled()) {
-                            LOGGER.debug("path: " + log.getPath());
-                            LOGGER.debug("function: " + log.getFunction());
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("Log path is: " + log.getPath());
+                            mLogger.fine("Log function is: " + log.getFunction());
                         }
 
                         if (null == ret) {
@@ -509,19 +512,19 @@ public final class TransactionLog implements Externalizable {
                     ArrayList list = (ArrayList) delta;
                     TransactionLog log = (TransactionLog) list.get(0);
                     
-                    if (LOGGER.isDebugEnabled()) {
-                        LOGGER.debug("recovering complete enterprise object");
-                        LOGGER.debug("     path: " + log.getPath());
-                        LOGGER.debug("     value: " + log.getValue());
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("Recovering complete enterprise object.");
+                        mLogger.fine("     log path is: " + log.getPath());
+                        mLogger.fine("     log value is: " + log.getValue());
                         switch (log.getFunction()) {
                         case TransactionLog.FUNCTION_UPDATE:
-                            LOGGER.debug("     function: update");
+                            mLogger.fine("     log function is: update");
                             break;
                         case TransactionLog.FUNCTION_REMOVE:
-                            LOGGER.debug("     function: remove");
+                            mLogger.fine("     log function is: remove");
                             break;
                         case TransactionLog.FUNCTION_ADD:
-                            LOGGER.debug("     function: add");
+                            mLogger.fine("     log function is: add");
                             break;
                         }
                     }
@@ -539,27 +542,23 @@ public final class TransactionLog implements Externalizable {
                         Object v = log.getValue();
                         String p = log.getPath();
                     
-                        if (LOGGER.isDebugEnabled()) {
-                            LOGGER.debug("     path: " + p);
-                            LOGGER.debug("     old value: " + v);
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("     Log path is: " + p);
+                            mLogger.fine("     Log value is: " + v);
                             switch (f) {
                             case TransactionLog.FUNCTION_UPDATE:
-                                LOGGER.debug("     function: update");
+                                mLogger.fine("     Log function: update");
                                 break;
                             case TransactionLog.FUNCTION_REMOVE:
-                                LOGGER.debug("     function: remove");
+                                mLogger.fine("     Log function: remove");
                                 break;
                             case TransactionLog.FUNCTION_ADD:
-                                LOGGER.debug("     function: add");
+                                mLogger.fine("     Log function: add");
                                 break;
                             }
                         }
                     
                         if (f != TransactionLog.FUNCTION_ADD) {
-                            if (LOGGER.isDebugEnabled()) {
-                                LOGGER.debug("<<skipped for the first round>>");
-                            }
-                            
                             continue;
                         }
                     
@@ -577,8 +576,8 @@ public final class TransactionLog implements Externalizable {
                         if (childNode == null) {
                             throw new ObjectException("Child node is null");
                         }
-                        if (LOGGER.isDebugEnabled()) {
-                            LOGGER.debug("TM: child node to be removed: " + childNode);
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("TransactionLog: child node to be removed: " + childNode);
                         }
 
                         if (parentNode == null) {
@@ -630,28 +629,24 @@ public final class TransactionLog implements Externalizable {
                         Object v = log.getValue();
                         String p = log.getPath();
                     
-                        if (LOGGER.isDebugEnabled()) {
-                            LOGGER.debug("     old value: " + v);
-                            LOGGER.debug("path: " + p);
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("     log value: " + v);
+                            mLogger.fine("     log path: " + p);
                     
                             switch (f) {
                             case TransactionLog.FUNCTION_UPDATE:
-                                LOGGER.debug("     function: update");
+                                mLogger.fine("     log function: update");
                                 break;
                             case TransactionLog.FUNCTION_REMOVE:
-                                LOGGER.debug("     function: remove");
+                                mLogger.fine("     log function: remove");
                                 break;
                             case TransactionLog.FUNCTION_ADD:
-                                LOGGER.debug("     function: add");
+                                mLogger.fine("     log function: add");
                                 break;
                             }
                         }
                     
                         if (f == TransactionLog.FUNCTION_ADD) {
-                            if (LOGGER.isDebugEnabled()) {
-                                LOGGER.debug("<<skipped for the second round>>");
-                            }
-                            
                             continue;
                         }
                     
@@ -684,10 +679,10 @@ public final class TransactionLog implements Externalizable {
                 ret = eo;
             }
         } catch (ObjectException ex) {
-            LOGGER.error("Exception", ex);
+            mLogger.warn(mLocalizer.x("OPS012: TransactionLog.applyDelta() encountered an ObjectException: {0}", ex.getMessage()));
             throw ex;
         } catch (EPathException ex) {
-            LOGGER.error("Exception", ex);
+            mLogger.warn(mLocalizer.x("OPS013: TransactionLog.applyDelta() encountered an EPathException: {0}", ex.getMessage()));
             throw ex;
         }
         
@@ -717,26 +712,26 @@ public final class TransactionLog implements Externalizable {
                 parentPath = parentPath.substring(0, periodPos) + ".*";
                 
                 
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("(getParentNode): path: " + path);
-                    LOGGER.debug("(getParentNode): parent path: " + parentPath);
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("(getParentNode): path: " + path);
+                    mLogger.fine("(getParentNode): parent path: " + parentPath);
                 }
             
                 ret = (ObjectNode) EPathAPI.getFieldValue(parentPath, node);
             } else {
                 int periodPos = path.lastIndexOf(".");
                 String parentPath = path.substring(0, periodPos) + ".*";
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("(getParentNode): path: " + path);
-                    LOGGER.debug("(getParentNode): parent path: " + parentPath);
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("(getParentNode): path: " + path);
+                    mLogger.fine("(getParentNode): parent path: " + parentPath);
                 }
             
                 ret = (ObjectNode) EPathAPI.getFieldValue(parentPath, node);
             }
         } catch (ObjectException ex) {
-            LOGGER.error("Exception", ex);
+            mLogger.warn(mLocalizer.x("OPS014: getParentNode() encountered an ObjectException: {0}", ex.getMessage()));
         } catch (EPathException ex) {
-            LOGGER.error("Exception", ex);
+            mLogger.warn(mLocalizer.x("OPS015: getParentNode() encountered an EPathException: {0}", ex.getMessage()));
         }
         
 

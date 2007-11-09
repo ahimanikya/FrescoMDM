@@ -28,8 +28,8 @@ import com.sun.mdm.index.objects.exception.NotNullableFieldException;
 import com.sun.mdm.index.objects.exception.InvalidKeyObjectException;
 import com.sun.mdm.index.objects.exception.InvalidFieldNameException;
 import com.sun.mdm.index.objects.exception.DuplicateChildKeyException;
-//import com.sun.mdm.index.objects.validation.exception.MaximumConstraintException;
 import com.sun.mdm.index.ops.TransactionLog;
+import com.sun.mdm.index.util.Localizer;
 
 
 import java.io.Externalizable;
@@ -43,8 +43,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 
 
@@ -109,8 +110,8 @@ public class ObjectNode implements Externalizable {
    private final int mObjectAddAccessMask = 8;
    private ArrayList mFieldUpdateLogs = null;
 
-   private Logger mLogger = LogUtil.getLogger(this);
-   private boolean mDebug = mLogger.isDebugEnabled();
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
 
    /**
     * list of child object tags
@@ -352,7 +353,7 @@ public class ObjectNode implements Externalizable {
    		}
 
    	} catch (Exception e) {
-   		mLogger.error("ObjectException", e);
+   		mLogger.warn(mLocalizer.x("OBJ001: Child object(s) could not be retrieved: {0}", e.getMessage()));
    		throw new ObjectException(e.getMessage());
    	}
    	return ret;
@@ -1615,7 +1616,7 @@ public class ObjectNode implements Externalizable {
    	   	   	}
    	   	}
    	   	catch ( ObjectException e ) {
-   	   		mLogger.error(e.getMessage(), e);
+   	   		mLogger.warn(mLocalizer.x("OBJ002: ObjectNode could not set the remove flag: {0}", e.getMessage()));
    	   		return;
    		}
 
@@ -1630,7 +1631,7 @@ public class ObjectNode implements Externalizable {
        		mParent.createChildIndex(this,false);
        	}
        	catch ( ObjectException e ) {
-   	   		mLogger.error(e.getMessage(), e);
+   	   		mLogger.warn(mLocalizer.x("OBJ003: ObjectNode could create the child index: {0}", e.getMessage()));
        		return;
        	}
        }
@@ -2172,7 +2173,7 @@ public class ObjectNode implements Externalizable {
        try{
            return equals((ObjectNode)node);
        }catch (ObjectException e){ 
-           mLogger.error(e.getMessage(), e);
+           mLogger.warn(mLocalizer.x("OBJ004: general error in invoking the equals method: {0}", e.getMessage()));
            return false;
        }
    }
@@ -2200,7 +2201,7 @@ public class ObjectNode implements Externalizable {
        	 		recalculateIndex();
        	 	}
        	 	catch ( ObjectException e ) {
-       	   		mLogger.error(e.getMessage(), e);
+               mLogger.warn(mLocalizer.x("OBJ005: Child node could not be removed: {0}", e.getMessage()));
              }
        }
    }
@@ -2220,7 +2221,7 @@ public class ObjectNode implements Externalizable {
                clearChildrenForType(aTargetChildren);
                recalculateIndex();               }
                catch ( ObjectException e ) {
-           	   		mLogger.error(e.getMessage(), e);
+                   mLogger.warn(mLocalizer.x("OBJ006: Children nodes could not be removed: {0}", e.getMessage()));
                }
            }
        }
@@ -2241,7 +2242,7 @@ public class ObjectNode implements Externalizable {
        	   		recalculateIndex();
        		}
            	catch ( ObjectException e ) {
-       	   		mLogger.error(e.getMessage(), e);
+                mLogger.warn(mLocalizer.x("OBJ007: Could not remove children nodes for type = {0}: {1}", type, e.getMessage()));
            	}
        }
    }
@@ -2782,7 +2783,7 @@ public class ObjectNode implements Externalizable {
                }
            }
        } catch (ObjectException ex) {
-           mLogger.error("ObjectException", ex);
+            mLogger.warn(mLocalizer.x("OBJ008: Could not retrieve the flag string: {0}", ex.getMessage()));
        }
 
        ArrayList aChildren = getAllChildrenFromHashMap();
@@ -2876,7 +2877,9 @@ public class ObjectNode implements Externalizable {
                     String msg= ex.getMessage();
                     if (msg != null)  {
                         if (msg.indexOf("local class incompatible:") == -1) {
-                            mLogger.error("IOException", ex);
+                            mLogger.warn(mLocalizer.x("OBJ009: Version 1: IOException " + 
+                                                "encountered during deserialization: {0}", 
+                                                ex.getMessage()));
                         }
                     }
                     throw new java.io.IOException(ex.getMessage());
@@ -2950,8 +2953,11 @@ public class ObjectNode implements Externalizable {
                 } catch (ObjectException ex) {
                     String msg= ex.getMessage();
                     if (msg != null)  {
-                        if (msg.indexOf("local class incompatible:") == -1)
-                            mLogger.error("IOException", ex);
+                        if (msg.indexOf("local class incompatible:") == -1) {
+                            mLogger.warn(mLocalizer.x("OBJ010: Version 2: IOException " + 
+                                                "encountered during deserialization: {0}", 
+                                                ex.getMessage()));
+                        }
                     }
                     throw new java.io.IOException(ex.getMessage());
                 }
@@ -3023,8 +3029,11 @@ public class ObjectNode implements Externalizable {
             } catch (java.io.IOException ex) {
                 String msg= ex.getMessage();
                 if (msg != null)  {
-                    if (msg.indexOf("local class incompatible:") == -1)
-                           mLogger.error("IOException", ex);
+                    if (msg.indexOf("local class incompatible:") == -1) {
+                            mLogger.warn(mLocalizer.x("OBJ011: Version 2: IOException " + 
+                                                "encountered when reading children: {0}", 
+                                                ex.getMessage()));
+                    }
                 }
                 throw new java.io.IOException(ex.getMessage());
             }
@@ -3090,7 +3099,8 @@ public class ObjectNode implements Externalizable {
        add(aTargetChildren, child);
        }
        catch ( Exception e) {
-   	   		mLogger.error(e.getMessage(), e);
+            mLogger.warn(mLocalizer.x("OBJ012: Could not add a child to the " + 
+                                "type array list: {0}", e.getMessage()));
        }
    }
 

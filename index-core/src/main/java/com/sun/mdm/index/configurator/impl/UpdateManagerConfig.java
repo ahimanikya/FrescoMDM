@@ -24,11 +24,14 @@ package com.sun.mdm.index.configurator.impl;
 
 import com.sun.mdm.index.configurator.ConfigurationException;
 import com.sun.mdm.index.configurator.ConfigurationInfo;
+import com.sun.mdm.index.util.Localizer;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import java.util.Hashtable;
+import java.util.logging.Level;
 import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 
 /**
@@ -46,7 +49,8 @@ public class UpdateManagerConfig
     private static final String SUNMERGE_POLICY = "SystemUnmergePolicy";
     private static final String UNDO_ASSUME_POLICY = "UndoAssumeMatchPolicy";
     
-    private final Logger logger = LogUtil.getLogger(this);
+    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
     
     private boolean mSkipUpdateIfNoChange = true;
 
@@ -120,7 +124,8 @@ public class UpdateManagerConfig
                 }
             }
         }
-        logger.info("Update Manager Configuration: policy class names:\n" + LogUtil.mapToString(mClassNames));
+        mLogger.info(mLocalizer.x("CFG023: Update Manager Configuration: the policy class name mappings are: {0}", 
+                                  LogUtil.mapToString(mClassNames)));
     }
     
     /** Return the Enterprise unmerge policy.

@@ -32,8 +32,6 @@ import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.objects.metadata.MetaDataService;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.index.util.ConnectionUtil;
 
 /**
@@ -53,7 +51,6 @@ public class LocalIdValidator implements ObjectValidator {
     private Hashtable mhIdDefs = new Hashtable();
     private final static String DB_PROP_KEY ="resJNDI";
     private final static String DB_PROP_FILE="eviewdb.properties";
-    private final Logger mLogger = LogUtil.getLogger(this);
     private boolean initialized = false;
 
     /**

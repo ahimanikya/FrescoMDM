@@ -32,9 +32,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
 import com.sun.mdm.index.util.Constants;
 import com.sun.mdm.index.util.ConnectionUtil;
 import com.sun.mdm.index.objects.metadata.ObjectFactory;
@@ -46,7 +48,8 @@ import com.sun.mdm.index.objects.metadata.ObjectFactory;
  */
 public class QueryManagerImpl implements QueryManager {
         
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     private static int connectionCounter = 0;
    
@@ -113,8 +116,8 @@ public class QueryManagerImpl implements QueryManager {
             }
             int queryOption = qobject.getQueryOption();
 
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("QueryObject:\n" + qobject);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("QueryObject:\n" + qobject);
             } 
            
             qobject.preInitializeForCacheComparision();
@@ -123,12 +126,12 @@ public class QueryManagerImpl implements QueryManager {
             
             QueryObjectCache qc = qcManager.getQueryObjectCache(qobject);
             
-            if (mLogger.isDebugEnabled()) {
+            if (mLogger.isLoggable(Level.FINE)) {
             	if ( qc == null ) {
-            		mLogger.debug(Thread.currentThread() + "No Match in  query cache found");
+            		mLogger.fine(Thread.currentThread() + "No Match in  query cache found");
             	}
             	else {
-            		mLogger.debug(Thread.currentThread() + "Match with cache found");            		
+            		mLogger.fine(Thread.currentThread() + "Match with cache found");            		
             	}
             } 
 
@@ -151,9 +154,9 @@ public class QueryManagerImpl implements QueryManager {
 
             int sqlSize = sqlDesc.length;
 
-            if (mLogger.isDebugEnabled()) {
+            if (mLogger.isLoggable(Level.FINE)) {
                 for (int i = 0; i < sqlSize; i++) {
-                    mLogger.debug(sqlDesc[i]);
+                    mLogger.fine("SQL description[" + i + "]: " + sqlDesc[i]);
                 }
             }
             
@@ -211,8 +214,8 @@ public class QueryManagerImpl implements QueryManager {
         
         boolean closeDbConnection = false;
         try {
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("QueryObject:\n" + qobject);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("QueryObject:\n" + qobject);
             }
             
             // Get the connection if necessary and database information
@@ -236,12 +239,12 @@ public class QueryManagerImpl implements QueryManager {
             //QueryObjectCache qc = getQueryObjectCache(qobject);
             QueryObjectCache qc = qcManager.getQueryObjectCache(qobject);
             
-            if (mLogger.isDebugEnabled()) {
+            if (mLogger.isLoggable(Level.FINE)) {
             	if ( qc == null ) {
-                    mLogger.debug(Thread.currentThread() + " @@ No Match in  query cache found");
+                    mLogger.fine(Thread.currentThread() + " @@ No Match in  query cache found");
             	}
             	else {
-            		mLogger.debug(Thread.currentThread() + " @@ Match with cache found");         		
+            		mLogger.fine(Thread.currentThread() + " @@ Match with cache found");         		
             	}
             } 
 
@@ -271,8 +274,8 @@ public class QueryManagerImpl implements QueryManager {
                 qmIterator.initCompile(sqlDesc, assDesc);
                 
                 
-                if (mLogger.isDebugEnabled()) {
-                    mLogger.debug("Will this Query use prepared Statement & participate in Cache :  " + qobject.isPrepare());
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Will this Query use prepared Statement & participate in Cache :  " + qobject.isPrepare());
                 }
 
                 if (qobject.isPrepare()) {
@@ -286,9 +289,9 @@ public class QueryManagerImpl implements QueryManager {
 
             int sqlSize = sqlDesc.length;
 
-            if (mLogger.isDebugEnabled()) {
+            if (mLogger.isLoggable(Level.FINE)) {
                 for (int i = 0; i < sqlSize; i++) {
-                    mLogger.debug(sqlDesc[i]);
+                    mLogger.fine("SQL description[" + i + "]: " + sqlDesc[i]);
                 }
             }
 
@@ -316,7 +319,7 @@ public class QueryManagerImpl implements QueryManager {
             
             return qmIterator;
         } catch (SQLException sqe) {
-            mLogger.debug("Exception", sqe);
+            mLogger.warn(mLocalizer.x("QUE003: executeAssemble() failed: {0}", sqe));
             throw new QMException(sqe);
         } catch (Exception ex) {
             throw new QMException(ex);
@@ -334,8 +337,8 @@ public class QueryManagerImpl implements QueryManager {
     public void prepare(QueryObject qobject)
         throws QMException {
         try {
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("QueryObject:\n" + qobject);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("QueryObject:\n" + qobject);
             }
 
             // Get the connection and database information
@@ -345,12 +348,12 @@ public class QueryManagerImpl implements QueryManager {
             AssembleDescriptor assDesc = qobject.getAssembleDescriptor();
             QueryObjectCache qc = qcManager.getQueryObjectCache(qobject);
             
-            if (mLogger.isDebugEnabled()) {
+            if (mLogger.isLoggable(Level.FINE)) {
             	if ( qc == null ) {
-            		mLogger.debug(Thread.currentThread() + " ## No Match in  query cache found");
+            		mLogger.fine(Thread.currentThread() + " ## No Match in  query cache found");
             	}
             	else {
-            		mLogger.debug(Thread.currentThread() + " ## Match with cache found");  		
+            		mLogger.fine(Thread.currentThread() + " ## Match with cache found");  		
             	}
             } 
             QMIterator qmIterator = null;
@@ -388,9 +391,9 @@ public class QueryManagerImpl implements QueryManager {
                 }
             }
 
-            if (mLogger.isDebugEnabled()) {
+            if (mLogger.isLoggable(Level.FINE)) {
                 for (int i = 0; i < sqlSize; i++) {
-                    mLogger.debug(sqlDesc[i]);
+                    mLogger.fine("SQL description[" + i + "]: " + sqlDesc[i]);
                 }
             }
 
@@ -418,14 +421,13 @@ public class QueryManagerImpl implements QueryManager {
     private Connection getConnection()
         throws Exception {
                 Connection con = ConnectionUtil.getConnection();
-                mLogger.debug("in getConnection(): " + con);
                 boolean autocommit = false;
                 if (Constants.AUTOCOMMIT) {
                   autocommit = true;
                 }
 
                 con.setAutoCommit(autocommit);
-         incrementConnectionCounter();
+                incrementConnectionCounter();
                 return con;
 
     }
@@ -483,8 +485,8 @@ public class QueryManagerImpl implements QueryManager {
                             for ( int k=0; k < size; k++ ) {                            
                             	Object value = values[k];
                                 setParam(statements[i], ++prepareIndex, cond.getType(), value);
-                                if (mLogger.isDebugEnabled()) {
-                                    mLogger.debug(Thread.currentThread() + " cond =" + cond + " value = " + value);                     
+                                if (mLogger.isLoggable(Level.FINE)) {
+                                    mLogger.fine(Thread.currentThread() + " cond =" + cond + " value = " + value);                     
                                 }
                             }
                         }
@@ -492,8 +494,8 @@ public class QueryManagerImpl implements QueryManager {
                              
                             Object value = cond.getValue();
                             setParam(statements[i], ++prepareIndex, cond.getType(), value);
-                            if (mLogger.isDebugEnabled()) {
-                                mLogger.debug(Thread.currentThread() + " cond =" + cond + " value = " + value);
+                            if (mLogger.isLoggable(Level.FINE)) {
+                                mLogger.fine(Thread.currentThread() + " cond =" + cond + " value = " + value);
                             }
                         }
                 }

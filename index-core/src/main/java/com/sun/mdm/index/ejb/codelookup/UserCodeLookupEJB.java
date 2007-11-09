@@ -28,8 +28,6 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import com.sun.mdm.index.codelookup.CodeLookupException;
 import com.sun.mdm.index.codelookup.UserCodeRegistry;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 
 
 @Stateless(mappedName="ejb/_EVIEW_OBJECT_TOKEN_UserCodeLookup")
@@ -39,11 +37,9 @@ import com.sun.mdm.index.util.Logger;
           mappedName="jdbc/_EVIEW_OBJECT_TOKEN_DataSource" )
 public class UserCodeLookupEJB implements UserCodeLookupRemote {
 
-    private final Logger mLogger = LogUtil.getLogger(this);
 
     /** Creates new UserCodeLookupEJB */
     public UserCodeLookupEJB() {
-        mLogger.debug("UserCodeLookupEJB()");
     }
     
     /** See UserCodeLookup

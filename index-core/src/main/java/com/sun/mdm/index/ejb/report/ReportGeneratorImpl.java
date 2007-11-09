@@ -30,8 +30,6 @@ import java.util.GregorianCalendar;
 import java.sql.Timestamp;
 import java.sql.Connection;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.index.util.ConnectionUtil;
 import com.sun.mdm.index.util.DateUtil;
 import com.sun.mdm.index.ejb.master.MasterController;
@@ -82,8 +80,6 @@ class ReportGeneratorImpl implements ReportGenerator {
     private static final int NUM_DAYS_IN_WEEK = 7;
     
     private MasterController mMaster;
-    
-    private final Logger mLogger = LogUtil.getLogger(this);
     
     /**
      * Creates a new instance of ReportGeneratorImpl
@@ -483,7 +479,6 @@ class ReportGeneratorImpl implements ReportGenerator {
             } else if (config.getEndDate() != null) {
                 specDate = config.getEndDate();
             } else {
-            	mLogger.error("Start or end date must be specified.");
             	throw new ReportException("Start or end date must be specified.");
             }
             
@@ -540,7 +535,6 @@ class ReportGeneratorImpl implements ReportGenerator {
             } else if (config.getEndDate() != null) {
                 specDate = config.getEndDate();
             } else {
-            	mLogger.error("Start or end date must be specified.");
             	throw new ReportException("Start or end date must be specified."); 
             }
             
@@ -575,7 +569,6 @@ class ReportGeneratorImpl implements ReportGenerator {
             } else if (config.getEndDate() != null) {
                 specDate = config.getEndDate();
             } else {
-            	mLogger.error("Start or end date must be specified.");
             	throw new ReportException("Start or end date must be specified.");
             }
             
@@ -600,8 +593,6 @@ class ReportGeneratorImpl implements ReportGenerator {
         throws ReportException {
             try {
                 Connection con = ConnectionUtil.getConnection();
-                mLogger.debug("in getConnection(): " + con);
-
                 return con;
             } catch (Exception e) {
                 throw new ReportException("Failed to get JDBC connection.", e);

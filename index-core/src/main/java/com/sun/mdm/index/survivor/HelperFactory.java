@@ -24,8 +24,6 @@ package com.sun.mdm.index.survivor;
 
 import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.configurator.impl.SurvivorHelperConfig;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 
 /** Factory methods to create a SurvivorHelper
  *
@@ -36,7 +34,6 @@ public class HelperFactory {
     /** cache the loaded class
      */
     private static Class mHelperClass = null;
-    private static final Logger LOGGER = LogUtil.getLogger("com.sun.mdm.index.survivor.HelperFactory");
     
     /** disabled, use factory method
      */
@@ -85,8 +82,6 @@ public class HelperFactory {
             Object obj = mHelperClass.newInstance();
 
             if (!AbstractSurvivorHelper.class.isInstance(obj)) {
-                LOGGER.debug("SurvivorHelper creation failed");
-
                 // throw creation exception
                 throw new HelperCreationException(
                     "Helper class does not extend AbstractSurvivorHelper");

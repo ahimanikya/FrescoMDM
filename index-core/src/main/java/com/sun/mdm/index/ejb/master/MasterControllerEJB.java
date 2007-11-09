@@ -24,8 +24,6 @@
 package com.sun.mdm.index.ejb.master;
 
 import com.sun.mdm.index.ejb.page.PageDataRemote;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 
 import com.sun.mdm.index.master.MatchResult;
 import com.sun.mdm.index.master.MergeResult;
@@ -86,8 +84,7 @@ import javax.ejb.TransactionManagementType;
 
 public class MasterControllerEJB implements MasterControllerRemote, MasterControllerLocal{
     
-    private final Logger mLogger = LogUtil.getLogger(this.getClass().getName());
-    
+
     private SessionContext mSessionContext;
     
     /**

@@ -47,8 +47,6 @@ import javax.ejb.Stateless;
 import javax.annotation.PostConstruct;
 
 import com.sun.mdm.index.ejb.master.MasterControllerLocal;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 
 /**
  * Session bean for reports
@@ -60,7 +58,6 @@ import com.sun.mdm.index.util.Logger;
           mappedName="jdbc/_EVIEW_OBJECT_TOKEN_DataSource" )
 public class ReportGeneratorEJB implements ReportGeneratorRemote{
     
-    private final Logger mLogger = LogUtil.getLogger(this);
     
     @EJB
     private MasterControllerLocal mMaster;

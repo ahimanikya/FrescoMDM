@@ -29,8 +29,6 @@ import javax.ejb.Stateless;
 
 import com.sun.mdm.index.codelookup.CodeLookupException;
 import com.sun.mdm.index.codelookup.CodeRegistry;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 
 /**
  * Session bean to provide code display pairs
@@ -43,13 +41,10 @@ import com.sun.mdm.index.util.Logger;
           mappedName="jdbc/_EVIEW_OBJECT_TOKEN_DataSource" )
 public class CodeLookupEJB implements CodeLookupRemote {
 
-    private final Logger mLogger = LogUtil.getLogger(this);
-    
     /**
      * Creates a new instance of CodeLookupEJB
      */
     public CodeLookupEJB() { 
-        mLogger.debug("CodeLookupEJB()");
     }
 
     

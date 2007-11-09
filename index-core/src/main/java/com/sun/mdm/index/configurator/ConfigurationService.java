@@ -32,6 +32,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,9 +43,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.sun.mdm.index.configurator.impl.MatchEngineConfig;
+import com.sun.mdm.index.util.Localizer;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /** ConfigurationMBean implementation
  *
@@ -85,8 +87,8 @@ public class ConfigurationService implements ConfigurationMBean {
     private static ConfigurationServiceObservable configServiceObservable 
             = new ConfigurationServiceObservable();
     
-    private static final Logger LOGGER 
-            = LogUtil.getLogger("com.sun.mdm.index.configurator.ConfigurationService");
+    private static transient Logger mLogger = Logger.getLogger("com.sun.mdm.index.configurator.ConfigurationService");
+    private static transient Localizer mLocalizer = Localizer.get();
     
     /** Creates new ConfigurationService instance */
     public ConfigurationService() {
@@ -101,7 +103,9 @@ public class ConfigurationService implements ConfigurationMBean {
      * @return configuration information.
      */
     public ConfigurationInfo getConfiguration(String name) {
-        LOGGER.debug("getConfiguration() called, looking up :" + name);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("getConfiguration() looking up name :" + name);
+        }
         return (ConfigurationInfo) configs.get(name);
     }
         
@@ -124,10 +128,10 @@ public class ConfigurationService implements ConfigurationMBean {
                    DOMException, ClassNotFoundException, InstantiationException,
                    IllegalAccessException, ConfigurationException {
                     
-        LOGGER.debug("entering load()");
-        
         Document doc;
-        LOGGER.debug("creating builder factory");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Creating builder factory");
+        }
         
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         builderFactory.setNamespaceAware(true);
@@ -149,21 +153,22 @@ public class ConfigurationService implements ConfigurationMBean {
             public void warning(SAXParseException err)
             throws SAXParseException {
                 // use logging facility to capture warning
-                LOGGER.error("** Warning" + ", line " + err.getLineNumber()
-                + ", uri " + err.getSystemId(), err);
+                mLogger.warn(mLocalizer.x("CFG010: Parsing error encountered at line {0}:  uri {1}: {2}", 
+                                           err.getLineNumber(), err.getSystemId(), err));
             }
         });
         
-        LOGGER.debug(builder.toString());
-        LOGGER.debug("builder created");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Builder created: " + builder.toString());
+        }
         
         org.xml.sax.InputSource input = new org.xml.sax.InputSource(fileStream);
         doc = builder.parse(input);
-        LOGGER.debug("document parsed");
-        
         parse(doc);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Document parsed");
+        }
         
-        LOGGER.debug("exiting load()");
     }
     
     /** Returns an inputstream to the configuration file.
@@ -175,25 +180,29 @@ public class ConfigurationService implements ConfigurationMBean {
             throws IOException {
                 
         String bbeHome = System.getProperty(HOME_SYS_PROP);
-        LOGGER.debug("bbeHome : " + bbeHome);
         
         // first look for the file in bbe.home, then try using the classloader
         if ((bbeHome != null) && !bbeHome.equals("")) {
-            LOGGER.debug("bbe.home IS defined, locating file in bbe.home");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("bbe.home IS defined, locating file in bbe.home");
+            }
             String filePath = bbeHome + java.io.File.separator + "config"
             + java.io.File.separator + fileName;
             
             java.io.File f = new java.io.File(filePath);
-            LOGGER.debug(f.getAbsolutePath());
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("bbe.home IS defined, locating file in bbe.home: " + f.getAbsolutePath());
+            }
             return new FileInputStream(f);
         } else {
             // bbe.home not defined, so use the class loader
             // throw exception if class loader cannot find the requested file
-            LOGGER.debug("bbe.home is not defined, using the class loader to locate file");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("bbe.home is not defined, using the class loader to locate file");
+            }
             InputStream is = this.getClass().getClassLoader().getResourceAsStream(fileName);
             if (is == null) {
-                LOGGER.info("Unable to find configuration file in classpath : " 
-                    + fileName);
+                mLogger.info(mLocalizer.x("CFG011: Unable to find the configuration file in classpath : {0}" , fileName));
                 throw new IOException("Unable to find configuration file in classpath : " 
                     + fileName);
             }
@@ -216,52 +225,40 @@ public class ConfigurationService implements ConfigurationMBean {
             instance = new ConfigurationService();
             
             try {
-                LOGGER.debug("Start loading " + MASTER_FILE_NAME);
+                mLogger.info(mLocalizer.x("CFG001: Loading master configuration file: {0}" , MASTER_FILE_NAME));
                 is = instance.getConfigFileStream(MASTER_FILE_NAME);
                 instance.load(is);
                 is.close();
-                LOGGER.debug("Done loading " + MASTER_FILE_NAME);
-                
-                LOGGER.debug("Start loading " + UPDATE_FILE_NAME);
+                mLogger.info(mLocalizer.x("CFG002: Loading: update configuration file: {0}" , UPDATE_FILE_NAME));
                 is = instance.getConfigFileStream(UPDATE_FILE_NAME);
                 instance.load(is);
                 is.close();
-                LOGGER.debug("Done loading " + UPDATE_FILE_NAME);
-                
-                
-                LOGGER.debug("Start loading " + QUERY_FILE_NAME);
+                mLogger.info(mLocalizer.x("CFG003: Loading: query configuration file: {0}" , QUERY_FILE_NAME));
                 is = instance.getConfigFileStream(QUERY_FILE_NAME);
                 instance.load(is);
                 is.close();
-                LOGGER.debug("Done loading " + QUERY_FILE_NAME);
-                
-                LOGGER.debug("Start loading " + MEFA_FILE_NAME);
+                mLogger.info(mLocalizer.x("CFG004: Loading: match configuration file: {0}" , MEFA_FILE_NAME));
                 is = instance.getConfigFileStream(MEFA_FILE_NAME);
                 instance.load(is);
                 is.close();
-                LOGGER.debug("Done loading " + MEFA_FILE_NAME);
-                
-                LOGGER.debug("Start loading " + VALIDATION_FILE_NAME);
+                mLogger.info(mLocalizer.x("CFG005: Loading: validation configuration file: {0}" , VALIDATION_FILE_NAME));
                 is = instance.getConfigFileStream(VALIDATION_FILE_NAME);
                 instance.load(is);
                 is.close();
-                LOGGER.debug("Done loading " + VALIDATION_FILE_NAME);
-                
-                LOGGER.debug("Start loading " + SECURITY_FILE_NAME);
+                mLogger.info(mLocalizer.x("CFG006: Loading: security configuration file: {0}" , SECURITY_FILE_NAME));
                 is = instance.getConfigFileStream(SECURITY_FILE_NAME);
                 instance.load(is);
                 is.close();
                 is = null;
-                LOGGER.debug("Done loading " + SECURITY_FILE_NAME);
                 
-                LOGGER.debug("Start loading match engine configuration files");
+                mLogger.info(mLocalizer.x("CFG007: Loading match engine configuration files."));
                 // instead of loading all the text files, simply delegate to the get 
                 // method to load from the classpath when requested
                 MatchEngineConfig matchConfig = new MatchEngineConfig();
                 instance.configs.put(MatchEngineConfig.MODULE_NAME, matchConfig);
-                LOGGER.info("loading match engine configuration files complete.");
+                mLogger.info(mLocalizer.x("CFG008: All configuration files loaded."));
             } catch (Exception e) {
-                LOGGER.fatal("Exception", e);
+                mLogger.severe(mLocalizer.x("CFG009: ConfigurationService could not load one or more files." + e.getMessage()));
                 instance = null;
                 throw new InstantiationException(e.getMessage());
             } finally {
@@ -312,7 +309,9 @@ public class ConfigurationService implements ConfigurationMBean {
             
             if (n.getNodeType() == Node.ELEMENT_NODE) {
                 // if it's element node, by XSD def, it must be of ModuleConfig type
-                LOGGER.debug(n.getNodeName());
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Parsing node: " + n.getNodeName());
+                }
                 
                 Element e = (Element) n;
                 String moduleName = e.getAttribute(ATR_MODULE_NAME);

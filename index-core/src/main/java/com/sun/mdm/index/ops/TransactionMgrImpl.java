@@ -28,6 +28,9 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 import com.sun.mdm.index.idgen.SEQException;
 import com.sun.mdm.index.master.search.transaction.TransactionSummary;
@@ -43,8 +46,7 @@ import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.ops.exception.OPSException;
 import com.sun.mdm.index.ops.exception.DataModifiedException;
 import com.sun.mdm.index.persistence.TMResult;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
 
 /**
 * Transaction Manager implementation
@@ -74,7 +76,8 @@ public class TransactionMgrImpl implements TransactionMgr {
     // use LockManager to lock EOs before any update transaction.
     private LockManager mLockManager;
 
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
    
     private boolean isCUIDMgrInitialized = false;
    
@@ -82,7 +85,6 @@ public class TransactionMgrImpl implements TransactionMgr {
      * Constructor to create transaction manager
      */
     public TransactionMgrImpl() throws OPSException {
-        mLogger.debug("TransactionMgrImpl()");
         initialize();
     }
    
@@ -90,8 +92,11 @@ public class TransactionMgrImpl implements TransactionMgr {
      * Initializes this class.
      */
     private void initialize() throws OPSException {
-        try{
-            mLogger.debug("loading entity OPS map");
+       
+        try {       
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Loading entity OPS map.");
+            }
             Class opsClass = Class.forName("com.sun.mdm.index.ops.OPSInitHelper");
             OPSLoad ops = (OPSLoad) opsClass.newInstance();
             mOPSMap = ops.loadOPS();
@@ -101,7 +106,7 @@ public class TransactionMgrImpl implements TransactionMgr {
             mTransactionObjectDB = new TransactionObjectDB();
             mMergeObjectDB = new MergeObjectDB();
             mLockManager = new LockManager();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new OPSException(ex);
         }
     } 
@@ -118,9 +123,11 @@ public class TransactionMgrImpl implements TransactionMgr {
      */
     private void initCUIDManager(Connection con) throws SEQException {
         if (isCUIDMgrInitialized == false) {
-            mLogger.debug("initializing CUIDManager");
-            String id = com.sun.mdm.index.idgen.CUIDManager.getNextUID(con, "TRANSACTIONNUMBER");   
-            isCUIDMgrInitialized = true;
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Initializing CUIDManager");
+                String id = com.sun.mdm.index.idgen.CUIDManager.getNextUID(con, "TRANSACTIONNUMBER");   
+                isCUIDMgrInitialized = true;
+            }
         }
     }
 
@@ -477,21 +484,25 @@ public class TransactionMgrImpl implements TransactionMgr {
             SBR sbr = eo.getSBR();
             boolean sbrToBeDeleted = sbr.isRemoved();
             String euid = eo.getEUID();
-            mLogger.debug("remove flag for EO(" + euid + "): " + eoToBeDeleted);
-            mLogger.debug("remove flag for SBR(" + euid + "): " + sbrToBeDeleted);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Remove flag for EO with EUID (" + euid + "): " + eoToBeDeleted);
+                mLogger.fine("Remove flag for SBR with EUID (" + euid + "): " + sbrToBeDeleted);
+            }
                     
             try {
                 mLockManager.lock(conn, eo, lock);
             } catch (DataModifiedException e) {
-                mLogger.info("Unable to lock record for update: " + e.getMessage());
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Unable to lock record for update: " + e.getMessage());
+                }
                 throw e;
             }
              
  
             if (sbrToBeDeleted || eoToBeDeleted) {
-                if (mLogger.isDebugEnabled()) {
-                    mLogger.debug("removing SBR and SO's of EO(" + euid + " due to "
-                                  + " removal flag of EO or SBR");
+                if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("Removing SBR and SO's of EO with EUID(" + euid + ") due to "
+                                      + " the value of the removal flag for EO or SBR");
                 }
  
                 ArrayList o = (ArrayList) eo.getSystemObjects();
@@ -506,8 +517,10 @@ public class TransactionMgrImpl implements TransactionMgr {
  
                 pDeleteSystemSBR(conn, eo.getEUID(), sbr);
             } else {
-                mLogger.debug("removal flag of EO and SBR false, updating SBR("
-                              + eo.getEUID() + ")");
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Removal flag of EO and SBR false, updating SBR("
+                                  + eo.getEUID() + ")");
+                }
                 pUpdateSystemSBR(conn, eo.getEUID(), sbr);
             }
  
@@ -518,9 +531,10 @@ public class TransactionMgrImpl implements TransactionMgr {
                 SystemObject obj = (SystemObject) objs.get(i);
  
                 if (obj.isRemoved() || eoToBeDeleted) {
-                    if (mLogger.isDebugEnabled()) {
-                        mLogger.debug("removal flag of EO or SO enabled, removing SO(" 
-                                      + obj.getSystemCode() + ":" + obj.getLID() + ")");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("Removal flag of EO or SO enabled, removing SO " 
+                                      + "for system code: " + obj.getSystemCode() 
+                                      + ", LID: " + obj.getLID());
                     }
  
                     pDeleteEnterpriseObject(conn, eo.getEUID(), 
@@ -528,9 +542,10 @@ public class TransactionMgrImpl implements TransactionMgr {
                     pDeleteSystemObject(conn, obj);
                 } else if (obj.isAdded()) {
                     count++;
-                    if (mLogger.isDebugEnabled()) {
-                        mLogger.debug("adding SO(" + obj.getSystemCode() + ":" 
-                                      + obj.getLID() + ")");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("Adding SO with system code: " 
+                                      + obj.getSystemCode() + ", LID: " 
+                                      + obj.getLID());
                     }
  
                     pAddSystemObject(conn, obj);
@@ -538,9 +553,10 @@ public class TransactionMgrImpl implements TransactionMgr {
                         obj.getLID());
                 } else {
                     count++;
-                    if (mLogger.isDebugEnabled()) {
-                        mLogger.debug("updating SO(" + obj.getSystemCode() + ":" 
-                                      + obj.getLID() + ")");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("Updating SO for system code: " 
+                                      + obj.getSystemCode() + ", LID: " 
+                                      + obj.getLID());
                     }
  
                     pUpdateSystemObject(conn, obj);
@@ -549,9 +565,9 @@ public class TransactionMgrImpl implements TransactionMgr {
                 
             if ((count == 0 && !sbr.isRemoved()) || eoToBeDeleted) {
                 eo.setRemoveFlag(true);
-                if (mLogger.isDebugEnabled()) {
-                    mLogger.debug("system object count: " + count + ", " 
-                                  + " removing SBR(" + eo.getEUID() + ")");
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("System object count: " + count + ", " 
+                                  + ", removing SBR for EUID: " + eo.getEUID());
                 }
                 pDeleteSystemSBR(conn, eo.getEUID(), sbr);
             }
@@ -611,7 +627,9 @@ public class TransactionMgrImpl implements TransactionMgr {
             try {
                 mLockManager.lock(conn, eo, revisionNumber, true);
             } catch (DataModifiedException e) {
-                mLogger.info("Unable to lock record for update: " + e.getMessage());
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Unable to lock record for update: " + e.getMessage());
+                }
                 throw e;
             }
             // don't lock eo again.
@@ -627,8 +645,8 @@ public class TransactionMgrImpl implements TransactionMgr {
             tObj.setLID(lid);
             tObj.setDelta(TransactionLog.getLogs("Enterprise", eo));
             tObj.setSystemUser(sbr.getUpdateUser());
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("Update Delta: " + tObj.getDelta());
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Update Delta: " + tObj.getDelta());
             }
 
             tObj.setTimeStamp(new java.util.Date());
@@ -689,7 +707,9 @@ public class TransactionMgrImpl implements TransactionMgr {
             try {
                 mLockManager.lock(conn, eo, revisionNumber, true);
             } catch (DataModifiedException e) {
-                mLogger.info("Unable to lock record for update: " + e.getMessage());
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Unable to lock record for update: " + e.getMessage());
+                }
                 throw e;
             }
             // don't lock eo again.
@@ -703,8 +723,8 @@ public class TransactionMgrImpl implements TransactionMgr {
             tObj.setEUID(eo.getEUID());
             tObj.setDelta(TransactionLog.getLogs("Enterprise", eo));
 
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("Update Delta: " + tObj.getDelta());
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Update Delta: " + tObj.getDelta());
             }
 
             tObj.setTimeStamp(new java.util.Date());
@@ -797,8 +817,8 @@ public class TransactionMgrImpl implements TransactionMgr {
             tObj.setLID(so.getLID());
             tObj.setDelta(TransactionLog.getLogs("Enterprise", so));
             tObj.setTimeStamp(new java.util.Date());
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("Update Delta: " + tObj.getDelta());
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Update Delta: " + tObj.getDelta());
             }
             tObj.setSystemUser(so.getUpdateUser());
             mTransactionObjectDB.create(conn, tObj);
@@ -851,8 +871,8 @@ public class TransactionMgrImpl implements TransactionMgr {
             tObj.setEUID(euid);
             tObj.setDelta(TransactionLog.getLogs("Enterprise", sbr));
             tObj.setTimeStamp(new java.util.Date());
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("Update Delta: " + tObj.getDelta());
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Update Delta: " + tObj.getDelta());
             }
             tObj.setSystemUser(sbr.getUpdateUser());
             mTransactionObjectDB.create(conn, tObj);
@@ -1066,7 +1086,9 @@ public class TransactionMgrImpl implements TransactionMgr {
             try {
                 mLockManager.lock(conn, eo1, eo2);
             } catch (DataModifiedException e) {
-                mLogger.info("Unable to lock record for update: " + e.getMessage());
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Unable to lock record for update: " + e.getMessage());
+                }
                 throw e;
             }
             // don't lock eo1, eo2 again.
@@ -1136,7 +1158,9 @@ public class TransactionMgrImpl implements TransactionMgr {
              try {
                  mLockManager.lock(conn, eo1, eo2, srcRevisionNumber, destRevisionNumber);
              } catch (DataModifiedException e) {
-                 mLogger.info("Unable to lock record for update: " + e.getMessage());
+                 if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("Unable to lock record for update: " + e.getMessage());
+                 }
                  throw e;
              }
              // don't lock eo1, eo2 again.
@@ -1293,7 +1317,9 @@ public class TransactionMgrImpl implements TransactionMgr {
             try {
                 mLockManager.lock(conn, eo1, eo2);
             } catch (DataModifiedException e) {
-                mLogger.info("Unable to lock record for update: " + e.getMessage());
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("Unable to lock record for update: " + e.getMessage());
+                }
                 throw e;
             }
             
@@ -1498,7 +1524,9 @@ public class TransactionMgrImpl implements TransactionMgr {
         try {
             mLockManager.lock(conn, eo1, eo2);
         } catch (DataModifiedException e) {
-            mLogger.info("Unable to lock record for update: " + e.getMessage());
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Unable to lock record for update: " + e.getMessage());
+            }
             throw e;
         }
         try {
@@ -1582,7 +1610,8 @@ public class TransactionMgrImpl implements TransactionMgr {
                 currentNode = (ObjectNode) childList.get(pos);
             }
         } catch (Exception ex) {
-            mLogger.error("Exception", ex);
+            mLogger.warn(mLocalizer.x("OPS017: TransactionMgr could not retrieve " 
+                                      + "a child node: {0}", ex.getMessage()));
         }
  
         return currentNode;
@@ -1836,7 +1865,8 @@ public class TransactionMgrImpl implements TransactionMgr {
                 ret = new RecreateResult(afterEO, afterEO2, beforeEO1, beforeEO2);
             }
         } catch (ObjectException ex) {
-            mLogger.error(ex.getMessage());
+            mLogger.warn(mLocalizer.x("OPS018: TransactionMgr could not recover " 
+                                      + "a transaction object: {0}", ex.getMessage()));
             throw ex;
         }    
         return ret;
@@ -1920,8 +1950,8 @@ public class TransactionMgrImpl implements TransactionMgr {
             // Survivor Object Related Logic 
             euid = currentTranObject.getEUID();
            
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("Recreating transaction#: " + transactionNumber);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Recreating transaction for Transaction ID: " + transactionNumber);
             }
                           
             if ( currentTranObject.getRecoverObject().equals(currentTranObject.RECOVER_SURVIVOR)  ) { 

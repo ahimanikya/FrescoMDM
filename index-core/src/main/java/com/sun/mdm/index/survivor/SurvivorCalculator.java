@@ -25,6 +25,8 @@ package com.sun.mdm.index.survivor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.SystemObject;
@@ -35,8 +37,6 @@ import com.sun.mdm.index.objects.SBROverWrite;
 import com.sun.mdm.index.objects.SystemObjectException;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.factory.SimpleFactory;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 
 import com.sun.mdm.index.objects.epath.EPathAPI;
 import com.sun.mdm.index.objects.epath.EPathException;
@@ -52,7 +52,7 @@ public class SurvivorCalculator implements java.io.Serializable {
      */
     private AbstractSurvivorHelper mHelper;
 
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     private MatchEngineController mMatch;
     
     /** Creates new SurvivorCalculator using default helper object
@@ -85,8 +85,8 @@ public class SurvivorCalculator implements java.io.Serializable {
             ObjectException {
   
        
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("input eo: " + omega);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Input EnterpriseObject: " + omega);
         }
         
         // do survivor calculation IFF there are more than 1 active systems
@@ -136,14 +136,16 @@ public class SurvivorCalculator implements java.io.Serializable {
                     // current candidate field
                     String candidateId = (String) iter.next();
                     
-                    mLogger.debug("processing candidate: " + candidateId);
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("Processing candidate: " + candidateId);
+                    }                
                     
                     // get fields used for calculation
                     SystemFieldListMap sysFields = mHelper.getSystemFields(omega,
                         candidateId);
                     
-                    if (mLogger.isDebugEnabled()) {
-                        mLogger.debug("system fields returned for candidate " + candidateId 
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("System fields returned for candidate " + candidateId 
                             + ": " + sysFields);
                     }
                     
@@ -154,7 +156,9 @@ public class SurvivorCalculator implements java.io.Serializable {
                     if (value != null) {
                         if (value.getValue() != null) {
                             // set the field value on SBR
-                            mLogger.debug("candidate values returned from strategy: " + value);
+                            if (mLogger.isLoggable(Level.FINE)) {
+                                mLogger.fine("Candidate values returned from strategy: " + value);
+                            }
                             mHelper.setCandidateFieldValue(sbrObj, value);
                         }
                     }
@@ -181,8 +185,8 @@ public class SurvivorCalculator implements java.io.Serializable {
                     }
                 }
             }
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("newly created sbrObj: " + sbrObj);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Newly created SBR Object: " + sbrObj);
             }
             // clear the object ID of all child objects
             ArrayList childList = sbrObj.pGetChildren();
@@ -207,10 +211,12 @@ public class SurvivorCalculator implements java.io.Serializable {
             // ckuo: added to use update
             ogSbrObj.update(stndSBR.getObject(), true, true);
         }  else {
-            mLogger.info("EO has less than 1 active system, skipping survivor calculation");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("EnterpriseObject has less than 1 active system, so survivor calculation is skipped.");
+            }
         }
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("returning SBR: " + omega.getSBR());
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Returning SBR: " + omega.getSBR());
         }
         
     }

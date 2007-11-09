@@ -35,8 +35,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
+import com.sun.mdm.index.util.Localizer;
 import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 
 /** Weighted survivor strategy configuration object
  *
@@ -79,7 +82,8 @@ public class WeightedCalculatorConfig implements ConfigurationInfo {
     /** default rules */
     private Collection mDefaultRules;
     
-    private final Logger logger = LogUtil.getLogger(this);
+    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
     
     
     /** Creates new WeightedCalculatorConfig */
@@ -232,7 +236,7 @@ public class WeightedCalculatorConfig implements ConfigurationInfo {
             mDefaultRules = parameterInsts;
         }
         
-        logger.info("WeightedCalculatorConfig:WeightStrategy::" + mConfig);
+        mLogger.info(mLocalizer.x("CFG042: WeightedCalculatorConfig:WeightStrategy: {0}", LogUtil.mapToString(mConfig)));
     }
 
     /** Return String representing the module type

@@ -29,8 +29,10 @@ import com.sun.mdm.index.objects.validation.exception.InvalidReferencedCode;
 import com.sun.mdm.index.objects.validation.exception.InvalidReferencedModule;
 import com.sun.mdm.index.objects.validation.exception.NullObjectException;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * @author jwu
@@ -39,7 +41,8 @@ public class UserReferenceDescriptor implements FieldValidator {
 
     private String mModule = null;
     private UserCodeRegistry mUserCodeRegistry = null;
-    private final Logger mLogger;
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     /**
      * Creates a new instance of ReferenceDescriptor
@@ -47,7 +50,6 @@ public class UserReferenceDescriptor implements FieldValidator {
      * @param module module name
      */
     public UserReferenceDescriptor(String module) {
-        mLogger = LogUtil.getLogger(this);
         if (module == null) {
             throw new RuntimeException("Module parameter cannot be null");
         }
@@ -55,7 +57,7 @@ public class UserReferenceDescriptor implements FieldValidator {
         try {
             mUserCodeRegistry = UserCodeRegistry.getInstance();
         } catch (CodeLookupException e) {
-            mLogger.error("CodeLookupException", e);
+            mLogger.warn(mLocalizer.x("OBJ041: User code registry could not be retrieved: {0}", e));
         }
         if (mUserCodeRegistry == null) {
             throw new RuntimeException("User code registry cannot be be located");

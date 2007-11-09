@@ -39,8 +39,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 
 /**
  * @author gzheng
@@ -314,7 +314,7 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
             + "               path = ?\n";
     }
 
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     
     
     /**
@@ -337,7 +337,9 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
      */
     public ArrayList get(Connection conn, HashMap opsmap, String euid)
             throws OPSException {
-        mLogger.debug("retrieving SBROverWrite(" + euid + ")");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Retrieving SBROverWrite for EUID: " + euid);
+        }
 
         ArrayList owobj = null;
 
@@ -411,7 +413,9 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
      */
     public void create(Connection conn, HashMap opsmap, String euid, SBROverWrite ow)
             throws OPSException {
-        mLogger.debug("creating SBRObjectWrite(" + euid + ")");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Creating SBRObjectWrite for EUID: " + euid );
+        }
 
         // executes insert SQL statement
         PreparedStatement stmt = null;
@@ -505,7 +509,9 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
      */
     public void remove(Connection conn, HashMap opsmap, String euid, SBROverWrite ow)
             throws OPSException {
-        mLogger.debug("removing SBROverWrite(" + euid + ")");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Removing SBROverWrite for EUID: " + euid);
+        }
 
         // executes delete SQL statement
         PreparedStatement stmt = null;
@@ -554,7 +560,9 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
      */
     public void update(Connection conn, HashMap opsmap, String euid, SBROverWrite ow)
         throws OPSException {
-        mLogger.debug("updating SBROverWrite(" + euid + ")");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Updating SBROverWrite for EUID: " + euid);
+        }
 
         // executes update SQL statement
         PreparedStatement stmt = null;

@@ -30,12 +30,14 @@ import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.configurator.impl.matching.MatchingConfiguration;
 import com.sun.mdm.index.configurator.impl.matching.MatchColumn;
+import com.sun.mdm.index.util.Localizer;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Converts the matchfields configured for a SystemObject into a flat
@@ -50,7 +52,8 @@ public class MatchTupleConverter
     // Default Date conversion format
     private DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");    
     
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     private static final int INITIAL_CHILD = 0;
     
@@ -254,8 +257,9 @@ public class MatchTupleConverter
                     fieldValues.add("");
                 }
             } catch (ObjectException ex) {
-                mLogger.error("Unable to obtain configured match field:" 
-                    + fieldName + " ePath:" + fieldEPath.toString(), ex);
+                mLogger.warn(mLocalizer.x("MAT030: Unable to obtain configured " + 
+                                          "match field: {0} with EPath: {1}: {2}", 
+                                          fieldName, fieldEPath.toString(), ex.getMessage()));
                 throw ex;
             }
             fieldEPaths.add(fieldEPath);

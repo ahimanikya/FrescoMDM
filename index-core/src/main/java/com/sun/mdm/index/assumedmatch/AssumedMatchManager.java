@@ -33,16 +33,18 @@ import com.sun.mdm.index.master.search.assumedmatch.AssumedMatchIterator;
 import com.sun.mdm.index.master.search.assumedmatch.AssumedMatchSummary;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
 import com.sun.mdm.index.ops.DBAdapter;
 import com.sun.mdm.index.ops.exception.OPSException;
 import com.sun.mdm.index.page.AssumedMatchPageAdapter;
 import com.sun.mdm.index.page.PageAdapter;
 import com.sun.mdm.index.ejb.page.PageData;
+import com.sun.mdm.index.util.Localizer;
+import com.sun.mdm.index.util.JNDINames;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
-import com.sun.mdm.index.util.JNDINames;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /** Data access class for potential assumedMatches
  * @author Dan Cidon
@@ -78,7 +80,8 @@ public class AssumedMatchManager {
     
     private static String mNumberConversion = null;     // convert a string to a number
     
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
     
      
      /** Creates a new instance of AssumedMatchManager
@@ -100,8 +103,10 @@ public class AssumedMatchManager {
     String systemCode, String lid, String transactionId)
     throws AssumedMatchException {
         try {
-            mLogger.debug("creating assumed match: EUID(" + dms.euid + "), SO(" +
-                systemCode + ", " + lid + "), weight(" + dms.weight + ")");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Creating assumed match: EUID(" + dms.euid + "), SO(" +
+                             systemCode + ", " + lid + "), weight(" + dms.weight + ")");
+            }
             PreparedStatement ps = con.prepareStatement(INSERT_CLAUSE);
             String id = CUIDManager.getNextUID(con,  "ASSUMEDMATCH" );
             ps.setString(1, id);
@@ -126,7 +131,9 @@ public class AssumedMatchManager {
     public void deleteAssumedMatch(Connection con, String assumedMatchId)
     throws AssumedMatchException {
         try {
-            mLogger.debug("deleting assumed match record id: " + assumedMatchId);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Deleting assumed match record id: " + assumedMatchId);
+            }
             PreparedStatement ps = con.prepareStatement(DELETE_CLAUSE);
             ps.setString(1, assumedMatchId);
             int retVal = ps.executeUpdate();
@@ -152,8 +159,8 @@ public class AssumedMatchManager {
         PreparedStatement ps = null;
         ArrayList parameters = new ArrayList();
         StringBuffer sb = new StringBuffer(BASE_SELECT_CLAUSE);
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("assumed match search object: " + obj);
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Assumed match search object: " + obj);
         }
         try {
             if (obj.getEUIDs() != null) {
@@ -202,8 +209,8 @@ public class AssumedMatchManager {
                       + " desc, a.EUID asc");            
                        
             String sqlString = sb.toString();
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("assumed match SQL search: " + sqlString);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Assumed match SQL search: " + sqlString);
             }
             ps = con.prepareStatement(sqlString);
             for (int i = 0; i < parameters.size(); i++) {

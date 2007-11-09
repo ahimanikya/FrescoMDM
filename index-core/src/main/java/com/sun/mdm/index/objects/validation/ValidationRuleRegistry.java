@@ -25,12 +25,15 @@ package com.sun.mdm.index.objects.validation;
 import java.util.Hashtable;
 import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.configurator.impl.validation.ValidationConfiguration;
+import com.sun.mdm.index.util.LogUtil;
+import com.sun.mdm.index.util.Localizer;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * @author jwu
@@ -44,7 +47,9 @@ public class ValidationRuleRegistry {
     private Hashtable hCustomObjectValidator = null;
     private Hashtable hCustomRuleValidator = null;
 
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     /**
      * Creates a new instance of ValidationRuleRegistry
      */
@@ -122,8 +127,10 @@ public class ValidationRuleRegistry {
 
     private void displayAllRules() {
 
-        mLogger.info("Rule  : " + hCustomRuleValidator.toString());
-        mLogger.info("Object: " + hCustomObjectValidator.toString());
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Validation Registry Rule  : " + hCustomRuleValidator.toString());
+            mLogger.fine("Validation Registry Object: " + hCustomObjectValidator.toString());
+        }
     }
 
     private void init() {
@@ -174,7 +181,9 @@ public class ValidationRuleRegistry {
             hDefaultValidator.put(descriptor.getObjectName(), descriptor);
         }
 
-        mLogger.debug("Generated validation rules:\n" + LogUtil.mapToString(hDefaultValidator));
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Generated validation rules:\n" + LogUtil.mapToString(hDefaultValidator));
+        }
                 
         ConfigurationService cfgService = null;
         try {

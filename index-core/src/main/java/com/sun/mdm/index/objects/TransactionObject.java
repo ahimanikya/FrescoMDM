@@ -25,11 +25,13 @@ package com.sun.mdm.index.objects;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.ops.DBAdapter;
 import com.sun.mdm.index.ops.exception.OPSException;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
 
 
 /**
@@ -59,10 +61,8 @@ public class TransactionObject extends ObjectNode {
     public static final String RECOVER_SURVIVOR = "Survivor";
 
     private static String mOperationColumnName = null;  // Name of the operation column.
-    // Logger instance.  This next line is hard-coded because it may be invoked from
-    // within a static context, and there is no other way to obtain the name
-    // of the object if it is not instantiated.
-    private static final Logger mLogger = LogUtil.getLogger("TransactionObject"); 
+    private transient static final Logger mLogger = Logger.getLogger("TransactionObject");
+    private transient static final Localizer mLocalizer = Localizer.get();
     private static ArrayList mFieldNames;       // field names
     private static ArrayList mFieldTypes;       // field types
  
@@ -719,7 +719,8 @@ public class TransactionObject extends ObjectNode {
         try {
             mOperationColumnName = getOperationColumnName();
         } catch (ObjectException e) {
-            mLogger.error("Unable to retrieve operation column name");
+            mLogger.warn(mLocalizer.x("OBJ016: Unable to retrieve operation " + 
+                                      "column name: {0}", e.getMessage()));
             return null;
         }
         mFieldNames.add(mOperationColumnName);

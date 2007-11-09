@@ -27,8 +27,8 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 
 /**
  * @author sanjay.sharma
@@ -37,7 +37,7 @@ import com.sun.mdm.index.util.Logger;
 
 public class QueryObjectCacheManagerImpl implements QueryObjectCacheManager {
 
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
 
     private QueryObjectCachePool mQueryObjectCachePool = null;    	
 	private int  mOldestCacheIndex = 0;
@@ -74,8 +74,8 @@ public class QueryObjectCacheManagerImpl implements QueryObjectCacheManager {
 	public  void setQueryObjectCache(QueryObjectCache qc) throws Exception {
 
         mQueryObjectCachePool.put(qc.getQueryObject(), qc);
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug(Thread.currentThread() + " Current Cache Size is : " + mQueryObjectCachePool.usedEntries());
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine(Thread.currentThread() + " Current Cache Size is : " + mQueryObjectCachePool.usedEntries());
         } 
    	}
 	

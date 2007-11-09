@@ -23,10 +23,12 @@
 package com.sun.mdm.index.master.search.enterprise;
 
 import java.util.Comparator;
+import java.util.logging.Level;
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.ObjectNodeComparator;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Comparator for EOSearchResultRecords
@@ -41,7 +43,8 @@ public class EOSearchResultComparator
      */    
     private final boolean mReverse;
 
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     
     /** Creates a new instance of EOSearchResultComparator
@@ -94,7 +97,8 @@ public class EOSearchResultComparator
                 }
             }
         } catch (Exception e) {
-            mLogger.error("Exception", e);
+            mLogger.warn(mLocalizer.x("MAS001: EOSearchResultComparator " + 
+                                      "encountered an exception: {0}", e.getMessage()));
             return 0;
         }
     }

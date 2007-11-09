@@ -33,9 +33,11 @@ import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.ops.exception.DataModifiedException;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.index.util.ConnectionUtil;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
+import java.util.logging.Level;
 
 /**
  *
@@ -43,7 +45,8 @@ import com.sun.mdm.index.util.ConnectionUtil;
  */
  class LockManager {
      
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     /**
      * For SQL Server, with clause will be used for locking.
@@ -232,8 +235,8 @@ import com.sun.mdm.index.util.ConnectionUtil;
     
         PreparedStatement ps = null;
         ResultSet rs = null;
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("locking SystemSBR euid:" + euid + " rv#:"
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Locking SystemSBR EUID:" + euid + " with revision number: "
                           + revisionNumber);
         }
         try {
@@ -270,8 +273,8 @@ import com.sun.mdm.index.util.ConnectionUtil;
     
         PreparedStatement ps = null;
         ResultSet rs = null;
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("locking SystemSBR euid:" + euid + " rv#:"
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Locking SystemSBR EUID:" + euid + " with revision number: "
                     + revisionNumber);
         }
         try {
@@ -311,9 +314,9 @@ import com.sun.mdm.index.util.ConnectionUtil;
             throws DataModifiedException {
     
         try {
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("LM:locking SystemSBR euid1:" + euid1 + " rv#1:"
-                        + revisionNumber1 + "and euid2:" + euid2 + " rv#2:"
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Locking SystemSBR EUID1: " + euid1 + " with revision number: "
+                        + revisionNumber1 + "and EUID2: " + euid2 + " with revision number: "
                         + revisionNumber2);
             }
 
@@ -335,8 +338,8 @@ import com.sun.mdm.index.util.ConnectionUtil;
                 throw new DataModifiedException(
                         "Record has been modified by another user.");
             }
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("LM:locking successful");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Database record locking was successful.");
             }
         } catch (SQLException e) {
              throw new DataModifiedException(e.getMessage());
@@ -359,9 +362,9 @@ import com.sun.mdm.index.util.ConnectionUtil;
             throws DataModifiedException {
     
         try {
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("LM:locking SystemSBR euid1:" + euid1 + " rv#1:"
-                        + revisionNumber1 + "and euid2:" + euid2 + " rv#2:"
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Locking SystemSBR EUID1: " + euid1 + " with revision number: "
+                        + revisionNumber1 + "and EUID2: " + euid2 + "  with revision number: "
                         + revisionNumber2);
             }
 
@@ -383,8 +386,8 @@ import com.sun.mdm.index.util.ConnectionUtil;
                 throw new DataModifiedException(
                         "Record has been modified by another user.");
             }
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("LM:locking successful");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Database record locking was successful.");
             }
         } catch (SQLException e) {
              throw new DataModifiedException(e.getMessage());

@@ -23,13 +23,15 @@
 package com.sun.mdm.index.configurator.impl.validation;
 
 import java.util.Hashtable;
+import java.util.logging.Level;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import com.sun.mdm.index.configurator.ConfigurationException;
 import com.sun.mdm.index.configurator.ConfigurationInfo;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 
 /**
@@ -44,7 +46,8 @@ public class ValidationConfiguration implements ConfigurationInfo {
     static final String TAG_RULES = "rules";
     static final String TAG_RULE = "rule";
 
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
 
     /** Creates a new instance of ValidationConfiguration */
     public ValidationConfiguration() {
@@ -125,8 +128,8 @@ public class ValidationConfiguration implements ConfigurationInfo {
                                 String objectName = attributes.getNamedItem("object-name").getNodeValue();
                                 String className = attributes.getNamedItem("class").getNodeValue();
                                 Object validator;
-                                if (mLogger.isDebugEnabled()) {
-                                    mLogger.debug("Validation class for " + objectName.toUpperCase() + "=" + className); 
+                                if (mLogger.isLoggable(Level.FINE)) {
+                                    mLogger.fine(mLocalizer.x("CFG041: Validation class for {0} = {1}", objectName.toUpperCase(), className)); 
                                 }
                                 try {
                                     Class validationClass = Class.forName(className);
@@ -143,13 +146,13 @@ public class ValidationConfiguration implements ConfigurationInfo {
                     }
                 }
             }
-            mLogger.info("CustomValidationByRule:" + hCustomValidationByRule);
-            mLogger.info("CustomValidationByObject:" + hCustomValidationByObject);
+            mLogger.info(mLocalizer.x("CFG016: The CustomValidationByRule class is: {0}", hCustomValidationByRule));
+            mLogger.info(mLocalizer.x("CFG017: The CustomValidationByObject class is: {0}", hCustomValidationByObject));
         } catch (ClassNotFoundException e) {
             throw new ConfigurationException("ClassNotFoundException: " + e.getMessage());
         }
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("Validation configuration parsed"); 
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Validation configuration parsed"); 
         }
     }
 

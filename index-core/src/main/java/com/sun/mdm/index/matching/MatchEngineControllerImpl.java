@@ -30,6 +30,9 @@ import java.util.Map;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 import com.sun.mdm.index.matching.StandardizationException;
 import com.sun.mdm.index.matching.Matcher;
@@ -68,9 +71,8 @@ import com.sun.mdm.index.master.ObjectNodeFilter;
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.metadata.MetaDataService;
 import com.sun.mdm.index.master.UserException;
-
+import com.sun.mdm.index.util.Localizer;
 import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 
 /**
  * The match engine controller provides the main entry point to the 
@@ -97,7 +99,8 @@ public class MatchEngineControllerImpl
     
     private static final String FIELD_EUID_STRING = "EUID";
     
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     
     static final String TAG_SBR = "Enterprise.SystemSBR.";    
@@ -107,7 +110,9 @@ public class MatchEngineControllerImpl
      * @throws QueryBuilderException the QueryBuilderConfiguration could not be obtained
      */    
     public MatchEngineControllerImpl() throws Exception { 
-        mLogger.debug("MatchEngineControllerImpl()");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Initializing MatchEngineControllerImpl()");
+        }
         initialize();        
     }
     
@@ -275,14 +280,16 @@ public class MatchEngineControllerImpl
         } catch (NoBlockApplicableException ex) {
             // The BlockPicker did not find a block definition left that would apply
             // This is not necessarily an error.
-            mLogger.info("No applicable block found " + ex.getMessage());
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("No applicable block found " + ex.getMessage());
+            }
         } catch (com.sun.mdm.index.query.QMException qex) {
-            mLogger.error("QueryManager execution failed", qex);
+            mLogger.warn(mLocalizer.x("QueryManager execution failed: {0}", qex.getMessage()));
             throw new MatchingException(qex.getMessage(), qex);
         } catch (UserException mex) {
         	throw mex;
         } catch (Exception e) {
-            mLogger.error("Find match failed", e);
+            mLogger.warn(mLocalizer.x("Find match encountered an exception: {0}", e.getMessage()));
             throw new MatchingException(e.getMessage(), e);
         } finally {
         	try {
@@ -495,8 +502,8 @@ public class MatchEngineControllerImpl
             // add the new list to the cache
             mMatchFieldLists.put(objectType, ret);
             
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("Match field list:\n" + LogUtil.listToString(ret));
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Match field list:\n" + LogUtil.listToString(ret));
             }
         }
         return ret;

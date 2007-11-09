@@ -26,13 +26,15 @@ import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.exception.EmptyLocalIDException;
 import com.sun.mdm.index.objects.exception.EmptyObjectException;
 import com.sun.mdm.index.objects.exception.EmptySystemCodeException;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.HashMap;
 import java.util.Date;
+import java.util.logging.Level;
 
 
 /**
@@ -90,7 +92,8 @@ public class SystemObject extends ObjectNode {
    public static ArrayList mFieldTypes;
 
    // logger
-   private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
 
    static {
        mFieldNames = new ArrayList();
@@ -809,7 +812,7 @@ public class SystemObject extends ObjectNode {
 		   			recalculateIndex();
     		   }
     		   catch ( ObjectException e ) {
-           	       mLogger.error(e.getMessage(), e);
+           	       mLogger.warn(mLocalizer.x("OBJ015: SystemObject could not set the object: {0}", e.getMessage()));
     		   }
            }
 

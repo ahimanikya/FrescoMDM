@@ -28,8 +28,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
+import com.sun.mdm.index.util.Localizer;
 
 /**
  * This AssemblerEngine is responsible to initialize the data structures that
@@ -70,7 +72,8 @@ public class AssemblerEngineImpl implements AssemblerEngine, Cloneable {
     private Object rootCache;
     
 
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     
     /**
@@ -173,7 +176,7 @@ public class AssemblerEngineImpl implements AssemblerEngine, Cloneable {
             mcompileAssObjectStates = setChildrenRelations(assDesc,
                     mcreateObjectList);
         } catch (Exception sqe) {
-            mLogger.error(sqe.getMessage());
+            mLogger.warn(mLocalizer.x("QUE001: initCompile() failed: {0}", sqe.getMessage()));
             throw new QMException(sqe);
         }
     }
@@ -216,7 +219,7 @@ public class AssemblerEngineImpl implements AssemblerEngine, Cloneable {
             mqrsets = createQueryResultSets(resultSets, mcreateObjectList,
                     massObjectStates, maxRows);
         } catch (SQLException sqe) {
-            mLogger.error(sqe.getMessage());
+            mLogger.warn(mLocalizer.x("QUE002: initRun() failed: {0}", sqe.getMessage()));
             throw new QMException(sqe);
         }
     }

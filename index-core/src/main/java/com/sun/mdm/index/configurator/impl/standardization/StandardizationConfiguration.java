@@ -25,6 +25,7 @@ package com.sun.mdm.index.configurator.impl.standardization;
 import java.util.LinkedHashMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
@@ -32,7 +33,9 @@ import org.w3c.dom.Document;
 import com.sun.mdm.index.configurator.ConfigurationInfo;
 import com.sun.mdm.index.configurator.ConfigurationException;
 import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Handles the parsing of the Standardization configuration, defining how to
@@ -53,7 +56,8 @@ public class StandardizationConfiguration implements ConfigurationInfo {
 
     private String moduleName;
     private String parserClass;
-    private final Logger logger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
 
 
@@ -125,9 +129,9 @@ public class StandardizationConfiguration implements ConfigurationInfo {
                 SystemObjectStandardization sysObjStand = parseStandardizeSystemObject(elementToParse);
                 sysObjs.put(sysObjStand.getQualifiedName(), sysObjStand);
             }
-            logger.info("Standardization Configuration: SystemObjects:\n" + LogUtil.mapToString(sysObjs));
-            logger.info("Standardization Configuration: moduleName: " + moduleName);
-            logger.info("Standardization Configuration: parserClass: " + parserClass);
+            mLogger.info(mLocalizer.x("CFG013: Standardization Configuration: the SystemObjects mappings are: {0}", LogUtil.mapToString(sysObjs)));
+            mLogger.info(mLocalizer.x("CFG014: Standardization Configuration: the moduleName is: {0}", moduleName));
+            mLogger.info(mLocalizer.x("CFG015: Standardization Configuration: the parserClass is: {0}", parserClass));
         } catch (Exception ex) {
             throw new ConfigurationException("Failed to parse Standardization configuration:" + ex.getMessage(), ex);
         }
@@ -281,7 +285,9 @@ public class StandardizationConfiguration implements ConfigurationInfo {
                 try  {
                     sourceFieldsDirectMap.put(new SystemObjectField(source), standObjFieldID);
                 }  catch (ConfigurationException e)  {
-                    logger.error("Standardization Configuration: invalid source: \"" + source + "\"");
+                    mLogger.severe(mLocalizer.x("CFG040: Standardization Configuration: " +
+                                                "invalid XML source for an unnormalized " +
+                                                "field name: {0}" , source));
                 }
             }
         }

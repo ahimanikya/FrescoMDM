@@ -23,6 +23,7 @@
 package com.sun.mdm.index.configurator.impl.querybuilder;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -30,8 +31,9 @@ import com.sun.mdm.index.configurator.ConfigurationInfo;
 import com.sun.mdm.index.configurator.ConfigurationException;
 import com.sun.mdm.index.querybuilder.QueryBuilder;
 import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
-
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Query builder configuration.
@@ -44,7 +46,8 @@ public class QueryBuilderConfiguration implements ConfigurationInfo {
 
     //Map query builder name to query builder info
     private final HashMap queryBuilderInfoMap = new HashMap();
-       private final Logger logger = LogUtil.getLogger(this);
+    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
     
 
     /** Creates a new QueryBuilderConfiguration instance. */
@@ -164,7 +167,7 @@ public class QueryBuilderConfiguration implements ConfigurationInfo {
                         }
                     }
                     queryBuilderInfoMap.put(builderName, qbInfo);
-                    logger.info("Query Builder Configuration:\n" + LogUtil.mapToString(queryBuilderInfoMap));
+                    mLogger.info(mLocalizer.x("CFG027: Query Builder Configuration mappings are: {0}", LogUtil.mapToString(queryBuilderInfoMap)));
                 }
             }
         } catch (Exception e) {

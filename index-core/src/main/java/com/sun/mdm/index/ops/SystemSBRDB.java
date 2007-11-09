@@ -35,14 +35,17 @@ import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 
 /**
  * @author gzheng
  * OPS class for SystemSBR records
  */
 public final class SystemSBRDB extends ObjectPersistenceService {
+    
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    
     private static String mDeleteString;
     private static String mInsertString;
     private static String mSelectString;
@@ -124,8 +127,6 @@ public final class SystemSBRDB extends ObjectPersistenceService {
             + "               euid = ? \n";
     }
 
-    private final Logger mLogger = LogUtil.getLogger(this);
-    
     
     /**
      * default constructor
@@ -147,7 +148,9 @@ public final class SystemSBRDB extends ObjectPersistenceService {
      */
     public SBR get(Connection conn, HashMap opsmap, String euid)
         throws OPSException {
-        mLogger.debug("retrieving SBR(" + euid + ")");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Retrieving SBR for EUID: " + euid );
+        }
 
         SBR sbrobj = null;
 
@@ -232,7 +235,9 @@ public final class SystemSBRDB extends ObjectPersistenceService {
      */
     public void create(Connection conn, HashMap opsmap, String euid, SBR sbr)
             throws OPSException {
-        mLogger.debug("creating SBR(" + euid + ")");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Creating SBR for EUID: " + euid);
+        }
 
         // executes insert SQL statement
         PreparedStatement stmt = null;
@@ -347,7 +352,9 @@ public final class SystemSBRDB extends ObjectPersistenceService {
      */
     public void remove(Connection conn, HashMap opsmap, String euid, SBR sbr)
             throws OPSException {
-        mLogger.debug("removing SBR(" + euid + ")");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Removing SBR for EUID: " + euid);
+        }
 
         // executes delete SQL statement
         PreparedStatement stmt = null;
@@ -403,7 +410,9 @@ public final class SystemSBRDB extends ObjectPersistenceService {
      */
     public void update(Connection conn, HashMap opsmap, String euid, SBR sbr)
             throws OPSException {
-        mLogger.debug("updating SBR(" + euid + ")");
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Updating SBR for EUID: " + euid);
+        }
 
         // executes update SQL statement
         PreparedStatement stmt = null;

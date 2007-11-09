@@ -37,9 +37,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
-
 /**
  * Key Statistics Report DB class for retrieving statistic data from database
  */
@@ -50,8 +47,6 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
     private static String mGetUnresolvedPotDupCountByDates;
     private static String mGetResolvedPotDupCountByDates;
 
-    private final Logger mLogger = LogUtil.getLogger(this);
-    
     
     static {
        mGetCountByDatesNFunction = null;

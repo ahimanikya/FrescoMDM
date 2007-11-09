@@ -22,8 +22,8 @@
  */
 package com.sun.mdm.index.master.search.merge;
 import com.sun.mdm.index.objects.TransactionObject;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Merge history node
@@ -47,7 +47,7 @@ public class MergeHistoryNode implements java.io.Serializable {
     private MergeHistoryNode mSourceNode;
 
     // logger    
-    private Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     
     /** Creates a new instance of MergeHistoryNode */
     public MergeHistoryNode() { }
@@ -130,7 +130,9 @@ public class MergeHistoryNode implements java.io.Serializable {
      * @param indent size of indent */    
     public void prettyPrint(int indent) {
         for (int i = 0; i < indent; i++) {
-            mLogger.debug("  ");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("  ");
+            }
         }
         String transId = null;
         if (mTransactionObject != null) {
@@ -141,9 +143,13 @@ public class MergeHistoryNode implements java.io.Serializable {
             }
         }
         if (transId != null) {
-            mLogger.debug(mEUID + " [trans: " + transId + "]");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine(mEUID + " [trans: " + transId + "]");
+            }
         } else {
-            mLogger.debug(mEUID);
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine(mEUID);
+            }
         }
         if (mDestinationNode != null) {
             mDestinationNode.prettyPrint(indent + 1);

@@ -23,15 +23,17 @@
 package com.sun.mdm.index.configurator.impl; 
 
 import java.util.HashMap;
+import java.util.logging.Level;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
 import org.w3c.dom.Document;
 import com.sun.mdm.index.configurator.ConfigurationInfo;
 import com.sun.mdm.index.configurator.ConfigurationException;
-
 import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Phonetic encoder configuration information.
@@ -53,7 +55,8 @@ public class PhoneticEncodersConfig
     private String moduleName;
     private String parserClass;
     
-    private final Logger logger = LogUtil.getLogger(this);
+    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
     
 
     /**
@@ -129,7 +132,7 @@ public class PhoneticEncodersConfig
 
                 encodersClasses.put(encodingTypeName, encoderImplClassName);
             }
-            logger.info("PhoneticEncodersConfig: " + encodersClasses);
+            mLogger.info(mLocalizer.x("CFG022: The Phonetic Encoders Configuration encoder mappings are: {0}", encodersClasses));
         } catch (Exception ex) {
             throw new ConfigurationException("Failed to parse phonetic encoders configuration:" + ex.getMessage(), ex);
         }

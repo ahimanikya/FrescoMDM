@@ -26,6 +26,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.logging.Level;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import com.sun.mdm.index.master.search.transaction.TransactionSearchObject;
@@ -35,9 +36,11 @@ import com.sun.mdm.index.objects.EnterpriseObjectHistory;
 import com.sun.mdm.index.ops.RecreateResult;
 import com.sun.mdm.index.ops.TransactionMgr;
 import com.sun.mdm.index.ops.TransactionMgrFactory;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
 import com.sun.mdm.index.util.ConnectionUtil;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
+
 /**
  * Adapter for transaction summaries
  * @author cychow
@@ -76,7 +79,8 @@ public class TransactionPageAdapter implements PageAdapter, java.io.Serializable
      */    
     private transient TransactionMgr mTrans;
 
-    private transient  Logger mLogger = LogUtil.getLogger(this);
+    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
 
     /** Creates a new instance of TransactionPageAdapter
      *
@@ -275,7 +279,6 @@ public class TransactionPageAdapter implements PageAdapter, java.io.Serializable
      */
     private void loadRows(int direction)
         throws PageException {
-    	initLogger();
         Connection con = null;
         if (mObjArray[mPosition].getEnterpriseObjectHistory() == null) {
             // Determine start and end indexes of records to load
@@ -320,8 +323,9 @@ public class TransactionPageAdapter implements PageAdapter, java.io.Serializable
                         //  for the GUI.  Otherwise, it must be handled by a 
                         //  user-defined API.
                         history = new RecreateResult();
-                        mLogger.error("Invalid Transaction Log. Transaction ID: " 
-                                + transNumber);
+                        mLogger.warn(mLocalizer.x("PAG001: Invalid Transaction " 
+                                                  + "Log. Transaction ID: {0}",
+                                                  transNumber));
                         // flag this transaction as invalid
                         validTransaction = false;
                     }
@@ -342,20 +346,10 @@ public class TransactionPageAdapter implements PageAdapter, java.io.Serializable
      * @param con JDBC connection
      */    
     private void releaseConnection(Connection con) {
-    	initLogger();
         try {
             con.close();
         } catch (SQLException e) {
-        	
-            mLogger.error("Exception", e);
+            mLogger.warn(mLocalizer.x("PAG002: TransactionPageAdapter could not release the JDBC connection: {0}", e.getMessage()));
         }
     }
-    
-    private void initLogger() {
-    
-    	if ( mLogger == null) {
-      	  mLogger = LogUtil.getLogger(this);
-      	}
-    }
-   
 }

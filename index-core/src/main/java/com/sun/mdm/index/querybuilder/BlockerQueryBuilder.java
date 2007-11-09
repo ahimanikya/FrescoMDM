@@ -61,11 +61,11 @@ import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.metadata.MetaDataService;
 import com.sun.mdm.index.parser.FieldDef;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
 
 /**
  * The Blocker is used to limit the amount of potential candidates the match
@@ -81,7 +81,7 @@ public class BlockerQueryBuilder extends QueryBuilder {
 
     private BlockerConfig config;
 
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
 
     private final SimpleDateFormat mDateFormat = new SimpleDateFormat(
             "yyyy-MM-dd");
@@ -220,9 +220,8 @@ public class BlockerQueryBuilder extends QueryBuilder {
                     retIds.add(currentId);
                 }
             }
-            if (mLogger.isDebugEnabled()) {
-                mLogger
-                        .debug("getApplicableBlockIds(): list of block ids to return: "
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("getApplicableBlockIds(): list of block ids to return: "
                                 + retIds.toString());
             }
             return (String[]) retIds.toArray(new String[] {});
@@ -321,8 +320,8 @@ public class BlockerQueryBuilder extends QueryBuilder {
 
             qo.setCondition(aConds);
 
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("buildQueryObject(): constructed query object:\n"
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("buildQueryObject(): constructed query object:\n"
                         + qo);
             }
             // return query object

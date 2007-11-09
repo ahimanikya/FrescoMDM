@@ -32,8 +32,11 @@ import javax.ejb.SessionContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
+
+import com.sun.mdm.index.util.Localizer;
 
 /**
  * @author sdua
@@ -44,7 +47,8 @@ public class ConnectionUtil {
     public static final int DB_ORACLE = 0;
     public static final int DB_SQLSERVER = 1;
     
-    private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.util." + ConnectionUtil.class.getName());
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.util." + ConnectionUtil.class.getName());
+    private transient static final Localizer mLocalizer = Localizer.get();
     
     private SessionContext mcontext;
     private static int connectionCounter = 0;
@@ -66,12 +70,16 @@ public class ConnectionUtil {
         // Check if mDataSource has been already cached.
         if (mDataSource == null) {
             Context ctx = new InitialContext();
-            mLogger.debug(DB_PROP_FILE + "not found, using default JNDI for data source");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine(DB_PROP_FILE + "not found, using default JNDI for data source");
+            }
             mDataSource = (javax.sql.DataSource)ctx.lookup(com.sun.mdm.index.util.JNDINames.BBE_DATASOURCE);
            
         } 
         Connection con = mDataSource.getConnection();
-        mLogger.debug("in getConnection(): " + con); 
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Obtained JDBC connection: " + con); 
+        }
         
         // Initialize the DB ID to make sure that
         // getDBProductID() always returns a valid ID
@@ -124,7 +132,7 @@ public class ConnectionUtil {
     					conn.close();
     				}
     			} catch ( Exception e ) {
-                    mLogger.error("releaseConnection(): could not close JDBC connection", e);    			
+                    mLogger.warn(mLocalizer.x("UTL001: ConnectionUtil.releaseConnection(): could not close JDBC connection: {0}", e.getMessage()));
     			}  
     		} catch (Exception e) {
     		}

@@ -23,10 +23,12 @@
 package com.sun.mdm.index.objects;
 
 import com.sun.mdm.index.objects.epath.EPathAPI;
+import com.sun.mdm.index.util.Localizer;
 
 import java.util.Comparator;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * @author gzheng
@@ -35,7 +37,9 @@ import com.sun.mdm.index.util.Logger;
 public class ObjectNodeComparator implements Comparator, java.io.Serializable {
     private final String mmFQFN;
     private final boolean mReverse;
-    private final Logger mLogger = LogUtil.getLogger(this);
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     /** Creates a new instance of ObjectNodeComparator
      * @param mFQFN fully qualified field name
      * @param reverse boolean 
@@ -99,7 +103,8 @@ public class ObjectNodeComparator implements Comparator, java.io.Serializable {
                 return val1.compareTo(val2);
             }
         } catch (Exception e) {
-            mLogger.error("Comparison Error", e);
+            mLogger.warn(mLocalizer.x("OBJ13: ObjectNodeComparator encountered " + 
+                                      "a comparison crror: {0}", e.getMessage()));
 
             return 0;
         }
