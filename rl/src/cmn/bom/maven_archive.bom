@@ -5,6 +5,4 @@
 set SRC_DIR <SRCROOT>/bld
 set DST_DIR .
 
-IFPORT solsparc
 m2.zip|0444|bin|<SRC_DIR>|<FILE>|<DST_DIR>
-ENDIFPORT
