@@ -1,0 +1,12 @@
+TARGET_OS = cmn & skel
+bldhost.prl    bin/$TARGET_OS/bldhost        0555
+
+TARGET_OS = ntcmn & skel & ksh
+bldhost.prl    bin/$TARGET_OS/bldhost.ksh    0555
+
+TARGET_OS=cmn, ntcmn
+bldhost.pl    lib/$TARGET_OS/bldhost.pl      0444
+
+#THIS IS UNIQUE FOR EACH PRODUCT & CODELINE.  RT 4/23/97
+TARGET_OS=cmn, ntcmn
+codeline.pl     lib/$TARGET_OS/codeline.pl       0444

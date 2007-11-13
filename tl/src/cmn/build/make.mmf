@@ -1,0 +1,12 @@
+TEMPLATE = file.mmf
+
+PKG   = bin
+PKG2  = lib
+
+#uncomment this if the ksh check starts failing
+#CHECK=
+
+FILES  = runbld.sh odmmibld.sh 
+FILES2 = bldres.dat 
+
+CMDS = $(FILES)

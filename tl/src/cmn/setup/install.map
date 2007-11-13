@@ -1,0 +1,3 @@
+TARGET_OS = cmn & substvar, ntcmn & substvar
+buildenv.csh  boot/$TARGET_OS/buildenv.csh 444
+buildenv.ksh  boot/$TARGET_OS/buildenv.ksh 444

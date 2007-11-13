@@ -1,0 +1,11 @@
+TEMPLATE	= file.mmf
+
+PKG	=  bin
+PKG2	=  lib
+
+MODE	=  0555
+MODE2	=  0444
+
+FILES	= bldhost.prl 
+FILES2	= bldhost.pl codeline.pl
+

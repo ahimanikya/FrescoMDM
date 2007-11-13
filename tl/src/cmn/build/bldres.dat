@@ -1,0 +1,197 @@
+#
+# BEGIN_HEADER - DO NOT EDIT
+# 
+# The contents of this file are subject to the terms
+# of the Common Development and Distribution License
+# (the "License").  You may not use this file except
+# in compliance with the License.
+#
+# You can obtain a copy of the license at
+# https://open-esb.dev.java.net/public/CDDLv1.0.html.
+# See the License for the specific language governing
+# permissions and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL
+# HEADER in each file and include the License file at
+# https://open-esb.dev.java.net/public/CDDLv1.0.html.
+# If applicable add the following below this CDDL HEADER,
+# with the fields enclosed by brackets "[]" replaced with
+# your own identifying information: Portions Copyright
+# [year] [name of copyright owner]
+#
+
+#
+# @(#)bldres.dat - ver 1.1 - 01/04/2006
+#
+# Copyright 2004-2006 Sun Microsystems, Inc. All Rights Reserved.
+# 
+# END_HEADER - DO NOT EDIT
+#
+
+# buildResults.dat
+# The Rules used by buildResults to parse the log files.
+#
+# Every block begins with some assignments.  The first and the only required
+# assignment is "BUILDRESULTS_TYPE = x".  Where "x" is the name of the block.
+# Other assignments change the default parameters (this is per log):
+#    MaxContext: max amount of lines BEFORE error to print out.
+#    MaxLinesPrinted: max number of lines to print AFTER an error.
+#    MaxErrors: max number of errors to print out before giving up on this
+#               log.
+#    MaxHeaderLineCount: max number of lines to have as the header for
+#                        the error.
+# Rules syntax:
+#   This section must begin with "begin rules" and end with "end rules".
+#   You may specify a single rule on multiple lines by putting a
+#     backslash at the end of the line to continue it.
+#   Comments begin with a '#' and goto the end of the line.  Do not put
+#     comments on the same line as a rule.
+#   You can include the rules of another block by saing "include x".
+#   A rule is made up of a result and a perl expression separated by a colon.
+#   The perl expression is as if it were put into the test part of
+#     an if statement.
+
+# general errors that get appended (at the end) of the other error lists
+BUILDRESULTS_TYPE = general
+MaxContext = 1
+MaxErrors = 100
+MaxLinesPrinted = 1
+MaxHeaderLineCount = 5
+begin rules
+    error:/BUILD_ERROR/
+    error:/^USER ERROR/
+    error:/^SYSTEM ERROR/
+    error:/^Fault at/
+    error:/Segmentation Fault/i
+    error:/segmentation or access violation/
+    error:/^Fault at/
+    error:/core dumped/i
+    error:/refused/
+    error:/command not found/i
+    error:/error in opening zip file/i
+    #from appserver:
+    error:/Port [0-9]+ is in use/i
+    error:/CLI[0-9]+/
+    # mks/nt:
+    error:/cannot find the path specified/i
+    error:/checksum error/i
+    # alphaosf
+    error:/cxx: Severe/  
+    # alphaosf
+    error:/cxx: Error/
+    error:/License failure/i
+    error:/syntax error/
+    error:/Deleting executable .* due to linkage error/
+    error:/file system is full/i || /file system full/i
+    error:/No space left on device/i
+    error:/Permission denied/i
+    error:/Can\'t locate file for/
+    error:/The build cannot continue/
+end rules
+
+### warning:  the "log" and "compile" rules are required by buildResults.pl ###
+
+BUILDRESULTS_TYPE = compile
+MaxContext = 1
+MaxErrors = 500
+MaxHeaderLineCount = 1
+MaxLinesPrinted = 1
+begin rules
+    include general
+end rules
+
+BUILDRESULTS_TYPE = log
+MaxContext = 1
+MaxErrors = 500
+MaxHeaderLineCount = 1
+MaxLinesPrinted = 1
+begin rules
+    include general
+end rules
+
+BUILDRESULTS_TYPE = cvsupdate
+MaxContext = 0
+MaxErrors = 500
+MaxHeaderLineCount = 0
+MaxLinesPrinted = 1
+begin rules
+    error:/^C /
+    error:/\?/
+    include general
+end rules
+
+BUILDRESULTS_TYPE = toolsBuild
+MaxContext = 1
+MaxErrors = 500
+MaxHeaderLineCount = 1
+MaxLinesPrinted = 1
+begin rules
+    include cvsupdate
+    include general
+end rules
+
+BUILDRESULTS_TYPE = ant_generic
+MaxContext = 1
+MaxErrors = 500
+MaxHeaderLineCount = 1
+MaxLinesPrinted = 1
+begin rules
+    error:/\[\w+\] [0-9]+ error/
+    good:/\[\w+\] [0-9]+ warning/
+    error:/BUILD FAILED/
+    include general
+end rules
+
+BUILDRESULTS_TYPE = javacompile
+MaxContext = 1
+MaxErrors = 500
+MaxHeaderLineCount = 1
+MaxLinesPrinted = 1
+begin rules
+#javadoc: .java:453: warning -
+    good:/\.java:\d+:\s+warning\s+/i
+#javac:  .java:15: warning:
+    good:/\.java:\d+:\s+warning:\s+/i
+#javadoc:  .java:40: cannot resolve symbol
+#  javac:  .java:362:
+    error:/\.java:\d+:/i
+    #\S matches any non-whitespace
+    good:/\S*error\S*\.java/i
+    good:/\S*error\S*\.class/i
+    error:/cannot resolve/i
+end rules
+
+BUILDRESULTS_TYPE = odmmi_javabuild
+MaxContext = 1
+MaxErrors = 500
+MaxHeaderLineCount = 1
+MaxLinesPrinted = 1
+begin rules
+    include javacompile
+    include ant_generic
+    error:/\.\w+Exception:/
+    error:/Full thread dump:/
+    error:/internalerror/i
+    error:/not found/i
+#javadoc#    error:/to avoid this note/i
+    error:/panic/i
+    error:/stacktrace:/
+    error:/Terminated/
+    include general
+end rules
+
+BUILDRESULTS_TYPE = jbi_regress
+MaxErrors = 1000
+MaxHeaderLineCount = 1
+#this is the number of lines printed BEFORE the error:
+MaxContext = 1
+#this is how many lines to print AFTER the error:
+MaxLinesPrinted = 1
+begin rules
+    error:/\s+\*TIMED OUT\*\s+/
+    error:/:\s+Connection refused/
+    error:/\s+\*\*\*FAILED\*\*\*\s+/
+    error:/\[junit\].*\s+FAILED/
+    error:/\[junit\] internal error/
+    include ant_generic
+end rules

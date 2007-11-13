@@ -1,0 +1,8 @@
+TEMPLATE= file.mmf
+
+PKG	= bin
+PKG2	= boot
+
+FILES   =
+FILES2  = buildenv.csh buildenv.ksh
+UPDATE2	= -udiff

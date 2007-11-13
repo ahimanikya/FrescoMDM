@@ -1,0 +1,12 @@
+TARGET_OS = cmn,ntcmn
+odmmibld.sh      bin/$TARGET_OS/odmmiBuild              0555
+#install run command as "run" + name of build script:
+runbld.sh        bin/$TARGET_OS/runodmmiBuild           0555
+
+TARGET_OS = ntcmn
+odmmibld.sh      bin/$TARGET_OS/odmmiBuild.ksh          0555
+runbld.sh        bin/$TARGET_OS/runodmmiBuild.ksh       0555
+
+TARGET_OS = cmn,ntcmn
+#install custom buildResults table as ${PRODUCT}_buildResults.dat
+bldres.dat       lib/$TARGET_OS/odmmi_buildResults.dat  0555
