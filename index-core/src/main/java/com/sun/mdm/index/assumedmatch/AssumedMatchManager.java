@@ -118,7 +118,8 @@ public class AssumedMatchManager {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            throw new AssumedMatchException(e);
+            throw new AssumedMatchException(mLocalizer.t("ASM500: Assumed Match " + 
+                                                         "record could not be added: {0}", e));    
         }
     }
     
@@ -139,11 +140,12 @@ public class AssumedMatchManager {
             int retVal = ps.executeUpdate();
             ps.close();
             if (retVal != 1) {
-                throw new AssumedMatchException("Invalid number of rows deleted: "
-                + retVal);
+                throw new AssumedMatchException(mLocalizer.t("ASM502: Invalid number " + 
+                                                             "of rows deleted: {0}", retVal));
             }               
         } catch (Exception e) {
-            throw new AssumedMatchException(e);
+            throw new AssumedMatchException(mLocalizer.t("ASM503: Assumed Match record " + 
+                                                         "could not be deleted: {0}", e));
         }
     }    
     
@@ -217,9 +219,13 @@ public class AssumedMatchManager {
                 ps.setObject(i + 1, parameters.get(i));
             }
         } catch (SQLException e) {
-            throw new AssumedMatchException(e);
+            throw new AssumedMatchException(mLocalizer.t("ASM504: Could not lookup " + 
+                                                         "Assumed Match record(s) due " + 
+                                                         "to an SQL error: {0}", e));
         } catch (OPSException e) {
-            throw new AssumedMatchException(e);
+            throw new AssumedMatchException(mLocalizer.t("ASM505: Could not lookup " + 
+                                                         "Assumed Match record(s) " + 
+                                                         "due to an OPS error: {0}", e));
         }            
         return lookupAssumedMatches(con, ps, obj);
     }
@@ -284,7 +290,83 @@ public class AssumedMatchManager {
                  
             return retIterator;
         } catch (Exception e) {
-            throw new AssumedMatchException(e);
+            throw new AssumedMatchException(mLocalizer.t("ASM506: Could not lookup " + 
+                                                         "Assumed Match record(s) due " + 
+                                                         "to a general error: {0}", e));
+        }
+    }    
+    
+    /** Count the assumed match records matching the search criteria.
+     * This does not handle EUID nor Source/LID search criteria.
+     * @param con Connection handle
+     * @param searchObj Search object
+     * @throws AssumedMatchException An error occured.
+     * @return Count of the assumed match records matching the search criteria.
+     */    
+    public int countAssumedMatches (Connection con, 
+                                    AssumedMatchSearchObject obj)
+            throws AssumedMatchException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList parameters = new ArrayList();
+        String countSelectClause =
+            "select count(*) " 
+            + "from sbyn_assumedmatch a, sbyn_transaction b "
+            + "where a.transactionnumber=b.transactionnumber ";    
+        StringBuffer sb = new StringBuffer(countSelectClause);
+        try {
+            if (obj.getSystemCode() != null) {
+                sb.append(" and a.SYSTEMCODE=?");
+                parameters.add(obj.getSystemCode());
+            }
+            if (obj.getAssumedMatchId() != null) {
+                sb.append(" and a.ASSUMEDMATCHID=?");
+                parameters.add(obj.getAssumedMatchId());
+            }
+            if (obj.getLID() != null) {
+                sb.append(" and a.LID=?");
+                parameters.add(obj.getLID());
+            }
+            if (obj.getCreateUser() != null) {
+                sb.append(" and b.SYSTEMUSER=?");
+                parameters.add(obj.getCreateUser());
+            }
+            if (obj.getCreateStartDate() != null) {
+                sb.append(" and b.TIMESTAMP>=?");
+                parameters.add(obj.getCreateStartDate());
+            }
+            if (obj.getCreateEndDate() != null) {
+                sb.append(" and b.TIMESTAMP<=?");
+                parameters.add(obj.getCreateEndDate());
+            }
+                       
+            String sqlString = sb.toString();
+            ps = con.prepareStatement(sqlString);
+            for (int i = 0; i < parameters.size(); i++) {
+                ps.setObject(i + 1, parameters.get(i));
+            }
+            int count = 0;
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            } 
+            return count;
+        } catch (SQLException e) {
+            throw new AssumedMatchException(mLocalizer.t("ASM507: Could not count " + 
+                                                         "Assumed Match record(s) due " + 
+                                                         "to an SQL error: {0}", e));
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (Exception e) {
+                throw new AssumedMatchException(mLocalizer.t("ASM508: Could not close the result " + 
+                                                         "Aset nor the prepared statement: {0}", e));
+            } 
         }
     }    
     
