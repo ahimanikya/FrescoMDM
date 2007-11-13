@@ -126,7 +126,8 @@ public class MatchEngineControllerImpl
                     (QueryBuilderConfiguration) ConfigurationService.getInstance().getConfiguration(
                     QueryBuilderConfiguration.QUERY_BUILDER);
         } catch (Exception e) {
-            throw new QueryBuilderException(e);
+            throw new QueryBuilderException(mLocalizer.t("MAT500: Could not initialize " + 
+                                                    "MatchEngineControllerImpl: {0}", e));
         }    
     }
    
@@ -250,8 +251,8 @@ public class MatchEngineControllerImpl
                     for (int idx = 0; idx < resultSets.length; idx++) {
                         totalRows += countRows(resultSets[idx]);
                         if (totalRows > candThreshold) {
-                            throw new UserException(new CandidateThresholdException("The maximum possible matches, " 
-                                    + candThreshold + ", is exceeded"));
+                            throw new UserException(new CandidateThresholdException(mLocalizer.t("MAT502: The maximum possible matches, " + 
+                                                    "{0}, has been exceeded", candThreshold)));
                         }
                     }
                 }
@@ -284,20 +285,18 @@ public class MatchEngineControllerImpl
                 mLogger.fine("No applicable block found " + ex.getMessage());
             }
         } catch (com.sun.mdm.index.query.QMException qex) {
-            mLogger.warn(mLocalizer.x("QueryManager execution failed: {0}", qex.getMessage()));
-            throw new MatchingException(qex.getMessage(), qex);
+            throw new MatchingException(mLocalizer.t("MAT511: QueryManager execution failed: {0}", qex));
         } catch (UserException mex) {
         	throw mex;
         } catch (Exception e) {
-            mLogger.warn(mLocalizer.x("Find match encountered an exception: {0}", e.getMessage()));
-            throw new MatchingException(e.getMessage(), e);
+            throw new MatchingException(mLocalizer.t("MAT503: Find match encountered an exception: {0}", e));
         } finally {
         	try {
                     if (block != null) {
                         block.close();
                     }
         	} catch (QMException ex) {
-        		throw new MatchingException(ex);
+        		throw new MatchingException(mLocalizer.t("MAT504: Could not close query result block: {0}", ex));
         	}
         }
         
@@ -407,7 +406,7 @@ public class MatchEngineControllerImpl
         
         // assert searchOption and sysObj are not null
         if (options == null || sysObj == null) {
-            throw new MatchingException("Input can not be null");
+            throw new MatchingException(mLocalizer.t("MAT505: Input can not be null"));
         }
         
         try {
@@ -431,7 +430,7 @@ public class MatchEngineControllerImpl
             
             // assert qos != null and length > 0
             if (qos == null) {
-                throw new MatchingException("Assertion failed, Query builder result is null");
+                throw new MatchingException(mLocalizer.t("MAT506: Assertion failed, Query builder result is null"));
             }
 
             if (options.getCandidateThreshold() > 0) {
@@ -447,13 +446,13 @@ public class MatchEngineControllerImpl
             return result;
             
         } catch (ConfigurationException cex) {
-            throw new MatchingException("Invalid search criteria option", cex);
+            throw new MatchingException(mLocalizer.t("MAT507: Invalid search criteria option: {0}", cex));
         } catch (QueryBuilderException qbex) {
-            throw new MatchingException("Dynamic query building failed", qbex);
+            throw new MatchingException(mLocalizer.t("MAT508: Dynamic query building failed: {0}", qbex));
         } catch (EPathException eex) {
-            throw new MatchingException(eex.getMessage(), eex);
+            throw new MatchingException(mLocalizer.t("MAT509: EPath problem encountered: {0}", eex));
         } catch (InstantiationException iex) {
-            throw new MatchingException(iex.getMessage(), iex);
+            throw new MatchingException(mLocalizer.t("MAT510: Instantiation problem encountered: {0}", iex));
         }
     }    
     

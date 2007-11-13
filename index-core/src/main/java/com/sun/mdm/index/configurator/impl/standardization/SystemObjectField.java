@@ -26,6 +26,10 @@ import com.sun.mdm.index.configurator.ConfigurationException;
 import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathParser;
 import com.sun.mdm.index.objects.metadata.MetaDataService;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
+
 
 /**
  * Represents the definition of a SystemObject field used in the configuration.
@@ -37,6 +41,9 @@ public class SystemObjectField {
     private String qualifiedName; // String version of the configured EPath, includes decorators such as [*]
     private int fieldSize;
 
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     /** Creates new SystemObjectField instance */
     public SystemObjectField() {
     }
@@ -54,8 +61,9 @@ public class SystemObjectField {
         try {
             this.ePath = EPathParser.parse(qualifiedName);
         } catch (com.sun.mdm.index.objects.epath.EPathException ex) {
-            throw new ConfigurationException("Failed to parse qualified field name as EPath: " 
-                + qualifiedName + ". " + ex.getMessage(), ex);
+            throw new ConfigurationException(mLocalizer.t("CFG545: SystemObjectField" + 
+                                    "failed to parse qualified field name {0} as an EPath: {1}", 
+                                    qualifiedName, ex));
         }
         // Get the maximum field size from the MetaDataService
         try {
@@ -63,9 +71,10 @@ public class SystemObjectField {
             String fullyQualified = MetaDataService.getSOPath(undecoratedFieldName);
             fieldSize = MetaDataService.getFieldSize(fullyQualified);
         } catch (Exception ex) {
-            throw new ConfigurationException("Failed to get the maximum field size" 
-                    + " from the MetaDataService for the configured standardization field: " 
-                    + qualifiedName + ". " + ex.getMessage(), ex);
+            throw new ConfigurationException(mLocalizer.t("CFG546: SystemObjectField" + 
+                                    "to get the maximum field size from the MetaDataService " + 
+                                    "for the configured standardization field {0} as an EPath: {1}", 
+                                    qualifiedName, ex));
         }
     }
 

@@ -124,7 +124,8 @@ public class SecurityConfiguration implements ConfigurationInfo {
             }
             mLogger.info(mLocalizer.x("CFG012: SecurityConfiguration: securityPlugInClassName is {0}", msecurityPlugInClassName));
         } catch (Exception e) {
-            throw new ConfigurationException(e.getMessage());
+            throw new ConfigurationException(mLocalizer.t("CFG541: Could not parse " + 
+                                    "the SecurityConfiguration XML node: {0}", e));
         }
     }
 

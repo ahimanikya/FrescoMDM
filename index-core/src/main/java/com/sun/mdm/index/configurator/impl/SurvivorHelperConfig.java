@@ -217,8 +217,8 @@ public class SurvivorHelperConfig implements ConfigurationInfo {
             if ((matchDefs == null) || (matchDefs.getLength() < 1)) {
                 //not there, just end
                 //must contains 1, defined in XSD
-                throw new ConfigurationException(
-                    "Missing candidate-definitions in the file");
+                throw new ConfigurationException(mLocalizer.t("CFG511: Missing " + 
+                                            "candidate-definitions in the file."));
             }
 
             Element matchDef = (Element) matchDefs.item(0);
@@ -229,8 +229,8 @@ public class SurvivorHelperConfig implements ConfigurationInfo {
             if (candidateFields == null) {
                 // must contain 1+
                 //not there, return error
-                throw new ConfigurationException(
-                    "Missing elements for candidate-field");
+                throw new ConfigurationException(mLocalizer.t("CFG512: Missing " + 
+                                            "elements for candidate-field."));
             }
 
             int candidateCount = candidateFields.getLength();
@@ -267,7 +267,8 @@ public class SurvivorHelperConfig implements ConfigurationInfo {
             mLogger.info(mLocalizer.x("CFG031: Survivor Helper Configuration: StrategyCache mappings are: {0}", LogUtil.mapToString(mStrategyCache)));
             mLogger.info(mLocalizer.x("CFG032: Survivor Helper Configuration: FieldCache mappings are: {0}", LogUtil.mapToString(mFieldCache)));
         } catch (Exception ex) {
-            throw new ConfigurationException(ex);
+            throw new ConfigurationException(mLocalizer.t("CFG513: SurvivorCalculator " + 
+                                        "could not parse an XML configuration node: {0}", ex));
         }
     }
 

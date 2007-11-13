@@ -29,6 +29,7 @@ import java.io.IOException;
 
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.TransactionObject;
+import com.sun.mdm.index.util.Localizer;
 
 
 /**
@@ -57,6 +58,7 @@ public class MergeResult implements Externalizable {
      */
     private TransactionObject mTransactionObject;
 
+    private transient final Localizer mLocalizer = Localizer.get();
 
     /**
      * Creates a new instance of the MergeResult class.
@@ -219,7 +221,7 @@ public class MergeResult implements Externalizable {
             ExternalizableVersion1 ev = new ExternalizableVersion1();
             ev.readExternal(in);
         } else {
-            throw new RuntimeException("Unsupported version = " + version);
+            throw new RuntimeException(mLocalizer.t("MAS503: Unsupported version: {0} ", version));
         }
     }
 }

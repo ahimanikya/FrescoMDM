@@ -36,6 +36,7 @@ import com.sun.mdm.index.configurator.impl.idgen.EuidGeneratorConfiguration;
 import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.master.ConnectionInvalidException;
 import com.sun.mdm.index.objects.metadata.ObjectFactory;
+import com.sun.mdm.index.util.Localizer;
 
 /**
  * <p>Title: </p>
@@ -54,6 +55,8 @@ public class CUIDManager {
 
     private static boolean isInitialized = false;
 
+    private transient static final Localizer mLocalizer = Localizer.get();
+
     private static void init() throws  SEQException {
         mSeqCache = new HashMap();
 
@@ -65,16 +68,16 @@ public class CUIDManager {
                     ConfigurationService.getInstance().getConfiguration(
                     EuidGeneratorConfiguration.EUID_GENERATOR);
             if (dmConfig == null) {
-                throw new Exception("EUID generator configuration not found.");
+                throw new Exception(mLocalizer.t("IDG500: EUID generator configuration not found."));
             }
             mEuidGenerator = dmConfig.getEuidGenerator();        
             if (mEuidGenerator == null) {
-                throw new Exception("EUID generator not defined.");
+                throw new Exception(mLocalizer.t("IDG501: EUID generator not defined."));
             }
             isInitialized = true;
 
         } catch (Exception ex) {
-            throw new SEQException(ex);
+            throw new SEQException(mLocalizer.t("IDG502: EUID generator could not be initialized: (0}", ex));
         } 
     }
 
@@ -152,7 +155,8 @@ public class CUIDManager {
                     nextValue = getSeqNoByProcedure(seqName, con);
             }
         } catch (SQLException exp) {
-            throw new SEQException(exp.getMessage());
+            throw new SEQException(mLocalizer.t("IDG503: Could not retrieve next " + 
+                                                "ID from the EUID generator: (0}", exp));
         }
 
         

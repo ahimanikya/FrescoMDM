@@ -29,6 +29,9 @@ import org.w3c.dom.NodeList;
 import com.sun.mdm.index.configurator.ConfigurationInfo;
 import com.sun.mdm.index.configurator.ConfigurationException;
 import com.sun.mdm.index.util.LogUtil;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Key Value Configuration.
@@ -38,6 +41,8 @@ public class KeyValueConfiguration implements ConfigurationInfo {
 
     private final HashMap keyValueMap = new HashMap();
 
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
 
     /** Creates new KeyValueConfiguration */
     public KeyValueConfiguration() {
@@ -62,7 +67,7 @@ public class KeyValueConfiguration implements ConfigurationInfo {
             } else if (val.equalsIgnoreCase("false")) {
                 return false;
             } else {
-                throw new ConfigurationException("Invalid boolean: " + val);
+                throw new ConfigurationException(mLocalizer.t("CFG535: Invalid boolean value: {0}", val));
             }
         }
     }
@@ -119,7 +124,8 @@ public class KeyValueConfiguration implements ConfigurationInfo {
                 }
             }
         } catch (Exception e) {
-            throw new ConfigurationException(e);
+            throw new ConfigurationException(mLocalizer.t("CFG536: KeyConfiguration could " + 
+                                        "not parse the XML configuration node: {0}", e));
         }
     }
 

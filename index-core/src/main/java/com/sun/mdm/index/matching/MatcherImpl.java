@@ -73,7 +73,7 @@ public class MatcherImpl implements Matcher {
             // use MatcherAPIHelper as factory        
             matcherAPIImpl = new MatcherAPIHelper().getMatcherAPIImpl();
             if (matcherAPIImpl == null) {
-                throw new MatchingException("MatcherAPI implementation has not been configured.");
+                throw new MatchingException(mLocalizer.t("MAT512: MatcherAPI implementation has not been configured."));
             }
             matchEngineConfig = new MatcherAPIHelper().getMatchEngineConfigImpl();
             if (matchEngineConfig == null) {

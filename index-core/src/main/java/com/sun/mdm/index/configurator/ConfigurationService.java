@@ -202,9 +202,8 @@ public class ConfigurationService implements ConfigurationMBean {
             }
             InputStream is = this.getClass().getClassLoader().getResourceAsStream(fileName);
             if (is == null) {
-                mLogger.info(mLocalizer.x("CFG011: Unable to find the configuration file in classpath : {0}" , fileName));
-                throw new IOException("Unable to find configuration file in classpath : " 
-                    + fileName);
+                throw new IOException(mLocalizer.t("CFG501: Unable to locate the " + 
+                                                   "configuration file in classpath : {0}" , fileName));
             }
             return is;
         }
@@ -258,16 +257,17 @@ public class ConfigurationService implements ConfigurationMBean {
                 instance.configs.put(MatchEngineConfig.MODULE_NAME, matchConfig);
                 mLogger.info(mLocalizer.x("CFG008: All configuration files loaded."));
             } catch (Exception e) {
-                mLogger.severe(mLocalizer.x("CFG009: ConfigurationService could not load one or more files." + e.getMessage()));
                 instance = null;
-                throw new InstantiationException(e.getMessage());
+                throw new InstantiationException(mLocalizer.t("CFG502: ConfigurationService " + 
+                                                              "could not load one or more files: {0}", e));
             } finally {
             	try {
             	  if ( is != null){
             		is.close();
             	  }
             	} catch (Exception io){
-            		throw new InstantiationException(io.getMessage());
+            		throw new InstantiationException(mLocalizer.t("CFG503: ConfigurationService " + 
+                                                              "could not close an InputStream: {0}", io));
             		
             	}
             }

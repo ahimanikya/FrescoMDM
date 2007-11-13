@@ -34,6 +34,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 
 import com.sun.mdm.index.objects.metadata.ObjectFactory;
+import com.sun.mdm.index.util.Localizer;
 
 import net.java.hulp.i18n.LocalizationSupport;
 import net.java.hulp.i18n.Logger;
@@ -45,6 +46,7 @@ import net.java.hulp.i18n.Logger;
 public class DefaultEuidGenerator implements EuidGenerator {
 
     private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     private int mIdLength;
     private int mChecksumLength;
@@ -73,8 +75,8 @@ public class DefaultEuidGenerator implements EuidGenerator {
         } else if (parameterName.equals("ChunkSize")) {
             mChunkSize = ((Integer) value).intValue();
         } else {
-            throw new SEQException("Unknown parameter: " 
-                    + parameterName);
+            throw new SEQException(mLocalizer.t("IDG504: Unknown parameter: (0}", 
+                                                parameterName));
         }            
     }
 
@@ -134,7 +136,8 @@ public class DefaultEuidGenerator implements EuidGenerator {
         		nextValue = getSeqNoByProcedure(conn);        		
         	}
         } catch (Exception exp) {
-            throw new SEQException(exp.getMessage());
+            throw new SEQException(mLocalizer.t("IDG505: Could not retrieve the " + 
+                                                "next EUID: (0}", exp));
         }
         return nextValue;
     }    
@@ -183,7 +186,8 @@ public class DefaultEuidGenerator implements EuidGenerator {
     
     private String formatEUID(String euid) throws SEQException {
         if (euid.length() > mIdLength) {
-            throw new SEQException("ID length exceeded.");
+            throw new SEQException(mLocalizer.t("IDG506: ID length exceeded: {0}. " + 
+                                    "Maximum length is {1}", euid.length(), mIdLength));
         }
         int padLength = mIdLength - euid.length();
         StringBuffer sb = new StringBuffer();

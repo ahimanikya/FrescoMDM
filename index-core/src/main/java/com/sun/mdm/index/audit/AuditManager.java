@@ -98,7 +98,7 @@ public class AuditManager {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            throw new AuditException(e);
+            throw new AuditException(mLocalizer.t("AUD500: Audit Log record could not be inserted: {0}", e));
         }
     }
 
@@ -118,7 +118,9 @@ public class AuditManager {
         try {
             sb = new StringBuffer (DBAdapter.getDBAdapterInstance().getAuditMgrSelectStmt());
         } catch (Exception e) {
-            throw new AuditException(e);
+            throw new AuditException(mLocalizer.t("AUD501: Could not retrieve the " + 
+                                                  "SELECT SQL statement for " + 
+                                                  "an Audit Log lookup: {0}", e));
         }
         boolean andFlag = false;
         
@@ -163,7 +165,9 @@ public class AuditManager {
                 try {
                     sb.append(DBAdapter.getDBAdapterInstance().getAuditMgrOperationColumnName());
                 } catch (Exception e) {
-                    throw new AuditException(e);
+                    throw new AuditException(mLocalizer.t("AUD502: Could not retrieve the " + 
+                                                  "SQL column name for " + 
+                                                  "an Audit Log lookup: {0}", e));
                 }
 
                 parameters.add(obj.getFunction());
@@ -229,7 +233,8 @@ public class AuditManager {
                 ps.setObject(i + 1, parameters.get(i));
             }
         } catch (Exception e) {
-            throw new AuditException(e);
+            throw new AuditException(mLocalizer.t("AUD503: Could not retrieve the " + 
+                                                  "Audit Log record(s): {0}", e));
         }
 
         return lookupAuditLog(con, ps, obj);
@@ -295,7 +300,8 @@ public class AuditManager {
 
             return retIterator;
         } catch (Exception e) {
-            throw new AuditException(e);
+            throw new AuditException(mLocalizer.t("AUD504: Could not look up " + 
+                                                  "Audit Log record(s): {0}", e));
         }
     }
 }

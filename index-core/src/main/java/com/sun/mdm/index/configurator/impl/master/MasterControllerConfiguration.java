@@ -151,7 +151,8 @@ public class MasterControllerConfiguration implements ConfigurationInfo {
                 } else if(optionName.equals("transaction")){
                 	//do nothing
                 } else {
-                    throw new ConfigurationException("Unknown tag: " + optionName);
+                    throw new ConfigurationException(mLocalizer.t("CFG527: Unrecognized tag for " + 
+                                                        "MasterControllerConfiguration: {0}", optionName));
                 }
             }
         }
@@ -176,7 +177,8 @@ public class MasterControllerConfiguration implements ConfigurationInfo {
                 if (optionName.equals("query-builder")) {
                     parseExecuteMatchQueryBuilder(option);
                 } else {
-                    throw new ConfigurationException("Unknown tag: " + optionName);
+                    throw new ConfigurationException(mLocalizer.t("CFG528: Could not parse the ExecuteMatch " + 
+                                                        "XML node.  This is an unrecognized tag: {0}", optionName));
                 }
             }
         }
@@ -198,7 +200,8 @@ public class MasterControllerConfiguration implements ConfigurationInfo {
         } else if (value.equalsIgnoreCase("Disabled")) {
             mMergedRecordUpdate = false;
         } else {
-            throw new ConfigurationException("Invalid value: " + value);
+            throw new ConfigurationException(mLocalizer.t("CFG529: Invalid value for the " + 
+                                                        "MergedRecordUpdate XML node: {0}", value));
         }
     }    
 
@@ -224,12 +227,15 @@ public class MasterControllerConfiguration implements ConfigurationInfo {
                     if (optionName.equals("option")) {
                         parseOption(option);
                     } else {
-                        throw new ConfigurationException("Unknown tag: " + optionName);
+                        throw new ConfigurationException(mLocalizer.t("CFG530: Could not parse the" + 
+                                                        "ExecuteMatchQueryBuilder XML node.  " + 
+                                                        "This is an unrecognized tag: {0}", optionName));
                     }
                 }
             }
         } catch (Exception e) {
-            throw new ConfigurationException(e);
+            throw new ConfigurationException(mLocalizer.t("CFG531: Could not parse the" + 
+                                                        "ExecuteMatchQueryBuilder XML node: {0}", e));
         }
     }
 
@@ -264,7 +270,9 @@ public class MasterControllerConfiguration implements ConfigurationInfo {
         } else if (updateMode.equals("Optimistic")) {
             mPessimisticEnabled = false;
         } else {
-            throw new ConfigurationException("Unknown update mode: " + updateMode);
+            throw new ConfigurationException(mLocalizer.t("CFG532: Could not parse the" + 
+                                                        "UpdateMode XML node.  " + 
+                                                        "This is an unrecognized update mode: {0}", updateMode));
         }
     }
 

@@ -299,7 +299,7 @@ public class BatchReportGeneratorEJB implements BatchReportGeneratorRemote {
             Connection con = ConnectionUtil.getConnection();
             return con;
         } catch (Exception e) {
-            throw new ReportException("Failed to get JDBC connection.", e);
+            throw new ReportException(mLocalizer.t("RPE500: Failed to get JDBC connection: {0}", e));
         }
     }
 }

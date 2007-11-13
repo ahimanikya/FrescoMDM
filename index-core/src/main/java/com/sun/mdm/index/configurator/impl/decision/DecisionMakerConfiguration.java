@@ -70,7 +70,8 @@ public class DecisionMakerConfiguration implements ConfigurationInfo {
             }
             return dm;
         } catch (Exception e) {
-            throw new ConfigurationException(e);
+            throw new ConfigurationException(mLocalizer.t("CFG521: Encountered an " + 
+                                    "error while retrieving the DecisionMaker: {0}", e));
         }
     }
 
@@ -122,8 +123,8 @@ public class DecisionMakerConfiguration implements ConfigurationInfo {
                     try {
                         mDecisionMakerClass = Class.forName(className);
                     } catch (Exception e) {
-                        throw new ConfigurationException("Cannot load class: " 
-                                + className + ": " + e.getMessage());
+                        throw new ConfigurationException(mLocalizer.t("CFG522: DecisionMakerConfiguration " + 
+                                    "could not load class {0}: {1}", className, e));
                     }
                 } else if (optionName.equals("parameters")) {
                     ParameterParser parameterParser = new ParameterParser();
@@ -135,7 +136,9 @@ public class DecisionMakerConfiguration implements ConfigurationInfo {
                         mLogger.info(mLocalizer.x("DEC002: DecisionMaker parameter is: {0}", mParameters[j].toString()));
                     }
                 } else {
-                    throw new ConfigurationException("Unknown option: " + optionName);
+                    throw new ConfigurationException(mLocalizer.t("CFG523: Unrecognized option for " + 
+                                                        "DecisionMakerConfiguration: {0}", optionName)); 
+                                    
                 }
             }
         }

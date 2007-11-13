@@ -133,7 +133,8 @@ public class StandardizationConfiguration implements ConfigurationInfo {
             mLogger.info(mLocalizer.x("CFG014: Standardization Configuration: the moduleName is: {0}", moduleName));
             mLogger.info(mLocalizer.x("CFG015: Standardization Configuration: the parserClass is: {0}", parserClass));
         } catch (Exception ex) {
-            throw new ConfigurationException("Failed to parse Standardization configuration:" + ex.getMessage(), ex);
+            throw new ConfigurationException(mLocalizer.t("CFG542: Could not parse " + 
+                                    "the StandardizationConfiguration XML node: {0}", ex));
         }
     }
 
@@ -321,7 +322,8 @@ public class StandardizationConfiguration implements ConfigurationInfo {
                     standardizationType, domainSelector, null);
             }
         } catch (Exception e) {
-            throw new ConfigurationException(e);
+            throw new ConfigurationException(mLocalizer.t("CFG543: Could not parse " + 
+                                    "the PreParsedGroup configuration XML node: {0}", e));
         }
         return fieldGroup;
     }
@@ -497,7 +499,8 @@ public class StandardizationConfiguration implements ConfigurationInfo {
                     standardizationTargets, localeMappings, standardizationType, domainSelector, null);
             }
         } catch (Exception e) {
-            throw new ConfigurationException(e);
+            throw new ConfigurationException(mLocalizer.t("CFG544: Could not parse " + 
+                                    "the UnParsedGroup configuration XML node: {0}", e));
         }
             
         return fieldGroup;

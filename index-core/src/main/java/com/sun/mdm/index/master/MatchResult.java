@@ -26,6 +26,7 @@ import java.io.Externalizable;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.IOException;
+import com.sun.mdm.index.util.Localizer;
 
 /**
  * The <b>MatchResult</b> class contains the return values for a call to any
@@ -86,6 +87,8 @@ public class MatchResult implements Externalizable {
 
     /* indicates if a match field has changed */
     private boolean mMatchFieldChanged;
+
+    private transient final Localizer mLocalizer = Localizer.get();
 
     /**
      * Creates a new instance of the MatchResult class.
@@ -356,7 +359,7 @@ public class MatchResult implements Externalizable {
               ExternalizableVersion2 ev = new ExternalizableVersion2();
               ev.readExternal(in);
           } else {
-              throw new RuntimeException("Unsupported version = " + version);
+              throw new RuntimeException(mLocalizer.t("MAS501: Unsupported version: {0} ", version));
           }
       }
 }

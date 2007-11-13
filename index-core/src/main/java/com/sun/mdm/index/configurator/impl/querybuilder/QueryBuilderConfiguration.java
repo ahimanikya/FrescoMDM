@@ -76,7 +76,7 @@ public class QueryBuilderConfiguration implements ConfigurationInfo {
         try {
             QueryBuilderInfoStruct qbInfo = (QueryBuilderInfoStruct) queryBuilderInfoMap.get(searchId);
             if (qbInfo == null) {
-                throw new ConfigurationException("Invalid search id: " + searchId);
+                throw new ConfigurationException(mLocalizer.t("CFG537: Invalid search id: {0}", searchId));
             } else {
                 if (qbInfo.queryBuilderInstance == null) {
                     qbInfo.queryBuilderInstance = (QueryBuilder) qbInfo.queryBuilderClass.newInstance();
@@ -90,7 +90,8 @@ public class QueryBuilderConfiguration implements ConfigurationInfo {
             
             return qbInfo.queryBuilderInstance;
         } catch (Exception e) {
-            throw new ConfigurationException(e);
+            throw new ConfigurationException(mLocalizer.t("CFG538: Could not retrieve " + 
+                                    "the query builder for search id: {0}", searchId));
         }
     }
 
@@ -171,7 +172,8 @@ public class QueryBuilderConfiguration implements ConfigurationInfo {
                 }
             }
         } catch (Exception e) {
-            throw new ConfigurationException(e);
+            throw new ConfigurationException(mLocalizer.t("CFG539: Could not parse " + 
+                                    "the QueryBuilderConfiguration XML node: {0}", e));
         }
     }
 
@@ -194,7 +196,8 @@ public class QueryBuilderConfiguration implements ConfigurationInfo {
             } else if (val.equalsIgnoreCase("false")) {
                 return false;
             } else {
-                throw new ConfigurationException("Invalid boolean: " + val);
+                throw new ConfigurationException(mLocalizer.t("CFG540: QueryBuilderConfiguration " + 
+                                            "encountered an invalid boolean value: {0}", val));
             }
         }
     }

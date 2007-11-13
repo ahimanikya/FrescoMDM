@@ -22,6 +22,11 @@
  */
 package com.sun.mdm.index.configurator;
 
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
+
 
 
 /**
@@ -53,6 +58,8 @@ public class Parameter implements Cloneable, java.io.Serializable {
     /** value */    
     protected String mValue;
 
+    private transient static final Logger mLogger = Logger.getLogger(Parameter.class.getName());
+    private transient static final Localizer mLocalizer = Localizer.get();
 
     /**
      * Creates new StrategyParameter.
@@ -102,15 +109,18 @@ public class Parameter implements Cloneable, java.io.Serializable {
                 return new Long(string);
             } else if (Character.class.equals(type)) {
                 if (string.length() != 1) {
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException(mLocalizer.t("CFG504: Encountered " + 
+                                                           "an unrecognized object type: {0}", type));
                 } else {
                     return new Character(string.charAt(0));
                 }
             }
         } catch (Throwable t) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(mLocalizer.t("CFG505: Error encountered " + 
+                                                            "while retrieving an object from a string: {0}", t));
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException(mLocalizer.t("CFG506: General error encountered " + 
+                                                            "while retrieving an object from satring."));
     }
 
 
@@ -186,7 +196,7 @@ public class Parameter implements Cloneable, java.io.Serializable {
             try {
                 typeClass = Class.forName(type);
             } catch (Throwable t) {
-                throw new IllegalArgumentException(type + " is not an allowed property value type");
+                throw new IllegalArgumentException(mLocalizer.t("CFG507: {0} is not a recognized property value type", t));
             }
 
             boolean allowedType = false;
@@ -197,7 +207,7 @@ public class Parameter implements Cloneable, java.io.Serializable {
                 }
             }
             if (!allowedType) {
-                throw new IllegalArgumentException(type + " is not an allowed property value type");
+                throw new IllegalArgumentException(mLocalizer.t("CFG508: \"{0}\" is not an allowed property value type", type));
             }
         }
     }

@@ -21,7 +21,11 @@
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
 package com.sun.mdm.index.configurator.impl.blocker;
+
 import com.sun.mdm.index.configurator.ConfigurationException;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 
 /** Range condition.
@@ -42,6 +46,9 @@ public class RangeCondition extends AbstractCondition {
     
     private int defaultLowerType = -1;
     private int defaultUpperType = -1;
+   
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     /** Creates a new instance of RangeCondition */
     public RangeCondition() {
@@ -150,7 +157,7 @@ public class RangeCondition extends AbstractCondition {
         } else if (i.equals("constant")) {
             type = RANGE_TYPE_CONSTANT;
         } else {
-            throw new ConfigurationException("Invalid range default type: " + i);
+            throw new ConfigurationException(mLocalizer.t("CFG520: Invalid default range type: {0}", i));
         }
         return type;
     }

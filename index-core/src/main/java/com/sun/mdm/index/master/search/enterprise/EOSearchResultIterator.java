@@ -30,6 +30,7 @@ import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.page.PageIteratorWrapper;
 import com.sun.mdm.index.page.PageException;
+import com.sun.mdm.index.util.Localizer;
 
 
 
@@ -41,7 +42,8 @@ import com.sun.mdm.index.page.PageException;
  * iterator.
  */
 public class EOSearchResultIterator extends PageIteratorWrapper
-          {
+{
+    private transient final Localizer mLocalizer = Localizer.get();
 
 
     /** Creates a new instance of the EOSearchResultIterator class that
@@ -278,7 +280,9 @@ public class EOSearchResultIterator extends PageIteratorWrapper
             }
             return result;
         } catch (Exception e) {
-            throw new PageException(e);
+            throw new PageException(mLocalizer.t("MAS509: Could not" + 
+                                "convert an ArrayList to an " + 
+                                "EOSearchResultRecord array: {0}", e));
         }
     }
 

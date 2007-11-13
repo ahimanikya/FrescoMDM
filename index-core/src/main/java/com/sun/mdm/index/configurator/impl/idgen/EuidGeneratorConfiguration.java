@@ -31,6 +31,10 @@ import com.sun.mdm.index.configurator.Parameter;
 import com.sun.mdm.index.configurator.ConfigurationException;
 import com.sun.mdm.index.configurator.ParameterParser;
 import com.sun.mdm.index.idgen.EuidGenerator;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
+
 
 
 /**
@@ -47,6 +51,8 @@ public class EuidGeneratorConfiguration implements ConfigurationInfo {
     private Class mEuidGeneratorClass;
     private Parameter[] mParameters;
 
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
 
     /** Creates new EuidGeneratorConfiguration instance. */
     public EuidGeneratorConfiguration() {
@@ -67,7 +73,8 @@ public class EuidGeneratorConfiguration implements ConfigurationInfo {
             }
             return dm;
         } catch (Exception e) {
-            throw new ConfigurationException(e);
+            throw new ConfigurationException(mLocalizer.t("CFG524: Encountered an " + 
+                                    "error while retrieving the EUID Generator: {0}", e));
         }
     }
 
@@ -119,8 +126,8 @@ public class EuidGeneratorConfiguration implements ConfigurationInfo {
                     try {
                         mEuidGeneratorClass = Class.forName(className.trim());
                     } catch (Exception e) {
-                        throw new ConfigurationException("Can not load class: " 
-                                + className + ": " + e.getMessage());
+                        throw new ConfigurationException(mLocalizer.t("CFG525: EuidGeneratorConfiguration " + 
+                                    "could not load class {0}: {1}", className, e));
                     }
                 } else if (optionName.equals("parameters")) {
                     ParameterParser parameterParser = new ParameterParser();
@@ -131,7 +138,8 @@ public class EuidGeneratorConfiguration implements ConfigurationInfo {
                         mParameters[j] = (Parameter) parameterList.get(j);
                     }
                 } else {
-                    throw new ConfigurationException("Unknown option: " + optionName);
+                    throw new ConfigurationException(mLocalizer.t("CFG526: Unrecognized option for " + 
+                                                        "EuidGeneratorConfiguration: {0}", optionName)); 
                 }
             }
         }

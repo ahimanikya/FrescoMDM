@@ -74,7 +74,7 @@ public class StandardizerImpl implements Standardizer{
             // use StandardizerAPIHelper as factory 
             standardizerAPIImpl = new StandardizerAPIHelper().getStandardizerAPIImpl();
             if (standardizerAPIImpl == null) {
-                throw new StandardizationException("No StandardizerAPI implementation configured.");
+                throw new StandardizationException(mLocalizer.t("MAT513: No StandardizerAPI implementation configured."));
             }
             standardizerEngineConfig = new StandardizerAPIHelper().getStandardizerEngineConfigImpl();
             if (standardizerEngineConfig == null) {
@@ -148,12 +148,17 @@ public class StandardizerImpl implements Standardizer{
                 if (metaData != null) {
                     standardizerAPIImpl.standardize(objToStandardize, metaData);
                 } else {
-                    throw new StandardizationException("Could not retrieve the standardization configuration for "
-                        + "object type: " + objType + ". The configuration service returned null.");
+                    throw new StandardizationException(mLocalizer.t("MAT514: Could not retrieve " + 
+                                            "the standardization configuration for " +
+                                            "object type {0}. The configuration service " + 
+                                            "returned null. ", objType));
                 }
             } else {
-                throw new ObjectException("The object to be standardized does not have a type attribute set. "
-                    + "The standardizer is unable to retrieve standardardization configuration without it.");
+                throw new ObjectException(mLocalizer.t("MAT515: The object to be " + 
+                                            "standardized does not have a type " + 
+                                            "attribute set. The standardizer is " + 
+                                            "unable to retrieve standardardization " + 
+                                            "configuration without it."));
             }
         }
         

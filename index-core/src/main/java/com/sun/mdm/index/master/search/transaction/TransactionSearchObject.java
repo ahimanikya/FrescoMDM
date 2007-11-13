@@ -25,6 +25,7 @@ package com.sun.mdm.index.master.search.transaction;
 import java.util.Date;
 import com.sun.mdm.index.objects.TransactionObject;
 import com.sun.mdm.index.master.ProcessingException;
+import com.sun.mdm.index.util.Localizer;
 
 
 /**
@@ -40,6 +41,7 @@ public class TransactionSearchObject implements java.io.Serializable {
     private int maxElements = 0;
     private int pageSize = 0;
     private TransactionObject transObj = null;
+    private transient final Localizer mLocalizer = Localizer.get();
 
 
     /**
@@ -56,7 +58,7 @@ public class TransactionSearchObject implements java.io.Serializable {
             transObj = new TransactionObject();
             setDefaults();
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot instantiate TransactionSearchObject", t);
+            throw new ProcessingException(mLocalizer.t("MAS511: Could not instantiate TransactionSearchObject: {0}", t));
         }
     }
 
@@ -77,7 +79,7 @@ public class TransactionSearchObject implements java.io.Serializable {
             setStartDate(sDate);
             setDefaults();
         } catch (Throwable t) {
-            throw new ProcessingException("Exception in TransactionSearchObject constructor", t);
+            throw new ProcessingException(mLocalizer.t("MAS512: Could not instantiate TransactionSearchObject: {0}", t));
         }
     }
 
@@ -100,7 +102,7 @@ public class TransactionSearchObject implements java.io.Serializable {
             setEndDate(eDate);
             setDefaults();
         } catch (Throwable t) {
-            throw new ProcessingException("Exception in TransactionSearchObject constructor", t);
+            throw new ProcessingException(mLocalizer.t("MAS513: Could not instantiate TransactionSearchObject: {0}", t));
         }
     }
 
@@ -130,7 +132,7 @@ public class TransactionSearchObject implements java.io.Serializable {
             setEndDate(eDate);
             setDefaults();
         } catch (Throwable t) {
-            throw new ProcessingException("Exception in TransactonSearchObject constructor", t);
+            throw new ProcessingException(mLocalizer.t("MAS514: Could not instantiate TransactionSearchObject: {0}", t));
         }
     }
 
@@ -150,7 +152,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             return transObj.getEUID();
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot retrieve EUID", t);
+            throw new ProcessingException(mLocalizer.t("MAS515: Could not retrieve EUID: {0}", t));
         }
     }
 
@@ -170,7 +172,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             return transObj.getEUID1();
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot retrieve EUID1", t);
+            throw new ProcessingException(mLocalizer.t("MAS516: Could not retrieve EUID1: {0}", t));
         }
     }
 
@@ -190,7 +192,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             return transObj.getEUID2();
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot retrieve EUID2", t);
+            throw new ProcessingException(mLocalizer.t("MAS517: Could not retrieve EUID2: {0}", t));
         }
     }
 
@@ -255,7 +257,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             return transObj.getFunction();
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot retrieve Function", t);
+            throw new ProcessingException(mLocalizer.t("MAS518: Could not retrieve function: {0}", t));
         }
     }
 
@@ -275,7 +277,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             return transObj.getLID();
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot retrieve LID", t);
+            throw new ProcessingException(mLocalizer.t("MAS519: Could not retrieve LID: {0}", t));
         }
     }
 
@@ -295,7 +297,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             return transObj.getLID1();
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot retrieve LID1", t);
+            throw new ProcessingException(mLocalizer.t("MAS520: Could not retrieve LID1: {0}", t));
         }
     }
 
@@ -315,7 +317,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             return transObj.getLID2();
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot retrieve LID2", t);
+            throw new ProcessingException(mLocalizer.t("MAS521: Could not retrieve LID2: {0}", t));
         }
     }
 
@@ -406,7 +408,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             return transObj.getSystemCode();
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot retrieve SystemCode", t);
+            throw new ProcessingException(mLocalizer.t("MAS522: Could not retrieve SystemCode: {0}", t));
         }
     }
 
@@ -427,7 +429,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             return transObj.getSystemUser();
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot retrieve SystemUser", t);
+            throw new ProcessingException(mLocalizer.t("MAS523: Could not retrieve SystemUser: {0}", t));
         }
     }
 
@@ -460,7 +462,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             transObj.setEUID(id);
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot set EUID", t);
+            throw new ProcessingException(mLocalizer.t("MAS524: Could not set EUID: {0}", t));
         }
     }
 
@@ -480,7 +482,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             transObj.setEUID1(id);
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot set EUID1", t);
+            throw new ProcessingException(mLocalizer.t("MAS525: Could not set EUID1: {0}", t));
         }
     }
 
@@ -500,7 +502,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             transObj.setEUID2(id);
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot set EUID2", t);
+            throw new ProcessingException(mLocalizer.t("MAS526: Could not set EUID2: {0}", t));
         }
     }
 
@@ -556,7 +558,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             transObj.setFunction(function);
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot set Function", t);
+            throw new ProcessingException(mLocalizer.t("MAS527: Could not set Function: {0}", t));
         }
     }
 
@@ -575,7 +577,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             transObj.setLID(lid);
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot set LID", t);
+            throw new ProcessingException(mLocalizer.t("MAS528: Could not set LID: {0}", t));
         }
     }
 
@@ -595,7 +597,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             transObj.setLID1(lid);
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot set LID1", t);
+            throw new ProcessingException(mLocalizer.t("MAS529: Could not set LID1: {0}", t));
         }
     }
 
@@ -615,7 +617,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             transObj.setLID2(lid);
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot set LID2", t);
+            throw new ProcessingException(mLocalizer.t("MAS530: Could not set LID2: {0}", t));
         }
     }
 
@@ -699,7 +701,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             transObj.setSystemCode(code);
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot set SystemCode", t);
+            throw new ProcessingException(mLocalizer.t("MAS531: Could not set SystemCode: {0}", t));
         }
     }
 
@@ -718,7 +720,7 @@ public class TransactionSearchObject implements java.io.Serializable {
         try {
             transObj.setSystemUser(user);
         } catch (Throwable t) {
-            throw new ProcessingException("Cannot set SystemUser", t);
+            throw new ProcessingException(mLocalizer.t("MAS532: Could not set SystemUser: {0}", t));
         }
     }
 

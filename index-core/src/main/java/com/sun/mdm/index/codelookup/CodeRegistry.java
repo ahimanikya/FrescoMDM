@@ -42,6 +42,8 @@ import com.sun.mdm.index.util.JNDINames;
 import com.sun.mdm.index.util.ConnectionUtil;
 import net.java.hulp.i18n.LocalizationSupport;
 import net.java.hulp.i18n.Logger;
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
 
 
 /** Code registry
@@ -62,8 +64,8 @@ public class CodeRegistry {
     private final static String DB_PROP_KEY = "resJNDI";
     private final static String DB_PROP_FILE = "eviewdb.properties";
     private HashMap tmCodes = null;
-    private final transient Logger mLogger = Logger.getLogger(this.getClass().getName());
-    private final transient Localizer mLocalizer = Localizer.get();
+    private final static transient Logger mLogger = Logger.getLogger(CodeRegistry.class.getName());
+    private final static transient Localizer mLocalizer = Localizer.get();
 
     /** Creates a new instance of CodeRegistry.
      *
@@ -90,7 +92,7 @@ public class CodeRegistry {
             }
             return SINGLETON;
         } catch (Exception e) {
-            throw new CodeLookupException(e);
+            throw new CodeLookupException(mLocalizer.t("COD500: Could not retrieve the CodeRegistry instance: {0}", e));
         }
     }
 
@@ -217,7 +219,7 @@ public class CodeRegistry {
             stmt.close();
             con.close();
         } catch (Exception se) {
-            throw new CodeLookupException(se);
+            throw new CodeLookupException(mLocalizer.t("COD501: Could not load codes from the CodeRegistry: {0}", se));
         }
     }
 }

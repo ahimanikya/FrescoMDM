@@ -128,7 +128,7 @@ public class MatchingConfiguration implements ConfigurationInfo {
             }
             mLogger.info(mLocalizer.x("CFG024: MatchingConfiguration: SystemObjects mappings are: {0}", sysObjs));
         } catch (Exception ex) {
-            throw new ConfigurationException("Failed to parse Matching configuration:" + ex.getMessage(), ex);
+            throw new ConfigurationException(mLocalizer.t("CFG534: Failed to parse Matching configuration: {0}", ex));
         }
     }
 

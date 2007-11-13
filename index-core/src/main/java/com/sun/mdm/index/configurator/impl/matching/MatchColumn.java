@@ -25,6 +25,9 @@ package com.sun.mdm.index.configurator.impl.matching;
 import com.sun.mdm.index.configurator.ConfigurationException;
 import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathParser;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
 
 /**
  * Represents the configuration for a Match Column.
@@ -37,6 +40,9 @@ public class MatchColumn {
     private int matchOrder;
     private String matchType;
     private String qualifiedName;
+
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
 
     /** Creates a new MatchColumn instance */
     public MatchColumn() {
@@ -118,8 +124,8 @@ public class MatchColumn {
         try {
             this.ePath = EPathParser.parse(qualifiedName);
         } catch (com.sun.mdm.index.objects.epath.EPathException ex) {
-            throw new ConfigurationException("Failed to parse MatchColumn qualified field name as EPath: " 
-                + qualifiedName + ". " + ex.getMessage(), ex);
+            throw new ConfigurationException(mLocalizer.t("CFG533: Failed to parse MatchColumn " + 
+                                                        "qualified field name {0} as an EPath: {1}", qualifiedName, ex));
         }
     }
 

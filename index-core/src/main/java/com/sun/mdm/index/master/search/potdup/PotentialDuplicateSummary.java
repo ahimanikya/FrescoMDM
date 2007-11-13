@@ -26,6 +26,7 @@ import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.ejb.master.MasterController;
+import com.sun.mdm.index.util.Localizer;
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.ArrayList;
@@ -90,6 +91,8 @@ public class PotentialDuplicateSummary extends ObjectNode {
     /** Object 2
      */
     private ObjectNode mObject2;
+
+    private transient final Localizer mLocalizer = Localizer.get();
 
     public PotentialDuplicateSummary() {
     }
@@ -476,7 +479,8 @@ public class PotentialDuplicateSummary extends ObjectNode {
             newSearchObj.setFieldsToRetrieve(searchObj.getFieldsToRetrieve());
             return mc.lookupPotentialDuplicates(newSearchObj);
         } catch (Exception e) {
-            throw new ProcessingException(e);
+            throw new ProcessingException(mLocalizer.t("MAS510: Could not" + 
+                                "retrieve associated potential duplicates: {0}", e));
         }
     }
 

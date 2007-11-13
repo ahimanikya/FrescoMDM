@@ -169,8 +169,8 @@ public class BlockerConfig implements ConfigurationInfo {
             }
             mLogger.info(mLocalizer.x("CFG026: Block Definition mappings are: {0}", LogUtil.mapToString(definitions)));
         } catch (Exception ex) {
-            throw new ConfigurationException(
-                "Parsing of node failed, caused by : " + ex.getMessage(), ex);
+            throw new ConfigurationException(mLocalizer.t("CFG514: BlockerConfig " + 
+                                        "could not parse an XML configuration node: {0}", ex));
         }
     }
 
@@ -278,7 +278,8 @@ public class BlockerConfig implements ConfigurationInfo {
         } else if ((conditionType != null) && conditionType.equals(TAG_RANGE)) {
             ac = new RangeCondition();
         } else {
-            throw new ConfigurationException("Unrecognized condition: " + conditionType);
+            throw new ConfigurationException(mLocalizer.t("CFG515: Unrecognized parse condition " + 
+                                                          "condition: {0}", conditionType));
         }
 
         NodeList nl = node.getChildNodes();
@@ -307,11 +308,13 @@ public class BlockerConfig implements ConfigurationInfo {
                                 String nodeName2 = tmpNode2.getNodeName();
                                 NamedNodeMap attrs = tmpNode2.getAttributes();
                                 if (attrs == null) {
-                                    throw new ConfigurationException("type attribute must be defined for: " + nodeName2);
+                                    throw new ConfigurationException(mLocalizer.t("CFG516: " + 
+                                                        "Type attribute must be defined for: {0}", nodeName2));
                                 }
                                 Node defaultType = attrs.getNamedItem("type");
                                 if (defaultType == null) {
-                                    throw new ConfigurationException("type attribute must be defined for: " + nodeName2);
+                                    throw new ConfigurationException(mLocalizer.t("CFG517: " + 
+                                                        "Default type must be defined for: {0}", nodeName2));
                                 }
                                 if (nodeName2.equals(TAG_LOWER)) {
                                     rc.setDefaultLowerType((String) defaultType.getNodeValue());
@@ -320,12 +323,15 @@ public class BlockerConfig implements ConfigurationInfo {
                                     rc.setDefaultUpperType((String) defaultType.getNodeValue());
                                     rc.setDefaultUpperValue(getStrElementValue(tmpNode2));
                                 } else {
-                                    throw new ConfigurationException("Only upper-bound / lower-bound tag allowed.");
+                                    throw new ConfigurationException(mLocalizer.t("CFG518: " + 
+                                                        "Only upper-bound / lower-bound tag allowed. " + 
+                                                        "This is an invalid tag: {0}", nodeName2));
                                 }
                             }
                         }
                     } else {
-                        throw new ConfigurationException("Only range conditions can have default tag.");
+                        throw new ConfigurationException(mLocalizer.t("CFG519: " + 
+                                                        "Only range conditions can have default tag."));
                     }
 
                 }

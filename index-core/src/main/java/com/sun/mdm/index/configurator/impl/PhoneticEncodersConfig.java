@@ -134,7 +134,7 @@ public class PhoneticEncodersConfig
             }
             mLogger.info(mLocalizer.x("CFG022: The Phonetic Encoders Configuration encoder mappings are: {0}", encodersClasses));
         } catch (Exception ex) {
-            throw new ConfigurationException("Failed to parse phonetic encoders configuration:" + ex.getMessage(), ex);
+            throw new ConfigurationException(mLocalizer.t("CFG510: Failed to parse phonetic encoders configuration: {0}", ex));
         }
     }
 

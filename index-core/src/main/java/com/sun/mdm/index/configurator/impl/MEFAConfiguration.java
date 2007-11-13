@@ -273,7 +273,7 @@ public class MEFAConfiguration implements ConfigurationInfo {
             mLogger.info(mLocalizer.x("CFG020: MEFA Configuration mappings are: {0}", LogUtil.mapToString(componentImplClassNames)));
             
         } catch (Exception ex) {
-            throw new ConfigurationException("Failed to parse MEFA configuration:" + ex.getMessage(), ex);
+            throw new ConfigurationException(mLocalizer.t("CFG509: Failed to parse MEFA configuration: {0}", ex));
         }
     }
 

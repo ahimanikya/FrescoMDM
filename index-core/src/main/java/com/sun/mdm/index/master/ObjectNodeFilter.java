@@ -35,6 +35,7 @@ import com.sun.mdm.index.
     configurator.impl.standardization.StandardizationConfiguration;
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.epath.EPathAPI;
+import com.sun.mdm.index.util.Localizer;
 
 
 /**
@@ -44,6 +45,8 @@ import com.sun.mdm.index.objects.epath.EPathAPI;
  * rather than the original source field.
  */
 public class ObjectNodeFilter {
+
+    private transient final Localizer mLocalizer = Localizer.get();
 
     /**
      * Creates a new instance of FullSearchQueryBuilder
@@ -72,7 +75,8 @@ public class ObjectNodeFilter {
                 EPathAPI.setFieldNull(path, objNode, true);
             }
         } catch (Exception e) {
-            throw new ProcessingException(e);
+            throw new ProcessingException(mLocalizer.t("MAS504: Error encountered " + 
+                                "in filterPhoneticizedSourceFields(): {0}", e));
         }
     }
 
@@ -96,7 +100,8 @@ public class ObjectNodeFilter {
                 EPathAPI.setFieldNull(path, objNode, true);
             }
         } catch (Exception e) {
-            throw new ProcessingException(e);
+            throw new ProcessingException(mLocalizer.t("MAS505: Error encountered " + 
+                                "in filterPhoneticizedTargetFields(): {0}", e));
         }
     }
 
@@ -143,7 +148,8 @@ public class ObjectNodeFilter {
                 }
             }
         } catch (Exception e) {
-            throw new ProcessingException(e);
+            throw new ProcessingException(mLocalizer.t("MAS506: Error encountered " + 
+                                "in filterStandardizedSourceFields(): {0}", e));
         }
     }
 
@@ -191,7 +197,8 @@ public class ObjectNodeFilter {
                 }
             }
         } catch (Exception e) {
-            throw new ProcessingException(e);
+            throw new ProcessingException(mLocalizer.t("MAS507: Error encountered " + 
+                                "in filterStandardizedTargetFields(): {0}", e));
         }
     }
 
@@ -209,7 +216,8 @@ public class ObjectNodeFilter {
                 StandardizationConfiguration.STANDARDIZATION);
             return config.getSystemObjectStandardization(objNode.pGetTag());
         } catch (Exception e) {
-            throw new ProcessingException(e);
+            throw new ProcessingException(mLocalizer.t("MAS508: Error encountered " + 
+                                "in getSystemObjectStandardization(): {0}", e));
         }
     }
 

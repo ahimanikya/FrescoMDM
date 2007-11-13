@@ -59,8 +59,8 @@ public class UserCodeRegistry {
     private final static String DB_PROP_KEY = "resJNDI";
     private final static String DB_PROP_FILE = "eviewdb.properties";
     private HashMap tmCodes = null;
-    private transient Logger mLogger = Logger.getLogger(this.getClass().getName());
-    private transient Localizer mLocalizer = Localizer.get();
+    private transient static Logger mLogger = Logger.getLogger(UserCodeRegistry.class.getName());
+    private transient static Localizer mLocalizer = Localizer.get();
 
     /** Creates a new instance of UserCodeRegistry.
      *
@@ -88,7 +88,7 @@ public class UserCodeRegistry {
             }
             return SINGLETON;
         } catch (Exception e) {
-            throw new CodeLookupException(e);
+            throw new CodeLookupException(mLocalizer.t("COD502: Could not retrieve the UserCodeRegistry instance: {0}", e));
         }
     }
 
@@ -231,7 +231,7 @@ public class UserCodeRegistry {
             stmt.close();
             con.close();
         } catch (Exception se) {
-            throw new CodeLookupException(se);
+            throw new CodeLookupException(mLocalizer.t("COD504: Could not load codes from the UserCodeRegistry: {0}", se));
         }
     }
 }

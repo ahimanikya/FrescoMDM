@@ -103,8 +103,7 @@ public class DefaultDecisionMaker extends DecisionMaker {
         } else if (parameterName.equals("DuplicateThreshold")) {
             mDuplicateThreshold = ((Float) value).floatValue();
         } else {
-            throw new DecisionMakerException("Unknown parameter: " 
-                    + parameterName);
+            throw new DecisionMakerException(mLocalizer.t("DEC501: Unknown parameter: {0}", parameterName));
         }
     }
 
@@ -197,7 +196,8 @@ public class DefaultDecisionMaker extends DecisionMaker {
             }
             return new DecisionMakerResult(assumedMatch, potentialDuplicates);
         } catch (Exception e) {
-            throw new DecisionMakerException(e);
+            throw new DecisionMakerException(mLocalizer.t("DEC502: DecisionMaker " + 
+                                    "encountered an error while processing records: {0}", e));
         }
     }
 

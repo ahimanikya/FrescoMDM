@@ -73,6 +73,8 @@ import com.sun.mdm.index.master.search.transaction.TransactionIterator;
 import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.metadata.ObjectFactory;
+import com.sun.mdm.index.util.Localizer;
+import net.java.hulp.i18n.LocalizationSupport;
 
 
 class ReportGeneratorImpl implements ReportGenerator {
@@ -81,6 +83,8 @@ class ReportGeneratorImpl implements ReportGenerator {
     
     private MasterController mMaster;
     
+    private transient final Localizer mLocalizer = Localizer.get();
+
     /**
      * Creates a new instance of ReportGeneratorImpl
      */
@@ -129,7 +133,8 @@ class ReportGeneratorImpl implements ReportGenerator {
                 }
             }
         } catch (Exception e) {
-            throw new ReportException(e);
+            throw new ReportException(mLocalizer.t("RPE541: Could not generate the " + 
+                                                   "Assumed Match report"));
         }
         return report;
     }
@@ -160,7 +165,8 @@ class ReportGeneratorImpl implements ReportGenerator {
             }
             return mMaster.lookupAssumedMatches(searchObj);
         } catch (Exception e) {
-            throw new ReportException(e);
+            throw new ReportException(mLocalizer.t("RPE542: Could not retrieve the " + 
+                                                   "Assumed Match records: {0}", e));
         }
     }    
     
@@ -218,7 +224,8 @@ class ReportGeneratorImpl implements ReportGenerator {
                 }
             }
         } catch (Exception e) {
-            throw new ReportException(e);
+            throw new ReportException(mLocalizer.t("RPE543: Could not generate the " + 
+                                                   "Potential Duplicate report"));
         }
         return report;
     }
@@ -268,7 +275,8 @@ class ReportGeneratorImpl implements ReportGenerator {
             return mMaster.lookupPotentialDuplicates(searchObj);
             
         } catch (Exception e) {
-            throw new ReportException(e);
+            throw new ReportException(mLocalizer.t("RPE544: Could not retrieve the " + 
+                                                   "Potential Duplicate records: {0}", e));
         }
     }
     
@@ -305,7 +313,8 @@ class ReportGeneratorImpl implements ReportGenerator {
                 }
             }
         } catch (Exception e) {
-            throw new ReportException(e);
+            throw new ReportException(mLocalizer.t("RPE545: Could not generate the " + 
+                                                   "Merge report"));
         }
         return report;
     }
@@ -343,7 +352,8 @@ class ReportGeneratorImpl implements ReportGenerator {
                 }
             }
         } catch (Exception e) {
-            throw new ReportException(e);
+            throw new ReportException(mLocalizer.t("RPE546: Could not generate the " + 
+                                                   "Unmerge report"));
         }
         return report;
     }
@@ -384,7 +394,8 @@ class ReportGeneratorImpl implements ReportGenerator {
                 }
             }
         } catch (Exception e) {
-            throw new ReportException(e);
+            throw new ReportException(mLocalizer.t("RPE547: Could not generate the " + 
+                                                   "Deactivate report"));
         }
         return report;
     }
@@ -425,7 +436,8 @@ class ReportGeneratorImpl implements ReportGenerator {
                 }
             }
         } catch (Exception e) {
-            throw new ReportException(e);
+            throw new ReportException(mLocalizer.t("RPE548: Could not generate the " + 
+                                                   "Update report"));
         }
         return report;
     }
@@ -458,7 +470,8 @@ class ReportGeneratorImpl implements ReportGenerator {
             }
             return mMaster.lookupTransactions(searchObj);
         } catch (Exception e) {
-            throw new ReportException(e);
+            throw new ReportException(mLocalizer.t("RPE549: Could not retrieve the " + 
+                                                   "Update records: {0}", e));
         }
     }    
     /** Execute the weekly key statistics report
@@ -479,7 +492,8 @@ class ReportGeneratorImpl implements ReportGenerator {
             } else if (config.getEndDate() != null) {
                 specDate = config.getEndDate();
             } else {
-            	throw new ReportException("Start or end date must be specified.");
+            	throw new ReportException(mLocalizer.t("RPE550: Start or end date must be specified " + 
+            	                                    "for the Weekly Statistics report."));
             }
             
             // Determine first date of week, Sunday's date, based on specified date
@@ -512,7 +526,8 @@ class ReportGeneratorImpl implements ReportGenerator {
             
             report.setDailyTotalsForWeek(getWeeklyCount(startDate));
         } catch (Exception e) {
-            throw new ReportException(e);
+            throw new ReportException(mLocalizer.t("RPE551: Could not generate the " + 
+                                                   "Weekly Statistics report"));
         }
         return report;
     }
@@ -535,7 +550,8 @@ class ReportGeneratorImpl implements ReportGenerator {
             } else if (config.getEndDate() != null) {
                 specDate = config.getEndDate();
             } else {
-            	throw new ReportException("Start or end date must be specified."); 
+            	throw new ReportException(mLocalizer.t("RPE552: Start or end date must be specified " + 
+            	                                    "for the Monthly Statistics report."));
             }
             
             // Determine first date of month based on specified date
@@ -546,7 +562,8 @@ class ReportGeneratorImpl implements ReportGenerator {
             // Get key stats totals
             report = getKeyStatsReportTotals(report, startDate, endDate);
         } catch (Exception e) {
-            throw new ReportException(e);
+            throw new ReportException(mLocalizer.t("RPE553: Could not generate the " + 
+                                                   "Monthly Statistics report"));
         }
         return report;
     }
@@ -569,7 +586,8 @@ class ReportGeneratorImpl implements ReportGenerator {
             } else if (config.getEndDate() != null) {
                 specDate = config.getEndDate();
             } else {
-            	throw new ReportException("Start or end date must be specified.");
+            	throw new ReportException(mLocalizer.t("RPE554: Start or end date must be specified " + 
+            	                                    "for the Yearly Statistics report."));
             }
             
             // Determine first date of year based on specified date
@@ -580,7 +598,8 @@ class ReportGeneratorImpl implements ReportGenerator {
             // Get key stats totals
             report = getKeyStatsReportTotals(report, startDate, endDate);
         } catch (Exception e) {
-            throw new ReportException(e);
+            throw new ReportException(mLocalizer.t("RPE555: Could not generate the " + 
+                                                   "Yearly Statistics report"));
         }
         return report;
     }       
@@ -595,7 +614,7 @@ class ReportGeneratorImpl implements ReportGenerator {
                 Connection con = ConnectionUtil.getConnection();
                 return con;
             } catch (Exception e) {
-                throw new ReportException("Failed to get JDBC connection.", e);
+                throw new ReportException(mLocalizer.t("RPE556: failed to get JDBC connection: {0}", e));
             }
     }
     
@@ -664,7 +683,7 @@ class ReportGeneratorImpl implements ReportGenerator {
             conn.close();
             return weeklyCount;
         } catch (Exception e) {
-            throw new ReportException("Error getting weekly count for function " + function);
+            throw new ReportException(mLocalizer.t("RPE557: Error getting weekly count for function : {0}", function));
         }
     }
     
@@ -695,7 +714,7 @@ class ReportGeneratorImpl implements ReportGenerator {
             conn.close();
             return weeklyCount;
         } catch (Exception e) {
-            throw new ReportException("Error getting weekly count");
+            throw new ReportException(mLocalizer.t("RPE558: Error getting weekly count."));
         }
     }
     
@@ -712,7 +731,8 @@ class ReportGeneratorImpl implements ReportGenerator {
             conn.close();
             return count;
         } catch (Exception e) {
-            throw new ReportException("Error getting monthly count for function " + function);
+            throw new ReportException(mLocalizer.t("RPE559: Error getting monthly " + 
+                                                   "count for function : {0}", function));
         }
     }
     
@@ -736,7 +756,8 @@ class ReportGeneratorImpl implements ReportGenerator {
             conn.close();
             return count;
         } catch (Exception e) {
-            throw new ReportException("Error getting potential duplicate monthly count for " + (resolved ? "resolved" : "unresolved"));
+            throw new ReportException(mLocalizer.t("RPE560: Error getting potential duplicate monthly " + 
+                                                   "count for: {0}", (resolved ? "resolved" : "unresolved")));
         }
     }
 }

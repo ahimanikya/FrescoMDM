@@ -26,6 +26,7 @@ import java.io.Externalizable;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.IOException;
+import com.sun.mdm.index.util.Localizer;
 
 /**
  * Return value for collaboration executeMatch
@@ -51,6 +52,8 @@ public class MatchColResult implements Externalizable {
     public static final int ASSUMED_MATCH = 3;
 
     private MatchResult mMatchResult;
+
+    private transient final Localizer mLocalizer = Localizer.get();
     
     /** Creates a new instance of MatchColResult
      */
@@ -121,7 +124,7 @@ public class MatchColResult implements Externalizable {
             ExternalizableVersion1 ev = new ExternalizableVersion1();
             ev.readExternal(in);
         } else {
-            throw new RuntimeException("Unsupported version = " + version);
+            throw new RuntimeException(mLocalizer.t("MAS500: Unsupported version: {0} ", version));
         }
     }
 }
