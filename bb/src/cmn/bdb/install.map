@@ -1,0 +1,29 @@
+#note - don't do the bdb munge on these files or you will be sorry!
+TARGET_OS=cmn & substvar
+projects.bdb       bdb/projects              0444
+
+TARGET_OS=cmn
+services.bdb       bdb/services              0444
+suffix.dat         bdb/suffix.dat            0444
+#environment definitions for the release build:
+mmf.rc             bdb/mmf.rc                0444
+mmf.rc             bdb/printmap.rc           0444
+
+#note that bdb also processes includes.
+TARGET_OS=cmn & bdb
+bdb.bdb            bdb/bdb.cmn               0444
+mmf.bdb            bdb/mmf.cmn               0444
+
+#these bdb's must match the project names in projects.bdb:
+maintools.bdb      bdb/maintools.cmn         0444
+maintools.bdb      bdb/jbicomptools.cmn      0444
+maintools.bdb      bdb/rttl.cmn              0444
+maintools.bdb      bdb/khtl.cmn              0444
+maintools.bdb      bdb/retools.cmn           0444
+
+#these bdb's are of the form <project>_ant.bdb
+#for a project name in the projects.bdb:
+maintools_ant.bdb  bdb/maintools_ant.cmn     0444
+maintools_ant.bdb  bdb/rttl_ant.cmn          0444
+maintools_ant.bdb  bdb/khtl_ant.cmn          0444
+maintools_ant.bdb  bdb/retools_ant.cmn       0444

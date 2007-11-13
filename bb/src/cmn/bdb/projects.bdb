@@ -1,0 +1,24 @@
+#list of projects related to this path.
+
+#used by tools build, if found in the AUX_TOOLS_PJLIST
+#environment variable.
+
+#NOTE - this project name must agree with corresponding bdb,
+#e.g., a project "footools" will look for a bdb named "footools.cmn"
+#you must create the footools.bdb source bdb in this directory
+#(perhaps by including another bdb file, like "maintools.bdb" OR
+#by simply adding your new bdb name to the install.map file).
+
+
+#########
+#generic RE tools setup:
+#########
+retools  /localdevroot/{=PRODUCT=}/{=CODELINE=}/devtools
+
+######
+#these projects are for tools development only:
+######
+rttl    /localdevroot/russt/{=CODELINE=}/devtools
+myktl   /localdevroot/myk/{=CODELINE=}/devtools
+#khtl    /localdevroot/karl/{=CODELINE=}/devtools
+khtl    /aflat1/bld/sandbox/open-dm-mi/main/build/devtools

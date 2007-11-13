@@ -1,0 +1,34 @@
+tl/src/cmn/makedrv
+tl/src/cmn/minstall
+tl/src/cmn/codegen
+tl/src/cmn/codegen/templates
+tl/src/cmn/codegen/templates/licenses
+tl/src/cmn/codegen/templategen/maven
+tl/src/cmn/codegen/templategen/maven2
+tl/src/cmn/codegen/templates/perl
+tl/src/cmn/codegen/templategen/xml
+tl/src/cmn/commitd
+tl/src/cmn/bom
+tl/src/cmn/libmmf
+tl/src/cmn/libmisc
+tl/src/cmn/os
+tl/src/cmn/support
+tl/src/cmn/parse
+tl/src/cmn/mmfdrv
+tl/src/cmn/whatport
+t3/src/misc/crc
+t3/src/trelab/makemf
+#java tools and scripts:
+tl/src/java/canonxml
+#these projects install readme.txt files to avoid empty package & lib dirs:
+tl/src/cygwin/packages
+tl/src/linux/packages
+tl/src/macosx/packages
+tl/src/nt/lib
+tl/src/nt/packages
+tl/src/solsparc/packages
+tl/src/solx86/packages
+#this requires that you set CVSDIST_LOCALE, e.g. "generic" or "oakland"
+#also, it is a good idea to do this last, so that the cvs module
+#defs are not visible until the tools finish building.
+admin/src/cvsdist/$CVSDIST_LOCALE

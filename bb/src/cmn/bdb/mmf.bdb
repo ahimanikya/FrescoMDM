@@ -1,0 +1,4 @@
+#directories build during toolsBuild (makedrv -c mmf)
+tl/src/cmn/build
+tl/src/cmn/codeline
+tl/src/cmn/setup

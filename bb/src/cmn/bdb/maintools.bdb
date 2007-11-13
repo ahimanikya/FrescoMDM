@@ -1,0 +1,46 @@
+#put prlskel first:
+tl/src/cmn/prlskel
+t3/src/gnu/cvsdist
+t3/src/gnu/diffutil
+t3/src/gnu/ed
+t3/src/gnu/gzip
+t3/src/gnu/make
+t3/src/gnu/patch
+t3/src/gnu/perl
+#check in perl modules here:
+t3/src/gnu/perlcmn
+t3/src/gnu/rsync
+t3/src/gnu/sinc32
+t3/src/gnu/wget
+t3/src/jakarta/ant1_6
+t3/src/jakarta/ant1_6ext
+t3/src/jakarta/maven2
+t3/src/gnu/rcs5
+t3/src/gnu/tar
+t3/src/xmltools/trang
+t3/src/xref
+tl/src/cmn/applyinf
+tl/src/cmn/bldres
+tl/src/cmn/cgutil
+tl/src/cmn/cvsboot
+tl/src/cmn/cvslib
+#tl/src/cmn/cvsutil
+tl/src/cmn/scmutil
+tl/src/cmn/email
+tl/src/cmn/fileio
+tl/src/cmn/fwhich
+tl/src/cmn/genbld
+#this is rj, jartoc, jxtohml:
+tl/src/cmn/javautil
+tl/src/cmn/maven-plugins/jregress
+tl/src/cmn/maven-util
+tl/src/cmn/psutil
+tl/src/cmn/time
+tl/src/cmn/toolinfo
+tl/src/cmn/util
+#java tools and scripts:
+tl/src/java/cmdutil
+#####
+#Include jnet tools
+#####
+include maintools_common.bdb
