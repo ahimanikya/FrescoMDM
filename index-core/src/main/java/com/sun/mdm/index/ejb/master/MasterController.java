@@ -648,6 +648,17 @@ public interface MasterController {
         lookupPotentialDuplicates(PotentialDuplicateSearchObject obj)
         throws ProcessingException, UserException;
 
+    /** Counts the number of potential duplicate records matching the 
+     * criteria specified in search object.  This does not
+     * handle searches based on EUID nor SystemCode/LID.
+     *
+     * @param obj Search criteria.
+     * @throws ProcessingException An error has occured.
+     * @throws UserException Invalid search object
+     * @return count of the potential duplicate records matching the search criteria.
+     */
+    public int countPotentialDuplicates(PotentialDuplicateSearchObject pdso) 
+            throws ProcessingException, UserException;
 
     /**
      * Returns an iterator of AssumedMatchSummary objects based on the
@@ -665,6 +676,18 @@ public interface MasterController {
     public AssumedMatchIterator lookupAssumedMatches(AssumedMatchSearchObject obj)
         throws ProcessingException, UserException;
 
+    /** Counts the number of assumed match records matching the 
+     * date criteria specified in search object.  This does not
+     * handle searches based on EUID nor SystemCode/LID.
+     *
+     * @param obj Search criteria.
+     * @throws ProcessingException An error has occured.
+     * @throws UserException Invalid search object
+     * @return count of the assumed match records matching the search criteria.
+     */
+    public int countAssumedMatches(AssumedMatchSearchObject amso)
+        throws ProcessingException, UserException;
+        
     /**
      * Reverses an assumed match transaction, unmerging the two objects that were
      * matched and creating a new enterprise object for the record that caused
@@ -1577,4 +1600,18 @@ public interface MasterController {
             throws ProcessingException;
 
 
+    /**
+     *  Retrieve the potential duplicate threshold.
+     *
+     * @returns the value of the potential duplicate threshold.
+     */
+    public float getDuplicateThreshold();
+
+    /**
+     *  Retrieve the Assumed Match threshold.
+     *
+     * @throws ProcessingException if an error is encountered.
+     * @returns the value of the Assumed Match threshold.
+     */
+    public float getAssumedMatchThreshold() throws ProcessingException;
 }

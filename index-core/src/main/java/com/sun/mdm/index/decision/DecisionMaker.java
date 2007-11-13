@@ -87,4 +87,12 @@ public abstract class DecisionMaker {
      */
     public abstract float getDuplicateThreshold() throws DecisionMakerException;
 
+    /** Return the assumed match threshold.  This is a minimum comparison
+     * score cutoff such that the MasterController will consider any records
+     * as Assumed Matches.
+     *
+     * @exception DecisionMakerException an error occured
+     * @return assumed match threshold
+     */
+    public abstract float getMatchThreshold() throws DecisionMakerException;
 }

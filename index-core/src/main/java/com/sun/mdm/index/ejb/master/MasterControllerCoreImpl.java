@@ -377,8 +377,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 if (logicInstance instanceof com.sun.mdm.index.master.ExecuteMatchLogics) {
                     mUserLogics = (ExecuteMatchLogics) logicInstance;
                 } else {
-                    throw new Exception(
-                            "Custom Logic class must inherit ExecuteMatchLogics class");
+                    throw new Exception(mLocalizer.t("MSC500: UserLogic class " + 
+                                        "must inherit from the ExecuteMatchLogics class"));
                 }
             }
             mLogger.info(mLocalizer.x("MSC005: The Create User logic class is : {0}", classString));
@@ -393,8 +393,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 if (logicInstance instanceof com.sun.mdm.index.master.ExecuteMatchLogics) {
                     mUserLogicsGui = (ExecuteMatchLogics) logicInstance;
                 } else {
-                    throw new Exception(
-                            "Custom Logic class must inherit ExecuteMatchLogics class");
+                    throw new Exception(mLocalizer.t("MSC501: UserLogicGUI class " + 
+                                        "must inherit from the ExecuteMatchLogics class"));
                 }
             }
             mLogger.info(mLocalizer.x("MSC006: MasterControllerImpl: Created user GUI logic class : {0}", classString));
@@ -476,16 +476,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     String format = v.getFormat();
                     String id = v.getId();
                     String sysCode = v.getSystemCode();
-                    throw new ValidationException(
-                            sysCode,
-                            systemDesc,
-                            format,
-                            id,
-                            "The value, "
-                                    + id
-                                    + ", does not conform to the format of SystemObject[LocalId] for "
-                                    + systemDesc + " which is \"" + format
-                                    + "\"");
+                    throw new ValidationException(mLocalizer.t("MSC502: getEUID() encountered a format validation error. " + 
+                                    "The ID {0} does not conform to the format of SystemObject[LocalId] for "
+                                    + "the system description {1}, which is {2}", id, systemDesc, format));
                 }
             }
             euid = mQueryHelper.getEUID(con, key);
@@ -604,16 +597,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     String format = v.getFormat();
                     String id = v.getId();
                     String sysCode = v.getSystemCode();
-                    throw new ValidationException(
-                            sysCode,
-                            systemDesc,
-                            format,
-                            id,
-                            "The value, "
-                                    + id
-                                    + ", does not conform to the format of SystemObject[LocalId] for "
-                                    + systemDesc + " which is \"" + format
-                                    + "\"");
+                    throw new ValidationException(mLocalizer.t("MSC503: getEnterpriseObject() encountered a format validation " + 
+                                    "error. The ID {0} does not conform to the format of SystemObject[LocalId] for "
+                                    + "the system description {1}, which is {2}", id, systemDesc, format));
                 }
             }
 
@@ -757,8 +743,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             String euid = mQueryHelper.getEUID(con, systemKey,
                     SystemObject.STATUS_INACTIVE);
             if (euid == null) {
-                throw new ProcessingException(
-                        "Inactive system object not found.");
+                throw new ProcessingException(mLocalizer.t("MSC504: Inactive system object not found: {0}", 
+                                                           systemKey.toString()));
             }
             EnterpriseObject eo = mTrans.getEnterpriseObject(con, euid);
             SystemObject so = eo.getSystemObject(systemKey.systemCode,
@@ -795,7 +781,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             mOutBoundSender.send(OutBoundMessages.REA, result
                     .getTransactionResult().getTMID(), eo);
         } catch (UserException e) {
-            throw e;
+            throw new UserException(mLocalizer.t("MSC505: Could not activate a SystemObject due to a " + 
+                                                 "UserException: {0}", e));
         } catch (Exception e) {
             throwProcessingException(e);
         }
@@ -824,17 +811,17 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
             EnterpriseObject eo = mTrans.getEnterpriseObject(con, euid);
             if (eo == null) {
-                throw new ProcessingException(
-                        "activateEnterpriseObject(): Invalid EUID: " + euid);
+                throw new ProcessingException(mLocalizer.t("MSC506: Could not activate an EnterpriseObject due " + 
+                                                 "to an invalid EUID: {0}", euid));
             }
 
             Object[] beforeMatchFields = mMatchFieldChange.getMatchFields(eo);
 
             SBR sbr = eo.getSBR();
             if (!sbr.getStatus().equals(SystemObject.STATUS_INACTIVE)) {
-                throw new ProcessingException(
-                        "activateEnterpriseObject(): EUID: " + euid
-                                + " does not have inactive status.");
+                throw new ProcessingException(mLocalizer.t("MSC507: Could not activate an " + 
+                                        "EnterpriseObject with EUID {0} because it is currently " + 
+                                        "not inactive", euid));
             }
 
             String user = getCallerUserId();
@@ -889,14 +876,14 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
             String existingEuid = mQueryHelper.getEUID(con, systemKey);
             if (existingEuid != null) {
-                throw new ProcessingException("addSystemObject(): system key "
-                        + systemKey + " already mapped to EUID: "
-                        + existingEuid);
+                throw new ProcessingException(mLocalizer.t("MSC508: Could not add a SystemObject. " + 
+                                        "The System Key {0} is already mapped to EUID {1}", 
+                                        systemKey.toString(), existingEuid));
             }
             EnterpriseObject beforeEO = mTrans.getEnterpriseObject(con, euid);
             if (beforeEO == null) {
-                throw new ProcessingException("addSystemObject(): EUID: "
-                        + euid + " does not exist");
+                throw new ProcessingException(mLocalizer.t("MSC509: Could not add a SystemObject " + 
+                                        "to a non-existent EUID {0}", euid));
             }
 
             String user = getCallerUserId();
@@ -988,9 +975,10 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             // Check to make sure the system object key is not already assigned
             String existingEuid = mQueryHelper.getEUID(con, systemKey);
             if (existingEuid != null) {
-                throw new ProcessingException(
-                        "createEnterpriseObject(): system key " + systemKey
-                                + " already mapped to EUID: " + existingEuid);
+                throw new ProcessingException(mLocalizer.t("MSC510: Could not create " + 
+                                        "an EnterpriseObject. The SystemKey {0} is " + 
+                                        "already mapped to an existing EUID: {1}", 
+                                        systemKey.toString(), existingEuid));
             }
 
             String user = sysobj.getUpdateUser();
@@ -1056,10 +1044,10 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                         .getSystemCode(), sysobj[i].getLID());
                 String existingEuid = mQueryHelper.getEUID(con, systemKey);
                 if (existingEuid != null) {
-                    throw new ProcessingException(
-                            "createEnterpriseObject(): system key " + systemKey
-                                    + " already mapped to EUID: "
-                                    + existingEuid);
+                    throw new ProcessingException(mLocalizer.t("MSC511 Could not create " + 
+                                        "an EnterpriseObject.  The SystemKey {0} is " + 
+                                        "already mapped to an existing EUID: {1}", 
+                                        systemKey.toString(), existingEuid));
                 }
             }
             for (int i = 0; i < sysobj.length; i++) {
@@ -1112,9 +1100,10 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             String euid = mQueryHelper.getEUID(con, systemKey,
                     SystemObject.STATUS_ACTIVE);
             if (euid == null) {
-                throw new ProcessingException(
-                        "deativateSystemObject(): system key " + systemKey
-                                + " is not active or does not exist");
+                throw new ProcessingException(mLocalizer.t("MSC512 Could not deactivate " + 
+                                        "a SystemObject.  The SystemKey {0} is " + 
+                                        "either not active or does not exist.",
+                                        systemKey.toString()));
             }
             EnterpriseObject eo = mTrans.getEnterpriseObject(con, euid);
 
@@ -1186,7 +1175,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
             EnterpriseObject eo = mTrans.getEnterpriseObject(con, euid);
             if (eo == null) {
-                throw new ProcessingException("Invalid euid.");
+                throw new ProcessingException(mLocalizer.t("MSC513 Could not deactivate " + 
+                                        "an EnterpriseObject.  The EUID {0} is " + 
+                                        "invalid.", euid));
             }
 
             // These two lines are added to get the beforeMatchFields to be used
@@ -1197,10 +1188,10 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
             SBR sbr = eo.getSBR();
             if (!sbr.getStatus().equals(SystemObject.STATUS_ACTIVE)) {
-                throw new ProcessingException(
-                        "deactivateEnterpriseObject(): EUID " + euid
-                                + " does not have active status.  Status is: "
-                                + sbr.getStatus());
+                throw new ProcessingException(mLocalizer.t("MSC514 Could not deactivate " + 
+                                        "an EnterpriseObject.  The EUID {0} is " + 
+                                        "does not have active status.  The current " + 
+                                        "status is: {1}", euid, sbr.getStatus()));
             }
 
             String user = getCallerUserId();
@@ -1254,16 +1245,17 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
             String euid = mQueryHelper.getEUID(con, systemKey);
             if (euid == null) {
-                throw new ProcessingException(
-                        "deleteSystemObject(): EUID not found for "
-                                + "system key: " + systemKey);
+                throw new ProcessingException(mLocalizer.t("MSC515 Could not delete " + 
+                                        "a SystemObject.  The EUID could not " + 
+                                        "be found for SystemKey {1}", systemKey.toString()));
             }
             EnterpriseObject beforeEO = mTrans.getEnterpriseObject(con, euid);
             Object[] beforeMatchFields = mMatchFieldChange
                     .getMatchFields(beforeEO);
             if (beforeEO == null) {
-                throw new ProcessingException(
-                        "deleteSystemObject(): Failed to load EUID: " + euid);
+                throw new ProcessingException(mLocalizer.t("MSC516 Could not delete " + 
+                                        "a SystemObject.  The EUID could not " + 
+                                        "be loaded", euid));
             }
 
             String user = getCallerUserId();
@@ -1512,21 +1504,18 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                             systemKey.systemCode, systemKey.lID).getStatus();
                     if (!mMergedRecordUpdateEnabled
                             && sysObjStatus.equals(SystemObject.STATUS_MERGED)) {
-                        throw new ProcessingException(
-                                "processMatch(): merged record update parameter "
-                                        + " is false and system key has merged status: "
-                                        + systemKey);
+                        throw new ProcessingException(mLocalizer.t("MSC517: merged record " + 
+                                        "update parameter s false and system key has merged status " + 
+                                        "for SystemKey {0}", systemKey.toString()));
                     }
                     if (sysObjStatus.equals(SystemObject.STATUS_INACTIVE)) {
-                        throw new ProcessingException(
-                                "processMatch(): system key has inactive status: "
-                                        + systemKey);
+                        throw new ProcessingException(mLocalizer.t("MSC518: system key {0} " + 
+                                        "has inactive status." , systemKey.toString()));
                     }
                     if (beforeEO.getStatus().equals(
                             SystemObject.STATUS_INACTIVE)) {
-                        throw new ProcessingException(
-                                "processMatch(): enterprise object has inactive status: "
-                                        + euid);
+                        throw new ProcessingException(mLocalizer.t("MSC519: EnterpriseObject {0} " + 
+                                        "has inactive status." , euid));
                     }
                     if (userLogics.rejectUpdate(sysObj, beforeEO)) {
                         if (mLogger.isLoggable(Level.FINE)) {
@@ -1798,16 +1787,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     String format = v.getFormat();
                     String id = v.getId();
                     String sysCode = v.getSystemCode();
-                    throw new ValidationException(
-                            sysCode,
-                            systemDesc,
-                            format,
-                            id,
-                            "The value, "
-                                    + id
-                                    + ", does not conform to the format of SystemObject[LocalId] for "
-                                    + systemDesc + " which is \"" + format
-                                    + "\"");
+                    throw new ValidationException(mLocalizer.t("MSC520: lookupAssumedMatches() encountered a format validation " + 
+                                    "error. The ID {0} does not conform to the format of SystemObject[LocalId] for "
+                                    + "the system description {1}, which is {2}", id, systemDesc, format));
                 }
             }
 
@@ -1841,6 +1823,31 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         return iterator;
     }
 
+    /** Counts the number of assumed match records matching the 
+     * date criteria specified in search object.  This does not
+     * handle searches based on EUID nor SystemCode/LID.
+     *
+     * @param obj Search criteria.
+     * @throws ProcessingException An error has occured.
+     * @throws UserException Invalid search object
+     * @return count of the assumed match records matching the search criteria.
+     */
+    public int countAssumedMatches(AssumedMatchSearchObject amso)
+        throws ProcessingException, UserException {
+        Connection con = null;
+        int count = 0;
+        try {
+            con = getConnection();
+            count = mAssumedMatchMgr.countAssumedMatches(con, amso);
+           
+        } catch (ProcessingException e) {
+            throwProcessingException(e);
+        } catch (RuntimeException e) {
+            throwProcessingException(e);
+        } 
+        return count;
+    }
+    
     /**
      * Undo an assumed match.
      * 
@@ -1891,10 +1898,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                         .getMatchFields(eo);
 
                 if (eo == null) {
-                    throw new ProcessingException("undoAssumedMatch(): "
-                            + "Record has been modified by another user.  "
-                            + "EUID has already been merged: "
-                            + assumedMatch.getEUID());
+                    throw new ProcessingException(mLocalizer.t("MSC521: Assumed Match record " +
+                             "could not be undone.  Record has been modified by another user. " +
+                             "EUID has already been merged: {0}", assumedMatch.getEUID()));
                 }
 
                 String user = getCallerUserId();
@@ -1924,10 +1930,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 }
 
             } else {
-                throw new ProcessingException("undoAssumedMatch(): "
-                        + "Record has been modified by another user.  "
-                        + "Assumed match has already been undone: "
-                        + assumedMatchId);
+                throw new ProcessingException(mLocalizer.t("MSC522: Assumed Match record " +
+                             "could not be undone.  Record has been modified by another user. " +
+                             "Assumed Match ID {0} has already been undone.", assumedMatchId));
             }
 
             // Delete the assumed match
@@ -2021,16 +2026,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     String format = v.getFormat();
                     String id = v.getId();
                     String sysCode = v.getSystemCode();
-                    throw new ValidationException(
-                            sysCode,
-                            systemDesc,
-                            format,
-                            id,
-                            "The value, "
-                                    + id
-                                    + ", does not conform to the format of SystemObject[LocalId] for "
-                                    + systemDesc + " which is \"" + format
-                                    + "\"");
+                    throw new ValidationException(mLocalizer.t("MSC523: lookupPotentialDuplicates() encountered a format validation " + 
+                                    "error. The ID {0} does not conform to the format of SystemObject[LocalId] for "
+                                    + "the system description {1}, which is {2}", id, systemDesc, format));
                 }
             }
 
@@ -2065,6 +2063,30 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         return iterator;
     }
 
+    /** Counts the number of potential duplicate records matching the 
+     * criteria specified in search object.  This does not
+     * handle searches based on EUID nor SystemCode/LID.
+     *
+     * @param obj Search criteria.
+     * @throws ProcessingException An error has occured.
+     * @throws UserException Invalid search object
+     * @return count of the potential duplicate records matching the search criteria.
+     */
+    public int countPotentialDuplicates(PotentialDuplicateSearchObject pdso) 
+            throws ProcessingException, UserException {
+        Connection con = null;
+        int count = 0;
+        try {
+            con = getConnection();
+            count = mPotDup.countPotentialDuplicates(con, pdso);
+        } catch (ProcessingException e) {
+            throwProcessingException(e);
+        } catch (RuntimeException e) {
+            throwProcessingException(e);
+        }
+        return count;
+    }
+    
     /**
      * Return array of system definition
      * 
@@ -2387,9 +2409,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             TransactionObject transObj = mTrans
                     .findTransactionLog(con, transId);
             if (transObj == null) {
-                throw new ProcessingException(
-                        "lookupTransaction(): invalid transaction id: "
-                                + transId);
+                throw new ProcessingException(mLocalizer.t("MSC524: Could not retrieve " + 
+                            "a transaction due to an invalid transaction ID: {0}", transId));
             }
             RecreateResult history = null;
             boolean validTransaction = true;
@@ -2525,9 +2546,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             EnterpriseObject destinationEO = mTrans.getEnterpriseObject(con,
                     destinationEUID);
             if (destinationEO == null) {
-                throw new ProcessingException("mergeEnterpriseObject(): "
-                        + "Record has been modified by another user.  "
-                        + "Destination EUID not found: " + destinationEUID);
+                throw new ProcessingException(mLocalizer.t("MSC525: Could not merge " + 
+                            "EnterpriseObjects.  Record has been modified by another user. " +
+                            "Destination EUID not found: {0}", destinationEUID));
             }
             mr = mergeEnterpriseObject(con, sourceEUID, destinationEO,
                     calculateOnly);
@@ -2580,9 +2601,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             EnterpriseObject destinationEO = mTrans.getEnterpriseObject(con,
                     destinationEUID);
             if (destinationEO == null) {
-                throw new ProcessingException("mergeEnterpriseObject(): "
-                        + "Record has been modified by another user.  "
-                        + "Destination EUID not found: " + destinationEUID);
+                throw new ProcessingException(mLocalizer.t("MSC526: Could not merge " + 
+                            "EnterpriseObjects.  Record has been modified by another user. " +
+                            "Destination EUID not found: {0}", destinationEUID));
             }
             mr = mergeEnterpriseObject(con, sourceEUID, destinationEO,
                     srcRevisionNumber, destRevisionNumber, calculateOnly);
@@ -2643,9 +2664,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             EnterpriseObject sourceEO = mTrans.getEnterpriseObject(con,
                     sourceEUID);
             if (sourceEO == null) {
-                throw new ProcessingException("mergeEnterpriseObject(): "
-                        + "Record has been modified by another user.  "
-                        + "Source EUID not found: " + sourceEUID);
+                throw new ProcessingException(mLocalizer.t("MSC527: Could not merge " + 
+                            "EnterpriseObjects.  Record has been modified by another user. " +
+                            "Source EUID not found: {0}", sourceEUID));
             }
 
             int flag = Constants.FLAG_UM_NONE;
@@ -2741,9 +2762,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             EnterpriseObject sourceEO = mTrans.getEnterpriseObject(con,
                     sourceEUID);
             if (sourceEO == null) {
-                throw new ProcessingException("mergeEnterpriseObject(): "
-                        + "Record has been modified by another user.  "
-                        + "Source EUID not found: " + sourceEUID);
+                throw new ProcessingException(mLocalizer.t("MSC528: Could notmerge " + 
+                            "EnterpriseObjects.  Record has been modified by another user. " +
+                            "Source EUID not found: {0}", sourceEUID));
             }
 
             int flag = Constants.FLAG_UM_NONE;
@@ -2875,14 +2896,12 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             throws ProcessingException, UserException {
 
         if (srcRevisionNumber == null) {
-            throw new UserException(
-                    "mergeSystemObject() error: srcRevisionNumber "
-                            + "cannot be null.");
+            throw new UserException(mLocalizer.t("MSC529: Could not merge " + 
+                            "SystemObjects.  srcRevisionNumber cannot be null."));
         }
         if (destRevisionNumber == null) {
-            throw new UserException(
-                    "mergeSystemObject() error: destRevisionNumber "
-                            + "cannot be null.");
+            throw new UserException(mLocalizer.t("MSC530: Could not merge " + 
+                            "SystemObjects.  destRevisionNumber cannot be null."));
         }
 
         SystemObjectPK sourceSystemKey = new SystemObjectPK(systemCode,
@@ -2903,7 +2922,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     pessimisticModeEnabled);
 
         } catch (UserException e) {
-            throw e;
+            throw new UserException(mLocalizer.t("MSC560: Could not merge " + 
+                            "SystemObjects: {0}", e));
         } catch (Exception e) {
             throwProcessingException(e);
         }
@@ -3016,14 +3036,12 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             boolean calculateOnly) throws ProcessingException, UserException {
 
         if (srcRevisionNumber == null) {
-            throw new UserException(
-                    "mergeSystemObject() error: srcRevisionNumber "
-                            + "cannot be null.");
+            throw new UserException(mLocalizer.t("MSC531: Could not merge " + 
+                            "SystemObjects.  srcRevisionNumber cannot be null."));
         }
         if (destRevisionNumber == null) {
-            throw new UserException(
-                    "mergeSystemObject() error: destRevisionNumber "
-                            + "cannot be null.");
+            throw new UserException(mLocalizer.t("MSC532: Could not merge " + 
+                            "SystemObjects.  destRevisionNumber cannot be null."));
         }
 
         SystemObjectPK sourceSystemKey = new SystemObjectPK(systemCode,
@@ -3054,8 +3072,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     pessimisticModeEnabled);
 
         } catch (UserException e) {
-
-            throw e;
+            throw new UserException(mLocalizer.t("MSC533: Could not merge " + 
+                            "SystemObjects: {0}", e));
         } catch (Exception e) {
 
             throwProcessingException(e);
@@ -3109,14 +3127,12 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             throws ProcessingException, UserException {
 
         if (srcRevisionNumber == null) {
-            throw new UserException(
-                    "mergeSystemObject() error: srcRevisionNumber "
-                            + "cannot be null.");
+            throw new UserException(mLocalizer.t("MSC534: Could not merge " + 
+                            "SystemObjects.  srcRevisionNumber cannot be null."));
         }
         if (destRevisionNumber == null) {
-            throw new UserException(
-                    "mergeSystemObject() error: destRevisionNumber "
-                            + "cannot be null.");
+            throw new UserException(mLocalizer.t("MSC535: Could not merge " + 
+                            "SystemObjects.  destRevisionNumber cannot be null."));
         }
 
         SystemObjectPK sourceSystemKey = new SystemObjectPK(systemCode,
@@ -3147,7 +3163,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     performPessimistic.booleanValue());
 
         } catch (UserException e) {
-            throw e;
+            throw new UserException(mLocalizer.t("MSC536: Could not merge " + 
+                "SystemObjects: {0}", e));
         } catch (Exception e) {
             throwProcessingException(e);
         }
@@ -3232,7 +3249,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             }
         }
         if (!euidSelected) {
-            throw new ProcessingException("EUID must be a selected field");
+            throw new ProcessingException(mLocalizer.t("MSC537: EUID must be a selected field."));
         }
         QMIterator qmIterator = null;
         try {
@@ -3327,8 +3344,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     fullObjPath = MetaDataService.getSBRPath(sysObj3
                             .getObject().pGetTag());
                 } else {
-                    throw new ProcessingException(
-                            "At least one SystemObject must be populated.");
+                    throw new ProcessingException(mLocalizer.t("MSC538: At least one SystemObject must be populated."));
                 }
                 AssembleDescriptor assdesc = new AssembleDescriptor();
                 EOSearchResultAssembler factory = new EOSearchResultAssembler();
@@ -3477,7 +3493,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     iterator.close();
                 }
             } catch (Exception ex) {
-                throw new ProcessingException(ex);
+                throw new ProcessingException(mLocalizer.t("MSC539: searchEnterpriseObject() " + 
+                                            "encountered an error: {0}", ex));
             }
         }
         return retIterator;
@@ -3503,8 +3520,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     return mObjectPath;
                 }
             }
-            throw new ProcessingException(
-                    "getObjectPath requires EUID to be selected.");
+            throw new ProcessingException(mLocalizer.t("MSC540: getObjectPath() " + 
+                                                       "requires EUID to be selected."));
         }
         return mObjectPath;
     }
@@ -3540,21 +3557,20 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     destinationEUID);
 
             if (srcEO == null) {
-                throw new UserException("no EO exists for given systemcode:"
-                        + systemKey.systemCode + " & localid:" + systemKey.lID);
+                throw new UserException(mLocalizer.t("MSC541: EntepriseObject does not " + 
+                                                     "exist for SystemCode={0}, LID={1}", 
+                                                     systemKey.systemCode, systemKey.lID));
             } else if (destEO == null) {
-                throw new UserException("destinationEUID:" + destinationEUID
-                        + " is not valid");
+                throw new UserException(mLocalizer.t("MSC542: Invalid destinationEUID: {0}", destinationEUID));
             }
 
             Object[] srcMatchFields = mMatchFieldChange.getMatchFields(srcEO);
             Object[] destMatchFields = mMatchFieldChange.getMatchFields(destEO);
 
             if (srcEO.getEUID().equals(destinationEUID)) {
-                throw new ProcessingException(
-                        "transferSystemObject(): transfer must be between two "
-                                + "different EUIDs.  Both EUIDs are: "
-                                + destinationEUID);
+                throw new ProcessingException(mLocalizer.t("MSC543: SystemObjects must " +
+                                    "be transferred between two different EUIDs.  Both " + 
+                                    "EUIDs are: {0}", destinationEUID));
             }
 
             String user = getCallerUserId();
@@ -3649,9 +3665,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     activeEUID);
             // To_DO: getStatus always returns null!!!
             if (activeEO == null /* || !activeEO.getStatus().equals("active") */) {
-                throw new ProcessingException("unmergeEnterpriseObject(): "
-                        + "Record has been modified by another user.  "
-                        + "EUID: " + activeEUID);
+                throw new ProcessingException(mLocalizer.t("MSC544: EnterpriseObjects could" +
+                                    "not be unmerged from EUID {0}. Record has been " + 
+                                    "modified by another user.", activeEUID));
             }
             Object[] activeMatchFields = mMatchFieldChange
                     .getMatchFields(activeEO);
@@ -3659,22 +3675,20 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             // if mergeHistoryNode is null, then the record has already been
             // unmerged
             if (mergeHistoryNode == null) {
-                throw new ProcessingException("unmergeEnterpriseObject(): "
-                        + "Record has been modified by another user.  "
-                        + "EUID has already been unmerged: " + activeEUID);
+                throw new ProcessingException(mLocalizer.t("MSC545: Record has been " + 
+                                    "modified by another user. EUID {0} has already " +
+                                    "been unmerged", activeEUID));
             }
             TransactionObject transObj = mergeHistoryNode
                     .getTransactionObject();
             if (transObj == null) {
-                throw new ProcessingException("unmergeEnterpriseObject(): "
-                        + "could not retrieve merge transaction");
+                throw new ProcessingException(mLocalizer.t("MSC546: Could not retrieve merge transaction."));
             }
             String transId = transObj.getTransactionNumber();
             mergeHistoryNode = mergeHistoryNode.getSourceNode();
             if (mergeHistoryNode == null) {
-                throw new ProcessingException(
-                        "unmergeEnterpriseObject(): EUID [" + activeEUID
-                                + "] does not have merge history.");
+                throw new ProcessingException(mLocalizer.t("MSC547: EUID {0} " +
+                                    "does not have merge history.", activeEUID));
             }
             String mergedEUID = mergeHistoryNode.getEUID();
             int flag = Constants.FLAG_UM_NONE;
@@ -3762,9 +3776,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     activeEUID);
             // To_DO: getStatus always returns null!!!
             if (activeEO == null) {
-                throw new ProcessingException("unmergeEnterpriseObject(): "
-                        + "Record has been modified by another user.  "
-                        + "EUID: " + activeEUID);
+                throw new ProcessingException(mLocalizer.t("MSC548: Record for EUID {0} " +
+                                    "has been modified by another user.", activeEUID));
             }
             // if srcRevisionNumber is changed, then the record has been
             // modified by other user
@@ -3773,10 +3786,10 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                         .getRevisionNumber();
                 if (!srcRevisionNumber.equalsIgnoreCase(curRevisionNumber
                         .toString())) {
-                    throw new UserException(
-                            "unmergeEnterpriseObject(): "
-                                    + "Source record has been modified by another user. "
-                                    + "Please click OK to reload the record.");
+                    throw new UserException(mLocalizer.t("MSC549: Source record " +
+                                    "has been modified by another user. Please " +
+                                    "reload the record."));
+                            
                 }
             }
 
@@ -3786,23 +3799,23 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             // if mergeHistoryNode is null, then the record has already been
             // unmerged
             if (mergeHistoryNode == null) {
-                throw new ProcessingException("unmergeEnterpriseObject(): "
-                        + "Record has been modified by another user.  "
-                        + "EUID has already been unmerged: " + activeEUID);
+                throw new ProcessingException(mLocalizer.t("MSC550: Record has been " +
+                                    "modified by another user. EUID has already been " + 
+                                    "unmerged: {0}", activeEUID));
             }
             TransactionObject transObj = mergeHistoryNode
                     .getTransactionObject();
             if (transObj == null) {
-                throw new ProcessingException("unmergeEnterpriseObject(): "
-                        + "could not retrieve merge transaction");
+                throw new ProcessingException(mLocalizer.t("MSC551: Could not " +
+                                    "retrieve merge transaction."));
             }
             String transId = transObj.getTransactionNumber();
 
             mergeHistoryNode = mergeHistoryNode.getSourceNode();
             if (mergeHistoryNode == null) {
-                throw new ProcessingException(
-                        "unmergeEnterpriseObject(): EUID [" + activeEUID
-                                + "] does not have merge history.");
+                throw new ProcessingException(mLocalizer.t("MSC552: Could not " +
+                                    "unmerge EnterpriseObject for EUID {0}." + 
+                                    "Record does not have a merge history."));
             }
             String mergedEUID = mergeHistoryNode.getEUID();
 
@@ -3894,8 +3907,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 String sysDesc = lookupSystemDefinition(con, systemCode)
                         .getDescription();
                 String sysMsg = "[" + sysDesc + "," + sourceLID + "]";
-                throw new ProcessingException("unmergeSystemObject(): "
-                        + "Source system record not found: " + sysMsg);
+                throw new ProcessingException(mLocalizer.t("MSC553: Source system record not found " +
+                                    "for System Description={0}, LID={1}", 
+                                    sysDesc, sourceLID));
             } else {
                 String status = mQueryHelper.getSOStatus(con, sourceSystemKey);
                 String errMsg = null;
@@ -3916,9 +3930,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     String sysDesc = lookupSystemDefinition(con, systemCode)
                             .getDescription();
                     String sysMsg = "[" + sysDesc + "," + sourceLID + "]";
-                    throw new ProcessingException("unmergeSystemObject(): "
-                            + "Record has been modified by another user.  "
-                            + errMsg + sysMsg);
+                    throw new ProcessingException(mLocalizer.t("MSC554: Record has been modified by another user " +
+                                    "for System Description={0}, LID={1}: {3}", 
+                                    sysDesc, sourceLID, errMsg));
                 }
             }
 
@@ -3928,8 +3942,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 String sysDesc = lookupSystemDefinition(con, systemCode)
                         .getDescription();
                 String sysMsg = "[" + sysDesc + "," + destLID + "]";
-                throw new ProcessingException("unmergeSystemObject(): "
-                        + "Destination system record not found: " + sysMsg);
+                throw new ProcessingException(mLocalizer.t("MSC555: Destination system record not found " +
+                                    "for System Description={0}, LID={1}", 
+                                    sysDesc, sourceLID));
 
             }
 
@@ -3947,8 +3962,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             TransactionObject transObjArray[] = mTrans.findTransactionLogs(con,
                     tObj, null, null);
             if (transObjArray.length == 0) {
-                throw new ProcessingException(
-                        "unmergeSystemObject(): no transactions found for LID merge.");
+                throw new ProcessingException(mLocalizer.t("MSC556: no transactions found for LID merge"));
             }
             int flag = Constants.FLAG_UM_NONE;
             if (calculateOnly) {
@@ -4091,8 +4105,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 String sysDesc = lookupSystemDefinition(con, systemCode)
                         .getDescription();
                 String sysMsg = "[" + sysDesc + "," + sourceLID + "]";
-                throw new ProcessingException("unmergeSystemObject(): "
-                        + "Source system record not found: " + sysMsg);
+                throw new ProcessingException(mLocalizer.t("MSC561: Source system record not found " +
+                                    "for System Description={0}, LID={1}", 
+                                    sysDesc, sourceLID));
             } else {
                 String status = mQueryHelper.getSOStatus(con, sourceSystemKey);
                 String errMsg = null;
@@ -4113,9 +4128,10 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     String sysDesc = lookupSystemDefinition(con, systemCode)
                             .getDescription();
                     String sysMsg = "[" + sysDesc + "," + sourceLID + "]";
-                    throw new ProcessingException("unmergeSystemObject(): "
-                            + "Record has been modified by another user.  "
-                            + errMsg + " " + sysMsg);
+                    throw new ProcessingException(mLocalizer.t("MSC557: System records could not be unmerged. " +
+                                    "Record has been modified by another user " +
+                                    "for System Description={0}, LID={1}: {2}", 
+                                    sysDesc, sourceLID, errMsg));
                 }
             }
 
@@ -4125,8 +4141,10 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 String sysDesc = lookupSystemDefinition(con, systemCode)
                         .getDescription();
                 String sysMsg = "[" + sysDesc + "," + destLID + "]";
-                throw new ProcessingException("unmergeSystemObject(): "
-                        + "Destination system record not found: " + sysMsg);
+                throw new ProcessingException(mLocalizer.t("MSC558: System records could not be unmerged. " +
+                                    "Destination system record not found for " +
+                                    "for System Description={0}, LID={1}", 
+                                    sysDesc, sourceLID));
             }
 
             EnterpriseObject beforedestinationEO = mTrans.getEnterpriseObject(
@@ -4143,8 +4161,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             TransactionObject transObjArray[] = mTrans.findTransactionLogs(con,
                     tObj, null, null);
             if (transObjArray.length == 0) {
-                throw new ProcessingException(
-                        "unmergeSystemObject(): no transactions found for LID merge.");
+                throw new ProcessingException(mLocalizer.t("MSC559: System records could not be unmerged. " +
+                                    "No transactions found for LID merge"));
             }
             int flag = Constants.FLAG_UM_NONE;
             if (calculateOnly) {
@@ -4168,10 +4186,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                         .getRevisionNumber();
                 if (!srcRevisionNumber.equalsIgnoreCase(curRevisionNumber
                         .toString())) {
-                    throw new UserException(
-                            "unmergeSystemObject(): "
-                                    + "Source record has been modified by another user. "
-                                    + "Please click OK to reload the record.");
+                    throw new UserException(mLocalizer.t("MSC562: System records could not be unmerged. " +
+                                    "Source record has been modified by another user. " +
+                                    "Please reload the record."));
                 }
             }
 
@@ -4515,17 +4532,19 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     SystemObject.STATUS_ACTIVE);
 
             if (euid == null) {
-                throw new ProcessingException("updateSystemObject(): SO [ "
-                        + sysobj.getSystemCode() + "-" + sysobj.getLID()
-                        + " ] is not Active");
+                throw new ProcessingException(mLocalizer.t("MSC563: SystemObject could not be" + 
+                                    "updated because the record is not active for " +
+                                    "System code={0}, LID={1}",  sysobj.getSystemCode(),
+                                    sysobj.getLID()));
             }
 
             EnterpriseObject eo = mTrans.getEnterpriseObject(con, euid);
 
             if (eo == null) {
-                throw new ProcessingException("updateSystemObject(): SO [ "
-                        + sysobj.getSystemCode() + "-" + sysobj.getLID()
-                        + " ] is not Active");
+                throw new ProcessingException(mLocalizer.t("MSC564: SystemObject could not be" + 
+                                    "updated because the record is not active for " +
+                                    "System code={0}, LID={1}",  sysobj.getSystemCode(),
+                                    sysobj.getLID()));
             }
 
             Object[] matchFields = mMatchFieldChange.getMatchFields(eo);
@@ -4588,7 +4607,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 throwProcessingException(e);
             }
         } else {
-            throw new UserException("Invalid parameter name: " + param);
+            throw new UserException(mLocalizer.t("MSC565: Invalid parameter name: {0}", param));
         }
         return retVal;
     }
@@ -4686,7 +4705,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
             return con;
         } catch (Exception e) {
-            throw new ConnectionInvalidException("Failed to get connection.", e);
+            throw new ConnectionInvalidException(mLocalizer.t("MSC566: Failed to get connection: {0}", e));
         }
     }
 
@@ -4794,7 +4813,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             }
             return potDups;
         } catch (Exception e) {
-            throw new ProcessingException(e);
+            throw new ProcessingException(mLocalizer.t("MSC567: execPessimistic() failed: {0}", e));
         }
     }
 
@@ -4839,7 +4858,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             }
 
         } catch (Exception e) {
-            throw new ProcessingException(e);
+            throw new ProcessingException(mLocalizer.t("MSC568: calculatePotentialDuplicates() failed: {0}" , e));
         }
         return;
     }
@@ -4877,7 +4896,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             }
             return pots;
         } catch (Exception e) {
-            throw new ProcessingException(e);
+            throw new ProcessingException(mLocalizer.t("MSC569: findInsertDuplicates() failed: {0}" , e));
         }
     }
 
@@ -4945,8 +4964,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             } else { // unrecognized status
                 errMsg = "Source system record not found: " + sysMsg;
             }
-            throw new ProcessingException("mergeSystemObject(): "
-                    + "Record has been modified by another user.  " + errMsg);
+            throw new ProcessingException(mLocalizer.t("MSC570: Could not merge SystemObjects. " +
+                                        "Record has been modified by another user: {0}", errMsg));
         }
 
         String toEUID = mQueryHelper.getEUID(con, destinationSystemKey,
@@ -4969,28 +4988,28 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             } else { // unrecognized status
                 errMsg = "Destination system record not found: " + sysMsg;
             }
-            throw new ProcessingException("mergeSystemObject(): "
-                    + "Record has been modified by another user.  " + errMsg);
+            throw new ProcessingException(mLocalizer.t("MSC571: Could not merge SystemObjects. " +
+                                        "Record has been modified by another user: {0}", errMsg));
         }
         if (sourceSystemKey.equals(destinationSystemKey)) {
             String sysDesc = lookupSystemDefinition(con,
                     sourceSystemKey.systemCode).getDescription();
             String lid = sourceSystemKey.lID;
             String sysMsg = "[" + sysDesc + "," + lid + "]";
-            throw new ProcessingException(
-                    "mergeSystemObject(): system object keys are equal "
-                            + sysMsg);
+            throw new ProcessingException(mLocalizer.t("MSC572: Could not merge SystemObjects. " +
+                                          "System object keys are equal.  SystemCode={0}, LID={1}", 
+                                          sysDesc, lid));
         }
         if (newSO != null) {
             if (!newSO.getSystemCode().equals(destinationSystemKey.systemCode)
                     || !newSO.getLID().equals(destinationSystemKey.lID)) {
                 String sysDesc = lookupSystemDefinition(con,
                         newSO.getSystemCode()).getDescription();
-                throw new ProcessingException(
-                        "mergeSystemObject(): system key "
-                                + destinationSystemKey
-                                + " does not match system object [" + sysDesc
-                                + ", " + newSO.getLID() + "]");
+                throw new ProcessingException(mLocalizer.t("MSC573: Could not merge SystemObjects. " +
+                                        "Destination SystemKey (SystemCode={0}, LID={1}) " +
+                                        "does not match the SystemObject (SystemCode={2}, LID={3})",  
+                                        destinationSystemKey.systemCode, destinationSystemKey.lID,
+                                        sysDesc, newSO.getLID()));
             }
         }
 
@@ -5034,8 +5053,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 Integer curRevisionNumber = srcEO.getSBR().getRevisionNumber();
                 if (!srcRevisionNumber.equalsIgnoreCase(curRevisionNumber
                         .toString())) {
-                    throw new UserException("mergeSystemObject(): "
-                            + "Record has been modified by another user.");
+                    throw new UserException(mLocalizer.t("MSC574: Could not merge SystemObjects. " +
+                                                         "Record has been modified by another user."));
                 }
             }
 
@@ -5086,16 +5105,14 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                         .getRevisionNumber();
                 if (!destRevisionNumber.equalsIgnoreCase(curRevisionNumber
                         .toString())) {
-                    throw new UserException(
-                            "mergeSystemObject(): "
-                                    + "Destination record has been modified by another user.");
+                    throw new UserException(mLocalizer.t("MSC575: Could not merge SystemObjects. " +
+                                                         "Destination record has been modified by another user."));
                 }
                 curRevisionNumber = sourceEO.getSBR().getRevisionNumber();
                 if (!srcRevisionNumber.equalsIgnoreCase(curRevisionNumber
                         .toString())) {
-                    throw new UserException(
-                            "mergeSystemObject(): "
-                                    + "Source record has been modified by another user.");
+                    throw new UserException(mLocalizer.t("MSC576: Could not merge SystemObjects. " +
+                                                         "Source record has been modified by another user."));
                 }
             }
             Object[] destinationMatchFields = mMatchFieldChange
@@ -5176,10 +5193,10 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             }
             mOutBoundSender.release();
         } catch (SQLException e) {
-            mLogger.warn(mLocalizer.x("MSC012: releaseConnection(): could not close JDBC connection: {0}", 
+            mLogger.warn(mLocalizer.x("MSC012: releaseResources(): could not close JDBC connection: {0}", 
                                        e.getMessage()));
         } catch (OutBoundException e) {
-            mLogger.warn(mLocalizer.x("MSC013: releaseConnection(): could not release JMS resources: {0}", 
+            mLogger.warn(mLocalizer.x("MSC013: releaseResources(): could not release JMS resources: {0}", 
                                        e.getMessage()));
         }
     }
@@ -5223,8 +5240,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         if (!status.equals(SystemObject.STATUS_ACTIVE)
                 && !status.equals(SystemObject.STATUS_INACTIVE)
                 && !status.equals(SystemObject.STATUS_MERGED)) {
-            throw new ProcessingException(
-                    "validateSystemObjectStatus(): invalid status: " + status);
+            throw new ProcessingException(mLocalizer.t("MSC577: validateSystemObjectStatus() failed. " +
+                                                       "The status is invalid: {0}", status));
         }
     }
 
@@ -5264,7 +5281,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 sysCode = sysObj.getSystemCode();
                 lid = sysObj.getLID();
             } catch (Exception e) {
-                throw new ProcessingException(e);
+                throw new ProcessingException(mLocalizer.t("MSC578: validateSystemObject() failed. " +
+                                                           "The SystemCode or LID could not be retrieved: {0}"));
             }
             if (mLogger.isLoggable(Level.FINE)) {
                 mLogger.fine("validateSystemObject(): validating system object ["
@@ -5288,16 +5306,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     }
                     String format = v.getFormat();
 
-                    throw new ValidationException(
-                            sysCode1,
-                            systemDesc,
-                            format,
-                            id,
-                            "The value, "
-                                    + id
-                                    + ", does not conform to the format of SystemObject[LocalId] for "
-                                    + systemDesc + " which is \"" + format
-                                    + "\"");
+                    throw new ValidationException(mLocalizer.t("MSC579: validateSystemObject() encountered a format validation " + 
+                                    "error. The ID {0} does not conform to the format of SystemObject[LocalId] for "
+                                    + "the system description {1}, which is {2}", id, systemDesc, format));
                 }
             }
             ObjectNode objNode = sysObj.getObject();
@@ -5309,8 +5320,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 // error message.
                 SystemDefinition sd = lookupSystemDefinition(con, sysCode);
                 String desc = sd.getDescription();
-                throw new ValidationException("[" + desc + ":" + lid + "] "
-                        + e.getMessage());
+                throw new ValidationException(mLocalizer.t("MSC580: validateSystemObject() encountered a format validation " + 
+                                    "error for SystemDescription={0}, LID={1}: {2}", desc, lid, e));
             }
         }
     }
@@ -5336,7 +5347,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                                     + entObj.getEUID());
                 }
             } catch (Exception e) {
-                throw new ProcessingException(e);
+                throw new ProcessingException(mLocalizer.t("MSC581: validateEnterpriseObject() could not retrieve " +
+                                                           "the EUID for an EnterpriseObject: {0}", e));
             }
             Collection sysObjs = entObj.getSystemObjects();
             if (sysObjs != null) {
@@ -5358,11 +5370,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             throws ProcessingException {
         mLogger.warn(mLocalizer.x("MSC016: ProcessingException: {0}", e.getMessage()));
         sendAlert(e.getClass().getName() + ": " + e.getMessage());
-        if (e instanceof ProcessingException) {
-            throw (ProcessingException) e;
-        } else {
-            throw new ProcessingException(e);
-        }
+        throw new ProcessingException(mLocalizer.t("MSC582: MasterControllerImpl encountered an error: {0}", e));
     }
 
     private synchronized void setMBeanServer() {
@@ -5579,5 +5587,29 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
     public void setObjectName(String objectName) {
         this.objectName=objectName;     
+    }
+    
+    /**
+     *  Retrieve the potential duplicate threshold.
+     *
+     * @returns the value of the potential duplicate threshold.
+     */
+    public float getDuplicateThreshold()  {
+        return mDuplicateThreshold;
+    }
+
+    /**
+     *  Retrieve the Assumed Match threshold.
+     *
+     * @throws ProcessingException if an error is encountered.
+     * @returns the value of the Assumed Match threshold.
+     */
+    public float getAssumedMatchThreshold() throws ProcessingException {
+        try {
+            return mDecision.getMatchThreshold();
+        } catch (Exception e) {
+            throw new ProcessingException(mLocalizer.t("MSC583: Could not " + 
+                                "retrieve the Assumed Match Threshold: {0}", e));
+        }
     }
 }

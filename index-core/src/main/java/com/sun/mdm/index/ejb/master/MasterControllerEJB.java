@@ -52,6 +52,7 @@ import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.SystemObjectPK;
 import com.sun.mdm.index.update.UpdateResult;
+import com.sun.mdm.index.util.Localizer;
 
 import javax.ejb.EJB;
 import javax.ejb.Local;
@@ -106,6 +107,9 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
     
     
     private String objectName = "_EVIEW_OBJECT_TOKEN_";
+    
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     /**
      * No argument constructor required by container.
      */
@@ -1240,6 +1244,34 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
     }
     
     
+    /** Counts the number of potential duplicate records matching the 
+     * criteria specified in search object.  This does not
+     * handle searches based on EUID nor SystemCode/LID.
+     *
+     * @param obj Search criteria.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid search object
+     * @return count of the potential duplicate records matching the search criteria.
+     */
+    public int countPotentialDuplicates(PotentialDuplicateSearchObject pdso) 
+            throws ProcessingException, UserException {
+        Connection con = null;
+        int count = 0;
+        try {
+            con = mControllerImpl.getConnection();
+            count = mControllerImpl.countPotentialDuplicates(pdso);
+        } catch (ProcessingException e) {
+            mControllerImpl.rollbackTransaction(con);
+            throw e;
+        } catch (UserException e) {
+            mControllerImpl.rollbackTransaction(con);
+            throw e;
+        } finally {
+            mControllerImpl.releaseResources(con);
+        }
+        return count;
+    }
+    
     /**
      * Returns an iterator of AssumedMatchSummary objects based on the
      * criteria contained in the assumed match search object
@@ -1274,6 +1306,35 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
             mControllerImpl.releaseResources( con );
         }
         return ami;
+    }
+    
+    /** Counts the number of assumed match records matching the 
+     * date criteria specified in search object.  This does not
+     * handle searches based on EUID nor SystemCode/LID.
+     *
+     * @param obj Search criteria.
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid search object
+     * @return count of the assumed match records matching the search criteria.
+     */
+    public int countAssumedMatches(AssumedMatchSearchObject amso)
+        throws ProcessingException, UserException {
+        Connection con = null;
+        int count = 0;
+        try {
+            con = mControllerImpl.getConnection();
+            count = mControllerImpl.countAssumedMatches(amso);
+           
+        } catch (ProcessingException e) {
+            mControllerImpl.rollbackTransaction(con);
+            throw e;
+        } catch (UserException e) {
+            mControllerImpl.rollbackTransaction(con);
+            throw e;
+        } finally {
+            mControllerImpl.releaseResources(con);
+        }
+        return count;
     }
     
     /**
@@ -2850,5 +2911,29 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
             mControllerImpl.releaseResources( con );
         }
         return rn;
+    }
+    
+    /**
+     *  Retrieve the potential duplicate threshold.
+     *
+     * @returns the value of the potential duplicate threshold.
+     */
+    public float getDuplicateThreshold()  {
+        return mControllerImpl.getDuplicateThreshold();
+    }
+
+    /**
+     *  Retrieve the Assumed Match threshold.
+     *
+     * @throws ProcessingException if an error is encountered.
+     * @returns the value of the Assumed Match threshold.
+     */
+    public float getAssumedMatchThreshold() throws ProcessingException {
+        try {
+            return mControllerImpl.getAssumedMatchThreshold();
+        } catch (Exception e) {
+            throw new ProcessingException(mLocalizer.t("MSC584 Could not " + 
+                                "retrieve the Assumed Match Threshold: {0}", e));
+        }
     }
 }
