@@ -167,6 +167,11 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
      */
     private float mDuplicateThreshold;
 
+    /** 
+     * Assumed match threshold as set in properties
+     */
+    private float mAssumedMatchThreshold = Float.POSITIVE_INFINITY;
+    
     /**
      * match engine controller implementation
      */
@@ -417,6 +422,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             mDecision = dmConfig.getDecisionMaker();
             mDecision.setMasterController(this);
             mDuplicateThreshold = mDecision.getDuplicateThreshold();
+            mAssumedMatchThreshold = mDecision.getMatchThreshold();
             mLogger.info(mLocalizer.x("MSC008: Potential duplicate threshold is set to: {0}", mDuplicateThreshold));
 
             if (mLogger.isLoggable(Level.FINE)) {
@@ -5601,15 +5607,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
     /**
      *  Retrieve the Assumed Match threshold.
      *
-     * @throws ProcessingException if an error is encountered.
      * @returns the value of the Assumed Match threshold.
      */
-    public float getAssumedMatchThreshold() throws ProcessingException {
-        try {
-            return mDecision.getMatchThreshold();
-        } catch (Exception e) {
-            throw new ProcessingException(mLocalizer.t("MSC583: Could not " + 
-                                "retrieve the Assumed Match Threshold: {0}", e));
-        }
+    public float getAssumedMatchThreshold() {
+        return mAssumedMatchThreshold;
     }
 }

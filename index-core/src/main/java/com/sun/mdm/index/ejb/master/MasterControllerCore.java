@@ -2019,8 +2019,7 @@ public interface MasterControllerCore {
     /**
      *  Retrieve the Assumed Match threshold.
      *
-     * @throws ProcessingException if an error is encountered.
      * @returns the value of the Assumed Match threshold.
      */
-    public float getAssumedMatchThreshold() throws ProcessingException;
+    public float getAssumedMatchThreshold();
 }

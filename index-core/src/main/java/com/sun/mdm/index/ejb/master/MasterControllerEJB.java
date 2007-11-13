@@ -2925,15 +2925,9 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
     /**
      *  Retrieve the Assumed Match threshold.
      *
-     * @throws ProcessingException if an error is encountered.
      * @returns the value of the Assumed Match threshold.
      */
-    public float getAssumedMatchThreshold() throws ProcessingException {
-        try {
-            return mControllerImpl.getAssumedMatchThreshold();
-        } catch (Exception e) {
-            throw new ProcessingException(mLocalizer.t("MSC584 Could not " + 
-                                "retrieve the Assumed Match Threshold: {0}", e));
-        }
+    public float getAssumedMatchThreshold() {
+        return mControllerImpl.getAssumedMatchThreshold();
     }
 }
