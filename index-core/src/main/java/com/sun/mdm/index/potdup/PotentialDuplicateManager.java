@@ -299,6 +299,89 @@ public class PotentialDuplicateManager {
         return lookupPotentialDuplicates(con, ps, obj);
     }
 
+    /** Count the potential duplicates records matching the search criteria.
+     * This does not handle EUID nor Source/LID search criteria.
+     * @param obj Search object.
+     * @param con Connection handle.
+     * @exception PotentialDuplicateException An error has occured.
+     * @return Count of the potential duplicates matching the search criteria.
+     */
+    public int countPotentialDuplicates(
+            Connection con, PotentialDuplicateSearchObject obj)
+        throws PotentialDuplicateException {
+            
+        String countSelectClause = 
+                "select count(*) "
+                + " from SBYN_POTENTIALDUPLICATES a, SBYN_TRANSACTION b"
+                + " where a.TRANSACTIONNUMBER = b.TRANSACTIONNUMBER ";
+                
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList parameters = new ArrayList();
+        StringBuffer sb = new StringBuffer(countSelectClause);
+
+        try {
+            if (obj.getStatus() != null) {
+                sb.append(" and a.STATUS=?");
+                parameters.add(obj.getStatus());
+            }
+            if (obj.getType() != null) {
+                sb.append(" and a.TYPE=?");
+                parameters.add(obj.getType());
+            }
+            if (obj.getCreateUser() != null) {
+                sb.append(" and b.SYSTEMUSER=?");
+                parameters.add(obj.getCreateUser());
+            }
+            if (obj.getCreateStartDate() != null) {
+                sb.append(" and b.TIMESTAMP>=?");
+                parameters.add(obj.getCreateStartDate());
+            }
+            if (obj.getCreateEndDate() != null) {
+                sb.append(" and b.TIMESTAMP<=?");
+                parameters.add(obj.getCreateEndDate());
+            }
+            if (obj.getResolvedUser() != null) {
+                sb.append(" and RESOLVEDUSER=?");
+                parameters.add(obj.getResolvedUser());
+            }
+            if (obj.getResolvedStartDate() != null) {
+                sb.append(" and RESOLVEDDATE>=?");
+                parameters.add(obj.getResolvedStartDate());
+            }
+            if (obj.getResolvedEndDate() != null) {
+                sb.append(" and RESOLVEDDATE<=?");
+                parameters.add(obj.getResolvedEndDate());
+            }
+            String sqlString = sb.toString();
+            ps = con.prepareStatement(sqlString);
+            for (int i = 0; i < parameters.size(); i++) {
+                ps.setObject(i + 1, parameters.get(i));
+            }
+            int count = 0;
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            } 
+            return count;
+        } catch (SQLException e) {
+            throw new PotentialDuplicateException(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (Exception e) {
+                mLogger.info("Could not close the result set nor the prepared statement: " + 
+                              e.getMessage());
+                throw new PotentialDuplicateException(e);
+            } 
+        }
+    }
+
 
     /** Set status of potential duplicate record to either (r)esolve or
      * (a)utoresolve.
