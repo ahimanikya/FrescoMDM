@@ -27,6 +27,7 @@ import com.sun.mdm.index.configurator.impl.MatchEngineConfig;
 import com.sun.mdm.index.configurator.ConfigurationException;
 import com.stc.sbme.api.SbmeConfigFilesAccess;
 import com.stc.sbme.api.SbmeConfigurationException;
+import com.sun.mdm.index.util.Localizer;
 import java.util.logging.Level;
 import net.java.hulp.i18n.Logger;
 
@@ -98,6 +99,7 @@ public class SbmeMatcherAdapterConfig
 
         private MatchEngineConfig mConfig;
         private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+        private transient final Localizer mLocalizer = Localizer.get();
     
         /**
          * Constructor to create instance
@@ -125,9 +127,10 @@ public class SbmeMatcherAdapterConfig
             java.io.ByteArrayInputStream stream = null;
                 
             if (mConfig == null) {
-                throw new SbmeConfigurationException(
-                        "Failed to retrieve the match engine configuration from the configuration service. " 
-                        + " MatchEngineConfig to access the configuration service is null.");
+                throw new SbmeConfigurationException(mLocalizer.t("MAT528: Failed to retrieve the " + 
+                                                    "match engine configuration from the " + 
+                                                    "configuration service. MatchEngineConfig " +  
+                                                    "to access the configuration service is null."));
             }
                 
             try {
@@ -143,7 +146,8 @@ public class SbmeMatcherAdapterConfig
                 }
 
             } catch (RuntimeException ex) {
-                throw new SbmeConfigurationException("Retrieving the configuration file failed: " + ex.getMessage(), ex);
+                throw new SbmeConfigurationException(mLocalizer.t("MAT529: Failed to retrieve " + 
+                                                            "the configuration file failed: {0}", ex));
             }
 
             if (mLogger.isLoggable(Level.FINE)) {

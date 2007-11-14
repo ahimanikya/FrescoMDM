@@ -26,6 +26,8 @@ import com.sun.mdm.index.matching.BlockPicker;
 import com.sun.mdm.index.matching.NoBlockApplicableException;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
+import com.sun.mdm.index.util.Localizer;
+
 import java.util.ArrayList;
 
 /**
@@ -38,6 +40,7 @@ import java.util.ArrayList;
  */
 public class PickAllBlocksAtOnce implements BlockPicker {
 
+    private transient final Localizer mLocalizer = Localizer.get();
     
     /** Creates new SerialBlockPicker */
     public PickAllBlocksAtOnce() {
@@ -68,7 +71,9 @@ public class PickAllBlocksAtOnce implements BlockPicker {
         if (noOfRemainingIDs > 0) {
             blockIDs = (String[]) remainingBlockIDs.toArray(new String[noOfRemainingIDs]);
         } else {
-            throw new NoBlockApplicableException("Unable to pick a block: the list of remaining block IDs is empty.");
+            throw new NoBlockApplicableException(mLocalizer.t("MAT544:  Unable to " +
+                                                "pick a block: the list of " + 
+                                                "remaining block IDs is empty."));
         }
         
         return blockIDs;

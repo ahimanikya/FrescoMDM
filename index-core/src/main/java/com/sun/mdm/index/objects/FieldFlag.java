@@ -24,6 +24,7 @@ package com.sun.mdm.index.objects;
 
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.exception.InvalidKeyTypeException;
+import com.sun.mdm.index.util.Localizer;
 
 import java.io.Externalizable;
 import java.io.Serializable;
@@ -39,6 +40,9 @@ import java.io.IOException;
 public class FieldFlag implements Externalizable {
     static final long serialVersionUID = -2216279605200640800L;
     public static final int version = 1;
+    
+    private transient final Localizer mLocalizer = Localizer.get();
+
     /**
      * invalid key type exception
      */
@@ -192,7 +196,8 @@ public class FieldFlag implements Externalizable {
             break;
 
         default:
-            throw new InvalidKeyTypeException("Unrecognized flag type: '" + type + "'");
+            throw new InvalidKeyTypeException(mLocalizer.t("OBJ504: Unrecognized  " + 
+                                                           "flag type: {0}", type));
         }
 
         return bRet;
@@ -345,7 +350,8 @@ public class FieldFlag implements Externalizable {
             break;
 
         default:
-            throw new InvalidKeyTypeException("Unrecognized flag type: '" + type + "'");
+            throw new InvalidKeyTypeException(mLocalizer.t("OBJ505: Unrecognized  " + 
+                                                           "flag type: {0}", type));
         }
     }
 

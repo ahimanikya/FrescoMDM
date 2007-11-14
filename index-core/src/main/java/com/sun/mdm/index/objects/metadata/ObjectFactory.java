@@ -33,6 +33,7 @@ import com.sun.mdm.index.parser.FieldDef;
 import com.sun.mdm.index.parser.RelationDef;
 import com.sun.mdm.index.parser.Utils;
 import com.sun.mdm.index.util.CodeGeneratorUtil;
+import com.sun.mdm.index.util.Localizer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -91,6 +92,8 @@ public class ObjectFactory {
      * node separator
      */
     public static final String NODESEPARATOR = ".";
+    
+    private transient static final Localizer mLocalizer = Localizer.get();
     
     // <TODO>  these all need to be commented
     private static String mSystemObjectPathHead = ENTERPRISETAG + NODESEPARATOR + SYSTEMOBJECTTAG + NODESEPARATOR;
@@ -232,7 +235,8 @@ public class ObjectFactory {
                 ObjectFactory.setPaths("", (RelationDef) mRelationships.get(0), true);
                 isInit = true;
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(mLocalizer.t("OBJ577: Could not " + 
+                                        "initialize ObjectFactory: {0}", e));
                     }
                 }
             }
@@ -263,7 +267,8 @@ public class ObjectFactory {
                     }
                     isInitCreate = true;
               } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    throw new RuntimeException(mLocalizer.t("OBJ611: Could not " + 
+                                        "create an ObjectFactory instance: {0}", e));
                     }
                 }
               }
@@ -296,10 +301,11 @@ public class ObjectFactory {
         throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ578: Invalid path: {0}", path));
         }
         if (!isObjectNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of object type");
+            throw new ObjectException(mLocalizer.t("OBJ579: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         ObjectMetaData ometa = (ObjectMetaData) mObjects.get(path);
@@ -328,10 +334,11 @@ public class ObjectFactory {
     public static String[] getObjectKeys(String path) throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ580: Invalid path: {0}", path));
         }
         if (!isObjectNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of object type");
+            throw new ObjectException(mLocalizer.t("OBJ581: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         ObjectMetaData ometa = (ObjectMetaData) mObjects.get(path);
@@ -351,7 +358,8 @@ public class ObjectFactory {
     public static String[] getChildTypes(String path) throws ObjectException {
         init();
         if (!isObjectNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of object type");
+            throw new ObjectException(mLocalizer.t("OBJ582: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         ObjectMetaData ometa = (ObjectMetaData) mObjects.get(path);
@@ -369,10 +377,11 @@ public class ObjectFactory {
     public static String getColumnName(String path) throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ583: Invalid path: {0}", path));
         }
         if (!isFieldNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of field type");
+            throw new ObjectException(mLocalizer.t("OBJ584: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         int pos = path.lastIndexOf(ObjectFactory.NODESEPARATOR);
@@ -391,10 +400,11 @@ public class ObjectFactory {
         throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ585: Invalid path: {0}", path));
         }
         if (!isObjectNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of object type");
+            throw new ObjectException(mLocalizer.t("OBJ586: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         ObjectMetaData ometa = (ObjectMetaData) mObjects.get(path);
@@ -424,10 +434,11 @@ public class ObjectFactory {
     public static String getFieldType(String path) throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ587: Invalid path: {0}", path));
         }
         if (!isFieldNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of field type");
+            throw new ObjectException(mLocalizer.t("OBJ588: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         String type = ((FieldMetaData) mFields.get(path)).getType();
@@ -444,10 +455,11 @@ public class ObjectFactory {
     public static String getFieldName(String path) throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ589: Invalid path: {0}", path));
         }
         if (!isFieldNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of field type");
+            throw new ObjectException(mLocalizer.t("OBJ590: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         String name = ((FieldMetaData) mFields.get(path)).getName();
@@ -464,10 +476,11 @@ public class ObjectFactory {
     public static int getFieldSize(String path) throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ591: Invalid path: {0}", path));
         }
         if (!isFieldNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of field type");
+            throw new ObjectException(mLocalizer.t("OBJ592: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         int size = ((FieldMetaData) mFields.get(path)).getSize();
@@ -483,10 +496,11 @@ public class ObjectFactory {
     public static boolean isFieldRequired(String path) throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ593: Invalid path: {0}", path));
         }
         if (!isFieldNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of field required");
+            throw new ObjectException(mLocalizer.t("OBJ594: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         boolean ret = ((FieldMetaData) mFields.get(path)).isRequired();
@@ -502,10 +516,11 @@ public class ObjectFactory {
     public static boolean isFieldUpdateable(String path) throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ595: Invalid path: {0}", path));
         }
         if (!isFieldNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of field updateable");
+            throw new ObjectException(mLocalizer.t("OBJ596: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         boolean ret = ((FieldMetaData) mFields.get(path)).isUpdateable();
@@ -521,10 +536,11 @@ public class ObjectFactory {
     public static String getUserCode(String path) throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ597: Invalid path: {0}", path));
         }
         if (!isFieldNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of field user-code");
+            throw new ObjectException(mLocalizer.t("OBJ598: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         String ret = ((FieldMetaData) mFields.get(path)).getUserCode();
@@ -540,10 +556,11 @@ public class ObjectFactory {
     public static String getConstraintBy(String path) throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ599: Invalid path: {0}", path));
         }
         if (!isFieldNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of field constraint-by");
+            throw new ObjectException(mLocalizer.t("OBJ610: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         String ret = ((FieldMetaData) mFields.get(path)).getConstraintBy();
@@ -562,10 +579,11 @@ public class ObjectFactory {
     public static String getColumnType(String path) throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ600: Invalid path: {0}", path));
         }
         if (!isFieldNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of field type");
+            throw new ObjectException(mLocalizer.t("OBJ601: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         String type = ((FieldMetaData) mFields.get(path)).getType();
@@ -584,10 +602,11 @@ public class ObjectFactory {
         throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ602: Invalid path: {0}", path));
         }
         if (!isObjectNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of object type");
+            throw new ObjectException(mLocalizer.t("OBJ603: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         ObjectMetaData ometa = (ObjectMetaData) mObjects.get(path);
@@ -612,10 +631,11 @@ public class ObjectFactory {
         throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ604: Invalid path: {0}", path));
         }
         if (!isObjectNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of object type");
+            throw new ObjectException(mLocalizer.t("OBJ605: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         String[] ret = null;
@@ -662,10 +682,11 @@ public class ObjectFactory {
         throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ606: Invalid path: {0}", path));
         }
         if (!isObjectNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of object type");
+            throw new ObjectException(mLocalizer.t("OBJ607: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         String[] ret = null;
@@ -715,10 +736,11 @@ public class ObjectFactory {
         throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ608: Invalid path: {0}", path));
         }
         if (!isObjectNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of object type");
+            throw new ObjectException(mLocalizer.t("OBJ609: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         String[] ret = null;
@@ -823,10 +845,11 @@ public class ObjectFactory {
     public static String getDBTableName(String path) throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ612: Invalid path: {0}", path));
         }
         if (!isObjectNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of object type");
+            throw new ObjectException(mLocalizer.t("OBJ613: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         String ret = null;
@@ -852,10 +875,11 @@ public class ObjectFactory {
     public static String[] getDBTablePK(String path) throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ614: Invalid path: {0}", path));
         }
         if (!isObjectNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of object type");
+            throw new ObjectException(mLocalizer.t("OBJ615: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         String[] ret = null;
@@ -883,10 +907,11 @@ public class ObjectFactory {
     public static String[] getPrimaryKey(String path) throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ616: Invalid path: {0}", path));
         }
         if (!isObjectNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of object type");
+            throw new ObjectException(mLocalizer.t("OBJ617: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         String[] ret = null;
@@ -907,10 +932,11 @@ public class ObjectFactory {
     public static String[] getFieldPaths(String path) throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ618: Invalid path: {0}", path));
         }
         if (!isObjectNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of object type");
+            throw new ObjectException(mLocalizer.t("OBJ619: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         ObjectMetaData ometa = (ObjectMetaData) mObjects.get(path);
@@ -938,10 +964,11 @@ public class ObjectFactory {
     public static String[] getFields(String path) throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ620: Invalid path: {0}", path));
         }
         if (!isObjectNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of object type");
+            throw new ObjectException(mLocalizer.t("OBJ621: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         ObjectMetaData ometa = (ObjectMetaData) mObjects.get(path);
@@ -979,10 +1006,11 @@ public class ObjectFactory {
     public static String getParentType(String path) throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ622: Invalid path: {0}", path));
         }
         if (!isObjectNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of object type");
+            throw new ObjectException(mLocalizer.t("OBJ623: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         ObjectMetaData ometa = (ObjectMetaData) mObjects.get(path);
@@ -1000,10 +1028,11 @@ public class ObjectFactory {
         throws ObjectException {
         init();
         if (!isPathValid(path)) {
-            throw new ObjectException("Invalid path: \"" + path + "\"");
+            throw new ObjectException(mLocalizer.t("OBJ624: Invalid path: {0}", path));
         }
         if (!isObjectNodePath(path)) {
-            throw new ObjectException("Path \"" + path + "\" is not of object type");
+            throw new ObjectException(mLocalizer.t("OBJ625: Invalid path.  This " + 
+                                            "is not an ObjectNodePath: {0}", path));
         }
 
         String ret = null;
@@ -1199,7 +1228,8 @@ public class ObjectFactory {
         ObjectNode ret = null;
 
         if (!isObjectNode(tag)) {
-            throw new ObjectException("tag \"" + tag + "\" is not of object type");
+            throw new ObjectException(mLocalizer.t("OBJ626: Could not create an " + 
+                                "ObjectNode.  The tag not an ObjectNode tag: {0}", tag));
         }
 
         Class res = (Class) mHandles.get(tag);
@@ -1207,9 +1237,11 @@ public class ObjectFactory {
         try {
             ret = (ObjectNode) res.newInstance();
         } catch (java.lang.InstantiationException e) {
-            throw new ObjectException(e.getMessage());
+            throw new ObjectException(mLocalizer.t("OBJ627: Could not create an " + 
+                                "ObjectNode: {0}", e));
         } catch (java.lang.IllegalAccessException e) {
-            throw new ObjectException(e.getMessage());
+            throw new ObjectException(mLocalizer.t("OBJ628: Could not create an " + 
+                                "ObjectNode: {0}", e));
         }
 
         return ret;

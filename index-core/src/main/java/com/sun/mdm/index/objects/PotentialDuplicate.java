@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.exception.PotentialDupMissingFieldException;
+import com.sun.mdm.index.util.Localizer;
 
 /**
  * @author gzheng
@@ -34,6 +35,7 @@ import com.sun.mdm.index.objects.exception.PotentialDupMissingFieldException;
 public class PotentialDuplicate extends ObjectNode {
     private static ArrayList mFieldNames;
     private static ArrayList mFieldTypes;
+    private transient final Localizer mLocalizer = Localizer.get();
     static {
         mFieldNames = new ArrayList();
         mFieldNames.add("EUID1");
@@ -89,22 +91,34 @@ public class PotentialDuplicate extends ObjectNode {
         throws ObjectException {
         super("PotentialDuplicate", mFieldNames, mFieldTypes);
         if (null == euid1 || euid1.equals("")) {
-            throw new PotentialDupMissingFieldException("EUID1");
+            throw new PotentialDupMissingFieldException(mLocalizer.t("OBJ542: Could not " + 
+                                        "instantiate a PotentialDuplicate instance.  The " + 
+                                        "EUID1 field is null or empty."));
         }
         if (null == euid2 || euid2.equals("")) {
-            throw new PotentialDupMissingFieldException("EUID2");
+            throw new PotentialDupMissingFieldException(mLocalizer.t("OBJ543: Could not " + 
+                                        "instantiate a PotentialDuplicate instance.  The " + 
+                                        "EUID2 field is null or empty."));
         }
         if (null == highmatchflag || highmatchflag.equals("")) {
-            throw new PotentialDupMissingFieldException("High Match Flag");
+            throw new PotentialDupMissingFieldException(mLocalizer.t("OBJ544: Could not " + 
+                                        "instantiate a PotentialDuplicate instance.  The " + 
+                                        "High Match Flag field is null or empty: {0}"));
         }
         if (null == datetime) {
-            throw new PotentialDupMissingFieldException("Date Time");
+            throw new PotentialDupMissingFieldException(mLocalizer.t("OBJ545: Could not " + 
+                                        "instantiate a PotentialDuplicate instance.  The " + 
+                                        "DateTime field is null."));
         }
         if (null == potdupsignature) {
-            throw new PotentialDupMissingFieldException("Potential Duplicate Signature");
+            throw new PotentialDupMissingFieldException(mLocalizer.t("OBJ546: Could not " + 
+                                        "instantiate a PotentialDuplicate instance.  The " + 
+                                        "Potential Duplicate Signature field is null."));
         }
         if (null == targetsignature) {
-            throw new PotentialDupMissingFieldException("Target Signature");
+            throw new PotentialDupMissingFieldException(mLocalizer.t("OBJ547: Could not " + 
+                                        "instantiate a PotentialDuplicate instance.  The " + 
+                                        "Target Signature field is null."));
         }
 
         setValue("EUID1", euid1);
@@ -239,7 +253,8 @@ public class PotentialDuplicate extends ObjectNode {
     public void setDateTime(Date datetime)
         throws ObjectException {
         if (null == datetime) {
-            throw new PotentialDupMissingFieldException("Date Time");
+            throw new PotentialDupMissingFieldException(mLocalizer.t("OBJ657: The datetime " + 
+                                        "field cannot be set to null."));
         }
         setValue("DateTime", datetime);
     }
@@ -266,7 +281,8 @@ public class PotentialDuplicate extends ObjectNode {
     public void setEUID1(String euid1)
         throws ObjectException {
         if (null == euid1 || euid1.equals("")) {
-            throw new PotentialDupMissingFieldException("EUID1");
+            throw new PotentialDupMissingFieldException(mLocalizer.t("OBJ658: The EUID1 " + 
+                                        "field cannot be set to null."));
         }
         setValue("EUID1", euid1);
     }
@@ -281,7 +297,8 @@ public class PotentialDuplicate extends ObjectNode {
     public void setEUID2(String euid2)
         throws ObjectException {
         if (null == euid2 || euid2.equals("")) {
-            throw new PotentialDupMissingFieldException("EUID2");
+            throw new PotentialDupMissingFieldException(mLocalizer.t("OBJ659: The EUID2 " + 
+                                        "field cannot be set to null."));
         }
         setValue("EUID2", euid2);
     }
@@ -296,7 +313,8 @@ public class PotentialDuplicate extends ObjectNode {
     public void setHighMatchFlag(String highmatchflag)
         throws ObjectException {
         if (null == highmatchflag || highmatchflag.equals("")) {
-            throw new PotentialDupMissingFieldException("High Match Flag");
+            throw new PotentialDupMissingFieldException(mLocalizer.t("OBJ660: The High " + 
+                                        "Match Flag field cannot be set to null."));
         }
         setValue("HighMatchFlag", highmatchflag);
     }
@@ -311,7 +329,8 @@ public class PotentialDuplicate extends ObjectNode {
     public void setPotDupSignature(byte[] potdupsignature)
         throws ObjectException {
         if (null == potdupsignature) {
-            throw new PotentialDupMissingFieldException("Potential Duplicate Signature");
+            throw new PotentialDupMissingFieldException(mLocalizer.t("OBJ661: The Potential " + 
+                                        "Duplicate Signature field cannot be set to null."));
         }
         setValue("PotDupSignature", potdupsignature);
     }
@@ -338,7 +357,8 @@ public class PotentialDuplicate extends ObjectNode {
     public void setTargetSignature(byte[] targetsignature)
         throws ObjectException {
         if (null == targetsignature) {
-            throw new PotentialDupMissingFieldException("Target Signature");
+            throw new PotentialDupMissingFieldException(mLocalizer.t("OBJ662: The Target " + 
+                                        "Signature field cannot be set to null."));
         }
         setValue("Target_Signature", targetsignature);
     }

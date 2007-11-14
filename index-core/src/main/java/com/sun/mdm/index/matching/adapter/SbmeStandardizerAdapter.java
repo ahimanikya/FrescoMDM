@@ -142,28 +142,25 @@ public class SbmeStandardizerAdapter
             objToStandardize = 
                 phoneticizeFields(objToStandardize, phoneticFields);
         } catch (EPathException ex) {
-            throw new StandardizationException("StandardizationException: Failed "
-                    + "to standardize the configured fields in the SystemObject: " 
-                    + ex.getMessage(), ex);
+            throw new StandardizationException(mLocalizer.t("MAT530:  Failed to " + 
+                                            "standardize the configured fields in " + 
+                                            "the SystemObject: {0}", ex));
         } catch (PhoneticEncoderException ex) {
-            throw new StandardizationException("Failed to create phonetic code "
-                    + "for the configured fields in the SystemObject: " 
-                    + ex.getMessage(), ex);
+            throw new StandardizationException(mLocalizer.t("MAT531:  Failed to " + 
+                                            "create phonetic code for the configured " + 
+                                            "fields in the SystemObject: {0}", ex));
         } catch (SbmeStandardizationException ex) {
             // This signifies a problem with the standardization engine
             // The normal result of it not being able to standardize a record would be to return
             // null for that record, not to throw an exception
-            throw new StandardizationException("The Standardization engine " 
-                    + "could not standardize the given record. " 
-                    + ex.getMessage(), ex);
+            throw new StandardizationException(mLocalizer.t("MAT532:  The Standardization engine " + 
+                                            "could not standardize the given record: {0}", ex));
         } catch (SbmeMatchEngineException ex) {
-            throw new StandardizationException(
-                "Failed to standardize, standardization engine reports an error: " 
-                    + ex.getMessage(), ex);                        
+            throw new StandardizationException(mLocalizer.t("MAT533:  Failed to standardize. " + 
+                                            "The standardization engine reports an error: {0}", ex));
         } catch (java.io.IOException ex) {
-            throw new StandardizationException("The Standardization engine " 
-                    + " failed to standardize the given record, an IOException was thrown. " 
-                    + ex.getMessage(), ex);
+            throw new StandardizationException(mLocalizer.t("MAT534:  The Standardization engine " + 
+                                            "failed to standardize the given record: {0}", ex));
         }
         
         return objToStandardize;
@@ -233,19 +230,19 @@ public class SbmeStandardizerAdapter
             phoneticizer = new Phoneticizer();
             
             if (config == null) {            
-                throw new StandardizationException("No standardization engine "
-                        + "configuration class is configured for this standardization " 
-                        + "adapter, unable to initialize Standardization Engine. " 
-                        + SbmeStandardizerAdapterConfig.class.getName()
-                        + " expected.");                
+                throw new StandardizationException(mLocalizer.t("MAT535:  No standardization engine " + 
+                                        "configuration class is configured for this standardization " +
+                                        "adapter, unable to initialize Standardization Engine. " +
+                                        "{0} expected", SbmeStandardizerAdapterConfig.class.getName()));
             }
             if (!(config instanceof SbmeStandardizerAdapterConfig)) {
-                throw new StandardizationException("The configured " 
-                        + "standardization engine configuration class is not " 
-                        + "compatible with this standardization adapter. " 
-                        + SbmeStandardizerAdapterConfig.class.getName()
-                        + " expected, configured: " 
-                        + config.getClass().getName());
+                throw new StandardizationException(mLocalizer.t("MAT536:  The configured " + 
+                                        "standardization engine configuration class is not " +
+                                        "compatible with this standardization adapter. " +
+                                        "{0} expected but configured {1}", 
+                                        SbmeStandardizerAdapterConfig.class.getName(),
+                                        config.getClass().getName()));
+                                        
             }
             SbmeStandardizerAdapterConfig eViewConfig =
                 (SbmeStandardizerAdapterConfig) config;
@@ -260,8 +257,8 @@ public class SbmeStandardizerAdapter
                 "Failed to initialize standardizer adapter, standardization engine reports an error: " 
                     + ex.getMessage(), ex);                                    
         } catch (Exception ex) {
-            throw new StandardizationException("Failed to initialize " 
-                + "standardizer adapter. " + ex.getMessage(), ex);
+            throw new StandardizationException(mLocalizer.t("MAT537:  Failed to " + 
+                                        "initialize the standardizer adapter: {0}", ex));
         }
     }
 
@@ -279,8 +276,8 @@ public class SbmeStandardizerAdapter
                 }
                 //standardizationEngine.shutdown();
             } catch (Exception ex) {
-                throw new StandardizationException(
-                    "Failed to shutdown standardization engine: " + ex.getMessage(), ex);
+                throw new StandardizationException(mLocalizer.t("MAT538:  Failed to " + 
+                                        "shutdown standardization engine: {0}", ex));
             } finally {
                 standardizationEngine = null;
             }
@@ -473,11 +470,10 @@ public class SbmeStandardizerAdapter
                 try {
                     standRec = standRecFactory.getInstance(standType);
                 } catch (IllegalArgumentException ex) {
-                    throw new StandardizationException("The configured " 
-                            + "standardization type is invalid: " + standType
-                            + ". The standardization engine threw an exception "
-                            + "creating a record of this type."  
-                            + ex.getMessage(), ex);
+                    throw new StandardizationException(mLocalizer.t("MAT539:  The configured " + 
+                                    "standardization type is invalid: {0}. " + 
+                                    "The standardization engine threw an exception " +
+                                    "creating a record of that type: {1}", standType, ex));
                 }
 
                 for (int colCount = 0; colCount < noOfColumns; colCount++) {

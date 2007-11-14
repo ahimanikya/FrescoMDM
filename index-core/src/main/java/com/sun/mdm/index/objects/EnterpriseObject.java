@@ -25,6 +25,7 @@ package com.sun.mdm.index.objects;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.exception.PotentialDupMissingFieldException;
+import com.sun.mdm.index.util.Localizer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,6 +45,8 @@ public class EnterpriseObject extends ObjectNode {
     private static ArrayList mFieldNames;
     private static ArrayList mFieldTypes;
 
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     static {
         mFieldNames = new ArrayList();
         mFieldNames.add("EUID");
@@ -267,7 +270,8 @@ public class EnterpriseObject extends ObjectNode {
      */
     public void setEUID(String euid) throws ObjectException {
         if ((null == euid) || euid.equals("")) {
-            throw new PotentialDupMissingFieldException("EUID");
+            throw new PotentialDupMissingFieldException(mLocalizer.t("OBJ502: Could not " + 
+                                            "set the EUID to a null or empty String"));
         }
 
         setValue("EUID", euid);
@@ -286,7 +290,9 @@ public class EnterpriseObject extends ObjectNode {
         try {
             SBR sbrobj = getSBR();
             if (sbrobj != null) {
-                throw new ObjectException("SBR record exists, can not set");
+                throw new ObjectException(mLocalizer.t("OBJ503: Could not " + 
+                                            "set the SBR record because an SBR " + 
+                                            "record already exists."));
             }
 
             addChild(sbr);

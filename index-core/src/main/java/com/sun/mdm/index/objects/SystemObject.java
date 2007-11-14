@@ -820,8 +820,12 @@ public class SystemObject extends ObjectNode {
            add(aTargetChildren,obj);
            obj.setParent(this);
        } else {
-           throw new ObjectException("Child type '"
-               + getValue("ChildType") + "' does not match with incoming object tag (" + obj.pGetTag() + ")");
+           throw new ObjectException(mLocalizer.t("OBJ552: Could not " + 
+                                        "set an ObjectNode.  The " + 
+                                        "child type {0} does not match " +
+                                        "the incoming object tag: {1}", 
+                                        getValue("ChildType"), obj.pGetTag()));
+           
        }
    }
 
@@ -840,20 +844,24 @@ public class SystemObject extends ObjectNode {
    public void setStatus(String status) throws ObjectException {
        try {
            if (getStatus() != null && getStatus().equals(SystemObject.STATUS_MERGED)) {
-               throw new ObjectException("Status of merged system object can "
-               + "not be modified.");
+               throw new ObjectException(mLocalizer.t("OBJ553: Status of " + 
+                                            "a merged system object cannot be modified."));
            }
            if (status.equals(SystemObject.STATUS_ACTIVE)
            || status.equals(SystemObject.STATUS_INACTIVE)) {
                setValue("Status", status);
            } else if (status.equals(SystemObject.STATUS_MERGED)) {
-               throw new ObjectException("Use MasterController merge functions "
-               + "to merge a SystemObject.");
+               throw new ObjectException(mLocalizer.t("OBJ554: The " + 
+                                    "MasterController merge functions " +
+                                    "should be used to merge a SystemObject."));
            } else {
-               throw new ObjectException("Invalid status: " + status);
+               throw new ObjectException(mLocalizer.t("OBJ555: Could not " + 
+                                "set the status.  This status is invalid: {0}", 
+                                status));
            }
        } catch (ObjectException e) {
-           throw e;
+           throw new ObjectException(mLocalizer.t("OBJ556: Could not " + 
+                                "set the status: {0}", e));
        }
    }
 

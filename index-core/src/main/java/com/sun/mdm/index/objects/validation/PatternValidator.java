@@ -27,6 +27,7 @@ import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.objects.validation.exception.PatternMismatchedException;
 import com.sun.mdm.index.objects.validation.exception.UnknownDataTypeException;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
+import com.sun.mdm.index.util.Localizer;
 
 
 /**
@@ -36,6 +37,7 @@ public class PatternValidator {
 
     private Pattern mPattern;
     private String  mRegularExpression;
+    private transient final Localizer mLocalizer = Localizer.get();
 
     /**
      * Creates a new instance of PatternValidator
@@ -70,10 +72,17 @@ public class PatternValidator {
         Object value = field.getValue();
         if (value != null) {
             if (!(value instanceof java.lang.String)) {
-                throw new UnknownDataTypeException(field.getName());
+                throw new UnknownDataTypeException(mLocalizer.t("OBJ714: Pattern Validator " + 
+                                        "encountered an unrecognized type " + 
+                                        "for this field: {0}", 
+                                        field.getName()));
             }
             if (!mPattern.matcher((String) value).matches()) {
-                throw new PatternMismatchedException(field.getName());
+                throw new PatternMismatchedException(mLocalizer.t("OBJ715: Pattern mismatch " + 
+                                        "for the value \"{0}\" " + 
+                                        "retrieved from this field: {1}", 
+                                        value, 
+                                        field.getName()));
             }
         }
     }
@@ -86,7 +95,8 @@ public class PatternValidator {
     public void validate(String value) throws ValidationException {
         if (value != null) {
             if (!mPattern.matcher((String) value).matches()) {
-                throw new PatternMismatchedException(value);
+                throw new PatternMismatchedException(mLocalizer.t("OBJ76: Pattern mismatch " + 
+                                        "for: {0}", value));
             }
         }
     }

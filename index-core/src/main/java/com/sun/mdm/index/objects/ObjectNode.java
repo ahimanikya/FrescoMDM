@@ -185,8 +185,10 @@ public class ObjectNode implements Externalizable {
     */
    public ObjectNode(String tag, ArrayList names, ArrayList types) throws ObjectException {
        if ((null == names) || (null == types) || (names.size() != types.size())) {
-           throw new InvalidFieldNameException("Invalid field definitions: "
-           + tag + "\n" + names + "\n" + types);
+           throw new InvalidFieldNameException(mLocalizer.t("OBJ523: Invalid  " + 
+                                      "field definitions: tag={0}, names={1}, types={2}", 
+                                      tag, names, types));
+           
        }
 
        mTag = tag;
@@ -236,14 +238,16 @@ public class ObjectNode implements Externalizable {
     */
    public ObjectNode(String tag, ArrayList names, ArrayList types, ArrayList values) throws ObjectException {
        if (null == names) {
-           throw new InvalidFieldNameException(
-           "ObjectNode cannot be constructed from empty field names");
+           throw new InvalidFieldNameException(mLocalizer.t("OBJ524: ObjectNode " + 
+                                        "cannot be constructed from empty field names"));
        }
 
        if ((null == values) || (null == types) || (values.size() != names.size())
        || (types.size() != values.size())) {
-           throw new InvalidFieldNameException("Invalid field definitions: "
-           + tag + "\n" + names + "\n" + types + "\n" + values);
+           throw new InvalidFieldNameException(mLocalizer.t("OBJ525: Invalid " + 
+                                      "field definitions: tag={0}, names={1}, " + 
+                                      "types={2}, values={3}", 
+                                      tag, names, types, values));
        }
 
        mTag = tag;
@@ -353,8 +357,8 @@ public class ObjectNode implements Externalizable {
    		}
 
    	} catch (Exception e) {
-   		mLogger.warn(mLocalizer.x("OBJ001: Child object(s) could not be retrieved: {0}", e.getMessage()));
-   		throw new ObjectException(e.getMessage());
+   		throw new ObjectException(mLocalizer.t("OBJ526: Child object(s) " + 
+   		                                    "could not be retrieved: {0}", e));
    	}
    	return ret;
    }
@@ -625,13 +629,14 @@ public class ObjectNode implements Externalizable {
        ObjectField field = null;
 
        if (mFields == null) {
-           throw new ObjectException("the object has empty field list");
+           throw new ObjectException(mLocalizer.t("OBJ527: The object has empty field list"));
        }
 
        field = (ObjectField) mFields.get(fieldname);
 
        if (field == null) {
-           throw new ObjectException("object '" + pGetTag() + "' does not have field '" + fieldname + "'");
+           throw new ObjectException(mLocalizer.t("OBJ528: The object {0} " +
+                                "does not have field {1}", pGetTag(), fieldname));
        }
 
        return field;
@@ -1447,7 +1452,8 @@ public class ObjectNode implements Externalizable {
      */
    public void setKey(ObjectKey key) throws ObjectException {
        if (!isKeyValid(key)) {
-           throw new InvalidKeyObjectException("Invalid key setting: " + key.toString());
+           throw new InvalidKeyObjectException(mLocalizer.t("OBJ529: Could not set " + 
+                                "the key.  This key setting is invalid: {0}", key.toString()));
        }
 
        ArrayList knames = key.getKeyNames();
@@ -1499,7 +1505,8 @@ public class ObjectNode implements Externalizable {
 
            setFlag(name, FieldFlag.NULLTYPE, flag);
        } catch (ObjectException e) {
-           throw e;
+           throw new ObjectException(mLocalizer.t("OBJ530: A non-nullable field to null cannot " + 
+                                                "be set to null: {0}", e));
        }
    }
 
@@ -1821,13 +1828,15 @@ public class ObjectNode implements Externalizable {
                        child.setParent(this);
 
                    } else {
-                       throw new DuplicateChildKeyException("A child object with the same key already exists: "
-                       + objKey);
+                       throw new DuplicateChildKeyException(mLocalizer.t("OBJ531: A child " + 
+                                                "object with the same key already exists: {0}", 
+                                                objKey.toString()));
                    }
                }
            }
        } catch (Exception e) {
-           throw new InvalidObjectException(e.getMessage());
+           throw new InvalidObjectException(mLocalizer.t("OBJ532: A child " + 
+                                                "object could not be added: {0}", e));
        }
    }
 
@@ -1871,13 +1880,15 @@ public class ObjectNode implements Externalizable {
                        addChildToTypeArrayList(child);
                        child.setParent(this);
                    } else {
-                       throw new DuplicateChildKeyException("a child object of the same key already exists: "
-                       + objKey);
+                       throw new DuplicateChildKeyException(mLocalizer.t("OBJ533: A child " + 
+                                                "object of the same key already exists: {0}", 
+                                                objKey.toString()));
                    }
                }
            }
        } catch (ObjectException e) {
-           throw new InvalidObjectException(e.getMessage());
+           throw new InvalidObjectException(mLocalizer.t("OBJ534: Coud not add a child " + 
+                                                "object: {0}", e));
        }
    }
 
@@ -2472,7 +2483,8 @@ public class ObjectNode implements Externalizable {
                throw new InvalidObjectException();
            }
        } catch (ObjectException e) {
-           throw e;
+           throw new ObjectException(mLocalizer.t("OBJ535: Could not update " + 
+                                                "a child object: {0}", e));
        }
    }
 
@@ -2551,7 +2563,8 @@ public class ObjectNode implements Externalizable {
                throw new InvalidObjectException();
            }
        } catch (ObjectException e) {
-           throw e;
+           throw new ObjectException(mLocalizer.t("OBJ536: Could not update " + 
+                                                "a child object: {0}", e));
        }
    }
 
@@ -2648,7 +2661,8 @@ public class ObjectNode implements Externalizable {
                throw new InvalidObjectException();
            }
        } catch (ObjectException e) {
-           throw e;
+           throw new ObjectException(mLocalizer.t("OBJ537: Could not update " + 
+                                                "a child object: {0}", e));
        }
    }
 
@@ -2745,7 +2759,8 @@ public class ObjectNode implements Externalizable {
                throw new InvalidObjectException();
            }
        } catch (ObjectException e) {
-           throw e;
+           throw new ObjectException(mLocalizer.t("OBJ538: Could not update " + 
+                                                "a child object: {0}", e));
        }
    }
 
@@ -2874,15 +2889,8 @@ public class ObjectNode implements Externalizable {
                     ObjectField obj = new ObjectField(n, t, v, f);
                     mFields.put(n, obj);
                 } catch (ObjectException ex) {
-                    String msg= ex.getMessage();
-                    if (msg != null)  {
-                        if (msg.indexOf("local class incompatible:") == -1) {
-                            mLogger.warn(mLocalizer.x("OBJ009: Version 1: IOException " + 
-                                                "encountered during deserialization: {0}", 
-                                                ex.getMessage()));
-                        }
-                    }
-                    throw new java.io.IOException(ex.getMessage());
+                    throw new java.io.IOException(mLocalizer.t("OBJ539: Version 1: IOException " + 
+                                                  "encountered during deserialization: {0}", ex));
                 }
            }
            // Split up children into HashMap
@@ -2952,14 +2960,8 @@ public class ObjectNode implements Externalizable {
                     mFields.put(n, obj);
                 } catch (ObjectException ex) {
                     String msg= ex.getMessage();
-                    if (msg != null)  {
-                        if (msg.indexOf("local class incompatible:") == -1) {
-                            mLogger.warn(mLocalizer.x("OBJ010: Version 2: IOException " + 
-                                                "encountered during deserialization: {0}", 
-                                                ex.getMessage()));
-                        }
-                    }
-                    throw new java.io.IOException(ex.getMessage());
+                    throw new java.io.IOException(mLocalizer.t("OBJ540: Version 2: IOException " + 
+                                                  "encountered during deserialization: {0}", ex));
                 }
             }
             readChildren(in);
@@ -3028,14 +3030,8 @@ public class ObjectNode implements Externalizable {
                 }
             } catch (java.io.IOException ex) {
                 String msg= ex.getMessage();
-                if (msg != null)  {
-                    if (msg.indexOf("local class incompatible:") == -1) {
-                            mLogger.warn(mLocalizer.x("OBJ011: Version 2: IOException " + 
-                                                "encountered when reading children: {0}", 
-                                                ex.getMessage()));
-                    }
-                }
-                throw new java.io.IOException(ex.getMessage());
+                throw new java.io.IOException(mLocalizer.t("OBJ541: Version 2: IOException " + 
+                                                  "encountered when reading children: {0}", ex));
             }
         }
     }

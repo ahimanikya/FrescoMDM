@@ -136,7 +136,9 @@ public class SBR extends SystemObject {
        || status.equals(SystemObject.STATUS_MERGED)) {
            setValue("Status", status);
        } else {
-           throw new ObjectException("SystemSBR: Unsupported status code: " + status);
+           throw new ObjectException(mLocalizer.t("OBJ548: Could not " + 
+                                        "instantiate an SBR instance.  The " + 
+                                        "status code is unsupported: {0}", status));
        }
        setValue("CreateSystem", createsystem);
        setValue("UpdateSystem", updatesystem);
@@ -195,7 +197,9 @@ public class SBR extends SystemObject {
        || status.equals(SystemObject.STATUS_MERGED)) {
            setValue("Status", status);
        } else {
-           throw new ObjectException("SystemSBR: Unsupported status code: " + status);
+           throw new ObjectException(mLocalizer.t("OBJ549: Could not " + 
+                                        "instantiate an SBR instance.  The " + 
+                                        "status code is unsupported: {0}", status));
        }
        setValue("CreateSystem", createsystem);
        setValue("UpdateSystem", updatesystem);
@@ -616,8 +620,11 @@ public class SBR extends SystemObject {
            add(aTargetChildren,obj);
            obj.setParent(this);
        } else {
-           throw new ObjectException("Child type '"
-                   + getValue("ChildType") + "' does not match with incoming object tag (" + obj.pGetTag() + ")");
+           throw new ObjectException(mLocalizer.t("OBJ550: Could not " + 
+                                        "set an SBR object.  The " + 
+                                        "child type {0} does not match " +
+                                        "the incoming object tag: {1}", 
+                                        getValue("ChildType"), obj.pGetTag()));
        }
    }
 
@@ -717,7 +724,9 @@ public class SBR extends SystemObject {
            || status.equals(SystemObject.STATUS_MERGED)) {
                setValue("Status", status);
            } else {
-               throw new ObjectException("SystemSBR: Unsupported status code: " + status);
+               throw new ObjectException(mLocalizer.t("OBJ551: Could not " + 
+                                        "set the status code.  The " + 
+                                        "status code is unsupported: {0}", status));
            }
        } catch (ObjectException e) {
            throw e;

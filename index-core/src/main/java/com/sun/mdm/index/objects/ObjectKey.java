@@ -27,6 +27,7 @@ import com.sun.mdm.index.objects.exception.UnfoundKeyNameException;
 import com.sun.mdm.index.objects.exception.InvalidKeyValueException;
 import com.sun.mdm.index.objects.exception.InvalidKeyNameValueException;
 import com.sun.mdm.index.objects.exception.InvalidKeyNameException;
+import com.sun.mdm.index.util.Localizer;
 
 import java.io.Externalizable;
 import java.io.Serializable;
@@ -53,6 +54,7 @@ public class ObjectKey implements Externalizable {
     private TreeMap mFieldTypes = null;
     private TreeMap mFieldValues = null;
     private TreeMap mFieldNames = null;
+    private transient final Localizer mLocalizer = Localizer.get();
 
     public ObjectKey() {}
         
@@ -69,13 +71,15 @@ public class ObjectKey implements Externalizable {
     public ObjectKey(ArrayList names, ArrayList types, ArrayList values)
     throws ObjectException {
         if ((null == names) || (null == values) || (null == types)) {
-            throw new InvalidKeyNameValueException("Invalid key values: \n"
-            + names + "\n" + values + "\n" + types);
+            throw new InvalidKeyNameValueException(mLocalizer.t("OBJ513: Invalid " + 
+                                      "key values: name={0}, values={1}, types={2}", 
+                                      names, values, types));
         }
         
         if ((names.size() != values.size()) || (names.size() != types.size())) {
-            throw new InvalidKeyNameValueException("Invalid key values: \n"
-            + names + "\n" + values + "\n" + types);
+            throw new InvalidKeyNameValueException(mLocalizer.t("OBJ514: Invalid " + 
+                                      "key values: name={0}, values={1}, types={2}", 
+                                      names, values, types));
         }
         
         for (int i = 0; i < types.size(); i++) {
@@ -84,8 +88,9 @@ public class ObjectKey implements Externalizable {
             if (!ObjectField.isValueValid(type, values.get(i))) {
                 String classname = (values.get(i).getClass()).getName();
                 String t = ObjectField.getTypeString(type);
-                throw new InvalidKeyValueException("Field("
-                + i + ") '" + (String) names.get(i) + "' of " + t + ": " + classname);
+                throw new InvalidKeyValueException(mLocalizer.t("OBJ515: Error " + 
+                                      "encountered for Field({0}), name={1}, type={2}, classname={3}",
+                                      i, names.get(i), t, classname));
             }
         }
         
@@ -175,10 +180,14 @@ public class ObjectKey implements Externalizable {
             if (value != null) {
                 ret = value.intValue();
             } else {
-                throw new UnfoundKeyNameException("Unrecognized key field name: " + name);
+                throw new UnfoundKeyNameException(mLocalizer.t("OBJ516: Could not " + 
+                                      "get the key type.  This is an unrecognized field name={0}",
+                                      name));
             }
         } else {
-            throw new UnfoundKeyNameException("Unrecognized key field name: " + name);
+            throw new UnfoundKeyNameException(mLocalizer.t("OBJ517: Could not " + 
+                                      "get the key type.  This is an unrecognized field name={0}",
+                                      name));
         }
         
         return ret;
@@ -197,11 +206,15 @@ public class ObjectKey implements Externalizable {
             value = mFieldValues.get(name);
             if (value == null) {
                 if (!mFieldValues.containsKey(name)) {
-                    throw new UnfoundKeyNameException("Unrecognized key field name: " + name);
+                    throw new UnfoundKeyNameException(mLocalizer.t("OBJ518: Could not " + 
+                                      "get the key value.  This is an unrecognized field name={0}",
+                                      name));
                 }
             }
         } else {
-            throw new UnfoundKeyNameException("Unrecognized key field name: " + name);
+            throw new UnfoundKeyNameException(mLocalizer.t("OBJ519: Could not " + 
+                                      "get the key value.  This is an unrecognized field name={0}",
+                                      name));
         }
         
         return value;
@@ -247,16 +260,20 @@ public class ObjectKey implements Externalizable {
                 if (!(ObjectField.isValueValid(type, value))) {
                     String classname = (value.getClass()).getName();
                     String t = ObjectField.getTypeString(type);
-                    throw new InvalidKeyValueException("Field(" + name + ") of " + t + ": " + classname);
+                    throw new InvalidKeyValueException(mLocalizer.t("OBJ520: Could not " + 
+                                      "set the key value for field name={0}, type={1}, classname={2}",
+                                      name, t, classname));
                 }
                 mFieldValues.remove(name);
                 mFieldValues.put(name, value);
             } else {
-                throw new UnfoundKeyNameException("Unrecognized key field name '" + name + "'"
-                + " not in " + mFieldValues);
+                throw new UnfoundKeyNameException(mLocalizer.t("OBJ521: Could not " + 
+                                      "set the key value for field name={0}.  These " +
+                                      " are the valid fields: {0}", mFieldValues));
             }
         } else {
-            throw new UnfoundKeyNameException("Unrecognized key field name '" + name + "'");
+            throw new UnfoundKeyNameException(mLocalizer.t("OBJ522: Unrecognized " + 
+                                      "key field name: {0}", name));
         }
     }
     

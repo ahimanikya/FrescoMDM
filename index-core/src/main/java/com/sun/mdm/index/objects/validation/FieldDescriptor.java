@@ -28,6 +28,7 @@ import com.sun.mdm.index.objects.validation.exception.NullObjectException;
 import com.sun.mdm.index.objects.validation.exception.UnknownDataTypeException;
 import com.sun.mdm.index.objects.validation.exception.UpdateNotAllowedException;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
+import com.sun.mdm.index.util.Localizer;
 
 
 /**
@@ -53,6 +54,8 @@ public class FieldDescriptor implements FieldValidator {
     private boolean bRequired = false;
     private String sFieldName = null;
 
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     /**
      * Creates a new instance of Field
      *
@@ -182,7 +185,9 @@ public class FieldDescriptor implements FieldValidator {
     public void setFieldType(int dataType) throws ValidationException {
 
         if (dataType < 0 || dataType > FieldType.MAX_TYPES) {
-            throw new UnknownDataTypeException();
+            throw new UnknownDataTypeException(mLocalizer.t("OBJ645: FieldDescriptor " + 
+                                        "encountered an unrecognized data type: {0}", 
+                                        dataType));
         }
         iDataType = dataType;
     }
@@ -214,19 +219,26 @@ public class FieldDescriptor implements FieldValidator {
         }
 
         if (field.getType() != getFieldType()) {
-            throw new UnknownDataTypeException(field.getName());
+            throw new UnknownDataTypeException(mLocalizer.t("OBJ646: FieldDescriptor " + 
+                                        "encountered an unrecognized type {0} " + 
+                                        "for this field: {1}", 
+                                        field.getType(), field.getName()));
         }
 
         if (!newObject) {
             if (field.isChanged() && !bUpdateable) {
-                throw new UpdateNotAllowedException(field.getName());
+                throw new UpdateNotAllowedException(mLocalizer.t("OBJ647: Updates " + 
+                                        "are not allowed for this field: {0}", 
+                                        field.getName()));
             }
         }
 
         Object value = field.getValue();
         if (value == null) {
             if (isRequired()) {
-                throw new MissingValueOnRequiredError(field.getName());
+                throw new MissingValueOnRequiredError(mLocalizer.t("OBJ648: A value " + 
+                                        "is required for this field: {0}", 
+                                        field.getName()));
             }
         }
     }

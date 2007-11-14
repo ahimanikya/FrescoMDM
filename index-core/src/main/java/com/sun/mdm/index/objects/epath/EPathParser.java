@@ -22,6 +22,7 @@
  */
 package com.sun.mdm.index.objects.epath;
 
+import com.sun.mdm.index.util.Localizer;
 import java.util.StringTokenizer;
 import java.util.Map;
 import java.util.Set;
@@ -59,6 +60,8 @@ public class EPathParser {
         "\\[\\s*(" + w + "+\\s*\\=(\\s*" + w + "\\#*)?)(,\\s*" + w 
             + "\\s*\\=(\\s*" + w + "\\#*)?)*\\s*\\]");
 
+    private transient static final Localizer mLocalizer = Localizer.get();
+    
     /**
      * Creates a new instance of EPathParser
      */
@@ -171,7 +174,8 @@ public class EPathParser {
 
         // check if the EPath string is separated by the right delimiter
         if (len == 0) {
-            throw new EPathException("Recognized EPath string");
+            throw new EPathException(mLocalizer.t("OBJ573: This is an unrecognized " + 
+                                                  "EPath string: {0}", ePathStr));
         }
 
         EPath path = new EPath(ePathStr, len);
@@ -230,12 +234,16 @@ public class EPathParser {
                     if (index >= 0) {
                         path.indices[i] = index;
                     } else {
-                        throw new EPathException(
-                            "Index value must be greater then 0. Value is : " + index);
+                        throw new EPathException(mLocalizer.t("OBJ574: Could not " + 
+                                             "parse this EPath: {0}. Index value " + 
+                                             "must be greater then 0. Value is: {1}", 
+                                             ePathStr, index));
                     }
                 } catch (NumberFormatException nfex) {
-                    throw new EPathException(
-                        "Assertion failed, Index value must be an integer, found : " + key);
+                    throw new EPathException(mLocalizer.t("OBJ575: Could not " + 
+                                             "parse this EPath: {0}. Index value " + 
+                                             "must be an integer but was actually: {1}", 
+                                             ePathStr, key));
                 }
 
                 path.tokenQueue[i] = normalize(path.tokenQueue[i]);
@@ -302,8 +310,10 @@ public class EPathParser {
 
             // now accepting empty RHS, so ignore this
             if (tok2.countTokens() < 1) {
-                throw new IllegalArgumentException(
-                    "Invalid filter parameter : " + filter);
+                throw new IllegalArgumentException(mLocalizer.t("OBJ576: Could not " + 
+                                             "parse filters: {0}. This is an " + 
+                                             "invalid filter parameter: {1}", 
+                                             s, filter));
             }
             // see if there is a @ in the name, remove it if there is
             String name = tok2.nextToken();

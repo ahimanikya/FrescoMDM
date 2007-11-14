@@ -27,6 +27,7 @@ import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.factory.SimpleFactory;
+import com.sun.mdm.index.util.Localizer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,6 +45,8 @@ public class EPathAPI {
     private static final String[][] STRING_FILTER = { {"\\.", "#kdot"}, {",", "#kcomma"} };
     private static final int UNMASKED = 0;
     private static final int MASKED = 1;
+    
+    private transient static final Localizer mLocalizer = Localizer.get();
     
     public static String maskString(Object str) {
         String ret = null;
@@ -177,7 +180,8 @@ public class EPathAPI {
                                 value = new Long(stringValue);
                                 break;
                             default:
-                                throw new ObjectException("Invalid key type: " + type);
+                                throw new ObjectException(mLocalizer.t("OBJ558: Could not " + 
+                                "retrieve the field value.  This is an invalid key type: {0}", type));
                         }
                     }
                     
@@ -215,7 +219,9 @@ public class EPathAPI {
                 break;
 
             default:
-                throw new EPathException("unrecognized op:" + e.ops[i]);
+                throw new EPathException(mLocalizer.t("OBJ559: Could not retrieve " + 
+                                    "the field value.  This is an unrecognized " + 
+                                    "operation: {0}", e.ops[i]));
             }
         }
 
@@ -273,7 +279,9 @@ public class EPathAPI {
                                 value = new Long(stringValue);
                                 break;
                             default:
-                                throw new ObjectException("Invalid key type: " + type);
+                                throw new ObjectException(mLocalizer.t("OBJ560: Could not " + 
+                                                    "retrieve the field value.  This is " + 
+                                                    "an invalid key type: {0}", type));
                         }
                     }
                     
@@ -316,7 +324,9 @@ public class EPathAPI {
                 break;
 
             default:
-                throw new EPathException("unrecognized op:" + e.ops[i]);
+                throw new EPathException(mLocalizer.t("OBJ561: Could not retrieve " + 
+                                    "the field value.  This is an unrecognized " + 
+                                    "operation: {0}", e.ops[i]));
             }
         }
 
@@ -365,7 +375,9 @@ public class EPathAPI {
                                 value = new Long(stringValue);
                                 break;
                             default:
-                                throw new ObjectException("Invalid key type: " + type);
+                                throw new ObjectException(mLocalizer.t("OBJ562: Could not " + 
+                                                    "retrieve the field value.  This is " + 
+                                                    "an invalid key type: {0}", type));
                         }
                     }
                     
@@ -410,7 +422,9 @@ public class EPathAPI {
                 break;
 
             default:
-                throw new EPathException("unrecognized op:" + e.ops[i]);
+                throw new EPathException(mLocalizer.t("OBJ563: Could not retrieve " + 
+                                    "the field value.  This is an unrecognized " + 
+                                    "operation: {0}", e.ops[i]));
             }
         }
 
@@ -452,8 +466,9 @@ public class EPathAPI {
         for (int i = 0; i < e.ops.length; i++) {
             if (current == null) {
                 // @todo caller method should log epath object when catching an exception
-               throw new EPathException("Current context was null while processing element [" 
-                + i + "] of epath: " + e);
+               throw new EPathException(mLocalizer.t("OBJ564: Current context " + 
+                                    "was null while processing element [{0}] " + 
+                                    "of this EPath: {1}", i, e));
             }
             switch (e.ops[i]) {
             case EPath.OP_NOOP:
@@ -483,7 +498,9 @@ public class EPathAPI {
                                 keyValue = new Long(stringValue);
                                 break;
                             default:
-                                throw new ObjectException("Invalid key type: " + type);
+                                throw new ObjectException(mLocalizer.t("OBJ565: Could not " + 
+                                                    "set the field value.  This is " + 
+                                                    "an invalid key type: {0}", type));
                         }
                     }
                     
@@ -547,12 +564,15 @@ public class EPathAPI {
                     }
                 } else {
                     if (value == null) {
-                        throw new EPathException(
-                            "Value is null.  Trying to set value for: " + e);
+                        throw new EPathException(mLocalizer.t("OBJ566: Cannot " + 
+                                                    "set the field value to null for " + 
+                                                    "this EPath: {0}", e));
                     } else {
-                        throw new EPathException(
-                            "Expecting a Collection, instead of: " + value.getClass().getName() 
-                                + " Trying to set value for: " + e);
+                        throw new EPathException(mLocalizer.t("OBJ567: Cannot " + 
+                                                    "set the field value.  A Collection " + 
+                                                    "was expected instead of {0} " +
+                                                    "for this EPath: {1}", 
+                                                    value.getClass().getName(), e));
                     }
                 }
 
@@ -564,7 +584,8 @@ public class EPathAPI {
                 break;
 
             default:
-                throw new EPathException("unrecognized op:" + e.ops[i]);
+                throw new EPathException(mLocalizer.t("OBJ568: Cannot set the field value. " + 
+                                         "This is an unrecognized operation: {0}", e.ops[i]));
             }
         }
     }
@@ -624,7 +645,8 @@ public class EPathAPI {
                 break;
 
             default:
-                throw new EPathException("unrecognized op:" + e.ops[i]);
+                throw new EPathException(mLocalizer.t("OBJ569: Cannot set the field value to null. " + 
+                                         "This is an unrecognized operation: {0}", e.ops[i]));
             }
         }
     }
@@ -698,7 +720,8 @@ public class EPathAPI {
                 break;
 
             default:
-                throw new EPathException("unrecognized op:" + e.ops[i]);
+                throw new EPathException(mLocalizer.t("OBJ570: Cannot add an object value. " + 
+                                         "This is an unrecognized operation: {0}", e.ops[i]));
             }
         }
     }
@@ -820,7 +843,8 @@ public class EPathAPI {
                 break;
 
             default:
-                throw new EPathException("unrecognized op:" + e.ops[i]);
+                throw new EPathException(mLocalizer.t("OBJ571: Cannot add an object value. " + 
+                                         "This is an unrecognized operation: {0}", e.ops[i]));
             }
         }
     }
@@ -935,7 +959,8 @@ public class EPathAPI {
             }
 
             default:
-                throw new EPathException("unrecognized op:" + e.ops[i]);
+                throw new EPathException(mLocalizer.t("OBJ572: Cannot retrieve the field values. " + 
+                                         "This is an unrecognized operation: {0}", e.ops[i]));
             }
         }
     }

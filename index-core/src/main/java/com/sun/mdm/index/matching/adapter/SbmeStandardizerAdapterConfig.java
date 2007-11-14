@@ -25,6 +25,7 @@ package com.sun.mdm.index.matching.adapter;
 import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.configurator.impl.MatchEngineConfig;
 import com.sun.mdm.index.configurator.ConfigurationException;
+import com.sun.mdm.index.util.Localizer;
 import com.stc.sbme.api.SbmeConfigFilesAccess;
 import com.stc.sbme.api.SbmeConfigurationException;
 
@@ -43,6 +44,7 @@ public class SbmeStandardizerAdapterConfig
     private MatchEngineConfig mMatchEngineConfig;
     private CSConfigFileAccess mCSConfigFileAccess;
 
+    private transient static final Localizer mLocalizer = Localizer.get();
             
     /** Creates new SbmeMatcherAdapterConfig */
     public SbmeStandardizerAdapterConfig() {
@@ -112,9 +114,11 @@ public class SbmeStandardizerAdapterConfig
             java.io.ByteArrayInputStream stream = null;
                 
             if (mConfig == null) {
-                throw new SbmeConfigurationException(
-                        "Failed to retrieve the standardization engine configuration from the configuration service. " 
-                        + " MatchEngineConfig to access the configuration service is null.");
+                throw new SbmeConfigurationException(mLocalizer.t("MAT540:  Failed to " + 
+                                                "retrieve the standardization engine " + 
+                                                "configuration from the configuration " + 
+                                                "service. MatchEngineConfig to access " + 
+                                                "the configuration service is null."));
             }
                 
             try {
@@ -123,8 +127,12 @@ public class SbmeStandardizerAdapterConfig
                     stream = new java.io.ByteArrayInputStream(fileContents);
                 }
             } catch (RuntimeException ex) {
-                throw new SbmeConfigurationException("Retrieving the configuration file " 
-                    + name + " failed: " + ex.getMessage(), ex);
+                throw new SbmeConfigurationException(mLocalizer.t("MAT541:  Could not " +
+                                                "retrieve the configuration file {0}" + 
+                                                "configuration from the configuration " + 
+                                                "service. MatchEngineConfig to access " + 
+                                                "the configuration service is null: {1}",
+                                                name, ex));
             }
 
             return stream;
@@ -142,9 +150,11 @@ public class SbmeStandardizerAdapterConfig
             java.io.ByteArrayInputStream stream = null;
                 
             if (mConfig == null) {
-                throw new SbmeConfigurationException(
-                        "Failed to retrieve the standardization engine configuration from the configuration service. " 
-                        + " MatchEngineConfig to access the configuration service is null.");
+                throw new SbmeConfigurationException(mLocalizer.t("MAT542:  Failed to " +
+                                                "retrieve the standardization engine " + 
+                                                "configuration from the configuration service. " + 
+                                                "MatchEngineConfig to access the " + 
+                                                "configuration service is null."));
             }
                 
             try {
@@ -153,8 +163,9 @@ public class SbmeStandardizerAdapterConfig
                     stream = new java.io.ByteArrayInputStream(fileContents);
                 }
             } catch (RuntimeException ex) {
-                throw new SbmeConfigurationException("Retrieving the configuration file " 
-                    + name + " failed: " + ex.getMessage(), ex);
+                throw new SbmeConfigurationException(mLocalizer.t("MAT543:  Failed to " +
+                                                "retrieve the configuration file {0}: {1}",
+                                                name, ex));
             }
 
             return stream;

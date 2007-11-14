@@ -225,47 +225,29 @@ public class SbmeMatcherAdapter
                 
             }
         } catch (SbmeMatchingException ex) {
-            mLogger.warn(mLocalizer.x("MAT016: SBME adapter encountered a matching exception: {0}", 
-                                      ex.getMessage()));
-            throw new MatchingException("SbmeMatchingException: " + ex.getMessage());
+            throw new MatchingException(mLocalizer.t("MAT516: SBME adapter encountered a matching exception: {0}", ex));
         } catch (SbmeMatchEngineException ex) {
-            mLogger.warn(mLocalizer.x("MAT017: SBME adapter encountered a match engine exception: {0}", 
-                                      ex.getMessage()));
-            throw new MatchingException("SbmeMatchEngineException: " + ex.getMessage());
+            throw new MatchingException(mLocalizer.t("MAT517: SBME adapter encountered a match engine exception: {0}", ex));
         } catch (ParseException ex) {
-            mLogger.warn(mLocalizer.x("MAT018: SBME adapter encountered a parsing Exception: {0}", 
-                                      ex.getMessage()));
-            throw new MatchingException("ParseException: " + ex.getMessage());
+            throw new MatchingException(mLocalizer.t("MAT518: SBME adapter encountered a parsing Exception: {0}", ex));
         } catch (EPathException ex) {
-            mLogger.warn(mLocalizer.x("MAT019: SBME adapter failed to match the configured " + 
-                                       "fields in a SystemObject: {0}", ex.getMessage()));
-            throw new MatchingException(
-                "Failed to match the configured fields in the SystemObject: " 
-                    + ex.getMessage(), ex);
+            throw new MatchingException(mLocalizer.t("MAT519: SBME adapter failed to match the configured " + 
+                                                     "fields in a SystemObject: {0}", ex));
         } catch (QMException ex) {
-            mLogger.warn(mLocalizer.x("MAT020: SBME adapter encountered a QMException " + 
-                                      "and failed to retrieve candidate " + 
-                                      "record(s) from database: {0}", ex.getMessage()));
-            throw new MatchingException(
-                "Failed to retrieve candidate(s) from database. " 
-                    + ex.getMessage(), ex);
+            throw new MatchingException(mLocalizer.t("MAT520: SBME adapter encountered a QMException " + 
+                                                     "and failed to retrieve candidate " + 
+                                                     "record(s) from database: {0}", ex));
         } catch (ObjectException ex) {
-            mLogger.warn(mLocalizer.x("MAT021: SBME adapter failed to to convert " + 
-                                      "a SystemObject to candidate format for matching: {0}", 
-                                      ex.getMessage()));
-            throw new MatchingException(
-                "Failed to convert SystemObject to candidate format for matching. " 
-                    + ex.getMessage(), ex);
+            throw new MatchingException(mLocalizer.t("MAT521: SBME adapter failed to to convert " + 
+                                              "a SystemObject to candidate format for matching: {0}", ex));
         } finally {
             // clean-up QMIterator
             if (tupleIter != null) {
                 try {
                     tupleIter.close();
                 } catch (QMException ex) {
-                    mLogger.warn(mLocalizer.x("MAT022: QMException: Failed to close QMIterator. ", 
-                                              ex.getMessage()));
-                    throw new MatchingException("Failed to close QMIterator. " 
-                        + ex.getMessage(), ex);
+                    throw new MatchingException(mLocalizer.t("MAT522: QMException: " + 
+                                                    "Failed to close QMIterator: {0}", ex));
                 }
             }            
         }
@@ -289,28 +271,17 @@ public class SbmeMatcherAdapter
             
             // Handle the configuration passed in.
             if (config == null) {            
-                mLogger.severe(mLocalizer.x("MAT023: No match engine configuration " 
+                throw new MatchingException(mLocalizer.t("MAT523: No match engine configuration " 
                         + "class is configured for this match adapter.  The " 
                         + "Match Engine cannot be initialized: {0} expected", 
                         SbmeMatcherAdapterConfig.class.getName()));
-                throw new MatchingException("No match engine configuration " 
-                        + "class is configured for this match adapter, unable " 
-                        + "to initialize Match Engine. " 
-                        + SbmeMatcherAdapterConfig.class.getName() 
-                        + " expected.");                
             }
             if (!(config instanceof SbmeMatcherAdapterConfig)) {
-                mLogger.severe(mLocalizer.x("MAT024: The configured match engine " 
+                throw new MatchingException(mLocalizer.t("MAT524: The configured match engine " 
                         + "configuration class is not compatible with this " 
                         + "match adapter: {0} expected, but configured: {1} ",
                         SbmeMatcherAdapterConfig.class.getName(),
                         config.getClass().getName()));
-                throw new MatchingException("The configured match engine " 
-                        + "configuration class is not compatible with this " 
-                        + "match adapter. " 
-                        + SbmeMatcherAdapterConfig.class.getName() 
-                        + " expected, configured: " 
-                        + config.getClass().getName());
             }
             SbmeMatcherAdapterConfig eViewConfig = 
                 (SbmeMatcherAdapterConfig) config;
@@ -327,16 +298,11 @@ public class SbmeMatcherAdapter
             }
             matchEngine.upLoadConfigFile(domain);
         } catch (SbmeMatchEngineException ex) {
-            mLogger.severe(mLocalizer.x("MAT025: Failed to initialize the SBME match " + 
-                                        "adapter: {0}", ex.getMessage()));
-            throw new MatchingException(
-                "Failed initialize match adapter, match engine reports an error: " 
-                    + ex.getMessage(), ex);                        
+            throw new MatchingException(mLocalizer.t("MAT525: Failed to initialize the " + 
+                                        "SBME match adapter: {0}", ex));
         } catch (Exception ex) {
-            mLogger.severe(mLocalizer.x("MAT026: General failure to initialize " + 
-                                        "the SBME match adapter: {0}", ex.getMessage()));
-            throw new MatchingException("Failed to initialize match adapter" 
-                + ex.getMessage(), ex);
+            throw new MatchingException(mLocalizer.t("MAT526: Failed to initialize the " + 
+                                        "SBME match adapter: {0}", ex));
         }
     }
 
@@ -351,10 +317,8 @@ public class SbmeMatcherAdapter
             try {
                 matchEngine.shutdown();
             } catch (Exception ex) {
-                mLogger.severe(mLocalizer.x("MAT027: Failed to shutdown match " + 
-                                            "engine: {0}", ex.getMessage()));
-                throw new MatchingException(
-                    "Failed to shutdown match engine: " + ex.getMessage(), ex);            
+                throw new MatchingException(mLocalizer.t("MAT527: Failed to shutdown match " + 
+                                            "engine: {0}", ex));
             } finally {
                 matchEngine = null;
             }

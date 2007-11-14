@@ -698,7 +698,8 @@ public class TransactionObject extends ObjectNode {
                     DBAdapter.getDBAdapterInstance().getOperationColumnName();
             }
         } catch (OPSException e) {
-            throw new ObjectException(e.getMessage());
+            throw new ObjectException(mLocalizer.t("OBJ557: Could not " + 
+                                "retrieve the Operation column name: {0}", e));
         }
         return mOperationColumnName;
     }

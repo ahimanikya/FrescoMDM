@@ -51,7 +51,8 @@ public class ReferenceDescriptor implements FieldValidator {
      */
     public ReferenceDescriptor(String module) {
         if (module == null) {
-            throw new RuntimeException("Module parameter cannot be null");
+            throw new RuntimeException(mLocalizer.t("OBJ716: Module parameter " + 
+                                        "cannot be null."));
         }
 
         try {
@@ -60,7 +61,8 @@ public class ReferenceDescriptor implements FieldValidator {
             mLogger.warn(mLocalizer.x("OBJ040: Code registry could not be retrieved: {0}", e));
         }
         if (mCodeRegistry == null) {
-            throw new RuntimeException("Code registry cannot be be located");
+            throw new RuntimeException(mLocalizer.t("OBJ717: Code registry " + 
+                                        "could not be located."));
         }
         mModule = module;
     }
@@ -96,18 +98,22 @@ public class ReferenceDescriptor implements FieldValidator {
      */
     public void validate(ObjectField field, boolean newObject) throws ValidationException {
         if (field == null) {
-            throw new NullObjectException("Null object field");
+            throw new NullObjectException(mLocalizer.t("OBJ718: field " + 
+                                        "cannot be null."));
         }
         if (field.getValue().getClass() != java.lang.String.class) {
-            throw new InvalidReferencedCode(field.getName());
+            throw new InvalidReferencedCode(mLocalizer.t("OBJ719: Invalid reference " + 
+                                        "code for this field: {0}", field.getName()));
         }
 
         if (!mCodeRegistry.hasModule(mModule)) {
-            throw new InvalidReferencedModule(mModule);
+            throw new InvalidReferencedModule(mLocalizer.t("OBJ720: Invalid reference " + 
+                                        "module for this field: {0}", mModule));
         }
         
         if (!isValidCode((String) field.getValue())) {
-            throw new InvalidReferencedCode(field.getName());
+            throw new InvalidReferencedCode(mLocalizer.t("OBJ721: Invalid reference " + 
+                                        "code for this field: {0}", field.getName()));
         }
     }
 

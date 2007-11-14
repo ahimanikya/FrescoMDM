@@ -28,6 +28,7 @@ import com.sun.mdm.index.objects.validation.exception.UnknownDataTypeException;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.objects.validation.exception.MaximumConstraintException;
 import com.sun.mdm.index.objects.validation.exception.MinimumConstraintException;
+import com.sun.mdm.index.util.Localizer;
 
 
 /**
@@ -37,6 +38,7 @@ public class LongValueValidator implements ValueValidator {
 
     private Long mMinValue = null;
     private Long mMaxValue = null;
+    private transient final Localizer mLocalizer = Localizer.get();
 
     /**
      * Creates a new instance of LongValueValidator
@@ -65,7 +67,10 @@ public class LongValueValidator implements ValueValidator {
         }
 
         if (field.getType() != FieldType.LONG) {
-            throw new UnknownDataTypeException(field.getName());
+            throw new UnknownDataTypeException(mLocalizer.t("OBJ677: Long Value Validator " + 
+                                        "encountered an unrecognized type {0} " + 
+                                        "for this field: {1}", 
+                                        field.getType(), field.getName()));
         }
 
         Object value = field.getValue();
@@ -73,18 +78,27 @@ public class LongValueValidator implements ValueValidator {
             try {
                 long longValue = ((Long) value).longValue();
             } catch (Exception ex) {
-                throw new UnknownDataTypeException(field.getName());
+                throw new UnknownDataTypeException(mLocalizer.t("OBJ678: Long Value Validator " + 
+                                        "encountered an unrecognized type {0} " + 
+                                        "for this field: {1}", 
+                                        field.getType(), field.getName()));
             }
             Long fieldValue = (Long) value;
             if (mMinValue != null) {
                 if (fieldValue.compareTo(mMinValue) < 0) {
-                    throw new MinimumConstraintException(field.getName());
+                    throw new MinimumConstraintException(mLocalizer.t("OBJ679: The field " + 
+                                        "value {0} for the field {1} is less than " + 
+                                        "the expected minimum value for this field: {2}", 
+                                        fieldValue, field.getName(), mMinValue));
                 }
             }
 
             if (mMaxValue != null) {
                 if (fieldValue.compareTo(mMaxValue) > 0) {
-                    throw new MaximumConstraintException(field.getName());
+                    throw new MaximumConstraintException(mLocalizer.t("OBJ680: The field " + 
+                                        "value {0} for the field {1} is greater than " + 
+                                        "the expected maximum value for this field: {2}", 
+                                        fieldValue, field.getName(), mMaxValue));
                 }
             }
         }

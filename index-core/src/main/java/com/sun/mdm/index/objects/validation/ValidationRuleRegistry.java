@@ -117,10 +117,12 @@ public class ValidationRuleRegistry {
             mThisRegistry = new ValidationRuleRegistry();
         }
         if (objectName == null) {
-            throw new RuntimeException("Attempt to register object descriptor with a null object name");
+            throw new RuntimeException(mLocalizer.t("OBJ743: Cannot register an " + 
+                                        "object descriptor with a null object name."));
         }
         if (objDesc == null) {
-            throw new RuntimeException("Attempt to register a null object descriptor");
+            throw new RuntimeException(mLocalizer.t("OBJ744: Cannot register a " + 
+                                        "null object descriptor."));
         }
         hDefaultValidator.put(objectName, objDesc);
     }
@@ -139,40 +141,34 @@ public class ValidationRuleRegistry {
         try {
             registerClass = Class.forName(sRegisterObjectClass);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("ClassNotFoundException: " + e.getMessage());
+            throw new RuntimeException(mLocalizer.t("OBJ745: Could not initialize " + 
+                                        "ValidationRuleRegistry: {0}", e));
         } 
         
         Object registerInstance;
         try {
             registerInstance = registerClass.newInstance();
-        } catch (InstantiationException e) {
-            throw new RuntimeException("InstantiationException: " + e.getMessage());
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("IllegalAccessException: " + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(mLocalizer.t("OBJ746: Could not initialize " + 
+                                        "ValidationRuleRegistry: {0}", e));
         } 
         
         Method methedToInvoke;
         try {
             Class[] parameterTypes = null;
             methedToInvoke = registerClass.getMethod("registerObjects", parameterTypes);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("NoSuchMethodException: " + e.getMessage());
-        } catch (SecurityException e) {
-            throw new RuntimeException("SecurityException: " + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(mLocalizer.t("OBJ747: Could not initialize " + 
+                                        "ValidationRuleRegistry: {0}", e));
         }
         
         ArrayList list;
         try {
             Object[] parms = null;
             list = (ArrayList) methedToInvoke.invoke(registerInstance, parms);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("IllegalAccessException: " + e.getMessage());
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException("IllegalArgumentException: " + e.getMessage());
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException("InvocationTargetException: " + e.getMessage());
-        } catch (NullPointerException e) {
-            throw new RuntimeException("NullPointerException: " + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(mLocalizer.t("OBJ748: Could not initialize " + 
+                                        "ValidationRuleRegistry: {0}", e));
         }
         
         hDefaultValidator = new Hashtable();
@@ -189,7 +185,8 @@ public class ValidationRuleRegistry {
         try {
             cfgService = ConfigurationService.getInstance();
         } catch (InstantiationException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(mLocalizer.t("OBJ749: Could not initialize " + 
+                                        "ValidationRuleRegistry: {0}", e));
         }
 
         ValidationConfiguration cfg

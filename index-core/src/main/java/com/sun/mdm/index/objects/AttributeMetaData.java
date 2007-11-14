@@ -22,6 +22,7 @@
  */
 package com.sun.mdm.index.objects;
 
+import com.sun.mdm.index.util.Localizer;
 
 import java.util.ArrayList;
 
@@ -61,6 +62,8 @@ public class AttributeMetaData extends ArrayList {
      */
     public static final int OMEGAMETA_OMEGA_TYPE = 5;
 
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     /**
      * default constructor
      */

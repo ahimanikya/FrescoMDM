@@ -35,6 +35,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Hashtable;
 import com.sun.mdm.index.util.ConnectionUtil;
+import com.sun.mdm.index.util.Localizer;
 
 
 /**
@@ -49,6 +50,8 @@ public class AuxIdValidator implements ObjectValidator {
 
     private Hashtable mIdDefs = null;
 
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     /**
      * Creates a new instance of AuxIdValidator
      */
@@ -67,25 +70,29 @@ public class AuxIdValidator implements ObjectValidator {
                 init(con);
                 con.close();
             } catch (Exception e) {
-                throw new ValidationException(e.getMessage());
+                throw new ValidationException(mLocalizer.t("OBJ629: Auxiliary ID Validator "  + 
+                                "Could not obtain a database connection: {0}", e));
             }
         }
 
         try {
             idDefId = (Integer) node.getValue("AuxIdDef");
         } catch (ObjectException e) {
-            throw new ValidationException(e.getMessage());
+            throw new ValidationException(mLocalizer.t("OBJ630: Auxiliary ID Validator " + 
+                                "could not retreive the value of a node: {0}", e));
         }
 
         AuxIdDefinition auxIdDef = (AuxIdDefinition) mIdDefs.get(idDefId);
         if (auxIdDef == null) {
-            throw new ValidationException("\"" + auxIdDef + "\" is not a valid Aux ID Type");
+            throw new ValidationException(mLocalizer.t("OBJ631: Invalid Auxiliary " + 
+                                                       "ID type: {0}", idDefId));
         }
 
         try {
             auxIdDef.validate((String) node.getValue("Id"));
         } catch (ObjectException e) {
-            throw new ValidationException(e.getMessage());
+            throw new ValidationException(mLocalizer.t("OBJ632: Auxiliary ID could " + 
+                                                       "not be validated: {0}", auxIdDef));
         }
     }
 
@@ -103,7 +110,8 @@ public class AuxIdValidator implements ObjectValidator {
             rs.close();
             stmt.close();
         } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(mLocalizer.t("OBJ633: Auxiliary ID validator " + 
+                                        "could not be initialized: {0}", e));
         }
     }
 
@@ -129,18 +137,21 @@ public class AuxIdValidator implements ObjectValidator {
 
         void validate(Object value) throws ValidationException {
             if (value.getClass() != java.lang.String.class) {
-                throw new ValidationException("Invalid data type for validation");
+                throw new ValidationException(mLocalizer.t("OBJ634: Invalid data type " + 
+                                        "for validation: {0}", value.getClass()));
             }
             if (((String) value).length() < idLength && !variableLength) {
-                throw new ValidationException("The required Length for ID of type \"" + idType + "\" is " 
-                    + idLength);
+                throw new ValidationException(mLocalizer.t("OBJ635: The required " + 
+                                        "length for an ID of this type ({0}) is: {1}", 
+                                        idType, idLength));
             }
             if (validator != null) {
                 try {
                     validator.validate((String) value);
                 } catch (PatternMismatchedException e) {
-                    throw new ValidationException("The value in ID, \"" + value  
-                            + "\" does not match the pattern \"" + this.pattern + "\""); 
+                    throw new ValidationException(mLocalizer.t("OBJ636: The value in ID " + 
+                                        "{0} does not match the pattern \"{1}\"", 
+                                        value, this.pattern));
                 }
             }
         }

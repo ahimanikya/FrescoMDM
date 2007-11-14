@@ -25,6 +25,7 @@ package com.sun.mdm.index.objects;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.exception.InvalidFieldValueException;
 import com.sun.mdm.index.objects.exception.InvalidKeyTypeException;
+import com.sun.mdm.index.util.Localizer;
 
 import java.io.Externalizable;
 import java.io.Serializable;
@@ -41,6 +42,9 @@ import java.util.Date;
 public class ObjectField implements Externalizable  {
     static final long serialVersionUID = 2508652257817000470L;
     public static final int version = 1;
+
+    private transient static final Localizer mLocalizer = Localizer.get();
+
     /**
      * undefined field type
      */
@@ -185,8 +189,9 @@ public class ObjectField implements Externalizable  {
 
         if (!isValueValid(type, value)) {
             String classname = (value.getClass()).getName();
-            throw new InvalidFieldValueException("Unmatched field value type(" 
-                + getTypeString(type) + "): " + classname);
+            throw new InvalidFieldValueException(mLocalizer.t("OBJ506: Unmatched " + 
+                                    "field value type {0} in class {1}", 
+                                    getTypeString(type), classname));
         }
 
         mType = type;
@@ -210,8 +215,9 @@ public class ObjectField implements Externalizable  {
 
         if (!isValueValid(type, value)) {
             String classname = (value.getClass()).getName();
-            throw new InvalidFieldValueException("Unmatched field value type(" 
-                + getTypeString(type) + "): " + classname);
+            throw new InvalidFieldValueException(mLocalizer.t("OBJ507: Unmatched " + 
+                                    "field value type {0} in class {1}", 
+                                    getTypeString(type), classname));
         }
 
         mType = type;
@@ -226,8 +232,9 @@ public class ObjectField implements Externalizable  {
 
         if (!isValueValid(type, value)) {
             String classname = (value.getClass()).getName();
-            throw new InvalidFieldValueException("Unmatched field value type(" 
-                + getTypeString(type) + "): " + classname);
+            throw new InvalidFieldValueException(mLocalizer.t("OBJ508: Unmatched " + 
+                                    "field value type {0} in class {1}", 
+                                    getTypeString(type), classname));
         }
 
         mType = type;
@@ -302,7 +309,9 @@ public class ObjectField implements Externalizable  {
                 break;
             }
         } catch (java.lang.ClassNotFoundException e) {
-            throw new ObjectException("Unsupported field type: " + type + "\n" + e.getMessage());
+            throw new ObjectException(mLocalizer.t("OBJ509: Unsupported " + 
+                                      "field value type {0} encountered: {1}", 
+                                      type, e));
         }
 
         return classRet;
@@ -607,8 +616,9 @@ public class ObjectField implements Externalizable  {
                     }
                 }
             } catch (Exception e) {
-                throw new ObjectException("Unmatched fields: " 
-                    + "\n" + field1.toString() + "\n" + field2.toString() + "\n");
+                throw new ObjectException(mLocalizer.t("OBJ501: Unmatched " + 
+                                      "fields: {0} and {1}:{2}" , field1.toString(),
+                                      field2.toString(), e));
             }
         }
         
@@ -667,7 +677,8 @@ public class ObjectField implements Externalizable  {
             break;
 
         default:
-            throw new InvalidKeyTypeException("Unrecognized bit mask '" + mask + "'");
+            throw new InvalidKeyTypeException(mLocalizer.t("OBJ510: Unrecognized " + 
+                                      "bit mask: {0}" , mask));
         }
 
         return bRet;
@@ -835,7 +846,8 @@ public class ObjectField implements Externalizable  {
             break;
 
         default:
-            throw new InvalidKeyTypeException("Unrecognized bit mask '" + mask + "'");
+            throw new InvalidKeyTypeException(mLocalizer.t("OBJ511: Unrecognized " + 
+                                      "bit mask \"{0}\"" , mask));
         }
     }
 
@@ -903,8 +915,9 @@ public class ObjectField implements Externalizable  {
         if (!isValueValid(mType, value)) {
             String classname = (value.getClass()).getName();
             String type = getTypeString(mType);
-            throw new InvalidFieldValueException("Unmatched field '" 
-                + getName() + "' of type " + type + " receives: " + classname);
+            throw new InvalidFieldValueException(mLocalizer.t("OBJ512: Unmatched " + 
+                                      "field. {0} of type {1} receives {2}", 
+                                      getName(), type, classname));
         }
 
         mValue = value;

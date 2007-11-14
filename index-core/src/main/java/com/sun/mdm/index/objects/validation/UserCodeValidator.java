@@ -36,6 +36,7 @@ import com.sun.mdm.index.codelookup.UserCode;
 import com.sun.mdm.index.codelookup.UserCodeRegistry;
 import com.sun.mdm.index.codelookup.CodeLookupException;
 import java.util.regex.PatternSyntaxException;
+import com.sun.mdm.index.util.Localizer;
 
 
 /**
@@ -46,6 +47,8 @@ public class UserCodeValidator implements FieldValidator {
     private String mReferencedFieldName = null;
     private String mReferencedFieldValue = null;
     private String mReferencedFieldModule = null;
+    private transient final Localizer mLocalizer = Localizer.get();
+
     /**
      * Creates a new instance of UserCodeValidator
      */
@@ -72,7 +75,10 @@ public class UserCodeValidator implements FieldValidator {
     public void validate(ObjectField field, boolean newObject) throws ValidationException {
 
         if (field.getType() != FieldType.STRING) {
-            throw new UnknownDataTypeException(field.getName());
+            throw new UnknownDataTypeException(mLocalizer.t("OBJ730: User Code Validator " + 
+                                        "encountered an unrecognized type {0} " + 
+                                        "for this field: {1}", 
+                                        field.getType(), field.getName()));
         }
         
         String value = (String) field.getValue();
@@ -84,27 +90,34 @@ public class UserCodeValidator implements FieldValidator {
         try {
             codeRegistry = UserCodeRegistry.getInstance();
         } catch (CodeLookupException e) {
-            throw new ValidationException(e);
+            throw new ValidationException(mLocalizer.t("OBJ731: Could not" + 
+                                        "retrieve the User Code Registry: {0}", e));
         }
         if (mReferencedFieldModule == null) {
-            throw new InvalidReferencedModule();
+            throw new InvalidReferencedModule(mLocalizer.t("OBJ732: Referenced" + 
+                                        "field module cannot be null."));
         }
         if (mReferencedFieldValue == null) {
-            throw new InvalidReferencedCode();
+            throw new InvalidReferencedCode(mLocalizer.t("OBJ733: Referenced" + 
+                                        "code cannot be null."));
         }
         
         UserCode uc = codeRegistry.getUserCode(mReferencedFieldModule, mReferencedFieldValue);
         if (uc == null) {
-            throw new InvalidContraintByField();
+            throw new InvalidContraintByField(mLocalizer.t("OBJ734: Could not " + 
+                                        "retrieve the user code"));
         }
         String format = uc.getFormat();
         if (format != null) {
             try {
                 if (!value.matches(format)) {
-                    throw new PatternMismatchedException("does not match the pattern \"" + format + "\"");
+                    throw new PatternMismatchedException(mLocalizer.t("OBJ735: Value \"{0}\" " + 
+                                        "does not match the pattern \"{0}\"", value, format));
                 }
             } catch (PatternSyntaxException e) {
-                    throw new ValidationException("Incorrect format, \"" + format + "\", defined for ");
+                    throw new ValidationException(mLocalizer.t("OBJ736: Incorrect format \"{0}\". ", 
+                                        format));
+                    
             } catch (NullPointerException e) {
                 ; // already checked for null, doesn't happen
             }

@@ -38,6 +38,8 @@ import com.sun.mdm.index.objects.validation.exception.PatternMismatchedException
 import com.sun.mdm.index.objects.validation.exception.MinimumConstraintException;
 import com.sun.mdm.index.objects.validation.exception.MaximumConstraintException;
 import com.sun.mdm.index.util.LogUtil;
+import com.sun.mdm.index.util.Localizer;
+
 /**
  * @author jwu
  */
@@ -51,7 +53,7 @@ public class ObjectDescriptor {
     private Hashtable mUserReferences;
     private Hashtable mValues;
     private Hashtable mUserCodes;
-
+    private transient final Localizer mLocalizer = Localizer.get();
     /**
      * Creates a new instance of ObjectDescriptor
      *
@@ -100,7 +102,8 @@ public class ObjectDescriptor {
      */
     public void addFieldDescriptor(FieldDescriptor fldDesc) throws ValidationException {
         if (fldDesc == null) {
-            throw new NullObjectException("Null field descriptor");
+            throw new NullObjectException(mLocalizer.t("OBJ681: The field descriptor " +
+                                                    "cannot be null."));
         }
         mFields.put(fldDesc.getFieldName(), fldDesc);
     }
@@ -115,10 +118,12 @@ public class ObjectDescriptor {
      */
     public void addFieldDescriptor(FieldDescriptor fldDesc, ReferenceDescriptor reference) throws ValidationException {
         if (fldDesc == null) {
-            throw new NullObjectException("Null field descriptor");
+            throw new NullObjectException(mLocalizer.t("OBJ682: The field descriptor " +
+                                                    "cannot be null."));
         }
         if (reference == null) {
-            throw new NullObjectException("Null reference descriptor");
+            throw new NullObjectException(mLocalizer.t("OBJ683: The reference descriptor " +
+                                                    "cannot be null."));
         }
         mFields.put(fldDesc.getFieldName(), fldDesc);
         addReferenceDescriptor(fldDesc.getFieldName(), reference);
@@ -132,7 +137,8 @@ public class ObjectDescriptor {
      */
     public void addFieldDescriptor(ArrayList fldDescArray) throws ValidationException {
         if (fldDescArray == null) {
-            throw new NullObjectException("Null field descriptor array");
+            throw new NullObjectException(mLocalizer.t("OBJ684: The field descriptor " +
+                                                    "array cannot be null."));
         }
         for (int i = 0; i < fldDescArray.size(); i++) {
             FieldDescriptor fd = (FieldDescriptor) fldDescArray.get(i);
@@ -149,10 +155,12 @@ public class ObjectDescriptor {
      */
     public void addPatternValidator(String fieldName, PatternValidator validator) throws ValidationException {
         if (fieldName == null) {
-            throw new NullObjectException("Null field name specified");
+            throw new NullObjectException(mLocalizer.t("OBJ685: The field name " +
+                                                    "cannot be null."));
         }
         if (validator == null) {
-            throw new NullObjectException("Null validator specified");
+            throw new NullObjectException(mLocalizer.t("OBJ686: The validator " +
+                                                    "cannot be null."));
         }
         mPatterns.put(fieldName, validator);
     }
@@ -166,10 +174,12 @@ public class ObjectDescriptor {
      */
     public void addReferenceDescriptor(String fieldName, ReferenceDescriptor reference) throws ValidationException {
         if (reference == null) {
-            throw new NullObjectException("Null reference descriptor");
+            throw new NullObjectException(mLocalizer.t("OBJ687: The reference " +
+                                                    "descriptor cannot be null."));
         }
         if (fieldName == null) {
-            throw new NullObjectException("Null field name");
+            throw new NullObjectException(mLocalizer.t("OBJ688: The field name " +
+                                                    "cannot be null."));
         }
 
         mReferences.put(fieldName, reference);
@@ -184,10 +194,12 @@ public class ObjectDescriptor {
      */
     public void addUserReferenceDescriptor(String fieldName, UserReferenceDescriptor reference) throws ValidationException {
         if (reference == null) {
-            throw new NullObjectException("Null reference descriptor");
+            throw new NullObjectException(mLocalizer.t("OBJ689: The reference descriptor " +
+                                                    "cannot be null."));
         }
         if (fieldName == null) {
-            throw new NullObjectException("Null field name");
+            throw new NullObjectException(mLocalizer.t("OBJ690: The field name " +
+                                                    "cannot be null."));
         }
 
         mUserReferences.put(fieldName, reference);
@@ -202,10 +214,12 @@ public class ObjectDescriptor {
      */
     public void addValueValidator(String fieldName, ValueValidator validator) throws ValidationException {
         if (fieldName == null) {
-            throw new NullObjectException("Null field name specified");
+            throw new NullObjectException(mLocalizer.t("OBJ691: The field name " +
+                                                    "cannot be null."));
         }
         if (validator == null) {
-            throw new NullObjectException("Null validator specified");
+            throw new NullObjectException(mLocalizer.t("OBJ692: The validator " +
+                                                    "cannot be null."));
         }
         mValues.put(fieldName, validator);
     }
@@ -219,10 +233,12 @@ public class ObjectDescriptor {
      */
     public void addUserCodeValidator(String fieldName, UserCodeValidator validator) throws ValidationException {
         if (fieldName == null) {
-            throw new NullObjectException("Null field name specified");
+            throw new NullObjectException(mLocalizer.t("OBJ693: The field name " +
+                                                    "cannot be null."));
         }
         if (validator == null) {
-            throw new NullObjectException("Null validator specified");
+            throw new NullObjectException(mLocalizer.t("OBJ694: The validator " +
+                                                    "cannot be null."));
         }
         mUserCodes.put(fieldName, validator);
     }
@@ -246,7 +262,8 @@ public class ObjectDescriptor {
     public void validate(ObjectNode objectNode) throws ValidationException {
 
         if (objectNode == null) {
-            throw new NullObjectException("Null object node");
+            throw new NullObjectException(mLocalizer.t("OBJ695: The object node " +
+                                                    "cannot be null."));
         }
         
         if (objectNode.isRemoved()) {
@@ -258,30 +275,32 @@ public class ObjectDescriptor {
         String objectName = objectNode.pGetTag();
 
         if (objectFields.length != mFields.size()) {
-            throw new ValidationException("Internal error: Field counts mismatched for " 
-                + objectName);
+            throw new ValidationException(mLocalizer.t("OBJ696: Internal error: the field " +
+                                          "counts are mismatched for: {0}", objectName));
         }
         
         for (int i = 0; i < objectFields.length; i++) {
             FieldDescriptor fd = (FieldDescriptor) mFields.get(objectFields[i].getName());
             if (fd == null) {
-                throw new ValidationException("Validation routine not defined for "
-                         + objectName + "[" + objectFields[i].getName() + "]");
+                throw new ValidationException(mLocalizer.t("OBJ697: Validation " +
+                                          "routine is not defined for {0}[{1}]",
+                                          objectName, objectFields[i].getName()));
             }
 
             try {
                 fd.validate(objectFields[i], newObject);
             } catch (UnknownDataTypeException e) {
-                throw new ValidationException("Invalid data type for "
-                         + objectName + "[" + objectFields[i].getName() + "]");
+                throw new ValidationException(mLocalizer.t("OBJ698: Invalid data " +
+                                          "type for {0}[{1}]",
+                                          objectName, objectFields[i].getName()));
             } catch (UpdateNotAllowedException e) {
-                throw new ValidationException("The value of " 
-                    + objectName + "[" + objectFields[i].getName() + "]"
-                    + " cannot be updated");
+                throw new ValidationException(mLocalizer.t("OBJ699: The value of " +
+                                          "{0}[{1}] cannot be updated.",
+                                          objectName, objectFields[i].getName()));
             } catch (MissingValueOnRequiredError e) {
-                throw new ValidationException("A value for " 
-                    + objectName + "[" + objectFields[i].getName() + "]"
-                    + " is required");
+                throw new ValidationException(mLocalizer.t("OBJ700: A value for " +
+                                          "{0}[{1}] is required.",
+                                          objectName, objectFields[i].getName()));
             }
             
             if (objectFields[i].getValue() != null) {
@@ -290,13 +309,17 @@ public class ObjectDescriptor {
                     try {
                         rd.validate(objectFields[i], newObject);
                     } catch (InvalidReferencedCode e) {
-                        throw new ValidationException("\"" + objectFields[i].getValue() + "\"" 
-                            + " is not a valid code for "
-                            + objectName + "[" + objectFields[i].getName() + "]");
+                        throw new ValidationException(mLocalizer.t("OBJ701: {0} is " +
+                                          "not a valid code for {1}[{2}].",
+                                          objectFields[i].getValue(), 
+                                          objectName,
+                                          objectFields[i].getName()));
                     } catch (InvalidReferencedModule e) {
-                        throw new ValidationException("\"" + e.getMessage() + "\"" 
-                            + " is not a valid referenced module for "
-                            + objectName + "[" + objectFields[i].getName() + "]");
+                        throw new ValidationException(mLocalizer.t("OBJ702: This is " +
+                                          "not a valid referenced module for {0}[{1}]:{2}",
+                                          objectName,
+                                          objectFields[i].getName(),
+                                          e));
                     }
                 }
 
@@ -305,29 +328,17 @@ public class ObjectDescriptor {
                     try {
                         vValidator.validate(objectFields[i]);
                     } catch (MaximumConstraintException e) {
-                        if (objectFields[i].getType() == FieldType.STRING) {
-                            throw new ValidationException("The value, "
-                                + objectFields[i].getValue() 
-                                + ", exceeds the maximum length allowed for "
-                                + objectName + "[" + objectFields[i].getName() + "]");
-                        } else {
-                            throw new ValidationException("The value, "
-                                + objectFields[i].getValue() 
-                                + ", exceeds the maximum value allowed for "
-                                + objectName + "[" + objectFields[i].getName() + "]");
-                        }
+                        throw new ValidationException(mLocalizer.t("OBJ703: The value " +
+                                      "{0} exceeds the maximum length allowed for {1}[{2}]",
+                                      objectFields[i].getValue(),
+                                      objectName,
+                                      objectFields[i].getName()));
                     } catch (MinimumConstraintException e) {
-                        if (objectFields[i].getType() == FieldType.STRING) {
-                            throw new ValidationException("The value, "
-                                + objectFields[i].getValue() 
-                                + ", failed the minimum length required for "
-                                + objectName + "[" + objectFields[i].getName() + "]");
-                        } else {
-                            throw new ValidationException("The value, "
-                                + objectFields[i].getValue() 
-                                + ", failed the minimum value required for "
-                                + objectName + "[" + objectFields[i].getName() + "]");
-                        }
+                        throw new ValidationException(mLocalizer.t("OBJ704: The value " +
+                                  "{0} the minimum length required for {1}[{2}]",
+                                  objectFields[i].getValue(),
+                                  objectName,
+                                  objectFields[i].getName()));
                     }
                 }
 
@@ -336,9 +347,12 @@ public class ObjectDescriptor {
                     try {
                         pValidator.validate(objectFields[i]);
                     } catch (PatternMismatchedException e) {
-                        throw new ValidationException("\"" + objectFields[i].getValue() + "\" in "
-                            + objectName + "[" + objectFields[i].getName() + "]"
-                            + " does not match the pattern \"" + pValidator.getPattern() + "\""); 
+                        throw new ValidationException(mLocalizer.t("OBJ705: {0} " +
+                                  "in {1}[{2}] does not match the pattern \"{4}\"",
+                                  objectFields[i].getValue(),
+                                  objectName,
+                                  objectFields[i].getName(),
+                                  pValidator.getPattern()));
                     }
                 }
                 
@@ -347,13 +361,18 @@ public class ObjectDescriptor {
                     try {
                         rDescriptor.validate(objectFields[i], newObject);
                     } catch (InvalidReferencedCode e) {
-                        throw new ValidationException("\"" + objectFields[i].getValue() + "\"" 
-                            + " is not a valid code for "
-                            + objectName + "[" + objectFields[i].getName() + "]");
+                        throw new ValidationException(mLocalizer.t("OBJ706: {0} " +
+                                  "is not a valid code for {1}[{2}]: {3}",
+                                  objectFields[i].getValue(),
+                                  objectName,
+                                  objectFields[i].getName(),
+                                  e));
                     } catch (InvalidReferencedModule e) {
-                        throw new ValidationException("\"" + e.getMessage() + "\"" 
-                            + " is not a valid referenced module for "
-                            + objectName + "[" + objectFields[i].getName() + "]");
+                        throw new ValidationException(mLocalizer.t("OBJ707: This is not " +
+                                  "a valid referenced module for {0}[{1}]: {2}",
+                                  objectName,
+                                  objectFields[i].getName(),
+                                  e));
                     }
                 }
                 
@@ -364,42 +383,60 @@ public class ObjectDescriptor {
                     try {
                         refField = objectNode.getField(refFieldName);
                     } catch (ObjectException e) {
-                        throw new ValidationException("\"" + refFieldName + "\"" 
-                            + " is not a valid constraint-by field name for "
-                            + objectName + "[" + objectFields[i].getName() + "]");
+                        throw new ValidationException(mLocalizer.t("OBJ708: {0} " +
+                                  "is not a valid constraint-by field " + 
+                                  "name for {1}[{2}]: {3}",
+                                  refFieldName,
+                                  objectName,
+                                  objectFields[i].getName(),
+                                  e));
                     }
                     if (refField.getType() != FieldType.STRING) {
-                        throw new ValidationException("The value of \"" + refFieldName 
-                            + "\" must be of type STRING to be a valid constraint-by field for "
-                            + objectName + "[" + objectFields[i].getName() + "]");
+                        throw new ValidationException(mLocalizer.t("OBJ709: The value of {0} " +
+                                  "must be of type String to be a valid constraint-by " + 
+                                  "field for {1}[{2}]: {3}",
+                                  refFieldName,
+                                  objectName,
+                                  objectFields[i].getName()));
                     }
                     
                     UserReferenceDescriptor urDescriptor 
                         = (UserReferenceDescriptor) mUserReferences.get(refFieldName);
                     if (urDescriptor == null) {
-                        throw new ValidationException("\"" + refFieldName + "\"" 
-                            + " is not a valid constraint-by field for "
-                            + objectName + "[" + objectFields[i].getName() + "]");
+                        throw new ValidationException(mLocalizer.t("OBJ710: {0} " +
+                                  "is not a valid constraint-by field for field " + 
+                                  "for {1}[{2}]",
+                                  refFieldName,
+                                  objectName,
+                                  objectFields[i].getName()));
                     }
                         
                     String module = urDescriptor.getModule();
                     String refValue = (String) refField.getValue();
                     if (refValue == null) {
-                        throw new ValidationException("\"" + refFieldName + "\"" 
-                            + " must have value to be a valid constraint-by field for "
-                            + objectName + "[" + objectFields[i].getName() + "]");
+                        throw new ValidationException(mLocalizer.t("OBJ711: {0} " +
+                                  "must have value to be a valid constraint-by field " + 
+                                  "for {1}[{2}]",
+                                  refFieldName,
+                                  objectName,
+                                  objectFields[i].getName()));
                     }
                     
                     ucValidator.setReferencedField(module, refValue);
                     try {
                         ucValidator.validate(objectFields[i], newObject);
                     } catch (PatternMismatchedException e) {
-                        throw new ValidationException("\"" + objectFields[i].getValue() + "\" in "
-                            + objectName + "[" + objectFields[i].getName() + "] "
-                            + e.getMessage()); 
+                        throw new ValidationException(mLocalizer.t("OBJ712: Pattern " +
+                                  "mismatch for {0} in {1}[{2}]: {3}",
+                                  objectFields[i].getValue(),
+                                  objectName,
+                                  objectFields[i].getName(),
+                                  e));
                     } catch (UnknownDataTypeException e) {
-                        throw new ValidationException("Invalid data type for "
-                             + objectName + "[" + objectFields[i].getName() + "]");
+                        throw new ValidationException(mLocalizer.t("OBJ713: Invalid " +
+                                  "data type for {0}[{1}]",
+                                  objectName,
+                                  objectFields[i].getName()));
                     }
                 }
             }
