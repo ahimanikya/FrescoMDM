@@ -1247,7 +1247,7 @@ make_release()
         touch $bldnumfile
     fi
 
-    kitdir=$kitbase/$bldnum
+    kitdir=$kitbase/$bldnum/cmn
     bom=odmmi.bom
 
     bldmsg -mark -p $p/make_release Release $bom to $kitdir
