@@ -25,6 +25,8 @@ package com.sun.mdm.index.ops;
 import com.sun.mdm.index.objects.TransactionObject;
 import com.sun.mdm.index.objects.metadata.ObjectFactory;
 import com.sun.mdm.index.ops.exception.OPSException;
+import com.sun.mdm.index.util.Localizer;
+
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.util.Date;
@@ -45,6 +47,8 @@ public abstract class DBAdapter {
     private static String mDatabaseType = null;     // database type
     private static DBAdapter mDBAdapterRef = null;  // database adapter
 
+    private transient static final Localizer mLocalizer = Localizer.get();
+    
     /**  Return the DBAdapter singleton.
      *
      * @throws OPSException if any exceptions are encountered.
@@ -62,8 +66,9 @@ public abstract class DBAdapter {
                 } else if (mDatabaseType.compareToIgnoreCase(SQLSERVER) == 0) {
                     mDBAdapterRef = SQLServerAdapter.getInstance();
                 } else {    // TODO: Add support for new database vendors as necessary
-                    throw new OPSException("Error. Unrecognized database type" 
-                                           + mDatabaseType);
+                    throw new OPSException(mLocalizer.t("OPS500: Could not retrieve " + 
+                                        "a database adapter instance.  This is an " + 
+                                        "unsupported database type: {0}", mDatabaseType));
                 }
             }
         }

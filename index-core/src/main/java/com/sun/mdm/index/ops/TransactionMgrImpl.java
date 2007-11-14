@@ -107,7 +107,8 @@ public class TransactionMgrImpl implements TransactionMgr {
             mMergeObjectDB = new MergeObjectDB();
             mLockManager = new LockManager();
         } catch (Exception ex) {
-            throw new OPSException(ex);
+            throw new OPSException(mLocalizer.t("OPS640: Could not initialize " + 
+                                            "TransactionMgrImpl: {0}", ex));
         }
     } 
    
@@ -151,10 +152,10 @@ public class TransactionMgrImpl implements TransactionMgr {
         try {
             eo = mEnterpriseDB.get(conn, mOPSMap, euid, mSystemObjectDB, 
                                    mSystemSBRDB);
-        } catch (OPSException ex) {
-            throw ex;
         } catch (Exception ex) {
-            throw new OPSException(ex);
+            throw new OPSException(mLocalizer.t("OPS641: Could not retrieve " + 
+                                            "the EnterpriseObject record with " + 
+                                            "EUID={0}: {1}", euid, ex));
         }
         return eo;
     }
@@ -180,16 +181,16 @@ public class TransactionMgrImpl implements TransactionMgr {
                 EORetriever eoRetriever = new EORetriever();
                 eo = eoRetriever.getEO(conn, euid, epaths);
             }           
-        } catch (OPSException ex) {
-            throw ex;
         } catch (Exception ex) {
-            throw new OPSException(ex);
+            throw new OPSException(mLocalizer.t("OPS642: Could not retrieve " + 
+                                            "the EnterpriseObject record with " + 
+                                            "EUID={0}: {1}", euid, ex));
         } 
         return eo; 
     }   
     
     /**
-     * Invokes SystemObject OPS to retrieve an SystemObject by its SystemCode
+     * Invokes SystemObject OPS to retrieve a SystemObject by its SystemCode
      * and LocalID.
      *
      * @param conn JDBC connection.
@@ -213,7 +214,7 @@ public class TransactionMgrImpl implements TransactionMgr {
    }
 
     /**
-     * Invokes SystemSBR OPS to retrieve an SystemSBR by its EUID.
+     * Invokes SystemSBR OPS to retrieve a SystemSBR by its EUID.
      *
      * @param conn JDBC connection.
      * @param euid EUID.
@@ -339,12 +340,9 @@ public class TransactionMgrImpl implements TransactionMgr {
             tObj.setSystemUser(sbr.getCreateUser());
             mTransactionObjectDB.create(conn, tObj);
             ret = new TMResult(euid, transnum);
-        } catch (ObjectException ex) {
-            throw new OPSException(ex.getMessage());
-        } catch (OPSException ex) {
-            throw ex;
-        } catch (SEQException ex) {
-            throw new OPSException(ex.getMessage());
+        } catch (Exception ex) {
+            throw new OPSException(mLocalizer.t("OPS643: Could not add " + 
+                                            "an EnterpriseObject record: {0}", ex));
         }
 
         return ret;
@@ -378,13 +376,10 @@ public class TransactionMgrImpl implements TransactionMgr {
             tObj.setTimeStamp(new java.util.Date());
             tObj.setSystemUser(sysObj.getCreateUser());
             mTransactionObjectDB.create(conn, tObj);
-        } catch (ObjectException ex) {
-            throw new OPSException(ex);
-        } catch (OPSException ex) {
-            throw ex;
-        } catch (SEQException ex) {
-            throw new OPSException(ex);
-        }
+        } catch (Exception ex) {
+            throw new OPSException(mLocalizer.t("OPS644: Could not add " + 
+                                            "a SystemObject record: {0}", ex));
+        } 
     }
 
     /**
@@ -411,12 +406,9 @@ public class TransactionMgrImpl implements TransactionMgr {
             tObj.setTimeStamp(new java.util.Date());
             tObj.setSystemUser(sbr.getCreateUser());
             mTransactionObjectDB.create(conn, tObj);
-        } catch (OPSException ex) {
-            throw ex;
-        } catch (ObjectException e) {
-            throw new OPSException(e.getMessage());
-        } catch (SEQException e) {
-            throw new OPSException(e.getMessage());
+        } catch (Exception e) {
+            throw new OPSException(mLocalizer.t("OPS645: Could not add " + 
+                                            "a SystemSBR record: {0}", e));
         }
  
         return euid;
@@ -438,10 +430,9 @@ public class TransactionMgrImpl implements TransactionMgr {
             initCUIDManager(conn);
             euid = com.sun.mdm.index.idgen.CUIDManager.getNextUID(conn, "EUID");
             mSystemSBRDB.create(conn, mOPSMap, euid, sbr);
-        } catch (OPSException ex) {
-            throw ex;
-        } catch (SEQException ex) {
-            throw new OPSException(ex.getMessage());
+        } catch (Exception ex) {
+            throw new OPSException(mLocalizer.t("OPS646: Could not add " + 
+                                            "a SystemSBR record: {0}", ex));
         }
  
         return euid;
@@ -571,10 +562,9 @@ public class TransactionMgrImpl implements TransactionMgr {
                 }
                 pDeleteSystemSBR(conn, eo.getEUID(), sbr);
             }
-        } catch (OPSException ex) {
-            throw ex;
-        } catch (ObjectException ex) {
-            throw new OPSException(ex.getMessage());
+        } catch (Exception ex) {
+            throw new OPSException(mLocalizer.t("OPS647: Could not update " + 
+                                            "an EnterpriseObject record: {0}", ex));
         }
     }
     
@@ -653,12 +643,9 @@ public class TransactionMgrImpl implements TransactionMgr {
             mTransactionObjectDB.create(conn, tObj);
 
             ret = new TMResult(eo.getEUID(), transnum);
-        } catch (OPSException ex) {
-            throw ex;
-        } catch (ObjectException ex) {
-            throw new OPSException(ex.getMessage());
-        } catch (SEQException ex) {
-            throw new OPSException(ex.getMessage());
+        } catch (Exception ex) {
+            throw new OPSException(mLocalizer.t("OPS648: Could not update " + 
+                                            "an EnterpriseObject record: {0}", ex));
         }
 
         return ret;
@@ -732,12 +719,9 @@ public class TransactionMgrImpl implements TransactionMgr {
             mTransactionObjectDB.create(conn, tObj);
 
             ret = new TMResult(eo.getEUID(), transnum);
-        } catch (OPSException ex) {
-            throw ex;
-        } catch (ObjectException ex) {
-            throw new OPSException(ex.getMessage());
-        } catch (SEQException ex) {
-            throw new OPSException(ex.getMessage());
+        } catch (Exception ex) {
+            throw new OPSException(mLocalizer.t("OPS649: Could not update " + 
+                                            "an EnterpriseObject record: {0}", ex));
         }
 
         return ret;
@@ -755,7 +739,8 @@ public class TransactionMgrImpl implements TransactionMgr {
         try {
             mSystemObjectDB.remove(conn, mOPSMap, so);
         } catch (OPSException ex) {
-            throw ex;
+            throw new OPSException(mLocalizer.t("OPS650: Could not delete " + 
+                                            "a SystemObject record: {0}", ex));
         }
     }
 
@@ -789,7 +774,8 @@ public class TransactionMgrImpl implements TransactionMgr {
         try {
             mSystemObjectDB.update(conn, mOPSMap, so);
         } catch (OPSException ex) {
-            throw ex;
+            throw new OPSException(mLocalizer.t("OPS651: Could not delete " + 
+                                            "a SystemObject record: {0}", ex));
         }
     }
 
@@ -822,12 +808,9 @@ public class TransactionMgrImpl implements TransactionMgr {
             }
             tObj.setSystemUser(so.getUpdateUser());
             mTransactionObjectDB.create(conn, tObj);
-        } catch (OPSException ex) {
-            throw ex;
-        } catch (SEQException e) {
-            throw new OPSException(e.getMessage());
-        } catch (ObjectException e) {
-            throw new OPSException(e.getMessage());
+        } catch (Exception e) {
+            throw new OPSException(mLocalizer.t("OPS652: Could not update " + 
+                                            "a SystemObject record: {0}", e));
         }
     }
 
@@ -845,7 +828,8 @@ public class TransactionMgrImpl implements TransactionMgr {
         try {
             mSystemSBRDB.update(conn, mOPSMap, euid, sbr);
         } catch (OPSException ex) {
-            throw ex;
+            throw new OPSException(mLocalizer.t("OPS653: Could not update " + 
+                                            "a SystemSBR record: {0}", ex));
         }
     }
 
@@ -876,12 +860,9 @@ public class TransactionMgrImpl implements TransactionMgr {
             }
             tObj.setSystemUser(sbr.getUpdateUser());
             mTransactionObjectDB.create(conn, tObj);
-        } catch (OPSException ex) {
-            throw ex;
-        } catch (SEQException e) {
-            throw new OPSException(e.getMessage());
-        } catch (ObjectException e) {
-            throw new OPSException(e.getMessage());
+        } catch (Exception e) {
+            throw new OPSException(mLocalizer.t("OPS654: Could not update " + 
+                                            "a SystemSBR record: {0}", e));
         }
     }
 
@@ -907,7 +888,9 @@ public class TransactionMgrImpl implements TransactionMgr {
         try {
             ret = mTransactionObjectDB.findTransactionObject(conn, euid, beginTS, endTS);
         } catch (OPSException ex) {
-            throw ex;
+            throw new OPSException(mLocalizer.t("OPS655: Could not retrieve " + 
+                                            "Transaction Logs for EUID={0}: {1}", 
+                                            euid, ex));
         }
  
         return ret;
@@ -934,7 +917,9 @@ public class TransactionMgrImpl implements TransactionMgr {
         try {
             ret = mTransactionObjectDB.findTransactionObject(conn, euid, beginTS);
         } catch (OPSException ex) {
-            throw ex;
+            throw new OPSException(mLocalizer.t("OPS656: Could not retrieve " + 
+                                            "Transaction Logs for EUID={0}: {1}", 
+                                            euid, ex));
         }
  
         return ret;
@@ -954,7 +939,10 @@ public class TransactionMgrImpl implements TransactionMgr {
         try {
             ret = mTransactionObjectDB.get(conn, transId);
         } catch (OPSException ex) {
-            throw ex;
+            throw new OPSException(mLocalizer.t("OPS657: Could not retrieve " + 
+                                            "Transaction Logs for Transaction " + 
+                                            "ID={0}: {1}", 
+                                            transId, ex));
         }
         return ret;
     }
@@ -985,7 +973,10 @@ public class TransactionMgrImpl implements TransactionMgr {
                                                              lid, beginTS, 
                                                              endTS);
         } catch (OPSException ex) {
-            throw ex;
+            throw new OPSException(mLocalizer.t("OPS658: Could not retrieve " + 
+                                            "Transaction Logs for SystemCode={0}, " + 
+                                            "Local ID={1}: {2}", 
+                                            systemcode, lid, ex));
         }
         return ret;
     }
@@ -1012,7 +1003,8 @@ public class TransactionMgrImpl implements TransactionMgr {
             ret = mTransactionObjectDB.findTransactionObject(conn, tObj,
                     beginTS, endTS);
         } catch (OPSException ex) {
-            throw ex;
+            throw new OPSException(mLocalizer.t("OPS659: Could not retrieve " + 
+                                            "Transaction Logs: {0}", ex));
         }
         return ret;
     }
@@ -1041,7 +1033,8 @@ public class TransactionMgrImpl implements TransactionMgr {
             ret = mTransactionObjectDB.findTransactionObject(conn, tObj,
                     beginTS, endTS, orderBy);
         } catch (OPSException ex) {
-            throw ex;
+            throw new OPSException(mLocalizer.t("OPS660: Could not retrieve " + 
+                                            "Transaction Logs: {0}", ex));
         }
  
         return ret;
@@ -1060,7 +1053,9 @@ public class TransactionMgrImpl implements TransactionMgr {
         try {
             mSystemSBRDB.remove(conn, mOPSMap, euid, sbr);
         } catch (OPSException ex) {
-            throw ex;
+            throw new OPSException(mLocalizer.t("OPS661: Could not delete " + 
+                                            "SystemSBR record from the database: {0}",
+                                             ex));
         }
     }
 
@@ -1122,12 +1117,9 @@ public class TransactionMgrImpl implements TransactionMgr {
             
             mMergeObjectDB.create(conn, mObj);
             ret = new TMResult(eo1.getEUID(), transnum);
-        } catch (OPSException ex) {
-            throw ex;
-        } catch (SEQException ex) {
-            throw new OPSException(ex.getMessage());
-        } catch (ObjectException ex) {
-            throw new OPSException(ex.getMessage());
+        } catch (Exception ex) {
+            throw new OPSException(mLocalizer.t("OPS662: Could not merge two " + 
+                                            "EnterpriseObject records in the database: {0}", ex));
         }
  
         return ret;
@@ -1158,10 +1150,9 @@ public class TransactionMgrImpl implements TransactionMgr {
              try {
                  mLockManager.lock(conn, eo1, eo2, srcRevisionNumber, destRevisionNumber);
              } catch (DataModifiedException e) {
-                 if (mLogger.isLoggable(Level.FINE)) {
-                        mLogger.fine("Unable to lock record for update: " + e.getMessage());
-                 }
-                 throw e;
+                 throw new DataModifiedException(mLocalizer.t("OPS663: Could not merge two " + 
+                                            "EnterpriseObject records in the database. " +
+                                            "The records could not be locked for update: {0}", e));
              }
              // don't lock eo1, eo2 again.
              pUpdateEnterpriseObject(conn, eo2, false);
@@ -1195,12 +1186,9 @@ public class TransactionMgrImpl implements TransactionMgr {
              mMergeObjectDB.create(conn, mObj);
             
              ret = new TMResult(eo1.getEUID(), transnum);
-         } catch (OPSException ex) {
-             throw ex;
-         } catch (SEQException ex) {
-             throw new OPSException(ex.getMessage());
-         } catch (ObjectException ex) {
-             throw new OPSException(ex.getMessage());
+         } catch (Exception ex) {
+             throw new OPSException(mLocalizer.t("OPS664: Could not merge two " + 
+                                            "EnterpriseObject records in the database."));
          }
  
          return ret;
@@ -1227,7 +1215,8 @@ public class TransactionMgrImpl implements TransactionMgr {
         try {
             ret = euidUnMerge(conn, null, eo1, eo2); 
         } catch (OPSException ex) {
-            throw ex;
+             throw new OPSException(mLocalizer.t("OPS665: Could not unmerge " + 
+                                            "EnterpriseObject records in the database."));
         }
         return ret;
     }
@@ -1281,12 +1270,11 @@ public class TransactionMgrImpl implements TransactionMgr {
              }
  
              ret = new TMResult(eo1.getEUID(), transnum);
-         } catch (OPSException ex) {
-             throw ex;
-         } catch (SEQException ex) {
-             throw new OPSException(ex.getMessage());
-         } catch (ObjectException ex) {
-             throw new OPSException(ex.getMessage());
+         } catch (Exception ex) {
+             throw new OPSException(mLocalizer.t("OPS667: Could not unmerge " + 
+                                            "EnterpriseObject records with the " + 
+                                            "Transaction ID={0}: {1}", 
+                                            transactionID, ex)); 
          }
          return ret;
      }
@@ -1317,10 +1305,11 @@ public class TransactionMgrImpl implements TransactionMgr {
             try {
                 mLockManager.lock(conn, eo1, eo2);
             } catch (DataModifiedException e) {
-                if (mLogger.isLoggable(Level.FINE)) {
-                    mLogger.fine("Unable to lock record for update: " + e.getMessage());
-                }
-                throw e;
+                 throw new OPSException(mLocalizer.t("OPS668: Could not lock " + 
+                                                "SystemObject records for a merge (" + 
+                                                "System Code={0}, Local ID1={1}, " + 
+                                                "Local ID2={2}): {3}", 
+                                                systemcode, lid1, lid2, e)); 
             }
             
             if (eo2 != null) {
@@ -1373,12 +1362,12 @@ public class TransactionMgrImpl implements TransactionMgr {
             mMergeObjectDB.create(conn, mObj);
  
             ret = new TMResult(eo1.getEUID(), transnum);
-        } catch (OPSException ex) {
-            throw ex;
-        } catch (SEQException ex) {
-            throw new OPSException(ex.getMessage());
-        } catch (ObjectException ex) {
-            throw new OPSException(ex.getMessage());
+        } catch (Exception ex) {
+            throw new OPSException(mLocalizer.t("OPS669: Could not merge " + 
+                                                "SystemObject records (" + 
+                                                "System Code={0}, Local ID1={1}, " + 
+                                                "Local ID2={2}): {3}", 
+                                                systemcode, lid1, lid2, ex)); 
         }
  
         return ret;
@@ -1409,7 +1398,11 @@ public class TransactionMgrImpl implements TransactionMgr {
          try {
              ret = lidUnMerge(conn, eo1,eo2, null, systemcode, lid1, lid2);
         } catch (OPSException ex) {
-            throw ex;
+            throw new OPSException(mLocalizer.t("OPS670: Could not unmerge " + 
+                                                "SystemObject records (" + 
+                                                "System Code={0}, Local ID1={1}, " + 
+                                                "Local ID2={2}): {3}", 
+                                                systemcode, lid1, lid2, ex)); 
         } 
         return ret;
     }
@@ -1487,14 +1480,12 @@ public class TransactionMgrImpl implements TransactionMgr {
             }
             
             ret = new TMResult(eo1.getEUID(), transnum);
-        } catch (OPSException ex) {
-            throw ex;
-        } catch (SEQException ex) {
-            throw new OPSException(ex.getMessage());
-        } catch (ObjectException ex) {
-            throw new OPSException(ex.getMessage());
-        } catch (DataModifiedException ex) {
-            throw ex;
+        } catch (Exception ex) {
+            throw new OPSException(mLocalizer.t("OPS671: Could not unmerge " + 
+                                                "SystemObject records (" + 
+                                                "System Code={0}, Local ID1={1}, " + 
+                                                "Local ID2={2}, Transaction ID={3}): {4}", 
+                                                systemcode, lid1, lid2, transactionID, ex)); 
         }
  
         return ret;
@@ -1527,7 +1518,11 @@ public class TransactionMgrImpl implements TransactionMgr {
             if (mLogger.isLoggable(Level.FINE)) {
                 mLogger.fine("Unable to lock record for update: " + e.getMessage());
             }
-            throw e;
+            throw new OPSException(mLocalizer.t("OPS672: Could not lock " + 
+                                                "EnterpriseObject records for " +
+                                                "transferring SystemObjects (" + 
+                                                "System Code={0}, Local ID={1}): {2}", 
+                                                systemcode, lid, e)); 
         }
         try {
             pUpdateEnterpriseObject(conn, eo2, false);
@@ -1564,12 +1559,11 @@ public class TransactionMgrImpl implements TransactionMgr {
             mMergeObjectDB.create(conn, mObj);
  
             ret = new TMResult(eo1.getEUID(), transnum);
-        } catch (OPSException ex) {
-            throw ex;
-        } catch (SEQException ex) {
-            throw new OPSException(ex.getMessage());
-        } catch (ObjectException ex) {
-            throw new OPSException(ex.getMessage());
+        } catch (Exception ex) {
+            throw new OPSException(mLocalizer.t("OPS673: Could not transfer " + 
+                                                "SystemObject records (" + 
+                                                "System Code={0}, Local ID={1}): {2}", 
+                                                systemcode, lid, ex)); 
         }
   
         return ret;
@@ -1631,10 +1625,10 @@ public class TransactionMgrImpl implements TransactionMgr {
         Object delta = TransactionLog.getLogs("Enterprise", eo);
         try{
             beforeEO = applyDelta(eo, delta);
-        }catch(EPathException ex){
-            throw new OPSException(ex.getMessage());
-        }catch(ObjectException ex){
-            throw new OPSException(ex.getMessage());
+        } catch (Exception ex){
+            throw new OPSException(mLocalizer.t("OPS674: Could not retrieve " + 
+                                                "the \"before\" image for an " + 
+                                                "EnterpriseObject: {0}", ex)); 
         }
         return beforeEO;
 
@@ -1865,9 +1859,9 @@ public class TransactionMgrImpl implements TransactionMgr {
                 ret = new RecreateResult(afterEO, afterEO2, beforeEO1, beforeEO2);
             }
         } catch (ObjectException ex) {
-            mLogger.warn(mLocalizer.x("OPS018: TransactionMgr could not recover " 
-                                      + "a transaction object: {0}", ex.getMessage()));
-            throw ex;
+            throw new OPSException(mLocalizer.t("OPS675: Transaction Manager could " + 
+                                                "not recover a transaction object: {0}",
+                                                ex)); 
         }    
         return ret;
     }
@@ -1900,10 +1894,10 @@ public class TransactionMgrImpl implements TransactionMgr {
                                             transactionnumber, 
                                             tranObjects);
             
-        } catch (OPSException ex) {
-            throw ex;
-        } catch (ObjectException ex) {
-            throw new OPSException(ex.getMessage());
+        } catch (Exception ex) {
+            throw new OPSException(mLocalizer.t("OPS676: Transaction Manager could " + 
+                                                "not recreate a transaction object: {0}",
+                                                ex)); 
         }         
         Map tranMap = new HashMap();
         return recreateObject(conn, tranObjectList, true, tranMap);
@@ -2037,7 +2031,8 @@ public class TransactionMgrImpl implements TransactionMgr {
                        // Should only happen in case of lidMerge and lid Transfer
                        if (!( "lidMerge".equals(currentTranObject.getFunction()) 
                               || "lidTransfer".equals(currentTranObject.getFunction()))) {
-                           throw new OPSException("Merged Object for LidUnmerge & EuidUnmerge must exists");
+                           throw new OPSException(mLocalizer.t("OPS677: TMerged Object " + 
+                                                "must exist for a unmerge operation.")); 
                        }
                    }
                }
@@ -2072,12 +2067,10 @@ public class TransactionMgrImpl implements TransactionMgr {
         // Now call the recoverObject on the current transaction            
         ret =  recoverObject( conn, survivorObject, mergedObject, currentTranObject, calcAfter );
         
-        } catch (OPSException ex) {
-            throw ex;
-        } catch (EPathException ex) {
-            throw new OPSException(ex.getMessage());
-        } catch (ObjectException ex) {
-            throw new OPSException(ex.getMessage());
+        } catch (Exception ex) {
+            throw new OPSException(mLocalizer.t("OPS678: Transaction Manager could " + 
+                                                "not recreate a transaction object: {0}",
+                                                ex)); 
         }            
         return ret;
    } 

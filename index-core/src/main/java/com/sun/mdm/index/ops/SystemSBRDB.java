@@ -27,6 +27,7 @@ import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SBROverWrite;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.ops.exception.OPSException;
+import com.sun.mdm.index.util.Localizer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -45,6 +46,7 @@ import net.java.hulp.i18n.Logger;
 public final class SystemSBRDB extends ObjectPersistenceService {
     
     private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     private static String mDeleteString;
     private static String mInsertString;
@@ -203,11 +205,18 @@ public final class SystemSBRDB extends ObjectPersistenceService {
             params.add(euid);
 
             String sql = sql2str(mSelectString, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS618: Could not update " + 
+                                        "a SystemSBR record in the database " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
         } catch (ObjectException e) {
-            throw new OPSException(e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS619: Could not update " + 
+                                        "a SystemSBR record in the database: {0}", 
+                                        e));
         } catch (OPSException e) {
-            throw e;
+            throw new OPSException(mLocalizer.t("OPS620: Could not update " + 
+                                        "a SystemSBR record in the database: {0}", 
+                                        e));
         } finally {
         	try {
         	    if (rset != null) {
@@ -218,7 +227,8 @@ public final class SystemSBRDB extends ObjectPersistenceService {
             		stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS621: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
         return sbrobj;
@@ -322,21 +332,32 @@ public final class SystemSBRDB extends ObjectPersistenceService {
                 params = addobject(params, sbr.getStatus());
 
                 String sql = sql2str(mInsertString, params);
-                throw new OPSException(sql + e.getMessage());
+                throw new OPSException(mLocalizer.t("OPS622: Could not create " + 
+                                        "a SystemSBR record in the database " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
             } catch (ObjectException oe) {
-                throw new OPSException(oe.getMessage() + "\n" + sqlerr);
+                throw new OPSException(mLocalizer.t("OPS623: Could not create " + 
+                                        "a SystemObject in the database " + 
+                                        "due to an SQL error: {0}: {1}", 
+                                        e, oe));
             }
         } catch (ObjectException e) {
-            throw new OPSException(e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS624: Could not create " + 
+                                        "a SystemSBR record in the database: {0}", 
+                                        e));
         } catch (OPSException e) {
-            throw e;
+            throw new OPSException(mLocalizer.t("OPS625: Could not create " + 
+                                        "a SystemSBR record in the database: {0}", 
+                                        e));
         } finally {
         	try {
         		if (stmt != null) {
             		stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS626: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }
@@ -385,16 +406,22 @@ public final class SystemSBRDB extends ObjectPersistenceService {
             params.add(euid);
 
             String sql = sql2str(mDeleteString, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS627: Could not create " + 
+                                        "a SystemSBR record in the database " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
         } catch (OPSException e) {
-            throw e;
+            throw new OPSException(mLocalizer.t("OPS628: Could not create " + 
+                                        "a SystemSBR record in the database: {0}", 
+                                        e));
         } finally {
         	try {
         		if (stmt != null) {
             		stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS629: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }
@@ -511,21 +538,30 @@ public final class SystemSBRDB extends ObjectPersistenceService {
                 params = addobject(params, euid);
 
                 String sql = sql2str(mUpdateString, params);
-                throw new OPSException(sql + e.getMessage());
+                throw new OPSException(mLocalizer.t("OPS630: Could not update " + 
+                                        "a SystemSBR record in the database " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
             } catch (ObjectException oe) {
-                throw new OPSException(oe.getMessage() + "\n" + sqlerr);
+                throw new OPSException(mLocalizer.t("OPS631: Could not create " + 
+                                        "a SystemObject in the database " + 
+                                        "due to an SQL error: {0}: {1}", 
+                                        e, oe));
             }
         } catch (ObjectException e) {
-            throw new OPSException(e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS632: Could not update " + 
+                                        "a SystemSBR record in the database: {0}", e)); 
         } catch (OPSException e) {
-            throw e;
+            throw new OPSException(mLocalizer.t("OPS633: Could not update " + 
+                                        "a SystemSBR record in the database: {0}", e)); 
         } finally {
         	try {
         		if (stmt != null) {
             		stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS634: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }

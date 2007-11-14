@@ -318,12 +318,10 @@ public final class TransactionLog implements Externalizable {
                         "ISO-8859-1"));
             ObjectInputStream in = new ObjectInputStream(buf);
             ret = (TransactionLog[]) in.readObject();
-        } catch (java.io.IOException ex) {
-            throw new OPSException(ex);
-        } catch (java.lang.ClassNotFoundException ex) {
-            throw new OPSException(ex);
+        } catch (Exception ex) {
+            throw new OPSException(mLocalizer.t("OPS635: Could not retrieve " + 
+                                        "Transaction Logs from the Blob: {0}", ex));
         }
-
         return ret;
     }
 
@@ -344,7 +342,8 @@ public final class TransactionLog implements Externalizable {
 
             return buf.toString("ISO-8859-1");
         } catch (java.io.IOException ex) {
-            throw new OPSException(ex);
+            throw new OPSException(mLocalizer.t("OPS636: Could not serialize " + 
+                                        "Transaction Logs to a String: {0}", ex));
         }
     }
 
@@ -574,14 +573,16 @@ public final class TransactionLog implements Externalizable {
                         }
                         ObjectNode childNode = (ObjectNode) EPathAPI.getFieldValue(p, eo);
                         if (childNode == null) {
-                            throw new ObjectException("Child node is null");
+                            throw new ObjectException(mLocalizer.t("OPS637: applyDelta() failed. " + 
+                                        "The child node is null."));
                         }
                         if (mLogger.isLoggable(Level.FINE)) {
                             mLogger.fine("TransactionLog: child node to be removed: " + childNode);
                         }
 
                         if (parentNode == null) {
-                            throw new ObjectException("Parent node is null");
+                            throw new ObjectException(mLocalizer.t("OPS638: applyDelta() failed. " + 
+                                                            "The parent node is null."));
                         }
                         
                         // Check if it is a non-keyed child.  If it isn't, then remove.
@@ -608,7 +609,8 @@ public final class TransactionLog implements Externalizable {
                         String p = (String) nonKeyedChildToRemoveList.get(j);
                         ObjectNode childNode = (ObjectNode) EPathAPI.getFieldValue(p, eo);
                         if (childNode == null) {
-                            throw new ObjectException("Child node is null");
+                            throw new ObjectException(mLocalizer.t("OPS639: applyDelta() failed. " + 
+                                                    "The child node is null."));
                         }
                         ObjectNode parentNode = null;
                         if (p.indexOf("SBROverWrite") > 0) {

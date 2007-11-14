@@ -23,6 +23,7 @@
 package com.sun.mdm.index.ops;
 
 import com.sun.mdm.index.ops.exception.OPSException;
+import com.sun.mdm.index.util.Localizer;
 
 import java.io.BufferedInputStream;
 import java.io.ObjectOutputStream;
@@ -48,6 +49,8 @@ import java.sql.Blob;
  * @version
  */
 public class SQLServerBlobHelper extends BlobHelper {
+
+    private transient final Localizer mLocalizer = Localizer.get();
     
     /** Creates a new instance of SQLBlobHelper */
     public SQLServerBlobHelper() {
@@ -70,7 +73,8 @@ public class SQLServerBlobHelper extends BlobHelper {
                 is = blob.getBinaryStream();
             }
         } catch (SQLException e) {
-            throw new OPSException(e);
+            throw new OPSException(mLocalizer.t("OPS593: Could not retrieve " + 
+                                    "the value of a Blob column: {0}", e));
         }
         ObjectInputStream iso = null;
         Object value = null;
@@ -84,7 +88,9 @@ public class SQLServerBlobHelper extends BlobHelper {
                 value = null;
                 iso = null;
             } catch (IOException e) {
-                throw new OPSException(e);
+                throw new OPSException(mLocalizer.t("OPS594: Could not open " + 
+                                    "an ObjectInputstreamForBackwardCompatibility " +
+                                    "instance: {0}", e));
             }
         }
         
@@ -102,15 +108,16 @@ public class SQLServerBlobHelper extends BlobHelper {
                     value = null;
                     iso = null;
                 } catch (IOException e3) {
-                    throw new OPSException(e3);
+                    throw new OPSException(mLocalizer.t("OPS595: Could not open " + 
+                                    "an ObjectInputStreamForVersion " +
+                                    "instance: {0}: {1}", e3, e));
                 }
                 if (iso != null) {
                     try {
                        value = iso.readObject();
-                    } catch (IOException e4) {
-                        throw new OPSException(e4);
-                    } catch (ClassNotFoundException e5) {
-                        throw new OPSException(e5);
+                    } catch (Exception e4) {
+                        throw new OPSException(mLocalizer.t("OPS596: Could not read " + 
+                                    "the object from the input stream: {0}: {1}", e4, e));
                     }
                 }
                 return value;
@@ -127,9 +134,9 @@ public class SQLServerBlobHelper extends BlobHelper {
      * @throws  OPSException if error is encountered
      */
     void setParamBlob(ResultSet rs, String column, Object value) throws OPSException {
-        throw new OPSException("Error: void setParamBlob(ResultSet rs, "
-                               + "String column, Object value) not supported "
-                               + "for SQL Server");
+        throw new OPSException(mLocalizer.t("OPS597: void setParamBlob(ResultSet rs, " +
+                               "String column, Object value) not supported " +
+                               "for SQL Server."));
     }
 
     /** Set the blob parameter.
@@ -155,7 +162,8 @@ public class SQLServerBlobHelper extends BlobHelper {
             ps.setBinaryStream(blobColumnIndex, bis, bis.available());
         
         } catch (Exception e) {
-            throw new OPSException(e);
+            throw new OPSException(mLocalizer.t("OPS598: Could not set " + 
+                                    "the value of a Blob column: {0}", e));
         }
     }
 }

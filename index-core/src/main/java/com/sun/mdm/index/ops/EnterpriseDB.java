@@ -27,6 +27,7 @@ import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.ops.exception.OPSException;
+import com.sun.mdm.index.util.Localizer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -47,6 +48,8 @@ public final class EnterpriseDB extends ObjectPersistenceService {
     private static String mSelectString = null;
     private static String mUpdateString = null;
 
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     // SQL strings for JDBC operations.
     
     static {
@@ -147,11 +150,16 @@ public final class EnterpriseDB extends ObjectPersistenceService {
             params = addobject(params, euid);
 
             String sql = sql2str(mSelectString, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS501: Could not retrieve " + 
+                                        "an EUID-SystemCode-LocalID association " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
         } catch (ObjectException e) {
-            throw new OPSException(e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS502: Could not retrieve " + 
+                                        "an EnterpriseObject: {0}", e));
         } catch (OPSException e) {
-            throw e;
+            throw new OPSException(mLocalizer.t("OPS503: Could not retrieve " + 
+                                        "an EnterpriseObject: {0}", e));
         } finally {
         	try {
         	    if (rset != null) {
@@ -162,7 +170,8 @@ public final class EnterpriseDB extends ObjectPersistenceService {
             		stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS504: Could not close " + 
+                                        "an SQL statement or result set: {0}", e));
             }
         }
 
@@ -195,14 +204,18 @@ public final class EnterpriseDB extends ObjectPersistenceService {
             params = addobject(params, lid);
 
             String sql = sql2str(mInsertString, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS505: Could not create " + 
+                                        "an EUID-SystemCode-LocalID association " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
         } finally {
         	try {
         		if (stmt != null) {
             		stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS506: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }
@@ -233,14 +246,18 @@ public final class EnterpriseDB extends ObjectPersistenceService {
             params = addobject(params, lid);
 
             String sql = sql2str(mDeleteString, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS507: Could not delete " + 
+                                        "an EUID-SystemCode-LocalID association " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
         } finally {
         	try {
         		if (stmt != null) {
             		stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS508: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }
@@ -271,14 +288,18 @@ public final class EnterpriseDB extends ObjectPersistenceService {
             params = addobject(params, lid);
 
             String sql = sql2str(mUpdateString, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS509: Could not update " + 
+                                        "an EUID-SystemCode-LocalID association " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
         } finally {
         	try {
         		if (stmt != null) {
             		stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS519: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }

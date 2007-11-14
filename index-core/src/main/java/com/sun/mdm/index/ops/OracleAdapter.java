@@ -25,6 +25,8 @@ package com.sun.mdm.index.ops;
 import com.sun.mdm.index.objects.TransactionObject;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.ops.exception.OPSException;
+import com.sun.mdm.index.util.Localizer;
+
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,7 +44,7 @@ import java.util.Date;
     
     private static OracleAdapter oracleAdapterInstance = null;  // singleton instance
     private static ObjectPersistenceService mOps = null;        // OPS instance
-
+    private transient final Localizer mLocalizer = Localizer.get();
     /**  Return the OracleAdapter singleton.
      *
      * @throws OPSException if any exceptions are encountered
@@ -628,7 +630,8 @@ import java.util.Date;
                 return false;
             }
         } catch (SQLException e) {
-            throw new OPSException(e);
+            throw new OPSException(mLocalizer.t("OPS559: Could not set " + 
+                                    "the value of the delta column: {0}", e));
         }
     }
     
@@ -682,7 +685,8 @@ import java.util.Date;
                 }
             }
         } catch (ObjectException e) {
-            throw new OPSException(e);
+            throw new OPSException(mLocalizer.t("OPS560: Could not create " + 
+                                    "a TransactionObjectDB instance: {0}", e));
         } catch (SQLException e) {
             String sqlErr = e.getMessage();
             ArrayList params = new ArrayList();
@@ -700,9 +704,15 @@ import java.util.Date;
                 params = mOps.addobject(params, tObj.getEUID());
 
                 String sql = mOps.sql2str(getTransObjInsertStmt(), params);
-                throw new OPSException(sql + e.getMessage());
+                throw new OPSException(mLocalizer.t("OPS561: Could not create " + 
+                                        "a TransactionObjectDB instance " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
             } catch (ObjectException oe) {
-                throw new OPSException(oe.getMessage() + sqlErr);
+                throw new OPSException(mLocalizer.t("OPS562: Could not create " + 
+                                        "a TransactionObjectDB instance " + 
+                                        "due to an SQL error: {0}: {1}", 
+                                        e, oe));
             }
         } finally {
             try {
@@ -713,7 +723,8 @@ import java.util.Date;
                     stmt2.close();
                 }
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS563: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }

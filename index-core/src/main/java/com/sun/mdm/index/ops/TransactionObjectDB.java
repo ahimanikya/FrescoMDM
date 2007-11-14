@@ -26,6 +26,7 @@ import com.sun.mdm.index.objects.TransactionObject;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.ops.exception.OPSException;
 import com.sun.mdm.index.util.ConnectionUtil;
+import com.sun.mdm.index.util.Localizer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -71,6 +72,7 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
     private static String mOperationColumnName = null;  // Name of the operation column.
     
     private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
 
     /**
      * default constructor
@@ -179,9 +181,14 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
             ArrayList params = new ArrayList();
             params.add(transactionnumber);
             String sql = sql2str(mSelectString, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS679: Could not retrieve " + 
+                                        "a TransactionObject from the database " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
         } catch (ObjectException e) {
-            throw new OPSException(e);
+            throw new OPSException(mLocalizer.t("OPS680: Could not retrieve " + 
+                                        "a TransactionObject from the database : {0}"
+                                        , e));
         } finally {
             try {
                 if (rSet != null) {
@@ -191,7 +198,8 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException("failed to close statement");
+                throw new OPSException(mLocalizer.t("OPS681: Could not close " + 
+                                        "an SQL statement or result set: {0}", e));
             }
         }
 
@@ -248,9 +256,14 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
             params.add(EUID);
             params.add(EUID);
             String sql = sql2str(mFindNextTranByEUID, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS682: Could not retrieve the " + 
+                                        "next TransactionObject from the database " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
         } catch (ObjectException e) {
-            throw new OPSException(e);
+            throw new OPSException(mLocalizer.t("OPS683: Could not retrieve the " + 
+                                        "next TransactionObject from the database: {0}", 
+                                        e));
         } finally {
             try {
                 if (rSet != null) {
@@ -260,7 +273,8 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException("failed to close statement");
+                throw new OPSException(mLocalizer.t("OPS684: Could not close " + 
+                                        "an SQL statement or result set: {0}", e));
             }
         }
     
@@ -377,9 +391,14 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 params.add(endTS);
                 sql = sql2str(mFindBySystemCodeLID3, params);
             }
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS685: Could not retrieve the " + 
+                                        "TransactionObjects from the database " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
         } catch (ObjectException e) {
-            throw new OPSException(e);
+            throw new OPSException(mLocalizer.t("OPS686: Could not retrieve the " + 
+                                        "TransactionObjects from the database : {0}", 
+                                        e));
         } finally {
             try {
                 if (rSet != null) {
@@ -389,7 +408,8 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException("failed to close statement");
+                throw new OPSException(mLocalizer.t("OPS687: Could not close " + 
+                                        "an SQL statement or result set: {0}", e));
             }
         }
 
@@ -520,9 +540,14 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 params.add(endTS);
                 sql = sql2str(mFindByEUID3, params);
             }
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS688: Could not retrieve the " + 
+                                        "TransactionObjects from the database " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
         } catch (ObjectException e) {
-            throw new OPSException(e);
+            throw new OPSException(mLocalizer.t("OPS689: Could not retrieve the " + 
+                                        "TransactionObjects from the database : {0}", 
+                                        e));
         } finally {
             try {
                 if (rSet != null) {
@@ -532,7 +557,8 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException("failed to close statement");
+                throw new OPSException(mLocalizer.t("OPS690: Could not close " + 
+                                        "an SQL statement or result set: {0}", e));
             }
         }
 
@@ -609,9 +635,14 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
             params.add(euid);
             params.add(beginTS);
             String sql = sql2str(mFindByEUID4, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS691: Could not retrieve the " + 
+                                        "TransactionObjects from the database " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
         } catch (ObjectException e) {
-            throw new OPSException(e);
+            throw new OPSException(mLocalizer.t("OPS692: Could not retrieve the " + 
+                                        "TransactionObjects from the database : {0}", 
+                                        e));
         } finally {
             try {
                 if (rSet != null) {
@@ -621,7 +652,8 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException("failed to close statement");
+                throw new OPSException(mLocalizer.t("OPS693: Could not close " + 
+                                        "an SQL statement or result set: {0}", e));
             }
         }
 
@@ -766,10 +798,10 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     }
                 }
             }
-        } catch (SQLException e) {
-            throw new OPSException(queryStr + e.getMessage());
-        } catch (ObjectException e) {
-            throw new OPSException(e);
+        } catch (Exception e) {
+            throw new OPSException(mLocalizer.t("OPS695: Could not retrieve the " + 
+                                        "TransactionObjects from the database: {0}", 
+                                        e));
         } finally {
             try {
                 if (rSet != null) {
@@ -779,7 +811,8 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     queryStmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException("failed to close statement");
+                throw new OPSException(mLocalizer.t("OPS696: Could not close " + 
+                                        "an SQL statement or result set: {0}", e));
             }
         }
 
@@ -864,9 +897,14 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
             params.add(euid);
             params.add(euid);
             String sql = sql2str(mFindByEUID5, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS697: Could not retrieve the " + 
+                                        "TransactionObjects from the database " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
         } catch (ObjectException e) {
-            throw new OPSException(e);
+            throw new OPSException(mLocalizer.t("OPS698: Could not retrieve the " + 
+                                        "TransactionObjects from the database: {0}", 
+                                        e));
         } finally {
             try {
                 if (rSet != null) {
@@ -876,7 +914,8 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException("failed to close statement");
+                throw new OPSException(mLocalizer.t("OPS699: Could not close " + 
+                                        "an SQL statement or result set: {0}", e));
             }
         }
         return ret;

@@ -23,6 +23,7 @@
 package com.sun.mdm.index.ops;
 
 import com.sun.mdm.index.ops.exception.OPSException;
+import com.sun.mdm.index.util.Localizer;
 
 import java.io.BufferedInputStream;
 import java.io.ObjectOutputStream;
@@ -39,6 +40,8 @@ import java.sql.SQLException;
  * @version
  */
 public class OracleBlobHelper extends BlobHelper {
+
+    private transient final Localizer mLocalizer = Localizer.get();
     
     /** Creates a new instance of OracleBlobHelper */
     public OracleBlobHelper() {
@@ -61,7 +64,8 @@ public class OracleBlobHelper extends BlobHelper {
                 is = blob.getBinaryStream();
             }
         } catch (SQLException e) {
-            throw new OPSException(e);
+            throw new OPSException(mLocalizer.t("OPS564: Could not retrieve " + 
+                                    "the value of a Blob column: {0}", e));
         }
         ObjectInputStream iso = null;
         Object value = null;
@@ -75,7 +79,9 @@ public class OracleBlobHelper extends BlobHelper {
                 value = null;
                 iso = null;
             } catch (IOException e) {
-                throw new OPSException(e);
+                throw new OPSException(mLocalizer.t("OPS565: Could not open " + 
+                                    "an ObjectInputstreamForBackwardCompatibility " +
+                                    "instance: {0}", e));
             }
         }
         
@@ -92,15 +98,16 @@ public class OracleBlobHelper extends BlobHelper {
                     value = null;
                     iso = null;
                 } catch (IOException e3) {
-                    throw new OPSException(e3);
+                    throw new OPSException(mLocalizer.t("OPS566: Could not open " + 
+                                    "an ObjectInputStreamForVersion " +
+                                    "instance: {0}:{1}", e3, e));
                 }
                 if (iso != null) {
                     try {
                        value = iso.readObject();
-                    } catch (IOException e4) {
-                        throw new OPSException(e4);
-                    } catch (ClassNotFoundException e5) {
-                        throw new OPSException(e5);
+                    } catch (Exception e4) {
+                        throw new OPSException(mLocalizer.t("OPS567: Could not read " + 
+                                    "the object from the input stream: {0}:{1}", e4, e));
                     }
                 }
                 return value;
@@ -125,7 +132,8 @@ public class OracleBlobHelper extends BlobHelper {
             blob = (oracle.sql.BLOB) rs.getBlob(column.toUpperCase());
             os = blob.getBinaryOutputStream();
         } catch (SQLException e) {
-            throw new OPSException(e);
+            throw new OPSException(mLocalizer.t("OPS568: Could not set " + 
+                                    "the value of a Blob column: {0}", e));
         }
         ObjectOutputStream oso = null;
         try {
@@ -134,7 +142,8 @@ public class OracleBlobHelper extends BlobHelper {
             oso.flush();
             oso.close();
     	} catch (IOException e) {
-                throw new OPSException(e);
+                throw new OPSException(mLocalizer.t("OPS569: Could not set " + 
+                                    "the value of a Blob column: {0}", e));
     	}
     }
 

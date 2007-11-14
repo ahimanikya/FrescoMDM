@@ -25,6 +25,7 @@ package com.sun.mdm.index.ops;
 import com.sun.mdm.index.objects.TransactionObject;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.ops.exception.OPSException;
+import com.sun.mdm.index.util.Localizer;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class SQLServerAdapter extends DBAdapter {
     
     private static SQLServerAdapter sqlServerAdapterInstance = null;   // singleton instance
     private static ObjectPersistenceService mOps = null;       // OPS instance
+    private transient static final Localizer mLocalizer = Localizer.get();
 
     /**  Return the SQLServerAdapter singleton.
      *
@@ -665,7 +667,8 @@ public class SQLServerAdapter extends DBAdapter {
                 stmt.executeUpdate();  
             }
         } catch (ObjectException e) {
-            throw new OPSException(e);
+            throw new OPSException(mLocalizer.t("OPS589: Could not create " + 
+                                    "a TransactionObjectDB instance: {0}", e));
         } catch (SQLException e) {
             String sqlErr = e.getMessage();
             ArrayList params = new ArrayList();
@@ -683,9 +686,15 @@ public class SQLServerAdapter extends DBAdapter {
                 params = mOps.addobject(params, tObj.getEUID());
 
                 String sql = mOps.sql2str(getTransObjInsertStmt(), params);
-                throw new OPSException(sql + e.getMessage());
+                throw new OPSException(mLocalizer.t("OPS590: Could not create " + 
+                                        "a TransactionObjectDB instance " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
             } catch (ObjectException oe) {
-                throw new OPSException(oe.getMessage() + sqlErr);
+                throw new OPSException(mLocalizer.t("OPS591: Could not create " + 
+                                        "a TransactionObjectDB instance " + 
+                                        "due to an SQL error: {0}: {1}", 
+                                        e, oe));
             }
         } finally {
             try {
@@ -693,7 +702,8 @@ public class SQLServerAdapter extends DBAdapter {
                     stmt.close();
                 }
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS592: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }

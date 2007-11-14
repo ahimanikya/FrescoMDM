@@ -209,11 +209,16 @@ public final class SystemObjectDB extends ObjectPersistenceService {
             params = addobject(params, lid);
 
             String sql = sql2str(mSelectString, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS599: Could not retrieve " + 
+                                        "a SystemObject from the database " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
         } catch (ObjectException e) {
-            throw new OPSException(e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS600: Could not retrieve " + 
+                                        "a SystemObject from the database: {0}", e));
         } catch (OPSException e) {
-            throw e;
+            throw new OPSException(mLocalizer.t("OPS601: Could not retrieve " + 
+                                        "a SystemObject from the database: {0}", e));
         } finally {
             try {
                 if (rset != null) {
@@ -224,7 +229,8 @@ public final class SystemObjectDB extends ObjectPersistenceService {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException("failed to close statement");
+                throw new OPSException(mLocalizer.t("OPS602: Could not close " + 
+                                        "an SQL statement or result set: {0}", e));
             }
         }
         return ret;
@@ -319,22 +325,30 @@ public final class SystemObjectDB extends ObjectPersistenceService {
                 params = addobject(params, sysobj.getStatus());
 
                 String sql = sql2str(mInsertString, params);
-                throw new OPSException(sql + e.getMessage());
+                throw new OPSException(mLocalizer.t("OPS603: Could not persist " + 
+                                        "a SystemObject into the database " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
             } catch (ObjectException oe) {
-                mLogger.warn(mLocalizer.x("OPS010: Error occurred in formatting an SQL string: {0}", oe.getMessage()));
-                throw new OPSException(oe.getMessage() + "\n" + sqlerr);
+                throw new OPSException(mLocalizer.t("OPS604: Could not persist " + 
+                                        "a SystemObject into the database " + 
+                                        "due to an SQL error: {0}: {1}", 
+                                        e, oe));
             }
         } catch (ObjectException e) {
-            throw new OPSException(e);
+            throw new OPSException(mLocalizer.t("OPS605: Could not persist " + 
+                                        "a SystemObject into the database: {0}", e));
         } catch (OPSException e) {
-            throw e;
+            throw new OPSException(mLocalizer.t("OPS606: Could not persist " + 
+                                        "a SystemObject into the database: {0}", e));
         } finally {
             try {
                 if (stmt != null) {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException("failed to close statement");
+                throw new OPSException(mLocalizer.t("OPS607: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }
@@ -380,21 +394,30 @@ public final class SystemObjectDB extends ObjectPersistenceService {
                 params = addobject(params, sysobj.getLID());
 
                 String sql = sql2str(mDeleteString, params);
-                throw new OPSException(sql + e.getMessage());
+                throw new OPSException(mLocalizer.t("OPS608: Could not remove " + 
+                                        "a SystemObject from the database " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
             } catch (ObjectException oe) {
-                throw new OPSException(oe.getMessage() + sqlerr);
+                throw new OPSException(mLocalizer.t("OPS609: Could not remove " + 
+                                        "a SystemObject from the database " + 
+                                        "due to an SQL error: {0}: {1}", 
+                                        e, oe));
             }
         } catch (ObjectException e) {
-            throw new OPSException(e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS610: Could not remove " + 
+                                        "a SystemObject from the database: {0}", e)); 
         } catch (OPSException e) {
-            throw e;
+            throw new OPSException(mLocalizer.t("OPS611: Could not remove " + 
+                                        "a SystemObject from the database: {0}", e)); 
         } finally {
             try {
                 if (stmt != null) {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException("failed to close statement");
+                throw new OPSException(mLocalizer.t("OPS612: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }
@@ -507,21 +530,30 @@ public final class SystemObjectDB extends ObjectPersistenceService {
 
                 String sql = sql2str(mUpdateString, params);
 
-                throw new OPSException(sql + e.getMessage());
+                throw new OPSException(mLocalizer.t("OPS613: Could not update " + 
+                                        "a SystemObject in the database " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
             } catch (ObjectException oe) {
-                throw new OPSException(oe.getMessage() + sqlerr);
+                throw new OPSException(mLocalizer.t("OPS614: Could not update " + 
+                                        "a SystemObject in the database " + 
+                                        "due to an SQL error: {0}: {1}", 
+                                        e, oe));
             }
         } catch (ObjectException e) {
-            throw new OPSException(e);
+            throw new OPSException(mLocalizer.t("OPS615: Could not update " + 
+                                        "a SystemObject in the database: {0}", e));
         } catch (OPSException e) {
-            throw e;
+            throw new OPSException(mLocalizer.t("OPS616: Could not update " + 
+                                        "a SystemObject in the database: {0}", e));
         } finally {
             try {
                 if (stmt != null) {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new OPSException("failed to close statement");
+                throw new OPSException(mLocalizer.t("OPS617: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }

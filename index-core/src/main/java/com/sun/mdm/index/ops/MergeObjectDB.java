@@ -135,7 +135,8 @@ public final class MergeObjectDB extends ObjectPersistenceService {
 
             stmt.executeUpdate();
         } catch (ObjectException e) {
-            throw new OPSException(e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS539: Could not persist " + 
+                                        "a MergeObject into the database: {0}", e));
         } catch (SQLException e) {
             String sqlErr = e.getMessage();
             ArrayList params = new ArrayList();
@@ -148,9 +149,15 @@ public final class MergeObjectDB extends ObjectPersistenceService {
                 params = addobject(params, mObj.getUnMergeTransactionNumber()); 
 
                 String sql = sql2str(mInsertString, params);
-                throw new OPSException(sql + e.getMessage());
+                throw new OPSException(mLocalizer.t("OPS551: Could not persist " + 
+                                        "a MergeObject into the database " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
             } catch (ObjectException oe) {
-                throw new OPSException(oe.getMessage() + sqlErr);
+                throw new OPSException(mLocalizer.t("OPS540: Could not persist " + 
+                                        "a MergeObject into the database " + 
+                                        "due to an SQL error: {0}: {1}", 
+                                        e, oe));
             }
         } finally {
         	try {
@@ -158,7 +165,8 @@ public final class MergeObjectDB extends ObjectPersistenceService {
             		stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS541: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }
@@ -190,23 +198,23 @@ public final class MergeObjectDB extends ObjectPersistenceService {
             params = addobject(params, originalTransactionID);
             
             String sql = sql2str(mUpdateString2, params);
-            mLogger.warn(mLocalizer.x("OPS001: MergeObjectDB could not execute " + 
-                                      "this SQL String: {0}", sql));
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS542: Could not unmerge " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
         } catch (OPSException e) {
-            mLogger.warn(mLocalizer.x("OPS002: MergeObjectDB encountered a " + 
-                                      "general OPS exception for unmerge " + 
+            throw new OPSException(mLocalizer.t("OPS543: Could not unmerge " + 
+                                      "record with " +
                                       "transaction ID = {0}, original " + 
-                                      "transaction ID = {1}: {2}", unmergetn, 
-                                      originalTransactionID, e.getMessage()));
-            throw e;
+                                      "transaction ID = {1}: {2}", 
+                                      unmergetn, originalTransactionID, e));
         } finally {
         	try {
         		if (stmt != null) {
             		stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS544: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }
@@ -229,19 +237,19 @@ public final class MergeObjectDB extends ObjectPersistenceService {
         try {
             update(conn, null, unmergetn, kepteuid, mergedeuid);
         } catch (OPSException e) {
-            mLogger.warn(mLocalizer.x("OPS003: MergeObjectDB encountered a " + 
-                                      "general OPS exception for unmerge " + 
-                                      "transaction ID = {0}, kept EUID = {1}" + 
-                                      "merged EUID = {2}: {3}", unmergetn, 
-                                      kepteuid, mergedeuid, e.getMessage()));
-            throw e;
+            throw new OPSException(mLocalizer.t("OPS545: Could not unmerge " + 
+                                      "record with " +
+                                      "transaction ID = {0}, kept EUID = {1} " + 
+                                      "merged EUID = {2}: {3}", 
+                                      unmergetn, kepteuid, mergedeuid, e));
         } finally {
         	try {
         		if (stmt != null) {
             		stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS546: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }
@@ -281,10 +289,9 @@ public final class MergeObjectDB extends ObjectPersistenceService {
                 }
             } else {
                 if (mergetn == null) {
-                    String mesg = "OPS Error: mergetn of the LID merge is null";
-                    mLogger.warn(mLocalizer.x("OPS004: merge transaction number " + 
-                                              "of the system merge is null"));
-                    throw new OPSException(mesg);
+                    throw new OPSException(mLocalizer.t("OPS547: Could not unmerge " + 
+                                      "record.  The merge transaction number " + 
+                                      "of the system merge is null"));
                 }
                 lidUnmergeFlag = true;
                 stmt = getStatement(mUpdateString3, conn);
@@ -320,21 +327,21 @@ public final class MergeObjectDB extends ObjectPersistenceService {
             
                 sql = sql2str(mUpdateString3, params);
             }
-            mLogger.warn(mLocalizer.x("OPS005: MergeObjectDB: A general " + 
-                            "SQL error occurred while executing this " +
-                            "SQL instruction: {0}: {1}", sql, sqlerr));
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS548: An SQL error " + 
+                                        "occurred while executing this " +
+                                        "SQL statement: {0}: {1}", 
+                                        sql, e));
         } catch (OPSException e) {
-            mLogger.warn(mLocalizer.x("OPS006: MergeObjectDB: An OPS exception " + 
-                                      "occurred: {0}", e.getMessage()));
-            throw e;
+            throw new OPSException(mLocalizer.t("OPS549: An OPS exception " + 
+                                      "occurred: {0}", e));
         } finally {
         	try {
         		if (stmt != null) {
             		stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS550: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }

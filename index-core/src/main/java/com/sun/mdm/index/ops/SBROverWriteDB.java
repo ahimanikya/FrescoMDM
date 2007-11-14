@@ -30,6 +30,7 @@ import com.sun.mdm.index.objects.metadata.MetaDataService;
 import com.sun.mdm.index.objects.epath.EPathAPI;
 import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathParser;
+import com.sun.mdm.index.util.Localizer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -47,6 +48,9 @@ import net.java.hulp.i18n.Logger;
  * OPS class for SystemSBR records
  */
 public final class SBROverWriteDB extends ObjectPersistenceService {
+    
+    private transient static final Localizer mLocalizer = Localizer.get();
+
     private static String mDeleteString;
     private static String mInsertStringForInt;
     private static String mInsertStringForBool;
@@ -380,11 +384,16 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
             params.add(euid);
 
             String sql = sql2str(mSelectString, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS570: Could not retrieve " + 
+                                        "a SystemSBR instance " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
         } catch (ObjectException e) {
-            throw new OPSException(e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS571: Could not retrieve " + 
+                                        "a SystemSBR instance: {0}", e));
         } catch (OPSException e) {
-            throw e;
+            throw new OPSException(mLocalizer.t("OPS572: Could not retrieve " + 
+                                        "a SystemSBR instance: {0}", e));
         } finally {
         	try {
         	    if (rset != null) {
@@ -395,7 +404,8 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
             		stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS573: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
         
@@ -479,21 +489,30 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
                     sql = sql2str(mInsertStringForTimeStamp, params);
                 }    
                 
-                throw new OPSException(sql + e.getMessage());
+                throw new OPSException(mLocalizer.t("OPS574: Could not create " + 
+                                        "a SystemSBR instance " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
             } catch (ObjectException oe) {
-                throw new OPSException(oe.getMessage() + "\n" + sqlerr);
+                throw new OPSException(mLocalizer.t("OPS575: Could not create " + 
+                                        "a SystemSBR instance " + 
+                                        "due to an SQL error: {0}: {1}", 
+                                        e, oe));
             }
         } catch (ObjectException e) {
-            throw new OPSException(e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS576: Could not create " + 
+                                        "a SystemSBR instance: {0}", e));
         } catch (OPSException e) {
-            throw e;
+            throw new OPSException(mLocalizer.t("OPS577: Could not create " + 
+                                        "a SystemSBR instance: {0}", e));
         } finally {
         	try {
         		if (stmt != null) {
             		stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS578: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }
@@ -530,21 +549,30 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
                 params.add(ow.getPath());
                 
                 String sql = sql2str(mDeleteString, params);
-                throw new OPSException(sql + e.getMessage());
+                throw new OPSException(mLocalizer.t("OPS579: Could not remove " + 
+                                        "a SystemSBR instance " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
             } catch (ObjectException oe) {
-                throw new OPSException(oe.getMessage() + "\n" + sqlerr);
+                throw new OPSException(mLocalizer.t("OPS580: Could not remove " + 
+                                        "a SystemSBR instance " + 
+                                        "due to an SQL error: {0}: {1}", 
+                                        e, oe));
             }
         } catch (ObjectException e) {
-            throw new OPSException(e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS581: Could not remove " + 
+                                        "a SystemSBR instance: {0}", e));
         } catch (OPSException e) {
-            throw e;
+            throw new OPSException(mLocalizer.t("OPS582: Could not remove " + 
+                                        "a SystemSBR instance: {0}", e));
         } finally {
         	try {
         		if (stmt != null) {
             		stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS583: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }
@@ -634,21 +662,30 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
                     sql = sql2str(mUpdateStringForTimeStamp, params);
                 }
                 
-                throw new OPSException(sql + e.getMessage());
+                throw new OPSException(mLocalizer.t("OPS584: Could not update " + 
+                                        "a SystemSBR instance " + 
+                                        "with this SQL statement: {0}: {1}", 
+                                        sql, e));
             } catch (ObjectException oe) {
-                throw new OPSException(oe.getMessage() + "\n" + sqlerr);
+                throw new OPSException(mLocalizer.t("OPS585: Could not update " + 
+                                        "a SystemSBR instance " + 
+                                        "due to an SQL error: {0}: {1}", 
+                                        e, oe));
             }
         } catch (ObjectException e) {
-            throw new OPSException(e.getMessage());
+            throw new OPSException(mLocalizer.t("OPS586: Could not update " + 
+                                        "a SystemSBR instance: {0}", e));
         } catch (OPSException e) {
-            throw e;
+            throw new OPSException(mLocalizer.t("OPS586: Could not update " + 
+                                        "a SystemSBR instance: {0}", e));
         } finally {
         	try {
         		if (stmt != null) {
             		stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("OPS587: Could not close " + 
+                                        "an SQL statement: {0}", e));
             }
         }
     }
@@ -667,8 +704,9 @@ public final class SBROverWriteDB extends ObjectPersistenceService {
         if (ret == null) {
             // MetaDataService does not throw an exception on error
             if (ret == null) {
-                throw new ObjectException("MetaDataService could not obtain " +
-                "field type of: " + overwrite.getEPath());
+                throw new ObjectException(mLocalizer.t("OPS588: MetaDataService " + 
+                                        "could not obtain field type of: {0}", 
+                                        overwrite.getEPath()));
             }
         }
         return ret;

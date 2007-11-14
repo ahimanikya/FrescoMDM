@@ -51,6 +51,7 @@ import com.sun.mdm.index.query.QMIterator;
 import com.sun.mdm.index.query.Condition;
 import com.sun.mdm.index.query.AssembleDescriptor;
 import com.sun.mdm.index.query.EOObjectNodeAssembler;
+import com.sun.mdm.index.util.Localizer;
 
 
 /** Retrieves EO from the database based on Epaths specified. Internally it 
@@ -62,6 +63,7 @@ import com.sun.mdm.index.query.EOObjectNodeAssembler;
 public final class EORetriever {
 	private QueryManager mQueryMgr;
 
+    private transient static final Localizer mLocalizer = Localizer.get();
 
     /** Default constructor
      * 
@@ -553,10 +555,14 @@ public final class EORetriever {
                   }
                 }
             } else {
-                throw new ObjectException();
+                throw new ObjectException(mLocalizer.t("OPS520: Could not combine " + 
+                                        "two object nodes.  The type of node1 ({0}) " + 
+                                        "does not match the type of node2 ({1})",
+                                        node1.pGetTag(), node2.pGetTag()));
             }
         } catch (ObjectException e) {
-            throw e;
+            throw new ObjectException(mLocalizer.t("OPS521: Could not combine " + 
+                                        "two object nodes: {0}", e));
         }
     }
 }

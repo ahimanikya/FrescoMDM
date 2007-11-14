@@ -98,9 +98,11 @@ import java.util.logging.Level;
             lockSBR(con, euid, revisionNumber);
             sbr.setRevisionNumber(sbr.getRevisionNumber().intValue() + 1);
         } catch (ObjectException ex) {
-            throw new DataModifiedException(ex.getMessage());
+            throw new DataModifiedException(mLocalizer.t("OPS523: Could not lock " + 
+                                        "EnterpriseObject: {1}", ex));
         } catch (SQLException se) {
-            throw new DataModifiedException(se.getMessage());
+            throw new DataModifiedException(mLocalizer.t("OPS524: Could not lock " + 
+                                        "EnterpriseObject: {1}", se));
         } 
     }
     
@@ -129,9 +131,11 @@ import java.util.logging.Level;
             }
             sbr.setRevisionNumber(sbr.getRevisionNumber().intValue() + 1);
         } catch (ObjectException ex) {
-            throw new DataModifiedException(ex.getMessage());
+            throw new DataModifiedException(mLocalizer.t("OPS525: Could not lock " + 
+                                        "EnterpriseObject: {1}", ex));
         } catch (SQLException se) {
-            throw new DataModifiedException(se.getMessage());
+            throw new DataModifiedException(mLocalizer.t("OPS526: Could not lock " + 
+                                        "EnterpriseObject: {1}", se));
         } 
     }
     
@@ -179,9 +183,11 @@ import java.util.logging.Level;
                 sbr2.setRevisionNumber(sbr2.getRevisionNumber().intValue() + 1);
             }
         } catch (ObjectException ex) {
-            throw new DataModifiedException(ex.getMessage());
+            throw new DataModifiedException(mLocalizer.t("OPS527: Could not lock " + 
+                                        "one or more EnterpriseObjects: {1}", ex));
         } catch (SQLException se) {
-            throw new DataModifiedException(se.getMessage());
+            throw new DataModifiedException(mLocalizer.t("OPS528: Could not lock " + 
+                                        "one or more EnterpriseObjects: {1}", se));
         } 
     }
     
@@ -216,9 +222,11 @@ import java.util.logging.Level;
             sbr1.setRevisionNumber(sbr1.getRevisionNumber().intValue() + 1);
             sbr2.setRevisionNumber(sbr2.getRevisionNumber().intValue() + 1);
         } catch (ObjectException ex) {
-           throw new DataModifiedException(ex.getMessage());
+           throw new DataModifiedException(mLocalizer.t("OPS529: Could not lock " + 
+                                        "one or more EnterpriseObjects: {1}", ex));
         } catch (SQLException se) {
-           throw new DataModifiedException(se.getMessage());
+           throw new DataModifiedException(mLocalizer.t("OPS530: Could not lock " + 
+                                        "one or more EnterpriseObject: {1}", se));
         } 
     }
     
@@ -252,11 +260,14 @@ import java.util.logging.Level;
             rs.close();
             ps.close();
             if (count != 1) {
-                throw new DataModifiedException("Record with EUID: " + euid 
-                                                + " has been modified by another user.");
+                throw new DataModifiedException(mLocalizer.t("OPS531: Record with " + 
+                                        "EUID: {0} has been modified by another user", 
+                                        euid));
             }
         } catch (SQLException e) {
-            throw new DataModifiedException(e.getMessage());
+            throw new DataModifiedException(mLocalizer.t("OPS532: Could not " + 
+                                        "lock an SBR for EUID {0}: {1}", 
+                                        euid, e));
         }
     }
     
@@ -291,11 +302,14 @@ import java.util.logging.Level;
             rs.close();
             ps.close();
             if (count != 1) {
-                throw new DataModifiedException("Record with EUID: " + euid 
-                                                + " has been modified by another user.");
+                throw new DataModifiedException(mLocalizer.t("OPS533: Record with " + 
+                                        "EUID: {0} has been modified by another user", 
+                                        euid));
             }
         } catch (SQLException e) {
-            throw new DataModifiedException(e.getMessage());
+            throw new DataModifiedException(mLocalizer.t("OPS534: Could not " + 
+                                        "lock an SBR for EUID {0}: {1}", 
+                                        euid, e));
         }
     }
     
@@ -335,14 +349,18 @@ import java.util.logging.Level;
             rs.close();
             ps.close();
             if (count != 2) {
-                throw new DataModifiedException(
-                        "Record has been modified by another user.");
+                throw new DataModifiedException(mLocalizer.t("OPS535: Could not " + 
+                                        "lock SBRs for EUID1 ({0}) or EUID2 ({1}).  " +
+                                        "They have been modified " + 
+                                        "by another user.", euid1, euid2));
             }
             if (mLogger.isLoggable(Level.FINE)) {
                 mLogger.fine("Database record locking was successful.");
             }
         } catch (SQLException e) {
-             throw new DataModifiedException(e.getMessage());
+             throw new DataModifiedException(mLocalizer.t("OPS536: Could not " + 
+                                        "lock SBRs for EUID1 ({0}) and EUID2 ({1}): {2}", 
+                                        euid1, euid2, e));
         }
 
     }
@@ -383,14 +401,18 @@ import java.util.logging.Level;
             rs.close();
             ps.close();
             if (count != 2) {
-                throw new DataModifiedException(
-                        "Record has been modified by another user.");
+                throw new DataModifiedException(mLocalizer.t("OPS537: Could not " + 
+                                        "lock SBRs for EUID1 ({0}) or EUID2 ({1}).  " +
+                                        "They have been modified " + 
+                                        "by another user.", euid1, euid2));
             }
             if (mLogger.isLoggable(Level.FINE)) {
                 mLogger.fine("Database record locking was successful.");
             }
         } catch (SQLException e) {
-             throw new DataModifiedException(e.getMessage());
+             throw new DataModifiedException(mLocalizer.t("OPS538: Could not " + 
+                                        "lock SBRs for EUID1 ({0}) and EUID2 ({1}): {2}", 
+                                        euid1, euid2, e));
         }
     }
      

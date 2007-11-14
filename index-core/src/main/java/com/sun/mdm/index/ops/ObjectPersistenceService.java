@@ -24,6 +24,7 @@ package com.sun.mdm.index.ops;
 
 import com.sun.mdm.index.ops.exception.OPSException;
 import com.sun.mdm.index.ops.exception.UnsupportedDataType;
+import com.sun.mdm.index.util.Localizer;
 
 import java.util.logging.Level;
 import net.java.hulp.i18n.Logger;
@@ -61,6 +62,7 @@ public class ObjectPersistenceService implements java.io.Serializable {
     private BlobHelper mBlobHelper = null;
     
     private transient static final Logger mLogger = Logger.getLogger(ObjectPersistenceService.class);
+    private transient static final Localizer mLocalizer = Localizer.get();
     
     /**
      * Default constructor: jdbc connection is obtained here (future
@@ -76,7 +78,9 @@ public class ObjectPersistenceService implements java.io.Serializable {
         
         mBlobHelper = BlobHelper.getBlobHelper(db);
         if (mBlobHelper == null) {
-            throw new OPSException("Failed to obtain an instance of BlobHelper for " + dbType);
+            throw new OPSException(mLocalizer.t("OPS552: Failed to " + 
+                                    "obtain an instance of BlobHelper for " + 
+                                    "this database type: {0}", dbType));
         }
     }
 
@@ -94,7 +98,8 @@ public class ObjectPersistenceService implements java.io.Serializable {
         try {
             stmt = conn.prepareStatement(sqlstr);
         } catch (SQLException ex) {
-            throw new OPSException(ex);
+            throw new OPSException(mLocalizer.t("OPS553: Could not " + 
+                                    "retrieve a PreparedStatement: {0}", ex));
         }
 
         return stmt;
@@ -302,10 +307,12 @@ public class ObjectPersistenceService implements java.io.Serializable {
             } else if (type.equals("Blob")) {
                 ret = mBlobHelper.getValue(rs, column);
             } else {
-                throw new UnsupportedDataType();
+                throw new UnsupportedDataType(mLocalizer.t("OPS554: This is " + 
+                                    "an unsupported data type: {0}", type));
             }
         } catch (SQLException ex) {
-            throw new OPSException(ex);
+            throw new OPSException(mLocalizer.t("OPS555: getValue() " + 
+                                    "encountered a SQLException: {0}", ex));
         }
 
         return ret;
@@ -381,7 +388,8 @@ public class ObjectPersistenceService implements java.io.Serializable {
                         new java.sql.Timestamp(
                             ((java.util.Date) value).getTime()));
                 } else {
-                    throw new UnsupportedDataType();
+                    throw new UnsupportedDataType(mLocalizer.t("OPS556: This is " + 
+                                    "an unsupported data type: {0}", type));
                 }
             } else {
                 if (type.equals("String")) {
@@ -405,12 +413,14 @@ public class ObjectPersistenceService implements java.io.Serializable {
                 } else if (type.equals("Blob")) {
                     stmt.setNull(pos, java.sql.Types.BLOB);
                 } else {
-                    throw new UnsupportedDataType("Type = " + type);
+                    throw new UnsupportedDataType(mLocalizer.t("OPS557: This is " + 
+                                    "an unsupported data type: {0}", type));
                 }
             }
         } catch (SQLException ex) {
-            throw new OPSException("Error in binding parameter (" 
-                + pos + ") of '" + type + "': " + value + ": " + ex.getMessage());
+            throw new OPSException(mLocalizer.t("OPS558: Error in binding parameter " + 
+                                    "({0}) of type=\"{1}\" to value={2}: {3}",
+                                    pos, type, value, ex)); 
         }
     }
 
