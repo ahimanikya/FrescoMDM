@@ -1238,6 +1238,16 @@ make_release()
     kitbase=$KIT_DISTROOT/$KIT_REV
     bldnum=Build$BLDNUM
     bldnumfile=$kitbase/.bldnum
+    relstage="$SRCROOT/bld/release"
+
+    #create release staging area:
+    rm -rf $relstage
+    installdir -m 0775 $relstage
+
+    #create version files:
+    versionfile="${relstage}/version.txt"
+    echo $bldnum  >> $versionfile 2>&1
+
 
     if [ ! -d $kitbase ]; then
         installdir -m 0775 $kitbase
@@ -1420,9 +1430,7 @@ EOF
 
     bldmsg -mark -p $p/make_mavenarchive Archiving m2 to bld/m2.zip using maven_archive.bom
     cd $SRCROOT
-    rm -rf $SRCROOT/bld
-    mkdir $SRCROOT/bld
-    jar -Mcf $SRCROOT/bld/m2.zip m2
+    jar -Mcf $SRCROOT/bld/release/m2.zip m2
     bldmsg -mark -p $p/make_mavenarchive Release maven_archive.bom to $maven_kitbase
     installdir $maven_kitbase
     release -bomloc $SRCROOT/rl/src/cmn/bom -ver $BLDNUM -log -checksum -w $maven_kitbase maven_archive.bom
