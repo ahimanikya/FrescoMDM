@@ -40,6 +40,8 @@ import com.sun.mdm.index.master.search.potdup.PotentialDuplicateSearchObject;
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.util.Constants;
+import com.sun.mdm.index.util.Localizer;
+
 import javax.ejb.EJBContext;
 
 /**
@@ -52,6 +54,8 @@ import javax.ejb.EJBContext;
  */
 public class PotentialDuplicatePageAdapter implements PageAdapter, java.io.Serializable {
 
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     /** Current row index
      */    
     private int mPosition = 0;
@@ -107,7 +111,8 @@ public class PotentialDuplicatePageAdapter implements PageAdapter, java.io.Seria
                 mFieldArray = null;
             }
         } catch (Exception e) {
-            throw new PageException(e);
+            throw new PageException(mLocalizer.t("PAG530: PotentialDuplicatePageAdapter " +
+                                        "could not be initialized: {0}", e));
         }
     }
 
@@ -119,7 +124,8 @@ public class PotentialDuplicatePageAdapter implements PageAdapter, java.io.Seria
     public void setCurrentPosition(int index)
         throws PageException {
         if (index + 1 >= mNumElements) {
-            throw new PageException("Index out of bounds: " + index);
+            throw new PageException(mLocalizer.t("PAG531: PotentialDuplicatePageAdapter " +
+                                        "index out of bounds: {0}", index));
         }
         mPosition = index;
     }
@@ -178,7 +184,8 @@ public class PotentialDuplicatePageAdapter implements PageAdapter, java.io.Seria
     public Object next()
         throws PageException {
         if (mPosition == mNumElements) {
-            throw new PageException("No more elements");
+            throw new PageException(mLocalizer.t("PAG532: PotentialDuplicatePageAdapter " +
+                                        "has no more elements to retrieve."));
         } else {
             if (mForwardOnly && mPosition > 0 && (mPosition%mPageSize == 0)) {   
                 clearPageSizeCache();
@@ -202,7 +209,7 @@ public class PotentialDuplicatePageAdapter implements PageAdapter, java.io.Seria
     public Object prev()
         throws PageException {
         if (mPosition == 0) {
-            throw new PageException("Already at beginning of iterator");
+            throw new PageException(mLocalizer.t("PAG533: Already at beginning of iterator."));
         } else {
             mPosition--;
             loadRows(REVERSE, false);
@@ -264,8 +271,8 @@ public class PotentialDuplicatePageAdapter implements PageAdapter, java.io.Seria
                     return mObjectPath;
                 }
             }
-            throw new PageException("PotentialDuplicatePageAdapter requires "
-            + "EUID to be selected.");
+            throw new PageException(mLocalizer.t("PAG534: PotentialDuplicatePageAdapter " + 
+                                                "requires EUID to be selected."));
         }
         return mObjectPath;
     }
@@ -300,7 +307,8 @@ public class PotentialDuplicatePageAdapter implements PageAdapter, java.io.Seria
                 endIndex = mPosition;
                 break;
             default:
-                throw new PageException("Invalid direction: " + direction);
+                throw new PageException(mLocalizer.t("PAG535: Invalid " + 
+                                                "load direction: {0}", direction));
             }
             //Load records
             QMIterator iterator = null;
@@ -376,7 +384,8 @@ public class PotentialDuplicatePageAdapter implements PageAdapter, java.io.Seria
                 }  // end WHILE loop
 
             } catch (Exception e) {
-                throw new PageException(e);
+                throw new PageException(mLocalizer.t("PAG536: Could not load " + 
+                                                "the records: {0}", e));
             } finally {
                 try {
             
@@ -384,7 +393,8 @@ public class PotentialDuplicatePageAdapter implements PageAdapter, java.io.Seria
         	         iterator.close();
         	      }
         	    } catch (Exception ex) {
-        		  throw new PageException(ex);
+        		  throw new PageException(mLocalizer.t("PAG537: Could not close " + 
+                                                "the iterator: {0}", ex));
         	    }
             }
       }

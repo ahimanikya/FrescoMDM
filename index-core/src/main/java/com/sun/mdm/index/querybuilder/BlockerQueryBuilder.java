@@ -61,6 +61,8 @@ import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.metadata.MetaDataService;
 import com.sun.mdm.index.parser.FieldDef;
+import com.sun.mdm.index.util.Localizer;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -82,7 +84,8 @@ public class BlockerQueryBuilder extends QueryBuilder {
     private BlockerConfig config;
 
     private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
-
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     private final SimpleDateFormat mDateFormat = new SimpleDateFormat(
             "yyyy-MM-dd");
 
@@ -207,7 +210,8 @@ public class BlockerQueryBuilder extends QueryBuilder {
                                 }
                             }
                         } catch (Exception ex) {
-                            throw new QueryBuilderException(ex);
+                            throw new QueryBuilderException(mLocalizer.t("QUE575: getApplicableQueryIds() " +
+                                                                    "failed: {0}", ex));
                         }
                     }
                     // if even one of the fields required is null, stop checking
@@ -226,7 +230,8 @@ public class BlockerQueryBuilder extends QueryBuilder {
             }
             return (String[]) retIds.toArray(new String[] {});
         } catch (Exception e) {
-            throw new QueryBuilderException(e);
+            throw new QueryBuilderException(mLocalizer.t("QUE576: getApplicableQueryIds() " +
+                                                                    "failed: {0}", e));
         }
     }
 
@@ -258,8 +263,8 @@ public class BlockerQueryBuilder extends QueryBuilder {
             SystemObject so3 = eoSearchCriteria.getSystemObject3();
 
             if (so == null && so2 == null && so3 == null) {
-                throw new QueryBuilderException(
-                        "At least one SystemObject must not be null");
+                throw new QueryBuilderException(mLocalizer.t("QUE577: At least " +
+                                                "one SystemObject must not be null."));
             }
 
             String fullObjPath = null;
@@ -291,8 +296,8 @@ public class BlockerQueryBuilder extends QueryBuilder {
             EPathArrayList fieldsToRetrieve = eoSearchOptions
                     .getFieldsToRetrieve();
             if (fieldsToRetrieve == null) {
-                throw new QueryBuilderException(
-                        "Fields to retrieve parameter can not be null");
+                throw new QueryBuilderException(mLocalizer.t("QUE578: Fields to " +
+                                                "retrieve parameter can not be null."));
             }
             qo.setSelect(fieldsToRetrieve.toStringArray());
 
@@ -327,7 +332,7 @@ public class BlockerQueryBuilder extends QueryBuilder {
             // return query object
             return qo;
         } catch (Exception e) {
-            throw new QueryBuilderException(e);
+            throw new QueryBuilderException(mLocalizer.t("QUE579: buildQueryObject() failed."));
         }
     }
 
@@ -634,8 +639,8 @@ public class BlockerQueryBuilder extends QueryBuilder {
                 if (value == null) {
                     // We should never get here if getApplicableQueryIds is
                     // working correctly
-                    throw new QueryBuilderException(
-                            "Insufficient data to execute block");
+                    throw new QueryBuilderException(mLocalizer.t("QUE580: Insufficient data " +
+                                            "to execute block."));
                 }
                 qmCondition = new Condition(field, "=", value, true);
             } 
@@ -660,8 +665,8 @@ public class BlockerQueryBuilder extends QueryBuilder {
             }
             break;
         default:
-            throw new IllegalArgumentException("Unrecgonized condition type: "
-                    + type);
+            throw new IllegalArgumentException(mLocalizer.t("QUE581: Unrecognized " +
+                                            "condition type: {0}", type));
         }
         return qmCondition;
     }
@@ -700,9 +705,8 @@ public class BlockerQueryBuilder extends QueryBuilder {
                         // Long constants are parsed in constructor
                         obj = new Long(rangeVal);
                     } else {
-                        throw new QueryBuilderException(
-                                "Unrecognized data type for default range constant: "
-                                        + fieldType);
+                        throw new QueryBuilderException(mLocalizer.t("QUE582: Unrecognized " +
+                                            "data type for default range constant: {0}", fieldType));
                     }
                     break;
                 case RangeCondition.RANGE_TYPE_OFFSET:
@@ -738,20 +742,19 @@ public class BlockerQueryBuilder extends QueryBuilder {
                             long i2 = Long.parseLong(rangeVal);
                             obj = new Long(i + i2);
                         } else {
-                            throw new QueryBuilderException(
-                                    "Unrecognized data type for default range offset: "
-                                            + fieldType);
+                            throw new QueryBuilderException(mLocalizer.t("QUE583: Unrecognized " +
+                                            "data type for default range offset: {0}", fieldType));
                         }
                     }
                     break;
                 default:
-                    throw new QueryBuilderException(
-                            "Unrecognized default range type: " + rangeType);
+                    throw new QueryBuilderException(mLocalizer.t("QUE584: Unrecognized " +
+                                            "data type for default range type: {0}", rangeType));
                 }
             }
             return obj;
         } catch (Exception e) {
-            throw new QueryBuilderException(e);
+            throw new QueryBuilderException(mLocalizer.t("QUE585: getDefaultValue() failed: {0}", e));
         }
     }
 

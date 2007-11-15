@@ -109,7 +109,8 @@ public class TransactionPageAdapter implements PageAdapter, java.io.Serializable
                 mObjArray[i] = transSummary;
             }
         } catch (Exception e) {
-            throw new PageException(e);
+            throw new PageException(mLocalizer.t("PAG538: TransactionPageAdapter " +
+                                        "could not be initialized: {0}", e));
         }
     }
 
@@ -121,7 +122,8 @@ public class TransactionPageAdapter implements PageAdapter, java.io.Serializable
     public void setCurrentPosition(int index)
         throws PageException {
         if ((index < 0) || (index >= mNumElements)) {
-            throw new PageException("Index out of bounds: " + index);
+            throw new PageException(mLocalizer.t("PAG539: TransactionPageAdapter " +
+                                        "index out of bounds: {0}", index));
         }
         mPosition = index;
     }
@@ -186,7 +188,8 @@ public class TransactionPageAdapter implements PageAdapter, java.io.Serializable
     public Object next()
         throws PageException {
         if (mPosition == mNumElements) {
-            throw new PageException("No more elements");
+            throw new PageException(mLocalizer.t("PAG540: TransactionPageAdapter " +
+                                        "has no more elements to load."));
         } else {
             if (mForwardOnly && mPosition > 0 && (mPosition%mPageSize == 0)) {   
                 clearPageSizeCache();
@@ -213,7 +216,7 @@ public class TransactionPageAdapter implements PageAdapter, java.io.Serializable
     public Object prev()
         throws PageException {
         if (mPosition == -1) {
-            throw new PageException("Already at beginning of iterator");
+            throw new PageException(mLocalizer.t("PAG541: Already at beginning of iterator."));
         } else {
             loadRows(REVERSE);
             return mObjArray[mPosition--];
@@ -265,7 +268,8 @@ public class TransactionPageAdapter implements PageAdapter, java.io.Serializable
         try {
             con = ConnectionUtil.getConnection();
         } catch (Exception e) {
-            throw new PageException(e);
+            throw new PageException(mLocalizer.t("PAG542: TransactionPageAdapter " + 
+                                    "could not retrieve a database connection."));
         }
         return con;
     }
@@ -300,7 +304,8 @@ public class TransactionPageAdapter implements PageAdapter, java.io.Serializable
                 endIndex = mPosition;
                 break;
             default:
-                throw new PageException("Invalid direction: " + direction);
+                throw new PageException(mLocalizer.t("PAG543: Invalid load direction: {0}", 
+                                                     direction));
             }
             // Load EnterpriseObjectHistory record for each TransactionSummary 
             // in object array
@@ -333,7 +338,8 @@ public class TransactionPageAdapter implements PageAdapter, java.io.Serializable
                     summaryObj.setValidTransaction(validTransaction);
                 }
             } catch (Exception e) {
-                throw new PageException(e);
+                throw new PageException(mLocalizer.t("PAG544: Could not load " + 
+                                                     "the records: {0}", e));
             } finally {
                 if (con != null) {
                     releaseConnection(con);

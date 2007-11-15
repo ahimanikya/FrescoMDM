@@ -33,6 +33,7 @@ import org.xml.sax.InputSource;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import java.io.File;
+import com.sun.mdm.index.util.Localizer;
 
 
 /**
@@ -40,6 +41,8 @@ import java.io.File;
  * @version
  */
 public class Utils {
+    
+    private transient static final Localizer mLocalizer = Localizer.get();
     
     private static Document mDoc;
     public static final String LINE = "\r";
@@ -92,7 +95,8 @@ public class Utils {
             
             if (newPath.exists()) {
                 if (recursiveDelete(newPath) == false) {
-                    throw new ParserException("Failed to delete directory: " + path);
+                    throw new ParserException(mLocalizer.t("PAR500: Failed to " + 
+                                                     "delete the directory: {0}", path));
                 }
             }
             
@@ -117,8 +121,9 @@ public class Utils {
             newPath = new java.io.File(path + "\\usersrc\\java");
             newPath.mkdirs();
         } catch (Exception e) {
-            throw new ParserException("Parser Util: failed to set up temporary build directory: "
-            + path, e);
+            throw new ParserException(mLocalizer.t("PAR501: Failed to set " + 
+                                        "up the temporary build directory: {0}:{1}", 
+                                        path, e));
         }
     }
     
@@ -180,7 +185,8 @@ public class Utils {
             ret.parse(mDoc);
             return ret;
         } catch (Exception e) {
-            throw new ParserException(e);
+            throw new ParserException(mLocalizer.t("PAR502: Failed to parse: {0}:{1}", 
+                                                    xmlPath, e));
         }
     }
     
@@ -198,7 +204,8 @@ public class Utils {
             ret.parse(mDoc);
             return ret;
         } catch (Exception e) {
-            throw new ParserException(e);
+            throw new ParserException(mLocalizer.t("PAR503: Failed to parse: {0}:{1}", 
+                                                    xmlSource, e));
         }
     }
     
@@ -216,7 +223,9 @@ public class Utils {
             ret.parse(mDoc);
             return ret;
         } catch (Exception e) {
-            throw new ParserException(e);
+            throw new ParserException(mLocalizer.t("PAR510: Failed to parse " +
+                                                "EDM type: {0}:{1}", 
+                                                xmlSource, e));
         }
     }
     
@@ -234,7 +243,9 @@ public class Utils {
             ret.parse(mDoc);
             return ret;
         } catch (Exception e) {
-            throw new ParserException(e);
+            throw new ParserException(mLocalizer.t("PAR504: Failed to parse " +
+                                                "Update type: {0}:{1}", 
+                                                xmlPath, e));
         }
     }
     
@@ -252,7 +263,9 @@ public class Utils {
             ret.parse(mDoc);
             return ret;
         } catch (Exception e) {
-            throw new ParserException(e);
+            throw new ParserException(mLocalizer.t("PAR505: Failed to parse " +
+                                                "Update type: {0}:{1}", 
+                                                xmlSource, e));
         }
     }
     
@@ -270,7 +283,9 @@ public class Utils {
             ret.parse(mDoc);
             return ret;
         } catch (Exception e) {
-            throw new ParserException(e);
+            throw new ParserException(mLocalizer.t("PAR506: Failed to parse " +
+                                                "Query type: {0}:{1}", 
+                                                xmlSource, e));
         }
     }
     
@@ -288,7 +303,9 @@ public class Utils {
             ret.parse(mDoc);
             return ret;
         } catch (Exception e) {
-            throw new ParserException(e);
+            throw new ParserException(mLocalizer.t("PAR507: Failed to parse " +
+                                                "Match Field Definition: {0}:{1}", 
+                                                xmlSource, e));
         }
     }
     
@@ -307,7 +324,9 @@ public class Utils {
             ret.parse(mDoc);
             return ret;
         } catch (Exception e) {
-            throw new ParserException(e);
+            throw new ParserException(mLocalizer.t("PAR508: Failed to parse " +
+                                                "Master type: {0}:{1}", 
+                                                xmlSource, e));
         }
     }
     
@@ -328,7 +347,9 @@ public class Utils {
             foutput.write(data.getBytes());
             foutput.close();
         } catch (IOException e) {
-            throw new ParserException("Parser Util: failed to write file", e);
+            throw new ParserException(mLocalizer.t("PAR509: Failed to write " +
+                                                "file: {0}:{1}", 
+                                                path, e));
         }
     }
     

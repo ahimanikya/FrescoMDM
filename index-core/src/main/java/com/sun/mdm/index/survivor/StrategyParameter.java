@@ -22,6 +22,7 @@
  */
 package com.sun.mdm.index.survivor;
 
+import com.sun.mdm.index.util.Localizer;
 
 /**
  * The <b>StrategyParameter</b> class represents a single parameter for the
@@ -33,6 +34,9 @@ package com.sun.mdm.index.survivor;
  * @version $Revision: 1.1 $
  */
 public class StrategyParameter implements Cloneable, java.io.Serializable {
+    
+    private transient static final Localizer mLocalizer = Localizer.get();
+    
     //private Object valueObject;
     private static Class[] allowedTypes = {
         java.lang.String.class, java.lang.Boolean.class, java.lang.Integer.class,
@@ -95,7 +99,8 @@ public class StrategyParameter implements Cloneable, java.io.Serializable {
             try {
                 typeClass = Class.forName(type);
             } catch (Throwable t) {
-                throw new IllegalArgumentException(type + " is not an allowed property value type");
+                throw new IllegalArgumentException(mLocalizer.t("SUR514: This is an invalid " +
+                                        "property value type: {0}", type));
             }
 
             boolean allowedType = false;
@@ -109,7 +114,8 @@ public class StrategyParameter implements Cloneable, java.io.Serializable {
             }
 
             if (!allowedType) {
-                throw new IllegalArgumentException(type + " is not an allowed property value type");
+                throw new IllegalArgumentException(mLocalizer.t("SUR515: This is an invalid " +
+                                        "property value type: {0}", type));
             }
         }
     }
@@ -215,13 +221,15 @@ public class StrategyParameter implements Cloneable, java.io.Serializable {
                 return new Long(string);
             } else if (Character.class.equals(type)) {
                 if (string.length() != 1) {
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException(mLocalizer.t("SUR516: This is an " +
+                                        "value for the string parameter: {0}", string));
                 } else {
                     return new Character(string.charAt(0));
                 }
             }
         } catch (Throwable t) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(mLocalizer.t("SUR517: Could not " +
+                                        "return the value object from a string: {0}", t));
         }
 
         throw new IllegalArgumentException();

@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import com.sun.mdm.index.objects.metadata.MetaDataService;
+import com.sun.mdm.index.util.Localizer;
 
 
 /**
@@ -38,6 +39,8 @@ import com.sun.mdm.index.objects.metadata.MetaDataService;
  * @author sdua
  */
  abstract class QueryParser {
+    
+    private transient final Localizer mLocalizer = Localizer.get();
     
     private QueryObject mqo;
     private String mroot;
@@ -167,7 +170,8 @@ import com.sun.mdm.index.objects.metadata.MetaDataService;
             }
 
             if (!found) {
-                throw new QMException(object + " is not valid object name");
+                throw new QMException(mLocalizer.t("QUE552: {0} is " +
+                                    "not a valid object name", object));
             }
         }
     }
@@ -322,7 +326,8 @@ ConditionMap[] createConditionMap(HashSet objects, QPath[] qpaths,
   	              fieldList.add(fields[j]);
   	           }
   	        } catch (Exception ex) {
-  	          throw new QMException("Invalid Select field:" + field + ex);
+  	          throw new QMException(mLocalizer.t("QUE550: Invalid Select field: " + 
+      	                                "{0}{1}", field, ex));
   	        }
   	          	      	       
   		  } else {
@@ -357,7 +362,8 @@ ConditionMap[] createConditionMap(HashSet objects, QPath[] qpaths,
          
           String[] key = MetaDataService.getPrimaryKey(root);
          if (key == null) {
-         	 throw new QMException("Feature to retrieve Primary Key is not present");
+         	 throw new QMException(mLocalizer.t("QUE551: Feature to retrieve " + 
+      	                                "Primary Key is not present."));
          }
          String[] rootkeys = new String[key.length];
          for (int i =0; i < rootkeys.length; i++) {

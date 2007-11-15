@@ -152,8 +152,9 @@ public class PotentialDuplicateManager {
                 PotentialDuplicate pd = 
                     (PotentialDuplicate) potDupIterator.next();
                 if (!euid.equals(pd.getEUID1())) {
-                    throw new PotentialDuplicateException("Invalid EUID1 for " 
-                            + "potential duplicate.");
+                    throw new PotentialDuplicateException(mLocalizer.t("PDP500: Invalid EUID1 " + 
+                                            "for potential duplicate: {0}", pd.getEUID1()));  
+                                            
                 }
                 String potDupId = CUIDManager.getNextUID( con, "POTENTIALDUPLICATE" );
                 ps.setString(1, potDupId);
@@ -167,7 +168,10 @@ public class PotentialDuplicateManager {
             }
             ps.close();
         } catch (Exception e) {
-            throw new PotentialDuplicateException(e);
+            throw new PotentialDuplicateException(mLocalizer.t("PDP501: Could not " + 
+                                            "add a potential duplicate record for " +
+                                            "EUID={0}, Transaction ID = {1}: {2}",
+                                            euid, transactionId, e));
         }
     }
 
@@ -189,7 +193,10 @@ public class PotentialDuplicateManager {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            throw new PotentialDuplicateException(e);
+            throw new PotentialDuplicateException(mLocalizer.t("PDP502: Could not " + 
+                                            "delete a potential duplicate record for " +
+                                            "EUID={0}: {1}",
+                                            euid, e));
         }
     }
 
@@ -293,7 +300,9 @@ public class PotentialDuplicateManager {
                 ps.setObject(i + 1, parameters.get(i));
             }
         } catch (SQLException e) {
-            throw new PotentialDuplicateException(e);
+            throw new PotentialDuplicateException(mLocalizer.t("PDP503: Could not " + 
+                                            "look up potential duplicate records: {0}",
+                                            e));
  
         }
         return lookupPotentialDuplicates(con, ps, obj);
@@ -365,7 +374,9 @@ public class PotentialDuplicateManager {
             } 
             return count;
         } catch (SQLException e) {
-            throw new PotentialDuplicateException(e);
+            throw new PotentialDuplicateException(mLocalizer.t("PDP504: Could not " + 
+                                            "count potential duplicate records: {0}",
+                                            e));
         } finally {
             try {
                 if (rs != null) {
@@ -375,9 +386,9 @@ public class PotentialDuplicateManager {
                     ps.close();
                 }
             } catch (Exception e) {
-                mLogger.info("Could not close the result set nor the prepared statement: " + 
-                              e.getMessage());
-                throw new PotentialDuplicateException(e);
+                throw new PotentialDuplicateException(mLocalizer.t("PDP505: Could not " + 
+                                            "close the result set or the prepared " +
+                                            "statement: {0}",e));
             } 
         }
     }
@@ -403,7 +414,10 @@ public class PotentialDuplicateManager {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            throw new PotentialDuplicateException(e);
+            throw new PotentialDuplicateException(mLocalizer.t("PDP506: Could not " + 
+                                            "resolve potential duplicate record with " +
+                                            "this Potential Duplicate ID: {0}:{1}",
+                                            potDupId, e));
         }
     }
 
@@ -424,7 +438,10 @@ public class PotentialDuplicateManager {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            throw new PotentialDuplicateException(e);
+            throw new PotentialDuplicateException(mLocalizer.t("PDP507: Could not " + 
+                                            "unresolve potential duplicate record with " +
+                                            "this Potential Duplicate ID: {0}:{1}",
+                                            potDupId, e));
         }
     }
 
@@ -485,7 +502,10 @@ public class PotentialDuplicateManager {
             ps.close();
             return retMap;
         } catch (SQLException e) {
-            throw new PotentialDuplicateException(e);
+            throw new PotentialDuplicateException(mLocalizer.t("PDP508: Could not " + 
+                                            "retrieve all potential duplicate records for " +
+                                            "this EUID: {0}:{1}",
+                                            euid, e));
         }
     }
 
@@ -555,7 +575,8 @@ public class PotentialDuplicateManager {
                  
             return retIterator;
         } catch (Exception e) {
-            throw new PotentialDuplicateException(e);
+            throw new PotentialDuplicateException(mLocalizer.t("PDP509: Could not " + 
+                                            "look up potential duplicate records: {0}", e));
         }
     }
 

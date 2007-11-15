@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import com.sun.mdm.index.ejb.page.PageData;
+import com.sun.mdm.index.util.Localizer;
 
 
 /**
@@ -35,6 +36,8 @@ import com.sun.mdm.index.ejb.page.PageData;
  * @author Dan Cidon
  */
 public class PageIterator implements java.io.Serializable {
+
+    private transient final Localizer mLocalizer = Localizer.get();
 
     /** Data loaded so far
      */    
@@ -232,7 +235,7 @@ public class PageIterator implements java.io.Serializable {
     public Object next()
         throws RemoteException, PageException {
         if (!hasNext()) {
-            throw new PageException("Exceeded iterator index.");
+            throw new PageException(mLocalizer.t("PAG527: Iterator index exceeded."));
         }
         Object obj = mData[mPosition];
         if (obj == null) {
@@ -259,7 +262,7 @@ public class PageIterator implements java.io.Serializable {
     public ArrayList next(int count)
         throws RemoteException, PageException {
         if (!hasNext()) {
-            throw new PageException("Exceeded iterator index.");
+            throw new PageException(mLocalizer.t("PAG528: Iterator index exceeded."));
         }
         ArrayList list = new ArrayList(count);
         for (int i = 0; i < count && hasNext(); i++) {
@@ -281,7 +284,7 @@ public class PageIterator implements java.io.Serializable {
     public Object prev()
         throws PageException, RemoteException {
         if (mPosition < 1) {
-            throw new PageException("Already at beginning of iterator.");
+            throw new PageException(mLocalizer.t("PAG529: Already at beginning of iterator."));
         }
         mPosition--;
         Object obj = mData[mPosition];

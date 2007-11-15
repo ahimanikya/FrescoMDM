@@ -34,12 +34,16 @@ import com.sun.mdm.index.master.SystemDefinition;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.ops.exception.OPSException;
 import com.sun.mdm.index.ops.DBAdapter;
+import com.sun.mdm.index.util.Localizer;
 
 /**
  * Performs basic straight JDBC calls for statically defined tables
  * @author Daniel
  */
 public class QueryHelper {
+
+    private transient final Localizer mLocalizer = Localizer.get();
+
     /**
      * Creates a new instance of QueryHelper
      */
@@ -113,7 +117,8 @@ public class QueryHelper {
             }
 
         } catch (SQLException e) {
-            throw new QMException(e);
+            throw new QMException(mLocalizer.t("QUE517: Could not retreive the " +
+                                            "SystemObject status:{0}", e));
         } finally {
             try {
                 if (rs != null) {
@@ -123,7 +128,8 @@ public class QueryHelper {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new QMException(e);
+                throw new QMException(mLocalizer.t("QUE518: Could not close the " +
+                                            "prepared statement or the result set: {0}", e));
             }
         }
         return status;
@@ -159,13 +165,14 @@ public class QueryHelper {
                 if (rs.next()) {
                     rs.close();
                     ps.close();
-                    throw new QMException("More than one EUID found for system"
-                            + " key: " + key);
+                    throw new QMException(mLocalizer.t("QUE519: More than one " +
+                                            "EUID found for the system key: {0}", key.toString()));
                 }
             }
 
         } catch (SQLException e) {
-            throw new QMException(e);
+            throw new QMException(mLocalizer.t("QUE520: Could not retrieve the EUID" +
+                                  "for the system key: {0}:{1}", key.toString(), e));
         } finally {
             try {
                 if (rs != null) {
@@ -175,7 +182,8 @@ public class QueryHelper {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new QMException(e);
+                throw new QMException(mLocalizer.t("QUE521: Could not close the " +
+                                            "prepared statement or the result set: {0}", e));
             }
         }
         return euid;
@@ -209,13 +217,14 @@ public class QueryHelper {
                 if (rs.next()) {
                     rs.close();
                     ps.close();
-                    throw new QMException("More than one EUID found for system"
-                            + " key: " + key);
+                    throw new QMException(mLocalizer.t("QUE522: More than one " +
+                                            "EUID found for the system key: {0}", key.toString()));
                 }
             }
 
         } catch (SQLException e) {
-            throw new QMException(e);
+            throw new QMException(mLocalizer.t("QUE523: Could not retrieve the EUID " +
+                                  "for the system key: {0}:{1}", key.toString(), e));
         } finally {
             try {
                 if (rs != null) {
@@ -225,7 +234,8 @@ public class QueryHelper {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new QMException(e);
+                throw new QMException(mLocalizer.t("QUE524: Could not close the " +
+                                            "prepared statement or the result set: {0}", e));
             }
         }
         return euid;
@@ -266,7 +276,8 @@ public class QueryHelper {
             }
 
         } catch (SQLException e) {
-            throw new QMException(e);
+            throw new QMException(mLocalizer.t("QUE525: Could not lookup the " +
+                                            "System Codes: {0}", e));
         } finally {
             try {
                 if (rs != null) {
@@ -276,7 +287,8 @@ public class QueryHelper {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new QMException(e);
+                throw new QMException(mLocalizer.t("QUE526: Could not close the " +
+                                            "prepared statement or the result set: {0}", e));
             }
         }
 
@@ -328,7 +340,8 @@ public class QueryHelper {
             }
 
         } catch (SQLException e) {
-            throw new QMException(e);
+            throw new QMException(mLocalizer.t("QUE527: Could not lookup the " +
+                                            "System Definitions: {0}", e));
         } finally {
             try {
                 if (rs != null) {
@@ -338,7 +351,8 @@ public class QueryHelper {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new QMException(e);
+                throw new QMException(mLocalizer.t("QUE528: Could not close the " +
+                                            "prepared statement or the result set: {0}", e));
             }
         }
 
@@ -383,10 +397,12 @@ public class QueryHelper {
                 count++;
             }           
             if (count > 1) {
-               throw new QMException("Found more than one System with the same system code: " + systemCode); 
+               throw new QMException(mLocalizer.t("QUE529: Found more than one " +
+                                            "System with the same system code."));
             }
         } catch (SQLException e) {
-            throw new QMException(e);
+            throw new QMException(mLocalizer.t("QUE530: Could not lookup " +
+                                            "System Definition."));
         } finally {
             try {
                 if (rs != null) {
@@ -396,7 +412,8 @@ public class QueryHelper {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new QMException(e);
+                throw new QMException(mLocalizer.t("QUE531: Could not close the " +
+                                            "prepared statement or the result set: {0}", e));
             }
         }
 
@@ -460,7 +477,8 @@ public class QueryHelper {
                 }
             }
         } catch (SQLException e) {
-            throw new QMException(e);
+            throw new QMException(mLocalizer.t("QUE532: Could not lookup the " +
+                                            "SystemObjectKeys: {0}", e));
         } finally {
             try {
                 if (rs != null) {
@@ -470,7 +488,8 @@ public class QueryHelper {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new QMException(e);
+                throw new QMException(mLocalizer.t("QUE533: Could not close the " +
+                                            "prepared statement or the result set: {0}", e));
             }
         }
 
@@ -495,8 +514,8 @@ public class QueryHelper {
         SystemObjectPK sourceKey = new SystemObjectPK(sourceSystem, sourceLID);
         String euid =  getEUID(con, sourceKey);
         if (euid == null) {
-            throw new QMException("No EUID found for System = " + sourceSystem
-                                   + ", LID = " +  sourceLID);
+            throw new QMException(mLocalizer.t("QUE534: No EUID found for System" +
+                                            "={0}, Local ID={1}", sourceSystem, sourceLID));
         }
 
         ArrayList retList = new ArrayList();
@@ -529,7 +548,8 @@ public class QueryHelper {
                 }
             }
         } catch (SQLException e) {
-            throw new QMException(e);
+            throw new QMException(mLocalizer.t("QUE535: Could not lookup" +
+                                            "SystemObjectKeys: {0}", e));
         } finally {
             try {
                 if (rs != null) {
@@ -539,7 +559,8 @@ public class QueryHelper {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new QMException(e);
+                throw new QMException(mLocalizer.t("QUE536: Could not close the " +
+                                            "prepared statement or the result set: {0}", e));
             }
         }
 
@@ -602,7 +623,8 @@ public class QueryHelper {
                              try {
                                 stmt1.close(); 
                              } catch (SQLException e1) {
-                                 throw new QMException(e1);
+                                 throw new QMException(mLocalizer.t("QUE537: Could not close the " +
+                                            "SQL statement: {0}", e1));
                              }
                          }
                          if (mtnm != 0) {
@@ -626,10 +648,9 @@ public class QueryHelper {
                     }
                 }
             
-        } catch (SQLException e) {
-            throw new QMException(e);
-        } catch (OPSException e) {
-            throw new QMException(e);
+        } catch (Exception e) {
+            throw new QMException(mLocalizer.t("QUE538: Could not find the " +
+                                            "\"merged to\" Local ID: {0}", e));
         } finally {
             try {
                 if (rSet1 != null) {
@@ -645,7 +666,8 @@ public class QueryHelper {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new QMException(e);
+                throw new QMException(mLocalizer.t("QUE539: Could not close the " +
+                                            "prepared statement or the result set: {0}", e));
             }
         }
 
@@ -677,7 +699,8 @@ public class QueryHelper {
                     deepSearchMergedLIDs(conn, newMergedLIDs, alist);
                 }
             } catch (QMException e) {
-                throw new QMException("failed findMergedToLID at deepSearchMergedLIDs "+ e.getMessage());
+                throw new QMException(mLocalizer.t("QUE540: findMergedToLID() failed " +
+                                            "at deepSearchMergedLIDs(): {0}", e));
             } 
             return;
         }
@@ -698,7 +721,8 @@ public class QueryHelper {
         try {
           mergedLIDs=findMergedToLID(conn, lid);
         } catch (QMException e) {
-            throw new QMException("failed findMergedToLID at findAllMergedLIDs "+ e.getMessage());
+            throw new QMException(mLocalizer.t("QUE541: findMergedToLID() failed " +
+                                            "at findAllMergedLIDs(): {0}", e));
         } 
         if (mergedLIDs != null)  {
             for (int i=0; i < mergedLIDs.length; i++) {
@@ -707,7 +731,8 @@ public class QueryHelper {
             try {
               deepSearchMergedLIDs(conn, mergedLIDs, alist);
             } catch (QMException e) {
-                    throw new QMException("failed findMergedToLID at findAllMergedLIDs "+ e.getMessage());
+                    throw new QMException(mLocalizer.t("QUE542: findMergedToLID() failed " +
+                                            "at findAllMergedLIDs(): {0}", e));
                 }   
             if (alist.size() > 0) {
                         ret = new String[alist.size()];
@@ -748,12 +773,13 @@ public class QueryHelper {
                 revisionNumber = new Integer(rs.getInt(1));
 
                 if (rs.next()) {
-                    throw new QMException("More than one revision number "
-                            + " found for EUID " + euid);
+                    throw new QMException(mLocalizer.t("QUE543: More than one " +
+                                            "revision number found for EUID: {0}", euid));
                 }
             }
         } catch (SQLException e) {
-            throw new QMException(e);
+            throw new QMException(mLocalizer.t("QUE544: Could not retrieve the " +
+                                            "revision number found for EUID: {0}", euid));
         } finally {
             try {
                 if (rs != null) {
@@ -763,7 +789,8 @@ public class QueryHelper {
                     ps.close();
                 }
             } catch (SQLException e) {
-                throw new QMException(e);
+                throw new QMException(mLocalizer.t("QUE545: Could not close the " +
+                                            "prepared statement or the result set: {0}", e));
             }
         }
 

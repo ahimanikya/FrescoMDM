@@ -27,6 +27,7 @@ import java.util.Iterator;
 
 import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.configurator.impl.PhoneticEncodersConfig;
+import com.sun.mdm.index.util.Localizer;
 
 /**
  * Manages all Phonetic Encoder instances and provides access to their
@@ -37,6 +38,8 @@ import com.sun.mdm.index.configurator.impl.PhoneticEncodersConfig;
  */
 public class Phoneticizer {
 
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     private HashMap encoders;    // A map from the encoding type to the PhoneticEncoder instance
     
     /** 
@@ -66,7 +69,8 @@ public class Phoneticizer {
         PhoneticEncoder searchEncoder = (PhoneticEncoder) encoders.get(encodingType);
         
         if (searchEncoder == null) {
-            throw new PhoneticEncoderException("Unknown phonetic encoding type: " + encodingType);
+            throw new PhoneticEncoderException(mLocalizer.t("PHN500: Unrecognized " + 
+                                                     "phonetic encoding type: {0}", encodingType));
         }
         
         String encodedStr = searchEncoder.encode(strToEncode, domain);
@@ -91,9 +95,10 @@ public class Phoneticizer {
             encodersConfig = 
                 (PhoneticEncodersConfig) cfgFactory.getConfiguration(PhoneticEncodersConfig.PHONETIC_ENCODERS);
         } catch (InstantiationException ex) {
-            throw new PhoneticEncoderException (
-                    "Failed to instantiate configuration classes to obtain config for phonetic encoders. " 
-                    + ex.getMessage(), ex);
+            throw new PhoneticEncoderException(mLocalizer.t("PHN501: Failed to " + 
+                                            "instantiate configuration classes " +
+                                            "to obtain configuration information " +
+                                            "for phonetic encoders: {0}", ex));
         }
 
         
@@ -108,11 +113,13 @@ public class Phoneticizer {
                 Class encoderClass = Class.forName(encoderClassName);
                 encoderInstance = (PhoneticEncoder) encoderClass.newInstance(); 
             } catch (ClassNotFoundException ex) {
-                throw new PhoneticEncoderException ("Failed to load configured phonetic encoder class: " 
-                        + encoderClassName + " msg: " + ex.getMessage(), ex);
+                throw new PhoneticEncoderException(mLocalizer.t("PHN502: Failed to " + 
+                                            "load the configured phonetic encoder " +
+                                            "class: {0}:{1}", encoderClassName, ex));
             } catch (Exception ex) {
-                throw new PhoneticEncoderException ("Failed to instantiate the configured phonetic encoder class: " 
-                        + encoderClassName + " msg: " + ex.getMessage(), ex);
+                throw new PhoneticEncoderException(mLocalizer.t("PHN503: Failed to " + 
+                                            "instantiate the configured phonetic encoder " +
+                                            "class: {0}:{1}", encoderClassName, ex));
             }
             encoders.put(encodingType, encoderInstance);
         }

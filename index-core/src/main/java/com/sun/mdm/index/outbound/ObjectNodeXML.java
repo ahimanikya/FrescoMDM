@@ -30,6 +30,7 @@ import com.sun.mdm.index.objects.SBROverWrite;
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.metadata.ObjectFactory;
 import com.sun.mdm.index.objects.exception.ObjectException;
+import com.sun.mdm.index.util.Localizer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,6 +45,8 @@ import java.text.SimpleDateFormat;
  */
 public class ObjectNodeXML {
 
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     private final String LINEFEED
              = new String(System.getProperty("line.separator"));
     private final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
@@ -118,7 +121,8 @@ public class ObjectNodeXML {
         try {
             sb.append("EUID=\"").append(eo.getEUID()).append("\" ");
         } catch (ObjectException e) {
-            throw new OutBoundException(e.getMessage());
+            throw new OutBoundException(mLocalizer.t("OUT500: Could not construct " + 
+                                    "an XML string for an EnterpriseObject: {0}", e));
         }
         SBR sbr = eo.getSBR();
         sb.append(formatSbrFields(sbr));
@@ -134,7 +138,8 @@ public class ObjectNodeXML {
                     sb.append("Status=\"").append(sysObj.getStatus()).append("\">");
                     sb.append(LINEFEED);
                 } catch (ObjectException e) {
-                    throw new OutBoundException(e.getMessage());
+                    throw new OutBoundException(mLocalizer.t("OUT501: Could not construct " + 
+                                    "an XML string for an EnterpriseObject: {0}", e));
                 }
                 sb.append("</SystemObject>").append(LINEFEED);
             }
@@ -218,7 +223,8 @@ public class ObjectNodeXML {
         try {
             fldNames = ObjectFactory.getFields(myPath);
         } catch (ObjectException e) {
-            throw new OutBoundException(e.getMessage());
+            throw new OutBoundException(mLocalizer.t("OUT502: Could not convert " + 
+                                    "an ObjectNode to an XML string: {0}", e));
         }
         // start from the 2nd field
         for (int i = 1; i < fldNames.length; i++) {
@@ -239,7 +245,8 @@ public class ObjectNodeXML {
         try {
             childTypes = ObjectFactory.getChildTypes(myPath);
         } catch (ObjectException e) {
-            throw new OutBoundException(e.getMessage());
+            throw new OutBoundException(mLocalizer.t("OUT503: Could not convert " + 
+                                    "an ObjectNode to an XML string: {0}", e));
         }
 
         ArrayList childNodes = null;

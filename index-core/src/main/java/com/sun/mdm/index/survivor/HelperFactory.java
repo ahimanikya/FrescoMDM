@@ -24,6 +24,7 @@ package com.sun.mdm.index.survivor;
 
 import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.configurator.impl.SurvivorHelperConfig;
+import com.sun.mdm.index.util.Localizer;
 
 /** Factory methods to create a SurvivorHelper
  *
@@ -31,6 +32,9 @@ import com.sun.mdm.index.configurator.impl.SurvivorHelperConfig;
  * @version $Revision: 1.1 $
  */
 public class HelperFactory {
+    
+    private transient static final Localizer mLocalizer = Localizer.get();
+    
     /** cache the loaded class
      */
     private static Class mHelperClass = null;
@@ -55,8 +59,8 @@ public class HelperFactory {
 
             return createSurvivorHelper(className, sc);
         } catch (InstantiationException iex) {
-            throw new HelperCreationException("unable to get configuration object: ",
-                iex);
+            throw new HelperCreationException(mLocalizer.t("SUR508: Unable to " + 
+                                    "get configuration object: {0}", iex));
         }
     }
 
@@ -83,24 +87,22 @@ public class HelperFactory {
 
             if (!AbstractSurvivorHelper.class.isInstance(obj)) {
                 // throw creation exception
-                throw new HelperCreationException(
-                    "Helper class does not extend AbstractSurvivorHelper");
+                throw new HelperCreationException(mLocalizer.t("SUR509: Helper class " + 
+                                    "does not extend AbstractSurvivorHelper."));
             }
 
             helper = (AbstractSurvivorHelper) obj;
             helper.init(config);
         } catch (IllegalAccessException aex) {
-            throw new HelperCreationException(
-                "Unable to access default constructor of helper class",
-                aex);
+            throw new HelperCreationException(mLocalizer.t("SUR510: Unable to " + 
+                                    "access default constructor of helper class: {0}", aex));
         } catch (ClassNotFoundException cex) {
-            throw new HelperCreationException(cex);
+            throw new HelperCreationException(mLocalizer.t("SUR511: Class not " + 
+                                    "found: {0}", cex));
         } catch (InstantiationException iex) {
-            throw new HelperCreationException(iex);
+            throw new HelperCreationException(mLocalizer.t("SUR512: InstantiationException: {0}", iex));
         } catch (StrategyCreationException scex) {
-          //  throw new HelperCreationException("Failed to load Strategy class: " + className,
-            //    scex);
-          throw new HelperCreationException(scex);
+          throw new HelperCreationException(mLocalizer.t("SUR513: StrategyCreationException: {0}", scex));
         }
 
         // return an instance of the helper class

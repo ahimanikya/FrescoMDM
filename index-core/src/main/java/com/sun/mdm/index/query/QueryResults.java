@@ -22,6 +22,8 @@
  */
 package com.sun.mdm.index.query;
 
+import com.sun.mdm.index.util.Localizer;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,6 +40,8 @@ import java.sql.Statement;
  * @author sdua
  */
 public class QueryResults implements QueryConstants, java.io.Serializable {
+    
+    private transient final Localizer mLocalizer = Localizer.get();
     
     private AssembleDescriptor massembleDesc;
     private Connection mconnection;
@@ -164,7 +168,7 @@ public class QueryResults implements QueryConstants, java.io.Serializable {
 
             return qmIterator;
         } catch (Exception ex) {
-            throw new QMException(ex);
+            throw new QMException(mLocalizer.t("QUE555: assemble() failed."));
         }
     }
 
@@ -190,7 +194,7 @@ public class QueryResults implements QueryConstants, java.io.Serializable {
                 }
             }
         } catch (SQLException sqe) {
-            throw new QMException(sqe.getMessage());
+            throw new QMException(mLocalizer.t("QUE556: Could not close database connection."));
         }
     }
 

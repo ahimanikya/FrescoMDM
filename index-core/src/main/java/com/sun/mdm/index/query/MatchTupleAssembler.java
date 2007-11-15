@@ -22,6 +22,8 @@
  */
 package com.sun.mdm.index.query;
 
+import com.sun.mdm.index.util.Localizer;
+
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -36,6 +38,9 @@ import java.text.SimpleDateFormat;
  * @version $Revision: 1.1 $
  */
 public class MatchTupleAssembler extends TupleAssembler {
+
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
     // Default Date conversion format
 
@@ -113,18 +118,18 @@ public class MatchTupleAssembler extends TupleAssembler {
             }
 
             if (euid == null) {
-                throw new VOAException("EUID is null");
+                throw new VOAException(mLocalizer.t("QUE511: EUID cannot be null."));
             }
 
             if (outDataLen == 0) {
-                throw new VOAException("No fields to assemble");
+                throw new VOAException(mLocalizer.t("QUE512: There are no fields to assemble."));
             }
 
             root = new MatchTuple(euid, data);
 
             return root;
         } catch (SQLException sqe) {
-            throw new VOAException(sqe);
+            throw new VOAException(mLocalizer.t("QUE513: Could not create root: {0}", sqe));
         }
     }
 }

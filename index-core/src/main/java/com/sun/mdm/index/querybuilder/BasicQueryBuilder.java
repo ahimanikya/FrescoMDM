@@ -35,6 +35,7 @@ import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.metadata.MetaDataService;
+import com.sun.mdm.index.util.Localizer;
 import java.util.logging.Level;
 import net.java.hulp.i18n.Logger;
 
@@ -49,6 +50,7 @@ public class BasicQueryBuilder extends QueryBuilder {
     private boolean useWildcard = false;
 
     private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     
     /**
@@ -86,7 +88,8 @@ public class BasicQueryBuilder extends QueryBuilder {
         }
         QueryObject queryObject = new QueryObject();
         if (!ids[0].equalsIgnoreCase("SINGLE-QUERY")) {
-            throw new QueryBuilderException("Invalid query id: " + ids[0]);
+            throw new QueryBuilderException(mLocalizer.t("QUE566: Invalid " +
+                            "query id: {0}", ids[0]));
         }
         try {
             EOSearchCriteria criteria = (EOSearchCriteria) crit;
@@ -223,7 +226,8 @@ public class BasicQueryBuilder extends QueryBuilder {
             queryObject.setRootObject(fullObjPath);
             EPathArrayList fieldArrayList = options.getFieldsToRetrieve();
             if (fieldArrayList == null) {
-                throw new QueryBuilderException("Fields to retrieve parameter can not be null");
+                throw new QueryBuilderException(mLocalizer.t("QUE567: Fields to " +
+                            "retrieve parameter can not be null."));
             }
             queryObject.setSelect(fieldArrayList.toStringArray());
             populateQueryObject(queryObject, objNode, objNode2, objNode3);
@@ -232,7 +236,8 @@ public class BasicQueryBuilder extends QueryBuilder {
             }
 
         } catch (Exception ex) {
-            throw new QueryBuilderException(ex);
+            throw new QueryBuilderException(mLocalizer.t("QUE568: buildQueryObject() " +
+                            "failed: {0}", ex));
         }
         return queryObject;
     }
@@ -251,7 +256,8 @@ public class BasicQueryBuilder extends QueryBuilder {
             }
             useWildcard = keyValueConfig.getBooleanValue("UseWildcard");
         } catch (Exception e) {
-            throw new QueryBuilderException(e);
+            throw new QueryBuilderException(mLocalizer.t("QUE569: BasicQueryBuilder " +
+                            "could not be initialized: {0}", e));
         }
     }
 
@@ -275,7 +281,8 @@ public class BasicQueryBuilder extends QueryBuilder {
                 tag = objNode3.pGetTag();
                 childTags = objNode3.pGetChildTags();
             } else {
-                throw new QueryBuilderException("At least one object must be populated");
+                throw new QueryBuilderException(mLocalizer.t("QUE570: At least " +
+                            "one object must be populated."));
             }
             Iterator primaryFieldIterator = primaryFields.iterator();
             String fullObjPath = MetaDataService.getSBRPath(tag);
@@ -348,22 +355,25 @@ public class BasicQueryBuilder extends QueryBuilder {
                             
                         if (children != null && children.size() > 0) {
                             if (children.size() > 1) {
-                                throw new QueryBuilderException("Only one child node " 
-                                    + "can be defined per type.  Type: " + childTag);
+                                throw new QueryBuilderException(mLocalizer.t("QUE571: Only one " +
+                                            "child node can be defined per type.  The " +
+                                            "type is: {0}", childTag));
                             }
                             child = (ObjectNode) children.get(0);
                         }
                         if (children2 != null && children2.size() > 0) {
                             if (children2.size() > 1) {
-                                throw new QueryBuilderException("Only one child node " 
-                                + "can be defined per type.  Type: " + childTag);
+                                throw new QueryBuilderException(mLocalizer.t("QUE572: Only one " +
+                                            "child node can be defined per type.  The " +
+                                            "type is: {0}", childTag));
                             }
                             child2 = (ObjectNode) children2.get(0);
                         }
                         if (children3 != null && children3.size() > 0) {
                             if (children3.size() > 1) {
-                            throw new QueryBuilderException("Only one child node " 
-                                    + "can be defined per type.  Type: " + childTag);
+                            throw new QueryBuilderException(mLocalizer.t("QUE573: Only one " +
+                                            "child node can be defined per type.  The " +
+                                            "type is: {0}", childTag));
                             }
                             child3 = (ObjectNode) children3.get(0);
                         }
@@ -374,7 +384,7 @@ public class BasicQueryBuilder extends QueryBuilder {
                 }
             
         } catch (Exception ex) {
-            throw new QueryBuilderException(ex);
+            throw new QueryBuilderException(mLocalizer.t("QUE574: populateQueryObject() failed: {0}", ex));
         }
     }         
 }

@@ -105,9 +105,9 @@ implements Cloneable, java.io.Serializable {
             Object obj = strategyClass.newInstance();
             
             if (!SurvivorStrategyInterface.class.isInstance(obj)) {
-                throw new StrategyCreationException(
-                "Survivor strategy class : " + strategyClass.getName()
-                + " does not implement SurvivorStrategyInterface");
+                throw new StrategyCreationException(mLocalizer.t("SUR500: Survivor strategy class " +
+                                                "{0} does not implement SurvivorStrategyInterface.", 
+                                                strategyClass.getName()));
             }
             
             SurvivorStrategyInterface sti = (SurvivorStrategyInterface) obj;
@@ -118,14 +118,14 @@ implements Cloneable, java.io.Serializable {
             // store strategy instance in cache, using candidate field as key
             mDefaultStrategy = sti;
         } catch (ClassNotFoundException cnfex) {
-            throw new StrategyCreationException("Default Strategy class not found:" + className,
-            cnfex);
+            throw new StrategyCreationException(mLocalizer.t("SUR501: Default Strategy class not found: " +
+                                                "{0}:{1}", className, cnfex));
         } catch (InstantiationException iex) {
-            throw new StrategyCreationException("Unable to instantiate default strategy:" + className,
-            iex);
+            throw new StrategyCreationException(mLocalizer.t("SUR502: Unable to instantiate default strategy: " +
+                                                "{0}:{1}", className, iex));
         } catch (IllegalAccessException iaex) {
-            throw new StrategyCreationException("Unable to access default constructor for default strategy:" + className,
-            iaex);
+            throw new StrategyCreationException(mLocalizer.t("SUR503: Unable to access default constructor for default strategy: " +
+                                                "{0}:{1}", className, iaex));
         }
         
         mFieldCache = config.getFieldCache();
@@ -143,9 +143,9 @@ implements Cloneable, java.io.Serializable {
                 Object obj = strategyClass.newInstance();
                 
                 if (!SurvivorStrategyInterface.class.isInstance(obj)) {
-                    throw new StrategyCreationException(
-                    "Survivor strategy class : " + strategyClass.getName()
-                    + " does not implement SurvivorStrategyInterface");
+                    throw new StrategyCreationException(mLocalizer.t("SUR504: Survivor strategy class: " +
+                                                "{0} does not implement SurvivorStrategyInterface.", 
+                                                strategyClass.getName()));
                 }
                 
                 SurvivorStrategyInterface sti = (SurvivorStrategyInterface) obj;
@@ -156,14 +156,14 @@ implements Cloneable, java.io.Serializable {
                 // store strategy instance in cache, using candidate field as key
                 mStrategyCache.put(candidateName, sti);
             } catch (ClassNotFoundException cnfex) {
-                throw new StrategyCreationException("Strategy class not found:" + className2,
-                cnfex);
+                throw new StrategyCreationException(mLocalizer.t("SUR505: Strategy class not found: " +
+                                                "{0}:{1}", className2, cnfex));
             } catch (InstantiationException iex) {
-                throw new StrategyCreationException("Unable to instantiate strategy:" + className2,
-                iex);
+                throw new StrategyCreationException(mLocalizer.t("SUR506: Unable to instantiate strategy: " +
+                                                "{0}:{1}", className2, iex));
             } catch (IllegalAccessException iaex) {
-                throw new StrategyCreationException("Unable to access default constructor for strategy:" + className2,
-                iaex);
+                throw new StrategyCreationException(mLocalizer.t("SUR507: Unable to access default constructor for strategy: " +
+                                                "{0}:{1}", className2, iaex));
             }
         }
     }

@@ -22,6 +22,8 @@
  */
 package com.sun.mdm.index.query;
 
+import com.sun.mdm.index.util.Localizer;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -33,6 +35,8 @@ import java.util.ArrayList;
  * @author sdua
  */
 public class TupleAssembler implements ResultObjectAssembler {
+    
+    private transient final Localizer mLocalizer = Localizer.get();
     
     /**
      * Creates a new instance of TupleAssembler
@@ -93,7 +97,8 @@ public class TupleAssembler implements ResultObjectAssembler {
 
             return root;
         } catch (SQLException sqe) {
-            throw new VOAException(sqe);
+            throw new VOAException(mLocalizer.t("QUE557: Could not create " +
+                                        "the root object: {0}", sqe));
         }
     }
 

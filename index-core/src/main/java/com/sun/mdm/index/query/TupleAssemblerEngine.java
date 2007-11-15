@@ -22,6 +22,8 @@
  */
 package com.sun.mdm.index.query;
 
+import com.sun.mdm.index.util.Localizer;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,6 +35,8 @@ import java.sql.Statement;
  */
 public class TupleAssemblerEngine implements AssemblerEngine, Cloneable {
     
+    private transient final Localizer mLocalizer = Localizer.get();
+
     private boolean mmoreRows = true;
     private boolean mbegin = false;
     private AssembleDescriptor massDesc;
@@ -88,7 +92,8 @@ public class TupleAssemblerEngine implements AssemblerEngine, Cloneable {
                }
             }
         } catch (SQLException sqe) {
-            throw new QMException(sqe.getMessage());
+            throw new QMException(mLocalizer.t("QUE559: Could not close " +
+                                        "the database connection: {0}", sqe));
         }
     }
 
@@ -109,9 +114,11 @@ public class TupleAssemblerEngine implements AssemblerEngine, Cloneable {
                }
             }
         } catch (SQLException sqe) {
-            throw new QMException(sqe);
+            throw new QMException(mLocalizer.t("QUE560: Could not execute " +
+                                        "finalize: {0}", sqe));
         } catch (Throwable th) {
-            throw new QMException(th);
+            throw new QMException(mLocalizer.t("QUE561: Could not execute " +
+                                        "finalize: {0}", th));
         }
     }
 
@@ -131,7 +138,8 @@ public class TupleAssemblerEngine implements AssemblerEngine, Cloneable {
 
             return mmoreRows;
         } catch (SQLException sqe) {
-            throw new QMException(sqe.getMessage());
+            throw new QMException(mLocalizer.t("QUE562: Could not determine " +
+                                        "if there were any more objects: {0}", sqe));
         }
     }
 
@@ -151,7 +159,7 @@ public class TupleAssemblerEngine implements AssemblerEngine, Cloneable {
             msqlDesc = sqlDescs[0];
             massDesc = assDesc;
         } catch (Exception ex) {
-            throw new QMException(ex);
+            throw new QMException(mLocalizer.t("QUE563: initCompile() failed: {0}", ex));
         }
     }
 
@@ -206,7 +214,7 @@ public class TupleAssemblerEngine implements AssemblerEngine, Cloneable {
             mattrsData = new AttributesData(mres,
                     msqlDesc.getAttributes(mrootName), 0);
         } catch (Exception ex) {
-            throw new QMException(ex);
+            throw new QMException(mLocalizer.t("QUE564: initRun() failed: {0}", ex));
         }
     }
 
@@ -239,7 +247,7 @@ public class TupleAssemblerEngine implements AssemblerEngine, Cloneable {
 
             return rootObject;
         } catch (SQLException sqe) {
-            throw new QMException(sqe);
+            throw new QMException(mLocalizer.t("QUE565: Could not load the next set of records: {0}", sqe));
         }
     }
 

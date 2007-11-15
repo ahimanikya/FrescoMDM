@@ -37,6 +37,8 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 import com.sun.mdm.index.matching.ScoreElement;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.ObjectNode;
+import com.sun.mdm.index.util.Localizer;
+
 import javax.ejb.EJBContext;
 
 
@@ -50,6 +52,8 @@ import javax.ejb.EJBContext;
  */
 public class EuidPageAdapter implements PageAdapter, java.io.Serializable {
 
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     /** Current row position
      */    
     private int mPosition = 0;
@@ -105,7 +109,8 @@ public class EuidPageAdapter implements PageAdapter, java.io.Serializable {
                 mNumElements = maxElements;
             }
         } catch (Exception e) {
-            throw new PageException(e);
+            throw new PageException(mLocalizer.t("PAG510: EuidPageAdapter " +
+                                        "could not be initialized: {0}", e));
         }
     }
 
@@ -116,7 +121,8 @@ public class EuidPageAdapter implements PageAdapter, java.io.Serializable {
     public void setCurrentPosition(int index)
         throws PageException {
         if (index + 1 >= mNumElements) {
-            throw new PageException("Index out of bounds: " + index);
+            throw new PageException(mLocalizer.t("PAG511: EuidPageAdapter " +
+                                        "index out of bounds: {0}", index));
         }
         mPosition = index;
     }
@@ -174,7 +180,8 @@ public class EuidPageAdapter implements PageAdapter, java.io.Serializable {
     public Object next()
         throws PageException {
         if (mPosition == mNumElements) {
-            throw new PageException("No more elements");
+            throw new PageException(mLocalizer.t("PAG512: EuidPageAdapter " +
+                                        "has no more elements to retrieve."));
         } else {
             if (mForwardOnly && mPosition > 0 && (mPosition%mPageSize == 0)) {   
                 clearPageSizeCache();
@@ -198,7 +205,8 @@ public class EuidPageAdapter implements PageAdapter, java.io.Serializable {
     public Object prev()
         throws PageException {
         if (mPosition == 0) {
-            throw new PageException("Already at beginning of iterator");
+            throw new PageException(mLocalizer.t("PAG513: EuidPageAdapter " +
+                                        "already at the beginning of the iterator."));
         } else {
             mPosition--;
             loadRows(REVERSE, false);
@@ -246,7 +254,8 @@ public class EuidPageAdapter implements PageAdapter, java.io.Serializable {
                 }
             }
             throw new 
-                PageException("EuidPageAdapter requires EUID to be selected.");
+                PageException(mLocalizer.t("PAG514: EuidPageAdapter " +
+                                        "requires EUID to be selected."));
         }
         return mObjectPath;
     }
@@ -292,7 +301,8 @@ public class EuidPageAdapter implements PageAdapter, java.io.Serializable {
                 endIndex = mPosition;
                 break;
             default:
-                throw new PageException("Invalid direction: " + direction);
+                throw new PageException(mLocalizer.t("PAG515: Invalid load " +
+                                        "direction: {0}", direction));
             }
             //Load records
             QMIterator iterator = null;
@@ -357,14 +367,16 @@ public class EuidPageAdapter implements PageAdapter, java.io.Serializable {
                     }
                 }
             } catch (Exception e) {
-                throw new PageException(e);
+                throw new PageException(mLocalizer.t("PAG516: Could not load " +
+                                                     "records."));
             }  finally {
             	 try {    
                   	 if (iterator != null) {
                 	    iterator.close();
                 	  }
                  } catch (Exception ex) {
-                      throw new PageException(ex);
+                      throw new PageException(mLocalizer.t("PAG517: Could not close " +
+                                                     "the iterator."));
                  }
             	
             }

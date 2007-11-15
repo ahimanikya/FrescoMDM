@@ -30,6 +30,8 @@ import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.objects.factory.SimpleFactory;
 import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SystemObject;
+import com.sun.mdm.index.util.Localizer;
+
 import java.util.HashMap;
 
 
@@ -45,6 +47,8 @@ import java.util.HashMap;
  * @author Swaranjit Dua
  */
 public class EOObjectNodeAssembler implements ResultObjectAssembler {
+    
+    private transient final Localizer mLocalizer = Localizer.get();
     
     // Attributes map containing SBR and SO field names that differ from
     // corresponding field names in the database tables, such as 
@@ -136,7 +140,8 @@ public class EOObjectNodeAssembler implements ResultObjectAssembler {
             	parentNode.addChild(objectNode);
             }
         } catch (Exception e) {
-            throw new VOAException(e);
+            throw new VOAException(mLocalizer.t("QUE507: Could not create " +
+                                            "Object attributes: {0} ", e));
         }
 
         return objectNode;
@@ -210,7 +215,8 @@ public class EOObjectNodeAssembler implements ResultObjectAssembler {
                     objectNode.setValue(attributeName, value);
             }
         } catch (Exception e) {
-            throw new VOAException(e);
+            throw new VOAException(mLocalizer.t("QUE508: Could not create " +
+                                            "root: {0} ", e));
         }
         objectNode.resetAll();
 

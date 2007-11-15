@@ -30,12 +30,17 @@ import java.util.NoSuchElementException;
 import com.sun.mdm.index.query.QMException;
 import com.sun.mdm.index.query.QMIterator;
 import com.sun.mdm.index.objects.ObjectNode;
+import com.sun.mdm.index.util.Localizer;
+
 import java.io.Serializable;
 
 /** Page adapter for Iterators
  * @author dcidon
  */
 public class IteratorPageAdapter implements PageAdapter,Serializable {
+
+    private transient static final Localizer mLocalizer = Localizer.get();
+    
     /** List of objects that have been loaded
      */    
     private final ArrayList mData;
@@ -98,8 +103,9 @@ public class IteratorPageAdapter implements PageAdapter,Serializable {
         //If index is more than the max number of possible elements, then
         //clearly it is out of bounds
         if (index >= mMaxElements) {
-            throw new PageException("Index greater than max elements.  Index: " 
-            + index + " Max elements: " + mMaxElements);
+            throw new PageException(mLocalizer.t("PAG518: Index ({0}) is greater " +
+                                                 "than the maximum number of " +
+                                                 "elements ({1})", index, mMaxElements));
         }
 
         //If index is less than or equal to current position, then we are
@@ -113,7 +119,8 @@ public class IteratorPageAdapter implements PageAdapter,Serializable {
             }
             //If we did not reach desired elements, then the index is invalid
             if (mCurrentPosition < index) {
-                throw new PageException("Index out of bounds: " + index);
+                throw new PageException(mLocalizer.t("PAG519: Index is out " +
+                                            "of bounds: {0}", index));
             }
         }
     }
@@ -177,7 +184,8 @@ public class IteratorPageAdapter implements PageAdapter,Serializable {
                    
                 }
             } catch (Exception e) {
-                throw new PageException(e);
+                throw new PageException(mLocalizer.t("PAG520: Could not determine " +
+                                            "if there are any more records: {0}", e));
             }
         }
         
@@ -198,7 +206,7 @@ public class IteratorPageAdapter implements PageAdapter,Serializable {
     public Object next()
         throws PageException {
         if (!hasNext()) {
-            throw new PageException("End of iterator reached");
+            throw new PageException(mLocalizer.t("PAG521: Reached the end of the iterator."));
         }
         Object obj = null;
         if (mCurrentPosition < mData.size() && mCurrentPosition >= 0) {
@@ -217,7 +225,8 @@ public class IteratorPageAdapter implements PageAdapter,Serializable {
                     mData.add(obj);
                 }
             } catch (Exception e) {
-                throw new PageException(e);
+                throw new PageException(mLocalizer.t("PAG522: Could not load the " +
+                                                "next set of records: {0}", e));
             }
         }
         mCurrentPosition++;
@@ -238,7 +247,7 @@ public class IteratorPageAdapter implements PageAdapter,Serializable {
     public Object prev()
         throws PageException {
         if (mCurrentPosition == 0) {
-            throw new PageException("Already at beginning of iterator");
+            throw new PageException(mLocalizer.t("PAG523: Already at beginning of iterator."));
         } else {
             mCurrentPosition--;
             return mData.get(mCurrentPosition);
@@ -302,7 +311,9 @@ public class IteratorPageAdapter implements PageAdapter,Serializable {
             try {
                 retVal = mQMIterator.hasNext();
             } catch (QMException e) {
-                throw new NoSuchElementException(e.getMessage());
+                throw new NoSuchElementException(mLocalizer.t("PAG524: Could not " +
+                                            "determine if there are any more " +
+                                            "records to load: {0}", e));
             }
             return retVal;
         }
@@ -316,7 +327,8 @@ public class IteratorPageAdapter implements PageAdapter,Serializable {
             try {
                 retVal = mQMIterator.next();
             } catch (QMException e) {
-                throw new NoSuchElementException(e.getMessage());
+                throw new NoSuchElementException(mLocalizer.t("PAG525: Could not " +
+                                            "load the next set of records: {0}", e));
             }
             return retVal;
         }
@@ -325,7 +337,8 @@ public class IteratorPageAdapter implements PageAdapter,Serializable {
         /** See Iterator
          */
         public void remove() {
-            throw new UnsupportedOperationException();
+            throw new UnsupportedOperationException(mLocalizer.t("PAG526: The \"remove\"" +
+                                            "operation is not supported by the IteratorPageAdapter."));
         }
         
         void close() throws Exception {

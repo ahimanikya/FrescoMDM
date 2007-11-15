@@ -25,6 +25,7 @@ package com.sun.mdm.index.report;
 import com.sun.mdm.index.ops.ObjectPersistenceService;
 import com.sun.mdm.index.ops.DBAdapter;
 import com.sun.mdm.index.ops.exception.OPSException;
+import com.sun.mdm.index.util.Localizer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,6 +43,8 @@ import java.util.Date;
  */
 public class KeyStatisticsReportDB extends ObjectPersistenceService {	
 
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     private static String mGetCountByDatesNFunction;
     private static String mGetCountByDates;
     private static String mGetUnresolvedPotDupCountByDates;
@@ -131,9 +134,12 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
                         = DBAdapter.getDBAdapterInstance().getKeyStatDBCountBetweenTimesStmt();
             }
             String sql = sql2str(mGetCountByDatesNFunction, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("RPT500: Encountered an error while " +
+                                                "executing this SQL statement: {0}:{1}", 
+                                                sql, e));
         } catch (OPSException e) {
-            throw e;
+            throw new OPSException(mLocalizer.t("RPT501: Could not retrieve the daily count " +
+                                                "by function: {0}", e));
         } finally {
         	try {
         	    if (rSet != null) {
@@ -144,7 +150,8 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
                         stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("RPT502: Could not close the SQL" +
+                                                "statement or result set: {0}", e));
             }
         }
 
@@ -181,7 +188,9 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
             params.add(transDate);
 
             String sql = sql2str(mGetCountByDates, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("RPT504: Encountered an error while " +
+                                                "executing this SQL statement: {0}:{1}", 
+                                                sql, e));
         } finally {
         	try {
         	    if (rSet != null) {
@@ -192,7 +201,8 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
                         stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("RPT505: Could not close the SQL" +
+                                                "statement or result set: {0}", e));
             }
         }
 
@@ -243,9 +253,12 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
                     = DBAdapter.getDBAdapterInstance().getKeyStatDBCountBetweenTimesStmt();
             }
             String sql = sql2str(mGetCountByDatesNFunction, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("RPT506: Encountered an error while " +
+                                                "executing this SQL statement: {0}:{1}", 
+                                                sql, e));
         } catch (OPSException e) {
-            throw e;
+            throw new OPSException(mLocalizer.t("RPT507: Could not retrieve the" +
+                                                "transaction count: {0}", e));
         } finally {
         	try {
         	    if (rSet != null) {
@@ -256,7 +269,8 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
                         stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("RPT508: Could not close the SQL" +
+                                                "statement or result set: {0}", e));
             }
         }
 
@@ -295,7 +309,9 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
             params.add(endDate);
 
             String sql = sql2str(mGetCountByDates, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("RPT509: Encountered an error while " +
+                                                "executing this SQL statement: {0}:{1}", 
+                                                sql, e));
         } finally {
         	try {
         	    if (rSet != null) {
@@ -306,7 +322,8 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
                         stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("RPT510: Could not close the SQL" +
+                                                "statement or result set: {0}", e));
             }
         }
 
@@ -348,7 +365,9 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
             params.add(endDate);
 
             String sql = sql2str(mGetUnresolvedPotDupCountByDates, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("RPT511: Encountered an error while " +
+                                                "executing this SQL statement: {0}:{1}", 
+                                                sql, e));
         } finally {
         	try {
         	    if (rSet != null) {
@@ -359,7 +378,8 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
                         stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("RPT512: Could not close the SQL" +
+                                                "statement or result set: {0}", e));
             }
         }
 
@@ -401,7 +421,9 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
             params.add(endDate);
 
             String sql = sql2str(mGetResolvedPotDupCountByDates, params);
-            throw new OPSException(sql + e.getMessage());
+            throw new OPSException(mLocalizer.t("RPT513: Encountered an error while " +
+                                                "executing this SQL statement: {0}:{1}", 
+                                                sql, e));
         } finally {
         	try {
         	    if (rSet != null) {
@@ -412,7 +434,8 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
                         stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException("failed to close statement");
+            	throw new OPSException(mLocalizer.t("RPT514: Could not close the SQL" +
+                                                "statement or result set: {0}", e));
             }
         }
 

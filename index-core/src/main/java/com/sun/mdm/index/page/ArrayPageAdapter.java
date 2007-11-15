@@ -21,6 +21,7 @@
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
 package com.sun.mdm.index.page;
+import com.sun.mdm.index.util.Localizer;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -32,6 +33,9 @@ import javax.ejb.EJBContext;
  * @author Dan Cidon
  */
 public class ArrayPageAdapter implements PageAdapter, java.io.Serializable {
+
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     /** Current row position
      */    
     private int mPosition = 0;
@@ -122,7 +126,7 @@ public class ArrayPageAdapter implements PageAdapter, java.io.Serializable {
     public Object next()
         throws PageException {
         if (mPosition == mObjArray.length) {
-            throw new PageException("Out of bounds");
+            throw new PageException(mLocalizer.t("PAG500: Page out of bounds."));
         }
         return mObjArray[mPosition++];
     }
@@ -141,7 +145,7 @@ public class ArrayPageAdapter implements PageAdapter, java.io.Serializable {
     public Object prev()
         throws PageException {
         if (mPosition == 0) {
-            throw new PageException("Out of bounds");
+            throw new PageException(mLocalizer.t("PAG501: Page out of bounds."));
         }
         return mObjArray[--mPosition];
     }

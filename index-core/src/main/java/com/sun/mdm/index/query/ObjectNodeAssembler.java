@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.objects.factory.SimpleFactory;
+import com.sun.mdm.index.util.Localizer;
 
 
 
@@ -37,6 +38,9 @@ import com.sun.mdm.index.objects.factory.SimpleFactory;
  * @author Daniel Cidon
  */
 public class ObjectNodeAssembler implements ResultObjectAssembler {
+    
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     /**
      * Creates a new instance of the ObjectNodeAssembler class.
      * <p>
@@ -112,7 +116,7 @@ public class ObjectNodeAssembler implements ResultObjectAssembler {
             ObjectNode parentNode = (ObjectNode)parent;
             parentNode.addChild(objectNode);
         } catch (Exception e) {
-            throw new VOAException(e);
+            throw new VOAException(mLocalizer.t("QUE515: Could not create Object attributes:{0}", e));
         }
 
         return objectNode;
@@ -197,7 +201,7 @@ public class ObjectNodeAssembler implements ResultObjectAssembler {
                 }
             }
         } catch (Exception e) {
-            throw new VOAException(e);
+            throw new VOAException(mLocalizer.t("QUE516: Could not create root:{0}", e));
         }
 
         return objectNode;

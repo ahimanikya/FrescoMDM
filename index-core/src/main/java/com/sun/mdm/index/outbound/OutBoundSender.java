@@ -25,6 +25,7 @@ package com.sun.mdm.index.outbound;
 import com.sun.mdm.index.master.MergeResult;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.util.JNDINames;
+import com.sun.mdm.index.util.Localizer;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -52,6 +53,9 @@ import javax.naming.NamingException;
  * @author  sdua
  */
 public class OutBoundSender {
+
+    private transient final Localizer mLocalizer = Localizer.get();
+
     /** event key that is published to Topic header. */
     public static final  String EVENT = "event";
     private InitialContext mInitCtx;
@@ -143,7 +147,8 @@ public class OutBoundSender {
             TextMessage msg = mTopicSession.createTextMessage(data);
             mTopicPublisher.publish(msg);
         } catch (JMSException e) {
-            throw new OutBoundException("Error in sending outboud message: " + e.getMessage());
+            throw new OutBoundException(mLocalizer.t("OUT504: Could not send " + 
+                                    "an outbound message: {0}", e));
         }
     }
 
@@ -154,10 +159,12 @@ public class OutBoundSender {
      */
     public void initialize(String connectionFactoryName, String topicName) throws OutBoundException {
         if (connectionFactoryName == null) {
-            throw new OutBoundException("JNDI for outbound ConnectionFactory is not specified");
+            throw new OutBoundException(mLocalizer.t("OUT505: JNDI for outbound " + 
+                                    "ConnectionFactory was not specified."));
         }
         if (topicName == null) {
-            throw new OutBoundException("JNDI for outbound Topic is not specified");
+            throw new OutBoundException(mLocalizer.t("OUT506: JNDI for outbound " + 
+                                    "Topic was not specified."));
         }
         
         if (mLogger.isLoggable(Level.FINE)) {
@@ -176,7 +183,8 @@ public class OutBoundSender {
             
             mTopicConnectionFactory = (TopicConnectionFactory) mInitCtx.lookup(mJndiConnectionFactory);
         } catch (NamingException e) {
-            throw new OutBoundException("Failed to locate the topic connection factory: " + e.getMessage());
+            throw new OutBoundException(mLocalizer.t("OUT507: Failed to locate " + 
+                                    "the topic connection factory: {0}", e));
         }
         
         mOutboundOn = true;
@@ -201,7 +209,7 @@ public class OutBoundSender {
             }
             mIsSessionReady = false;
         } catch (JMSException e) {
-            throw new OutBoundException("JMS operations failed: " + e.getMessage());
+            throw new OutBoundException(mLocalizer.t("OUT508: JMS operations failed: {0}", e));
         }
         
     }

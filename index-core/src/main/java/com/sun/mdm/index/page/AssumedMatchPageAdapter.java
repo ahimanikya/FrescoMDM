@@ -39,6 +39,7 @@ import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.util.JNDINames;
 import javax.ejb.EJBContext;
 import com.sun.mdm.index.util.ConnectionUtil;
+import com.sun.mdm.index.util.Localizer;
 
 
 
@@ -52,6 +53,8 @@ import com.sun.mdm.index.util.ConnectionUtil;
  */
 public class AssumedMatchPageAdapter implements PageAdapter, java.io.Serializable {
 
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     /** Used internally to signal forward traversal
      */    
     private static final int FORWARD = 1;
@@ -97,7 +100,8 @@ public class AssumedMatchPageAdapter implements PageAdapter, java.io.Serializabl
             }
             mNumElements = mObjArray.length;
         } catch (Exception e) {
-            throw new PageException(e);
+            throw new PageException(mLocalizer.t("PAG502: AssumedMatchPageAdapter " +
+                                        "could not be initialized: {0}", e));
         }
     }
 
@@ -109,7 +113,8 @@ public class AssumedMatchPageAdapter implements PageAdapter, java.io.Serializabl
     public void setCurrentPosition(int index)
         throws PageException {
         if (index + 1 >= mNumElements) {
-            throw new PageException("Index out of bounds: " + index);
+            throw new PageException(mLocalizer.t("PAG503: AssumedMatchPageAdapter " +
+                                        "index out of bounds: {0}", index));
         }
         mPosition = index;
     }
@@ -166,7 +171,8 @@ public class AssumedMatchPageAdapter implements PageAdapter, java.io.Serializabl
     public Object next()
         throws PageException {
         if (mPosition == mNumElements) {
-            throw new PageException("No more elements");
+            throw new PageException(mLocalizer.t("PAG504: AssumedMatchPageAdapter " +
+                                        "has no more elements to retrieve."));
         } else {
             if (mForwardOnly && mPosition > 0 && (mPosition%mPageSize == 0)) {   
                 clearPageSizeCache();
@@ -190,7 +196,8 @@ public class AssumedMatchPageAdapter implements PageAdapter, java.io.Serializabl
     public Object prev()
         throws PageException {
         if (mPosition == 0) {
-            throw new PageException("Already at beginning of iterator");
+            throw new PageException(mLocalizer.t("PAG505: AssumedMatchPageAdapter " +
+                                        "already at the beginning of the iterator."));
         } else {
             mPosition--;
             loadRows(REVERSE, false);
@@ -230,7 +237,8 @@ public class AssumedMatchPageAdapter implements PageAdapter, java.io.Serializabl
         try {
             con = ConnectionUtil.getConnection();
         } catch (Exception e) {
-            throw new PageException(e);
+            throw new PageException(mLocalizer.t("PAG506: AssumedMatchPageAdapter " +
+                                        "could not obtain a database connection: {0}", e));
         }
         return con;
     }
@@ -280,7 +288,8 @@ public class AssumedMatchPageAdapter implements PageAdapter, java.io.Serializabl
                 endIndex = mPosition;
                 break;
             default:
-                throw new PageException("Invalid direction: " + direction);
+                throw new PageException(mLocalizer.t("PAG507: Invalid load " +
+                                        "direction: {0}", direction));
             }
             //Load records
             Connection con = null;
@@ -302,7 +311,8 @@ public class AssumedMatchPageAdapter implements PageAdapter, java.io.Serializabl
                     ams.setNewSO(so);
                 }
             } catch (Exception e) {
-                throw new PageException(e);
+                throw new PageException(mLocalizer.t("PAG508: Could not load " +
+                                        "Assumed Match Summary records."));
             } finally {
                 if (con != null) {
                     releaseConnection(con);
@@ -321,7 +331,8 @@ public class AssumedMatchPageAdapter implements PageAdapter, java.io.Serializabl
         try {
             con.close();
         } catch (SQLException e) {
-            throw new PageException(e);
+            throw new PageException(mLocalizer.t("PAG509: AssumedMatchPageAdapter " +
+                                        "could not close the database connection: {0}", e));
         }
     }
  

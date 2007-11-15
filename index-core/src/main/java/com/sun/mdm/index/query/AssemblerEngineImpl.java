@@ -128,9 +128,11 @@ public class AssemblerEngineImpl implements AssemblerEngine, Cloneable {
                             }
         		}
         	} catch (Exception ex){
-        		throw new QMException(ex);
+        		throw new QMException(mLocalizer.t("QUE500: Could not close " + 
+                                            "the database connection: {0}", ex));
         	} 
-            throw new QMException(sqe);
+            throw new QMException(mLocalizer.t("QUE501: Could not close " + 
+                                            "the database connection: {0}", sqe));
         }
     }
 
@@ -151,9 +153,11 @@ public class AssemblerEngineImpl implements AssemblerEngine, Cloneable {
                 }
             }
         } catch (SQLException sqe) {
-            throw new QMException(sqe);
+            throw new QMException(mLocalizer.t("QUE502: Could not " + 
+                                            "execute finalize(): {0}", sqe));
         } catch (Throwable th) {
-            throw new QMException(th);
+            throw new QMException(mLocalizer.t("QUE503: Could not " + 
+                                            "execute finalize(): {0}", th));
         }
     }
 
@@ -176,8 +180,7 @@ public class AssemblerEngineImpl implements AssemblerEngine, Cloneable {
             mcompileAssObjectStates = setChildrenRelations(assDesc,
                     mcreateObjectList);
         } catch (Exception sqe) {
-            mLogger.warn(mLocalizer.x("QUE001: initCompile() failed: {0}", sqe.getMessage()));
-            throw new QMException(sqe);
+            throw new QMException(mLocalizer.t("QUE504: initCompile() failed: {0} ", sqe));
         }
     }
 
@@ -219,8 +222,7 @@ public class AssemblerEngineImpl implements AssemblerEngine, Cloneable {
             mqrsets = createQueryResultSets(resultSets, mcreateObjectList,
                     massObjectStates, maxRows);
         } catch (SQLException sqe) {
-            mLogger.warn(mLocalizer.x("QUE002: initRun() failed: {0}", sqe.getMessage()));
-            throw new QMException(sqe);
+            throw new QMException(mLocalizer.t("QUE505: initRun() failed: {0} ", sqe));
         }
     }
     /**
@@ -284,7 +286,7 @@ public class AssemblerEngineImpl implements AssemblerEngine, Cloneable {
 
             return root;
         } catch (SQLException sqe) {
-            throw new QMException(sqe);
+            throw new QMException(mLocalizer.t("QUE506: next() failed: {0} ", sqe));
         }
     }
 

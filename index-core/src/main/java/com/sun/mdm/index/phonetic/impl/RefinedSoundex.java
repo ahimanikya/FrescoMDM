@@ -59,6 +59,7 @@ package com.sun.mdm.index.phonetic.impl;
 
 import com.sun.mdm.index.phonetic.PhoneticEncoder;
 import com.sun.mdm.index.phonetic.PhoneticEncoderException;
+import com.sun.mdm.index.util.Localizer;
 
 
 /**
@@ -73,6 +74,8 @@ import com.sun.mdm.index.phonetic.PhoneticEncoderException;
  */
 public class RefinedSoundex implements PhoneticEncoder {
 
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     /** informative String about the encoding type this encoder does */
     public static final String ENCODING_TYPE = "RefinedSoundex";
 
@@ -207,7 +210,9 @@ public class RefinedSoundex implements PhoneticEncoder {
     public Object encode(Object pObject) throws PhoneticEncoderException {
         Object result;
         if (!(pObject instanceof java.lang.String)) {
-            throw new PhoneticEncoderException("Parameter supplied to RefinedSoundex encode is not of type java.lang.String"); 
+            throw new PhoneticEncoderException(mLocalizer.t("PHN506: Parameter supplied " + 
+                                            "to RefinedSoundex encode is not " +
+                                            "of type java.lang.String."));
         } else {
             result = soundex((String) pObject);
         }

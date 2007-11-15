@@ -24,6 +24,8 @@ package com.sun.mdm.index.query;
 
 import com.sun.mdm.index.master.search.enterprise.EOSearchResultRecord;
 import com.sun.mdm.index.objects.ObjectNode;
+import com.sun.mdm.index.util.Localizer;
+
 import java.sql.SQLException;
 
 
@@ -37,7 +39,7 @@ import java.sql.SQLException;
  */
 public class EOSearchResultAssembler implements ResultObjectAssembler {
 
-
+    private transient final Localizer mLocalizer = Localizer.get();
 
        private final ObjectNodeAssembler assembler;
 
@@ -102,10 +104,10 @@ public class EOSearchResultAssembler implements ResultObjectAssembler {
         try {
             euid = (String) attrsData.get("EUID");
             if (euid == null || euid.equals("")) {
-                throw new VOAException("EUID must be selected");
+                throw new VOAException(mLocalizer.t("QUE509: EUID must be selected."));
             }
         } catch (SQLException e) {
-            throw new VOAException(e);
+            throw new VOAException(mLocalizer.t("QUE510: Could not create root."));
         }
         EOSearchResultRecord resultRecord = new EOSearchResultRecord();
         resultRecord.setEUID(euid);

@@ -178,10 +178,8 @@ public class QueryManagerImpl implements QueryManager {
 
 
             return new QueryResults(con, resultSets, statements, sqlDesc, queryOption, closeDbConnection);
-        } catch (SQLException sqe) {
-            throw new QMException(sqe);
         } catch (Exception ex) {
-            throw new QMException(ex);
+            throw new QMException(mLocalizer.t("QUE546: execute() failed: {0}", ex));
         }
     }
 
@@ -318,11 +316,8 @@ public class QueryManagerImpl implements QueryManager {
             qmIterator.initRun(con, resultSets, statements, maxRows, closeDbConnection);
             
             return qmIterator;
-        } catch (SQLException sqe) {
-            mLogger.warn(mLocalizer.x("QUE003: executeAssemble() failed: {0}", sqe));
-            throw new QMException(sqe);
         } catch (Exception ex) {
-            throw new QMException(ex);
+            throw new QMException(mLocalizer.t("QUE547: executeAssemble() failed: {0}", ex));
         }
     }
 
@@ -408,10 +403,8 @@ public class QueryManagerImpl implements QueryManager {
                 Condition[] conditions = qobject.getConditionsUnion();
                 prepareQuery(con, resultSets, qc.getQueryObject(), conditions);
             }
-        } catch (SQLException sqe) {
-            throw new QMException(sqe);
         } catch (Exception ex) {
-            throw new QMException(ex);
+            throw new QMException(mLocalizer.t("QUE549: prepare() failed: {0}", ex));
         }
     }
 

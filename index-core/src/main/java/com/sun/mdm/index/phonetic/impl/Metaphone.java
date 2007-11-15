@@ -59,6 +59,7 @@ package com.sun.mdm.index.phonetic.impl;
 
 import com.sun.mdm.index.phonetic.PhoneticEncoder;
 import com.sun.mdm.index.phonetic.PhoneticEncoderException;
+import com.sun.mdm.index.util.Localizer;
 
 /**
  * Encodes a string into a metaphone value.
@@ -76,6 +77,8 @@ import com.sun.mdm.index.phonetic.PhoneticEncoderException;
  */
 public class Metaphone implements PhoneticEncoder {
 
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     /**
      * Five values in the English language 
      */
@@ -377,7 +380,9 @@ public class Metaphone implements PhoneticEncoder {
     public Object encode(Object pObject) throws PhoneticEncoderException {
         Object result;
         if (!(pObject instanceof java.lang.String)) {
-            throw new PhoneticEncoderException("Parameter supplied to Metaphone encode is not of type java.lang.String"); 
+            throw new PhoneticEncoderException(mLocalizer.t("PHN505: Parameter supplied " + 
+                                            "to Metaphone encode is not " +
+                                            "of type java.lang.String."));
         } else {
             result = metaphone((String) pObject);
         }

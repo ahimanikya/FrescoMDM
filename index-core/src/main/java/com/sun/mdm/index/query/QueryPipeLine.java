@@ -22,6 +22,7 @@
  */
 package com.sun.mdm.index.query;
 
+import com.sun.mdm.index.util.Localizer;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -66,6 +67,8 @@ import java.util.ArrayList;
  */
 class QueryPipeLine implements AssemblerEngine {
         
+    private transient final Localizer mLocalizer = Localizer.get();
+
     private AssemblerEngine assEngineDelegate;
     private int fetchSize = 1000; 
         
@@ -86,7 +89,8 @@ class QueryPipeLine implements AssemblerEngine {
       	mQueryMgr = QueryManagerFactory.getInstance();
       	
       } catch (Exception e) {
-        throw new CreateException(e.getMessage());
+        throw new CreateException(mLocalizer.t("QUE553: Could not retrieve a " +
+                                    "QueryPipeLine instance: {0}", e));
       }
     }
     
@@ -303,7 +307,7 @@ class QueryPipeLine implements AssemblerEngine {
     	      try {
     	       return attrsData.get(0);
     	      } catch (SQLException sqe) {
-                throw new VOAException(sqe);
+                throw new VOAException(mLocalizer.t("QUE554: createPrimayIDQO() failed."));
               }
     	    }
              

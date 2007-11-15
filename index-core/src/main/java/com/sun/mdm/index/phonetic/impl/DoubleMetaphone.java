@@ -58,6 +58,7 @@ package com.sun.mdm.index.phonetic.impl;
 
 import com.sun.mdm.index.phonetic.PhoneticEncoder;
 import com.sun.mdm.index.phonetic.PhoneticEncoderException;
+import com.sun.mdm.index.util.Localizer;
 
 
 /**
@@ -77,6 +78,8 @@ import com.sun.mdm.index.phonetic.PhoneticEncoderException;
  */
 public class DoubleMetaphone implements PhoneticEncoder {
 
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     /**
      * "Vowels" to test for
      */
@@ -257,7 +260,9 @@ public class DoubleMetaphone implements PhoneticEncoder {
     public Object encode(Object obj) throws PhoneticEncoderException {
 
         if (!(obj instanceof String)) {
-            throw new PhoneticEncoderException("DoubleMetaphone encode parameter is not of type java.lang.String"); 
+            throw new PhoneticEncoderException(mLocalizer.t("PHN504: DoubleMetaphone " + 
+                                            "encode parameter is not " +
+                                            "of type java.lang.String."));
         } else {
             return doubleMetaphone((String) obj);
         }
