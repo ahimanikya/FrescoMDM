@@ -45,5 +45,7 @@ public interface JNDINames {
     public static final String BBE_DATASOURCE = "java:comp/env/jdbc/BBEDataSource";
     /** JNDI name for the XA data source */    
     public static final String BBE_XADATASOURCE = "java:comp/env/jdbc/XABBEDataSource";
+    /** JNDI name for the OuntBound TopicConnectionFactory */    
+    public static final String OUTBOUND_TOPIC_CONN_FACTORY = "java:comp/env/jms/outBoundSender";
 
 }

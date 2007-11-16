@@ -1,0 +1,3 @@
+EVNT|||UI|HQ|HQ||||<>ID||0001^SiteA|&DEMO||JON^SMITH^^^||^^^^|19920405||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0002^SiteA|&DEMO||JOHN^SMITH^^^||^^^^|19920405||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0003^SiteA|&DEMO||JEFF^WEST^^^||^^^^|19820405||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>

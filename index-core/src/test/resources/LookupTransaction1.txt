@@ -1,0 +1,18 @@
+//First transaction will be an add
+Record=Person
+Key=SiteA,0001
+FirstName=DAN
+LastName=CIDON
+Gender=M
+DOB=19740110
+
+//Second transaction will be an update
+Record=Person
+Key=SiteA,0001
+FirstName=DAN
+LastName=CIDONE
+Gender=M
+DOB=19740110
+MStatus=S
+
+

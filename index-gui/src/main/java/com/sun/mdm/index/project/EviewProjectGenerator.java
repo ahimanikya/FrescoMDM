@@ -126,7 +126,7 @@ public class EviewProjectGenerator {
         EditableProperties ep = h.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
         ep.setProperty(EviewProjectProperties.EJB_DIR,mainProjectName + "-ejb");
         ep.setProperty(EviewProjectProperties.WAR_DIR,mainProjectName + "-war");
-        ep.setProperty("eView.generated.dir", EviewRepository.EVIEW_GENERATED_FOLDER);
+        ep.setProperty("eView.generated.dir", EviewProjectProperties.EVIEW_GENERATED_FOLDER);
         ep.setProperty(EviewProjectProperties.J2EE_SERVER_TYPE, Deployment.getDefault().getServerID(serverInstanceID));
         ep.setProperty(EviewProjectProperties.J2EE_PLATFORM, j2eeLevel);
         h.putProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH, ep);
@@ -162,61 +162,61 @@ public class EviewProjectGenerator {
             EviewRepository repository  = EviewRepository.getEviewRepository();  
             
             // *** Sub folder - Configuration ***
-            FileObject configurationFolder = srcRoot.createFolder(EviewRepository.CONFIGURATION_FOLDER); // NOI18N     
+            FileObject configurationFolder = srcRoot.createFolder(EviewProjectProperties.CONFIGURATION_FOLDER); // NOI18N     
             
             String strXml;            
             // object.xml/ObjectDefinitionFile
             strXml = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_OBJECT_DEF_FILE).toString();      
-            repository.createConfigurationFile(configurationFolder, EviewRepository.OBJECT_XML, strXml);
+            repository.createConfigurationFile(configurationFolder, EviewProjectProperties.OBJECT_XML, strXml);
        
             // edm.xml/GuiConfigurationFile
             strXml = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_GUI_CONFIG_FILE).toString();
-            repository.createConfigurationFile(configurationFolder, EviewRepository.EDM_XML, strXml);
+            repository.createConfigurationFile(configurationFolder, EviewProjectProperties.EDM_XML, strXml);
         
             // master.xml/MasterConfigurationFile;
             strXml = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_MASTER_CONFIG_FILE).toString();
-            repository.createConfigurationFile(configurationFolder, EviewRepository.MASTER_XML, strXml);
+            repository.createConfigurationFile(configurationFolder, EviewProjectProperties.MASTER_XML, strXml);
             
             // mefa.xml/MefaConfigurationFile;
             strXml = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_MEFA_CONFIG_FILE).toString();
-            repository.createConfigurationFile(configurationFolder, EviewRepository.MEFA_XML, strXml);
+            repository.createConfigurationFile(configurationFolder, EviewProjectProperties.MEFA_XML, strXml);
         
             // security.xml/SecurityConfigurationFile;
             strXml = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_SECURITY_CONFIG_FILE).toString();
-            repository.createConfigurationFile(configurationFolder, EviewRepository.SECURITY_XML, strXml);
+            repository.createConfigurationFile(configurationFolder, EviewProjectProperties.SECURITY_XML, strXml);
         
             // validation.xml/ValidationConfigurationFile;
             strXml = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_VALID_CONFIG_FILE).toString();
-            repository.createConfigurationFile(configurationFolder, EviewRepository.VALIDATION_XML, strXml);
+            repository.createConfigurationFile(configurationFolder, EviewProjectProperties.VALIDATION_XML, strXml);
         
             // query.xml/QueryConfigurationFile;
             strXml = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_QUERY_CONFIG_FILE).toString();
-            repository.createConfigurationFile(configurationFolder, EviewRepository.QUERY_XML, strXml);
+            repository.createConfigurationFile(configurationFolder, EviewProjectProperties.QUERY_XML, strXml);
         
             // update.xml/UpdateConfigurationFile;
             strXml = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_UPDATE_CONFIG_FILE).toString();
-            repository.createConfigurationFile(configurationFolder, EviewRepository.UPDATE_XML, strXml);
+            repository.createConfigurationFile(configurationFolder, EviewProjectProperties.UPDATE_XML, strXml);
             
             // *** Sub folder - Database Script ***
-            FileObject dbscriptFolder = srcRoot.createFolder(EviewRepository.DATABASE_SCRIPT_FOLDER); // NOI18N
+            FileObject dbscriptFolder = srcRoot.createFolder(EviewProjectProperties.DATABASE_SCRIPT_FOLDER); // NOI18N
             String dbScript = null;
             
             dbScript = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_DBSCRIPT_SYSTEMS).toString();                      
-            FileObject systemsDdl = repository.createConfigurationFile(dbscriptFolder, EviewRepository.SYSTEMS_SQL, dbScript);        
+            FileObject systemsDdl = repository.createConfigurationFile(dbscriptFolder, EviewProjectProperties.SYSTEMS_SQL, dbScript);        
             
             dbScript = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_DBSCRIPT_CODELIST).toString();
-            FileObject codelistDdl = repository.createConfigurationFile(dbscriptFolder, EviewRepository.CODELIST_SQL, dbScript);                
+            FileObject codelistDdl = repository.createConfigurationFile(dbscriptFolder, EviewProjectProperties.CODELIST_SQL, dbScript);                
         
             // *** Sub folder - Match Engine ***
-            FileObject matchEngineFolder = getTemplates(srcRoot, EviewRepository.MATCH_ENGINE_FOLDER, EviewRepository.MATCH_TEMPLATE_LOCATION);              
+            FileObject matchEngineFolder = getTemplates(srcRoot, EviewProjectProperties.MATCH_ENGINE_FOLDER, EviewProjectProperties.MATCH_TEMPLATE_LOCATION);              
          
             // *** Sub folder - Standardization ***
-            FileObject standardizationEngineFolder = srcRoot.createFolder(EviewRepository.STANDARDIZATION_ENGINE_FOLDER); // NOI18N
-            FileObject standardizationEngineBizFolder = getTemplates(standardizationEngineFolder, EviewRepository.STANDARDIZATION_ENGINE_BIZ_FOLDER, EviewRepository.BIZ_TEMPLATE_LOCATION);                      
-            FileObject standardizationEngineAUFolder = getTemplates(standardizationEngineFolder, EviewRepository.STANDARDIZATION_ENGINE_AU_FOLDER, EviewRepository.AU_TEMPLATE_LOCATION);       
-            FileObject standardizationEngineFRFolder = getTemplates(standardizationEngineFolder, EviewRepository.STANDARDIZATION_ENGINE_FR_FOLDER, EviewRepository.FR_TEMPLATE_LOCATION);               
-            FileObject standardizationEngineUKFolder = getTemplates(standardizationEngineFolder, EviewRepository.STANDARDIZATION_ENGINE_UK_FOLDER, EviewRepository.UK_TEMPLATE_LOCATION);       
-            FileObject standardizationEngineUSFolder = getTemplates(standardizationEngineFolder, EviewRepository.STANDARDIZATION_ENGINE_US_FOLDER, EviewRepository.US_TEMPLATE_LOCATION);
+            FileObject standardizationEngineFolder = srcRoot.createFolder(EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER); // NOI18N
+            FileObject standardizationEngineBizFolder = getTemplates(standardizationEngineFolder, EviewProjectProperties.STANDARDIZATION_ENGINE_BIZ_FOLDER, EviewProjectProperties.BIZ_TEMPLATE_LOCATION);                      
+            FileObject standardizationEngineAUFolder = getTemplates(standardizationEngineFolder, EviewProjectProperties.STANDARDIZATION_ENGINE_AU_FOLDER, EviewProjectProperties.AU_TEMPLATE_LOCATION);       
+            FileObject standardizationEngineFRFolder = getTemplates(standardizationEngineFolder, EviewProjectProperties.STANDARDIZATION_ENGINE_FR_FOLDER, EviewProjectProperties.FR_TEMPLATE_LOCATION);               
+            FileObject standardizationEngineUKFolder = getTemplates(standardizationEngineFolder, EviewProjectProperties.STANDARDIZATION_ENGINE_UK_FOLDER, EviewProjectProperties.UK_TEMPLATE_LOCATION);       
+            FileObject standardizationEngineUSFolder = getTemplates(standardizationEngineFolder, EviewProjectProperties.STANDARDIZATION_ENGINE_US_FOLDER, EviewProjectProperties.US_TEMPLATE_LOCATION);
             
             // *** Sub folder - Plug-ins ***
             //FileObject customPluginsFolder = srcRoot.createFolder(EviewRepository.CUSTOM_PLUG_INS_FOLDER); // NOI18N        
@@ -226,7 +226,7 @@ public class EviewProjectGenerator {
             throws EviewRepositoryException, FileNotFoundException, IOException{
         EviewRepository repository  = EviewRepository.getEviewRepository(); 
                     // Unzip -ejb and -war projects from template
-        FileObject template = repository.getInstalledFile(EviewRepository.TEMPLATE_ZIP);
+        FileObject template = repository.getInstalledFile(EviewProjectProperties.TEMPLATE_ZIP);
         unZipFile(template.getInputStream(), projectDir);
         // Rename template directories here
         Enumeration e = projectDir.getFolders(true);

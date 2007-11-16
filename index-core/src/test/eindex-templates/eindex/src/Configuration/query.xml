@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by seebeyond (SeeBeyond) -->
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="sbyn:SeeBeyond/eView/schema/query.xsd">
+	<QueryBuilderConfig module-name="QueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.querybuilder.QueryBuilderConfiguration">
+		<query-builder name="ALPHA-SEARCH" class="com.sun.mdm.index.querybuilder.BasicQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.querybuilder.KeyValueConfiguration" standardize="true" phoneticize="false">
+			<config>
+				<option key="UseWildcard" value="true"/>
+			</config>
+		</query-builder>
+		<query-builder name="PHONETIC-SEARCH" class="com.sun.mdm.index.querybuilder.BasicQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.querybuilder.KeyValueConfiguration" standardize="true" phoneticize="true">
+			<config>
+				<option key="UseWildcard" value="false"/>
+			</config>
+		</query-builder>
+		<query-builder name="BLOCKER-SEARCH" class="com.sun.mdm.index.querybuilder.BlockerQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.blocker.BlockerConfig" standardize="true" phoneticize="true">
+			<config>
+				<block-definition number="ID000000">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.FnamePhoneticCode</field>
+							<source>Person.FnamePhoneticCode</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.LnamePhoneticCode</field>
+							<source>Person.LnamePhoneticCode</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000001">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.SSN</field>
+							<source>Person.SSN</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000002">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.FnamePhoneticCode</field>
+							<source>Person.FnamePhoneticCode</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.DOB</field>
+							<source>Person.DOB</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Gender</field>
+							<source>Person.Gender</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000003">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.LnamePhoneticCode</field>
+							<source>Person.LnamePhoneticCode</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.MotherMNPhoneticCode</field>
+							<source>Person.MotherMNPhoneticCode</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+                <block-definition number="ID000004">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Alias.LnamePhoneticCode</field>
+							<source>Person.LnamePhoneticCode</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Alias.FnamePhoneticCode</field>
+							<source>Person.FnamePhoneticCode</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+			</config>
+		</query-builder>
+		<query-builder name="BLOCKER-SEARCH2" class="com.sun.mdm.index.querybuilder.BlockerQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.blocker.BlockerConfig" standardize="true" phoneticize="true">
+			<config>
+				<block-definition number="ID000000">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.FnamePhoneticCode</field>
+							<source>Person.FnamePhoneticCode</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.LnamePhoneticCode</field>
+							<source>Person.LnamePhoneticCode</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000001">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Address.HouseNumber</field>
+							<source>Person.Address.HouseNumber</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Address.StreetNamePhoneticCode</field>
+							<source>Person.Address.StreetNamePhoneticCode</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000002">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Address.StreetNamePhoneticCode</field>
+							<source>Person.Address.StreetNamePhoneticCode</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.LnamePhoneticCode</field>
+							<source>Person.LnamePhoneticCode</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000003">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.SSN</field>
+							<source>Person.SSN</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000004">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.FnamePhoneticCode</field>
+							<source>Person.FnamePhoneticCode</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Gender</field>
+							<source>Person.Gender</source>
+						</equals>
+						<range>
+							<field>Enterprise.SystemSBR.Person.DOB</field>
+							<source>Person.DOB</source>
+						</range>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000005">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.LnamePhoneticCode</field>
+							<source>Person.LnamePhoneticCode</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.MotherMNPhoneticCode</field>
+							<source>Person.MotherMNPhoneticCode</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000006">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Alias.LnamePhoneticCode</field>
+							<source>Person.LnamePhoneticCode</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Alias.FnamePhoneticCode</field>
+							<source>Person.FnamePhoneticCode</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+			</config>
+		</query-builder>
+	</QueryBuilderConfig>
+</Configuration>

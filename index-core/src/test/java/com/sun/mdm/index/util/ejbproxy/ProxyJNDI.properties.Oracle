@@ -1,0 +1,44 @@
+# Properties file for use with EJBTestProxy to define a JNDI provider to forward requests to
+# Uncomment INITIAL_CONTEXT_FACTORY and PROVIDER_URL to forward requests.
+
+# Context.INITIAL_CONTEXT_FACTORY
+#java.naming.factory.initial=weblogic.jndi.WLInitialContextFactory
+#java.naming.factory.initial=com.stc.is.naming.NamingContextFactory
+
+#Context.PROVIDER_URL
+#java.naming.provider.url=t3://unfaithful:7001
+#java.naming.provider.url=java://localhost:18005
+# BBE_DATASOURCE connection properties
+
+# Sets the network protocol for the connections. For Oracle, can be set to all 
+# possible protocols Net8 supports. Only needed for JDBC OCI driver.
+proxy.datasource.network.protocol=tcp
+
+# Sets the JDBC driver type. Only used by Oracle driver. Possible values 
+# are thin and oci8.
+proxy.datasource.driver.type=thin
+
+# Sets the user name with which connections have to be obtained. 
+proxy.datasource.user.id=eindex
+#proxy.datasource.user.id=ui
+
+# Sets the password with which connections have to be obtained. 
+proxy.datasource.password=eindex
+#proxy.datasource.password=ui
+
+# Sets the port number where a server is listening for requests.
+proxy.datasource.port.number=1521
+#proxy.datasource.port.number=1433
+
+# Sets the name of the Server on which database is running.
+proxy.datasource.server.name=localhost
+#proxy.datasource.server.name=server01-te
+
+# Set the database vendor name.  Currently only Oracle and SQL Server are supported.
+proxy.datasource.vendor=ORACLE
+#proxy.datasource.vendor=SQL Server
+
+# Sets the name of a particular database on a server. In Oracle's jargon this 
+# is called SID (System Identifier).
+proxy.datasource.name=dragon
+#proxy.datasource.name=ei50

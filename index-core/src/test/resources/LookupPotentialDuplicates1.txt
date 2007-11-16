@@ -1,0 +1,10 @@
+// Data to create multiple potential duplicate, VIP='Y'
+EVNT|||UI|HQ|HQ||||<>ID||0001^SiteA|&DEMO||JOHN^SMITH^^^||^^^^|19920401||M||111221231|^|H|||||^^|^^USA|Y||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0002^SiteA|&DEMO||JOHN^SMITH^^^||^^^^|19920402||M||111221232|^|H|||||^^|^^USA|Y||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0003^SiteA|&DEMO||JOHN^SMITH^^^||^^^^|19920403||M||111221233|^|H|||||^^|^^USA|Y||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0004^SiteA|&DEMO||JOHN^SMITH^^^||^^^^|19920404||M||111221234|^|H|||||^^|^^USA|Y||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0005^SiteA|&DEMO||JOHN^SMITH^^^||^^^^|19920405||M||111221235|^|H|||||^^|^^USA|Y||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0006^SiteA|&DEMO||JOHN^SMITH^^^||^^^^|19920406||M||111221236|^|H|||||^^|^^USA|Y||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0007^SiteA|&DEMO||JOHN^SMITH^^^||^^^^|19920407||M||111221237|^|H|||||^^|^^USA|Y||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0008^SiteA|&DEMO||JOHN^SMITH^^^||^^^^|19920408||M||111221238|^|H|||||^^|^^USA|Y||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0009^SiteA|&DEMO||JOHN^SMITH^^^||^^^^|19920409||M||111221239|^|H|||||^^|^^USA|Y||^^||^|||||&AUX|||<>

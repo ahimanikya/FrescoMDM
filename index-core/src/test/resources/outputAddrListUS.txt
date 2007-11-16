@@ -1,0 +1,904 @@
+ExtraInfo                     OREM UT
+OrigStreetName                475
+HouseNumber                   1057
+MatchStreetName               475
+StreetNamePrefDirection       N
+StreetNameSufDirection        E
+                                      
+ExtraInfo                     HOUSTON TX
+StreetNameSufType             Ln
+OrigStreetName                BUTTERFLY
+HouseNumber                   13611
+MatchStreetName               BUTTERFLY
+                                      
+ExtraInfo                     DES MOINES
+StreetNameSufType             Ave
+OrigStreetName                INGERSOLL
+HouseNumber                   1911
+MatchStreetName               INGERSOLL
+                                      
+ExtraInfo                     LANSING MI
+StreetNameSufType             St
+OrigStreetName                MAY
+HouseNumber                   1120
+MatchStreetName               MAY
+                                      
+ExtraInfo                     LARKSPUR
+WithinStructDescript          #
+StreetNameSufType             Cir
+OrigStreetName                LINCOLN VILLAGE
+HouseNumber                   300
+MatchStreetName               LINCOLN Vlg
+WithinStructIdentif           122
+                                      
+ExtraInfo                     BEAVERTON
+StreetNameSufType             Ct
+OrigStreetName                MELODY
+HouseNumber                   15499
+MatchStreetName               MELODY
+StreetNamePrefDirection       NW
+                                      
+ExtraInfo                     PRAIRIE DU ROCHER IL
+StreetNameSufType             St
+OrigStreetName                HENRY
+HouseNumber                   12
+MatchStreetName               HENRY
+                                       
+ExtraInfo                     SEATTLE WA
+WithinStructDescript          Fl
+StreetNameSufType             Ave
+OrigStreetName                2nd
+HouseNumber                   1601
+MatchStreetName               2nd
+WithinStructIdentif           5th
+                                      
+ExtraInfo                     NEW DURHAM
+StreetNameSufType             Road
+OrigStreetName                OLD BAY
+HouseNumber                   315
+MatchStreetName               OLD BAY
+                                      
+ExtraInfo                     NORTH EAST MD
+StreetNameSufType             Road
+OrigStreetName                EAST
+HouseNumber                   1140
+MatchStreetName               East
+StreetNamePrefDirection       N
+                                      
+ExtraInfo                     SAINT CLOUD MN
+StreetNameSufType             Ave
+OrigStreetName                LINCOLN
+HouseNumber                   525
+MatchStreetName               LINCOLN
+StreetNameSufDirection        SE
+                                      
+ExtraInfo                     LIVINGSTON
+StreetNameSufType             Ter
+OrigStreetName                SYCAMORE
+HouseNumber                   15
+MatchStreetName               SYCAMORE
+                                      
+ExtraInfo                     MANHATTAN
+StreetNameSufType             Cir
+OrigStreetName                COTTONWOOD
+HouseNumber                   3610
+MatchStreetName               COTTONWOOD
+                                      
+ExtraInfo                     WEST HURLEY
+RuralRouteDescript            RR
+BoxDescript                   PO Box
+RuralRouteIdentif             1
+BoxIdentif                    298
+                                      
+ExtraInfo                     103 N 4th MANHATTAN
+StreetNameSufType             Ave
+OrigStreetName                POYNTZ
+HouseNumber                   224
+MatchStreetName               POYNTZ
+                                      
+ExtraInfo                     WHITINGHAM
+StreetNameSufType             Road
+OrigStreetName                STIMPSON HILL
+MatchStreetName               STIMPSON Hl
+                                      
+ExtraInfo                     BIRMINGHAM
+StreetNameSufType             Blvd
+OrigStreetName                RICHARD ARRINGTON JR
+HouseNumber                   716
+MatchStreetName               RICHARD ARRINGTON JR
+StreetNameSufDirection        N
+                                      
+StreetNameSufType             St
+OrigStreetName                STATE
+HouseNumber                   4528
+MatchStreetName               STATE
+StreetNamePrefDirection       S
+                                      
+StreetNameSufType             Dr
+OrigStreetName                COUNTRY CLUB
+HouseNumber                   2233
+MatchStreetName               COUNTRY Club
+                                      
+WithinStructDescript          Ste
+StreetNameSufType             Blvd
+OrigStreetName                CRENSHAW
+HouseNumber                   18815
+MatchStreetName               CRENSHAW
+WithinStructIdentif           A
+                                      
+StreetNameSufType             Ct
+OrigStreetName                FAIR OAKS
+HouseNumber                   8024
+MatchStreetName               FAIR OAKS
+                                      
+StreetNameSufType             Road # 3
+BoxDescript                   PO Box
+BoxIdentif                    9
+                                      
+WithinStructDescript          #
+StreetNameSufType             St
+OrigStreetName                7th
+HouseNumber                   244
+MatchStreetName               7th
+StreetNamePrefDirection       E
+WithinStructIdentif           11
+                                      
+StreetNameSufType             Ct
+OrigStreetName                FOX COVE
+HouseNumber                   110
+MatchStreetName               FOX Cv
+                                      
+StreetNameSufType             Dr
+OrigStreetName                MARTIN L KING
+HouseNumber                   506
+MatchStreetName               MLK
+StreetNamePrefDirection       S
+                                      
+StreetNameSufType             Blvd
+OrigStreetName                T C JESTER
+HouseNumber                   1660
+MatchStreetName               T C JESTER
+StreetNamePrefDirection       W
+                                      
+WithinStructDescript          Apt
+StreetNameSufType             Road
+OrigStreetName                FOREST HILL
+HouseNumber                   19
+MatchStreetName               Frst Hl
+WithinStructIdentif           44
+                                      
+StreetNameSufType             Ave
+OrigStreetName                PERRY
+HouseNumber                   4525
+MatchStreetName               PERRY
+StreetNameSufDirection        N
+                                      
+StreetNameSufType             Road
+OrigStreetName                GIBBS CITY
+HouseNumber                   382
+MatchStreetName               GIBBS CITY
+                                      
+StreetNameSufType             Road
+OrigStreetName                MISSISSAUGA
+HouseNumber                   6521
+MatchStreetName               MISSISSAUGA
+StreetNameSufDirection        N
+                                      
+WithinStructDescript          #
+StreetNameSufType             St
+OrigStreetName                24th
+HouseNumber                   1643
+MatchStreetName               24th
+StreetNameSufDirection        W
+WithinStructIdentif           308
+                                      
+StreetNameSufType             Road
+RuralRouteDescript            RR
+OrigStreetName                SODA CREEK
+RuralRouteIdentif             3
+HouseNumber                   5000
+MatchStreetName               SODA Crk
+                                      
+StreetNameSufType             Ln
+OrigStreetName                EVENSTAR
+HouseNumber                   4671
+MatchStreetName               EVENSTAR
+StreetNamePrefDirection       S
+                                      
+WithinStructDescript          Ste
+StreetNameSufType             Blvd
+OrigStreetName                SUNSET
+HouseNumber                   8721
+MatchStreetName               SUNSET
+StreetNamePrefDirection       W
+WithinStructIdentif           103
+                                      
+ExtraInfo                     LITTLETON CO
+StreetNameSufType             Way
+OrigStreetName                ACOMA
+HouseNumber                   7105
+MatchStreetName               ACOMA
+StreetNamePrefDirection       S
+                                      
+ExtraInfo                     BEAVERTON OR
+StreetNameSufType             Ct
+OrigStreetName                WILSON
+HouseNumber                   14310
+MatchStreetName               WILSON
+StreetNamePrefDirection       SW
+                                      
+ExtraInfo                     ARLINGTON VA
+StreetNameSufType             Road
+OrigStreetName                19th
+HouseNumber                   3215
+MatchStreetName               19th
+StreetNameSufDirection        N
+                                      
+ExtraInfo                     BLACKSBURG VA
+WithinStructDescript          #
+StreetNameSufType             St
+OrigStreetName                PROGRESS
+HouseNumber                   623
+MatchStreetName               PROGRESS
+StreetNameSufDirection        NE
+WithinStructIdentif           A
+                                      
+ExtraInfo                     HOLLY SPRINGS MS
+WithinStructDescript          Ste
+OrigStreetName                VAN DORN
+HouseNumber                   128
+MatchStreetName               VAN DORN
+WithinStructIdentif           5
+                                      
+ExtraInfo                     BLUE BELL PA
+WithinStructDescript          #
+StreetNameSufType             Pike
+OrigStreetName                PENLLYN BLUE BELL
+HouseNumber                   794
+MatchStreetName               PENLLYN BLUE BELL
+WithinStructIdentif           2
+                                      
+ExtraInfo                     MOORHEAD MN
+StreetNameSufType             St
+OrigStreetName                11th
+HouseNumber                   1700
+MatchStreetName               11th
+StreetNameSufDirection        N
+                                      
+ExtraInfo                     KIRKLAND WA
+StreetNameSufType             Ave
+OrigStreetName                108th
+HouseNumber                   6025
+MatchStreetName               108th
+StreetNameSufDirection        NE
+                                      
+BoxDescript                   PO Box
+BoxIdentif                    42
+                                      
+ExtraInfo                     ARVADA CO
+StreetNameSufType             Pl
+OrigStreetName                75th
+HouseNumber                   5991
+MatchStreetName               75th
+StreetNamePrefDirection       W
+                                       
+ExtraInfo                     DALLAS TX
+StreetNameSufType             Row
+OrigStreetName                REGAL
+HouseNumber                   256
+MatchStreetName               REGAL
+                                      
+ExtraInfo                     PERRYSVILLE OH
+WithinStructDescript          #
+OrigStreetName                TRAIL
+HouseNumber                   3308
+MatchStreetName               Trl
+WithinStructIdentif           3375
+                                      
+ExtraInfo                     SAINT PAUL MN
+StreetNameSufType             St
+OrigStreetName                148th
+HouseNumber                   5131
+MatchStreetName               148th
+StreetNameSufDirection        W
+                                      
+ExtraInfo                     CARBONDALE IL
+WithinStructDescript          #
+StreetNameSufType             Ave
+HouseNumberSuffix             1/2
+OrigStreetName                OAKLAND
+HouseNumber                   905
+MatchStreetName               OAKLAND
+StreetNamePrefDirection       S
+WithinStructIdentif           A
+                                      
+ExtraInfo                     ATLANTA GA
+StreetNameSufType             St
+OrigStreetName                10th
+HouseNumber                   400
+MatchStreetName               10th
+                                      
+ExtraInfo                     SANTA MONICA CA
+StreetNameSufType             Loop
+OrigStreetName                DONALD DOUGLAS
+HouseNumber                   3239
+MatchStreetName               DONALD DOUGLAS
+StreetNameSufDirection        S
+                                      
+StreetNameSufType             Dr
+OrigStreetName                MARTIN L KING
+HouseNumber                   506
+MatchStreetName               MLK
+StreetNamePrefDirection       S
+                                      
+ExtraInfo                     BROOTEN MN
+StreetNamePrefType            StHy
+OrigStreetName                55th
+HouseNumber                   850
+MatchStreetName               55th
+                                      
+ExtraInfo                     AUBURN WA
+StreetNameSufType             St
+OrigStreetName                37th
+HouseNumber                   1201
+MatchStreetName               37th
+StreetNameSufDirection        NW
+                                      
+ExtraInfo                     EDMONDS WA
+WithinStructDescript          #
+StreetNameSufType             Ave
+OrigStreetName                76th
+HouseNumber                   20506
+MatchStreetName               76th
+StreetNameSufDirection        W
+WithinStructIdentif           B
+                                      
+ExtraInfo                     LYNNWOOD WA
+StreetNameSufType             Way
+OrigStreetName                ASH
+HouseNumber                   14420
+MatchStreetName               ASH
+                                      
+ExtraInfo                     MORRISTOWN NJ
+StreetNameSufType             Plz
+OrigStreetName                HEADQUARTERS
+HouseNumber                   89
+MatchStreetName               HEADQUARTERS
+                                      
+ExtraInfo                     LAFAYETTE CA
+StreetNameSufType             Ct
+OrigStreetName                HASLEMERE
+HouseNumber                   131
+MatchStreetName               HASLEMERE
+                                      
+ExtraInfo                     BARNSTEAD NH
+MatchPropertyName             DEPOT ST
+OrigPropertyName              DEPOT ST
+PropertySufType               Ctr
+                                      
+ExtraInfo                     NEW YORK NY
+WithinStructDescript          Fl
+StreetNameSufType             St
+OrigStreetName                23RD
+HouseNumber                   36
+MatchStreetName               23RD
+StreetNamePrefDirection       W
+WithinStructIdentif           4th
+                                      
+ExtraInfo                     SIMI VALLEY CA
+WithinStructDescript          #
+StreetNameSufType             St
+OrigStreetName                1ST
+HouseNumber                   2225
+MatchStreetName               1st
+WithinStructIdentif           108
+                                      
+ExtraInfo                     ALBUQUERQUE NM
+StreetNameSufType             Dr
+OrigStreetName                CLIFFSIDE
+HouseNumber                   1757
+MatchStreetName               CLIFFSIDE
+StreetNameSufDirection        NW
+                                      
+ExtraInfo                     TWENTYNINE PALMS CA
+WithinStructDescript          Lot #
+StreetNameSufType             Road
+OrigStreetName                SUNSHINE PEAK
+HouseNumber                   7941
+MatchStreetName               SUNSHINE PEAK
+WithinStructIdentif           68
+                                      
+ExtraInfo                     TWENTYNINE PALMS CA
+WithinStructDescript          #
+StreetNameSufType             Road
+OrigStreetName                RAINBOW CANYON
+HouseNumber                   8009
+MatchStreetName               RAINBOW Cyn
+WithinStructIdentif           C
+                                      
+ExtraInfo                     HOBSOVILLE AUCKLAND
+StreetNameSufType             Ter
+OrigStreetName                FERNTREE
+HouseNumber                   11
+MatchStreetName               FERNTREE
+                                      
+ExtraInfo                     ALBUQUERQUE NM
+StreetNameSufType             Road
+OrigStreetName                OSUNA
+HouseNumber                   4001
+MatchStreetName               OSUNA
+StreetNameSufDirection        NE
+                                      
+ExtraInfo                     BUFFALO NY
+StreetNameSufType             Trl
+OrigStreetName                FAWN
+HouseNumber                   278
+MatchStreetName               FAWN
+                                      
+ExtraInfo                     MARION MA
+StreetNameSufType             Road
+HouseNumberSuffix             A
+OrigStreetName                POINT
+HouseNumber                   548
+MatchStreetName               Pt
+                                      
+StreetNameSufType             Road
+OrigStreetName                BEAUTY SPOT
+HouseNumber                   470
+MatchStreetName               BEAUTY SPOT
+StreetNameSufDirection        E
+                                      
+WithinStructDescript          Ste
+StreetNameSufType             Blvd
+OrigStreetName                TOWN CENTRE
+HouseNumber                   200
+MatchStreetName               TOWN Ctr
+WithinStructIdentif           205
+                                      
+ExtraInfo                     BRONX NY
+StreetNameSufType             Pky
+OrigStreetName                MANHATTAN COLLEGE
+HouseNumber                   4513
+MatchStreetName               MANHATTAN COLLEGE
+                                      
+ExtraInfo                     BEAVERTON OR
+StreetNameSufType             Ct
+OrigStreetName                MEADOW GRASS
+HouseNumber                   16693
+MatchStreetName               MEADOW GRASS
+StreetNamePrefDirection       NW
+                                      
+StreetNameSufType             Road
+RuralRouteDescript            RR
+OrigStreetName                SODA CREEK
+RuralRouteIdentif             3
+HouseNumber                   5000
+MatchStreetName               SODA Crk
+                                      
+StreetNameSufType             Ln
+OrigStreetName                EVENSTAR
+HouseNumber                   4671
+MatchStreetName               EVENSTAR
+StreetNamePrefDirection       S
+                                      
+WithinStructDescript          #
+StreetNameSufType             Blvd
+OrigStreetName                DEL AMO
+HouseNumber                   3838
+MatchStreetName               AMO
+WithinStructIdentif           202
+                                      
+StreetNameSufType             Ave
+OrigStreetName                LAS CRUCES
+HouseNumber                   132
+MatchStreetName               CRUCES
+StreetNamePrefDirection       W
+                                      
+StreetNamePrefType            Cam
+OrigStreetName                DE LA TIERRA
+HouseNumber                   254
+MatchStreetName               TIERRA
+                                      
+StreetNamePrefType            Ave
+OrigStreetName                OF THE AMERICAS
+HouseNumber                   434
+MatchStreetName               AMERICAS
+                                      
+StreetNameSufType             St
+OrigStreetName                LOS ANGELES
+HouseNumber                   22
+MatchStreetName               ANGELES
+                                      
+StreetNameSufType             St
+HouseNumberSuffix             B
+OrigStreetName                WALNUT
+HouseNumber                   2738
+MatchStreetName               WALNUT
+                                      
+RuralRouteDescript            HC #
+BoxDescript                   Box
+RuralRouteIdentif             85
+BoxIdentif                    49A1
+                                     
+WithinStructDescript          #
+OrigStreetName                APPLYWAY
+HouseNumber                   1905
+MatchStreetName               APPLYWAY
+WithinStructIdentif           D51
+                                      
+StreetNamePrefType            Road
+WithinStructDescript          #
+OrigStreetName                84th
+HouseNumber                   3517
+MatchStreetName               84th
+StreetNamePrefDirection       N
+WithinStructIdentif           126B
+                                      
+WithinStructDescript          Fl
+StreetNameSufType             St
+OrigStreetName                BLEECKER
+HouseNumber                   65
+MatchStreetName               BLEECKER
+WithinStructIdentif           3
+                                      
+StreetNameSufType             St
+HouseNumberSuffix             1/2
+OrigStreetName                MASSACHUSETTS
+HouseNumber                   1007
+MatchStreetName               MA
+                                      
+BoxDescript                   PO Box
+BoxIdentif                    3548-1000
+                                      
+WithinStructDescript          Ste
+StreetNameSufType             Ave
+OrigStreetName                GRAND
+HouseNumber                   715
+MatchStreetName               GRAND
+WithinStructIdentif           1A
+                                      
+WithinStructDescript          #
+StreetNameSufType             Ave
+OrigStreetName                PHOENIX
+HouseNumber                   6101
+MatchStreetName               PHOENIX
+WithinStructIdentif           1CONARC
+                                      
+StreetNameSufType             St
+OrigStreetName                NEW KING
+HouseNumber                   4
+MatchStreetName               NEW KING
+StreetNameSufDirection        W
+                                      
+PropDesPrefDirection          W
+MatchPropertyName             AJ
+OrigPropertyName              AJ
+HouseNumber                   3064
+PropertySufType               Hall
+                                      
+RuralRouteDescript            RR
+BoxDescript                   Box
+RuralRouteIdentif             5
+BoxIdentif                    108B
+                                      
+StreetNameSufType             Cir
+OrigStreetName                SOMMER VALLEY
+HouseNumber                   6254
+MatchStreetName               SOMMER Val
+                                      
+WithinStructDescript          #
+StreetNameSufType             St
+OrigStreetName                17th
+HouseNumber                   513
+MatchStreetName               17th
+StreetNamePrefDirection       N
+WithinStructIdentif           1202
+                                      
+WithinStructDescript          #
+StreetNameSufType             Dr
+OrigStreetName                NORTHSIDE
+HouseNumber                   1575
+MatchStreetName               NORTHSIDE
+StreetNameSufDirection        NW
+WithinStructIdentif           350
+                                      
+WithinStructDescript          #
+StreetNameSufType             Pky
+OrigStreetName                GEORGE BUSBEE
+HouseNumber                   2615
+MatchStreetName               GEORGE BUSBEE
+StreetNameSufDirection        NW
+WithinStructIdentif           1
+                                      
+WithinStructDescript          Apt
+StreetNameSufType             Ave
+OrigStreetName                26th
+HouseNumber                   107
+MatchStreetName               26th
+WithinStructIdentif           4
+                                      
+StreetNameSufType             Cres
+HouseNumberSuffix             A
+OrigStreetName                ARLINGNGTON
+HouseNumber                   2451
+MatchStreetName               ARLINGNGTON
+                                      
+StreetNameSufType             Ct
+OrigStreetName                LAMIRDA
+HouseNumber                   117
+MatchStreetName               LAMIRDA
+StreetNameSufDirection        NW
+                                      
+WithinStructDescript          Unit
+StreetNameSufType             Hwy
+OrigStreetName                OSEAS
+HouseNumber                   87200
+MatchStreetName               OSEAS
+WithinStructIdentif           F9
+                                      
+WithinStructDescript          #
+StreetNameSufType             Ter
+OrigStreetName                23RD
+HouseNumber                   2930
+MatchStreetName               23RD
+StreetNamePrefDirection       SW
+WithinStructIdentif           2511
+                                      
+StreetNameSufType             St
+OrigStreetName                A
+HouseNumber                   2749
+MatchStreetName               A
+                                      
+StreetNameSufType             Dr
+OrigStreetName                EAST
+HouseNumber                   150
+MatchStreetName               East
+                                      
+StreetNameSufType             St
+OrigStreetName                38th
+HouseNumber                   32
+MatchStreetName               38th
+StreetNamePrefDirection       E
+                                      
+StreetNamePrefType            Ave
+WithinStructDescript          Lbby
+OrigStreetName                OF AMERICAS
+HouseNumber                   1271
+MatchStreetName               AMERICAS
+WithinStructIdentif           9
+                                      
+StreetNamePrefType            Ave
+WithinStructDescript          Lbby
+OrigStreetName                OF THE AMERICAS
+HouseNumber                   1271
+MatchStreetName               AMERICAS
+WithinStructIdentif           9
+                                      
+StreetNamePrefType            Ave
+WithinStructDescript          Rm
+OrigStreetName                OF AMERICAS
+HouseNumber                   1271
+MatchStreetName               AMERICAS
+WithinStructIdentif           3910
+                                      
+ExtraInfo                     364
+WithinStructDescript          Ste
+StreetNameSufType             Blvd
+OrigStreetName                UNIVERSITY
+HouseNumber                   5910
+MatchStreetName               Univ
+StreetNamePrefDirection       S
+WithinStructIdentif           C18
+                                      
+StreetNameSufType             St
+OrigStreetName                1ST
+HouseNumber                   110
+MatchStreetName               1st
+StreetNamePrefDirection       S
+                                      
+WithinStructDescript          Apt
+StreetNameSufType             St
+OrigStreetName                72nd
+HouseNumber                   124
+MatchStreetName               72nd
+StreetNamePrefDirection       E
+WithinStructIdentif           12
+                                      
+WithinStructDescript          Apt
+StreetNameSufType             St
+OrigStreetName                82nd
+HouseNumber                   4210
+MatchStreetName               82nd
+WithinStructIdentif           6R
+                                      
+WithinStructDescript          Lbby
+StreetNameSufType             Ctr
+OrigStreetName                HSBC
+HouseNumber                   1
+MatchStreetName               HSBC
+WithinStructIdentif           3
+                                      
+WithinStructDescript          Ste
+StreetNameSufType             Road
+OrigStreetName                OSUNA
+HouseNumber                   3600
+MatchStreetName               OSUNA
+StreetNameSufDirection        NE
+WithinStructIdentif           323
+                                      
+ExtraInfo                     AVERY POINT
+StreetNameSufType             Road
+OrigStreetName                SHENNCOSSET
+HouseNumber                   1084
+MatchStreetName               SHENNCOSSET
+                                      
+StreetNameSufType             St
+OrigStreetName                5th
+HouseNumber                   11342
+MatchStreetName               5th
+StreetNamePrefDirection       SW
+                                      
+WithinStructDescript          Apt
+StreetNameSufType             Loop
+OrigStreetName                NE
+HouseNumber                   2439
+MatchStreetName               NE
+WithinStructIdentif           1811
+                                      
+StreetNameSufType             St
+OrigStreetName                11th
+HouseNumber                   1029
+MatchStreetName               11th
+StreetNamePrefDirection       NW
+                                      
+WithinStructDescript          Ste
+StreetNameSufType             Ave
+OrigStreetName                8th
+HouseNumber                   3620
+MatchStreetName               8th
+StreetNameSufDirection        S
+WithinStructIdentif           110
+                                      
+WithinStructDescript          #
+StreetNameSufType             St
+OrigStreetName                24th
+HouseNumber                   10227
+MatchStreetName               24th
+StreetNamePrefDirection       SW
+WithinStructIdentif           B232
+                                      
+WithinStructDescript          #
+StreetNameSufType             St
+OrigStreetName                46th
+HouseNumber                   445
+MatchStreetName               46th
+StreetNamePrefDirection       W
+WithinStructIdentif           4C
+                                      
+StreetNameSufType             Cir
+OrigStreetName                LAKEVIEW
+HouseNumber                   437
+MatchStreetName               LAKEVIEW
+                                      
+StreetNameSufType             Cir
+OrigStreetName                RED OAK
+HouseNumber                   206
+MatchStreetName               RED OAK
+                                      
+StreetNameSufType             Cir
+OrigStreetName                BROKEN ARROW
+HouseNumber                   28835
+MatchStreetName               BROKEN ARROW
+                                      
+WithinStructDescript          #
+StreetNameSufType             Cir
+OrigStreetName                GLENWOOD
+HouseNumber                   201
+MatchStreetName               GLENWOOD
+WithinStructIdentif           221
+                                      
+WithinStructDescript          #
+StreetNameSufType             Ter
+OrigStreetName                23RD
+HouseNumber                   2930
+MatchStreetName               23RD
+StreetNamePrefDirection       SW
+WithinStructIdentif           2511
+                                      
+StreetNameSufType             St
+OrigStreetName                A
+HouseNumber                   2749
+MatchStreetName               A
+                                      
+StreetNameSufType             Dr
+OrigStreetName                EAST
+HouseNumber                   150
+MatchStreetName               East
+                                      
+StreetNameSufType             St
+OrigStreetName                38th
+HouseNumber                   32
+MatchStreetName               38th
+StreetNamePrefDirection       E
+                                      
+StreetNameSufType             St
+OrigStreetName                75th
+HouseNumber                   19-03
+MatchStreetName               75th
+StreetNameSufDirection        E
+                                      
+ExtraInfo                     NW
+StreetNameSufType             Rt
+RuralRouteDescript            RR
+OrigStreetName                ERLAND
+HouseNumber                   2821
+MatchStreetName               ERLAND
+                                      
+WithinStructDescript          #
+OrigStreetName                175th
+HouseNumber                   7711
+MatchStreetName               175th
+StreetNamePrefDirection       NE
+WithinStructIdentif           B108
+                                      
+WithinStructDescript          #
+StreetNameSufType             Ave
+OrigStreetName                28th
+HouseNumber                   20525
+MatchStreetName               28th
+StreetNameSufDirection        W
+WithinStructIdentif           A
+                                      
+WithinStructDescript          #
+StreetNameSufType             St
+OrigStreetName                O
+HouseNumber                   2952
+MatchStreetName               O
+StreetNamePrefDirection       SE
+WithinStructIdentif           D
+                                      
+WithinStructDescript          #
+StreetNameSufType             Pl
+OrigStreetName                66th
+HouseNumber                   902
+MatchStreetName               66th
+StreetNamePrefDirection       SE
+WithinStructIdentif           B
+                                      
+WithinStructDescript          #
+StreetNameSufType             Ave
+OrigStreetName                ROCKEFELLER
+HouseNumber                   1902
+MatchStreetName               ROCKEFELLER
+WithinStructIdentif           C
+                                      
+WithinStructDescript          #
+StreetNameSufType             Ave
+OrigStreetName                HOXIE
+HouseNumber                   1909
+MatchStreetName               HOXIE
+WithinStructIdentif           B
+                                      
+WithinStructDescript          #
+OrigStreetName                WALNUT
+HouseNumber                   6104
+MatchStreetName               WALNUT
+StreetNamePrefDirection       W
+WithinStructIdentif           B
+                                      
+WithinStructDescript          #
+StreetNameSufType             St
+OrigStreetName                22nd
+HouseNumber                   11308
+MatchStreetName               22nd
+StreetNamePrefDirection       SE
+WithinStructIdentif           A
+                                      
+WithinStructDescript          #
+StreetNameSufType             Road
+OrigStreetName                YEAGER
+HouseNumber                   22630
+MatchStreetName               YEAGER
+WithinStructIdentif           A
+
+HouseNumber                   44

@@ -1,0 +1,14 @@
+<project name="testsuite builder" default="test" basedir=".">
+   
+	<target name="test">		
+		<path id="mdm_gen_classpath2">
+            <pathelement location="target/test-classes"/>
+        </path>
+        <ant antfile="target/test-classes/eindex/build.xml" 
+            target="gen-mdm-index-files" inheritAll="false" inheritrefs="false">                                   
+            <!--property name="mdm.gen.classpath" refid="mdm_gen_classpath2"/-->
+        </ant>
+	</target>
+	
+	
+</project>

@@ -1,0 +1,471 @@
+AliasList                     STC
+PrimaryName                   SEEBEYOND
+IndustrySectorList            Computer Software & Services - Information Technology Consulting Services
+
+AliasList                     STC
+PrimaryName                   SEEBEYOND
+IndustrySectorList            Computer Software & Services - Information Technology Consulting Services
+IndustryTypeKeyword           TECHNOLOGY
+OrgTypeKeyword                CORPORATION
+
+PrimaryName                   FAIRCHILD
+IndustrySectorList            Electronics & Miscellaneous Technology - Semiconductor-Equipment & Materials
+IndustryTypeKeyword           AEROSPACE
+OrgTypeKeyword                CORPORATION
+
+PrimaryName                   INTERNATIONAL BUSINESS MACHINE
+OrgTypeKeyword                CORPORATION
+
+PrimaryName                   HOWEL & THORNHILL
+OrgTypeKeyword                PA
+
+PrimaryName                   AMERICAN CAPACITOR
+OrgTypeKeyword                CORPORATION
+
+PrimaryName                   JAPAN STORAGE
+IndustrySectorList            Manufacturing - Miscellaneous Electrical Products
+IndustryTypeKeyword           BATTERY
+OrgTypeKeyword                COMPANY LIMITED
+                                      
+PrimaryName                   HOFFMAN-LA ROCHE
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   BIOJECT
+IndustrySectorList            Drugs
+IndustryTypeKeyword           MEDICAL TECHNOLOGY
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   AMAZON.COM
+                                      
+PrimaryName                   JOHNSON & JOHNSON
+IndustrySectorList            Automotive & Transport Equipment - Auto Parts
+                                      
+AliasList                     STRUCTURAL TECHNOLOGY CORPORATION
+PrimaryName                   STC
+                                      
+AliasList                     BIG BLUE
+PrimaryName                   IBM
+IndustrySectorList            Computer Hardware - Diversified Computer Products
+                                      
+PrimaryName                   UNITED TECHNOLOGY
+IndustrySectorList            Computer Hardware
+OrgTypeKeyword                CORPORATION
+                                      
+PrimaryName                   ADVANCED TECHNOLOGY
+IndustrySectorList            Computer Hardware
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   AB LORENTZEN & WETTRE
+                                      
+PrimaryName                   ABB
+OrgTypeKeyword                INCORPORATED
+                                      
+AssocTypeKeyword              GROUP
+PrimaryName                   ALUMASC
+OrgTypeKeyword                PLC
+                                      
+PrimaryName                   AMSTED
+IndustrySectorList            Manufacturing - Diversified Machinery
+IndustryTypeKeyword           INDUSTRIES
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   APPLIED FILMS
+IndustrySectorList            Consumer Products - Durables-Photographic Equipment & Supplies
+OrgTypeKeyword                CORPORATION
+                                      
+PrimaryName                   ATKINS
+IndustrySectorList            Manufacturing - Construction, Mining & Other Heavy Machinery
+IndustryTypeKeyword           MACHINERY
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   COMPAGNIA FINANZARIA DE BENEDETTI
+                                       
+AssocTypeKeyword              HOLDING
+PrimaryName                   BRUNEL
+OrgTypeKeyword                PLC
+                                      
+PrimaryName                   BURLINGTON
+IndustrySectorList            Manufacturing - Textile Manufacturing
+IndustryTypeKeyword           TEXTILE MACHINERY
+OrgTypeKeyword                CORPORATION
+                                      
+PrimaryName                   COLUMBUS MCKINNON
+OrgTypeKeyword                CORPORATION
+                                      
+PrimaryName                   CONNELL
+OrgTypeKeyword                LIMITED PARTNERSHIP
+                                      
+PrimaryName                   DAEWOO
+IndustrySectorList            Manufacturing - Diversified Machinery
+IndustryTypeKeyword           HEAVY INDUSTRIES
+OrgTypeKeyword                LIMITED
+                                      
+PrimaryName                   DOVER
+OrgTypeKeyword                CORPORATION
+                                      
+PrimaryName                   DUKANE
+OrgTypeKeyword                CORPORATION
+                                      
+PrimaryName                   DÜRR
+OrgTypeKeyword                AG
+                                      
+PrimaryName                   DYNACTION
+OrgTypeKeyword                SA
+                                      
+PrimaryName                   EXX
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   FARREL
+OrgTypeKeyword                CORPORATION
+                                      
+PrimaryName                   COMPAGNIE DE FIVES-LILLE
+                                      
+PrimaryName                   GEORG FISCHER
+OrgTypeKeyword                LIMITED
+                                      
+PrimaryName                   IDRA PRESSE
+OrgTypeKeyword                SPA
+                                      
+PrimaryName                   ILLINOIS TOOL WORKS
+IndustrySectorList            Consumer Products - Durables-Lawn & Garden Equipment & Small Tools & Accessories
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   INDUCTOTHERM
+IndustrySectorList            Manufacturing - Diversified Machinery
+IndustryTypeKeyword           INDUSTRIES
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   INGERSOLL-RAND
+IndustrySectorList            Manufacturing - Diversified Machinery
+OrgTypeKeyword                COMPANY LIMITED
+                                      
+PrimaryName                   INGERSOLL-RAND
+IndustrySectorList            Manufacturing - Diversified Machinery
+IndustryTypeKeyword           INDUSTRIAL SOLUTIONS
+                                      
+PrimaryName                   ISHIKAWAJIMA-HARIMA
+IndustrySectorList            Manufacturing - Diversified Machinery
+IndustryTypeKeyword           HEAVY INDUSTRIES
+OrgTypeKeyword                COMPANY LIMITED
+                                      
+PrimaryName                   JOY GLOBAL
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   KAWASAKI
+IndustrySectorList            Manufacturing - Diversified Machinery
+IndustryTypeKeyword           HEAVY INDUSTRIES
+OrgTypeKeyword                LIMITED
+                                      
+PrimaryName                   LTG
+IndustrySectorList            Computer Hardware
+IndustryTypeKeyword           TECHNOLOGY
+OrgTypeKeyword                PLC
+                                      
+PrimaryName                   MAN AKTIENGESELLSCHAFT
+                                      
+PrimaryName                   MEIDENSHA
+OrgTypeKeyword                CORPORATION
+                                      
+PrimaryName                   MITSUI
+IndustrySectorList            Manufacturing - Construction, Mining & Other Heavy Machinery
+IndustryTypeKeyword           ENGINEERING & SHIPBUILDING
+OrgTypeKeyword                COMPANY LIMITED
+                                      
+PrimaryName                   NIIGATA
+IndustrySectorList            Manufacturing - Construction, Mining & Other Heavy Machinery
+IndustryTypeKeyword           ENGINEERING
+OrgTypeKeyword                COMPANY LIMITED
+                                      
+PrimaryName                   ABBOTT
+IndustrySectorList            Drugs - Drug Manufacturers-Major
+IndustryTypeKeyword           LABORATORIES
+                                      
+PrimaryName                   ASTRAZENECA
+OrgTypeKeyword                PLC
+                                      
+PrimaryName                   AVENTIS
+                                      
+PrimaryName                   AVENTIS
+IndustrySectorList            Drugs
+IndustryTypeKeyword           PHARMACEUTICALS
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   BOEHRINGER INGELHEIM
+OrgTypeKeyword                GMBH
+                                      
+PrimaryName                   BRISTOL-MYERS SQUIBB
+IndustrySectorList            Drugs - Drug Manufacturers-Major
+OrgTypeKeyword                COMPANY
+                                      
+PrimaryName                   DAIICHI
+IndustrySectorList            Drugs
+IndustryTypeKeyword           PHARMACEUTICAL
+OrgTypeKeyword                COMPANY LIMITED
+                                      
+AssocTypeKeyword              AND COMPANY
+PrimaryName                   ELI LILLY
+IndustrySectorList            Drugs - Biotechnology-Research
+                                      
+PrimaryName                   GLAXOSMITHKLINE
+OrgTypeKeyword                PLC
+                                      
+PrimaryName                   HOFFMANN-LA ROCHE
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   JOHNSON & JOHNSON
+IndustrySectorList            Automotive & Transport Equipment - Auto Parts
+                                      
+AssocTypeKeyword              AND COMPANY
+PrimaryName                   MERCK
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   MERCK
+OrgTypeKeyword                KGAA
+                                      
+PrimaryName                   NOVARTIS
+OrgTypeKeyword                AG
+                                      
+PrimaryName                   NOVO NORDISK
+OrgTypeKeyword                A/S
+                                      
+PrimaryName                   ORTHO-MCNEIL
+IndustrySectorList            Drugs
+IndustryTypeKeyword           PHARMACEUTICAL
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   PHARMACIA
+OrgTypeKeyword                CORPORATION
+                                      
+PrimaryName                   PURDUE PHARMA
+OrgTypeKeyword                LIMITED PARTNERSHIP
+                                      
+AssocTypeKeyword              GROUP
+PrimaryName                   ROCHE
+                                      
+PrimaryName                   SANKYO
+OrgTypeKeyword                COMPANY LIMITED
+                                      
+PrimaryName                   SANOFI-SYNTHÉLABO
+                                      
+PrimaryName                   SCHERING
+OrgTypeKeyword                AG
+                                      
+PrimaryName                   SCHERING-PLOUGH
+OrgTypeKeyword                CORPORATION
+                                      
+PrimaryName                   TAKEDA
+IndustrySectorList            Chemicals
+IndustryTypeKeyword           CHEMICALS INDUSTRIES
+OrgTypeKeyword                LIMITED
+                                      
+PrimaryName                   WYETH
+IndustrySectorList            Drugs - Biotechnology-Medicine
+IndustryTypeKeyword           PHARMACEUTICALS
+                                      
+AssocTypeKeyword              GMBH AND COMPANY
+PrimaryName                   ABBOTT
+IndustrySectorList            Drugs - Drug Manufacturers-Major
+OrgTypeKeyword                KG
+                                      
+PrimaryName                   ALTANA AKTIENGESELLSCHAFT
+                                      
+PrimaryName                   AMARIN
+OrgTypeKeyword                CORPORATION PLC
+                                      
+PrimaryName                   ANORMED
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   AVANT IMMUNOTHERAPEUTICS
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   AVENTIS PASTEUR
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   AVI
+IndustrySectorList            Drugs
+IndustryTypeKeyword           BIOPHARMA
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   AXCAN PHARMA
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   BIOSPHERE
+IndustrySectorList            Drugs
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   BIO-TECHNOLOGY GENERAL
+OrgTypeKeyword                CORPORATION
+                                      
+PrimaryName                   BONE CARE INTERNATIONAL
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   CELL PATHWAYS
+OrgTypeKeyword                INCORPORATED
+                                      
+AssocTypeKeyword              GROUP
+PrimaryName                   CELLTECH
+OrgTypeKeyword                PLC
+                                      
+PrimaryName                   CENES
+IndustrySectorList            Drugs
+IndustryTypeKeyword           PHARMACEUTICALS
+OrgTypeKeyword                PLC
+                                      
+PrimaryName                   CHUGAI
+IndustrySectorList            Drugs
+IndustryTypeKeyword           PHARMACEUTICAL
+OrgTypeKeyword                COMPANY LIMITED
+                                      
+PrimaryName                   DERMA
+IndustrySectorList            Drugs
+IndustryTypeKeyword           SCIENCES
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   DISCOVERY
+IndustrySectorList            Drugs
+IndustryTypeKeyword           LABORATORIES
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   DR REDDY'S
+IndustrySectorList            Drugs
+IndustryTypeKeyword           LABORATORIES
+OrgTypeKeyword                LIMITED
+                                      
+PrimaryName                   DRAXIS
+IndustrySectorList            Health Products & Services
+IndustryTypeKeyword           HEALTH
+OrgTypeKeyword                INCORPORATED
+                                      
+PrimaryName                   EISAI
+OrgTypeKeyword                COMPANY LIMITED
+                                      
+PrimaryName                   ELAN
+OrgTypeKeyword                CORPORATION PLC
+                                      
+AssocTypeKeyword              HOLDING
+PrimaryName                   ENDO
+IndustrySectorList            Drugs
+IndustryTypeKeyword           PHARMACEUTICALS
+OrgTypeKeyword                INCORPORATED
+                                      
+AssocTypeKeyword              ENTERPRISES
+PrimaryName                   COCA COLA
+IndustrySectorList            Food, Beverage & Tobacco - Beverages - Soft Drinks
+                                      
+AssocTypeKeyword              ENTERPRISES
+PrimaryName                   COCA COLA
+IndustrySectorList            Food, Beverage & Tobacco - Beverages - Soft Drinks
+OrgTypeKeyword                LIMITED
+                                      
+PrimaryName                   COCA COLA
+IndustrySectorList            Food, Beverage & Tobacco - Beverages - Soft Drinks
+                                      
+PrimaryName                   COUCA COULA ENTERPR
+                                      
+PrimaryName                   ROCKY MOUNTAIN
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+IndustryTypeKeyword           BOOKS
+                                      
+PrimaryName                   RAINIER
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+IndustryTypeKeyword           BOOKS
+                                      
+PrimaryName                   COWELLS
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+IndustryTypeKeyword           BOOKS
+                                      
+PrimaryName                   THE BOOKIE
+                                      
+PrimaryName                   THE BOOKIES
+                                      
+PrimaryName                   D HALTON
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+IndustryTypeKeyword           BOOKSELLER
+                                      
+PrimaryName                   FRANKLIN
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+IndustryTypeKeyword           BOOKS
+                                      
+PrimaryName                   FISHER'S
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+IndustryTypeKeyword           BOOKS
+                                      
+PrimaryName                   BOOKS FOR YOU
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+                                      
+PrimaryName                   HAYMARKET
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+IndustryTypeKeyword           BOOKS
+                                      
+PrimaryName                   BIG CITY
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+IndustryTypeKeyword           BOOKS
+                                      
+PrimaryName                   SEARCHERS
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+IndustryTypeKeyword           BOOKSTORE
+                                      
+PrimaryName                   SEARCHERS
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+IndustryTypeKeyword           BOOKS
+                                      
+PrimaryName                   BROMAN'S
+                                      
+PrimaryName                   CINEMA
+IndustrySectorList            Media - Movie Theaters
+IndustryTypeKeyword           BOOKSTORE
+                                      
+PrimaryName                   CINEMA
+IndustrySectorList            Media - Movie Theaters
+IndustryTypeKeyword           BOOKS
+                                      
+PrimaryName                   LIBROS DE ESPANA
+                                      
+PrimaryName                   RESORT
+IndustrySectorList            Leisure - Gambling Resorts & Casinos
+IndustryTypeKeyword           BOOKSELLER
+                                      
+PrimaryName                   COASTAL BOOKS
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+                                      
+PrimaryName                   BOOKS 'N BOATS
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+                                      
+PrimaryName                   BOOKS 'N BRATS
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+                                      
+PrimaryName                   BOOKS 'N BEATS
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+                                      
+PrimaryName                   THE DIPLOMATIC POUCH
+                                      
+PrimaryName                   OLD TOWN
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+IndustryTypeKeyword           BOOKS
+                                      
+PrimaryName                   NORTHWEST BOOKWORLD
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+                                      
+PrimaryName                   SOUTHERN FRIED
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+IndustryTypeKeyword           BOOKS
+                                      
+PrimaryName                   SOUTHWEST BOOKWORLD
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+                                      
+PrimaryName                   SOUTHWEST BOOKS
+IndustrySectorList            Specialty Retail - Music, Video, Book & Entertainment Software Retailing & Dist.
+                                      
+PrimaryName                   FRANKLIN-MOON
+OrgTypeKeyword                INCORPORATED
+                                       
+PrimaryName                   HARDCOURT
+IndustrySectorList            Media - Publishing - Books
+IndustryTypeKeyword           PUBLISHING
+                                      
+AssocTypeKeyword              AND COMPANY
+PrimaryName                   NIHON-KOTO
+                                      
+PrimaryName                   ZEDMAN
+IndustrySectorList            Media - Publishing - Other
+IndustryTypeKeyword           PUBLISHER

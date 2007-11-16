@@ -1,0 +1,722 @@
+StreetNamePrefType            Rue
+OrigStreetName                BLUE
+MatchStreetName               BLUE
+                                      
+StreetNamePrefType            Rue
+OrigStreetName                JULIEN LACROIX
+MatchStreetName               JULIEN LACROIX
+                         
+StreetNamePrefType            Rue
+OrigStreetName                DES PYRENEES
+MatchStreetName               PYRENEES
+                                      
+StreetNamePrefType            Rue
+OrigStreetName                DE LA ROQUETTE
+MatchStreetName               LA ROQUETTE
+                                      
+StreetNamePrefType            Rue
+OrigStreetName                DU CHEMIN VERT
+MatchStreetName               Chemin VERT
+                                      
+StreetNamePrefType            Rue
+OrigStreetName                DE L'OURCQ
+MatchStreetName               L'OURCQ
+                                      
+StreetNamePrefType            Rue
+OrigStreetName                JOSEPH DE MAITRE
+MatchStreetName               JOSEPH DE MAITRE
+                                      
+StreetNamePrefType            Blvd
+OrigStreetName                DE BON SECOURS
+HouseNumber                   79
+MatchStreetName               BON SECOURS
+                                      
+StreetNamePrefType            Rue
+OrigStreetName                DES BELLES FEUILLES
+HouseNumber                   16
+MatchStreetName               BELLES FEUILLES
+                                      
+StreetNamePrefType            Blvd
+OrigStreetName                DE BONNE-NOUVELLE
+HouseNumber                   42
+MatchStreetName               BONNE-NOUVELLE
+                                      
+StreetNamePrefType            Rue
+OrigStreetName                R LAURENT
+HouseNumber                   6
+MatchStreetName               Rue LAURENT
+                                      
+StreetNamePrefType            Rue
+OrigStreetName                DU COLONEL PIERRE AVIA
+HouseNumber                   8
+MatchStreetName               COLONEL PIERRE AVIA
+                                      
+StreetNamePrefType            Blvd
+OrigStreetName                SAINT GERMAIN
+HouseNumber                   50
+MatchStreetName               Saint GERMAIN
+                                      
+StreetNamePrefType            Blvd
+OrigStreetName                PEREIRE
+HouseNumber                   143
+MatchStreetName               PEREIRE
+StreetNameSufDirection        Nord
+                                      
+StreetNamePrefType            Aven
+HouseNumberSuffix             A
+OrigStreetName                BLANCHE
+HouseNumber                   12
+MatchStreetName               BLANCHE
+                                      
+StreetNamePrefType            Quai
+HouseNumberSuffix             D
+OrigStreetName                ST BERNARD
+HouseNumber                   12
+MatchStreetName               Saint BERNARD
+                                      
+StreetNamePrefType            Voie
+HouseNumberSuffix             B
+OrigStreetName                GEORGE POMPIDOU
+HouseNumber                   645
+MatchStreetName               GEORGE POMPIDOU
+                                      
+StreetNamePrefType            Rue
+HouseNumberSuffix             T
+OrigStreetName                DE LA POMPE
+HouseNumber                   65
+MatchStreetName               LA POMPE
+                                      
+StreetNamePrefType            Blvd
+OrigStreetName                HENRY VI
+HouseNumber                   23
+MatchStreetName               HENRY VI
+                                      
+StreetNamePrefType            Place
+OrigStreetName                DE LA CONCORDE
+MatchStreetName               LA CONCORDE
+                                      
+StreetNamePrefType            Rlle
+OrigStreetName                DU SOLEIL D'OR
+HouseNumber                   2
+MatchStreetName               SOLEIL D'OR
+                                      
+StreetNamePrefType            Port
+OrigStreetName                DES SAINT PERES
+MatchStreetName               Saint PERES
+                                      
+StreetNamePrefType            Cours
+OrigStreetName                LA REINE
+MatchStreetName               REINE
+                                      
+StreetNamePrefType            Allé
+HouseNumberSuffix             B
+OrigStreetName                MARCEL PROUST
+HouseNumber                   27
+MatchStreetName               MARCEL PROUST
+                                      
+StreetNamePrefType            Pont
+OrigStreetName                DU FAUBOURG DE PIERRE
+HouseNumber                   88
+MatchStreetName               Faubourg DE PIERRE
+                                      
+StreetNamePrefType            CHEM
+OrigStreetName                DE L'ARMEE D'AFRIQUE
+HouseNumber                   7
+MatchStreetName               L'ARMEE D'AFRIQUE
+                                      
+StreetNamePrefType            IMP
+OrigStreetName                DE CANNES
+MatchStreetName               CANNES
+                                      
+StreetNamePrefType            SQ
+OrigStreetName                DU MONT BLANC
+MatchStreetName               Mont BLANC
+                                      
+StreetNamePrefType            PAS
+OrigStreetName                DU CHEMIN VERT
+MatchStreetName               Chemin VERT
+                                      
+StreetNamePrefType            Cour
+OrigStreetName                DU CHENE VERT
+MatchStreetName               CHENE VERT
+                                      
+StreetNamePrefType            Carrefour
+OrigStreetName                DE LA CROIX ROUGE
+MatchStreetName               LA CROIX ROUGE
+                                      
+StreetNamePrefType            Route
+OrigStreetName                D'ALLAUCH
+MatchStreetName               D'ALLAUCH
+                                      
+StreetNamePrefType            VLLA
+OrigStreetName                AUGUSTE BLANQUI
+MatchStreetName               AUGUSTE BLANQUI
+                                      
+StreetNamePrefType            VLLA
+OrigStreetName                AUGUSTE BLANQUI
+HouseNumber                   2
+MatchStreetName               AUGUSTE BLANQUI
+                                      
+StreetNamePrefType            Rue
+HouseNumberSuffix             T
+OrigStreetName                ROGER BOCA
+HouseNumber                   8
+MatchStreetName               ROGER BOCA
+                                      
+MatchPropertyName             VINCENNES
+OrigPropertyName              VINCENNES
+PropertySufType               Gare RER
+                                      
+MatchPropertyName             CHATELET LES HALLES
+OrigPropertyName              CHATELET LES HALLES
+PropertySufType               Gare RER
+                                      
+CenterIdentif                 2
+MatchPropertyName             FLEURS
+OrigPropertyName              DES FLEURS
+CenterDescript                Bâtiment
+PropertySufType               Cité
+                                      
+ExtraInfo                     75008 PARIS
+StreetNamePrefType            Rue
+HouseNumberSuffix             B
+OrigStreetName                ARCADE
+HouseNumber                   11
+MatchStreetName               ARCADE
+                                      
+MatchPropertyName             LATIN
+OrigPropertyName              LATIN
+PropertySufType               Qrtr
+                                      
+StreetNamePrefType            Pte Rue
+OrigStreetName                VINCENNES
+MatchStreetName               VINCENNES
+                                      
+StreetNamePrefType            Aven
+OrigStreetName                DU PETIT LYCÉE
+MatchStreetName               Petit Lycée
+StreetNamePrefDirection       Nord
+                                      
+StreetNameSufType             Pont
+OrigStreetName                PETIT
+MatchStreetName               Petit
+                                      
+MatchPropertyName             LONGCHAMPS
+OrigPropertyName              DE LONGCHAMPS
+PropertySufType               Hyppo
+                                      
+StreetNamePrefType            Clos
+OrigStreetName                SAINT-CYR
+MatchStreetName               SAINT-CYR
+                                      
+StreetNamePrefType            Les hauts
+OrigStreetName                DE SAINT BARTH
+MatchStreetName               Saint BARTH
+                                       
+StreetNamePrefType            Parvis
+OrigStreetName                DU SACRE COEUR
+MatchStreetName               SACRE COEUR
+                                      
+StreetNameSufType             Place
+OrigStreetName                GRAND'
+MatchStreetName               Grand
+                                      
+StreetNamePrefType            Boucle Sout
+OrigStreetName                SAINT-EUSTACHE
+MatchStreetName               SAINT-EUSTACHE
+                                      
+StreetNamePrefType            GALE
+OrigStreetName                DU CAIRE
+MatchStreetName               CAIRE
+                                      
+StreetNamePrefType            MAIL
+OrigStreetName                DES LOCHERES
+MatchStreetName               LOCHERES
+                                      
+ExtraInfo                     A55
+MatchPropertyName             NAL
+OrigPropertyName              NATIONALE
+                                      
+ExtraInfo                     A55
+MatchPropertyName             AUTOROUTE
+OrigPropertyName              AUTOROUTE
+                                      
+StreetNamePrefType            ESP
+OrigStreetName                DE LA DEFENSE
+MatchStreetName               LA DEFENSE
+                                      
+StreetNamePrefType            Rue
+OrigStreetName                FAUBOURG ST HONORE
+MatchStreetName               Faubourg Saint HONORE
+                                      
+StreetNamePrefType            Rue
+HouseNumberSuffix             B
+OrigStreetName                DES ECOLES
+HouseNumber                   183
+MatchStreetName               ECOLES
+                                      
+ExtraInfo                     65120
+StreetNamePrefType            Route
+MatchPropertyName             LUZ ST SAUVEUR
+OrigStreetName                DE VILLENAVE
+OrigPropertyName              LUZ ST SAUVEUR
+MatchStreetName               VILLENAVE
+                                      
+ExtraInfo                     75018 PARIS
+StreetNamePrefType            Rue
+MatchPropertyName             2 EME Droite
+OrigStreetName                POTEAU
+OrigPropertyName              2 EME DROITE
+HouseNumber                   26
+MatchStreetName               POTEAU
+PropertySufType               RESID
+                                      
+ExtraInfo                     75020 PARIS
+StreetNamePrefType            Rue
+OrigStreetName                VILLIERS DE L'ISLE ADAM
+HouseNumber                   45
+MatchStreetName               VILLIERS DE L'ISLE ADAM
+                                      
+ExtraInfo                     75013 PARIS
+StreetNamePrefType            Blvd
+MatchPropertyName             2
+OrigStreetName                KELLERMANN
+OrigPropertyName              2
+HouseNumber                   56
+MatchStreetName               KELLERMANN
+PropertySufType               BAT
+                                      
+ExtraInfo                     13015
+StreetNamePrefType            RN
+MatchPropertyName             MARSEILLE
+OrigStreetName                DE SAINT LOUIS
+OrigPropertyName              MARSEILLE
+HouseNumber                   48
+MatchStreetName               Saint LOUIS
+                                      
+ExtraInfo                     33290 BLANQUEFORT
+StreetNamePrefType            Aven
+OrigStreetName                GENERAL DE GAULLE
+HouseNumber                   16
+MatchStreetName               Géneral DE GAULLE
+                                      
+ExtraInfo                     33290 PAREMPUYRE
+StreetNamePrefType            Aven
+OrigStreetName                PHILIPPE DURAND DASSIER
+HouseNumber                   34
+MatchStreetName               PHILIPPE DURAND DASSIER
+                                      
+ExtraInfo                     69002 LYON
+StreetNamePrefType            Cours
+OrigStreetName                CHARLEMAGNE
+HouseNumber                   5
+MatchStreetName               CHARLEMAGNE
+                                      
+ExtraInfo                     69002 LYON
+StreetNamePrefType            Place
+OrigStreetName                LE VISTE
+HouseNumber                   4
+MatchStreetName               VISTE
+                                      
+ExtraInfo                     69002
+StreetNamePrefType            Rue
+HouseNumberSuffix             T
+MatchPropertyName             LYON
+OrigStreetName                PRÉS CARNOT
+OrigPropertyName              LYON
+HouseNumber                   1
+MatchStreetName               PRÉS CARNOT
+                                      
+ExtraInfo                     92824 PUTEAUX CEDEX
+StreetNamePrefType            Quai
+OrigStreetName                DE DION BOUTON
+HouseNumber                   30
+MatchStreetName               DION BOUTON
+                                      
+ExtraInfo                     22100
+StreetNamePrefType            Place
+MatchPropertyName             DINAN
+OrigStreetName                11 NOVEMBRE 1918
+OrigPropertyName              DINAN
+HouseNumber                   15
+MatchStreetName               11 Novembre 1918
+                                      
+ExtraInfo                     22100 TADEN
+MatchPropertyName             ALLEUX
+OrigPropertyName              ALLEUX
+PropertySufType               Zne Art
+                                      
+ExtraInfo                     2100 SAINT QUENTIN
+StreetNamePrefType            Rue
+OrigStreetName                JF KENNEDY
+HouseNumber                   48
+MatchStreetName               J F Kennedy
+                                      
+ExtraInfo                     VILLAGE
+MatchPropertyName             LE
+OrigStreetName                REVEST DU BION
+OrigPropertyName              LE
+HouseNumber                   4150
+MatchStreetName               REVEST DU BION
+                                      
+ExtraInfo                     67010
+StreetNamePrefType            Route
+MatchPropertyName             STRASBOURG
+OrigStreetName                DE POLYGONE
+OrigPropertyName              STRASBOURG
+HouseNumber                   73
+MatchStreetName               POLYGONE
+                                      
+ExtraInfo                     67000
+StreetNamePrefType            Rue
+MatchPropertyName             STRASBOURG
+OrigStreetName                DU VIEUX MARCHÉ AUX VINS
+OrigPropertyName              STRASBOURG
+HouseNumber                   10
+MatchStreetName               Vieux MARCHÉ AUX VINS
+                                      
+ExtraInfo                     67084 STRASBOURG CEDEX
+StreetNamePrefType            Allé
+OrigStreetName                ROBERTSAU
+HouseNumber                   4
+MatchStreetName               ROBERTSAU
+                                      
+ExtraInfo                     2800
+StreetNameSufType             Rue
+MatchPropertyName             VERSIGNY
+OrigStreetName                GRANDE
+OrigPropertyName              VERSIGNY
+HouseNumber                   50
+MatchStreetName               Grande
+                                      
+ExtraInfo                     BAUPTE
+MatchPropertyName             50500
+OrigStreetName                LE
+OrigPropertyName              50500
+HouseNumber                   55
+MatchStreetName               LE
+PropertySufType               Bourg
+                                      
+ExtraInfo                     50500
+StreetNamePrefType            Rue
+MatchPropertyName             CARENTAN
+OrigStreetName                101 ÈME AIRBORNE
+OrigPropertyName              CARENTAN
+HouseNumber                   55
+MatchStreetName               101 ÈME AIRBORNE
+                                      
+ExtraInfo                     22100 QUEVERT
+MatchPropertyName             CIAL CHÊNE
+OrigPropertyName              CIAL LE CHÊNE
+PropertySufType               CTRE
+                                      
+ExtraInfo                     22100
+StreetNamePrefType            Rue
+MatchPropertyName             DINAN
+OrigStreetName                QUAI
+OrigPropertyName              DINAN
+HouseNumber                   11
+MatchStreetName               Quai
+                                      
+ExtraInfo                     22100 TADEN
+MatchPropertyName             TRÉLAT
+OrigPropertyName              TRÉLAT
+PropertySufType               Bourg
+                                      
+OrigStreetName                LE BOULET
+HouseNumber                   55
+MatchStreetName               BOULET
+                                      
+ExtraInfo                     22100 TADEN
+MatchPropertyName             Landes
+OrigPropertyName              DES LANDES
+PropertySufType               PRÉ
+                                      
+ExtraInfo                     75732 PARIS
+StreetNamePrefType            Rue
+OrigStreetName                MIOLLIS
+HouseNumber                   21-23
+MatchStreetName               MIOLLIS
+                                      
+ExtraInfo                     78011 -
+StreetNamePrefType            Rue
+MatchPropertyName             VERSAILLES
+OrigStreetName                DE NOAILLES
+OrigPropertyName              VERSAILLES
+BoxDescript                   BP
+HouseNumber                   35
+MatchStreetName               NOAILLES
+BoxIdentif                    1115
+                                      
+ExtraInfo                     78 190 CEDEX
+StreetNamePrefType            Rue
+MatchPropertyName             TRAPPES
+OrigStreetName                TEISSERENC DE BORT
+OrigPropertyName              TRAPPES
+HouseNumber                   12
+MatchStreetName               TEISSERENC DE BORT
+                                      
+StreetNamePrefType            Aven
+MatchPropertyName             VAUX-LE-PENIL
+OrigStreetName                GEORGES CLÉMENCEAU
+OrigPropertyName              VAUX-LE-PENIL
+BoxDescript                   BP
+HouseNumber                   319
+MatchStreetName               GEORGES CLÉMENCEAU
+BoxIdentif                    505
+                                      
+ExtraInfo                     93 352 CEDEX
+StreetNamePrefType            Rue
+MatchPropertyName             BOURGET
+OrigStreetName                DE L'EGALITÉ PROLONGÉE
+OrigPropertyName              LE BOURGET
+BoxDescript                   BP
+MatchStreetName               L'EGALITÉ PROLONGÉE
+BoxIdentif                    134
+                                      
+ExtraInfo                     94002 CRÉTEIL CEDEX
+StreetNamePrefType            Aven
+HouseNumberSuffix             B
+OrigStreetName                DU MARÉCHAL DE LATTRE DE TASSIGNY
+BoxDescript                   BP
+HouseNumber                   79
+MatchStreetName               MARÉCHAL DE LATTRE DE TASSIGNY
+BoxIdentif                    45
+                                      
+ExtraInfo                     38040 GRENOBLE CEDEX 9
+BoxDescript                   BP
+BoxIdentif                    47
+                                      
+ExtraInfo                     -
+StreetNamePrefType            Aven
+WithinStructDescript          APP
+MatchPropertyName             ARSH 1
+OrigStreetName                CENTRALE
+OrigPropertyName              ARSH 1
+HouseNumber                   1281
+MatchStreetName               CENTRALE
+PropertySufType               BAT
+StreetNameExtensionIndex      3 ÈME ETG
+WithinStructIdentif           5
+                                      
+ExtraInfo                     BÂTIMENT
+WithinStructDescript          BURE
+MatchPropertyName             DROIT
+OrigPropertyName              DE DROIT
+PropertySufType               FAC
+StreetNameExtensionIndex      1 ER ETG
+WithinStructIdentif           F148
+                                      
+ExtraInfo                     75008 PARIS
+StreetNamePrefType            Aven
+OrigStreetName                DES CHAMPS ELYSEES
+HouseNumber                   66
+MatchStreetName               CHAMPS ELYSEES
+                                      
+ExtraInfo                     75008 PARIS
+StreetNamePrefType            Rue
+OrigStreetName                DE PONTHIEU
+HouseNumber                   49-51
+MatchStreetName               PONTHIEU
+                                      
+ExtraInfo                     75014 PARIS
+StreetNamePrefType            Aven
+HouseNumberSuffix             B
+OrigStreetName                DU GÉNÉRAL LECLERC
+HouseNumber                   99
+MatchStreetName               GÉNÉRAL LECLERC
+                                      
+ExtraInfo                     75015 PARIS
+StreetNamePrefType            Rue
+OrigStreetName                DE CRONSTADT
+HouseNumber                   41
+MatchStreetName               CRONSTADT
+                                      
+ExtraInfo                     75020 PARIS
+StreetNamePrefType            Rue
+OrigStreetName                DE LA PLAINE
+HouseNumber                   73-75
+MatchStreetName               LA PLAINE
+                                      
+ExtraInfo                     59155 FACHES THUMESNIL
+WithinStructDescript          CELL
+MatchPropertyName             CIAL FÁCHES
+OrigPropertyName              CIAL FÁCHES
+PropertySufType               CTRE
+WithinStructIdentif           47
+                                      
+ExtraInfo                     38690
+StreetNamePrefType            CHEM
+MatchPropertyName             BIZONNES
+OrigStreetName                PLACE
+OrigPropertyName              BIZONNES
+HouseNumber                   106
+MatchStreetName               Place
+                                      
+ExtraInfo                     47140 SAINT SYLVESTRE SUR LOT
+StreetNamePrefType            Rue
+OrigStreetName                LOT
+HouseNumber                   10
+MatchStreetName               LOT
+                                       
+ExtraInfo                     47130 PORT
+StreetNamePrefType            RN
+MatchPropertyName             STE MARIE
+OrigStreetName                113th
+OrigPropertyName              SAINTE MARIE
+MatchStreetName               113th
+                                      
+ExtraInfo                     47380 SAINT ETIENNE FOUGÈRES
+MatchPropertyName             LIEU DIT NATIBOLIS
+OrigPropertyName              LIEU DIT NATIBOLIS
+                                      
+ExtraInfo                     64600 ANGLET
+StreetNamePrefType            Rue
+MatchPropertyName             LES DUNES
+OrigStreetName                AUGUSTE GUIMONT
+OrigPropertyName              LES DUNES
+HouseNumber                   6
+MatchStreetName               AUGUSTE GUIMONT
+PropertySufType               RESID
+                                      
+ExtraInfo                     40220 TARNOS
+MatchPropertyName             BARTHÉS
+OrigPropertyName              BARTHÉS
+PropertySufType               Qrtr
+                                      
+ExtraInfo                     40350
+StreetNamePrefType            Aven
+MatchPropertyName             POUILLON
+OrigStreetName                L ET G LONGUEFOSSE
+OrigPropertyName              POUILLON
+MatchStreetName               L Et G LONGUEFOSSE
+                                      
+ExtraInfo                     40130 CAPBRETON
+MatchPropertyName             LES DUEX PINS
+OrigPropertyName              LES DUEX PINS
+PropertySufType               Zne Art
+                                      
+ExtraInfo                     40090 UCHACQ ET PARENTIS
+StreetNamePrefType            RTE DEP
+OrigStreetName                651st
+MatchStreetName               651st
+                                      
+ExtraInfo                     154 RUE LANDES
+MatchPropertyName             0
+OrigStreetName                RION
+OrigPropertyName              0
+HouseNumber                   40370
+MatchStreetName               RION
+PropertySufType               Zne Ind
+                                      
+ExtraInfo                     40510 SEIGNOSSE
+StreetNamePrefType            Aven
+MatchPropertyName             LOUBIAN
+OrigStreetName                CHARLES DE GAULLE
+OrigPropertyName              LOUBIAN
+MatchStreetName               CHARLES DE GAULLE
+PropertySufType               Qrtr
+                                      
+ExtraInfo                     40300 LABATUT
+StreetNamePrefType            Blvd
+RuralRouteDescript            RN
+OrigStreetName                DES PYRÉNÉES
+RuralRouteIdentif             117RoutePUYOO
+HouseNumber                   397
+MatchStreetName               PYRÉNÉES
+                                      
+ExtraInfo                     40601 BISCARROSSE CEDEX
+BoxDescript                   BP
+BoxIdentif                    50048
+                                      
+CenterIdentif                 D
+MatchPropertyName             ARAGO 2
+OrigStreetName                PESSAC
+OrigPropertyName              ARAGO 2
+HouseNumber                   33600
+CenterDescript                Bâtiment
+MatchStreetName               PESSAC
+PropertySufType               RESID
+                                      
+ExtraInfo                     33200 BORDEAUX
+CenterIdentif                 A
+StreetNamePrefType            Rue
+MatchPropertyName             SYLVA
+OrigStreetName                PASTEUR
+OrigPropertyName              SYLVA
+HouseNumber                   356
+CenterDescript                Bâtiment
+MatchStreetName               PASTEUR
+PropertySufType               RESID
+                                      
+ExtraInfo                     33370 TRESSES
+StreetNamePrefType            HAME
+OrigStreetName                DUBOURDIEU
+HouseNumber                   17
+MatchStreetName               DUBOURDIEU
+                                      
+ExtraInfo                     33910
+PropertySufDirection          Nord
+MatchPropertyName             BONZAC
+OrigStreetName                POUTON
+OrigPropertyName              BONZAC
+HouseNumber                   6
+MatchStreetName               POUTON
+                                      
+ExtraInfo                     33160 SAINT MÉDARD EN JALLES
+StreetNamePrefType            Aven
+MatchPropertyName             ZONE GALAXIE NO
+OrigStreetName                ANDROMÈDE
+OrigPropertyName              ZONE GALAXIE NO
+HouseNumber                   1
+MatchStreetName               ANDROMÈDE
+                                      
+ExtraInfo                     33170 GRADIGNAN
+StreetNamePrefType            Cours
+OrigStreetName                GÉN DE GAULLE
+HouseNumber                   194
+MatchStreetName               Géneral DE GAULLE
+                                      
+ExtraInfo                     33480 AVENSAN
+StreetNamePrefType            CHEM
+OrigStreetName                BEL AIR
+HouseNumber                   27
+MatchStreetName               BEL AIR
+                                      
+ExtraInfo                     33380 BIGANOS
+StreetNamePrefType            Voie com
+MatchPropertyName             LES TUILERIES
+OrigStreetName                NO 20
+OrigPropertyName              LES TUILERIES
+MatchStreetName               NO 20
+                                      
+ExtraInfo                     24410
+StreetNamePrefType            Lot com
+MatchPropertyName             ECHOURGNAC
+OrigStreetName                LACROUE
+OrigPropertyName              ECHOURGNAC
+MatchStreetName               LACROUE
+                                      
+ExtraInfo                     24480
+MatchPropertyName             BUISSON CADOUIN
+OrigStreetName                LOG BELLERIVE
+OrigPropertyName              LE BUISSON DE CADOUIN
+HouseNumber                   12
+MatchStreetName               LOG BELLERIVE
+                                        
+ExtraInfo                     33220 PORT SAINTE FOY ET PONCHAPT
+MatchPropertyName             TRASSIL
+OrigStreetName                RES
+OrigPropertyName              TRASSIL
+HouseNumber                   6
+MatchStreetName               Résidence
+                                      
+ExtraInfo                     24000 PÉRIGUEUX
+StreetNamePrefType            IMP
+OrigStreetName                GABRIEL LACUEILLE
+HouseNumber                   2
+MatchStreetName               GABRIEL LACUEILLE
+                                      
+ExtraInfo                     24290 THONAC
+MatchPropertyName             LD COLOMBIER
+OrigPropertyName              LD LE COLOMBIER

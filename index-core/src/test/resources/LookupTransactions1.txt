@@ -1,0 +1,10 @@
+EVNT|||UI|HQ|HQ||||<>ID||0001^SiteA|&DEMO||GUTWIRTH^REGINA^^^||^^^^LIBERMANSCH^""^""|1925-07-05||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0002^SiteA|&DEMO||MANSO^JAMIE^^^||^^^^|19790624||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0003^SiteA|&DEMO||ORTIZ^MARTHA^^^||^^^^|19610103||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0004^SiteA|&DEMO||SHACKLEFORD^BLANCHE^^^||^^^^|19090102||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0005^SiteA|&DEMO||PROCTOR^HELEN^^^||^^^^|19181231||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0006^SiteA|&DEMO||THOMPSON^WILLIAM^^^||^^^^|19440518||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0007^SiteA|&DEMO||LIPKIND^HEATHER^^^||^^^^|19720530||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0008^SiteA|&DEMO||ORTIZ^MARVIN^^^||^^^^ORTIZ^MARTHA^""|19860714||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0009^SiteA|&DEMO||CHUNG^YOUNG SOOK^^^||^^^^|19670118||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0010^SiteA|&DEMO||JOST^ELIANE^^^||^^^^|19300620||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>

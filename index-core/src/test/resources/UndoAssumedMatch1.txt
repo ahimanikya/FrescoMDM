@@ -1,0 +1,13 @@
+Record=Person
+Key=SiteA,0001
+FirstName=DAN
+LastName=CIDON
+Gender=M
+DOB=19740110
+
+Record=Person
+Key=SiteB,0001
+FirstName=DAN
+LastName=CIDON
+Gender=M
+DOB=19740110

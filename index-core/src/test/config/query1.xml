@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by seebeyond (SeeBeyond) -->
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="sbyn:SeeBeyond/eView/schema/query.xsd">
+	<QueryBuilderConfig module-name="QueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.querybuilder.QueryBuilderConfiguration">
+		<query-builder name="ALPHA-SEARCH" class="com.sun.mdm.index.querybuilder.BasicQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.querybuilder.KeyValueConfiguration" standardize="true" phoneticize="false">
+			<config>
+				<option key="UseWildcard" value="true"/>
+			</config>
+		</query-builder>
+		<query-builder name="PHONETIC-SEARCH" class="com.sun.mdm.index.querybuilder.BasicQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.querybuilder.KeyValueConfiguration" standardize="true" phoneticize="true">
+			<config>
+				<option key="UseWildcard" value="false"/>
+			</config>
+		</query-builder>
+		<query-builder name="BLOCKER-SEARCH" class="com.sun.mdm.index.querybuilder.BlockerQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.blocker.BlockerConfig" standardize="true" phoneticize="true">
+			<config>
+				<block-definition number="ID000001">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.FnamePhoneticCode</field>
+							<source>Person.FnamePhoneticCode</source>
+						</equals>
+						<range>
+							<field>Enterprise.SystemSBR.Person.DOB</field>
+							<source>Person.DOB</source>
+						</range>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Gender</field>
+							<source>Person.Gender</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000002">
+					<block-rule>
+						<range>
+							<field>Enterprise.SystemSBR.Person.Address.PostalCode</field>
+							<source>Person.Address.PostalCode</source>
+						</range>
+					</block-rule>
+				</block-definition>
+			</config>
+		</query-builder>
+		<query-builder name="BLOCKER-SEARCH2" class="com.sun.mdm.index.querybuilder.BlockerQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.blocker.BlockerConfig" standardize="true" phoneticize="true">
+			<config>
+				<block-definition number="ID000001">
+					<block-rule>
+						<range>
+ 							<field>Enterprise.SystemSBR.Person.DOB</field>
+ 							<source>Person.DOB</source>
+ 							<default>
+    							<lower-bound type="offset">-355</lower-bound>
+                        <upper-bound type="offset">10</upper-bound>
+    						</default>    	
+   					</range>
+					</block-rule>
+				</block-definition>
+			</config>
+		</query-builder>		
+		<query-builder name="BLOCKER-SEARCH3" class="com.sun.mdm.index.querybuilder.BlockerQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.blocker.BlockerConfig" standardize="true" phoneticize="true">
+			<config>
+				<block-definition number="ID000001">
+					<block-rule>
+						<range>
+ 							<field>Enterprise.SystemSBR.Person.DOB</field>
+ 							<source>Person.DOB</source>
+ 							<default>
+    							<lower-bound type="constant">1974-01-09</lower-bound>
+                        <upper-bound type="constant">1974-01-11</upper-bound>
+    						</default>    	
+   					</range>
+					</block-rule>
+				</block-definition>
+			</config>
+		</query-builder>
+		<query-builder name="BLOCKER-SEARCH-MULTI-VAL" class="com.sun.mdm.index.querybuilder.BlockerQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.blocker.BlockerConfig" standardize="true" phoneticize="true">
+			<config>
+				<block-definition number="ID000000">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.FirstName</field>
+							<source>Person.FirstName</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.LastName</field>
+							<source>Person.LastName</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000001">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.SSN</field>
+							<source>Person.SSN</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000002">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Address.City</field>
+							<source>Person.Address[*].City</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Address.StateCode</field>
+							<source>Person.Address[*].StateCode</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.DOB</field>
+							<source>Person.DOB</source>
+						</equals>
+						
+					</block-rule>
+				</block-definition>
+			</config>
+		</query-builder>
+		<query-builder name="BLOCKER-SEARCH-MULTI-VAL-RANGE" class="com.sun.mdm.index.querybuilder.BlockerQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.blocker.BlockerConfig" standardize="true" phoneticize="true">
+			<config>
+				<block-definition number="ID000000">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.FirstName</field>
+							<source>Person.FirstName</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.LastName</field>
+							<source>Person.LastName</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000001">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.SSN</field>
+							<source>Person.SSN</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000002">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Address.City</field>
+							<source>Person.Address[*].City</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Address.StateCode</field>
+							<source>Person.Address[*].StateCode</source>
+						</equals>
+						<range>
+							<field>Enterprise.SystemSBR.Person.DOB</field>
+							<source>Person.DOB</source>
+						</range>
+						
+					</block-rule>
+				</block-definition>
+			</config>
+		</query-builder>
+		<query-builder name="BLOCKER-SEARCH-RANGE-WITH-CONSTANTS" class="com.sun.mdm.index.querybuilder.BlockerQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.blocker.BlockerConfig" standardize="true" phoneticize="true">
+			<config>
+				<block-definition number="ID000000">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.FirstName</field>
+							<source>Person.FirstName</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.LastName</field>
+							<source>Person.LastName</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000001">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.SSN</field>
+							<source>Person.SSN</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000002">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Address.City</field>
+							<source>Person.Address[*].City</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Address.StateCode</field>
+							<source>Person.Address[*].StateCode</source>
+						</equals>
+						<range>
+							<field>Enterprise.SystemSBR.Person.DOB</field>
+							<source>Person.DOB</source>
+  							<default>
+    								<lower-bound type="constant">1966-02-04</lower-bound>
+    								<upper-bound type="constant">1966-02-06</upper-bound>
+  							</default>
+						</range>						
+					</block-rule>
+				</block-definition>
+			</config>
+		</query-builder>	
+		<query-builder name="BLOCKER-SEARCH-RANGE-WITH-OFFSET" class="com.sun.mdm.index.querybuilder.BlockerQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.blocker.BlockerConfig" standardize="true" phoneticize="true">
+			<config>
+				<block-definition number="ID000000">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.FirstName</field>
+							<source>Person.FirstName</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.LastName</field>
+							<source>Person.LastName</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000001">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.SSN</field>
+							<source>Person.SSN</source>
+						</equals>
+					</block-rule>
+				</block-definition>
+				<block-definition number="ID000002">
+					<block-rule>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Address.City</field>
+							<source>Person.Address[*].City</source>
+						</equals>
+						<equals>
+							<field>Enterprise.SystemSBR.Person.Address.StateCode</field>
+							<source>Person.Address[*].StateCode</source>
+						</equals>
+						<range>
+							<field>Enterprise.SystemSBR.Person.DOB</field>
+							<source>Person.DOB</source>
+  							<default>
+    								<lower-bound type="offset">-1</lower-bound>
+    								<upper-bound type="offset">1</upper-bound>
+  							</default>
+						</range>						
+					</block-rule>
+				</block-definition>
+			</config>
+		</query-builder>	
+	</QueryBuilderConfig>
+</Configuration>

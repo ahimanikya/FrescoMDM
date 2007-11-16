@@ -1,0 +1,11 @@
+Record=Person
+Key=SiteA,0001
+FirstName=DAN
+LastName=CIDON
+Gender=M
+DOB=19740110
+Address[0].AddressType=H
+//Missing line 1 of address on purpose
+Address[0].City=DAVIS
+Address[0].StateCode=CA
+Address[0].PostalCode=95616

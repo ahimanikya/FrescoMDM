@@ -195,6 +195,36 @@ public class OutBoundSender {
     }
     
     /**
+     * Initialize the OutBound Sender
+     */
+    public void initialize(String topicName) throws OutBoundException {
+        if (topicName == null) {
+            throw new OutBoundException(mLocalizer.t("OUT508: JNDI for outbound " + 
+                                    "Topic was not specified."));
+        }
+        mJndiTopic = topicName;
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("JNDI for outbound Topic = " + topicName);
+        }
+        try {
+            mInitCtx = new InitialContext();
+            
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("Outbound: Lookup TopicConnectionFactory using " + JNDINames.OUTBOUND_TOPIC_CONN_FACTORY);
+            }
+                        
+            mTopicConnectionFactory = (TopicConnectionFactory) mInitCtx.lookup(JNDINames.OUTBOUND_TOPIC_CONN_FACTORY); 
+        } catch (NamingException e) {
+            throw new OutBoundException(mLocalizer.t("OUT509: Failed to locate " + 
+                                    "the topic connection factory: {0}", e));
+        }       
+        mOutboundOn = true;
+        if (mLogger.isLoggable(Level.FINE)) {
+            mLogger.fine("Sender is initialized");
+        }
+    }
+    
+    /**
      * Release connections
      */
     public void release() throws OutBoundException {
@@ -209,7 +239,7 @@ public class OutBoundSender {
             }
             mIsSessionReady = false;
         } catch (JMSException e) {
-            throw new OutBoundException(mLocalizer.t("OUT508: JMS operations failed: {0}", e));
+            throw new OutBoundException(mLocalizer.t("OUT510: JMS operations failed: {0}", e));
         }
         
     }

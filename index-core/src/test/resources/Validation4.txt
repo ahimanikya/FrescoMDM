@@ -1,0 +1,7 @@
+Record=Person
+Key=SiteA,0001
+FirstName=DAN
+LastName=CIDON
+Gender=M
+DOB=19740110
+Alias[0].FirstName=DANIEL

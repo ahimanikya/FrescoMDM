@@ -1,0 +1,2 @@
+// Data to create multiple system objects
+EVNT|||UI|HQ|HQ||||<>ID||0001^SiteA~0001^SiteB~0002^SiteB|&DEMO||JOHN^SMITH^^^||^^^^|19920405||M||111221234|^|H|||||^^|^^USA|Y||^^||^|||||&AUX|||<>

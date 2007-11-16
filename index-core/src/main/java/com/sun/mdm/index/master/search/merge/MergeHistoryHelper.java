@@ -90,7 +90,7 @@ public class MergeHistoryHelper {
             + "WHERE M.MERGED_EUID = ? "
             + "AND M.MERGE_TRANSACTIONNUM = T.TRANSACTIONNUMBER "
             + "AND M.UNMERGE_TRANSACTIONNUM IS NULL "
-            + "AND T.TIMESTAMP > ?"
+            + "AND T.TIMESTAMP > ? "
             + "ORDER BY T.TIMESTAMP DESC"; 
     
     /** This method populates the MergeHistoryNode object based on the root EUID

@@ -1,0 +1,91 @@
+//Record with both UK and US address
+Record=Person
+Key=SiteA,0001
+FirstName=DAN
+LastName=PHINQUE
+Gender=M
+DOB=19740110
+Address[0].AddressType=H
+Address[0].AddressLine1=2505 Callan Vale
+Address[0].AddressLine2=Apt 102
+Address[0].City=DAVIS
+Address[0].StateCode=CA
+Address[0].PostalCode=95616
+Address[0].CountryCode=UNST
+Address[1].AddressType=W
+Address[1].AddressLine1=2506 Callan Vale
+Address[1].AddressLine2=Apt 103
+Address[1].City=DAVIS
+Address[1].StateCode=CA
+Address[1].PostalCode=95616
+Address[1].CountryCode=UNIT
+
+//Record without country code in address
+Record=Person
+Key=SiteA,0002
+FirstName=DAN
+LastName=PHINQUE
+Gender=M
+DOB=19740110
+Address[0].AddressType=H
+Address[0].AddressLine1=2506 Callan Vale
+Address[0].City=DAVIS
+Address[0].StateCode=CA
+Address[0].PostalCode=95616
+
+//Record with a Great Britain country code in address
+Record=Person
+Key=SiteA,0003
+FirstName=DAN
+LastName=PHINQUE
+Gender=M
+DOB=19740110
+Address[0].AddressType=H
+Address[0].AddressLine1=2506 Callan Vale
+Address[0].City=EAST HAM
+Address[0].PostalCode=E62RA
+Address[0].CountryCode=UNIT
+
+//Record without any address info
+Record=Person
+Key=SiteA,0004
+FirstName=DAN
+LastName=PHINQUE
+Gender=M
+DOB=19740110
+
+//Record without any address info and with three aliases
+Record=Person
+Key=SiteA,0005
+FirstName=DAN
+LastName=PHINQUE
+Alias[0].FirstName=DANNY
+Alias[0].LastName=PHINQUE
+Alias[1].FirstName=DANIEL
+Alias[1].LastName=PHINQUE
+Alias[2].FirstName=DANN
+Alias[2].LastName=PHINQUE
+Gender=M
+DOB=19740110
+
+//Record with UK address and three aliases
+Record=Person
+Key=SiteA,0006
+FirstName=DAN
+LastName=PHINQUE
+Alias[0].FirstName=JOHN
+Alias[0].LastName=PHINQUE
+Alias[1].FirstName=JON
+Alias[1].LastName=PHINQUE
+Alias[2].FirstName=JONATHAN
+Alias[2].LastName=PHINQUE
+Gender=M
+DOB=19740110
+Address[0].AddressType=W
+Address[0].AddressLine1=2506 Callan Vale
+Address[0].AddressLine2=Apt 103
+Address[0].City=DAVIS
+Address[0].StateCode=CA
+Address[0].PostalCode=95616
+Address[0].CountryCode=UNIT
+

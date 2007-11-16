@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="sbyn:SeeBeyond/eView/schema/security.xsd">
+	<SecurityConfig module-name="Security" parser-class="com.sun.mdm.index.configurator.impl.security.SecurityConfiguration">
+		
+	<SecurityPlugInClass></SecurityPlugInClass>		
+	</SecurityConfig>
+</Configuration>

@@ -1,0 +1,20 @@
+Record=Person
+Key=SiteA,0001
+FirstName=DAN
+LastName=CIDON
+Gender=M
+DOB=19740110
+Address[0].AddressType=H
+Address[0].AddressLine1=2505 NORTH WALTER ST
+Address[0].City=DAVIS
+Address[0].StateCode=CA
+Address[0].PostalCode=95616
+Address[1].AddressType=W
+Address[1].AddressLine1=123 MAIN ST
+Address[1].City=ANYCITY
+Address[1].StateCode=CA
+Address[1].PostalCode=99999
+
+
+
+

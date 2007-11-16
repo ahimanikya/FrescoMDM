@@ -1,0 +1,3 @@
+// Test update based on system object key match
+EVNT|||UI|HQ|HQ||||<>ID||0001^SiteA|&DEMO||RAMOS^YARITZA^^^||^^^^|19920405||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0001^SiteA|&DEMO||UPDATE^YARITZA^^^||^^^^|19920405||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>

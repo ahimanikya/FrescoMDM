@@ -1,0 +1,3 @@
+EVNT|||UI|HQ|HQ||||<>ID||0001^SiteA~0002^SiteA|&DEMO||JOHN^SMITH^^^||^^^^|19920405||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0003^SiteA~0004^SiteA|&DEMO||JUDY^WOODE^^^||^^^^|19910305||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0005^SiteA~0006^SiteA|&DEMO||JACK^CLYDE^^^||^^^^|19910205||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>

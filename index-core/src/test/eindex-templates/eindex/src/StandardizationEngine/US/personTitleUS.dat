@@ -1,0 +1,47 @@
+CEO                        0          N 
+CFO                        0          N
+CHAIRMAN                   0          N
+CHAIRMAN EMERITUS          0          M
+CHAIRMAN OF THE BOARD      0          N
+CHIEF EXECUTIVE OFFICER    CEO        N 
+CHIEF FINANCIAL OFFICER    CFO        N
+CHIEF INFORMATION OFFICER  CIO        N
+CHIEF TECHNOLOGY OFFICER   CTO        N
+CIO                        0          N
+COUNSELOR                  0          N
+CTO                        0          N
+DEAN                       0          N
+DIR                        DIRECTOR   N
+DIRECTOR                   0          N
+DOC                        DR         N
+DOCTOR                     DR         N
+DR                         0          N
+DRS                        0          N
+EMERITUS                   0          N
+FOUNDER                    0          N
+GEN                        0          N
+GENERAL                    GEN        N
+MANAGER                    0          N
+MGR                        MANAGER    N
+MISS                       0          F
+MISSUS                     MRS        F
+MISTER                     MR         M
+MISTRESS                   MRS        F
+MR                         0          M
+MRS                        0          F
+MS                         0          F
+PRES                       PRESIDENT  N
+PRESIDENT                  0          N      
+PRESIDENT EMERITA          0          F
+PROF                       PROFESSOR  N
+PROFESSOR                  0          N
+PROVOST                    0          N
+REV                        0          N
+REVEREND                   REV        N
+SENIOR                     SR         N
+SR                         0          N
+TRUSTEE                    0          N
+VICE CHAIRMAN              0          N
+VICE PRESIDENT             VP         N
+VICE PROVOST               0          N
+VICE-PRESIDENT             VP         N

@@ -1,0 +1,3 @@
+// Test assumed match update
+EVNT|||UI|HQ|HQ||||<>ID||0001^SiteA|&DEMO||JOHN^SMITH^^^||^^^^|19920405||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX||STRING1|<>
+EVNT|||UI|HQ|HQ||||<>ID||0002^SiteB|&DEMO||JOHN^SMITH^^^||^^^^|19920405||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX||STRING1MOD|<>

@@ -1,0 +1,77 @@
+WI PD NA ST|HN NA ST|*                  // Ground Floor, East Point Plaza|233 Adelaide Terrace
+WI BI BI BY|HN NA ST
+
+EI AU|AU TY|*                           // Cnr Tozer|Elbow Street
+EI NA|N2 ST
+
+EI|NA ST|NA ST|*                        // Cnr Valla Road|Rodeo Drive
+EI|NA ST|N2 S2
+
+EI NA ST|NA ST|*                        // Cnr Valla Road|SE Drive
+EI NA ST|N2 S2
+
+NA ST|NA ST|*                           // Valla Road|GREEN Drive
+NA ST|N2 S2
+
+EI NA ST|NA ST|*                        // Cnr Valla Road|GREEN Drive
+EI NA ST|N2 S2
+
+NA TY|NA TY|*                           // GREEN ROAD|RED STREET
+NA ST|N2 S2     
+
+HN NA ST|NA ST|*                        // 21 HEIGHWAY COURT|BROOKLAND ROAD
+HN NA ST|N2 S2
+
+BN BT|NA NA|NA ST|*                     // HYDE HOUSE|THE HYDE|EDGWARE RD|Amazon    
+BN BT|BI BI|NA ST
+ 
+BN BT|WI|BN BT|*                        // ST ANDREWS HOUSE, NORTHSIDE|ST ANDREWS BUSINESS PARK|THORPE-ST-ANDREW   
+BN BT|WI|BI BY
+
+BN BN BT|WI|BN BT|*                     // ST BROWN HOUSE, NORTHSIDE|ST ANDREWS BUSINESS PARK|THORPE-ST-ANDREW   
+BN BN BT|WI|BI BY
+
+BN BT|WI|BN BT|*                        // ST ANDREWS HOUSE, NORTHSIDE|ST ANDREWS BUSINESS PARK  
+BN BT|WI|BI BY
+
+BN BT|NA ST|NA ST|*                     // PROTEA HOUSE|NEW BRIDGE|MARINE PARADE
+BN BT|NA ST|N2 S2
+
+HN NA ST|HN NA ST|*                     // 21 HEIGHWAY COURT|45 BROOKLAND ROAD
+HN NA ST|H2 N2 S2
+
+HN NA ST|NA ST|*                        // 21 HEIGHWAY COURT|BROOKLAND ROAD
+HN NA ST|N2 S2
+
+NA ST|HN NA ST|*                        // HEIGHWAY COURT|45 BROOKLAND ROAD
+NA ST|H2 N2 S2
+
+WD WI|BN BT|NA ST|NA ST|*               // Room 9, PROTEA HOUSE|NEW BRIDGE|MARINE PARADE
+WD WI|BN BT|N2 S2|NA ST
+
+NA ST|NA ST|*                           // WEST PARK RD|HORTON LANE
+NA ST|N2 S2
+
+BN BT|BN BT|*                           // GRACE HOUSE|HARROVIAN BUSINESS VILLAGE|BESSBOROUGH ROAD
+BN BT|BI BY
+
+BN BT|BN BN BT|*                        // ARCADIA HOUSE|WARLEY HILL BUSINESS PARK|THE DRIVE
+BN BT|BI BI BY
+
+BN BT|NA ST|NA NA|*                     // GROVE HOUSE|LANGTON BROW|THE GREEN
+BN BT|NA ST|N2 N2
+
+EI|BN BT|*                              // HILLVIEW|FULBOURN HOSPITAL
+BN|BI BY
+
+BN BT|NA ST|NL PT NA|*                  // GROVE HOUSE|LANGTON BROW|THE GREEN, ECCLESTON
+BN BT|NA ST|N2 N2 EI
+
+BN BT|EI EI|NA ST|*                     // BLENHEIM HOUSE|WEST ONE|DUNCOMBE STREET
+BN BN|BI BY|NA ST
+
+BN BT|NA ST|BN BT|*                     // KINGFISHER HOUSE|KINGFISHER WAY|HINCHINGBROOKE BUSINESS PARK
+BN BT|NA ST|BI BY
+
+EI|NA ST|NA ST|*                        // HIGHFIELD|CLIFTONVILLE RD|OLD ROAD|HEADINGTON
+BN|NA ST|N2 N2

@@ -4651,38 +4651,13 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
         OutBoundSender sender = new OutBoundSender();
         sender.setInTransactMode(mIsTransactional);
-        InputStream is = this.getClass().getClassLoader().getResourceAsStream(
-                TOPIC_PROP_FILE);
-        if (is != null) {
-            Properties topicProp = new Properties();
-            try {
-                topicProp.load(is);
-            } catch (IOException e) {
-                throwProcessingException(e);
-            } finally {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    throwProcessingException(e);
-                }
-            }
-
-            String factoryName = topicProp
-                    .getProperty(TOPIC_CONNECTION_FACTORY_PROP_KEY);
-            String topicName = topicProp.getProperty(TOPIC_PROP_KEY);
+        try{
+            String topicName = objectName+"Topic";
+            sender.initialize(topicName);
+        }catch(OutBoundException e){
             if (mLogger.isLoggable(Level.FINE)) {
-                mLogger.fine("setupOutBoundSender(): connection factory name: "
-                        + factoryName);
-                mLogger.fine("setupOutBoundSender(): topic name: " + topicName);
-            }
-            sender.initialize(factoryName, topicName);
-            if (mLogger.isLoggable(Level.FINE)) {
-                mLogger.fine("setupOutBoundSender(): Outbound message enabled");
-            }
-        } else {
-            if (mLogger.isLoggable(Level.FINE)) {
-                mLogger.fine("setupOutBoundSender(): " + TOPIC_PROP_FILE
-                        + "not found, outbound message disabled");
+                mLogger.fine("setupOutBoundSender(): " +
+                "failed to initialize OutBoundSender, outbound message disabled");
             }
         }
         return sender;

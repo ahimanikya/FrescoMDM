@@ -22,6 +22,7 @@
  */
 package com.sun.mdm.index.project.anttasks;
 
+import com.sun.mdm.index.project.EviewProjectProperties;
 import com.sun.mdm.index.project.generator.descriptor.AppXmlWriter;
 import com.sun.mdm.index.project.generator.exception.TemplateWriterException;
 import com.sun.mdm.index.project.generator.objects.EntityObjectWriter;
@@ -29,12 +30,11 @@ import com.sun.mdm.index.project.generator.ops.OPSWriter;
 import com.sun.mdm.index.project.generator.persistence.DDLWriter;
 import com.sun.mdm.index.project.generator.validation.ObjectDescriptorWriter;
 import com.sun.mdm.index.project.generator.webservice.WebServiceWriter;
+import com.sun.mdm.index.project.generator.outbound.OutboundXSDBuilder;
 import com.sun.mdm.index.objects.metadata.MetaDataService;
 import com.sun.mdm.index.parser.EIndexObject;
 import com.sun.mdm.index.parser.ParserException;
 import com.sun.mdm.index.parser.Utils;
-import com.sun.mdm.index.util.JarUtil;
-import com.sun.mdm.index.project.EviewRepository;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -70,6 +70,8 @@ public class EViewGeneratorTask extends Task {
     private String mSrcdir;
     private String mEjbdir;
     private String mWardir;
+    private String mTemplateDir;
+    private boolean mForce=false;
     
     public void setSrcdir(String srcdir) {
         Project p = this.getProject();
@@ -88,6 +90,14 @@ public class EViewGeneratorTask extends Task {
         String projPath = p.getProperty("basedir");
         this.mWardir = projPath + File.separator + wardir;
     }
+    
+    public void setTemplateDir(String templateDir) {
+        this.mTemplateDir = templateDir;
+    }
+    
+    public void setForce(boolean force) {
+        this.mForce = force;
+    }
 
     public void execute() throws BuildException{  
         
@@ -100,11 +110,16 @@ public class EViewGeneratorTask extends Task {
         if (mWardir == null){
             throw new BuildException ("Must specify the war project directory");
         }
+        if (mTemplateDir==null){
+            String modulePath = getProject().getProperty("module.install.dir");
+            mTemplateDir= modulePath + File.separator + "ext" + File.separator + "eview";
+        }
+    
         // need to regenerate if source files have been modified
-        if (modified()){
+        if (modified()||mForce){
             try {
                 File objectFile = new File(mSrcdir + File.separator +
-                EviewRepository.CONFIGURATION_FOLDER + File.separator +"object.xml");
+                EviewProjectProperties.CONFIGURATION_FOLDER + File.separator +"object.xml");
                 InputSource source = new InputSource(new FileInputStream(objectFile));
                 EIndexObject eo = Utils.parseEIndexObject(source);
                 String objName = eo.getName();        
@@ -134,7 +149,7 @@ public class EViewGeneratorTask extends Task {
 
 
 
-    public void generateFiles(EIndexObject eo ) throws FileNotFoundException, TemplateWriterException, ParserException{
+    public void generateFiles(EIndexObject eo ) throws FileNotFoundException, TemplateWriterException, ParserException, IOException{
 
         String ejbdir = mEjbdir + File.separator + "src" + File.separator + "java";
         File destDir = new File(ejbdir + "\\com\\sun\\mdm\\index\\objects");
@@ -185,12 +200,12 @@ public class EViewGeneratorTask extends Task {
 
         String tmpl = getCreateDDLWriterTemplate(eo.getDataBase());
         String outPath = mSrcdir + File.separator +
-                EviewRepository.DATABASE_SCRIPT_FOLDER + File.separator + "create.sql";
+                EviewProjectProperties.DATABASE_SCRIPT_FOLDER + File.separator + "create.sql";
         DDLWriter tdw = new DDLWriter(outPath, eo, tmpl);
         tdw.write(true); 
 
         tmpl = getDropDDLWriterTemplate(eo.getDataBase());
-        outPath = mSrcdir + File.separator + EviewRepository.DATABASE_SCRIPT_FOLDER +
+        outPath = mSrcdir + File.separator + EviewProjectProperties.DATABASE_SCRIPT_FOLDER +
                 File.separator + "drop.sql";
         tdw = new DDLWriter(outPath, eo, tmpl);
         tdw.write(false);
@@ -201,11 +216,19 @@ public class EViewGeneratorTask extends Task {
         AppXmlWriter appWriter = new AppXmlWriter(genpath, eo, ejbName, warName);
         appWriter.write();
         
-        File objectFile = new File(mSrcdir + File.separator +
-                EviewRepository.CONFIGURATION_FOLDER + File.separator +"object.xml");
-        MetaDataService.registerObjectDefinition(new FileInputStream(objectFile));
+        String projPath = getProject().getProperty("basedir");
+        File eview_gen_folder = new File(projPath + File.separator + 
+                EviewProjectProperties.EVIEW_GENERATED_FOLDER);
+            eview_gen_folder.mkdir();       
+        File xsdFile = new File(projPath + File.separator + 
+                    EviewProjectProperties.EVIEW_GENERATED_FOLDER+
+                    File.separator + "outbound.xsd");
+        OutboundXSDBuilder builder = new OutboundXSDBuilder();
+        builder.buildXSD(eo,xsdFile);
         
-            
+        File objectFile = new File(mSrcdir + File.separator +
+                EviewProjectProperties.CONFIGURATION_FOLDER + File.separator +"object.xml");
+        MetaDataService.registerObjectDefinition(new FileInputStream(objectFile));           
     }
     
     
@@ -213,7 +236,7 @@ public class EViewGeneratorTask extends Task {
         
             String projPath = getProject().getProperty("basedir");
             File destDir = new File(projPath + File.separator + 
-                    EviewRepository.EVIEW_GENERATED_FOLDER + File.separator + "resource");
+                    EviewProjectProperties.EVIEW_GENERATED_FOLDER + File.separator + "resource");
             
             Delete delete = (Delete) getProject().createTask("delete");
             delete.setDir(destDir);
@@ -223,7 +246,7 @@ public class EViewGeneratorTask extends Task {
             
             //copy configuration file           
             destDir.mkdir();
-            File srcDir = new File(mSrcdir + File.separator + EviewRepository.CONFIGURATION_FOLDER);
+            File srcDir = new File(mSrcdir + File.separator + EviewProjectProperties.CONFIGURATION_FOLDER);
             FileSet srcfileSet = new FileSet(); 
             srcfileSet.setDir(srcDir);
             Copy copy = (Copy) getProject().createTask("copy");
@@ -234,9 +257,9 @@ public class EViewGeneratorTask extends Task {
             copy.execute();
             
             //copy standardization file  
-            destDir = new File(projPath + File.separator + EviewRepository.EVIEW_GENERATED_FOLDER +
+            destDir = new File(projPath + File.separator + EviewProjectProperties.EVIEW_GENERATED_FOLDER +
                     File.separator + "resource" + File.separator + "stand" );
-            srcDir = new File(mSrcdir + File.separator + EviewRepository.STANDARDIZATION_ENGINE_FOLDER);
+            srcDir = new File(mSrcdir + File.separator + EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER);
             srcfileSet = new FileSet(); 
             srcfileSet.setDir(srcDir);
             copy = (Copy) getProject().createTask("copy");
@@ -247,9 +270,9 @@ public class EViewGeneratorTask extends Task {
             copy.execute();
             
             //copy match engine file  
-            destDir = new File(projPath + File.separator + EviewRepository.EVIEW_GENERATED_FOLDER +
+            destDir = new File(projPath + File.separator + EviewProjectProperties.EVIEW_GENERATED_FOLDER +
                     File.separator + "resource" + File.separator + "match" );
-            srcDir = new File(mSrcdir + File.separator + EviewRepository.MATCH_ENGINE_FOLDER);
+            srcDir = new File(mSrcdir + File.separator + EviewProjectProperties.MATCH_ENGINE_FOLDER);
             srcfileSet = new FileSet(); 
             srcfileSet.setDir(srcDir);
             copy = (Copy) getProject().createTask("copy");
@@ -265,7 +288,7 @@ public class EViewGeneratorTask extends Task {
             if (jarFile.exists()){
                 jarFile.delete();
             }
-            srcDir = new File(projPath + File.separator + EviewRepository.EVIEW_GENERATED_FOLDER +
+            srcDir = new File(projPath + File.separator + EviewProjectProperties.EVIEW_GENERATED_FOLDER +
                     File.separator + "resource");
             srcfileSet = new FileSet(); 
             srcfileSet.setDir(srcDir);
@@ -283,10 +306,8 @@ public class EViewGeneratorTask extends Task {
         
         String projPath   = getProject().getProperty("basedir");
         String buildPath  = getProject().getProperty("build.dir");
-        String modulePath = getProject().getProperty("module.install.dir");
         String destPath   = projPath + File.separator + buildPath + File.separator + "lib";
-        String srcPath    = modulePath + File.separator + "ext" + File.separator + "eview";
-                                    
+        String srcPath    = mTemplateDir;
         File destDir = new File(destPath);
         
         Delete delete = (Delete) getProject().createTask("delete");
@@ -319,9 +340,7 @@ public class EViewGeneratorTask extends Task {
     
     private void generateEbjFiles(EIndexObject eo){
         
-        String modulePath = getProject().getProperty("module.install.dir");
-        String srcPath    = modulePath + File.separator + "ext" + File.separator + 
-                "eview" + File.separator + "repository" + File.separator + "ejb-source.zip";
+        String srcPath    = mTemplateDir + File.separator + "repository" + File.separator + "ejb-source.zip";
         File srcFile = new File(srcPath);
         File destDir = new File(mEjbdir + File.separator + "src" + File.separator + "java");
         Expand expand = (Expand) getProject().createTask("unzip");
@@ -341,7 +360,7 @@ public class EViewGeneratorTask extends Task {
     private void setTransaction(){
         String transaction = "LOCAL";
         File masterFile = new File(mSrcdir + File.separator + 
-                EviewRepository.CONFIGURATION_FOLDER + File.separator +"master.xml");
+                EviewProjectProperties.CONFIGURATION_FOLDER + File.separator +"master.xml");
         try{
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false);
@@ -380,9 +399,7 @@ public class EViewGeneratorTask extends Task {
     
     private void generateWarFiles(){
         
-        String modulePath = getProject().getProperty("module.install.dir");
-        String srcPath    = modulePath + File.separator + "ext" + File.separator + 
-                "eview" + File.separator + "repository" + File.separator + "edm.war";
+        String srcPath    = mTemplateDir + File.separator + "repository" + File.separator + "edm.war";
         File srcFile = new File(srcPath);
         File destDir = new File(mWardir + File.separator + "web" + File.separator);
         PatternSet patternSet = new PatternSet();
@@ -396,7 +413,7 @@ public class EViewGeneratorTask extends Task {
         expand.execute(); 
         
         srcFile = new File(mSrcdir + File.separator +
-                EviewRepository.CONFIGURATION_FOLDER + File.separator + "edm.xml");
+                EviewProjectProperties.CONFIGURATION_FOLDER + File.separator + "edm.xml");
         destDir = new File(mWardir + File.separator + "web" + File.separator + 
                 "WEB-INF" + File.separator + "classes");
         Copy copy = (Copy) getProject().createTask("copy");
@@ -424,17 +441,17 @@ public class EViewGeneratorTask extends Task {
     
     private boolean modified(){
         File folder = new File(getProject().getProperty("basedir") + File.separator + 
-                EviewRepository.EVIEW_GENERATED_FOLDER + File.separator + "resource");
+                EviewProjectProperties.EVIEW_GENERATED_FOLDER + File.separator + "resource");
         // First, an up-to-date check
         long genModified = getLastModifiedTime(folder);
         
         // check if any source files are newer.
         ArrayList<File> srcFolders = new ArrayList<File>();
-        folder= new File(mSrcdir + File.separator + EviewRepository.CONFIGURATION_FOLDER);
+        folder= new File(mSrcdir + File.separator + EviewProjectProperties.CONFIGURATION_FOLDER);
         srcFolders.add(folder);
-        folder= new File(mSrcdir + File.separator + EviewRepository.MATCH_ENGINE_FOLDER);
+        folder= new File(mSrcdir + File.separator + EviewProjectProperties.MATCH_ENGINE_FOLDER);
         srcFolders.add(folder);
-        folder= new File(mSrcdir + File.separator + EviewRepository.STANDARDIZATION_ENGINE_FOLDER);
+        folder= new File(mSrcdir + File.separator + EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER);
         srcFolders.add(folder);
         long srcModified =  getLastModifiedTime(srcFolders);
         

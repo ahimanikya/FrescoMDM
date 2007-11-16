@@ -62,6 +62,7 @@ import javax.ejb.Stateless;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
+import javax.annotation.Resources;
 import java.sql.Connection;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
@@ -76,9 +77,15 @@ import javax.ejb.TransactionManagementType;
 @EJB(   name="ejb/PageDataRemote",
         beanInterface=PageDataRemote.class,
         mappedName="ejb/_EVIEW_OBJECT_TOKEN_PageData")
-@Resource(  name="jdbc/BBEDataSource",
-            type=javax.sql.DataSource.class,
-            mappedName="jdbc/_EVIEW_OBJECT_TOKEN_DataSource" )
+@Resources ({
+
+    @Resource(  name="jdbc/BBEDataSource",
+                type=javax.sql.DataSource.class,
+                mappedName="jdbc/_EVIEW_OBJECT_TOKEN_DataSource" ),
+    @Resource(  name="jms/outBoundSender",
+                type=javax.jms.ConnectionFactory.class,
+                mappedName="jms/_EVIEW_OBJECT_TOKEN_OutBoundSender" )
+})
 @TransactionManagement(TransactionManagementType.BEAN)
 //if CONTAINER then _TransactionManagementType_TOKEN_ is TransactionManagementType.CONTAINER
 //if BEAN and local then _TransactionManagementType_TOKEN_ is TransactionManagementType.BEAN
@@ -1831,7 +1838,7 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
      */
     public SystemObject getSystemObject(SystemObjectPK key)
     throws ProcessingException, UserException{
-        SystemObject so = null;;
+        SystemObject so = null;
         Connection con = null;
         
         try {
@@ -1867,7 +1874,7 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
      */
     public SystemObjectPK[] lookupSystemObjectPKs(String euid)
     throws ProcessingException, UserException{
-        SystemObjectPK[] retVal = null;;
+        SystemObjectPK[] retVal = null;
         Connection con = null;
         
         try {
@@ -1906,7 +1913,7 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
             String euid, 
             String status)
     throws ProcessingException, UserException{
-        SystemObjectPK[] retVal = null;;
+        SystemObjectPK[] retVal = null;
         Connection con = null;
         
         try {
@@ -1949,7 +1956,7 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
             String destSystem, 
             String status)
     throws ProcessingException, UserException{
-        SystemObjectPK[] retVal = null;;
+        SystemObjectPK[] retVal = null;
         Connection con = null;
         
         try {

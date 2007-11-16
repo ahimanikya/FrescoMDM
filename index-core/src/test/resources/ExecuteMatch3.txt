@@ -1,0 +1,1000 @@
+EVNT|||UI|HQ|HQ||||<>ID||002685105^SiteA|&DEMO||GUTWIRTH^REGINA^^^||^^^^LIBERMANSCH^""^""|1925-07-05||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000446951^SiteA|&DEMO||MANSO^JAMIE^^^||^^^^|19790624||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000391731^SiteA|&DEMO||ORTIZ^MARTHA^^^||^^^^|19610103||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707670^SiteA|&DEMO||SHACKLEFORD^BLANCHE^^^||^^^^|19090102||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002253085^SiteA|&DEMO||PROCTOR^HELEN^^^||^^^^|19181231||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000312136^SiteA|&DEMO||THOMPSON^WILLIAM^^^||^^^^|19440518||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002527216^SiteA|&DEMO||LIPKIND^HEATHER^^^||^^^^|19720530||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000257186^SiteA|&DEMO||ORTIZ^MARVIN^^^||^^^^ORTIZ^MARTHA^""|19860714||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002371258^SiteA|&DEMO||CHUNG^YOUNG SOOK^^^||^^^^|19670118||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408394^SiteA|&DEMO||JOST^ELIANE^^^||^^^^|19300620||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001176469^SiteA|&DEMO||WATSON^MARTHA^^^||^^^^|19341013||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002248876^SiteA|&DEMO||JOYCE^EDNA^^^||^^^^|19180328||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002180627^SiteA|&DEMO||KOSTELL^JAMES M^^^||^^^^|19560107||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707329^SiteA|&DEMO||WASHINGTON^NEKIA^^^||^^^^|19750403||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002270604^SiteA|&DEMO||COMO^ALBERT^^^||^^^^|19100520||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002643028^SiteA|&DEMO||RAMOS^YARITZA^^^||^^^^|19920405||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002643028^SiteA|&DEMO||RAMOS^YARITZA^^^||^^^^|19920405||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408320^SiteA|&DEMO||DANYI^JOHN^^^||^^^^|19411227||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002150019^SiteA|&DEMO||QUINN^YVONNE SUSAN^^^||^^^^|19510513||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072096^SiteA|&DEMO||ALEXANDRU^LUCIAN^^^||^^^^|19700328||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002527389^SiteA|&DEMO||KOUTRAS^ANNA^^^||^^^^|19320102||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001087951^SiteA|&DEMO||VISSCHER^JOHN^^^||^^^^|19170129||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408182^SiteA|&DEMO||YU^MEIJUN^^^||^^^^|19560702||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002643028^SiteA|&DEMO||RAMOS^YARITZA^^^||^^^^|19920405||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072078^SiteA|&DEMO||SUPERVILLE^RUDOLPH^^^||^^^^|19680615||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002360678^SiteA|&DEMO||MUNIZ^NOELIA^^^||^^^^|19400915||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002298492^SiteA|&DEMO||ROMERO^RICARDO^^^||^^^^|19910924||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002298492^SiteA|&DEMO||ROMERO^RICARDO^^^||^^^^|19910924||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002527389^SiteA|&DEMO||KOUTRAS^ANNA^^^||^^^^|19320102||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002392397^SiteA|&DEMO||DUMPSON^VANETTE^^^||^^^^|19651103||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001301589^SiteA|&DEMO||ADAMS-SCHNEIDER^LAURIE^^^||^^^^|19410929||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000355669^SiteA|&DEMO||DELACRUZ^CANDIDO^^^||^^^^|19571201||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072077^SiteA|&DEMO||LINDSEY^LIZZIE^^^||^^^^|19911110||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002370654^SiteA|&DEMO||BOYKIN^VIRGINIA J^^^||^^^^TYLER^""^""|19421211||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437509^SiteA|&DEMO||WHITE^JOHN^^^||^^^^|19280626||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001061655^SiteA|&DEMO||ZELNO^HELEN^^^||^^^^|19160310||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072074^SiteA|&DEMO||TAVARES^PEDRO^^^||^^^^|19710503||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000807069^SiteA|&DEMO||HENDERSON^ROSALYN^^^||^^^^HARGROVE^""^""|19620822||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001066546^SiteA|&DEMO||VELASQUEZ^AQUINILDE^^^||^^^^|19580427||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002527389^SiteA|&DEMO||KOUTRAS^ANNA^^^||^^^^|19320102||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000807069^SiteA|&DEMO||HENDERSON^ROSALYN^^^||^^^^HARGROVE^""^""|19620822||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001071009^SiteA|&DEMO||MOHAMMED^NAFESSHA^^^||^^^^|19541006||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408396^SiteA|&DEMO||BETHEA^MAURICE^^^||^^^^|19720615||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001024820^SiteA|&DEMO||VASQUEZ^EVA^^^||^^^^|19320717||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002375106^SiteA|&DEMO||DURAN^ELIZABETH^^^||^^^^|19710304||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001470489^SiteA|&DEMO||STOKES^STEPHANIE^^^||^^^^|19420820||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000807069^SiteA|&DEMO||HENDERSON^ROSALYN^^^||^^^^HARGROVE^""^""|19620822||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001053765^SiteA|&DEMO||ROMERO^ALEXANDRA^^^||^^^^|19791010||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072098^SiteA|&DEMO||MADRID^CARLOS^^^||^^^^RIVERA^ESTHER^""|19550402||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001298028^SiteA|&DEMO||BERNSTEIN^SUSAN^^^||^^^^|19510622||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408396^SiteA|&DEMO||BETHEA^MAURICE^^^||^^^^|19720615||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002248876^SiteA|&DEMO||JOYCE^EDNA^^^||^^^^|19180328||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002364755^SiteA|&DEMO||JODHA^ISAIAH^^^||^^^^|19971107||M|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002364755^SiteA|&DEMO||JODHA^ISAIAH^^^||^^^^|19971107||M|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002446996^SiteA|&DEMO||FABIAN^ENEDINA^^^||^^^^|19271207||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|SM|SM||||<>ID||063813^SiteA|&DEMO||TURVIN EISMAN^ELAINE^R^^||^^^^|19390324||F|||^||||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072091^SiteA|&DEMO||JIMENEZ^FRANCIS^^^||^^^^|19720328||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000340537^SiteA|&DEMO||VENTICINQUE^JOSEPHINE^^^||^^^^CARLINO^NICOLINA^""|19231110||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000403951^SiteA|&DEMO||RASLINA^OLGA^^^||^^^^|19221019||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002492186^SiteA|&DEMO||WILLIAMS^CHARLES^^^||^^^^FOGG^""^""|19221209||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002492186^SiteA|&DEMO||WILLIAMS^CHARLES^^^||^^^^FOGG^""^""|19221209||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001071909^SiteA|&DEMO||HERNANDEZ^JUAN^^^||^^^^|19601009||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002492186^SiteA|&DEMO||WILLIAMS^CHARLES^^^||^^^^FOGG^""^""|19221209||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002642187^SiteA|&DEMO||GRANT^GWENDOLYN^^^||^^^^|19120207||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002043749^SiteA|&DEMO||WATERS^WILLIAM^^^||^^^^|19440530||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001069496^SiteA|&DEMO||MEDRANO^PEDRO ANTONIO^^^||^^^^|19521101||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002298492^SiteA|&DEMO||ROMERO^RICARDO^^^||^^^^|19910924||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002300060^SiteA|&DEMO||NI^JUCHUNTAN^^^||^^^^|19451117||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000429582^SiteA|&DEMO||TULCHINSKY^TSAL^^^||^^^^|19031105||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001071892^SiteA|&DEMO||AROCHO^MADELYN^^^||^^^^|19600709||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002449846^SiteA|&DEMO||SERRATA^JUAN^^^||^^^^|19800423||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002449846^SiteA|&DEMO||SERRATA^JUAN^^^||^^^^|19800423||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000438623^SiteA|&DEMO||PADILLA^IRMA^^^||^^^^SERVERA^ANA^MERCEDES|19301015||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001071949^SiteA|&DEMO||SWINNTON^CHRISTOPHER^^^||^^^^|19690724||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002364755^SiteA|&DEMO||JODHA^ISAIAH^^^||^^^^|19971107||M|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002318696^SiteA|&DEMO||WATERS^WILLIAM^^^||^^^^|19440530||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002648751^SiteA|&DEMO||VUORINEN^HARRY^^^||^^^^|19971003||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002648751^SiteA|&DEMO||VUORINEN^HARRY^^^||^^^^|19971003||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002702510^SiteA|&DEMO||ORTIZ^SINDY^^^||^^^^|19791022||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072041^SiteA|&DEMO||LEIVA^LIGIA D^^^||^^^^|19600821||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001043628^SiteA|&DEMO||MONTES^JAZMIN^^^||^^^^TAPIA^DAISY^""|19750709||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707513^SiteA|&DEMO||LEVENTHAL^GABRIEL^^^||^^^^|19100203||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001000355^SiteA|&DEMO||PAO^SIHOKE^^^||^^^^|19150304||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002399684^SiteA|&DEMO||SERRATA^MIGUEL^^^||^^^^|19400528||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072041^SiteA|&DEMO||LEIVA^LIGIA D^^^||^^^^|19600821||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072041^SiteA|&DEMO||LEIVA^LIGIA D^^^||^^^^|19600821||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002705889^SiteA|&DEMO||SIEGEL^BB TWIN A^^^||^^^^SIEGEL^""^""|19980828||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002449846^SiteA|&DEMO||SERRATA^JUAN^^^||^^^^|19800423||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002394901^SiteA|&DEMO||MCCUE^PRISCILLA^^^||^^^^|19620708||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002705891^SiteA|&DEMO||SIEGEL^BB TWIN B^^^||^^^^SIEGEL^""^""|19980828||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002595507^SiteA|&DEMO||PADRO^DANIEL^^^||^^^^N/A^N/A^""|19430619||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002319135^SiteA|&DEMO||WATERS^WILLIAM^^^||^^^^|19440530||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408373^SiteA|&DEMO||YUN^DUKKYUNG^^^||^^^^|19720222||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002279362^SiteA|&DEMO||ROTTER^LISA MARIE^^^||^^^^|19640605||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002279362^SiteA|&DEMO||ROTTER^LISA MARIE^^^||^^^^|19640605||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002705890^SiteA|&DEMO||RABEN^CHARLES^^^||^^^^WEINSTOCK^CATHERINE^""|19980828||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002705890^SiteA|&DEMO||RABEN^CHARLES^^^||^^^^WEINSTOCK^CATHERINE^""|19980828||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002704510^SiteA|&DEMO||MURRAY^WILLIAM^^^||^^^^|19440819||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002279362^SiteA|&DEMO||ROTTER^LISA MARIE^^^||^^^^|19640605||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072041^SiteA|&DEMO||LEIVA^LIGIA D^^^||^^^^|19600821||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706508^SiteA|&DEMO||SANTIAGO^RUBEN^^^||^^^^|19560308||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002388706^SiteA|&DEMO||ROY^MADELINE^^^||^^^^|19690110||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002388706^SiteA|&DEMO||ROY^MADELINE^^^||^^^^|19690110||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002468714^SiteA|&DEMO||WRIGHT^KAREN^^^||^^^^WINT^""^""|19640819||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408397^SiteA|&DEMO||PYUN^EUISUN^^^||^^^^|19710202||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002378046^SiteA|&DEMO||FORTUNATO^ALEXA^^^||^^^^|19920326||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002378046^SiteA|&DEMO||FORTUNATO^ALEXA^^^||^^^^|19920326||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002397497^SiteA|&DEMO||WATERS^WILLIAM^^^||^^^^|19440530||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408397^SiteA|&DEMO||PYUN^EUISUN^^^||^^^^|19710202||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002391078^SiteA|&DEMO||ROSARIO^JOSELYN^^^||^^^^|19710126||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002388706^SiteA|&DEMO||ROY^MADELINE^^^||^^^^|19690110||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002332164^SiteA|&DEMO||WATERS^WILLIAM R.^^^||^^^^|19440530||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002391078^SiteA|&DEMO||ROSARIO^JOSELYN^^^||^^^^|19710126||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000837111^SiteA|&DEMO||CRUZ^VANESSA^^^||^^^^|19851008||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000837111^SiteA|&DEMO||CRUZ^VANESSA^^^||^^^^|19851008||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002391078^SiteA|&DEMO||ROSARIO^JOSELYN^^^||^^^^|19710126||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002391078^SiteA|&DEMO||ROSARIO^JOSELYN^^^||^^^^|19710126||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002252075^SiteA|&DEMO||FEIN^TOM^^^||^^^^ALEXIS^""^""|19900831||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002679038^SiteA|&DEMO||ELSAMANOUDY^SAID^^^||^^^^|19550228||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002391078^SiteA|&DEMO||ROSARIO^JOSELYN^^^||^^^^|19710126||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002684980^SiteA|&DEMO||AIDEYAN^ADESUWA^^^||^^^^|19891117||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002391078^SiteA|&DEMO||ROSARIO^JOCELYN^^^||^^^^|19710126||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001063885^SiteA|&DEMO||SCOTT^MARCIA M.^^^||^^^^|19560729||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001063885^SiteA|&DEMO||SCOTT^MARCIA M.^^^||^^^^|19560729||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000837111^SiteA|&DEMO||CRUZ^VANESSA^^^||^^^^|19851008||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001133275^SiteA|&DEMO||JORDAN^NYGIAR^^^||^^^^|19680803||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001063885^SiteA|&DEMO||SCOTT^MARCIA M.^^^||^^^^|19560729||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002641778^SiteA|&DEMO||AFFRONTI^RICKEY^^^||^^^^|19980221||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002332164^SiteA|&DEMO||WATERS^WILLIAM R.^^^||^^^^|19440530||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002171388^SiteA|&DEMO||BARCIA^KAREN^^^||^^^^|19820420||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707401^SiteA|&DEMO||PETRITSIS^ANTONIO^^^||^^^^|19620516||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707401^SiteA|&DEMO||PETRITSIS^ANTONIO^^^||^^^^|19620516||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707401^SiteA|&DEMO||PETRITSIS^ANTONIO^^^||^^^^|19620516||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408398^SiteA|&DEMO||AHN^SUSANNA^^^||^^^^|19580215||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002378046^SiteA|&DEMO||FORTUNATO^ALEXA^^^||^^^^|19920326||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002332164^SiteA|&DEMO||WATERS^WILLIAM R.^^^||^^^^|19440530||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002391078^SiteA|&DEMO||ROSARIO^JOCELYN^^^||^^^^|19710126||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437592^SiteA|&DEMO||ZWIBEL^HARRY^^^||^^^^|19111213||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002171388^SiteA|&DEMO||BARCIA^KAREN^^^||^^^^|19820420||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002194659^SiteA|&DEMO||ELLOWIS^DANA A^^^||^^^^SILVERMAN^""^""|19570129||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002194659^SiteA|&DEMO||ELLOWIS^DANA A^^^||^^^^SILVERMAN^""^""|19570129||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001336690^SiteA|&DEMO||MEYER^YVONNE MARY^^^||^^^^|19151115||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408398^SiteA|&DEMO||AHN^SUSANNA^^^||^^^^|19580215||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001215615^SiteA|&DEMO||CONCANNON^MAURA^^^||^^^^|19370503||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000434912^SiteA|&DEMO||FALCONHERRERA^DIGNALIZ^^^||^^^^|19930904||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000434912^SiteA|&DEMO||FALCONHERRERA^DIGNALIZ^^^||^^^^|19930904||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001058423^SiteA|&DEMO||AVILES^RAMON^^^||^^^^|19560304||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002194659^SiteA|&DEMO||ELLOWIS^DANA A^^^||^^^^SILVERMAN^""^""|19570129||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000434912^SiteA|&DEMO||FALCONHERRERA^DIGNALIZ^^^||^^^^|19930904||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002678903^SiteA|&DEMO||WILDER^STEPHEN^^^||^^^^|19271224||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000431880^SiteA|&DEMO||GORDON^RUTH^^^||^^^^|19160912||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001242064^SiteA|&DEMO||VALLE^JEANETTE M^^^||^^^^|19710414||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002672759^SiteA|&DEMO||SHAPIRO^VERA A^^^||^^^^|19620829||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002672759^SiteA|&DEMO||SHAPIRO^VERA A^^^||^^^^|19620829||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002642299^SiteA|&DEMO||GOODMAN^EVALIN^^^||^^^^|19230614||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002672759^SiteA|&DEMO||SHAPIRO^VERA A^^^||^^^^|19620829||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001546543^SiteA|&DEMO||BASS^GEORGE^^^||^^^^PEREYRA^""^""|19450919||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002219460^SiteA|&DEMO||ARAOZ^ROBERTA^^^||^^^^MARTINEZ^AMALIA^""|19230429||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002068119^SiteA|&DEMO||GRANADOS^ANA^^^||^^^^|19530915||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001346474^SiteA|&DEMO||CICHANOWICZ^MARY^^^||^^^^|19170728||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002659509^SiteA|&DEMO||GIBSON^JOAN S.^^^||^^^^|19250223||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001346474^SiteA|&DEMO||CICHANOWICZ^MARY^^^||^^^^|19170728||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002672759^SiteA|&DEMO||SHAPIRO^VERA A^^^||^^^^|19620829||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002672759^SiteA|&DEMO||SHAPIRO^VERA A^^^||^^^^|19620829||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000196249^SiteA|&DEMO||SHIPS^JAMES^^^||^^^^|19320421||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000196249^SiteA|&DEMO||SHIPS^JAMES^^^||^^^^|19320421||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002698345^SiteA|&DEMO||ORLANDO^LISA M.^^^||^^^^|19550805||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002068119^SiteA|&DEMO||GRANADOS^ANA^^^||^^^^|19530915||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002371258^SiteA|&DEMO||CHUNG^YOUNG SOOK^^^||^^^^|19670118||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002318696^SiteA|&DEMO||WATERS^WILLIAM^^^||^^^^|19440530||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437677^SiteA|&DEMO||FRIEDE^SYLVIA^^^||^^^^|19220901||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000196249^SiteA|&DEMO||SHIPS^JAMES^^^||^^^^|19320421||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002016890^SiteA|&DEMO||RABIN^EDNA^^^||^^^^|19130321||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002318696^SiteA|&DEMO||WATERS^WILLIAM^^^||^^^^|19440530||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002612507^SiteA|&DEMO||BOGUE^BECKE^^^||^^^^|19690429||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072095^SiteA|&DEMO||LITTLE^KATHY^^^||^^^^|19670915||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002672759^SiteA|&DEMO||SHAPIRO^VERA A^^^||^^^^|19620829||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002318696^SiteA|&DEMO||WATERS^WILLIAM^^^||^^^^|19440530||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000431880^SiteA|&DEMO||GORDON^RUTH^^^||^^^^|19160912||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002705285^SiteA|&DEMO||MCCUE^SUSAN^^^||^^^^|19760806||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002705285^SiteA|&DEMO||MCCUE^SUSAN^^^||^^^^|19760806||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437675^SiteA|&DEMO||SMIRNOFF^VLADIMIR^^^||^^^^|19510808||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072095^SiteA|&DEMO||LITTLE^KATHY^^^||^^^^|19670915||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072095^SiteA|&DEMO||LITTLE^KATHY^^^||^^^^|19670915||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001407670^SiteA|&DEMO||BECKFORD^GARFIELD^^^||^^^^|19591108||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001407670^SiteA|&DEMO||BECKFORD^GARFIELD^^^||^^^^|19591108||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000350089^SiteA|&DEMO||GRIMES^SHANTA M^^^||^^^^|19850820||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000350089^SiteA|&DEMO||GRIMES^SHANTA M^^^||^^^^|19850820||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002705285^SiteA|&DEMO||MCCUE^SUSAN^^^||^^^^|19760806||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002043749^SiteA|&DEMO||WATERS^WILLIAM^^^||^^^^|19440530||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001407670^SiteA|&DEMO||BECKFORD^GARFIELD^^^||^^^^|19591108||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002349358^SiteA|&DEMO||MATHEWSON^WESLEY^^^||^^^^|19831016||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002043749^SiteA|&DEMO||WATERS^WILLIAM^^^||^^^^|19440530||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072095^SiteA|&DEMO||LITTLE^KATHY^^^||^^^^|19670915||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000350089^SiteA|&DEMO||GRIMES^SHANTA M^^^||^^^^|19850820||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002678687^SiteA|&DEMO||HORGAN^JOAN^^^||^^^^|19300807||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002216499^SiteA|&DEMO||SHAPIRO^ROBERT S^^^||^^^^ROSENBLATT^""^""|19270217||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001407670^SiteA|&DEMO||BECKFORD^GARFIELD^^^||^^^^|19591108||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002703499^SiteA|&DEMO||TOMAHARSCH^CARMEN^^^||^^^^|19530925||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002043749^SiteA|&DEMO||WATERS^WILLIAM^^^||^^^^|19440530||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707623^SiteA|&DEMO||ARDITO^JESSICA^^^||^^^^|19750304||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002551093^SiteA|&DEMO||HAIR^BRITTANY^^^||^^^^|19940819||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001522892^SiteA|&DEMO||GLADSTONE^JAMES^^^||^^^^BAILEY^""^""|19231116||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072144^SiteA|&DEMO||PONCE^CHRISTIAN^^^||^^^^|19920518||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002551093^SiteA|&DEMO||HAIR^BRITTANY^^^||^^^^|19940819||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408399^SiteA|&DEMO||CARUSO^ROSEMARY^^^||^^^^|19360929||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002360458^SiteA|&DEMO||KROHN^RENE^^^||^^^^|19230613||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002078978^SiteA|&DEMO||TYLER^ROBERT^^^||^^^^|19301211||F|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000273336^SiteA|&DEMO||OWENS^LATISHA^^^||^^^^|19721120||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000273336^SiteA|&DEMO||OWENS^LATISHA^^^||^^^^|19721120||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002412688^SiteA|&DEMO||ROCCA^RAVEN^^^||^^^^|19930909||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072144^SiteA|&DEMO||PONCE^CHRISTIAN^^^||^^^^|19920518||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002118509^SiteA|&DEMO||STAFFA^IDA^^^||^^^^|19160914||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000273336^SiteA|&DEMO||OWENS^LATISHA^^^||^^^^|19721120||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002389667^SiteA|&DEMO||MAY^WAH^^^||^^^^|19280606||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002412688^SiteA|&DEMO||ROCCA^RAVEN^^^||^^^^|19930909||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002485614^SiteA|&DEMO||RIVERA^YASLYNN^^^||^^^^MEDINA^""^""|19941124||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002485614^SiteA|&DEMO||RIVERA^YASLYNN^^^||^^^^MEDINA^""^""|19941124||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408399^SiteA|&DEMO||CARUSO^ROSEMARY^^^||^^^^|19360929||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002485614^SiteA|&DEMO||RIVERA^YASLYNN^^^||^^^^MEDINA^""^""|19941124||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002485614^SiteA|&DEMO||RIVERA^YASLYNN^^^||^^^^MEDINA^""^""|19941124||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002607460^SiteA|&DEMO||HELLMAN^HOLLY H^^^||^^^^N/A^""^""|19631127||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002691127^SiteA|&DEMO||BAPTISTE^KEYANA S^^^||^^^^|19970501||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002485614^SiteA|&DEMO||RIVERA^YASLYNN^^^||^^^^MEDINA^""^""|19941124||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002647527^SiteA|&DEMO||PEREZ^WIDILIA^^^||^^^^|19461224||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000453955^SiteA|&DEMO||MOTA^LUZ^^^||^^^^|19221107||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002485614^SiteA|&DEMO||RIVERA^YASLYNN^^^||^^^^MEDINA^""^""|19941124||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001010569^SiteA|&DEMO||SALCEDO^RAFAEL^^^||^^^^|19471012||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408400^SiteA|&DEMO||POLONIA^SAMMY^^^||^^^^|19770920||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|SM|SM||||<>ID||063640^SiteA|&DEMO||THOMAS^FRANCIS^""^^||^^^^|19591025||M|||^||||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001010907^SiteA|&DEMO||WESLEY^JUNE^^^||^^^^|19490601||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002688888^SiteA|&DEMO||GABRIEL^WILLIAM^^^||^^^^|19690803||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002688888^SiteA|&DEMO||GABRIEL^WILLIAM^^^||^^^^|19690803||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002535410^SiteA|&DEMO||HU^ERIC^^^||^^^^|19950923||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002688888^SiteA|&DEMO||GABRIEL^WILLIAM^^^||^^^^|19690803||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707282^SiteA|&DEMO||HEMRAJ^RAMJIT^^^||^^^^|19760505||M|||^|I|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408400^SiteA|&DEMO||POLONIA^SAMMY^^^||^^^^|19770920||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002535410^SiteA|&DEMO||HU^ERIC^^^||^^^^|19950923||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002519665^SiteA|&DEMO||LEVINSON^IRIS^^^||^^^^|19450620||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002584953^SiteA|&DEMO||KONIGSBERG^RENEE^^^||^^^^CHAVKIN^""^""|19620519||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001032376^SiteA|&DEMO||ESPINOSA^JARVIS^^^||^^^^ROMERO^NITZA^""|19970809||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707527^SiteA|&DEMO||MCMASTER^KATHERINE^^^||^^^^|19700414||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002513855^SiteA|&DEMO||CARROLL^REBECCA SUSAN^^^||^^^^|19590424||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707596^SiteA|&DEMO||HUSTON^SAM^^^||^^^^|19420319||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001032376^SiteA|&DEMO||ESPINOSA^JARVIS^^^||^^^^ROMERO^NITZA^""|19970809||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001032376^SiteA|&DEMO||ESPINOSA^JARVIS^^^||^^^^ROMERO^NITZA^""|19970809||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002624139^SiteA|&DEMO||DRAGAN^LUCIC^^^||^^^^|19511107||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001583262^SiteA|&DEMO||MACERO^ATTILIO J^^^||^^^^DEFABIO^""^""|19251030||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001583262^SiteA|&DEMO||MACERO^ATTILIO J^^^||^^^^DEFABIO^""^""|19251030||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000293325^SiteA|&DEMO||LOPEZ^EMMANUEL^^^||^^^^RIVERA^JULIA^""|19820819||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000293325^SiteA|&DEMO||LOPEZ^EMMANUEL^^^||^^^^RIVERA^JULIA^""|19820819||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001583262^SiteA|&DEMO||MACERO^ATTILIO J^^^||^^^^DEFABIO^""^""|19251030||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706851^SiteA|&DEMO||PANZO^JEFFREY^^^||^^^^|19710406||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001032376^SiteA|&DEMO||ESPINOSA^JARVIS^^^||^^^^ROMERO^NITZA^""|19970809||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001057344^SiteA|&DEMO||MUNOZ^FLOR^^^||^^^^TORRES^ALICIA^""|19400621||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000293325^SiteA|&DEMO||LOPEZ^EMMANUEL^^^||^^^^RIVERA^JULIA^""|19820819||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002682540^SiteA|&DEMO||MORGAN^EDWARD^^^||^^^^|19701116||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001057344^SiteA|&DEMO||MUNOZ^FLOR^^^||^^^^TORRES^ALICIA^""|19400621||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001057344^SiteA|&DEMO||MUNOZ^FLOR^^^||^^^^TORRES^ALICIA^""|19400621||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408401^SiteA|&DEMO||PALENCIA^MARCO^^^||^^^^|19830812||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002589530^SiteA|&DEMO||RIVERA^ALANIS SERA^^^||^^^^ALMODOVOR^""^""|19960902||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001981282^SiteA|&DEMO||CHOUDRI^NENA^^^||^^^^|19661121||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002654943^SiteA|&DEMO||PAULINO^ANDRES^^^||^^^^|19971110||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000426061^SiteA|&DEMO||RAMOS^MARLENE^^^||^^^^|19570106||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707646^SiteA|&DEMO||TAN^WILLIAM D.^^^||^^^^|19961008||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707584^SiteA|&DEMO||CASTELLANO^ROBERTO^^^||^^^^|19461120||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002032159^SiteA|&DEMO||WILLIAMS^DRUCILLA^^^||^^^^|19330927||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001057344^SiteA|&DEMO||MUNOZ^FLOR^^^||^^^^TORRES^ALICIA^""|19400621||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002680592^SiteA|&DEMO||BRAUNSTEIN^NAFTALIA^^^||^^^^|19750802||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002377456^SiteA|&DEMO||KALIMOOTOO^SHANTI^^^||^^^^N/A^N/A^""|19610422||F|||^|I|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707584^SiteA|&DEMO||CASTELLANO^ROBERTO^^^||^^^^|19461120||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707584^SiteA|&DEMO||CASTELLANO^ROBERTO^^^||^^^^|19461120||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002529960^SiteA|&DEMO||GRAHAM^DAWN^^^||^^^^|19610202||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002114793^SiteA|&DEMO||FIGUEROA^RAY ANTHONY^^^||^^^^|19840913||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002414786^SiteA|&DEMO||OBAS^CLAUDENY^^^||^^^^|19860529||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002414786^SiteA|&DEMO||OBAS^CLAUDENY^^^||^^^^|19860529||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001057344^SiteA|&DEMO||MUNOZ^FLOR^^^||^^^^|19400621||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707584^SiteA|&DEMO||CASTELLANO^ROBERTO^^^||^^^^|19461120||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002414797^SiteA|&DEMO||ONAS^MAGEF^^^||^^^^|19880818||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002486903^SiteA|&DEMO||MARTINEZ^DIANNE^^^||^^^^|19650325||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000426061^SiteA|&DEMO||RAMOS^MARLENE^^^||^^^^|19570106||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002349276^SiteA|&DEMO||GIORDANO^MILDRED^^^||^^^^|19291225||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002216230^SiteA|&DEMO||SCHENKEL^ELISE^^^||^^^^|19670320||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408401^SiteA|&DEMO||PALENCIA^MARCO^^^||^^^^|19830812||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002696007^SiteA|&DEMO||BAEZ^ORLANDO^^^||^^^^|19651123||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002696007^SiteA|&DEMO||BAEZ^ORLANDO^^^||^^^^|19651123||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002696007^SiteA|&DEMO||BAEZ^ORLANDO^^^||^^^^|19651123||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001900903^SiteA|&DEMO||COOPERMAN^MORRIS M.^^^||^^^^|19071209||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002414797^SiteA|&DEMO||ONAS^MAGEF^^^||^^^^|19880818||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002696463^SiteA|&DEMO||HESTER^PATRICK^^^||^^^^|19400108||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002312746^SiteA|&DEMO||KNAPP^VIRGINIA^^^||^^^^|19220127||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000452405^SiteA|&DEMO||MORRISON^NYISHA^^^||^^^^|19750520||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000452405^SiteA|&DEMO||MORRISON^NYISHA^^^||^^^^|19750520||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002043749^SiteA|&DEMO||WATERS^WILLIAM^^^||^^^^|19440530||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001308186^SiteA|&DEMO||KRUMHOLZ^JACOB J^^^||^^^^N/A^""^""|19190102||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002038632^SiteA|&DEMO||ROLIDER^HENRY^^^||^^^^|19180810||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002697024^SiteA|&DEMO||THREAT^JENNIFER^^^||^^^^|19731204||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001062394^SiteA|&DEMO||RILLERA^HERNANDEZ, MARY^^^||^^^^|19510411||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002300060^SiteA|&DEMO||NI^JUCHUNTAN^^^||^^^^|19451117||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001955583^SiteA|&DEMO||GARAVITO^RAUL NELSON^^^||^^^^|19351107||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002268529^SiteA|&DEMO||ROZARIO^JANET^^^||^^^^|19670718||F|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000452405^SiteA|&DEMO||MORRISON^NYISHA^^^||^^^^|19750520||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706764^SiteA|&DEMO||RODRIGUEZ^GENEVIEVE^^^||^^^^|19750718||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002057112^SiteA|&DEMO||RODRIGUEZ^ANDREW^^^||^^^^|19810415||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001608436^SiteA|&DEMO||BARBARISI^PHILIP A^^^||^^^^|19501030||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707123^SiteA|&DEMO||DILWORTH^JIM^^^||^^^^|19650802||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072113^SiteA|&DEMO||CAUTELA^ELISA^^^||^^^^|19170404||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002043966^SiteA|&DEMO||AIDEYAN^ANTHONY^^^||^^^^|19870311||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072113^SiteA|&DEMO||CAUTELA^ELISA^^^||^^^^|19170404||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072113^SiteA|&DEMO||CAUTELA^ELISA^^^||^^^^|19170404||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002664369^SiteA|&DEMO||KRESTAN^MARY^^^||^^^^|19150809||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002634386^SiteA|&DEMO||BURTON^MIRACELE^^^||^^^^|19970617||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000413023^SiteA|&DEMO||BRATTI^GENO^^^||^^^^|19270604||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000413023^SiteA|&DEMO||BRATTI^GENO^^^||^^^^|19270604||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000442097^SiteA|&DEMO||RIVERA^RENE V^^^||^^^^GUEVARES^JESSICA^""|19960319||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001519559^SiteA|&DEMO||ABELES^LILLIAN^^^||^^^^REICHER^""^""|19160208||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001962325^SiteA|&DEMO||CLARKE^BRENDA L^^^||^^^^|19570622||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001924324^SiteA|&DEMO||KONOPKO^ABRAHAM M^^^||^^^^|19251218||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002360458^SiteA|&DEMO||KROHN^RENE^^^||^^^^|19230613||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002360458^SiteA|&DEMO||KROHN^RENE^^^||^^^^|19230613||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072145^SiteA|&DEMO||LEGUILLOW^WENDY^^^||^^^^|19721103||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000424030^SiteA|&DEMO||MONGERO^JONATHAN^^^||^^^^|19950408||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002526490^SiteA|&DEMO||KURA^MARIA^^^||^^^^|19710607||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000311517^SiteA|&DEMO||JORDAN^CATHERINE EMP^^^||^^^^|19470720||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001645434^SiteA|&DEMO||RIVERA-CASTILLO^CARMEN^^^||^^^^|19541109||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002671905^SiteA|&DEMO||BLAISDELL^SHANNON^^^||^^^^|19740424||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000406489^SiteA|&DEMO||GONZALEZ^GISELLE^^^||^^^^GONZALEZ^OLGA^""|19940920||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000413023^SiteA|&DEMO||BRATTI^GENO^^^||^^^^|19270604||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072113^SiteA|&DEMO||CAUTELA^ELISA^^^||^^^^|19170404||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002145596^SiteA|&DEMO||LEE^SONJA^^^||^^^^|19680712||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408402^SiteA|&DEMO||KISSOON^GUYATRI^^^||^^^^|19550518||F|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408403^SiteA|&DEMO||MCLEAN^GRETCHEN^^^||^^^^|19310207||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002660737^SiteA|&DEMO||CARVALHO^ANGELA^^^||^^^^|19630121||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002679092^SiteA|&DEMO||MENDEZ^JUDITH^^^||^^^^|19341119||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072145^SiteA|&DEMO||LEGUILLOW^WENDY^^^||^^^^|19721103||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001002609^SiteA|&DEMO||ECHEVARRIA^MARIANA^^^||^^^^|19160805||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002563715^SiteA|&DEMO||ROBLES^CANDACE^^^||^^^^|19880515||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002498551^SiteA|&DEMO||KIMURA^MICHIO^^^||^^^^NOSE^""^""|19240709||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072145^SiteA|&DEMO||LEGUILLOW^WENDY^^^||^^^^|19721103||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002145028^SiteA|&DEMO||MISHKIN^ARNON^^^||^^^^|19550503||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002145028^SiteA|&DEMO||MISHKIN^ARNON^^^||^^^^|19550503||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001002609^SiteA|&DEMO||ECHEVARRIA^MARIANA^^^||^^^^|19160805||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001814130^SiteA|&DEMO||BROWN^EMMA C^^^||^^^^|19171212||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002683583^SiteA|&DEMO||MATTERA^CHRISTOPHER^^^||^^^^|19671002||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002679088^SiteA|&DEMO||TOWLES^MINNIE^^^||^^^^|19620711||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408403^SiteA|&DEMO||MCLEAN^GRETCHEN^^^||^^^^|19310207||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001738850^SiteA|&DEMO||SANTOS^BERNADETTE C^^^||^^^^|19470930||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002530560^SiteA|&DEMO||MAREKH^ZARY^^^||^^^^|19590325||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408402^SiteA|&DEMO||KISSOON^GUYATRI^^^||^^^^|19550518||F|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001195194^SiteA|&DEMO||PRIVOTT^CAROL^^^||^^^^KELLY^""^""|19450518||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002237894^SiteA|&DEMO||FRANCIS^STEPHEN^^^||^^^^|19570628||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408402^SiteA|&DEMO||KISSOON^GUYATRI^^^||^^^^|19550518||F|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002396436^SiteA|&DEMO||LACK^JORGE^^^||^^^^|19310526||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002008335^SiteA|&DEMO||SGARLATA^JOSEPH^^^||^^^^|19280212||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000309251^SiteA|&DEMO||FASSO^CHARLES J^^^||^^^^|19180421||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000309251^SiteA|&DEMO||FASSO^CHARLES J^^^||^^^^|19180421||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002164171^SiteA|&DEMO||GREENWALD^RUTH^^^||^^^^|19110207||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706395^SiteA|&DEMO||BURKE^EUGENE^^^||^^^^|19340127||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000452405^SiteA|&DEMO||MORRISON^NYISHA^^^||^^^^|19750520||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002169296^SiteA|&DEMO||PERLOV^MAURICE^^^||^^^^|19260501||M|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001169066^SiteA|&DEMO||WILLIAMS^HARRIET^^^||^^^^|19320918||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000309251^SiteA|&DEMO||FASSO^CHARLES J^^^||^^^^|19180421||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002000789^SiteA|&DEMO||GELBER^DAVID^^^||^^^^|19071212||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002000789^SiteA|&DEMO||GELBER^DAVID^^^||^^^^|19071212||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002595507^SiteA|&DEMO||PADRO^DANIEL^^^||^^^^N/A^N/A^""|19430619||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002693619^SiteA|&DEMO||SCHANSINGER^BERNARD^^^||^^^^SCHWARTZ^""^""|19280622||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000452405^SiteA|&DEMO||MORRISON^NYISHA^^^||^^^^|19750520||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002000789^SiteA|&DEMO||GELBER^DAVID^^^||^^^^|19071212||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706054^SiteA|&DEMO||BISNAUTHSING^BG^^^||^^^^VALENTINO^MARYANN^RITA|19980901||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706054^SiteA|&DEMO||BISNAUTHSING^BG^^^||^^^^|19980901||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002383811^SiteA|&DEMO||RIOS^ALEXANDER^^^||^^^^|19980319||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002383811^SiteA|&DEMO||RIOS^ALEXANDER^^^||^^^^|19980319||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408406^SiteA|&DEMO||SINGH^ERIC^^^||^^^^|19380926||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072102^SiteA|&DEMO||DEJESUS^ALEXANDRA^^^||^^^^|19760129||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002383811^SiteA|&DEMO||RIOS^ALEXANDER^^^||^^^^|19980319||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707570^SiteA|&DEMO||DELEON^NELSIDO^^^||^^^^|19631210||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002216075^SiteA|&DEMO||PINZON^BEVERLY^^^||^^^^|19601223||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408407^SiteA|&DEMO||BROWN^ROSA^^^||^^^^|19510709||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437678^SiteA|&DEMO||ALAM^ASHRAFUL^^^||^^^^|19481231||M|||^|I|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002517505^SiteA|&DEMO||KLEIN^GARY I^^^||^^^^BROWN^""^""|19420514||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002578988^SiteA|&DEMO||FINNEMAN^SILVIA^^^||^^^^|19670208||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408406^SiteA|&DEMO||SINGH^ERIC^^^||^^^^|19380926||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000375455^SiteA|&DEMO||HERRERA^AZALIA^^^||^^^^|19870923||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002701299^SiteA|&DEMO||STECK^FREDRIC^^^||^^^^|19450807||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072121^SiteA|&DEMO||LOPEZ^ADELINA^^^||^^^^|19451013||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437678^SiteA|&DEMO||ALAM^ASHRAFUL^^^||^^^^|19481231||M|||^|I|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000375455^SiteA|&DEMO||HERRERA^AZALIA^^^||^^^^|19870923||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001553952^SiteA|&DEMO||JONES^WILLIE MAE^^^||^^^^|19471112||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002557132^SiteA|&DEMO||PHIFER^DERRICK L.^^^||^^^^|19660110||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707585^SiteA|&DEMO||CASANOVA^CARMEN^^^||^^^^|19590914||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408407^SiteA|&DEMO||BROWN^ROSA^^^||^^^^|19510709||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001506208^SiteA|&DEMO||TIRADO^SHERRY A.^^^||^^^^|19471205||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707671^SiteA|&DEMO||VECCHIA^FRANCES^^^||^^^^|19490126||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408407^SiteA|&DEMO||BROWN^ROSA^^^||^^^^|19510709||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707361^SiteA|&DEMO||PREMINGER^CAROL^^^||^^^^|19250801||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707671^SiteA|&DEMO||VECCHIA^FRANCES^^^||^^^^|19490126||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437678^SiteA|&DEMO||ALAM^ASHRAFUL^^^||^^^^|19481231||M|||^|I|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002293213^SiteA|&DEMO||EISDORFER^ABRAHAM^^^||^^^^|19520104||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002705890^SiteA|&DEMO||SASS^CHARLES^^^||^^^^WEINSTOCK^CATHERINE^""|19980828||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002705890^SiteA|&DEMO||SASS^CHARLES^^^||^^^^WEINSTOCK^CATHERINE^""|19980828||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072121^SiteA|&DEMO||LOPEZ^ADELINA^^^||^^^^|19451013||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072121^SiteA|&DEMO||LOPEZ^ADELINA^^^||^^^^|19451013||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002705890^SiteA|&DEMO||SASS^CHARLES^^^||^^^^WEINSTOCK^CATHERINE^""|19980828||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002496608^SiteA|&DEMO||OQUENDO^JONATHAN^^^||^^^^|19900410||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002496608^SiteA|&DEMO||OQUENDO^JONATHAN^^^||^^^^|19900410||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072121^SiteA|&DEMO||LOPEZ^ADELINA^^^||^^^^|19451013||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002496608^SiteA|&DEMO||OQUENDO^JONATHAN^^^||^^^^|19900410||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000458462^SiteA|&DEMO||ORTIZ^JULIAN^^^||^^^^|19840905||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408408^SiteA|&DEMO||FERRIGNO^LORRAINE^^^||^^^^|19420219||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002300060^SiteA|&DEMO||NI^JUCHUNTAN^^^||^^^^|19451117||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002394896^SiteA|&DEMO||MAZZUCO^MARIE^^^||^^^^|19390810||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408408^SiteA|&DEMO||FERRIGNO^LORRAINE^^^||^^^^|19420219||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000458462^SiteA|&DEMO||ORTIZ^JULIAN^^^||^^^^|19840905||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002373592^SiteA|&DEMO||MORAN^JOSE^^^||^^^^|19321029||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001066976^SiteA|&DEMO||SERRANO^JASMILLE^^^||^^^^|19820711||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001066976^SiteA|&DEMO||SERRANO^JASMILLE^^^||^^^^|19820711||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002232663^SiteA|&DEMO||GALANTOWICZ^NICHOLAS^^^||^^^^|19900716||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002232663^SiteA|&DEMO||GALANTOWICZ^NICHOLAS^^^||^^^^|19900716||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002252410^SiteA|&DEMO||GUEVARA^SALVADOR^^^||^^^^|19630719||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001066976^SiteA|&DEMO||SERRANO^JASMILLE^^^||^^^^|19820711||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002344167^SiteA|&DEMO||RAMOS^HEIDE^^^||^^^^|19660122||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002344167^SiteA|&DEMO||RAMOS^HEIDE^^^||^^^^|19660122||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001947494^SiteA|&DEMO||CABRERA-AGOSTINI^HILDA^^^||^^^^GUEVARA^""^""|19590705||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002640952^SiteA|&DEMO||NIRENBERG^ANNETTE L^^^||^^^^|19610519||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002118291^SiteA|&DEMO||CSERNICK^SCOTT^^^||^^^^|19671119||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706010^SiteA|&DEMO||CABRERA-AGOSTINI^BG^^^||^^^^CABRERA^""^""|19980831||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706009^SiteA|&DEMO||NIRENBERG^BB^^^||^^^^ST. ONGE^ANNETTE^L|19980830||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408409^SiteA|&DEMO||CABRERA^AUGUSTINE^^^||^^^^|19690401||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002344167^SiteA|&DEMO||RAMOS^HEIDE^^^||^^^^|19660122||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002006324^SiteA|&DEMO||TAKVORIAN^ANDON^^^||^^^^|19280509||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072139^SiteA|&DEMO||MARTIS^MERCEDEZ^^^||^^^^|19931019||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408409^SiteA|&DEMO||CABRERA^AUGUSTINE^^^||^^^^|19690401||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002118291^SiteA|&DEMO||CSERNICK^SCOTT^^^||^^^^|19671119||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001018124^SiteA|&DEMO||ANCHUNDIA^KAREN^^^||^^^^|19940113||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001006491^SiteA|&DEMO||ROBLES^JORDAN^^^||^^^^|19961112||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000172755^SiteA|&DEMO||CARRERO^AMANDA^^^||^^^^SIACA^PAT^""|19921016||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000172755^SiteA|&DEMO||CARRERO^AMANDA^^^||^^^^SIACA^PAT^""|19921016||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000757674^SiteA|&DEMO||RESNICK^ALAN^^^||^^^^|19510115||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000757674^SiteA|&DEMO||RESNICK^ALAN^^^||^^^^|19510115||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001033013^SiteA|&DEMO||CARRERO^DAVID^^^||^^^^|19600830||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707582^SiteA|&DEMO||COTTER^NANCY^^^||^^^^|19470412||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000172755^SiteA|&DEMO||CARRERO^AMANDA^^^||^^^^SIACA^PAT^""|19921016||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707582^SiteA|&DEMO||COTTER^NANCY^^^||^^^^|19470412||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707582^SiteA|&DEMO||COTTER^NANCY^^^||^^^^|19470412||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408410^SiteA|&DEMO||CHO^BABYGIRL^^^||^^^^|19980901||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408410^SiteA|&DEMO||CHO^BABYGIRL^^^||^^^^|19980901||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000757674^SiteA|&DEMO||RESNICK^ALAN^^^||^^^^|19510115||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408410^SiteA|&DEMO||CHO^BABYGIRL^^^||^^^^|19980901||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002279526^SiteA|&DEMO||WILLIAMS^ELEANOR^^^||^^^^|19541228||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408371^SiteA|&DEMO||WHITE^BRIDGET^^^||^^^^|19670218||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408371^SiteA|&DEMO||WHITE^BRIDGET^^^||^^^^|19670218||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707582^SiteA|&DEMO||COTTER^NANCY^^^||^^^^|19470412||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072101^SiteA|&DEMO||HERNANDEZ^SALLY^^^||^^^^|19680509||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072101^SiteA|&DEMO||HERNANDEZ^SALLY^^^||^^^^RODRIGUEZ^CARMEN^""|19680509||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072101^SiteA|&DEMO||HERNANDEZ^SALLY^^^||^^^^RODRIGUEZ^CARMEN^""|19680509||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000424255^SiteA|&DEMO||LABARBERA^MARY^^^||^^^^|19140622||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002297678^SiteA|&DEMO||WINSTON^GEORGE^^^||^^^^|19880416||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408371^SiteA|&DEMO||WHITE^BRIDGET^^^||^^^^|19670218||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002247977^SiteA|&DEMO||LONGO^PASQUALE^^^||^^^^|19420404||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072146^SiteA|&DEMO||MARCO^MAYER^^^||^^^^|19511120||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707673^SiteA|&DEMO||AATAR^HARRIETT^^^||^^^^|19330109||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707661^SiteA|&DEMO||NIEVES^CHRISTINA^^^||^^^^|19660415||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707661^SiteA|&DEMO||NEIVES^CHRISTOPHER^^^||^^^^|19871214||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707661^SiteA|&DEMO||NEIVES^CHRISTOPHER^^^||^^^^|19871214||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072147^SiteA|&DEMO||MORALES^DANIEL^^^||^^^^|19950831||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707673^SiteA|&DEMO||AATAR^HARRIETT^^^||^^^^|19330109||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072101^SiteA|&DEMO||HERNANDEZ^SALLY^^^||^^^^RODRIGUEZ^CARMEN^""|19680509||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072146^SiteA|&DEMO||MARCO^MAYER^^^||^^^^|19511120||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707661^SiteA|&DEMO||NEIVES^CHRISTOPHER^^^||^^^^|19871214||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707661^SiteA|&DEMO||NEIVES^CHRISTOPHER^^^||^^^^|19871214||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001333971^SiteA|&DEMO||GIOURGAS^PROCOPIOS^^^||^^^^|19250525||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072147^SiteA|&DEMO||MORALES^DANIEL^^^||^^^^|19950831||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437679^SiteA|&DEMO||BENELIEZER^TAMMY^^^||^^^^|19780101||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707661^SiteA|&DEMO||NIEVES^CHRISTOPHER^^^||^^^^|19871214||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707661^SiteA|&DEMO||NIEVES^CHRISTOPHER^^^||^^^^|19871214||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408304^SiteA|&DEMO||GERSTL^GARY^^^||^^^^|19630716||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408304^SiteA|&DEMO||GERSTL^GARY^^^||^^^^|19630716||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001134031^SiteA|&DEMO||GILBERT^SUCHIE^^^||^^^^|19100617||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002264732^SiteA|&DEMO||MUNOZ^PATRICIA^^^||^^^^|19630613||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002264732^SiteA|&DEMO||MUNOZ^PATRICIA^^^||^^^^|19630613||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002079654^SiteA|&DEMO||KAHN^BETTY^^^||^^^^|19040304||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408300^SiteA|&DEMO||ESPINAL^YASMIL^^^||^^^^|19650923||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002400799^SiteA|&DEMO||POLANCO^GLADYS^^^||^^^^|19450105||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002154718^SiteA|&DEMO||OGARA^MARY^^^||^^^^|19080822||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001062481^SiteA|&DEMO||JOSEPH^JOAN^^^||^^^^|19640613||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001062481^SiteA|&DEMO||JOSEPH^JOAN^^^||^^^^|19640613||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002405207^SiteA|&DEMO||CHAN^MULINA^^^||^^^^|19471017||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408412^SiteA|&DEMO||RABL^MARY^^^||^^^^|19200202||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001130857^SiteA|&DEMO||TANNENBAUM^SCHIFRA^^^||^^^^|19201017||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408385^SiteA|&DEMO||ANTAR^HARRIET^^^||^^^^|19330109||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001062481^SiteA|&DEMO||JOSEPH^JOAN^^^||^^^^|19640613||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002252410^SiteA|&DEMO||GUEVARA^SALVADOR^^^||^^^^|19630719||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437679^SiteA|&DEMO||BENELIEZER^TAMMY^^^||^^^^|19780101||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000456350^SiteA|&DEMO||CHAPMAN^STARASIA D^^^||^^^^|19950729||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000456350^SiteA|&DEMO||CHAPMAN^STARASIA D^^^||^^^^|19950729||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072148^SiteA|&DEMO||GEST^BRANDY^^^||^^^^|19771108||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002264732^SiteA|&DEMO||MUNOZ^PATRICIA^^^||^^^^|19630613||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408412^SiteA|&DEMO||RABL^MARY^^^||^^^^|19200202||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002006324^SiteA|&DEMO||TAKVORIAN^ANDON^^^||^^^^|19280509||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408304^SiteA|&DEMO||GERSTL^GARY^^^||^^^^|19630716||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001026952^SiteA|&DEMO||MOLINA^LOUIS^^^||^^^^RODRIGUEZ^JENNIE^""|19490411||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000456350^SiteA|&DEMO||CHAPMAN^STARASIA D^^^||^^^^|19950729||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072053^SiteA|&DEMO||UNKNOWN^WHITE MALE^^^||^^^^|19600101||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072053^SiteA|&DEMO||UNKNOWN^WHITE MALE^^^||^^^^|19600101||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072053^SiteA|&DEMO||UNKNOWN^WHITE MALE^^^||^^^^|19600101||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001061510^SiteA|&DEMO||JIMENEZ^JEFFREY^^^||^^^^ALBERT^LORIANN^""|19980219||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001061510^SiteA|&DEMO||JIMENEZ^JEFFREY^^^||^^^^ALBERT^LORIANN^""|19980219||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707502^SiteA|&DEMO||YUDELL^JANE R^^^||^^^^|19450222||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000456350^SiteA|&DEMO||CHAPMAN^STARASIA D^^^||^^^^|19950729||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072148^SiteA|&DEMO||GEST^BRANDY^^^||^^^^|19771108||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707674^SiteA|&DEMO||NADELMANN^DEBORAH^^^||^^^^|19650619||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002232663^SiteA|&DEMO||GALANTOWICZ^NICHOLAS^^^||^^^^|19900716||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707502^SiteA|&DEMO||YUDELL^JANE R^^^||^^^^|19450222||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707502^SiteA|&DEMO||YUDELL^JANE R^^^||^^^^|19450222||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408356^SiteA|&DEMO||JIMENEZ^JOSEPH^^^||^^^^|19570212||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408413^SiteA|&DEMO||PAIK^NHAHWAN^^^||^^^^|19371101||M|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707674^SiteA|&DEMO||NADELMANN^DEBORAH^^^||^^^^|19650619||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072053^SiteA|&DEMO||UNKNOWN^WHITE MALE^^^||^^^^|19600101||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707502^SiteA|&DEMO||YUDELL^JANE R^^^||^^^^|19450222||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001061510^SiteA|&DEMO||JIMENEZ^JEFFREY^^^||^^^^ALBERT^LORIANN^""|19980219||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408362^SiteA|&DEMO||DOSTOVA^DILBAR^^^||^^^^|19431012||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002374712^SiteA|&DEMO||DOUMANOFF^NICHOLAS^^^||^^^^|19271206||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002374712^SiteA|&DEMO||DOUMANOFF^NICHOLAS^^^||^^^^|19271206||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002374712^SiteA|&DEMO||DOUMANOFF^NICHOLAS^^^||^^^^|19271206||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408414^SiteA|&DEMO||BIONDOLILLO^ANDREW^^^||^^^^|19840403||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000321918^SiteA|&DEMO||SHEPARD^ELAINE E.^^^||^^^^|19130402||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002253133^SiteA|&DEMO||FRIELINGSDORF^MIRIAM^^^||^^^^|19440703||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001051669^SiteA|&DEMO||ESPINAL^LUIS^^^||^^^^|19781021||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001051669^SiteA|&DEMO||ESPINAL^LUIS^^^||^^^^|19781021||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000321918^SiteA|&DEMO||SHEPARD^ELAINE E.^^^||^^^^|19130402||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000321918^SiteA|&DEMO||SHEPARD^ELAINE E.^^^||^^^^|19130402||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408413^SiteA|&DEMO||PAIK^NHAHWAN^^^||^^^^|19371101||M|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072114^SiteA|&DEMO||BROWN^JOHN^^^||^^^^|19590406||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408413^SiteA|&DEMO||PAIK^NHAHWAN^^^||^^^^|19371101||M|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002182962^SiteA|&DEMO||NAGLER^DONNA^^^||^^^^|19440812||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002182962^SiteA|&DEMO||NAGLER^DONNA^^^||^^^^|19440812||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001051669^SiteA|&DEMO||ESPINAL^LUIS^^^||^^^^|19781021||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002182962^SiteA|&DEMO||NAGLER^DONNA^^^||^^^^|19440812||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437680^SiteA|&DEMO||CARDONA^PROVIDENCIA^^^||^^^^|19691203||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001134031^SiteA|&DEMO||GILBERT^SUCHIE^^^||^^^^|19100617||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001133444^SiteA|&DEMO||ANDERSON^GERRI^^^||^^^^|19530210||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001133444^SiteA|&DEMO||ANDERSON^GERRI^^^||^^^^|19530210||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408414^SiteA|&DEMO||BIONDOLILLO^ANDREW^^^||^^^^|19840403||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001133444^SiteA|&DEMO||ANDERSON^GERRI^^^||^^^^|19530210||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408300^SiteA|&DEMO||ESPINAL^YASMIL^^^||^^^^|19650923||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000321918^SiteA|&DEMO||SHEPARD^ELAINE E.^^^||^^^^|19130402||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437680^SiteA|&DEMO||CARDONA^PROVIDENCIA^^^||^^^^|19691203||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002079654^SiteA|&DEMO||KAHN^BETTY^^^||^^^^|19040304||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002400799^SiteA|&DEMO||POLANCO^GLADYS^^^||^^^^|19450105||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002027831^SiteA|&DEMO||CAMURATI^ALBERT^^^||^^^^|19170413||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002027831^SiteA|&DEMO||CAMURATI^ALBERT^^^||^^^^|19170413||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002154718^SiteA|&DEMO||OGARA^MARY^^^||^^^^|19080822||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707675^SiteA|&DEMO||SCHWARTZ^JEANNIE^^^||^^^^|19690906||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001130857^SiteA|&DEMO||TANNENBAUM^SCHIFRA^^^||^^^^|19201017||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002600421^SiteA|&DEMO||BUCK^FRIEDERIKE^^^||^^^^DUTEAU^""^""|19961018||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072149^SiteA|&DEMO||PADILLA^JOSE^^^||^^^^|19560411||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437680^SiteA|&DEMO||CARDONA^PROVIDENCIA^^^||^^^^|19691203||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707675^SiteA|&DEMO||SCHWARTZ^JEANNIE^^^||^^^^|19690906||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002027831^SiteA|&DEMO||CAMURATI^ALBERT^^^||^^^^|19170413||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072149^SiteA|&DEMO||PADILLA^JOSE^^^||^^^^|19560411||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706912^SiteA|&DEMO||ARGUE^BIRKLEY^^^||^^^^BALON^""^""|19900723||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002264379^SiteA|&DEMO||BRODY^STANLEY^^^||^^^^|19341211||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002264379^SiteA|&DEMO||BRODY^STANLEY^^^||^^^^|19341211||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002669484^SiteA|&DEMO||TAYLOR^LARRY^^^||^^^^|19570621||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002669484^SiteA|&DEMO||TAYLOR^LARRY^^^||^^^^|19570621||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001132899^SiteA|&DEMO||BACHER^JOSEPH^^^||^^^^|19210528||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002669484^SiteA|&DEMO||TAYLOR^LARRY^^^||^^^^|19570621||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002264379^SiteA|&DEMO||BRODY^STANLEY^^^||^^^^|19341211||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706056^SiteA|&DEMO||LEE^BB^^^||^^^^LEE^""^""|19980901||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001132899^SiteA|&DEMO||BACHER^JOSEPH^^^||^^^^|19210528||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706053^SiteA|&DEMO||MALDONADO^BB^^^||^^^^|19980901||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001127128^SiteA|&DEMO||HUTCHINSON^BENJAMIN^^^||^^^^|19321105||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001127128^SiteA|&DEMO||HUTCHINSON^BENJAMIN^^^||^^^^|19321105||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002704423^SiteA|&DEMO||BISNAUTHSING^MARYANN^^^||^^^^|19721221||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001055814^SiteA|&DEMO||SALAZAR^AMELIA M^^^||^^^^|19551111||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001055814^SiteA|&DEMO||SALAZAR^AMELIA M^^^||^^^^|19551111||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001055814^SiteA|&DEMO||SALAZAR^AMELIA M^^^||^^^^|19551111||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001127128^SiteA|&DEMO||HUTCHINSON^BENJAMIN^^^||^^^^|19321105||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707676^SiteA|&DEMO||KURAMOTO^BEVERLY^^^||^^^^|19700917||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706508^SiteA|&DEMO||SANTIAGO^RUBEN^^^||^^^^|19560308||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000452405^SiteA|&DEMO||MORRISON^NYISHA^^^||^^^^|19750520||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706508^SiteA|&DEMO||SANTIAGO^RUBEN^^^||^^^^|19560308||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072150^SiteA|&DEMO||THRISTINO^ARTHUR J^^^||^^^^|19441104||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001466302^SiteA|&DEMO||DRAGONETTI^PHILIP^^^||^^^^|19130705||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707677^SiteA|&DEMO||SELTZER^BROOKE^^^||^^^^|19690131||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707676^SiteA|&DEMO||KURAMOTO^BEVERLY^^^||^^^^|19700917||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072053^SiteA|&DEMO||UNKNOWN^WHITE MALE^^^||^^^^|19600101||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707677^SiteA|&DEMO||SELTZER^BROOKE^^^||^^^^|19690131||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072142^SiteA|&DEMO||SANCHEZ^GUMERCINDA^^^||^^^^|19240118||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001067320^SiteA|&DEMO||CAMPBELL^SHANAE V^^^||^^^^|19750613||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001067320^SiteA|&DEMO||CAMPBELL^SHANAE V^^^||^^^^|19750613||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072142^SiteA|&DEMO||SANCHEZ^GUMERCINDA^^^||^^^^|19240118||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072142^SiteA|&DEMO||SANCHEZ^GUMERCINDA^^^||^^^^|19240118||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002027831^SiteA|&DEMO||CAMURATI^ALBERT^^^||^^^^|19170413||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002278903^SiteA|&DEMO||SCOTT^ROBERT^^^||^^^^|19291124||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002278903^SiteA|&DEMO||SCOTT^ROBERT^^^||^^^^|19291124||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002027831^SiteA|&DEMO||CAMURATI^ALBERT^^^||^^^^|19170413||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000452405^SiteA|&DEMO||MORRISON^NYISHA^^^||^^^^|19750520||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001067320^SiteA|&DEMO||CAMPBELL^SHANAE V^^^||^^^^|19750613||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707582^SiteA|&DEMO||COTTER^NANCY^^^||^^^^|19470412||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000452405^SiteA|&DEMO||MORRISON^NYISHA^^^||^^^^|19750520||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000452405^SiteA|&DEMO||MORRISON^NYISHA^^^||^^^^|19750520||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002278903^SiteA|&DEMO||SCOTT^ROBERT^^^||^^^^|19291124||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706931^SiteA|&DEMO||MOSHE^CHAREEN^^^||^^^^|19241013||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002649087^SiteA|&DEMO||FISHER^ADA^^^||^^^^|19450507||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002649087^SiteA|&DEMO||FISHER^ADA^^^||^^^^|19450507||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072150^SiteA|&DEMO||THRISTINO^ARTHUR J^^^||^^^^|19441104||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002389346^SiteA|&DEMO||AHMADZADA^NILA^^^||^^^^|19720313||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000906934^SiteA|&DEMO||SHELTON^JUANITA O.^^^||^^^^|19070512||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000369433^SiteA|&DEMO||RIVERA^ANGEL^^^||^^^^NIEVES^ANA^""|19110625||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072142^SiteA|&DEMO||SANCHEZ^GUMERCINDA^^^||^^^^|19240118||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706519^SiteA|&DEMO||REID^GAIL^^^||^^^^|19370824||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000452405^SiteA|&DEMO||MORRISON^NYISHA^^^||^^^^|19750520||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000452405^SiteA|&DEMO||MORRISON^NYISHA^^^||^^^^|19750520||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002450485^SiteA|&DEMO||PHAM^SA^^^||^^^^|19350330||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002450485^SiteA|&DEMO||PHAM^SA^^^||^^^^|19350330||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408394^SiteA|&DEMO||JOST^ELIANE^^^||^^^^|19300620||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002450485^SiteA|&DEMO||PHAM^SA^^^||^^^^|19350330||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000432812^SiteA|&DEMO||ESTRADA^JOSELYN^^^||^^^^|19931201||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000432812^SiteA|&DEMO||ESTRADA^JOSELYN^^^||^^^^|19931201||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000413023^SiteA|&DEMO||BRATTI^GENO^^^||^^^^|19270604||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000432812^SiteA|&DEMO||ESTRADA^JOSELYN^^^||^^^^|19931201||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000369433^SiteA|&DEMO||RIVERA^ANGEL^^^||^^^^NIEVES^ANA^""|19110625||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002042956^SiteA|&DEMO||KHAN^MOHAMMAD^^^||^^^^|19361008||M|||^|I|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000908948^SiteA|&DEMO||SANS^ALLISON^^^||^^^^|19310721||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000908948^SiteA|&DEMO||SANS^ALLISON^^^||^^^^|19310721||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001039395^SiteA|&DEMO||RESTO^JOSE^^^||^^^^COLLAZA^JUANA^""|19380312||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001039395^SiteA|&DEMO||RESTO^JOSE^^^||^^^^COLLAZA^JUANA^""|19380312||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001071268^SiteA|&DEMO||PARKINS^IELDA^^^||^^^^|19170611||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000908948^SiteA|&DEMO||SANS^ALLISON^^^||^^^^|19310721||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002275560^SiteA|&DEMO||RICKER^BARBARA^^^||^^^^|19201021||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002407300^SiteA|&DEMO||SANFORD^JEFFREY^^^||^^^^|19900214||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001092212^SiteA|&DEMO||STRAKEY^GEORGE^^^||^^^^|19410607||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002406907^SiteA|&DEMO||XIONG^JIANG^^^||^^^^|19640721||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001070339^SiteA|&DEMO||FERICK^ANNA^^^||^^^^|19120714||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001039395^SiteA|&DEMO||RESTO^JOSE^^^||^^^^COLLAZA^JUANA^""|19380312||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000413023^SiteA|&DEMO||BRATTI^GENO^^^||^^^^|19270604||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002109846^SiteA|&DEMO||QUINN^ALICE^^^||^^^^|19450203||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002042956^SiteA|&DEMO||KHAN^MOHAMMAD^^^||^^^^|19361008||M|||^|I|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000452405^SiteA|&DEMO||MORRISON^NYISHA^^^||^^^^|19750520||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408415^SiteA|&DEMO||KOUSPIDIS^ZAIDA^^^||^^^^|19661204||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001065965^SiteA|&DEMO||CRUZ^MARIBEL^^^||^^^^|19730715||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001065965^SiteA|&DEMO||CRUZ^MARIBEL^^^||^^^^|19730715||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707678^SiteA|&DEMO||DUNN^CHRISTINA^^^||^^^^|19900702||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072145^SiteA|&DEMO||LEGUILLOW^WENDY^^^||^^^^|19721103||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002649087^SiteA|&DEMO||FISHER^ADA^^^||^^^^|19450507||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072144^SiteA|&DEMO||PONCE^CHRISTIAN^^^||^^^^|19920518||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001065965^SiteA|&DEMO||CRUZ^MARIBEL^^^||^^^^|19730715||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002249298^SiteA|&DEMO||ALONSO^JOYCE^^^||^^^^|19700320||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707678^SiteA|&DEMO||DUNN^CHRISTINA^^^||^^^^|19900702||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000445241^SiteA|&DEMO||RIVERA^BRUNITZA^^^||^^^^|19960327||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000445241^SiteA|&DEMO||RIVERA^BRUNITZA^^^||^^^^|19960327||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000445241^SiteA|&DEMO||RIVERA^BRUNITZA^^^||^^^^|19960327||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001011759^SiteA|&DEMO||HERNANDEZ^DAMARIS^^^||^^^^|19780828||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001011759^SiteA|&DEMO||HERNANDEZ^DAMARIS^^^||^^^^|19780828||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408385^SiteA|&DEMO||ANTAR^HARRIET^^^||^^^^|19330109||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408216^SiteA|&DEMO||DIMOU^VASILIOS^^^||^^^^|19231226||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001011759^SiteA|&DEMO||HERNANDEZ^DAMARIS^^^||^^^^|19780828||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001115500^SiteA|&DEMO||CAULIFFE^ARTHUR^^^||^^^^|19390324||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707678^SiteA|&DEMO||DUNN^CHRISTINA^^^||^^^^|19900702||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707678^SiteA|&DEMO||DUNN^CHRISTINA^^^||^^^^|19900702||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002331191^SiteA|&DEMO||BEAULIEU^MONIQUE^^^||^^^^|19680502||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707678^SiteA|&DEMO||DUNN^CHRISTINA^^^||^^^^|19900702||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002649087^SiteA|&DEMO||FISHER^ADA^^^||^^^^|19450507||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707678^SiteA|&DEMO||DUNN^CHRISTINA^^^||^^^^|19900702||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707678^SiteA|&DEMO||DUNN^CHRISTINA^^^||^^^^|19900702||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002393157^SiteA|&DEMO||MURDUKHAEV^YURY^^^||^^^^|19421222||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002177917^SiteA|&DEMO||LOFTIN^VEOLLA^^^||^^^^|19420712||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000344527^SiteA|&DEMO||LUISI^ANN^^^||^^^^|19230203||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002405329^SiteA|&DEMO||PERICH^CAMILLO^^^||^^^^|19240705||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002667523^SiteA|&DEMO||VAZQUEZ^ADRIAN JR^^^||^^^^DIAZ^NELISMEL^""|19961208||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002667523^SiteA|&DEMO||VAZQUEZ^ADRIAN JR^^^||^^^^DIAZ^NELISMEL^""|19961208||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408415^SiteA|&DEMO||KOUSPIDIS^ZAIDA^^^||^^^^|19661204||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001415003^SiteA|&DEMO||MARRERO^BERTHA G^^^||^^^^|19470124||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002667523^SiteA|&DEMO||VAZQUEZ^ADRIAN JR^^^||^^^^DIAZ^NELISMEL^""|19961208||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707653^SiteA|&DEMO||MAKOYI^NGALULA^^^||^^^^|19000101||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706053^SiteA|&DEMO||MALDONADO^BB^^^||^^^^|19980901||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408415^SiteA|&DEMO||KOUSPIDIS^ZAIDA^^^||^^^^|19661204||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002392090^SiteA|&DEMO||DREIMANN^INGRID A.^^^||^^^^|19630912||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002678218^SiteA|&DEMO||DREIMANN^INGRID^^^||^^^^|19630912||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002678218^SiteA|&DEMO||DREIMANN^INGRID^^^||^^^^|19630912||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408415^SiteA|&DEMO||KOUSPIDIS^ZAIDA^^^||^^^^|19661204||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002695029^SiteA|&DEMO||MAYO^MARTHA^^^||^^^^N/A^N/A^""|19380317||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002695029^SiteA|&DEMO||MAYO^MARTHA^^^||^^^^N/A^N/A^""|19380317||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072151^SiteA|&DEMO||FABERS^SHANIA^^^||^^^^|19960910||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002695029^SiteA|&DEMO||MAYO^MARTHA^^^||^^^^N/A^N/A^""|19380317||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707680^SiteA|&DEMO||BRUELL^PHILIP^^^||^^^^|19730604||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002696570^SiteA|&DEMO||RAVO^ANNMARIE^^^||^^^^|19460204||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002696570^SiteA|&DEMO||RAVO^ANNMARIE^^^||^^^^|19460204||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072151^SiteA|&DEMO||FABERS^SHANIA^^^||^^^^|19960910||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707680^SiteA|&DEMO||BRUELL^PHILIP^^^||^^^^|19730604||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001064326^SiteA|&DEMO||HARTEN^ROBERT^^^||^^^^|19531009||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001855076^SiteA|&DEMO||NORMAN^KATRINA^^^||^^^^|19660911||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001855076^SiteA|&DEMO||NORMAN^KATRINA^^^||^^^^|19660911||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408414^SiteA|&DEMO||BIONDOLILLO^ANDREW^^^||^^^^|19840403||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001855076^SiteA|&DEMO||NORMAN^KATRINA^^^||^^^^|19660911||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072152^SiteA|&DEMO||HENDERSON^VINCENT^^^||^^^^|19601128||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072152^SiteA|&DEMO||HENDERSON^VINCENT^^^||^^^^|19601128||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002696570^SiteA|&DEMO||RAVO^ANNMARIE^^^||^^^^|19460204||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002045367^SiteA|&DEMO||GELPIERYN^FANNY^^^||^^^^ZETNER^""^""|19380415||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072053^SiteA|&DEMO||HARTEN^ROBERT^^^||^^^^|19531009||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072053^SiteA|&DEMO||HARTEN^ROBERT^^^||^^^^|19531009||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072153^SiteA|&DEMO||NIEVES^SELENA^^^||^^^^|19970322||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072153^SiteA|&DEMO||NIEVES^SELENA^^^||^^^^|19970322||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002666683^SiteA|&DEMO||ANTAR^HARRIET^^^||^^^^|19330109||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706024^SiteA|&DEMO||KOWAL^BB^^^||^^^^KOWAL^JILL^A|19980831||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706020^SiteA|&DEMO||MARTINEZ^BB^^^||^^^^FLORES LOPEZ^ANGELICA^""|19980831||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002673411^SiteA|&DEMO||MARTINEZ^ANGELICA^^^||^^^^|19730510||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002666683^SiteA|&DEMO||ANTAR^HARRIET^^^||^^^^|19330109||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002335423^SiteA|&DEMO||KOWAL^JILL A^^^||^^^^GAFVER^""^""|19661012||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072053^SiteA|&DEMO||HARTEN^ROBERT^^^||^^^^|19531009||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002068767^SiteA|&DEMO||TRIMARCO^ROSE^^^||^^^^|19190417||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002068767^SiteA|&DEMO||TRIMARCO^ROSE^^^||^^^^|19190417||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002705889^SiteA|&DEMO||SIEGEL^BB TWIN A^^^||^^^^SIEGEL^""^""|19980828||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002705891^SiteA|&DEMO||SIEGEL^BB TWIN B^^^||^^^^SIEGEL^""^""|19980828||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002068767^SiteA|&DEMO||TRIMARCO^ROSE^^^||^^^^|19190417||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001005847^SiteA|&DEMO||ESTEVEZ^YVONNE^^^||^^^^ROSARIO^JOSEFA^""|19640115||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707681^SiteA|&DEMO||WU^TE WANG^^^||^^^^|19511214||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072101^SiteA|&DEMO||HERNANDEZ^SALLY^^^||^^^^RODRIGUEZ^CARMEN^""|19680509||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408416^SiteA|&DEMO||HERNANDEZ^MARCOS^^^||^^^^|19720202||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000415966^SiteA|&DEMO||REEDER^ANTHONY^^^||^^^^|19501218||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000415966^SiteA|&DEMO||REEDER^ANTHONY^^^||^^^^|19501218||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707681^SiteA|&DEMO||WU^TE WANG^^^||^^^^|19511214||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072121^SiteA|&DEMO||LOPEZ^ADELINA^^^||^^^^|19451013||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000309251^SiteA|&DEMO||FASSO^CHARLES J^^^||^^^^|19180421||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000415966^SiteA|&DEMO||REEDER^ANTHONY^^^||^^^^|19501218||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001933774^SiteA|&DEMO||MAAS^GERALD^^^||^^^^FOLEY^""^""|19290331||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001165228^SiteA|&DEMO||LEHMAN^JACK H^^^||^^^^|19451205||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408416^SiteA|&DEMO||HERNANDEZ^MARCOS^^^||^^^^|19720202||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001165228^SiteA|&DEMO||LEHMAN^JACK H^^^||^^^^|19451205||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000135930^SiteA|&DEMO||HERNANDEZ^CARMEN^^^||^^^^|19521102||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408417^SiteA|&DEMO||KIM^SORA^^^||^^^^|19931221||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000309251^SiteA|&DEMO||FASSO^CHARLES J^^^||^^^^|19180421||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408417^SiteA|&DEMO||KIM^SORA^^^||^^^^|19931221||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000293325^SiteA|&DEMO||LOPEZ^EMMANUEL^^^||^^^^RIVERA^JULIA^""|19820819||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002253085^SiteA|&DEMO||PROCTOR^HELEN^^^||^^^^|19181231||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000434912^SiteA|&DEMO||FALCONHERRERA^DIGNALIZ^^^||^^^^|19930904||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408311^SiteA|&DEMO||BARDO^CARLOS^^^||^^^^|19620101||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072154^SiteA|&DEMO||AVILA^STEPHANIE^^^||^^^^|19931031||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002184380^SiteA|&DEMO||THOMAS^ALMA^^^||^^^^|19290709||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072154^SiteA|&DEMO||AVILA^STEPHANIE^^^||^^^^|19931031||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002259602^SiteA|&DEMO||KANDEL^MARILYN^^^||^^^^|19490212||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002177917^SiteA|&DEMO||LOFTIN^VEOLLA^^^||^^^^|19420712||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707667^SiteA|&DEMO||DANIELS^MARK^^^||^^^^|19630820||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002331191^SiteA|&DEMO||BEAULIEU^MONIQUE^^^||^^^^|19680502||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002101430^SiteA|&DEMO||PERSAUD^TULSIE^^^||^^^^|19660823||M|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002101430^SiteA|&DEMO||PERSAUD^TULSIE^^^||^^^^|19660823||M|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072155^SiteA|&DEMO||DAVIS^DANIEL^^^||^^^^|19840706||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001121010^SiteA|&DEMO||EYZAGUIRRE^MARIO^^^||^^^^|19360127||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002101430^SiteA|&DEMO||PERSAUD^TULSIE^^^||^^^^|19660823||M|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002678218^SiteA|&DEMO||DREIMANN^INGRID^^^||^^^^|19630912||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072156^SiteA|&DEMO||GRACIA^VICTOR^^^||^^^^|19720911||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002666836^SiteA|&DEMO||HARRISON^CLARENCE C^^^||^^^^|19470331||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002666836^SiteA|&DEMO||HARRISON^CLARENCE C^^^||^^^^|19470331||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707682^SiteA|&DEMO||WILLIAMS^DURELLE^^^||^^^^|19780808||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002666836^SiteA|&DEMO||HARRISON^CLARENCE C^^^||^^^^|19470331||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707682^SiteA|&DEMO||WILLIAMS^DURELLE^^^||^^^^|19780808||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002280824^SiteA|&DEMO||MCCLEAN^TONY NASHAWN^^^||^^^^MCCLEAN^""^""|19831029||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072156^SiteA|&DEMO||GRACIA^VICTOR^^^||^^^^|19720911||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072155^SiteA|&DEMO||DAVIS^DANIEL^^^||^^^^|19840706||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001112449^SiteA|&DEMO||BENAS^RONALD^^^||^^^^|19411225||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001112449^SiteA|&DEMO||BENAS^RONALD^^^||^^^^|19411225||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072155^SiteA|&DEMO||DAVIS^DANIEL^^^||^^^^|19840706||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707682^SiteA|&DEMO||WILLIAMS^DURELLE^^^||^^^^|19780808||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001115500^SiteA|&DEMO||CAULIFFE^ARTHUR^^^||^^^^|19390324||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001112449^SiteA|&DEMO||BENAS^RONALD^^^||^^^^|19411225||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001112449^SiteA|&DEMO||BENAS^RONALD^^^||^^^^|19411225||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002280824^SiteA|&DEMO||MCCLEAN^TONY NASHAWN^^^||^^^^MCCLEAN^""^""|19831029||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000459426^SiteA|&DEMO||DISHMEY^AIANNA E^^^||^^^^|19960928||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000459426^SiteA|&DEMO||DISHMEY^AIANNA E^^^||^^^^|19960928||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000311682^SiteA|&DEMO||SCHNEIDER^YETTA^^^||^^^^LEVY^BETTY^""|19320218||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000311682^SiteA|&DEMO||SCHNEIDER^YETTA^^^||^^^^LEVY^BETTY^""|19320218||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000459426^SiteA|&DEMO||DISHMEY^AIANNA E^^^||^^^^|19960928||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001112449^SiteA|&DEMO||BENAS^RONALD^^^||^^^^|19411225||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001763318^SiteA|&DEMO||GLANTZMAN^ABRAHAM^^^||^^^^|19200130||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000311682^SiteA|&DEMO||SCHNEIDER^YETTA^^^||^^^^LEVY^BETTY^""|19320218||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001315230^SiteA|&DEMO||KONRAD^JOHN^^^||^^^^|19461101||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000321918^SiteA|&DEMO||SHEPARD^ELAINE E.^^^||^^^^|19130402||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002225566^SiteA|&DEMO||SCHIFF^JOSEPHINE^^^||^^^^|19251206||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000465527^SiteA|&DEMO||AVILA^ESTEFANY^^^||^^^^|19931031||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002679903^SiteA|&DEMO||CIARAVOLO^ANNA^^^||^^^^|19360228||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002502628^SiteA|&DEMO||CARDINALE^ROSE^^^||^^^^|19170114||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002598625^SiteA|&DEMO||ELIAS^JOSE M^^^||^^^^|19240315||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000465527^SiteA|&DEMO||AVILA^ESTEFANY^^^||^^^^|19931031||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002183398^SiteA|&DEMO||FRIEDLAND^LISA ANN^^^||^^^^WAGNER^""^""|19570708||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002653533^SiteA|&DEMO||DICHTER^BESSIE^^^||^^^^|19170210||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001792952^SiteA|&DEMO||FERRULLI^RITA^^^||^^^^|19440910||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002678438^SiteA|&DEMO||DALLAS^HELEN^^^||^^^^|19371027||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001680402^SiteA|&DEMO||HOBBY^GLADYS^^^||^^^^|19240611||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001112449^SiteA|&DEMO||BENAS^RONALD^^^||^^^^|19411225||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001112449^SiteA|&DEMO||BENAS^RONALD^^^||^^^^|19411225||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002605291^SiteA|&DEMO||ECONOMOS^JOHN L^^^||^^^^|19260120||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001112449^SiteA|&DEMO||BENAS^RONALD^^^||^^^^|19411225||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001130241^SiteA|&DEMO||VOLPE^VINNIE^^^||^^^^|19220401||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001680402^SiteA|&DEMO||HOBBY^GLADYS^^^||^^^^|19240611||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001680402^SiteA|&DEMO||HOBBY^GLADYS^^^||^^^^|19240611||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000848347^SiteA|&DEMO||SOTO^CARLOS^^^||^^^^|19780708||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001523234^SiteA|&DEMO||DE MENIL^ADELAIDE^^^||^^^^SCHLUMBERGER^""^""|19350521||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002700972^SiteA|&DEMO||GOLDBERG^PATTY^^^||^^^^|19461121||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002363309^SiteA|&DEMO||RIVAS^JOSE^^^||^^^^|19660916||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002398122^SiteA|&DEMO||CHO^YOUNG SOON^^^||^^^^|19680723||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002260870^SiteA|&DEMO||BASILICATA^LOUIS^^^||^^^^|19700825||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002260870^SiteA|&DEMO||BASILICATA^LOUIS^^^||^^^^|19700825||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000886622^SiteA|&DEMO||SCULLY^ELIZABETH^^^||^^^^|19000101||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001680402^SiteA|&DEMO||HOBBY^GLADYS^^^||^^^^|19240611||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001637640^SiteA|&DEMO||THOMPSON^JOHN F.^^^||^^^^|19060717||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002363309^SiteA|&DEMO||RIVAS^JOSE^^^||^^^^|19660916||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000810842^SiteA|&DEMO||HANCE^AGUSTIN^^^||^^^^VELEZ^NANCY^""|19840417||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000848347^SiteA|&DEMO||SOTO^CARLOS^^^||^^^^|19780708||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002680393^SiteA|&DEMO||ASDERIAN^EVELYN^^^||^^^^AIRS^""^""|19240708||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000810842^SiteA|&DEMO||HANCE^AGUSTIN^^^||^^^^VELEZ^NANCY^""|19840417||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000810842^SiteA|&DEMO||HANCE^AGUSTIN^^^||^^^^VELEZ^NANCY^""|19840417||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002452255^SiteA|&DEMO||REMSEN^LAURA V^^^||^^^^|19460207||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002260870^SiteA|&DEMO||BASILICATA^LOUIS^^^||^^^^|19700825||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002662221^SiteA|&DEMO||DERISO^KAREN ANN^^^||^^^^|19710308||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002662221^SiteA|&DEMO||DERISO^KAREN ANN^^^||^^^^|19710308||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002363309^SiteA|&DEMO||RIVAS^JOSE ANTONIO^^^||^^^^|19660916||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002363309^SiteA|&DEMO||RIVAS^JOSE ANTONIO^^^||^^^^|19660916||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002363309^SiteA|&DEMO||RIVAS^JOSE ANTONIO^^^||^^^^|19660916||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002677496^SiteA|&DEMO||ROSENFELD^RONNI^^^||^^^^|19581227||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437437^SiteA|&DEMO||JIMENEZ^JARIS^^^||^^^^|19760818||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002170698^SiteA|&DEMO||PENA^BERNADETTE^^^||^^^^|19670525||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000934611^SiteA|&DEMO||BERNSTEIN^JANET^^^||^^^^|19380726||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002706512^SiteA|&DEMO||SANTANA^FRANCISCO^^^||^^^^|19240520||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437681^SiteA|&DEMO||GHAHREMANI^ARVIN^^^||^^^^|19920427||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002697438^SiteA|&DEMO||ADELSON^HELEN^^^||^^^^|19290422||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437437^SiteA|&DEMO||JIMENEZ^JARIS^^^||^^^^|19760818||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002643323^SiteA|&DEMO||FIRESTONE^PAULETTE^^^||^^^^|19420518||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002671518^SiteA|&DEMO||HALPERN^MILLICENT^^^||^^^^|19360707||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000810842^SiteA|&DEMO||HANCE^AGUSTIN^^^||^^^^VELEZ^NANCY^""|19840417||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437681^SiteA|&DEMO||GHAHREMANI^ARVIN^^^||^^^^|19920427||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002666683^SiteA|&DEMO||ANTAR^HARRIET^^^||^^^^|19330109||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002666683^SiteA|&DEMO||ANTAR^HARRIET^^^||^^^^|19330109||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002670196^SiteA|&DEMO||HENRIQUES^MARIA^^^||^^^^MARIA^""^""|19480410||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001682172^SiteA|&DEMO||SHELINSKY^EVELYN^^^||^^^^LUBLINER^""^""|19540109||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072157^SiteA|&DEMO||SOTOMAYOR^AGNES^^^||^^^^|19961216||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002132774^SiteA|&DEMO||BOWLES^DOROTHY^^^||^^^^|19380722||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002132774^SiteA|&DEMO||BOWLES^DOROTHY^^^||^^^^|19380722||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002681218^SiteA|&DEMO||SLOANE^ABIGAIL^^^||^^^^|19450327||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002662221^SiteA|&DEMO||DERISO^KAREN ANN^^^||^^^^|19710308||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002694491^SiteA|&DEMO||MEYERS^LAURIE K^^^||^^^^|19521126||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002405207^SiteA|&DEMO||CHAN^MULINA^^^||^^^^|19471017||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001745489^SiteA|&DEMO||HARRIS^SURI^^^||^^^^|19510427||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002487744^SiteA|&DEMO||PIERRE^AVRON G^^^||^^^^|19580327||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002487744^SiteA|&DEMO||PIERRE^AVRON G^^^||^^^^|19580327||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001745489^SiteA|&DEMO||HARRIS^SURI^^^||^^^^|19510427||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002118509^SiteA|&DEMO||STAFFA^IDA^^^||^^^^|19160914||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002601940^SiteA|&DEMO||KLAHR^DANIELLE^^^||^^^^|19481212||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002132774^SiteA|&DEMO||BOWLES^DOROTHY^^^||^^^^|19380722||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002379500^SiteA|&DEMO||LITOFF^CAROL^^^||^^^^|19400329||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002487744^SiteA|&DEMO||PIERRE^AVRON G^^^||^^^^|19580327||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707451^SiteA|&DEMO||STOCKTON^ELONNE^^^||^^^^|19781006||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072157^SiteA|&DEMO||SOTOMAYOR^AGNES^^^||^^^^|19961216||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001012021^SiteA|&DEMO||CABRAL^FELICITA^^^||^^^^|19251111||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001012021^SiteA|&DEMO||CABRAL^FELICITA^^^||^^^^|19251111||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002065676^SiteA|&DEMO||GUTCHO^CAROL^^^||^^^^|19170207||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002708309^SiteA|&DEMO||STAPLES-VANGEL^SIMON^^^||^^^^|19930903||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000447158^SiteA|&DEMO||JUSTINIANO^MODESTO^^^||^^^^VELEZ^EUGENIA^""|19420214||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000447158^SiteA|&DEMO||JUSTINIANO^MODESTO^^^||^^^^VELEZ^EUGENIA^""|19420214||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001012021^SiteA|&DEMO||CABRAL^FELICITA^^^||^^^^|19251111||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437682^SiteA|&DEMO||KELLY^MAUREEN^^^||^^^^|19610329||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072154^SiteA|&DEMO||AVILA^STEPHANIE^^^||^^^^|19931031||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002406547^SiteA|&DEMO||AMEND^ERIK^^^||^^^^|19670330||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002406547^SiteA|&DEMO||AMEND^ERIK^^^||^^^^|19670330||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000288202^SiteA|&DEMO||STANCATI^MARIE^^^||^^^^PERSCHE^(D)^GERTRUDE|19360909||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072141^SiteA|&DEMO||THOMPSON^JASON^^^||^^^^|19710129||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002178272^SiteA|&DEMO||SCHIMMENTI^GANDOLFA^^^||^^^^|19090412||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002178272^SiteA|&DEMO||SCHIMMENTI^GANDOLFA^^^||^^^^|19090412||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072100^SiteA|&DEMO||OCASIO^JOSE^^^||^^^^FONTANEZ^ZAIDA^""|19740714||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000424680^SiteA|&DEMO||SIERRA^VIVIAN^^^||^^^^SIERRA^LUCY^""|19730809||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002406547^SiteA|&DEMO||AMEND^ERIK^^^||^^^^|19670330||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000329418^SiteA|&DEMO||ARIAS^YESENIA^^^||^^^^|19771118||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000329418^SiteA|&DEMO||ARIAS^YESENIA^^^||^^^^|19771118||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000447158^SiteA|&DEMO||JUSTINIANO^MODESTO^^^||^^^^VELEZ^EUGENIA^""|19420214||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002178272^SiteA|&DEMO||SCHIMMENTI^GANDOLFA^^^||^^^^|19090412||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000329418^SiteA|&DEMO||ARIAS^YESENIA^^^||^^^^|19771118||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437682^SiteA|&DEMO||KELLY^MAUREEN^^^||^^^^|19610329||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000447158^SiteA|&DEMO||JUSTINIANO^MODESTO^^^||^^^^|19420214||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002386695^SiteA|&DEMO||LORA^CARLOS^^^||^^^^|19670228||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002386695^SiteA|&DEMO||LORA^CARLOS^^^||^^^^|19670228||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002386695^SiteA|&DEMO||LORA^CARLOS^^^||^^^^|19670228||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000911063^SiteA|&DEMO||NEGRON^ANGEL L^^^||^^^^COLON^MARIA^""|19780909||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000911063^SiteA|&DEMO||NEGRON^ANGEL L^^^||^^^^COLON^MARIA^""|19780909||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002708309^SiteA|&DEMO||STAPLES-VANGEL^SIMON^^^||^^^^|19930903||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000342235^SiteA|&DEMO||MASTARRENO^BRIAN^^^||^^^^|19870120||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707451^SiteA|&DEMO||STOCKTON^ELONNE^^^||^^^^|19781006||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000911063^SiteA|&DEMO||NEGRON^ANGEL L^^^||^^^^COLON^MARIA^""|19780909||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002555832^SiteA|&DEMO||BULINA^MELISSA^^^||^^^^CABA^""^""|19960131||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002555832^SiteA|&DEMO||BULINA^MELISSA^^^||^^^^CABA^""^""|19960131||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002272789^SiteA|&DEMO||BRAVER^BEILU^^^||^^^^|19530617||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002272789^SiteA|&DEMO||BRAVER^BEILU^^^||^^^^|19530617||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002378046^SiteA|&DEMO||FORTUNATO^ALEXA^^^||^^^^|19920326||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002555832^SiteA|&DEMO||BULINA^MELISSA^^^||^^^^CABA^""^""|19960131||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001142450^SiteA|&DEMO||REA^JOSEPHINE^^^||^^^^|19140317||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002272789^SiteA|&DEMO||BRAVER^BEILU^^^||^^^^|19530617||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000342235^SiteA|&DEMO||MASTARRENO^BRIAN^^^||^^^^|19870120||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707584^SiteA|&DEMO||CASTELLANO^ROBERTO^^^||^^^^|19461120||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408418^SiteA|&DEMO||BERAGISING^GLADYS^^^||^^^^|19261016||F|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002360824^SiteA|&DEMO||BARTOLOMEO^YVONNE^^^||^^^^|19790831||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002360824^SiteA|&DEMO||BARTOLOMEO^YVONNE^^^||^^^^|19790831||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408419^SiteA|&DEMO||CHO^AUSTIN^^^||^^^^|19971106||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002360824^SiteA|&DEMO||BARTOLOMEO^YVONNE^^^||^^^^|19790831||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408418^SiteA|&DEMO||BERAGISING^GLADYS^^^||^^^^|19261016||F|||^|O|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072158^SiteA|&DEMO||MASTARRENO^KELVIN^^^||^^^^|19930610||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408419^SiteA|&DEMO||CHO^AUSTIN^^^||^^^^|19971106||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072158^SiteA|&DEMO||MASTARRENO^KELVIN^^^||^^^^|19930610||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID``ID||001072159^SiteA|&DEMO||BYRD^CHYNNA^^^||^^^^|19910407||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002061738^SiteA|&DEMO||MONTERO^MARIA^^^||^^^^|19111105||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002061738^SiteA|&DEMO||MONTERO^MARIA^^^||^^^^|19111105||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002547387^SiteA|&DEMO||EPSTEIN^ANNE^^^||^^^^|19190712||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000175487^SiteA|&DEMO||FELICIANO^DORIAN^^^||^^^^GONZALEZ^PAULA^""|19490920||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000175487^SiteA|&DEMO||FELICIANO^DORIAN^^^||^^^^GONZALEZ^PAULA^""|19490920||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002061738^SiteA|&DEMO||MONTERO^MARIA^^^||^^^^|19111105||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000175487^SiteA|&DEMO||FELICIANO^DORIAN^^^||^^^^GONZALEZ^PAULA^""|19490920||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002395512^SiteA|&DEMO||TOM^FRANK^^^||^^^^|19220702||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002395512^SiteA|&DEMO||TOM^FRANK^^^||^^^^|19220702||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072159^SiteA|&DEMO||BYRD^CHYNNA^^^||^^^^|19910407||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707684^SiteA|&DEMO||QUEZADA^SALVADOR^^^||^^^^|19640821||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002342996^SiteA|&DEMO||MANOS^JAMES^^^||^^^^|19080315||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002342996^SiteA|&DEMO||MANOS^JAMES^^^||^^^^|19080315||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437683^SiteA|&DEMO||LAI^LOY LOK^^^||^^^^|19360530||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002395512^SiteA|&DEMO||TOM^FRANK^^^||^^^^|19220702||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002342996^SiteA|&DEMO||MANOS^JAMES^^^||^^^^|19080315||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002138580^SiteA|&DEMO||LIN^FEIYU^^^||^^^^|19161224||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002138580^SiteA|&DEMO||LIN^FEIYU^^^||^^^^|19161224||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000399622^SiteA|&DEMO||GUZMAN^PEDRO^^^||^^^^GUZMAN^MAYDA^""|19600719||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000399622^SiteA|&DEMO||GUZMAN^PEDRO^^^||^^^^GUZMAN^MAYDA^""|19600719||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707684^SiteA|&DEMO||QUEZADA^SALVADOR^^^||^^^^|19640821||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000399622^SiteA|&DEMO||GUZMAN^PEDRO^^^||^^^^GUZMAN^MAYDA^""|19600719||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000437683^SiteA|&DEMO||LAI^LOY LOK^^^||^^^^|19360530||M|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000297779^SiteA|&DEMO||RIVERS^MARIE^^^||^^^^|19200917||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000297779^SiteA|&DEMO||RIVERS^MARIE^^^||^^^^|19200917||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000442176^SiteA|&DEMO||SARMIENTO^DIOSELINA^^^||^^^^|19940524||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002138580^SiteA|&DEMO||LIN^FEIYU^^^||^^^^|19161224||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000297779^SiteA|&DEMO||RIVERS^MARIE^^^||^^^^|19200917||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408420^SiteA|&DEMO||KOUSPIDIS^BABYGIRL^^^||^^^^|19980901||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408420^SiteA|&DEMO||KOUSPIDIS^BABYGIRL^^^||^^^^|19980901||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408397^SiteA|&DEMO||PYUN^EUISUN^^^||^^^^|19710202||F|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001011873^SiteA|&DEMO||RICE^JANICE^^^||^^^^|19610225||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000442176^SiteA|&DEMO||SARMIENTO^DIOSELINA^^^||^^^^|19940524||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002396161^SiteA|&DEMO||WALKE^YVONNE^^^||^^^^|19381210||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002319825^SiteA|&DEMO||SILVERSTEIN^JOAN^^^||^^^^|19420501||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001036536^SiteA|&DEMO||CUBA^WALDO^^^||^^^^|19700810||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001036536^SiteA|&DEMO||CUBA^WALDO^^^||^^^^|19700810||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408421^SiteA|&DEMO||ROSARIO^BABYGIRL^^^||^^^^|19980901||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408421^SiteA|&DEMO||ROSARIO^BABYGIRL^^^||^^^^|19980901||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001680402^SiteA|&DEMO||HOBBY^GLADYS^^^||^^^^|19240611||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001036536^SiteA|&DEMO||CUBA^WALDO^^^||^^^^|19700810||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707502^SiteA|&DEMO||YUDELL^JANE R^^^||^^^^|19450222||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408422^SiteA|&DEMO||HAYGOOD^ANTHONY^^^||^^^^|19500619||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002708309^SiteA|&DEMO||STAPLES-VANGEL^SIMON^^^||^^^^|19930909||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002191956^SiteA|&DEMO||ARNOLD^VRENY^^^||^^^^|19240309||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000338463^SiteA|&DEMO||VAINSHTEIN^ROSA^^^||^^^^|19230502||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000338463^SiteA|&DEMO||VAINSHTEIN^ROSA^^^||^^^^|19230502||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002699124^SiteA|&DEMO||BYHOVSKY^UDIT^^^||^^^^|19370122||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001070567^SiteA|&DEMO||HENGLEIN^ANNA MARIE^^^||^^^^|19370629||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001070567^SiteA|&DEMO||HENGLEIN^ANNA MARIE^^^||^^^^|19370629||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408421^SiteA|&DEMO||ROSARIO^BABYGIRL^^^||^^^^|19980901||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002406193^SiteA|&DEMO||SURI^BABYBOY^^^||^^^^|19980818||M|||^|I|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002407936^SiteA|&DEMO||NOVARA^BABYBOY^^^||^^^^PAGANO^THERESA^ANN|19980829||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408422^SiteA|&DEMO||HAYGOOD^ANTHONY^^^||^^^^|19500619||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002407970^SiteA|&DEMO||URENA^BABYGIRL^^^||^^^^|19980830||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408422^SiteA|&DEMO||HAYGOOD^ANTHONY^^^||^^^^|19500619||M|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000338463^SiteA|&DEMO||VAINSHTEIN^ROSA^^^||^^^^|19230502||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072160^SiteA|&DEMO||ANDERSON^JOSEPH^^^||^^^^|19720622||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072160^SiteA|&DEMO||ANDERSON^JOSEPH^^^||^^^^|19720622||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001070567^SiteA|&DEMO||HENGLEIN^ANNA MARIE^^^||^^^^|19370629||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002708309^SiteA|&DEMO||STAPLES-VANGEL^SIMON^^^||^^^^|19930909||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002407914^SiteA|&DEMO||YUN^BABYBOY^^^||^^^^|19980829||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707504^SiteA|&DEMO||KLEINBERG^BANDELLI MARCI^^^||^^^^|19670309||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707504^SiteA|&DEMO||KLEINBERG^BANDELLI MARCI^^^||^^^^|19670309||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002708309^SiteA|&DEMO||STAPLES-VANGEL^SIMON^^^||^^^^|19930909||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408423^SiteA|&DEMO||PAGAN^ANGEL^^^||^^^^|19470926||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001032044^SiteA|&DEMO||GAVIN^DEBORAH^^^||^^^^|19640213||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001032044^SiteA|&DEMO||GAVIN^DEBORAH^^^||^^^^|19640213||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072161^SiteA|&DEMO||RIVERS^MARY^^^||^^^^|19200914||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001032044^SiteA|&DEMO||GAVIN^DEBORAH^^^||^^^^|19640213||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408205^SiteA|&DEMO||ESPINOZA^DIEGO^^^||^^^^|19870328||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408423^SiteA|&DEMO||PAGAN^ANGEL^^^||^^^^|19470926||M|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||001072161^SiteA|&DEMO||RIVERS^MARY^^^||^^^^|19200914||F|||^|B|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002663546^SiteA|&DEMO||SIROTIN^SARAH^^^||^^^^|19080328||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002663546^SiteA|&DEMO||SIROTIN^SARAH^^^||^^^^|19080328||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002663546^SiteA|&DEMO||SIROTIN^SARAH^^^||^^^^|19080328||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002708309^SiteA|&DEMO||STAPLES-VANGEL^SIMON^^^||^^^^|19930909||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408424^SiteA|&DEMO||SEIBERT^HERBERT^^^||^^^^|19230514||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408425^SiteA|&DEMO||YU^XINLONG^^^||^^^^|19830604||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002708309^SiteA|&DEMO||STAPLES-VANGEL^SIMON^^^||^^^^|19930909||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408424^SiteA|&DEMO||SEIBERT^HERBERT^^^||^^^^|19230514||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002708309^SiteA|&DEMO||STAPLES-VANGEL^SIMON^^^||^^^^|19930909||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002708309^SiteA|&DEMO||STAPLES-VANGEL^SIMON^^^||^^^^|19930909||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408394^SiteA|&DEMO||JOST^ELIANE^^^||^^^^|19300620||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408394^SiteA|&DEMO||JOST^ELIANE^^^||^^^^|19300620||F|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408425^SiteA|&DEMO||YU^XINLONG^^^||^^^^|19830604||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707504^SiteA|&DEMO||KLEINBERG^BANDELLI MARCI^^^||^^^^|19670309||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||000464333^SiteA|&DEMO||MUNOZ^NIEVES ODALIS^^^||^^^^|19730823||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707337^SiteA|&DEMO||FU^CHENZHONG^^^||^^^^|19561026||M|||^|A|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002707617^SiteA|&DEMO||LIGHTNER^MAJOR^^^||^^^^|19700309||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002708309^SiteA|&DEMO||STAPLES-VANGEL^SIMON^^^||^^^^|19930909||M|||^|W|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002408426^SiteA|&DEMO||MARTINES^DALIA^^^||^^^^|19980309||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||002622217^SiteA|&DEMO||BABU^MAHMUDA TASNEEM^^^||^^^^|19970410||F|||^|U|||||^^|^^USA|||^^||^|||||&AUX|||<>

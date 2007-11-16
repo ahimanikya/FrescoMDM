@@ -1,0 +1,4 @@
+EVNT|||UI|HQ|HQ||||<>ID||0001^SiteA|&DEMO||FIRST^FIRST^^^||^^^^|19920405||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0002^SiteA|&DEMO||SECOND^SECOND^^^||^^^^|19910305||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0003^SiteA|&DEMO||THIRD^THIRD^^^||^^^^|19910205||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0004^SiteA|&DEMO||FOURTH^FOURTH^^^||^^^^|19910205||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>

@@ -1,0 +1,2 @@
+EVNT|||UI|HQ|HQ||||<>ID||0001^SiteA|&DEMO||JOHN^SMITH^^^||^^^^|19920405||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0002^SiteA|&DEMO||ROBERT^EBERT^^^||^^^^|19920405||F|||^|H|||||^^|^^USA|||^^||^|||||&AUX|||<>

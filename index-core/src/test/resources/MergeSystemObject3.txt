@@ -1,0 +1,2 @@
+EVNT|||UI|HQ|HQ||||<>ID||0001^SiteA|&DEMO||ANNA^ALBA^^^||^^^^|19010101||F|||^|H|||||^^|^^USA|||^^||^||||W^111 N. FIRST ST.^^^^ALHAMBRA^CA^91801^^^US|&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0003^SiteA|&DEMO||BEATRICE^BAKER^^^||^^^^|19920202||F|||^|H|||||^^|^^USA|||^^||^||||W^222 W. SECOND AVE^^^^MONTEREY PARK^CA^91754^^^US|&AUX|||<>

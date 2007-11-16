@@ -1,0 +1,1989 @@
+StreetNameSufType             RD
+OrigStreetName                NEW SOUTH HEAD
+HouseNumber                   354
+MatchStreetName               NEW S HEAD
+                                      
+OrigStreetName                THE BILLABONG
+HouseNumber                   12
+MatchStreetName               BILLABONG
+                                      
+StreetNameSufType             GLY
+OrigStreetName                SHEEP STATION
+MatchStreetName               SHEEP Sta
+                                      
+StreetNameSufType             ST
+OrigStreetName                SMITH
+HouseNumber                   5
+MatchStreetName               SMITH
+StreetNameSufDirection        UP
+                                      
+StreetNameSufType             AVE
+OrigStreetName                21ST
+HouseNumber                   4
+MatchStreetName               21ST
+                                      
+StreetNameSufType             WALK
+OrigStreetName                CHEYNE
+HouseNumber                   31
+MatchStreetName               CHEYNE
+                                      
+StreetNameSufType             WHRF
+HouseNumberSuffix             C
+OrigStreetName                WATTON
+HouseNumber                   4
+MatchStreetName               WATTON
+StreetNameSufDirection        SE
+                                      
+StreetNameSufType             TCE
+OrigStreetName                GIVEN
+HouseNumber                   22-24
+MatchStreetName               GIVEN
+StreetNameSufDirection        S
+                                      
+WithinStructDescript          U
+StreetNameSufType             AVE
+OrigStreetName                BROWN
+HouseNumber                   28
+MatchStreetName               BROWN
+StreetNameSufDirection        S
+WithinStructIdentif           1
+                                      
+WithinStructDescript          F
+StreetNameSufType             PDE
+OrigStreetName                LYN
+HouseNumber                   10
+MatchStreetName               LYN
+StreetNameSufDirection        LWR
+WithinStructIdentif           33
+                                      
+WithinStructDescript          L
+StreetNameSufType             RD
+OrigStreetName                NEW SOUTH HEAD
+HouseNumber                   203-233
+MatchStreetName               NEW S HEAD
+WithinStructIdentif           2
+                                      
+WithinStructDescript          B
+StreetNameSufType             ST
+OrigStreetName                KENT
+HouseNumber                   189-193
+MatchStreetName               KENT
+WithinStructIdentif           -
+                                      
+WithinStructDescript          LOT
+StreetNameSufType             PL
+OrigStreetName                THE SANCTUARY TRANQUIL
+MatchStreetName               SANCTUARY TRANQUIL
+WithinStructIdentif           11
+                                      
+WithinStructDescript          SITE
+MatchPropertyName             HOMELANDS
+OrigPropertyName              HOMELANDS
+PropertySufType               Trpk
+WithinStructIdentif           86
+                                      
+WithinStructDescript          Hngr
+StreetNameSufType             RDGE
+OrigStreetName                LIGHTNING
+MatchStreetName               LIGHTNING
+WithinStructIdentif           9
+                                      
+WithinStructDescript          LOT
+StreetNameSufType             ST
+OrigStreetName                ALICE
+BoxDescript                   PO Box
+MatchStreetName               ALICE
+BoxIdentif                    850
+WithinStructIdentif           7
+                                      
+WithinStructDescript          RM
+MatchPropertyName             NURSES
+OrigPropertyName              NURSES
+PropertySufType               Home
+WithinStructIdentif           96
+                                      
+BoxDescript                   Private Bag
+BoxIdentif                    25
+                                      
+WithinStructDescript          L
+StreetNameSufType             ST
+MatchPropertyName             MUSEUM
+OrigStreetName                CASTLEREAGH
+OrigPropertyName              MUSEUM
+HouseNumber                   267-277
+MatchStreetName               CASTLEREAGH
+PropertySufType               Twrs
+WithinStructIdentif           5
+                                      
+ExtraInfo                     CNR AND
+StreetNameSufType             RD
+OrigSecondStreetName          NE
+OrigStreetName                FAWCETT
+MatchStreetName               FAWCETT
+SecondStreetNameSufType       HWY
+                                      
+StreetNameSufType             RD
+OrigStreetName                EAST WEST
+MatchStreetName               EAST WEST
+                                      
+StreetNameSufType             HWY
+OrigStreetName                TASMAN
+MatchStreetName               TASMAN
+                                      
+StreetNameSufType             HWY
+OrigStreetName                GREAT EASTERN
+MatchStreetName               GREAT EASTERN
+                                      
+StreetNameSufType             RD
+OrigStreetName                COX
+MatchStreetName               COX
+                                      
+StreetNameSufType             RD
+OrigStreetName                SPRING FLAT
+MatchStreetName               Spr FLAT
+                                      
+StreetNameSufType             RD
+OrigStreetName                TIMMS VALE
+MatchStreetName               TIMMS VALE
+StreetNameSufDirection        S
+                                      
+StreetNameSufType             GR
+OrigStreetName                KELVIN
+MatchStreetName               KELVIN
+                                       
+StreetNameSufType             GLY
+OrigStreetName                SHEEP STATION
+MatchStreetName               SHEEP Sta
+                                      
+StreetNameSufType             VALE
+OrigStreetName                YARRAN
+MatchStreetName               YARRAN
+                                      
+StreetNameSufType             PL
+OrigStreetName                IMLAY
+MatchStreetName               IMLAY
+                                      
+StreetNameSufType             ST
+OrigStreetName                NULLA NULLA
+MatchStreetName               NULLA NULLA
+                                      
+StreetNameSufType             RD
+OrigStreetName                SOUTH PINE
+HouseNumber                   93
+MatchStreetName               S PINE
+StreetNameSufDirection        E
+                                      
+StreetNameSufType             RD
+OrigStreetName                HIGH STREET
+HouseNumber                   14
+MatchStreetName               HIGH ST
+                                      
+OrigStreetName                THE AVENUE
+HouseNumber                   23
+MatchStreetName               AVE
+                                      
+OrigStreetName                ESPLANADE
+HouseNumber                   31
+MatchStreetName               ESP
+                                      
+StreetNamePrefType            ESP
+OrigStreetName                HEADLAND
+HouseNumber                   53
+MatchStreetName               HEADLAND
+                                      
+HouseNumberPrefix             A
+StreetNameSufType             HWY
+HouseNumberSuffix             B
+OrigStreetName                PRINCES
+HouseNumber                   200
+MatchStreetName               PRINCES
+                                      
+StreetNameSufType             ESP
+OrigStreetName                BEACH
+HouseNumber                   84
+MatchStreetName               Bch
+                                      
+OrigStreetName                THE TERRACE
+HouseNumber                   75
+MatchStreetName               TCE
+                                      
+StreetNameSufType             HWY
+OrigStreetName                OLD HUME
+HouseNumber                   13
+MatchStreetName               OLD HUME
+                                      
+StreetNameSufType             RD
+OrigStreetName                NEW SOUTH HEAD
+HouseNumber                   354
+MatchStreetName               NEW S HEAD
+                                      
+StreetNameSufType             ST
+OrigStreetName                KING EDWARD
+HouseNumber                   22
+MatchStreetName               KING EDWARD
+                                      
+StreetNameSufType             NOOK
+OrigStreetName                PANDORA
+HouseNumber                   832
+MatchStreetName               PANDORA
+                                      
+StreetNameSufType             ST
+HouseNumberSuffix             A
+OrigStreetName                PRITCHETT
+HouseNumber                   42
+MatchStreetName               PRITCHETT
+                                      
+StreetNameSufType             CCT
+OrigStreetName                JENKE
+HouseNumber                   30
+MatchStreetName               JENKE
+                                      
+StreetNameSufType             AVE
+HouseNumberSuffix             A
+OrigStreetName                LIVINGSTON
+HouseNumber                   110
+MatchStreetName               LIVINGSTON
+                                      
+StreetNameSufType             RD
+OrigStreetName                NORTH EAST
+HouseNumber                   732
+MatchStreetName               NE
+                                      
+StreetNameSufType             RD
+OrigStreetName                GRAND JUNCTION
+HouseNumber                   587
+MatchStreetName               GRAND JNC
+                                      
+StreetNameSufType             ST
+OrigStreetName                SMITH
+HouseNumber                   5
+MatchStreetName               SMITH
+StreetNameSufDirection        UP
+                                      
+StreetNameSufType             RMBL
+OrigStreetName                BARRONS
+HouseNumber                   485
+MatchStreetName               BARRONS
+                                      
+StreetNameSufType             TCE
+OrigStreetName                SOUTH
+HouseNumber                   231
+MatchStreetName               South
+                                      
+StreetNameSufType             CL
+OrigStreetName                WARNGAR
+HouseNumber                   4
+MatchStreetName               WARNGAR
+                                      
+OrigStreetName                THE KINGSWAY
+HouseNumber                   5
+MatchStreetName               KINGSWAY
+                                      
+StreetNameSufType             RD
+OrigStreetName                PT NEPEAN
+HouseNumber                   3752
+MatchStreetName               Pt NEPEAN
+                                      
+OrigStreetName                THE STRAND
+HouseNumber                   34
+MatchStreetName               STRAND
+                                      
+StreetNameSufType             GR
+OrigStreetName                BOAT HAVEN
+HouseNumber                   10
+MatchStreetName               BOAT Hvn
+                                      
+StreetNameSufType             HTS
+OrigStreetName                BLAIRGOWIE
+HouseNumber                   38
+MatchStreetName               BLAIRGOWIE
+                                      
+StreetNameSufType             ST
+HouseNumberSuffix             A
+OrigStreetName                EBDEN
+HouseNumber                   27
+MatchStreetName               EBDEN
+                                      
+StreetNameSufType             GRA
+OrigStreetName                SOUTH PINE
+HouseNumber                   93
+MatchStreetName               S PINE
+StreetNameSufDirection        E
+                                      
+StreetNameSufType             CL
+OrigStreetName                CARARA
+HouseNumber                   6
+MatchStreetName               CARARA
+                                      
+StreetNameSufType             LANE
+OrigStreetName                MCKAY
+HouseNumber                   32
+MatchStreetName               MCKAY
+                                      
+OrigStreetName                THE BILLABONG
+HouseNumber                   12
+MatchStreetName               BILLABONG
+                                      
+StreetNameSufType             PDE
+OrigStreetName                ALLENBY PARK
+HouseNumber                   52
+MatchStreetName               ALLENBY PARK
+                                      
+StreetNameSufType             RTT
+OrigStreetName                OUTBACK
+HouseNumber                   300
+MatchStreetName               OUTBACK
+                                      
+StreetNameSufType             RD
+OrigStreetName                MAIN NORTH
+HouseNumber                   354
+MatchStreetName               MAIN N
+                                      
+StreetNameSufType             PKWY
+OrigStreetName                PARTYTIME
+HouseNumber                   701
+MatchStreetName               PARTYTIME
+                                      
+StreetNameSufType             AVE
+OrigStreetName                FIFTH
+HouseNumber                   12
+MatchStreetName               5th
+                                      
+StreetNameSufType             SQ
+OrigStreetName                SALAMANCA
+HouseNumber                   10
+MatchStreetName               SALAMANCA
+                                      
+StreetNameSufType             ST
+HouseNumberSuffix             C
+OrigStreetName                WATTON
+HouseNumber                   4
+MatchStreetName               WATTON
+                                      
+StreetNameSufType             RD
+OrigStreetName                SOUTH WEST ROCKS
+HouseNumber                   864
+MatchStreetName               SW ROCKS
+                                      
+StreetNameSufType             RD
+OrigStreetName                PATSY’S FLAT
+HouseNumber                   46
+MatchStreetName               PATSY’S FLAT
+                                      
+StreetNameSufType             RD
+OrigStreetName                TON OF FUN
+HouseNumber                   20
+MatchStreetName               TON OF FUN
+                                      
+StreetNameSufType             PDE
+OrigStreetName                CUTTLEFISH
+HouseNumber                   29
+MatchStreetName               CUTTLEFISH
+                                      
+StreetNameSufType             AVE
+OrigStreetName                21ST
+HouseNumber                   1
+MatchStreetName               21ST
+                                      
+StreetNameSufType             PDE
+OrigStreetName                THE GRAND
+HouseNumber                   36
+MatchStreetName               GRAND
+                                      
+StreetNameSufType             ST
+HouseNumberSuffix             A
+OrigStreetName                CRESENT
+HouseNumber                   3
+MatchStreetName               CRES
+                                      
+StreetNameSufType             RD
+OrigStreetName                BILLYBILLINGWA
+HouseNumber                   343
+MatchStreetName               BILLYBILLINGWA
+                                      
+StreetNameSufType             WAY
+OrigStreetName                OSPREY
+HouseNumber                   11
+MatchStreetName               OSPREY
+                                      
+StreetNameSufType             PL
+OrigStreetName                PASADENA
+HouseNumber                   10
+MatchStreetName               PASADENA
+                                      
+StreetNameSufType             WHRF
+HouseNumberSuffix             C
+OrigStreetName                WATTON
+HouseNumber                   4
+MatchStreetName               WATTON
+StreetNameSufDirection        SE
+                                      
+StreetNameSufType             RD
+OrigStreetName                OLD BELLS LINE
+HouseNumber                   145
+MatchStreetName               OLD BELLS LINE
+                                      
+StreetNameSufType             RD
+OrigStreetName                COPELAND
+HouseNumber                   167
+MatchStreetName               COPELAND
+StreetNameSufDirection        E
+                                      
+StreetNameSufType             PDE
+OrigStreetName                ELEVENTH
+HouseNumber                   16
+MatchStreetName               11th
+                                      
+StreetNameSufType             CL
+OrigStreetName                WILLOW STREET
+HouseNumber                   8
+MatchStreetName               WILLOW ST
+                                      
+StreetNameSufType             RD
+OrigStreetName                SEVEN HILLS
+HouseNumber                   253
+MatchStreetName               7th Hls
+                                      
+StreetNameSufType             CCT
+OrigStreetName                CHAIN-O-PONDS
+HouseNumber                   48
+MatchStreetName               CHAIN-O-PONDS
+                                      
+StreetNameSufType             RD
+OrigStreetName                SWALLOWS NEST
+HouseNumber                   922
+MatchStreetName               SWALLOWS NEST
+                                      
+StreetNameSufType             WYND
+OrigStreetName                RUBBER TREE
+HouseNumber                   47
+MatchStreetName               RUBBER TREE
+                                      
+StreetNameSufType             AVE
+OrigStreetName                FRIGATE-BIRD
+HouseNumber                   13
+MatchStreetName               FRIGATE-BIRD
+                                      
+HouseNumberPrefix             A
+StreetNameSufType             GLEN
+OrigStreetName                QUEENSLAND HEIGHTS
+HouseNumber                   55
+MatchStreetName               QLD HTS
+                                      
+StreetNameSufType             DR
+OrigStreetName                1ST FARM
+HouseNumber                   16
+MatchStreetName               1st Farm
+                                      
+StreetNameSufType             TCE
+OrigStreetName                EAST
+HouseNumber                   8
+MatchStreetName               East
+                                      
+StreetNameSufType             RD
+OrigStreetName                NORTH ISLAND LOOP
+HouseNumber                   78
+MatchStreetName               N Isle LOOP
+                                      
+StreetNameSufType             WALK
+OrigStreetName                CHEYNE
+HouseNumber                   31
+MatchStreetName               CHEYNE
+                                      
+StreetNameSufType             RD
+OrigStreetName                FAT DUCK
+HouseNumber                   15
+MatchStreetName               FAT DUCK
+                                      
+StreetNameSufType             CRES
+OrigStreetName                LINDHURST WALK
+HouseNumber                   9
+MatchStreetName               LINDHURST WALK
+                                      
+StreetNameSufType             RD
+HouseNumberSuffix             A
+OrigStreetName                OXFORD FALLS
+HouseNumber                   1039
+MatchStreetName               OXFORD Fls
+StreetNameSufDirection        W
+                                      
+StreetNameSufType             RD
+OrigStreetName                HILLCREST
+HouseNumber                   36
+MatchStreetName               HILLCREST
+                                      
+StreetNameSufType             ST
+OrigStreetName                SELWYN
+HouseNumber                   10
+MatchStreetName               SELWYN
+                                      
+StreetNameSufType             ST
+OrigStreetName                VALE
+HouseNumber                   15
+MatchStreetName               VALE
+                                      
+StreetNameSufType             ESP
+OrigStreetName                EDGECLIFFE
+HouseNumber                   26
+MatchStreetName               EDGECLIFFE
+                                      
+StreetNameSufType             GR
+OrigStreetName                SHE OAK
+HouseNumber                   35
+MatchStreetName               SHE OAK
+                                      
+StreetNameSufType             RD
+OrigStreetName                BELLAMY FARM
+HouseNumber                   19
+MatchStreetName               BELLAMY Farm
+                                      
+StreetNameSufType             WAY
+OrigStreetName                EASTERN VALLEY
+HouseNumber                   88
+MatchStreetName               EASTERN Val
+                                      
+StreetNameSufType             DR
+OrigStreetName                LAKE WAY
+HouseNumber                   1
+MatchStreetName               Lake WAY
+                                      
+StreetNameSufType             CRES
+HouseNumberSuffix             A
+OrigStreetName                WARATAH
+HouseNumber                   2
+MatchStreetName               WARATAH
+                                      
+StreetNameSufType             ST
+OrigStreetName                SMITH
+HouseNumber                   5
+MatchStreetName               SMITH
+StreetNameSufDirection        E
+                                      
+StreetNameSufType             PDE
+OrigStreetName                MARINE
+HouseNumber                   33
+MatchStreetName               MARINE
+                                      
+StreetNameSufType             CT
+OrigStreetName                HERON
+HouseNumber                   21-24
+MatchStreetName               HERON
+                                      
+StreetNameSufType             CRES
+OrigStreetName                CONDOR
+HouseNumber                   1-3
+MatchStreetName               CONDOR
+                                      
+StreetNameSufType             AVE
+HouseNumberSuffix             A
+OrigStreetName                KINGS
+HouseNumber                   27-31
+MatchStreetName               KINGS
+                                      
+StreetNameSufType             ST
+OrigStreetName                SMITH
+HouseNumber                   5-9
+MatchStreetName               SMITH
+StreetNameSufDirection        W
+                                      
+StreetNameSufType             TCE
+OrigStreetName                GIVEN
+HouseNumber                   22-24
+MatchStreetName               GIVEN
+StreetNameSufDirection        S
+                                      
+StreetNameSufType             DR
+OrigStreetName                BROWNLEIGH VALE
+HouseNumber                   7-11
+MatchStreetName               BROWNLEIGH VALE
+                                      
+StreetNameSufType             ST
+OrigStreetName                BROUGHAM
+HouseNumber                   10-14
+MatchStreetName               BROUGHAM
+                                      
+OrigStreetName                THE PARADE
+HouseNumber                   23–25
+MatchStreetName               PDE
+                                      
+StreetNameSufType             RD
+OrigStreetName                EMU BAY
+HouseNumber                   46-48
+MatchStreetName               EMU BAY
+                                      
+StreetNameSufType             ROW
+OrigStreetName                EAST
+HouseNumber                   43-45
+MatchStreetName               East
+                                      
+StreetNameSufType             RD
+OrigStreetName                OLD NORTHERN
+HouseNumber                   1373-1379
+MatchStreetName               OLD NORTHERN
+                                      
+StreetNameSufType             Stra
+OrigStreetName                LANCASTER
+HouseNumber                   3-6
+MatchStreetName               LANCASTER
+                                      
+WithinStructDescript          LOT
+StreetNameSufType             ST
+OrigStreetName                GWEN
+MatchStreetName               GWEN
+StreetNameSufDirection        N
+WithinStructIdentif           30A
+                                      
+WithinStructDescript          LOT
+StreetNameSufType             ST
+OrigStreetName                CRAIGIE
+MatchStreetName               CRAIGIE
+WithinStructIdentif           46
+                                      
+WithinStructDescript          LOT
+StreetNameSufType             HWY
+OrigStreetName                GREAT EASTERN
+MatchStreetName               GREAT EASTERN
+WithinStructIdentif           55
+                                      
+WithinStructDescript          LOT
+StreetNameSufType             PL
+OrigStreetName                THE SANCTUARY TRANQUIL
+MatchStreetName               SANCTUARY TRANQUIL
+WithinStructIdentif           11
+                                      
+WithinStructDescript          LOT
+StreetNameSufType             DR
+OrigStreetName                ESTATE
+MatchStreetName               EST
+WithinStructIdentif           19
+                                      
+WithinStructDescript          LOT
+StreetNameSufType             RD
+OrigStreetName                NORTH ARM
+MatchStreetName               N ARM
+WithinStructIdentif           1
+                                      
+WithinStructDescript          LOT
+StreetNameSufType             RD
+OrigStreetName                NORTH ARM
+MatchStreetName               N ARM
+WithinStructIdentif           2
+                                      
+WithinStructDescript          LOT
+StreetNameSufType             RD
+OrigStreetName                THE CROWN GLEN DAVIS
+MatchStreetName               CROWN GLEN DAVIS
+WithinStructIdentif           1
+                                      
+WithinStructDescript          LOT
+MatchPropertyName             BOWMAN
+OrigPropertyName              BOWMAN
+PropertySufType               Park
+WithinStructIdentif           1
+                                      
+WithinStructDescript          LOT
+StreetNameSufType             RD
+OrigStreetName                NORTH BONVILLE
+HouseNumber                   3
+MatchStreetName               NORTH BONVILLE
+WithinStructIdentif           2
+                                      
+WithinStructDescript          LOT
+StreetNameSufType             RD
+OrigStreetName                DINGO GULLY
+MatchStreetName               DINGO GULLY
+WithinStructIdentif           13
+                                      
+ExtraInfo                     C/-
+BoxDescript                   PO Box
+BoxIdentif                    8
+                                      
+BoxDescript                   Care Po
+                                      
+BoxDescript                   Care Po
+                                      
+ExtraInfo                     C/-
+BoxDescript                   PO Box
+BoxIdentif                    3
+                                      
+ExtraInfo                     C/O
+StreetNameSufType             PDE
+OrigStreetName                BEACHCOMBER
+HouseNumber                   15-17
+MatchStreetName               BEACHCOMBER
+                                      
+BoxDescript                   Private Bag
+BoxIdentif                    25
+                                      
+BoxDescript                   PO Box
+BoxIdentif                    886N
+                                      
+BoxDescript                   PO Box
+BoxIdentif                    8
+                                      
+BoxDescript                   PO Box
+BoxIdentif                    W83
+                                      
+BoxDescript                   PO Box
+BoxIdentif                    403
+                                      
+BoxDescript                   GPO BOX
+BoxIdentif                    1150
+                                      
+StreetNameSufType             RD
+OrigStreetName                BROWNS
+BoxDescript                   MS
+MatchStreetName               BROWNS
+BoxIdentif                    324
+                                      
+BoxDescript                   Locked Bag
+BoxIdentif                    2
+                                       
+BoxDescript                   Private Bag
+BoxIdentif                    11
+                                      
+StreetNameSufType             RD
+OrigStreetName                TURPENTINE
+BoxDescript                   RMB
+MatchStreetName               TURPENTINE
+BoxIdentif                    8140
+                                      
+StreetNameSufType             RD
+OrigStreetName                GOONOO GOONOO
+BoxDescript                   RMB
+MatchStreetName               GOONOO GOONOO
+BoxIdentif                    532D
+                                      
+StreetNameSufType             RD
+OrigStreetName                JILLIBY
+BoxDescript                   RMB
+MatchStreetName               JILLIBY
+BoxIdentif                    780
+                                       
+BoxDescript                   RMB
+BoxIdentif                    968
+                                      
+StreetNameSufType             Via
+OrigStreetName                TALARM
+BoxDescript                   RMB
+MatchStreetName               TALARM
+BoxIdentif                    69
+                                      
+BoxDescript                   MS
+BoxIdentif                    428
+                                      
+WithinStructDescript          L
+StreetNameSufType             ST
+OrigStreetName                CITY
+HouseNumber                   202
+MatchStreetName               CITY
+WithinStructIdentif           3
+                                      
+StreetNameSufType             CT
+OrigStreetName                M DOUGLAS
+MatchStreetName               M DOUGLAS
+                                      
+WithinStructDescript          FL
+StreetNameSufType             ST
+OrigStreetName                CITY
+HouseNumber                   202
+MatchStreetName               CITY
+WithinStructIdentif           3
+                                      
+WithinStructDescript          L
+StreetNameSufType             DALE
+OrigStreetName                SMYTH
+HouseNumber                   84
+MatchStreetName               SMYTH
+StreetNameSufDirection        CN
+WithinStructIdentif           1
+                                      
+WithinStructDescript          L
+StreetNameSufType             RD
+OrigStreetName                ST KILDA
+HouseNumber                   380
+MatchStreetName               ST KILDA
+WithinStructIdentif           6
+                                      
+WithinStructDescript          Fl
+StreetNameSufType             ST
+OrigStreetName                KENT
+HouseNumber                   189
+MatchStreetName               KENT
+WithinStructIdentif           G
+                                      
+WithinStructDescript          FL
+StreetNameSufType             AVE
+OrigStreetName                FIFTH
+HouseNumber                   12
+MatchStreetName               5th
+WithinStructIdentif           4
+                                      
+WithinStructDescript          FL
+StreetNameSufType             ST
+OrigStreetName                WILSON
+HouseNumber                   10
+MatchStreetName               WILSON
+WithinStructIdentif           1
+                                      
+WithinStructDescript          L
+StreetNameSufType             ST
+OrigStreetName                MAIN
+HouseNumber                   3-7
+MatchStreetName               MAIN
+WithinStructIdentif           -
+                                      
+WithinStructDescript          B
+StreetNameSufType             ST
+OrigStreetName                KENT
+HouseNumber                   189-193
+MatchStreetName               KENT
+WithinStructIdentif           -
+                                      
+WithinStructDescript          Fl
+StreetNameSufType             PL
+OrigStreetName                IMLAY
+HouseNumber                   13-18
+MatchStreetName               IMLAY
+WithinStructIdentif           UG
+                                      
+WithinStructDescript          L
+StreetNameSufType             RD
+OrigStreetName                NEW SOUTH HEAD
+HouseNumber                   203-233
+MatchStreetName               NEW S HEAD
+WithinStructIdentif           2
+                                      
+WithinStructDescript          FL
+StreetNameSufType             COWY
+OrigStreetName                COLLEGE
+HouseNumber                   37-39
+MatchStreetName               Coll
+WithinStructIdentif           3
+                                      
+WithinStructDescript          Fl
+StreetNameSufType             RD
+OrigStreetName                BARABOOL
+HouseNumber                   92-94
+MatchStreetName               BARABOOL
+StreetNameSufDirection        NW
+WithinStructIdentif           G
+                                      
+WithinStructDescript          M
+StreetNameSufType             RDWY
+OrigStreetName                KINGSTON
+HouseNumber                   235-239
+MatchStreetName               KINGSTON
+WithinStructIdentif           2
+                                      
+WithinStructDescript          F
+StreetNameSufType             RD
+OrigStreetName                MAIN
+HouseNumber                   22
+MatchStreetName               MAIN
+WithinStructIdentif           5
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                MAIN
+HouseNumber                   3-7
+MatchStreetName               MAIN
+                                      
+WithinStructDescript          SL
+StreetNameSufType             AVE
+OrigStreetName                QUINLAN
+HouseNumber                   112
+MatchStreetName               QUINLAN
+WithinStructIdentif           11
+                                      
+WithinStructDescript          SE
+StreetNameSufType             MEWS
+OrigStreetName                RUSSELL
+MatchStreetName               RUSSELL
+WithinStructIdentif           4
+                                      
+WithinStructDescript          U
+StreetNameSufType             AVE
+OrigStreetName                BROWN
+HouseNumber                   28
+MatchStreetName               BROWN
+StreetNameSufDirection        S
+WithinStructIdentif           1
+                                      
+WithinStructDescript          SHOP
+StreetNameSufType             ESP
+OrigStreetName                WILLIAMS
+HouseNumber                   117
+MatchStreetName               WILLIAMS
+WithinStructIdentif           1
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                WOONGARRA
+HouseNumber                   53
+MatchStreetName               WOONGARRA
+WithinStructIdentif           1
+                                      
+WithinStructDescript          SHOP
+StreetNameSufType             ST
+OrigStreetName                WOONGARRA
+HouseNumber                   53
+MatchStreetName               WOONGARRA
+WithinStructIdentif           1
+                                      
+WithinStructDescript          SHOP
+StreetNameSufType             ST
+OrigStreetName                HESSE
+HouseNumber                   84
+MatchStreetName               HESSE
+WithinStructIdentif           2
+                                      
+WithinStructDescript          SE
+MatchPropertyName             MANUKA
+OrigPropertyName              MANUKA
+PropertySufType               Plz
+WithinStructIdentif           30
+                                      
+WithinStructDescript          SHOP
+StreetNameSufType             AVE
+OrigStreetName                RAILWAY
+HouseNumber                   37
+MatchStreetName               RAILWAY
+WithinStructIdentif           2
+                                      
+WithinStructDescript          SHOP
+StreetNameSufType             ST
+OrigStreetName                TRAFALGAR
+HouseNumber                   1
+MatchStreetName               TRAFALGAR
+WithinStructIdentif           3
+                                      
+WithinStructDescript          U
+StreetNameSufType             RD
+OrigStreetName                ROOTY HILL
+HouseNumber                   45
+MatchStreetName               ROOTY Hl
+StreetNameSufDirection        N
+WithinStructIdentif           1
+                                      
+WithinStructDescript          SE
+StreetNameSufType             RD
+OrigStreetName                GOYDER
+HouseNumber                   5
+MatchStreetName               GOYDER
+WithinStructIdentif           2
+                                      
+WithinStructDescript          U
+StreetNameSufType             RD
+OrigStreetName                MAIN SOUTH
+HouseNumber                   230
+MatchStreetName               MAIN S
+WithinStructIdentif           5
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                HOSKINS
+HouseNumber                   78
+MatchStreetName               HOSKINS
+WithinStructIdentif           1
+                                      
+WithinStructDescript          SHOP
+StreetNameSufType             SQ
+OrigStreetName                GOYDER
+HouseNumber                   5
+MatchStreetName               GOYDER
+WithinStructIdentif           2A
+                                      
+WithinStructDescript          F
+StreetNameSufType             PDE
+OrigStreetName                LYN
+HouseNumber                   10
+MatchStreetName               LYN
+StreetNameSufDirection        LWR
+WithinStructIdentif           33
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                COLLEGE
+HouseNumber                   43
+MatchStreetName               Coll
+WithinStructIdentif           20
+                                      
+WithinStructDescript          RM
+StreetNameSufType             PDE
+OrigStreetName                CAMPBELL
+HouseNumber                   89
+MatchStreetName               CAMPBELL
+WithinStructIdentif           12B
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                BRADFORD
+HouseNumber                   10
+MatchStreetName               BRADFORD
+WithinStructIdentif           12
+                                      
+WithinStructDescript          U
+StreetNameSufType             PDE
+OrigStreetName                LYN
+HouseNumber                   10
+MatchStreetName               LYN
+WithinStructIdentif           2
+                                      
+WithinStructDescript          SE
+StreetNameSufType             TCE
+OrigStreetName                GIVEN
+HouseNumber                   283
+MatchStreetName               GIVEN
+WithinStructIdentif           60
+                                      
+WithinStructDescript          KSK
+StreetNameSufType             CRES
+OrigStreetName                CHARLES TODD
+HouseNumber                   9
+MatchStreetName               CHARLES TODD
+WithinStructIdentif           4
+                                      
+WithinStructDescript          U
+StreetNameSufType             RD
+OrigStreetName                ANNERLEY
+HouseNumber                   40
+MatchStreetName               ANNERLEY
+WithinStructIdentif           10B
+                                      
+WithinStructDescript          SHOP
+StreetNameSufType             HWY
+OrigStreetName                DAWSON
+HouseNumber                   45
+MatchStreetName               DAWSON
+WithinStructIdentif           18A
+                                      
+WithinStructDescript          VLLA
+StreetNameSufType             RD
+OrigStreetName                MAIDENS BRUSH
+HouseNumber                   13
+MatchStreetName               MAIDENS BRUSH
+WithinStructIdentif           10
+                                      
+WithinStructDescript          MSNT
+StreetNameSufType             Rt
+OrigStreetName                WITNESS
+HouseNumber                   189
+MatchStreetName               WITNESS
+WithinStructIdentif           3
+                                      
+WithinStructDescript          SHOP
+MatchPropertyName             DOLPHIN
+OrigPropertyName              DOLPHIN
+PropertySufType               Arc
+WithinStructIdentif           123
+                                      
+WithinStructDescript          HSE
+StreetNameSufType             ST
+OrigStreetName                WEST PORT
+MatchStreetName               W Prt
+WithinStructIdentif           31
+                                      
+WithinStructDescript          U
+StreetNameSufType             CCT
+OrigStreetName                TMARA MARA
+HouseNumber                   41
+MatchStreetName               TMARA MARA
+WithinStructIdentif           1
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                MC MINN
+HouseNumber                   27
+MatchStreetName               MC MINN
+WithinStructIdentif           14
+                                      
+WithinStructDescript          VLLA
+StreetNameSufType             RD
+OrigStreetName                KARLATA
+HouseNumber                   33
+MatchStreetName               KARLATA
+WithinStructIdentif           1
+                                      
+WithinStructDescript          U
+StreetNameSufType             RD
+OrigStreetName                TARREN
+HouseNumber                   4
+MatchStreetName               TARREN
+StreetNameSufDirection        S
+WithinStructIdentif           13
+                                      
+WithinStructDescript          U
+StreetNameSufType             GR
+OrigStreetName                COCOS
+HouseNumber                   2
+MatchStreetName               COCOS
+WithinStructIdentif           1
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                HIGH
+HouseNumber                   32
+MatchStreetName               HIGH
+WithinStructIdentif           1-4
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                SOUTH
+HouseNumber                   27
+MatchStreetName               South
+WithinStructIdentif           3
+                                      
+WithinStructDescript          CTGE
+StreetNameSufType             CCT
+OrigStreetName                TMARA MARA
+HouseNumber                   41
+MatchStreetName               TMARA MARA
+WithinStructIdentif           3
+                                      
+WithinStructDescript          U
+StreetNameSufType             RD
+OrigStreetName                ADDISON
+HouseNumber                   4-66
+MatchStreetName               ADDISON
+                                      
+WithinStructDescript          U
+StreetNameSufType             PDE
+OrigStreetName                DEE WHY
+HouseNumber                   4
+MatchStreetName               DEE WHY
+WithinStructIdentif           2
+                                      
+StreetNamePrefType            AVE
+WithinStructDescript          U
+OrigStreetName                OF THE AMERICAS
+HouseNumber                   4
+MatchStreetName               AMERICAS
+WithinStructIdentif           3
+                                      
+WithinStructDescript          U
+StreetNameSufType             END
+HouseNumberSuffix             B
+OrigStreetName                BRIDGE
+HouseNumber                   15
+MatchStreetName               Brdg
+WithinStructIdentif           8
+                                      
+WithinStructDescript          U
+StreetNameSufType             CRES
+OrigStreetName                LAKE VISTA
+HouseNumber                   9
+MatchStreetName               Lake VISTA
+WithinStructIdentif           1
+                                      
+WithinStructDescript          U
+StreetNameSufType             DR
+OrigStreetName                IBIS
+HouseNumber                   19
+MatchStreetName               IBIS
+WithinStructIdentif           1
+                                      
+WithinStructDescript          U
+StreetNameSufType             PDE
+OrigStreetName                WEST
+HouseNumber                   42
+MatchStreetName               West
+WithinStructIdentif           6
+                                      
+WithinStructDescript          U
+OrigStreetName                THE BOULEVARDE
+HouseNumber                   154
+MatchStreetName               BOULEVARDE
+WithinStructIdentif           10
+                                      
+WithinStructDescript          U
+StreetNameSufType             PDE
+OrigStreetName                WONNONA
+HouseNumber                   27
+MatchStreetName               WONNONA
+StreetNameSufDirection        E
+WithinStructIdentif           1
+                                      
+WithinStructDescript          U
+StreetNameSufType             RD
+OrigStreetName                COWPER WHARF
+HouseNumber                   6
+MatchStreetName               COWPER WHRF
+WithinStructIdentif           130
+                                      
+WithinStructDescript          M
+StreetNameSufType             ST
+OrigStreetName                QUAY
+HouseNumber                   2
+MatchStreetName               QY
+WithinStructIdentif           507
+                                      
+WithinStructDescript          U
+StreetNameSufType             AVE
+HouseNumberSuffix             A
+OrigStreetName                KEATS
+HouseNumber                   19-21
+MatchStreetName               KEATS
+WithinStructIdentif           23
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                HIGH
+HouseNumber                   82-84
+MatchStreetName               HIGH
+StreetNameSufDirection        W
+WithinStructIdentif           9
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                GLADSTONE
+HouseNumber                   52-62
+MatchStreetName               GLADSTONE
+WithinStructIdentif           6A
+                                      
+WithinStructDescript          TNHS
+StreetNameSufType             AVE
+OrigStreetName                STUART
+HouseNumber                   2-4
+MatchStreetName               STUART
+WithinStructIdentif           62
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                CASTLE
+HouseNumber                   24-26
+MatchStreetName               CASTLE
+WithinStructIdentif           4
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                DARLING
+HouseNumber                   15-17
+MatchStreetName               DARLING
+WithinStructIdentif           78
+                                      
+WithinStructDescript          SE
+StreetNameSufType             RD
+OrigStreetName                MAIN
+HouseNumber                   22-24
+MatchStreetName               MAIN
+WithinStructIdentif           2
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                MAIN
+HouseNumber                   22-24
+MatchStreetName               MAIN
+WithinStructIdentif           1
+                                      
+WithinStructDescript          U
+StreetNameSufType             RD
+OrigStreetName                NELSONS BUILDING
+HouseNumber                   57-59
+MatchStreetName               NELSONS Bldg
+WithinStructIdentif           45
+                                      
+WithinStructDescript          U
+StreetNameSufType             RD
+OrigStreetName                MAIN
+HouseNumber                   22-24
+MatchStreetName               MAIN
+WithinStructIdentif           5
+                                      
+WithinStructDescript          SE
+StreetNameSufType             ST
+OrigStreetName                SMITH
+HouseNumber                   4-6
+MatchStreetName               SMITH
+WithinStructIdentif           1
+                                      
+WithinStructDescript          SHOP
+StreetNameSufType             ST
+OrigStreetName                SMITH
+HouseNumber                   4-6
+MatchStreetName               SMITH
+WithinStructIdentif           1
+                                      
+WithinStructDescript          RM
+StreetNameSufType             ARC
+OrigStreetName                ORCHARD
+HouseNumber                   3-5
+MatchStreetName               Orch
+StreetNameSufDirection        W
+WithinStructIdentif           4B
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                POST OFFICE
+HouseNumber                   1-5
+MatchStreetName               POST OFF
+WithinStructIdentif           8
+                                      
+WithinStructDescript          U
+StreetNameSufType             RD
+OrigStreetName                LAMBERT
+HouseNumber                   12-16
+MatchStreetName               LAMBERT
+                                      
+WithinStructDescript          DUP
+StreetNameSufType             ANCG
+OrigStreetName                SHIPLOCK
+HouseNumber                   34-38
+MatchStreetName               SHIPLOCK
+WithinStructIdentif           9
+                                      
+StreetNameSufType             RD
+MatchPropertyName             DOME
+OrigStreetName                KINGS CROSS
+OrigPropertyName              THE DOME
+HouseNumber                   1
+MatchStreetName               KINGS CROSS
+                                      
+StreetNameSufType             AVE
+MatchPropertyName             PILGRIM
+OrigStreetName                NORTHBOURNE
+OrigPropertyName              PILGRIM
+HouseNumber                   69
+MatchStreetName               NORTHBOURNE
+PropertySufType               HSE
+                                      
+StreetNameSufType             PDE
+MatchPropertyName             GLACIA
+OrigStreetName                FLORA
+OrigPropertyName              GLACIA
+MatchStreetName               FLORA
+PropertySufType               HSE
+                                      
+MatchPropertyName             CANTON Bch
+OrigPropertyName              CANTON BEACH
+PropertySufType               Trpk
+                                      
+OrigStreetName                ST KILDA PIER
+MatchStreetName               St KILDA PIER
+                                      
+StreetNameSufType             ST
+MatchPropertyName             BURGESS
+OrigStreetName                KARNE
+OrigPropertyName              BURGESS
+MatchStreetName               KARNE
+PropertySufType               HSE
+                                      
+OrigStreetName                'KERONA'
+MatchStreetName               'KERONA'
+                                      
+OrigStreetName                'OLD BUDDAH LAKE'
+MatchStreetName               'OLD BUDDAH LAKE'
+                                      
+StreetNameSufType             RD
+MatchPropertyName             COLLITTS
+OrigStreetName                HARTLEY VALLEY
+OrigPropertyName              COLLITTS
+MatchStreetName               HARTLEY Val
+PropertySufType               Inn
+                                      
+StreetNameSufType             ST
+MatchPropertyName             ASTILL
+OrigStreetName                NILE
+OrigPropertyName              ASTILL
+HouseNumber                   75
+MatchStreetName               NILE
+PropertySufType               HSE
+                                      
+StreetNameSufType             FLAT
+OrigStreetName                'UNALA' SANDY
+MatchStreetName               'UNALA' SANDY
+                                      
+StreetNameSufType             ST
+MatchPropertyName             VIC
+OrigStreetName                QUEEN
+OrigPropertyName              VICTORIA
+MatchStreetName               QUEEN
+PropertySufType               Htl
+                                      
+StreetNameSufType             DR
+MatchPropertyName             BELLBIRD
+OrigStreetName                TERRIGAL
+OrigPropertyName              BELLBIRD
+MatchStreetName               TERRIGAL
+PropertySufType               Trpk
+                                      
+WithinStructDescript          RM
+MatchPropertyName             NURSES
+OrigPropertyName              NURSES
+PropertySufType               Home
+WithinStructIdentif           96
+                                      
+WithinStructDescript          SITE
+MatchPropertyName             HOMELANDS
+OrigPropertyName              HOMELANDS
+PropertySufType               Trpk
+WithinStructIdentif           86
+                                      
+WithinStructDescript          WARD
+MatchPropertyName             MACQUARIE
+OrigPropertyName              MACQUARIE
+PropertySufType               Hosp
+WithinStructIdentif           13A
+                                      
+ExtraInfo                     CNR AND
+StreetNameSufType             HWY
+OrigSecondStreetName          ALICE
+OrigStreetName                HUME
+MatchStreetName               HUME
+SecondStreetNameSufType       ST
+                                      
+ExtraInfo                     CNR &
+StreetNameSufType             CRST
+OrigSecondStreetName          PLUNKETT
+OrigStreetName                MACLAURIN
+MatchStreetName               MACLAURIN
+SecondStreetNameSufType       ST
+                                      
+ExtraInfo                     CNR
+StreetNameSufType             RD
+OrigSecondStreetName          RODEO
+OrigStreetName                VALLA
+MatchStreetName               VALLA
+SecondStreetNameSufType       DR
+                                      
+WithinStructDescript          WARD
+MatchPropertyName             MACQUARIE
+OrigPropertyName              MACQUARIE
+PropertySufType               Hosp
+WithinStructIdentif           13A
+                                      
+WithinStructDescript          LOT
+StreetNameSufType             ST
+OrigStreetName                CRAIGIE
+MatchStreetName               CRAIGIE
+WithinStructIdentif           46
+                                      
+WithinStructDescript          LOT
+StreetNameSufType             RD
+OrigStreetName                DINGO GULLY
+MatchStreetName               DINGO GULLY
+WithinStructIdentif           13
+                                      
+BoxDescript                   Care Po
+                                      
+BoxDescript                   Care Po
+                                      
+ExtraInfo                     CNR AND
+StreetNameSufType             RD
+OrigSecondStreetName          NE
+OrigStreetName                FAWCETT
+MatchStreetName               FAWCETT
+SecondStreetNameSufType       HWY
+                                      
+ExtraInfo                     CNR
+StreetNameSufType             ST
+OrigSecondStreetName          BROWN
+OrigStreetName                PADBURY
+MatchStreetName               PADBURY
+SecondStreetNameSufType       ST
+                                      
+ExtraInfo                     CNR
+WithinStructDescript          LOT
+StreetNameSufType             RD
+OrigSecondStreetName          NE
+OrigStreetName                FAWCETT
+MatchStreetName               FAWCETT
+WithinStructIdentif           A
+SecondStreetNameSufType       HWY
+                                      
+StreetNameSufType             ST
+OrigStreetName                QUEEN
+BoxDescript                   PO Box
+HouseNumber                   4
+MatchStreetName               QUEEN
+BoxIdentif                    70
+                                      
+MatchPropertyName             KAMIRA
+OrigPropertyName              KAMIRA
+BoxDescript                   PO Box
+PropertySufType               Farm
+BoxIdentif                    284
+                                      
+WithinStructDescript          LOT
+StreetNameSufType             ST
+OrigStreetName                ALICE
+BoxDescript                   PO Box
+MatchStreetName               ALICE
+BoxIdentif                    850
+WithinStructIdentif           7
+                                      
+ExtraInfo                     C/-
+StreetNameSufType             ST
+MatchPropertyName             ELDERS REAL ESTATE ADELAIDE
+OrigStreetName                CURRIE
+OrigPropertyName              ELDERS REAL ESTATE ADELAIDE
+HouseNumber                   27
+MatchStreetName               CURRIE
+                                      
+WithinStructDescript          Fl
+StreetNameSufType             TCE
+MatchPropertyName             E Pt
+OrigStreetName                ADELAIDE
+OrigPropertyName              EAST POINT
+HouseNumber                   233
+MatchStreetName               ADELAIDE
+PropertySufType               Plz
+WithinStructIdentif           G
+                                      
+WithinStructDescript          L
+StreetNameSufType             TCE
+MatchPropertyName             QV 1
+OrigStreetName                ST GEORGES
+OrigPropertyName              QV 1
+HouseNumber                   250
+MatchStreetName               ST GEORGES
+PropertySufType               Twrs
+WithinStructIdentif           25
+                                      
+WithinStructDescript          L
+StreetNameSufType             ST
+MatchPropertyName             LENNONS
+OrigStreetName                QUEEN
+OrigPropertyName              LENNONS
+HouseNumber                   66-76
+MatchStreetName               QUEEN
+PropertySufType               Plz
+WithinStructIdentif           24
+                                      
+WithinStructDescript          L
+StreetNameSufType             ST
+MatchPropertyName             MUSEUM
+OrigStreetName                CASTLEREAGH
+OrigPropertyName              MUSEUM
+HouseNumber                   267-277
+MatchStreetName               CASTLEREAGH
+PropertySufType               Twrs
+WithinStructIdentif           5
+                                      
+WithinStructDescript          SHOP
+MatchPropertyName             YEPERENYE
+OrigPropertyName              YEPERENYE
+PropertySufType               SC
+WithinStructIdentif           36
+                                      
+WithinStructDescript          SHOP
+StreetNameSufType             ST
+MatchPropertyName             Mall
+OrigStreetName                DAUNCEY
+OrigPropertyName              THE MALL
+MatchStreetName               DAUNCEY
+WithinStructIdentif           2
+                                      
+WithinStructDescript          SITE
+StreetNameSufType             RD
+MatchPropertyName             HERITAGE
+OrigStreetName                EVANS
+OrigPropertyName              HERITAGE
+HouseNumber                   1
+MatchStreetName               EVANS
+PropertySufType               Vlg
+WithinStructIdentif           98
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+MatchPropertyName             ‘WENTWORTH COURT’
+OrigStreetName                GILES
+OrigPropertyName              ‘WENTWORTH COURT’
+HouseNumber                   41-53
+MatchStreetName               GILES
+WithinStructIdentif           4
+                                      
+WithinStructDescript          SHOP
+StreetNameSufType             AVE
+MatchPropertyName             Orch
+OrigStreetName                VICTORIA
+OrigPropertyName              ORCHARD
+HouseNumber                   455
+MatchStreetName               VIC
+PropertySufType               Arc
+WithinStructIdentif           3A
+                                      
+WithinStructDescript          U
+MatchPropertyName             TOSCANA
+OrigPropertyName              TOSCANA
+PropertySufType               Vlg
+WithinStructIdentif           18
+                                      
+WithinStructDescript          LOT
+StreetNameSufType             RD
+MatchPropertyName             COTTAGE
+OrigStreetName                BATES
+OrigPropertyName              THE COTTAGE
+MatchStreetName               BATES
+WithinStructIdentif           2
+                                      
+ExtraInfo                     CNR
+StreetNameSufType             RD
+MatchPropertyName             Htl
+OrigStreetName                BOTANY/GARDNER
+OrigPropertyName              HOTEL
+MatchStreetName               BOTANY/GARDNER
+                                      
+ExtraInfo                     CNR AND
+StreetNameSufType             ST
+OrigSecondStreetName          LONGERENONG
+OrigStreetName                LAMBRIGG
+MatchStreetName               LAMBRIGG
+                                      
+ExtraInfo                     CNR &
+StreetNameSufType             RD
+OrigSecondStreetName          ZILLMERE
+OrigStreetName                GYMPIE
+MatchStreetName               GYMPIE
+                                      
+ExtraInfo                     CNR
+StreetNameSufType             ST
+OrigStreetName                TOZER/ELBOW
+MatchStreetName               TOZER/ELBOW
+                                      
+WithinStructDescript          VAN
+MatchPropertyName             TOUKLEY
+OrigPropertyName              TOUKLEY
+PropertySufType               Trpk
+WithinStructIdentif           20
+                                      
+WithinStructDescript          CAB
+StreetNameSufType             PARK
+OrigStreetName                EAST VAN
+MatchStreetName               E VAN
+WithinStructIdentif           10
+                                      
+WithinStructDescript          U
+MatchPropertyName             KIRIBILLI
+OrigPropertyName              KIRIBILLI
+PropertySufType               VGAP
+WithinStructIdentif           127A
+                                      
+WithinStructDescript          U
+StreetNameSufType             RD
+MatchPropertyName             TINGARI
+OrigStreetName                DUFFYS
+OrigPropertyName              TINGARI
+MatchStreetName               DUFFYS
+PropertySufType               VLLA
+WithinStructIdentif           76
+                                      
+WithinStructDescript          U
+MatchPropertyName             HENRY KENDALL
+OrigPropertyName              HENRY KENDALL
+PropertySufType               Vlg
+WithinStructIdentif           738
+                                      
+WithinStructDescript          SHOP
+StreetNameSufType             ST
+MatchPropertyName             Hyperdome
+OrigStreetName                ANKETELL
+OrigPropertyName              HYPERDOME
+MatchStreetName               ANKETELL
+WithinStructIdentif           10
+                                      
+OrigStreetName                BIDE-A-WEE
+MatchStreetName               BIDE-A-WEE
+                                      
+MatchPropertyName             LATCHFORD
+OrigPropertyName              LATCHFORD
+PropertySufType               BRAK
+                                      
+OrigStreetName                BURRAWANG
+MatchStreetName               BURRAWANG
+StreetNameSufDirection        S
+                                      
+StreetNameSufType             RD
+MatchPropertyName             BALLAMBI
+OrigStreetName                DUNEDOO
+OrigPropertyName              BALLAMBI
+MatchStreetName               DUNEDOO
+PropertySufType               HSTD
+                                      
+WithinStructDescript          Fl
+StreetNameSufType             ST
+MatchPropertyName             SAVOY
+OrigStreetName                KING
+OrigPropertyName              THE SAVOY
+HouseNumber                   37
+MatchStreetName               KING
+WithinStructIdentif           G
+                                      
+OrigStreetName                KILLIMICAT
+MatchStreetName               KILLIMICAT
+                                      
+StreetNameSufType             RD
+MatchPropertyName             COLONIAL
+OrigStreetName                FOREST
+OrigPropertyName              COLONIAL
+HouseNumber                   741
+MatchStreetName               Frst
+PropertySufType               Nrsh
+                                      
+StreetNameSufType             RD
+MatchPropertyName             INVERNESS
+OrigStreetName                GRENFELL
+OrigPropertyName              INVERNESS
+MatchStreetName               GRENFELL
+PropertySufType               PROP
+                                      
+MatchPropertyName             VERONICA
+OrigPropertyName              VERONICA
+PropertySufType               Nrsh
+                                      
+OrigStreetName                TERRY-HIE-HIE
+BoxDescript                   RMB
+MatchStreetName               TERRY-HIE-HIE
+BoxIdentif                    6
+                                      
+BoxDescript                   Private Bag
+BoxIdentif                    151
+                                      
+OrigStreetName                ERINA FAIR
+BoxDescript                   PO Box
+MatchStreetName               ERINA FAIR
+BoxIdentif                    5072
+                                      
+StreetNameSufType             HWY
+OrigStreetName                ARTHUR
+BoxDescript                   RA
+MatchStreetName               ARTHUR
+BoxIdentif                    6953
+                                      
+StreetNameSufType             RD
+OrigStreetName                MEDWIN’S
+BoxDescript                   RA
+MatchStreetName               MEDWIN’S
+BoxIdentif                    40
+                                      
+StreetNameSufType             RD
+OrigStreetName                ANSONS BAY
+BoxDescript                   RA
+MatchStreetName               ANSONS BAY
+BoxIdentif                    1260
+                                      
+BoxDescript                   PO Box
+BoxIdentif                    169
+                                      
+BoxDescript                   PMB
+                                      
+MatchPropertyName             1308
+OrigPropertyName              1308
+PropDesPrefType               Farm
+                                      
+StreetNameSufType             RD
+MatchPropertyName             PORTION
+OrigStreetName                COMLEROY
+OrigPropertyName              PORTION
+HouseNumber                   141
+MatchStreetName               COMLEROY
+                                      
+WithinStructDescript          Hngr
+StreetNameSufType             RDGE
+OrigStreetName                LIGHTNING
+MatchStreetName               LIGHTNING
+WithinStructIdentif           9
+                                      
+WithinStructDescript          ALOT
+WithinStructIdentif           32
+                                      
+WithinStructDescript          SITE
+WithinStructIdentif           29
+                                      
+CenterIdentif                 2
+StreetNameSufType             RD
+OrigStreetName                BOURKE
+HouseNumber                   140
+CenterDescript                Building
+MatchStreetName               BOURKE
+                                      
+WithinStructDescript          FL
+StreetNameSufType             QY
+OrigStreetName                RIVERSIDE
+HouseNumber                   4
+MatchStreetName               RIVERSIDE
+WithinStructIdentif           G
+                                      
+ExtraInfo                     –
+WithinStructDescript          L
+StreetNameSufType             ST
+OrigStreetName                QUEEN
+HouseNumber                   379
+MatchStreetName               QUEEN
+WithinStructIdentif           4
+                                      
+StreetNameSufType             ST
+OrigStreetName                QUEEN
+HouseNumber                   4–379
+MatchStreetName               QUEEN
+                                      
+WithinStructDescript          SHOP
+StreetNameSufType             PDE
+OrigStreetName                HORTON
+HouseNumber                   151-155
+MatchStreetName               HORTON
+WithinStructIdentif           3 & 4
+                                      
+WithinStructDescript          U
+StreetNameSufType             RD
+OrigStreetName                MAIN
+HouseNumber                   22-24
+MatchStreetName               MAIN
+WithinStructIdentif           1
+                                      
+WithinStructDescript          U
+StreetNameSufType             DR
+OrigStreetName                HENRY PARRY
+HouseNumber                   84-86
+MatchStreetName               HENRY PARRY
+WithinStructIdentif           4
+                                      
+WithinStructDescript          TNHS
+StreetNameSufType             AVE
+OrigStreetName                STUART
+HouseNumber                   2-4
+MatchStreetName               STUART
+WithinStructIdentif           62
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                GROSVENOR
+MatchStreetName               GROSVENOR
+WithinStructIdentif           1
+                                      
+WithinStructDescript          U
+StreetNameSufType             CRES
+OrigStreetName                LAKE MORGAN
+HouseNumber                   43
+MatchStreetName               Lake MORGAN
+WithinStructIdentif           23
+                                      
+WithinStructDescript          U
+StreetNameSufType             RD
+OrigStreetName                GAP
+HouseNumber                   58
+MatchStreetName               GAP
+WithinStructIdentif           1 & 2
+                                      
+WithinStructDescript          HSE
+StreetNameSufType             DR
+OrigStreetName                THE ROUND
+HouseNumber                   160
+MatchStreetName               ROUND
+WithinStructIdentif           6
+                                      
+WithinStructDescript          U
+StreetNameSufType             AVE
+OrigStreetName                BYRE
+HouseNumber                   2
+MatchStreetName               BYRE
+WithinStructIdentif           1
+                                      
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                HOWIT
+HouseNumber                   15
+MatchStreetName               HOWIT
+WithinStructIdentif           37
+                                      
+WithinStructDescript          MB
+StreetNameSufType             RD
+OrigStreetName                SOUTH WHARF
+MatchStreetName               S WHRF
+WithinStructIdentif           8
+                                      
+WithinStructDescript          PTHS
+StreetNameSufType             Rt
+OrigStreetName                PRINCESS
+MatchStreetName               PRINCESS
+WithinStructIdentif           37
+                                      
+WithinStructDescript          VLLA
+StreetNameSufType             RD
+OrigStreetName                EASTER
+HouseNumber                   13
+MatchStreetName               EASTER
+WithinStructIdentif           20
+                                      
+WithinStructDescript          CAB
+StreetNameSufType             PDE
+OrigStreetName                GUGGERAH
+HouseNumber                   19
+MatchStreetName               GUGGERAH
+WithinStructIdentif           Rear
+                                      
+StreetNameSufType             RD
+OrigStreetName                AA QUARRY
+MatchStreetName               AA QUARRY
+                                      
+StreetNameSufType             EST
+OrigStreetName                SINGLINE
+HouseNumber                   1
+MatchStreetName               SINGLINE
+                                      
+StreetNameSufType             ST
+OrigStreetName                TIPPER
+HouseNumber                   0
+MatchStreetName               TIPPER
+                                      
+StreetNameSufType             RD
+HouseNumberSuffix             O
+OrigStreetName                G
+HouseNumber                   5
+MatchStreetName               G
+                                      
+WithinStructDescript          U
+StreetNameSufType             RD
+MatchPropertyName             HOMELAND
+OrigStreetName                JOHNS
+OrigPropertyName              HOMELAND
+MatchStreetName               JOHNS
+PropertySufType               Trpk
+WithinStructIdentif           23
+                                      
+WithinStructDescript          U
+StreetNameSufType             Vlg
+OrigStreetName                LAKEHAVEN MASONIC
+HouseNumber                   4
+MatchStreetName               LAKEHAVEN MASONIC
+WithinStructIdentif           3
+                                      
+ExtraInfo                     OFF
+StreetNameSufType             AVE
+OrigStreetName                POCKET
+MatchStreetName               POCKET
+                                      
+ExtraInfo                     OFF
+StreetNameSufType             RD
+OrigStreetName                MYRTLE GROVE
+MatchStreetName               MYRTLE GROVE
+                                      
+CenterIdentif                 433
+WithinStructDescript          U
+StreetNameSufType             ST
+OrigStreetName                BEACH
+CenterDescript                Lot
+MatchStreetName               Bch
+WithinStructIdentif           5
+                                      
+CenterIdentif                 10
+WithinStructDescript          SE
+StreetNameSufType             ST
+MatchPropertyName             CHRISTIE CORPORATE
+OrigStreetName                ADELAIDE
+OrigPropertyName              CHRISTIE CORPORATE
+HouseNumber                   320
+CenterDescript                Level
+MatchStreetName               ADELAIDE
+WithinStructIdentif           12
+                                      
+CenterIdentif                 1
+WithinStructDescript          SHOP
+StreetNameSufType             ST
+OrigStreetName                SMITH
+HouseNumber                   3
+CenterDescript                Level
+MatchStreetName               SMITH
+WithinStructIdentif           1
+
+HouseNumber                   44

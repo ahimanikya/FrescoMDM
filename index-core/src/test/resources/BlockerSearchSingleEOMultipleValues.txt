@@ -1,0 +1,17 @@
+Record=Person
+Key=SiteA,0001
+FirstName=SAM
+LastName=KING
+Gender=M
+DOB=19660205
+Address[0].AddressType=H
+Address[0].AddressLine1=123 MAIN ST
+Address[0].City=IRVINE
+Address[0].StateCode=CA
+Address[0].PostalCode=92606
+Address[1].AddressType=W
+Address[1].AddressLine1=456 MAIN ST
+Address[1].City=MONROVIA
+Address[1].StateCode=CA
+Address[1].PostalCode=92606
+

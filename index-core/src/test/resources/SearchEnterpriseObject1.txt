@@ -1,0 +1,2 @@
+EVNT|||UI|HQ|HQ||||<>ID||0001^SiteA|&DEMO||RAMOS^YARITZA^^^||^^^^|19920405||F||111332122|^|H|||||^^|^^USA|Y||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0002^SiteB|&DEMO||RAMOS^YARITZA^^^||^^^^|19920405||F||111332122|^|H|||||^^|^^USA|Y||^^||^|||||&AUX|||<>

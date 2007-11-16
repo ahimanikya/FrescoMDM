@@ -1,0 +1,15 @@
+//Invalid LID - has non numerics
+Record=Person
+Key=SiteA,ABC1234123
+FirstName=DAN
+LastName=CIDON
+Gender=M
+DOB=19740110
+Address[0].AddressType=H
+Address[0].AddressLine1=2505 FIFTH ST
+Address[0].City=DAVIS
+Address[0].StateCode=CA
+Address[0].PostalCode=95616
+
+
+

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="sbyn:SeeBeyond/eView/schema/update.xsd">
+	<SurvivorHelperConfig module-name="SurvivorHelper" parser-class="com.sun.mdm.index.configurator.impl.SurvivorHelperConfig">
+		<helper-class>com.sun.mdm.index.survivor.impl.DefaultSurvivorHelper</helper-class>
+		<default-survivor-strategy>
+			<strategy-class>com.sun.mdm.index.survivor.impl.WeightedSurvivorStrategy</strategy-class>
+			<parameters>
+				<parameter>
+					<parameter-name>ConfigurationModuleName</parameter-name>
+					<parameter-type>java.lang.String</parameter-type>
+					<parameter-value>WeightedSurvivorCalculator</parameter-value>
+				</parameter>
+			</parameters>
+		</default-survivor-strategy>
+		<candidate-definitions>
+			<candidate-field name="Person.PersonCatCode"/>
+			<candidate-field name="Person.LastName"/>
+			<candidate-field name="Person.FirstName"/>
+			<candidate-field name="Person.MiddleName"/>
+			<candidate-field name="Person.Suffix"/>
+			<candidate-field name="Person.Title"/>
+			<candidate-field name="Person.DOB"/>
+			<candidate-field name="Person.Death"/>
+			<candidate-field name="Person.Gender"/>
+			<candidate-field name="Person.MStatus"/>
+			<candidate-field name="Person.SSN"/>
+			<candidate-field name="Person.Race"/>
+			<candidate-field name="Person.Ethnic"/>
+			<candidate-field name="Person.Religion"/>
+			<candidate-field name="Person.Language"/>
+			<candidate-field name="Person.SpouseName"/>
+			<candidate-field name="Person.MotherName"/>
+			<candidate-field name="Person.MotherMN"/>
+			<candidate-field name="Person.FatherName"/>
+			<candidate-field name="Person.Maiden"/>
+			<candidate-field name="Person.PobCity"/>
+			<candidate-field name="Person.PobState"/>
+			<candidate-field name="Person.PobCountry"/>
+			<candidate-field name="Person.VIPFlag"/>
+			<candidate-field name="Person.VetStatus"/>
+			<candidate-field name="Person.FnamePhoneticCode"/>
+			<candidate-field name="Person.LnamePhoneticCode"/>
+			<candidate-field name="Person.MnamePhoneticCode"/>
+			<candidate-field name="Person.MotherMNPhoneticCode"/>
+			<candidate-field name="Person.MaidenPhoneticCode"/>
+			<candidate-field name="Person.SpousePhoneticCode"/>
+			<candidate-field name="Person.MotherPhoneticCode"/>
+			<candidate-field name="Person.FatherPhoneticCode"/>
+			<candidate-field name="Person.DriversLicense"/>
+			<candidate-field name="Person.DriversLicenseSt"/>
+			<candidate-field name="Person.Dod"/>
+			<candidate-field name="Person.DeathCertificate"/>
+			<candidate-field name="Person.Nationality"/>
+			<candidate-field name="Person.Citizenship"/>
+			<candidate-field name="Person.PensionNo"/>
+			<candidate-field name="Person.PensionExpDate"/>
+			<candidate-field name="Person.RepatriationNo"/>
+			<candidate-field name="Person.DistrictOfResidence"/>
+			<candidate-field name="Person.LgaCode"/>
+			<candidate-field name="Person.MilitaryBranch"/>
+			<candidate-field name="Person.MilitaryRank"/>
+			<candidate-field name="Person.MilitaryStatus"/>
+			<candidate-field name="Person.DummyDate"/>
+			<candidate-field name="Person.Class1"/>
+			<candidate-field name="Person.Class2"/>
+			<candidate-field name="Person.Class3"/>
+			<candidate-field name="Person.Class4"/>
+			<candidate-field name="Person.Class5"/>
+			<candidate-field name="Person.String1"/>
+			<candidate-field name="Person.String2"/>
+			<candidate-field name="Person.String3"/>
+			<candidate-field name="Person.String4"/>
+			<candidate-field name="Person.String5"/>
+			<candidate-field name="Person.String6"/>
+			<candidate-field name="Person.String7"/>
+			<candidate-field name="Person.String8"/>
+			<candidate-field name="Person.String9"/>
+			<candidate-field name="Person.String10"/>
+			<candidate-field name="Person.Date1"/>
+			<candidate-field name="Person.Date2"/>
+			<candidate-field name="Person.Date3"/>
+			<candidate-field name="Person.Date4"/>
+			<candidate-field name="Person.Date5"/>
+			<candidate-field name="Person.StdFirstName"/>
+			<candidate-field name="Person.StdLastName"/>
+			<candidate-field name="Person.StdMiddleName"/>
+			<candidate-field name="Person.Phone[*].*"/>
+			<candidate-field name="Person.Alias[*].*"/>
+			<candidate-field name="Person.Address[*].*"/>
+			<candidate-field name="Person.AuxId[*].*"/>
+			<candidate-field name="Person.Comment[*].*"/>
+		</candidate-definitions>
+	</SurvivorHelperConfig>
+	<WeightedCalculator module-name="WeightedSurvivorCalculator" parser-class="com.sun.mdm.index.configurator.impl.WeightedCalculatorConfig">
+		<default-parameters>
+			<parameter>
+				<quality>MostRecentModified</quality>
+				<utility>100.0</utility>
+			</parameter>
+		</default-parameters>
+	</WeightedCalculator>
+	<UpdateManagerConfig module-name="UpdateManager" parser-class="com.sun.mdm.index.configurator.impl.UpdateManagerConfig">
+		<EnterpriseMergePolicy>com.sun.mdm.index.update.impl.EnterpriseMergePolicy</EnterpriseMergePolicy>
+		<EnterpriseUnmergePolicy>com.sun.mdm.index.update.impl.EnterpriseUnmergePolicy</EnterpriseUnmergePolicy>
+		<EnterpriseUpdatePolicy>com.sun.mdm.index.update.impl.EnterpriseUpdatePolicy</EnterpriseUpdatePolicy>
+		<EnterpriseCreatePolicy>com.sun.mdm.index.update.impl.EnterpriseCreatePolicy</EnterpriseCreatePolicy>
+		<SystemMergePolicy>com.sun.mdm.index.update.impl.SystemMergePolicy</SystemMergePolicy>
+		<SystemUnmergePolicy>com.sun.mdm.index.update.impl.SystemUnmergePolicy</SystemUnmergePolicy>
+		<UndoAssumeMatchPolicy/>
+		<SkipUpdateIfNoChange>true</SkipUpdateIfNoChange>
+	</UpdateManagerConfig>
+	<!--
+	<UpdateManagerConfig module-name="UpdateManager" parser-class="com.sun.mdm.index.configurator.impl.UpdateManagerConfig">
+		<EnterpriseMergePolicy/>
+		<EnterpriseUnmergePolicy/>
+		<EnterpriseUpdatePolicy/>
+		<EnterpriseCreatePolicy/>
+		<SystemMergePolicy/>
+		<SystemUnmergePolicy/>
+		<UndoAssumeMatchPolicy/>
+	</UpdateManagerConfig>
+	-->
+</Configuration>

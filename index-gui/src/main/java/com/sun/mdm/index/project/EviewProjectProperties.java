@@ -22,13 +22,58 @@
  */
 package com.sun.mdm.index.project;
 
-import java.util.HashMap;
-import java.util.Map;
-import org.netbeans.modules.j2ee.deployment.devmodules.spi.J2eeModuleProvider;
-
 /** Defines constants for properties used in eView. 
  */
 public class EviewProjectProperties {
+    
+    public static final String EVIEW_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates";    
+    public static final String MATCH_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates/match";        
+    public static final String BIZ_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates/stand/biz";        
+    public static final String AU_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates/stand/AU";    
+    public static final String FR_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates/stand/FR";    
+    public static final String UK_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates/stand/UK";    
+    public static final String US_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates/stand/US";
+    
+    public static final String CONF_FOLDER = "conf"; //NOI18N    
+    // eView Configuration Folder
+    public static final String CONFIGURATION_FOLDER = "Configuration"; //NOI18N
+    // eView Match Engine Folder
+    public static final String MATCH_ENGINE_FOLDER = "MatchEngine"; //NOI18N
+    // eView Standardization Folder
+    public static final String STANDARDIZATION_ENGINE_FOLDER = "StandardizationEngine"; //NOI18N
+    public static final String STANDARDIZATION_ENGINE_BIZ_FOLDER = "biz"; //NOI18N
+    public static final String STANDARDIZATION_ENGINE_AU_FOLDER = "AU"; //NOI18N
+    public static final String STANDARDIZATION_ENGINE_FR_FOLDER = "FR"; //NOI18N    
+    public static final String STANDARDIZATION_ENGINE_UK_FOLDER = "UK"; //NOI18N    
+    public static final String STANDARDIZATION_ENGINE_US_FOLDER = "US"; //NOI18N   
+    // eView Database Script Folder
+    public static final String DATABASE_SCRIPT_FOLDER = "DatabaseScript"; //NOI18N
+    // Filter Folder
+    public static final String FILTER_FOLDER = "Filter"; //NOI18N
+    // eView Custom Plug-ins Folder
+    public static final String CUSTOM_PLUG_INS_FOLDER = "CustomPlug-ins"; //NOI18N
+    public static final String J2EE_MODULES_FOLDER = "J2EE Modules"; //NOI18N
+    
+    public static final String OBJECT_XML = "object.xml";
+    public static final String EDM_XML = "edm.xml";
+    public static final String MASTER_XML = "master.xml";    
+    public static final String MEFA_XML = "mefa.xml";    
+    public static final String SECURITY_XML = "security.xml";    
+    public static final String VALIDATION_XML = "validation.xml";    
+    public static final String QUERY_XML = "query.xml";   
+    public static final String UPDATE_XML = "update.xml";    
+    
+    public static final String MATCH_CONFIG_FILE = "matchConfigFile.cfg";
+    
+    public static final String SYSTEMS_SQL = "systems.sql";
+    public static final String CODELIST_SQL = "codelist.sql";
+    
+    public static final String MATCH_ZIP = "modules/ext/eview/repository/templates/match.zip";
+    public static final String STAND_ZIP = "modules/ext/eview/repository/templates/stand.zip";
+    public static final String TEMPLATE_ZIP = "modules/ext/eview/repository/templates/EviewApplicationTemplateProject.zip";
+    
+    public static final String EVIEW_GENERATED_FOLDER = "eView_generated";
+    
     //following properties are from ear project
     public static final String WEB_PROJECT_NAME = "web.project.name"; //NOI18N
     public static final String JAVA_PLATFORM = "platform.active"; //NOI18N

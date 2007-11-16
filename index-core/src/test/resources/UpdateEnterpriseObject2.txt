@@ -1,0 +1,13 @@
+Record=Person
+Key=SiteA,0001
+SystemObject.UpdateDateTime=19000110
+SystemObject.UpdateFunction=JUNK
+SystemObject.CreateFunction=JUNK2
+FirstName=DAN
+LastName=CIDON
+Gender=M
+DOB=19740110
+
+
+
+

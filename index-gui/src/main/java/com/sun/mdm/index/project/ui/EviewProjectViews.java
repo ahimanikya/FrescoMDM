@@ -61,7 +61,7 @@ import org.openide.filesystems.FileUtil;
 import javax.swing.Action;
 //import java.io.IOException;
 
-import com.sun.mdm.index.project.EviewRepository;
+import com.sun.mdm.index.project.EviewProjectProperties;
 
 class EviewProjectViews {
 
@@ -165,27 +165,27 @@ class EviewProjectViews {
                     }
                 }
             } else if (key == KEY_CONFIGURATION_DIR) {
-                FileObject configurationFolder = srcRoot.getFileObject(EviewRepository.CONFIGURATION_FOLDER);
+                FileObject configurationFolder = srcRoot.getFileObject(EviewProjectProperties.CONFIGURATION_FOLDER);
                 if (configurationFolder != null) {
                     n = new EviewConfigurationFolderNode(CONFIGURATION_FOLDER_DISPLAY_NAME, DataFolder.findFolder(configurationFolder), project);                                                
                 }
             } else if (key == KEY_DBSCRIPT_DIR) {
-                FileObject dbscriptFolder = srcRoot.getFileObject(EviewRepository.DATABASE_SCRIPT_FOLDER);
+                FileObject dbscriptFolder = srcRoot.getFileObject(EviewProjectProperties.DATABASE_SCRIPT_FOLDER);
                 if (dbscriptFolder != null) {
                     n = new EviewDBScriptFolderNode(DATABASE_SCRIPT_FOLDER_DISPLAY_NAME, DataFolder.findFolder(dbscriptFolder));                                                
                 }
             } else if (key == KEY_STANDARDIZATION_DIR) {
-                FileObject standardizationEngineFolder = srcRoot.getFileObject(EviewRepository.STANDARDIZATION_ENGINE_FOLDER);
+                FileObject standardizationEngineFolder = srcRoot.getFileObject(EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER);
                 if (standardizationEngineFolder != null) {
                     n = new EviewConfigurationFolderNode(STANDARDIZATION_ENGINE_FOLDER_DISPLAY_NAME, DataFolder.findFolder(standardizationEngineFolder));                                                
                 }
             } else if (key == KEY_MATCH_ENGINE_DIR) {
-                FileObject matchEngineFolder = srcRoot.getFileObject(EviewRepository.MATCH_ENGINE_FOLDER);
+                FileObject matchEngineFolder = srcRoot.getFileObject(EviewProjectProperties.MATCH_ENGINE_FOLDER);
                 if (matchEngineFolder != null) {
                     n = new EviewConfigurationFolderNode(MATCH_ENGINE_FOLDER_DISPLAY_NAME, DataFolder.findFolder(matchEngineFolder));                                                
                 }
             } else if (key == KEY_FILTER_DIR) {
-                FileObject filterFolder = srcRoot.getFileObject(EviewRepository.FILTER_FOLDER);
+                FileObject filterFolder = srcRoot.getFileObject(EviewProjectProperties.FILTER_FOLDER);
                 if (filterFolder == null) {
                     try {
                         filterFolder = FileUtil.createFolder(srcRoot, FILTER_FOLDER_DISPLAY_NAME);
@@ -198,7 +198,7 @@ class EviewProjectViews {
                 }
 
             } else if (key == KEY_CUSTOM_PLUG_INS_DIR) {
-                FileObject customPluginsFolder = srcRoot.getFileObject(EviewRepository.CUSTOM_PLUG_INS_FOLDER);
+                FileObject customPluginsFolder = srcRoot.getFileObject(EviewProjectProperties.CUSTOM_PLUG_INS_FOLDER);
                 if (customPluginsFolder != null) {
                     n = new EviewCustomPlugInsFolderNode(CUSTOM_PLUG_INS_FOLDER_DISPLAY_NAME, projectDir, DataFolder.findFolder(customPluginsFolder));                                                
                 }

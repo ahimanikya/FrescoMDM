@@ -153,7 +153,7 @@ public class EviewApplication extends EviewProject {
     public EDMType getEDMType(boolean bRefresh) {
         try {
             if (mEDMType == null || bRefresh) {
-                FileObject cf = getConfigurationFile(EviewRepository.CONFIGURATION_FOLDER, EviewRepository.EDM_XML, false);                    
+                FileObject cf = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.EDM_XML, false);                    
                 if (cf != null) {
                     InputStream objectdef = cf.getInputStream();
                     InputSource source = new InputSource(objectdef);
@@ -176,7 +176,7 @@ public class EviewApplication extends EviewProject {
     public UpdateType getUpdateType(boolean bRefresh) {
         try {
             if (mUpdateType == null || bRefresh) {
-                FileObject cf = getConfigurationFile(EviewRepository.CONFIGURATION_FOLDER, EviewRepository.UPDATE_XML, false);
+                FileObject cf = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.UPDATE_XML, false);
                 if (cf != null) {
                     InputStream objectdef = cf.getInputStream();
                     InputSource source = new InputSource(objectdef);
@@ -365,7 +365,7 @@ public class EviewApplication extends EviewProject {
      */
     public ArrayList getMatchTypeList(boolean bRefresh) {
         if (mAlMatchTypes == null || bRefresh) {
-            FileObject file = getConfigurationFile(EviewRepository.MATCH_ENGINE_FOLDER, EviewRepository.MATCH_CONFIG_FILE, false);        
+            FileObject file = getConfigurationFile(EviewProjectProperties.MATCH_ENGINE_FOLDER, EviewProjectProperties.MATCH_CONFIG_FILE, false);        
 
             if (file != null) {
                 mAlMatchTypes = new ArrayList<String>();
@@ -432,7 +432,7 @@ public class EviewApplication extends EviewProject {
     public MatchFieldDef getMatchFieldDef(boolean bRefresh) {
         if (mMatchFieldDef == null || bRefresh) {
             try {
-                FileObject cf = getConfigurationFile(EviewRepository.CONFIGURATION_FOLDER, EviewRepository.MEFA_XML, false);
+                FileObject cf = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.MEFA_XML, false);
                 if (cf != null) {
                     InputStream objectdef = cf.getInputStream();
                     InputSource source = new InputSource(objectdef);
@@ -527,7 +527,7 @@ public class EviewApplication extends EviewProject {
     public QueryType getQueryType(boolean bRefresh) {
         if (mQueryType == null || bRefresh) {
             try {
-                FileObject cf = getConfigurationFile(EviewRepository.CONFIGURATION_FOLDER, EviewRepository.QUERY_XML, false);
+                FileObject cf = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.QUERY_XML, false);
                 if (cf != null) {
                     InputStream objectdef = cf.getInputStream();                
                     InputSource source = new InputSource(objectdef);
@@ -550,7 +550,7 @@ public class EviewApplication extends EviewProject {
     public MasterType getMasterType(boolean bRefresh) {
         if (mMasterType == null || bRefresh) {
             try {
-                FileObject cf = getConfigurationFile(EviewRepository.CONFIGURATION_FOLDER, EviewRepository.MASTER_XML, false);
+                FileObject cf = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.MASTER_XML, false);
                 if (cf != null) {
                     InputStream objectdef = cf.getInputStream();                
                     InputSource source = new InputSource(objectdef);
@@ -639,7 +639,7 @@ public class EviewApplication extends EviewProject {
         boolean checkedOut = true;
         try {
             // check out MATCH_CONFIG_FILE
-            fileMatchConfigCheckedOut = getConfigurationFile(EviewRepository.MATCH_ENGINE_FOLDER, EviewRepository.MATCH_CONFIG_FILE, false);
+            fileMatchConfigCheckedOut = getConfigurationFile(EviewProjectProperties.MATCH_ENGINE_FOLDER, EviewProjectProperties.MATCH_CONFIG_FILE, false);
         } catch (Exception ex) {
             msgCheckedOut += ex.getMessage() + "\n";
             checkedOut = false;
@@ -701,7 +701,7 @@ public class EviewApplication extends EviewProject {
         boolean checkedOut = true;
         try {
             // check out EDM
-            fileEdmCheckedOut = getConfigurationFile(EviewRepository.CONFIGURATION_FOLDER, EviewRepository.EDM_XML, false);
+            fileEdmCheckedOut = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.EDM_XML, false);
         } catch (Exception ex) {
             msgCheckedOut += ex.getMessage() + "\n";
             checkedOut = false;
@@ -731,7 +731,7 @@ public class EviewApplication extends EviewProject {
         boolean checkedOut = true;
         try {
             // check out mefa
-            fileMefaCheckedOut = getConfigurationFile(EviewRepository.CONFIGURATION_FOLDER, EviewRepository.MEFA_XML, false);
+            fileMefaCheckedOut = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.MEFA_XML, false);
         } catch (Exception ex) {
             msgCheckedOut += ex.getMessage() + "\n";
             checkedOut = false;
@@ -761,7 +761,7 @@ public class EviewApplication extends EviewProject {
         boolean checkedOut = true;
         try {
             // check out query
-            fileQueryCheckedOut = getConfigurationFile(EviewRepository.CONFIGURATION_FOLDER, EviewRepository.QUERY_XML, false);
+            fileQueryCheckedOut = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.QUERY_XML, false);
         } catch (Exception ex) {
             msgCheckedOut += ex.getMessage() + "\n";
             checkedOut = false;
@@ -791,7 +791,7 @@ public class EviewApplication extends EviewProject {
         boolean checkedOut = true;
         try {
             // check out security
-            fileSecurityCheckedOut = getConfigurationFile(EviewRepository.CONFIGURATION_FOLDER, EviewRepository.SECURITY_XML, false);
+            fileSecurityCheckedOut = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.SECURITY_XML, false);
         } catch (Exception ex) {
             msgCheckedOut += ex.getMessage() + "\n";
             checkedOut = false;
@@ -821,7 +821,7 @@ public class EviewApplication extends EviewProject {
         boolean checkedOut = true;
         try {
             // check out master
-            fileMasterCheckedOut = getConfigurationFile(EviewRepository.CONFIGURATION_FOLDER, EviewRepository.MASTER_XML, false);
+            fileMasterCheckedOut = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.MASTER_XML, false);
         } catch (Exception ex) {
             msgCheckedOut += ex.getMessage() + "\n";
             checkedOut = false;
@@ -851,7 +851,7 @@ public class EviewApplication extends EviewProject {
         boolean checkedOut = true;
         try {
             // check out update
-            fileUpdateCheckedOut = getConfigurationFile(EviewRepository.CONFIGURATION_FOLDER, EviewRepository.UPDATE_XML, false);
+            fileUpdateCheckedOut = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.UPDATE_XML, false);
         } catch (Exception ex) {
             msgCheckedOut += ex.getMessage() + "\n";
             checkedOut = false;
@@ -881,7 +881,7 @@ public class EviewApplication extends EviewProject {
         boolean checkedOut = true;
         try {
             // check out validation
-            fileValidationCheckedOut = getConfigurationFile(EviewRepository.CONFIGURATION_FOLDER, EviewRepository.VALIDATION_XML, false);
+            fileValidationCheckedOut = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.VALIDATION_XML, false);
         } catch (Exception ex) {
             msgCheckedOut += ex.getMessage() + "\n";
             checkedOut = false;
@@ -929,7 +929,7 @@ public class EviewApplication extends EviewProject {
      */ 
 
     public FileObject getObjectDefinitionFile() {
-        FileObject fo = getConfigurationFile(EviewRepository.CONFIGURATION_FOLDER, EviewRepository.OBJECT_XML, false);
+        FileObject fo = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.OBJECT_XML, false);
         return fo;
     }
 

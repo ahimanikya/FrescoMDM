@@ -21,7 +21,7 @@ import com.sun.mdm.index.parser.MatchFieldDef;
 import com.sun.mdm.index.parser.QueryType;
 import com.sun.mdm.index.parser.Utils;
 import com.sun.mdm.index.parser.QueryType.QueryBuilder;
-import com.sun.mdm.index.project.EviewRepository;
+import com.sun.mdm.index.project.EviewProjectProperties;
 
 /**
  * @author Sujit Biswas, Kevin Kao
@@ -59,7 +59,7 @@ public class LoaderGeneratorTask extends Task {
 
 			// Threshold
 			xmlFile = new File(srcDir + File.separator
-					+ EviewRepository.CONFIGURATION_FOLDER + File.separator
+					+ EviewProjectProperties.CONFIGURATION_FOLDER + File.separator
 					+ "master.xml");
 			source = new InputSource(new FileInputStream(xmlFile));
 			MasterType masterType = Utils.parseMasterType(source);
@@ -87,7 +87,7 @@ public class LoaderGeneratorTask extends Task {
 
 			// QueryBuilder
 			xmlFile = new File(srcDir + File.separator
-					+ EviewRepository.CONFIGURATION_FOLDER + File.separator
+					+ EviewProjectProperties.CONFIGURATION_FOLDER + File.separator
 					+ "query.xml");
 			source = new InputSource(new FileInputStream(xmlFile));
 			QueryType queryType = Utils.parseQueryType(source);
@@ -101,7 +101,7 @@ public class LoaderGeneratorTask extends Task {
 
 			// MatchConfig
 			xmlFile = new File(srcDir + File.separator
-					+ EviewRepository.CONFIGURATION_FOLDER + File.separator
+					+ EviewProjectProperties.CONFIGURATION_FOLDER + File.separator
 					+ "mefa.xml");
 			source = new InputSource(new FileInputStream(xmlFile));
 			MatchFieldDef matchFieldDef = Utils.parseMatchFieldDef(source);

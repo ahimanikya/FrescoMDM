@@ -1,0 +1,464 @@
+StreetNamePrefType            BD
+OrigStreetName                101ÈME AIRBORNE
+HouseNumber                   5
+MatchStreetName               101ÈME AIRBORNE
+                                      
+StreetNamePrefType            RUE
+OrigStreetName                DES 4 VENTS
+MatchStreetName               4 VENTS
+                                      
+StreetNamePrefType            BD
+OrigStreetName                DE LA CORDERIE
+HouseNumber                   12
+MatchStreetName               LA CORDERIE
+                                      
+StreetNamePrefType            RPT
+OrigStreetName                SOUVENIR FRANCAIS
+HouseNumber                   12 
+MatchStreetName               SOUVENIR FRANCAIS
+                                      
+StreetNamePrefType            PL
+HouseNumberSuffix             T
+OrigStreetName                GAMETTA
+HouseNumber                   14
+MatchStreetName               GAMETTA
+                                      
+StreetNamePrefType            RUE
+OrigStreetName                ALBERT 1ER DE BELGIQUE
+MatchStreetName               ALBERT 1ER DE BELGIQUE
+                                      
+StreetNamePrefType            RUE
+OrigStreetName                DU 11 NOVEMBRE 1918
+MatchStreetName               11 NOV 1918
+                                      
+StreetNameSufType             GD RUE
+MatchPropertyName             BOUT
+OrigStreetName                CHARLES DE GAULLES
+OrigPropertyName              BOUTIQUE
+HouseNumber                   93
+MatchStreetName               CHARLES DE GAULLES
+                                      
+StreetNamePrefType            ALL
+WithinStructDescript          APP
+MatchPropertyName             BARCLELEAU
+OrigStreetName                LIMOUSINE
+OrigPropertyName              BARCLELEAU
+HouseNumber                   1
+MatchStreetName               LIMOUSINE
+WithinStructIdentif           B
+                                      
+StreetNamePrefType            RTN
+OrigStreetName                DE SAINT LOUIS
+HouseNumber                   48
+MatchStreetName               ST LOUIS
+                                      
+StreetNamePrefType            RUE
+MatchPropertyName             CLOS ARLAC
+OrigStreetName                DES ŒILLETS
+OrigPropertyName              CLOS ARLAC
+HouseNumber                   5
+MatchStreetName               ŒILLETS
+PropertySufType               RES
+                                      
+StreetNamePrefType            RUE
+MatchPropertyName             ALGORITHMES
+OrigStreetName                MICHEL CARRÉ
+OrigPropertyName              DES ALGORITHMES
+BoxDescript                   BP
+HouseNumber                   145
+MatchStreetName               MICHEL CARRÉ
+PropertySufType               ZI
+BoxIdentif                    9006
+                                      
+StreetNamePrefType            RUE
+MatchPropertyName             ALFRED DANEY
+OrigStreetName                LA MOTTE PICQUET
+OrigPropertyName              ALFRED DANEY
+MatchStreetName               MOTTE PICQUET
+PropertySufType               ZI
+                                      
+StreetNamePrefType            RUE
+MatchPropertyName             LOT
+OrigStreetName                LE CORBUSIER
+OrigPropertyName              LOT
+HouseNumber                   112
+MatchStreetName               CORBUSIER
+                                      
+MatchPropertyName             ALLEUX
+OrigPropertyName              ALLEUX
+PropertySufType               ZA
+                                      
+StreetNamePrefType            RUE
+MatchPropertyName             CERVIÈRES
+OrigStreetName                JOSEPH SILVESTRE
+OrigPropertyName              DE CERVIÈRES
+HouseNumber                   20
+MatchStreetName               JOSEPH SILVESTRE
+PropertySufType               PONT
+                                      
+StreetNamePrefType            RUE
+OrigStreetName                JEAN JAURES
+BoxDescript                   BP
+HouseNumber                   1
+MatchStreetName               JEAN JAURES
+BoxIdentif                    27
+                                      
+ExtraInfo                     BATIMENT A
+StreetNamePrefType            ALL
+WithinStructDescript          ESC
+MatchPropertyName             INGENIEUR
+OrigStreetName                DES JONQUILLES
+OrigPropertyName              INGENIEUR
+HouseNumber                   4
+MatchStreetName               JONQUILLES
+WithinStructIdentif           1
+                                      
+StreetNamePrefType            RTED
+OrigStreetName                651
+MatchStreetName               651
+
+StreetNamePrefType            RTE
+OrigStreetName                DE VILLENAVE
+MatchStreetName               VILLENAVE
+                                      
+StreetNamePrefType            PL
+OrigStreetName                DE LA MAIRIE
+HouseNumber                   2
+MatchStreetName               LA MAIRIE
+                                      
+StreetNamePrefType            BD
+OrigStreetName                DE LA CORDERIE
+HouseNumber                   12
+MatchStreetName               LA CORDERIE
+                                      
+StreetNamePrefType            RUE
+OrigStreetName                LOUIS CONDORCET
+HouseNumber                   22
+MatchStreetName               LOUIS CONDORCET
+                                      
+StreetNamePrefType            RUE
+OrigStreetName                DU PAPE JEAN XXIII
+MatchStreetName               PAPE JEAN XXIII
+                                      
+StreetNamePrefType            RUE
+OrigStreetName                ALBERT 1ER DE BELGIQUE
+MatchStreetName               ALBERT 1ER DE BELGIQUE
+                                      
+StreetNamePrefType            RUE
+OrigStreetName                DU 11 NOVEMBRE 1918
+MatchStreetName               11 NOV 1918
+                                      
+StreetNamePrefType            AV
+OrigStreetName                DU 140E RIA
+MatchStreetName               140E RIA
+                                      
+StreetNamePrefType            PL
+OrigStreetName                DU 77 IEME
+MatchStreetName               77 IEME
+                                      
+StreetNamePrefType            RUE
+OrigStreetName                DES 4 VENTS
+MatchStreetName               4 VENTS
+                                      
+StreetNamePrefType            PL
+OrigStreetName                DES QUATRE VINGTS
+MatchStreetName               QUATRE VINGTS
+                                      
+StreetNamePrefType            AV
+OrigStreetName                DE SAINT ANTOINE
+HouseNumber                   134
+MatchStreetName               ST ANTOINE
+                                      
+StreetNamePrefType            AV
+OrigStreetName                GÉN DE GAULLE
+HouseNumber                   16
+MatchStreetName               GEN DE GAULLE
+                                      
+StreetNamePrefType            AV
+OrigStreetName                DU GÉN DE GAULLE
+HouseNumber                   34
+MatchStreetName               GEN DE GAULLE
+                                      
+StreetNamePrefType            CRS
+OrigStreetName                CHARLEMAGNE
+HouseNumber                   5
+MatchStreetName               CHARLEMAGNE
+                                      
+StreetNamePrefType            RUE
+HouseNumberSuffix             T
+OrigStreetName                PRÉS CARNOT
+HouseNumber                   1
+MatchStreetName               PRÉS CARNOT
+                                      
+StreetNamePrefType            QUAI
+OrigStreetName                DE DION BOUTON
+HouseNumber                   30
+MatchStreetName               DION BOUTON
+                                      
+StreetNamePrefType            CITE
+OrigStreetName                D’ANTIN
+HouseNumber                   10
+MatchStreetName               D’ANTIN
+                                      
+StreetNamePrefType            PL
+OrigStreetName                11 NOVEMBRE 1918
+HouseNumber                   15
+MatchStreetName               11 NOV 1918
+                                      
+StreetNamePrefType            PL
+HouseNumberSuffix             B
+OrigStreetName                JOFFRE
+HouseNumber                   11
+MatchStreetName               JOFFRE
+                                      
+StreetNamePrefType            RUE
+OrigStreetName                DU VIEUX MARCHÉ AUX VINS
+HouseNumber                   10
+MatchStreetName               VX MARCHÉ AUX VINS
+                                      
+StreetNameSufType             RUE
+OrigStreetName                GRANDE
+HouseNumber                   50
+MatchStreetName               GDE
+                                      
+OrigStreetName                LE BOURG
+HouseNumber                   55
+MatchStreetName               BRG
+                                      
+StreetNamePrefType            RUE
+OrigStreetName                101ÈME AIRBORNE
+HouseNumber                   55
+MatchStreetName               101ÈME AIRBORNE
+                                      
+StreetNamePrefType            RUE
+OrigStreetName                QUAI
+HouseNumber                   11
+MatchStreetName               QUAI
+                                      
+StreetNamePrefType            CHEM
+OrigStreetName                PLACE
+HouseNumber                   106
+MatchStreetName               PL
+                                      
+StreetNamePrefType            RTE
+OrigStreetName                GOULETS
+MatchStreetName               GOULETS
+                                      
+StreetNamePrefType            BD
+OrigStreetName                ALLIÉS
+HouseNumber                   5
+MatchStreetName               ALLIÉS
+                                      
+StreetNamePrefType            RUE
+OrigStreetName                FRANÇOIS 1ER
+HouseNumber                   64
+MatchStreetName               FRANÇOIS 1ER
+                                      
+StreetNamePrefType            RUE
+OrigStreetName                HUIT MAI 1945
+HouseNumber                   7
+MatchStreetName               HUIT MAI 1945
+                                      
+StreetNamePrefType            PL
+HouseNumberSuffix             T
+OrigStreetName                GAMBETTA
+HouseNumber                   14
+MatchStreetName               GAMBETTA
+                                      
+StreetNamePrefType            QUAI
+OrigStreetName                LOUIS XVIII
+HouseNumber                   4
+MatchStreetName               LOUIS XVIII
+                                      
+StreetNamePrefType            PAS
+OrigStreetName                GALERIE BORDELAISE
+HouseNumber                   8
+MatchStreetName               GAL BORDELAISE
+                                      
+StreetNamePrefType            RTE
+OrigStreetName                ROYAN
+MatchStreetName               ROYAN
+                                      
+StreetNamePrefType            PROM
+OrigStreetName                BELVÉDÈRE
+HouseNumber                   5
+MatchStreetName               BELVÉDÈRE
+                                      
+StreetNamePrefType            RPT
+OrigStreetName                SOUVENIR FRANÇAIS
+HouseNumber                   12
+MatchStreetName               SOUVENIR FRANÇAIS
+                                      
+OrigStreetName                PATIO REFLETS
+HouseNumber                   32
+MatchStreetName               PATIO REFLETS
+                                      
+StreetNamePrefType            RUE
+HouseNumberSuffix             B
+OrigStreetName                GUSTAVE BRINDEAU
+HouseNumber                   6
+MatchStreetName               GUSTAVE BRINDEAU
+                                      
+StreetNamePrefType            AV
+HouseNumberSuffix             T
+OrigStreetName                TUILERIES
+HouseNumber                   6
+MatchStreetName               TUILERIES
+                                      
+StreetNameSufType             GD RUE
+HouseNumberSuffix             B
+OrigStreetName                CHARLES DE GAULLE
+HouseNumber                   24
+MatchStreetName               CHARLES DE GAULLE
+                                      
+StreetNamePrefType            IMP
+OrigStreetName                GABRIEL LACUEILLE
+HouseNumber                   2
+MatchStreetName               GABRIEL LACUEILLE
+                                      
+StreetNamePrefType            PL
+OrigStreetName                NOVEMBRE
+HouseNumber                   3
+MatchStreetName               NOV
+                                      
+StreetNamePrefType            RUE
+OrigStreetName                26 MARS 1944
+HouseNumber                   103
+MatchStreetName               26 MARS 1944
+                                      
+StreetNamePrefType            CRS
+OrigStreetName                GÉN DE GAULLE
+HouseNumber                   194
+MatchStreetName               GEN DE GAULLE
+                                      
+StreetNamePrefType            CHEM
+OrigStreetName                BEL AIR
+HouseNumber                   27
+MatchStreetName               BEL AIR
+                                      
+MatchPropertyName             VAL YERRES
+OrigPropertyName              VAL YERRES
+PropertySufType               CCAL
+                                      
+MatchPropertyName             NATIBOLIS
+OrigPropertyName              NATIBOLIS
+PropertySufType               LD
+                                      
+BoxDescript                   BP
+BoxIdentif                    50048
+                                      
+StreetNamePrefType            RTED
+OrigStreetName                651
+MatchStreetName               651
+                                      
+MatchPropertyName             BORDEAUX FRÊT
+OrigPropertyName              BORDEAUX FRÊT
+PropertySufType               ZI
+                                      
+StreetNamePrefType            GAL
+OrigStreetName                GRANDS HOMME
+MatchStreetName               GRANDS HOMME
+                                      
+MatchPropertyName             CENTRAL PARC
+OrigPropertyName              CENTRAL PARC
+PropertySufType               IMM
+                                      
+MatchPropertyName             CHÊNE
+OrigPropertyName              LE CHÊNE
+PropertySufType               CCAL
+                                      
+MatchPropertyName             PRÉ LANDES
+OrigPropertyName              LE PRÉ DES LANDES
+                                      
+MatchPropertyName             ALLEUX
+OrigPropertyName              ALLEUX
+PropertySufType               ZA
+                                      
+MatchPropertyName             ALLEUX
+OrigPropertyName              ALLEUX
+PropertySufType               ZAR
+                                      
+MatchPropertyName             PARIS AUTEUIL
+OrigPropertyName              PARIS AUTEUIL
+PropertySufType               PSTR
+                                      
+StreetNamePrefType            RUE
+MatchPropertyName             LOT
+OrigStreetName                LE CORBUSIER
+OrigPropertyName              LOT
+HouseNumber                   112
+MatchStreetName               CORBUSIER
+                                      
+StreetNamePrefType            RUE
+MatchPropertyName             CLOS ARLAC
+OrigStreetName                DES ŒILLETS
+OrigPropertyName              CLOS ARLAC
+HouseNumber                   5
+MatchStreetName               ŒILLETS
+PropertySufType               RES
+                                      
+CenterIdentif                 D
+MatchPropertyName             ARAGO 2
+OrigPropertyName              ARAGO 2
+CenterDescript                Bâtiment
+PropertySufType               RES
+                                      
+StreetNamePrefType            AV
+MatchPropertyName             LOUBIAN
+OrigStreetName                CHARLES DE GAULLE
+OrigPropertyName              LOUBIAN
+MatchStreetName               CHARLES DE GAULLE
+PropertySufType               QUA
+                                      
+StreetNameSufType             GD RUE
+MatchPropertyName             BOUT
+OrigStreetName                CHARLES DE GAULLE
+OrigPropertyName              BOUTIQUE
+HouseNumber                   93
+MatchStreetName               CHARLES DE GAULLE
+                                      
+StreetNamePrefType            RUE
+MatchPropertyName             ALFRED DANEY
+OrigStreetName                LA MOTTE PICQUET
+OrigPropertyName              ALFRED DANEY
+MatchStreetName               MOTTE PICQUET
+PropertySufType               ZI
+                                      
+StreetNamePrefType            RUE
+MatchPropertyName             BEAULIEU
+OrigStreetName                CHAMPOLLION
+OrigPropertyName              BEAULIEU
+HouseNumber                   1
+MatchStreetName               CHAMPOLLION
+PropertySufType               LOT
+                                      
+WithinStructDescript          CELL
+MatchPropertyName             FÁCHES
+OrigPropertyName              FÁCHES
+PropertySufType               CCAL
+WithinStructIdentif           47
+                                      
+StreetNamePrefType            RUE
+OrigStreetName                JEAN JAURES
+BoxDescript                   BP
+HouseNumber                   1
+MatchStreetName               JEAN JAURES
+BoxIdentif                    27
+                                      
+StreetNamePrefType            PL
+OrigStreetName                DE LA GARE
+BoxDescript                   BP
+HouseNumber                   12
+MatchStreetName               LA GARE
+BoxIdentif                    12
+                                      
+StreetNamePrefType            ALL
+WithinStructDescript          APP
+MatchPropertyName             BARCLELEAU
+OrigStreetName                LIMOUSINE
+OrigPropertyName              BARCLELEAU
+HouseNumber                   1
+MatchStreetName               LIMOUSINE
+WithinStructIdentif           B
+
+HouseNumber                   44

@@ -1,0 +1,4 @@
+// Data to create multiple assumed matches, VIP='Y'
+EVNT|||UI|HQ|HQ||||<>ID||0001^SiteA|&DEMO||JOHN^SMITH^^^||^^^^|19920405||M||111221234|^|H|||||^^|^^USA|Y||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0001^SiteB|&DEMO||JOHN^SMITH^^^||^^^^|19920405||M||111221234|^|H|||||^^|^^USA|Y||^^||^|||||&AUX|||<>
+EVNT|||UI|HQ|HQ||||<>ID||0001^SiteC|&DEMO||JOHN^SMITH^^^||^^^^|19920405||M||111221234|^|H|||||^^|^^USA|Y||^^||^|||||&AUX|||<>
