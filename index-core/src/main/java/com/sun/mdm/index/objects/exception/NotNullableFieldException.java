@@ -54,6 +54,6 @@ public class NotNullableFieldException extends ObjectException {
      * @include
      */
     public NotNullableFieldException(String msg) {
-        super("the field [" + msg + "] is not nullable");
+        super(msg);
     }
 }

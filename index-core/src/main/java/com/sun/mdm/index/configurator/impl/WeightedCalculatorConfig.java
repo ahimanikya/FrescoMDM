@@ -236,7 +236,7 @@ public class WeightedCalculatorConfig implements ConfigurationInfo {
             mDefaultRules = parameterInsts;
         }
         
-        mLogger.info(mLocalizer.x("CFG042: WeightedCalculatorConfig:WeightStrategy: {0}", LogUtil.mapToString(mConfig)));
+        mLogger.info(mLocalizer.x("CFG042: WeightedCalculatorConfig WeightStrategy is: {0}", LogUtil.mapToString(mConfig)));
     }
 
     /** Return String representing the module type

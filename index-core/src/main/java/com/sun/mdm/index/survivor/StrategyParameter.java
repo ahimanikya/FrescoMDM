@@ -221,8 +221,8 @@ public class StrategyParameter implements Cloneable, java.io.Serializable {
                 return new Long(string);
             } else if (Character.class.equals(type)) {
                 if (string.length() != 1) {
-                    throw new IllegalArgumentException(mLocalizer.t("SUR516: This is an " +
-                                        "value for the string parameter: {0}", string));
+                    throw new IllegalArgumentException(mLocalizer.t("SUR516: Could not " +
+                                        "return the value object from a string: {0}", string));
                 } else {
                     return new Character(string.charAt(0));
                 }
@@ -232,6 +232,7 @@ public class StrategyParameter implements Cloneable, java.io.Serializable {
                                         "return the value object from a string: {0}", t));
         }
 
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException(mLocalizer.t("SUR533: Could not " +
+                                        "return the value object from a string."));
     }
 }

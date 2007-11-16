@@ -257,7 +257,7 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
                                                 "executing this SQL statement: {0}:{1}", 
                                                 sql, e));
         } catch (OPSException e) {
-            throw new OPSException(mLocalizer.t("RPT507: Could not retrieve the" +
+            throw new OPSException(mLocalizer.t("RPT507: Could not retrieve the " +
                                                 "transaction count: {0}", e));
         } finally {
         	try {
@@ -269,7 +269,7 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
                         stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException(mLocalizer.t("RPT508: Could not close the SQL" +
+            	throw new OPSException(mLocalizer.t("RPT508: Could not close the SQL " +
                                                 "statement or result set: {0}", e));
             }
         }
@@ -322,7 +322,7 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
                         stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException(mLocalizer.t("RPT510: Could not close the SQL" +
+            	throw new OPSException(mLocalizer.t("RPT510: Could not close the SQL " +
                                                 "statement or result set: {0}", e));
             }
         }
@@ -378,7 +378,7 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
                         stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException(mLocalizer.t("RPT512: Could not close the SQL" +
+            	throw new OPSException(mLocalizer.t("RPT512: Could not close the SQL " +
                                                 "statement or result set: {0}", e));
             }
         }
@@ -434,7 +434,7 @@ public class KeyStatisticsReportDB extends ObjectPersistenceService {
                         stmt.close();
             	}
             } catch (SQLException e) {
-            	throw new OPSException(mLocalizer.t("RPT514: Could not close the SQL" +
+            	throw new OPSException(mLocalizer.t("RPT514: Could not close the SQL " +
                                                 "statement or result set: {0}", e));
             }
         }

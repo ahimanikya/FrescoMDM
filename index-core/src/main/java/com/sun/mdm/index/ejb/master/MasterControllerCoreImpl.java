@@ -383,7 +383,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     mUserLogics = (ExecuteMatchLogics) logicInstance;
                 } else {
                     throw new Exception(mLocalizer.t("MSC500: UserLogic class " + 
-                                        "must inherit from the ExecuteMatchLogics class"));
+                                        "must inherit from the ExecuteMatchLogics class."));
                 }
             }
             mLogger.info(mLocalizer.x("MSC005: The Create User logic class is : {0}", classString));
@@ -399,7 +399,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     mUserLogicsGui = (ExecuteMatchLogics) logicInstance;
                 } else {
                     throw new Exception(mLocalizer.t("MSC501: UserLogicGUI class " + 
-                                        "must inherit from the ExecuteMatchLogics class"));
+                                        "must inherit from the ExecuteMatchLogics class."));
                 }
             }
             mLogger.info(mLocalizer.x("MSC006: MasterControllerImpl: Created user GUI logic class : {0}", classString));
@@ -1510,8 +1510,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                             systemKey.systemCode, systemKey.lID).getStatus();
                     if (!mMergedRecordUpdateEnabled
                             && sysObjStatus.equals(SystemObject.STATUS_MERGED)) {
-                        throw new ProcessingException(mLocalizer.t("MSC517: merged record " + 
-                                        "update parameter s false and system key has merged status " + 
+                        throw new ProcessingException(mLocalizer.t("MSC517: Merged record " + 
+                                        "update parameter is false and system key has merged status " + 
                                         "for SystemKey {0}", systemKey.toString()));
                     }
                     if (sysObjStatus.equals(SystemObject.STATUS_INACTIVE)) {
@@ -2768,7 +2768,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             EnterpriseObject sourceEO = mTrans.getEnterpriseObject(con,
                     sourceEUID);
             if (sourceEO == null) {
-                throw new ProcessingException(mLocalizer.t("MSC528: Could notmerge " + 
+                throw new ProcessingException(mLocalizer.t("MSC528: Could not merge " + 
                             "EnterpriseObjects.  Record has been modified by another user. " +
                             "Source EUID not found: {0}", sourceEUID));
             }
@@ -3671,7 +3671,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     activeEUID);
             // To_DO: getStatus always returns null!!!
             if (activeEO == null /* || !activeEO.getStatus().equals("active") */) {
-                throw new ProcessingException(mLocalizer.t("MSC544: EnterpriseObjects could" +
+                throw new ProcessingException(mLocalizer.t("MSC544: EnterpriseObjects could " +
                                     "not be unmerged from EUID {0}. Record has been " + 
                                     "modified by another user.", activeEUID));
             }
@@ -3793,8 +3793,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 if (!srcRevisionNumber.equalsIgnoreCase(curRevisionNumber
                         .toString())) {
                     throw new UserException(mLocalizer.t("MSC549: Source record " +
-                                    "has been modified by another user. Please " +
-                                    "reload the record."));
+                                    "has been modified by another user."));
                             
                 }
             }
@@ -3820,7 +3819,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             mergeHistoryNode = mergeHistoryNode.getSourceNode();
             if (mergeHistoryNode == null) {
                 throw new ProcessingException(mLocalizer.t("MSC552: Could not " +
-                                    "unmerge EnterpriseObject for EUID {0}." + 
+                                    "unmerge EnterpriseObject for EUID {0}. " + 
                                     "Record does not have a merge history."));
             }
             String mergedEUID = mergeHistoryNode.getEUID();
@@ -3968,7 +3967,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             TransactionObject transObjArray[] = mTrans.findTransactionLogs(con,
                     tObj, null, null);
             if (transObjArray.length == 0) {
-                throw new ProcessingException(mLocalizer.t("MSC556: no transactions found for LID merge"));
+                throw new ProcessingException(mLocalizer.t("MSC556: No transactions found for LID merge."));
             }
             int flag = Constants.FLAG_UM_NONE;
             if (calculateOnly) {
@@ -4168,7 +4167,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     tObj, null, null);
             if (transObjArray.length == 0) {
                 throw new ProcessingException(mLocalizer.t("MSC559: System records could not be unmerged. " +
-                                    "No transactions found for LID merge"));
+                                    "No transactions found for LID merge."));
             }
             int flag = Constants.FLAG_UM_NONE;
             if (calculateOnly) {
@@ -4193,8 +4192,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 if (!srcRevisionNumber.equalsIgnoreCase(curRevisionNumber
                         .toString())) {
                     throw new UserException(mLocalizer.t("MSC562: System records could not be unmerged. " +
-                                    "Source record has been modified by another user. " +
-                                    "Please reload the record."));
+                                    "Source record has been modified by another user."));
                 }
             }
 
@@ -4538,7 +4536,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     SystemObject.STATUS_ACTIVE);
 
             if (euid == null) {
-                throw new ProcessingException(mLocalizer.t("MSC563: SystemObject could not be" + 
+                throw new ProcessingException(mLocalizer.t("MSC563: SystemObject could not be " + 
                                     "updated because the record is not active for " +
                                     "System code={0}, LID={1}",  sysobj.getSystemCode(),
                                     sysobj.getLID()));
@@ -4547,7 +4545,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             EnterpriseObject eo = mTrans.getEnterpriseObject(con, euid);
 
             if (eo == null) {
-                throw new ProcessingException(mLocalizer.t("MSC564: SystemObject could not be" + 
+                throw new ProcessingException(mLocalizer.t("MSC564: SystemObject could not be " + 
                                     "updated because the record is not active for " +
                                     "System code={0}, LID={1}",  sysobj.getSystemCode(),
                                     sysobj.getLID()));
@@ -4711,7 +4709,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
             return con;
         } catch (Exception e) {
-            throw new ConnectionInvalidException(mLocalizer.t("MSC566: Failed to get connection: {0}", e));
+            throw new ConnectionInvalidException(mLocalizer.t("MSC566: Failed to obtain " + 
+                                                "a database connection: {0}", e));
         }
     }
 
@@ -5199,10 +5198,10 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             }
             mOutBoundSender.release();
         } catch (SQLException e) {
-            mLogger.warn(mLocalizer.x("MSC012: releaseResources(): could not close JDBC connection: {0}", 
+            mLogger.warn(mLocalizer.x("MSC012: MasterControllerCoreImpl could not close JDBC connection: {0}", 
                                        e.getMessage()));
         } catch (OutBoundException e) {
-            mLogger.warn(mLocalizer.x("MSC013: releaseResources(): could not release JMS resources: {0}", 
+            mLogger.warn(mLocalizer.x("MSC013: MasterControllerCoreImpl could not release JMS resources: {0}", 
                                        e.getMessage()));
         }
     }
@@ -5213,7 +5212,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 con.rollback();
             }
         } catch (SQLException e) {
-            mLogger.severe(mLocalizer.x("MSC014: rollback(): could not rollback transaction: {0}", e.getMessage()));
+            mLogger.severe(mLocalizer.x("MSC014: MasterControllerCoreImpl could not rollback transaction: {0}", e.getMessage()));
         }
     }
 
@@ -5229,7 +5228,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 con.commit();
             }
         } catch (SQLException e) {
-            mLogger.severe(mLocalizer.x("MSC015: commit(): could not commit transaction: {0}", e.getMessage()));
+            mLogger.severe(mLocalizer.x("MSC015: MasterControllerCoreImpl could not commit transaction: {0}", e.getMessage()));
         }
     }
 
@@ -5374,9 +5373,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
     private void throwProcessingException(Exception e)
             throws ProcessingException {
-        mLogger.warn(mLocalizer.x("MSC016: ProcessingException: {0}", e.getMessage()));
+
         sendAlert(e.getClass().getName() + ": " + e.getMessage());
-        throw new ProcessingException(mLocalizer.t("MSC582: MasterControllerImpl encountered an error: {0}", e));
+        throw new ProcessingException(mLocalizer.t("MSC582: MasterControllerImpl encountered an ProcessingException: {0}", e));
     }
 
     private synchronized void setMBeanServer() {
@@ -5390,7 +5389,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             }
         }
         if (mMBeanServer == null) {
-            mLogger.severe(mLocalizer.x("MSC017: Could not find the mBeanServer"));
+            mLogger.severe(mLocalizer.x("MSC017: Could not find the mBeanServer."));
         }
 
         registerMbean();

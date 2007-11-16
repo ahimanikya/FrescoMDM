@@ -419,7 +419,7 @@ public class ObjectPersistenceService implements java.io.Serializable {
             }
         } catch (SQLException ex) {
             throw new OPSException(mLocalizer.t("OPS558: Error in binding parameter " + 
-                                    "({0}) of type=\"{1}\" to value={2}: {3}",
+                                    "({0}) of type=\"{1}\" to value=\"{2}\": {3}",
                                     pos, type, value, ex)); 
         }
     }

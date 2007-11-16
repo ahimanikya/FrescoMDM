@@ -120,7 +120,7 @@ public class Parameter implements Cloneable, java.io.Serializable {
                                                             "while retrieving an object from a string: {0}", t));
         }
         throw new IllegalArgumentException(mLocalizer.t("CFG506: General error encountered " + 
-                                                            "while retrieving an object from satring."));
+                                                            "while retrieving an object from a string."));
     }
 
 
@@ -196,7 +196,7 @@ public class Parameter implements Cloneable, java.io.Serializable {
             try {
                 typeClass = Class.forName(type);
             } catch (Throwable t) {
-                throw new IllegalArgumentException(mLocalizer.t("CFG507: {0} is not a recognized property value type", t));
+                throw new IllegalArgumentException(mLocalizer.t("CFG507: \"{0}\" is not a recognized property value type", t));
             }
 
             boolean allowedType = false;

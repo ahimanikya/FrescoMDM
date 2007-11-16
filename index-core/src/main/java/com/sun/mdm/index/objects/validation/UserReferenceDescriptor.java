@@ -51,7 +51,7 @@ public class UserReferenceDescriptor implements FieldValidator {
      */
     public UserReferenceDescriptor(String module) {
         if (module == null) {
-            throw new RuntimeException(mLocalizer.t("OBJ737: module parameter " + 
+            throw new RuntimeException(mLocalizer.t("OBJ737: The module parameter " + 
                                         "cannot be null."));
         }
 

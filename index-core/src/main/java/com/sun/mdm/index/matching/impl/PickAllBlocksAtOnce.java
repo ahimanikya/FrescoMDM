@@ -71,8 +71,8 @@ public class PickAllBlocksAtOnce implements BlockPicker {
         if (noOfRemainingIDs > 0) {
             blockIDs = (String[]) remainingBlockIDs.toArray(new String[noOfRemainingIDs]);
         } else {
-            throw new NoBlockApplicableException(mLocalizer.t("MAT544:  Unable to " +
-                                                "pick a block: the list of " + 
+            throw new NoBlockApplicableException(mLocalizer.t("MAT544: Unable to " +
+                                                "pick a block. The list of " + 
                                                 "remaining block IDs is empty."));
         }
         

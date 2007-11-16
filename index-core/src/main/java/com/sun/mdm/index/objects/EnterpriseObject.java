@@ -271,7 +271,7 @@ public class EnterpriseObject extends ObjectNode {
     public void setEUID(String euid) throws ObjectException {
         if ((null == euid) || euid.equals("")) {
             throw new PotentialDupMissingFieldException(mLocalizer.t("OBJ502: Could not " + 
-                                            "set the EUID to a null or empty String"));
+                                            "set the EUID to a null or empty String."));
         }
 
         setValue("EUID", euid);

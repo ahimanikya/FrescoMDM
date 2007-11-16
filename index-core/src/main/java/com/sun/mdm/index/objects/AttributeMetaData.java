@@ -113,7 +113,8 @@ public class AttributeMetaData extends ArrayList {
         }
 
         if (!bFound) {
-            throw new InvalidElementNameException();
+            throw new InvalidElementNameException(mLocalizer.t("OBJ772: Invalid " +
+                                        "element name: {0}", elementName));
         }
 
         return bRet;
@@ -157,7 +158,8 @@ public class AttributeMetaData extends ArrayList {
         }
 
         if (!bFound) {
-            throw new InvalidElementNameException();
+            throw new InvalidElementNameException(mLocalizer.t("OBJ773: Invalid " +
+                                        "element name: {0}", elementName));
         }
 
         return iRet;
@@ -183,6 +185,9 @@ public class AttributeMetaData extends ArrayList {
          */
         public InvalidElementNameException() {
             super("Attribute Meta Data: invalid element name");
+        }
+        public InvalidElementNameException(String msg) {
+            super(msg);
         }
     }
 }

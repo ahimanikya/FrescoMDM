@@ -187,7 +187,8 @@ public class UpdateManagerImpl implements UpdateManager {
             if (tresult != null) {
                 newEO.setEUID(tresult.getEUID());
             } else {
-                throw new UpdateException("Enterprise Object creation failed");
+                throw new UpdateException(mLocalizer.t("UPD501: Enterprise Object " +
+                                                "creation failed."));
             }
             
             if (mLogger.isLoggable(Level.FINE)) {
@@ -197,7 +198,8 @@ public class UpdateManagerImpl implements UpdateManager {
             
             return new UpdateResult(tresult, newEO);
         } catch (OPSException ex) {
-            throw new UpdateException(ex.getMessage(), ex);
+            throw new UpdateException(mLocalizer.t("UPD502: Could not create an " +
+                                            "Enterprise Object: {0}", ex));
         }
     }
     
@@ -223,7 +225,8 @@ public class UpdateManagerImpl implements UpdateManager {
                    ObjectException, UserException {
         
         if (so.length == 0) {
-            throw new UpdateException("At least one system object required.");
+            throw new UpdateException(mLocalizer.t("UPD503: At least one " +
+                                            "system object required."));
         } else if (so.length == 1) {
             return createEnterpriseObject(con, so[0]);
         } else {
@@ -253,7 +256,8 @@ public class UpdateManagerImpl implements UpdateManager {
                 SBR newSBR = (SBR) mMatch.standardize(sbr);
                 sbr.updateIfNotNull(newSBR, true, true);
             } catch (Exception e) {
-                throw new UpdateException("Standardizing SBR failed: " + e.getMessage());
+                throw new UpdateException(mLocalizer.t("UPD504: SBR " +
+                                            "could not be standardized: {0}", e));
             }
             
             if (mLogger.isLoggable(Level.FINE)) {
@@ -268,14 +272,18 @@ public class UpdateManagerImpl implements UpdateManager {
                 // call persist to create DB
                 tresult = mTransaction.addEnterpriseObject(con, newEO);
             } catch (OPSException rex) {
-                throw new UpdateException(rex.getMessage(), rex);
+                throw new UpdateException(mLocalizer.t("UPD505: Could not " +
+                                            "add an EnterpriseObject to the " +
+                                            "database: {0}", rex));
             }
             
             // add newly allocated EUID
             if (tresult != null) {
                 newEO.setEUID(tresult.getEUID());
             } else {
-                throw new UpdateException("Enterprise Object creation failed");
+                throw new UpdateException(mLocalizer.t("UPD506: Could not " +
+                                            "create an EnterpriseObject in the " +
+                                            "database."));
             }
             
             if (mLogger.isLoggable(Level.FINE)) {
@@ -475,11 +483,14 @@ public class UpdateManagerImpl implements UpdateManager {
                 
                 return new UpdateResult(tmr, eo);
             } catch (OPSException rex) {
-                throw new UpdateException(rex.getMessage(), rex);
+                throw new UpdateException(mLocalizer.t("UPD507: Could not " +
+                                            "update an EnterpriseObject in the " +
+                                            "database: {0}", rex));
             }
         }
         
-        throw new UpdateException("EnterpriseObject and SystemObject can not be null");
+        throw new UpdateException(mLocalizer.t("UPD508: EnterpriseObject " +
+                                            "and SystemObject cannot be null."));
     }
     
     
@@ -576,7 +587,10 @@ public class UpdateManagerImpl implements UpdateManager {
                 try{
                     ogEO = mTransaction.getBeforeImage(ogEO);
                 } catch (OPSException oex) {
-                    throw new UpdateException(oex.getMessage(), oex);
+                    throw new UpdateException(mLocalizer.t("UPD509: Could not " +
+                                            "update an EnterpriseObject.  The " +
+                                            "\"before\" image could not be "+ 
+                                            "retrieved: {0}", oex));
                 }
 	    }
 
@@ -655,7 +669,8 @@ public class UpdateManagerImpl implements UpdateManager {
                 
                 return new UpdateResult(tmr, eo);
             } catch (OPSException oex) {
-                throw new UpdateException(oex.getMessage(), oex);
+                throw new UpdateException(mLocalizer.t("UPD510: Could not " +
+                                            "update an EnterpriseObject: {0}", oex));
             }
         }
         
@@ -685,11 +700,13 @@ public class UpdateManagerImpl implements UpdateManager {
                 TMResult tmr = mTransaction.updateEnterpriseObject(con, eo, "euidDeactivate");
                 return new UpdateResult(tmr, eo);
             } catch (OPSException oex) {
-                throw new UpdateException(oex.getMessage(), oex);
+                throw new UpdateException(mLocalizer.t("UPD511: Could not " +
+                                            "deactivate an EnterpriseObject: {0}", oex));
             }
         }
         
-        throw new UpdateException("EnterpriseObject can not be null");
+        throw new UpdateException(mLocalizer.t("UPD512: EnterpriseObject " +
+                                            "cannot be null. "));
     }
     
     /** Activates a particular EnterpriseObject
@@ -716,11 +733,13 @@ public class UpdateManagerImpl implements UpdateManager {
                 TMResult tmr = mTransaction.updateEnterpriseObject(con, eo, "euidActivate");
                 return new UpdateResult(tmr, eo);
             } catch (OPSException oex) {
-                throw new UpdateException(oex.getMessage(), oex);
+                throw new UpdateException(mLocalizer.t("UPD513: Could not " +
+                                         "activate an EnterpriseObject: {0}", oex));
             }
         }
         
-        throw new UpdateException("EnterpriseObject can not be null");
+        throw new UpdateException(mLocalizer.t("UPD514: EnterpriseObject " +
+                                            "cannot be null."));
     }
     
     /**
@@ -799,7 +818,8 @@ public class UpdateManagerImpl implements UpdateManager {
             
             return new UpdateResult(r, retEO, srcEO);
         } catch (OPSException oex) {
-            throw new UpdateException(oex.getMessage(), oex);
+            throw new UpdateException(mLocalizer.t("UPD515: Could not transfer " +
+                                            "SystemObjects:{0}", oex));
         }
     }
     
@@ -863,7 +883,8 @@ public class UpdateManagerImpl implements UpdateManager {
             
             return new UpdateResult(tmr, srcEO);
         } catch (OPSException rex) {
-            throw new UpdateException(rex.getMessage(), rex);
+            throw new UpdateException(mLocalizer.t("UPD516: Could not remove " +
+                                            "a SystemObject."));
         }
     }
     
@@ -908,8 +929,8 @@ public class UpdateManagerImpl implements UpdateManager {
         SystemObject mergedSO = srcEO.getSystemObject(system, lid);
         
         if (mergedSO == null) {
-            throw new UpdateException(
-            "SystemObject to be merged does not exist in specified EnterpriseObject");
+            throw new UpdateException(mLocalizer.t("UPD517: SystemObject to be " +
+                            "merged does not exist in specified EnterpriseObject."));
         }
         
         mergedSO.setValue("Status", SystemObject.STATUS_MERGED);
@@ -937,8 +958,8 @@ public class UpdateManagerImpl implements UpdateManager {
         newEO = mHelper.updateSO(newSO, srcEO, true, replaceSO);
         
         if (null == newEO) {
-            throw new UpdateException(
-            "EnterpriseObject does not contain the specified SystemObject");
+            throw new UpdateException(mLocalizer.t("UPD518: EnterpriseObject does not " +
+                                                "contain the specified SystemObject."));
         }
         
         //because its same EO lid merge, there will always be at least 1 SO left on the EO
@@ -995,7 +1016,8 @@ public class UpdateManagerImpl implements UpdateManager {
             }
             return new UpdateResult(tmr, newEO);
         } catch (OPSException rex) {
-            throw new UpdateException(rex.getMessage(), rex);
+            throw new UpdateException(mLocalizer.t("UPD519: Could not " +
+                                                "merge SystemObjects: {0}", rex));
         }
     }
     
@@ -1033,9 +1055,10 @@ public class UpdateManagerImpl implements UpdateManager {
 
         if (srcEO.equals(destEO)) {
             //same EO, throw exception
-            throw new UpdateException(
-            "Source EnterpriseObject and destination EnterpriseObject "
-            + "can not be the same for cross-EO SystemObject merge");
+            throw new UpdateException(mLocalizer.t("UPD520: Source EnterpriseObject " +
+                                                "and destination EnterpriseObject " +
+                                                "cannot be the same for cross-EO " +
+                                                "SystemObject merge."));
         }
         
         Date date = new Date();
@@ -1079,8 +1102,9 @@ public class UpdateManagerImpl implements UpdateManager {
             boolean replaceSO = true;
             EnterpriseObject newEO = mHelper.updateSO(newSO, destEO, true, replaceSO);
             if (newEO == null) {
-                throw new UpdateException(
-                "EnterpriseObject does not contain the specified SystemObject");
+                throw new UpdateException(mLocalizer.t("UPD521: EnterpriseObject " +
+                                                "does not contain the " +
+                                                "specified SystemObject."));
             }
             
             if (mLogger.isLoggable(Level.FINE)) {
@@ -1107,7 +1131,8 @@ public class UpdateManagerImpl implements UpdateManager {
                         }
                     }
                 } catch(Exception e1) {
-                    throw new UpdateException(e1);
+                    throw new UpdateException(mLocalizer.t("UPD522: Could not " +
+                                            "retrieve all merged SystemObjects: {0}", e1));
                 }
                 
                 if ( countInActiveSystems(srcEO) > 0 ) {
@@ -1156,7 +1181,8 @@ public class UpdateManagerImpl implements UpdateManager {
             }
             return new UpdateResult(tmr, newEO, srcEO);
         } catch (OPSException rex) {
-            throw new UpdateException(rex.getMessage(), rex);
+            throw new UpdateException(mLocalizer.t("UPD523: Could not " +
+                                           "merge SystemObjects: {0}", rex));
         }
     }
     
@@ -1237,7 +1263,8 @@ public class UpdateManagerImpl implements UpdateManager {
             }
             return new UpdateResult(tmr, retEO, srcEO);
         } catch (OPSException rex) {
-            throw new UpdateException(rex.getMessage(), rex);
+            throw new UpdateException(mLocalizer.t("UPD524: Could not " +
+                                            "merge EnterpriseObjects: {0}", rex));
         }
     }
 
@@ -1322,7 +1349,8 @@ public class UpdateManagerImpl implements UpdateManager {
             }
             return new UpdateResult(tmr, retEO, srcEO);
         } catch (OPSException rex) {
-            throw new UpdateException(rex.getMessage(), rex);
+            throw new UpdateException(mLocalizer.t("UPD525: Could not " +
+                                            "merge EnterpriseObjects: {0}", rex));
         }
     }
 
@@ -1469,8 +1497,8 @@ public class UpdateManagerImpl implements UpdateManager {
             destEuid);
             // check if current dest eo has been deleted, there for null
             if (curDestEO == null) {
-                throw new UpdateException("The EnterpriseObject has been removed : "
-                + destEuid);
+                throw new UpdateException(mLocalizer.t("UPD531: The EnterpriseObject " +
+                                            "has been removed: {0}", destEuid));
             }
             EnterpriseObject ogDestEO = null;
             if (mSUnmergePolicy != null) {
@@ -1490,8 +1518,10 @@ public class UpdateManagerImpl implements UpdateManager {
                 if (so.getStatus().equals(SystemObject.STATUS_MERGED)) {
                     so.setValue("Status", SystemObject.STATUS_ACTIVE);
                 } else {
-                    throw new UpdateException("The SystemObject does not have "
-                    + "merged status: " + mergedSysCode + ", " + mergedLid);
+                    throw new UpdateException(mLocalizer.t("UPD526: The SystemObject " +
+                                            "with SystemCode={0}, Local ID={1} " +
+                                            "does not have merged status.", 
+                                            mergedSysCode, mergedLid));
                 }
                 
                 // restore the winning SO to its previous image
@@ -1540,17 +1570,26 @@ public class UpdateManagerImpl implements UpdateManager {
                         try{
                             status = mQueryHelper.getSOStatus(con, systemKey);
                         }catch(QMException qex){
-                            throw new UpdateException(qex.getMessage(),qex);
+                            throw new UpdateException(mLocalizer.t("UPD527: Could not " +
+                                            "retrieve the status for the SystemObject " +
+                                            "with this SystemKey: {0}", 
+                                            systemKey.toString()));
                         }
                         if (status == null) {
-                            throw new UpdateException("Source system record not found: " + systemKey);
+                            throw new UpdateException(mLocalizer.t("UPD528: Source system " +
+                                            "record could not be found with this SystemKey: {0}",
+                                            systemKey.toString()));
                         }
                         if (status.compareToIgnoreCase(SystemObject.STATUS_MERGED) != 0) {
-                            throw new UpdateException("Record has been modified by another user.  " 
-                                + "System record has already been unmerged: " + systemKey);
+                            throw new UpdateException(mLocalizer.t("UPD529: Record has " +
+                                            "been modified by another user. System record " +
+                                            "with SystemKey={0} has already been unmerged.", 
+                                            systemKey.toString()));
                         } else {
-                            throw new UpdateException("Record has been modified by another user." 
-                                 + "System record: " + systemKey + ", Status: " + status);
+                            throw new UpdateException(mLocalizer.t("UPD530: Record has " +
+                                            "been modified by another user. System record " +
+                                            "with SystemKey={0} has this status: {1}", 
+                                            systemKey.toString(), status));
                         }
                     }
                 }
@@ -1638,10 +1677,9 @@ public class UpdateManagerImpl implements UpdateManager {
             }
 
             return new UpdateResult(tmr, curDestEO, curSrcEO);
-        } catch (OPSException oex) {
-            throw new UpdateException(oex.getMessage(), oex);
-        } catch (QMException qex) {
-            throw new UpdateException(qex.getMessage(), qex);
+        } catch (Exception oex) {
+            throw new UpdateException(mLocalizer.t("UPD532: Could not merge " +
+                                            "SystemObjects: {0}", oex));
         }
     }
     
@@ -1856,8 +1894,8 @@ public class UpdateManagerImpl implements UpdateManager {
             EnterpriseObject curDestEO = mTransaction.getEnterpriseObject(con, destEuid);
             
             if (curDestEO == null) {
-                throw new UpdateException("The EnterpriseObject has been removed : "
-                + destEuid);
+                throw new UpdateException(mLocalizer.t("UPD533: The EnterpriseObject " +
+                                            "with EUID={0} has been removed.", destEuid));
             }
             
             EnterpriseObject ogDestEO = null;
@@ -1919,7 +1957,9 @@ public class UpdateManagerImpl implements UpdateManager {
             
             return new UpdateResult(tmr, curDestEO, newSrcEO);
         } catch (OPSException oex) {
-            throw new UpdateException(oex.getMessage(), oex);
+            throw new UpdateException(mLocalizer.t("UPD534: EnterpriseObjects " +
+                                            "could not be unmerged for this " +
+                                            "Transaction ID {0}: {1}", transactionID, oex));
         }
     }
     

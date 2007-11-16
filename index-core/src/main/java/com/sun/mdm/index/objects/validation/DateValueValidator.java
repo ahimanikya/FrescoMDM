@@ -64,7 +64,8 @@ public class DateValueValidator implements ValueValidator {
      */
     public void validate(ObjectField field) throws ValidationException {
         if (field == null) {
-            throw new NullObjectException();
+            throw new NullObjectException(mLocalizer.t("OBJ751: The field " + 
+                                            "parameter cannot be null."));
         }
 
         if (field.getType() != FieldType.DATE) {

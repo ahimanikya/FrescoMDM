@@ -133,7 +133,7 @@ public class DecisionMakerConfiguration implements ConfigurationInfo {
                     mParameters = new Parameter[size];
                     for (int j = 0; j < size; j++) {
                         mParameters[j] = (Parameter) parameterList.get(j);
-                        mLogger.info(mLocalizer.x("DEC002: DecisionMaker parameter is: {0}", mParameters[j].toString()));
+                        mLogger.info(mLocalizer.x("DEC002: DecisionMakerConfiguration parameter is: {0}", mParameters[j].toString()));
                     }
                 } else {
                     throw new ConfigurationException(mLocalizer.t("CFG523: Unrecognized option for " + 

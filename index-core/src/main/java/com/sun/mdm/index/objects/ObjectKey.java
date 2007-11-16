@@ -181,12 +181,12 @@ public class ObjectKey implements Externalizable {
                 ret = value.intValue();
             } else {
                 throw new UnfoundKeyNameException(mLocalizer.t("OBJ516: Could not " + 
-                                      "get the key type.  This is an unrecognized field name={0}",
+                                      "get the key type. This is an unrecognized field name={0}",
                                       name));
             }
         } else {
             throw new UnfoundKeyNameException(mLocalizer.t("OBJ517: Could not " + 
-                                      "get the key type.  This is an unrecognized field name={0}",
+                                      "get the key type. This is an unrecognized field name={0}",
                                       name));
         }
         
@@ -207,13 +207,13 @@ public class ObjectKey implements Externalizable {
             if (value == null) {
                 if (!mFieldValues.containsKey(name)) {
                     throw new UnfoundKeyNameException(mLocalizer.t("OBJ518: Could not " + 
-                                      "get the key value.  This is an unrecognized field name={0}",
+                                      "get the key value. This is an unrecognized field name={0}",
                                       name));
                 }
             }
         } else {
             throw new UnfoundKeyNameException(mLocalizer.t("OBJ519: Could not " + 
-                                      "get the key value.  This is an unrecognized field name={0}",
+                                      "get the key value. This is an unrecognized field name={0}",
                                       name));
         }
         
@@ -268,7 +268,7 @@ public class ObjectKey implements Externalizable {
                 mFieldValues.put(name, value);
             } else {
                 throw new UnfoundKeyNameException(mLocalizer.t("OBJ521: Could not " + 
-                                      "set the key value for field name={0}.  These " +
+                                      "set the key value for field name={0}. These " +
                                       " are the valid fields: {0}", mFieldValues));
             }
         } else {

@@ -251,8 +251,8 @@ public class MatchEngineControllerImpl
                     for (int idx = 0; idx < resultSets.length; idx++) {
                         totalRows += countRows(resultSets[idx]);
                         if (totalRows > candThreshold) {
-                            throw new UserException(new CandidateThresholdException(mLocalizer.t("MAT502: The maximum possible matches, " + 
-                                                    "{0}, has been exceeded", candThreshold)));
+                            throw new UserException(new CandidateThresholdException(mLocalizer.t("MAT502: The maximum possible matches " + 
+                                                    "({0}), has been exceeded", candThreshold)));
                         }
                     }
                 }
@@ -406,7 +406,7 @@ public class MatchEngineControllerImpl
         
         // assert searchOption and sysObj are not null
         if (options == null || sysObj == null) {
-            throw new MatchingException(mLocalizer.t("MAT505: Input can not be null"));
+            throw new MatchingException(mLocalizer.t("MAT505: Input cannot be null."));
         }
         
         try {

@@ -280,7 +280,7 @@ public class EOSearchResultIterator extends PageIteratorWrapper
             }
             return result;
         } catch (Exception e) {
-            throw new PageException(mLocalizer.t("MAS509: Could not" + 
+            throw new PageException(mLocalizer.t("MAS509: Could not " + 
                                 "convert an ArrayList to an " + 
                                 "EOSearchResultRecord array: {0}", e));
         }

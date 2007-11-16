@@ -134,7 +134,7 @@ class ReportGeneratorImpl implements ReportGenerator {
             }
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE541: Could not generate the " + 
-                                                   "Assumed Match report"));
+                                                   "Assumed Match report."));
         }
         return report;
     }
@@ -225,7 +225,7 @@ class ReportGeneratorImpl implements ReportGenerator {
             }
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE543: Could not generate the " + 
-                                                   "Potential Duplicate report"));
+                                                   "Potential Duplicate report."));
         }
         return report;
     }
@@ -314,7 +314,7 @@ class ReportGeneratorImpl implements ReportGenerator {
             }
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE545: Could not generate the " + 
-                                                   "Merge report"));
+                                                   "Merge report."));
         }
         return report;
     }
@@ -353,7 +353,7 @@ class ReportGeneratorImpl implements ReportGenerator {
             }
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE546: Could not generate the " + 
-                                                   "Unmerge report"));
+                                                   "Unmerge report."));
         }
         return report;
     }
@@ -395,7 +395,7 @@ class ReportGeneratorImpl implements ReportGenerator {
             }
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE547: Could not generate the " + 
-                                                   "Deactivate report"));
+                                                   "Deactivate report."));
         }
         return report;
     }
@@ -437,7 +437,7 @@ class ReportGeneratorImpl implements ReportGenerator {
             }
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE548: Could not generate the " + 
-                                                   "Update report"));
+                                                   "Update report."));
         }
         return report;
     }
@@ -527,7 +527,7 @@ class ReportGeneratorImpl implements ReportGenerator {
             report.setDailyTotalsForWeek(getWeeklyCount(startDate));
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE551: Could not generate the " + 
-                                                   "Weekly Statistics report"));
+                                                   "Weekly Statistics report."));
         }
         return report;
     }
@@ -563,7 +563,7 @@ class ReportGeneratorImpl implements ReportGenerator {
             report = getKeyStatsReportTotals(report, startDate, endDate);
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE553: Could not generate the " + 
-                                                   "Monthly Statistics report"));
+                                                   "Monthly Statistics report."));
         }
         return report;
     }
@@ -599,7 +599,7 @@ class ReportGeneratorImpl implements ReportGenerator {
             report = getKeyStatsReportTotals(report, startDate, endDate);
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE555: Could not generate the " + 
-                                                   "Yearly Statistics report"));
+                                                   "Yearly Statistics report."));
         }
         return report;
     }       

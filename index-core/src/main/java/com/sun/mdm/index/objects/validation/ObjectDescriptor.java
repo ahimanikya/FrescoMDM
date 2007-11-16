@@ -348,7 +348,7 @@ public class ObjectDescriptor {
                         pValidator.validate(objectFields[i]);
                     } catch (PatternMismatchedException e) {
                         throw new ValidationException(mLocalizer.t("OBJ705: {0} " +
-                                  "in {1}[{2}] does not match the pattern \"{4}\"",
+                                  "in {1}[{2}] does not match the pattern \"{3}\"",
                                   objectFields[i].getValue(),
                                   objectName,
                                   objectFields[i].getName(),

@@ -84,7 +84,7 @@ public class MatcherImpl implements Matcher {
             
             matcherAPIImpl.initialize(matchEngineConfig);
         } catch (MatchingException ex) {
-            mLogger.severe(mLocalizer.x("MAT001: match engine initialization failed: {0}", 
+            mLogger.severe(mLocalizer.x("MAT001: Match engine initialization failed: {0}", 
                                         ex.getMessage()));
             throw ex;            
         } catch (InstantiationException ex) {
@@ -94,11 +94,11 @@ public class MatcherImpl implements Matcher {
             throw ex;            
         } catch (ClassNotFoundException ex) {
             mLogger.severe(mLocalizer.x("MAT003: Could not load the user API " +
-                                        " implmentation class: {0}", ex.getMessage()));
+                                        "implmentation class: {0}", ex.getMessage()));
             throw ex;            
         } catch (IllegalAccessException ex) {
             mLogger.severe(mLocalizer.x("MAT004: Could not access the user API " +
-                                        " implmentation class: {0}", ex.getMessage()));
+                                        "implmentation class: {0}", ex.getMessage()));
             throw ex;            
         } catch (RuntimeException ex) {
             mLogger.severe(mLocalizer.x("MAT005: General failure for match engine " +

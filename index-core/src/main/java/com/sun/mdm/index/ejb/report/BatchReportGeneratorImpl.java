@@ -479,7 +479,7 @@ public class BatchReportGeneratorImpl{
                 throws ReportException {
 
         if (mResultSetAssumedMatch == null) {
-            throw new ReportException(mLocalizer.t("RPE511: Assumed Match Report has not been generated"));
+            throw new ReportException(mLocalizer.t("RPE511: Assumed Match Report has not been generated."));
         }
         int pageSize = mAssumedMatchReportConfig.getPageSize().intValue();
         if (pageSize == 0) {
@@ -518,7 +518,7 @@ public class BatchReportGeneratorImpl{
             }
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE512: Could not load the " + 
-                                                   "next set of Assumed Match records"));
+                                                   "next set of Assumed Match records."));
         }
         return mAssumedMatchReport;
     }
@@ -573,7 +573,7 @@ public class BatchReportGeneratorImpl{
             mResultSetAssumedMatch = lookupAssumedMatchRecords(mAssumedMatchSearchObject, conn);
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE513: Could not generate the " + 
-                                                   "Assumed Match report"));
+                                                   "Assumed Match report."));
         }
         return getNextAssumedMatchRecords();
     }
@@ -639,7 +639,7 @@ public class BatchReportGeneratorImpl{
             mResultSetPotentialDuplicate = lookupPotDupRecords(mPotentialDuplicateSearchObject, conn);
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE514: Could not generate the " + 
-                                                   "Potential Duplicate report"));
+                                                   "Potential Duplicate report."));
         }
         return getNextPotDupRecords();
     }
@@ -677,7 +677,7 @@ public class BatchReportGeneratorImpl{
             mResultSetMerge = lookupTransactions(searchObj, conn);
        } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE515: Could not generate the " + 
-                                                   "Merge report"));
+                                                   "Merge report."));
         }
         return getNextMergeRecords();        
     }
@@ -691,7 +691,7 @@ public class BatchReportGeneratorImpl{
         throws ReportException {
 
         if (mResultSetMerge == null) {
-            throw new ReportException(mLocalizer.t("RPE516: Merge Report has not been generated"));
+            throw new ReportException(mLocalizer.t("RPE516: Merge Report has not been generated."));
         }
         int pageSize = mMergeReportConfig.getPageSize().intValue();
         if (pageSize == 0) {
@@ -763,7 +763,7 @@ public class BatchReportGeneratorImpl{
             mResultSetUnmerge = lookupTransactions(searchObj, conn);
        } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE518: Could not generate the " + 
-                                                   "Unmerge report"));
+                                                   "Unmerge report."));
         }
         return getNextUnmergeRecords();        
     }
@@ -778,7 +778,7 @@ public class BatchReportGeneratorImpl{
         throws ReportException {
         
         if (mResultSetUnmerge == null) {
-            throw new ReportException(mLocalizer.t("RPE519: Unmerge Report has not been generated"));
+            throw new ReportException(mLocalizer.t("RPE519: Unmerge Report has not been generated."));
         }
         int pageSize = mUnmergeReportConfig.getPageSize().intValue();
         if (pageSize == 0) {
@@ -852,7 +852,7 @@ public class BatchReportGeneratorImpl{
             mResultSetDeactivate = lookupTransactions(searchObj, conn);
        } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE520: Could not generate the " + 
-                                                   "Deactivate report"));
+                                                   "Deactivate report."));
         }
         return getNextDeactivateRecords();        
     }
@@ -866,7 +866,7 @@ public class BatchReportGeneratorImpl{
         throws ReportException {
         
         if (mResultSetDeactivate == null) {
-            throw new ReportException(mLocalizer.t("RPE521: Deactivate Report has not been generated"));
+            throw new ReportException(mLocalizer.t("RPE521: Deactivate Report has not been generated."));
         }
         int pageSize = mDeactivateReportConfig.getPageSize().intValue();
         if (pageSize == 0) {
@@ -1071,7 +1071,7 @@ public class BatchReportGeneratorImpl{
             mResultSetUpdate = lookupTransactions(searchObj, conn);
        } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE528: Could not generate the " + 
-                                                   "Update report"));
+                                                   "Update report."));
         }
         return getNextUpdateRecords();        
     }
@@ -1135,7 +1135,7 @@ public class BatchReportGeneratorImpl{
             report.setDailyTotalsForWeek(getWeeklyCount(startDate, conn));
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE531: Could not generate the " + 
-                                                   "Weekly Statistics report"));
+                                                   "Weekly Statistics report."));
         }
 
         return report;
@@ -1164,7 +1164,7 @@ public class BatchReportGeneratorImpl{
                 specDate = config.getEndDate();
             } else {
                 throw new ReportException(mLocalizer.t("RPE532: Start or end date must be specified " + 
-                                            "for the Monthly Statistics Report"));
+                                            "for the Monthly Statistics report."));
             }
 
             // Determine first date of month based on specified date
@@ -1178,7 +1178,7 @@ public class BatchReportGeneratorImpl{
             report = getKeyStatsReportTotals(report, startDate, endDate, conn);
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE533: Could not generate the " + 
-                                                   "Monthly Statistics report"));
+                                                   "Monthly Statistics report."));
         }
 
         return report;
@@ -1207,7 +1207,7 @@ public class BatchReportGeneratorImpl{
                 specDate = config.getEndDate();
             } else {
                 throw new ReportException(mLocalizer.t("RPE534: Start or end date must be specified " + 
-                                            "for the Yearly Statistics Report"));
+                                            "for the Yearly Statistics r."));
             }
 
             // Determine first date of year based on specified date
@@ -1221,7 +1221,7 @@ public class BatchReportGeneratorImpl{
             report = getKeyStatsReportTotals(report, startDate, endDate, conn);
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE535: Could not generate the " + 
-                                                   "Yearly Statistics report"));
+                                                   "Yearly Statistics report."));
         }
 
         return report;
@@ -1383,7 +1383,7 @@ public class BatchReportGeneratorImpl{
             return count;
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE540: Error getting the " + 
-                                "potential duplicatecount for function : {0}", 
+                                "potential duplicate count for function : {0}", 
                                 (resolved ? "resolved" : "unresolved")));
         }
     }

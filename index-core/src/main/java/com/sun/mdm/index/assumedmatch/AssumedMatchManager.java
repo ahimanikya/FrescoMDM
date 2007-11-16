@@ -220,11 +220,11 @@ public class AssumedMatchManager {
             }
         } catch (SQLException e) {
             throw new AssumedMatchException(mLocalizer.t("ASM504: Could not lookup " + 
-                                                         "Assumed Match record(s) due " + 
+                                                         "Assumed Match records due " + 
                                                          "to an SQL error: {0}", e));
         } catch (OPSException e) {
             throw new AssumedMatchException(mLocalizer.t("ASM505: Could not lookup " + 
-                                                         "Assumed Match record(s) " + 
+                                                         "Assumed Match records " + 
                                                          "due to an OPS error: {0}", e));
         }            
         return lookupAssumedMatches(con, ps, obj);
@@ -291,7 +291,7 @@ public class AssumedMatchManager {
             return retIterator;
         } catch (Exception e) {
             throw new AssumedMatchException(mLocalizer.t("ASM506: Could not lookup " + 
-                                                         "Assumed Match record(s) due " + 
+                                                         "Assumed Match records due " + 
                                                          "to a general error: {0}", e));
         }
     }    
@@ -353,7 +353,7 @@ public class AssumedMatchManager {
             return count;
         } catch (SQLException e) {
             throw new AssumedMatchException(mLocalizer.t("ASM507: Could not count " + 
-                                                         "Assumed Match record(s) due " + 
+                                                         "Assumed Match records due " + 
                                                          "to an SQL error: {0}", e));
         } finally {
             try {
@@ -365,7 +365,7 @@ public class AssumedMatchManager {
                 }
             } catch (Exception e) {
                 throw new AssumedMatchException(mLocalizer.t("ASM508: Could not close the result " + 
-                                                         "Aset nor the prepared statement: {0}", e));
+                                                         "set or the prepared statement: {0}", e));
             } 
         }
     }    

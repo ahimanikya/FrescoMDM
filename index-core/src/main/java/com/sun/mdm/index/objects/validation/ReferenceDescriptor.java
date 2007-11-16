@@ -98,7 +98,7 @@ public class ReferenceDescriptor implements FieldValidator {
      */
     public void validate(ObjectField field, boolean newObject) throws ValidationException {
         if (field == null) {
-            throw new NullObjectException(mLocalizer.t("OBJ718: field " + 
+            throw new NullObjectException(mLocalizer.t("OBJ718: The field parameter " + 
                                         "cannot be null."));
         }
         if (field.getValue().getClass() != java.lang.String.class) {

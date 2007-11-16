@@ -71,9 +71,9 @@ public class SystemObjectField {
             String fullyQualified = MetaDataService.getSOPath(undecoratedFieldName);
             fieldSize = MetaDataService.getFieldSize(fullyQualified);
         } catch (Exception ex) {
-            throw new ConfigurationException(mLocalizer.t("CFG546: SystemObjectField" + 
+            throw new ConfigurationException(mLocalizer.t("CFG546: SystemObjectField failed " + 
                                     "to get the maximum field size from the MetaDataService " + 
-                                    "for the configured standardization field {0} as an EPath: {1}", 
+                                    "for the configured standardization field {0}: {1}", 
                                     qualifiedName, ex));
         }
     }

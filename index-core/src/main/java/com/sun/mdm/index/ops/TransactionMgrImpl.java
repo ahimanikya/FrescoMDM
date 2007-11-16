@@ -1053,7 +1053,7 @@ public class TransactionMgrImpl implements TransactionMgr {
         try {
             mSystemSBRDB.remove(conn, mOPSMap, euid, sbr);
         } catch (OPSException ex) {
-            throw new OPSException(mLocalizer.t("OPS661: Could not delete " + 
+            throw new OPSException(mLocalizer.t("OPS661: Could not delete a " + 
                                             "SystemSBR record from the database: {0}",
                                              ex));
         }
@@ -1152,7 +1152,7 @@ public class TransactionMgrImpl implements TransactionMgr {
              } catch (DataModifiedException e) {
                  throw new DataModifiedException(mLocalizer.t("OPS663: Could not merge two " + 
                                             "EnterpriseObject records in the database. " +
-                                            "The records could not be locked for update: {0}", e));
+                                            "The records could not be locked: {0}", e));
              }
              // don't lock eo1, eo2 again.
              pUpdateEnterpriseObject(conn, eo2, false);
@@ -2031,7 +2031,7 @@ public class TransactionMgrImpl implements TransactionMgr {
                        // Should only happen in case of lidMerge and lid Transfer
                        if (!( "lidMerge".equals(currentTranObject.getFunction()) 
                               || "lidTransfer".equals(currentTranObject.getFunction()))) {
-                           throw new OPSException(mLocalizer.t("OPS677: TMerged Object " + 
+                           throw new OPSException(mLocalizer.t("OPS677: Merged Object " + 
                                                 "must exist for a unmerge operation.")); 
                        }
                    }

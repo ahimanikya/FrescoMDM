@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import com.sun.mdm.index.master.ProcessingException;
+import com.sun.mdm.index.util.Localizer;
 
 /**
  *
@@ -33,12 +34,15 @@ import com.sun.mdm.index.master.ProcessingException;
  */
 public class PackageTree {
     
+    private transient final Localizer mLocalizer = Localizer.get();
+
     private final PackageTreeNode mRootNode;
     
     /** Creates a new instance of PackageTree */
     public PackageTree(Object objValue) throws ProcessingException {
         if (objValue == null) {
-            throw new ProcessingException("Object value can not be null for root node");
+            throw new ProcessingException(mLocalizer.t("UTL500: Object value " + 
+                                            "cannot be null for root node."));
         }
         mRootNode = new PackageTreeNode(null);
         mRootNode.setObjectValue(objValue);
@@ -68,8 +72,8 @@ public class PackageTree {
                 mChildren = new HashMap();
             } else {
                 if (mChildren.get(packageComponent) != null) {
-                    throw new ProcessingException("Package componenet already exists: " +
-                    packageComponent);
+                    throw new ProcessingException(mLocalizer.t("UTL501: Package component already exists: {0}",
+                                                               packageComponent));
                 }
             }
             mChildren.put(packageComponent, node);

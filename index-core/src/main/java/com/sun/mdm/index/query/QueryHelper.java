@@ -171,7 +171,7 @@ public class QueryHelper {
             }
 
         } catch (SQLException e) {
-            throw new QMException(mLocalizer.t("QUE520: Could not retrieve the EUID" +
+            throw new QMException(mLocalizer.t("QUE520: Could not retrieve the EUID " +
                                   "for the system key: {0}:{1}", key.toString(), e));
         } finally {
             try {

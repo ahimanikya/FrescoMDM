@@ -43,7 +43,7 @@ import com.sun.mdm.index.survivor.SurvivorStrategyInterface;
 import com.sun.mdm.index.survivor.SystemField;
 import com.sun.mdm.index.survivor.SystemFieldList;
 import com.sun.mdm.index.survivor.SystemFieldListMap;
-
+import com.sun.mdm.index.util.Localizer;
 
 
 
@@ -55,6 +55,7 @@ public class UnionSurvivorStrategy
 implements SurvivorStrategyInterface {
     
     private transient static final Logger mLogger = Logger.getLogger(UnionSurvivorStrategy.class);
+    private transient final Localizer mLocalizer = Localizer.get();
     
     /** Creates a new instance of UnionSurvivorStrategy */
     public UnionSurvivorStrategy() {
@@ -99,7 +100,8 @@ implements SurvivorStrategyInterface {
                 }
             }
         }catch (ObjectException oex) {
-            throw new SurvivorCalculationException(oex);
+            throw new SurvivorCalculationException(mLocalizer.t("SUR526: Could not " +
+                                            "select field: {0}", oex));
         }
         
         ArrayList a;
@@ -137,8 +139,9 @@ implements SurvivorStrategyInterface {
                     // since object from set is object node, all objects in array
                     // should be object node also
                     if (!(ao instanceof ObjectNode)) {
-                        throw new SurvivorCalculationException("Expecting candidate value to be an object node"
-                        + "got this instead : " + ao);
+                        throw new SurvivorCalculationException(mLocalizer.t("SUR527: Expected " +
+                                            "candidate value to be an ObjectNode " + 
+                                            "instance, but retrieved this instead: {0}", ao));
                     }
                     ObjectNode aNode = (ObjectNode) ao;
                     ObjectKey aKey = aNode.pGetKey();

@@ -188,15 +188,18 @@ public class SystemObject extends ObjectNode {
        setKeyType("LocalID", true);
 
        if ((null == system) || system.equals("")) {
-           throw new EmptySystemCodeException();
+           throw new EmptySystemCodeException(mLocalizer.t("OBJ759: The system " + 
+                                            "parameter cannot be null or empty."));
        }
 
        if ((null == lid) || lid.equals("")) {
-           throw new EmptyLocalIDException();
+           throw new EmptyLocalIDException(mLocalizer.t("OBJ763: The Local ID " + 
+                                            "parameter cannot be null or empty."));
        }
 
        if (null == obj) {
-           throw new EmptyObjectException();
+           throw new EmptyObjectException(mLocalizer.t("OBJ774: The object node " +
+                                        "cannot be null."));
        }
 
        setValue("SystemCode", system);
@@ -274,15 +277,18 @@ public class SystemObject extends ObjectNode {
        super(tag, aux_name_list, aux_type_list);
 
        if ((null == system) || system.equals("")) {
-           throw new EmptySystemCodeException();
+           throw new EmptySystemCodeException(mLocalizer.t("OBJ760: The system " + 
+                                            "parameter cannot be null or empty."));
        }
 
        if ((null == lid) || lid.equals("")) {
-           throw new EmptyLocalIDException();
+           throw new EmptyLocalIDException(mLocalizer.t("OBJ764: The Local ID " + 
+                                            "parameter cannot be null or empty."));
        }
 
        if (null == obj) {
-           throw new EmptyObjectException();
+           throw new EmptyObjectException(mLocalizer.t("OBJ775: The object node " +
+                                        "cannot be null."));
        }
 
        setValue("SystemCode", system);
@@ -361,15 +367,18 @@ public class SystemObject extends ObjectNode {
        setKeyType("LocalID", true);
 
        if ((null == system) || system.equals("")) {
-           throw new EmptySystemCodeException();
+           throw new EmptySystemCodeException(mLocalizer.t("OBJ761: The system " + 
+                                            "parameter cannot be null or empty."));
        }
 
        if ((null == lid) || lid.equals("")) {
-           throw new EmptyLocalIDException();
+           throw new EmptyLocalIDException(mLocalizer.t("OBJ765: The Local ID " + 
+                                            "parameter cannot be null or empty."));
        }
 
        if (null == obj) {
-           throw new EmptyObjectException();
+           throw new EmptyObjectException(mLocalizer.t("OBJ776: The object node " +
+                                        "cannot be null."));
        }
 
        setValue("SystemCode", system);
@@ -449,15 +458,18 @@ public class SystemObject extends ObjectNode {
        super(tag, aux_name_list, aux_type_list);
 
        if ((null == system) || system.equals("")) {
-           throw new EmptySystemCodeException();
+           throw new EmptySystemCodeException(mLocalizer.t("OBJ762: The system " + 
+                                            "parameter cannot be null or empty."));
        }
 
        if ((null == lid) || lid.equals("")) {
-           throw new EmptyLocalIDException();
+           throw new EmptyLocalIDException(mLocalizer.t("OBJ766: The Local ID " + 
+                                            "parameter cannot be null or empty."));
        }
 
        if (null == obj) {
-           throw new EmptyObjectException();
+           throw new EmptyObjectException(mLocalizer.t("OBJ777: The object node " +
+                                        "cannot be null."));
        }
 
        setValue("SystemCode", system);

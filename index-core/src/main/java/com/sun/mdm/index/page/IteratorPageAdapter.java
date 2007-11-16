@@ -337,7 +337,7 @@ public class IteratorPageAdapter implements PageAdapter,Serializable {
         /** See Iterator
          */
         public void remove() {
-            throw new UnsupportedOperationException(mLocalizer.t("PAG526: The \"remove\"" +
+            throw new UnsupportedOperationException(mLocalizer.t("PAG526: The \"remove\" " +
                                             "operation is not supported by the IteratorPageAdapter."));
         }
         

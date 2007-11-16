@@ -229,14 +229,14 @@ public class SbmeMatcherAdapter
         } catch (SbmeMatchEngineException ex) {
             throw new MatchingException(mLocalizer.t("MAT517: SBME adapter encountered a match engine exception: {0}", ex));
         } catch (ParseException ex) {
-            throw new MatchingException(mLocalizer.t("MAT518: SBME adapter encountered a parsing Exception: {0}", ex));
+            throw new MatchingException(mLocalizer.t("MAT518: SBME adapter encountered a parsing exception: {0}", ex));
         } catch (EPathException ex) {
             throw new MatchingException(mLocalizer.t("MAT519: SBME adapter failed to match the configured " + 
                                                      "fields in a SystemObject: {0}", ex));
         } catch (QMException ex) {
             throw new MatchingException(mLocalizer.t("MAT520: SBME adapter encountered a QMException " + 
                                                      "and failed to retrieve candidate " + 
-                                                     "record(s) from database: {0}", ex));
+                                                     "records from database: {0}", ex));
         } catch (ObjectException ex) {
             throw new MatchingException(mLocalizer.t("MAT521: SBME adapter failed to to convert " + 
                                               "a SystemObject to candidate format for matching: {0}", ex));
@@ -273,7 +273,7 @@ public class SbmeMatcherAdapter
             if (config == null) {            
                 throw new MatchingException(mLocalizer.t("MAT523: No match engine configuration " 
                         + "class is configured for this match adapter.  The " 
-                        + "Match Engine cannot be initialized: {0} expected", 
+                        + "match engine cannot be initialized: {0} expected", 
                         SbmeMatcherAdapterConfig.class.getName()));
             }
             if (!(config instanceof SbmeMatcherAdapterConfig)) {
@@ -317,7 +317,7 @@ public class SbmeMatcherAdapter
             try {
                 matchEngine.shutdown();
             } catch (Exception ex) {
-                throw new MatchingException(mLocalizer.t("MAT527: Failed to shutdown match " + 
+                throw new MatchingException(mLocalizer.t("MAT527: Failed to shut down match " + 
                                             "engine: {0}", ex));
             } finally {
                 matchEngine = null;

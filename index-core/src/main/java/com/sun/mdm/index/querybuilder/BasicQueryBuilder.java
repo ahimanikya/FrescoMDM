@@ -227,7 +227,7 @@ public class BasicQueryBuilder extends QueryBuilder {
             EPathArrayList fieldArrayList = options.getFieldsToRetrieve();
             if (fieldArrayList == null) {
                 throw new QueryBuilderException(mLocalizer.t("QUE567: Fields to " +
-                            "retrieve parameter can not be null."));
+                            "retrieve parameter cannot be null."));
             }
             queryObject.setSelect(fieldArrayList.toStringArray());
             populateQueryObject(queryObject, objNode, objNode2, objNode3);

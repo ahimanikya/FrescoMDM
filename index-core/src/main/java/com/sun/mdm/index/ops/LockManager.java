@@ -226,7 +226,7 @@ import java.util.logging.Level;
                                         "one or more EnterpriseObjects: {1}", ex));
         } catch (SQLException se) {
            throw new DataModifiedException(mLocalizer.t("OPS530: Could not lock " + 
-                                        "one or more EnterpriseObject: {1}", se));
+                                        "one or more EnterpriseObjects: {1}", se));
         } 
     }
     

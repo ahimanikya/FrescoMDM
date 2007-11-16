@@ -92,7 +92,7 @@ public class DefaultDecisionMaker extends DecisionMaker {
      */
     public void setParameter(String parameterName, Object value)
         throws DecisionMakerException {
-        mLogger.info(mLocalizer.x("DEC001: DefaultDecisionmaker setting " +
+        mLogger.info(mLocalizer.x("DEC001: DefaultDecisionMaker setting " +
                                   "parameter {0} to {1}", parameterName, value));
         if (parameterName.equals("OneExactMatch")) {
             mOneExactMatch = ((Boolean) value).booleanValue();
@@ -196,7 +196,7 @@ public class DefaultDecisionMaker extends DecisionMaker {
             }
             return new DecisionMakerResult(assumedMatch, potentialDuplicates);
         } catch (Exception e) {
-            throw new DecisionMakerException(mLocalizer.t("DEC502: DecisionMaker " + 
+            throw new DecisionMakerException(mLocalizer.t("DEC502: DefaultDecisionMaker " + 
                                     "encountered an error while processing records: {0}", e));
         }
     }

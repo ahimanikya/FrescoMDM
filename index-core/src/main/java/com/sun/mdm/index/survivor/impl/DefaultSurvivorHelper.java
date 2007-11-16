@@ -40,6 +40,7 @@ import com.sun.mdm.index.survivor.SystemFieldList;
 import com.sun.mdm.index.survivor.SystemFieldListMap;
 import com.sun.mdm.index.survivor.HelperCreationException;
 import com.sun.mdm.index.survivor.StrategyCreationException;
+import com.sun.mdm.index.util.Localizer;
 
 import java.util.Hashtable;
 import java.util.Collection;
@@ -55,6 +56,8 @@ import java.util.HashMap;
 public class DefaultSurvivorHelper
     extends com.sun.mdm.index.survivor.AbstractSurvivorHelper {
         
+    private transient final Localizer mLocalizer = Localizer.get();
+    
     /** pre-parse epaths and cache the ePath objects here
      */
     protected Map mEPathCache;
@@ -148,7 +151,8 @@ public class DefaultSurvivorHelper
 
             return sysFields;
         } catch (Exception ex) {
-            throw new SurvivorCalculationException(ex);
+            throw new SurvivorCalculationException(mLocalizer.t("SUR521: Could not " +
+                                                "retrieve system fields: {0}", ex));
         }
     }
 
@@ -166,8 +170,10 @@ public class DefaultSurvivorHelper
             EPathAPI.setFieldValue(getEPath(candidateField.getName()), eo,
                 candidateField.getValue(), false);
         } catch (Exception ex) {
-            throw new SurvivorCalculationException(
-                "Unable to set candidate field value for field : " + candidateField.getName(), ex);
+            throw new SurvivorCalculationException(mLocalizer.t("SUR522: Unable to " +
+                                            "set candidate field value for " + 
+                                            "field: {0}:{1}", 
+                                            candidateField.getName(), ex));
         }
 
         return eo;
@@ -187,7 +193,8 @@ public class DefaultSurvivorHelper
                 mEPathCache.put(canPath, e);
             }
         } catch (EPathException eex) {
-            throw new HelperCreationException(eex);
+            throw new HelperCreationException(mLocalizer.t("SUR523: Could not " +
+                                            "initialize DefaultSurvivorHelper: {0}", eex));
         }
     }    
     

@@ -114,7 +114,7 @@ public class SbmeStandardizerAdapterConfig
             java.io.ByteArrayInputStream stream = null;
                 
             if (mConfig == null) {
-                throw new SbmeConfigurationException(mLocalizer.t("MAT540:  Failed to " + 
+                throw new SbmeConfigurationException(mLocalizer.t("MAT540: Failed to " + 
                                                 "retrieve the standardization engine " + 
                                                 "configuration from the configuration " + 
                                                 "service. MatchEngineConfig to access " + 
@@ -127,7 +127,7 @@ public class SbmeStandardizerAdapterConfig
                     stream = new java.io.ByteArrayInputStream(fileContents);
                 }
             } catch (RuntimeException ex) {
-                throw new SbmeConfigurationException(mLocalizer.t("MAT541:  Could not " +
+                throw new SbmeConfigurationException(mLocalizer.t("MAT541: Could not " +
                                                 "retrieve the configuration file {0}" + 
                                                 "configuration from the configuration " + 
                                                 "service. MatchEngineConfig to access " + 
@@ -150,7 +150,7 @@ public class SbmeStandardizerAdapterConfig
             java.io.ByteArrayInputStream stream = null;
                 
             if (mConfig == null) {
-                throw new SbmeConfigurationException(mLocalizer.t("MAT542:  Failed to " +
+                throw new SbmeConfigurationException(mLocalizer.t("MAT542: Failed to " +
                                                 "retrieve the standardization engine " + 
                                                 "configuration from the configuration service. " + 
                                                 "MatchEngineConfig to access the " + 
@@ -163,7 +163,7 @@ public class SbmeStandardizerAdapterConfig
                     stream = new java.io.ByteArrayInputStream(fileContents);
                 }
             } catch (RuntimeException ex) {
-                throw new SbmeConfigurationException(mLocalizer.t("MAT543:  Failed to " +
+                throw new SbmeConfigurationException(mLocalizer.t("MAT543: Failed to " +
                                                 "retrieve the configuration file {0}: {1}",
                                                 name, ex));
             }

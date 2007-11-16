@@ -182,7 +182,7 @@ public class LocalIdValidator implements ObjectValidator {
                     throw new ValidationException(mLocalizer.t("OBJ676: The value " + 
                                         "of the Local ID ({0}) does not conform " + 
                                         "to the format of the Local ID for {1}, " +
-                                        " which is this pattern \"{2}\"", 
+                                        "which is this pattern \"{2}\"", 
                                         id, systemId, format));
                     
                 }

@@ -129,9 +129,9 @@ public class StandardizationConfiguration implements ConfigurationInfo {
                 SystemObjectStandardization sysObjStand = parseStandardizeSystemObject(elementToParse);
                 sysObjs.put(sysObjStand.getQualifiedName(), sysObjStand);
             }
-            mLogger.info(mLocalizer.x("CFG013: Standardization Configuration: the SystemObjects mappings are: {0}", LogUtil.mapToString(sysObjs)));
-            mLogger.info(mLocalizer.x("CFG014: Standardization Configuration: the moduleName is: {0}", moduleName));
-            mLogger.info(mLocalizer.x("CFG015: Standardization Configuration: the parserClass is: {0}", parserClass));
+            mLogger.info(mLocalizer.x("CFG013: Standardization Configuration: the SystemObject mappings are: {0}", LogUtil.mapToString(sysObjs)));
+            mLogger.info(mLocalizer.x("CFG014: Standardization Configuration: the module name is: {0}", moduleName));
+            mLogger.info(mLocalizer.x("CFG015: Standardization Configuration: the parser class is: {0}", parserClass));
         } catch (Exception ex) {
             throw new ConfigurationException(mLocalizer.t("CFG542: Could not parse " + 
                                     "the StandardizationConfiguration XML node: {0}", ex));

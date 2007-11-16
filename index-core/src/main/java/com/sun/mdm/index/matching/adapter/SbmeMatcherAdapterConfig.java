@@ -147,7 +147,7 @@ public class SbmeMatcherAdapterConfig
 
             } catch (RuntimeException ex) {
                 throw new SbmeConfigurationException(mLocalizer.t("MAT529: Failed to retrieve " + 
-                                                            "the configuration file failed: {0}", ex));
+                                                            "the configuration file: {0}", ex));
             }
 
             if (mLogger.isLoggable(Level.FINE)) {

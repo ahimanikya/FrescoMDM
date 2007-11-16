@@ -29,6 +29,7 @@ import com.sun.mdm.index.survivor.SurvivorStrategyInterface;
 import com.sun.mdm.index.survivor.SystemField;
 import com.sun.mdm.index.survivor.SystemFieldList;
 import com.sun.mdm.index.survivor.SystemFieldListMap;
+import com.sun.mdm.index.util.Localizer;
 
 import java.util.Iterator;
 import java.util.Collection;
@@ -42,6 +43,9 @@ import java.util.Set;
  */
 public class DefaultSurvivorStrategy implements SurvivorStrategyInterface,
 Cloneable, java.io.Serializable {
+
+    private transient final Localizer mLocalizer = Localizer.get();
+
     private String mPreferredSystem;
     
     /** Creates new MySurvivalStrategy */
@@ -92,8 +96,9 @@ Cloneable, java.io.Serializable {
     public void init(java.util.Collection parameters)
     throws StrategyCreationException {
         if (parameters == null) {
-            throw new StrategyCreationException(
-            "Missing initialization parameters");
+            throw new StrategyCreationException(mLocalizer.t("SUR524: Could not " +
+                                            "initialize DefaultSurvivorStrategy. " +
+                                            "Initialization parameters are missing."));
         }
         
         Iterator iter = parameters.iterator();
@@ -107,8 +112,9 @@ Cloneable, java.io.Serializable {
         }
         
         if ((mPreferredSystem == null) || mPreferredSystem.equals("")) {
-            throw new StrategyCreationException(
-            "Incorrect or missing parameter value for preferredSystem");
+            throw new StrategyCreationException(mLocalizer.t("SUR525: Incorrect " +
+                                            "or missing parameter value " +
+                                            "for preferredSystem."));
         }
     }
 }

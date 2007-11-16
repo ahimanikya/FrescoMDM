@@ -71,7 +71,7 @@ public class AuxIdValidator implements ObjectValidator {
                 con.close();
             } catch (Exception e) {
                 throw new ValidationException(mLocalizer.t("OBJ629: Auxiliary ID Validator "  + 
-                                "Could not obtain a database connection: {0}", e));
+                                "could not obtain a database connection: {0}", e));
             }
         }
 

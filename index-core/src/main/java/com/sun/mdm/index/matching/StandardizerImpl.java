@@ -85,32 +85,26 @@ public class StandardizerImpl implements Standardizer{
             
             standardizerAPIImpl.initialize(standardizerEngineConfig);
         } catch (StandardizationException ex) {
-            mLogger.severe(mLocalizer.x("MAT010: Initializing the standardization " + 
-                                        "engine failed: {0}", ex.getMessage()));
-            throw ex;            
+            throw new StandardizationException(mLocalizer.t("MAT546: Initializing the standardization " + 
+                                        "engine failed: {0}", ex));
         } catch (InstantiationException ex) {
-            mLogger.severe(mLocalizer.x("MAT011: StandardizerImpl failed to " + 
+            throw new InstantiationException(mLocalizer.t("MAT547: StandardizerImpl failed to " + 
                                         "instantiate the user API implementation " + 
-                                        "class failed: {0}", ex.getMessage()));
-            throw ex;            
+                                        "class: {0}", ex));
         } catch (ClassNotFoundException ex) {
-            mLogger.severe(mLocalizer.x("MAT012: StandardizerImpl failed to " + 
-                                        "load the user API implementation class " + 
-                                        "failed: {0}", ex.getMessage()));
-            throw ex;            
+            throw new ClassNotFoundException(mLocalizer.t("MAT548: StandardizerImpl failed to " + 
+                                        "load the user API implementation class: " + 
+                                        "{0}", ex));
         } catch (IllegalAccessException ex) {
-            mLogger.severe(mLocalizer.x("MAT013: StandardizerImpl failed to " + 
+            throw new IllegalAccessException(mLocalizer.t("MAT549: StandardizerImpl failed to " + 
                                         "access the user API implementation " + 
-                                        "class failed: {0}", ex.getMessage()));
-            throw ex;            
+                                        "class: {0}", ex));
         } catch (RuntimeException ex) {
-            mLogger.severe(mLocalizer.x("MAT014: Initialization failed for " + 
-                                        "StandardizerImpl: {0}", ex.getMessage()));
-            throw ex;            
+            throw new RuntimeException(mLocalizer.t("MAT550: Initialization failed for " + 
+                                        "StandardizerImpl: {0}", ex));
         } catch (LinkageError ex) {
-            mLogger.severe(mLocalizer.x("MAT015: Failed to load a native library: {0}", 
-                                        ex.getMessage()));
-            throw ex;            
+            throw new LinkageError(mLocalizer.t("MAT551: Failed to load a native library: {0}", 
+                                        ex));
         }
     }
     
@@ -156,8 +150,8 @@ public class StandardizerImpl implements Standardizer{
             } else {
                 throw new ObjectException(mLocalizer.t("MAT515: The object to be " + 
                                             "standardized does not have a type " + 
-                                            "attribute set. The standardizer is " + 
-                                            "unable to retrieve standardardization " + 
+                                            "attribute set. The standardizer cannot " + 
+                                            "retrieve the standardardization " + 
                                             "configuration without it."));
             }
         }

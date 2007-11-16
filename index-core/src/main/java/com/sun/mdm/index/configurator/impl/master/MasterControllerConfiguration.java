@@ -227,14 +227,14 @@ public class MasterControllerConfiguration implements ConfigurationInfo {
                     if (optionName.equals("option")) {
                         parseOption(option);
                     } else {
-                        throw new ConfigurationException(mLocalizer.t("CFG530: Could not parse the" + 
+                        throw new ConfigurationException(mLocalizer.t("CFG530: Could not parse the " + 
                                                         "ExecuteMatchQueryBuilder XML node.  " + 
                                                         "This is an unrecognized tag: {0}", optionName));
                     }
                 }
             }
         } catch (Exception e) {
-            throw new ConfigurationException(mLocalizer.t("CFG531: Could not parse the" + 
+            throw new ConfigurationException(mLocalizer.t("CFG531: Could not parse the " + 
                                                         "ExecuteMatchQueryBuilder XML node: {0}", e));
         }
     }

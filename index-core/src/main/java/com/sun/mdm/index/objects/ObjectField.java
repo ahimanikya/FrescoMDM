@@ -678,7 +678,7 @@ public class ObjectField implements Externalizable  {
 
         default:
             throw new InvalidKeyTypeException(mLocalizer.t("OBJ510: Unrecognized " + 
-                                      "bit mask: {0}" , mask));
+                                      "bit mask \"{0}\"" , mask));
         }
 
         return bRet;

@@ -69,8 +69,8 @@ public class SerialBlockPicker implements BlockPicker {
         if (remainingBlockIDs.size() > 0) {
             blockID = (String) remainingBlockIDs.get(0);
         } else {
-            throw new NoBlockApplicableException(mLocalizer.t("MAT545:  Unable to " +
-                                                "pick a block: the list of " + 
+            throw new NoBlockApplicableException(mLocalizer.t("MAT545: Unable to " +
+                                                "pick a block. The list of " + 
                                                 "remaining block IDs is empty."));
         }
         

@@ -45,6 +45,6 @@ public class InvalidObjectException extends ObjectException {
      * @param msg the detail message.
      */
     public InvalidObjectException(String msg) {
-        super("Unrecognized object tag: <" + msg + ">");
+        super(msg);
     }
 }

@@ -65,7 +65,8 @@ public class FieldDescriptor implements FieldValidator {
      */
     public FieldDescriptor(String name) throws ValidationException {
         if (name == null) {
-            throw new NullObjectException();
+            throw new NullObjectException(mLocalizer.t("OBJ752: The name " + 
+                                            "parameter cannot be null."));
         }
         sFieldName = name;
         iDataType = FieldType.UNKNOWN;
@@ -215,7 +216,8 @@ public class FieldDescriptor implements FieldValidator {
      */
     public void validate(ObjectField field, boolean newObject) throws ValidationException {
         if (field == null) {
-            throw new NullObjectException();
+            throw new NullObjectException(mLocalizer.t("OBJ753: The field " + 
+                                            "parameter cannot be null."));
         }
 
         if (field.getType() != getFieldType()) {

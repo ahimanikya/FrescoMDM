@@ -42,6 +42,7 @@ import com.sun.mdm.index.objects.epath.EPathAPI;
 import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.objects.epath.EPathParser;
 import com.sun.mdm.index.matching.MatchEngineController;
+import com.sun.mdm.index.util.Localizer;
 
 /** Survivor calculator class
  * 
@@ -53,6 +54,7 @@ public class SurvivorCalculator implements java.io.Serializable {
     private AbstractSurvivorHelper mHelper;
 
     private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     private MatchEngineController mMatch;
     
     /** Creates new SurvivorCalculator using default helper object
@@ -164,7 +166,8 @@ public class SurvivorCalculator implements java.io.Serializable {
                     }
                 }
             } else {
-                throw new SurvivorCalculationException("SBR entity object is null");
+                throw new SurvivorCalculationException(mLocalizer.t("SUR518: SBR " +
+                                                    "entity object is null."));
             }
             
             // now apply the override values
@@ -179,8 +182,8 @@ public class SurvivorCalculator implements java.io.Serializable {
                         try {
                             EPathAPI.addObjectValue(EPathParser.parse(path), sbrObj, data);
                         } catch (EPathException eex) {
-                            throw new SurvivorCalculationException(
-                            "Error applying overwrite value, EPath error", eex);
+                            throw new SurvivorCalculationException(mLocalizer.t("SUR519: Error " +
+                                                "applying overwrite value: EPath error: {0}", eex));
                         }
                     }
                 }
@@ -206,7 +209,8 @@ public class SurvivorCalculator implements java.io.Serializable {
             try {
                 stndSBR = (SBR) mMatch.standardize(stndSBR);
             } catch (Exception e) {
-                throw new SurvivorCalculationException("Standardizing SBR failed", e);
+                throw new SurvivorCalculationException(mLocalizer.t("SUR520: Standardizing " +
+                                                "SBR failed: {0}", e));
             }
             // ckuo: added to use update
             ogSbrObj.update(stndSBR.getObject(), true, true);

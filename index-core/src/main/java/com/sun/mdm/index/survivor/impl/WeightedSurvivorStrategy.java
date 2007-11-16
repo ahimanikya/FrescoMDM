@@ -45,6 +45,7 @@ import com.sun.mdm.index.survivor.SystemField;
 import com.sun.mdm.index.survivor.SystemFieldList;
 import com.sun.mdm.index.survivor.SystemFieldListMap;
 import com.sun.mdm.index.survivor.StrategyParameter;
+import com.sun.mdm.index.util.Localizer;
 
 
 
@@ -61,6 +62,7 @@ public class WeightedSurvivorStrategy implements SurvivorStrategyInterface {
     
     private transient static final Logger mLogger 
                 = Logger.getLogger("com.sun.mdm.index.survivor.impl.WeightedSurvivorStrategy");
+    private transient final Localizer mLocalizer = Localizer.get();
     
     /** configuration object */
     private WeightedCalculatorConfig mConfig;
@@ -152,9 +154,10 @@ public class WeightedSurvivorStrategy implements SurvivorStrategyInterface {
                 systemFields);
             
             if (date == null) {
-                throw new SurvivorCalculationException(
-                "Last modified date does not exist in actual field values for candidate : "
-                + candidateId + ", system : " + systemKey);
+                throw new SurvivorCalculationException(mLocalizer.t("SUR528: Last " +
+                                            "modified date does not exist in " + 
+                                            "actual field values for candidateID={0}, " +
+                                            "systemKey={1}", candidateId, systemKey.toString()));
             }
             
             // check the value of the candidate field, don't consider the system if value == null
@@ -282,8 +285,9 @@ public class WeightedSurvivorStrategy implements SurvivorStrategyInterface {
         if (rules == null) {
             rules = mConfig.getDefaultRules();
             if (rules == null) {
-                throw new SurvivorCalculationException(
-                "Both custom and default rules are not defined for candidate field : " + candidateId);
+                throw new SurvivorCalculationException(mLocalizer.t("SUR529: Both " +
+                                            "custom and default rules are not " + 
+                                            "defined for candidate field: {0}", candidateId));
             }
         }
         
@@ -372,8 +376,8 @@ public class WeightedSurvivorStrategy implements SurvivorStrategyInterface {
         }
         
         if ((configModName == null) || configModName.equals("")) {
-            throw new StrategyCreationException(
-            "Configuration module name is empty");
+            throw new StrategyCreationException(mLocalizer.t("SUR530: Configuration " +
+                                            "module name is empty."));
         }
         
         try {
@@ -381,12 +385,14 @@ public class WeightedSurvivorStrategy implements SurvivorStrategyInterface {
             mConfig = (WeightedCalculatorConfig) c.getConfiguration(configModName);
             
             if (mConfig == null) {
-                throw new StrategyCreationException("Configuration for module "
-                + WeightedCalculatorConfig.MODULE_NAME + " is null, unable to proceed");
+                throw new StrategyCreationException(mLocalizer.t("SUR531: Configuration " +
+                                            "for module {0} cannot be null.", 
+                                            WeightedCalculatorConfig.MODULE_NAME));
             }
         } catch (InstantiationException iex) {
-            throw new StrategyCreationException("unable to get configuration mBean instance",
-            iex);
+            throw new StrategyCreationException(mLocalizer.t("SUR532: Unable " +
+                                            "to retrieve configuration mBean instance: {0}", 
+                                            iex));
         }
     }
 }

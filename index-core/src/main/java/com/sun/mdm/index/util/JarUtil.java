@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ArrayList;
+import com.sun.mdm.index.util.Localizer;
 
 /**
  * Utilities for jar file manipulation
@@ -47,6 +48,8 @@ import java.util.ArrayList;
  */
 public class JarUtil {
     
+    private transient static final Localizer mLocalizer = Localizer.get();
+
     static final int BUFFER_SIZE = 2048;
     public final static String ENC = "US-ASCII"; 
     
@@ -80,7 +83,9 @@ public class JarUtil {
     throws FileNotFoundException, IOException {
         File jarFile = new File(jarFileName);        
         if (!jarFile.exists()) {
-            throw new IOException("Jar file does not exist: " + jarFile.getAbsolutePath());
+            throw new IOException(mLocalizer.t("UTL505: Jar file " +
+                                            "does not exist: {0}", 
+                                            jarFile.getAbsolutePath()));
         }
         
         //Check if there is an existing temp file.  If yes, delete it
@@ -89,7 +94,9 @@ public class JarUtil {
         
         boolean bool = jarFile.renameTo(jarTempFile);
         if (!bool) {
-    	    throw new IOException("Unable to rename jar file: " + jarFile.getAbsolutePath());
+    	    throw new IOException(mLocalizer.t("UTL506: Unable to " +
+                                            "rename jar file: {0}", 
+                                            jarFile.getAbsolutePath()));
         }
         
         jarFile = new File(jarFileName);        
@@ -430,7 +437,9 @@ public class JarUtil {
     private static void deleteFile(File file) throws IOException {
         if (file.exists()) {
             if (file.delete() != true) {
-                throw new IOException("Could not delete: " + file.getAbsolutePath());
+                throw new IOException(mLocalizer.t("UTL507: Unable to " +
+                                            "delete file: {0}", 
+                                            file.getAbsolutePath()));
             }
         }        
     }

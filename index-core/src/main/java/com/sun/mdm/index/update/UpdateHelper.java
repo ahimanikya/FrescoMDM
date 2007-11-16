@@ -34,6 +34,7 @@ import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.SystemObjectException;
 import com.sun.mdm.index.objects.exception.ObjectException;
+import com.sun.mdm.index.util.Localizer;
 
 
 /**helper methods for update manager
@@ -41,6 +42,7 @@ import com.sun.mdm.index.objects.exception.ObjectException;
 public class UpdateHelper {
     
     private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient final Localizer mLocalizer = Localizer.get();
     
     
     /** Creates new UpdateHelper */
@@ -97,8 +99,8 @@ public class UpdateHelper {
             destEo.addSystemObject(socopy);
             return socopy;
         } else {
-            throw new UpdateException("Invalid system code / lid: " + system
-            + ", " + lid);
+            throw new UpdateException(mLocalizer.t("UPD500: Invalid System Code={0}, " +
+                                            "Local ID={1}", system, lid));
         }
     }
     

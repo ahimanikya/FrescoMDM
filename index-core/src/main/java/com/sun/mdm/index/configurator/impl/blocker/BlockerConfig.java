@@ -278,7 +278,7 @@ public class BlockerConfig implements ConfigurationInfo {
         } else if ((conditionType != null) && conditionType.equals(TAG_RANGE)) {
             ac = new RangeCondition();
         } else {
-            throw new ConfigurationException(mLocalizer.t("CFG515: Unrecognized parse condition " + 
+            throw new ConfigurationException(mLocalizer.t("CFG515: Unrecognized parse " + 
                                                           "condition: {0}", conditionType));
         }
 
@@ -330,8 +330,8 @@ public class BlockerConfig implements ConfigurationInfo {
                             }
                         }
                     } else {
-                        throw new ConfigurationException(mLocalizer.t("CFG519: " + 
-                                                        "Only range conditions can have default tag."));
+                        throw new ConfigurationException(mLocalizer.t("CFG519: Only range " + 
+                                                        "conditions can have a default tag."));
                     }
 
                 }

@@ -196,7 +196,7 @@ public class FieldFlag implements Externalizable {
             break;
 
         default:
-            throw new InvalidKeyTypeException(mLocalizer.t("OBJ504: Unrecognized  " + 
+            throw new InvalidKeyTypeException(mLocalizer.t("OBJ504: Unrecognized " + 
                                                            "flag type: {0}", type));
         }
 
@@ -350,7 +350,7 @@ public class FieldFlag implements Externalizable {
             break;
 
         default:
-            throw new InvalidKeyTypeException(mLocalizer.t("OBJ505: Unrecognized  " + 
+            throw new InvalidKeyTypeException(mLocalizer.t("OBJ505: Unrecognized " + 
                                                            "flag type: {0}", type));
         }
     }

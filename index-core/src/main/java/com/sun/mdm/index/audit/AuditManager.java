@@ -234,7 +234,7 @@ public class AuditManager {
             }
         } catch (Exception e) {
             throw new AuditException(mLocalizer.t("AUD503: Could not retrieve the " + 
-                                                  "Audit Log record(s): {0}", e));
+                                                  "Audit Log records: {0}", e));
         }
 
         return lookupAuditLog(con, ps, obj);
@@ -301,7 +301,7 @@ public class AuditManager {
             return retIterator;
         } catch (Exception e) {
             throw new AuditException(mLocalizer.t("AUD504: Could not look up " + 
-                                                  "Audit Log record(s): {0}", e));
+                                                  "Audit Log records: {0}", e));
         }
     }
 }

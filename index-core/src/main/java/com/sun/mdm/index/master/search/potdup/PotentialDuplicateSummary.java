@@ -479,7 +479,7 @@ public class PotentialDuplicateSummary extends ObjectNode {
             newSearchObj.setFieldsToRetrieve(searchObj.getFieldsToRetrieve());
             return mc.lookupPotentialDuplicates(newSearchObj);
         } catch (Exception e) {
-            throw new ProcessingException(mLocalizer.t("MAS510: Could not" + 
+            throw new ProcessingException(mLocalizer.t("MAS510: Could not " + 
                                 "retrieve associated potential duplicates: {0}", e));
         }
     }

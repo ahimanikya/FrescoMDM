@@ -29,6 +29,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.sun.mdm.index.util.Localizer;
 
 /**
  * utility class for code generation. contains a variety of generic code
@@ -38,6 +39,8 @@ import java.util.Map;
  * @version 0.1
  */
 public class CodeGeneratorUtil {
+
+    private transient static final Localizer mLocalizer = Localizer.get();
 
     private static final String [] DOS_SERVICE_NAMES =
     {
@@ -122,13 +125,15 @@ public class CodeGeneratorUtil {
     public static File createPackageDir(File baseDir, String pkgName) 
             throws Exception {
         if (baseDir == null) {
-            throw new Exception("Invalid working directory specified");
+            throw new Exception(mLocalizer.t("UTL502: Invalid working " +
+                                            "directory specified."));
         }
 
         File pkgDir = new File(baseDir, packageToPath(pkgName));
 
         if (pkgDir.exists() && pkgDir.isFile()) {
-            throw new Exception("Invalid package directory specified");
+            throw new Exception(mLocalizer.t("UTL503: Invalid package " +
+                                            "directory specified: {0}", pkgName));
         }
 
         pkgDir.mkdirs();
@@ -150,7 +155,8 @@ public class CodeGeneratorUtil {
             new java.text.SimpleDateFormat("yyyyMMddHHmmssSSSS");
 
         if (baseDir == null) {
-            throw new Exception("Invalid working directory specified");
+            throw new Exception(mLocalizer.t("UTL504: Invalid working " +
+                                            "directory specified."));
         }
 
         File workingDir = new File(baseDir, sf.format(new java.util.Date()));
