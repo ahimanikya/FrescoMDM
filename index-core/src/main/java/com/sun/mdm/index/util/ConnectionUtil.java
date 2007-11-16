@@ -46,6 +46,7 @@ public class ConnectionUtil {
     public static final int DB_UNKNOWN = -1;
     public static final int DB_ORACLE = 0;
     public static final int DB_SQLSERVER = 1;
+    public static final int DB_AXION = 5;
     
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.util." + ConnectionUtil.class.getName());
     private transient static final Localizer mLocalizer = Localizer.get();
@@ -100,7 +101,7 @@ public class ConnectionUtil {
         Connection conn = null;
         try {
         	conn = getConnection();
-        	if (getDBProductID()==DB_SQLSERVER){
+            if ((getDBProductID()==DB_SQLSERVER) || ((getDBProductID()==DB_AXION))){
         		//sql server use SELECT 'Something'
         		stmt = conn.prepareStatement("select 'Up'");
         	}else{
@@ -156,6 +157,8 @@ public class ConnectionUtil {
     	
     	  if (dbProductName.endsWith("SQL Server")) {
     		mDBProduct = DB_SQLSERVER;
+            } else if (dbProductName.equals("AxionDB")){
+                mDBProduct = DB_AXION;
     	  } else {
     		mDBProduct = DB_ORACLE;
     	  }
@@ -169,7 +172,8 @@ public class ConnectionUtil {
      * @param con Database connection.
      * @throws Exception if an error occurred.
      * @return  DB_SQLSERVER for an SQL Server database 
-     * or DB_ORACLE for an Oracle database.
+     * or DB_ORACLE for an Oracle database
+     * or DB_AXION for an Axion database
      */
     
     public static int getDBProductID(Connection con) 
@@ -183,7 +187,8 @@ public class ConnectionUtil {
     /** Get The ID of the database vendor.
      * 
      * @return  DB_SQLSERVER for an SQL Server database 
-     * or DB_ORACLE for an Oracle database.
+     * or DB_ORACLE for an Oracle database
+     * or DB_AXION for an Axion database
      */
     public static int getDBProductID() 
 	{	

@@ -1031,6 +1031,9 @@ public class QueryObject implements java.io.Serializable, QueryConstants {
     QueryObjectCache getCacheRef() {
     	return mQoCache;
     }
+    public void clearQueryConditions(){
+        mconditions.clear();        
+    }
     /*
      * Returns a String representation of this object.
      * @return a String representation of this object.

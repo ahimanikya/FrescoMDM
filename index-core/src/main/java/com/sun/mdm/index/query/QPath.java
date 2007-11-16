@@ -344,6 +344,11 @@ private void createJoin(StringBuffer joinFields, String primaryObject,
              joinFields.append(joinField);
              break;
              
+        case ConnectionUtil.DB_AXION :
+            joinField = AxionSQLObject.createJoin(pTable, pk, sTable, fkey, outerJoin);
+            joinFields.append(joinField);
+            break;
+          
   }
     
 }
@@ -552,6 +557,9 @@ StringBuffer createANSIJoin(StringBuffer innerBuf, String primaryObject,
         	case ConnectionUtil.DB_SQLSERVER:
         		sql = SQLServerSQLObject.createSQL(selectbuf, fromTable, joinbuf, conditionbuf, maxRows, hint);
         		break;
+        case ConnectionUtil.DB_AXION:
+            sql = AxionSQLObject.createSQL(selectbuf, fromTable, joinbuf, conditionbuf, maxRows, hint);
+            break;
         	case ConnectionUtil.DB_ORACLE:        		
         	default:
         		sql = OracleSQLObject.createSQL(selectbuf, fromTable, joinbuf, conditionbuf, maxRows, hint);

@@ -1199,11 +1199,13 @@ public class ObjectFactory {
 
     /**
      *  does Database requires ANSI queries
+     * @return true is DB Type is ANSI
      */
     public static boolean isDatabaseANSI() {
         boolean ansi = false;
     	init();
         if ( mEIndexObject.getDataBase().equals("SQL Server")) {
+        //if ( mEIndexObject.getDataBase().equals("SQL Server") ||  mEIndexObject.getDataBase().equals("AxionDB")){
         	ansi = true;
         }
         return ansi;
