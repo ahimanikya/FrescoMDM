@@ -30,7 +30,7 @@
         <localRepository>${maven.repo.local}</localRepository>
         <netbeans.version>RELEASE60-BETA1</netbeans.version>
         <netbeans.cluster>soa1</netbeans.cluster>
-        </properties>
+    </properties>
     <repositories>
         <repository>
             <id>download-java-net-legacy-repository</id>

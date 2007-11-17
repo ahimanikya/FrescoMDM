@@ -216,14 +216,56 @@
                         <goals><goal>run</goal></goals>
                         <configuration>
                             <tasks>
-                                <ant antfile="junitTest.xml">
-                                    <property name="build.dir" value="${project.build.directory}"/>
-                                    <property name="test.src.dir" value="${project.build.testSourceDirectory}"/>
-                                    <property name="build.test.classes.dir" value="${project.build.testOutputDirectory}"/>
-                                    <property name="run.test.classpath" refid="maven.test.classpath"/>
-                                    <property name="compile.classpath" refid="maven.compile.classpath"/>
-                                    <property name="localRepository.path" value="${settings.localRepository}"/>
-                                </ant>
+                                <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+                                    <classpath refid="maven.test.classpath"/>
+                                </taskdef>
+                                <if>
+                                    <equals arg1="${env.RUN_JUNIT}" arg2="oracle" />
+                                <then>
+                                    <echo>::Oracle JUnit Test</echo>
+                                    <ant antfile="junitTest.xml" target="runtests_oracle">
+                                        <property name="build.dir" value="${project.build.directory}"/>
+                                        <property name="test.src.dir" value="${project.build.testSourceDirectory}"/>
+                                        <property name="build.test.classes.dir" value="${project.build.testOutputDirectory}"/>
+                                        <property name="run.test.classpath" refid="maven.test.classpath"/>
+                                        <property name="compile.classpath" refid="maven.compile.classpath"/>
+                                        <property name="localRepository.path" value="${settings.localRepository}"/>
+                                    </ant>
+                                </then>                                
+                                <elseif>
+                                    <equals arg1="${env.RUN_JUNIT}" arg2="sqlserver" />
+                                <then>
+                                    <echo>::SQL Server JUnit Test</echo>
+                                    <ant antfile="junitTest.xml" target="runtests_sqlserver">
+                                        <property name="build.dir" value="${project.build.directory}"/>
+                                        <property name="test.src.dir" value="${project.build.testSourceDirectory}"/>
+                                        <property name="build.test.classes.dir" value="${project.build.testOutputDirectory}"/>
+                                        <property name="run.test.classpath" refid="maven.test.classpath"/>
+                                        <property name="compile.classpath" refid="maven.compile.classpath"/>
+                                        <property name="localRepository.path" value="${settings.localRepository}"/>
+                                    </ant>
+                                </then>
+                                </elseif>
+                                <elseif>
+                                    <equals arg1="${env.RUN_JUNIT}" arg2="all" />
+                                <then>
+                                    <echo>::ALL JUnit Test</echo>
+                                    <ant antfile="junitTest.xml">
+                                        <property name="build.dir" value="${project.build.directory}"/>
+                                        <property name="test.src.dir" value="${project.build.testSourceDirectory}"/>
+                                        <property name="build.test.classes.dir" value="${project.build.testOutputDirectory}"/>
+                                        <property name="run.test.classpath" refid="maven.test.classpath"/>
+                                        <property name="compile.classpath" refid="maven.compile.classpath"/>
+                                        <property name="localRepository.path" value="${settings.localRepository}"/>
+                                    </ant>
+                                </then>
+                                </elseif>                                  
+                                <else>
+                                    <echo>::NO JUnit Test</echo>
+                                </else>
+                                </if>
+
+                                
                             </tasks> 
                         </configuration>
                     </execution>
@@ -323,6 +365,12 @@
             <groupId>ant</groupId>
             <artifactId>ant-junit</artifactId>
             <version>1.6.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ant-contrib</groupId>
+            <artifactId>ant-contrib</artifactId>
+            <version>1.0b2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
