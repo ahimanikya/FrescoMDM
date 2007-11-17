@@ -32,7 +32,7 @@ proxy.datasource.port.number=1433
 
 # Sets the name of the Server on which database is running.
 #proxy.datasource.server.name=server01-te
-proxy.datasource.server.name=jlu-gx620xp
+proxy.datasource.server.name=localhost
 
 # Set the database vendor name.  Currently only Oracle and SQL Server are supported.
 #proxy.datasource.vendor=ORACLE
