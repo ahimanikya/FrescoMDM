@@ -117,7 +117,7 @@ public class QueryHelper {
             }
 
         } catch (SQLException e) {
-            throw new QMException(mLocalizer.t("QUE517: Could not retreive the " +
+            throw new QMException(mLocalizer.t("QUE517: Could not retrieve the " +
                                             "SystemObject status:{0}", e));
         } finally {
             try {

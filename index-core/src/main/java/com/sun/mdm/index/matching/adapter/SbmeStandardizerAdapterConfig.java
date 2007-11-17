@@ -129,7 +129,7 @@ public class SbmeStandardizerAdapterConfig
             } catch (RuntimeException ex) {
                 throw new SbmeConfigurationException(mLocalizer.t("MAT541: Could not " +
                                                 "retrieve the configuration file {0}" + 
-                                                "configuration from the configuration " + 
+                                                "from the configuration " + 
                                                 "service. MatchEngineConfig to access " + 
                                                 "the configuration service is null: {1}",
                                                 name, ex));

@@ -99,10 +99,10 @@ import java.util.logging.Level;
             sbr.setRevisionNumber(sbr.getRevisionNumber().intValue() + 1);
         } catch (ObjectException ex) {
             throw new DataModifiedException(mLocalizer.t("OPS523: Could not lock " + 
-                                        "EnterpriseObject: {1}", ex));
+                                        "EnterpriseObject: {0}", ex));
         } catch (SQLException se) {
             throw new DataModifiedException(mLocalizer.t("OPS524: Could not lock " + 
-                                        "EnterpriseObject: {1}", se));
+                                        "EnterpriseObject: {0}", se));
         } 
     }
     
@@ -132,10 +132,10 @@ import java.util.logging.Level;
             sbr.setRevisionNumber(sbr.getRevisionNumber().intValue() + 1);
         } catch (ObjectException ex) {
             throw new DataModifiedException(mLocalizer.t("OPS525: Could not lock " + 
-                                        "EnterpriseObject: {1}", ex));
+                                        "EnterpriseObject: {0}", ex));
         } catch (SQLException se) {
             throw new DataModifiedException(mLocalizer.t("OPS526: Could not lock " + 
-                                        "EnterpriseObject: {1}", se));
+                                        "EnterpriseObject: {0}", se));
         } 
     }
     
@@ -184,10 +184,10 @@ import java.util.logging.Level;
             }
         } catch (ObjectException ex) {
             throw new DataModifiedException(mLocalizer.t("OPS527: Could not lock " + 
-                                        "one or more EnterpriseObjects: {1}", ex));
+                                        "one or more EnterpriseObjects: {0}", ex));
         } catch (SQLException se) {
             throw new DataModifiedException(mLocalizer.t("OPS528: Could not lock " + 
-                                        "one or more EnterpriseObjects: {1}", se));
+                                        "one or more EnterpriseObjects: {0}", se));
         } 
     }
     
@@ -223,10 +223,10 @@ import java.util.logging.Level;
             sbr2.setRevisionNumber(sbr2.getRevisionNumber().intValue() + 1);
         } catch (ObjectException ex) {
            throw new DataModifiedException(mLocalizer.t("OPS529: Could not lock " + 
-                                        "one or more EnterpriseObjects: {1}", ex));
+                                        "one or more EnterpriseObjects: {0}", ex));
         } catch (SQLException se) {
            throw new DataModifiedException(mLocalizer.t("OPS530: Could not lock " + 
-                                        "one or more EnterpriseObjects: {1}", se));
+                                        "one or more EnterpriseObjects: {0}", se));
         } 
     }
     

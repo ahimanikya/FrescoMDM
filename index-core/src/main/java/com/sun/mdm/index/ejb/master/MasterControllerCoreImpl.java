@@ -430,7 +430,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             }
 
         } catch (Exception e) {
-            mLogger.severe(mLocalizer.x("MSC009: initialization failed: {0}.", e.getMessage()));
+            mLogger.severe(mLocalizer.x("MSC009: Initialization failed: {0}.", e.getMessage()));
             sendCriticalError("MasterController initializing failed: "
                     + e.getClass().getName() + ": " + e.getMessage());
             throw e;

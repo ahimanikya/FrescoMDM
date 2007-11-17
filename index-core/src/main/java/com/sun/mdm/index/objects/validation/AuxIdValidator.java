@@ -79,7 +79,7 @@ public class AuxIdValidator implements ObjectValidator {
             idDefId = (Integer) node.getValue("AuxIdDef");
         } catch (ObjectException e) {
             throw new ValidationException(mLocalizer.t("OBJ630: Auxiliary ID Validator " + 
-                                "could not retreive the value of a node: {0}", e));
+                                "could not retrieve the value of a node: {0}", e));
         }
 
         AuxIdDefinition auxIdDef = (AuxIdDefinition) mIdDefs.get(idDefId);

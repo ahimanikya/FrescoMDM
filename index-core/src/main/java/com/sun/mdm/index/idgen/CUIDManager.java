@@ -155,7 +155,7 @@ public class CUIDManager {
                     nextValue = getSeqNoByProcedure(seqName, con);
             }
         } catch (SQLException exp) {
-            throw new SEQException(mLocalizer.t("IDG503: Could not retrieve next the " + 
+            throw new SEQException(mLocalizer.t("IDG503: Could not retrieve the next " + 
                                                 "ID from the EUID generator: (0}", exp));
         }
 

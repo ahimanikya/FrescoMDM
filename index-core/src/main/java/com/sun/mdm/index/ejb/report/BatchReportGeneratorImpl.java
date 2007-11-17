@@ -1207,7 +1207,7 @@ public class BatchReportGeneratorImpl{
                 specDate = config.getEndDate();
             } else {
                 throw new ReportException(mLocalizer.t("RPE534: Start or end date must be specified " + 
-                                            "for the Yearly Statistics r."));
+                                            "for the Yearly Statistics report."));
             }
 
             // Determine first date of year based on specified date

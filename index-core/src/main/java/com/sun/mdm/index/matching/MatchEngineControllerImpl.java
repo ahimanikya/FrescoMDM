@@ -430,7 +430,7 @@ public class MatchEngineControllerImpl
             
             // assert qos != null and length > 0
             if (qos == null) {
-                throw new MatchingException(mLocalizer.t("MAT506: Assertion failed, Query builder result is null"));
+                throw new MatchingException(mLocalizer.t("MAT506: Query object cannot be null"));
             }
 
             if (options.getCandidateThreshold() > 0) {

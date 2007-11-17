@@ -270,7 +270,7 @@ public class MasterControllerConfiguration implements ConfigurationInfo {
         } else if (updateMode.equals("Optimistic")) {
             mPessimisticEnabled = false;
         } else {
-            throw new ConfigurationException(mLocalizer.t("CFG532: Could not parse the" + 
+            throw new ConfigurationException(mLocalizer.t("CFG532: Could not parse the " + 
                                                         "UpdateMode XML node.  " + 
                                                         "This is an unrecognized update mode: {0}", updateMode));
         }

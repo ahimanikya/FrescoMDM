@@ -244,7 +244,7 @@ public class ConfigurationService implements ConfigurationMBean {
                 is = instance.getConfigFileStream(VALIDATION_FILE_NAME);
                 instance.load(is);
                 is.close();
-                mLogger.info(mLocalizer.x("CFG006: Loadin: security configuration file: {0}" , SECURITY_FILE_NAME));
+                mLogger.info(mLocalizer.x("CFG006: Loading: security configuration file: {0}" , SECURITY_FILE_NAME));
                 is = instance.getConfigFileStream(SECURITY_FILE_NAME);
                 instance.load(is);
                 is.close();

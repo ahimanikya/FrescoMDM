@@ -61,7 +61,7 @@ public class SystemObjectField {
         try {
             this.ePath = EPathParser.parse(qualifiedName);
         } catch (com.sun.mdm.index.objects.epath.EPathException ex) {
-            throw new ConfigurationException(mLocalizer.t("CFG545: SystemObjectField" + 
+            throw new ConfigurationException(mLocalizer.t("CFG545: SystemObjectField " + 
                                     "failed to parse qualified field name {0} as an EPath: {1}", 
                                     qualifiedName, ex));
         }
