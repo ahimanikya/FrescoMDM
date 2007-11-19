@@ -68,7 +68,7 @@ fi
 
 export MAVEN_OPTS
 if [ x$MAVEN_OPTS = x ]; then
-    MAVEN_OPTS="-Xmx400m"
+    MAVEN_OPTS="-Xmx512m"
 fi
 
 #########
@@ -305,7 +305,7 @@ PATH="$JAVA_HOME/bin${PS}$PATH"
 export ANT_HOME ANT_OPTS
 ANT_HOME=$TOOLROOT/java/ant
 if [ x$ANT_OPTS = x ]; then
-    ANT_OPTS=-Xmx200m
+    ANT_OPTS=-Xmx512m
 fi
 
 export MAVEN_HOME M2_HOME

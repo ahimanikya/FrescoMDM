@@ -57,7 +57,7 @@ if !($?BOOTSTRAP_TOOLS) setenv BOOTSTRAP_TOOLS "/net/asharp.sfbay.sun.com/asharp
 if !($?JAVABASE)    setenv JAVABASE /usr
 if !($?JAVAVERS)    setenv JAVAVERS java
 if !($?IIS_CVSROOT) setenv IIS_CVSROOT :pserver:${JNET_USER}@cvs.dev.java.net:/cvs
-if !($?MAVEN_OPTS)    setenv MAVEN_OPTS -Xmx400m
+if !($?MAVEN_OPTS)    setenv MAVEN_OPTS -Xmx512m
 
 ### is the user using VSPMS?
 if ($?PROJECTRC && $?MYPROJECTS) then
@@ -260,7 +260,7 @@ set path = ($JAVA_HOME/bin $path)
 ##### JAVA TOOLS
 #ant
 setenv ANT_HOME $TOOLROOT/java/ant
-if !($?ANT_OPTS)    setenv ANT_OPTS -Xmx200m
+if !($?ANT_OPTS)    setenv ANT_OPTS -Xmx512m
 
 setenv MAVEN_HOME $TOOLROOT/java/maven
 setenv M2_HOME $TOOLROOT/java/maven2
