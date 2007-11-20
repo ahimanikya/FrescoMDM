@@ -152,39 +152,39 @@ public class EViewGeneratorTask extends Task {
     public void generateFiles(EIndexObject eo ) throws FileNotFoundException, TemplateWriterException, ParserException, IOException{
 
         String ejbdir = mEjbdir + File.separator + "src" + File.separator + "java";
-        File destDir = new File(ejbdir + "\\com\\sun\\mdm\\index\\objects");
+        File destDir = new File(ejbdir + "/com/sun/mdm/index/objects");
         Delete delete = (Delete) getProject().createTask("delete");
         delete.setDir(destDir);
         delete.init();
         delete.setLocation(getLocation());
         delete.execute();
 
-        destDir = new File(ejbdir + "\\com\\sun\\mdm\\index\\ops");
+        destDir = new File(ejbdir + "/com/sun/mdm/index/ops");
         delete.setDir(destDir);
         delete.init();
         delete.setLocation(getLocation());
         delete.execute();
 
-        destDir = new File(ejbdir + "\\com\\sun\\mdm\\index\\webservice");
+        destDir = new File(ejbdir + "/com/sun/mdm/index/webservice");
         delete.setDir(destDir);
         delete.init();
         delete.setLocation(getLocation());
         delete.execute();
 
-        destDir = new File(ejbdir + "\\com\\sun\\mdm\\index\\ejb");
+        destDir = new File(ejbdir + "/com/sun/mdm/index/ejb");
         delete.setDir(destDir);
         delete.init();
         delete.setLocation(getLocation());
         delete.execute();
 
         File newPath = null;
-        newPath = new File(ejbdir + "\\com\\sun\\mdm\\index\\objects");
+        newPath = new File(ejbdir + "/com/sun/mdm/index/objects");
         newPath.mkdirs();
-        newPath = new File(ejbdir + "\\com\\sun\\mdm\\index\\objects\\validation");
+        newPath = new File(ejbdir + "/com/sun/mdm/index/objects/validation");
         newPath.mkdirs();
-        newPath = new File(ejbdir + "\\com\\sun\\mdm\\index\\ops");
+        newPath = new File(ejbdir + "/com/sun/mdm/index/ops");
         newPath.mkdirs();
-        newPath = new File(ejbdir + "\\com\\sun\\mdm\\index\\webservice");
+        newPath = new File(ejbdir + "/com/sun/mdm/index/webservice");
         newPath.mkdirs();            
         ObjectDescriptorWriter odw = new ObjectDescriptorWriter(ejbdir, eo);
         odw.write();
@@ -392,7 +392,7 @@ public class EViewGeneratorTask extends Task {
             tokenMap.put("_CMT_XA__TOKEN","BMT_LOCAL");             
         }
                 
-        String ejbFilePath = mEjbdir + "\\src\\java\\com\\sun\\mdm\\index\\ejb";
+        String ejbFilePath = mEjbdir + "/src/java/com/sun/mdm/index/ejb";
         String path = ejbFilePath + File.separator + "master" + File.separator + "MasterControllerEJB.java";
         replaceToken(path , tokenMap);   
     }
@@ -501,7 +501,7 @@ public class EViewGeneratorTask extends Task {
     private void setEJBMappedName(String token, String value){
         
         ArrayList<String> files = new ArrayList<String>();
-        String ejbFilePath = mEjbdir + "\\src\\java\\com\\sun\\mdm\\index\\ejb";
+        String ejbFilePath = mEjbdir + "/src/java/com/sun/mdm/index/ejb";
         String path = ejbFilePath + File.separator + 
                 "codelookup" + File.separator + "CodeLookupEJB.java";
         files.add(path);
