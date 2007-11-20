@@ -118,7 +118,7 @@ public class ObjectDescriptorWriter {
      */
     public ObjectDescriptorWriter(String path, EIndexObject eo) {
         mEO = eo;
-        mOutPath = path + "\\com\\sun\\mdm\\index\\objects\\validation\\RegisterObjectDefinitions.java";
+        mOutPath = path + "/com/sun/mdm/index/objects/validation/RegisterObjectDefinitions.java";
     }
 
     /**

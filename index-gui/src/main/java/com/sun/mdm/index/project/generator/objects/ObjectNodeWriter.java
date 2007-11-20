@@ -37,7 +37,7 @@ import com.sun.mdm.index.util.CodeGeneratorUtil;
  */
 class ObjectNodeWriter {
     private TemplateWriter mTW = null;
-    private final String mPackage = "\\com\\sun\\mdm\\index\\objects";
+    private final String mPackage = "/com/sun/mdm/index/objects";
     private ArrayList mFieldKeys;
     private ArrayList mFieldNames;
     private ArrayList mFieldNullables;
@@ -127,7 +127,7 @@ class ObjectNodeWriter {
 
             String res = mTW.writeConstruct((String) cons.get(0), values);
             RandomAccessFile foutput 
-            = new RandomAccessFile(mPath + "\\" + CodeGeneratorUtil.makeClassName(mName) + "Object.java", "rw");
+            = new RandomAccessFile(mPath + "/" + CodeGeneratorUtil.makeClassName(mName) + "Object.java", "rw");
             foutput.write(res.getBytes());
             foutput.close();
         } catch (TemplateWriterException e) {
