@@ -43,6 +43,7 @@ import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.objects.epath.EPathParser;
 import com.sun.mdm.index.matching.MatchEngineController;
 import com.sun.mdm.index.util.Localizer;
+import com.sun.mdm.index.matching.Standardizer;
 
 /** Survivor calculator class
  * 
@@ -56,6 +57,7 @@ public class SurvivorCalculator implements java.io.Serializable {
     private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
     private transient final Localizer mLocalizer = Localizer.get();
     private MatchEngineController mMatch;
+    private Standardizer mStandardizer = null;
     
     /** Creates new SurvivorCalculator using default helper object
      * @param match MatchEngineController
@@ -64,6 +66,11 @@ public class SurvivorCalculator implements java.io.Serializable {
     public SurvivorCalculator(MatchEngineController match) throws HelperCreationException {
         mHelper = HelperFactory.createSurvivorHelper();
         mMatch = match;
+    }
+    
+    public SurvivorCalculator(Standardizer standardizer) throws HelperCreationException {
+    	mHelper = HelperFactory.createSurvivorHelper();
+    	mStandardizer = standardizer;
         
     }
 
@@ -207,7 +214,11 @@ public class SurvivorCalculator implements java.io.Serializable {
             stndSBR.setChildType(sbr.getChildType());
             stndSBR.setObject(sbrObj);
             try {
+            	if (mMatch != null) {
                 stndSBR = (SBR) mMatch.standardize(stndSBR);
+            	} else if (mStandardizer != null) {
+            		mStandardizer.standardize(stndSBR);
+            	}
             } catch (Exception e) {
                 throw new SurvivorCalculationException(mLocalizer.t("SUR520: Standardizing " +
                                                 "SBR failed: {0}", e));
