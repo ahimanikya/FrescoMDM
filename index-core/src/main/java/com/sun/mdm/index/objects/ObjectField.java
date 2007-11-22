@@ -101,6 +101,10 @@ public class ObjectField implements Externalizable  {
     public static final int OBJECTMETA_CHAR_TYPE = 9;
 
     /**
+     * link type - for SBR
+     */
+    public static final int OBJECTMETA_LINK_TYPE = 10;
+    /**
      * undefined type string
      */
     public static final String OBJECTMETA_UNDEFINED_STRING = "Unknown";
@@ -120,6 +124,10 @@ public class ObjectField implements Externalizable  {
      */
     public static final String OBJECTMETA_STRING_STRING = "String";
 
+    /**
+     * link type string
+     */
+    public static final String OBJECTMETA_LINK_STRING = "String";
     /**
      * byte type string
      */
@@ -336,7 +344,10 @@ public class ObjectField implements Externalizable  {
             str = OBJECTMETA_BOOL_STRING;
 
             break;
-
+        case OBJECTMETA_LINK_TYPE:
+        	str = OBJECTMETA_LINK_STRING;
+        	
+        	break;
         case OBJECTMETA_STRING_TYPE:
             str = OBJECTMETA_STRING_STRING;
 
@@ -412,6 +423,7 @@ public class ObjectField implements Externalizable  {
 
             break;
 
+        case OBJECTMETA_LINK_TYPE:
         case OBJECTMETA_STRING_TYPE:
 
             if (!(value instanceof java.lang.String)) {
@@ -530,6 +542,7 @@ public class ObjectField implements Externalizable  {
                         
                             break;
                         
+                        case OBJECTMETA_LINK_TYPE:
                         case OBJECTMETA_STRING_TYPE:
                         
                             String strvalue1 = (String) field1.getValue();
@@ -912,6 +925,14 @@ public class ObjectField implements Externalizable  {
      * @exception ObjectException ObjectException
      */
     public void setValue(Object value) throws ObjectException {
+        if (!(null == value)){
+        	if (value instanceof java.lang.String){
+        		String strValue = (String) value;
+        		if (strValue.charAt(0)=='[' && strValue.charAt(strValue.length()-1)==']') {
+        			mType = 10;
+        		}
+        	}
+        }
         if (!isValueValid(mType, value)) {
             String classname = (value.getClass()).getName();
             String type = getTypeString(mType);

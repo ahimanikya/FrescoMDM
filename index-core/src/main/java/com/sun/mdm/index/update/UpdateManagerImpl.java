@@ -962,6 +962,10 @@ public class UpdateManagerImpl implements UpdateManager {
                                                 "contain the specified SystemObject."));
         }
         
+        // SBROverride code starts here - SambaG
+        removeSBROverrideLinks(srcEO,system, lid);
+        removeSBROverrideLinks(newEO,system, lid);
+        // SBROverride coce ends here - SambaG
         //because its same EO lid merge, there will always be at least 1 SO left on the EO
         //so no need to count the active SOs
         
@@ -1097,7 +1101,10 @@ public class UpdateManagerImpl implements UpdateManager {
                     }
                 }
             }
-            
+            // SBROverride code starts here - SambaG
+            removeSBROverrideLinks(srcEO, system, lid);
+            removeSBROverrideLinks(destEO, system, lid);
+            // SBROverride coce ends here - SambaG
             // update the so with the passed in value
             boolean replaceSO = true;
             EnterpriseObject newEO = mHelper.updateSO(newSO, destEO, true, replaceSO);
@@ -1257,6 +1264,10 @@ public class UpdateManagerImpl implements UpdateManager {
                 retEO = mEMergePolicy.applyUpdatePolicy(ogEO, retEO);
             }
             
+            // SBROverride code starts here - SambaG
+           removeSBROverrideLinks(srcEO);
+           removeSBROverrideLinks(retEO); 
+            // SBROverride code ends here - SambaG
             TMResult tmr = null;
             if ((flags & Constants.FLAG_UM_CALC_ONLY) != Constants.FLAG_UM_CALC_ONLY) {
                 tmr = mTransaction.euidMerge(con, retEO, srcEO);
@@ -1341,6 +1352,10 @@ public class UpdateManagerImpl implements UpdateManager {
             if (mEMergePolicy != null) {
                 retEO = mEMergePolicy.applyUpdatePolicy(ogEO, retEO);
             }
+            // SBROverwrite code starts here
+            removeSBROverrideLinks(srcEO);
+            removeSBROverrideLinks(retEO);
+            // SBROverwrite code ends here
             
             TMResult tmr = null;
             if ((flags & Constants.FLAG_UM_CALC_ONLY) != Constants.FLAG_UM_CALC_ONLY) {
@@ -1655,6 +1670,10 @@ public class UpdateManagerImpl implements UpdateManager {
                 }
             }
 
+            // SBROverriding code starts here - SamabG
+            removeSBROverrideLinks(curDestEO, removeSysCode, removeLid);
+            removeSBROverrideLinks(curSrcEO, mergedSysCode, mergedLid);
+            // SBROverriding code ends here - SamabG
             // call TM to presist beforeDestEO
             TMResult tmr = null;
             if ((flag & Constants.FLAG_UM_CALC_ONLY) != Constants.FLAG_UM_CALC_ONLY) {
@@ -1936,6 +1955,10 @@ public class UpdateManagerImpl implements UpdateManager {
             
             eliminateSBRUnkeyedChildObjects(curDestEO, true);
             eliminateSBRUnkeyedChildObjects(newSrcEO, false);
+            // SBROverride code starts here - SambaG
+            removeSBROverrideLinks(curDestEO);
+            removeSBROverrideLinks(newSrcEO);
+            // SBROverride coce ends here - SambaG
             
             mCalculator.determineSurvivor(curDestEO);
             mCalculator.determineSurvivor(newSrcEO);
@@ -2113,5 +2136,65 @@ public class UpdateManagerImpl implements UpdateManager {
             }
         }
         return count;
+    }
+    
+    /**
+     * To delete the LINK information for specified EO
+     * @param eo Enterprise Object that need to delete all the corresponding LINK information
+     * @throws com.sun.mdm.index.objects.exception.ObjectException
+     */
+    private void removeSBROverrideLinks(EnterpriseObject eo) throws ObjectException{
+        if (eo==null){
+            mLogger.fine("EO is null, So no LINKs can be removed!");
+            return;
+        }
+         SBR sbr = eo.getSBR();
+            ArrayList overWrites = sbr.getOverWrites();
+            Iterator overWritesItr = overWrites.iterator();
+            while( overWritesItr.hasNext() ){
+                SBROverWrite sbrOverWrite = (SBROverWrite) overWritesItr.next();               
+                Object fieldValue = sbrOverWrite.getData();
+                if(fieldValue instanceof java.lang.String){
+                    String value = (String) fieldValue;
+                    if (value.charAt(0) == '[' && value.charAt( value.length()-1) == ']'){
+                        sbrOverWrite.setRemoveFlag(true);
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("<<== removing override link info for : " + sbrOverWrite);
+                        }
+                    }
+                }
+            }
+    }
+    /**
+     * To delete the LINK information for specified EO
+     * @param eo eo Enterprise Object that need to delete all the corresponding LINK information
+     * @param system SystemCode for which SO the LINKs should be deleted
+     * @param lid LID for which SO the LINKs should be deleted
+     * @throws com.sun.mdm.index.objects.exception.ObjectException
+     */
+    private void removeSBROverrideLinks(EnterpriseObject eo, String system, String lid) throws ObjectException{
+            if (eo==null){
+                mLogger.fine("EO is null, So no LINKs can be removed!");
+                return;
+            }
+            SBR sbr = eo.getSBR();
+            String linkTobeRemoved = "["+system+":"+"]";
+            ArrayList overWrites = sbr.getOverWrites();
+            Iterator overWritesItr = overWrites.iterator();
+            while( overWritesItr.hasNext() ){
+                SBROverWrite sbrOverWrite = (SBROverWrite) overWritesItr.next();               
+                Object fieldValue = sbrOverWrite.getData();
+                if(fieldValue instanceof java.lang.String){
+                    String value = (String) fieldValue;
+                    if (value.charAt(0) == '[' && value.charAt( value.length()-1) == ']'){
+                        if ( value.equals(linkTobeRemoved) ){
+                            sbrOverWrite.setRemoveFlag(true);
+                            if (mLogger.isLoggable(Level.FINE)) {
+                                mLogger.fine("<<== removing override link info for : " + sbrOverWrite);
+                            }
+                        }
+                    }
+                }
+            }
     }
 }

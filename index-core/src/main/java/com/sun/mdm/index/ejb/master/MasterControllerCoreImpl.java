@@ -117,6 +117,7 @@ import com.sun.mdm.index.page.PageAdapter;
 import com.sun.mdm.index.page.TransactionPageAdapter;
 import com.sun.mdm.index.persistence.TMResult;
 import com.sun.mdm.index.objects.SystemObjectPK;
+import com.sun.mdm.index.ops.exception.OPSException;
 import com.sun.mdm.index.outbound.OutBoundException;
 import com.sun.mdm.index.potdup.PotentialDuplicateManager;
 import com.sun.mdm.index.querybuilder.QueryBuilder;
@@ -127,6 +128,7 @@ import com.sun.mdm.index.util.JNDINames;
 import com.sun.mdm.index.util.ConnectionUtil;
 import com.sun.mdm.index.outbound.OutBoundSender;
 import com.sun.mdm.index.outbound.OutBoundMessages;
+import java.util.Map;
 import javax.transaction.UserTransaction;
 import net.java.hulp.i18n.LocalizationSupport;
 import net.java.hulp.i18n.Logger;
@@ -5585,5 +5587,35 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
      */
     public float getAssumedMatchThreshold() {
         return mAssumedMatchThreshold;
+    }
+    
+    // for SBROverriding
+    /** Updates SBR by collecting the values from MAP to the SBR that specified by EUID.
+    *
+    * @param mapSystems The Map consists of epath as key and System as value from which the filed should take for updating SBR
+    * @param euid The EUID of SBR on which the updation of SBR to perform.
+    *
+    */
+    public void updateSBR(Map mapSystems, EnterpriseObject eo, boolean removalFlag)
+            throws ProcessingException, UserException {
+        mCalculator.updateSBR(mapSystems, eo, removalFlag);
+    }
+    
+    /** Returns a map with (fieldName, actual value for link) for the given EO.
+    *
+    * @param eo The EnterpriseObject that has LINKs
+    * @return resultMap map with (fieldName, actual value for link) for the given EO.
+    * @throws ObjectException An error occured.
+    * @throws ConnectionInvalidException An error occured.
+    * @throws OPSException An error occured.
+    *
+    */
+    public Map getLinkValues(EnterpriseObject eo, Connection conn) 
+            throws ObjectException, ConnectionInvalidException, OPSException {
+            
+            Map resultMap = null;
+            resultMap = mCalculator.getLinkValues(eo, conn);
+            
+            return resultMap;
     }
 }

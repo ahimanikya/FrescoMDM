@@ -114,6 +114,10 @@ public class SBROverWrite extends ObjectNode {
         try {
             Object value = getData();
             if (value instanceof String) {
+                String tempValue = (String) value;
+            	if (tempValue.charAt(0) == '[' && tempValue.charAt(tempValue.length()-1)== ']')
+            		ret = ObjectField.OBJECTMETA_LINK_STRING; // for SBROverride
+            	else
                 ret = ObjectField.OBJECTMETA_STRING_STRING;
             } else if (value instanceof Boolean) {
                 ret = ObjectField.OBJECTMETA_BOOL_STRING;

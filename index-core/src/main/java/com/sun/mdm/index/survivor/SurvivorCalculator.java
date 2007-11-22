@@ -22,6 +22,9 @@
  */
 package com.sun.mdm.index.survivor;
 
+import com.sun.mdm.index.master.ConnectionInvalidException;
+import com.sun.mdm.index.master.ProcessingException;
+import com.sun.mdm.index.master.UserException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -44,6 +47,13 @@ import com.sun.mdm.index.objects.epath.EPathParser;
 import com.sun.mdm.index.matching.MatchEngineController;
 import com.sun.mdm.index.util.Localizer;
 import com.sun.mdm.index.matching.Standardizer;
+import com.sun.mdm.index.ops.OPSLoad;
+import com.sun.mdm.index.ops.SystemObjectDB;
+import com.sun.mdm.index.ops.exception.OPSException;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /** Survivor calculator class
  * 
@@ -187,7 +197,17 @@ public class SurvivorCalculator implements java.io.Serializable {
                         Object data = over.getData();
 
                         try {
+                            // added for SBROverriding
+                            String strData = new String();
+                            boolean isLink = false;
+                            if (data instanceof String){
+                                strData = (String) data;
+                                if(strData.charAt(0)=='[' && strData.charAt( strData.length() -1 ) == ']')
+                                    isLink = true;
+                            }
+                            if(isLink == false){
                             EPathAPI.addObjectValue(EPathParser.parse(path), sbrObj, data);
+                            }
                         } catch (EPathException eex) {
                             throw new SurvivorCalculationException(mLocalizer.t("SUR519: Error " +
                                                 "applying overwrite value: EPath error: {0}", eex));
@@ -272,5 +292,132 @@ public class SurvivorCalculator implements java.io.Serializable {
         return count;
     }
 
+    /** Updates SBR by collecting the values from MAP to the SBR that specified by EUID.
+    *
+    * @param mapSystems The Map consists of epath as key and System as value from which the filed should take for updating SBR
+    * @param euid The EUID of SBR on which the updation of SBR to perform.
+    * @param removeFlag To store LINK information removalFalg should be false. For UNLINK (to remove LINK information) this should be true
+    *
+    */
+    public void updateSBR(Map mapSystems, EnterpriseObject eo, boolean removalFlag)
+            throws ProcessingException, UserException {
+        SBR sbr = eo.getSBR();
+
+        Set keySet = mapSystems.keySet();
+        Iterator keys = keySet.iterator();
+        while (keys.hasNext()) {
+            String epath = (String) keys.next();
+            SystemObject systemObj = (SystemObject) mapSystems.get(epath);
+            SBROverWrite sbrOverWriteTemp = new SBROverWrite();
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("<<== systemObj :" + systemObj);
+            }
+            sbrOverWriteTemp.setPath(epath);
+            sbrOverWriteTemp.setData("[" + systemObj.getSystemCode() + ":" + systemObj.getLID() + "]");
+            if (removalFlag == true) {
+                sbrOverWriteTemp.setRemoveFlag(removalFlag);
+            }
+            sbr.addOverWrite(sbrOverWriteTemp);
+        }
+    }
+    /**
+     *  To decode the value from LINK information of an Enterprise Object to a Map
+     * @param eo the EnterpriseObject that user need to decode the value from LINK information
+     * @param conn Connection Object for querying LINK information
+     * @return Map with fieldName as value and corresponding Value from the system specified in link
+     * @throws com.sun.mdm.index.objects.exception.ObjectException
+     * @throws com.sun.mdm.index.master.ConnectionInvalidException
+     * @throws com.sun.mdm.index.ops.exception.OPSException
+     */
     
+    public Map getLinkValues(EnterpriseObject eo, Connection conn) throws ObjectException, ConnectionInvalidException, OPSException {
+
+        HashMap hashMapResult = new HashMap();
+        // following code is for Decoding LINK to actualValue
+        SBR sbr = eo.getSBR();
+        ArrayList ow = sbr.getOverWrites();
+        Iterator itr = ow.iterator();
+        while (itr.hasNext()) {
+            SBROverWrite sbrOverWriteEx = (SBROverWrite) itr.next();
+            String path = sbrOverWriteEx.getPath();
+            String data = sbrOverWriteEx.getData().toString();
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("<<== sbrOverWriteEx.getPath() :" + path);
+                mLogger.fine("<<== sbrOverWriteEx.getData() :" + data);
+            }
+            if (isLink(data) == true) {
+                try {
+                    String systemCode = data.substring(1, data.indexOf(":"));
+                    String LID = data.substring(data.indexOf(":") + 1, data.length() - 1);
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("<<== systemCode :" + systemCode);
+                        mLogger.fine("<<== LID :" + LID);
+                    }
+                    SystemObject so = null;
+
+                    SystemObjectDB mSystemObjectDB;
+                    mSystemObjectDB = new SystemObjectDB();
+
+                    HashMap mOPSMap;
+                    Class opsClass = Class.forName("com.sun.mdm.index.ops.OPSInitHelper");
+                    OPSLoad ops = (OPSLoad) opsClass.newInstance();
+                    mOPSMap = ops.loadOPS();
+                    so = mSystemObjectDB.get(conn, mOPSMap, systemCode, LID);
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("<<== so: " + so);
+                        mLogger.fine("<<== children for so: " + so.getAllChildrenFromHashMap());
+                    }
+
+                    ObjectNode objectNode = null;
+
+                    Iterator iter = so.getAllChildrenFromHashMap().iterator();
+                    while (iter.hasNext()) {
+                        ObjectNode o1 = (ObjectNode) iter.next();
+                        objectNode = o1;
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("<<== so: " + objectNode);
+                        }
+                    }
+
+                    String fieldName = path.substring(path.lastIndexOf("dot") + 3);
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("<<== fieldName :" + fieldName);
+                    }
+
+                    if (objectNode != null) {
+                        String value = objectNode.getField(fieldName).getValue().toString();
+                        hashMapResult.put(fieldName, value);
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("<<== value :" + value);
+                        }
+                    } else {
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("<<==" + fieldName + " NOT available. (or) invalid ObjectNode");
+                        }
+                    }
+                } catch (InstantiationException ex) {
+                    mLogger.fine(ex.getCause());                    
+                } catch (IllegalAccessException ex) {
+                    mLogger.fine(ex.getCause());
+                } catch (ClassNotFoundException ex) {
+                    mLogger.fine(ex.getCause());
+                }
+
+            }
+
+        }
+        return hashMapResult;
+    }
+    
+    /**
+     * To find out whether given string is in LINK format or not
+     * @param linkString the String to find whether given string is in LINK format or not
+     * @return true if the passed sting is boolean. Else false
+     */
+    private boolean isLink(String linkString) {
+        if (linkString.charAt(0) == '[' && linkString.charAt(linkString.length() - 1) == ']') {
+            return true;
+        }
+        return false;
+    }
 }

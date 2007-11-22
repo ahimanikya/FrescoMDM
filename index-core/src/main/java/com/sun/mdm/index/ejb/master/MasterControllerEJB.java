@@ -25,6 +25,7 @@ package com.sun.mdm.index.ejb.master;
 
 import com.sun.mdm.index.ejb.page.PageDataRemote;
 
+import com.sun.mdm.index.master.ConnectionInvalidException;
 import com.sun.mdm.index.master.MatchResult;
 import com.sun.mdm.index.master.MergeResult;
 import com.sun.mdm.index.master.ProcessingException;
@@ -51,6 +52,8 @@ import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.SystemObjectPK;
+import com.sun.mdm.index.objects.exception.ObjectException;
+import com.sun.mdm.index.ops.exception.OPSException;
 import com.sun.mdm.index.update.UpdateResult;
 import com.sun.mdm.index.util.Localizer;
 
@@ -64,6 +67,7 @@ import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 import javax.annotation.Resources;
 import java.sql.Connection;
+import java.util.Map;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 
@@ -2936,5 +2940,41 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
      */
     public float getAssumedMatchThreshold() {
         return mControllerImpl.getAssumedMatchThreshold();
+    }
+    
+    // for SBROverriding
+    /** Updates SBR by collecting the values from MAP to the SBR that specified by EUID.
+    *
+    * @param mapSystems The Map consists of epath as key and System as value from which the filed should take for updating SBR
+    * @param euid The EUID of SBR on which the updation of SBR to perform.
+    *
+    */
+    public void updateSBR(Map mapSystems, EnterpriseObject eo, boolean removalFlag)
+            throws ProcessingException, UserException {
+        mControllerImpl.updateSBR(mapSystems, eo, removalFlag);
+    }
+    
+    /** Returns a map with (fieldName, actual value for link) for the given EO.
+    *
+    * @param eo The EnterpriseObject that has LINKs
+    * @return resultMap map with (fieldName, actual value for link) for the given EO.
+    * @throws ObjectException An error occured.
+    * @throws ConnectionInvalidException An error occured.
+    * @throws OPSException An error occured.
+    *
+    */
+    public Map getLinkValues(EnterpriseObject eo)
+            throws ObjectException, ConnectionInvalidException, OPSException, ProcessingException {
+        Connection con = null;
+        Map result;
+        try {            
+            con = mControllerImpl.getConnection();
+            result = mControllerImpl.getLinkValues(eo, con);            
+        } catch (ProcessingException e) {
+            throw e;
+        } finally {
+            mControllerImpl.releaseResources(con);
+        }
+        return result;
     }
 }
