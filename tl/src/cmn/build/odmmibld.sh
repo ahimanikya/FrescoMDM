@@ -368,10 +368,10 @@ parse_args()
             #we don't need to run the clean step if we are removing the src tree:
             DOCLEAN=0
             bldmsg -p $p -warn Ignoring -clean because -cleansrc is also specified.
-        elif [ ! -d "$SRCROOT/build-common" ]; then
-            #we don't need to run the clean step because source has not been checked out yet:
-            DOCLEAN=0
-            bldmsg -p $p -warn Ignoring -clean because build-common is missing - assume first build.
+  #      elif [ ! -d "$SRCROOT/build-common" ]; then
+  #          #we don't need to run the clean step because source has not been checked out yet:
+  #          DOCLEAN=0
+  #          bldmsg -p $p -warn Ignoring -clean because build-common is missing - assume first build.
         fi
     fi
 
@@ -1175,7 +1175,7 @@ clean_build_tree()
 
     MAVEN_GOALS="clean"
 
-    cmd="mvn -DSRCROOT='$JV_SRCROOT' -Dmaven.repo.local='$JV_SRCROOT/m2/repository' -Dmaven.test.skip=true -DBUILD_NUMBER=$BLDNUM $MAVEN_GOALS"
+    cmd="mvn $MAVEN_OPTIONS -DSRCROOT='$JV_SRCROOT' -Dmaven.repo.local='$JV_SRCROOT/m2/repository' -Dmaven.test.skip=true -DBUILD_NUMBER=$BLDNUM $MAVEN_GOALS"
     bldmsg -mark -p $p/clean_build_tree `echo $cmd`
 
     eval $cmd
