@@ -155,6 +155,8 @@ public class LogUtil {
 
             hm.put("Wizard", new String[] {
                         "java.com.sun.mdm.index.wizard" });        
+             hm.put("Filter", new String[] {
+                        "com.sun.mdm.index.filter" });     
                         
             sLogMapping.addAssignment(hm);
         } catch (Exception e) {

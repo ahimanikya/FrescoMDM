@@ -75,6 +75,10 @@ public class ConfigurationService implements ConfigurationMBean {
     static final String MATCH_DIR = "match";
     static final String STAND_DIR = "stand";
     
+    /* start for Filter  */
+     static final String FILTER_FILE_NAME = "filter.xml";
+    
+    /* end for Filter */
     /** singleton instance */
     private static ConfigurationService instance = null;
     
@@ -176,7 +180,7 @@ public class ConfigurationService implements ConfigurationMBean {
      * @throws IOException error constructing the URL.
      * @return an inputstream to the configuration file.
      */
-    private InputStream getConfigFileStream(String fileName)
+    public InputStream getConfigFileStream(String fileName)
             throws IOException {
                 
         String bbeHome = System.getProperty(HOME_SYS_PROP);
@@ -248,8 +252,16 @@ public class ConfigurationService implements ConfigurationMBean {
                 is = instance.getConfigFileStream(SECURITY_FILE_NAME);
                 instance.load(is);
                 is.close();
+               // is = null;
+              
+                /* start for Filter  */
+                mLogger.info(mLocalizer.x("CFG043: Loading: filter configuration file: {0}", FILTER_FILE_NAME));
+                is = instance.getConfigFileStream(FILTER_FILE_NAME);
+                instance.load(is);
+                is.close();
                 is = null;
-                
+                /* end for Filter */
+
                 mLogger.info(mLocalizer.x("CFG007: Loading match engine configuration files."));
                 // instead of loading all the text files, simply delegate to the get 
                 // method to load from the classpath when requested

@@ -60,6 +60,8 @@ import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.configurator.ConfigurationException;
 import com.sun.mdm.index.configurator.impl.matching.MatchingConfiguration;
 import com.sun.mdm.index.configurator.impl.matching.MatchColumn;
+import com.sun.mdm.index.filter.ExclusionFilterService;
+import com.sun.mdm.index.filter.ExclusionFilterServiceImpl;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.SystemObjectException;
 import com.sun.mdm.index.objects.epath.EPathException;
@@ -231,10 +233,25 @@ public class MatchEngineControllerImpl
         ArrayList qresults = new ArrayList();
         ArrayList passResults = null;
         int totalRows = 0;
-   
+        //Start for Filters
+        ExclusionFilterService filterService = new ExclusionFilterServiceImpl();
+        //end  for Filters.
         QueryResults block = null;
         try {
-            SystemObject objToMatch = crit.getSystemObject();
+           
+            SystemObject objForBlock = crit.getSystemObject();
+            
+             /*Start for  blocking filter.*/
+            //take the copy of the objToMatch
+            SystemObject objToMatch = (SystemObject) objForBlock.copy();
+            //exclusion for blocking
+            ObjectNode tempObjNode = objForBlock.getObject();
+            ObjectNode filteredObjNode = filterService.blockingExclusion(tempObjNode);
+            objForBlock.setObject(filteredObjNode);
+           //SystemObject systemObjectAfterBlocking = objForBlock;
+            crit.setSystemObject(objForBlock);
+            /*End for  blocking filter.*/
+            
             //RANGE_SEARCH: lower-bound and upper-bound in SystemObject 2 & 3
             SystemObject objToBlock2 = crit.getSystemObject2();
             SystemObject objToBlock3 = crit.getSystemObject3();
@@ -242,10 +259,10 @@ public class MatchEngineControllerImpl
             remainingBlockIDs = new ArrayList(Arrays.asList(queryBuilder.getApplicableQueryIds(crit, opts)));
             do {
                 // Pick block to use
-                String[] blockIDs = getBlockPicker().pickBlock(objToMatch, opts, previousBlockIDs, remainingBlockIDs);
+                String[] blockIDs = getBlockPicker().pickBlock(objForBlock, opts, previousBlockIDs, remainingBlockIDs);
                 
                 // Retrieve block
-                block = retrieveBlock(con, queryBuilder, opts, blockIDs, objToMatch, objToBlock2, objToBlock3);
+                block = retrieveBlock(con, queryBuilder, opts, blockIDs, objForBlock, objToBlock2, objToBlock3);
                 ResultSet[] resultSets = block.getResultSets();
                 if (candThreshold > 0) {
                     for (int idx = 0; idx < resultSets.length; idx++) {
@@ -267,11 +284,17 @@ public class MatchEngineControllerImpl
                 
                 // Call PassController with results, if evalAnotherPass true loop to pick block
                 another = getPassController().evalAnotherPass(
-                    objToMatch, opts, passResults, combinedResults, previousBlockIDs, remainingBlockIDs);
+                    objForBlock, opts, passResults, combinedResults, previousBlockIDs, remainingBlockIDs);
             } while (another);
             for (int idx = 0; idx < qresults.size(); idx++) {
                 block = (QueryResults) qresults.get(idx);
-                // Pass block to match engine
+
+                /* Start for matching filter  */
+                ObjectNode tempObjNode1 = objToMatch.getObject();
+                ObjectNode fileterdForMatch = filterService.exclusionMatchField(tempObjNode1);
+                objToMatch.setObject(fileterdForMatch);
+                 /* End for matching filter  */
+                
                 passResults = getMatcher().findWeights(objToMatch, block, matchOptions);
                 // Combine results with previous pass results
                 // If we get several results for the same EUID, keep the latest pass

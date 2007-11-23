@@ -1588,8 +1588,16 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     matchOpts.setSortWeightResults(true);
                     matchOpts.setMinimumWeight(mDuplicateThreshold);
                     EOSearchCriteria crit = new EOSearchCriteria(sysObj);
+                    /* Start filter changes */
+                    //for filters take the copy of the sysOject
+                    SystemObject originalObjToMatch = (SystemObject) sysObj.copy();
+                    /* End filter changes */
                     list = mMatch.findMatch(con, crit, mSearchOptions,
                             matchOpts);
+                    /* Start filter changes */
+                    //assign the original value to systemobject 
+                    sysObj = originalObjToMatch;
+                    /* End filter changes */
                     if (mLogger.isLoggable(Level.FINE)) {
                         mLogger.fine("processMatch(): match query completed");
                     }
