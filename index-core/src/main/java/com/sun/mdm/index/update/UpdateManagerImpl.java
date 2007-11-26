@@ -884,7 +884,7 @@ public class UpdateManagerImpl implements UpdateManager {
             return new UpdateResult(tmr, srcEO);
         } catch (OPSException rex) {
             throw new UpdateException(mLocalizer.t("UPD516: Could not remove " +
-                                            "a SystemObject."));
+                                            "a SystemObject: {0}", rex));
         }
     }
     
@@ -2147,7 +2147,7 @@ public class UpdateManagerImpl implements UpdateManager {
         if (eo==null){
             mLogger.fine("EO is null, So no LINKs can be removed!");
             return;
-        }
+}
          SBR sbr = eo.getSBR();
             ArrayList overWrites = sbr.getOverWrites();
             Iterator overWritesItr = overWrites.iterator();

@@ -107,7 +107,7 @@ public class EOSearchResultAssembler implements ResultObjectAssembler {
                 throw new VOAException(mLocalizer.t("QUE509: EUID must be selected."));
             }
         } catch (SQLException e) {
-            throw new VOAException(mLocalizer.t("QUE510: Could not create root."));
+            throw new VOAException(mLocalizer.t("QUE510: Could not create root: {0}", e));
         }
         EOSearchResultRecord resultRecord = new EOSearchResultRecord();
         resultRecord.setEUID(euid);

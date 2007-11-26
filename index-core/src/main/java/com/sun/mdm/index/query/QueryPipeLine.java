@@ -307,7 +307,7 @@ class QueryPipeLine implements AssemblerEngine {
     	      try {
     	       return attrsData.get(0);
     	      } catch (SQLException sqe) {
-                throw new VOAException(mLocalizer.t("QUE554: createPrimayIDQO() failed."));
+                throw new VOAException(mLocalizer.t("QUE554: createPrimayIDQO() failed: {0}", sqe));
               }
     	    }
              

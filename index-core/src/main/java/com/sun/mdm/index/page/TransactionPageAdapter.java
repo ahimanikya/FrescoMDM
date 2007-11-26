@@ -269,7 +269,7 @@ public class TransactionPageAdapter implements PageAdapter, java.io.Serializable
             con = ConnectionUtil.getConnection();
         } catch (Exception e) {
             throw new PageException(mLocalizer.t("PAG542: TransactionPageAdapter " + 
-                                    "could not retrieve a database connection."));
+                                    "could not retrieve a database connection: {0}", e));
         }
         return con;
     }

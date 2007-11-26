@@ -100,9 +100,11 @@ public class HelperFactory {
             throw new HelperCreationException(mLocalizer.t("SUR511: Class not " + 
                                     "found: {0}", cex));
         } catch (InstantiationException iex) {
-            throw new HelperCreationException(mLocalizer.t("SUR512: InstantiationException: {0}", iex));
+            throw new HelperCreationException(mLocalizer.t("SUR512: SurvivorHelper " + 
+                                    "could not be instantiated: {0}", iex));
         } catch (StrategyCreationException scex) {
-          throw new HelperCreationException(mLocalizer.t("SUR513: StrategyCreationException: {0}", scex));
+          throw new HelperCreationException(mLocalizer.t("SUR513: SurvivorHelper " +
+                                    "could not create a strategy: {0}", scex));
         }
 
         // return an instance of the helper class

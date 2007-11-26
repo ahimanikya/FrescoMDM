@@ -1517,7 +1517,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                                         "for SystemKey {0}", systemKey.toString()));
                     }
                     if (sysObjStatus.equals(SystemObject.STATUS_INACTIVE)) {
-                        throw new ProcessingException(mLocalizer.t("MSC518: system key {0} " + 
+                        throw new ProcessingException(mLocalizer.t("MSC518: System key {0} " + 
                                         "has inactive status." , systemKey.toString()));
                     }
                     if (beforeEO.getStatus().equals(
@@ -3946,7 +3946,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                             .getDescription();
                     String sysMsg = "[" + sysDesc + "," + sourceLID + "]";
                     throw new ProcessingException(mLocalizer.t("MSC554: Record has been modified by another user " +
-                                    "for System Description={0}, LID={1}: {3}", 
+                                    "for System Description={0}, LID={1}: {2}", 
                                     sysDesc, sourceLID, errMsg));
                 }
             }

@@ -146,7 +146,7 @@ public class SbmeStandardizerAdapter
                                             "standardize the configured fields in " + 
                                             "the SystemObject: {0}", ex));
         } catch (PhoneticEncoderException ex) {
-            throw new StandardizationException(mLocalizer.t("MAT531:  Failed to " + 
+            throw new StandardizationException(mLocalizer.t("MAT531: Failed to " + 
                                             "create phonetic code for the configured " + 
                                             "fields in the SystemObject: {0}", ex));
         } catch (SbmeStandardizationException ex) {
@@ -232,7 +232,7 @@ public class SbmeStandardizerAdapter
             if (config == null) {            
                 throw new StandardizationException(mLocalizer.t("MAT535: No standardization engine " + 
                                         "configuration class is configured for this standardization " +
-                                        "adapter, unable to initialize Standardization Engine. " +
+                                        "adapter.  The Standardization Engine could not be initialized. " +
                                         "{0} expected", SbmeStandardizerAdapterConfig.class.getName()));
             }
             if (!(config instanceof SbmeStandardizerAdapterConfig)) {

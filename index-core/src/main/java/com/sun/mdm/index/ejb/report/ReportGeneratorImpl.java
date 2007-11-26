@@ -563,7 +563,7 @@ class ReportGeneratorImpl implements ReportGenerator {
             report = getKeyStatsReportTotals(report, startDate, endDate);
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE553: Could not generate the " + 
-                                                   "Monthly Statistics report."));
+                                                   "Monthly Statistics report: {0}", e));
         }
         return report;
     }
@@ -599,7 +599,7 @@ class ReportGeneratorImpl implements ReportGenerator {
             report = getKeyStatsReportTotals(report, startDate, endDate);
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE555: Could not generate the " + 
-                                                   "Yearly Statistics report."));
+                                                   "Yearly Statistics report: {0}", e));
         }
         return report;
     }       
@@ -714,7 +714,7 @@ class ReportGeneratorImpl implements ReportGenerator {
             conn.close();
             return weeklyCount;
         } catch (Exception e) {
-            throw new ReportException(mLocalizer.t("RPE558: Error getting weekly count."));
+            throw new ReportException(mLocalizer.t("RPE558: Error getting weekly count: {0}", e));
         }
     }
     

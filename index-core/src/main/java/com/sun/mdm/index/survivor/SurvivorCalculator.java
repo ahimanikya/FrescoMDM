@@ -78,7 +78,7 @@ public class SurvivorCalculator implements java.io.Serializable {
         mHelper = HelperFactory.createSurvivorHelper();
         mMatch = match;
     }
-    
+        
     public SurvivorCalculator(Standardizer standardizer) throws HelperCreationException {
     	mHelper = HelperFactory.createSurvivorHelper();
     	mStandardizer = standardizer;
@@ -171,7 +171,7 @@ public class SurvivorCalculator implements java.io.Serializable {
                     /* start for SBR Filter  */
                     ExclusionFilterService filterService = new ExclusionFilterServiceImpl();
                     SystemFieldListMap filterdSysFields = filterService.exclusionSystemFieldList(sysFields, candidateId);
-
+                    
                     if (mLogger.isLoggable(Level.FINE)) {
                         mLogger.fine("System fields returned for candidate after filter" + candidateId + ": " + filterdSysFields);
                     }
@@ -201,7 +201,7 @@ public class SurvivorCalculator implements java.io.Serializable {
                 }
             } else {
                 throw new SurvivorCalculationException(mLocalizer.t("SUR518: SBR " +
-                                                    "entity object is null."));
+                                                    "entity object cannot be null."));
             }
             
             // now apply the override values
@@ -319,7 +319,7 @@ public class SurvivorCalculator implements java.io.Serializable {
     public void updateSBR(Map mapSystems, EnterpriseObject eo, boolean removalFlag)
             throws ProcessingException, UserException {
         SBR sbr = eo.getSBR();
-
+    
         Set keySet = mapSystems.keySet();
         Iterator keys = keySet.iterator();
         while (keys.hasNext()) {
@@ -328,7 +328,7 @@ public class SurvivorCalculator implements java.io.Serializable {
             SBROverWrite sbrOverWriteTemp = new SBROverWrite();
             if (mLogger.isLoggable(Level.FINE)) {
                 mLogger.fine("<<== systemObj :" + systemObj);
-            }
+}
             sbrOverWriteTemp.setPath(epath);
             sbrOverWriteTemp.setData("[" + systemObj.getSystemCode() + ":" + systemObj.getLID() + "]");
             if (removalFlag == true) {

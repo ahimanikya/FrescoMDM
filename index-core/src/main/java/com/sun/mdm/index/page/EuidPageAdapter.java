@@ -368,7 +368,7 @@ public class EuidPageAdapter implements PageAdapter, java.io.Serializable {
                 }
             } catch (Exception e) {
                 throw new PageException(mLocalizer.t("PAG516: Could not load " +
-                                                     "records."));
+                                                     "records: {0}", e));
             }  finally {
             	 try {    
                   	 if (iterator != null) {
@@ -376,7 +376,7 @@ public class EuidPageAdapter implements PageAdapter, java.io.Serializable {
                 	  }
                  } catch (Exception ex) {
                       throw new PageException(mLocalizer.t("PAG517: Could not close " +
-                                                     "the iterator."));
+                                                     "the iterator: {0}", ex));
                  }
             	
             }

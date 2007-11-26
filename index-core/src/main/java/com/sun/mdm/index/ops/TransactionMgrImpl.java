@@ -1188,7 +1188,7 @@ public class TransactionMgrImpl implements TransactionMgr {
              ret = new TMResult(eo1.getEUID(), transnum);
          } catch (Exception ex) {
              throw new OPSException(mLocalizer.t("OPS664: Could not merge two " + 
-                                            "EnterpriseObject records in the database."));
+                                            "EnterpriseObject records in the database: {0}", ex));
          }
  
          return ret;
@@ -1216,7 +1216,7 @@ public class TransactionMgrImpl implements TransactionMgr {
             ret = euidUnMerge(conn, null, eo1, eo2); 
         } catch (OPSException ex) {
              throw new OPSException(mLocalizer.t("OPS665: Could not unmerge " + 
-                                            "EnterpriseObject records in the database."));
+                                            "EnterpriseObject records in the database: {0}", ex));
         }
         return ret;
     }

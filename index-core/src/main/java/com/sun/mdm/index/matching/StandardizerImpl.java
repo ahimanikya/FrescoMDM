@@ -144,7 +144,7 @@ public class StandardizerImpl implements Standardizer{
                 } else {
                     throw new StandardizationException(mLocalizer.t("MAT514: Could not retrieve " + 
                                             "the standardization configuration for " +
-                                            "object type {0}. The configuration service " + 
+                                            "object type={0}. The configuration service " + 
                                             "returned null. ", objType));
                 }
             } else {

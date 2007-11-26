@@ -168,7 +168,7 @@ public class QueryResults implements QueryConstants, java.io.Serializable {
 
             return qmIterator;
         } catch (Exception ex) {
-            throw new QMException(mLocalizer.t("QUE555: assemble() failed."));
+            throw new QMException(mLocalizer.t("QUE555: assemble() failed: {0}", ex));
         }
     }
 
@@ -194,7 +194,7 @@ public class QueryResults implements QueryConstants, java.io.Serializable {
                 }
             }
         } catch (SQLException sqe) {
-            throw new QMException(mLocalizer.t("QUE556: Could not close database connection."));
+            throw new QMException(mLocalizer.t("QUE556: Could not close database connection: {0}", sqe));
         }
     }
 

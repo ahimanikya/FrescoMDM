@@ -332,7 +332,7 @@ public class BlockerQueryBuilder extends QueryBuilder {
             // return query object
             return qo;
         } catch (Exception e) {
-            throw new QueryBuilderException(mLocalizer.t("QUE579: buildQueryObject() failed."));
+            throw new QueryBuilderException(mLocalizer.t("QUE579: buildQueryObject() failed: {0}", e));
         }
     }
 

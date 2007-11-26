@@ -312,7 +312,7 @@ public class AssumedMatchPageAdapter implements PageAdapter, java.io.Serializabl
                 }
             } catch (Exception e) {
                 throw new PageException(mLocalizer.t("PAG508: Could not load " +
-                                        "Assumed Match Summary records."));
+                                        "Assumed Match Summary records: {0}", e));
             } finally {
                 if (con != null) {
                     releaseConnection(con);

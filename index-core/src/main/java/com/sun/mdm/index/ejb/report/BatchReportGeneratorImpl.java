@@ -518,7 +518,7 @@ public class BatchReportGeneratorImpl{
             }
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE512: Could not load the " + 
-                                                   "next set of Assumed Match records."));
+                                                   "next set of Assumed Match records: {0}", e));
         }
         return mAssumedMatchReport;
     }
@@ -573,7 +573,7 @@ public class BatchReportGeneratorImpl{
             mResultSetAssumedMatch = lookupAssumedMatchRecords(mAssumedMatchSearchObject, conn);
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE513: Could not generate the " + 
-                                                   "Assumed Match report."));
+                                                   "Assumed Match report: {0}", e));
         }
         return getNextAssumedMatchRecords();
     }
@@ -639,7 +639,7 @@ public class BatchReportGeneratorImpl{
             mResultSetPotentialDuplicate = lookupPotDupRecords(mPotentialDuplicateSearchObject, conn);
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE514: Could not generate the " + 
-                                                   "Potential Duplicate report."));
+                                                   "Potential Duplicate report: {0}", e));
         }
         return getNextPotDupRecords();
     }
@@ -677,7 +677,7 @@ public class BatchReportGeneratorImpl{
             mResultSetMerge = lookupTransactions(searchObj, conn);
        } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE515: Could not generate the " + 
-                                                   "Merge report."));
+                                                   "Merge report: {0}", e));
         }
         return getNextMergeRecords();        
     }
@@ -763,7 +763,7 @@ public class BatchReportGeneratorImpl{
             mResultSetUnmerge = lookupTransactions(searchObj, conn);
        } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE518: Could not generate the " + 
-                                                   "Unmerge report."));
+                                                   "Unmerge report: {0}", e));
         }
         return getNextUnmergeRecords();        
     }
@@ -852,7 +852,7 @@ public class BatchReportGeneratorImpl{
             mResultSetDeactivate = lookupTransactions(searchObj, conn);
        } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE520: Could not generate the " + 
-                                                   "Deactivate report."));
+                                                   "Deactivate report: {0}", e));
         }
         return getNextDeactivateRecords();        
     }
@@ -1071,7 +1071,7 @@ public class BatchReportGeneratorImpl{
             mResultSetUpdate = lookupTransactions(searchObj, conn);
        } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE528: Could not generate the " + 
-                                                   "Update report."));
+                                                   "Update report: {0}", e));
         }
         return getNextUpdateRecords();        
     }
@@ -1135,7 +1135,7 @@ public class BatchReportGeneratorImpl{
             report.setDailyTotalsForWeek(getWeeklyCount(startDate, conn));
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE531: Could not generate the " + 
-                                                   "Weekly Statistics report."));
+                                                   "Weekly Statistics report: {0}", e));
         }
 
         return report;
@@ -1178,7 +1178,7 @@ public class BatchReportGeneratorImpl{
             report = getKeyStatsReportTotals(report, startDate, endDate, conn);
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE533: Could not generate the " + 
-                                                   "Monthly Statistics report."));
+                                                   "Monthly Statistics report: {0}", e));
         }
 
         return report;
@@ -1221,7 +1221,7 @@ public class BatchReportGeneratorImpl{
             report = getKeyStatsReportTotals(report, startDate, endDate, conn);
         } catch (Exception e) {
             throw new ReportException(mLocalizer.t("RPE535: Could not generate the " + 
-                                                   "Yearly Statistics report."));
+                                                   "Yearly Statistics report: {0}", e));
         }
 
         return report;
@@ -1340,7 +1340,7 @@ public class BatchReportGeneratorImpl{
             
             return weeklyCount;
         } catch (Exception e) {
-            throw new ReportException(mLocalizer.t("RPE538: Error getting weekly count."));
+            throw new ReportException(mLocalizer.t("RPE538: Error getting weekly count: {0}", e));
         }
     }
 

@@ -402,7 +402,7 @@ public class QueryHelper {
             }
         } catch (SQLException e) {
             throw new QMException(mLocalizer.t("QUE530: Could not lookup " +
-                                            "System Definition."));
+                                            "System Definition: {0}", e));
         } finally {
             try {
                 if (rs != null) {
