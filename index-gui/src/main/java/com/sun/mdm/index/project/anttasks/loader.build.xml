@@ -61,7 +61,7 @@
 	         ================================= -->
 	<target name="run-loader" description="run the bulk loader">
 
-		<java classname="com.sun.mdm.index.loader.main.BulkMatcherLoader">
+		<java classname="com.sun.mdm.index.loader.main.BulkMatcherLoader" fork="true">
 			<sysproperty key="javax.xml.parsers.DocumentBuilderFactory" value="org.apache.xerces.jaxp.DocumentBuilderFactoryImpl" />
 
 			<classpath refid="run.loader.lib.path">
