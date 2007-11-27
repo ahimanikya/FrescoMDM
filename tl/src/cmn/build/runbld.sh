@@ -547,16 +547,26 @@ MSG_EOF
 }
 
 
-#scm_update()
-#{
-#    bldmsg -p $p -mark "Running local source code update"
-#
-#    cd $SRCROOT
-#    svn update
-#    status=$?
-#
-#    return $status
-#}
+scm_update_tmp()
+{
+    bldmsg -p $p -mark "Running local subversion code update"
+
+    cd $SRCROOT
+    svn update
+    status=$?
+
+    bldmsg -p $p -mark "Running local cvs code update"
+    cd $SRCROOT/..
+    rm -rf loader
+    rm -rf alaska_cvs_tmp
+    mkdir alaska_cvs_tmp
+    cd alaska_cvs_tmp
+    cvs -d $ALASKA_CVSROOT co capstool/projects/eviewpro/loader
+    cd $SRCROOT/..
+    cp -r $SRCROOT/../alaska_cvs_tmp/capstool/projects/eviewpro/loader .
+
+    return $status
+}
 
 
 #################################### MAIN #####################################
@@ -663,7 +673,7 @@ fi
 if [ $DOSRCUPDATE -eq 1 ]; then
     bldmsg -p $p -markbeg "local source update on $HOST_NAME" >> $MAINLOG
     bldmsg -p $p -mark "source update log is $SRCUPLOG" >> $MAINLOG
-    scm_update >> $SRCUPLOG 2>&1
+    scm_update_tmp >> $SRCUPLOG 2>&1
     SRCUPDATE_STATUS=$?
     bldmsg -p $p -markend -status $SRCUPDATE_STATUS "local source update on $HOST_NAME" >> $MAINLOG
 fi

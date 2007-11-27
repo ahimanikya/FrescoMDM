@@ -1114,27 +1114,36 @@ build_product()
     fi
 
     bldmsg "BUILDRESULTS_TYPE = ant_generic"
+    build_product_errs=0
 
     cd $SRCROOT
-
-#
-#    #build the jbi_compileconf jar:
-#    MAVEN_GOALS="-f platform-config/jbi-compileconf/pom.xml clean"
-#    cmd="mvn $MAVEN_OPTIONS -DSRCROOT='$JV_SRCROOT' -Dmaven.repo.local='$JV_SRCROOT/m2/repository' -Dmaven.test.skip=true -DBUILD_NUMBER=$BLDNUM $MAVEN_GOALS"
-#    bldmsg -mark -p $p/build_product `echo $cmd`
-#
-#    eval $cmd
-#    if [ $? -ne 0 ]; then
-#        bldmsg -error -p $p/build_product FAILED while building jbi_compileconf jar
-#        bld_fatal_error "CANNOT build jbi_compileconf jar - ABORT"
-#    fi
 
     MAVEN_GOALS="install"
     cmd="mvn $MAVEN_OPTIONS -DSRCROOT='$JV_SRCROOT' -Dmaven.repo.local='$JV_SRCROOT/m2/repository' -Dmaven.test.skip=true -DBUILD_NUMBER=$BLDNUM $MAVEN_GOALS"
     bldmsg -mark -p $p/build_product `echo $cmd`
 
     eval $cmd
-    return $?
+    status=$?
+
+    if [ $status -ne 0 ]; then
+       bldmsg -error -p $p/build_product "$cmd FAILED"
+       build_product_errs=1
+       return $build_product_errs
+    fi
+
+    cd $SRCROOT/../loader
+    cmd="ant jar"
+    bldmsg -mark -p $p/build_product `echo $cmd`
+    eval $cmd
+    status=$?
+
+    if [ $status -ne 0 ]; then
+       bldmsg -error -p $p/build_product "$cmd FAILED"
+       build_product_errs=1
+       return $build_product_errs
+    fi
+
+    return $build_product_errs
 }
 
 
