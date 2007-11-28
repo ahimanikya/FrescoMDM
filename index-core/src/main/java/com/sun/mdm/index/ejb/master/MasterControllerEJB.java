@@ -110,7 +110,7 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
      */
     private boolean mIsTransactional = false;
     
-    private String transactionType = "BMT_LOCAL";
+    private String transactionType = "_CMT_XA__TOKEN";
     //if CONTAINER then CMT_XA;
     //if BEAN then BMT_XA;
     //if LOCAL them BMT_LOCAL

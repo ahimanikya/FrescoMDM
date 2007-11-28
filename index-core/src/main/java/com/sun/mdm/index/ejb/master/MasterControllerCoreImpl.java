@@ -4688,7 +4688,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             if (mLogger.isLoggable(Level.FINE)) {
                 mLogger.fine("getConnection(): obtaining a connection: " + con);
             }
-            if (transactionType.equals("BMT_LOCAL")) {
+            if (transactionType.equals("CMT_XA")||transactionType.equals("BMT_XA")) {
+                con.setAutoCommit(true);
+            }else{
                 con.setAutoCommit(false);
             }
 

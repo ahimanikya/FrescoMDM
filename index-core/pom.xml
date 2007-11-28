@@ -86,15 +86,6 @@
                                 <javac srcdir="${basedir}/../index-gui/src/main/java" compiler="extJavac"
                                  destdir="${project.build.testOutputDirectory}" classpathref="maven.test.classpath" >
                                     <include name="com/sun/mdm/index/project/anttasks/EViewGeneratorTask.java"/>
-                                    <include name="com/sun/mdm/index/project/generator/exception/TemplateWriterException.java"/>
-                                    <include name="com/sun/mdm/index/project/generator/objects/EntityObjectWriter.java"/>
-                                    <include name="com/sun/mdm/index/project/generator/ops/OPSWriter.java"/>
-                                    <include name="com/sun/mdm/index/project/generator/outbound/OutboundXSDBuilder.java"/>
-                                    <include name="com/sun/mdm/index/project/generator/persistence/DDLWriter.java"/>
-                                    <include name="com/sun/mdm/index/project/generator/validation/ObjectDescriptorWriter.java"/>
-                                    <include name="com/sun/mdm/index/project/generator/webservice/WebServiceWriter.java"/>
-                                    <include name="com/sun/mdm/index/objects/metadata/MetaDataService.java"/>
-                                    <include name="com/sun/mdm/index/project/EviewRepository"/>
                                 </javac>
                                 
                                 
