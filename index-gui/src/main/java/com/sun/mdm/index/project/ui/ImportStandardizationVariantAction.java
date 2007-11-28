@@ -30,25 +30,25 @@ import org.openide.util.NbBundle;
 import org.openide.nodes.Node;
 import org.openide.filesystems.FileUtil;
 import org.openide.filesystems.FileObject;
+import org.openide.loaders.DataFolder;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
 
 /**
- * Implements the methods for the delete action.
+ * To get Standardization jar with dataTypeDescription.xml
  * 
  */
-public class ImportFilterFileAction extends CookieAction {
+public class ImportStandardizationVariantAction extends CookieAction {
    
     /**
      * The log4j logger
      */
     private static final java.util.logging.Logger mLog = java.util.logging.Logger.getLogger(
-            ImportFilterFileAction.class.getName()
-        
+            ImportStandardizationVariantAction.class.getName()        
         );
 
     /**
@@ -66,7 +66,7 @@ public class ImportFilterFileAction extends CookieAction {
      * @return the cookie action name
      */
     public String getName() {
-        return NbBundle.getMessage(ImportFilterFileAction.class, "LBL_Action_Import_Filter_Files");
+        return NbBundle.getMessage(ImportStandardizationVariantAction.class, "LBL_Action_Import_Standardization_Variant");
     }
     
     /**
@@ -80,28 +80,33 @@ public class ImportFilterFileAction extends CookieAction {
                 public void run() {
                     try {
                         final JFileChooser fc = new JFileChooser();
-                        fc.setMultiSelectionEnabled(true);
-                        fc.setFileFilter(new FilterFileFilter());
+                        fc.setMultiSelectionEnabled(false);
+                        fc.setFileFilter(new JarFileFilter()); // jar with variantDescriptor.xml
                         fc.setAcceptAllFileFilterUsed(false);
             
                         int returnVal = fc.showOpenDialog(null);
                         if (returnVal == JFileChooser.APPROVE_OPTION) {
-                            File[] files = fc.getSelectedFiles();
-                            for (int i = 0; i < files.length; i++) {
-                                if (!files[i].exists()) {
-                                    throw new FileNotFoundException("File: " + files[i].getName() + " not found.");
+                            EviewStandardizationVariantCookie cookie = activatedNodes[0].getCookie(EviewStandardizationVariantCookie.class);
+                            EviewStandardizationDataTypeNode standardizationDataTypeNode = cookie.getEviewStandardizationDataTypeNode();
+                            FileObject fobjStandDataType = standardizationDataTypeNode.getFileObject();
+
+                            File jarFile = fc.getSelectedFile();
+
+                            //ToDo Kevin/Ricardo/Shant
+                            //Call util to get the variant, create sub folder, e.g. FR
+                            //VariantDescriptor variantDescriptor = introspectVariant(JarFile jarFile);
+                            //if (VariantDescriptor != null) {
+                                String strVariant = "FR"; //variantDescriptor.getId();
+                                FileObject fo = FileUtil.toFileObject(jarFile);
+                                FileUtil.copyFile(fo, fobjStandDataType, fo.getName());                            
+                                FileObject newVariantFolder = fobjStandDataType.getFileObject(strVariant);
+                                if (newVariantFolder == null) {
+                                    newVariantFolder = FileUtil.createFolder(fobjStandDataType, strVariant);
                                 }
-                            }
-                            EviewFilterCookie cookie = activatedNodes[0].getCookie(EviewFilterCookie.class);
-                            EviewFilterFolderNode filterFolderNode = cookie.getEviewFilterFolderNode();
-                            FileObject filterFolder = filterFolderNode.getFileObject();
-                            for (int i=0; i < files.length; i++) {
-                                FileObject fo = FileUtil.toFileObject(files[i]);
-                                FileUtil.copyFile(fo, filterFolder, fo.getName());
-                            }
+                            //}
                         }                          
                     } catch (Exception e) {
-                        mLog.severe(NbBundle.getMessage(ImportFilterFileAction.class, "MSG_FAILED_To_Import_Filter_Files")); // NOI18N
+                        mLog.severe(NbBundle.getMessage(ImportStandardizationVariantAction.class, "MSG_FAILED_To_Import_Standardization_Plugin")); // NOI18N
                         ErrorManager.getDefault().log(ErrorManager.ERROR, e.getMessage());
                         ErrorManager.getDefault().notify(ErrorManager.ERROR, e);
                     } finally {
@@ -109,7 +114,7 @@ public class ImportFilterFileAction extends CookieAction {
                 }
             });
         } catch (Exception ex) {
-            mLog.severe(NbBundle.getMessage(ImportFilterFileAction.class, "MSG_FAILED_To_Perform") + ex.getMessage());
+            mLog.severe(NbBundle.getMessage(ImportStandardizationVariantAction.class, "MSG_FAILED_To_Perform") + ex.getMessage());
         }           
     }
     
@@ -124,7 +129,7 @@ public class ImportFilterFileAction extends CookieAction {
      * @return the list of cookie class
      */
     protected Class[] cookieClasses() {
-        return new Class[]{ImportFilterFileAction.class};
+        return new Class[]{ImportStandardizationVariantAction.class};
     }
 
     /**
@@ -149,14 +154,14 @@ public class ImportFilterFileAction extends CookieAction {
         return CookieAction.MODE_EXACTLY_ONE;
     }
     
-    private class FilterFileFilter extends FileFilter {
+    private class JarFileFilter extends FileFilter {
         
         public boolean accept(java.io.File file) {
-            return ( file.isDirectory() || file.getName().endsWith(".txt") || file.getName().endsWith(".xml") );
+            return ( file.isDirectory() || file.getName().endsWith(".jar") );
         }
         
         public String getDescription() {
-            return "XML/Text Files";
+            return "Jar Files";
         }
         
     }    

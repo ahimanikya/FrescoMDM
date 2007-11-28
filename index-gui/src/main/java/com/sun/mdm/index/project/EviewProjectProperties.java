@@ -27,12 +27,12 @@ package com.sun.mdm.index.project;
 public class EviewProjectProperties {
     
     public static final String EVIEW_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates";    
-    public static final String MATCH_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates/match";        
-    public static final String BIZ_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates/stand/biz";        
-    public static final String AU_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates/stand/AU";    
-    public static final String FR_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates/stand/FR";    
-    public static final String UK_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates/stand/UK";    
-    public static final String US_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates/stand/US";
+    public static final String MATCH_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/match";        
+    public static final String BIZ_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/biz";        
+    public static final String AU_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/AU";    
+    public static final String FR_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/FR";    
+    public static final String UK_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/UK";    
+    public static final String US_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/US";
     
     public static final String CONF_FOLDER = "conf"; //NOI18N    
     // eView Configuration Folder
@@ -50,6 +50,7 @@ public class EviewProjectProperties {
     public static final String DATABASE_SCRIPT_FOLDER = "DatabaseScript"; //NOI18N
     // Filter Folder
     public static final String FILTER_FOLDER = "Filter"; //NOI18N
+    public static final String FILTER_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/filter";        
     // eView Custom Plug-ins Folder
     public static final String CUSTOM_PLUG_INS_FOLDER = "CustomPlug-ins"; //NOI18N
     public static final String J2EE_MODULES_FOLDER = "J2EE Modules"; //NOI18N
@@ -68,9 +69,9 @@ public class EviewProjectProperties {
     public static final String SYSTEMS_SQL = "systems.sql";
     public static final String CODELIST_SQL = "codelist.sql";
     
-    public static final String MATCH_ZIP = "modules/ext/eview/repository/templates/match.zip";
-    public static final String STAND_ZIP = "modules/ext/eview/repository/templates/stand.zip";
-    public static final String TEMPLATE_ZIP = "modules/ext/eview/repository/templates/EviewApplicationTemplateProject.zip";
+    public static final String MATCH_ZIP = EVIEW_TEMPLATE_LOCATION + "/match.zip";
+    public static final String STAND_ZIP = EVIEW_TEMPLATE_LOCATION + "/stand.zip";
+    public static final String TEMPLATE_ZIP = EVIEW_TEMPLATE_LOCATION + "/EviewApplicationTemplateProject.zip";
     
     public static final String EVIEW_GENERATED_FOLDER = "eView_generated";
     public static final String EVIEW_JBI_JAR = "jbi.jar";

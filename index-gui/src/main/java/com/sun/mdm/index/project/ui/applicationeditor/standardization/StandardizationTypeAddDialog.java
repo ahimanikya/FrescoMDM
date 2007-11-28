@@ -54,7 +54,7 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
     private Map mMapFieldIDs;       // key:standardizationType
     private Map mMapTargetFields;
     private Map mMapFieldIDsPerTargetField; // key:targetField
-    private FreeFormGroup mGroup;
+    private FreeFormGroup mFreeFormGroup;
     
     /** Creates new form StandardizationTypeAddDialog */
     public StandardizationTypeAddDialog(Map sourceFieldsMap, Map fieldIDsMap, Map targetFieldsMap, Map fieldIDsPerTargetFieldMap, String matchEngine, EntityTree entityTree, MatchFieldDef matchFieldDef, String standardizationType, boolean editMode) {
@@ -69,15 +69,22 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
         mMapFieldIDsPerTargetField = fieldIDsPerTargetFieldMap;
         initComponents();
 
+        /* ToDo Kevin/Ricardo/Shant
+        ArrayList alDomainSelectors = getDomainSelectors();
+        for (int i = 0; alDomainSelectors != null && i < alDomainSelectors.size(); i++) {
+            this.cbDomainSelector.addItem(alDomainSelectors[i]);
+        }
+         */
+        
         this.cbDomainSelector.addItem(MatchFieldDef.MULTIPLE_DOMAIN_SELECTOR);
         this.cbDomainSelector.addItem(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_AU);
         this.cbDomainSelector.addItem(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_FR);
         this.cbDomainSelector.addItem(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_UK);
         this.cbDomainSelector.addItem(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_US);
         if (editMode) {
-            mGroup = mMatchFieldDef.getFreeFormGroup(standardizationType);
-            this.cbDomainSelector.setSelectedItem(mGroup.getDomainSelector());
-            String localeFieldName = mGroup.getLocaleFieldName();
+            mFreeFormGroup = mMatchFieldDef.getFreeFormGroup(standardizationType);
+            this.cbDomainSelector.setSelectedItem(mFreeFormGroup.getDomainSelector());
+            String localeFieldName = mFreeFormGroup.getLocaleFieldName();
             if (localeFieldName != null) {
                 jTextFieldLocaleFieldName.setText(localeFieldName);
             }
@@ -542,11 +549,20 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_onAddSourceFields
     
     private void loadStandardizationTypes(String matchEngine, String standardizationType, boolean editMode) {
-
-        MatchType[] mMatchTypes;
-        mMatchTypes = ConfigGenerator.getMatchTypes(matchEngine);
-        for (int i = 0; i < mMatchTypes.length; i++) {
-            String matchTypeID = mMatchTypes[i].getMatchTypeID();
+        /* ToDo Kevin/Ricardo/Shant
+        ArrayList alStandardizationTypes = getStandardizationTypes(String matchEngine);
+        for (int i = 0; i < alStandardizationTypes.length; i++) {
+            ArrayList alSourceFields = (ArrayList) mMapSourceFields.get(alStandardizationTypes[i]);
+            if (editMode || (alSourceFields == null || alSourceFields.size() <= 0)) {
+                cbStandardizationTypes.addItem(alStandardizationTypes[i]);
+            }
+        }
+        */
+        
+        MatchType[] alStandardizationTypes;
+        alStandardizationTypes = ConfigGenerator.getMatchTypes(matchEngine);
+        for (int i = 0; i < alStandardizationTypes.length; i++) {
+            String matchTypeID = alStandardizationTypes[i].getMatchTypeID();
             ArrayList alSourceFields = (ArrayList) mMapSourceFields.get(matchTypeID);
             if (editMode || (alSourceFields == null || alSourceFields.size() <= 0)) {
                 if (matchTypeID.equals("Address") || matchTypeID.equals("BusinessName")) {
@@ -555,14 +571,6 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
             }
         }
 
-        /*
-        if (editMode || mMapSourceFields.get("Address") == null) {
-            cbStandardizationTypes.addItem("Address");
-        }
-        if (editMode || mMapSourceFields.get("BusinessName") == null) {
-            cbStandardizationTypes.addItem("BusinessName");
-        }
-        */
         if (standardizationType != null) {
             cbStandardizationTypes.setSelectedItem(standardizationType);
         } else {
@@ -599,7 +607,7 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
     private void loadLocaleCodesTable(boolean editMode) {
         ArrayList rows = new ArrayList();
         if (editMode) {
-            ArrayList alLocaleCodes = mGroup.getLocaleCodes();
+            ArrayList alLocaleCodes = mFreeFormGroup.getLocaleCodes();
 
             for (int i=0; alLocaleCodes != null && i < alLocaleCodes.size(); i++) {
                 LocaleCode localeCode = (LocaleCode) alLocaleCodes.get(i);

@@ -151,6 +151,10 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
     }
     
     private static void buildFunctions() {
+        //ToDo
+        //Get comparator and description from comparatorsList.xml
+        //instance = com.sun.mdm.matcher.comparators.configurator.ComparatorsConfigBean.getClass();
+        //mMapShortKeyFunctions = instance.getCodeNamesDesc()
         mAlFunctionsDesc = new ArrayList<String>();
         mAlFunctionsDesc.add("Bigram String Comparator");   // b1
         mAlFunctionsDesc.add("Advanced Bigram String Comparator");  // b2

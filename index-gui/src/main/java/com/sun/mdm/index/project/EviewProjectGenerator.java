@@ -209,7 +209,7 @@ public class EviewProjectGenerator {
             FileObject codelistDdl = repository.createConfigurationFile(dbscriptFolder, EviewProjectProperties.CODELIST_SQL, dbScript);                
         
             // *** Sub folder - Match Engine ***
-            FileObject matchEngineFolder = getTemplates(srcRoot, EviewProjectProperties.MATCH_ENGINE_FOLDER, EviewProjectProperties.MATCH_TEMPLATE_LOCATION);              
+            FileObject matchEngineFolder = getTemplates(srcRoot, EviewProjectProperties.MATCH_ENGINE_FOLDER, EviewProjectProperties.MATCH_TEMPLATE_LOCATION);
          
             // *** Sub folder - Standardization ***
             FileObject standardizationEngineFolder = srcRoot.createFolder(EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER); // NOI18N
@@ -219,8 +219,8 @@ public class EviewProjectGenerator {
             FileObject standardizationEngineUKFolder = getTemplates(standardizationEngineFolder, EviewProjectProperties.STANDARDIZATION_ENGINE_UK_FOLDER, EviewProjectProperties.UK_TEMPLATE_LOCATION);       
             FileObject standardizationEngineUSFolder = getTemplates(standardizationEngineFolder, EviewProjectProperties.STANDARDIZATION_ENGINE_US_FOLDER, EviewProjectProperties.US_TEMPLATE_LOCATION);
             
-            // *** Sub folder - Plug-ins ***
-            //FileObject customPluginsFolder = srcRoot.createFolder(EviewRepository.CUSTOM_PLUG_INS_FOLDER); // NOI18N        
+            // *** Sub folder - Filter ***
+            FileObject filterFolder = getTemplates(srcRoot, EviewProjectProperties.FILTER_FOLDER, EviewProjectProperties.FILTER_TEMPLATE_LOCATION);
     }
     
     private static void createEjbWar(FileObject projectDir, String mainProjectName, String serverInstanceID, String j2eeLevel )

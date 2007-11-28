@@ -78,6 +78,7 @@ class EviewProjectViews {
         private static final String KEY_CONFIGURATION_DIR = "configurationDir"; // NOI18N
         private static final String KEY_DBSCRIPT_DIR = "dbscriptDir"; // NOI18N
         private static final String KEY_STANDARDIZATION_DIR = "standardizationDir"; // NOI18N
+        private static final String KEY_STANDARDIZATION_DATA_TYPE_DIR = "standardizationDataTypeDir"; // NOI18N
         private static final String KEY_MATCH_ENGINE_DIR = "matchengineDir"; // NOI18N        
         private static final String KEY_CUSTOM_PLUG_INS_DIR = "custompluginsDir"; // NOI18N
         private static final String KEY_FILTER_DIR = "filterDir"; // NOI18N        
@@ -126,6 +127,7 @@ class EviewProjectViews {
                 l.add(KEY_CONFIGURATION_DIR);
                 l.add(KEY_DBSCRIPT_DIR);
                 l.add(KEY_STANDARDIZATION_DIR);
+                //l.add(KEY_STANDARDIZATION_DATA_TYPE_DIR);
                 l.add(KEY_MATCH_ENGINE_DIR);
                 l.add(KEY_FILTER_DIR);
             }
@@ -153,6 +155,7 @@ class EviewProjectViews {
 
         protected Node[] createNodes(Object key) {
             Node n = null;
+            Node[] nodes = null;
             FileObject srcRoot = helper.resolveFileObject(evaluator.getProperty (IcanproProjectProperties.SRC_DIR));
 
             if (key == KEY_SOURCE_DIR) {
@@ -177,7 +180,16 @@ class EviewProjectViews {
             } else if (key == KEY_STANDARDIZATION_DIR) {
                 FileObject standardizationEngineFolder = srcRoot.getFileObject(EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER);
                 if (standardizationEngineFolder != null) {
-                    n = new EviewConfigurationFolderNode(STANDARDIZATION_ENGINE_FOLDER_DISPLAY_NAME, DataFolder.findFolder(standardizationEngineFolder));                                                
+                    n = new EviewStandardizationFolderNode(STANDARDIZATION_ENGINE_FOLDER_DISPLAY_NAME, DataFolder.findFolder(standardizationEngineFolder));
+                    /*
+                    FileObject[] children = standardizationEngineFolder.getChildren();
+                    if (children != null && children.length > 0) {
+                        nodes = new Node[children.length + 1];
+                        nodes[0] = n;
+                        for (int i=0; children != null && i < children.length; i++) {
+                            nodes[i+1] = new EviewStandardizationDataTypeNode(children[i].getName(), DataFolder.findFolder(children[i]));
+                        }
+                    } */
                 }
             } else if (key == KEY_MATCH_ENGINE_DIR) {
                 FileObject matchEngineFolder = srcRoot.getFileObject(EviewProjectProperties.MATCH_ENGINE_FOLDER);
@@ -186,17 +198,9 @@ class EviewProjectViews {
                 }
             } else if (key == KEY_FILTER_DIR) {
                 FileObject filterFolder = srcRoot.getFileObject(EviewProjectProperties.FILTER_FOLDER);
-                if (filterFolder == null) {
-                    try {
-                        filterFolder = FileUtil.createFolder(srcRoot, FILTER_FOLDER_DISPLAY_NAME);
-                    } catch (Exception ex) {
-                        
-                    }
-                }
                 if (filterFolder != null) {
                     n = new EviewFilterFolderNode(FILTER_FOLDER_DISPLAY_NAME, DataFolder.findFolder(filterFolder));                                                
                 }
-
             } else if (key == KEY_CUSTOM_PLUG_INS_DIR) {
                 FileObject customPluginsFolder = srcRoot.getFileObject(EviewProjectProperties.CUSTOM_PLUG_INS_FOLDER);
                 if (customPluginsFolder != null) {
@@ -221,7 +225,7 @@ class EviewProjectViews {
 //                }
             } 
             /*
-            else if (key == WEBSERVICES_DIR){
+             } else if (key == WEBSERVICES_DIR){
                 //WebServicesView webServicesView = WebServicesView.getWebServicesView(srcRoot);
                 //if(webServicesView != null) {
                 //    n = webServicesView.createWebServicesView(srcRoot);
@@ -235,7 +239,9 @@ class EviewProjectViews {
                 } catch (org.openide.loaders.DataObjectNotFoundException dnfe) {}
             } 
             */
-
+            if (nodes != null) {
+                return nodes;
+            }
             return n == null ? new Node[0] : new Node[] {n};
         }
 
