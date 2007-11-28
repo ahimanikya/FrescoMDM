@@ -928,7 +928,7 @@ public class ObjectField implements Externalizable  {
         if (!(null == value)){
         	if (value instanceof java.lang.String){
         		String strValue = (String) value;
-        		if (strValue.charAt(0)=='[' && strValue.charAt(strValue.length()-1)==']') {
+        		if (strValue.length()>0 && strValue.charAt(0)=='[' && strValue.charAt(strValue.length()-1)==']') {
         			mType = 10;
         		}
         	}
