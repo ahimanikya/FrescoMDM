@@ -129,6 +129,7 @@ public class EviewProjectGenerator {
         ep.setProperty("eView.generated.dir", EviewProjectProperties.EVIEW_GENERATED_FOLDER);
         ep.setProperty(EviewProjectProperties.J2EE_SERVER_TYPE, Deployment.getDefault().getServerID(serverInstanceID));
         ep.setProperty(EviewProjectProperties.J2EE_PLATFORM, j2eeLevel);
+        ep.setProperty(EviewProjectProperties.EVIEW_JBI_JAR, mainProjectName+"-jbi.jar");
         h.putProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH, ep);
                
         // set private properties

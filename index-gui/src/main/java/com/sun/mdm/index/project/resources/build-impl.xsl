@@ -257,9 +257,14 @@ is divided into following sections:
 				<delete dir="loader-generated/loader"></delete>
 
 			</target>
-
-
-
+            
+                        <target name="dist_se">
+                            <xsl:attribute name="depends">dist</xsl:attribute>
+                            <copy file="${{dist.jar}}" tofile="${{dist.dir}}/jbi/${{jbi.jar}}"/>
+                            <jar destfile="${{dist.dir}}/jbi/${{jbi.jar}}"
+                            basedir="${{eView.generated.dir}}/jbi" update="true"/>                
+                        </target>
+                        
 			<target name="pre-pre-compile">
 				<xsl:attribute name="depends">init,gen-mdm-index-files,deps-jar,deps-j2ee-archive</xsl:attribute>
 				<!--mkdir dir="${{build.classes.dir}}"/-->

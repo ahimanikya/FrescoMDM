@@ -73,6 +73,7 @@ public class EviewProjectProperties {
     public static final String TEMPLATE_ZIP = "modules/ext/eview/repository/templates/EviewApplicationTemplateProject.zip";
     
     public static final String EVIEW_GENERATED_FOLDER = "eView_generated";
+    public static final String EVIEW_JBI_JAR = "jbi.jar";
     
     //following properties are from ear project
     public static final String WEB_PROJECT_NAME = "web.project.name"; //NOI18N

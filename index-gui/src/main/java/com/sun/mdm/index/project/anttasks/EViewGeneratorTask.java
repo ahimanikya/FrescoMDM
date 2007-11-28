@@ -31,6 +31,7 @@ import com.sun.mdm.index.project.generator.persistence.DDLWriter;
 import com.sun.mdm.index.project.generator.validation.ObjectDescriptorWriter;
 import com.sun.mdm.index.project.generator.webservice.WebServiceWriter;
 import com.sun.mdm.index.project.generator.outbound.OutboundXSDBuilder;
+import com.sun.mdm.index.project.generator.descriptor.JbiXmlWriter;
 import com.sun.mdm.index.objects.metadata.MetaDataService;
 import com.sun.mdm.index.parser.EIndexObject;
 import com.sun.mdm.index.parser.ParserException;
@@ -217,14 +218,21 @@ public class EViewGeneratorTask extends Task {
         appWriter.write();
         
         String projPath = getProject().getProperty("basedir");
-        File eview_gen_folder = new File(projPath + File.separator + 
-                EviewProjectProperties.EVIEW_GENERATED_FOLDER);
-            eview_gen_folder.mkdir();       
-        File xsdFile = new File(projPath + File.separator + 
-                    EviewProjectProperties.EVIEW_GENERATED_FOLDER+
-                    File.separator + "outbound.xsd");
+        String generatePath = projPath + File.separator + 
+                EviewProjectProperties.EVIEW_GENERATED_FOLDER;
+        File generateFolder = new File(generatePath);
+        generateFolder.mkdirs();       
+        File xsdFile = new File(generatePath + File.separator + "outbound.xsd");
         OutboundXSDBuilder builder = new OutboundXSDBuilder();
         builder.buildXSD(eo,xsdFile);
+        
+        String jbiXmlpath = projPath + File.separator + 
+                    EviewProjectProperties.EVIEW_GENERATED_FOLDER +
+                    File.separator + "jbi"+ File.separator + "META-INF";
+        File jbiXmlFolder = new File(jbiXmlpath);
+        jbiXmlFolder.mkdirs();
+        JbiXmlWriter jbrWriter = new JbiXmlWriter(jbiXmlpath,eo.getName());
+        jbrWriter.write();
         
         File objectFile = new File(mSrcdir + File.separator +
                 EviewProjectProperties.CONFIGURATION_FOLDER + File.separator +"object.xml");
