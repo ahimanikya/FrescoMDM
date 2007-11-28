@@ -95,6 +95,11 @@
                                         <include name="**/*"/>
                                     </fileset>
                                 </copy>
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates/filter">
+                                    <fileset dir="${basedir}/../index-core/src/main/resources/filter">
+                                        <include name="**/*"></include>
+                                    </fileset>
+                                </copy>
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository">
                                     <fileset dir="${basedir}/../index-core/target">
                                         <include name="ejb-source.zip"/>                  
