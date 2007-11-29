@@ -4689,8 +4689,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 mLogger.fine("getConnection(): obtaining a connection: " + con);
             }
             if (transactionType.equals("CMT_XA")||transactionType.equals("BMT_XA")) {
-                con.setAutoCommit(true);
+                //if container managed transaction or bean managed transaction then do nothing.
             }else{
+                //local transaction
                 con.setAutoCommit(false);
             }
 
