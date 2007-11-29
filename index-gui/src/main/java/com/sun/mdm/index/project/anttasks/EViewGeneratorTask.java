@@ -290,6 +290,21 @@ public class EViewGeneratorTask extends Task {
             copy.setLocation(getLocation());
             copy.execute();
             
+            //copy filter configuration files
+            destDir = new File(projPath + File.separator + EviewProjectProperties.EVIEW_GENERATED_FOLDER +
+                    File.separator + "resource");
+            srcDir = new File(mSrcdir + File.separator + EviewProjectProperties.FILTER_FOLDER);
+            if (srcDir.exists()){
+                srcfileSet = new FileSet(); 
+                srcfileSet.setDir(srcDir);
+                copy = (Copy) getProject().createTask("copy");
+                copy.setTodir(destDir);
+                copy.addFileset(srcfileSet);
+                copy.init();
+                copy.setLocation(getLocation());
+                copy.execute();
+            }
+            
             //make resources.jar
             File jarFile = new File(projPath + File.separator + getProject().getProperty("build.dir") +
                     File.separator + "lib" + File.separator + "resources.jar" );
