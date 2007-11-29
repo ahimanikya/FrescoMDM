@@ -255,13 +255,21 @@ public class ConfigurationService implements ConfigurationMBean {
                // is = null;
               
                 /* start for Filter  */
-                mLogger.info(mLocalizer.x("CFG043: Loading: filter configuration file: {0}", FILTER_FILE_NAME));
-                is = instance.getConfigFileStream(FILTER_FILE_NAME);
-                instance.load(is);
-                is.close();
-                is = null;
-                /* end for Filter */
+                try {
+                    mLogger.info(mLocalizer.x("CFG043: Loading: filter configuration file: {0}",
+                            FILTER_FILE_NAME));
 
+                    is = instance.getConfigFileStream(FILTER_FILE_NAME);
+                    instance.load(is);
+                    is.close();
+                } catch (Exception fe) {
+                    mLogger.info(mLocalizer.x("CFG044:  Exclusion filter is disabled "));
+                    mLogger.severe(mLocalizer.x("CFG045:Filter config file failed to load :",
+                            fe));
+
+                }
+                /* end for Filter */
+                is = null;
                 mLogger.info(mLocalizer.x("CFG007: Loading match engine configuration files."));
                 // instead of loading all the text files, simply delegate to the get 
                 // method to load from the classpath when requested

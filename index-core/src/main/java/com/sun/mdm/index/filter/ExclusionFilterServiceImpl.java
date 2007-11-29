@@ -34,9 +34,6 @@ import com.sun.mdm.index.survivor.SystemFieldListMap;
 import com.sun.mdm.index.survivor.SystemFieldListMap.SystemKey;
 import com.sun.mdm.index.util.Localizer;
 import com.sun.mdm.index.util.Logger;
-//import com.sun.mdm.index.dataobject.DataObject;
-//import com.sun.mdm.index.dataobject.epath.DOEpath;
-//import com.sun.mdm.index.dataobject.objectdef.Lookup;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -71,62 +68,73 @@ public class ExclusionFilterServiceImpl implements ExclusionFilterService {
     */
     public SystemFieldListMap exclusionSystemFieldList(SystemFieldListMap sysFields,
             String candidateId) {
-     
+
         SystemFieldListMap filterdSysFields = new SystemFieldListMap();
-        Set sysfieldList = sysFields.keySet();
-        SystemFieldList fieldValues = new SystemFieldList();
-        Iterator it = sysfieldList.iterator();
+        ArrayList sbrList = lookup.getExclusionList(FilterConstants.SBR_EXCLUSION_TYPE);
+        if (sbrList.size() != 0 && !sbrList.isEmpty() && sbrList != null) {
+            Set sysfieldList = sysFields.keySet();
+            SystemFieldList fieldValues = new SystemFieldList();
+            Iterator it = sysfieldList.iterator();
 
-        while (it.hasNext()) {
+            while (it.hasNext()) {
 
-            SystemKey key = (SystemFieldListMap.SystemKey) it.next();
-            if (key != null) {
-                fieldValues = sysFields.get(key);
-                SystemField sysField = fieldValues.get(candidateId);
-                String fieldName = sysField.getName();
-                Object oSysField = sysField.getValue();
-
-                if (mLogger.isDebugEnabled()) {
-                    mLogger.debug("The field name is  = " + fieldName);
-                }
-
-                if (oSysField != null) {
-                    String fieldValue = oSysField.toString();
+                SystemKey key = (SystemFieldListMap.SystemKey) it.next();
+                if (key != null) {
+                    fieldValues = sysFields.get(key);
+                    SystemField sysField = fieldValues.get(candidateId);
+                    String fieldName = sysField.getName();
+                    Object oSysField = sysField.getValue();
 
                     if (mLogger.isDebugEnabled()) {
-                        mLogger.debug("the field value is :" + fieldValue);
+                        mLogger.debug("The field name is  = " + fieldName);
                     }
 
-                    if (fieldValue != null || !fieldValue.equals(" ") || !fieldValue.equals("null")) {
+                    if (oSysField != null) {
+                        String fieldValue = oSysField.toString();
 
-                        //chk feldname is present in the exclusion list.
-                        boolean isFieldNameExists = lookup.isFieldNameInExclusion(fieldName, FilterConstants.SBR_EXCLUSION_TYPE);
-                        if (isFieldNameExists) {
-                            boolean isFieldvalueExists = lookup.isFieldValueInExclusion(fieldValue, fieldName, FilterConstants.SBR_EXCLUSION_TYPE);
-                            if (isFieldvalueExists) {
-                                if (mLogger.isDebugEnabled()) {
-                                    mLogger.debug("the field name to be removed from the SystemFieldListMap =: " + fieldName);
+                        if (mLogger.isDebugEnabled()) {
+                            mLogger.debug("the field value is :" + fieldValue);
+                        }
+
+                        if (fieldValue != null && !fieldValue.equals(" ") && !fieldValue.equals("null")) {
+
+                            //chk feldname is present in the exclusion list.
+                            boolean isFieldNameExists = lookup.isFieldNameInExclusion(fieldName,
+                                    FilterConstants.SBR_EXCLUSION_TYPE);
+                            if (isFieldNameExists) {
+                                boolean isFieldvalueExists = lookup.isFieldValueInExclusion(fieldValue,
+                                        fieldName,
+                                        FilterConstants.SBR_EXCLUSION_TYPE);
+                                if (isFieldvalueExists) {
+                                    if (mLogger.isDebugEnabled()) {
+                                        mLogger.debug("the field name to be removed from the SystemFieldListMap =: " + fieldName);
+                                    }
+                                } else {
+                                    filterdSysFields.put(key, fieldValues);
+                                    if (mLogger.isDebugEnabled()) {
+                                        mLogger.debug("the field value not in exclusion list=:   " + fieldValues);
+                                    }
                                 }
                             } else {
-                                filterdSysFields.put(key, fieldValues);
-                                if (mLogger.isDebugEnabled()) {
-                                    mLogger.debug("the field value not in exclusion list=:   " + fieldValues);
-                                }
-                            }
-                        } else {
 
-                            filterdSysFields.put(key, fieldValues);
+                                filterdSysFields.put(key, fieldValues);
+                            }
                         }
                     }
                 }
             }
-        }
-        //If all the field values are present in the exclusion list then return the original list without filtering.        
-        if (filterdSysFields.size() == 0 || filterdSysFields == null) {
-            if (mLogger.isDebugEnabled()) {
-                        mLogger.debug("All the fields are in exclusion list, disable the filter");
-            }
+            //If all the field values are present in the exclusion list then return the original list without filtering.        
+            if (filterdSysFields.size() == 0 || filterdSysFields == null) {
+                if (mLogger.isDebugEnabled()) {
+                    mLogger.debug("All the fields are in exclusion list, disable the filter");
+                }
 
+                filterdSysFields = sysFields;
+            }
+        } else {
+            if (mLogger.isDebugEnabled()) {
+                    mLogger.debug("The SBR exclusion list is empty");
+                }
             filterdSysFields = sysFields;
         }
         return filterdSysFields;
@@ -178,7 +186,7 @@ public class ExclusionFilterServiceImpl implements ExclusionFilterService {
       private void excludeField(ObjectNode objectNode, ArrayList blockList,
             String listType) {
 
-        if (!blockList.isEmpty() || blockList != null) {
+        if (blockList.size()!= 0 && !blockList.isEmpty() && blockList != null) {
             for (int i = 0; i < blockList.size(); i++) {
                 HashMap map = (HashMap) blockList.get(i);
                 Iterator it = map.keySet().iterator();
@@ -193,7 +201,7 @@ public class ExclusionFilterServiceImpl implements ExclusionFilterService {
                         mLogger.error(mLocalizer.x("EFS002: EPathException has encountered "), e);
                     }
 
-                    if (fieldValue != null || !fieldValue.equals(" ") || !fieldValue.equals("null")) {
+                    if (fieldValue != null && !fieldValue.equals("") && !fieldValue.equals("null")) {
                         boolean isFieldvalueExists = lookup.isFieldValueInExclusion(fieldValue, fieldName, listType);
                         if (isFieldvalueExists) {
                             try {
