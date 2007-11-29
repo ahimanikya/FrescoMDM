@@ -157,7 +157,7 @@ public class EviewProjectLogicalViewProvider implements LogicalViewProvider {
                 ProjectSensitiveActions.projectCommandAction( ActionProvider.COMMAND_CLEAN, bundle.getString( "LBL_CleanAction_Name" ), null ), // NOI18N
                 null,
                 //ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_GENWSDL, "Generate WSDL", null ), // NOI18N
-                ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_GENEVIEW, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Generate_MDM_Files"), null ),
+                ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_GENEVIEW, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Generate_Master_Index_Files"), null ),
                 ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_GENLOADER, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Generate_Loader_Zip"), null ),
                 null,
                 ProjectSensitiveActions.projectCommandAction( IcanproConstants.COMMAND_REDEPLOY, bundle.getString( "LBL_RedeployAction_Name" ), null ), // NOI18N
