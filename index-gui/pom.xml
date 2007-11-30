@@ -74,6 +74,9 @@
                                     <fileset dir="${basedir}/src/main/java/com/sun/mdm/index/project">									      
                                         <include name="EviewApplicationTemplateProject.zip"/>
                                     </fileset>
+                                    <fileset dir="${basedir}/../index-core/src/main/resources/matchengine/config/runtime">
+                                        <include name="**/*"/>
+                                    </fileset>
                                 </copy>
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/schema">
                                     <fileset dir="${basedir}/../index-core/src/main/resources/schema">
@@ -84,15 +87,11 @@
                                     <fileset dir="${basedir}/../index-core/src/main/resources">
                                         <include name="edm.war"/>
                                     </fileset>
-                                </copy>
-                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository">
                                     <fileset dir="${basedir}/../index-core/src/main/resources/matchengine">
                                         <include name="stc_sbme.jar"/>
                                     </fileset>
-                                </copy>
-                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates">
-                                    <fileset dir="${basedir}/../index-core/src/main/resources/matchengine/config/runtime">
-                                        <include name="**/*"/>
+                                    <fileset dir="${basedir}/../index-core/target">
+                                        <include name="ejb-source.zip"/>                  
                                     </fileset>
                                 </copy>
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates/filter">
@@ -100,22 +99,18 @@
                                         <include name="**/*"></include>
                                     </fileset>
                                 </copy>
-                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository">
-                                    <fileset dir="${basedir}/../index-core/target">
-                                        <include name="ejb-source.zip"/>                  
-                                    </fileset>
-                                </copy>
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview">
                                     <fileset dir="${basedir}/../index-core/target">
                                         <include name="index-core.jar"/>                 
                                     </fileset>
-                                </copy>
-                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview">
+                                    <fileset dir="${basedir}/../index-core/src/main/resources/matchengine">
+                                        <include name="sun_matcher.jar"/>
+                                    </fileset>
                                     <fileset dir="${basedir}/../index-core/src/main/resources/globalization">
                                         <include name="net.java.hulp.i18n.jar"/>                 
                                         <include name="net.java.hulp.i18ntask.jar"/>                 
-                                    </fileset>
-                                </copy>
+                                    </fileset>                                    
+                                </copy>                                
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/report/lib">
                                     <fileset dir="${basedir}/../report/target">
                                         <include name="com-sun-eview-report.jar"/>                    
@@ -183,6 +178,11 @@
             <artifactId>index-core</artifactId>
             <version>${mural.currentVersion}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>mural</groupId>
+            <artifactId>sun-matcher</artifactId>
+            <version>${mural.currentVersion}</version>
         </dependency>
         <dependency>
             <groupId>net.java.dev.swing-layout</groupId>
