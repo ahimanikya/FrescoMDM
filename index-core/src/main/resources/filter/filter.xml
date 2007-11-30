@@ -34,14 +34,14 @@
             </value>
         </field>
         
-        <field sbr="true" matching="true" blocking="false">
+        <!--field sbr="true" matching="true" blocking="false">
             <name>PatientView.SSN</name>
             <value>
                 <file delimiter="|"> 
                     <file-name>matching.txt</file-name> 
                 </file>
             </value>
-        </field>  
+        </field-->  
         
           
     </exclusion-List>
