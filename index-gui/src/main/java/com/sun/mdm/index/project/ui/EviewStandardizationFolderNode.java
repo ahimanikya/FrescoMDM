@@ -46,6 +46,7 @@ public class EviewStandardizationFolderNode extends EviewFolderNode {
     public Action[] getActions( boolean context ) {
         return new Action[] {
             SystemAction.get(ImportStandardizationDataTypeAction.class),
+            SystemAction.get(ImportStandardizationVariantAction.class),
             null,
             SystemAction.get(org.openide.actions.FindAction.class),
             null,

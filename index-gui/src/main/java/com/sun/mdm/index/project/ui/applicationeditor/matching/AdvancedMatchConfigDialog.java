@@ -25,8 +25,16 @@ package com.sun.mdm.index.project.ui.applicationeditor.matching;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.Iterator;
+
+import com.sun.mdm.matcher.comparators.configurator.ComparatorsConfigBean;
+import com.sun.mdm.matcher.comparators.ComparatorsManager;
+import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.LogUtil;
 
 public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
+    private static Logger mLogger = LogUtil.getLogger(AdvancedMatchConfigDialog.class);
     private boolean mModified = false;
     private static ArrayList<String> mAlFunctions;
     private static ArrayList<String> mAlFunctionsDesc;
@@ -37,6 +45,7 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
     private static Map mMapNullFields2 = new HashMap();
     private static Map mMapDescKeyFunctions = new HashMap();
     private static Map mMapShortKeyFunctions = new HashMap();
+    private static String mCoparatorListPath;
     
     /** Creates new form AdvancedMatchConfigDialog */
     public AdvancedMatchConfigDialog(String probabilityType,
@@ -46,11 +55,12 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
                                      String function, 
                                      String agreementW,
                                      String disagreementW,
-                                     String parameters) {
+                                     String parameters,
+                                     String coparatorListPath) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         initComponents();
         //build components
-
+        mCoparatorListPath = coparatorListPath;
         
         //populate components
         this.jTextFieldMatchType.setText(matchType);
@@ -153,56 +163,24 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
     private static void buildFunctions() {
         //ToDo
         //Get comparator and description from comparatorsList.xml
-        //instance = com.sun.mdm.matcher.comparators.configurator.ComparatorsConfigBean.getClass();
-        //mMapShortKeyFunctions = instance.getCodeNamesDesc()
+        try {
+            ComparatorsManager comparatorsManager = new ComparatorsManager(mCoparatorListPath);
+            ComparatorsConfigBean instance = comparatorsManager.getComparatorsConfigBean();
+            mMapShortKeyFunctions = instance.getCodeNamesDesc();
+        } catch (Exception ex) {
+            mLogger.error(ex.getMessage());
+        }
         mAlFunctionsDesc = new ArrayList<String>();
-        mAlFunctionsDesc.add("Bigram String Comparator");   // b1
-        mAlFunctionsDesc.add("Advanced Bigram String Comparator");  // b2
-        mAlFunctionsDesc.add("Generic String Comparator");  // u
-        mAlFunctionsDesc.add("Advanced Generic String Comparator"); // ua
-        mAlFunctionsDesc.add("Simplified String Comparator - FirstName");   // uf
-        mAlFunctionsDesc.add("Simplified String Comparator - LastName");    // ul
-        mAlFunctionsDesc.add("Simplified String Comparator - HouseNumber"); // un
-        mAlFunctionsDesc.add("Simplified String Comparator");   // us
-        mAlFunctionsDesc.add("Language-specific String Comparator");    // usu
-        mAlFunctionsDesc.add("Exact char-by-char Comparator");  // c
-        mAlFunctionsDesc.add("Generic Number Comparator");  // n
-        mAlFunctionsDesc.add("Integer Comparator"); // nI
-        mAlFunctionsDesc.add("Real Number Comparator"); // nR  
-        mAlFunctionsDesc.add("Alpha-Numeric Comparator");   // nS
-        mAlFunctionsDesc.add("Date Comparator - Year only"); // dY
-        mAlFunctionsDesc.add("Date Comparator - Month-Year"); // dM
-        mAlFunctionsDesc.add("Date Comparator - Day-Month-Year");   // dD
-        mAlFunctionsDesc.add("Date Comparator - Hour-Day-Month-Year");  // dH
-        mAlFunctionsDesc.add("Date Comparator - Min-Hour-Day-Month-Year");  // dm
-        mAlFunctionsDesc.add("Date Comparator - Sec-Min-Hour-Day-Month-Year");  // ds
-        mAlFunctionsDesc.add("Prorated Comparator");    // p
-
         mAlFunctions = new ArrayList<String>();
-        mAlFunctions.add("b1");
-        mAlFunctions.add("b2");
-        mAlFunctions.add("u");
-        mAlFunctions.add("ua");
-        mAlFunctions.add("uf");
-        mAlFunctions.add("ul");
-        mAlFunctions.add("un");
-        mAlFunctions.add("us");
-        mAlFunctions.add("usu");        
-        mAlFunctions.add("c");
-        mAlFunctions.add("n");
-        mAlFunctions.add("nI");
-        mAlFunctions.add("nR");        
-        mAlFunctions.add("nS");
-        mAlFunctions.add("dY");
-        mAlFunctions.add("dM");
-        mAlFunctions.add("dD");        
-        mAlFunctions.add("dH");
-        mAlFunctions.add("dm");
-        mAlFunctions.add("ds");
-        mAlFunctions.add("p");
-        for (int i=0; i<mAlFunctions.size(); i++) {
-            mMapDescKeyFunctions.put(mAlFunctionsDesc.get(i), mAlFunctions.get(i));  
-            mMapShortKeyFunctions.put(mAlFunctions.get(i), mAlFunctionsDesc.get(i));  
+        
+        Set set = mMapShortKeyFunctions.keySet();
+        Iterator iter = set.iterator();
+        for (int i=0; i < set.size(); i++) {
+            String strFunction = iter.next().toString();
+            String strDesc = mMapShortKeyFunctions.get(strFunction).toString();
+            mAlFunctionsDesc.add(strDesc);
+            mAlFunctions.add(strFunction);
+            mMapDescKeyFunctions.put(strDesc, strFunction);  
         }
     }
     
@@ -261,7 +239,8 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
     /** 
      *return mAlFunctions
      */
-    public static ArrayList getFunctions() {
+    public static ArrayList getFunctions(String coparatorListPath) {
+        mCoparatorListPath = coparatorListPath;
         if (mAlFunctions == null) {
             buildFunctions();
         }

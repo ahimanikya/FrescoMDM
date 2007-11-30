@@ -37,7 +37,12 @@ import javax.swing.filechooser.FileFilter;
 
 import java.io.File;
 //import java.io.FileNotFoundException;
+import java.util.jar.JarFile;
+
 //import com.sun.mdm.standardizer.DataTypeDescriptor;
+//import com.sun.mdm.standardizer.StandardizerIntrospector;
+//import com.sun.mdm.standardizer.VariantDescriptor;
+//import com.sun.mdm.standardizer.engine.DefaultStandardizerIntrospector;
 
 /**
  * To get Standardization jar with dataTypeDescription.xml
@@ -91,19 +96,38 @@ public class ImportStandardizationDataTypeAction extends CookieAction {
                             EviewStandardizationFolderCookie cookie = activatedNodes[0].getCookie(EviewStandardizationFolderCookie.class);
                             EviewStandardizationFolderNode standardizationFolderNode = cookie.getEviewStandardizationFolderNode();
                             FileObject standFolder = standardizationFolderNode.getFileObject();
-
+                            
+                            File selectedFile = fc.getSelectedFile();
+                            String pathSelectedFile = selectedFile.getAbsolutePath();
                             //ToDo Kevin/Ricardo/Shant
                             //Call util to get the data type, create sub folder, e.g. Address
-                            String strDataType = "Address"; //util.getStandardizationType();
+                            //JarFile jarDataType = new JarFile(pathSelectedFile);
+                            //StandardizerIntrospector introspector = new DefaultStandardizerIntrospector();
+                            //DataTypeDescriptor dataTypeDescriptor = introspector.introspectDataType(jarDataType);
+
+                            String strDataType = "Address"; 
+                            //String strDataType = dataTypeDescriptor.getName();
+                            //String strDescription = dataTypeDescriptor.getDescription();
                             FileObject newDataTypeFolder = standFolder.getFileObject(strDataType);
                             if (newDataTypeFolder == null) {
                                 newDataTypeFolder = FileUtil.createFolder(standFolder, strDataType);
                             }
+                            //EviewStandardizationDataTypeNode standardizationDataTypeNode = new EviewStandardizationDataTypeNode(strDataType, DataFolder.findFolder(newDataTypeFolder)); 
 
-                            EviewStandardizationDataTypeNode standardizationDataTypeNode = new EviewStandardizationDataTypeNode(strDataType, DataFolder.findFolder(newDataTypeFolder)); 
+                            //for (String variantId: dataTypeDescriptor.variantsIds()) {
+                            //    VariantDescriptor variantDescriptor = dataTypeDescriptor.getVariant(variantId);
+                            //    String variantId = variantDescriptor.getId();
+                            //}
+                            // The default variant (if one exists)
+                            //System.out.println("Default variant in address data type: " + dataTypeDescriptor.getDefaultVariant().getId());
+		
+                            // The token names for this data type (this would be the fields to map to DB)
+                            //for (String fieldName: dataTypeDescriptor.tokenNames()) {
+                            //    System.out.println(fieldName);
+                            //}
 
-                            File file = fc.getSelectedFile();
-                            FileObject fo = FileUtil.toFileObject(file);
+
+                            FileObject fo = FileUtil.toFileObject(selectedFile);
                             FileUtil.copyFile(fo, newDataTypeFolder, fo.getName());
                         }                          
                     } catch (Exception e) {

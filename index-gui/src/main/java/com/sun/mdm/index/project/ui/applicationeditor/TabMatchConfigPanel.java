@@ -58,6 +58,7 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
     private JTable mTableFieldsMatchTypeSelected;    
     private JTable mTableMatchingRules;
     private boolean bCheckedOut;
+    private String mCoparatorListPath;
     
     /** Creates new form TabMatchConfigPanel */
     public TabMatchConfigPanel(EviewEditorMainApp eviewEditorMainApp, EviewApplication eviewApplication) {
@@ -65,6 +66,7 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
         mEviewEditorMainApp = eviewEditorMainApp;
         bCheckedOut = eviewEditorMainApp.isCheckedOut();
         mEviewApplication = eviewApplication;
+        mCoparatorListPath = mEviewApplication.getComparatorListFile().getPath();
         mMasterType = mEviewApplication.getMasterType(false);
         mMatchFieldDef = mEviewApplication.getMatchFieldDef(false);
         parameterDuplicateThreshold = mMasterType.getDecisionMakerConfigParameterByName(MasterType.DUPLICATETHRESHOLD);
@@ -300,7 +302,7 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
         
         mProbabilityType = getProbabilityType();
         AdvancedMatchConfigDialog dlg = new AdvancedMatchConfigDialog(mProbabilityType, matchType, matchSize,
-                nullField, function, agreementW, disagreementW, parameters);
+                nullField, function, agreementW, disagreementW, parameters, mCoparatorListPath);
         dlg.setVisible(true);
         if (dlg.isModified()) {
             // update table
@@ -371,10 +373,10 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
         mProbabilityType = getProbabilityType();
         if (mProbabilityType.equals("0")) {
             dlg = new AdvancedMatchConfigDialog(mProbabilityType, "", "30",
-                "0", "us", "0.99", "0.001", "");
+                "0", "us", "0.99", "0.001", "", mCoparatorListPath);
         } else {
             dlg = new AdvancedMatchConfigDialog(mProbabilityType, "", "30",
-                "0", "us", "10", "-10", "");
+                "0", "us", "10", "-10", "", mCoparatorListPath);
         }
         dlg.setVisible(true);
         if (dlg.isModified()) {
@@ -591,7 +593,7 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
         mAlNullFields = AdvancedMatchConfigDialog.getNullFields();
         mMapNullFields = AdvancedMatchConfigDialog.getMapNullFields();
         
-        mAlFunctions = AdvancedMatchConfigDialog.getFunctions();
+        mAlFunctions = AdvancedMatchConfigDialog.getFunctions(mCoparatorListPath);
         mAlFunctionsDesc = AdvancedMatchConfigDialog.getFunctionsDesc();
         mMapDescKeyFunctions = AdvancedMatchConfigDialog.getMapDescKeyFunctions();
         mMapShortKeyFunctions = AdvancedMatchConfigDialog.getMapShortKeyFunctions();

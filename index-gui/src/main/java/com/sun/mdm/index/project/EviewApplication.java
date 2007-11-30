@@ -924,6 +924,7 @@ public class EviewApplication extends EviewProject {
     public String getMsgCheckedOut() {
         return msgCheckedOut;
     }
+    
     /** return the FileObject for object.xml
      * @return FileObject fo
      */ 
@@ -933,6 +934,14 @@ public class EviewApplication extends EviewProject {
         return fo;
     }
 
+    /** return the FileObject for comparatorsList.xml
+     * @return FileObject fo
+     */ 
+
+    public FileObject getComparatorListFile() {
+        FileObject fo = getConfigurationFile(EviewProjectProperties.MATCH_ENGINE_FOLDER, EviewProjectProperties.MATCH_COMPARATOR_XML, false);
+        return fo;
+    }
     
     /** returns Configuration FileObject from project directory
     If create == true, then it will create empty file if it does not exist

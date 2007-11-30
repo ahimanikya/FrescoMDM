@@ -37,6 +37,12 @@ import javax.swing.filechooser.FileFilter;
 
 import java.io.File;
 //import java.io.FileNotFoundException;
+import java.util.jar.JarFile;
+
+//import com.sun.mdm.standardizer.DataTypeDescriptor;
+//import com.sun.mdm.standardizer.StandardizerIntrospector;
+//import com.sun.mdm.standardizer.VariantDescriptor;
+//import com.sun.mdm.standardizer.engine.DefaultStandardizerIntrospector;
 
 /**
  * To get Standardization jar with dataTypeDescription.xml
@@ -90,18 +96,24 @@ public class ImportStandardizationVariantAction extends CookieAction {
                             EviewStandardizationDataTypeNode standardizationDataTypeNode = cookie.getEviewStandardizationDataTypeNode();
                             FileObject fobjStandDataType = standardizationDataTypeNode.getFileObject();
 
-                            File jarFile = fc.getSelectedFile();
+                            File selectedFile = fc.getSelectedFile();
+                            String pathSelectedFile = selectedFile.getAbsolutePath();
 
                             //ToDo Kevin/Ricardo/Shant
                             //Call util to get the variant, create sub folder, e.g. FR
-                            //VariantDescriptor variantDescriptor = introspectVariant(JarFile jarFile);
-                            //if (VariantDescriptor != null) {
-                                String strVariant = "FR"; //variantDescriptor.getId();
-                                FileObject fo = FileUtil.toFileObject(jarFile);
+                            //StandardizerIntrospector introspector = new DefaultStandardizerIntrospector();
+                            //JarFile jarVariantType = new JarFile(pathSelectedFile);
+                            //VariantDescriptor variantDescriptor = introspector.introspectVariant(jarVariantType);
+                            
+                            //if (variantDescriptor != null) {
+                                //String variantDescription = variantDescriptor.getDescription();
+                                //String variantId = variantDescriptor.getId();
+                                String variantId = "FR"; //variantDescriptor.getId();
+                                FileObject fo = FileUtil.toFileObject(selectedFile);
                                 FileUtil.copyFile(fo, fobjStandDataType, fo.getName());                            
-                                FileObject newVariantFolder = fobjStandDataType.getFileObject(strVariant);
+                                FileObject newVariantFolder = fobjStandDataType.getFileObject(variantId);
                                 if (newVariantFolder == null) {
-                                    newVariantFolder = FileUtil.createFolder(fobjStandDataType, strVariant);
+                                    newVariantFolder = FileUtil.createFolder(fobjStandDataType, variantId);
                                 }
                             //}
                         }                          

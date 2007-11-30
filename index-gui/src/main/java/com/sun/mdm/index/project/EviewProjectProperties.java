@@ -65,6 +65,7 @@ public class EviewProjectProperties {
     public static final String UPDATE_XML = "update.xml";    
     
     public static final String MATCH_CONFIG_FILE = "matchConfigFile.cfg";
+    public static final String MATCH_COMPARATOR_XML = "comparatorsList.xml";
     
     public static final String SYSTEMS_SQL = "systems.sql";
     public static final String CODELIST_SQL = "codelist.sql";
