@@ -24,7 +24,7 @@ package com.sun.mdm.index.phonetic.impl;
 
 import com.sun.mdm.index.phonetic.PhoneticEncoder;
 import com.sun.mdm.index.phonetic.PhoneticEncoderException;
-import com.stc.sbme.util.EmeUtil;
+import com.sun.mdm.matcher.util.DiacriticalMarks;
 import java.util.logging.Level;
 import net.java.hulp.i18n.Logger;
 
@@ -110,7 +110,7 @@ public class Nysiis implements PhoneticEncoder {
                 i--;
                 continue;                 
             }            
-            word.setCharAt(i, EmeUtil.removeDiacriticalMark(word.charAt(i)));          
+            word.setCharAt(i, DiacriticalMarks.removeDiacriticalMark(word.charAt(i)));          
         }       
 
         char first;

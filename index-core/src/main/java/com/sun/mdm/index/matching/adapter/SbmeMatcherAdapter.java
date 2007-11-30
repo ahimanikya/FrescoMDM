@@ -41,10 +41,9 @@ import com.sun.mdm.index.query.QMException;
 import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.objects.exception.ObjectException;
 
-import com.stc.sbme.api.SbmeMatchingEngine;
-import com.stc.sbme.api.SbmeMatchingException;
-import com.stc.sbme.api.SbmeMatchEngineException;
-import com.stc.sbme.api.SbmeConfigFilesAccess;
+import com.sun.mdm.matcher.api.MatchingEngine;
+import com.sun.mdm.matcher.api.MatcherException;
+import com.sun.mdm.matcher.api.ConfigFilesAccess;
 
 import com.sun.mdm.index.util.Localizer;
 import java.util.logging.Level;
@@ -62,7 +61,7 @@ public class SbmeMatcherAdapter
         
     private MatchTupleConverter tupleConverter;
     private AssembleDescriptor tupleDescriptor;
-    private SbmeMatchingEngine matchEngine;
+    private MatchingEngine matchEngine;
     
     /**  mLogger instance
      *
@@ -224,10 +223,8 @@ public class SbmeMatcherAdapter
                 }
                 
             }
-        } catch (SbmeMatchingException ex) {
+        } catch (MatcherException ex) {
             throw new MatchingException(mLocalizer.t("MAT516: SBME adapter encountered a matching exception: {0}", ex));
-        } catch (SbmeMatchEngineException ex) {
-            throw new MatchingException(mLocalizer.t("MAT517: SBME adapter encountered a match engine exception: {0}", ex));
         } catch (ParseException ex) {
             throw new MatchingException(mLocalizer.t("MAT518: SBME adapter encountered a parsing exception: {0}", ex));
         } catch (EPathException ex) {
@@ -289,15 +286,15 @@ public class SbmeMatcherAdapter
             // TODO: where to get this from? Shouldn't it be initialized for all?
             String domain = "US";
             String configFileName = eViewConfig.getConfigurationFileName();
-            SbmeConfigFilesAccess cfgFilesAccess = eViewConfig.getConfigFileAccess();
-            matchEngine = new SbmeMatchingEngine(cfgFilesAccess);
+            ConfigFilesAccess cfgFilesAccess = eViewConfig.getConfigFileAccess();
+            matchEngine = new MatchingEngine(cfgFilesAccess);
             matchEngine.initializeData(cfgFilesAccess);
             if (mLogger.isLoggable(Level.FINE)) {
                 mLogger.fine("Setting configuration file:" + configFileName + 
                              " for domain: " + domain);
             }
             matchEngine.upLoadConfigFile(domain);
-        } catch (SbmeMatchEngineException ex) {
+        } catch (MatcherException ex) {
             throw new MatchingException(mLocalizer.t("MAT525: Failed to initialize the " + 
                                         "SBME match adapter: {0}", ex));
         } catch (Exception ex) {

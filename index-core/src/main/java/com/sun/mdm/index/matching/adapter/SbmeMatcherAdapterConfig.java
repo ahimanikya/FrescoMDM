@@ -25,8 +25,8 @@ package com.sun.mdm.index.matching.adapter;
 import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.configurator.impl.MatchEngineConfig;
 import com.sun.mdm.index.configurator.ConfigurationException;
-import com.stc.sbme.api.SbmeConfigFilesAccess;
-import com.stc.sbme.api.SbmeConfigurationException;
+import com.sun.mdm.matcher.api.ConfigFilesAccess;
+import com.sun.mdm.matcher.api.MatcherConfigurationException;
 import com.sun.mdm.index.util.Localizer;
 import java.util.logging.Level;
 import net.java.hulp.i18n.Logger;
@@ -95,7 +95,7 @@ public class SbmeMatcherAdapterConfig
      * Inner class that implements the eView Match engine interface
      * giving access to the configuration files, e.g. stored in the repository
      */
-    public static class CSConfigFileAccess implements SbmeConfigFilesAccess {
+    public static class CSConfigFileAccess implements ConfigFilesAccess {
 
         private MatchEngineConfig mConfig;
         private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
@@ -115,10 +115,10 @@ public class SbmeMatcherAdapterConfig
          * configuration service. This might be retrieved from the repository.
          * @param name the name of the configuration file to retrieve
          * @return the configuration file contents as a stream
-         * @throws SbmeConfigurationException if retrieving the configuration file failed
+         * @throws MatcherConfigurationException if retrieving the configuration file failed
          */
         public java.io.InputStream getConfigFileAsStream(String name) 
-            throws SbmeConfigurationException {
+            throws MatcherConfigurationException {
 
             if (mLogger.isLoggable(Level.FINE)) {
                 mLogger.fine("Retrieving configuration file: " + name);
@@ -127,7 +127,7 @@ public class SbmeMatcherAdapterConfig
             java.io.ByteArrayInputStream stream = null;
                 
             if (mConfig == null) {
-                throw new SbmeConfigurationException(mLocalizer.t("MAT528: Failed to retrieve the " + 
+                throw new MatcherConfigurationException(mLocalizer.t("MAT528: Failed to retrieve the " + 
                                                     "match engine configuration from the " + 
                                                     "configuration service. MatchEngineConfig " +  
                                                     "to access the configuration service is null."));
@@ -146,7 +146,7 @@ public class SbmeMatcherAdapterConfig
                 }
 
             } catch (RuntimeException ex) {
-                throw new SbmeConfigurationException(mLocalizer.t("MAT529: Failed to retrieve " + 
+                throw new MatcherConfigurationException(mLocalizer.t("MAT529: Failed to retrieve " + 
                                                             "the configuration file: {0}", ex));
             }
 
@@ -158,7 +158,7 @@ public class SbmeMatcherAdapterConfig
         }
         
         public java.io.InputStream getConfigFileAsStream(String name, String domain) 
-            throws SbmeConfigurationException {
+            throws MatcherConfigurationException {
             
             return null;
         }

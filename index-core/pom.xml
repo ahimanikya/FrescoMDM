@@ -102,6 +102,9 @@
                                         <include name="net.java.hulp.i18n.jar"/>                 
                                         <include name="net.java.hulp.i18ntask.jar"/>                 
                                     </fileset>
+                                    <fileset dir="${basedir}/src/main/resources/matchengine">
+                                        <include name="sun_matcher.jar"/>
+                                    </fileset>
                                 </copy>
                                 <copy todir="${project.build.testOutputDirectory}/modules/ext/eview/repository">
                                     <fileset dir="${project.build.directory}">
@@ -280,6 +283,19 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>install-sun-matcher</id>
+                        <phase>process-resources</phase>
+                        <goals><goal>install-file</goal></goals>
+                        <configuration>
+                            <generatePom>true</generatePom>
+                            <packaging>jar</packaging>
+                            <groupId>mural</groupId>
+                            <artifactId>sun-matcher</artifactId>
+                            <version>${mural.currentVersion}</version>
+                            <file>${basedir}/src/main/resources/matchengine/sun_matcher.jar</file>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>install-i18n</id>
                         <phase>process-resources</phase>
                         <goals><goal>install-file</goal></goals>
@@ -392,7 +408,12 @@
             <groupId>mural</groupId>
             <artifactId>matchengine</artifactId>
             <version>${mural.currentVersion}</version>
-            </dependency>
+        </dependency>
+        <dependency>
+            <groupId>mural</groupId>
+            <artifactId>sun-matcher</artifactId>
+            <version>${mural.currentVersion}</version>
+        </dependency>
         <dependency>
             <groupId>mural</groupId>
             <artifactId>i18n</artifactId>

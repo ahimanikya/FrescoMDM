@@ -22,7 +22,7 @@
  */
 package com.sun.mdm.index.phonetic.impl;
 
-import com.stc.sbme.util.EmeUtil;
+import com.sun.mdm.matcher.util.DiacriticalMarks;
 
 /**
  * Encode a string using a version of French Soundex algorithm (Soundex2 by .
@@ -67,6 +67,7 @@ public class SoundexFR {
         
         // If the token is empty, return an empty 4 character-long string
         if (size == 0) {
+
             return "    ";
         }
         
@@ -94,7 +95,7 @@ public class SoundexFR {
             }
             
             if ((int) ch > 191) {                         
-                word.setCharAt(i, EmeUtil.removeDiacriticalMark(ch));
+                word.setCharAt(i, DiacriticalMarks.removeDiacriticalMark(ch));
             }
         }               
         

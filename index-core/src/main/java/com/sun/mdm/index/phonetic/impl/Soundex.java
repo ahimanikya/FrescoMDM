@@ -24,7 +24,7 @@ package com.sun.mdm.index.phonetic.impl;
 
 import com.sun.mdm.index.phonetic.PhoneticEncoder;
 import com.sun.mdm.index.phonetic.PhoneticEncoderException;
-import com.stc.sbme.util.EmeUtil;
+import com.sun.mdm.matcher.util.DiacriticalMarks;
 
 import java.util.logging.Level;
 import net.java.hulp.i18n.Logger;
@@ -112,7 +112,7 @@ public class Soundex implements PhoneticEncoder {
             ch = str.charAt(i);  
             
             if ((int) ch > 191) {                         
-                word.setCharAt(i, EmeUtil.removeDiacriticalMark(ch));
+                word.setCharAt(i, DiacriticalMarks.removeDiacriticalMark(ch));
             }
         }        
         
