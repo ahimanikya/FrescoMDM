@@ -22,6 +22,7 @@
  */
 package com.sun.mdm.index.project;
 
+import com.sun.mdm.index.project.generator.descriptor.SunEjbJarWriter;
 import com.sun.mdm.index.project.ui.wizards.WizardProperties;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -277,6 +278,8 @@ public class EviewProjectGenerator {
         try {
             AntDeploymentHelper.writeDeploymentScript(new File(projectFolder, EviewProjectProperties.ANT_DEPLOY_BUILD_SCRIPT),
                     J2eeModule.EJB, serverInstanceID);
+            
+            new SunEjbJarWriter(projectFolder).write();
         } catch (IOException ioe) {
             Logger.getLogger("global").log(Level.INFO, null, ioe);
         }
