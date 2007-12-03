@@ -5492,6 +5492,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
      */
     public void beginTransaction() throws ProcessingException {
 
+    	checkSecurity();
+    	
         try {
             if (transactionType.equals("BMT_XA")) {
                 utx.begin();
@@ -5503,7 +5505,12 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         }
     }
 
-    /**
+    private void checkSecurity() {
+    	mLogger.fine("caller principal: " +  context.getCallerPrincipal());
+    	mLogger.fine("caller role is Admin? : " +  context.isCallerInRole("eView.Admin"));
+	}
+
+	/**
      * Commit current transaction.
      * 
      * @param con

@@ -66,6 +66,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 import javax.annotation.Resources;
+import javax.annotation.security.DeclareRoles;
+
 import java.sql.Connection;
 import java.util.Map;
 import javax.ejb.TransactionManagement;
@@ -93,7 +95,7 @@ import javax.ejb.TransactionManagementType;
 @TransactionManagement(TransactionManagementType.BEAN)
 //if CONTAINER then _TransactionManagementType_TOKEN_ is TransactionManagementType.CONTAINER
 //if BEAN and local then _TransactionManagementType_TOKEN_ is TransactionManagementType.BEAN
-
+@DeclareRoles({"eView.Admin", "eView.User"})
 public class MasterControllerEJB implements MasterControllerRemote, MasterControllerLocal{
     
 
