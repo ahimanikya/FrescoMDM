@@ -112,6 +112,7 @@ public class LoaderGeneratorTask extends Task {
 			// Write it out
 			write(config);
 			writeBuildXML();
+			writeLoaderBat();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -153,6 +154,45 @@ public class LoaderGeneratorTask extends Task {
 		}
 
 	}
+	
+	
+	private void writeLoaderBat() {
+		try {
+			File f = new File(configDir + "/../run-loader.bat");
+			BufferedWriter wr = new BufferedWriter(new FileWriter(f));
+
+			InputStream ins = this
+					.getClass()
+					.getClassLoader()
+					.getResourceAsStream(
+							"com/sun/mdm/index/project/anttasks/run-loader.bat.xml");
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(ins));
+
+			StringBuilder sb = new StringBuilder();
+
+			try {
+				while (true) {
+					String line = br.readLine();
+					if (line == null)
+						break;
+					sb.append(line + "\n");
+
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			wr.write(sb.toString());
+
+			wr.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
 
 	private void write(LoaderConfig config) {
 		try {
