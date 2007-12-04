@@ -48,21 +48,7 @@ public class LoaderConfig {
 	 * 
 	 */
 	private void initEuidGenerator() {
-		euidGenerator = "\n\t<EuidGeneratorConfig module-name=\"EuidGenerator\""
-				+ "\n\t\tparser-class=\"com.sun.mdm.index.configurator.impl.idgen.EuidGeneratorConfiguration\">"
-				+ "\n\t\t<euid-generator-class>com.sun.mdm.index.loader.euid.LoaderEuidGenerator</euid-generator-class>"
-				+ "\n\t\t<parameters>" +
-						"\n\t\t\t<parameter><parameter-name>IdLength</parameter-name>" +
-						"<parameter-type>java.lang.Integer</parameter-type>	" +
-						"<parameter-value>20</parameter-value></parameter>" +
-						"\n\t\t\t<parameter><parameter-name>ChecksumLength</parameter-name>" +
-						"<parameter-type>java.lang.Integer</parameter-type>" +
-						"<parameter-value>0</parameter-value></parameter>" +
-						"\n\t\t\t<parameter><parameter-name>ChunkSize</parameter-name>" +
-						"<parameter-type>java.lang.Integer</parameter-type>" +
-						"<parameter-value>1000</parameter-value></parameter>" +
-				"\n\t\t</parameters>"
-				+ "\n\t</EuidGeneratorConfig>";
+		euidGenerator = "<EuidGenerator class=\"com.sun.mdm.index.loader.euid.LoaderEuidGenerator\"/>";
 	}
 
 	/**
