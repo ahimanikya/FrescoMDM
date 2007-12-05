@@ -67,8 +67,8 @@ public class ObjectInputstreamForBackwardCompatibility extends
 		Class localClass = Class.forName(getObjectStreamClass(classDescriptor).getName(),false,this.getClass().getClassLoader());
 
 		ObjectStreamClass localClassDescriptor = ObjectStreamClass.lookup(localClass);
-                    logger.info(classDescriptor.getName());
-                    logger.info(localClassDescriptor.getName());
+                    logger.fine(classDescriptor.getName());
+                    logger.fine(localClassDescriptor.getName());
 		return localClassDescriptor;
 	}
 
