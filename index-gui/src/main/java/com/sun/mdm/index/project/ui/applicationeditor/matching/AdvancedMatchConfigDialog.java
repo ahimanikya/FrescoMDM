@@ -45,6 +45,7 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
     private static Map mMapNullFields2 = new HashMap();
     private static Map mMapDescKeyFunctions = new HashMap();
     private static Map mMapShortKeyFunctions = new HashMap();
+    private static Map mMapRequiredExtraParameters = new HashMap();
     private static String mCoparatorListPath;
     
     /** Creates new form AdvancedMatchConfigDialog */
@@ -161,30 +162,37 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
     }
     
     private static void buildFunctions() {
-        //ToDo
         //Get comparator and description from comparatorsList.xml
         try {
             ComparatorsManager comparatorsManager = new ComparatorsManager(mCoparatorListPath);
             ComparatorsConfigBean instance = comparatorsManager.getComparatorsConfigBean();
             mMapShortKeyFunctions = instance.getCodeNamesDesc();
+            mAlFunctionsDesc = new ArrayList<String>();
+            mAlFunctions = new ArrayList<String>();
+        
+            Set set = mMapShortKeyFunctions.keySet();
+            Iterator iter = set.iterator();
+            for (int i=0; i < set.size(); i++) {
+                String strFunction = iter.next().toString();
+                String strDesc = mMapShortKeyFunctions.get(strFunction).toString();
+                mAlFunctionsDesc.add(strDesc);
+                mAlFunctions.add(strFunction);
+                mMapDescKeyFunctions.put(strDesc, strFunction);  
+            }
         } catch (Exception ex) {
             mLogger.error(ex.getMessage());
-        }
-        mAlFunctionsDesc = new ArrayList<String>();
-        mAlFunctions = new ArrayList<String>();
-        
-        Set set = mMapShortKeyFunctions.keySet();
-        Iterator iter = set.iterator();
-        for (int i=0; i < set.size(); i++) {
-            String strFunction = iter.next().toString();
-            String strDesc = mMapShortKeyFunctions.get(strFunction).toString();
-            mAlFunctionsDesc.add(strDesc);
-            mAlFunctions.add(strFunction);
-            mMapDescKeyFunctions.put(strDesc, strFunction);  
         }
     }
     
     private static void createDefaultExtraParameters() {
+        try {
+            ComparatorsManager comparatorsManager = new ComparatorsManager(mCoparatorListPath);
+            ComparatorsConfigBean instance = comparatorsManager.getComparatorsConfigBean();
+            //mMapRequiredExtraParameters = instance.getCodeNamesDesc();
+        } catch (Exception ex) {
+            mLogger.error(ex.getMessage());
+        }
+
         mAlRequiredExtraParameters = new ArrayList<String>();
         mAlRequiredExtraParameters.add("");   // b1
         mAlRequiredExtraParameters.add("");  // b2
@@ -628,9 +636,9 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
     private void onFunctionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_onFunctionItemStateChanged
         // Check if extra parameters required for the selected comparator
         int i = jComboBoxFunction.getSelectedIndex();
-        String parameters = mAlRequiredExtraParameters.get(i);
-        this.jTextFieldParameters.setText(parameters);
-        this.jTextFieldParameters.setEnabled(parameters.length() > 0);
+        //String parameters = mAlRequiredExtraParameters.get(i);
+        //this.jTextFieldParameters.setText(parameters);
+        //this.jTextFieldParameters.setEnabled(parameters.length() > 0);
         enableOK();
     }//GEN-LAST:event_onFunctionItemStateChanged
 
