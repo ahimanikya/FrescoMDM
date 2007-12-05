@@ -194,7 +194,7 @@ class EviewProjectViews {
             } else if (key == KEY_MATCH_ENGINE_DIR) {
                 FileObject matchEngineFolder = srcRoot.getFileObject(EviewProjectProperties.MATCH_ENGINE_FOLDER);
                 if (matchEngineFolder != null) {
-                    n = new EviewConfigurationFolderNode(MATCH_ENGINE_FOLDER_DISPLAY_NAME, DataFolder.findFolder(matchEngineFolder));                                                
+                    n = new EviewMatchEngineFolderNode(MATCH_ENGINE_FOLDER_DISPLAY_NAME, DataFolder.findFolder(matchEngineFolder));                                                
                 }
             } else if (key == KEY_FILTER_DIR) {
                 FileObject filterFolder = srcRoot.getFileObject(EviewProjectProperties.FILTER_FOLDER);
