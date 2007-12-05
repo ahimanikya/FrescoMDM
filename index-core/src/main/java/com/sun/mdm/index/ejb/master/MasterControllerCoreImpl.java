@@ -38,6 +38,9 @@ import javax.ejb.SessionContext;
 import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
 import javax.management.ObjectName;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+
 import com.sun.mdm.index.assumedmatch.AssumedMatchManager;
 import com.sun.mdm.index.audit.AuditManager;
 import com.sun.mdm.index.configurator.ConfigurationService;
@@ -2515,7 +2518,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     }
                     retIterator = new TransactionIterator(resultRecord);
                 } else {
-                    PageData pd = (PageData) context
+                	Context jndiContext = new InitialContext();
+                    PageData pd = (PageData) jndiContext
                             .lookup(JNDINames.EJB_REF_PAGEDATA);
                     pd.setPageAdapter(adapter);
                     retIterator = new TransactionIterator(pd, pageSize,
@@ -3386,7 +3390,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 retIterator = new EOSearchResultIterator(resultRecord);
 
             } else {
-                PageData pd = (PageData) context
+            	Context jndiContext = new InitialContext();
+                PageData pd = (PageData) jndiContext
                         .lookup(JNDINames.EJB_REF_PAGEDATA);
                 pd.setPageAdapter(adapter);
                 pd.setPageAdapter(adapter);
@@ -3493,7 +3498,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 retIterator = new EOSearchResultIterator(resultRecord);
 
             } else {
-                PageData pd = (PageData) context
+            	Context jndiContext = new InitialContext();
+                PageData pd = (PageData) jndiContext
                         .lookup(JNDINames.EJB_REF_PAGEDATA);
                 pd.setPageAdapter(adapter);
                 retIterator = new EOSearchResultIterator(pd, pageSize,
