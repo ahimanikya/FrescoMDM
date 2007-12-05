@@ -23,6 +23,7 @@
 package com.sun.mdm.index.ejb.master;
 
 import com.sun.mdm.index.master.ConnectionInvalidException;
+import com.sun.mdm.index.security.SecurityManager;
 import com.sun.mdm.index.update.UpdateResult;
 import com.sun.mdm.index.master.MatchResult;
 import com.sun.mdm.index.master.MergeResult;
@@ -2003,6 +2004,12 @@ public interface MasterControllerCore {
 	 * @param type
 	 */
 	public void setTransactionType(String type);
+	
+	/**
+	 * set the security manager
+	 */
+	
+	public void setSecurityManager(SecurityManager securityManager);
 
 	/**
 	 * the ObjectName for the monitoring mBean, this is based on the application

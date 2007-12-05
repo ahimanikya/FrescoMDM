@@ -104,7 +104,7 @@ public class ObjectInputstreamForBackwardCompatibility extends
 	private ObjectStreamClass getObjectStreamClass(ObjectStreamClass desc) {
 
 		
-		logger.info(desc.getName());
+		logger.fine(desc.getName());
 		
 		if (desc.getName().endsWith("TransactionLog")) {
 			return ObjectStreamClass.lookup(TransactionLog.class);
@@ -133,8 +133,8 @@ public class ObjectInputstreamForBackwardCompatibility extends
 			
 			String s= desc.getName().substring(desc.getName().lastIndexOf('.') + 1);
 			long sid = desc.getSerialVersionUID();
-			logger.info("created object class name" + s);
-            logger.info("sid" + sid);
+			logger.fine("created object class name" + s);
+            logger.fine("sid" + sid);
 			Class c = null;
 			try {
 				c = Class.forName("com.sun.mdm.index.objects." + s);

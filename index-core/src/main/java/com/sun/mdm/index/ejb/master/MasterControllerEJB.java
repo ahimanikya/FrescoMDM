@@ -54,6 +54,7 @@ import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.SystemObjectPK;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.ops.exception.OPSException;
+import com.sun.mdm.index.security.SecurityManager;
 import com.sun.mdm.index.update.UpdateResult;
 import com.sun.mdm.index.util.Localizer;
 
@@ -72,6 +73,8 @@ import java.sql.Connection;
 import java.util.Map;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.interceptor.AroundInvoke;
+import javax.interceptor.InvocationContext;
 
 /** The Master Controller EJB implements the main interface that is exposed to clients of
  * the indexing system. This is a stateless session bean, though some methods
@@ -105,6 +108,12 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
      * Implementation of MasterControllerCore
      */
     private MasterControllerCore mControllerImpl;
+    
+    /**
+     * 
+     */
+    
+    private SecurityManager securityManager;
     
     /**
      * Controlling whether the business methods are in
@@ -147,6 +156,8 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
         
         mControllerImpl.init(mSessionContext);
         
+        securityManager = new SecurityManager(mSessionContext);
+        mControllerImpl.setSecurityManager(securityManager);
               
     }
     
@@ -2980,4 +2991,11 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
         }
         return result;
     }
+    @AroundInvoke
+    public Object intercept(InvocationContext invocation) throws Exception {
+    	securityManager.setCurrentMethod(invocation.getMethod().getName());
+    	return invocation.proceed();
+ 
+    }
+    
 }

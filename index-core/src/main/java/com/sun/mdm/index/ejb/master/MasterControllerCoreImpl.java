@@ -124,6 +124,7 @@ import com.sun.mdm.index.ops.exception.OPSException;
 import com.sun.mdm.index.outbound.OutBoundException;
 import com.sun.mdm.index.potdup.PotentialDuplicateManager;
 import com.sun.mdm.index.querybuilder.QueryBuilder;
+import com.sun.mdm.index.security.SecurityManager;
 import com.sun.mdm.index.survivor.SurvivorCalculator;
 import com.sun.mdm.index.util.Constants;
 import com.sun.mdm.index.util.Localizer;
@@ -236,7 +237,13 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
      * True if pessimistic mode enabled in properties
      */
     private boolean pessimisticModeEnabled;
+    
+    /**
+     * 
+     */
 
+    private SecurityManager securityManager;
+    
     /**
      * JMS outbound message sender
      */
@@ -5511,10 +5518,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         }
     }
 
-    private void checkSecurity() {
-    	mLogger.fine("caller principal: " +  context.getCallerPrincipal());
-    	mLogger.fine("caller role is Admin? : " +  context.isCallerInRole("eView.Admin"));
-	}
+    private void checkSecurity() throws ProcessingException {
+    	securityManager.checkAccess();
+ 	}
 
 	/**
      * Commit current transaction.
@@ -5642,4 +5648,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             
             return resultMap;
     }
+
+	public void setSecurityManager(SecurityManager securityManager) {
+		this.securityManager=securityManager;
+		
+	}
 }
