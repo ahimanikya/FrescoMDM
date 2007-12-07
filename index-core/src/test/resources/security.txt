@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="sbyn:SeeBeyond/eView/schema/security.xsd">
+	<SecurityConfig module-name="Security" parser-class="com.sun.mdm.index.configurator.impl.security.SecurityConfiguration">
+		<SecurityPlugInClass></SecurityPlugInClass>
+		<role>
+			<role-name>eView.User</role-name>
+			<operations>
+				<name>lookupAssumedMatches</name>
+				<name>lookupAuditLog</name>
+				<name>lookupPotentialDuplicates</name>
+				<name>lookupSystemDefinition</name>
+				<name>lookupSystemDefinitions</name>
+				<name>lookupSystemObjectPKs</name>
+				<name>lookupSystemObjects</name>
+				<name>lookupTransactions</name>
+				<name>resolvePotentialDuplicate</name>
+				<name>searchEnterpriseObject</name>
+			</operations>
+		</role>
+		<role>
+			<role-name>eView.User1</role-name>
+			<operations>
+				<name>lookupAssumedMatches</name>
+				<name>lookupAuditLog</name>
+				<name>lookupPotentialDuplicates</name>
+				<name>lookupSystemDefinition</name>
+				<name>lookupSystemDefinitions</name>
+				<name>lookupSystemObjectPKs</name>
+				<name>lookupSystemObjects</name>
+				<name>lookupTransactions</name>
+				<name>resolvePotentialDuplicate</name>
+				<name>searchEnterpriseObject</name>
+			</operations>
+		</role>
+		<role>
+			<role-name>eView.User2</role-name>
+			<operations>
+				<name>lookupAssumedMatches</name>
+				<name>lookupAuditLog</name>
+				<name>lookupPotentialDuplicates</name>
+				<name>lookupSystemDefinition</name>
+				<name>lookupSystemDefinitions</name>
+				<name>lookupSystemObjectPKs</name>
+				<name>lookupSystemObjects</name>
+				<name>lookupTransactions</name>
+				<name>resolvePotentialDuplicate</name>
+				<name>searchEnterpriseObject</name>
+			</operations>
+		</role>
+		
+	</SecurityConfig>
+</Configuration>

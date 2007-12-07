@@ -98,7 +98,7 @@ import javax.interceptor.InvocationContext;
 @TransactionManagement(TransactionManagementType.BEAN)
 //if CONTAINER then _TransactionManagementType_TOKEN_ is TransactionManagementType.CONTAINER
 //if BEAN and local then _TransactionManagementType_TOKEN_ is TransactionManagementType.BEAN
-@DeclareRoles({"eView.Admin", "eView.User"})
+@DeclareRoles({"_MasterIndex_Roles_token"})
 public class MasterControllerEJB implements MasterControllerRemote, MasterControllerLocal{
     
 

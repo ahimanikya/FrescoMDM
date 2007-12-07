@@ -38,6 +38,8 @@ import com.sun.mdm.index.util.Localizer;
 public class SecurityManager {
 
 	private static final String EVIEW_ADMIN = "eView.Admin";
+	private static final String MASTER_INDEX_ADMIN = "MasterIndex.Admin";
+	
 	private SessionContext context;
 	private String method;
 	private Document doc;
@@ -166,6 +168,12 @@ public class SecurityManager {
 
 		if (!b) {
 			b = EVIEW_ADMIN.equals(context.getCallerPrincipal().getName());
+		}
+		if (!b) {
+			b = context.isCallerInRole(MASTER_INDEX_ADMIN);
+		}
+		if (!b) {
+			b = MASTER_INDEX_ADMIN.equals(context.getCallerPrincipal().getName());
 		}
 
 		return b;
