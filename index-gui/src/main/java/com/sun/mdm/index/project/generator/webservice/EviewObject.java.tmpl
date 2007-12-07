@@ -94,6 +94,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.annotation.security.RunAs;
 
 import com.sun.mdm.index.ejb.page.PageData;
 import java.sql.Connection;
@@ -110,6 +111,7 @@ import java.sql.Connection;
 @Stateless
 @WebService
 @TransactionManagement(TransactionManagementType.CONTAINER)
+@RunAs("MasterIndex.Admin")
 public class [sbyntag:objname.makeClassName]EJB {
     private final static String ALPHA_SEARCH = "ALPHA-SEARCH";
     private final static String BLOCKER_SEARCH = "BLOCKER-SEARCH";
