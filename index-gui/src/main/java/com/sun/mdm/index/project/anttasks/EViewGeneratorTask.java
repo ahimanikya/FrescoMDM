@@ -31,6 +31,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -67,6 +69,7 @@ import com.sun.mdm.index.parser.Utils;
 import com.sun.mdm.index.project.EviewProjectProperties;
 import com.sun.mdm.index.project.generator.descriptor.AppXmlWriter;
 import com.sun.mdm.index.project.generator.descriptor.JbiXmlWriter;
+import com.sun.mdm.index.project.generator.descriptor.SunEjbJarWriter;
 import com.sun.mdm.index.project.generator.exception.TemplateWriterException;
 import com.sun.mdm.index.project.generator.objects.EntityObjectWriter;
 import com.sun.mdm.index.project.generator.ops.OPSWriter;
@@ -405,47 +408,115 @@ public class EViewGeneratorTask extends Task {
 		setEJBMappedName(token, value);
 		setTransaction();
 		setRoles();
+		setSunEjbJarXML();
 
+	}
+
+	private void setSunEjbJarXML() {
+
+		try {
+			String s = mEjbdir + "/src/conf/";
+
+			InputStream is = getClass()
+					.getClassLoader()
+					.getResourceAsStream(
+							"com/sun/mdm/index/project/generator/descriptor/sun-ejb-jar.xml.tmpl");
+
+			byte[] buf = new byte[0];
+			byte[] chunk = new byte[4096];
+			int count;
+			while ((count = is.read(chunk)) >= 0) {
+				byte[] temp = new byte[buf.length + count];
+				System.arraycopy(buf, 0, temp, 0, buf.length);
+				System.arraycopy(chunk, 0, temp, buf.length, count);
+				buf = temp;
+			}
+			String content = new String(buf, "ISO8859-1");
+			is.close();
+			
+			content = content.replaceAll("_REPLACE_ROLES_TOKEN_", getRoleMapping());
+
+			FileWriter fw = new FileWriter(s + "sun-ejb-jar.xml");
+
+			fw.write(content);
+
+			fw.close();
+
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	private String getRoleMapping() throws ParserConfigurationException, SAXException, IOException {
+
+		ArrayList<String> list = getSecurityRoles();
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("\n");
+		for (String r : list) {
+
+			sb.append("<security-role-mapping>\n");
+			sb.append("\t<role-name>");
+			sb.append(r);
+			sb.append("</role-name>\n");
+			sb.append("\t<group-name>");
+			sb.append(r);
+			sb.append("</group-name>\n");
+			sb.append("</security-role-mapping>\n");
+		}
+
+		return sb.toString();
 	}
 
 	private void setRoles() {
 
 		String rolesToReplace = "\"_MasterIndex_Roles_token\"";
-		File securityFile = new File(mSrcdir + File.separator
-				+ EviewProjectProperties.CONFIGURATION_FOLDER + File.separator
-				+ "security.xml");
 
 		StringBuilder sb = new StringBuilder();
 		try {
-			Document doc = getDocument(securityFile);
+
+			ArrayList<String> list = getSecurityRoles();
 
 			sb.append("\"MasterIndex.Admin\",\"eView.Admin\"");
-
-			ArrayList<String> list = getRoles(doc);
 
 			for (String s : list) {
 				String a = ",\"" + s + "\"";
 				sb.append(a);
 			}
-			//sb.append("}");
+			// sb.append("}");
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-//		HashMap<String, String> tokenMap;
-//		tokenMap = new HashMap<String, String>();
-//		tokenMap.put(rolesToReplace, sb.toString());
+		// HashMap<String, String> tokenMap;
+		// tokenMap = new HashMap<String, String>();
+		// tokenMap.put(rolesToReplace, sb.toString());
 
 		String ejbFilePath = mEjbdir + "/src/java/com/sun/mdm/index/ejb";
 		String path = ejbFilePath + File.separator + "master" + File.separator
 				+ "MasterControllerEJB.java";
-		replaceToken(path, rolesToReplace,sb.toString());
+		replaceToken(path, rolesToReplace, sb.toString());
 
 	}
 
-	private ArrayList<String> getRoles(Document doc) {
-
+	/**
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
+	private ArrayList<String> getSecurityRoles()
+			throws ParserConfigurationException, SAXException, IOException {
+		File securityFile = new File(mSrcdir + File.separator
+				+ EviewProjectProperties.CONFIGURATION_FOLDER + File.separator
+				+ "security.xml");
+		Document doc = getDocument(securityFile);
 		ArrayList<String> list = new ArrayList<String>();
 
 		if (doc != null) {
@@ -474,7 +545,6 @@ public class EViewGeneratorTask extends Task {
 			}
 
 		}
-
 		return list;
 
 	}
