@@ -2150,16 +2150,18 @@ public class UpdateManagerImpl implements UpdateManager {
 }
          SBR sbr = eo.getSBR();
             ArrayList overWrites = sbr.getOverWrites();
-            Iterator overWritesItr = overWrites.iterator();
-            while( overWritesItr.hasNext() ){
-                SBROverWrite sbrOverWrite = (SBROverWrite) overWritesItr.next();               
-                Object fieldValue = sbrOverWrite.getData();
-                if(fieldValue instanceof java.lang.String){
-                    String value = (String) fieldValue;
-                    if (value.charAt(0) == '[' && value.charAt( value.length()-1) == ']'){
-                        sbrOverWrite.setRemoveFlag(true);
-                        if (mLogger.isLoggable(Level.FINE)) {
-                            mLogger.fine("<<== removing override link info for : " + sbrOverWrite);
+            if (overWrites != null) {
+                Iterator overWritesItr = overWrites.iterator();
+                while( overWritesItr.hasNext() ){
+                    SBROverWrite sbrOverWrite = (SBROverWrite) overWritesItr.next();               
+                    Object fieldValue = sbrOverWrite.getData();
+                    if(fieldValue instanceof java.lang.String){
+                        String value = (String) fieldValue;
+                        if (value.charAt(0) == '[' && value.charAt( value.length()-1) == ']'){
+                            sbrOverWrite.setRemoveFlag(true);
+                            if (mLogger.isLoggable(Level.FINE)) {
+                                mLogger.fine("<<== removing override link info for : " + sbrOverWrite);
+                            }
                         }
                     }
                 }
@@ -2180,17 +2182,19 @@ public class UpdateManagerImpl implements UpdateManager {
             SBR sbr = eo.getSBR();
             String linkTobeRemoved = "["+system+":"+"]";
             ArrayList overWrites = sbr.getOverWrites();
-            Iterator overWritesItr = overWrites.iterator();
-            while( overWritesItr.hasNext() ){
-                SBROverWrite sbrOverWrite = (SBROverWrite) overWritesItr.next();               
-                Object fieldValue = sbrOverWrite.getData();
-                if(fieldValue instanceof java.lang.String){
-                    String value = (String) fieldValue;
-                    if (value.charAt(0) == '[' && value.charAt( value.length()-1) == ']'){
-                        if ( value.equals(linkTobeRemoved) ){
-                            sbrOverWrite.setRemoveFlag(true);
-                            if (mLogger.isLoggable(Level.FINE)) {
-                                mLogger.fine("<<== removing override link info for : " + sbrOverWrite);
+            if (overWrites != null) {
+                Iterator overWritesItr = overWrites.iterator();
+                while( overWritesItr.hasNext() ){
+                    SBROverWrite sbrOverWrite = (SBROverWrite) overWritesItr.next();               
+                    Object fieldValue = sbrOverWrite.getData();
+                    if(fieldValue instanceof java.lang.String){
+                        String value = (String) fieldValue;
+                        if (value.charAt(0) == '[' && value.charAt( value.length()-1) == ']'){
+                            if ( value.equals(linkTobeRemoved) ){
+                                sbrOverWrite.setRemoveFlag(true);
+                                if (mLogger.isLoggable(Level.FINE)) {
+                                    mLogger.fine("<<== removing override link info for : " + sbrOverWrite);
+                                }
                             }
                         }
                     }
