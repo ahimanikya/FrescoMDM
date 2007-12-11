@@ -233,7 +233,7 @@ is divided into following sections:
 
 
 
-			<target name="gen-loader-zip" depends="gen-mdm-index-files"
+			<target name="gen-loader-zip" depends="pre-pre-compile"
 				description="generate loader zip">
 				<mkdir dir="loader-generated/loader/conf" />
 				<mkdir dir="loader-generated/loader/lib" />
@@ -247,6 +247,11 @@ is divided into following sections:
 						<include name="*.jar" />
 					</fileset>
 				</copy>
+				<copy tofile="loader-generated/loader/lib/generated-ejb.jar">
+					<fileset dir="build">
+						<include name="*-ejb.jar" />
+					</fileset>
+				</copy>
 
 				<generate-loader-zip srcDir="${{src.dir}}" configDir="loader-generated/loader/conf" />
 
@@ -257,14 +262,14 @@ is divided into following sections:
 				<delete dir="loader-generated/loader"></delete>
 
 			</target>
-            
-                        <target name="dist_se">
-                            <xsl:attribute name="depends">dist</xsl:attribute>
-                            <copy file="${{dist.jar}}" tofile="${{dist.dir}}/jbi/${{jbi.jar}}"/>
-                            <jar destfile="${{dist.dir}}/jbi/${{jbi.jar}}"
-                            basedir="${{eView.generated.dir}}/jbi" update="true"/>                
-                        </target>
-                        
+
+			<target name="dist_se">
+				<xsl:attribute name="depends">dist</xsl:attribute>
+				<copy file="${{dist.jar}}" tofile="${{dist.dir}}/jbi/${{jbi.jar}}" />
+				<jar destfile="${{dist.dir}}/jbi/${{jbi.jar}}"
+					basedir="${{eView.generated.dir}}/jbi" update="true" />
+			</target>
+
 			<target name="pre-pre-compile">
 				<xsl:attribute name="depends">init,gen-mdm-index-files,deps-jar,deps-j2ee-archive</xsl:attribute>
 				<!--mkdir dir="${{build.classes.dir}}"/-->
