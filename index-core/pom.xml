@@ -85,16 +85,16 @@
                                 <property name="build.compiler" value="extJavac"/>                              
                                 <javac srcdir="${basedir}/../index-gui/src/main/java" compiler="extJavac"
                                  destdir="${project.build.testOutputDirectory}" classpathref="maven.test.classpath" >
-                                    <include name="com/sun/mdm/index/project/anttasks/EViewGeneratorTask.java"/>
+                                    <include name="com/sun/mdm/index/project/anttasks/ObjectGeneratorTask.java"/>
                                 </javac>
-                                
                                 
                                 <copy todir="${project.build.testOutputDirectory}">
                                     <fileset dir="${basedir}/../index-gui/src/main/java">
                                         <include name="com/sun/mdm/index/project/generator/**/*.tmpl"/>
                                     </fileset>
                                 </copy>
-                                <mkdir dir="${project.build.testOutputDirectory}/modules/ext/eview"/>
+                                
+                                <!--mkdir dir="${project.build.testOutputDirectory}/modules/ext/eview"/>
                                 <jar destfile="${project.build.testOutputDirectory}/modules/ext/eview/index-core.jar" 
                                 basedir="${project.build.directory}/classes"/>
                                 <copy todir="${project.build.testOutputDirectory}/modules/ext/eview">
@@ -150,7 +150,21 @@
                                 </ant>
                                 <copy todir="${project.build.testOutputDirectory}">
                                     <fileset dir="${project.build.testOutputDirectory}/eindex/eindex-ejb/build/jar"/>
+                                </copy!-->
+                                 <taskdef name="object-gen" classname="com.sun.mdm.index.project.anttasks.ObjectGeneratorTask">
+                                    <classpath refid="maven.test.classpath"/>
+                                </taskdef>
+                                <mkdir dir="${project.build.testOutputDirectory}/src"/>
+                                <object-gen destdir="${project.build.testOutputDirectory}/src" objectFile="${basedir}/src/test/eindex-templates/eindex/src/Configuration/object.xml">
+                                </object-gen>
+                                <copy todir="${project.build.testOutputDirectory}/src">
+                                    <fileset dir="${basedir}/src/test/eindex-templates/eindex/eindex-ejb/src/java">
+                                        <include name="**/*.java"/>
+                                    </fileset>
                                 </copy>
+                                <javac srcdir="${project.build.testOutputDirectory}/src" compiler="extJavac"
+                                 destdir="${project.build.testOutputDirectory}" classpathref="maven.test.classpath" >
+                                </javac>
                                 <echo message="##### [EIndex Project is generated.] #####"/>
                             </tasks>          
                         </configuration>
