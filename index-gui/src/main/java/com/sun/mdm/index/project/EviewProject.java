@@ -60,10 +60,6 @@ import org.openide.util.Lookup;
 import org.openide.util.Mutex;
 import org.openide.util.Utilities;
 import org.openide.util.lookup.Lookups;
-import org.netbeans.modules.compapp.projects.base.spi.JbiArtifactProvider;
-import org.netbeans.modules.compapp.projects.base.ui.IcanproCustomizerProvider;
-import org.netbeans.modules.compapp.projects.base.ui.IcanproLogicalViewProvider;
-import org.netbeans.modules.compapp.projects.base.ui.customizer.IcanproProjectProperties;
 import com.sun.mdm.index.project.ui.EviewProjectLogicalViewProvider;
 import java.util.HashMap;
 import java.util.Map;
@@ -71,6 +67,7 @@ import org.netbeans.modules.j2ee.deployment.devmodules.api.J2eeModule;
 import org.netbeans.modules.j2ee.deployment.devmodules.spi.J2eeModuleProvider;
 import org.netbeans.spi.java.project.support.ui.BrokenReferencesSupport;
 import org.netbeans.spi.project.AuxiliaryConfiguration;
+import org.netbeans.spi.project.ant.AntArtifactProvider;
 import org.netbeans.spi.project.support.ant.EditableProperties;
 import org.openide.modules.InstalledFileLocator;
 import org.w3c.dom.Element;
@@ -255,7 +252,7 @@ public class EviewProject implements Project, AntProjectListener {
             new EviewProjectActionProvider( this, helper, refHelper ),
             eviewproLogicalViewProvider,
             new IcanproCustomizerProvider( this, helper, refHelper ),
-            new JbiArtifactProviderImpl(),
+            new AntArtifactProviderImpl(),
             new ProjectXmlSavedHookImpl(),
             new ProjectOpenedHookImpl(),
             fileBuilt,
@@ -459,19 +456,17 @@ public class EviewProject implements Project, AntProjectListener {
      * Exports the main JAR as an official build product for use from other scripts.
      * The type of the artifact will be {@link AntArtifact}.
      */
-    private final class JbiArtifactProviderImpl implements JbiArtifactProvider {
+    private final class AntArtifactProviderImpl implements AntArtifactProvider {
 
         public AntArtifact[] getBuildArtifacts() {
             return new AntArtifact[] {
-                helper.createSimpleAntArtifact(JbiArtifactProvider.ARTIFACT_TYPE_JBI_ASA + ":" +
-                        helper.getStandardPropertyEvaluator().getProperty(IcanproProjectProperties.JBI_SETYPE_PREFIX),
-                        IcanproProjectProperties.SE_DEPLOYMENT_JAR,
+                helper.createSimpleAntArtifact(
+                        EviewProjectProperties.ARTIFACT_TYPE_JBI_ASA + ":" +
+                        helper.getStandardPropertyEvaluator().getProperty(
+                        EviewProjectProperties.JBI_SE_TYPE),
+                        EviewProjectProperties.SE_DEPLOYMENT_JAR,
                         helper.getStandardPropertyEvaluator(), "dist_se", "clean"), // NOI18N
             };
-        }
-
-        public String getJbiServiceAssemblyType() {
-            return helper.getStandardPropertyEvaluator().getProperty(IcanproProjectProperties.JBI_SETYPE_PREFIX);
         }
     }
 

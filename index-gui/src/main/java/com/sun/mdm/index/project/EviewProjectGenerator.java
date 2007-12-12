@@ -127,10 +127,17 @@ public class EviewProjectGenerator {
         EditableProperties ep = h.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
         ep.setProperty(EviewProjectProperties.EJB_DIR,mainProjectName + "-ejb");
         ep.setProperty(EviewProjectProperties.WAR_DIR,mainProjectName + "-war");
-        ep.setProperty("eView.generated.dir", EviewProjectProperties.EVIEW_GENERATED_FOLDER);
-        ep.setProperty(EviewProjectProperties.J2EE_SERVER_TYPE, Deployment.getDefault().getServerID(serverInstanceID));
+        ep.setProperty("eView.generated.dir", 
+                       EviewProjectProperties.EVIEW_GENERATED_FOLDER);
+        ep.setProperty(EviewProjectProperties.J2EE_SERVER_TYPE, 
+                       Deployment.getDefault().getServerID(serverInstanceID));
         ep.setProperty(EviewProjectProperties.J2EE_PLATFORM, j2eeLevel);
-        ep.setProperty(EviewProjectProperties.EVIEW_JBI_JAR, mainProjectName+"-jbi.jar");
+        ep.setProperty(EviewProjectProperties.EVIEW_JBI_JAR, 
+                       mainProjectName+".jar");
+        ep.setProperty(EviewProjectProperties.JBI_SE_TYPE, 
+                       EviewProjectProperties.JAVA_EE_SE_COMPONENT_NAME);
+        ep.setProperty(EviewProjectProperties.SE_DEPLOYMENT_JAR,
+                       "${dist.dir}/jbi/${jbi.jar}"); 
         h.putProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH, ep);
                
         // set private properties

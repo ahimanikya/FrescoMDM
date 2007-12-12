@@ -76,6 +76,10 @@ public class EviewProjectProperties {
     
     public static final String EVIEW_GENERATED_FOLDER = "eView_generated";
     public static final String EVIEW_JBI_JAR = "jbi.jar";
+    public static final String SE_DEPLOYMENT_JAR ="sedeployment.jar"; 
+    public static final String JBI_SE_TYPE = "com.sun.jbi.ui.devtool.jbi.setype.prefix";
+    public static final String ARTIFACT_TYPE_JBI_ASA = "CAPS.asa";
+    public static final String JAVA_EE_SE_COMPONENT_NAME = "sun-javaee-engine";
     
     //following properties are from ear project
     public static final String WEB_PROJECT_NAME = "web.project.name"; //NOI18N
