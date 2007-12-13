@@ -22,6 +22,13 @@
  */
 package com.sun.mdm.index.filter;
 
+import com.sun.mdm.index.objects.ObjectField;
+import com.sun.mdm.index.objects.ObjectNode;
+import com.sun.mdm.index.objects.epath.EPathAPI;
+import com.sun.mdm.index.objects.epath.EPathException;
+import com.sun.mdm.index.objects.exception.ObjectException;
+import com.sun.mdm.index.util.Localizer;
+import com.sun.mdm.index.util.Logger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,6 +39,8 @@ import java.util.Iterator;
  */
 public class ExclusionListLookup {
 
+    private transient final Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private transient Localizer mLocalizer = Localizer.get();
     /** Creates a new instance of ExclusionListLookup */
     public ExclusionListLookup() {
     }
@@ -48,8 +57,7 @@ public class ExclusionListLookup {
             String exclusionType) {
         boolean isFieldExists = false;
         ArrayList list = getExclusionList(exclusionType);
-        System.out.println(list.size());
-        if (!list.isEmpty() || list != null) {
+        if (!list.isEmpty() && list != null  ) {
             for (int i = 0; i < list.size(); i++) {
                 HashMap map = (HashMap) list.get(i);
                 Iterator it = map.keySet().iterator();
@@ -80,7 +88,7 @@ public class ExclusionListLookup {
         boolean isFieldValueExists = false;
         ArrayList list = getExclusionList(exclusionType);
 
-        if (!list.isEmpty() || list != null) {
+        if (!list.isEmpty() && list != null ) {
 
             for (int i = 0; i < list.size(); i++) {
                 HashMap map = (HashMap) list.get(i);
@@ -149,4 +157,90 @@ public class ExclusionListLookup {
         }
         return valueExists;
     }
+   public boolean isSbrFilterEnabled() {
+        boolean isEnabled = false;
+        ArrayList list = exclusionFilterCofig.getSbrList();
+        if (list != null && !list.isEmpty() ) {
+            isEnabled = true;
+        }
+        return isEnabled;
+    }
+
+    public boolean isBlockingFilterEnabled() {
+        boolean isEnabled = false;
+        ArrayList list = exclusionFilterCofig.getBlockingList();
+        if (list != null && !list.isEmpty() ) {
+            isEnabled = true;
+        }
+        return isEnabled;
+    }
+
+    public boolean isMatchingFilterEnabled() {
+        boolean isEnabled = false;
+        ArrayList list = exclusionFilterCofig.getmatchingList();
+        if (list != null && !list.isEmpty() ) {
+            isEnabled = true;
+        }
+        return isEnabled;
+    }
+     public void restoreOriginalValue(ObjectNode oNode,
+            HashMap originalVaue) throws ObjectException  {
+        Iterator itr = originalVaue.keySet().iterator();
+        while (itr.hasNext()) {
+            try {
+                String fieldName = (String) itr.next();
+                Object filedValue = originalVaue.get(fieldName);
+                ObjectField oField = oNode.getField(fieldName);
+                oNode.setValue(fieldName, filedValue);
+      
+            } catch (ObjectException ex) {
+                throw new ObjectException(mLocalizer.t("EFL001:failed to set the fieldValue"));
+
+            }
+        }
+    }
+      public HashMap excludeFieldMap(ObjectNode objectNode, String listType)
+           {
+
+        HashMap originlMap = new HashMap();
+        ArrayList blockList = getExclusionList(listType); 
+      
+        if ( !blockList.isEmpty() && blockList != null) {
+            for (int i = 0; i < blockList.size(); i++) {
+                HashMap map = (HashMap) blockList.get(i);
+                Iterator it = map.keySet().iterator();
+                while (it.hasNext()) {
+                    String fieldName = (String) it.next();
+                    String fieldValue = "";
+                    try {
+                        fieldValue = (String) EPathAPI.getFieldValue(fieldName,
+                                objectNode);
+                    } catch (ObjectException ex) {
+                        mLogger.error(mLocalizer.x("EFS001: Unrecognised  fieldname :{0} ",
+                                fieldName), ex);
+
+                    } catch (EPathException ep) {
+
+                        mLogger.error(mLocalizer.x("EFS002: EPathException has encountered "),
+                                ep);
+
+                    }
+
+                    if (fieldValue != null && !fieldValue.equals("") && fieldValue.trim().length()!= 0) {
+                        boolean isFieldvalueExists = isFieldValueInExclusion(fieldValue,
+                                fieldName, listType);
+                        if (isFieldvalueExists) {
+                            String name = fieldName.substring(fieldName.lastIndexOf(".") + 1,
+                                    fieldName.length());
+                            mLogger.info("  fieldname in Hashmap :" + name + "fieldValue " + fieldValue);
+                            originlMap.put(name, fieldValue);
+
+                        }
+                    }
+                }
+            }
+        }
+        return originlMap;
+    }
+
 }
