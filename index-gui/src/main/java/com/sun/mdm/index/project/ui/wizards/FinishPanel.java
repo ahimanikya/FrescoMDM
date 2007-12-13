@@ -54,7 +54,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     static final String EVISION_GENERATOR_EVIEW = "eView";
     static final String DB_ORACLE = "oracle";
     static final String DB_SYBASE = "sybase";
-    static final String DB_SQLSERVER = "sqlserver";
+    static final String DB_SQLSERVER = "sql server";
     static final String DB_DB2 = "db2";
     static final String CODE_LIST_ORACLE_TEMPLATE = "codelist.oracle.tmpl";
     static final String CODE_LIST_SYBASE_TEMPLATE = "codelist.sybase.tmpl";
