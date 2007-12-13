@@ -31,7 +31,7 @@ import com.sun.mdm.index.objects.metadata.MetaDataService;
  * @version
  */
 public class SBROverWrite extends ObjectNode {
-    
+
     private static ArrayList mFieldNames;
     private static ArrayList mFieldTypes;
     static {
@@ -82,7 +82,7 @@ public class SBROverWrite extends ObjectNode {
      * @return String path
      */
     public String getPath()
-        throws ObjectException {
+            throws ObjectException {
         try {
             return ((String) getValue("Path"));
         } catch (ObjectException e) {
@@ -95,7 +95,7 @@ public class SBROverWrite extends ObjectNode {
      * @return String value
      */
     public Object getData()
-        throws ObjectException {
+            throws ObjectException {
         try {
             return (getValue("Data"));
         } catch (ObjectException e) {
@@ -109,16 +109,21 @@ public class SBROverWrite extends ObjectNode {
      * @return String field type
      */
     public String getFieldType()
-        throws ObjectException {
+            throws ObjectException {
         String ret = null;
         try {
             Object value = getData();
             if (value instanceof String) {
                 String tempValue = (String) value;
-            	if (tempValue.charAt(0) == '[' && tempValue.charAt(tempValue.length()-1)== ']')
-            		ret = ObjectField.OBJECTMETA_LINK_STRING; // for SBROverride
-            	else
-                ret = ObjectField.OBJECTMETA_STRING_STRING;
+                if (tempValue != null && tempValue.length() > 0) {
+                    if (tempValue.charAt(0) == '[' && tempValue.charAt(tempValue.length() - 1) == ']') {
+                        ret = ObjectField.OBJECTMETA_LINK_STRING;
+                    } // for SBROverride
+                } 
+                else {
+                    ret = ObjectField.OBJECTMETA_STRING_STRING;
+                }
+
             } else if (value instanceof Boolean) {
                 ret = ObjectField.OBJECTMETA_BOOL_STRING;
             } else if (value instanceof Integer) {
@@ -140,7 +145,7 @@ public class SBROverWrite extends ObjectNode {
 
         // If null is returned, retrieve the field type from the
         // MetaDataService.
-        
+
         if (ret == null) {
             String path = getEPath();
             StringBuffer destBuf = new StringBuffer("Enterprise.SystemSBR.");
@@ -157,9 +162,9 @@ public class SBROverWrite extends ObjectNode {
                     destBuf.append(str);
                 }
                 destBuf.append(".");
-                
+
                 startIndex = endIndex + 1;
-                
+
                 // check for boundary condition
                 if (endIndex == lastIndex) {
                     str = sourceBuf.substring(startIndex);
@@ -173,7 +178,7 @@ public class SBROverWrite extends ObjectNode {
                 endIndex = sourceBuf.indexOf(".", startIndex);
             }
             ret = MetaDataService.getFieldType(destBuf.toString());
-            
+
             // MetaDataService does not throw an exception on error.  
             // MetaDataService returns some type values with first letter not capitalized.
             if (ret != null && Character.isLowerCase(ret.charAt(0))) {
@@ -190,7 +195,7 @@ public class SBROverWrite extends ObjectNode {
      * @todo Document: Setter for ChildFieldType attribute of the SBR object
      */
     public void setPath(String path)
-        throws ObjectException {
+            throws ObjectException {
         try {
             path = path.replaceAll("\\.", "#dot");
             path = path.replaceAll("\\[", "#left");
@@ -214,10 +219,10 @@ public class SBROverWrite extends ObjectNode {
      * @exception ObjectException object exception
      */
     public String getEPath()
-        throws ObjectException {
+            throws ObjectException {
         try {
             String path = (String) getValue("Path");
-    
+
             path = path.replaceAll("#dot", "\\.");
             path = path.replaceAll("#left", "\\[");
             path = path.replaceAll("#right", "\\]");
@@ -225,34 +230,33 @@ public class SBROverWrite extends ObjectNode {
             path = path.replaceAll("#equal", "=");
             path = path.replaceAll("#key", "@");
             path = path.replaceAll("#comma", ",");
-            
+
             return path;
         } catch (ObjectException e) {
             throw e;
         }
     }
-    
+
     /**
      * @param data Data
      * @exception ObjectException object exception
      * @todo Document: Setter for ChildFieldType attribute of the SBR object
      */
     public void setData(Object data)
-        throws ObjectException {
+            throws ObjectException {
         try {
-            setValue("Data", data); 
+            setValue("Data", data);
         } catch (ObjectException e) {
             throw e;
         }
     }
 
-    
     /**
      * @exception ObjectException object exception
      * @return ObjectNode copy
      */
     public ObjectNode copy()
-        throws ObjectException {
+            throws ObjectException {
         SBROverWrite ret = null;
         try {
             ret = new SBROverWrite(getPath(), getData());
@@ -264,10 +268,10 @@ public class SBROverWrite extends ObjectNode {
                 ret.setChanged(name, isChanged(name));
                 ret.setKeyType(name, isKeyType(name));
             }
-        
-            ret.setUpdateFlag (isUpdated());
-            ret.setRemoveFlag (isRemoved());
-            ret.setAddFlag (isAdded());
+
+            ret.setUpdateFlag(isUpdated());
+            ret.setRemoveFlag(isRemoved());
+            ret.setAddFlag(isAdded());
             ret.setFieldUpdateLogs(pGetFieldUpdateLogs());
         } catch (ObjectException e) {
             throw e;
@@ -282,7 +286,7 @@ public class SBROverWrite extends ObjectNode {
      * @return ObjectNode structure copy
      */
     public ObjectNode structCopy()
-        throws ObjectException {
+            throws ObjectException {
         SBROverWrite ret = null;
         try {
             ret = new SBROverWrite(getPath(), getData());
@@ -297,7 +301,7 @@ public class SBROverWrite extends ObjectNode {
             ObjectKey key = pGetKey();
             if (key != null) {
                 ret.setKey(key);
-            }                
+            }
         } catch (ObjectException e) {
             throw e;
         }
