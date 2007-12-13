@@ -62,6 +62,8 @@ import com.sun.mdm.index.configurator.impl.matching.MatchingConfiguration;
 import com.sun.mdm.index.configurator.impl.matching.MatchColumn;
 import com.sun.mdm.index.filter.ExclusionFilterService;
 import com.sun.mdm.index.filter.ExclusionFilterServiceImpl;
+import com.sun.mdm.index.filter.ExclusionListLookup;
+import com.sun.mdm.index.filter.FilterConstants;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.SystemObjectException;
 import com.sun.mdm.index.objects.epath.EPathException;
@@ -75,6 +77,7 @@ import com.sun.mdm.index.objects.metadata.MetaDataService;
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.util.Localizer;
 import com.sun.mdm.index.util.LogUtil;
+import java.util.HashMap;
 
 /**
  * The match engine controller provides the main entry point to the 
@@ -235,22 +238,23 @@ public class MatchEngineControllerImpl
         int totalRows = 0;
         //Start for Filters
         ExclusionFilterService filterService = new ExclusionFilterServiceImpl();
+         ExclusionListLookup lookup = new ExclusionListLookup();
+         HashMap restoreValues = new   HashMap();
         //end  for Filters.
         QueryResults block = null;
         try {
            
             SystemObject objForBlock = crit.getSystemObject();
-            
-             /*Start for  blocking filter.*/
-            //take the copy of the objToMatch
-            SystemObject objToMatch = (SystemObject) objForBlock.copy();
-            //exclusion for blocking
-            ObjectNode tempObjNode = objForBlock.getObject();
-            ObjectNode filteredObjNode = filterService.blockingExclusion(tempObjNode);
-            objForBlock.setObject(filteredObjNode);
-           //SystemObject systemObjectAfterBlocking = objForBlock;
-            crit.setSystemObject(objForBlock);
-            /*End for  blocking filter.*/
+            /* Start for Filters */
+            //check for blocking filter is enabled or not. 
+            if (lookup.isBlockingFilterEnabled()) {
+
+                restoreValues = lookup.excludeFieldMap(objForBlock.getObject(),
+                        FilterConstants.BLOCK_EXCLUSION_TYPE);
+                ObjectNode filteredObjNode = filterService.blockingExclusion(objForBlock.getObject());
+                objForBlock.setObject(filteredObjNode);
+            }
+              /* end for Filters */
             
             //RANGE_SEARCH: lower-bound and upper-bound in SystemObject 2 & 3
             SystemObject objToBlock2 = crit.getSystemObject2();
@@ -289,13 +293,29 @@ public class MatchEngineControllerImpl
             for (int idx = 0; idx < qresults.size(); idx++) {
                 block = (QueryResults) qresults.get(idx);
 
-                /* Start for matching filter  */
-                ObjectNode tempObjNode1 = objToMatch.getObject();
-                ObjectNode fileterdForMatch = filterService.exclusionMatchField(tempObjNode1);
-                objToMatch.setObject(fileterdForMatch);
-                 /* End for matching filter  */
+              /* Start for matching filter  */
+                //restoring the original values to the ObjectNode for Matching process.
+                if (!restoreValues.isEmpty() && restoreValues != null ) {
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("The objectNode before restoring the value  " + objForBlock.getObject().
+                                toString());
+                    }
+                    lookup.restoreOriginalValue(objForBlock.getObject(),
+                            restoreValues);
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("The objectNode after restoring the value  " + objForBlock.getObject().
+                                toString());
+                    }
+                }
+               //check for matching filter is enabled or not. 
+                if (lookup.isMatchingFilterEnabled()) {
+                    ObjectNode fileterdForMatch = filterService.exclusionMatchField(objForBlock.getObject());
+                    objForBlock.setObject(fileterdForMatch);
+                }
                 
-                passResults = getMatcher().findWeights(objToMatch, block, matchOptions);
+           /* end  for matching filter  */
+                
+                passResults = getMatcher().findWeights(objForBlock, block, matchOptions);
                 // Combine results with previous pass results
                 // If we get several results for the same EUID, keep the latest pass
                 combinedResults.removeAll(passResults);
