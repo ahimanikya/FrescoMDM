@@ -310,6 +310,19 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>install-mdm-standardizer</id>
+                        <phase>process-resources</phase>
+                        <goals><goal>install-file</goal></goals>
+                        <configuration>
+                            <generatePom>true</generatePom>
+                            <packaging>jar</packaging>
+                            <groupId>mural</groupId>
+                            <artifactId>mdm-standardizer</artifactId>
+                            <version>${mural.currentVersion}</version>
+                            <file>${basedir}/src/main/resources/matchengine/standardizer/lib/mdm-standardizer.jar</file>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>install-i18n</id>
                         <phase>process-resources</phase>
                         <goals><goal>install-file</goal></goals>
@@ -320,6 +333,19 @@
                             <artifactId>i18n</artifactId>
                             <version>${mural.currentVersion}</version>
                             <file>${basedir}/src/main/resources/globalization/net.java.hulp.i18n.jar</file>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-loader</id>
+                        <phase>process-resources</phase>
+                        <goals><goal>install-file</goal></goals>
+                        <configuration>
+                            <generatePom>true</generatePom>
+                            <packaging>jar</packaging>
+                            <groupId>mural</groupId>
+                            <artifactId>loader</artifactId>
+                            <version>${mural.currentVersion}</version>
+                            <file>${basedir}/src/main/resources/loader.jar</file>
                         </configuration>
                     </execution>
                     <!--execution>
@@ -426,6 +452,11 @@
         <dependency>
             <groupId>mural</groupId>
             <artifactId>sun-matcher</artifactId>
+            <version>${mural.currentVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>mural</groupId>
+            <artifactId>mdm-standardizer</artifactId>
             <version>${mural.currentVersion}</version>
         </dependency>
         <dependency>

@@ -22,37 +22,37 @@
  */
 package com.sun.mdm.index.matching.adapter;
 
-import com.sun.mdm.index.objects.SystemObject;
-import com.sun.mdm.index.matching.StandardizationException;
-import com.sun.mdm.index.matching.StandardizerEngineConfiguration;
-import com.sun.mdm.index.matching.DomainSelector;
-import com.sun.mdm.index.configurator.impl.standardization.SystemObjectStandardization;
-import com.sun.mdm.index.configurator.impl.standardization.StandardizationFieldGroup;
-import com.sun.mdm.index.configurator.impl.standardization.PreparsedFieldGroup;
-import com.sun.mdm.index.configurator.impl.standardization.UnparsedFieldGroup;
-import com.sun.mdm.index.configurator.impl.standardization.SystemObjectField;
-import com.sun.mdm.index.configurator.impl.standardization.PhoneticizeField;
-import com.sun.mdm.index.objects.epath.EPathAPI;
-import com.sun.mdm.index.objects.epath.EPath;
-import com.sun.mdm.index.objects.epath.EPathException;
-import com.sun.mdm.index.phonetic.Phoneticizer;
-import com.sun.mdm.index.phonetic.PhoneticEncoderException;
-import com.sun.mdm.index.objects.exception.ObjectException;
-import com.stc.sbme.api.SbmeStandRecord;
-import com.stc.sbme.api.SbmeStandardizationEngine;
-import com.stc.sbme.api.SbmeStandRecordFactory;
-import com.stc.sbme.api.SbmeStandardizationException;
-import com.stc.sbme.api.SbmeMatchEngineException;
-import com.stc.sbme.api.SbmeConfigFilesAccess;
-import com.sun.mdm.index.util.Localizer;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.logging.Level;
-import net.java.hulp.i18n.LocalizationSupport;
+
 import net.java.hulp.i18n.Logger;
+
+import com.stc.sbme.api.SbmeConfigFilesAccess;
+import com.stc.sbme.api.SbmeMatchEngineException;
+import com.stc.sbme.api.SbmeStandRecord;
+import com.stc.sbme.api.SbmeStandRecordFactory;
+import com.stc.sbme.api.SbmeStandardizationException;
+import com.sun.mdm.index.configurator.impl.standardization.PhoneticizeField;
+import com.sun.mdm.index.configurator.impl.standardization.PreparsedFieldGroup;
+import com.sun.mdm.index.configurator.impl.standardization.StandardizationFieldGroup;
+import com.sun.mdm.index.configurator.impl.standardization.SystemObjectField;
+import com.sun.mdm.index.configurator.impl.standardization.SystemObjectStandardization;
+import com.sun.mdm.index.configurator.impl.standardization.UnparsedFieldGroup;
+import com.sun.mdm.index.matching.DomainSelector;
+import com.sun.mdm.index.matching.StandardizationException;
+import com.sun.mdm.index.matching.StandardizerEngineConfiguration;
+import com.sun.mdm.index.objects.SystemObject;
+import com.sun.mdm.index.objects.epath.EPath;
+import com.sun.mdm.index.objects.epath.EPathAPI;
+import com.sun.mdm.index.objects.epath.EPathException;
+import com.sun.mdm.index.objects.exception.ObjectException;
+import com.sun.mdm.index.phonetic.PhoneticEncoderException;
+import com.sun.mdm.index.phonetic.Phoneticizer;
+import com.sun.mdm.index.util.Localizer;
+import com.sun.sbme.api.SbmeStandardizationEngine;
 
 /**
  * StandardizerAPI implementation that allows MEFA to communicate with the
@@ -111,6 +111,7 @@ public class SbmeStandardizerAdapter
             // is meant to only contain one, and this will be logged. 
             String domains[] = unparsedRawRecords.getDomains();
 
+            mLogger.info(mLocalizer.x("STD001: About to standardize the given system objects"));
             SbmeStandRecord[][] allUnparsedStandRecords = 
                     standardizationEngine.standardize(
                     unparsedRawRecords.getRecStandardizationTypes(), 
@@ -274,7 +275,7 @@ public class SbmeStandardizerAdapter
                 if (mLogger.isLoggable(Level.FINE)) {
                     mLogger.fine("Shutting down the SBME standardization engine");
                 }
-                //standardizationEngine.shutdown();
+                standardizationEngine.shutdown();
             } catch (Exception ex) {
                 throw new StandardizationException(mLocalizer.t("MAT538: Failed to " + 
                                         "shutdown standardization engine: {0}", ex));
