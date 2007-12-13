@@ -2180,7 +2180,7 @@ public class UpdateManagerImpl implements UpdateManager {
                 return;
             }
             SBR sbr = eo.getSBR();
-            String linkTobeRemoved = "["+system+":"+"]";
+            String linkTobeRemoved = "["+system+":"+lid+"]";
             ArrayList overWrites = sbr.getOverWrites();
             if (overWrites != null) {
                 Iterator overWritesItr = overWrites.iterator();

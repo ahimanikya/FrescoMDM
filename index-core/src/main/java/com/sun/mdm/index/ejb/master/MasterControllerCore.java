@@ -2039,7 +2039,7 @@ public interface MasterControllerCore {
     * @param euid The EUID of SBR on which the updation of SBR to perform.
     *
     */
-    public void updateSBR(Map mapSystems, EnterpriseObject eo, boolean removalFlag)
+    public EnterpriseObject updateSBR(Map mapSystems, EnterpriseObject eo, boolean removalFlag)
             throws ProcessingException, UserException;
     
     /** Returns a map with (fieldName, actual value for link) for the given EO.

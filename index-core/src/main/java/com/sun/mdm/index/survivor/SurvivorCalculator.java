@@ -323,7 +323,7 @@ public class SurvivorCalculator implements java.io.Serializable {
     * @param removeFlag To store LINK information removalFalg should be false. For UNLINK (to remove LINK information) this should be true
     *
     */
-    public void updateSBR(Map mapSystems, EnterpriseObject eo, boolean removalFlag)
+    public EnterpriseObject updateSBR(Map mapSystems, EnterpriseObject eo, boolean removalFlag)
             throws ProcessingException, UserException {
         SBR sbr = eo.getSBR();
     
@@ -343,6 +343,7 @@ public class SurvivorCalculator implements java.io.Serializable {
             }
             sbr.addOverWrite(sbrOverWriteTemp);
         }
+        return eo;
     }
     /**
      *  To decode the value from LINK information of an Enterprise Object to a Map
@@ -439,8 +440,10 @@ public class SurvivorCalculator implements java.io.Serializable {
      * @return true if the passed sting is boolean. Else false
      */
     private boolean isLink(String linkString) {
+        if(linkString!=null && linkString.length()>0){
         if (linkString.charAt(0) == '[' && linkString.charAt(linkString.length() - 1) == ']') {
             return true;
+        }
         }
         return false;
     }

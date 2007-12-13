@@ -5626,9 +5626,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
     * @param euid The EUID of SBR on which the updation of SBR to perform.
     *
     */
-    public void updateSBR(Map mapSystems, EnterpriseObject eo, boolean removalFlag)
+    public EnterpriseObject updateSBR(Map mapSystems, EnterpriseObject eo, boolean removalFlag)
             throws ProcessingException, UserException {
-        mCalculator.updateSBR(mapSystems, eo, removalFlag);
+        return mCalculator.updateSBR(mapSystems, eo, removalFlag);
     }
     
     /** Returns a map with (fieldName, actual value for link) for the given EO.

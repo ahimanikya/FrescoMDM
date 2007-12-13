@@ -2962,10 +2962,10 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
     * @param euid The EUID of SBR on which the updation of SBR to perform.
     *
     */
-    public void updateSBR(Map mapSystems, EnterpriseObject eo, boolean removalFlag)
+    public EnterpriseObject updateSBR(Map mapSystems, EnterpriseObject eo, boolean removalFlag)
             throws ProcessingException, UserException {
-        mControllerImpl.updateSBR(mapSystems, eo, removalFlag);
-		updateEnterpriseObject(eo);
+        return mControllerImpl.updateSBR(mapSystems, eo, removalFlag);
+		// updateEnterpriseObject(eo);
     }
     
     /** Returns a map with (fieldName, actual value for link) for the given EO.
