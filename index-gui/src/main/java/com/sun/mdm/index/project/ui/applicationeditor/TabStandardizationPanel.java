@@ -156,14 +156,16 @@ public class TabStandardizationPanel extends javax.swing.JPanel {
         String standardizationType = (String) model.getValueAt(iSelectedRow,  model.iColStandardizationType);
         String sourceFields = (String) model.getValueAt(iSelectedRow, model.iColSourceFields);
         String matchEngine = PropertiesDeploymentPanel.getMatchEngine();
-        StandardizationTypeAddDialog dlg = new StandardizationTypeAddDialog(mMapSourceFields, 
+        StandardizationTypeAddDialog dlg = new StandardizationTypeAddDialog(mEviewApplication, 
+                                                mMapSourceFields, 
                                                 mMapFieldIDs, 
                                                 mMapTargetFields, 
                                                 (Map) mMapAllFieldIDsPerTargetField.get(standardizationType), 
                                                 matchEngine, 
                                                 mEviewEditorMainApp.getEviewEditorMainPanel().getEntityTree(true), 
                                                 mMatchFieldDef, 
-                                                standardizationType, true);
+                                                standardizationType, 
+                                                true);
 
         dlg.setVisible(true);
         mEviewEditorMainApp.getEviewEditorMainPanel().setEntityTreePane();        
@@ -184,8 +186,8 @@ public class TabStandardizationPanel extends javax.swing.JPanel {
             FreeFormGroup group = mMatchFieldDef.getFreeFormGroup(standardizationType);
             // replace unstandardized-source-fields
             group.setDomainSelector(dlg.getDomainSelector());
-            group.setLocaleFieldName(dlg.getLocaleFieldName() != null ? dlg.getLocaleFieldName() : "");
-            group.setLocaleCodes(dlg.getLocaleCodeRows());
+            group.setLocaleFieldName(dlg.getVariantFieldName() != null ? dlg.getVariantFieldName() : "");
+            group.setLocaleCodes(dlg.getVariantRows());
             group.setUnstandardizedSourceFields(alSourceFieldsSelected);
             group.setTargetMappings(null);
             // then replace the list of target-mapping in standardization-targets
@@ -244,11 +246,20 @@ public class TabStandardizationPanel extends javax.swing.JPanel {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         String matchEngine = PropertiesDeploymentPanel.getMatchEngine();
         Map mapFieldIDsPerTargetField = new HashMap();
-        StandardizationTypeAddDialog dlg = new StandardizationTypeAddDialog(mMapSourceFields, mMapFieldIDs, mMapTargetFields, mapFieldIDsPerTargetField, matchEngine, mEviewEditorMainApp.getEviewEditorMainPanel().getEntityTree(true), mMatchFieldDef, null, false);
+        StandardizationTypeAddDialog dlg = new StandardizationTypeAddDialog(mEviewApplication, 
+                                                                            mMapSourceFields, 
+                                                                            mMapFieldIDs, 
+                                                                            mMapTargetFields, 
+                                                                            mapFieldIDsPerTargetField, 
+                                                                            matchEngine, 
+                                                                            mEviewEditorMainApp.getEviewEditorMainPanel().getEntityTree(true), 
+                                                                            mMatchFieldDef, 
+                                                                            null, 
+                                                                            false);
         dlg.setVisible(true);
         mEviewEditorMainApp.getEviewEditorMainPanel().setEntityTreePane();        
         if (dlg.isModified()) {
-            String standardizationType = dlg.getStandardizationType();
+            String standardizationType = dlg.getStandardizationDataType();
             //update mTblStandardizationTypes
             mTblStandardizationTypes.clearSelection();
             String sourceFields = "";
@@ -260,7 +271,7 @@ public class TabStandardizationPanel extends javax.swing.JPanel {
                     sourceFields += (String) alSourceFieldsSelected.get(i) + ";";
                 }
             }
-            StandardizationTypeRow r = new StandardizationTypeRow(dlg.getStandardizationType(), sourceFields);
+            StandardizationTypeRow r = new StandardizationTypeRow(dlg.getStandardizationDataType(), sourceFields);
             TableStandardizationTypes model = (TableStandardizationTypes) mTblStandardizationTypes.getModel();
             model.addRow(r);
             int iSelectedRow = model.getRowCount() - 1;
@@ -275,8 +286,8 @@ public class TabStandardizationPanel extends javax.swing.JPanel {
             FreeFormGroup group = mMatchFieldDef.createFreeFormGroup(standardizationType);
             // replace unstandardized-source-fields
             group.setDomainSelector(dlg.getDomainSelector());
-            group.setLocaleFieldName(dlg.getLocaleFieldName() != null ? dlg.getLocaleFieldName() : "");
-            group.setLocaleCodes(dlg.getLocaleCodeRows());
+            group.setLocaleFieldName(dlg.getVariantFieldName() != null ? dlg.getVariantFieldName() : "");
+            group.setLocaleCodes(dlg.getVariantRows());
             group.setUnstandardizedSourceFields(alSourceFieldsSelected);
             group.setTargetMappings(null);
             // then replace the list of target-mapping in standardization-targets

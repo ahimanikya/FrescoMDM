@@ -26,14 +26,13 @@ package com.sun.mdm.index.project;
  */
 public class EviewProjectProperties {
     
-    public static final String EVIEW_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates";    
-    public static final String MATCH_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/match";        
-    public static final String BIZ_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/biz";        
-    public static final String AU_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/AU";    
-    public static final String FR_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/FR";    
-    public static final String UK_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/UK";    
-    public static final String US_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/US";
-    
+    public static final String EVIEW_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates";
+    public static final String MATCH_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/match";
+    public static final String STANDARDIZATION_DEPLOYMENT_LOCATION = "modules/ext/eview/standardizer/deployment";
+    public static final String BUSINESSNAME_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/BusinessName";
+    public static final String PERSONNAME_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/PersonName";
+    public static final String ADDRESS_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/Address";
+       
     public static final String CONF_FOLDER = "conf"; //NOI18N    
     // eView Configuration Folder
     public static final String CONFIGURATION_FOLDER = "Configuration"; //NOI18N
@@ -41,11 +40,10 @@ public class EviewProjectProperties {
     public static final String MATCH_ENGINE_FOLDER = "MatchEngine"; //NOI18N
     // eView Standardization Folder
     public static final String STANDARDIZATION_ENGINE_FOLDER = "StandardizationEngine"; //NOI18N
-    public static final String STANDARDIZATION_ENGINE_BIZ_FOLDER = "biz"; //NOI18N
-    public static final String STANDARDIZATION_ENGINE_AU_FOLDER = "AU"; //NOI18N
-    public static final String STANDARDIZATION_ENGINE_FR_FOLDER = "FR"; //NOI18N    
-    public static final String STANDARDIZATION_ENGINE_UK_FOLDER = "UK"; //NOI18N    
-    public static final String STANDARDIZATION_ENGINE_US_FOLDER = "US"; //NOI18N   
+    // Supported Data Types
+    public static final String STANDARDIZATION_ENGINE_ADDRESS_FOLDER = "Address"; //NOI18N
+    public static final String STANDARDIZATION_ENGINE_BUSINESSNAME_FOLDER = "BusinessName"; //NOI18N
+    public static final String STANDARDIZATION_ENGINE_PERSONNAME_FOLDER = "PersonName"; //NOI18N
     // eView Database Script Folder
     public static final String DATABASE_SCRIPT_FOLDER = "DatabaseScript"; //NOI18N
     // Filter Folder

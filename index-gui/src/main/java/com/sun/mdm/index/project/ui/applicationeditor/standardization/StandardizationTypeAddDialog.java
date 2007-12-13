@@ -38,27 +38,37 @@ import com.sun.mdm.index.project.ui.wizards.generator.ConfigGenerator;
 import com.sun.mdm.index.project.ui.wizards.generator.MatchType;
 import com.sun.mdm.index.project.ui.applicationeditor.EntityTreeSelectionDialog;
 import com.sun.mdm.index.project.ui.applicationeditor.EntityTree;
+import com.sun.mdm.index.project.EviewApplication;
+import com.sun.mdm.standardizer.StandardizerIntrospector;
+import com.sun.mdm.standardizer.DataTypeDescriptor;
+import com.sun.mdm.standardizer.VariantDescriptor;
 
 public class StandardizationTypeAddDialog extends javax.swing.JDialog {
+    private static final java.util.logging.Logger mLog = java.util.logging.Logger.getLogger(
+            StandardizationTypeAddDialog.class.getName()
+        );
     private boolean mModified = false;
     private MatchFieldDef mMatchFieldDef;
     private EntityTree mEntityTree;
     private String mMatchEngine;
     private ArrayList mAlSourceFieldNames = new ArrayList();
     private ArrayList mAlFieldIDs = new ArrayList();
+    private ArrayList mAlSupportedVariants = new ArrayList();
     private javax.swing.JList mLstSources = new javax.swing.JList();
     private javax.swing.JList mLstFieldIDs = new javax.swing.JList();
-    private JTable mTblLocaleCodes;    
+    private JTable mTblVariants;    
     private JTable mTblTargetMappings;
     private Map mMapSourceFields;   // key:standardizationType
     private Map mMapFieldIDs;       // key:standardizationType
     private Map mMapTargetFields;
     private Map mMapFieldIDsPerTargetField; // key:targetField
     private FreeFormGroup mFreeFormGroup;
+    private EviewApplication mEviewApplication;
     
     /** Creates new form StandardizationTypeAddDialog */
-    public StandardizationTypeAddDialog(Map sourceFieldsMap, Map fieldIDsMap, Map targetFieldsMap, Map fieldIDsPerTargetFieldMap, String matchEngine, EntityTree entityTree, MatchFieldDef matchFieldDef, String standardizationType, boolean editMode) {
+    public StandardizationTypeAddDialog(EviewApplication eviewApplication, Map sourceFieldsMap, Map fieldIDsMap, Map targetFieldsMap, Map fieldIDsPerTargetFieldMap, String matchEngine, EntityTree entityTree, MatchFieldDef matchFieldDef, String dataType, boolean editMode) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
+        mEviewApplication = eviewApplication;
         mMatchEngine = matchEngine;
         mEntityTree = entityTree;
         mEntityTree.setEditable(false);        
@@ -70,31 +80,39 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
         initComponents();
 
         /* ToDo Kevin/Ricardo/Shant
+         * Get domain selectors per Data Type
         ArrayList alDomainSelectors = getDomainSelectors();
+        */
+        ArrayList alDomainSelectors = new ArrayList();
+        alDomainSelectors.add(MatchFieldDef.MULTIPLE_DOMAIN_SELECTOR);
+        alDomainSelectors.add(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_AU);
+        alDomainSelectors.add(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_FR);
+        alDomainSelectors.add(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_UK);
+        alDomainSelectors.add(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_US);
         for (int i = 0; alDomainSelectors != null && i < alDomainSelectors.size(); i++) {
-            this.cbDomainSelector.addItem(alDomainSelectors[i]);
+            this.cbDomainSelector.addItem(alDomainSelectors.get(i));
         }
-         */
         
-        this.cbDomainSelector.addItem(MatchFieldDef.MULTIPLE_DOMAIN_SELECTOR);
-        this.cbDomainSelector.addItem(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_AU);
-        this.cbDomainSelector.addItem(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_FR);
-        this.cbDomainSelector.addItem(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_UK);
-        this.cbDomainSelector.addItem(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_US);
         if (editMode) {
-            mFreeFormGroup = mMatchFieldDef.getFreeFormGroup(standardizationType);
+            mFreeFormGroup = mMatchFieldDef.getFreeFormGroup(dataType);
             this.cbDomainSelector.setSelectedItem(mFreeFormGroup.getDomainSelector());
-            String localeFieldName = mFreeFormGroup.getLocaleFieldName();
-            if (localeFieldName != null) {
-                jTextFieldLocaleFieldName.setText(localeFieldName);
+            String variantFieldName = mFreeFormGroup.getLocaleFieldName();
+            if (variantFieldName != null) {
+                jTextFieldVariant.setText(variantFieldName);
             }
         } else {
-            this.cbDomainSelector.setSelectedItem(MatchFieldDef.MULTIPLE_DOMAIN_SELECTOR);
+            /* ToDo ??? Kevin/Ricardo/Shant
+             * VariantDescriptor variantDescriptor = DataTypeDescriptor.getDefaultVariant();
+             * String defaultDomainSelector = variantDescriptor.getFactoryClass(); //"com.sun.mdm.standardizer.datatype.address.USStandardizerFactory"
+             */
+            String defaultDomainSelector = MatchFieldDef.MULTIPLE_DOMAIN_SELECTOR;
+            this.cbDomainSelector.setSelectedItem(defaultDomainSelector);
         }
 
-        loadStandardizationTypes(mMatchEngine, standardizationType, editMode);
-        loadLocaleCodesTable(editMode);
-        // these methods will be invoked twice, 1st by setting standardizationType
+        loadStandardizationDataTypes(mMatchEngine, dataType, editMode);
+        loadVariantTable(editMode);
+        loadSupportedVariants(dataType);
+        // these methods will be invoked twice, 1st by setting dataType
         // see onTypeSelected()
         loadSelectedSourceFields();
         loadTargetMappingsTable();
@@ -106,10 +124,11 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
             }
         });
 
-        cbStandardizationTypes.addItemListener(new java.awt.event.ItemListener() {
+        cbStandardizationDataTypes.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 loadSelectedSourceFields();
                 loadTargetMappingsTable();
+                loadSupportedVariants(getStandardizationDataType());
             }
         });
 
@@ -125,7 +144,7 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
      */
-    // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         pnlConfiguration = new javax.swing.JPanel();
@@ -140,16 +159,16 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
         btnRemoveSource = new javax.swing.JButton();
         btnRemoveSource.setEnabled(false);
         lblDesc = new javax.swing.JLabel();
-        cbStandardizationTypes = new javax.swing.JComboBox();
+        cbStandardizationDataTypes = new javax.swing.JComboBox();
         lblStep4 = new javax.swing.JLabel();
-        jScrollPaneLocaleCodes = new javax.swing.JScrollPane();
-        btnAddLocaleMap = new javax.swing.JButton();
-        btnRemoveLocaleMap = new javax.swing.JButton();
+        jScrollPaneVariants = new javax.swing.JScrollPane();
+        btnAddVariantMap = new javax.swing.JButton();
+        btnRemoveVariantMap = new javax.swing.JButton();
         btnRemoveTargetMapping.setEnabled(false);
-        btnEditLocaleMap = new javax.swing.JButton();
+        btnEditVariantMap = new javax.swing.JButton();
         btnEditTargetMapping.setEnabled(false);
-        jTextFieldLocaleFieldName = new javax.swing.JTextField();
-        btnSelectLocaleFieldName = new javax.swing.JButton();
+        jTextFieldVariant = new javax.swing.JTextField();
+        btnSelectVariantFieldName = new javax.swing.JButton();
         jLabelDomainSelector = new javax.swing.JLabel();
         cbDomainSelector = new javax.swing.JComboBox();
         btnCancel = new javax.swing.JButton();
@@ -225,58 +244,58 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
         lblDesc.setText(bundle.getString("LBL_Select_Standardization_Type")); // NOI18N
         pnlConfiguration.add(lblDesc);
         lblDesc.setBounds(10, 10, 120, 20);
-        pnlConfiguration.add(cbStandardizationTypes);
-        cbStandardizationTypes.setBounds(130, 10, 440, 22);
+        pnlConfiguration.add(cbStandardizationDataTypes);
+        cbStandardizationDataTypes.setBounds(130, 10, 440, 22);
 
-        lblStep4.setText(bundle.getString("LBL_Locale_Field_Name")); // NOI18N
+        lblStep4.setText(bundle.getString("LBL_Variant_Field_Name")); // NOI18N
         pnlConfiguration.add(lblStep4);
         lblStep4.setBounds(10, 70, 120, 20);
 
-        jScrollPaneLocaleCodes.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), bundle.getString("LBL_Locale_Codes"))); // NOI18N
-        pnlConfiguration.add(jScrollPaneLocaleCodes);
-        jScrollPaneLocaleCodes.setBounds(10, 100, 560, 110);
+        jScrollPaneVariants.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), bundle.getString("LBL_Variants"))); // NOI18N
+        pnlConfiguration.add(jScrollPaneVariants);
+        jScrollPaneVariants.setBounds(10, 100, 560, 110);
 
-        btnAddLocaleMap.setText(bundle.getString("LBL_Add")); // NOI18N
-        btnAddLocaleMap.addActionListener(new java.awt.event.ActionListener() {
+        btnAddVariantMap.setText(bundle.getString("LBL_Add")); // NOI18N
+        btnAddVariantMap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onAddLocaleCode(evt);
+                onAddVariant(evt);
             }
         });
-        pnlConfiguration.add(btnAddLocaleMap);
-        btnAddLocaleMap.setBounds(330, 220, 80, 23);
+        pnlConfiguration.add(btnAddVariantMap);
+        btnAddVariantMap.setBounds(330, 220, 80, 23);
 
-        btnRemoveLocaleMap.setText(bundle.getString("LBL_Remove")); // NOI18N
-        btnRemoveLocaleMap.setEnabled(false);
-        btnRemoveLocaleMap.addActionListener(new java.awt.event.ActionListener() {
+        btnRemoveVariantMap.setText(bundle.getString("LBL_Remove")); // NOI18N
+        btnRemoveVariantMap.setEnabled(false);
+        btnRemoveVariantMap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onRemoveLocaleCode(evt);
+                onRemoveVariant(evt);
             }
         });
-        pnlConfiguration.add(btnRemoveLocaleMap);
-        btnRemoveLocaleMap.setBounds(410, 220, 80, 23);
+        pnlConfiguration.add(btnRemoveVariantMap);
+        btnRemoveVariantMap.setBounds(410, 220, 80, 23);
 
-        btnEditLocaleMap.setText(bundle.getString("LBL_Edit")); // NOI18N
-        btnEditLocaleMap.setEnabled(false);
-        btnEditLocaleMap.addActionListener(new java.awt.event.ActionListener() {
+        btnEditVariantMap.setText(bundle.getString("LBL_Edit")); // NOI18N
+        btnEditVariantMap.setEnabled(false);
+        btnEditVariantMap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onEditLocaleCode(evt);
+                onEditVariant(evt);
             }
         });
-        pnlConfiguration.add(btnEditLocaleMap);
-        btnEditLocaleMap.setBounds(490, 220, 80, 23);
+        pnlConfiguration.add(btnEditVariantMap);
+        btnEditVariantMap.setBounds(490, 220, 80, 23);
 
-        jTextFieldLocaleFieldName.setEnabled(false);
-        pnlConfiguration.add(jTextFieldLocaleFieldName);
-        jTextFieldLocaleFieldName.setBounds(130, 70, 350, 19);
+        jTextFieldVariant.setEnabled(false);
+        pnlConfiguration.add(jTextFieldVariant);
+        jTextFieldVariant.setBounds(130, 70, 350, 19);
 
-        btnSelectLocaleFieldName.setText(bundle.getString("LBL_Select")); // NOI18N
-        btnSelectLocaleFieldName.addActionListener(new java.awt.event.ActionListener() {
+        btnSelectVariantFieldName.setText(bundle.getString("LBL_Select")); // NOI18N
+        btnSelectVariantFieldName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                onButtonSelectLocaleFieldName(evt);
+                onButtonSelectVariantFieldName(evt);
             }
         });
-        pnlConfiguration.add(btnSelectLocaleFieldName);
-        btnSelectLocaleFieldName.setBounds(490, 70, 80, 20);
+        pnlConfiguration.add(btnSelectVariantFieldName);
+        btnSelectVariantFieldName.setBounds(490, 70, 80, 20);
 
         jLabelDomainSelector.setText(bundle.getString("LBL_Domain_Selector")); // NOI18N
         pnlConfiguration.add(jLabelDomainSelector);
@@ -325,34 +344,34 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
         setBounds((screenSize.width-604)/2, (screenSize.height-661)/2, 604, 661);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void onButtonSelectLocaleFieldName(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onButtonSelectLocaleFieldName
-        String localeFieldName = this.jTextFieldLocaleFieldName.getText();
+    private void onButtonSelectVariantFieldName(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onButtonSelectVariantFieldName
+        String variantFieldName = this.jTextFieldVariant.getText();
         mEntityTree.clearSelection();        
-        EntityTreeSelectionDialog entityTreeSelectionDialog = new EntityTreeSelectionDialog(mEntityTree, localeFieldName, true);                                        
+        EntityTreeSelectionDialog entityTreeSelectionDialog = new EntityTreeSelectionDialog(mEntityTree, variantFieldName, true);                                        
         entityTreeSelectionDialog.setVisible(true);
         if (entityTreeSelectionDialog.isSelected()) {        
-            this.jTextFieldLocaleFieldName.setText(entityTreeSelectionDialog.getTargetFieldName());                
+            this.jTextFieldVariant.setText(entityTreeSelectionDialog.getTargetFieldName());                
             enableOK();            
         }
 
-    }//GEN-LAST:event_onButtonSelectLocaleFieldName
+}//GEN-LAST:event_onButtonSelectVariantFieldName
 
-    private void onEditLocaleCode(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onEditLocaleCode
-        LocaleCodesTableModel model = (LocaleCodesTableModel) mTblLocaleCodes.getModel();
-        int iEditRow = mTblLocaleCodes.getSelectedRow();
+    private void onEditVariant(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onEditVariant
+        VariantsTableModel model = (VariantsTableModel) mTblVariants.getModel();
+        int iEditRow = mTblVariants.getSelectedRow();
         String value = (String) model.getValueAt(iEditRow, model.iColValue);
-        String locale = (String) model.getValueAt(iEditRow, model.iColLocale);
-        LocaleCodeDialog dlg = new LocaleCodeDialog(value, locale, true);
+        String variant = (String) model.getValueAt(iEditRow, model.iColVariant);
+        LocaleCodeDialog dlg = new LocaleCodeDialog(value, variant, true, mAlSupportedVariants);
         dlg.setVisible(true);
         if (dlg.isModified()) {
             model.setValueAt(dlg.getValue(), iEditRow, model.iColValue);
-            model.setValueAt(dlg.getLocaleCode(), iEditRow, model.iColLocale);
+            model.setValueAt(dlg.getVariant(), iEditRow, model.iColVariant);
             enableOK();
         }
-    }//GEN-LAST:event_onEditLocaleCode
+}//GEN-LAST:event_onEditVariant
 
-    private void onRemoveLocaleCode(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveLocaleCode
-        int rs[] = mTblLocaleCodes.getSelectedRows();
+    private void onRemoveVariant(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveVariant
+        int rs[] = mTblVariants.getSelectedRows();
         int length = rs.length;
         String prompt = (length == 1) ? NbBundle.getMessage(StandardizationTypeAddDialog.class, "MSG_Confirm_Remove_Row_Prompt")
                                         : NbBundle.getMessage(StandardizationTypeAddDialog.class, "MSG_Confirm_Remove_Rows_Prompt");
@@ -362,29 +381,29 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
                                  NbBundle.getMessage(StandardizationTypeAddDialog.class, "MSG_Confirm_Remove_Row_Title"), 
                                  NotifyDescriptor.YES_NO_OPTION);
         if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
-            LocaleCodesTableModel model = (LocaleCodesTableModel) mTblLocaleCodes.getModel();
+            VariantsTableModel model = (VariantsTableModel) mTblVariants.getModel();
             for (int i=length - 1; i>=0 && i < length; i--) {
                 int j = rs[i];
                 String value = (String) model.getValueAt(j, model.iColValue);
-                String locale = (String) model.getValueAt(j, model.iColLocale);
+                String variant = (String) model.getValueAt(j, model.iColVariant);
                 model.removeRow(j);
             }
-            btnRemoveLocaleMap.setEnabled(false);
-            btnEditLocaleMap.setEnabled(false);
+            btnRemoveVariantMap.setEnabled(false);
+            btnEditVariantMap.setEnabled(false);
             enableOK();
         }
-    }//GEN-LAST:event_onRemoveLocaleCode
+}//GEN-LAST:event_onRemoveVariant
 
-    private void onAddLocaleCode(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddLocaleCode
-        LocaleCodeDialog dlg = new LocaleCodeDialog("", "US", false);
+    private void onAddVariant(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddVariant
+        LocaleCodeDialog dlg = new LocaleCodeDialog("", "US", false, mAlSupportedVariants);
         dlg.setVisible(true);
         if (dlg.isModified()) {
-            LocaleCode r = new LocaleCode(dlg.getValue(), dlg.getLocaleCode());
-            LocaleCodesTableModel model = (LocaleCodesTableModel) mTblLocaleCodes.getModel();
+            LocaleCode r = new LocaleCode(dlg.getValue(), dlg.getVariant());
+            VariantsTableModel model = (VariantsTableModel) mTblVariants.getModel();
             model.addRow(r);
             enableOK();
         }
-    }//GEN-LAST:event_onAddLocaleCode
+}//GEN-LAST:event_onAddVariant
 
     private void onRemoveSourceFields(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveSourceFields
         int[] itemsBeingRemoved = mLstSources.getSelectedIndices();
@@ -422,8 +441,8 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
         TargetMappingsTableModel model = (TargetMappingsTableModel) mTblTargetMappings.getModel();
         String targetFieldName = (String) model.getValueAt(iSelectedRow,  0);    // ToDo hard-coded
         String fieldIDs = (String) model.getValueAt(iSelectedRow,  1);    // ToDo hard-coded
-        String standardizationType = getStandardizationType();
-        TargetMappingDialog dlg = new TargetMappingDialog(mEntityTree, standardizationType, targetFieldName, fieldIDs, true);
+        String dataType = getStandardizationDataType();
+        TargetMappingDialog dlg = new TargetMappingDialog(mEntityTree, dataType, targetFieldName, fieldIDs, true);
         dlg.setVisible(true);
         if (dlg.isModified()) {
             ArrayList alFieldIDs = dlg.getFieldIDs();
@@ -444,7 +463,7 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_onEditTargetMapping
 
     private void onRemoveTargetMapping(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveTargetMapping
-        String standardizationType = getStandardizationType();
+        String dataType = getStandardizationDataType();
 
         int rs[] = mTblTargetMappings.getSelectedRows();
         int length = rs.length;
@@ -460,9 +479,9 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
             for (int i=length - 1; i>=0 && i < length; i--) {
                 int j = rs[i];
                 String targetFieldName = (String) model.getValueAt(j,  0);    // ToDo hard-coded
-                ArrayList alTargetFields = (ArrayList) mMapTargetFields.get(standardizationType);
+                ArrayList alTargetFields = (ArrayList) mMapTargetFields.get(dataType);
                 alTargetFields.remove(targetFieldName);
-                mMapTargetFields.put(standardizationType, alTargetFields);
+                mMapTargetFields.put(dataType, alTargetFields);
                 mMapFieldIDsPerTargetField.remove(targetFieldName);
                 model.removeRow(j);
             }
@@ -473,17 +492,16 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_onRemoveTargetMapping
 
     private void onAddTargetMapping(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddTargetMapping
-        // TODO add your handling code here:
-        String standardizationType = getStandardizationType();
-        TargetMappingDialog dlg = new TargetMappingDialog(mEntityTree, standardizationType, "", null, false);
+        String dataType = getStandardizationDataType();
+        TargetMappingDialog dlg = new TargetMappingDialog(mEntityTree, dataType, "", null, false);
         dlg.setVisible(true);
         if (dlg.isModified()) {
-            //TODO- check if target Field already selected
+            //TODO check if target Field already selected
             ArrayList alFieldIDs = dlg.getFieldIDs();
             mMapFieldIDsPerTargetField.put(dlg.getTargetField(), alFieldIDs);
-            ArrayList alTargetFields = (ArrayList) mMapTargetFields.get(standardizationType);
+            ArrayList alTargetFields = (ArrayList) mMapTargetFields.get(dataType);
             alTargetFields.add(dlg.getTargetField());
-            mMapTargetFields.put(standardizationType, alTargetFields);
+            mMapTargetFields.put(dataType, alTargetFields);
             String sFieldIDs = "";
             for (int i=0; i < alFieldIDs.size(); i++) {
                 if (sFieldIDs.equals("")) {
@@ -538,8 +556,8 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
         dlg.setVisible(true);
         if (dlg.isModified()) {
             mAlSourceFieldNames = dlg.getSelectedSourceFields();
-            String standardizationType = getStandardizationType();
-            mMapSourceFields.put(standardizationType, mAlSourceFieldNames);
+            String dataType = getStandardizationDataType();
+            mMapSourceFields.put(dataType, mAlSourceFieldNames);
             mLstSources.setListData(mAlSourceFieldNames.toArray());
             jScrollPaneSourceFields.setViewportView(mLstSources);
             enableOK();
@@ -548,41 +566,41 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_onAddSourceFields
     
-    private void loadStandardizationTypes(String matchEngine, String standardizationType, boolean editMode) {
+    private void loadStandardizationDataTypes(String matchEngine, String dataType, boolean editMode) {
         /* ToDo Kevin/Ricardo/Shant
-        ArrayList alStandardizationTypes = getStandardizationTypes(String matchEngine);
-        for (int i = 0; i < alStandardizationTypes.length; i++) {
-            ArrayList alSourceFields = (ArrayList) mMapSourceFields.get(alStandardizationTypes[i]);
+        ArrayList alDataTypes = getStandardizationDataTypes(String matchEngine);
+        for (int i = 0; i < alDataTypes.length; i++) {
+            ArrayList alSourceFields = (ArrayList) mMapSourceFields.get(alDataTypes[i]);
             if (editMode || (alSourceFields == null || alSourceFields.size() <= 0)) {
-                cbStandardizationTypes.addItem(alStandardizationTypes[i]);
+                cbStandardizationDataTypes.addItem(alDataTypes[i]);
             }
         }
         */
         
-        MatchType[] alStandardizationTypes;
-        alStandardizationTypes = ConfigGenerator.getMatchTypes(matchEngine);
-        for (int i = 0; i < alStandardizationTypes.length; i++) {
-            String matchTypeID = alStandardizationTypes[i].getMatchTypeID();
+        MatchType[] alDataTypes;
+        alDataTypes = ConfigGenerator.getMatchTypes(matchEngine);
+        for (int i = 0; i < alDataTypes.length; i++) {
+            String matchTypeID = alDataTypes[i].getMatchTypeID();
             ArrayList alSourceFields = (ArrayList) mMapSourceFields.get(matchTypeID);
             if (editMode || (alSourceFields == null || alSourceFields.size() <= 0)) {
                 if (matchTypeID.equals("Address") || matchTypeID.equals("BusinessName")) {
-                    cbStandardizationTypes.addItem(matchTypeID);
+                    cbStandardizationDataTypes.addItem(matchTypeID);
                 }
             }
         }
 
-        if (standardizationType != null) {
-            cbStandardizationTypes.setSelectedItem(standardizationType);
+        if (dataType != null) {
+            cbStandardizationDataTypes.setSelectedItem(dataType);
         } else {
-            cbStandardizationTypes.setSelectedIndex(0);
+            cbStandardizationDataTypes.setSelectedIndex(0);
         }
-        cbStandardizationTypes.setEnabled(!editMode);
+        cbStandardizationDataTypes.setEnabled(!editMode);
     }
     
     private void loadSelectedSourceFields() {
-        String standardizationType = getStandardizationType();
+        String dataType = getStandardizationDataType();
         //get this from memory
-        mAlSourceFieldNames = (ArrayList) mMapSourceFields.get(standardizationType);
+        mAlSourceFieldNames = (ArrayList) mMapSourceFields.get(dataType);
         if (mAlSourceFieldNames != null) {
             mLstSources.setListData(mAlSourceFieldNames.toArray());
         } else {
@@ -593,8 +611,8 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
     }
     
     private void loadSelectedFieldIDs() {
-        String standardizationType = getStandardizationType();
-        mAlFieldIDs = (ArrayList) mMapFieldIDs.get(standardizationType);
+        String dataType = getStandardizationDataType();
+        mAlFieldIDs = (ArrayList) mMapFieldIDs.get(dataType);
         if (mAlFieldIDs != null) {
             mLstFieldIDs.setListData(mAlFieldIDs.toArray());
         } else {
@@ -604,51 +622,51 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
         //jScrollPaneFieldIDs.setViewportView(mLstFieldIDs);
     }
     
-    private void loadLocaleCodesTable(boolean editMode) {
+    private void loadVariantTable(boolean editMode) {
         ArrayList rows = new ArrayList();
         if (editMode) {
-            ArrayList alLocaleCodes = mFreeFormGroup.getLocaleCodes();
+            ArrayList alVariants = mFreeFormGroup.getLocaleCodes();
 
-            for (int i=0; alLocaleCodes != null && i < alLocaleCodes.size(); i++) {
-                LocaleCode localeCode = (LocaleCode) alLocaleCodes.get(i);
-                if (localeCode != null) {
-                    rows.add(localeCode);
+            for (int i=0; alVariants != null && i < alVariants.size(); i++) {
+                LocaleCode variant = (LocaleCode) alVariants.get(i);
+                if (variant != null) {
+                    rows.add(variant);
                 }
             }
         }
-        LocaleCodesTableModel model = new LocaleCodesTableModel(rows);
-        mTblLocaleCodes = new JTable(model);
-        mTblLocaleCodes.getTableHeader().setReorderingAllowed(false);
-        jScrollPaneLocaleCodes.setViewportView(mTblLocaleCodes);
+        VariantsTableModel model = new VariantsTableModel(rows);
+        mTblVariants = new JTable(model);
+        mTblVariants.getTableHeader().setReorderingAllowed(false);
+        jScrollPaneVariants.setViewportView(mTblVariants);
         
-        mTblLocaleCodes.addMouseListener(new java.awt.event.MouseAdapter() {
+        mTblVariants.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
-                    onEditLocaleCode(null);
+                    onEditVariant(null);
                 } else {
-                    btnRemoveLocaleMap.setEnabled(true);
-                    if (mTblLocaleCodes.getSelectedRowCount() > 1) {
-                        btnEditLocaleMap.setEnabled(false);
+                    btnRemoveVariantMap.setEnabled(true);
+                    if (mTblVariants.getSelectedRowCount() > 1) {
+                        btnEditVariantMap.setEnabled(false);
                     } else {
-                        btnEditLocaleMap.setEnabled(true);
+                        btnEditVariantMap.setEnabled(true);
                     }
                 }
             }
         });
     }
     
-    // Table model for Locale Maps
-    class LocaleCodesTableModel extends AbstractTableModel {
+    // Table model for Variant Maps
+    class VariantsTableModel extends AbstractTableModel {
         private	String columnNames [] = {NbBundle.getMessage(StandardizationTypeAddDialog.class, "LBL_Value"),
-                                         NbBundle.getMessage(StandardizationTypeAddDialog.class, "LBL_Locale")
+                                         NbBundle.getMessage(StandardizationTypeAddDialog.class, "LBL_Variant")
                                         };
         int iColValue = 0;
-        int iColLocale = 1;
-        ArrayList localeCodeRows;
+        int iColVariant = 1;
+        ArrayList variantRows;
         
-        LocaleCodesTableModel(ArrayList rows) {
-            localeCodeRows = rows;
+        VariantsTableModel(ArrayList rows) {
+            variantRows = rows;
         }
         
         public int getColumnCount() {
@@ -656,8 +674,8 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
         }
 
         public int getRowCount() {
-            if (localeCodeRows != null) {
-                return localeCodeRows.size();
+            if (variantRows != null) {
+                return variantRows.size();
             }
             return 0;
         }
@@ -667,11 +685,11 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
         }
 
         public Object getValueAt(int row, int col) {
-            if (localeCodeRows != null) {
-                LocaleCode singleRow = (LocaleCode) localeCodeRows.get(row);
+            if (variantRows != null) {
+                LocaleCode singleRow = (LocaleCode) variantRows.get(row);
                 if (singleRow != null && col == iColValue) {
                     return singleRow.getValue();
-                } else if (singleRow != null && col == iColLocale) {
+                } else if (singleRow != null && col == iColVariant) {
                     return singleRow.getLocaleCode();
                 }
             }
@@ -697,11 +715,11 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
          * data can change.
          */
         public void setValueAt(Object value, int row, int col) {
-            if (localeCodeRows != null) {
-                LocaleCode singleRow = (LocaleCode) localeCodeRows.get(row);
+            if (variantRows != null) {
+                LocaleCode singleRow = (LocaleCode) variantRows.get(row);
                 if (col == iColValue) {
                     singleRow.setValue((String) value);
-                } else if (col == iColLocale) {
+                } else if (col == iColVariant) {
                     singleRow.setLocaleCode((String) value);
                 }
             }
@@ -709,25 +727,43 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
         }
         
         public void addRow(LocaleCode singleRow) {
-            localeCodeRows.add(singleRow);
+            variantRows.add(singleRow);
             this.fireTableRowsInserted(0, getRowCount());
         }
         
         public void removeRow(int index) {
-            localeCodeRows.remove(index);
+            variantRows.remove(index);
             this.fireTableRowsDeleted(index, index);
         }
         
-        public ArrayList getLocaleCodeRows() {
-            return localeCodeRows;
+        public ArrayList getVariantRows() {
+            return variantRows;
+        }
+    }
+    
+    private void loadSupportedVariants(String dataType) {
+        try {
+            StandardizerIntrospector introspector = mEviewApplication.getStandardizerIntrospector();
+            DataTypeDescriptor dataTypeDescriptor = introspector.getDataType(dataType);
+            VariantDescriptor[] variantDescriptors = dataTypeDescriptor.variants();
+            for (VariantDescriptor variantDescriptor: variantDescriptors) {
+                mAlSupportedVariants.add(variantDescriptor.getName());
+            }
+        } catch (Exception ex) {
+            // ToDo: Kevin/Ricardo/Shant Need to remove this when all data types are supported
+            mAlSupportedVariants.add("AU");
+            mAlSupportedVariants.add("FR");
+            mAlSupportedVariants.add("UK");
+            mAlSupportedVariants.add("US");
+            mLog.severe(ex.getMessage());
         }
     }
     
     private void loadTargetMappingsTable() {
         //mMapFieldIDsPerTargetField
         //mMapTargetFields
-        String standardizationType = getStandardizationType();
-        ArrayList mAlTargetFields = (ArrayList) mMapTargetFields.get(standardizationType);
+        String dataType = getStandardizationDataType();
+        ArrayList mAlTargetFields = (ArrayList) mMapTargetFields.get(dataType);
         ArrayList rows = new ArrayList();
         for (int i=0; i < mAlTargetFields.size(); i++) {
             String fieldName = (String) mAlTargetFields.get(i);
@@ -886,28 +922,27 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
     }
     
     /*
-     *@return standardizationType
+     *@return dataType
      */
-    public String getStandardizationType() {
-        String standardizationType = (String) cbStandardizationTypes.getSelectedItem();
-        return standardizationType;
+    public String getStandardizationDataType() {
+        String dataType = (String) cbStandardizationDataTypes.getSelectedItem();
+        return dataType;
     }
     
     public String getDomainSelector() {
         return this.cbDomainSelector.getSelectedItem().toString();
     }
     
-    public String getLocaleFieldName() {
-        return this.jTextFieldLocaleFieldName.getText();
+    public String getVariantFieldName() {
+        return this.jTextFieldVariant.getText();
     }
     
     /*
-     *@return ArrayList of LocaleRow
+     *@return ArrayList of VariantRow
      */
-    public ArrayList getLocaleCodeRows() {
-        ArrayList localeCodeRows;
-        LocaleCodesTableModel model = (LocaleCodesTableModel) mTblLocaleCodes.getModel();
-        return model.getLocaleCodeRows();
+    public ArrayList getVariantRows() {
+        VariantsTableModel model = (VariantsTableModel) mTblVariants.getModel();
+        return model.getVariantRows();
     }
     
     public ArrayList getSelectedSourceFields() {
@@ -932,24 +967,24 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddLocaleMap;
     private javax.swing.JButton btnAddSource;
     private javax.swing.JButton btnAddTargetMapping;
+    private javax.swing.JButton btnAddVariantMap;
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnEditLocaleMap;
     private javax.swing.JButton btnEditTargetMapping;
+    private javax.swing.JButton btnEditVariantMap;
     private javax.swing.JButton btnOK;
-    private javax.swing.JButton btnRemoveLocaleMap;
     private javax.swing.JButton btnRemoveSource;
     private javax.swing.JButton btnRemoveTargetMapping;
-    private javax.swing.JButton btnSelectLocaleFieldName;
+    private javax.swing.JButton btnRemoveVariantMap;
+    private javax.swing.JButton btnSelectVariantFieldName;
     private javax.swing.JComboBox cbDomainSelector;
-    private javax.swing.JComboBox cbStandardizationTypes;
+    private javax.swing.JComboBox cbStandardizationDataTypes;
     private javax.swing.JLabel jLabelDomainSelector;
-    private javax.swing.JScrollPane jScrollPaneLocaleCodes;
     private javax.swing.JScrollPane jScrollPaneSourceFields;
     private javax.swing.JScrollPane jScrollPaneTargetMappings;
-    private javax.swing.JTextField jTextFieldLocaleFieldName;
+    private javax.swing.JScrollPane jScrollPaneVariants;
+    private javax.swing.JTextField jTextFieldVariant;
     private javax.swing.JLabel lblDesc;
     private javax.swing.JLabel lblStep4;
     private javax.swing.JPanel pnlConfiguration;

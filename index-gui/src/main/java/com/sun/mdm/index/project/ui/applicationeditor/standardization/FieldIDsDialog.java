@@ -54,7 +54,7 @@ public class FieldIDsDialog extends javax.swing.JDialog {
         loadFieldIDsSelected(alFieldIDs);
         // List of "standardized-object-field-id" per standardization type
         // Address, BusinessName, PersonFirstName, etc.
-        loadFieldIDsAvailable(entityTree.getEviewApplication().getStandardizationFieldIDsByType(standardizationType));
+        loadFieldIDsAvailable(entityTree.getEviewApplication().getStandardizationComponentsByType(standardizationType));
         scrollPaneFieldIDsAvailable.setViewportView(mLstFieldIDsAvailable);
         scrollPaneFieldIDsSelected.setViewportView(mLstFieldIDsSelected);
     }

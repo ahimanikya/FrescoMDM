@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
+<Form version="1.3" maxVersion="1.3" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="title" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
@@ -41,20 +41,20 @@
           </Group>
           <Group type="102" attributes="0">
               <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-              <Component id="jLabelLocaleFieldName" min="-2" pref="140" max="-2" attributes="0"/>
-              <Component id="jTextFieldLocaleFieldName" min="-2" pref="330" max="-2" attributes="0"/>
+              <Component id="jLabelVariantFieldName" min="-2" pref="140" max="-2" attributes="0"/>
+              <Component id="jTextFieldVariantFieldName" min="-2" pref="330" max="-2" attributes="0"/>
               <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-              <Component id="jButtonSelectLocaleFieldName" min="-2" pref="80" max="-2" attributes="0"/>
+              <Component id="jButtonSelectVariantFieldName" min="-2" pref="80" max="-2" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
               <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-              <Component id="jScrollPaneLocaleCodes" min="-2" pref="560" max="-2" attributes="0"/>
+              <Component id="jScrollPaneVariants" min="-2" pref="560" max="-2" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
               <EmptySpace min="330" pref="330" max="330" attributes="0"/>
-              <Component id="btnAddLocaleMap" min="-2" pref="80" max="-2" attributes="0"/>
-              <Component id="btnRemoveLocaleMap" min="-2" pref="80" max="-2" attributes="0"/>
-              <Component id="btnEditLocaleMap" min="-2" pref="80" max="-2" attributes="0"/>
+              <Component id="btnAddVariantMap" min="-2" pref="80" max="-2" attributes="0"/>
+              <Component id="btnRemoveVariantMap" min="-2" pref="80" max="-2" attributes="0"/>
+              <Component id="btnEditVariantMap" min="-2" pref="80" max="-2" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
               <EmptySpace min="10" pref="10" max="10" attributes="0"/>
@@ -86,17 +86,17 @@
               </Group>
               <EmptySpace min="8" pref="8" max="8" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabelLocaleFieldName" min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="jTextFieldLocaleFieldName" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButtonSelectLocaleFieldName" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="jLabelVariantFieldName" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="jTextFieldVariantFieldName" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonSelectVariantFieldName" min="-2" pref="20" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-              <Component id="jScrollPaneLocaleCodes" min="-2" pref="110" max="-2" attributes="0"/>
+              <Component id="jScrollPaneVariants" min="-2" pref="110" max="-2" attributes="0"/>
               <EmptySpace min="10" pref="10" max="10" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btnAddLocaleMap" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnRemoveLocaleMap" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnEditLocaleMap" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnAddVariantMap" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnRemoveVariantMap" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnEditVariantMap" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="7" pref="7" max="7" attributes="0"/>
               <Component id="jPanelUnnormalizedSource" min="-2" pref="100" max="-2" attributes="0"/>
@@ -311,33 +311,38 @@
         <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cbStandardizationTypesonTypeSelected"/>
       </Events>
     </Component>
-    <Container class="javax.swing.JScrollPane" name="jScrollPaneLocaleCodes">
+    <Container class="javax.swing.JScrollPane" name="jScrollPaneVariants">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Locale Codes">
+            <TitledBorder title="Variants">
               <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
-              <ResourceString PropertyName="titleX" bundle="com/sun/mdm/index/project/ui/applicationeditor/standardization/Bundle.properties" key="LBL_Locale_Codes" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+              <ResourceString PropertyName="titleX" bundle="com/sun/mdm/index/project/ui/applicationeditor/standardization/Bundle.properties" key="LBL_Variants" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
         </Property>
       </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/standardization/Bundle.properties" key="LBL_Variants" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+        </Property>
+      </AccessibilityProperties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
     </Container>
-    <Component class="javax.swing.JButton" name="btnAddLocaleMap">
+    <Component class="javax.swing.JButton" name="btnAddVariantMap">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/standardization/Bundle.properties" key="LBL_Add" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onAddLocaleCode"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onAddVariant"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnRemoveLocaleMap">
+    <Component class="javax.swing.JButton" name="btnRemoveVariantMap">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/standardization/Bundle.properties" key="LBL_Remove" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -345,13 +350,13 @@
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onRemoveLocaleCode"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onRemoveVariant"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="btnRemoveLocaleMap.setEnabled(false);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="btnRemoveVariantMap.setEnabled(false);"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JButton" name="btnEditLocaleMap">
+    <Component class="javax.swing.JButton" name="btnEditVariantMap">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/standardization/Bundle.properties" key="LBL_Edit" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -359,32 +364,37 @@
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onEditLocaleCode"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onEditVariant"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="btnEditLocaleMap.setEnabled(false);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="btnEditVariantMap.setEnabled(false);"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabelLocaleFieldName">
+    <Component class="javax.swing.JLabel" name="jLabelVariantFieldName">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/standardization/Bundle.properties" key="LBL_Locale_Field_Name" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/standardization/Bundle.properties" key="LBL_Variant_Field_Name" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/matching/Bundle.properties" key="LBL_Variant_Field_Name" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+        </Property>
+      </AccessibilityProperties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextFieldLocaleFieldName">
+    <Component class="javax.swing.JTextField" name="jTextFieldVariantFieldName">
       <Properties>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButtonSelectLocaleFieldName">
+    <Component class="javax.swing.JButton" name="jButtonSelectVariantFieldName">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/standardization/Bundle.properties" key="LBL_Browse" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onButtonSelectLocaleFieldName"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onButtonSelectVariantFieldName"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelDomainSelector">

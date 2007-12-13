@@ -39,10 +39,12 @@ import java.io.File;
 //import java.io.FileNotFoundException;
 import java.util.jar.JarFile;
 
-//import com.sun.mdm.standardizer.DataTypeDescriptor;
-//import com.sun.mdm.standardizer.StandardizerIntrospector;
-//import com.sun.mdm.standardizer.VariantDescriptor;
-//import com.sun.mdm.standardizer.engine.DefaultStandardizerIntrospector;
+import com.sun.mdm.index.project.EviewApplication;
+
+import com.sun.mdm.standardizer.Descriptor;
+import com.sun.mdm.standardizer.DataTypeDescriptor;
+import com.sun.mdm.standardizer.StandardizerIntrospector;
+import com.sun.mdm.standardizer.VariantDescriptor;
 
 /**
  * To get Standardization jar with dataTypeDescription.xml
@@ -99,36 +101,16 @@ public class ImportStandardizationDataTypeAction extends CookieAction {
                             
                             File selectedFile = fc.getSelectedFile();
                             String pathSelectedFile = selectedFile.getAbsolutePath();
-                            //ToDo Kevin/Ricardo/Shant
+
                             //Call util to get the data type, create sub folder, e.g. Address
-                            //JarFile jarDataType = new JarFile(pathSelectedFile);
-                            //StandardizerIntrospector introspector = new DefaultStandardizerIntrospector();
-                            //DataTypeDescriptor dataTypeDescriptor = introspector.introspectDataType(jarDataType);
-
-                            String strDataType = "Address"; 
-                            //String strDataType = dataTypeDescriptor.getName();
-                            //String strDescription = dataTypeDescriptor.getDescription();
-                            FileObject newDataTypeFolder = standFolder.getFileObject(strDataType);
-                            if (newDataTypeFolder == null) {
-                                newDataTypeFolder = FileUtil.createFolder(standFolder, strDataType);
-                            }
-                            //EviewStandardizationDataTypeNode standardizationDataTypeNode = new EviewStandardizationDataTypeNode(strDataType, DataFolder.findFolder(newDataTypeFolder)); 
-
-                            //for (String variantId: dataTypeDescriptor.variantsIds()) {
-                            //    VariantDescriptor variantDescriptor = dataTypeDescriptor.getVariant(variantId);
-                            //    String variantId = variantDescriptor.getId();
-                            //}
-                            // The default variant (if one exists)
-                            //System.out.println("Default variant in address data type: " + dataTypeDescriptor.getDefaultVariant().getId());
-		
-                            // The token names for this data type (this would be the fields to map to DB)
-                            //for (String fieldName: dataTypeDescriptor.tokenNames()) {
-                            //    System.out.println(fieldName);
-                            //}
-
-
-                            FileObject fo = FileUtil.toFileObject(selectedFile);
-                            FileUtil.copyFile(fo, newDataTypeFolder, fo.getName());
+                            JarFile jarDataType = new JarFile(pathSelectedFile);
+                            String strDataType = "unknown";
+                            EviewApplication eviewApplication = standardizationFolderNode.getEviewApplication();
+                            
+                            StandardizerIntrospector introspector = eviewApplication.getStandardizerIntrospector();
+                            introspector.setRepository(FileUtil.toFile(standFolder));
+                            Descriptor dataTypeDescriptor = introspector.importJar(jarDataType);
+                            eviewApplication.closeStandardizerIntrospector();
                         }                          
                     } catch (Exception e) {
                         mLog.severe(NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_FAILED_To_Import_Standardization_Plugin")); // NOI18N

@@ -150,8 +150,11 @@ public class TabNormalizationPanel extends javax.swing.JPanel {
                                                                             unnormalizedFieldID, unnormalizedSourceField,
                                                                             normalizedFieldID, normalizedTargetField);
         String domainSelector = group.getDomainSelector();
-        NormalizedFieldEditDialog dlg = new NormalizedFieldEditDialog(mEviewEditorMainApp.getEviewEditorMainPanel().getEntityTree(true), 
-                mMatchFieldDef, group, true);
+        NormalizedFieldEditDialog dlg = new NormalizedFieldEditDialog(mEviewApplication, 
+                                                                      mEviewEditorMainApp.getEviewEditorMainPanel().getEntityTree(true), 
+                                                                      mMatchFieldDef, 
+                                                                      group, 
+                                                                      true);
         /*
         NormalizedFieldEditDialog dlg = new NormalizedFieldEditDialog(mEviewEditorMainApp.getEviewEditorMainPanel().getEntityTree(true), 
                 standardizationType, domainSelector,
@@ -169,11 +172,11 @@ public class TabNormalizationPanel extends javax.swing.JPanel {
             normalizedFieldID = dlg.getNormalizedFieldID();
             normalizedTargetField = dlg.getStandardizedTarget();
             domainSelector = dlg.getDomainSelector();
-            String localeFieldName = dlg.getLocaleFieldName();
-            ArrayList localeCodeRows = dlg.getLocaleCodeRows();
+            String variantFieldName = dlg.getVariantFieldName();
+            ArrayList localeCodeRows = dlg.getVariantRows();
             
             group.setDomainSelector(domainSelector);
-            group.setLocaleFieldName(localeFieldName != null ? localeFieldName : "");
+            group.setLocaleFieldName(variantFieldName != null ? variantFieldName : "");
             group.setLocaleCodes(localeCodeRows);
             group.setUnnormalizedFieldId(unnormalizedFieldID);
             group.setUnnormalizedSourceFieldName(unnormalizedSourceField);
@@ -228,8 +231,11 @@ public class TabNormalizationPanel extends javax.swing.JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         int iInsertRow = mTblNormalizationTypes.getRowCount();        
-        NormalizedFieldEditDialog dlg = new NormalizedFieldEditDialog(mEviewEditorMainApp.getEviewEditorMainPanel().getEntityTree(true), 
-                mMatchFieldDef, null, false);
+        NormalizedFieldEditDialog dlg = new NormalizedFieldEditDialog(mEviewApplication,
+                                                                      mEviewEditorMainApp.getEviewEditorMainPanel().getEntityTree(true), 
+                                                                      mMatchFieldDef, 
+                                                                      null, 
+                                                                      false);
         dlg.setVisible(true);
         mEviewEditorMainApp.getEviewEditorMainPanel().setEntityTreePane();
         if (dlg.isModified()) {
@@ -239,8 +245,8 @@ public class TabNormalizationPanel extends javax.swing.JPanel {
             String normalizedFieldID = dlg.getNormalizedFieldID();
             String normalizedTargetField = dlg.getStandardizedTarget();
             String domainSelector = dlg.getDomainSelector();
-            String localeFieldName = dlg.getLocaleFieldName();
-            ArrayList localeCodeRows = dlg.getLocaleCodeRows();
+            String variantFieldName = dlg.getVariantFieldName();
+            ArrayList localeCodeRows = dlg.getVariantRows();
             
             NormalizationTypeRow r = new NormalizationTypeRow(standardizationType, 
                     unnormalizedFieldID,
@@ -257,7 +263,7 @@ public class TabNormalizationPanel extends javax.swing.JPanel {
             btnEdit.setEnabled(bCheckedOut);
             // update mMatchFieldDef
             mMatchFieldDef.addNormalizationGroup(standardizationType, domainSelector, 
-                                                 localeFieldName, localeCodeRows,
+                                                 variantFieldName, localeCodeRows,
                                                  unnormalizedFieldID, unnormalizedSourceField,
                                                  normalizedFieldID, normalizedTargetField);
 

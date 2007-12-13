@@ -28,23 +28,16 @@ public class LocaleCodeDialog extends javax.swing.JDialog {
     boolean mModified;
     
     /** Creates new form LocaleCodeDialog */
-    public LocaleCodeDialog(String value, String locale, boolean editMode) {
+    public LocaleCodeDialog(String value, String variant, boolean editMode, ArrayList allSupportedVariants) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         initComponents();
-        /* ToDo Kevin/Ricardo/Shant */
-        //ArrayList alSupportedLocales = getSupportedLocales();
-        ArrayList alSupportedLocales = new ArrayList();
-        alSupportedLocales.add("AU");
-        alSupportedLocales.add("FR");
-        alSupportedLocales.add("UK");
-        alSupportedLocales.add("US");
-        for (int i=0; alSupportedLocales != null && i < alSupportedLocales.size(); i++) {
-            cbLocale.addItem(alSupportedLocales.get(i));
+        for (int i=0; allSupportedVariants != null && i < allSupportedVariants.size(); i++) {
+            cbVariants.addItem(allSupportedVariants.get(i));
         }
 
         if (editMode) {
-            jTextFieldValue.setText(value);
-            cbLocale.setSelectedItem(locale);
+            jTextVariantValue.setText(value);
+            cbVariants.setSelectedItem(variant);
         }
     }
     
@@ -56,29 +49,29 @@ public class LocaleCodeDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabelLocaleValue = new javax.swing.JLabel();
-        jTextFieldValue = new javax.swing.JTextField();
+        jLabelVariantValue = new javax.swing.JLabel();
+        jTextVariantValue = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jButtonOK = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
-        cbLocale = new javax.swing.JComboBox();
+        cbVariants = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/sun/mdm/index/project/ui/applicationeditor/standardization/Bundle"); // NOI18N
-        setTitle(bundle.getString("Title_Locale_Code")); // NOI18N
+        setTitle(bundle.getString("Title_Variant")); // NOI18N
         setModal(true);
         setName(""); // NOI18N
         setResizable(false);
 
-        jLabelLocaleValue.setText(bundle.getString("LBL_Locale_Value")); // NOI18N
+        jLabelVariantValue.setText(bundle.getString("LBL_Variant_Value")); // NOI18N
 
-        jTextFieldValue.addKeyListener(new java.awt.event.KeyAdapter() {
+        jTextVariantValue.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 onValueKeyReleased(evt);
             }
         });
 
-        jLabel1.setText(bundle.getString("LBL_Locale_Locale")); // NOI18N
+        jLabel1.setText(bundle.getString("LBL_Variant")); // NOI18N
 
         jButtonOK.setText(bundle.getString("LBL_OK")); // NOI18N
         jButtonOK.addActionListener(new java.awt.event.ActionListener() {
@@ -94,7 +87,7 @@ public class LocaleCodeDialog extends javax.swing.JDialog {
             }
         });
 
-        cbLocale.setEditable(true);
+        cbVariants.setEditable(true);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,12 +95,12 @@ public class LocaleCodeDialog extends javax.swing.JDialog {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .add(10, 10, 10)
-                .add(jLabelLocaleValue, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(jTextFieldValue, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 160, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(jLabelVariantValue, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jTextVariantValue, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 160, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
             .add(layout.createSequentialGroup()
                 .add(10, 10, 10)
                 .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(cbLocale, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 160, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(cbVariants, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 160, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
             .add(layout.createSequentialGroup()
                 .add(30, 30, 30)
                 .add(jButtonOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -119,24 +112,26 @@ public class LocaleCodeDialog extends javax.swing.JDialog {
             .add(layout.createSequentialGroup()
                 .add(10, 10, 10)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabelLocaleValue)
-                    .add(jTextFieldValue, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jLabelVariantValue)
+                    .add(jTextVariantValue, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(11, 11, 11)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jLabel1)
-                    .add(cbLocale, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(cbVariants, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(8, 8, 8)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jButtonOK)
                     .add(jButtonCancel)))
         );
 
+        jLabel1.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(LocaleCodeDialog.class, "LBL_Variant")); // NOI18N
+
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-259)/2, (screenSize.height-133)/2, 259, 133);
     }// </editor-fold>//GEN-END:initComponents
 
     private void onValueKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_onValueKeyReleased
-        boolean flag = jTextFieldValue.getText() != null && jTextFieldValue.getText().length() > 0;
+        boolean flag = jTextVariantValue.getText() != null && jTextVariantValue.getText().length() > 0;
     }//GEN-LAST:event_onValueKeyReleased
 
     private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCancel
@@ -150,11 +145,11 @@ public class LocaleCodeDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_onOK
     
     public String getValue() {
-        return jTextFieldValue.getText();
+        return jTextVariantValue.getText();
     }
     
-    public String getLocaleCode() {
-        return cbLocale.getSelectedItem().toString();
+    public String getVariant() {
+        return cbVariants.getSelectedItem().toString();
     }
     
     public boolean isModified() {
@@ -167,18 +162,18 @@ public class LocaleCodeDialog extends javax.swing.JDialog {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LocaleCodeDialog("", "US", true);
+                new LocaleCodeDialog("", "US", true, new ArrayList());
             }
         });
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox cbLocale;
+    private javax.swing.JComboBox cbVariants;
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonOK;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabelLocaleValue;
-    private javax.swing.JTextField jTextFieldValue;
+    private javax.swing.JLabel jLabelVariantValue;
+    private javax.swing.JTextField jTextVariantValue;
     // End of variables declaration//GEN-END:variables
     
 }

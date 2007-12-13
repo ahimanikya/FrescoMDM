@@ -41,16 +41,16 @@ import com.sun.mdm.index.project.ui.applicationeditor.EntityTreeSelectionDialog;
 
 public class TargetMappingDialog extends javax.swing.JDialog implements TreeSelectionListener {
     private EntityTree mEntityTree;
-    //private JList mLstFieldIDs;
+    //private JList mLstStandComponents;
     private String mStandardizationType;
     private JTable mTblTargetMappings;
     private boolean mModified = false;
-    private ArrayList mAlFieldIDsAvailable;
-    private ArrayList mAlFieldIDsSelected = new ArrayList();
-    private javax.swing.JList mLstFieldIDsAvailable;
+    private ArrayList mAlStandComponentsAvailable;
+    private ArrayList mAlStandComponentsSelected = new ArrayList();
+    private javax.swing.JList mLstStandComponentsAvailable;
     
     /** Creates new form TargetMappingDialog */
-    public TargetMappingDialog(EntityTree entityTree, String standardizationType, String targetFieldName, String fieldIDs, boolean editMode) {
+    public TargetMappingDialog(EntityTree entityTree, String standardizationType, String targetFieldName, String standComponentsSelected, boolean editMode) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         mEntityTree = entityTree;
         mEntityTree.setEditable(false);        
@@ -66,10 +66,10 @@ public class TargetMappingDialog extends javax.swing.JDialog implements TreeSele
         mEntityTree.addTreeSelectionListener(this);
 
         
-        if (fieldIDs != null && fieldIDs.length() > 0) {
-            String[] iDs = fieldIDs.split(";");
+        if (standComponentsSelected != null && standComponentsSelected.length() > 0) {
+            String[] iDs = standComponentsSelected.split(";");
             for (int i=0; iDs != null && i < iDs.length; i++) {
-                mAlFieldIDsSelected.add(iDs[i]);
+                mAlStandComponentsSelected.add(iDs[i]);
             }
         }
         
@@ -79,8 +79,8 @@ public class TargetMappingDialog extends javax.swing.JDialog implements TreeSele
         }        
         loadTargetMappingsTable();
         
-        mLstFieldIDsAvailable = new javax.swing.JList();
-        mLstFieldIDsAvailable.addMouseListener(new java.awt.event.MouseAdapter() {
+        mLstStandComponentsAvailable = new javax.swing.JList();
+        mLstStandComponentsAvailable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
                     btnAddFieldIDActionPerformed(null);
@@ -90,8 +90,8 @@ public class TargetMappingDialog extends javax.swing.JDialog implements TreeSele
             }
         });
         
-        loadFieldIDsAvailable(entityTree.getEviewApplication().getStandardizationFieldIDsByType(standardizationType));
-        scrollPaneFieldIDsAvailable.setViewportView(mLstFieldIDsAvailable);        
+        loadStandComponentsAvailable(entityTree.getEviewApplication().getStandardizationComponentsByType(standardizationType));
+        scrollPaneFieldIDsAvailable.setViewportView(mLstStandComponentsAvailable);        
     }
     
     /** This method is called from within the constructor to
@@ -298,12 +298,12 @@ public class TargetMappingDialog extends javax.swing.JDialog implements TreeSele
             for (int i=length - 1; i>=0 && i < length; i--) {
                 int j = rs[i];
                 String fieldID = (String) model.getValueAt(j,  1);
-                mAlFieldIDsSelected.remove(fieldID);
-                mAlFieldIDsAvailable.add(fieldID);
+                mAlStandComponentsSelected.remove(fieldID);
+                mAlStandComponentsAvailable.add(fieldID);
                 model.removeRow(j);
             }
-            //  mMapTargetFields.put(mStandardizationType, mAlFieldIDsSelected);
-            mLstFieldIDsAvailable.setListData(mAlFieldIDsAvailable.toArray());            
+            //  mMapTargetFields.put(mStandardizationType, mAlStandComponentsSelected);
+            mLstStandComponentsAvailable.setListData(mAlStandComponentsAvailable.toArray());            
             btnRemoveFieldID.setEnabled(false);
         }
         btnUp.setEnabled(false);
@@ -316,7 +316,7 @@ public class TargetMappingDialog extends javax.swing.JDialog implements TreeSele
     }//GEN-LAST:event_btnDownActionPerformed
 
     private void onTargetFieldPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_onTargetFieldPropertyChange
-        btnOK.setEnabled(txtTargetFieldName.getText().length() > 0 && mAlFieldIDsSelected.size() > 0);
+        btnOK.setEnabled(txtTargetFieldName.getText().length() > 0 && mAlStandComponentsSelected.size() > 0);
     }//GEN-LAST:event_onTargetFieldPropertyChange
 
     private void btnUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpActionPerformed
@@ -328,9 +328,9 @@ public class TargetMappingDialog extends javax.swing.JDialog implements TreeSele
         int iInsertTo = iSelectedRow + (moveUp ? -1 : 1);
         TargetMappingsTableModel model = (TargetMappingsTableModel) mTblTargetMappings.getModel();
         TargetMappingsRow row = model.removeRow(iSelectedRow);
-        mAlFieldIDsSelected.remove(iSelectedRow);
+        mAlStandComponentsSelected.remove(iSelectedRow);
         model.insertRow(row, iInsertTo);
-        mAlFieldIDsSelected.add(iInsertTo, row.getFieldID());
+        mAlStandComponentsSelected.add(iInsertTo, row.getFieldID());
         mTblTargetMappings.addRowSelectionInterval(iInsertTo, iInsertTo);
         boolean bEnabled = iInsertTo > 0;
         btnUp.setEnabled(iInsertTo > 0);
@@ -349,19 +349,19 @@ public class TargetMappingDialog extends javax.swing.JDialog implements TreeSele
     }//GEN-LAST:event_onOK
 
     private void btnAddFieldIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFieldIDActionPerformed
-        if (mLstFieldIDsAvailable != null && mLstFieldIDsAvailable.getModel().getSize() > 0) {
-            Object[] fieldNames = mLstFieldIDsAvailable.getSelectedValues();
+        if (mLstStandComponentsAvailable != null && mLstStandComponentsAvailable.getModel().getSize() > 0) {
+            Object[] fieldNames = mLstStandComponentsAvailable.getSelectedValues();
             int[] indices = new int[fieldNames.length];
             int j = -1;
             for (int i=fieldNames.length - 1; i>=0 && i < fieldNames.length; i--) {
-                if (mAlFieldIDsSelected != null && !mAlFieldIDsSelected.contains(fieldNames[i])) {
-                    mAlFieldIDsSelected.add(fieldNames[i]);
-                    int index = mAlFieldIDsSelected.indexOf(fieldNames[i]);
+                if (mAlStandComponentsSelected != null && !mAlStandComponentsSelected.contains(fieldNames[i])) {
+                    mAlStandComponentsSelected.add(fieldNames[i]);
+                    int index = mAlStandComponentsSelected.indexOf(fieldNames[i]);
                     indices[++j] = index;
-                    mAlFieldIDsAvailable.remove(fieldNames[i]);
+                    mAlStandComponentsAvailable.remove(fieldNames[i]);
                 }
             }
-            mLstFieldIDsAvailable.setListData(mAlFieldIDsAvailable.toArray());
+            mLstStandComponentsAvailable.setListData(mAlStandComponentsAvailable.toArray());
         }
         
         loadTargetMappingsTable();
@@ -381,13 +381,13 @@ public class TargetMappingDialog extends javax.swing.JDialog implements TreeSele
     }
     
     public ArrayList getFieldIDs() {
-        ArrayList alFieldIDs = new ArrayList();
+        ArrayList alStandComponents = new ArrayList();
         TargetMappingsTableModel targetMappingsTableModel = (TargetMappingsTableModel) mTblTargetMappings.getModel();
         for (int i=0; i < targetMappingsTableModel.getRowCount(); i++) {
             String fieldID = (String) targetMappingsTableModel.getValueAt(i,  1);
-            alFieldIDs.add(fieldID);
+            alStandComponents.add(fieldID);
         }
-        return alFieldIDs;
+        return alStandComponents;
     }
     
     public boolean isModified() {
@@ -397,8 +397,8 @@ public class TargetMappingDialog extends javax.swing.JDialog implements TreeSele
     
     private void loadTargetMappingsTable() {
         ArrayList rows = new ArrayList();
-        for (int i=0; i < mAlFieldIDsSelected.size(); i++) {
-            TargetMappingsRow r = new TargetMappingsRow(i+1, (String) mAlFieldIDsSelected.get(i)); //, this.txtTargetFieldName.getText());
+        for (int i=0; i < mAlStandComponentsSelected.size(); i++) {
+            TargetMappingsRow r = new TargetMappingsRow(i+1, (String) mAlStandComponentsSelected.get(i)); //, this.txtTargetFieldName.getText());
             rows.add(r);
         }
         TargetMappingsTableModel targetMappingsTableModel = new TargetMappingsTableModel(rows);
@@ -433,19 +433,19 @@ public class TargetMappingDialog extends javax.swing.JDialog implements TreeSele
                 }
             });
             
-        btnOK.setEnabled(txtTargetFieldName.getText().length() > 0 && mAlFieldIDsSelected.size() > 0);
+        btnOK.setEnabled(txtTargetFieldName.getText().length() > 0 && mAlStandComponentsSelected.size() > 0);
     }
     
-    private void loadFieldIDsAvailable(ArrayList alFieldIDsAvailable) {
-        mAlFieldIDsAvailable = alFieldIDsAvailable;
-        if (mAlFieldIDsAvailable != null && mAlFieldIDsSelected != null) {
-            for (int i=0; i < mAlFieldIDsSelected.size(); i++) {
-                String fieldIdSelected = (String) mAlFieldIDsSelected.get(i);
-                if (mAlFieldIDsAvailable.contains(fieldIdSelected)) {
-                    mAlFieldIDsAvailable.remove(fieldIdSelected);
+    private void loadStandComponentsAvailable(ArrayList alStandComponentsAvailable) {
+        mAlStandComponentsAvailable = alStandComponentsAvailable;
+        if (mAlStandComponentsAvailable != null && mAlStandComponentsSelected != null) {
+            for (int i=0; i < mAlStandComponentsSelected.size(); i++) {
+                String fieldIdSelected = (String) mAlStandComponentsSelected.get(i);
+                if (mAlStandComponentsAvailable.contains(fieldIdSelected)) {
+                    mAlStandComponentsAvailable.remove(fieldIdSelected);
                 }
             }
-            mLstFieldIDsAvailable.setListData(mAlFieldIDsAvailable.toArray());            
+            mLstStandComponentsAvailable.setListData(mAlStandComponentsAvailable.toArray());            
         }
     }
     

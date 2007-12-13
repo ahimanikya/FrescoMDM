@@ -5,9 +5,27 @@ OpenIDE-Module-Java-Dependencies: Java > 1.5
 AutoUpdate-Show-In-Client: true
 OpenIDE-Module: com.sun.mdm.index.project
 OpenIDE-Module-Layer: com/sun/mdm/index/project/layer.xml
-OpenIDE-Module-Localizing-Bundle: com/sun/mdm/index/project/Bundle.pro
- perties
+OpenIDE-Module-Localizing-Bundle: com/sun/mdm/index/project/Bundle.properties
 OpenIDE-Module-Specification-Version: 1.0
 OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
-Class-Path: ext/eview/index-core.jar ext/eview/net.java.hulp.i18n.jar ext/eview/net.java.hulp.i18ntask.jar ext/eview/sun_matcher.jar
-
+Class-Path: ext/eview/index-core.jar 
+    ext/eview/net.java.hulp.i18n.jar 
+    ext/eview/net.java.hulp.i18ntask.jar 
+    ext/eview/sun_matcher.jar 
+    ext/eview/standardizer/lib/mdm-standardizer.jar 
+    ext/eview/standardizer/lib/aopalliance-1.0.jar 
+    ext/eview/standardizer/lib/asm-2.2.3.jar 
+    ext/eview/standardizer/lib/asm-commons-2.2.3.jar 
+    ext/eview/standardizer/lib/asm-tree-2.2.3.jar 
+    ext/eview/standardizer/lib/aspectjrt.jar 
+    ext/eview/standardizer/lib/script-api.jar 
+    ext/eview/standardizer/lib/cglib-nodep-2.1_3.jar 
+    ext/eview/standardizer/lib/spring-beans-2.0.5.jar 
+    ext/eview/standardizer/lib/spring-core-2.0.5.jar 
+    ext/eview/standardizer/lib/spring-aop-2.0.5.jar 
+    ext/eview/standardizer/lib/spring-context-2.0.5.jar 
+    ext/eview/standardizer/lib/spring-javaconfig-1.0-m2.jar 
+    ext/eview/standardizer/lib/spring-support-2.0.5.jar 
+    ext/eview/standardizer/lib/commons-beanutils.jar 
+    ext/eview/standardizer/lib/commons-collections-2.1.1.jar 
+    ext/eview/standardizer/lib/commons-logging-1.1.jar 

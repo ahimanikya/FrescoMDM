@@ -27,8 +27,10 @@ import org.netbeans.spi.project.support.ant.EditableProperties;
 
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileLock;
+import org.openide.filesystems.FileUtil;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.File;
 import org.openide.nodes.Node;
 
 
@@ -36,6 +38,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import org.xml.sax.InputSource;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import com.sun.mdm.index.parser.Utils;
 import com.sun.mdm.index.parser.EIndexObject;
@@ -44,6 +50,11 @@ import com.sun.mdm.index.parser.MasterType;
 import com.sun.mdm.index.parser.UpdateType;
 import com.sun.mdm.index.parser.QueryType;
 import com.sun.mdm.index.parser.MatchFieldDef;
+
+import com.sun.mdm.standardizer.StandardizerIntrospector;
+import com.sun.mdm.standardizer.DataTypeDescriptor;
+import com.sun.mdm.standardizer.VariantDescriptor;
+import com.sun.mdm.standardizer.util.StandardizerUtils;
 
 public class EviewApplication extends EviewProject {
     private static final java.util.logging.Logger mLog = java.util.logging.Logger.getLogger(
@@ -79,12 +90,12 @@ public class EviewApplication extends EviewProject {
     private ArrayList<String> mAlMatchTypes = null;  // MATCH_CONFIG_FILE
     private String msgCheckedOut = "";
     private boolean bNeedToCheckIn;
+    private StandardizerIntrospector mStandardizerIntrospector;
     
     /** Creates a new instance of EviewApplication */
-    public EviewApplication(final AntProjectHelper helper) throws IOException {
+    public EviewApplication(final AntProjectHelper helper) throws IOException  {
         super(helper);
         mHelper = helper;
-        setStandardizationFieldIDs();
     }
     
     private EditableProperties getEditableProperties() {
@@ -414,7 +425,9 @@ public class EviewApplication extends EviewProject {
                             }
                         }                        
                     }
+                    is.close();
                 } catch (Exception ex) {
+                    this.mLog.severe(ex.getMessage());
                 }
             }
         }
@@ -448,75 +461,76 @@ public class EviewApplication extends EviewProject {
         mMatchFieldDef = matchFieldDef;
     }
     
-    // Should include Match Engine when more engines are added
-    // These Field IDs should also match those listed in "MefaStandardization.tmpl"
-    // address
-    // businessname
-    // personname
-    // The following are not supported
-    // char
-    // date
-    // number
-    // personfirstname
-    // personlastname
-    // string
-    final String STANDTYPE_ADDRESS = "Address";
-    final String STANDTYPE_BUSINESSNAME = "BusinessName";
-    final String STANDTYPE_PERSONNAME = "PersonName";
-    final ArrayList<String> alFieldIDsAddress = new ArrayList<String>();
-    final ArrayList<String> alFieldIDsBusinessName = new ArrayList<String> ();
-    final ArrayList<String> alFieldIDsPersonName = new ArrayList<String> ();
-    /*
-    final String STANDTYPE_PERSONFIRSTNAME = "PersonFirstName";
-    final String STANDTYPE_PERSONLASTNAME = "PersonLastName";
-    final String STANDTYPE_CHAR = "Char";
-    final String STANDTYPE_DATE = "Date";
-    final String STANDTYPE_NUMBER = "Number";
-    final String STANDTYPE_SRING = "String";
-    final ArrayList<String> alFieldIDsPersonFirstName = new ArrayList<String>();
-    final ArrayList<String> alFieldIDsPersonLastName = new ArrayList<String>();
-    final ArrayList<String> alFieldIDsCharName = new ArrayList<String>();
-    final ArrayList<String> alFieldIDsDateName = new ArrayList<String>();
-    */     
-    private void setStandardizationFieldIDs() {
-        // STANDTYPE_ADDRESS
-        alFieldIDsAddress.add("HouseNumber");
-        alFieldIDsAddress.add("RuralRouteIdentif");
-        alFieldIDsAddress.add("BoxIdentif");
-        alFieldIDsAddress.add("MatchStreetName");        
-        alFieldIDsAddress.add("RuralRouteDescript");        
-        alFieldIDsAddress.add("BoxDescript");        
-        alFieldIDsAddress.add("PropDesPrefDirection");        
-        alFieldIDsAddress.add("PropDesSufDirection");        
-        alFieldIDsAddress.add("StreetNamePrefDirection");        
-        alFieldIDsAddress.add("StreetNameSufDirection");                
-        alFieldIDsAddress.add("StreetNameSufType");                
-        alFieldIDsAddress.add("StreetNamePrefType");                
-        alFieldIDsAddress.add("PropDesSufType");                
-        alFieldIDsAddress.add("PropDesPrefType");     
-        // STANDTYPE_BUSINESSNAME
-        alFieldIDsBusinessName.add("PrimaryName");
-        alFieldIDsBusinessName.add("OrgTypeKeyword");
-        alFieldIDsBusinessName.add("AssocTypeKeyword");
-        alFieldIDsBusinessName.add("IndustrySectorList");
-        alFieldIDsBusinessName.add("IndustryTypeKeyword");
-        alFieldIDsBusinessName.add("Url");
-        // STANDTYPE_PERSONNAME
-        alFieldIDsPersonName.add("FirstName");
-        alFieldIDsPersonName.add("LastName");
-        alFieldIDsPersonName.add("MiddleName");        
+    public StandardizerIntrospector getStandardizerIntrospector() throws Exception {
+        if (mStandardizerIntrospector == null) {
+            mStandardizerIntrospector = StandardizerUtils.getStandardizerIntrospector();;
+        }
+        return mStandardizerIntrospector;
     }
     
-    public ArrayList getStandardizationFieldIDsByType(String standardizationType) {
-        ArrayList al = null;
-        if (standardizationType.equals(STANDTYPE_ADDRESS)) {
-                return alFieldIDsAddress;
-        } else if (standardizationType.equals(STANDTYPE_BUSINESSNAME)) {
-            return alFieldIDsBusinessName;
-        } else if (standardizationType.equals(STANDTYPE_PERSONNAME)) {
-            return alFieldIDsPersonName;
+    public void closeStandardizerIntrospector() {
+        if (mStandardizerIntrospector != null) {
+            //mStandardizerIntrospector.close();
+            mStandardizerIntrospector = null;
         }
+    }
+    
+    public void setStandardizerRepositoryDirOld() throws Exception {
+        StandardizerIntrospector introspector = getStandardizerIntrospector();
+        introspector.setRepository(getStandardizerRepositoryDir());
+    }
+    
+    /** returns STANDARDIZATION_ENGINE_FOLDER directory
+     * call com.sun.mdm.standardizer.StandardizerIntrospector.importDirectory(File standDir)
+     * to get the list of supported data types (Address, BusinessName, PersonName, etc)
+     * @return File 
+    */
 
+    public File getStandardizerRepositoryDir() {
+        FileObject standDir = this.getSourceDirectory().getFileObject(EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER);            
+        return FileUtil.toFile(standDir);
+    }
+    
+    private Map mMapStandDataTypeFields = new HashMap(); // {"Address", ArrayList}
+    private Map mMapStandDataTypeVariants = new HashMap(); // {"Address", "AU"}
+
+    public void setStandardizerRepositoryDir() throws Exception {
+        StandardizerIntrospector standardizerIntrospector = getStandardizerIntrospector();
+        DataTypeDescriptor[] dataTypeDescriptors = standardizerIntrospector.setRepository(getStandardizerRepositoryDir());
+        for (DataTypeDescriptor dataTypeDescriptor: dataTypeDescriptors) {
+            String strDataType = dataTypeDescriptor.getName();
+            
+            VariantDescriptor[] variantDescriptors = dataTypeDescriptor.variants();
+            ArrayList alVariants = new ArrayList(variantDescriptors.length);
+            for (VariantDescriptor variantDescriptor: variantDescriptors) {
+                if (variantDescriptor.getDataTypeName().equals(strDataType)) {
+                    alVariants.add(variantDescriptor.getName()); 
+                }
+            }
+            mMapStandDataTypeVariants.put(strDataType, alVariants);
+            
+            ArrayList alFieldNames = new ArrayList(dataTypeDescriptor.getFieldNames().length);
+            for (String fieldName: dataTypeDescriptor.getFieldNames()) {
+                alFieldNames.add(fieldName);
+            }
+            mMapStandDataTypeFields.put(strDataType, alFieldNames);
+        }
+    }
+    
+    /* return ArrayList of variant names
+     *@return ArrayList of Variant Names 
+     */
+    public ArrayList getStandardizationVariantsByType(String standardizationType) {
+        ArrayList al = (ArrayList) mMapStandDataTypeVariants.get(standardizationType);
+        return al;
+    }
+    
+    
+    /* return ArrayList of field names per data type
+     *@return ArrayList of Field Names 
+     */
+    public ArrayList getStandardizationComponentsByType(String standardizationType) {
+        ArrayList al = (ArrayList) mMapStandDataTypeFields.get(standardizationType);
         return al;
     }
     
@@ -979,7 +993,6 @@ public class EviewApplication extends EviewProject {
                getUpdateXml() &&
                getMatchConfigFile();
     }
-    
     
     private void writeConfigurationFile(FileObject file, String str) {
         if (file != null) {

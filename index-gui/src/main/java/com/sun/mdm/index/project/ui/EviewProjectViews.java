@@ -59,7 +59,7 @@ import org.openide.util.actions.SystemAction;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import javax.swing.Action;
-//import java.io.IOException;
+import com.sun.mdm.index.project.EviewApplication;
 
 import com.sun.mdm.index.project.EviewProjectProperties;
 
@@ -170,17 +170,17 @@ class EviewProjectViews {
             } else if (key == KEY_CONFIGURATION_DIR) {
                 FileObject configurationFolder = srcRoot.getFileObject(EviewProjectProperties.CONFIGURATION_FOLDER);
                 if (configurationFolder != null) {
-                    n = new EviewConfigurationFolderNode(CONFIGURATION_FOLDER_DISPLAY_NAME, DataFolder.findFolder(configurationFolder), project);                                                
+                    n = new EviewConfigurationFolderNode(CONFIGURATION_FOLDER_DISPLAY_NAME, DataFolder.findFolder(configurationFolder), project);
                 }
             } else if (key == KEY_DBSCRIPT_DIR) {
                 FileObject dbscriptFolder = srcRoot.getFileObject(EviewProjectProperties.DATABASE_SCRIPT_FOLDER);
                 if (dbscriptFolder != null) {
-                    n = new EviewDBScriptFolderNode(DATABASE_SCRIPT_FOLDER_DISPLAY_NAME, DataFolder.findFolder(dbscriptFolder));                                                
+                    n = new EviewDBScriptFolderNode(DATABASE_SCRIPT_FOLDER_DISPLAY_NAME, DataFolder.findFolder(dbscriptFolder));
                 }
             } else if (key == KEY_STANDARDIZATION_DIR) {
                 FileObject standardizationEngineFolder = srcRoot.getFileObject(EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER);
                 if (standardizationEngineFolder != null) {
-                    n = new EviewStandardizationFolderNode(STANDARDIZATION_ENGINE_FOLDER_DISPLAY_NAME, DataFolder.findFolder(standardizationEngineFolder));
+                    n = new EviewStandardizationFolderNode(STANDARDIZATION_ENGINE_FOLDER_DISPLAY_NAME, DataFolder.findFolder(standardizationEngineFolder), (EviewApplication) project);
                     /*
                     FileObject[] children = standardizationEngineFolder.getChildren();
                     if (children != null && children.length > 0) {
@@ -310,8 +310,6 @@ class EviewProjectViews {
         @Override
         public Action[] getActions( boolean context ) {
             return new Action[] {
-                //SystemAction.get(NewCustomPlugInAction.class),
-                //null,
                 SystemAction.get(org.openide.actions.FindAction.class),
                 null,
                 SystemAction.get(org.openide.actions.OpenLocalExplorerAction.class),

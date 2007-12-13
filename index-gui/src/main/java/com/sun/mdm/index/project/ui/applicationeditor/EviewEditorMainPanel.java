@@ -116,6 +116,11 @@ public class EviewEditorMainPanel extends javax.swing.JPanel implements TreeSele
         mEviewEditorMainApp = eviewEditorMainApp;
         mEviewApplication = eviewApplication;
         bCheckedOut = eviewEditorMainApp.isCheckedOut();
+        try {
+            mEviewApplication.setStandardizerRepositoryDir();
+        } catch (Exception ex) {
+            
+        }
         initComponents();
     }
 

@@ -24,21 +24,21 @@ package com.sun.mdm.index.project.ui;
 
 import org.openide.loaders.DataFolder;
 import org.openide.util.actions.SystemAction;
-
 import javax.swing.Action;
 
+import com.sun.mdm.index.project.EviewApplication;
+
 public class EviewStandardizationFolderNode extends EviewFolderNode {
+    private EviewApplication mEviewApplication;
     private static final java.util.logging.Logger mLog = java.util.logging.Logger.getLogger(
             EviewStandardizationFolderNode.class.getName()
-        
-        
-        
         );
     private DataFolder folder;
     
-    public EviewStandardizationFolderNode(String displayName, DataFolder folder) {
+    public EviewStandardizationFolderNode(String displayName, DataFolder folder, EviewApplication eviewApplication) {
         super(displayName, folder);
         this.folder = folder;
+        this.mEviewApplication = eviewApplication;
         this.getCookieSet().add(new EviewStandardizationFolderCookie(this));                
     }
     
@@ -46,11 +46,14 @@ public class EviewStandardizationFolderNode extends EviewFolderNode {
     public Action[] getActions( boolean context ) {
         return new Action[] {
             SystemAction.get(ImportStandardizationDataTypeAction.class),
-            SystemAction.get(ImportStandardizationVariantAction.class),
             null,
             SystemAction.get(org.openide.actions.FindAction.class),
             null,
             SystemAction.get(org.openide.actions.OpenLocalExplorerAction.class),
         };
+    }
+    
+    public EviewApplication getEviewApplication() {
+        return this.mEviewApplication;
     }
 }

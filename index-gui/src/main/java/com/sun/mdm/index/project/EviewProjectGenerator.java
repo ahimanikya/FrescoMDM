@@ -57,19 +57,22 @@ import java.util.zip.ZipInputStream;
 import org.netbeans.modules.j2ee.deployment.devmodules.api.J2eeModule;
 import org.netbeans.modules.j2ee.deployment.devmodules.api.J2eePlatform;
 
+import com.sun.mdm.standardizer.StandardizerIntrospector;
+import com.sun.mdm.standardizer.DataTypeDescriptor;
+import com.sun.mdm.standardizer.VariantDescriptor;
+
+
 /**
  * Create a fresh EjbProject from scratch or by importing and exisitng web module 
  * in one of the recognized directory structures.
  *
  */
 public class EviewProjectGenerator {
-    
     public static final String DEFAULT_DOC_BASE_FOLDER = "conf"; //NOI18N
     public static final String DEFAULT_SRC_FOLDER = "src"; //NOI18N
     public static final String DEFAULT_RESOURCE_FOLDER = "setup"; //NOI18N
     public static final String DEFAULT_BPELASA_FOLDER = "bpelasa"; //NOI18N
     public static final String DEFAULT_BUILD_DIR = "build"; //NOI18N
-    
     public static final String DEFAULT_NBPROJECT_DIR = "nbproject"; //NOI18N
     public static final String WAR_NAME = "war.name"; //NOI18N
 
@@ -95,7 +98,6 @@ public class EviewProjectGenerator {
     private static String EVIEW_ENTERPRISE_PROJECT_EJB = "EviewEnterpriseApplication-ejb";
     private static String EVIEW_ENTERPRISE_PROJECT_WAR = "EviewEnterpriseApplication-war";
     
-    
     private EviewProjectGenerator() {}
 
     /**
@@ -113,16 +115,14 @@ public class EviewProjectGenerator {
         String serverInstanceID = (String)wDesc.getProperty("serverInstanceID");
         String mainProjectName = (String) wDesc.getProperty(WizardProperties.NAME);
         String j2eeLevel = (String)wDesc.getProperty(WizardProperties.J2EE_LEVEL);
+
         try{
-           createConfigFile(srcRoot, wDesc );
            createEjbWar(fo, mainProjectName, serverInstanceID, j2eeLevel);           
             //FileObject j2eeModulesFolder = srcRoot.createFolder(EviewRepository.J2EE_MODULES_FOLDER); // NOI18N        
-
         } catch (EviewRepositoryException ex) {
             throw new IOException(ex.toString());         
         }
 
-        
         //set project properties
         EditableProperties ep = h.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
         ep.setProperty(EviewProjectProperties.EJB_DIR,mainProjectName + "-ejb");
@@ -149,23 +149,23 @@ public class EviewProjectGenerator {
             ep.setProperty(EviewProjectProperties.DEPLOY_ANT_PROPS_FILE, deployAntPropsFile.getAbsolutePath());
         }
         
-        
-        
         h.putProperties(AntProjectHelper.PRIVATE_PROPERTIES_PATH, ep);
-        
-        //Project p = ProjectManager.getDefault().findProject(fo);
-        //Project p = 
         EviewApplication p = (EviewApplication) ProjectManager.getDefault().findProject(h.getProjectDirectory ());
         // Set Application name and Object 
         p.setApplicationName(wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_TARGET_VIEW_NAME).toString());
         p.setObjectName(wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_OBJECT_NAME).toString());
-        
+        try{
+           createConfigFile(srcRoot, wDesc, p);
+        } catch (EviewRepositoryException ex) {
+            throw new IOException(ex.toString());         
+        }
+
         ProjectManager.getDefault().saveProject(p);
 
         return h;
     }
 
-    private static void createConfigFile(FileObject srcRoot, WizardDescriptor wDesc)
+    private static void createConfigFile(FileObject srcRoot, WizardDescriptor wDesc, EviewApplication eviewApplication)
             throws EviewRepositoryException, IOException{
                  
             EviewRepository repository  = EviewRepository.getEviewRepository();  
@@ -221,12 +221,18 @@ public class EviewProjectGenerator {
          
             // *** Sub folder - Standardization ***
             FileObject standardizationEngineFolder = srcRoot.createFolder(EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER); // NOI18N
-            FileObject standardizationEngineBizFolder = getTemplates(standardizationEngineFolder, EviewProjectProperties.STANDARDIZATION_ENGINE_BIZ_FOLDER, EviewProjectProperties.BIZ_TEMPLATE_LOCATION);                      
-            FileObject standardizationEngineAUFolder = getTemplates(standardizationEngineFolder, EviewProjectProperties.STANDARDIZATION_ENGINE_AU_FOLDER, EviewProjectProperties.AU_TEMPLATE_LOCATION);       
-            FileObject standardizationEngineFRFolder = getTemplates(standardizationEngineFolder, EviewProjectProperties.STANDARDIZATION_ENGINE_FR_FOLDER, EviewProjectProperties.FR_TEMPLATE_LOCATION);               
-            FileObject standardizationEngineUKFolder = getTemplates(standardizationEngineFolder, EviewProjectProperties.STANDARDIZATION_ENGINE_UK_FOLDER, EviewProjectProperties.UK_TEMPLATE_LOCATION);       
-            FileObject standardizationEngineUSFolder = getTemplates(standardizationEngineFolder, EviewProjectProperties.STANDARDIZATION_ENGINE_US_FOLDER, EviewProjectProperties.US_TEMPLATE_LOCATION);
-            
+            try {
+                StandardizerIntrospector introspector = eviewApplication.getStandardizerIntrospector();
+                introspector.setRepository(FileUtil.toFile(standardizationEngineFolder));
+                File globalRepository = InstalledFileLocator.getDefault().locate(EviewProjectProperties.STANDARDIZATION_DEPLOYMENT_LOCATION, "", false);
+                if (!globalRepository.exists()) {
+                    throw new Exception("Global repository '" + globalRepository.getAbsolutePath() + "' does not exist.");
+                }
+                DataTypeDescriptor[] dataTypeDescriptors = introspector.importDirectory(globalRepository);
+                //introspector.close();
+            } catch (Exception ex) {
+                throw new IOException(ex.toString());
+            }
             // *** Sub folder - Filter ***
             FileObject filterFolder = getTemplates(srcRoot, EviewProjectProperties.FILTER_FOLDER, EviewProjectProperties.FILTER_TEMPLATE_LOCATION);
     }
@@ -352,7 +358,7 @@ public class EviewProjectGenerator {
         propsFile.close();
     }
     
-    public static String toClasspathString(File[] classpathEntries) {
+    private static String toClasspathString(File[] classpathEntries) {
         if (classpathEntries == null) {
             return "";
         }
@@ -385,20 +391,33 @@ public class EviewProjectGenerator {
         return h;
     }
 
-    public static FileObject getTemplates(FileObject parent, String folderName, String location) throws IOException {
-        FileObject folder = parent.createFolder(folderName);        
-        File f = InstalledFileLocator.getDefault().locate(location, "", false);
+    private static FileObject getTemplates(FileObject parent, String folderName, String templateLocation) throws IOException {
+        FileObject folder = parent.createFolder(folderName);
+        File f = InstalledFileLocator.getDefault().locate(templateLocation, "", false);
         if (f != null) {
             FileObject fTemplates = FileUtil.toFileObject(f);
             FileObject[] files = fTemplates.getChildren();
             for (int i = 0; i < files.length; i++) {
-                FileUtil.copyFile(files[i], folder, files[i].getName());
+                FileObject file = files[i];
+                if (file.isFolder()) {
+                    FileObject folder2 = folder.createFolder(file.getName());
+                    FileObject[] files2 = file.getChildren();
+                    for (int j = 0; j < files2.length; j++) {
+                        FileObject file2 = files2[j];
+                        FileUtil.copyFile(file2, folder2, file2.getName());
+                    }
+                } else {
+                    FileUtil.copyFile(file, folder, file.getName());
+                }
             }
         }
         return folder;
     }
 
-    public static FileObject getInstalledFile(FileObject folder, String fname) throws IOException {
+    /*
+     * Not used
+     */
+    private static FileObject getInstalledFile(FileObject folder, String fname) throws IOException {
         FileObject installedFile = null;
         File f = InstalledFileLocator.getDefault().locate(fname, "", false);
         if (f != null) {
@@ -408,7 +427,10 @@ public class EviewProjectGenerator {
         return installedFile;
     }
     
-    public static FileObject createEviewFile(FileObject folder, String name, String data) 
+    /*
+     * Not used
+     */
+    private static FileObject createEviewFile(FileObject folder, String name, String data) 
     throws EviewRepositoryException {
         try {
             if (folder == null || name == null || data == null) {
