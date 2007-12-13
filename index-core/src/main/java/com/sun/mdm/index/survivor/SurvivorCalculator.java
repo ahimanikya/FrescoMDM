@@ -23,6 +23,7 @@
 package com.sun.mdm.index.survivor;
 import com.sun.mdm.index.filter.ExclusionFilterService;
 import com.sun.mdm.index.filter.ExclusionFilterServiceImpl;
+import com.sun.mdm.index.filter.ExclusionListLookup;
 import com.sun.mdm.index.master.ConnectionInvalidException;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.master.UserException;
@@ -169,23 +170,29 @@ public class SurvivorCalculator implements java.io.Serializable {
                             + ": " + sysFields);
                     }
                     /* start for SBR Filter  */
+                    SystemField value = null;
+                    ExclusionListLookup lookup = new ExclusionListLookup();
+                    //Check for sbr filter is enabled or not.
+                    if (lookup.isSbrFilterEnabled()) {
                     ExclusionFilterService filterService = new ExclusionFilterServiceImpl();
                     SystemFieldListMap filterdSysFields = filterService.exclusionSystemFieldList(sysFields, candidateId);
                     
                     if (mLogger.isLoggable(Level.FINE)) {
                         mLogger.fine("System fields returned for candidate after filter" + candidateId + ": " + filterdSysFields);
                     }
-                    /* end for SBR Filter */
                     // call survival strategy for each set of system fields using candidate id
-                    SystemField value = mHelper.executeStrategy(candidateId,
-                        filterdSysFields);
+                     value = mHelper.executeStrategy(candidateId, filterdSysFields);
                     
-                      /* start for SBR Filter  */
                     //if the strategy returns null then calculate the strategy with out filtering the data.
                     if (value == null) {
                         if (mLogger.isLoggable(Level.FINE)) {
                             mLogger.fine("Candidate values returned from strategy is null: " + value);
                         }
+                            value = mHelper.executeStrategy(candidateId,
+                                    sysFields);
+                        }
+                    } else {
+                        //if filter is disabled
                         value = mHelper.executeStrategy(candidateId, sysFields);
                     }
                     /* end for SBR Filter */
