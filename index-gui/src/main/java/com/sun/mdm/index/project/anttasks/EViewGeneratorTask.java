@@ -71,6 +71,8 @@ import com.sun.mdm.index.project.generator.descriptor.JbiXmlWriter;
 import com.sun.mdm.index.project.generator.exception.TemplateWriterException;
 import com.sun.mdm.index.project.generator.outbound.OutboundXSDBuilder;
 import com.sun.mdm.index.project.generator.persistence.DDLWriter;
+import com.sun.mdm.standardizer.StandardizerIntrospector;
+import com.sun.mdm.standardizer.util.StandardizerUtils;
 
 public class EViewGeneratorTask extends Task {
     private File mSrcdir;
@@ -192,7 +194,7 @@ public class EViewGeneratorTask extends Task {
         MetaDataService.registerObjectDefinition(new FileInputStream(objectFile)); 
     }
 
-   private void generate_eview_resources_jar(){
+   private void generate_eview_resources_jar() throws Exception{
         
         String projPath = getProject().getProperty("basedir");
         File destDir = new File(projPath + File.separator + 
@@ -216,10 +218,13 @@ public class EViewGeneratorTask extends Task {
         copy.setLocation(getLocation());
         copy.execute();
 
-        //copy standardization file            
-        destDir = new File(projPath + File.separator + EviewProjectProperties.EVIEW_GENERATED_FOLDER +
+        //copy standardization file 
+        //need to remove           
+        destDir = new File(projPath + File.separator + 
+                EviewProjectProperties.EVIEW_GENERATED_FOLDER +
                 File.separator + "resource" + File.separator + "stand" );
-        srcDir = new File(mSrcdir + File.separator + EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER);
+        String modulePath = getProject().getProperty("module.install.dir");
+        srcDir= new File(modulePath + "/ext/eview/repository/templates/stand");
         srcfileSet = new FileSet(); 
         srcfileSet.setDir(srcDir);
         copy = (Copy) getProject().createTask("copy");
@@ -228,6 +233,16 @@ public class EViewGeneratorTask extends Task {
         copy.init();
         copy.setLocation(getLocation());
         copy.execute();
+        
+        StandardizerIntrospector introspector = StandardizerUtils.getStandardizerIntrospector();
+		
+        File resourceDirectory = new File(projPath + File.separator + 
+                EviewProjectProperties.EVIEW_GENERATED_FOLDER + 
+                File.separator + "resource");
+        File repositoryDirectory = new File(mSrcdir, EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER);
+        introspector.setRepository(repositoryDirectory);
+        introspector.takeSnapshot(resourceDirectory);
+        introspector.close();
 
 
         //copy match engine file  
@@ -277,7 +292,7 @@ public class EViewGeneratorTask extends Task {
         jar.execute ();           
     }     
     
-    private void generateJars() throws FileNotFoundException, IOException{
+    private void generateJars() throws FileNotFoundException, IOException, Exception{
         
         String projPath   = getProject().getProperty("basedir");
         String buildPath  = getProject().getProperty("build.dir");
@@ -299,7 +314,8 @@ public class EViewGeneratorTask extends Task {
                                 "sun_matcher.jar," +
                                 "index-core.jar," +
                                 "net.java.hulp.i18n.jar, " +
-                                "net.java.hulp.i18ntask.jar");
+                                "net.java.hulp.i18ntask.jar," +
+                                "standardizer/lib/*.jar");
         
         Copy copy = (Copy) getProject().createTask("copy");
         copy.init();
