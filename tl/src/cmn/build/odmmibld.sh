@@ -1131,17 +1131,17 @@ build_product()
        return $build_product_errs
     fi
 
-    cd $SRCROOT/../loader
-    cmd="ant jar"
-    bldmsg -mark -p $p/build_product `echo $cmd`
-    eval $cmd
-    status=$?
-
-    if [ $status -ne 0 ]; then
-       bldmsg -error -p $p/build_product "$cmd FAILED"
-       build_product_errs=1
-       return $build_product_errs
-    fi
+    #cd $SRCROOT/../loader
+    #cmd="ant jar"
+    #bldmsg -mark -p $p/build_product `echo $cmd`
+    #eval $cmd
+    #status=$?
+    #
+    #if [ $status -ne 0 ]; then
+    #   bldmsg -error -p $p/build_product "$cmd FAILED"
+    #   build_product_errs=1
+    #   return $build_product_errs
+    #fi
 
     return $build_product_errs
 }
