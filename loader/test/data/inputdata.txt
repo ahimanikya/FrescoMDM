@@ -1,0 +1,24 @@
+1|A|100|M|John|Smith|07/07/07|123456789|John|Smith|John|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
+2|B|100|M|John|Smith|06/09/07|123456789|Jon|Smith|Jhn|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-123
+3|A|200|M|Joe|Foo|07/07/07|1234567|John|Smiath|John|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
+4|B|200|M|George|Smith|06/07/07|123456789|Jon|Samith|Jhn|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-123
+5|A|300|M|John1|Smith|07/07/07|123456789|John|Smitha|John|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
+6|B|300|M|John2|Foo|06/09/07|123567|Joqn|Smith|Jhn|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-123
+7|A|400|M|John|Smith|07/07/07|123456789|John|Smith|John|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
+8|B|400|M|John|Smith|06/09/07|123456789|Jon|Smith|Jhn|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-123
+9|A|500|M|Joe|Foo|07/07/07|1234567|John|Smiath|John|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
+10|B|500|M|George|Smith|06/07/07|123456789|Jon|Samith|Jhn|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-123
+11|A|600|M|Swaranjit|Dua|01/07/07|123456789|John|Smitha|John|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
+12|B|600|M|Swaranjit|Dua|06/09/07|123567|Joqn|Smith|Jhn|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-123
+13|A|700|M|Leo|Smith|07/07/07|123456789|John|Smith|John|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
+14|B|800|M|Leo|Smith|06/09/07|123456789|Jon|Smith|Jhn|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-123
+15|A|900|M|Joe|Foo|07/07/07|1234567|John|Smiath|John|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
+16|B|1000|M|George|Smith|06/07/07|123456789|Jon|Samith|Jhn|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-123
+17|A|1300|M|John|Smith|07/07/07|123456789|John|Smitha|John|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
+18|B|3100|M|John2|Foo|06/09/07|123567|Joqn|Smith|Jhn|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-123
+19|A|4100|M|Barry|Smihh|07/07/07|123456789|John|Smith|John|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
+20|B|4200|M|Barry|Smihh|06/09/07|123456789|Jon|Smith|Jhn|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-123
+21|A|5100|M|Joe|Foo|07/07/07|1234567|John|Smiath|John|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
+22|B|5200|M|George|Smith|06/07/07|123456789|Jon|Samith|Jhn|Smith
+23|A|6100|M|Swaran|Dua|01/07/07|123456789|John|Smitha|John|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA
+24|B|6200|M|Swaran|Dua|06/09/07|123567|Joqn|Smith|Jhn|Smith#$HOME|800 Royals oaks| Monrovia $BUSINESS|Highland Ave|CA #$ phone-company1|626-626-1234

@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+	<!DOCTYPE jasperReport
+  PUBLIC "-//JasperReports//DTD Report Design//EN"
+	  "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd"> 
+<jasperReport name="Weight_Analysis_Report" > 
+	<field name="SystemCode_1" class= "java.lang.String" />
+	<field name="SystemCode_2" class= "java.lang.String" />
+	<field name="Total_wt" class= "java.lang.Double" />
+	<field name="Lid_1" class= "java.lang.String" />
+	<field name="Lid_2" class= "java.lang.String" />
+	<field name="Lid_wt" class= "java.lang.Double" />
+	<field name="Person_StdFirstName_1" class= "java.lang.String" />
+	<field name="Person_StdFirstName_2" class= "java.lang.String" />
+	<field name="Person_StdFirstName_wt" class= "java.lang.Double" />
+	<field name="Person_StdLastName_1" class= "java.lang.String" />
+	<field name="Person_StdLastName_2" class= "java.lang.String" />
+	<field name="Person_StdLastName_wt" class= "java.lang.Double" />
+	<field name="Person_SSN_1" class= "java.lang.String" />
+	<field name="Person_SSN_2" class= "java.lang.String" />
+	<field name="Person_SSN_wt" class= "java.lang.Double" />
+	<field name="Person_DOB_1" class= "java.lang.String" />
+	<field name="Person_DOB_2" class= "java.lang.String" />
+	<field name="Person_DOB_wt" class= "java.lang.Double" />
+	<field name="Person_Gender_1" class= "java.lang.String" />
+	<field name="Person_Gender_2" class= "java.lang.String" />
+	<field name="Person_Gender_wt" class= "java.lang.Double" />
+
+	<detail>
+		<band height= "180" isSplitAllowed="false"> 
+
+		<textField>
+			<reportElement x="0" y= "0" width= "200" height="180" />
+			<textFieldExpression class="java.lang.String">
+				"SystemCode"+"\n"+
+				"Lid"+"\n"+
+				"Person.StdFirstName"+"\n"+
+				"Person.StdLastName"+"\n"+
+				"Person.SSN"+"\n"+
+				"Person.DOB"+"\n"+
+				"Person.Gender"
+			 </textFieldExpression>
+		</textField>
+		<textField>
+			<reportElement x="160" y= "0" width= "200" height="180" />
+			<textFieldExpression class="java.lang.String">
+				<![CDATA[$F{SystemCode_1}]]>+"\n"+
+				<![CDATA[$F{Lid_1}]]>+"\n"+
+				<![CDATA[$F{Person_StdFirstName_1}]]>+"\n"+
+				<![CDATA[$F{Person_StdLastName_1}]]>+"\n"+
+				<![CDATA[$F{Person_SSN_1}]]>+"\n"+
+				<![CDATA[$F{Person_DOB_1}]]>+"\n"+
+				<![CDATA[$F{Person_Gender_1}]]>
+			 </textFieldExpression>
+		</textField>
+		<textField>
+			<reportElement x="320" y= "0" width= "200" height="180" />
+			<textFieldExpression class="java.lang.String">
+				<![CDATA[$F{SystemCode_2}]]>+"\n"+
+				<![CDATA[$F{Lid_2}]]>+"\n"+
+				<![CDATA[$F{Person_StdFirstName_2}]]>+"\n"+
+				<![CDATA[$F{Person_StdLastName_2}]]>+"\n"+
+				<![CDATA[$F{Person_SSN_2}]]>+"\n"+
+				<![CDATA[$F{Person_DOB_2}]]>+"\n"+
+				<![CDATA[$F{Person_Gender_2}]]>
+			 </textFieldExpression>
+		</textField>
+		<textField>
+			<reportElement x="480" y= "0" width= "200" height="180" />
+			<textFieldExpression class="java.lang.String">
+				<![CDATA[$F{Total_wt}]]>+"\n"+
+				"  "+"\n"+
+				<![CDATA[$F{Person_StdFirstName_wt}]]>+"\n"+
+				<![CDATA[$F{Person_StdLastName_wt}]]>+"\n"+
+				<![CDATA[$F{Person_SSN_wt}]]>+"\n"+
+				<![CDATA[$F{Person_DOB_wt}]]>+"\n"+
+				<![CDATA[$F{Person_Gender_wt}]]>
+			 </textFieldExpression>
+		</textField>
+		</band>
+
+	</detail>
+</jasperReport> 

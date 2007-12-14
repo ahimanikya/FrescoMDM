@@ -122,6 +122,16 @@
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/report">
                                     <fileset dir="${basedir}/../report/src/main/resources"></fileset>
                                 </copy>
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/loader">
+                                    <fileset dir="${basedir}/../loader/lib">
+    		                    		<exclude name="index-core.jar" />
+    		                    		<exclude name="stc_sbme.jar" />
+    		                    		<exclude name="ojdbc14.jar" />
+                                    </fileset>
+                                    <fileset dir="${basedir}/../loader/target">
+                                        <include name="loader.jar" />
+                                    </fileset>
+                                </copy>
                             </tasks>          
                         </configuration>
                     </execution>

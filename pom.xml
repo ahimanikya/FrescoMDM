@@ -10,6 +10,7 @@
     <url>http://maven.apache.org</url>
     <modules>
         <module>index-core</module>
+        <module>loader</module>
         <module>report</module>
         <module>index-gui</module>
     </modules>

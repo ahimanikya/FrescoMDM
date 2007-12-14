@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<loader>
+
+
+	<threshold-config>
+		<duplicateThreshold>7.25</duplicateThreshold>
+		<matchThreshold>30.0</matchThreshold>
+	</threshold-config>
+
+
+	<query-builder name="BLOCKER-SEARCH" class="com.sun.mdm.index.querybuilder.BlockerQueryBuilder"
+		parser-class="com.sun.mdm.index.configurator.impl.blocker.BlockerConfig" standardize="true"
+		phoneticize="true">
+		<config>
+			<block-definition number="ID0">
+				<block-rule>
+					<equals>
+						<field>Enterprise.SystemSBR.Person.FirstName_Phon</field>
+						<source>Person.FirstName_Phon</source>
+					</equals>
+				</block-rule>
+			</block-definition>
+			<block-definition number="ID1">
+				<block-rule>
+					<equals>
+						<field>Enterprise.SystemSBR.Person.LastName_Phon</field>
+						<source>Person.LastName_Phon</source>
+					</equals>
+				</block-rule>
+			</block-definition>
+			<block-definition number="ID2">
+				<block-rule>
+					<equals>
+						<field>Enterprise.SystemSBR.Person.SSN</field>
+						<source>Person.SSN</source>
+					</equals>
+				</block-rule>
+			</block-definition>
+			<block-definition number="ID3">
+				<block-rule>
+					<equals>
+						<field>Enterprise.SystemSBR.Person.Address.AddressLine1_HouseNo</field>
+						<source>Person.Address.AddressLine1_HouseNo</source>
+					</equals>
+					<equals>
+						<field>Enterprise.SystemSBR.Person.Address.AddressLine1_StPhon</field>
+						<source>Person.Address.AddressLine1_StPhon</source>
+					</equals>
+				</block-rule>
+			</block-definition>
+		</config>
+	</query-builder>
+	<MatchingConfig module-name="Matching"
+		parser-class="com.stc.eindex.configurator.impl.matching.MatchingConfiguration">
+		<match-system-object>
+			<object-name>Person</object-name>
+			<match-columns>
+				<match-column>
+					<column-name>Enterprise.SystemSBR.Person.FirstName</column-name>
+					<match-type>FirstName</match-type>
+				</match-column>
+				<match-column>
+					<column-name>Enterprise.SystemSBR.Person.LastName</column-name>
+					<match-type>LastName</match-type>
+				</match-column>
+				<match-column>
+					<column-name>Enterprise.SystemSBR.Person.SSN</column-name>
+					<match-type>SSN</match-type>
+				</match-column>
+				<match-column>
+					<column-name>Enterprise.SystemSBR.Person.DOB</column-name>
+					<match-type>DOB</match-type>
+				</match-column>
+				<match-column>
+					<column-name>Enterprise.SystemSBR.Person.Gender</column-name>
+					<match-type>Gender</match-type>
+				</match-column>
+			</match-columns>
+		</match-system-object>
+	</MatchingConfig>
+
+	<!-- the user can  plugin their own EuidGenerator -->
+	<EuidGeneratorConfig module-name="EuidGenerator"
+		parser-class="com.sun.mdm.index.configurator.impl.idgen.EuidGeneratorConfiguration">
+		<euid-generator-class>
+			com.sun.mdm.index.loader.euid.LoaderEuidGenerator
+		</euid-generator-class>
+		<parameters>
+			<parameter>
+				<parameter-name>IdLength</parameter-name>
+				<parameter-type>java.lang.Integer</parameter-type>
+				<parameter-value>20</parameter-value>
+			</parameter>
+			<parameter>
+				<parameter-name>ChecksumLength</parameter-name>
+				<parameter-type>java.lang.Integer</parameter-type>
+				<parameter-value>0</parameter-value>
+			</parameter>
+			<parameter>
+				<parameter-name>ChunkSize</parameter-name>
+				<parameter-type>java.lang.Integer</parameter-type>
+				<parameter-value>1000</parameter-value>
+			</parameter>
+		</parameters>
+	</EuidGeneratorConfig>
+
+
+
+	<!-- all configuration with regard to the initial loader components
+		specific config needs to be put in like isMasterLoader... -->
+
+
+	<system>
+		<properties>
+			<property name="loaderName" value="loader-2" />
+			<property name="isMasterLoader" value="false" />
+			<property name="rmiPort" value="9999" />
+			<property name="workingDir" value="test/data/loader/loader-2" />
+			<property name="ftp.workingDir" value="/loader/loader-2" />
+
+
+			<property name="numBuckets" value="5" />
+			<property name="numThreads" value="1" />
+
+			<!-- used by euid assigner -->
+			<property name="maxNoOfBucket" value="3" />
+			<property name="totalNoOfRecords" value="400000" />
+
+
+			<!-- time in milli seconds -->
+			<property name="pollInterval" value="1000" />
+			<property name="maxWaitTime" value="1000000000" />
+
+
+			<!-- ftp properties -->
+			<property name="ftp.server" value="sbiswas-tecra" />
+			<property name="ftp.username" value="loader" />
+			<property name="ftp.password" value="loader" />
+
+
+
+			<!-- cluster database properties -->
+			<property name="cluster.database" value="Oracle" />
+			<property name="cluster.database.url" value="jdbc:oracle:thin:@sbiswas-acer:1521:mural" />
+			<property name="cluster.database.user" value="sujit" />
+			<property name="cluster.database.password" value="sujit" />
+			<property name="cluster.database.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
+
+			<property name="eviewDatabase" value="Oracle" />
+			<property name="eviewDatabaseUrl" value="Oracle" />
+
+
+			<!-- oracle SQL loader properties -->
+			<property name="sqlldr.userid" value="sujit/sujit@mdm.stc.com" />
+			<property name="sqlldr.record.delimiter" value="$$$" />
+
+		</properties>
+		<monitoring-control>
+			<!-- info to support standard jmx based monitoring and management 
+				this can be made part of the properties-->
+		</monitoring-control>
+		<dataObjectReader>
+
+
+			<beans>
+				<bean id="dataObjectReader"
+					class="com.sun.mdm.index.dataobject.DataObjectFileReader" singleton="false">
+					<constructor-arg type="java.lang.String"
+						value="C:/test/loader/finalInputData.txt" />
+					<constructor-arg type="boolean" value="false" />
+				</bean>
+			</beans>
+
+
+		</dataObjectReader>
+
+
+	</system>
+
+</loader>
