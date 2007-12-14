@@ -43,6 +43,7 @@ import org.openide.filesystems.FileUtil;
 public final class ProjectEar extends J2eeModuleProvider
         implements 
             ModuleChangeReporter,
+            EjbChangeDescriptor,
             J2eeApplicationImplementation {
       
     public static final String FILE_DD = "application.xml";//NOI18N   
@@ -119,6 +120,19 @@ public final class ProjectEar extends J2eeModuleProvider
         return project.getOrCreateMetaInfDir();
     }
     
+    public EjbChangeDescriptor getEjbChanges(long arg0) {
+        return this;
+    }
+    
+    public boolean ejbsChanged () {
+        return false;
+    }
+    
+    public String[] getChangedEjbs () {
+        return new String[] {};
+    }
+
+    
     public void setServerInstanceID(String severInstanceID) {
         throw new UnsupportedOperationException("ProjectEar.setServerInstanceID()--Not supported yet.");
     }
@@ -150,10 +164,6 @@ public final class ProjectEar extends J2eeModuleProvider
 
     public void removePropertyChangeListener(PropertyChangeListener arg0) {
         throw new UnsupportedOperationException("ProjectEar.removePropertyChangeListener()--Not supported yet.");
-    }
-
-    public EjbChangeDescriptor getEjbChanges(long arg0) {
-        throw new UnsupportedOperationException("ProjectEar.getEjbChanges()--Not supported yet.");
     }
 
     public boolean isManifestChanged(long arg0) {
