@@ -335,19 +335,6 @@
                             <file>${basedir}/src/main/resources/globalization/net.java.hulp.i18n.jar</file>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>install-loader</id>
-                        <phase>process-resources</phase>
-                        <goals><goal>install-file</goal></goals>
-                        <configuration>
-                            <generatePom>true</generatePom>
-                            <packaging>jar</packaging>
-                            <groupId>mural</groupId>
-                            <artifactId>loader</artifactId>
-                            <version>${mural.currentVersion}</version>
-                            <file>${basedir}/src/main/resources/loader.jar</file>
-                        </configuration>
-                    </execution>
                     <!--execution>
                         <id>install-eindex-person</id>
                         <phase>process-test-sources</phase>
