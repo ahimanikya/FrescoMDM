@@ -311,7 +311,8 @@ public class EViewGeneratorTask extends Task {
         File srcDir = mTemplateDir;
         srcFileSet.setDir(srcDir);
         srcFileSet.setIncludes( "repository/stc_sbme.jar," +
-                                "sun_matcher.jar," +
+                                "matcher.jar," +
+                                "lucene-core.jar," +
                                 "index-core.jar," +
                                 "net.java.hulp.i18n.jar, " +
                                 "net.java.hulp.i18ntask.jar," +

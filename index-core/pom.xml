@@ -176,6 +176,8 @@
                         <goals><goal>run</goal></goals>
                         <configuration>
                             <tasks>
+                                <unzip src="${settings.localRepository}/mural/matcher-resources/1.0/matcher-resources-1.0.jar" 
+                                    dest="${project.build.testOutputDirectory}"/>
                                 <copy todir="${project.build.directory}/test-classes">
                                     <fileset dir="${basedir}/src/test/java">
                                         <exclude name="**/*.java"/>
@@ -183,6 +185,7 @@
                                 </copy>
                                 <copy todir="${project.build.directory}/test-classes">
                                     <fileset dir="${basedir}/src/main/resources/matchengine/config/runtime">
+                                        <exclude name="match/**"/>
                                     </fileset>
                                 </copy>
                                 <copy todir="${project.build.directory}/test-classes">
@@ -216,7 +219,7 @@
                                     <entry key="localRepository.path" value="${localRepository.path}"/>
                                 </propertyfile--> 
                             </tasks>          
-                                </configuration>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>run-JUnit-test</id>
@@ -294,19 +297,6 @@
                             <artifactId>matchengine</artifactId>
                             <version>${mural.currentVersion}</version>
                             <file>${basedir}/src/main/resources/matchengine/stc_sbme.jar</file>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>install-sun-matcher</id>
-                        <phase>process-resources</phase>
-                        <goals><goal>install-file</goal></goals>
-                        <configuration>
-                            <generatePom>true</generatePom>
-                            <packaging>jar</packaging>
-                            <groupId>mural</groupId>
-                            <artifactId>sun-matcher</artifactId>
-                            <version>${mural.currentVersion}</version>
-                            <file>${basedir}/src/main/resources/matchengine/sun_matcher.jar</file>
                         </configuration>
                     </execution>
                     <execution>
@@ -438,7 +428,12 @@
         </dependency>
         <dependency>
             <groupId>mural</groupId>
-            <artifactId>sun-matcher</artifactId>
+            <artifactId>matcher</artifactId>
+            <version>${mural.currentVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>mural</groupId>
+            <artifactId>matcher-resources</artifactId>
             <version>${mural.currentVersion}</version>
         </dependency>
         <dependency>

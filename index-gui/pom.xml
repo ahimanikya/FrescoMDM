@@ -75,7 +75,7 @@
                                         <include name="EviewApplicationTemplateProject.zip"></include>
                                     </fileset>
                                     <fileset dir="${basedir}/../index-core/src/main/resources/matchengine/config/runtime">
-                                        <include name="**/*"></include>
+                                        <exclude name="match/**"/>
                                     </fileset>
                                 </copy>
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/schema">
@@ -103,14 +103,17 @@
                                     <fileset dir="${basedir}/../index-core/target">
                                         <include name="index-core.jar"></include>                 
                                     </fileset>
-                                    <fileset dir="${basedir}/../index-core/src/main/resources/matchengine">
-                                        <include name="sun_matcher.jar"></include>
-                                    </fileset>
                                     <fileset dir="${basedir}/../index-core/src/main/resources/globalization">
                                         <include name="net.java.hulp.i18n.jar"></include>                 
                                         <include name="net.java.hulp.i18ntask.jar"></include>                 
                                     </fileset>                                    
                                 </copy>
+                                <copy file="${settings.localRepository}/mural/matcher/1.0/matcher-1.0.jar" 
+                                    tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/matcher.jar"/>
+                                <copy file="${settings.localRepository}/org/apache/lucene/lucene-core/2.2.0/lucene-core-2.2.0.jar"
+                                    tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/lucene-core.jar"/>
+                                <unzip src="${settings.localRepository}/mural/matcher-resources/1.0/matcher-resources-1.0.jar" 
+                                    dest="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates"/>
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/standardizer">
                                     <fileset dir="${basedir}/../index-core/src/main/resources/matchengine/standardizer"></fileset>   
                                 </copy>                                    
@@ -189,11 +192,6 @@
         </dependency>
         <dependency>
             <groupId>mural</groupId>
-            <artifactId>sun-matcher</artifactId>
-            <version>${mural.currentVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>mural</groupId>
             <artifactId>mdm-standardizer</artifactId>
             <version>${mural.currentVersion}</version>
         </dependency>
@@ -228,5 +226,6 @@
             <artifactId>org-netbeans-modules-compapp-projects-base</artifactId>
             <version>${netbeans.version}</version>			
         </dependency>
+        
     </dependencies>
 </project>
