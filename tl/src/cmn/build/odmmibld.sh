@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #
 # BEGIN_HEADER - DO NOT EDIT
 #
@@ -62,6 +63,8 @@ Options:
  -updatemaven    Update external dependencies in local maven repository.  DEFAULT IF -update
  -noupdatemaven  Do not update external dependencies in local maven repository.
                  (pass --offline option to all mvn commands.)
+ -popmaven       populate the remote maven repository defined by REMOTE_MAVEN_REPOS with build artifacts . DEFAULT FOR RELEASE BUILD.
+ -nopopmaven     do not populate any remote maven repository.  DEVELOPER DEFAULT.
  -fast|-fastupdate
                  Short-hand for:  $p -update -noregress -nojavadoc
  -integreport    Create integration report. DEFAULT FOR RELEASE BUILD.
@@ -135,6 +138,7 @@ parse_args()
     VERBOSE_ARG=
     REGRESS_PRODUCT=openesb
     DOMAVEN_UPDATE=1
+    DOMAVEN_POP=0
     DOTASK_REPORT=0
     DEBUG=0
     DOREGRESS=1
@@ -169,16 +173,19 @@ parse_args()
             DOTASK_REPORT=0
             DOINSTALL=1
             DOARCHIVEDOC=1
+            DOMAVEN_POP=1
         else
             DOINTEGREPORT=0
             DORELEASE=0
             DOARCHIVEDOC=0
             DOINSTALL=0
+            DOMAVEN_POP=0
         fi
     else
         DOCLEAN=1
         DOCLEANSRC=0
         DOMAVENCLEAN=0
+        DOMAVEN_POP=0
         DOUPDATE=0
         DOMAVEN_UPDATE=1
         DOINTEGREPORT=0
@@ -310,6 +317,12 @@ parse_args()
         -noupdatemaven )
             DOMAVEN_UPDATE=0
             ;;
+        -popmaven )
+            DOMAVEN_POP=1
+            ;;
+        -nopopmaven )
+            DOMAVEN_POP=0
+            ;;
         -fast|-fastupdate )
             DOUPDATE=1
             #only run junit tests (this will force use to compile tests):
@@ -411,6 +424,7 @@ $1 OPTION SETTINGS FOR $p -
     DOCLEAN is         $DOCLEAN
     DOMAVENCLEAN is    $DOMAVENCLEAN
     DOMAVEN_UPDATE is  $DOMAVEN_UPDATE
+    DOMAVEN_POP is     $DOMAVEN_POP
     DOCLEANSRC is      $DOCLEANSRC
 
     DOUPDATE is        $DOUPDATE
@@ -452,6 +466,7 @@ show_build_environment()
     BUILDLOG is     $BUILDLOG
     JAVADOCLOG is   $JAVADOCLOG
     RELEASELOG is   $RELEASELOG
+    POPMAVENLOG is  $POPMAVENLOG
     PUSHKITLOG is   $PUSHKITLOG
     UNITTESTLOG is  $UNITTESTLOG
     REGRESSLOG is   $REGRESSLOG
@@ -626,6 +641,14 @@ set_global_vars()
       MAVEN_OFFLINE=
     fi
 
+    if [ $DOMAVEN_POP -eq 1 ]; then
+        #Make sure required environment is defined:
+        if [ x$MAVENPOP_IDENTITY = x ]; then
+            DOMAVEN_POP=0
+            bldmsg -error -p $p "turning off -popmaven because MAVENPOP_IDENTITY is not set"
+        fi
+    fi
+
     if [ $DOPUSHKIT -eq 1 ]; then
         #Make sure required environment is defined:
         if [ x$PUSHKIT_IDENTITY = x ]; then
@@ -725,13 +748,14 @@ set_global_vars()
     export ANTLOGDIR
     ANTLOGDIR=$LOGDIR/antlogs
 
-    export CLEANLOG BUILDLOG RELEASELOG INSTALLOG 
+    export CLEANLOG BUILDLOG RELEASELOG INSTALLOG POPMAVENLOG
     export UNITTESTLOG REGRESSLOG UPDATELOG INTEGRATIONLOG PUSHKITLOG
     export JAVADOCLOG INSTALLER_TESTLOG 
 
     CLEANLOG=$LOGDIR/javaClean.log
     BUILDLOG=$LOGDIR/javaBuild.log
     RELEASELOG=$LOGDIR/makeRelease.log
+    POPMAVENLOG=$LOGDIR/populateMaven.log
     INSTALLOG=$LOGDIR/makeInstall.log
     INSTALLER_TESTLOG=$LOGDIR/installerTest.log
     PUSHKITLOG=$LOGDIR/pushkit.log
@@ -1313,7 +1337,7 @@ MSG_EOF
     kitdir=$kitbase/$bldnum
     make_mavenarchive "$kitdir"
     if [ $? -ne 0 ]; then
-      bldmsg -error -p $p/make_installer make_mavenarchive FAILED
+      bldmsg -error -p $p/make_release make_mavenarchive FAILED
       kiterrs=1
     fi
 
@@ -1338,6 +1362,29 @@ MSG_EOF
 }
 
 
+populate_maven()
+{
+    if [ $TESTMODE -eq 1 ]; then
+        return 0
+    fi
+
+    populate_maven_errs=0
+    bldmsg "BUILDRESULTS_TYPE=general"
+
+    deploy_defs="deploy:deploy-file -Durl=file://$MAVENPOP_IDENTITY -DrepositoryId=sun-private -Dpackaging=jar -DgeneratePom=true"
+
+    ## matcher.jar ##
+    filedir=$SRCROOT/../open-dm-dq/matcher/target
+    groupId=mural
+    file="matcher.jar"
+    artifactId=matcher
+    version=1.0-*SNAPSHOT
+    echo "mvn $deploy_defs -Dfile=$filedir/$file -DgroupId=$groupId -DartifactId=$artifactId -Dversion=$version -Dmaven.repo.local=$SRCROOT/m2/repository"
+    cmd="mvn ${deploy_defs} -Dfile=${filedir}/${file} -DgroupId=${groupId} -DartifactId=${artifactId} -Dversion=${version} -Dmaven.repo.local=${SRCROOT}/m2/repository"
+
+    eval $cmd
+    return $?
+}
 
 
 push_kit()
@@ -1668,25 +1715,26 @@ run_background_tasks()
     fi
     bld_reset_watchdog
 
-#    install_failed=0
-#    if [ $DOINSTALL -eq 1 ]; then
-#        if [ $release_failed -eq 0 -a $BUILD_FAILED -eq 0 ]; then
-#            bldmsg -mark Kitting Installer of $PRODUCT - Log is $INSTALLOG
-#            bldmsg -markbeg ${p}:make_installer
-#            make_installer >> $INSTALLOG 2>&1
-#            status=$?
-#            if [ $status -ne 0 ]; then
-#                bldmsg -error -p $p make_installer failed. Check $INSTALLOG for errors.
-#                install_failed=1
-#                BG_BUILD_STATUS=1
-#                shprops -set $BG_RESULTS BG_BUILD_STATUS=$BG_BUILD_STATUS
-#            fi
-#            bldmsg -markend -status $status ${p}:make_installer
-#        else
-#             bldmsg -error Skipping make_installer because release or build step failed
-#        fi
-#        bld_reset_watchdog
-#    fi
+
+    popmaven_failed=0
+    if [ $DOMAVEN_POP -eq 1 -a $release_failed -eq 0 -a $BUILD_FAILED -eq 0 ]; then
+        bldmsg -mark Populating maven repository - Log is $POPMAVENLOG
+        bldmsg -markbeg ${p}:populate_maven
+        populate_maven >> $POPMAVENLOG 2>&1
+        status=$?
+        if [ $status -ne 0 ]; then
+            bldmsg -error -p $p populate_maven failed. Check $POPMAVENLOG for errors.
+            popmaven_failed=1
+            BG_BUILD_STATUS=1
+            shprops -set $BG_RESULTS BG_BUILD_STATUS=$BG_BUILD_STATUS
+        fi
+        bldmsg -markend -status $status ${p}:populate_maven
+        bld_reset_watchdog
+    else
+        bldmsg -error Skipping populate_maven because release or build step failed
+    fi
+    bld_reset_watchdog
+
 
 #    pushkit_failed=0
 #    if [ $DOPUSHKIT -eq 1 -a $release_failed -eq 0 -a $install_failed -eq 0 -a $BUILD_FAILED -eq 0 ]; then
