@@ -292,7 +292,7 @@ is divided into following sections:
                 <zip destfile="profiler-generated/profiler.zip" basedir="profiler-generated/profiler" excludes="profiler.zip"/>
                 <delete dir="profiler-generated/profiler"/>
             </target>
-            <target name="gen-bulkloader-zip"  description="generate bulk loader zip">
+            <target name="gen-bulkloader-zip" depends="gen-mdm-index-files" description="generate bulk loader zip">
                 <mkdir dir="bulkloader-generated/bulkloader"/>
                 <copy todir="bulkloader-generated/bulkloader">
                     <fileset dir="${{module.install.dir}}/ext/eview/bulkloader">
