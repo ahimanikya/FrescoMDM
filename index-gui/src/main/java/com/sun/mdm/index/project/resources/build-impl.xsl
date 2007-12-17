@@ -263,7 +263,36 @@ is divided into following sections:
 				<delete dir="loader-generated/loader"></delete>
 
 			</target>
-
+            <target name="gen-cleanser-zip" depends="gen-mdm-index-files" description="generate cleanser zip">
+                <mkdir dir="cleanser-generated/cleanser"/>
+                
+                <unzip src="${{module.install.dir}}/ext/eview/dataanalysis/cleanser/executable-cleanser.zip" dest="cleanser-generated/cleanser"/>
+                <jar destfile="cleanser-generated/cleanser/lib/cleanserresource-1.0.jar" basedir="eView_generated/resource"/>
+                <copy todir="cleanser-generated/cleanser/">
+                    <fileset dir="eView_generated/resource">
+                        <include name="object.xml"/>
+                    </fileset>
+                    
+                </copy>
+                
+                <zip destfile="cleanser-generated/cleanser.zip" basedir="cleanser-generated/cleanser" excludes="cleanser.zip"/>
+                <delete dir="cleanser-generated/cleanser"/>
+            </target>
+            <target name="gen-profiler-zip" depends="gen-mdm-index-files" description="generate profiler zip">
+                <mkdir dir="profiler-generated/profiler"/>
+                
+                <unzip src="${{module.install.dir}}/ext/eview/dataanalysis/profiler/executable-profiler.zip" dest="profiler-generated/profiler"/>
+                <copy todir="profiler-generated/profiler/">
+                    <fileset dir="eView_generated/resource">
+                        <include name="object.xml"/>
+                    </fileset>
+                    
+                </copy>
+                
+                <zip destfile="profiler-generated/profiler.zip" basedir="profiler-generated/profiler" excludes="profiler.zip"/>
+                <delete dir="profiler-generated/profiler"/>
+            </target>
+            
 			<target name="dist_se">
 				<xsl:attribute name="depends">dist</xsl:attribute>
 				<copy file="${{dist.jar}}" tofile="${{dist.dir}}/jbi/${{jbi.jar}}" />
