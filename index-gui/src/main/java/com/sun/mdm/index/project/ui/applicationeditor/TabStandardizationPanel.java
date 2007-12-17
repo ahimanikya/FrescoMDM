@@ -55,6 +55,8 @@ public class TabStandardizationPanel extends javax.swing.JPanel {
     private Map mMapFieldIDsPerTargetFieldRestore = new HashMap(); // key:targetField see TargetMapping
     private Map mMapAllFieldIDsPerTargetField = new HashMap(); // key:standardizationType entry:mapFieldIDsPerTargetField
     private boolean bCheckedOut;
+    private ArrayList mAlDataTypes;
+    private int mCntDataTypes;
     
     /** Creates new form TabStandardizationPanel */
     public TabStandardizationPanel(EviewEditorMainApp eviewEditorMainApp, EviewApplication eviewApplication) {
@@ -63,9 +65,16 @@ public class TabStandardizationPanel extends javax.swing.JPanel {
         bCheckedOut = eviewEditorMainApp.isCheckedOut();
         mMatchFieldDef = mEviewApplication.getMatchFieldDef(false);
         initComponents();
+        try {
+            mAlDataTypes = mEviewApplication.getStandardizationDataTypes();
+            mCntDataTypes = mAlDataTypes.size();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         createStandardizationTable();
         mTblStandardizationTypes.setEnabled(bCheckedOut);
-        btnAdd.setEnabled(bCheckedOut && mTblStandardizationTypes.getRowCount() < 2);
+        btnAdd.setEnabled(bCheckedOut && mTblStandardizationTypes.getRowCount() < mCntDataTypes);
     }
     
     /** This method is called from within the constructor to
@@ -234,7 +243,7 @@ public class TabStandardizationPanel extends javax.swing.JPanel {
                 mMapSourceFields.remove(standardizationType);
                 model.removeRow(j);
             }
-            btnAdd.setEnabled(bCheckedOut && model.getRowCount() < 2); // For now only BusinessName and Address
+            btnAdd.setEnabled(bCheckedOut && model.getRowCount() < mCntDataTypes);
             btnRemove.setEnabled(false);
             btnEdit.setEnabled(false);
             mMatchFieldDef.setModified(true);
@@ -278,7 +287,7 @@ public class TabStandardizationPanel extends javax.swing.JPanel {
             mTblStandardizationTypes.clearSelection();
             mTblStandardizationTypes.addRowSelectionInterval(iSelectedRow, iSelectedRow);
             mTblStandardizationTypes.setEditingRow(iSelectedRow);
-            btnAdd.setEnabled(bCheckedOut && model.getRowCount() < 2); // For now only BusinessName and Address
+            btnAdd.setEnabled(bCheckedOut && model.getRowCount() < mCntDataTypes);
             btnEdit.setEnabled(bCheckedOut);
             btnRemove.setEnabled(bCheckedOut);
             //TODO Add a FreeFormGroup
@@ -336,12 +345,9 @@ public class TabStandardizationPanel extends javax.swing.JPanel {
     
     private void loadMaps() {
         clearMaps();
-        
-        String matchEngine = PropertiesDeploymentPanel.getMatchEngine();
-        MatchType[] mMatchTypes;
-        mMatchTypes = ConfigGenerator.getMatchTypes(matchEngine);
-        for (int i = 0; i < mMatchTypes.length; i++) {
-            String standardizationType = mMatchTypes[i].getMatchTypeID();
+
+        for (int i = 0; i < mAlDataTypes.size(); i++) {
+            String standardizationType = (String) mAlDataTypes.get(i);
             ArrayList alSourceFields = getSourceFieldsFromMatchFieldDef(standardizationType);
             mMapSourceFields.put(standardizationType, alSourceFields);
             ArrayList alSourceFieldsRestore = new ArrayList();
@@ -475,7 +481,7 @@ public class TabStandardizationPanel extends javax.swing.JPanel {
         
         loadMaps();
         jScrollPaneTable.setViewportView(mTblStandardizationTypes);
-        btnAdd.setEnabled(bCheckedOut && model.getRowCount() < 2); // For now only BusinessName and Address
+        btnAdd.setEnabled(bCheckedOut && model.getRowCount() < mCntDataTypes);
     }
     
     /* Called by EntityNode when field name changed
@@ -619,7 +625,7 @@ public class TabStandardizationPanel extends javax.swing.JPanel {
         }
         
         if (true) {
-            btnAdd.setEnabled(bCheckedOut && model.getRowCount() < 2); // For now only BusinessName and Address
+            btnAdd.setEnabled(bCheckedOut && model.getRowCount() < mCntDataTypes);
             // update mMatchFieldDef...
             ArrayList alFreeFormGroups = mMatchFieldDef.getFreeFormGroups();
             for (int j=0; alFreeFormGroups != null && j < alFreeFormGroups.size(); j++) {

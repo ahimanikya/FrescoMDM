@@ -475,11 +475,6 @@ public class EviewApplication extends EviewProject {
         }
     }
     
-    public void setStandardizerRepositoryDirOld() throws Exception {
-        StandardizerIntrospector introspector = getStandardizerIntrospector();
-        introspector.setRepository(getStandardizerRepositoryDir());
-    }
-    
     /** returns STANDARDIZATION_ENGINE_FOLDER directory
      * call com.sun.mdm.standardizer.StandardizerIntrospector.importDirectory(File standDir)
      * to get the list of supported data types (Address, BusinessName, PersonName, etc)
@@ -493,13 +488,15 @@ public class EviewApplication extends EviewProject {
     
     private Map mMapStandDataTypeFields = new HashMap(); // {"Address", ArrayList}
     private Map mMapStandDataTypeVariants = new HashMap(); // {"Address", "AU"}
-
+    private ArrayList mAlStandDataDataTypes = null;
+    
     public void setStandardizerRepositoryDir() throws Exception {
         StandardizerIntrospector standardizerIntrospector = getStandardizerIntrospector();
         DataTypeDescriptor[] dataTypeDescriptors = standardizerIntrospector.setRepository(getStandardizerRepositoryDir());
+        mAlStandDataDataTypes = new ArrayList(dataTypeDescriptors.length);
         for (DataTypeDescriptor dataTypeDescriptor: dataTypeDescriptors) {
             String strDataType = dataTypeDescriptor.getName();
-            
+            mAlStandDataDataTypes.add(strDataType);
             VariantDescriptor[] variantDescriptors = dataTypeDescriptor.variants();
             ArrayList alVariants = new ArrayList(variantDescriptors.length);
             for (VariantDescriptor variantDescriptor: variantDescriptors) {
@@ -515,6 +512,16 @@ public class EviewApplication extends EviewProject {
             }
             mMapStandDataTypeFields.put(strDataType, alFieldNames);
         }
+    }
+    
+    /*
+     * @return ArrayList mAlStandDataDataTypes
+     */
+    public ArrayList getStandardizationDataTypes() throws Exception {
+        if (mAlStandDataDataTypes == null) {
+            setStandardizerRepositoryDir();
+        }
+        return mAlStandDataDataTypes;
     }
     
     /* return ArrayList of variant names

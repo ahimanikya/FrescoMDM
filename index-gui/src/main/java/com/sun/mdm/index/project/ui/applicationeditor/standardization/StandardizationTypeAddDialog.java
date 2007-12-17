@@ -108,7 +108,7 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
             String defaultDomainSelector = MatchFieldDef.MULTIPLE_DOMAIN_SELECTOR;
             this.cbDomainSelector.setSelectedItem(defaultDomainSelector);
         }
-
+        
         loadStandardizationDataTypes(mMatchEngine, dataType, editMode);
         loadVariantTable(editMode);
         loadSupportedVariants(dataType);
@@ -500,6 +500,10 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
             ArrayList alFieldIDs = dlg.getFieldIDs();
             mMapFieldIDsPerTargetField.put(dlg.getTargetField(), alFieldIDs);
             ArrayList alTargetFields = (ArrayList) mMapTargetFields.get(dataType);
+            if (alTargetFields == null) {
+                alTargetFields = new ArrayList();
+                mMapTargetFields.put(dataType, alTargetFields);
+            }
             alTargetFields.add(dlg.getTargetField());
             mMapTargetFields.put(dataType, alTargetFields);
             String sFieldIDs = "";
@@ -567,34 +571,32 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_onAddSourceFields
     
     private void loadStandardizationDataTypes(String matchEngine, String dataType, boolean editMode) {
-        /* ToDo Kevin/Ricardo/Shant
-        ArrayList alDataTypes = getStandardizationDataTypes(String matchEngine);
-        for (int i = 0; i < alDataTypes.length; i++) {
-            ArrayList alSourceFields = (ArrayList) mMapSourceFields.get(alDataTypes[i]);
-            if (editMode || (alSourceFields == null || alSourceFields.size() <= 0)) {
-                cbStandardizationDataTypes.addItem(alDataTypes[i]);
-            }
-        }
-        */
-        
-        MatchType[] alDataTypes;
-        alDataTypes = ConfigGenerator.getMatchTypes(matchEngine);
-        for (int i = 0; i < alDataTypes.length; i++) {
-            String matchTypeID = alDataTypes[i].getMatchTypeID();
-            ArrayList alSourceFields = (ArrayList) mMapSourceFields.get(matchTypeID);
-            if (editMode || (alSourceFields == null || alSourceFields.size() <= 0)) {
-                if (matchTypeID.equals("Address") || matchTypeID.equals("BusinessName")) {
-                    cbStandardizationDataTypes.addItem(matchTypeID);
+        try {
+            ArrayList alTempDataTypes = new ArrayList();
+            ArrayList alDataTypes = mEviewApplication.getStandardizationDataTypes();
+            alTempDataTypes.addAll(alDataTypes);
+            if (!editMode) {
+                for (int i = 0; i < alDataTypes.size(); i++) {
+                    ArrayList alSourceFields = (ArrayList) mMapSourceFields.get(alDataTypes.get(i));
+                    if (alSourceFields != null && alSourceFields.size() > 0) {
+                        alTempDataTypes.remove(alDataTypes.get(i));
+                    }
                 }
             }
-        }
 
-        if (dataType != null) {
-            cbStandardizationDataTypes.setSelectedItem(dataType);
-        } else {
-            cbStandardizationDataTypes.setSelectedIndex(0);
+            for (int i = 0; i < alTempDataTypes.size(); i++) {
+                cbStandardizationDataTypes.addItem(alTempDataTypes.get(i));
+            }
+
+            if (dataType != null) {
+                cbStandardizationDataTypes.setSelectedItem(dataType);
+            } else {
+                cbStandardizationDataTypes.setSelectedIndex(0);
+            }
+            cbStandardizationDataTypes.setEnabled(!editMode);
+        } catch (Exception ex) {
+            mLog.severe(ex.getMessage());
         }
-        cbStandardizationDataTypes.setEnabled(!editMode);
     }
     
     private void loadSelectedSourceFields() {
@@ -765,7 +767,7 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
         String dataType = getStandardizationDataType();
         ArrayList mAlTargetFields = (ArrayList) mMapTargetFields.get(dataType);
         ArrayList rows = new ArrayList();
-        for (int i=0; i < mAlTargetFields.size(); i++) {
+        for (int i=0; mAlTargetFields != null && i < mAlTargetFields.size(); i++) {
             String fieldName = (String) mAlTargetFields.get(i);
             String fieldIDs = null;
             ArrayList alFieldIDs = (ArrayList) mMapFieldIDsPerTargetField.get(fieldName);
