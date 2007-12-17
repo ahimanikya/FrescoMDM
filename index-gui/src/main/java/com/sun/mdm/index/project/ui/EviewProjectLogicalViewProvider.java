@@ -160,6 +160,9 @@ public class EviewProjectLogicalViewProvider implements LogicalViewProvider {
                 ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_GENEVIEW, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Generate_Master_Index_Files"), null ),
                 ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_GENLOADER, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Generate_Loader_Zip"), null ),
                 null,
+                ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_CLEANSER, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Cleanser"), null ),
+                ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_PROFILER, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Profiler"), null ),
+                null,
                 ProjectSensitiveActions.projectCommandAction( IcanproConstants.COMMAND_REDEPLOY, bundle.getString( "LBL_RedeployAction_Name" ), null ), // NOI18N
                 ProjectSensitiveActions.projectCommandAction( IcanproConstants.COMMAND_DEPLOY, bundle.getString( "LBL_DeployAction_Name" ), null ), // NOI18N
                 null,
