@@ -292,6 +292,14 @@ is divided into following sections:
                 <zip destfile="profiler-generated/profiler.zip" basedir="profiler-generated/profiler" excludes="profiler.zip"/>
                 <delete dir="profiler-generated/profiler"/>
             </target>
+            <target name="gen-bulkloader-zip"  description="generate bulk loader zip">
+                <mkdir dir="bulkloader-generated/bulkloader"/>
+                <copy todir="bulkloader-generated/bulkloader">
+                    <fileset dir="${{module.install.dir}}/ext/eview/bulkloader">
+                        <include name="bulk-loader.zip" />
+                    </fileset>
+                </copy>
+            </target>
             
 			<target name="dist_se">
 				<xsl:attribute name="depends">dist</xsl:attribute>
