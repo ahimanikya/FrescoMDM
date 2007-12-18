@@ -11,7 +11,7 @@ OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
 Class-Path: ext/eview/index-core.jar 
     ext/eview/net.java.hulp.i18n.jar 
     ext/eview/net.java.hulp.i18ntask.jar 
-    ext/eview/sun_matcher.jar 
+    ext/eview/matcher.jar 
     ext/eview/standardizer/lib/mdm-standardizer.jar 
     ext/eview/standardizer/lib/aopalliance-1.0.jar 
     ext/eview/standardizer/lib/asm-2.2.3.jar 
@@ -28,4 +28,4 @@ Class-Path: ext/eview/index-core.jar
     ext/eview/standardizer/lib/spring-support-2.0.5.jar 
     ext/eview/standardizer/lib/commons-beanutils.jar 
     ext/eview/standardizer/lib/commons-collections-2.1.1.jar 
-    ext/eview/standardizer/lib/commons-logging-1.1.jar 
+    ext/eview/standardizer/lib/commons-logging-1.0.4.jar 
