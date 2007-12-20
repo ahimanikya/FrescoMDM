@@ -113,6 +113,8 @@ public class LoaderGeneratorTask extends Task {
 			write(config);
 			writeBuildXML();
 			writeLoaderBat();
+			writeLoaderScripts();
+			writeLoggingProperties();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -123,28 +125,10 @@ public class LoaderGeneratorTask extends Task {
 			File f = new File(configDir + "/../build.xml");
 			BufferedWriter wr = new BufferedWriter(new FileWriter(f));
 
-			InputStream ins = this
-					.getClass()
-					.getClassLoader()
-					.getResourceAsStream(
-							"com/sun/mdm/index/project/anttasks/loader.build.xml");
+			String fileResource = "com/sun/mdm/index/project/anttasks/loader.build.xml";
+			
+			StringBuilder sb = getResourceContents(fileResource);
 
-			BufferedReader br = new BufferedReader(new InputStreamReader(ins));
-
-			StringBuilder sb = new StringBuilder();
-
-			try {
-				while (true) {
-					String line = br.readLine();
-					if (line == null)
-						break;
-					sb.append(line + "\n");
-
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 
 			wr.write(sb.toString());
 
@@ -160,29 +144,10 @@ public class LoaderGeneratorTask extends Task {
 		try {
 			File f = new File(configDir + "/../run-loader.bat");
 			BufferedWriter wr = new BufferedWriter(new FileWriter(f));
+			String fileResource = "com/sun/mdm/index/project/anttasks/run-loader.bat.xml";
+			
 
-			InputStream ins = this
-					.getClass()
-					.getClassLoader()
-					.getResourceAsStream(
-							"com/sun/mdm/index/project/anttasks/run-loader.bat.xml");
-
-			BufferedReader br = new BufferedReader(new InputStreamReader(ins));
-
-			StringBuilder sb = new StringBuilder();
-
-			try {
-				while (true) {
-					String line = br.readLine();
-					if (line == null)
-						break;
-					sb.append(line + "\n");
-
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			StringBuilder sb = getResourceContents(fileResource);
 
 			wr.write(sb.toString());
 
@@ -191,6 +156,73 @@ public class LoaderGeneratorTask extends Task {
 			e.printStackTrace();
 		}
 
+	}
+	
+	private void writeLoaderScripts() {
+		try {
+			File f = new File(configDir + "/../run-loader.sh");
+			BufferedWriter wr = new BufferedWriter(new FileWriter(f));
+			String fileResource = "com/sun/mdm/index/project/anttasks/run-loader.sh.xml";
+			
+
+			StringBuilder sb = getResourceContents(fileResource);
+
+			wr.write(sb.toString());
+
+			wr.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	private void writeLoggingProperties() {
+		try {
+			File f = new File(configDir + "/logging.properties");
+			BufferedWriter wr = new BufferedWriter(new FileWriter(f));
+			String fileResource = "com/sun/mdm/index/project/anttasks/logging.properties.xml";
+			
+
+			StringBuilder sb = getResourceContents(fileResource);
+
+			wr.write(sb.toString());
+
+			wr.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+
+	/**
+	 * @param fileResource
+	 * @return
+	 */
+	private StringBuilder getResourceContents(String fileResource) {
+		InputStream ins = this
+				.getClass()
+				.getClassLoader()
+				.getResourceAsStream(
+						fileResource);
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(ins));
+
+		StringBuilder sb = new StringBuilder();
+
+		try {
+			while (true) {
+				String line = br.readLine();
+				if (line == null)
+					break;
+				sb.append(line + "\n");
+
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sb;
 	}
 
 
