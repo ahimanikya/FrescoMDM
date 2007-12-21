@@ -62,7 +62,7 @@ $PRODUCT = "odmmi";
 
 #this is the current release number:
 %MILESTONE_VERSION = (
-    'odmmi', 'SM05',
+    'odmmi', 'SM06',
 );
 
 #this is the milestone date this release is based on.
