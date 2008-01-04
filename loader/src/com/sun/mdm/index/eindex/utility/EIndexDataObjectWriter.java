@@ -70,7 +70,7 @@ public class EIndexDataObjectWriter {
 		}
 
 		try {
-			writer = new DataObjectFileWriter(inputDir + "/finalInputData.txt");
+			writer = new DataObjectFileWriter(inputDir + "/finalInputData.txt",true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -118,25 +118,25 @@ public class EIndexDataObjectWriter {
 	public static void main(String[] args) {
 		try {
 			EIndexDataObjectWriter wr = new EIndexDataObjectWriter(
-					"C:/test/loader");
+					"C:/test/loader/eIndex");
 
 			wr.write();
 			wr.close();
 
-			DataObjectFileReader fr = new DataObjectFileReader("C:/test/loader/finalInputData.txt");
-
-			while (true) {
-				DataObject d = fr.readDataObject();
-				
-				
-
-				if (d == null) {
-					break;
-				}
-				
-				logger.info(d.toString());
-				
-			}
+//			DataObjectFileReader fr = new DataObjectFileReader("C:/test/loader/finalInputData.txt");
+//
+//			while (true) {
+//				DataObject d = fr.readDataObject();
+//				
+//				
+//
+//				if (d == null) {
+//					break;
+//				}
+//				
+//				logger.info(d.toString());
+//				
+//			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

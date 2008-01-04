@@ -35,63 +35,73 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
 
 /**
  * @author Sujit Biswas
- *
+ * 
  */
 public class BulkLoader {
-	
-	
+
 	private ScriptGenerator scriptGenerator = new ScriptGenerator();
-	
+
 	private static Logger logger = Logger.getLogger(BulkLoader.class.getName());
-	
+
 	private LoaderConfig config = LoaderConfig.getInstance();
-	
-	private ClusterSynchronizer clusterSynchronizer = ClusterSynchronizer.getInstance();
-	
-	
-	public void load(){
-		
+
+	private ClusterSynchronizer clusterSynchronizer = ClusterSynchronizer
+			.getInstance();
+
+	public void load() {
+
 		scriptGenerator.generate();
-		
+
 		ArrayList<Table> tables = scriptGenerator.getTables();
-		
+
 		ExecutorService executor = Executors.newFixedThreadPool(tables.size());
-		
+
 		ArrayList<Future<String>> futures = new ArrayList<Future<String>>();
-		
-		for(Table t : tables){
+
+		for (Table t : tables) {
 			OracleTableLoader o = new OracleTableLoader(t.getName());
-			
+
 			futures.add(executor.submit(o));
 		}
-		
-		for( Future<String> f : futures){
+
+		for (Future<String> f : futures) {
 			try {
 				f.get();
 			} catch (Exception e) {
 				logger.info(e.getMessage());
-			} 
+			}
 		}
-		
-		
-		
-		
-		if(isMasterLoader()){
+
+		if (isMasterLoader()) {
 			clusterSynchronizer.waitBulkLoadingDoneBySlaves();
 			clusterSynchronizer.setClusterState(ClusterState.BULK_LOADING_DONE);
-		}else{
+		} else {
 			clusterSynchronizer.setLoaderState(ClusterState.BULK_LOADING_DONE);
 		}
 		
-		
+		executor.shutdown();
+
 	}
-	
-	
+
 	protected boolean isMasterLoader() {
-		String isMasterLoader = config
-				.getSystemProperty("isMasterLoader");
-	
+		String isMasterLoader = config.getSystemProperty("isMasterLoader");
+
 		return Boolean.parseBoolean(isMasterLoader);
+	}
+
+	public static void main(String[] args) {
+
+		ClusterSynchronizer.getInstance().setLoaderState(
+				ClusterState.BULK_LOADING_DONE);
+
+		BulkLoader bl = new BulkLoader();
+
+		long t1 = System.currentTimeMillis();
+		bl.load();
+		long t2 = System.currentTimeMillis();
+
+		logger.info("time taken in millis: " + (t2 - t1));
+
 	}
 
 }
