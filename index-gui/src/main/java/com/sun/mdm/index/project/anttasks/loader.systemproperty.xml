@@ -4,28 +4,31 @@
 
 	<system>
 		<properties>
-			<property name="loaderName" value="loader1" />
+			<property name="loaderName" value="master-loader" />
 			<property name="isMasterLoader" value="true" />
+			<property name="matchAnalyzerMode" value="false" />
+
 			<property name="rmiPort" value="9999" />
 			<property name="workingDir" value="/eview/loader" />
+			<property name="ftp.workingDir" value="/loader" />
 
-			<property name="numBuckets" value="5" />
+			<property name="numBlockBuckets" value="5" />
 			<property name="numThreads" value="1" />
 
 			<!-- used by euid assigner -->
-			<property name="maxNoOfBucket" value="3" />
-			<property name="totalNoOfRecords" value="200" />
+			<property name="numEUIDBuckets" value="3" />
+			<property name="totalNoOfRecords" value="400" />
 
 
 			<!-- time in milli seconds -->
 			<property name="pollInterval" value="1000" />
-			<property name="maxWaitTime" value="10000" />
+			<property name="maxWaitTime" value="1000000000" />
 
 
 			<!-- ftp properties -->
-			<property name="ftp.server" value="sbiswas-d600" />
-			<property name="ftp.username" value="sujit" />
-			<property name="ftp.password" value="sujit" />
+			<property name="ftp.server" value="sbiswas-acer" />
+			<property name="ftp.username" value="loader" />
+			<property name="ftp.password" value="loader" />
 
 
 
@@ -36,8 +39,7 @@
 			<property name="cluster.database.password" value="sujit" />
 			<property name="cluster.database.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
 
-			<property name="eviewDatabase" value="Oracle" />
-			<property name="eviewDatabaseUrl" value="Oracle" />
+
 
 
 			<!-- oracle SQL loader properties -->
