@@ -11,6 +11,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -30,6 +32,7 @@ import com.sun.mdm.index.project.EviewProjectProperties;
  * 
  */
 public class LoaderGeneratorTask extends Task {
+	private static final String REPLACE_WITH_CLASSPATH = "_REPLACE_WITH_CLASSPATH_";
 	private String srcDir;
 	private String configDir;
 
@@ -59,8 +62,8 @@ public class LoaderGeneratorTask extends Task {
 
 			// Threshold
 			xmlFile = new File(srcDir + File.separator
-					+ EviewProjectProperties.CONFIGURATION_FOLDER + File.separator
-					+ "master.xml");
+					+ EviewProjectProperties.CONFIGURATION_FOLDER
+					+ File.separator + "master.xml");
 			source = new InputSource(new FileInputStream(xmlFile));
 			MasterType masterType = Utils.parseMasterType(source);
 			com.sun.mdm.index.parser.Utils.Parameter parameterDuplicateThreshold;
@@ -87,8 +90,8 @@ public class LoaderGeneratorTask extends Task {
 
 			// QueryBuilder
 			xmlFile = new File(srcDir + File.separator
-					+ EviewProjectProperties.CONFIGURATION_FOLDER + File.separator
-					+ "query.xml");
+					+ EviewProjectProperties.CONFIGURATION_FOLDER
+					+ File.separator + "query.xml");
 			source = new InputSource(new FileInputStream(xmlFile));
 			QueryType queryType = Utils.parseQueryType(source);
 			String queryBuilderName = masterType
@@ -101,8 +104,8 @@ public class LoaderGeneratorTask extends Task {
 
 			// MatchConfig
 			xmlFile = new File(srcDir + File.separator
-					+ EviewProjectProperties.CONFIGURATION_FOLDER + File.separator
-					+ "mefa.xml");
+					+ EviewProjectProperties.CONFIGURATION_FOLDER
+					+ File.separator + "mefa.xml");
 			source = new InputSource(new FileInputStream(xmlFile));
 			MatchFieldDef matchFieldDef = Utils.parseMatchFieldDef(source);
 			str = matchFieldDef.getMatchingConfigXML();
@@ -126,9 +129,8 @@ public class LoaderGeneratorTask extends Task {
 			BufferedWriter wr = new BufferedWriter(new FileWriter(f));
 
 			String fileResource = "com/sun/mdm/index/project/anttasks/loader.build.xml";
-			
-			StringBuilder sb = getResourceContents(fileResource);
 
+			StringBuilder sb = getResourceContents(fileResource);
 
 			wr.write(sb.toString());
 
@@ -138,18 +140,28 @@ public class LoaderGeneratorTask extends Task {
 		}
 
 	}
-	
-	
+
 	private void writeLoaderBat() {
 		try {
 			File f = new File(configDir + "/../run-loader.bat");
 			BufferedWriter wr = new BufferedWriter(new FileWriter(f));
 			String fileResource = "com/sun/mdm/index/project/anttasks/run-loader.bat.xml";
-			
 
 			StringBuilder sb = getResourceContents(fileResource);
 
-			wr.write(sb.toString());
+			List<String> l = getJarFiles();
+
+			StringBuilder sb1 = new StringBuilder();
+			for (String s : l) {
+				sb1.append("%loader_home%\\\\lib\\\\");
+				sb1.append(s);
+				sb1.append(";");
+			}
+			sb1.append("%ORACLE_JDBC_JAR%");
+
+			String result = sb.toString().replaceAll(REPLACE_WITH_CLASSPATH,
+					sb1.toString());
+			wr.write(result);
 
 			wr.close();
 		} catch (Exception e) {
@@ -157,17 +169,42 @@ public class LoaderGeneratorTask extends Task {
 		}
 
 	}
-	
+
+	private List<String> getJarFiles() {
+		File f = new File(configDir + "/../lib");
+
+		List<String> l = new ArrayList<String>();
+
+		for (String s : f.list()) {
+			if (s.endsWith(".jar"))
+				l.add(s);
+		}
+
+		return l;
+
+	}
+
 	private void writeLoaderScripts() {
 		try {
 			File f = new File(configDir + "/../run-loader.sh");
 			BufferedWriter wr = new BufferedWriter(new FileWriter(f));
 			String fileResource = "com/sun/mdm/index/project/anttasks/run-loader.sh.xml";
-			
 
 			StringBuilder sb = getResourceContents(fileResource);
 
-			wr.write(sb.toString());
+			List<String> l = getJarFiles();
+
+			StringBuilder sb1 = new StringBuilder();
+			for (String s : l) {
+				sb1.append("${loader_home}/lib/");
+				sb1.append(s);
+				sb1.append(":");
+			}
+			sb1.append("${ORACLE_JDBC_JAR}");
+
+			String result = sb.toString().replace(REPLACE_WITH_CLASSPATH,
+					sb1.toString());
+			wr.write(result);
 
 			wr.close();
 		} catch (Exception e) {
@@ -175,13 +212,12 @@ public class LoaderGeneratorTask extends Task {
 		}
 
 	}
-	
+
 	private void writeLoggingProperties() {
 		try {
 			File f = new File(configDir + "/logging.properties");
 			BufferedWriter wr = new BufferedWriter(new FileWriter(f));
 			String fileResource = "com/sun/mdm/index/project/anttasks/logging.properties.xml";
-			
 
 			StringBuilder sb = getResourceContents(fileResource);
 
@@ -193,18 +229,14 @@ public class LoaderGeneratorTask extends Task {
 		}
 
 	}
-	
 
 	/**
 	 * @param fileResource
 	 * @return
 	 */
 	private StringBuilder getResourceContents(String fileResource) {
-		InputStream ins = this
-				.getClass()
-				.getClassLoader()
-				.getResourceAsStream(
-						fileResource);
+		InputStream ins = this.getClass().getClassLoader().getResourceAsStream(
+				fileResource);
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(ins));
 
@@ -224,7 +256,6 @@ public class LoaderGeneratorTask extends Task {
 		}
 		return sb;
 	}
-
 
 	private void write(LoaderConfig config) {
 		try {
