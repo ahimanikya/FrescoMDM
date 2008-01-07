@@ -450,7 +450,7 @@ public class BlockingRuleDefinitionDialog extends javax.swing.JDialog implements
         });
         
         jScrollPaneBlockRules.setViewportView(mTblBlockRules);
-        int wCol = 580/8;
+        int wCol = 580/8;   // Cannot get the right width programmatically
         // Disable auto resizing
         mTblBlockRules.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         // Set width for the "Field" column
