@@ -118,11 +118,6 @@ public class FinishVisualPanel extends javax.swing.JPanel {
                 FinishVisualPanel.class,
                 "MSG_Xml_Security_Configuration"));
 
-        javax.swing.JLabel jLabelDBSystems = new javax.swing.JLabel();
-        jLabelDBSystems.setText(NbBundle.getMessage(
-                FinishVisualPanel.class,
-                "MSG_DB_Script_Systems"));
-
         javax.swing.JLabel jLabelDBScript = new javax.swing.JLabel();
         jLabelDBScript.setText(NbBundle.getMessage(
                 FinishVisualPanel.class,
