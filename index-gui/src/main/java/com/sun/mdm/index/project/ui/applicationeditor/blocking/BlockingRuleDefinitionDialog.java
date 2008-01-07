@@ -450,19 +450,18 @@ public class BlockingRuleDefinitionDialog extends javax.swing.JDialog implements
         });
         
         jScrollPaneBlockRules.setViewportView(mTblBlockRules);
-        int width = jScrollPaneBlockRules.getWidth();
-        int widthFifth = ((width - 20) / 5);
+        int wCol = 580/8;
         // Disable auto resizing
-        //mTblBlockRules.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        mTblBlockRules.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         // Set width for the "Field" column
         TableColumn col = mTblBlockRules.getColumnModel().getColumn(blockRulesTableModel.iColField);
-        col.setPreferredWidth(widthFifth * 2);
+        col.setPreferredWidth(wCol * 4 + 4);
         // Set width for the "Operator" column
         col = mTblBlockRules.getColumnModel().getColumn(blockRulesTableModel.iColOperator);
-        col.setPreferredWidth(widthFifth);
+        col.setPreferredWidth(wCol);
         // Set width for the "Source" column
         col = mTblBlockRules.getColumnModel().getColumn(blockRulesTableModel.iColSource);
-        col.setPreferredWidth(widthFifth * 2);
+        col.setPreferredWidth(wCol * 3);
         
         mTblBlockRules.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
