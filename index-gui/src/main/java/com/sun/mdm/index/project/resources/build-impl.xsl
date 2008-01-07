@@ -171,6 +171,7 @@ is divided into following sections:
                             location="${{module.install.dir}}/com-sun-mdm-index-project.jar" />
                         <pathelement location="${{module.install.dir}}/ext/eview/index-core.jar" />
                         <pathelement location="${{module.install.dir}}/ext/eview/standardizer/lib/mdm-standardizer.jar" />
+                        <pathelement location="${{module.install.dir}}/ext/eview/standardizer/lib/commons-logging-1.0.4.jar"/>
                     </classpath>
                 </taskdef>
                 

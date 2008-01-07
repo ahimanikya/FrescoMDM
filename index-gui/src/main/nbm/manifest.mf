@@ -17,8 +17,7 @@ Class-Path: ext/eview/index-core.jar
     ext/eview/standardizer/lib/asm-2.2.3.jar 
     ext/eview/standardizer/lib/asm-commons-2.2.3.jar 
     ext/eview/standardizer/lib/asm-tree-2.2.3.jar 
-    ext/eview/standardizer/lib/aspectjrt.jar 
-    ext/eview/standardizer/lib/script-api.jar 
+    ext/eview/standardizer/lib/aspectjrt.jar  
     ext/eview/standardizer/lib/cglib-nodep-2.1_3.jar 
     ext/eview/standardizer/lib/spring-beans-2.0.5.jar 
     ext/eview/standardizer/lib/spring-core-2.0.5.jar 
@@ -27,5 +26,4 @@ Class-Path: ext/eview/index-core.jar
     ext/eview/standardizer/lib/spring-javaconfig-1.0-m2.jar 
     ext/eview/standardizer/lib/spring-support-2.0.5.jar 
     ext/eview/standardizer/lib/commons-beanutils.jar 
-    ext/eview/standardizer/lib/commons-collections-2.1.1.jar 
-    ext/eview/standardizer/lib/commons-logging-1.0.4.jar 
+    ext/eview/standardizer/lib/commons-collections-2.1.1.jar

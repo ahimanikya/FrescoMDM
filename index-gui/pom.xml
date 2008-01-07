@@ -226,6 +226,10 @@
             <artifactId>org-netbeans-modules-compapp-projects-base</artifactId>
             <version>${netbeans.version}</version>			
         </dependency>
-        
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-libs-commons_logging</artifactId>
+            <version>${netbeans.version}</version>			
+        </dependency>        
     </dependencies>
 </project>
