@@ -242,7 +242,7 @@ is divided into following sections:
                 
                 <copy todir="loader-generated/loader/lib">
                     
-                    <fileset dir="build/lib">
+                    <fileset dir="lib">
                         <include name="*.jar" />
                     </fileset>
                     <fileset dir="${{module.install.dir}}/ext/eview/loader">
@@ -378,8 +378,13 @@ is divided into following sections:
             </target>
             
             <xsl:comment>DIST BUILDING SECTION</xsl:comment>
-            
+            <target name="-pre-dist-mdm-lib-">
+                <copy todir="${{build.dir}}/lib">
+                    <fileset dir="lib"/>
+                </copy>
+            </target>            
             <target name="pre-dist">
+                <xsl:attribute name="depends">-pre-dist-mdm-lib-</xsl:attribute>
                 <xsl:comment>Empty placeholder for easier customization.</xsl:comment>
                 <xsl:comment>You can override this target in the ../build.xml file.</xsl:comment>
             </target>

@@ -274,8 +274,8 @@ public class EViewGeneratorTask extends Task {
         }
 
         //make resources.jar
-        File jarFile = new File(projPath + File.separator + getProject().getProperty("build.dir") +
-                File.separator + "lib" + File.separator + "resources.jar" );
+        File jarFile = new File(projPath + File.separator + "lib" + 
+                File.separator + "resources.jar" );
         if (jarFile.exists()){
             jarFile.delete();
         }
@@ -295,8 +295,7 @@ public class EViewGeneratorTask extends Task {
     private void generateJars() throws FileNotFoundException, IOException, Exception{
         
         String projPath   = getProject().getProperty("basedir");
-        String buildPath  = getProject().getProperty("build.dir");
-        String destPath   = projPath + File.separator + buildPath + File.separator + "lib";
+        String destPath   = projPath + File.separator + "lib";
         File destDir = new File(destPath);
         
         Delete delete = (Delete) getProject().createTask("delete");
@@ -570,11 +569,11 @@ public class EViewGeneratorTask extends Task {
         java.util.Properties properties = new java.util.Properties();
         properties.load(new FileInputStream(ejbPropertyFile));
         properties.setProperty("file.reference.index-core.jar",
-                        "../build/lib/index-core.jar");
+                        "../lib/index-core.jar");
         properties.setProperty("file.reference.net.java.hulp.i18ntask.jar",
-                        "../build/lib/net.java.hulp.i18ntask.jar");
+                        "../lib/net.java.hulp.i18ntask.jar");
         properties.setProperty("file.reference.net.java.hulp.i18n.jar",
-                        "../build/lib/net.java.hulp.i18n.jar");
+                        "../lib/net.java.hulp.i18n.jar");
         properties.setProperty("javac.classpath",
                         "${file.reference.index-core.jar}:"
                                         + "${file.reference.net.java.hulp.i18n.jar}:"
