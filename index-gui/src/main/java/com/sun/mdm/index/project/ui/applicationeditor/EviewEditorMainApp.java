@@ -153,9 +153,10 @@ public class EviewEditorMainApp {
         mEviewApplication = application;
         try {
             checkOutAll();
-            String path = application.getProjectDirectory().getName();
+            String path = mEviewApplication.getProjectDirectory().getName();
 
             mObjectTopComponent = new ObjectTopComponent();
+            mEviewApplication.setObjectTopComponent(mObjectTopComponent);
             if (mObjectTopComponent.startEviewTopComponent(getInstance(path), path, application)) {
                 mObjectTopComponent.open();
             }
@@ -376,6 +377,7 @@ public class EviewEditorMainApp {
     //}
     
     public void enableSaveAction(boolean flag) {
+        this.mEviewApplication.setModified(flag);
         this.mEviewEditorMainPanel.enableSaveButton(bCheckedOut && flag);
     }
     

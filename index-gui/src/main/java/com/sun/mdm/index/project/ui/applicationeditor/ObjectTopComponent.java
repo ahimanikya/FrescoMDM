@@ -32,6 +32,7 @@ import org.openide.nodes.Node;
 import org.openide.nodes.NodeAdapter;
 import org.openide.util.NbBundle;
 import org.openide.windows.TopComponent;
+import org.openide.cookies.SaveCookie;
 
 import com.sun.mdm.index.project.EviewApplication;
 
@@ -251,21 +252,37 @@ public class ObjectTopComponent
         return mPath;
     }
 
-
     /**
-     * Saves the configuration
+     * Implementation of SaveCookie which will be performed once global Save is 
+     * clicked on for this top component
      */
-    public void save() {
-        // 
-        //rootNode
+    private class Save implements SaveCookie {
+
+        private ObjectTopComponent myTC = null;
+        
+        public Save(ObjectTopComponent tc) {
+            myTC = tc;
+        }
+        
+        public void save() throws java.io.IOException {
+            myTC.mEviewEditorMainApp.save(false);
+        }                 
     }
-    
+    /**
+     * Getter for the save cookie
+     *
+     * @return a new save cookie
+     */
+    public SaveCookie getSaveCookie() {
+        return new Save(this);
+    }    
+
     private void addListeners() {
         if (mEviewApplication == null) {
             return;
         }
         try {
-            final Node node = mEviewApplication.getRootNode();
+            final Node node = mEviewApplication.getAssociatedNode();
             node.addNodeListener(new NodeAdapter() {
                 @Override
                 public void propertyChange(PropertyChangeEvent ev) {

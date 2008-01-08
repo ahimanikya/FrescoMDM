@@ -40,8 +40,6 @@ import org.xml.sax.InputSource;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
 
 import com.sun.mdm.index.parser.Utils;
 import com.sun.mdm.index.parser.EIndexObject;
@@ -55,6 +53,8 @@ import com.sun.mdm.standardizer.StandardizerIntrospector;
 import com.sun.mdm.standardizer.DataTypeDescriptor;
 import com.sun.mdm.standardizer.VariantDescriptor;
 import com.sun.mdm.standardizer.util.StandardizerUtils;
+import com.sun.mdm.index.project.ui.applicationeditor.ObjectTopComponent;
+import com.sun.mdm.index.project.ui.EviewConfigurationFolderNode;
 
 public class EviewApplication extends EviewProject {
     private static final java.util.logging.Logger mLog = java.util.logging.Logger.getLogger(
@@ -62,7 +62,8 @@ public class EviewApplication extends EviewProject {
         );
 
     private AntProjectHelper mHelper;
-    private Node mRootNode;
+    private EviewConfigurationFolderNode mAssociatedNode;
+    private ObjectTopComponent mObjectTopComponent;
     public final String EVIEW_APPLICATION_NAME = "eViewApplicationName";
     public final String EVIEW_OBJECT_NAME = "eViewObjectName";
     private String mMatchConfigFileString = "";
@@ -587,20 +588,31 @@ public class EviewApplication extends EviewProject {
         mMasterType = masterType;
     }
     
-    public void setRootNode(Node node) {
-        mRootNode = node;
+    public void setAssociatedNode(EviewConfigurationFolderNode node) {
+        mAssociatedNode = node;
     }
     
-    @Override
-    public Node getRootNode() {
-        return mRootNode;
+    public EviewConfigurationFolderNode getAssociatedNode() {
+        return mAssociatedNode;
     }
     
+    public void setObjectTopComponent(ObjectTopComponent otc) {
+        mObjectTopComponent = otc;
+    }
+    
+    public ObjectTopComponent getObjectTopComponent() {
+        return mObjectTopComponent;
+    }
+
     /* set dirty bit by various configuration panels
      * so we know we need to rewrite xml files
      */
     public void setModified(boolean flag) {
         mModified = flag;
+        if (flag == false && mModifiedMatchConfig == true) {
+            return;
+        }
+        mAssociatedNode.setModified(flag);
     }
     
     /* set dirty bit by various configuration panels
@@ -608,6 +620,10 @@ public class EviewApplication extends EviewProject {
      */
     public void setModifiedMatchConfig(boolean flag) {
         mModifiedMatchConfig = flag;
+        if (flag == false && mModified == true) {
+            return;
+        }
+        mAssociatedNode.setModified(flag);
     }
     
     /* Called by EntityNode so cbMatchType contains the right list of match types
@@ -930,6 +946,7 @@ public class EviewApplication extends EviewProject {
     public void resetModified(boolean flag) {
         mModified = flag; 
         mModifiedMatchConfig = flag;
+        setModified(flag);
         mEindexObject.setModified(flag);
         mEDMType.setModified(flag);
         mQueryType.setModified(flag);

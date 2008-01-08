@@ -24,9 +24,12 @@ package com.sun.mdm.index.project.ui;
 
 import org.openide.loaders.DataFolder;
 import org.openide.util.actions.SystemAction;
+import org.openide.cookies.SaveCookie;
 import org.netbeans.api.project.Project;
 
 import javax.swing.Action;
+
+import com.sun.mdm.index.project.EviewApplication;
 
 /**
  *
@@ -37,19 +40,12 @@ public class EviewConfigurationFolderNode extends EviewFolderNode {
     private String displayName;
     
     /**
-     * Constructor folder node for Standardization and Match Engine 
-     */
-    public EviewConfigurationFolderNode(String displayName, DataFolder folder) {
-        super(displayName, folder);
-        //this.getCookieSet().add(new EviewConfigurationFolderCookieImpl(this));        
-    }
-
-    /**
      * Constructor folder node for Configuration (xml files) 
      */
     public EviewConfigurationFolderNode(String displayName, DataFolder folder, Project project) {
         super(displayName, folder);
         this.project = project;
+        ((EviewApplication) this.project).setAssociatedNode(this);
         this.getCookieSet().add(new EviewConfigurationFolderCookieImpl(this));                
     }
     
@@ -79,4 +75,19 @@ public class EviewConfigurationFolderNode extends EviewFolderNode {
     public Project getProject() {
         return this.project;
     }
+    
+    public void setModified(boolean flag) {
+        if (flag) {
+            if (getCookie(SaveCookie.class) == null) {
+                SaveCookie saveCookie = ((EviewApplication) this.project).getObjectTopComponent().getSaveCookie();
+                getCookieSet().add(saveCookie);
+            }     
+        } else {
+            SaveCookie save = (SaveCookie) getCookie(SaveCookie.class);
+            if (save != null) {
+                getCookieSet().remove(save);
+            }
+        }
+    }
+
 }
