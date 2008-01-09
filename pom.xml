@@ -63,5 +63,16 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>springframework</id>
+            <name>repository hosting springframework artifacts</name>
+            <url>https://s3.amazonaws.com/maven.springframework.org/snapshot/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 </project>
