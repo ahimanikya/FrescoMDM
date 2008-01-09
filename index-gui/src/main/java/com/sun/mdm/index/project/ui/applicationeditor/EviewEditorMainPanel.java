@@ -90,6 +90,7 @@ public class EviewEditorMainPanel extends javax.swing.JPanel implements TreeSele
 
     private JSplitPane mSplitPane = null;
     private JScrollPane entityTreePane;
+    private JScrollPane entityPropertyPane = new JScrollPane();
     private EntityNode mRootNode;
     private JPopupMenu mMenu;
     private JPopupMenu mTemplatesMenu;
@@ -141,7 +142,8 @@ public class EviewEditorMainPanel extends javax.swing.JPanel implements TreeSele
         // Force to display properties for root node
         setSelectedNode(mRootNode);
         try {
-            mSplitPane.setRightComponent(mRootNode.getConfigPropertySheetForRootNode());
+            entityPropertyPane.setViewportView(mRootNode.getConfigPropertySheetForRootNode());
+            mSplitPane.setRightComponent(entityPropertyPane);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -168,9 +170,13 @@ public class EviewEditorMainPanel extends javax.swing.JPanel implements TreeSele
         entityTreePane.setBorder(new javax.swing.border.TitledBorder(
                     new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
                                     NbBundle.getMessage(EntityTree.class, "LBL_Object_Definition")));
+        entityPropertyPane.setViewportView(jLabelNoProperties);
+        entityPropertyPane.setBorder(new javax.swing.border.TitledBorder(
+                    new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
+                                    NbBundle.getMessage(EntityTree.class, "MSG_Properties")));
         
         mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                entityTreePane, jLabelNoProperties);
+                entityTreePane, entityPropertyPane);
         mSplitPane.setOneTouchExpandable(true);
         mSplitPane.setDividerLocation(250);
 
@@ -566,10 +572,12 @@ public class EviewEditorMainPanel extends javax.swing.JPanel implements TreeSele
 
         try {
             if (mCurrentSelectedNode.isRoot()) {
-                mSplitPane.setRightComponent(mCurrentSelectedNode.getConfigPropertySheetForRootNode());
+                entityPropertyPane.setViewportView(mCurrentSelectedNode.getConfigPropertySheetForRootNode());
+                mSplitPane.setRightComponent(entityPropertyPane);
                 mEntityTree.setEditable(false);
             } else {
-                mSplitPane.setRightComponent(mCurrentSelectedNode.getConfigPropertySheet());
+                entityPropertyPane.setViewportView(mCurrentSelectedNode.getConfigPropertySheet());
+                mSplitPane.setRightComponent(entityPropertyPane);
                 mEntityTree.setEditable(true);
             }
         } catch (Exception ex) {

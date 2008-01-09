@@ -268,9 +268,9 @@ public class EntityNode extends DefaultMutableTreeNode {
         try {
             if (mEntityProperty == null) {
                 mEntityProperty = new JTabbedPane();
-                mEntityProperty.setBorder(new javax.swing.border.TitledBorder(
-                                            new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
-                                            NbBundle.getMessage(EntityNode.class, "MSG_Properties")));
+                //mEntityProperty.setBorder(new javax.swing.border.TitledBorder(
+                //                            new javax.swing.border.EtchedBorder(javax.swing.border.EtchedBorder.LOWERED),
+                //                            NbBundle.getMessage(EntityNode.class, "MSG_Properties")));
             
                 if (isPrimary() || isSub()) {
                     mPropertiesNamePanel = new PropertiesNamePanel(this, mEviewEditorMainApp.isCheckedOut());
