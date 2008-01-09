@@ -74,5 +74,13 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+        <repository>
+    		<id>mule-deps</id>
+    		<name>Mule Dependencies</name>
+    		<url>http://repo1.maven.org/maven/mule/dependencies/maven2</url>
+    		<snapshots>
+    			<enabled>false</enabled>
+    		</snapshots>
+	   </repository>
     </repositories>
 </project>
