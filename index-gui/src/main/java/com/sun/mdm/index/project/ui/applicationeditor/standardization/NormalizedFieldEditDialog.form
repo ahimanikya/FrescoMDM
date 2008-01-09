@@ -405,6 +405,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cbDomainSelector">
+      <Properties>
+        <Property name="editable" type="boolean" value="true"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

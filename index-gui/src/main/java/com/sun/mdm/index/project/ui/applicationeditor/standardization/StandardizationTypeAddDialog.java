@@ -95,7 +95,12 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
         
         if (editMode) {
             mFreeFormGroup = mMatchFieldDef.getFreeFormGroup(dataType);
-            this.cbDomainSelector.setSelectedItem(mFreeFormGroup.getDomainSelector());
+            String domainSelector = mFreeFormGroup.getDomainSelector();
+            if (!alDomainSelectors.contains(domainSelector)) {
+                this.cbDomainSelector.addItem(domainSelector);
+            }
+
+            this.cbDomainSelector.setSelectedItem(domainSelector);
             String variantFieldName = mFreeFormGroup.getLocaleFieldName();
             if (variantFieldName != null) {
                 jTextFieldVariant.setText(variantFieldName);
@@ -300,6 +305,8 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
         jLabelDomainSelector.setText(bundle.getString("LBL_Domain_Selector")); // NOI18N
         pnlConfiguration.add(jLabelDomainSelector);
         jLabelDomainSelector.setBounds(10, 40, 120, 20);
+
+        cbDomainSelector.setEditable(true);
         pnlConfiguration.add(cbDomainSelector);
         cbDomainSelector.setBounds(130, 40, 440, 22);
 

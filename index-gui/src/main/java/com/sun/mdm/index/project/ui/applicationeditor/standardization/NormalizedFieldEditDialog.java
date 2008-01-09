@@ -66,7 +66,7 @@ public class NormalizedFieldEditDialog extends javax.swing.JDialog {
         mGroup = group;
         initComponents();
 
-        cbStandardizationTypes.addItem("BusinessName");
+        //cbStandardizationTypes.addItem("BusinessName");
         cbStandardizationTypes.addItem("PersonName");
         cbStandardizationTypes.setEnabled(!editMode);
         cbStandardizationTypes.addItemListener(new java.awt.event.ItemListener() {
@@ -84,14 +84,22 @@ public class NormalizedFieldEditDialog extends javax.swing.JDialog {
         loadFieldIDs(cbStandardizationTypes.getSelectedItem().toString());
         loadSupportedVariants(cbStandardizationTypes.getSelectedItem().toString());
         
-        this.cbDomainSelector.addItem(MatchFieldDef.MULTIPLE_DOMAIN_SELECTOR);
-        this.cbDomainSelector.addItem(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_AU);
-        this.cbDomainSelector.addItem(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_FR);
-        this.cbDomainSelector.addItem(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_UK);
-        this.cbDomainSelector.addItem(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_US);
+        ArrayList alDomainSelectors = new ArrayList();
+        alDomainSelectors.add(MatchFieldDef.MULTIPLE_DOMAIN_SELECTOR);
+        alDomainSelectors.add(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_AU);
+        alDomainSelectors.add(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_FR);
+        alDomainSelectors.add(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_UK);
+        alDomainSelectors.add(MatchFieldDef.SINGLE_DOMAIN_SELECTOR_US);
+        for (int i = 0; alDomainSelectors != null && i < alDomainSelectors.size(); i++) {
+            this.cbDomainSelector.addItem(alDomainSelectors.get(i));
+        }
 
         if (editMode) {
-            this.cbDomainSelector.setSelectedItem(mGroup.getDomainSelector());
+            String domainSelector = mGroup.getDomainSelector();
+            if (!alDomainSelectors.contains(domainSelector)) {
+                this.cbDomainSelector.addItem(domainSelector);
+            }
+            this.cbDomainSelector.setSelectedItem(domainSelector);
             String variantFieldName = mGroup.getLocaleFieldName();
             if (variantFieldName == null) {
                 variantFieldName = "";
@@ -339,6 +347,8 @@ public class NormalizedFieldEditDialog extends javax.swing.JDialog {
         });
 
         jLabelDomainSelector.setText(bundle.getString("LBL_Domain_Selector")); // NOI18N
+
+        cbDomainSelector.setEditable(true);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

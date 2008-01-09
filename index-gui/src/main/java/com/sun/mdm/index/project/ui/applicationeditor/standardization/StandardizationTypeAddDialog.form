@@ -340,6 +340,9 @@
           </Constraints>
         </Component>
         <Component class="javax.swing.JComboBox" name="cbDomainSelector">
+          <Properties>
+            <Property name="editable" type="boolean" value="true"/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="130" y="40" width="440" height="-1"/>

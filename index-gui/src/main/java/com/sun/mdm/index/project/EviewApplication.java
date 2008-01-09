@@ -31,8 +31,6 @@ import org.openide.filesystems.FileUtil;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.File;
-import org.openide.nodes.Node;
-
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -584,22 +582,42 @@ public class EviewApplication extends EviewProject {
         return mMasterType;
     }
     
+    /**
+     * com.sun.mdm.index.parser.MasterType 
+     * @param masterType
+     */
     public void setMasterType(MasterType masterType) {
         mMasterType = masterType;
     }
     
+    /**
+     * 
+     * @param EviewConfigurationFolderNode node
+     */
     public void setAssociatedNode(EviewConfigurationFolderNode node) {
         mAssociatedNode = node;
     }
     
+    /**
+     * 
+     * @return EviewConfigurationFolderNode
+     */
     public EviewConfigurationFolderNode getAssociatedNode() {
         return mAssociatedNode;
     }
     
+    /**
+     * 
+     * @param ObjectTopComponent otc
+     */
     public void setObjectTopComponent(ObjectTopComponent otc) {
         mObjectTopComponent = otc;
     }
     
+    /**
+     * 
+     * @return ObjectTopComponent
+     */
     public ObjectTopComponent getObjectTopComponent() {
         return mObjectTopComponent;
     }
@@ -637,6 +655,10 @@ public class EviewApplication extends EviewProject {
         mMatchConfigFileString = data;
     }
     
+    /** Check if configuration is modified
+     * 
+     * @return mModified
+     */
     public boolean isModified() {
         mModified = mModified || 
                     mModifiedMatchConfig ||
@@ -649,11 +671,19 @@ public class EviewApplication extends EviewProject {
         return mModified;
     }
     
+    /**
+     * Not implemented
+     * @return
+     */
     public boolean isValidated() {
         boolean validated = true;
         return validated;
     }
     
+    /**
+     * Not used in Open Source version
+     * @param flag
+     */
     public void setNeedToCheckIn(boolean flag) {
         bNeedToCheckIn = flag;
         String value = (flag == true) ? "true" : "false";
@@ -662,6 +692,10 @@ public class EviewApplication extends EviewProject {
         //getVersionManager().checkIn(applicationSubPlugIn, "setNeedToCheckIn = " + value);
     }
     
+    /**
+     * Not used in Open Source version
+     * @return
+     */
     public boolean getNeedToCheckIn() {
         //String flag = (String) this.getPartOfProperty(NEED_TO_CHECKIN);
         //bNeedToCheckIn = flag != null && flag.equals("true");
