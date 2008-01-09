@@ -240,7 +240,7 @@ public class EviewProjectGenerator {
     private static void createEjbWar(FileObject projectDir, String mainProjectName, String serverInstanceID, String j2eeLevel )
             throws EviewRepositoryException, FileNotFoundException, IOException{
         EviewRepository repository  = EviewRepository.getEviewRepository(); 
-                    // Unzip -ejb and -war projects from template
+        // Unzip -ejb and -war projects from template
         FileObject template = repository.getInstalledFile(EviewProjectProperties.TEMPLATE_ZIP);
         unZipFile(template.getInputStream(), projectDir);
         // Rename template directories here
