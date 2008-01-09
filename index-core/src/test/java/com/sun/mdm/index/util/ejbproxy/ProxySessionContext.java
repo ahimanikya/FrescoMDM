@@ -144,7 +144,7 @@ public class ProxySessionContext implements javax.ejb.SessionContext {
      * @see javax.ejb.SessionContext
      */
     public boolean isCallerInRole(java.lang.String str) {
-        throw new RuntimeException("Call not supported by ProxySessionContext");        
+        return true;       
     }
     
     /**

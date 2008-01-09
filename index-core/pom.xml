@@ -16,12 +16,16 @@
         <finalName>index-core</finalName>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>src/main/java</directory>
                 <excludes>
-                    <exclude>schema/**</exclude>
-                    <exclude>matchengine/**</exclude>
-                    <exclude>edm.war</exclude>
+                    <exclude>**/*.java</exclude>
                 </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>com/**</include>
+                </includes>
             </resource>            
         </resources>
         <plugins>
@@ -230,6 +234,33 @@
                                 <taskdef resource="net/sf/antcontrib/antcontrib.properties">
                                     <classpath refid="maven.test.classpath"/>
                                 </taskdef>
+                                <taskdef name="propertyfile" classname="org.apache.tools.ant.taskdefs.optional.PropertyFile">
+                                    <classpath refid="maven.test.classpath"/>
+                                </taskdef>
+                                <!-->You may overwrite database properties in 
+                                ProxyJNDI.properties.Oracle file and ProxyJNDI.properties.SQLServer 
+                                file by setting corresponding properties in setting.xml file<-->
+                                <if>
+                                    <equals arg1="${database.properties.overwrite}" 
+                                            arg2="true" />
+                                <then>
+                                    <propertyfile file="${project.build.directory}/test-classes/com/sun/mdm/index/util/ejbproxy/ProxyJNDI.properties.Oracle">
+                                        <entry key="proxy.datasource.user.id" value="${oracle.datasource.user.id}"/>
+                                        <entry key="proxy.datasource.password" value="${oracle.datasource.password}"/>
+                                        <entry key="proxy.datasource.port.number" value="${oracle.datasource.port.number}"/>                                    
+                                        <entry key="proxy.datasource.server.name" value="${oracle.datasource.server.name}"/>
+                                        <entry key="proxy.datasource.name" value="${oracle.datasource.name}"/>
+                                    </propertyfile>
+                                    <propertyfile file="${project.build.directory}/test-classes/com/sun/mdm/index/util/ejbproxy/ProxyJNDI.properties.SQLServer">
+                                        <entry key="proxy.datasource.user.id" value="${sqlserver.datasource.user.id}"/>
+                                        <entry key="proxy.datasource.password" value="${sqlserver.datasource.password}"/>
+                                        <entry key="proxy.datasource.port.number" value="${sqlserver.datasource.port.number}"/>                                    
+                                        <entry key="proxy.datasource.server.name" value="${sqlserver.datasource.server.name}"/>
+                                        <entry key="proxy.datasource.name" value="${sqlserver.datasource.name}"/>
+                                    </propertyfile> 
+                                </then>
+                                </if>
+                                
                                 <if>
                                     <equals arg1="${env.RUN_JUNIT}" arg2="oracle" />
                                 <then>
@@ -274,9 +305,7 @@
                                 <else>
                                     <echo>::NO JUnit Test</echo>
                                 </else>
-                                </if>
-
-                                
+                                </if>                      
                             </tasks> 
                         </configuration>
                     </execution>
@@ -409,6 +438,32 @@
             <version>1.6.5</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>2.0.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>2.0.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.javaconfig</groupId>
+            <artifactId>spring-javaconfig</artifactId>
+            <version>1.0-m3-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.script</groupId>
+            <artifactId>script-api</artifactId>
+            <version>1.0</version>
+            <classifier>jdk14</classifier>
+            <scope>test</scope>
+        </dependency>
+        
         <!--dependency>
             <groupId>mural</groupId>
             <artifactId>eindex-person</artifactId>
