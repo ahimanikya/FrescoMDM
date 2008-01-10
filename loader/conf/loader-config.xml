@@ -150,6 +150,12 @@
 						value="C:/test/loader/finalInputData.txt" />
 					<constructor-arg type="boolean" value="false" />
 				</bean>
+				<bean id="customDataObjectReader"
+					class="com.sun.mdm.index.dataobject.DataObjectFileReader" singleton="false">
+					<constructor-arg type="java.lang.String"
+						value="C:/test/loader/finalInputData.txt" />
+					<constructor-arg type="boolean" value="false" />
+				</bean>
 			</beans>
 
 
