@@ -72,7 +72,7 @@ public class EviewProjectProperties {
     public static final String STAND_ZIP = EVIEW_TEMPLATE_LOCATION + "/stand.zip";
     public static final String TEMPLATE_ZIP = EVIEW_TEMPLATE_LOCATION + "/EviewApplicationTemplateProject.zip";
     
-    public static final String EVIEW_GENERATED_FOLDER = "eView_generated";
+    public static final String EVIEW_GENERATED_FOLDER = "files-generated";
     public static final String EVIEW_JBI_JAR = "jbi.jar";
     public static final String SE_DEPLOYMENT_JAR ="sedeployment.jar"; 
     public static final String JBI_SE_TYPE = "com.sun.jbi.ui.devtool.jbi.setype.prefix";

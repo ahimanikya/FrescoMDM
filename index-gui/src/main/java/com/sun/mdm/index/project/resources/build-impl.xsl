@@ -271,10 +271,10 @@ is divided into following sections:
                     <fileset dir="${{module.install.dir}}/ext/eview/dataanalysis/cleanser"/>
                 </copy>
                 
-                <jar destfile="cleanser-generated/cleanser/lib/cleanserresource-1.0.jar" basedir="eView_generated/resource"/>
+                <jar destfile="cleanser-generated/cleanser/lib/cleanserresource-1.0.jar" basedir="files-generated/resource"/>
                 
                 <copy todir="cleanser-generated/cleanser/">
-                    <fileset dir="eView_generated/resource">
+                    <fileset dir="files-generated/resource">
                         <include name="object.xml"/>
                     </fileset>
                 </copy>
@@ -290,7 +290,7 @@ is divided into following sections:
                 </copy>
                 
                 <copy todir="profiler-generated/profiler/">
-                    <fileset dir="eView_generated/resource">
+                    <fileset dir="files-generated/resource">
                         <include name="object.xml"/>
                     </fileset>
                 </copy>
