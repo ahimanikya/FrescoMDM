@@ -156,25 +156,24 @@ public class LoaderConfig {
 	HashMap<String, String> euidParams = new HashMap<String, String>();
 
 	private void initEuidGenerator() {
-		
-		
-		InputStream is = getClass().getClassLoader().getResourceAsStream("master.xml");
-		
-		
-		
+
+		InputStream is = getClass().getClassLoader().getResourceAsStream(
+				"master.xml");
 
 		try {
-			Document document=getDocument(is);
-			
-			Node item = document.getElementsByTagName("EuidGeneratorConfig").item(0);
-			
-			//TODO get it from config
+			Document document = getDocument(is);
+
+			Node item = document.getElementsByTagName("EuidGeneratorConfig")
+					.item(0);
+
+			// TODO get it from config
 			initLoaderEuidGeneratorClass();
 
 			XPath xpath = XPathFactory.newInstance().newXPath();
 
 			NodeList elements = (NodeList) xpath.evaluate(
-					"//EuidGeneratorConfig/parameters/parameter", item, XPathConstants.NODESET);
+					"//EuidGeneratorConfig/parameters/parameter", item,
+					XPathConstants.NODESET);
 
 			for (int i = 0; i < elements.getLength(); i++) {
 				Element e = (Element) elements.item(i);
@@ -199,23 +198,23 @@ public class LoaderConfig {
 	 * 
 	 */
 	private void initLoaderEuidGeneratorClass() {
-		
+
 		Node item = doc.getElementsByTagName("EuidGenerator").item(0);
-		
+
 		try {
-			if(item!=null){
-				String className= ((Element)item).getAttribute("class");
-				
-				euidGenerator=	(EuidGenerator)Class.forName(className).newInstance();
-			}else{
+			if (item != null) {
+				String className = ((Element) item).getAttribute("class");
+
+				euidGenerator = (EuidGenerator) Class.forName(className)
+						.newInstance();
+			} else {
 				euidGenerator = new LoaderEuidGenerator();
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
 	}
 
 	private void initMatchFields() {
@@ -486,10 +485,10 @@ public class LoaderConfig {
 
 		lc.getDataObjectReader();
 
-		lc.getDataObjectReader();
+		lc.getCustomDataObjectReader();
 
 		System.out.println(lc.getObjectDefinition());
-		
+
 		lc.getEuidGenerator();
 	}
 
@@ -509,6 +508,19 @@ public class LoaderConfig {
 	public DataObjectReader getDataObjectReader() {
 		dataObjectReader = (DataObjectReader) context
 				.getBean("dataObjectReader");
+		return dataObjectReader;
+	}
+
+	public DataObjectReader getCustomDataObjectReader() {
+
+		if (context.containsBeanDefinition("customDataObjectReader")) {
+			dataObjectReader = (DataObjectReader) context
+					.getBean("customDataObjectReader");
+		}
+		else {
+			dataObjectReader = (DataObjectReader) context
+					.getBean("dataObjectReader");
+		}
 		return dataObjectReader;
 	}
 
