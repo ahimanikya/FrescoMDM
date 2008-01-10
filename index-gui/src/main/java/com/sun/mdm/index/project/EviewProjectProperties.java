@@ -32,10 +32,12 @@ public class EviewProjectProperties {
     public static final String BUSINESSNAME_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/BusinessName";
     public static final String PERSONNAME_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/PersonName";
     public static final String ADDRESS_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/Address";
-       
+    public static final String SCHEMA_TEMPLATE_LOCATION = "modules/ext/eview/repository/schema";
+    
     public static final String CONF_FOLDER = "conf"; //NOI18N    
     // eView Configuration Folder
     public static final String CONFIGURATION_FOLDER = "Configuration"; //NOI18N
+    public static final String SCHEMA_FOLDER = "schema"; //NOI18N
     // eView Match Engine Folder
     public static final String MATCH_ENGINE_FOLDER = "MatchEngine"; //NOI18N
     // eView Standardization Folder
@@ -55,12 +57,20 @@ public class EviewProjectProperties {
     
     public static final String OBJECT_XML = "object.xml";
     public static final String EDM_XML = "edm.xml";
-    public static final String MASTER_XML = "master.xml";    
-    public static final String MEFA_XML = "mefa.xml";    
-    public static final String SECURITY_XML = "security.xml";    
-    public static final String VALIDATION_XML = "validation.xml";    
-    public static final String QUERY_XML = "query.xml";   
-    public static final String UPDATE_XML = "update.xml";    
+    public static final String MASTER_XML = "master.xml";
+    public static final String MEFA_XML = "mefa.xml";
+    public static final String SECURITY_XML = "security.xml";
+    public static final String VALIDATION_XML = "validation.xml";
+    public static final String QUERY_XML = "query.xml";
+    public static final String UPDATE_XML = "update.xml";
+    public static final String OBJECT_XSD = "eIndex.xsd";
+    public static final String EDM_XSD = "EDM.xsd";
+    public static final String MASTER_XSD = "master.xsd";
+    public static final String MEFA_XSD = "mefa.xsd";
+    public static final String SECURITY_XSD = "security.xsd";
+    public static final String VALIDATION_XSD = "validation.xsd";
+    public static final String QUERY_XSD = "query.xsd";
+    public static final String UPDATE_XSD = "update.xsd";
     
     public static final String MATCH_CONFIG_FILE = "matchConfigFile.cfg";
     public static final String MATCH_COMPARATOR_XML = "comparatorsList.xml";

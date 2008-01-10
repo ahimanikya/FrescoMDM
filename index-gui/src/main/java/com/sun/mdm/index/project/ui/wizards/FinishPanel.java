@@ -514,7 +514,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     private void createObjectXml(WizardDescriptor wiz) {
         String tagHeaderObject = "<eView xmlns:xsi=" +
             "\"http://www.w3.org/2001/XMLSchema-instance" +
-            "\" xsi:noNamespaceSchemaLocation=\"sbyn:SeeBeyond/eView/schema/eIndex.xsd\">\n";
+            "\" xsi:noNamespaceSchemaLocation=\"schema/eIndex.xsd\">\n";
         String tagTailObject = "</eView>";
 
         String strXml = xmlHEADER + tagHeaderObject + "    <name>" + mViewName +
@@ -535,7 +535,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         // create EDM.xml
         String tagHeaderEDM = "<edm xmlns:xsi=" +
             "\"http://www.w3.org/2001/XMLSchema-instance" +
-            "\" xsi:noNamespaceSchemaLocation=\"sbyn:SeeBeyond/eView/schema/EDM.xsd\">\n";
+            "\" xsi:noNamespaceSchemaLocation=\"schema/EDM.xsd\">\n";
         String tagTailEDM = "</edm>";
 
         String strXml = xmlHEADER + tagHeaderEDM +
