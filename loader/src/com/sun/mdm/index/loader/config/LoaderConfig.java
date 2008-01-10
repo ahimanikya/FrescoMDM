@@ -27,8 +27,6 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -53,13 +51,11 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.sun.mdm.index.Resource;
-import com.sun.mdm.index.configurator.impl.idgen.EuidGeneratorConfiguration;
 import com.sun.mdm.index.dataobject.DataObjectReader;
 import com.sun.mdm.index.dataobject.objectdef.ObjectDefinition;
 import com.sun.mdm.index.dataobject.objectdef.ObjectDefinitionBuilder;
 import com.sun.mdm.index.idgen.EuidGenerator;
 import com.sun.mdm.index.loader.blocker.BlockDefinition;
-import com.sun.mdm.index.loader.blocker.BlockDefinition.Rule;
 import com.sun.mdm.index.loader.euid.LoaderEuidGenerator;
 
 /**
