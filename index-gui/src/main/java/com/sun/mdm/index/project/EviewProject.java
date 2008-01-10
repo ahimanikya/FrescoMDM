@@ -37,7 +37,6 @@ import org.netbeans.api.project.ProjectManager;
 import org.netbeans.api.project.ant.AntArtifact;
 import org.netbeans.modules.compapp.projects.base.ui.IcanproCustomizerProvider;
 import org.netbeans.modules.compapp.projects.base.ui.IcanproLogicalViewProvider;
-import org.netbeans.modules.compapp.projects.base.ui.customizer.IcanproProjectProperties;
 import org.netbeans.api.project.ProjectInformation;
 import org.netbeans.spi.project.SubprojectProvider;
 import org.netbeans.spi.project.support.ant.AntProjectEvent;
@@ -94,6 +93,9 @@ public class EviewProject implements Project, AntProjectListener {
     
     public static final String COMMAND_CLEANSER = "gen-cleanser-zip";
     public static final String COMMAND_PROFILER = "gen-profiler-zip";
+    
+    public static final String COMMAND_REDEPLOY = "redeploy";
+    public static final String COMMAND_DEPLOY = "deploy";
     
     private final AntProjectHelper helper;
     private final PropertyEvaluator eval;
@@ -216,11 +218,11 @@ public class EviewProject implements Project, AntProjectListener {
         String webModuleLabel = org.openide.util.NbBundle.getMessage(IcanproCustomizerProvider.class, "LBL_Node_EJBModule"); //NOI18N
         String srcJavaLabel = org.openide.util.NbBundle.getMessage(IcanproCustomizerProvider.class, "LBL_Node_Sources"); //NOI18N
 
-        sourcesHelper.addPrincipalSourceRoot("${"+IcanproProjectProperties.SOURCE_ROOT+"}", webModuleLabel, /*XXX*/null, null);
-        sourcesHelper.addPrincipalSourceRoot("${"+IcanproProjectProperties.SRC_DIR+"}", srcJavaLabel, /*XXX*/null, null);
+        sourcesHelper.addPrincipalSourceRoot("${"+EviewProjectProperties.SOURCE_ROOT+"}", webModuleLabel, /*XXX*/null, null);
+        sourcesHelper.addPrincipalSourceRoot("${"+EviewProjectProperties.SRC_DIR+"}", srcJavaLabel, /*XXX*/null, null);
 
-        sourcesHelper.addTypedSourceRoot("${"+IcanproProjectProperties.SRC_DIR+"}", SOURCES_TYPE_ICANPRO, srcJavaLabel, /*XXX*/null, null);
-        sourcesHelper.addTypedSourceRoot("${"+IcanproProjectProperties.SRC_DIR+"}", JavaProjectConstants.SOURCES_TYPE_JAVA, srcJavaLabel, /*XXX*/null, null);
+        sourcesHelper.addTypedSourceRoot("${"+EviewProjectProperties.SRC_DIR+"}", SOURCES_TYPE_ICANPRO, srcJavaLabel, /*XXX*/null, null);
+        sourcesHelper.addTypedSourceRoot("${"+EviewProjectProperties.SRC_DIR+"}", JavaProjectConstants.SOURCES_TYPE_JAVA, srcJavaLabel, /*XXX*/null, null);
         ProjectManager.mutex().postWriteRequest(new Runnable() {
             public void run() {
                 sourcesHelper.registerExternalRoots(FileOwnerQuery.EXTERNAL_ALGORITHM_TRANSIENT);
@@ -264,10 +266,10 @@ public class EviewProject implements Project, AntProjectListener {
             refHelper,
             sourcesHelper.createSources(),
             helper.createSharabilityQuery(evaluator(),
-                new String[] {"${"+IcanproProjectProperties.SOURCE_ROOT+"}"},
+                new String[] {"${"+EviewProjectProperties.SOURCE_ROOT+"}"},
                 new String[] {
-                    "${"+IcanproProjectProperties.BUILD_DIR+"}",
-                    "${"+IcanproProjectProperties.DIST_DIR+"}"}
+                    "${"+EviewProjectProperties.BUILD_DIR+"}",
+                    "${"+EviewProjectProperties.DIST_DIR+"}"}
                 )
         });
     }
@@ -287,7 +289,7 @@ public class EviewProject implements Project, AntProjectListener {
     }
 
     String getBuildXmlName() {
-        String storedName = helper.getStandardPropertyEvaluator().getProperty(IcanproProjectProperties.BUILD_FILE);
+        String storedName = helper.getStandardPropertyEvaluator().getProperty(EviewProjectProperties.BUILD_FILE);
         return storedName == null ? GeneratedFilesHelper.BUILD_XML_PATH : storedName;
     }
 

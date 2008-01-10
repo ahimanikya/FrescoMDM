@@ -45,10 +45,9 @@ import org.netbeans.spi.project.support.ant.ReferenceHelper;
 import org.netbeans.spi.project.ui.LogicalViewProvider;
 import org.netbeans.spi.project.ui.support.ProjectSensitiveActions;
 import org.netbeans.spi.java.project.support.ui.BrokenReferencesSupport;
-import org.netbeans.modules.compapp.projects.base.ui.customizer.IcanproProjectProperties;
 import org.netbeans.modules.compapp.projects.base.ui.IcanproLogicalViewProvider;
-import org.netbeans.modules.compapp.projects.base.IcanproConstants;
 import com.sun.mdm.index.project.EviewProject;
+import com.sun.mdm.index.project.EviewProjectProperties;
 import org.openide.loaders.DataFolder;
 import org.openide.util.lookup.Lookups;
 import org.openide.loaders.DataFolder;
@@ -101,14 +100,14 @@ public class EviewProjectLogicalViewProvider implements LogicalViewProvider {
     // Private innerclasses ----------------------------------------------------
 
     private static final String[] BREAKABLE_PROPERTIES = new String[] {
-        IcanproProjectProperties.JAVAC_CLASSPATH,
-        IcanproProjectProperties.DEBUG_CLASSPATH,
-        IcanproProjectProperties.SRC_DIR,
+        EviewProjectProperties.JAVAC_CLASSPATH,
+        EviewProjectProperties.DEBUG_CLASSPATH,
+        EviewProjectProperties.SRC_DIR,
     };
 
     public static boolean hasBrokenLinks(AntProjectHelper helper, ReferenceHelper resolver) {
         return BrokenReferencesSupport.isBroken(helper, resolver, BREAKABLE_PROPERTIES,
-            new String[] {IcanproProjectProperties.JAVA_PLATFORM});
+            new String[] {EviewProjectProperties.JAVA_PLATFORM});
     }
 
     /** Filter node containin additional features for the J2SE physical
@@ -164,8 +163,8 @@ public class EviewProjectLogicalViewProvider implements LogicalViewProvider {
                 ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_CLEANSER, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Cleanser"), null ),
                 ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_PROFILER, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Profiler"), null ),
                 null,
-                ProjectSensitiveActions.projectCommandAction( IcanproConstants.COMMAND_REDEPLOY, bundle.getString( "LBL_RedeployAction_Name" ), null ), // NOI18N
-                ProjectSensitiveActions.projectCommandAction( IcanproConstants.COMMAND_DEPLOY, bundle.getString( "LBL_DeployAction_Name" ), null ), // NOI18N
+                ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_REDEPLOY, bundle.getString( "LBL_RedeployAction_Name" ), null ), // NOI18N
+                ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_DEPLOY, bundle.getString( "LBL_DeployAction_Name" ), null ), // NOI18N
                 null,
                 CommonProjectActions.setAsMainProjectAction(),
                 CommonProjectActions.openSubprojectsAction(),
@@ -191,7 +190,7 @@ public class EviewProjectLogicalViewProvider implements LogicalViewProvider {
             }
 
             public void actionPerformed(ActionEvent e) {
-                BrokenReferencesSupport.showCustomizer(helper, resolver, BREAKABLE_PROPERTIES, new String[]{IcanproProjectProperties.JAVA_PLATFORM});
+                BrokenReferencesSupport.showCustomizer(helper, resolver, BREAKABLE_PROPERTIES, new String[]{EviewProjectProperties.JAVA_PLATFORM});
                 if (!hasBrokenLinks(helper, resolver)) {
                     disable();
                 }

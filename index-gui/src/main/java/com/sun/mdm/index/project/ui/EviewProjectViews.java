@@ -45,7 +45,6 @@ import org.netbeans.spi.java.project.support.ui.PackageView;
 import org.netbeans.spi.project.support.ant.AntProjectHelper;
 import org.netbeans.spi.project.support.ant.PropertyEvaluator;
 
-import org.netbeans.modules.compapp.projects.base.ui.customizer.IcanproProjectProperties;
 import org.netbeans.modules.compapp.projects.base.ui.IcanproLogicalViewProvider;
 
 import org.netbeans.modules.j2ee.dd.api.ejb.DDProvider;
@@ -121,7 +120,7 @@ class EviewProjectViews {
             }
             */
 
-            DataFolder srcDir = getFolder(IcanproProjectProperties.SRC_DIR);
+            DataFolder srcDir = getFolder(EviewProjectProperties.SRC_DIR);
             if (srcDir != null) {
                 //l.add(KEY_SOURCE_DIR);
                 l.add(KEY_CONFIGURATION_DIR);
@@ -156,7 +155,7 @@ class EviewProjectViews {
         protected Node[] createNodes(Object key) {
             Node n = null;
             Node[] nodes = null;
-            FileObject srcRoot = helper.resolveFileObject(evaluator.getProperty (IcanproProjectProperties.SRC_DIR));
+            FileObject srcRoot = helper.resolveFileObject(evaluator.getProperty (EviewProjectProperties.SRC_DIR));
 
             if (key == KEY_SOURCE_DIR) {
                 Project p = FileOwnerQuery.getOwner (srcRoot);

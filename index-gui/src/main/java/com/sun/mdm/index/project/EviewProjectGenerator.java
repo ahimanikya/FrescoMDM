@@ -137,7 +137,8 @@ public class EviewProjectGenerator {
         ep.setProperty(EviewProjectProperties.JBI_SE_TYPE, 
                        EviewProjectProperties.JAVA_EE_SE_COMPONENT_NAME);
         ep.setProperty(EviewProjectProperties.SE_DEPLOYMENT_JAR,
-                       "${dist.dir}/jbi/${jbi.jar}"); 
+                       "${dist.dir}/jbi/${jbi.jar}");
+        ep.setProperty(EviewProjectProperties.SRC_DIR,"src"); 
         h.putProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH, ep);
                
         // set private properties
