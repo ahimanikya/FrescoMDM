@@ -1400,8 +1400,20 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
         }
         return euid;
     }
-    
-    //Added by Pratibha
+
+    /**
+     * Provides capability to have preview of 
+     * undo assumed Match before its is persisted in the Database.
+     * <p>
+     * @param assumedMatchId The assumed match ID of assumed match transaction
+     * to reverse.
+     * @return <CODE>String</CODE> - The EUID of the newly created enterprise
+     * object.
+     * @exception ProcessingException Thrown if an error occurs during the undo
+     * process.
+     * @exception UserException Thrown if the assumed match ID is invalid.
+     * @include
+     */
 public EnterpriseObject previewUndoAssumedMatch(
             String assumedMatchId)
     throws ProcessingException, UserException{
@@ -1411,6 +1423,7 @@ public EnterpriseObject previewUndoAssumedMatch(
             mControllerImpl.beginTransaction();
             con = mControllerImpl.getConnection();
             newEO = mControllerImpl.previewUndoAssumedMatch(con, assumedMatchId);
+            
             mControllerImpl.commitTransaction(con);
         } catch (ProcessingException e) {
             mControllerImpl.rollbackTransaction(con);
@@ -1423,7 +1436,6 @@ public EnterpriseObject previewUndoAssumedMatch(
         }
         return newEO;
     }
-	//Ends Here
             
     /**
      * Merges two enterprise objects based on the specified EUIDs. When this

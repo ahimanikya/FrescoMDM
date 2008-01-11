@@ -713,7 +713,19 @@ public interface MasterController {
     public String undoAssumedMatch(String assumedMatchId)
         throws ProcessingException, UserException;
     
-    //Added by Pratibha
+    /**
+     * Preview Undo an assumed match.
+     * 
+     * @param con
+     *            Connection
+     * @param assumedMatchId
+     *            Id of assumed match to be resolved
+     * @return EUID of new EO
+     * @exception ProcessingException
+     *                An error has occured.
+     * @exception UserException
+     *                Invalid id
+     */
 	public EnterpriseObject previewUndoAssumedMatch(String assumedMatchId)
         throws ProcessingException, UserException;
 

@@ -1979,7 +1979,19 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
     }
 
     
-    //Added by Pratibha
+    /**
+     * Preview Undo an assumed match.
+     * 
+     * @param con
+     *            Connection
+     * @param assumedMatchId
+     *            Id of assumed match to be resolved
+     * @return EUID of new EO
+     * @exception ProcessingException
+     *                An error has occured.
+     * @exception UserException
+     *                Invalid id
+     */
 	public EnterpriseObject previewUndoAssumedMatch(Connection con, String assumedMatchId)
 			throws ProcessingException, UserException {
 
@@ -1988,17 +2000,16 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 EnterpriseObject newEO = null;
 
 		try {
-			System.out.println(">>>> previewUndoAssumedMatch(): invoked for assumed match id: "
-					+ assumedMatchId);
-
+                    if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("previewUndoAssumedMatch(): invoked for assumed match id: "
+                            + assumedMatchId);
+                    }
 			AssumedMatchSearchObject searchObj = new AssumedMatchSearchObject();
 			searchObj.setAssumedMatchId(assumedMatchId);
-			System.out.println(">>> 1 "+assumedMatchId);
                         searchObj.setPageSize(1);
 			searchObj.setMaxElements(1);
 			AssumedMatchIterator i = mAssumedMatchMgr.lookupAssumedMatches(con,
 					searchObj);
-                        System.out.println(">>> 3  i.count() "+i.count());
 			if (i.hasNext()) {
 				AssumedMatchSummary assumedMatch = i.next();
 				String sysCode = assumedMatch.getSystemCode();
@@ -2009,12 +2020,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 								+ lid
 								+ "], EUID: "
 								+ assumedMatch.getEUID());
-				EnterpriseObject eo = mTrans.getEnterpriseObject(con,
+				newEO = mTrans.getEnterpriseObject(con,
 						assumedMatch.getEUID());
-				System.out.println("....eo  "+eo);
-//				Object[] beforeMatchFields = mMatchFieldChange.getMatchFields(eo);
-		System.out.println("**************************************** 11");
-				if (eo == null) {
+				if (newEO == null) {
 					throw new ProcessingException("undoAssumedMatch(): "
 							+ "Record has been modified by another user.  "
 							+ "EUID has already been merged: "
@@ -2032,9 +2040,6 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 		}
 		return newEO;
 	}
-//Ends Here
-    
-    
     
     /**
      * Search for audit records.
