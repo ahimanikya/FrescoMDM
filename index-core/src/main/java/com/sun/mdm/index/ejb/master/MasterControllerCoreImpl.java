@@ -2014,12 +2014,6 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 				AssumedMatchSummary assumedMatch = i.next();
 				String sysCode = assumedMatch.getSystemCode();
 				String lid = assumedMatch.getLID();
-				System.out.println(">>> undoAssumedMatch(): system key to undo assumed match ["
-								+ sysCode
-								+ ", "
-								+ lid
-								+ "], EUID: "
-								+ assumedMatch.getEUID());
 				newEO = mTrans.getEnterpriseObject(con,
 						assumedMatch.getEUID());
 				if (newEO == null) {
