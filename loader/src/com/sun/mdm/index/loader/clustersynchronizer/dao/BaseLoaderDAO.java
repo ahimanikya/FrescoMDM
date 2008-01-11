@@ -31,8 +31,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
-import sun.security.action.GetLongAction;
-
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterState;
 import com.sun.mdm.index.loader.clustersynchronizer.TimeOutException;
 import com.sun.mdm.index.loader.config.LoaderConfig;
