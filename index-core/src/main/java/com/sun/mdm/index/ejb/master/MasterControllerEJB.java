@@ -1401,6 +1401,30 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
         return euid;
     }
     
+    //Added by Pratibha
+public EnterpriseObject previewUndoAssumedMatch(
+            String assumedMatchId)
+    throws ProcessingException, UserException{
+        EnterpriseObject newEO = null;
+        Connection con = null;
+        try {
+            mControllerImpl.beginTransaction();
+            con = mControllerImpl.getConnection();
+            newEO = mControllerImpl.previewUndoAssumedMatch(con, assumedMatchId);
+            mControllerImpl.commitTransaction(con);
+        } catch (ProcessingException e) {
+            mControllerImpl.rollbackTransaction(con);
+            throw e;
+        } catch (UserException e) {
+            mControllerImpl.rollbackTransaction(con);
+            throw e;
+        } finally {
+            mControllerImpl.releaseResources( con );
+        }
+        return newEO;
+    }
+	//Ends Here
+            
     /**
      * Merges two enterprise objects based on the specified EUIDs. When this
      * method is called with calculateOnly set to false, the application changes

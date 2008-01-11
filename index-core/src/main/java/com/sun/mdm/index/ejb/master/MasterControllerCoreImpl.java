@@ -1978,6 +1978,64 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         return newEuid;
     }
 
+    
+    //Added by Pratibha
+	public EnterpriseObject previewUndoAssumedMatch(Connection con, String assumedMatchId)
+			throws ProcessingException, UserException {
+
+		String newEuid = null;
+		String transId = null;
+                EnterpriseObject newEO = null;
+
+		try {
+			System.out.println(">>>> previewUndoAssumedMatch(): invoked for assumed match id: "
+					+ assumedMatchId);
+
+			AssumedMatchSearchObject searchObj = new AssumedMatchSearchObject();
+			searchObj.setAssumedMatchId(assumedMatchId);
+			System.out.println(">>> 1 "+assumedMatchId);
+                        searchObj.setPageSize(1);
+			searchObj.setMaxElements(1);
+			AssumedMatchIterator i = mAssumedMatchMgr.lookupAssumedMatches(con,
+					searchObj);
+                        System.out.println(">>> 3  i.count() "+i.count());
+			if (i.hasNext()) {
+				AssumedMatchSummary assumedMatch = i.next();
+				String sysCode = assumedMatch.getSystemCode();
+				String lid = assumedMatch.getLID();
+				System.out.println(">>> undoAssumedMatch(): system key to undo assumed match ["
+								+ sysCode
+								+ ", "
+								+ lid
+								+ "], EUID: "
+								+ assumedMatch.getEUID());
+				EnterpriseObject eo = mTrans.getEnterpriseObject(con,
+						assumedMatch.getEUID());
+				System.out.println("....eo  "+eo);
+//				Object[] beforeMatchFields = mMatchFieldChange.getMatchFields(eo);
+		System.out.println("**************************************** 11");
+				if (eo == null) {
+					throw new ProcessingException("undoAssumedMatch(): "
+							+ "Record has been modified by another user.  "
+							+ "EUID has already been merged: "
+							+ assumedMatch.getEUID());
+				}
+			} else {
+				throw new ProcessingException("undoAssumedMatch(): "
+						+ "Record has been modified by another user.  "
+						+ "Assumed match has already been undone: "
+						+ assumedMatchId);
+			}
+		}  catch (Exception e) {
+
+			throwProcessingException(e);
+		}
+		return newEO;
+	}
+//Ends Here
+    
+    
+    
     /**
      * Search for audit records.
      * 
@@ -2767,18 +2825,11 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             String destRevisionNumber, boolean calculateOnly)
             throws ProcessingException, UserException {
 
-        
-        if (mLogger.isLoggable(Level.FINER)) {
-            mLogger.finer("mergeEnterpriseObject(): invoked with source EUID: "
-                    + sourceEUID + " destination EUID: " + destinationEO.getEUID()
-                    + "calculateOnly: " + calculateOnly
-                    + " and updated destination image: " 
-                    + destinationEO.toString());
-        } else if (mLogger.isLoggable(Level.FINE)) {
+        if (mLogger.isLoggable(Level.FINE)) {
             mLogger.fine("mergeEnterpriseObject(): invoked with source EUID: "
                     + sourceEUID + " destination EUID: " + destinationEO.getEUID()
                     + "calculateOnly: " + calculateOnly
-                    + " and updated destination image (set log to FINER to view)");
+                    + " and updated destination image (set log to DEBUG to view)");
         }
         validateEnterpriseObject(con, destinationEO);
         MergeResult mergeResult = new MergeResult();
@@ -2845,7 +2896,6 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         return mergeResult;
     }
 
-    
     /**
      * Merge the two lids for the given system. Note that the keys may both
      * belong to a single EO, or may belong to two different EO's.
@@ -2998,18 +3048,11 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         SystemObjectPK sourceSystemKey = new SystemObjectPK(systemCode,
                 sourceLID);
         SystemObjectPK destSystemKey = new SystemObjectPK(systemCode, destLID);
-        
-        if (mLogger.isLoggable(Level.FINER)) {
-            mLogger.finer("mergeSystemObject(): invoked with source system key: "
-                    + sourceSystemKey + ", destination system key: "
-                    + destSystemKey
-                    + " and updated destination image: " 
-                    + destImage.toString());
-        } else if (mLogger.isLoggable(Level.FINE)) {
+        if (mLogger.isLoggable(Level.FINE)) {
             mLogger.fine("mergeSystemObject(): invoked with source system key: "
                     + sourceSystemKey + ", destination system key: "
                     + destSystemKey
-                    + " and updated destination image (set log to FINER to view)");
+                    + " and updated destination image (set log to DEBUG to view)");
         }
 
         // validateObjectNode(destImage);
@@ -3089,23 +3132,14 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         SystemObjectPK sourceSystemKey = new SystemObjectPK(systemCode,
                 sourceLID);
         SystemObjectPK destSystemKey = new SystemObjectPK(systemCode, destLID);
-        if (mLogger.isLoggable(Level.FINER)) {
-            mLogger.finer("mergeSystemObject(): invoked with source system key:"
-                    + sourceSystemKey + ", source revision number: "
-                    + srcRevisionNumber + ", destination system key: "
-                    + destSystemKey + " destination revision number: "
-                    + destRevisionNumber
-                    + " and updated destination image: " 
-                    + destImage.toString());
-        } else if (mLogger.isLoggable(Level.FINE)) {
+        if (mLogger.isLoggable(Level.FINE)) {
             mLogger.fine("mergeSystemObject(): invoked with source system key:"
                     + sourceSystemKey + ", source revision number: "
                     + srcRevisionNumber + ", destination system key: "
                     + destSystemKey + " destination revision number: "
                     + destRevisionNumber
-                    + " and updated destination image (set log to FINER to view)");
+                    + " and updated destination image (set log to DEBUG to view)");
         }
-
 
         MergeResult mr = null;
         try {
@@ -3681,7 +3715,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             throwProcessingException(e);
         }
     }
-        
+
     /**
      * Decouple the enterprise objects involved in the last merge operation for
      * the given EUID. This will result in the merge object being reestablished
@@ -5400,7 +5434,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             throws ProcessingException {
 
         sendAlert(e.getClass().getName() + ": " + e.getMessage());
-        throw new ProcessingException(mLocalizer.t("MSC582: MasterControllerImpl encountered an ProcessingException: name={0}, message={1}", e.getClass().getName(), e.getMessage()));
+        throw new ProcessingException(mLocalizer.t("MSC582: MasterControllerImpl encountered an ProcessingException: {0}", e));
     }
 
     private synchronized void setMBeanServer() {
@@ -5438,8 +5472,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 mMBeanServer.invoke(mMBeanObjectName, "logAlert", obj, sig);
             }
         } catch (Exception ex) {
-            mLogger.warn(mLocalizer.x("MSC018: sendAlert(): error sending message. This is the original message: " +
-                                        "\"{0}\".  This is the exception: \"{1}\"", message, ex.getMessage()));
+            mLogger.warn(mLocalizer.x("MSC018: sendAlert(): error sending message: {0}", ex.getMessage()));
         }
     }
 
@@ -5452,8 +5485,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                         sig);
             }
         } catch (Exception ex) {
-            mLogger.warn(mLocalizer.x("MSC019: sendCriticalError(): error sending message. This is the original message: " +
-                                        "\"{0}\".  This is the exception: \"{1}\"", message, ex.getMessage()));
+            mLogger.warn(mLocalizer.x("MSC019: sendCriticalError(): error sending message: {0}", ex.getMessage()));
         }
     }
 

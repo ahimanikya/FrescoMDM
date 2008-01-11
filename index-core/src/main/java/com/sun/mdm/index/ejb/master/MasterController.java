@@ -712,6 +712,10 @@ public interface MasterController {
      */
     public String undoAssumedMatch(String assumedMatchId)
         throws ProcessingException, UserException;
+    
+    //Added by Pratibha
+	public EnterpriseObject previewUndoAssumedMatch(String assumedMatchId)
+        throws ProcessingException, UserException;
 
    /**
      * Merges two enterprise objects based on the specified EUIDs. When this
