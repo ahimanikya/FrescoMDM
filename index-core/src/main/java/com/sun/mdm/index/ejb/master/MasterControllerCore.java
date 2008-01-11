@@ -856,7 +856,12 @@ public interface MasterControllerCore {
 	 */
 	public String undoAssumedMatch(Connection con, String assumedMatchId)
 			throws ProcessingException, UserException;
+        
+        //Added by Pratibha
+	public EnterpriseObject previewUndoAssumedMatch(Connection con, String assumedMatchId)
+			throws ProcessingException, UserException;
 
+        
 	/**
 	 * Merges two enterprise objects based on the specified EUIDs. When this
 	 * method is called with calculateOnly set to false, the application changes
