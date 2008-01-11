@@ -196,6 +196,11 @@
                                     <fileset dir="${basedir}/src/test/eindex-templates/eindex/src/Configuration">
                                     </fileset>
                                 </copy>
+                                <copy todir="${project.build.directory}/test-classes/META-INF/mdm/standardizer">
+                                    <fileset dir="${basedir}/src/main/resources/matchengine/standardizer">
+                                        <include name="repositoryImage.zip"/>
+                                    </fileset>
+                                </copy>
                                                                         
                                 <!--pathconvert property="run.test.classpath" refid="maven.test.classpath" />
                                 <pathconvert property="compile.classpath" refid="maven.compile.classpath" />
@@ -354,44 +359,26 @@
                             <file>${basedir}/src/main/resources/globalization/net.java.hulp.i18n.jar</file>
                         </configuration>
                     </execution>
-                    <!--execution>
-                        <id>install-eindex-person</id>
-                        <phase>process-test-sources</phase>
+                    <execution>
+                        <id>install-spring-javaconfig</id>
+                        <phase>process-resources</phase>
                         <goals><goal>install-file</goal></goals>
                         <configuration>
                             <generatePom>true</generatePom>
                             <packaging>jar</packaging>
-                            <groupId>mural</groupId>
-                            <artifactId>eindex-person</artifactId>
-                            <version>${mural.currentVersion}</version>
-                            <file>${project.build.testOutputDirectory}/eindex/build/eindex-ejb.jar</file>
+                            <groupId>org.springframework.javaconfig</groupId>
+                            <artifactId>spring-javaconfig</artifactId>
+                            <version>1.0-m2</version>
+                            <file>${basedir}/src/main/resources/matchengine/standardizer/lib/spring-javaconfig-1.0-m2.jar</file>
                         </configuration>
-                    </execution-->
+                    </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>                
-                <configuration>
-                    <!--testExcludes>
-                        <testExclude>**/*.java</testExclude> 
-                    </testExcludes-->
-                </configuration>                              
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>        
                     <skipExec>true</skipExec>
-                    <!--excludes>
-                        <exclude name="**/DomainSelectorTest.class"/>
-                        <exclude name="**/WeightedSurvivorStrategy1Test.class"/>
-                        <exclude name="**/WeightedSurvivorStrategy2Test.class"/>
-                        <exclude name="**/WeightedSurvivorStrategy3Test.class"/>
-                        <exclude name="**/BlockerRangeSearchTest.class"/>
-                        <exclude name="**/BlockerRangeSearchTest.class"/>
-                        <exclude name="**/upgrade/*.class"/>
-                    </excludes-->
                 </configuration>
             </plugin>
         </plugins>
@@ -439,8 +426,57 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>javax.script</groupId>
+            <artifactId>script-api</artifactId>
+            <version>1.0</version>
+            <classifier>jdk14</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.5.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>2.2.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm-commons</artifactId>
+            <version>2.2.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm-tree</artifactId>
+            <version>2.2.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>2.1.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.6</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
+            <version>2.0.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
             <version>2.0.5</version>
             <scope>test</scope>
         </dependency>
@@ -453,23 +489,21 @@
         <dependency>
             <groupId>org.springframework.javaconfig</groupId>
             <artifactId>spring-javaconfig</artifactId>
-            <version>1.0-m3-SNAPSHOT</version>
+            <version>1.0-m2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>javax.script</groupId>
-            <artifactId>script-api</artifactId>
-            <version>1.0</version>
-            <classifier>jdk14</classifier>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>2.1_3</version>
             <scope>test</scope>
         </dependency>
-        
-        <!--dependency>
-            <groupId>mural</groupId>
-            <artifactId>eindex-person</artifactId>
-            <version>${mural.currentVersion}</version>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-support</artifactId>
+            <version>2.0.5</version>
             <scope>test</scope>
-        </dependency-->
+        </dependency>
         <dependency>
             <groupId>msft.sqlserver.jdbc</groupId>
             <artifactId>sqljdbc</artifactId>
