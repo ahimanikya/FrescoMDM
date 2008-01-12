@@ -162,17 +162,16 @@ is divided into following sections:
                         <isset property="app.client" />
                     </and>
                 </condition>
+                <path id="generate.class.path">
+                    <pathelement location="${{module.install.dir}}/ext/eview/com-sun-mdm-index-project-anttasks.jar" />
+                    <pathelement location="${{module.install.dir}}/com-sun-mdm-index-project.jar" />
+                    <pathelement location="${{module.install.dir}}/ext/eview/index-core.jar" />
+                    <pathelement location="${{module.install.dir}}/ext/eview/standardizer/lib/mdm-standardizer.jar" />
+                    <pathelement location="${{module.install.dir}}/ext/eview/standardizer/lib/commons-logging-1.0.4.jar"/>
+                </path>
                 <taskdef name="generate-mdm-index-files"
                          classname="com.sun.mdm.index.project.anttasks.EViewGeneratorTask">
-                    <classpath>
-                        <pathelement
-                            location="${{module.install.dir}}/ext/eview/com-sun-mdm-index-project-anttasks.jar" />
-                        <pathelement
-                            location="${{module.install.dir}}/com-sun-mdm-index-project.jar" />
-                        <pathelement location="${{module.install.dir}}/ext/eview/index-core.jar" />
-                        <pathelement location="${{module.install.dir}}/ext/eview/standardizer/lib/mdm-standardizer.jar" />
-                        <pathelement location="${{module.install.dir}}/ext/eview/standardizer/lib/commons-logging-1.0.4.jar"/>
-                    </classpath>
+                    <classpath refid="generate.class.path"/>
                 </taskdef>
                 
                 <taskdef name="generate-loader-zip"
@@ -247,11 +246,6 @@ is divided into following sections:
                     </fileset>
                     <fileset dir="${{module.install.dir}}/ext/eview/loader">
                         <include name="*.jar" />
-                    </fileset>
-                </copy>
-                <copy tofile="loader-generated/loader/lib/generated-ejb.jar">
-                    <fileset dir="build">
-                        <include name="*-ejb.jar" />
                     </fileset>
                 </copy>
                 

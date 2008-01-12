@@ -119,7 +119,7 @@
                                 </copy>                                    
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/report/lib">
                                     <fileset dir="${basedir}/../report/target">
-                                        <include name="com-sun-eview-report.jar"></include>                    
+                                        <include name="master-index-report.jar"></include>                    
                                     </fileset>
                                 </copy>
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/report">
@@ -185,10 +185,14 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>ant</groupId>
+            <artifactId>ant</artifactId>
+            <version>1.6.5</version>
+        </dependency>
+        <dependency>
             <groupId>mural</groupId>
             <artifactId>index-core</artifactId>
             <version>${mural.currentVersion}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>mural</groupId>

@@ -73,6 +73,10 @@ import com.sun.mdm.index.project.generator.outbound.OutboundXSDBuilder;
 import com.sun.mdm.index.project.generator.persistence.DDLWriter;
 import com.sun.mdm.standardizer.StandardizerIntrospector;
 import com.sun.mdm.standardizer.util.StandardizerUtils;
+import org.apache.tools.ant.taskdefs.Javac;
+import org.apache.tools.ant.taskdefs.Move;
+import org.apache.tools.ant.types.Path;
+import org.apache.tools.ant.types.Reference;
 
 public class EViewGeneratorTask extends Task {
     private File mSrcdir;
@@ -140,6 +144,9 @@ public class EViewGeneratorTask extends Task {
                                
                 //add lib to ejb project by modifing ejb project's project.properties file. 
                 addEjbLib();
+                
+                //generate report client
+                generateReportClient();
 
             }catch(Exception ex){
                 throw new BuildException(ex.getMessage());         
@@ -150,11 +157,6 @@ public class EViewGeneratorTask extends Task {
 
     public void generateFiles(File objectFile ) throws FileNotFoundException, TemplateWriterException, ParserException, IOException{
         
-        File ejbdir = new File(mEjbdir, "src/java");         
-        ObjectGeneratorTask objectGenerator = new ObjectGeneratorTask();
-        objectGenerator.setDestdir(ejbdir);
-        objectGenerator.setObjectFile(objectFile);
-        objectGenerator.execute();
         InputSource source = new InputSource(new FileInputStream(objectFile));
         EIndexObject eo = Utils.parseEIndexObject(source);
         
@@ -178,7 +180,26 @@ public class EViewGeneratorTask extends Task {
         String generatePath = projPath + File.separator + 
                 EviewProjectProperties.EVIEW_GENERATED_FOLDER;
         File generateFolder = new File(generatePath);
-        generateFolder.mkdirs();       
+        generateFolder.mkdirs();
+               
+        File clientdir = new File(generatePath,"client/java");
+        clientdir.mkdirs();
+        ObjectGeneratorTask objectGenerator = new ObjectGeneratorTask();
+        objectGenerator.setDestdir(clientdir);
+        objectGenerator.setObjectFile(objectFile);
+        objectGenerator.execute();
+        
+        File destDir = new File(mEjbdir,"src/java");
+        FileSet srcfileSet = new FileSet(); 
+        srcfileSet.setDir(clientdir);
+        srcfileSet.setIncludes("com/sun/mdm/index/webservice/**" );
+        Move move = (Move) getProject().createTask("move");
+        move.setTodir(destDir);
+        move.addFileset(srcfileSet);
+        move.init();
+        move.setLocation(getLocation());
+        move.execute();
+                
         File xsdFile = new File(generatePath + File.separator + "outbound.xsd");
         OutboundXSDBuilder builder = new OutboundXSDBuilder();
         builder.buildXSD(eo,xsdFile);
@@ -290,7 +311,34 @@ public class EViewGeneratorTask extends Task {
         jar.setLocation(getLocation());
         jar.init ();
         jar.execute ();           
-    }     
+    }
+   
+    private void generate_client_jar(){
+        String projPath = getProject().getProperty("basedir");
+        String generatePath = projPath + File.separator + 
+                EviewProjectProperties.EVIEW_GENERATED_FOLDER;        
+
+        Javac javac = (Javac) getProject().createTask("javac");
+        Path srcDir= new Path(getProject(),generatePath+"/client/java");
+        javac.setSrcdir(srcDir);
+        File destDir = new File(generatePath,"client/classes");
+        destDir.mkdirs();
+        javac.setDestdir(destDir);
+        Reference ref= new Reference(getProject(), "generate.class.path");       
+        javac.setClasspathRef(ref);
+        javac.init();
+        javac.setLocation(getLocation());
+        javac.execute();       
+        Jar jar = (Jar)getProject().createTask("jar");
+        
+        File jarFile = new File(projPath + File.separator + "lib" + 
+                File.separator + "master-index-client.jar" );
+        jar.setDestFile(jarFile);
+        jar.setBasedir(destDir);
+        jar.init();
+        jar.setLocation(getLocation());
+        jar.execute();       
+    }
     
     private void generateJars() throws FileNotFoundException, IOException, Exception{
         
@@ -315,8 +363,7 @@ public class EViewGeneratorTask extends Task {
                                 "index-core.jar," +
                                 "net.java.hulp.i18n.jar, " +
                                 "net.java.hulp.i18ntask.jar," +
-                                "standardizer/lib/*.jar");
-        
+                                "standardizer/lib/*.jar"); 
         Copy copy = (Copy) getProject().createTask("copy");
         copy.init();
         copy.setTodir(destDir);
@@ -327,6 +374,7 @@ public class EViewGeneratorTask extends Task {
         
         // make resources.jar
         generate_eview_resources_jar();
+        generate_client_jar();
     }
     
     private void generateEbjFiles(EIndexObject eo) {
@@ -570,16 +618,58 @@ public class EViewGeneratorTask extends Task {
         properties.load(new FileInputStream(ejbPropertyFile));
         properties.setProperty("file.reference.index-core.jar",
                         "../lib/index-core.jar");
+        properties.setProperty("file.reference.master-index-client.jar",
+                        "../lib/master-index-client.jar");
         properties.setProperty("file.reference.net.java.hulp.i18ntask.jar",
                         "../lib/net.java.hulp.i18ntask.jar");
         properties.setProperty("file.reference.net.java.hulp.i18n.jar",
                         "../lib/net.java.hulp.i18n.jar");
         properties.setProperty("javac.classpath",
-                        "${file.reference.index-core.jar}:"
-                                        + "${file.reference.net.java.hulp.i18n.jar}:"
-                                        + "${file.reference.net.java.hulp.i18n.jar}");
+                        "${file.reference.index-core.jar}:"+
+                        "${file.reference.master-index-client.jar}:"+
+                        "${file.reference.net.java.hulp.i18n.jar}:"+
+                        "${file.reference.net.java.hulp.i18n.jar}");
 
         properties.store(new FileOutputStream(ejbPropertyFile), null);
+    }
+    
+    private void generateReportClient(){
+        String projPath = getProject().getProperty("basedir");
+        File destDir = new File(projPath + File.separator + 
+                EviewProjectProperties.REPORT_CLIENT_FOLDER );
+
+        Delete delete = (Delete) getProject().createTask("delete");
+        delete.setDir(destDir);
+        delete.init();
+        delete.setLocation(getLocation());
+        delete.execute();
+        
+        destDir.mkdir();
+        String modulePath = getProject().getProperty("module.install.dir");
+        File srcDir= new File(modulePath + "/ext/eview/repository/report");
+        FileSet srcfileSet = new FileSet(); 
+        srcfileSet.setDir(srcDir);
+        
+        Copy copy = (Copy) getProject().createTask("copy");
+        copy.setTodir(destDir);
+        copy.addFileset(srcfileSet);
+        copy.init();
+        copy.setLocation(getLocation());
+        copy.execute();
+      
+        copy = (Copy) getProject().createTask("copy");
+        destDir = new File(projPath + File.separator + 
+                EviewProjectProperties.REPORT_CLIENT_FOLDER +
+                File.separator +"lib");
+        copy.setTodir(destDir);        
+        srcDir= new File(modulePath + "/ext/eview");
+        srcfileSet = new FileSet(); 
+        srcfileSet.setDir(srcDir);
+        srcfileSet.setIncludes("index-core.jar");
+        copy.addFileset(srcfileSet);
+        copy.init();
+        copy.setLocation(getLocation());
+        copy.execute();  
     }
 
     private boolean modified() {
@@ -592,14 +682,17 @@ public class EViewGeneratorTask extends Task {
 
             // check if any source files are newer.
             ArrayList<File> srcFolders = new ArrayList<File>();
-            folder = new File(mSrcdir + File.separator
-                            + EviewProjectProperties.CONFIGURATION_FOLDER);
+            folder = new File(mSrcdir + File.separator +
+                    EviewProjectProperties.CONFIGURATION_FOLDER);
             srcFolders.add(folder);
-            folder = new File(mSrcdir + File.separator
-                            + EviewProjectProperties.MATCH_ENGINE_FOLDER);
+            folder = new File(mSrcdir + File.separator +
+                    EviewProjectProperties.MATCH_ENGINE_FOLDER);
             srcFolders.add(folder);
-            folder = new File(mSrcdir + File.separator
-                            + EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER);
+            folder = new File(mSrcdir + File.separator +
+                    EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER);
+            srcFolders.add(folder);
+            folder = new File(mSrcdir + File.separator +
+                    EviewProjectProperties.FILTER_FOLDER);
             srcFolders.add(folder);
             long srcModified = getLastModifiedTime(srcFolders);
 
