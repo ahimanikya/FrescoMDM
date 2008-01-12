@@ -13,7 +13,7 @@
     <version>${mural.currentVersion}</version>
     <url>http://maven.apache.org</url>
     <build>
-        <finalName>report</finalName>
+        <finalName>master-index-report</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
