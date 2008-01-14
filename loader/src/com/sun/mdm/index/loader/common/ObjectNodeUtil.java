@@ -69,6 +69,16 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
 		return objDef;
 	}
 	
+	public static void initDateFormat() {
+		ObjectDefinition objDef = config.getObjectDefinition();
+		String dateString = objDef.getDateFormat();
+		String timeFormat = config.getSystemProperty("TimeFormat");
+		if (timeFormat != null) {
+			dateString = dateString + " " + timeFormat;
+		}
+		dateFormat_ = new SimpleDateFormat(dateString); // + " hh:mm:ss");
+	}
+	
 	
 	public static SystemObject getSystemObject(DataObject d, String lid, String systemcode,
 			String updateDateTime, String updateUser) throws Exception {
