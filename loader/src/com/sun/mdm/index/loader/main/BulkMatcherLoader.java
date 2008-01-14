@@ -57,7 +57,7 @@ import com.sun.mdm.index.configurator.ConfigurationInfo;
  *  Database Loader: to load data into eview master index
  *  Potential duplicate Generator: To generate potential duplicates
  * 
- * @author sdua
+ * @author Swaranjit Dua
  *
  */
 
@@ -185,8 +185,10 @@ public class BulkMatcherLoader {
 	 
 	 deleteSBRBlockDir();
 	 
-	 PotDupGenerator potGen = new PotDupGenerator();
-	 potGen.generatePotDups();		 
+	 if (isMasterLoader_) { 	 
+	   PotDupGenerator potGen = new PotDupGenerator();
+	   potGen.generatePotDups();
+	 }
 		   	  
 	 deleteSBRMatchDir();
 	 
@@ -261,8 +263,9 @@ public class BulkMatcherLoader {
 		
 		blockEpaths[0] = primaryObject + ".blockID";
 		blockEpaths[1] = primaryObject + ".GID";
-		blockEpaths[2] = primaryObject + ".lid";
-		blockEpaths[3] = primaryObject + ".systemcode";		
+		blockEpaths[2] = primaryObject + ".systemcode";		
+		blockEpaths[3] = primaryObject + ".lid";
+		
 		System.arraycopy(paths, 0, blockEpaths, 4, paths.length);		
 		return blockEpaths;
 	}
@@ -290,12 +293,13 @@ public class BulkMatcherLoader {
 		f.setName("GID");
 		obd.addField(0,f);
 		
+				
 		f = new Field();
-		f.setName("lid");
+		f.setName("systemcode");
 		obd.addField(1,f);
 		
 		f = new Field();
-		f.setName("systemcode");
+		f.setName("lid");
 		obd.addField(2,f);
 		
 		f = new Field();
