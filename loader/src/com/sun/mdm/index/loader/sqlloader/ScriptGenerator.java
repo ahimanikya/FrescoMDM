@@ -267,7 +267,7 @@ public class ScriptGenerator {
 	private String[] SBYN_ENTERPRISE = { "SYSTEMCODE", "LID", "EUID" };
 
 	private String[] SBYN_TRANSACTION = { "TRANSACTIONNUMBER", "LID1", "LID2",
-			"EUID1", "EUID2", "FUNCTION", "SYSTEMUSER", "TIMESTAMP",
+			"EUID1", "EUID2", "FUNCTION", "SYSTEMUSER", "TIMESTAMP", "DELTA",
 			"SYSTEMCODE", "LID", "EUID" };
 
 	private String[] SBYN_ASSUMEDMATCH = { "ASSUMEDMATCHID", "EUID",
