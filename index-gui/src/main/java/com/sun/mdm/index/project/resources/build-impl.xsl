@@ -259,37 +259,39 @@ is divided into following sections:
                 
             </target>
             
-            <target name="gen-cleanser-zip" depends="gen-mdm-index-files" description="generate cleanser zip">
+            <target name="gen-cleanser-zip" depends="pre-pre-compile" description="generate cleanser zip">
                 <mkdir dir="cleanser-generated/cleanser"/>
                 <copy todir="cleanser-generated/cleanser">
                     <fileset dir="${{module.install.dir}}/ext/eview/dataanalysis/cleanser"/>
                 </copy>
                 
-                <jar destfile="cleanser-generated/cleanser/lib/cleanserresource-1.0.jar" basedir="files-generated/resource"/>
+                <jar destfile="cleanser-generated/cleanser/lib/resource.jar" basedir="files-generated/resource"/>
                 
-                <copy todir="cleanser-generated/cleanser/">
-                    <fileset dir="files-generated/resource">
-                        <include name="object.xml"/>
+                <copy file="files-generated/resource/object.xml" todir="cleanser-generated/cleanser"/>
+                <copy todir="cleanser-generated/cleanser">
+                    <fileset dir="${{ejb.dir}}/dist">
+                        <include name="*.jar"/>
                     </fileset>
                 </copy>
                 
-                <zip destfile="cleanser-generated/cleanser.zip" basedir="cleanser-generated/cleanser" excludes="cleanser.zip"/>
+                <zip destfile="cleanser-generated/cleanser.zip" basedir="cleanser-generated" excludes="cleanser.zip"/>
                 <delete dir="cleanser-generated/cleanser"/>
             </target>
             
-            <target name="gen-profiler-zip" depends="gen-mdm-index-files" description="generate profiler zip">
+            <target name="gen-profiler-zip" depends="pre-pre-compile" description="generate profiler zip">
+                
                 <mkdir dir="profiler-generated/profiler"/>
                 <copy todir="profiler-generated/profiler">
                     <fileset dir="${{module.install.dir}}/ext/eview/dataanalysis/profiler"/>
                 </copy>
                 
-                <copy todir="profiler-generated/profiler/">
-                    <fileset dir="files-generated/resource">
-                        <include name="object.xml"/>
+                <copy file="files-generated/resource/object.xml" todir="profiler-generated/profiler"/>
+                <copy todir="profiler-generated/profiler">
+                    <fileset dir="${{ejb.dir}}/dist">
+                        <include name="*.jar"/>
                     </fileset>
                 </copy>
-                
-                <zip destfile="profiler-generated/profiler.zip" basedir="profiler-generated/profiler" excludes="profiler.zip"/>
+                <zip destfile="profiler-generated/profiler.zip" basedir="profiler-generated" excludes="profiler.zip"/>
                 <delete dir="profiler-generated/profiler"/>
             </target>
             
