@@ -297,7 +297,7 @@ public class DataObjectAdapter {
             	if (dateFormat_ == null) {
                  valueObj = DateFormat.getDateInstance().parse(value);
             	} else {
-            		dateFormat_.parse(value);
+            	 valueObj = dateFormat_.parse(value);
             	}
             } else if (type == ObjectField.OBJECTMETA_TIMESTAMP_TYPE) {
                 valueObj = DateFormat.getDateTimeInstance().parse(value);
