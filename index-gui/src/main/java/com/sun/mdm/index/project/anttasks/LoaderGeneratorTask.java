@@ -118,6 +118,7 @@ public class LoaderGeneratorTask extends Task {
 			writeLoaderBat();
 			writeLoaderScripts();
 			writeLoggingProperties();
+			writeClusterSynchronizerSQL();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -129,6 +130,24 @@ public class LoaderGeneratorTask extends Task {
 			BufferedWriter wr = new BufferedWriter(new FileWriter(f));
 
 			String fileResource = "com/sun/mdm/index/project/anttasks/loader.build.xml";
+
+			StringBuilder sb = getResourceContents(fileResource);
+
+			wr.write(sb.toString());
+
+			wr.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	private void writeClusterSynchronizerSQL() {
+		try {
+			File f = new File(configDir + "/../cluster-synchronizer.sql");
+			BufferedWriter wr = new BufferedWriter(new FileWriter(f));
+
+			String fileResource = "com/sun/mdm/index/project/anttasks/cluster-synchronizer.sql.xml";
 
 			StringBuilder sb = getResourceContents(fileResource);
 
