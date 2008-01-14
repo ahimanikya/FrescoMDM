@@ -62,7 +62,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 
 /**
  *  Worker task that creates Master Index data from input data.
- *  The main task is to create SBR from input data.
+ *  One of the main task is to create SBR from input data.
  *  The data created is for tables:
  *  Enterprise
  *  SystemObject
@@ -73,7 +73,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
  *  
  *  each concurrent MIndexTask is executed in a different thread 
      
- * @author sdua
+ * @author Swaranjit Dua
  *
  */
    public class MIndexTask implements Runnable {
@@ -93,6 +93,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
     private static SimpleDateFormat dateFormat_;  // This format is used in
         // user defined objects per object de
     	// new SimpleDateFormat("dd-MMM-yy hh:mm:ss");
+    private static SimpleDateFormat outdateFormat_; 
     private static SimpleDateFormat sysdateFormat_ = new SimpleDateFormat("dd-MMM-yy hh:mm:ss");
 	// This format is used for storing dates in systemobjects, sbr, transaction table,
       // per database loader .ctl.
@@ -156,12 +157,16 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		addIDs(objDef);
 		DataObjectAdapter.init(objDef);
 		String dateString = objDef.getDateFormat();
+		outdateFormat_ = new SimpleDateFormat(dateString + " hh:mm:ss"); // output date format is
+		  // written to master index files is - "object def date Format" + "hh:mm:ss"
 		String timeFormat = config.getSystemProperty("TimeFormat");
 		if (timeFormat != null) {
 			dateString = dateString + " " + timeFormat;
 		}
+		
 		dateFormat_ = new SimpleDateFormat(dateString); // + " hh:mm:ss");
 		DataObjectAdapter.setDateFormat(dateFormat_);
+		ObjectNodeUtil.initDateFormat();
 		return objDef;
 	}
 	
@@ -169,7 +174,9 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		String euid = eo.getEUID();
 		Collection systems = eo.getSystemObjects();
 		
+
 		int i = 0;
+		String transnum = null;
 		for (Object o: systems) {			
 			SystemObject sys = (SystemObject) o;
 			String localid = sys.getLID();
@@ -178,12 +185,18 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		    addSystemObject(sys);
 		    String user = sys.getUpdateUser();
 		    
-		    String transnum = addTransactionNumber(euid, syscode, localid, user);
-		    if(weights != null) {
-		      String weight = weights.get(syscode+localid);
-		      if (weight != null && Double.parseDouble(weight) > 0) {
-		        addAssumedMatchTable(euid, syscode, localid, weight, transnum);
-		      }
+		    if (i == 0) {
+		       transnum = com.sun.mdm.index.idgen.CUIDManager.getNextUID(con_,
+	        "TRANSACTIONNUMBER");
+		       addTransactionNumber(euid, syscode, localid, user, transnum);
+		    } else {
+		    
+		     if(weights != null) {
+		       String weight = weights.get(syscode+localid);
+		       if (weight != null && Double.parseDouble(weight) > 0) {
+		         addAssumedMatchTable(euid, syscode, localid, weight, transnum);
+		       }
+		     }
 		    }
 		    i++; // weights List has a weight corresponding to each system object
 		}	
@@ -309,39 +322,8 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
         }        
 	}
 	
-	private ObjectNode convertObjectNode(DataObject d) throws Exception {
-		// The DataObject that is retrieved from EUID bucket contains
-		// following fields, that don't belong to primary/secondary objects.
-		// So these are first removed before converting to ObjectNode.
-	    d.remove(0); // EUID
-	    d.remove(0); // GID
-	    d.remove(0); // syscode
-	    d.remove(0); //lid
-	    d.remove(0);  // weight
-	    d.remove(0);  // update date
-	    d.remove(0);  // craete user	 
-	    addIdvals(d);
-	    ObjectNode o = DataObjectAdapter.toObjectNode(d);
-	    
-	//    logger.info(o.toString());
-	    
-	    return o;
-	}
 	
 	
-	private void addIdvals(DataObject d) {
-		d.add(0, "");
-		List<ChildType> childTypes = d.getChildTypes();
-		
-		for (int i = 0; i < childTypes.size(); i++) {
-			if (d.hasChild(i)) {
-			  List<DataObject> children =  d.getChildren(i);
-			  for (DataObject dobject: children) {
-			    addIdvals(dobject);
-			  }
-			}
-		}
-	}
 	
 	private EnterpriseObject createEnterpriseObject(SystemObject so) throws Exception {
 		so.setCreateFunction(SystemObject.ACTION_ADD);
@@ -352,11 +334,12 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	}
 	
 	
-	private String addTransactionNumber(String euid, String syscode, String localid, String user) 
+	private String addTransactionNumber(String euid, String syscode, String localid, String user
+			, String transnum) 
 	throws Exception {
 	           
-       String transnum = com.sun.mdm.index.idgen.CUIDManager.getNextUID(con_,
-                                           "TRANSACTIONNUMBER");
+       //String transnum = com.sun.mdm.index.idgen.CUIDManager.getNextUID(con_,
+         //                                  "TRANSACTIONNUMBER");
        //String transnum = null;
     
        List<String> list = new ArrayList<String>();
@@ -369,10 +352,10 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
        list.add(""); // LID2
        list.add(""); // EUID1
        list.add("");  // EUID2
-       list.add("ADD");
+       list.add("Add");
        list.add(user); // SYSTEMUSER
        list.add(sdate_);  // TIMESTAMP new java.util.Date()
-       list.add(""); // DELTA
+     //  list.add(""); // DELTA
        list.add(syscode);
        list.add(localid);
        list.add(euid);
@@ -506,7 +489,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
        list.add(updatefunction);
        list.add(sysdateFormat_.format(updateDate));
        list.add(status);
-       list.add("");
+       list.add("1");
        addData(SYSTEMSBR, list);
 	}
 	
@@ -552,8 +535,15 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 			String name = objectDef.getField(i).getName();
 			Object value = o.getValue(name);
 			String val = "";
+			
+					
 			if (value != null) {
-				val = value.toString();
+				if (value instanceof Date)
+				{
+				  val = outdateFormat_.format(value);
+				} else {
+				   val = value.toString();
+				}
 			}		
 			list.add(val);			
 		}		
