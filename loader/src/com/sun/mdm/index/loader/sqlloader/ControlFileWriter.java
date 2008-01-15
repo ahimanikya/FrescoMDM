@@ -30,14 +30,13 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
 
 /**
  * @author Sujit Biswas
- *
+ * 
  */
-public class ControlFileWriter implements Writer{
-	
+public class ControlFileWriter implements Writer {
+
 	private Table table;
 	private String baseDir;
-	
-	
+
 	/**
 	 * @param table
 	 * @param baseDir
@@ -46,80 +45,103 @@ public class ControlFileWriter implements Writer{
 		this.table = table;
 		this.baseDir = baseDir;
 	}
-	
+
 	public void write() {
-		
+
 		try {
-			FileWriter w = new FileWriter(baseDir + "/" + table.getName() + ".ctl");
-			
+			FileWriter w = new FileWriter(baseDir + "/" + table.getName()
+					+ ".ctl");
+
 			w.write(getControlScript());
-			
+
 			w.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	private String getControlScript(){
-		
-		
+
+	private String getControlScript() {
+
 		StringBuilder sb = new StringBuilder();
-		
+
 		sb.append("load data \n");
-		
-		sb.append("\t infile '../masterindex/" +  table.getName() + ".data' " +  "\"str '" + getRecordLimiter() +"'\"" +  "\n");
+
+		sb.append("\t infile '../masterindex/" + table.getName() + ".data' "
+				+ "\"str '" + getRecordLimiter() + "'\"" + "\n");
 		sb.append("\t APPEND into table " + table.getName() + "\n");
-		
-		sb.append("\t fields terminated by \"|\" optionally enclosed by '\"' \n");
-		
+
+		sb
+				.append("\t fields terminated by \"|\" optionally enclosed by '\"' \n");
+
 		sb.append("\t TRAILING NULLCOLS \n");
-		
+
 		sb.append("\t " + getColumns());
-		
-		
-		return sb.toString();
-	}
-	
-	LoaderConfig config = LoaderConfig.getInstance();
-	private String getRecordLimiter(){
-		return config.getSystemProperty("sqlldr.record.delimiter");
-	}
-	
-	private String getColumns(){
-		
-		StringBuilder sb = new StringBuilder();
-		
-		sb.append("( ");
-		for (int i = 0; i < table.getColumns().size(); i++) {
-			sb.append(table.getColumns().get(i) );
-			
-			if( !table.getColumnTypes().isEmpty() && isDate(table.getColumnTypes().get(i))){
-				sb.append(" date \"" +config.getObjectDefinition().getDateFormat()+ " HH24:MI:SS"+"\"");
-			}
-			if( table.getColumnTypes().isEmpty() && isDate(table.getName(),table.getColumns().get(i))){
-				sb.append(" date \"" +"dd-mm-yy HH24:MI:SS"+"\"");
-			}
-			
-			if(table.getName().equalsIgnoreCase("SBYN_TRANSACTION") && table.getColumns().get(i).equalsIgnoreCase("delta") ){
-				sb.append(" FILLER ");
-			}
-			
-			if(i== table.getColumns().size()-1){
-				sb.append(" ) \n");
-			}else
-				sb.append(", ");
-			
-		}
-		
+
 		return sb.toString();
 	}
 
+	LoaderConfig config = LoaderConfig.getInstance();
+
+	private String getRecordLimiter() {
+		return config.getSystemProperty("sqlldr.record.delimiter");
+	}
+
+	private String getColumns() {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("( ");
+		for (int i = 0; i < table.getColumns().size(); i++) {
+
+			if (isDeltaColumn(i)) {
+				continue;
+			}
+
+			sb.append(table.getColumns().get(i));
+
+			if (!table.getColumnTypes().isEmpty()
+					&& isDate(table.getColumnTypes().get(i))) {
+				sb.append(" date \""
+						+ config.getObjectDefinition().getDateFormat()
+						+ " HH24:MI:SS" + "\"");
+			}
+			if (table.getColumnTypes().isEmpty()
+					&& isDate(table.getName(), table.getColumns().get(i))) {
+				sb.append(" date \"" + "dd-mm-yy HH24:MI:SS" + "\"");
+			}
+
+			if (isDeltaColumn(i)) {
+
+			}
+
+			if (i == table.getColumns().size() - 1) {
+				sb.append(" ) \n");
+			} else
+				sb.append(", ");
+
+		}
+
+		return sb.toString();
+	}
+
+	/**
+	 * @param i
+	 * @return
+	 */
+	private boolean isDeltaColumn(int i) {
+		return table.getName().equalsIgnoreCase("SBYN_TRANSACTION")
+				&& table.getColumns().get(i).equalsIgnoreCase("delta");
+	}
+
 	private boolean isDate(String table, String column) {
-		if(table.equals("SBYN_SYSTEMOBJECT") || table.equals("SBYN_SYSTEMSBR") || table.equals("SBYN_POTENTIALDUPLICATES")){
-			
-			if(column.equalsIgnoreCase("createdate") || column.equalsIgnoreCase("updatedate") || column.equalsIgnoreCase("resolveddate")){
+		if (table.equals("SBYN_SYSTEMOBJECT") || table.equals("SBYN_SYSTEMSBR")
+				|| table.equals("SBYN_POTENTIALDUPLICATES")) {
+
+			if (column.equalsIgnoreCase("createdate")
+					|| column.equalsIgnoreCase("updatedate")
+					|| column.equalsIgnoreCase("resolveddate")) {
 				return true;
 			}
 		}
@@ -128,7 +150,7 @@ public class ControlFileWriter implements Writer{
 
 	private boolean isDate(String date) {
 		return "date".equals(date);
-		
+
 	}
 
 }
