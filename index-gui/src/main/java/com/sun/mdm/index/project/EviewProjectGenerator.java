@@ -24,6 +24,7 @@ package com.sun.mdm.index.project;
 
 import com.sun.mdm.index.project.generator.descriptor.SunEjbJarWriter;
 import com.sun.mdm.index.project.ui.wizards.WizardProperties;
+import com.sun.mdm.index.project.ui.wizards.Properties;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,6 +34,7 @@ import org.openide.WizardDescriptor;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.filesystems.FileLock;
+import org.openide.ErrorManager;
 
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectManager;
@@ -43,6 +45,7 @@ import org.netbeans.modules.j2ee.deployment.devmodules.api.AntDeploymentHelper;
 import org.netbeans.modules.j2ee.deployment.devmodules.api.Deployment;
 import org.openide.modules.InstalledFileLocator;
 import org.openide.loaders.DataObject;
+import org.apache.tools.ant.module.api.support.ActionUtils;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -59,7 +62,6 @@ import org.netbeans.modules.j2ee.deployment.devmodules.api.J2eePlatform;
 
 import com.sun.mdm.standardizer.StandardizerIntrospector;
 import com.sun.mdm.standardizer.DataTypeDescriptor;
-import com.sun.mdm.standardizer.VariantDescriptor;
 
 
 /**
@@ -115,6 +117,7 @@ public class EviewProjectGenerator {
         String serverInstanceID = (String)wDesc.getProperty("serverInstanceID");
         String mainProjectName = (String) wDesc.getProperty(WizardProperties.NAME);
         String j2eeLevel = (String)wDesc.getProperty(WizardProperties.J2EE_LEVEL);
+        String autoGenerate = (String) wDesc.getProperty(Properties.PROP_AUTO_GENERATE);
 
         try{
            createEjbWar(fo, mainProjectName, serverInstanceID, j2eeLevel);           
@@ -163,6 +166,14 @@ public class EviewProjectGenerator {
 
         ProjectManager.getDefault().saveProject(p);
 
+        if (autoGenerate.equals("Yes")) {
+            try {
+                FileObject buildXml = p.getProjectDirectory().getFileObject(p.getBuildXmlName ());
+                ActionUtils.runTarget(buildXml, new String[] {"gen-mdm-index-files"}, null);
+            } catch (IOException e) {
+                ErrorManager.getDefault().notify(e);
+            }
+        }
         return h;
     }
 
