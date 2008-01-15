@@ -116,7 +116,9 @@ public class LoaderGeneratorTask extends Task {
 			write(config);
 			writeBuildXML();
 			writeLoaderBat();
+			writeSQLLoaderBat();
 			writeLoaderScripts();
+			writeSQLLoaderScripts();
 			writeLoggingProperties();
 			writeClusterSynchronizerSQL();
 		} catch (Exception ex) {
@@ -188,6 +190,36 @@ public class LoaderGeneratorTask extends Task {
 		}
 
 	}
+	
+	private void writeSQLLoaderBat() {
+		try {
+			File f = new File(configDir + "/../generate-sql-loader.bat");
+			BufferedWriter wr = new BufferedWriter(new FileWriter(f));
+			String fileResource = "com/sun/mdm/index/project/anttasks/run-loader.bat.xml";
+
+			StringBuilder sb = getResourceContents(fileResource);
+
+			List<String> l = getJarFiles();
+
+			StringBuilder sb1 = new StringBuilder();
+			for (String s : l) {
+				sb1.append("%loader_home%\\\\lib\\\\");
+				sb1.append(s);
+				sb1.append(";");
+			}
+			sb1.append("%ORACLE_JDBC_JAR%");
+
+			String result = sb.toString().replaceAll(REPLACE_WITH_CLASSPATH,
+					sb1.toString());
+			wr.write(result.replaceAll("com.sun.mdm.index.loader.main.BulkMatcherLoader", "com.sun.mdm.index.loader.sqlloader.ScriptGenerator"));
+
+			wr.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
 
 	private List<String> getJarFiles() {
 		File f = new File(configDir + "/../lib");
@@ -224,6 +256,35 @@ public class LoaderGeneratorTask extends Task {
 			String result = sb.toString().replace(REPLACE_WITH_CLASSPATH,
 					sb1.toString());
 			wr.write(result);
+
+			wr.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	private void writeSQLLoaderScripts() {
+		try {
+			File f = new File(configDir + "/../generate-sql-loader.sh");
+			BufferedWriter wr = new BufferedWriter(new FileWriter(f));
+			String fileResource = "com/sun/mdm/index/project/anttasks/run-loader.sh.xml";
+
+			StringBuilder sb = getResourceContents(fileResource);
+
+			List<String> l = getJarFiles();
+
+			StringBuilder sb1 = new StringBuilder();
+			for (String s : l) {
+				sb1.append("${loader_home}/lib/");
+				sb1.append(s);
+				sb1.append(":");
+			}
+			sb1.append("${ORACLE_JDBC_JAR}");
+
+			String result = sb.toString().replace(REPLACE_WITH_CLASSPATH,
+					sb1.toString());
+			wr.write(result.replaceAll("com.sun.mdm.index.loader.main.BulkMatcherLoader", "com.sun.mdm.index.loader.sqlloader.ScriptGenerator"));
 
 			wr.close();
 		} catch (Exception e) {
