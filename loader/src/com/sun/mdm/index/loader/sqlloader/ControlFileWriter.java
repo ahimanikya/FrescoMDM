@@ -102,6 +102,10 @@ public class ControlFileWriter implements Writer{
 				sb.append(" date \"" +"dd-mm-yy HH24:MI:SS"+"\"");
 			}
 			
+			if(table.getName().equalsIgnoreCase("SBYN_TRANSACTION") && table.getColumns().get(i).equalsIgnoreCase("delta") ){
+				sb.append(" FILLER ");
+			}
+			
 			if(i== table.getColumns().size()-1){
 				sb.append(" ) \n");
 			}else
