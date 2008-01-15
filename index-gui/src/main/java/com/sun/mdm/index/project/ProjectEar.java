@@ -166,8 +166,8 @@ public final class ProjectEar extends J2eeModuleProvider
         throw new UnsupportedOperationException("ProjectEar.removePropertyChangeListener()--Not supported yet.");
     }
 
-    public boolean isManifestChanged(long arg0) {
-        throw new UnsupportedOperationException("ProjectEar.isManifestChanged()--Not supported yet.");
+    public boolean isManifestChanged (long timestamp) {
+        return false;
     }
 
     public <T> MetadataModel<T> getDeploymentDescriptor(Class<T> arg0) {

@@ -65,7 +65,7 @@ class EviewProjectActionProvider implements ActionProvider {
         EviewProject.COMMAND_CLEANSER,
         EviewProject.COMMAND_PROFILER,
         //IcanproConstants.COMMAND_REDEPLOY,
-        IcanproConstants.COMMAND_DEPLOY,
+        EviewProject.COMMAND_DEPLOY,
     };
     
     // Project
@@ -91,7 +91,7 @@ class EviewProjectActionProvider implements ActionProvider {
         commands.put(EviewProject.COMMAND_CLEANSER, new String[] {"gen-cleanser-zip"}); // NOI18N
         commands.put(EviewProject.COMMAND_PROFILER, new String[] {"gen-profiler-zip"}); // NOI18N
         //commands.put(IcanproConstants.COMMAND_REDEPLOY, new String[] {"run"}); // NOI18N
-        commands.put(IcanproConstants.COMMAND_DEPLOY, new String[] {"run-deploy"}); // NOI18N
+        commands.put(EviewProject.COMMAND_DEPLOY, new String[] {"run-deploy"}); // NOI18N
 
         this.antProjectHelper = antProjectHelper;
         this.project = project;

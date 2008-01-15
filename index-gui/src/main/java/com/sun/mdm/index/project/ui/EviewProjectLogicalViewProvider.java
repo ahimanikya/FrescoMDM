@@ -163,8 +163,8 @@ public class EviewProjectLogicalViewProvider implements LogicalViewProvider {
                 ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_CLEANSER, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Cleanser"), null ),
                 ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_PROFILER, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Profiler"), null ),
                 null,
-                ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_REDEPLOY, bundle.getString( "LBL_RedeployAction_Name" ), null ), // NOI18N
-                ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_DEPLOY, bundle.getString( "LBL_DeployAction_Name" ), null ), // NOI18N
+                //ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_REDEPLOY, bundle.getString( "LBL_RedeployAction_Name" ), null ), // NOI18N
+                ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_DEPLOY, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_DeployAction_Name" ), null ), // NOI18N
                 null,
                 CommonProjectActions.setAsMainProjectAction(),
                 CommonProjectActions.openSubprojectsAction(),
