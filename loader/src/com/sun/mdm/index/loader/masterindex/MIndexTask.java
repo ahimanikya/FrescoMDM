@@ -130,7 +130,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 			  String syslocalid = d.getFieldValue(2) + d.getFieldValue(3);
 			  String weight = d.getFieldValue(4); // weight is at position 5 in EUID bucket
 			  String wt = weightMap.get(syslocalid);			  
-			  if (wt == null) {
+			  if (wt == null && !weight.equals("999999")) {
 				weightMap.put(syslocalid, weight);  
 			  }			 
 		    }
@@ -355,7 +355,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
        list.add("Add");
        list.add(user); // SYSTEMUSER
        list.add(sdate_);  // TIMESTAMP new java.util.Date()
-     //  list.add(""); // DELTA
+       list.add(""); // DELTA
        list.add(syscode);
        list.add(localid);
        list.add(euid);
