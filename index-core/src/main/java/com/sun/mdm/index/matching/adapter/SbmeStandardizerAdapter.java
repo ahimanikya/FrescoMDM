@@ -30,11 +30,8 @@ import java.util.logging.Level;
 
 import net.java.hulp.i18n.Logger;
 
-import com.stc.sbme.api.SbmeConfigFilesAccess;
-import com.stc.sbme.api.SbmeMatchEngineException;
 import com.stc.sbme.api.SbmeStandRecord;
 import com.stc.sbme.api.SbmeStandRecordFactory;
-import com.stc.sbme.api.SbmeStandardizationException;
 import com.sun.mdm.index.configurator.impl.standardization.PhoneticizeField;
 import com.sun.mdm.index.configurator.impl.standardization.PreparsedFieldGroup;
 import com.sun.mdm.index.configurator.impl.standardization.StandardizationFieldGroup;
@@ -52,7 +49,7 @@ import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.phonetic.PhoneticEncoderException;
 import com.sun.mdm.index.phonetic.Phoneticizer;
 import com.sun.mdm.index.util.Localizer;
-import com.sun.sbme.api.SbmeStandardizationEngine;
+import com.sun.mdm.standardizer.compat.StandardizationEngineWrapper;
 
 /**
  * StandardizerAPI implementation that allows MEFA to communicate with the
@@ -71,7 +68,7 @@ public class SbmeStandardizerAdapter
     
     private SbmeStandRecordFactory standRecFactory; // To create SbmeStandRecords 
     private Phoneticizer phoneticizer;             // Access to phonetic encoders
-    private SbmeStandardizationEngine standardizationEngine;
+    private StandardizationEngineWrapper standardizationEngine;
     
     /**  mLogger instance
      *
@@ -150,7 +147,7 @@ public class SbmeStandardizerAdapter
             throw new StandardizationException(mLocalizer.t("MAT531: Failed to " + 
                                             "create phonetic code for the configured " + 
                                             "fields in the SystemObject: {0}", ex));
-        } catch (SbmeStandardizationException ex) {
+        } /*catch (SbmeStandardizationException ex) {
             // This signifies a problem with the standardization engine
             // The normal result of it not being able to standardize a record would be to return
             // null for that record, not to throw an exception
@@ -162,7 +159,7 @@ public class SbmeStandardizerAdapter
         } catch (java.io.IOException ex) {
             throw new StandardizationException(mLocalizer.t("MAT534: The Standardization engine " + 
                                             "failed to standardize the given record: {0}", ex));
-        }
+        }*/
         
         return objToStandardize;
     }
@@ -248,16 +245,17 @@ public class SbmeStandardizerAdapter
             SbmeStandardizerAdapterConfig eViewConfig =
                 (SbmeStandardizerAdapterConfig) config;
 
-            SbmeConfigFilesAccess cfgFilesAccess = eViewConfig.getConfigFileAccess();
-            
-            standardizationEngine = new SbmeStandardizationEngine(cfgFilesAccess);
-            standardizationEngine.initializeData(cfgFilesAccess);
+            standardizationEngine = new StandardizationEngineWrapper();
+            standardizationEngine.initialize();
+//            SbmeConfigFilesAccess cfgFilesAccess = eViewConfig.getConfigFileAccess();
+//            standardizationEngine = new StandardizationEngineWrapper(cfgFilesAccess);
+//            standardizationEngine.initializeData(cfgFilesAccess);
 
-        } catch (SbmeMatchEngineException ex) {
+/*        } catch (SbmeMatchEngineException ex) {
             throw new StandardizationException(
                 "Failed to initialize standardizer adapter, standardization engine reports an error: " 
                     + ex.getMessage(), ex);                                    
-        } catch (Exception ex) {
+*/        } catch (Exception ex) {
             throw new StandardizationException(mLocalizer.t("MAT537: Failed to " + 
                                         "initialize the standardizer adapter: {0}", ex));
         }

@@ -49,7 +49,7 @@
         
     <target name="do-testing">
     
-        <junit printsummary="yes" haltonfailure="no" failureProperty="test.failure" >
+        <junit maxmemory="1024m" printsummary="yes" haltonfailure="no" failureProperty="test.failure" >
             <classpath>
                 <pathelement path="${run.test.classpath}"/>
             </classpath>

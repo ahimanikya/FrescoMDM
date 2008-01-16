@@ -118,9 +118,10 @@ public class SBROverWrite extends ObjectNode {
                 if (tempValue != null && tempValue.length() > 0) {
                     if (tempValue.charAt(0) == '[' && tempValue.charAt(tempValue.length() - 1) == ']') {
                         ret = ObjectField.OBJECTMETA_LINK_STRING;
-                    } // for SBROverride
-                } 
-                else {
+                    } else{
+                        ret = ObjectField.OBJECTMETA_STRING_STRING;
+                    }
+                }else {
                     ret = ObjectField.OBJECTMETA_STRING_STRING;
                 }
 
