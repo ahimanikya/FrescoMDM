@@ -131,7 +131,12 @@ public class BlockDistributor {
 			   Bucket bucket = buckets_[bucketNum];
 			   bucket.write(matchObject);			   
 		     }
-		   } 
+		   }
+		   if (!isSBR_) {
+		       writeSystemBlock(inputdataObject);
+		   }
+		   
+						   
 		}
 		
 	//	logger.info("countNullBlids:" + countNullBlids);
@@ -153,6 +158,41 @@ public class BlockDistributor {
 	}
 	
 
+	public static boolean isSystemBlock(String blockid) {
+		if(blockid != null && blockid.startsWith("Systemlid")) {
+			return true;
+		}
+		return false;
+	}
+	
+//	Map systemMap = new HashMap();
+	
+	/**
+	 * This is special block that contains only systemcode, lid, GID. The purpose of this block is to associate
+	 * duplicate records that have same systemcode/lid and later these duplicates are assigned same EUID and then
+	 * are merged by Master Index Generator.
+	 */
+	
+	private void writeSystemBlock(DataObject d) throws Exception {
+	    String GID = d.getFieldValue(0);
+		String systemcode = d.getFieldValue(1);
+		String lid = d.getFieldValue(2);
+		
+		String blockid = "Systemlid:"+ systemcode + lid;
+		DataObject sysmatchObject = new DataObject();
+		sysmatchObject.addFieldValue(blockid);
+		sysmatchObject.addFieldValue(GID);
+		sysmatchObject.addFieldValue(systemcode);
+		sysmatchObject.addFieldValue(lid);
+		int bucketNum = getBucketNum(blockid);
+		Bucket bucket = buckets_[bucketNum];
+		bucket.write(sysmatchObject);
+		
+	//	systemMap.put(systemcode+lid, systemcode+lid);
+	
+	}
+	
+	
 	private void initializeBuckets() throws IOException {
 		long memorySize = 100000000;// bytes
 		long numRecords = 1000000;
@@ -214,6 +254,8 @@ public class BlockDistributor {
 				countNullBlids++;
 			}
 		}
+		
+				
 		return blockids;
 	}
 	
