@@ -71,8 +71,9 @@ import com.sun.mdm.index.project.generator.descriptor.JbiXmlWriter;
 import com.sun.mdm.index.project.generator.exception.TemplateWriterException;
 import com.sun.mdm.index.project.generator.outbound.OutboundXSDBuilder;
 import com.sun.mdm.index.project.generator.persistence.DDLWriter;
-import com.sun.mdm.standardizer.StandardizerIntrospector;
-import com.sun.mdm.standardizer.util.StandardizerUtils;
+import com.sun.mdm.standardizer.introspector.StandardizationIntrospector;
+import com.sun.inti.components.util.ClassUtils;
+import com.sun.inti.components.util.IOUtils;
 import org.apache.tools.ant.taskdefs.Javac;
 import org.apache.tools.ant.taskdefs.Move;
 import org.apache.tools.ant.types.Path;
@@ -255,16 +256,14 @@ public class EViewGeneratorTask extends Task {
         copy.setLocation(getLocation());
         copy.execute();
         
-        StandardizerIntrospector introspector = StandardizerUtils.getStandardizerIntrospector();
+        StandardizationIntrospector introspector = ClassUtils.loadDefaultService(StandardizationIntrospector.class);
+        File repositoryDirectory = new File(mSrcdir, EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER);
+        introspector.setRepositoryDirectory(repositoryDirectory);
 		
         File resourceDirectory = new File(projPath + File.separator + 
                 EviewProjectProperties.EVIEW_GENERATED_FOLDER + 
                 File.separator + "resource");
-        File repositoryDirectory = new File(mSrcdir, EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER);
-        introspector.setRepository(repositoryDirectory);
         introspector.takeSnapshot(resourceDirectory);
-        introspector.close();
-
 
         //copy match engine file  
         destDir = new File(projPath + File.separator + EviewProjectProperties.EVIEW_GENERATED_FOLDER +
