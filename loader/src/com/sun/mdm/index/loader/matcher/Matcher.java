@@ -101,6 +101,12 @@ public class Matcher {
 	}
 	
 		
+	/**
+	 * the core workhorse function.
+	 * Keep reading Block Bucket file, matches and output to Match Files.
+	 * Do until no more Block Bucket is to be matched.
+	 * @throws Exception
+	 */
    public void match() throws Exception {
 		
 	 File bucketFile;
