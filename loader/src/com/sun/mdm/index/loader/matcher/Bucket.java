@@ -32,6 +32,7 @@ import com.sun.mdm.index.dataobject.DataObjectReader;
 import com.sun.mdm.index.dataobject.DataObjectWriter;
 import java.io.File;
 import com.sun.mdm.index.dataobject.ChildType;
+import com.sun.mdm.index.loader.blocker.BlockDistributor;
 
 
 /**
@@ -113,6 +114,12 @@ public class Bucket {
 	}
 	
 	private void removeDup(Block block) {
+		if (BlockDistributor.isSystemBlock(block.getBlockId())) {
+			// systemlid block have records that have same systemcode, lid. We don't want to remove them. As these
+			// are special case of determining EUID for records with same systemcode, lid
+			return;
+		}
+		
 		Map<String,DataObject> map = new HashMap<String,DataObject>();
 		
 		List<DataObject> records = block.getRecords();
