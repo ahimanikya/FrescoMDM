@@ -40,6 +40,7 @@ import com.sun.mdm.index.objects.epath.EPathParser;
 import com.sun.mdm.index.loader.analysis.WeightAnalyzer;
 import com.sun.mdm.index.filter.ExclusionListLookup;
 import com.sun.mdm.index.filter.FilterConstants;
+import com.sun.mdm.index.loader.blocker.BlockDistributor;
 
 
 /**
@@ -120,6 +121,7 @@ import com.sun.mdm.index.filter.FilterConstants;
 		//List<MatchRecord> list = new ArrayList<MatchRecord>();
 	    int recordPosition = blockPosition.getRecordPosition();
 	    Block block = blockPosition.getBlock();
+	    String blockid = block.getBlockId();
 	    int size = block.getSize();
 	    /*
 	     * matches a given record within block with all other records
@@ -132,10 +134,19 @@ import com.sun.mdm.index.filter.FilterConstants;
 	    	String gid2 = data2.getFieldValue(1);
 	    	boolean matched = block.isMatched();
 	    	double score = matchThreshold_;
-	    	if (matched == false) { // do matching only if block is not already set to MATCHED
+	    	
+	    	if (BlockDistributor.isSystemBlock(blockid) && !isSBR_) {
+	    		score = 999999;
+	    		MatchRecord record = new MatchGIDRecord(gid1, gid2, score);
+	    		matchTree_.put(record, record);
+	    		record = new MatchGIDRecord(gid2, gid1, score);
+	    		matchTree_.put(record, record);
+	    		continue;
+
+	    	}  else if (matched == false) { // do matching only if block is not already set to MATCHED
 	    		// if it is already set to MATCHED in block definition, bypass matching and every
 	    		// record in the block match to each other
-	    	  score = match(data1, data2);
+	    	   score = match(data1, data2);
 	    	}
 	    	
 	    	if (isSBR_) {
