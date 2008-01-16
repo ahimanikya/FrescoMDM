@@ -475,9 +475,9 @@ public class ClusterSynchronizerTest extends TestCase {
 		
 		ClusterSynchronizer cs2 = new ClusterSynchronizer(c2);
 		
-		TestLoader t1 = new TestLoader(c1,cs1);
+		XTestLoader t1 = new XTestLoader(c1,cs1);
 		
-		TestLoader t2 = new TestLoader(c2,cs2);
+		XTestLoader t2 = new XTestLoader(c2,cs2);
 		
 		ExecutorService executor = Executors.newFixedThreadPool(3);
 

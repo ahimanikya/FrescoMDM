@@ -34,7 +34,7 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
  * @author Sujit Biswas
  * 
  */
-public class TestLoader implements Callable<String> {
+public class XTestLoader implements Callable<String> {
 
 	private static final int bucketNum = 50;
 	private LoaderConfig config;
@@ -46,7 +46,7 @@ public class TestLoader implements Callable<String> {
 	 * @param config
 	 * @param clusterSynchronizer
 	 */
-	public TestLoader(LoaderConfig config,
+	public XTestLoader(LoaderConfig config,
 			ClusterSynchronizer clusterSynchronizer) {
 		this.config = config;
 		this.clusterSynchronizer = clusterSynchronizer;
