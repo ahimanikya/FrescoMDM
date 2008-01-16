@@ -68,8 +68,8 @@ public class LoaderFtpClientTest extends TestCase {
 	 */
 	public void testStoreFile() {
 		lftp = new LoaderFtpClient("sbiswas-acer.stc.com", "sujit", "sujit");
-		boolean b = lftp.storeFile("/eview/loader", "/eview/loader/",
-				"blockBucket1");
+		boolean b = lftp.storeFile("/eview/loader", "test/data/",
+				"blockBucket2");
 
 		assertTrue(b);
 	}
@@ -80,20 +80,20 @@ public class LoaderFtpClientTest extends TestCase {
 	 */
 	public void testRetrieveFile() {
 		lftp = new LoaderFtpClient("sbiswas-acer.stc.com", "sujit", "sujit");
-		boolean b = lftp.retrieveFile("/eview/loader", "/eview/loader/match/",
-				"blockBucket1");
+		boolean b = lftp.retrieveFile("/eview/loader", "test/data/loader/",
+				"blockBucket2");
 
 		assertTrue(b);
 
 		// TODO note the change dir happens always with respect to the root dir
 		// of the ftp server
 
-		lftp = new LoaderFtpClient("sbiswas-acer.stc.com", "sujit", "sujit");
-		
-		b = lftp.retrieveFile("/eview/loader/sbr-match",
-				"/eview/loader/match/", "blockBucket1");
-
-		assertTrue(b);
+//		lftp = new LoaderFtpClient("sbiswas-acer.stc.com", "sujit", "sujit");
+//		
+//		b = lftp.retrieveFile("/eview/loader/sbr-match",
+//				"/eview/loader/match/", "blockBucket1");
+//
+//		assertTrue(b);
 
 	}
 
