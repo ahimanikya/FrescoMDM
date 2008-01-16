@@ -48,7 +48,7 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
 
 /**
  * 
- * @author sdua
+ * @author Swaranjit Dua
  *
  */
 public class MIConstants {
@@ -58,6 +58,6 @@ public class MIConstants {
 	 static final String ENTERPRISE = "SBYN_ENTERPRISE";
 	 static final String TRANSACTION = "SBYN_TRANSACTION";
 	 static final String ASSUMEDMATCH = "SBYN_ASSUMEDMATCH";
-	 static final String POTENTIALDUPLICATES = "SBYN_POTENTAILDUPLICATES";
+	 static final String POTENTIALDUPLICATES = "SBYN_POTENTIALDUPLICATES";
 	
 }
