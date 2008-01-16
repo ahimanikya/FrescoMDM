@@ -30,19 +30,11 @@ import org.openide.util.NbBundle;
 import org.openide.nodes.Node;
 import org.openide.filesystems.FileUtil;
 import org.openide.filesystems.FileObject;
-import org.openide.loaders.DataFolder;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import java.io.File;
-//import java.io.FileNotFoundException;
-import java.util.jar.JarFile;
-
-//import com.sun.mdm.standardizer.DataTypeDescriptor;
-//import com.sun.mdm.standardizer.StandardizerIntrospector;
-//import com.sun.mdm.standardizer.VariantDescriptor;
-//import com.sun.mdm.standardizer.engine.DefaultStandardizerIntrospector;
 
 /**
  * To get Standardization jar with dataTypeDescription.xml

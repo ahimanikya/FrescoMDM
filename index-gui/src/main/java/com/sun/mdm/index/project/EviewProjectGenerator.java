@@ -28,6 +28,7 @@ import com.sun.mdm.index.project.ui.wizards.Properties;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.zip.ZipFile;
 import java.util.Enumeration;
 
 import org.openide.WizardDescriptor;
@@ -60,10 +61,8 @@ import java.util.zip.ZipInputStream;
 import org.netbeans.modules.j2ee.deployment.devmodules.api.J2eeModule;
 import org.netbeans.modules.j2ee.deployment.devmodules.api.J2eePlatform;
 
-import com.sun.mdm.standardizer.StandardizerIntrospector;
-import com.sun.mdm.standardizer.DataTypeDescriptor;
-
-
+import com.sun.inti.components.util.IOUtils;
+import com.sun.mdm.standardizer.introspector.StandardizationIntrospector;
 /**
  * Create a fresh EjbProject from scratch or by importing and exisitng web module 
  * in one of the recognized directory structures.
@@ -236,14 +235,11 @@ public class EviewProjectGenerator {
             // *** Sub folder - Standardization ***
             FileObject standardizationEngineFolder = srcRoot.createFolder(EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER); // NOI18N
             try {
-                StandardizerIntrospector introspector = eviewApplication.getStandardizerIntrospector();
-                introspector.setRepository(FileUtil.toFile(standardizationEngineFolder));
-                File globalRepository = InstalledFileLocator.getDefault().locate(EviewProjectProperties.STANDARDIZATION_DEPLOYMENT_LOCATION, "", false);
-                if (!globalRepository.exists()) {
-                    throw new Exception("Global repository '" + globalRepository.getAbsolutePath() + "' does not exist.");
-                }
-                DataTypeDescriptor[] dataTypeDescriptors = introspector.importDirectory(globalRepository);
-                //introspector.close();
+                FileObject repImage = repository.getInstalledFile(EviewProjectProperties.STAND_REPOSITORY_ZIP);
+                IOUtils.extract(new ZipFile(repImage.getPath()), FileUtil.toFile(standardizationEngineFolder));
+                
+                StandardizationIntrospector introspector = eviewApplication.getStandardizationIntrospector();
+                introspector.setRepositoryDirectory(FileUtil.toFile(standardizationEngineFolder));
             } catch (Exception ex) {
                 throw new IOException(ex.toString());
             }

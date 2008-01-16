@@ -1,6 +1,5 @@
 Manifest-Version: 1.0
 Ant-Version: Apache Ant 1.7.0
-OpenIDE-Module-Public-Packages: -
 OpenIDE-Module-Java-Dependencies: Java > 1.5
 AutoUpdate-Show-In-Client: true
 OpenIDE-Module: com.sun.mdm.index.project
@@ -12,7 +11,11 @@ Class-Path: ext/eview/index-core.jar
     ext/eview/net.java.hulp.i18n.jar 
     ext/eview/net.java.hulp.i18ntask.jar 
     ext/eview/matcher.jar 
-    ext/eview/standardizer/lib/mdm-standardizer.jar 
+    ext/eview/standardizer/lib/inti-components-1.0.jar 
+    ext/eview/standardizer/lib/inti-container-api-1.0.jar 
+    ext/eview/standardizer/lib/inti-container-impl-1.0.jar 
+    ext/eview/standardizer/lib/standardizer-api.jar 
+    ext/eview/standardizer/lib/standardizer-impl.jar 
     ext/eview/standardizer/lib/aopalliance-1.0.jar 
     ext/eview/standardizer/lib/asm-2.2.3.jar 
     ext/eview/standardizer/lib/asm-commons-2.2.3.jar 

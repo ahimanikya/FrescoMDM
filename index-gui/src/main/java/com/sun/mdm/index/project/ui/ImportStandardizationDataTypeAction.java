@@ -30,21 +30,18 @@ import org.openide.util.NbBundle;
 import org.openide.nodes.Node;
 import org.openide.filesystems.FileUtil;
 import org.openide.filesystems.FileObject;
-import org.openide.loaders.DataFolder;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import java.io.File;
-//import java.io.FileNotFoundException;
 import java.util.jar.JarFile;
+import java.util.zip.ZipFile;
+import java.awt.Cursor;
 
 import com.sun.mdm.index.project.EviewApplication;
-
-import com.sun.mdm.standardizer.Descriptor;
-import com.sun.mdm.standardizer.DataTypeDescriptor;
-import com.sun.mdm.standardizer.StandardizerIntrospector;
-import com.sun.mdm.standardizer.VariantDescriptor;
+import com.sun.mdm.standardizer.introspector.Descriptor;
+import com.sun.mdm.standardizer.introspector.StandardizationIntrospector;
 
 /**
  * To get Standardization jar with dataTypeDescription.xml
@@ -87,14 +84,16 @@ public class ImportStandardizationDataTypeAction extends CookieAction {
         try {
             RequestProcessor.getDefault().post(new Runnable() {
                 public void run() {
+                    final JFileChooser fc = new JFileChooser();
                     try {
-                        final JFileChooser fc = new JFileChooser();
                         fc.setMultiSelectionEnabled(false);
-                        fc.setFileFilter(new JarFileFilter()); // jar with dataTypeDescriptor.xml
+                        fc.setFileFilter(new ZipFileFilter()); // jar with dataTypeDescriptor.xml
                         fc.setAcceptAllFileFilterUsed(false);
             
                         int returnVal = fc.showOpenDialog(null);
                         if (returnVal == JFileChooser.APPROVE_OPTION) {
+                            fc.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                            
                             EviewStandardizationFolderCookie cookie = activatedNodes[0].getCookie(EviewStandardizationFolderCookie.class);
                             EviewStandardizationFolderNode standardizationFolderNode = cookie.getEviewStandardizationFolderNode();
                             FileObject standFolder = standardizationFolderNode.getFileObject();
@@ -103,20 +102,18 @@ public class ImportStandardizationDataTypeAction extends CookieAction {
                             String pathSelectedFile = selectedFile.getAbsolutePath();
 
                             //Call util to get the data type, create sub folder, e.g. Address
-                            JarFile jarDataType = new JarFile(pathSelectedFile);
+                            ZipFile zipDataType = new ZipFile(pathSelectedFile);
                             String strDataType = "unknown";
                             EviewApplication eviewApplication = standardizationFolderNode.getEviewApplication();
-                            
-                            StandardizerIntrospector introspector = eviewApplication.getStandardizerIntrospector();
-                            introspector.setRepository(FileUtil.toFile(standFolder));
-                            Descriptor dataTypeDescriptor = introspector.importJar(jarDataType);
-                            eviewApplication.closeStandardizerIntrospector();
+                            StandardizationIntrospector introspector = eviewApplication.getStandardizationIntrospector();
+                            Descriptor dataTypeDescriptor = introspector.deploy(zipDataType);
                         }                          
                     } catch (Exception e) {
                         mLog.severe(NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_FAILED_To_Import_Standardization_Plugin")); // NOI18N
                         ErrorManager.getDefault().log(ErrorManager.ERROR, e.getMessage());
                         ErrorManager.getDefault().notify(ErrorManager.ERROR, e);
                     } finally {
+                        fc.setCursor(Cursor.getDefaultCursor());
                     }
                 }
             });
@@ -161,14 +158,14 @@ public class ImportStandardizationDataTypeAction extends CookieAction {
         return CookieAction.MODE_EXACTLY_ONE;
     }
     
-    private class JarFileFilter extends FileFilter {
+    private class ZipFileFilter extends FileFilter {
         
         public boolean accept(java.io.File file) {
-            return ( file.isDirectory() || file.getName().endsWith(".jar") );
+            return ( file.isDirectory() || file.getName().endsWith(".zip") );
         }
         
         public String getDescription() {
-            return "Jar Files";
+            return "Zip Files";
         }
         
     }    

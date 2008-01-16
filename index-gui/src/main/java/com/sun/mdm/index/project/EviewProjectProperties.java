@@ -81,6 +81,7 @@ public class EviewProjectProperties {
     public static final String MATCH_ZIP = EVIEW_TEMPLATE_LOCATION + "/match.zip";
     public static final String STAND_ZIP = EVIEW_TEMPLATE_LOCATION + "/stand.zip";
     public static final String TEMPLATE_ZIP = EVIEW_TEMPLATE_LOCATION + "/EviewApplicationTemplateProject.zip";
+    public static final String STAND_REPOSITORY_ZIP = "modules/ext/eview/standardizer/repositoryImage.zip";
     
     public static final String EVIEW_GENERATED_FOLDER = "files-generated";
     public static final String REPORT_CLIENT_FOLDER = "report-client";

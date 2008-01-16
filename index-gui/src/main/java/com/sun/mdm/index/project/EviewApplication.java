@@ -47,10 +47,11 @@ import com.sun.mdm.index.parser.UpdateType;
 import com.sun.mdm.index.parser.QueryType;
 import com.sun.mdm.index.parser.MatchFieldDef;
 
-import com.sun.mdm.standardizer.StandardizerIntrospector;
-import com.sun.mdm.standardizer.DataTypeDescriptor;
-import com.sun.mdm.standardizer.VariantDescriptor;
-import com.sun.mdm.standardizer.util.StandardizerUtils;
+import com.sun.mdm.standardizer.introspector.StandardizationIntrospector;
+import com.sun.mdm.standardizer.introspector.DataTypeDescriptor;
+import com.sun.mdm.standardizer.introspector.VariantDescriptor;
+import com.sun.inti.components.util.ClassUtils;
+
 import com.sun.mdm.index.project.ui.applicationeditor.ObjectTopComponent;
 import com.sun.mdm.index.project.ui.EviewConfigurationFolderNode;
 
@@ -89,7 +90,7 @@ public class EviewApplication extends EviewProject {
     private ArrayList<String> mAlMatchTypes = null;  // MATCH_CONFIG_FILE
     private String msgCheckedOut = "";
     private boolean bNeedToCheckIn;
-    private StandardizerIntrospector mStandardizerIntrospector;
+    private StandardizationIntrospector mStandardizationIntrospector = null;
     
     /** Creates a new instance of EviewApplication */
     public EviewApplication(final AntProjectHelper helper) throws IOException  {
@@ -460,22 +461,15 @@ public class EviewApplication extends EviewProject {
         mMatchFieldDef = matchFieldDef;
     }
     
-    public StandardizerIntrospector getStandardizerIntrospector() throws Exception {
-        if (mStandardizerIntrospector == null) {
-            mStandardizerIntrospector = StandardizerUtils.getStandardizerIntrospector();;
+    public StandardizationIntrospector getStandardizationIntrospector() throws Exception {
+        if (mStandardizationIntrospector == null) {
+            mStandardizationIntrospector = ClassUtils.loadDefaultService(StandardizationIntrospector.class);           
         }
-        return mStandardizerIntrospector;
-    }
-    
-    public void closeStandardizerIntrospector() {
-        if (mStandardizerIntrospector != null) {
-            //mStandardizerIntrospector.close();
-            mStandardizerIntrospector = null;
-        }
+        return mStandardizationIntrospector;
     }
     
     /** returns STANDARDIZATION_ENGINE_FOLDER directory
-     * call com.sun.mdm.standardizer.StandardizerIntrospector.importDirectory(File standDir)
+     * call com.sun.mdm.standardizer.StandardizationIntrospector.importDirectory(File standDir)
      * to get the list of supported data types (Address, BusinessName, PersonName, etc)
      * @return File 
     */
@@ -490,18 +484,18 @@ public class EviewApplication extends EviewProject {
     private ArrayList mAlStandDataDataTypes = null;
     
     public void setStandardizerRepositoryDir() throws Exception {
-        StandardizerIntrospector standardizerIntrospector = getStandardizerIntrospector();
-        DataTypeDescriptor[] dataTypeDescriptors = standardizerIntrospector.setRepository(getStandardizerRepositoryDir());
+        StandardizationIntrospector standardizationIntrospector = getStandardizationIntrospector();
+        DataTypeDescriptor[] dataTypeDescriptors = standardizationIntrospector.getDataTypes();
         mAlStandDataDataTypes = new ArrayList(dataTypeDescriptors.length);
         for (DataTypeDescriptor dataTypeDescriptor: dataTypeDescriptors) {
             String strDataType = dataTypeDescriptor.getName();
             mAlStandDataDataTypes.add(strDataType);
-            VariantDescriptor[] variantDescriptors = dataTypeDescriptor.variants();
+            VariantDescriptor[] variantDescriptors = dataTypeDescriptor.getVariants();
             ArrayList alVariants = new ArrayList(variantDescriptors.length);
             for (VariantDescriptor variantDescriptor: variantDescriptors) {
-                if (variantDescriptor.getDataTypeName().equals(strDataType)) {
+                //if (variantDescriptor.getDataTypeName().equals(strDataType)) {
                     alVariants.add(variantDescriptor.getName()); 
-                }
+                //}
             }
             mMapStandDataTypeVariants.put(strDataType, alVariants);
             
