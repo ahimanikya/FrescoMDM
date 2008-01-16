@@ -145,13 +145,14 @@ public class MatchTupleConverter
         // which might be in a different order than the match columns, epaths, 
         // etc.
         
-        int fieldCount = ((ArrayList) tuplesToOrder.get(0)).size();
-        String[][] tuplesArray = new String[tuplesToOrder.size()][ePaths.size()];
+        //int fieldCount = ((ArrayList) tuplesToOrder.get(0)).size();
+        int fieldCount = ePaths.size(); //HF6618360 Relay Health  
+        String[][] tuplesArray = new String[tuplesToOrder.size()][fieldCount];
         
         // Initialize tuplesArray in case child objects with match fields are 
         // not present.
         for (int i = 0; i < tuplesToOrder.size(); i++) {
-            for (int j = 0; j < ePaths.size(); j++) {
+            for (int j = 0; j < fieldCount; j++) {
                 tuplesArray[i][j] = null;
             }
         }
