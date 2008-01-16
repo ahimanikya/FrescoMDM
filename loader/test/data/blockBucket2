@@ -1,10 +1,18 @@
-123~$456||Jo~##$ hn|Smith
-123456|bock-id|John|Smith
-123~$456|bock~|-id|Jo~#hn|Smith#$800 ~#Royals oaks| Monrovia |CA| 910~#116 $Highland Ave| Duarte|CA |91010 #$ phone-company1|~$ 626-626~$-1234$ phone-~|company1| 626-626~~~|-1235
-123~$456|bock~|-id|Jo~#hn|Smith
-123456|bock-id|John|Smith
-123456|bock-id|John|Smith#$800 Royals~
- oaks| Monrovia |CA| 910116 $Highland Ave| Duarte|CA |91010 #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
-123~$456||Jo~#hn|Smith
-123456||John|Smith#$800 Royals oaks| Monrovia |CA| 910116 $Highland Ave||CA |91010 #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
-123~$456|bock~|-id|Jo~#hn|Smith#$800 ~#Royals oaks| Monrovia |CA|$Highland Ave| Duarte|CA |91010 #$ phone-company1|~$ 626-626~$-1234$ phone-~|company1| 626-626~~~|-1235
+1|123~$456||Jo~##$ hn|Smith
+2|123456|bock-id|John|Smith
+3|123~$456|bock~|-id|Jo~#hn|Smith#$800 ~#Royals oaks| Monrovia |CA| 910~#116 $Highland Ave| Duarte|CA |91010 #$ phone-company1|~$ 626-626~$-1234$ phone-~|company1| 626-626~~~|-1235
+4|123~$456|bock~|-id|Jo~#hn|Smith
+5|123456|bock-id|John|Smith
+6|123456|bock-id|John|Smith#$800 Royals~
+7| oaks| Monrovia |CA| 910116 $Highland Ave| Duarte|CA |91010 #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
+8|123~$456||Jo~#hn|Smith
+9|123456||John|Smith#$800 Royals oaks| Monrovia |CA| 910116 $Highland Ave||CA |91010 #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
+10|123~$456|bock~|-id|Jo~#hn|Smith#$800 ~#Royals oaks| Monrovia |CA|$Highland Ave| Duarte|CA |91010 #$ phone-company1|~$ 626-626~$-1234$ phone-~|company1| 626-626~~~|-1235
+11|123~$456|bock~|-id|Jo~#hn|Smith#$800 ~#Royals oaks|null|null|null$Highland Ave| Duarte|CA |91010 #$ phone-company1|~$ 626-626~$-1234$ phone-~|company1| 626-626~~~|-1235
+12| oaks| Monrovia |CA| 910116 ~$Highland Ave| Duarte|CA |91010 #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
+13|123~$456||Jo~#hn|Smith
+14|123456||John|Smith#$800 Royals oaks| Monrovia |CA| 910116 $Highland Ave||CA |91010 #$ phone-company1|626-626-1234$ phone-company1|626-626-1235
+15|123~$456|bock~|-id|Jo~#hn|Smith#$800 ~#Royals oaks| Monrovia |CA|$Highland Ave| Duarte|CA |91010 #$ phone-company1|~$ 626-626~$-1234$ phone-~|company1| 626-626~~~|-1235
+16|123~$456|bock~|-id|Jo~#hn|Smith#$800 ~#Royals oaks|null|null|null$Highland Ave| Duarte|CA |91010 #$ phone-company1|~$ 626-626~$-1234$ phone-~|company1| 626-626~~~|-1235
+99|123~$456|bock~|-id|Jo~#hn|Smith#$800 ~#Royals oaks| Monrovia |CA|$Highland Ave| Duarte|CA |91010 #$ phone-company1|~$ 626-626~$-1234$ phone-~|company1| 626-626~~~|-1235
+100|123~$456|bock~|-id|Jo~#hn|Smith#$800 ~#Royals oaks|null|null|null$Highland Ave| Duarte|CA |91010 #$ phone-company1|~$ 626-626~$-1234$ phone-~|company1| 626-626~~~|-1235
