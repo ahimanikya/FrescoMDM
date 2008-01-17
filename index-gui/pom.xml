@@ -149,7 +149,11 @@
                                 <available file="${install.dir}" type="dir" property="install.dir.present"></available>
                                 <if>
                                     <isset property="install.dir.present"></isset>
-                                    <then> 
+                                    <then>
+                                        <delete file="${project.build.directory}/nbm/netbeans/soa1/update_tracking/com-sun-mdm-index-project.xml"/>
+                                        <delete file="${project.build.directory}/nbm/netbeans/soa1/config/Modules/com-sun-mdm-index-project.xml"/>
+                                        <delete file="${project.build.directory}/nbm/netbeans/soa1/modules/com-sun-mdm-index-project.jar"/>
+                                        <delete dir="${project.build.directory}/nbm/netbeans/soa1/modules/ext/eview"/>
                                         <copy todir="${install.dir}">
                                             <fileset dir="${project.build.directory}/nbm/netbeans">
                                                 <exclude name="module_tracking.xml"></exclude>                
