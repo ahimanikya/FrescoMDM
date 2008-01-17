@@ -464,6 +464,9 @@ public class EviewApplication extends EviewProject {
     public StandardizationIntrospector getStandardizationIntrospector() throws Exception {
         if (mStandardizationIntrospector == null) {
             mStandardizationIntrospector = ClassUtils.loadDefaultService(StandardizationIntrospector.class);           
+
+            FileObject standardizationEngineFolder = mHelper.getProjectDirectory().getFileObject("src/StandardizationEngine");
+            mStandardizationIntrospector.setRepositoryDirectory(FileUtil.toFile(standardizationEngineFolder));
         }
         return mStandardizationIntrospector;
     }
