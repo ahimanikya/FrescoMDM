@@ -96,7 +96,7 @@ public class PotDupGenerator {
 		list.add(weight);
 		list.add("");
 		list.add("");
-		list.add("");
+		list.add("U");
 		list.add("");
 		list.add("");
 		list.add("");
