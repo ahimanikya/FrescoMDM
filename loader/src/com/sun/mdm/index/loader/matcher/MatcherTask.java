@@ -50,7 +50,7 @@ import com.sun.mdm.index.loader.blocker.BlockDistributor;
     Many concurrent threads matches different portion of same bucket at a given time.
     The MatchRecords from the matcherTask are output to the passed TreeMap.
    
- * @author sdua
+ * @author Swaranjit Dua
  *
  */
    public class MatcherTask implements Runnable {
@@ -62,10 +62,13 @@ import com.sun.mdm.index.loader.blocker.BlockDistributor;
 	private Bucket.MatchCursor matchCursor_;
 	private CountDownLatch endGate_;
 	private SbmeMatcher matchEngine_ ;
+	//private NewMatcher matchEngine_;
 	private static Logger logger = Logger.getLogger(MatcherTask.class
 			.getName());
 	private WeightAnalyzer matchAnalyzer_;
 	private boolean isSBR_;
+	private static int DUPSCORE = 999999;
+	public static final String SDUPSCORE = "999999";
 	
 	MatcherTask(TreeMap<MatchRecord,MatchRecord> map, 
 			Bucket.MatchCursor cursor, String[] paths, String[] matchTypes, 
@@ -77,6 +80,7 @@ import com.sun.mdm.index.loader.blocker.BlockDistributor;
 		matchTree_ = map;
 		matchCursor_ = cursor;
 		endGate_ = endGate;
+		//matchEngine_ = new NewMatcher(tupleCursor_.matchFieldIDs_);
 		matchEngine_ = new SbmeMatcher(tupleCursor_.matchFieldIDs_);
 	    isSBR_ = isSBR;
 	}
@@ -136,7 +140,7 @@ import com.sun.mdm.index.loader.blocker.BlockDistributor;
 	    	double score = matchThreshold_;
 	    	
 	    	if (BlockDistributor.isSystemBlock(blockid) && !isSBR_) {
-	    		score = 999999;
+	    		score = DUPSCORE;
 	    		MatchRecord record = new MatchGIDRecord(gid1, gid2, score);
 	    		matchTree_.put(record, record);
 	    		record = new MatchGIDRecord(gid2, gid1, score);
@@ -599,6 +603,24 @@ import com.sun.mdm.index.loader.blocker.BlockDistributor;
 			 
 		  }
 	   }	   	
+	}
+	
+	public static void main(String[] args) {
+		try {
+		
+		String[] matchFields = {"FirstName", "LastName", "SSN", "DOB", "Gender"};
+		
+		NewMatcher matchEngine = new NewMatcher(matchFields);
+		String[] rec1 = {"Swaranjit", "dua", "11111", "12/12/2008", "M"};
+		String[] rec2 = {"Swaranjit", "dua", "11111", "12/12/2008", "M"};
+		double score = matchEngine.compareRecords(rec1, rec2);
+		System.out.println(score);
+		
+		
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			
+		}
 	}
 			
 }
