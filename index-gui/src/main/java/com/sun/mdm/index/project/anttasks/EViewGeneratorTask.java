@@ -250,7 +250,7 @@ public class EViewGeneratorTask extends Task {
 		
         File repositoryLocation = new File(projPath + File.separator + 
                 EviewProjectProperties.EVIEW_GENERATED_FOLDER + 
-                File.separator + "resource");
+                File.separator + "resource" + File.separator + REPOSITORY_LOCATION);
         
         File repositoryImageZip = new File(repositoryLocation, REPOSITORY_RESOURCE_NAME);
         introspector.takeSnapshot(repositoryImageZip);
