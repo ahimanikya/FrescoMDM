@@ -742,4 +742,4 @@ if [ $DOEMAIL -eq 1 ]; then
 fi
 
 cleanup
-exit $status
+exit $RUNBUILD_STATUS
