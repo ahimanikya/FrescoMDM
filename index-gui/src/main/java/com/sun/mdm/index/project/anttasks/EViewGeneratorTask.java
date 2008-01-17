@@ -73,7 +73,7 @@ import com.sun.mdm.index.project.generator.outbound.OutboundXSDBuilder;
 import com.sun.mdm.index.project.generator.persistence.DDLWriter;
 import com.sun.mdm.standardizer.introspector.StandardizationIntrospector;
 import com.sun.inti.components.util.ClassUtils;
-import com.sun.inti.components.util.IOUtils;
+import java.util.Properties;
 import org.apache.tools.ant.taskdefs.Javac;
 import org.apache.tools.ant.taskdefs.Move;
 import org.apache.tools.ant.types.Path;
@@ -85,7 +85,11 @@ public class EViewGeneratorTask extends Task {
     private File mWardir;
     private File mTemplateDir;
     private boolean mForce=false;
-
+    private static final String REPOSITORY_LOCATION = "com/sun/mdm/standardizer"; 
+    private static final String REPOSITORY_RESOURCE_NAME = "repositoryImage.zip"; 
+    private static final String PROPERTIES_RESOURCE_NAME = "standardizationEngine.properties";
+    private static final String REPOSITORY_NAME_PROPERTY = "repositoryName";     
+    
     public void setSrcdir(File srcdir) {
         this.mSrcdir =  srcdir;
     }
@@ -240,30 +244,22 @@ public class EViewGeneratorTask extends Task {
         copy.setLocation(getLocation());
         copy.execute();
 
-        //copy standardization file 
-        //need to remove           
-        destDir = new File(projPath + File.separator + 
-                EviewProjectProperties.EVIEW_GENERATED_FOLDER +
-                File.separator + "resource" + File.separator + "stand" );
-        String modulePath = getProject().getProperty("module.install.dir");
-        srcDir= new File(modulePath + "/ext/eview/repository/templates/stand");
-        srcfileSet = new FileSet(); 
-        srcfileSet.setDir(srcDir);
-        copy = (Copy) getProject().createTask("copy");
-        copy.setTodir(destDir);
-        copy.addFileset(srcfileSet);
-        copy.init();
-        copy.setLocation(getLocation());
-        copy.execute();
-        
         StandardizationIntrospector introspector = ClassUtils.loadDefaultService(StandardizationIntrospector.class);
         File repositoryDirectory = new File(mSrcdir, EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER);
         introspector.setRepositoryDirectory(repositoryDirectory);
 		
-        File resourceDirectory = new File(projPath + File.separator + 
+        File repositoryLocation = new File(projPath + File.separator + 
                 EviewProjectProperties.EVIEW_GENERATED_FOLDER + 
                 File.separator + "resource");
-        introspector.takeSnapshot(resourceDirectory);
+        
+        File repositoryImageZip = new File(repositoryLocation, REPOSITORY_RESOURCE_NAME);
+        introspector.takeSnapshot(repositoryImageZip);
+        
+        Properties properties = new Properties();
+        synchronized (this) {
+            properties.setProperty(REPOSITORY_NAME_PROPERTY, "repository" + System.currentTimeMillis());
+        }
+        properties.store(new FileOutputStream(new File(repositoryLocation, PROPERTIES_RESOURCE_NAME)), "Generated");
 
         //copy match engine file  
         destDir = new File(projPath + File.separator + EviewProjectProperties.EVIEW_GENERATED_FOLDER +

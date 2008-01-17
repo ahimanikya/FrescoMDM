@@ -34,14 +34,12 @@ import org.openide.DialogDisplayer;
 import com.sun.mdm.index.parser.MatchFieldDef;
 import com.sun.mdm.index.parser.MatchFieldDef.FreeFormGroup;
 import com.sun.mdm.index.parser.MatchFieldDef.LocaleCode;
-import com.sun.mdm.index.project.ui.wizards.generator.ConfigGenerator;
-import com.sun.mdm.index.project.ui.wizards.generator.MatchType;
 import com.sun.mdm.index.project.ui.applicationeditor.EntityTreeSelectionDialog;
 import com.sun.mdm.index.project.ui.applicationeditor.EntityTree;
 import com.sun.mdm.index.project.EviewApplication;
-import com.sun.mdm.standardizer.StandardizerIntrospector;
-import com.sun.mdm.standardizer.DataTypeDescriptor;
-import com.sun.mdm.standardizer.VariantDescriptor;
+import com.sun.mdm.standardizer.introspector.StandardizationIntrospector;
+import com.sun.mdm.standardizer.introspector.DataTypeDescriptor;
+import com.sun.mdm.standardizer.introspector.VariantDescriptor;
 
 public class StandardizationTypeAddDialog extends javax.swing.JDialog {
     private static final java.util.logging.Logger mLog = java.util.logging.Logger.getLogger(
@@ -752,9 +750,9 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
     
     private void loadSupportedVariants(String dataType) {
         try {
-            StandardizerIntrospector introspector = mEviewApplication.getStandardizerIntrospector();
+            StandardizationIntrospector introspector = mEviewApplication.getStandardizationIntrospector();
             DataTypeDescriptor dataTypeDescriptor = introspector.getDataType(dataType);
-            VariantDescriptor[] variantDescriptors = dataTypeDescriptor.variants();
+            VariantDescriptor[] variantDescriptors = dataTypeDescriptor.getVariants();
             for (VariantDescriptor variantDescriptor: variantDescriptors) {
                 mAlSupportedVariants.add(variantDescriptor.getName());
             }

@@ -25,6 +25,7 @@ package com.sun.mdm.index.project.ui.applicationeditor;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.awt.Cursor;
 
 import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
@@ -156,14 +157,16 @@ public class EviewEditorMainApp {
             String path = mEviewApplication.getProjectDirectory().getName();
 
             mObjectTopComponent = new ObjectTopComponent();
+            mObjectTopComponent.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             mEviewApplication.setObjectTopComponent(mObjectTopComponent);
             if (mObjectTopComponent.startEviewTopComponent(getInstance(path), path, application)) {
                 mObjectTopComponent.open();
             }
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
+        } finally {
+            mObjectTopComponent.setCursor(Cursor.getDefaultCursor());
         }
-
     }
 
     /**

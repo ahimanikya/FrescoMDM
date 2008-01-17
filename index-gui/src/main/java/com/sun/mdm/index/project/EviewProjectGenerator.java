@@ -237,9 +237,7 @@ public class EviewProjectGenerator {
             try {
                 FileObject repImage = repository.getInstalledFile(EviewProjectProperties.STAND_REPOSITORY_ZIP);
                 IOUtils.extract(new ZipFile(repImage.getPath()), FileUtil.toFile(standardizationEngineFolder));
-                
                 StandardizationIntrospector introspector = eviewApplication.getStandardizationIntrospector();
-                introspector.setRepositoryDirectory(FileUtil.toFile(standardizationEngineFolder));
             } catch (Exception ex) {
                 throw new IOException(ex.toString());
             }
