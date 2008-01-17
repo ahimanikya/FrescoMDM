@@ -78,6 +78,14 @@ public class PotDupGenerator {
 		
 		String potdupId = com.sun.mdm.index.idgen.CUIDManager.getNextUID(con_,
         "POTENTIALDUPLICATE");
+		
+		int index1 = euid1.indexOf(":TRANS:");
+		int index2 = euid2.indexOf(":TRANS:");
+		
+		
+		String e1 = euid1.substring(0,index1);
+		String e2 = euid2.substring(0,index2);
+		String trans = euid2.substring(index2+7);
 				
 		//"POTENTIALDUPLICATEID",
 		//"WEIGHT", "TYPE", "DESCRIPTION", "STATUS", "HIGHMATCHFLAG",
@@ -93,9 +101,9 @@ public class PotDupGenerator {
 		list.add("");
 		list.add("");
 		list.add("");
-		list.add(euid2);
-		list.add("loader");
-		list.add(euid1);
+		list.add(e2);
+		list.add(trans);
+		list.add(e1);
 		MasterImageWriter.write(bwriter_, list);
 	}			 	 	
 }
