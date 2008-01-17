@@ -57,6 +57,7 @@ import com.sun.mdm.index.loader.common.ObjectNodeUtil;
 import com.sun.mdm.index.loader.config.LoaderConfig;
 import com.sun.mdm.index.matching.Standardizer;
 import com.sun.mdm.index.matching.StandardizerFactory;
+import com.sun.mdm.index.loader.matcher.MatcherTask;
 
 import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 
@@ -130,7 +131,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 			  String syslocalid = d.getFieldValue(2) + d.getFieldValue(3);
 			  String weight = d.getFieldValue(4); // weight is at position 5 in EUID bucket
 			  String wt = weightMap.get(syslocalid);			  
-			  if (wt == null && !weight.equals("999999")) {
+			  if (wt == null && !weight.equals(MatcherTask.SDUPSCORE)) {
 				weightMap.put(syslocalid, weight);  
 			  }			 
 		    }
@@ -201,7 +202,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		    i++; // weights List has a weight corresponding to each system object
 		}	
 		SBR sbr = eo.getSBR();
-		addSBR(euid, sbr);
+		addSBR(euid, sbr, transnum);
 	}
 	
 	private void addEnterpriseTable(String euid, String localid, String syscode) {
@@ -396,20 +397,20 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		//addPrimaryTable(so, list, tag, false);
 	}
 	
-	private void addSBR(String euid, SBR sbr) throws Exception {
+	private void addSBR(String euid, SBR sbr, String transnum) throws Exception {
 		ObjectNode primaryO = sbr.getObject();		
 		String tag = primaryO.pGetTag();
 		addSBRTable(sbr, euid, tag);
-		writeSBR(primaryO, euid);
+		writeSBRPot(primaryO, euid, transnum); 
 		List<String> list = new ArrayList<String>();
 		list.add(euid);
 		addConfigTableData(objDef_, sbr.getObject(), list, null, true);
-		//addPrimaryTable(sbr, list, tag, true);
+		
 	}
 	
-	private void writeSBR(ObjectNode primarySBR, String euid) throws Exception {
+	private void writeSBRPot(ObjectNode primarySBR, String euid, String transnum) throws Exception {
 		DataObject data = ObjectNodeUtil.fromObjectNode(primarySBR);
-		data.add(0, euid);  // add back EUID, that is not in data Object returned
+		data.add(0, euid+":TRANS:" + transnum );  // add back EUID, that is not in data Object returned
 		// from Util.fromObjectNode
 		//deleteChildIDs(data);
 		addData(POTENTIALDUPLICATES, data);
