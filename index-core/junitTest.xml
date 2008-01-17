@@ -122,7 +122,7 @@
         
         <move file="${build.test.classes.dir}/mefa.xml" tofile="${build.test.classes.dir}/mefa.xml.bak"/>
         <copy file="${test.src.dir}/../config/mefa1.xml" tofile="${build.test.classes.dir}/mefa.xml" overwrite="true"/>
-        <junit printsummary="yes" haltonfailure="no" failureProperty="test.failure" >
+        <junit maxmemory="1024m" printsummary="yes" haltonfailure="no" failureProperty="test.failure" >
             <classpath>
                 <pathelement path="${run.test.classpath}"/>
             </classpath>
@@ -138,7 +138,7 @@
         
         <move file="${build.test.classes.dir}/query.xml" tofile="${build.test.classes.dir}/query.xml.bak"/>
         <copy file="${test.src.dir}/../config/query1.xml" tofile="${build.test.classes.dir}/query.xml" overwrite="true"/>
-        <junit printsummary="yes" haltonfailure="no" failureProperty="test.failure">
+        <junit maxmemory="1024m" printsummary="yes" haltonfailure="no" failureProperty="test.failure">
             <classpath>
                 <pathelement path="${run.test.classpath}"/>
             </classpath>
