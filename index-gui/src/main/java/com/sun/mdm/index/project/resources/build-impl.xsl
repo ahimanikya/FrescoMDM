@@ -264,15 +264,9 @@ is divided into following sections:
                 <copy todir="cleanser-generated/cleanser">
                     <fileset dir="${{module.install.dir}}/ext/eview/dataanalysis/cleanser"/>
                 </copy>
-                
-                <jar destfile="cleanser-generated/cleanser/lib/resource.jar" basedir="files-generated/resource"/>
-                
+                <jar destfile="cleanser-generated/cleanser/lib/resources.jar" basedir="files-generated/resource"/>
                 <copy file="files-generated/resource/object.xml" todir="cleanser-generated/cleanser"/>
-                <copy todir="cleanser-generated/cleanser">
-                    <fileset dir="${{ejb.dir}}/dist">
-                        <include name="*.jar"/>
-                    </fileset>
-                </copy>
+                <copy file="lib/master-index-client.jar" todir="cleanser-generated/cleanser/lib"/>
                 
                 <zip destfile="cleanser-generated/cleanser.zip" basedir="cleanser-generated" excludes="cleanser.zip"/>
                 <delete dir="cleanser-generated/cleanser"/>
@@ -286,11 +280,7 @@ is divided into following sections:
                 </copy>
                 
                 <copy file="files-generated/resource/object.xml" todir="profiler-generated/profiler"/>
-                <copy todir="profiler-generated/profiler">
-                    <fileset dir="${{ejb.dir}}/dist">
-                        <include name="*.jar"/>
-                    </fileset>
-                </copy>
+                <copy file="lib/master-index-client.jar" todir="profiler-generated/profiler/lib"/>
                 <zip destfile="profiler-generated/profiler.zip" basedir="profiler-generated" excludes="profiler.zip"/>
                 <delete dir="profiler-generated/profiler"/>
             </target>
