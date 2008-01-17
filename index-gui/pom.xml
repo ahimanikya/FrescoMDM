@@ -75,7 +75,7 @@
                                         <include name="EviewApplicationTemplateProject.zip"></include>
                                     </fileset>
                                     <fileset dir="${basedir}/../index-core/src/main/resources/matchengine/config/runtime">
-                                        <exclude name="match/**"/>
+                                        <exclude name="match/**"></exclude>
                                     </fileset>
                                 </copy>
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/schema">
@@ -108,12 +108,9 @@
                                         <include name="net.java.hulp.i18ntask.jar"></include>                 
                                     </fileset>                                    
                                 </copy>
-                                <copy file="${settings.localRepository}/mural/matcher/1.0/matcher-1.0.jar" 
-                                    tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/matcher.jar"/>
-                                <copy file="${settings.localRepository}/org/apache/lucene/lucene-core/2.2.0/lucene-core-2.2.0.jar"
-                                    tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/lucene-core.jar"/>
-                                <unzip src="${settings.localRepository}/mural/matcher-resources/1.0/matcher-resources-1.0.jar" 
-                                    dest="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates"/>
+                                <copy file="${settings.localRepository}/mural/matcher/1.0/matcher-1.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/matcher.jar"></copy>
+                                <copy file="${settings.localRepository}/org/apache/lucene/lucene-core/2.2.0/lucene-core-2.2.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/lucene-core.jar"></copy>
+                                <unzip src="${settings.localRepository}/mural/matcher-resources/1.0/matcher-resources-1.0.jar" dest="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates"></unzip>
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/standardizer">
                                     <fileset dir="${basedir}/../index-core/src/main/resources/matchengine/standardizer"></fileset>   
                                 </copy>                                    
@@ -127,12 +124,12 @@
                                 </copy>
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/loader">
                                     <fileset dir="${basedir}/../loader/lib">
-    		                    		<exclude name="index-core.jar" />
-    		                    		<exclude name="stc_sbme.jar" />
-    		                    		<exclude name="ojdbc14.jar" />
+    		                    		<exclude name="index-core.jar"></exclude>
+    		                    		<exclude name="stc_sbme.jar"></exclude>
+    		                    		<exclude name="ojdbc14.jar"></exclude>
                                     </fileset>
                                     <fileset dir="${basedir}/../loader/target">
-                                        <include name="loader.jar" />
+                                        <include name="loader.jar"></include>
                                     </fileset>
                                 </copy>
                             </tasks>          
@@ -196,7 +193,27 @@
         </dependency>
         <dependency>
             <groupId>mural</groupId>
-            <artifactId>mdm-standardizer</artifactId>
+            <artifactId>standardizer-api</artifactId>
+            <version>${mural.currentVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>mural</groupId>
+            <artifactId>standardizer-impl</artifactId>
+            <version>${mural.currentVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>mural</groupId>
+            <artifactId>inti-components</artifactId>
+            <version>${mural.currentVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>mural</groupId>
+            <artifactId>inti-container-api</artifactId>
+            <version>${mural.currentVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>mural</groupId>
+            <artifactId>inti-container-impl</artifactId>
             <version>${mural.currentVersion}</version>
         </dependency>
         <dependency>
