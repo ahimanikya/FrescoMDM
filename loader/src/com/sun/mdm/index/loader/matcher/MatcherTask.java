@@ -610,11 +610,11 @@ import com.sun.mdm.index.loader.blocker.BlockDistributor;
 		
 		String[] matchFields = {"FirstName", "LastName", "SSN", "DOB", "Gender"};
 		
-		NewMatcher matchEngine = new NewMatcher(matchFields);
-		String[] rec1 = {"Swaranjit", "dua", "11111", "12/12/2008", "M"};
-		String[] rec2 = {"Swaranjit", "dua", "11111", "12/12/2008", "M"};
-		double score = matchEngine.compareRecords(rec1, rec2);
-		System.out.println(score);
+//		NewMatcher matchEngine = new NewMatcher(matchFields);
+//		String[] rec1 = {"Swaranjit", "dua", "11111", "12/12/2008", "M"};
+//		String[] rec2 = {"Swaranjit", "dua", "11111", "12/12/2008", "M"};
+//		double score = matchEngine.compareRecords(rec1, rec2);
+//		System.out.println(score);
 		
 		
 		} catch (Exception ex) {
