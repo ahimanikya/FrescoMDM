@@ -39,7 +39,7 @@ import com.sun.mdm.index.util.CodeGeneratorUtil;
 class ObjectNodeDBWriter {
     private TemplateWriter mTW = null;
     private TemplateWriter mSBRTW = null;
-    private final String mPackage = "\\com\\sun\\mdm\\index\\ops";
+    private final String mPackage = "/com/sun/mdm/index/ops";
     private ArrayList mFieldNames;
     private ArrayList mFieldTypes;
     private String mName;
@@ -61,7 +61,7 @@ class ObjectNodeDBWriter {
                               ArrayList seclist) {
         try {
             if (pname.equals("")) {
-                mTW = new TemplateWriter("com/sun/mdm/index/project/generator/ops/ObjectNodeRootDB.java.tmpl");
+                    mTW = new TemplateWriter("com/sun/mdm/index/project/generator/ops/ObjectNodeRootDB.java.tmpl");
                 mSBRTW = new TemplateWriter("com/sun/mdm/index/project/generator/ops/ObjectNodeRootSBRDB.java.tmpl");
             } else if (null != seclist) {
                 mTW = new TemplateWriter("com/sun/mdm/index/project/generator/ops/ObjectNodeDB.java.tmpl");
@@ -102,7 +102,7 @@ class ObjectNodeDBWriter {
             String res = mTW.writeConstruct((String) cons.get(0), values);
             RandomAccessFile foutput 
                 = new RandomAccessFile(mPath 
-                                       + "\\" 
+                                       + "/" 
                                        + CodeGeneratorUtil.makeClassName(mName) 
                                        + "DB.java", "rw");
             foutput.write(res.getBytes());
@@ -123,7 +123,7 @@ class ObjectNodeDBWriter {
             res = mSBRTW.writeConstruct((String) cons.get(0), values);
             RandomAccessFile sbrfoutput 
                 = new RandomAccessFile(mPath 
-                                       + "\\" 
+                                       + "/" 
                                        + CodeGeneratorUtil.makeClassName(mName) 
                                        + "SBRDB.java", "rw");
             sbrfoutput.write(res.getBytes());

@@ -38,7 +38,7 @@ import com.sun.mdm.index.parser.ParserException;
  */
 class EnterpriseObjectWriter {
     private TemplateWriter mTW = null;
-    private final String mPackage = "\\com\\sun\\mdm\\index\\webservice";
+    private final String mPackage = "/com/sun/mdm/index/webservice";
     private String mName;
     private String mPath;
 
@@ -75,7 +75,7 @@ class EnterpriseObjectWriter {
              
             String res = mTW.writeConstruct((String) cons.get(0), values);
             RandomAccessFile foutput 
-            = new RandomAccessFile(mPath + "\\" + "Enterprise" + mName + ".java", "rw");
+            = new RandomAccessFile(mPath + "/" + "Enterprise" + mName + ".java", "rw");
             foutput.write(res.getBytes());
             foutput.close();
         } catch (TemplateWriterException e) {

@@ -37,7 +37,7 @@ import com.sun.mdm.index.parser.ParserException;
  */
 class SourceEOWriter {
     private TemplateWriter mTW = null;
-    private final String mPackage = "\\com\\sun\\mdm\\index\\webservice";
+    private final String mPackage = "/com/sun/mdm/index/webservice";
     private String mName;
     private String mPath;
 
@@ -74,7 +74,7 @@ class SourceEOWriter {
              
             String res = mTW.writeConstruct((String) cons.get(0), values);
             RandomAccessFile foutput 
-            = new RandomAccessFile(mPath + "\\" + "SourceEO.java", "rw");
+            = new RandomAccessFile(mPath + "/" + "SourceEO.java", "rw");
             foutput.write(res.getBytes());
             foutput.close();
         } catch (TemplateWriterException e) {

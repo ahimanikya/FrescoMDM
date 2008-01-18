@@ -39,7 +39,7 @@ import com.sun.mdm.index.util.CodeGeneratorUtil;
  */
 class ObjectBeanWriter {
     private TemplateWriter mTW = null;
-    private final String mPackage = "\\com\\sun\\mdm\\index\\webservice";
+    private final String mPackage = "/com/sun/mdm/index/webservice";
     private ArrayList mFieldNames;
     private ArrayList mFieldTypes;
     private ArrayList mSecList;
@@ -97,7 +97,7 @@ class ObjectBeanWriter {
 
             String res = mTW.writeConstruct((String) cons.get(0), values);
             RandomAccessFile foutput 
-            = new RandomAccessFile(mPath + "\\" + CodeGeneratorUtil.makeClassName(mName) + "Bean.java", "rw");
+            = new RandomAccessFile(mPath + "/" + CodeGeneratorUtil.makeClassName(mName) + "Bean.java", "rw");
             foutput.write(res.getBytes());
             foutput.close();
         } catch (TemplateWriterException e) {

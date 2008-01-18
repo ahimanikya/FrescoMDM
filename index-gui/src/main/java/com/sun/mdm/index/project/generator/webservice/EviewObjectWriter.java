@@ -39,7 +39,7 @@ import com.sun.mdm.index.util.CodeGeneratorUtil;
  */
 class EviewObjectWriter {
     private TemplateWriter mTW = null;
-    private final String mPackage = "\\com\\sun\\mdm\\index\\webservice";
+    private final String mPackage = "/com/sun/mdm/index/webservice";
     private String mName;
     private String mPath;
 
@@ -77,7 +77,7 @@ class EviewObjectWriter {
              
             String res = mTW.writeConstruct((String) cons.get(0), values);
             RandomAccessFile foutput 
-            = new RandomAccessFile(mPath + "\\" + CodeGeneratorUtil.makeClassName(mName) + "EJB.java", "rw");
+            = new RandomAccessFile(mPath + "/" + CodeGeneratorUtil.makeClassName(mName) + "EJB.java", "rw");
             foutput.write(res.getBytes());
             foutput.close();
         } catch (TemplateWriterException e) {

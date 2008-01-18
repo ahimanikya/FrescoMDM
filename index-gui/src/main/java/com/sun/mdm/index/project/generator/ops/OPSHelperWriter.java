@@ -36,7 +36,7 @@ import com.sun.mdm.index.parser.ParserException;
  */
 class OPSHelperWriter {
     private TemplateWriter mTW = null;
-    private final String mPackage = "\\com\\sun\\mdm\\index\\ops";
+    private final String mPackage = "/com/sun/mdm/index/ops";
     private String mPath;
     private ArrayList mNodeList;
 
@@ -75,7 +75,7 @@ class OPSHelperWriter {
             String res = mTW.writeConstruct((String) cons.get(0), values);
             RandomAccessFile foutput 
                 = new RandomAccessFile(mPath 
-                                       + "\\OPSInitHelper.java", "rw");
+                                       + "/OPSInitHelper.java", "rw");
             foutput.write(res.getBytes());
             foutput.close();
         } catch (TemplateWriterException e) {
