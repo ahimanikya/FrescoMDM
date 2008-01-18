@@ -165,13 +165,13 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
     }
     
     private static ComparatorsConfigBean getComparatorsConfigBean() {
-        if (mComparatorsManager == null) {
+        //if (mComparatorsManager == null) {
            try {
             mComparatorsManager = new ComparatorsManager(mCoparatorListPath);
             } catch (Exception ex) {
                 mLogger.error(ex.getMessage());
             }
-        }
+        //}
         ComparatorsConfigBean instance = mComparatorsManager.getComparatorsConfigBean();
         return instance;
     }
@@ -201,8 +201,8 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
     
     private static void createDefaultExtraParameters() {
         try {
-            ComparatorsManager comparatorsManager = new ComparatorsManager(mCoparatorListPath);
-            ComparatorsConfigBean instance = comparatorsManager.getComparatorsConfigBean();
+            //ComparatorsManager comparatorsManager = new ComparatorsManager(mCoparatorListPath);
+            //ComparatorsConfigBean instance = comparatorsManager.getComparatorsConfigBean();
             //mMapRequiredExtraParameters = instance.getCodeNamesDesc();
         } catch (Exception ex) {
             mLogger.error(ex.getMessage());
@@ -264,9 +264,9 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
      */
     public static ArrayList getFunctions(String coparatorListPath) {
         mCoparatorListPath = coparatorListPath;
-        if (mAlFunctions == null) {
+        //if (mAlFunctions == null) {
             buildFunctions();
-        }
+        //}
         return mAlFunctions;
     }
     
@@ -275,9 +275,9 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
      */
 
     public static ArrayList getFunctionsDesc() {
-        if (mAlFunctionsDesc == null) {
+        //if (mAlFunctionsDesc == null) {
             buildFunctions();
-        }
+        //}
         return mAlFunctionsDesc;
     }
     
