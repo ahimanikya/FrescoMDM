@@ -225,9 +225,7 @@ public class SurvivorCalculator implements java.io.Serializable {
                             String strData = new String();
                             boolean isLink = false;
                             if (data instanceof String){
-                                strData = (String) data;
-                                if(strData.charAt(0)=='[' && strData.charAt( strData.length() -1 ) == ']')
-                                    isLink = true;
+                                isLink = isLink(strData); 
                             }
                             if(isLink == false){
                             EPathAPI.addObjectValue(EPathParser.parse(path), sbrObj, data);
