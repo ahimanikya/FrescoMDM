@@ -1548,7 +1548,7 @@ public class UpdateManagerImpl implements UpdateManager {
                 // the SBR with the values in the system object.  However, because 
                 // they are unkeyed, it cannot update them (it cannot locate them) and 
                 // will append them instead.  This will lead to duplicate  unkeyed objects.  
-                // curDestEO’s SBR records are in the database, so they need to be 
+                // curDestEO's SBR records are in the database, so they need to be 
                 // deleted (i.e. set the Remove flag to true).            
 
                 eliminateSBRUnkeyedChildObjects(curDestEO, true);
@@ -1632,7 +1632,7 @@ public class UpdateManagerImpl implements UpdateManager {
                 // the SBR with the values in the system object.  However, because 
                 // they are unkeyed, it cannot update them (it cannot locate them) and 
                 // will append them instead.  This will lead to duplicate  unkeyed objects.  
-                // curDestEO’s SBR records are in the database, so they need to be 
+                // curDestEOï¿½s SBR records are in the database, so they need to be 
                 // deleted (i.e. set the Remove flag to true).            
                 // If curSrcEO has been added, it was deactivated, such as in the 
                 // case where it had 1 SO, which was merge to another EO.  The record
@@ -1948,9 +1948,9 @@ public class UpdateManagerImpl implements UpdateManager {
             // the SBR with the values in the system object.  However, because 
             // they are unkeyed, it cannot update them (it cannot locate them) and 
             // will append them instead.  This will lead to duplicate  unkeyed objects.  
-            // newSrcEO’s SBR records are not in the database  because they were 
+            // newSrcEOï¿½s SBR records are not in the database  because they were 
             // constructed from the deltas.  Thus, they need to be removed.  
-            // curDestEO’s SBR records are in the database, so they need to be 
+            // curDestEOï¿½s SBR records are in the database, so they need to be 
             // deleted (i.e. set the Remove flag to true).            
             
             eliminateSBRUnkeyedChildObjects(curDestEO, true);
@@ -2155,14 +2155,16 @@ public class UpdateManagerImpl implements UpdateManager {
                 while( overWritesItr.hasNext() ){
                     SBROverWrite sbrOverWrite = (SBROverWrite) overWritesItr.next();               
                     Object fieldValue = sbrOverWrite.getData();
-                    if(fieldValue instanceof java.lang.String){
-                        String value = (String) fieldValue;
-                        if (value.charAt(0) == '[' && value.charAt( value.length()-1) == ']'){
-                            sbrOverWrite.setRemoveFlag(true);
-                            if (mLogger.isLoggable(Level.FINE)) {
-                                mLogger.fine("<<== removing override link info for : " + sbrOverWrite);
+                    if(fieldValue instanceof java.lang.String){                        
+                         String value = (String) fieldValue;
+                         if(value!=null && value.length()>0){
+                            if (value.charAt(0) == '[' && value.charAt( value.length()-1) == ']'){
+                                sbrOverWrite.setRemoveFlag(true);
+                                if (mLogger.isLoggable(Level.FINE)) {
+                                    mLogger.fine("<<== removing override link info for : " + sbrOverWrite);
+                                }
                             }
-                        }
+                         }
                     }
                 }
             }
@@ -2189,11 +2191,13 @@ public class UpdateManagerImpl implements UpdateManager {
                     Object fieldValue = sbrOverWrite.getData();
                     if(fieldValue instanceof java.lang.String){
                         String value = (String) fieldValue;
-                        if (value.charAt(0) == '[' && value.charAt( value.length()-1) == ']'){
-                            if ( value.equals(linkTobeRemoved) ){
-                                sbrOverWrite.setRemoveFlag(true);
-                                if (mLogger.isLoggable(Level.FINE)) {
-                                    mLogger.fine("<<== removing override link info for : " + sbrOverWrite);
+                        if(value!=null && value.length()>0){
+                            if (value.charAt(0) == '[' && value.charAt( value.length()-1) == ']'){
+                                if ( value.equals(linkTobeRemoved) ){
+                                    sbrOverWrite.setRemoveFlag(true);
+                                    if (mLogger.isLoggable(Level.FINE)) {
+                                        mLogger.fine("<<== removing override link info for : " + sbrOverWrite);
+                                    }
                                 }
                             }
                         }
