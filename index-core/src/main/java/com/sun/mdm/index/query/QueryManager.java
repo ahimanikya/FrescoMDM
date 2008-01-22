@@ -32,7 +32,7 @@ import java.sql.Connection;
  * uses the value object assembler specified in QueryObject to construct a
  * Query Manager iterator (class QMIterator). The iterator is used to iterate
  * through a collection of composite value objects. The composite value objects
- * are used by other eView components, such as the match engine and the Enterprise
+ * are used by other Master Index components, such as the match engine and the Enterprise
  * Data Manager.
  * <p>
  * The Query Manager operates in two modes, execution mode and assembling mode. In

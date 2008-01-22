@@ -717,9 +717,6 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
         }
 
         public Class getColumnClass(int c) {
-            if (c < 0) {
-                c = 0;
-            }
             return getValueAt(0, c).getClass();
         }
 

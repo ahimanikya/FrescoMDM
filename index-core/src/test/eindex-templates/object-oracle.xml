@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<eView xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="sbyn:SeeBeyond/eView/schema/eIndex.xsd">
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/eIndex.xsd">
 	<name>Person</name>
 	<database>oracle</database>
 	<dateformat>MM/dd/yyyy</dateformat>
@@ -894,4 +894,4 @@
 		<children>AuxId</children>
 		<children>Comment</children>
 	</relationships>
-</eView>
+</Configuration>

@@ -30,7 +30,7 @@ import com.stc.sbme.api.SbmeConfigFilesAccess;
 import com.stc.sbme.api.SbmeConfigurationException;
 
 /**
- * Class to provide the eView standardization engine with user configuration
+ * Class to provide the Master Index standardization engine with user configuration
  *
  * It allows the Standardization Engine access to the Configuration Service - and 
  * therefore the repository.
@@ -85,7 +85,7 @@ public class SbmeStandardizerAdapterConfig
     
 
     /**
-     * Inner class that implements the eView standardization engine interface
+     * Inner class that implements the Master Index standardization engine interface
      * giving access to the configuration files, e.g. stored in the repository
      */
     public static class CSConfigFileAccess implements SbmeConfigFilesAccess {

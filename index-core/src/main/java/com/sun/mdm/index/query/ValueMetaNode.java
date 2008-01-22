@@ -42,7 +42,7 @@ public abstract class ValueMetaNode {
      * Retrieves the method name to be used to add the parent node. This method
      * is optional and only needs to be used if the assembler engine is using
      * reflection to create objects. The name of the parent method is defined
-     * based on the object structure defined for the eView Project.
+     * based on the object structure defined for the Master Index Project.
      * <p>
      * <DL><DT><B>Parameters:</B><DD>None.</DL>
      * @return <CODE>String</CODE> - The parent method name.

@@ -69,7 +69,7 @@ public class ObjectNodeAssembler implements ResultObjectAssembler {
      * @param parent The parent object for the new object to be created (this
      * may be the same as the root object).
      * @param objectName The name of the object to be created, as defined in the
-     * Object Definition configuration file of the eView Project.
+     * Object Definition configuration file of the Master Index Project.
      * @param attrsData The attribute data associated with the object.
      * @return <CODE>Object</CODE> - An object containing the attributes.
      * @exception VOAException Thrown if an error occurs while creating

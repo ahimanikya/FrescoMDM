@@ -35,7 +35,7 @@ import org.w3c.dom.Node;
  * @version
  */
 public class EIndexObject {
-    private final String mTagEindexObject = "eView";
+    private final String mTagConfiguration = "Configuration";
     private final String mTagName = "name";
     private final String mTagDatabase = "database";
     private final String mTagAppServer = "appserver";
@@ -196,7 +196,7 @@ public class EIndexObject {
             }
 
             if (null != element
-                     && ((Element) element).getTagName().equals(mTagEindexObject)
+                     && ((Element) element).getTagName().equals(mTagConfiguration)
                      && element.hasChildNodes()) {
                 nl = element.getChildNodes();
                 for (int i = 0; i < nl.getLength(); i++) {
@@ -264,9 +264,9 @@ public class EIndexObject {
      */
     public String toString() {
         String ret = "";
-        ret += "(" + mTagEindexObject + ")" + mTagName + ": " + strName + ": \n";
+        ret += "(" + mTagConfiguration + ")" + mTagName + ": " + strName + ": \n";
         ret += "(" 
-               + mTagEindexObject 
+               + mTagConfiguration 
                + ")" 
                + mTagDatabase 
                + ": " 

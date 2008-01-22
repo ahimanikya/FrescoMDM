@@ -26,7 +26,7 @@ package com.sun.mdm.index.master;
 
 /**
  * The <b>EViewException</b> class is the base exception class for all
- * eView exceptions.
+ * Master Index exceptions.
  */
 public class EViewException extends Exception {
 

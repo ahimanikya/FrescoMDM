@@ -31,7 +31,7 @@ import com.sun.mdm.index.querybuilder.SearchOptions;
  * The <b>EOSearchOptions</b> class represents a specific sub-class of the
  * <b>SearchOptions</b> class, and is used by <b>searchEnterpriseObject</b>
  * as criteria for an enterprise object search. Methods in this class use
- * fully qualified field names (see <i>Creating a Master Index with eView Studio</i>
+ * fully qualified field names (see <i>Creating a Master Index with Master Index Studio</i>
  * for more information about field names).
  */
 public class EOSearchOptions extends SearchOptions {

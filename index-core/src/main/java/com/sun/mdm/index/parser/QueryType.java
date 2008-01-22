@@ -982,7 +982,7 @@ public class QueryType {
         
         buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + Utils.LINE);
         
-        buffer.append("<Configuration xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"sbyn:SeeBeyond/eView/schema/query.xsd\">" + Utils.LINE);
+        buffer.append("<Configuration xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"schema/query.xsd\">" + Utils.LINE);
         buffer.append(Utils.TAB + "<" + mTagQueryBuilderConfig);
         
         buffer.append(Utils.quoteAttribute(mTagModuleName, mQueryBuilderConfig.moduleName));

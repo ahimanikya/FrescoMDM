@@ -57,7 +57,7 @@ import java.util.Map;
 import javax.ejb.SessionContext;
 
 /**
- * The <b>MasterControllerCore</b> interface is the interface of the eView
+ * The <b>MasterControllerCore</b> interface is the interface of the Master Index
  * Manager Service, which controls the primary functions of the master index.
  * This includes the "execute match" functions, which are the primary functions
  * used when processing records into the master index database. It invokes the
@@ -98,7 +98,7 @@ public interface MasterControllerCore {
 
 	/**
 	 * <b>executeMatch</b> is one of four methods that process a system object
-	 * based on the configuration defined for the eView Manager Service and
+	 * based on the configuration defined for the Master Index Manager Service and
 	 * associated runtime components. This method searches for possible matches
 	 * in the database, and if it finds a match, it replaces the system object
 	 * (instead of updating the system object, which is what
@@ -132,7 +132,7 @@ public interface MasterControllerCore {
 
 	/**
 	 * <b>executeMatchDupRecalc</b> is one of four methods that process a
-	 * system object based on the configuration defined for the eView Manager
+	 * system object based on the configuration defined for the Master Index Manager
 	 * Service and associated runtime components. It is configured by the same
 	 * components as <b>executeMatch</b>, and is similar to <b>executeMatch</B>
 	 * but allows you to control whether potential duplicates are recalculated
@@ -176,7 +176,7 @@ public interface MasterControllerCore {
 	/**
 	 * <b>executeMatchGui</b> is identical to <b>executeMatch</b>, but it is
 	 * only called by the Enterprise Data Manager. It processes a system object
-	 * based on the configuration defined for the eView Manager Service and
+	 * based on the configuration defined for the Master Index Manager Service and
 	 * associated runtime components. This method searches for possible matches
 	 * in the database, and if it finds a match, it replaces the system object
 	 * (instead of updating the system object). The following runtime components
@@ -207,7 +207,7 @@ public interface MasterControllerCore {
 
 	/**
 	 * <b>executeMatchUpdate</b> is one of four methods that process a system
-	 * object based on the configuration defined for the eView Manager Service
+	 * object based on the configuration defined for the Master Index Manager Service
 	 * and associated runtime components. It is configured by the same
 	 * components as <b>executeMatch</b>. This method searches for possible
 	 * matches in the database, and if it finds a match, it updates the system
@@ -240,7 +240,7 @@ public interface MasterControllerCore {
 
 	/**
 	 * <b>executeMatchUpdateDupRecalc</b> is one of four methods that process a
-	 * system object based on the configuration defined for the eView Manager
+	 * system object based on the configuration defined for the Master Index Manager
 	 * Service and associated runtime components. It is configured by the same
 	 * components as <b>executeMatch</b>, and is similar to
 	 * <b>executeMatchUpdate</B> but allows you to control whether potential
@@ -1903,7 +1903,7 @@ public interface MasterControllerCore {
 	 * 
 	 * @param param
 	 *            The parameter name. These parameters are defined in the
-	 *            Threshold configuration file of the eView Project.
+	 *            Threshold configuration file of the Master Index Project.
 	 * @return <CODE>Object</CODE> - An object containing the value of the
 	 *         specified parameter.
 	 * @exception ProcessingException

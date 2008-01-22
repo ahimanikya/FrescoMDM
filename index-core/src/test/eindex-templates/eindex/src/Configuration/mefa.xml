@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by seebeyond (SeeBeyond) -->
-<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="sbyn:SeeBeyond/eView/schema/mefa.xsd">
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/mefa.xsd">
 	<StandardizationConfig module-name="Standardization" parser-class="com.sun.mdm.index.configurator.impl.standardization.StandardizationConfiguration">
 		<standardize-system-object>
 			<system-object-name>Person</system-object-name>

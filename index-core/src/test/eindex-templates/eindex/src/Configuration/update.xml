@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by seebeyond (SeeBeyond) -->
-<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="sbyn:SeeBeyond/eView/schema/update.xsd">
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/update.xsd">
 	<SurvivorHelperConfig module-name="SurvivorHelper" parser-class="com.sun.mdm.index.configurator.impl.SurvivorHelperConfig">
 		<helper-class>com.sun.mdm.index.survivor.impl.DefaultSurvivorHelper</helper-class>
 		<default-survivor-strategy>

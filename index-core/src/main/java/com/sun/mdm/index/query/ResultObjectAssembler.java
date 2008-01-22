@@ -90,7 +90,7 @@ public interface ResultObjectAssembler  {
      * @param parent The name of the parent object (this may be the same as the root
      * object).
      * @param objectName The name of the object, as defined in the Object Definition
-     * configuration file in the eView Project.
+     * configuration file in the Master Index Project.
      * @param attrsData - The attribute data associated with the object.
      * @return <CODE>Object</CODE> - An object containing the attributes.
      * @exception VOAException Thrown if an error occurs while creating the object

@@ -47,7 +47,7 @@ import java.sql.ResultSet;
  * You can query from multiple objects and set conditions on any object attributes.
  * The relationship between objects does not need to be specified by the client;
  * they are obtained internally and mapped by the Query Manager. Use the qualified
- * field name syntax to specify fields (see the eView Studio or eIndex Single Patient
+ * field name syntax to specify fields (see the Master Index Studio or eIndex Single Patient
  * Identifier User's Guide for more information about field
  * syntax conventions).
  * @author sdua

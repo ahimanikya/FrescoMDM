@@ -423,7 +423,7 @@ public class PotentialDuplicateSearchObject extends SearchOptions implements jav
      * of a potential duplicate search.
      * <p>
      * @param fieldsToRetrieve An array containing the ePaths to the fields
-     * to retrieve (see <i>Creating a Master Index with eView Studio</i>
+     * to retrieve (see <i>Creating a Master Index with Master Index Studio</i>
      * for more information about ePaths).
      * <DT><B>Returns:</B><DD> <CODE>void</CODE> - None.
      * <DT><B>Throws:</B><DD>None.
@@ -438,7 +438,7 @@ public class PotentialDuplicateSearchObject extends SearchOptions implements jav
      * of a potential duplicate search.
      * <p>
      * @param fieldsToSearch An array containing the ePaths to the fields
-     * that are used as the search criteria (see <i>Creating a Master Index with eView Studio</i>
+     * that are used as the search criteria (see <i>Creating a Master Index with Master Index Studio</i>
      * for more information about ePaths).
      * <DT><B>Returns:</B><DD> <CODE>void</CODE> - None.
      * <DT><B>Throws:</B><DD>None.

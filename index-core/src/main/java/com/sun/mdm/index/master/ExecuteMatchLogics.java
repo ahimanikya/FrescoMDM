@@ -28,7 +28,7 @@ import com.sun.mdm.index.objects.EnterpriseObject;
 /**
  * The <b>ExecuteMatchLogics</b> class provides methods that allow you to customize
  * how the matching process is performed by any of the "execute match" methods of the
- * <b>MasterController</b> class. To incorporate the custom methods in an eView or
+ * <b>MasterController</b> class. To incorporate the custom methods in an Master Index or
  * eIndex Project, create custom plug-ins for the Project. <b>executeMatch</b>
  * automatically checks the Threshold configuration file for the name of the custom
  * plug-ins that contain these custom processing methods. If no custom plug-ins are

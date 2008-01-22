@@ -31,7 +31,7 @@ package com.sun.mdm.index.query;
  * record (converted to a String). If a field is null in the database, the
  * corresponding array element is also null. The fields included in the String
  * array are the fields defined for matching in the Match Field file in the
- * eView Project.
+ * Master Index Project.
  *
  * @author SeeBeyond
  * @version $Revision: 1.1 $

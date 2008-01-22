@@ -685,7 +685,7 @@ public class UpdateType {
         
         // @Todo change this hardcoded code to elements retrieved during parsing
         buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + Utils.LINE);
-        buffer.append("<Configuration xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"sbyn:SeeBeyond/eView/schema/update.xsd\">" + Utils.LINE);
+        buffer.append("<Configuration xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"schema/update.xsd\">" + Utils.LINE);
         
         buffer.append(getSurvivorHelperConfigXMLString(alCandidateFieldsPerObject));
         for (int i=0; i < mAlWeightedCalculator.size(); i++) {

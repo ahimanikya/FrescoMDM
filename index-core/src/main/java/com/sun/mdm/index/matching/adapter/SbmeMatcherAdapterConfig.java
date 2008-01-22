@@ -32,7 +32,7 @@ import java.util.logging.Level;
 import net.java.hulp.i18n.Logger;
 
 /**
- * Class to provide the eView match engine with user configuration
+ * Class to provide the Master Index match engine with user configuration
  *
  * It allows the Match Engine access to the Configuration Service - and 
  * therefore the repository.
@@ -92,7 +92,7 @@ public class SbmeMatcherAdapterConfig
     
 
     /**
-     * Inner class that implements the eView Match engine interface
+     * Inner class that implements the Master Index Match engine interface
      * giving access to the configuration files, e.g. stored in the repository
      */
     public static class CSConfigFileAccess implements ConfigFilesAccess {

@@ -442,7 +442,7 @@ public class MasterType {
         
         // @Todo change this hardcoded code to elements retrieved during parsing
         buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + Utils.LINE);
-        buffer.append("<Configuration xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"sbyn:SeeBeyond/eView/schema/master.xsd\">" + Utils.LINE);
+        buffer.append("<Configuration xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"schema/master.xsd\">" + Utils.LINE);
         
         buffer.append(getMasterControllerConfigXMLString());
         buffer.append(getDecisionMakerConfigXMLString());

@@ -36,7 +36,7 @@
 	<xs:element name="constraint-by" type="xs:string"/>
 	<xs:element name="database" type="xs:string"/>
 	<xs:element name="dateformat" type="xs:string"/>
-	<xs:element name="eView">
+	<xs:element name="Configuration">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="name"/>

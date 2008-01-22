@@ -27,8 +27,8 @@ import java.util.ArrayList;
 
 /**
  * The <b>EPathArrayList</b> class represents an array of ePaths, which define
- * the locations of fields in eView objects and the database. For more
- * information about ePaths, see <i>Creating a Master Index with eView
+ * the locations of fields in Master Index objects and the database. For more
+ * information about ePaths, see <i>Creating a Master Index with Master Index
  * Studio</i>.
  * @author Dan Cidon
  */
