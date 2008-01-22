@@ -150,10 +150,10 @@
                                 <if>
                                     <isset property="install.dir.present"></isset>
                                     <then>
-                                        <delete file="${install.dir}/soa1/update_tracking/com-sun-mdm-index-project.xml"/>
-                                        <delete file="${install.dir}/soa1/config/Modules/com-sun-mdm-index-project.xml"/>
-                                        <delete file="${install.dir}/soa1/modules/com-sun-mdm-index-project.jar"/>
-                                        <delete dir="${install.dir}/soa1/modules/ext/eview"/>
+                                        <delete file="${install.dir}/soa1/update_tracking/com-sun-mdm-index-project.xml"></delete>
+                                        <delete file="${install.dir}/soa1/config/Modules/com-sun-mdm-index-project.xml"></delete>
+                                        <delete file="${install.dir}/soa1/modules/com-sun-mdm-index-project.jar"></delete>
+                                        <delete dir="${install.dir}/soa1/modules/ext/eview"></delete>
                                         <copy todir="${install.dir}">
                                             <fileset dir="${project.build.directory}/nbm/netbeans">
                                                 <exclude name="module_tracking.xml"></exclude>                

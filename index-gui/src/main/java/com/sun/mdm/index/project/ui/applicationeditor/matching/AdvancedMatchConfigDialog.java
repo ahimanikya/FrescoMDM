@@ -29,27 +29,22 @@ import java.util.Set;
 import java.util.Iterator;
 import java.util.Collection;
 
-import com.sun.mdm.matcher.comparators.configurator.ComparatorsConfigBean;
-import com.sun.mdm.matcher.comparators.ComparatorsManager;
 import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.index.util.LogUtil;
 
 public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
     private static Logger mLogger = LogUtil.getLogger(AdvancedMatchConfigDialog.class);
     private boolean mModified = false;
-    private static ArrayList<String> mAlFunctions;
-    private static ArrayList<String> mAlFunctionsDesc;
+    private ArrayList<String> mAlFunctionsDesc;
     private static ArrayList<String> mAlRequiredExtraParameters;
     private static ArrayList<String> mAlNullFields;
     private static ArrayList<String> mAlNullFieldsDesc;
     private static Map mMapNullFields = new HashMap();
     private static Map mMapNullFields2 = new HashMap();
-    private static Map mMapDescKeyFunctions = new HashMap();
-    private static Map mMapShortKeyFunctions = new HashMap();
-    private static Map mMapRequiredExtraParameters = new HashMap();
-    private static String mCoparatorListPath;
-    private static ComparatorsManager mComparatorsManager;
-    private static Map<String, Map<String, ArrayList>> mParmsMap;
+    private Map mMapDescKeyFunctions = new HashMap();
+    private Map mMapRequiredExtraParameters = new HashMap();
+    private String mCoparatorListPath;
+    private static Map<String, Map<String, ArrayList>> mMapParams;
     
     /** Creates new form AdvancedMatchConfigDialog */
     public AdvancedMatchConfigDialog(String probabilityType,
@@ -60,12 +55,15 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
                                      String agreementW,
                                      String disagreementW,
                                      String parameters,
-                                     String coparatorListPath) {
+                                     Map mapDescKeyFunctions,
+                                     ArrayList alFunctionsDesc,
+                                     Map mapParams) {
         super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         initComponents();
-        //build components
-        mCoparatorListPath = coparatorListPath;
-        
+        mMapDescKeyFunctions = mapDescKeyFunctions;
+        mAlFunctionsDesc = new ArrayList(alFunctionsDesc);
+        mMapParams = mapParams;
+
         //populate components
         this.jTextFieldMatchType.setText(matchType);
         
@@ -90,23 +88,19 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
             this.jTextFieldDisagreementWeight.setText(disagreementW);
         }
         
-        buildMaps();
-        for (int i=0; i<mAlNullFields.size(); i++) {
+        buildNullFields();
+        createDefaultExtraParameters();
+
+        for (int i=0; i<mAlNullFields.size() && i<mAlNullFieldsDesc.size(); i++) {
             jComboBoxNullField.addItem(mAlNullFieldsDesc.get(i));
         }
         this.jComboBoxNullField.setSelectedItem(mMapNullFields2.get(nullField));
 
-        for (int i=0; i<mAlFunctions.size(); i++) {
+        for (int i=0; i<mAlFunctionsDesc.size(); i++) {
             jComboBoxFunction.addItem(mAlFunctionsDesc.get(i));
         }
-        this.jComboBoxFunction.setSelectedItem(function); //mMapShortKeyFunctions.get(function));
+        this.jComboBoxFunction.setSelectedItem(function);
         this.jTextFieldParameters.setText(parameters);
-    }
-    
-    private void buildMaps() {
-        buildNullFields();
-        buildFunctions();
-        createDefaultExtraParameters();
     }
     
     private static void buildNullFields() {
@@ -164,50 +158,7 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
         }
     }
     
-    private static ComparatorsConfigBean getComparatorsConfigBean() {
-        //if (mComparatorsManager == null) {
-           try {
-            mComparatorsManager = new ComparatorsManager(mCoparatorListPath);
-            } catch (Exception ex) {
-                mLogger.error(ex.getMessage());
-            }
-        //}
-        ComparatorsConfigBean instance = mComparatorsManager.getComparatorsConfigBean();
-        return instance;
-    }
-    
-    private static void buildFunctions() {
-        //Get comparator and description from comparatorsList.xml
-        try {
-            ComparatorsConfigBean instance = getComparatorsConfigBean();
-            mMapShortKeyFunctions = instance.getCodeNamesDesc();
-            mAlFunctionsDesc = new ArrayList<String>();
-            mAlFunctions = new ArrayList<String>();
-        
-            Set set = mMapShortKeyFunctions.keySet();
-            Iterator iter = set.iterator();
-            for (int i=0; i < set.size(); i++) {
-                String strFunction = iter.next().toString();
-                String strDesc = mMapShortKeyFunctions.get(strFunction).toString();
-                mAlFunctionsDesc.add(strDesc);
-                mAlFunctions.add(strFunction);
-                mMapDescKeyFunctions.put(strDesc, strFunction);  
-            }
-            mParmsMap = instance.getParametersDetailsForGUI();
-        } catch (Exception ex) {
-            mLogger.error(ex.getMessage());
-        }
-    }
-    
-    private static void createDefaultExtraParameters() {
-        try {
-            //ComparatorsManager comparatorsManager = new ComparatorsManager(mCoparatorListPath);
-            //ComparatorsConfigBean instance = comparatorsManager.getComparatorsConfigBean();
-            //mMapRequiredExtraParameters = instance.getCodeNamesDesc();
-        } catch (Exception ex) {
-            mLogger.error(ex.getMessage());
-        }
-
+    private void createDefaultExtraParameters() {
         mAlRequiredExtraParameters = new ArrayList<String>();
         mAlRequiredExtraParameters.add("");   // b1
         mAlRequiredExtraParameters.add("");  // b2
@@ -257,42 +208,6 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
      */
     public static Map getMapNullFields() {
         return mMapNullFields;
-    }
-
-    /** 
-     *return mAlFunctions
-     */
-    public static ArrayList getFunctions(String coparatorListPath) {
-        mCoparatorListPath = coparatorListPath;
-        //if (mAlFunctions == null) {
-            buildFunctions();
-        //}
-        return mAlFunctions;
-    }
-    
-    /** 
-     *return mAlFunctionsDesc
-     */
-
-    public static ArrayList getFunctionsDesc() {
-        //if (mAlFunctionsDesc == null) {
-            buildFunctions();
-        //}
-        return mAlFunctionsDesc;
-    }
-    
-    /**
-     *return mMapDescKeyFunctions
-     */
-    public static Map getMapDescKeyFunctions() {
-        return mMapDescKeyFunctions;
-    }
-    
-    /**
-     *return mMapShortKeyFunctions
-     */
-    public static Map getMapShortKeyFunctions() {
-        return mMapShortKeyFunctions;
     }
     
     /**
@@ -653,7 +568,7 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
         String desc = (String) jComboBoxFunction.getSelectedItem();
         String func = (String) mMapDescKeyFunctions.get(desc);
         //Map<String, Map<String, ArrayList>>
-        Map mapParam = mParmsMap.get(func);
+        Map mapParam = mMapParams.get(func);
         
         if (mapParam != null) {
             Set set = mapParam.keySet();

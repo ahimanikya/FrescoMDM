@@ -28,6 +28,9 @@ import org.openide.DialogDisplayer;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
@@ -39,7 +42,13 @@ import com.sun.mdm.index.project.ui.applicationeditor.matching.AdvancedMatchConf
 import com.sun.mdm.index.parser.MatchFieldDef;
 import com.sun.mdm.index.parser.MasterType;
 
+import com.sun.mdm.matcher.comparators.configurator.ComparatorsConfigBean;
+import com.sun.mdm.matcher.comparators.ComparatorsManager;
+import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.LogUtil;
+
 public class TabMatchConfigPanel extends javax.swing.JPanel {
+    private static Logger mLogger = LogUtil.getLogger(TabMatchConfigPanel.class);
     private EviewEditorMainApp mEviewEditorMainApp;
     private EviewApplication mEviewApplication;
     private MatchFieldDef mMatchFieldDef;
@@ -50,8 +59,9 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
     private String mProbabilityType;
     private ArrayList mAlFunctions;
     private ArrayList mAlFunctionsDesc;
-    private Map mMapDescKeyFunctions = null;
+    private Map mMapDescKeyFunctions = new HashMap();;
     private Map mMapShortKeyFunctions = null;
+    private Map<String, Map<String, ArrayList>> mMapParams;
     private ArrayList mAlNullFields;
     private ArrayList mAlNullFieldsDesc;
     private Map mMapNullFields = null;
@@ -302,7 +312,8 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
         
         mProbabilityType = getProbabilityType();
         AdvancedMatchConfigDialog dlg = new AdvancedMatchConfigDialog(mProbabilityType, matchType, matchSize,
-                nullField, function, agreementW, disagreementW, parameters, mCoparatorListPath);
+                nullField, function, agreementW, disagreementW, parameters, 
+                mMapDescKeyFunctions, mAlFunctionsDesc, mMapParams);
         dlg.setVisible(true);
         if (dlg.isModified()) {
             // update table
@@ -373,10 +384,12 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
         mProbabilityType = getProbabilityType();
         if (mProbabilityType.equals("0")) {
             dlg = new AdvancedMatchConfigDialog(mProbabilityType, "", "30",
-                "0", "us", "0.99", "0.001", "", mCoparatorListPath);
+                "0", "us", "0.99", "0.001", "", 
+                mMapDescKeyFunctions, mAlFunctionsDesc, mMapParams);
         } else {
             dlg = new AdvancedMatchConfigDialog(mProbabilityType, "", "30",
-                "0", "us", "10", "-10", "", mCoparatorListPath);
+                "0", "us", "10", "-10", "", 
+                mMapDescKeyFunctions, mAlFunctionsDesc, mMapParams);
         }
         dlg.setVisible(true);
         if (dlg.isModified()) {
@@ -592,11 +605,28 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
         mAlNullFieldsDesc = AdvancedMatchConfigDialog.getNullFieldsDesc();
         mAlNullFields = AdvancedMatchConfigDialog.getNullFields();
         mMapNullFields = AdvancedMatchConfigDialog.getMapNullFields();
+        //Get comparator and description from comparatorsList.xml
+        try {
+            ComparatorsManager mComparatorsManager = new ComparatorsManager(mCoparatorListPath);
+            ComparatorsConfigBean instance = mComparatorsManager.getComparatorsConfigBean();
+            Map mapCodeNameDesc = instance.getCodeNamesDesc();
+            mMapShortKeyFunctions = mapCodeNameDesc;
+            mAlFunctionsDesc = new ArrayList<String>();
+            mAlFunctions = new ArrayList<String>();
         
-        mAlFunctions = AdvancedMatchConfigDialog.getFunctions(mCoparatorListPath);
-        mAlFunctionsDesc = AdvancedMatchConfigDialog.getFunctionsDesc();
-        mMapDescKeyFunctions = AdvancedMatchConfigDialog.getMapDescKeyFunctions();
-        mMapShortKeyFunctions = AdvancedMatchConfigDialog.getMapShortKeyFunctions();
+            Set set = mMapShortKeyFunctions.keySet();
+            Iterator iter = set.iterator();
+            for (int i=0; i < set.size(); i++) {
+                String strFunction = iter.next().toString();
+                String strDesc = mMapShortKeyFunctions.get(strFunction).toString();
+                mAlFunctionsDesc.add(strDesc);
+                mAlFunctions.add(strFunction);
+                mMapDescKeyFunctions.put(strDesc, strFunction);  
+            }
+            mMapParams = instance.getParametersDetailsForGUI();
+        } catch (Exception ex) {
+            mLogger.error(ex.getMessage());
+        }
         
         // load TableModelMatchRules
         ArrayList rows = new ArrayList();

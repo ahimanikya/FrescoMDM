@@ -53,10 +53,10 @@ public class ObjectWriter {
         mMatchEngine = matchEngine;
         createRuntimeConfig(systemList, duplicateThreshold, matchThreshold);
         
-        String tagHeaderObject = "<eView xmlns:xsi=" +
+        String tagHeaderObject = "<Configuration xmlns:xsi=" +
             "\"http://www.w3.org/2001/XMLSchema-instance" +
             "\" xsi:noNamespaceSchemaLocation=\"sbyn:SeeBeyond/eView/schema/eIndex.xsd\">\n";
-        String tagTailObject = "</eView>";
+        String tagTailObject = "</Configuration>";
 
         String strXml = xmlHEADER + tagHeaderObject + "    <name>" + viewName +
             "</name>" + "\n    <database>" + database + "</database>" +
