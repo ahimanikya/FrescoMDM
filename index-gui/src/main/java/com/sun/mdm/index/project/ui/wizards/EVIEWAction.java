@@ -38,7 +38,7 @@ import javax.swing.SwingUtilities;
  */
 public class EVIEWAction extends NodeAction {
     /**
-     * Action for bringing up eView Wizard
+     * Action for bringing up Master Index Wizard
      */
     @Override
     public void performAction() {

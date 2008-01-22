@@ -47,7 +47,7 @@ public class EDMWriter {
         // create EDM.xml
         String tagHeaderEDM = "<edm xmlns:xsi=" +
             "\"http://www.w3.org/2001/XMLSchema-instance" +
-            "\" xsi:noNamespaceSchemaLocation=\"sbyn:SeeBeyond/eView/schema/EDM.xsd\">\n";
+            "\" xsi:noNamespaceSchemaLocation=\"schema/EDM.xsd\">\n";
         String tagTailEDM = "</edm>";
 
         String strXml = xmlHEADER + tagHeaderEDM +

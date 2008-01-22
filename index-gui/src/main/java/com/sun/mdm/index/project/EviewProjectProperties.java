@@ -22,7 +22,7 @@
  */
 package com.sun.mdm.index.project;
 
-/** Defines constants for properties used in eView. 
+/** Defines constants for properties used in Master Index. 
  */
 public class EviewProjectProperties {
     
@@ -35,23 +35,23 @@ public class EviewProjectProperties {
     public static final String SCHEMA_TEMPLATE_LOCATION = "modules/ext/eview/repository/schema";
     
     public static final String CONF_FOLDER = "conf"; //NOI18N    
-    // eView Configuration Folder
+    // Master Index Configuration Folder
     public static final String CONFIGURATION_FOLDER = "Configuration"; //NOI18N
     public static final String SCHEMA_FOLDER = "schema"; //NOI18N
-    // eView Match Engine Folder
+    // Master Index Match Engine Folder
     public static final String MATCH_ENGINE_FOLDER = "MatchEngine"; //NOI18N
-    // eView Standardization Folder
+    // Master Index Standardization Folder
     public static final String STANDARDIZATION_ENGINE_FOLDER = "StandardizationEngine"; //NOI18N
     // Supported Data Types
     public static final String STANDARDIZATION_ENGINE_ADDRESS_FOLDER = "Address"; //NOI18N
     public static final String STANDARDIZATION_ENGINE_BUSINESSNAME_FOLDER = "BusinessName"; //NOI18N
     public static final String STANDARDIZATION_ENGINE_PERSONNAME_FOLDER = "PersonName"; //NOI18N
-    // eView Database Script Folder
+    // Master Index Database Script Folder
     public static final String DATABASE_SCRIPT_FOLDER = "DatabaseScript"; //NOI18N
     // Filter Folder
     public static final String FILTER_FOLDER = "Filter"; //NOI18N
     public static final String FILTER_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/filter";        
-    // eView Custom Plug-ins Folder
+    // Master Index Custom Plug-ins Folder
     public static final String CUSTOM_PLUG_INS_FOLDER = "CustomPlug-ins"; //NOI18N
     public static final String J2EE_MODULES_FOLDER = "J2EE Modules"; //NOI18N
     

@@ -70,7 +70,7 @@ public class EviewConfigurationFolderNode extends EviewFolderNode {
     }
     
     /**
-     * @return project top eView project node
+     * @return project top Master Index project node
      */ 
     public Project getProject() {
         return this.project;

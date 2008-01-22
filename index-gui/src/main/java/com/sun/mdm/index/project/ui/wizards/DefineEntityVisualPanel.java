@@ -924,7 +924,7 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
 
             NotifyDescriptor d = new NotifyDescriptor.Message("\"" +
                         value + "\" is longer than 20 characters.\n\n" +
-                        "After appending eView qualifier it may exceed maximum\n" +
+                        "After appending Master Index qualifier it may exceed maximum\n" +
                         "length for a database identifier.");
             d.setMessageType(NotifyDescriptor.WARNING_MESSAGE);
             d.setTitle("Warning");

@@ -24,7 +24,7 @@ package com.sun.mdm.index.project.ui.wizards.generator;
 
 
 /**
- * An exception occurred whilst generating the eView configuration files.
+ * An exception occurred whilst generating the Master Index configuration files.
  */
 public class ConfigGeneratorException extends java.lang.Exception {
     /**

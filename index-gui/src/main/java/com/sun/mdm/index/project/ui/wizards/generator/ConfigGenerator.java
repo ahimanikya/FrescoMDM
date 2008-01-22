@@ -74,7 +74,7 @@ public class ConfigGenerator {
     private static String validation;
     
     /**
-     * Generates the eView configurations mefa, master, query, update, validation
+     * Generates the Master Index configurations mefa, master, query, update, validation
      * @param genpath an optional path to write the configuration files to. Passing in <code>null<code>
      * will mean that no files are written, the generated configurations will be returned as Strings
      * from the method.

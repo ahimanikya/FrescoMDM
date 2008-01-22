@@ -55,7 +55,7 @@ import javax.swing.tree.TreePath;
 
 import com.sun.mdm.index.project.EviewApplication;
 
-/** The main panel for eView Configuration Editor.
+/** The main panel for Master Index Configuration Editor.
  *
  */
 public class EviewEditorMainPanel extends javax.swing.JPanel implements TreeSelectionListener, ActionListener  {

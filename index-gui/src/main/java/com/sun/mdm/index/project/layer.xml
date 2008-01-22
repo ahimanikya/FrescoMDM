@@ -33,7 +33,7 @@
                     <attr name="SystemFileSystem.localizingBundle" stringvalue="com.sun.mdm.index.project.ui.wizards.Bundle"/>
                     <attr name="instantiatingWizardURL" urlvalue="nbresloc:/com/sun/mdm/index/project/ui/resources/project.html"/>
 
-                    <!-- Add template for the eView enterprize project -->
+                    <!-- Add template for the Master Index enterprize project -->
                     <file name="Master Index Application">
                         <attr name="template" boolvalue="true"/>
                         <attr name="templateWizardIterator" newvalue="com.sun.mdm.index.project.ui.wizards.EVIEWIterator"/>

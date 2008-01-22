@@ -377,7 +377,7 @@ public class PropertiesDeploymentPanel extends JPanel {
         }
     }
 
-    /** set eView Application name for panel title
+    /** set Master Index Application name for panel title
      *@param  applicationName
      */
     private void setApplicationName(String applicationName) {

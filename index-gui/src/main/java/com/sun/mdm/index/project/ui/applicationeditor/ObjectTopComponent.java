@@ -38,7 +38,7 @@ import com.sun.mdm.index.project.EviewApplication;
 
 
 /**
- * A wapper top component contains eView configuration editor
+ * A wapper top component contains Master Index configuration editor
  *
  */
 public class ObjectTopComponent

@@ -50,7 +50,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     // The eVision generator 'factory factory' class to use
     static final String DEFAULT_EVISION_GENERATOR_FACTORY_FACTORY = "com.stc.dap.ui.gen.GeneratorFactoryFactory";
 
-    // The identifier to pass to eVision to generate the eView site.
+    // The identifier to pass to eVision to generate the Master Index site.
     static final String EVISION_GENERATOR_EVIEW = "eView";
     static final String DB_ORACLE = "oracle";
     static final String DB_SYBASE = "sybase";
@@ -100,7 +100,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     ArrayList mList = new ArrayList();
     final boolean bDEBUG = false;
 
-    //Instance mInstance;  // eView App Instance
+    //Instance mInstance;  // Master Index App Instance
 
     /** Create the wizard panel descriptor. */
     public FinishPanel() {
@@ -259,7 +259,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
     /**
      * Generate an eVision site if eVision generators are available.
-     * @param eViewInstanceName the eView instance name defined in the wizard
+     * @param eViewInstanceName the Master Index instance name defined in the wizard
      * @param businessObjectName the primary object name
      * @param projectName the project name the wizard was started from
      * @throws SiteGenerationException if an error was encountered during site generation
@@ -288,7 +288,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         try {
             factoryFactory = Class.forName(factoryFactoryName);
         } catch (ClassNotFoundException ex) {
-            // This may not be an error. Possibly only eView is installed and not eVision (on purpose)
+            // This may not be an error. Possibly only Master Index is installed and not eVision (on purpose)
 //            mLogger.debug("No eVision generator factory is available for " +
 //                EVISION_GENERATOR_EVIEW +
 //                ". Skipping generation of eVision site.");
@@ -318,7 +318,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
                     new java.lang.Object[] {context});
             }
         } catch (Exception ex) {
-            throw new SiteGenerationException("Failed to generate eView site in eVision.",
+            throw new SiteGenerationException("Failed to generate Master Index site in eVision.",
                 ex);
         }
     }

@@ -55,7 +55,7 @@ public class ObjectWriter {
         
         String tagHeaderObject = "<Configuration xmlns:xsi=" +
             "\"http://www.w3.org/2001/XMLSchema-instance" +
-            "\" xsi:noNamespaceSchemaLocation=\"sbyn:SeeBeyond/eView/schema/eIndex.xsd\">\n";
+            "\" xsi:noNamespaceSchemaLocation=\"schema/eIndex.xsd\">\n";
         String tagTailObject = "</Configuration>";
 
         String strXml = xmlHEADER + tagHeaderObject + "    <name>" + viewName +

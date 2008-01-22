@@ -49,7 +49,7 @@ import com.sun.mdm.index.project.ui.applicationeditor.writers.ObjectWriter;
 import com.sun.mdm.index.project.ui.applicationeditor.writers.EDMWriter;
 
 /**
- * Main application class for eView Configuration Editor
+ * Main application class for Master Index Configuration Editor
  *
  */
 public class EviewEditorMainApp {
@@ -100,7 +100,7 @@ public class EviewEditorMainApp {
      /**
      * get the singalton instance per name
      *
-     * @param name eView Configuration Editor name
+     * @param name Master Index Configuration Editor name
      * @return EviewEditorMainApp instance
      */
     public static EviewEditorMainApp createInstance(String instanceName) {
@@ -122,7 +122,7 @@ public class EviewEditorMainApp {
      /**
      * get the singalton instance per name
      *
-     * @param name eView Configuration Editor name
+     * @param name Master Index Configuration Editor name
      * @return EviewEditorMainApp instance
      */
     public static EviewEditorMainApp getInstance(String instanceName) {
@@ -146,7 +146,7 @@ public class EviewEditorMainApp {
         }
     }
     /**
-     * Stating point of eView Configuration Editor from editable eView Instance
+     * Stating point of Master Index Configuration Editor from editable Master Index Instance
      *
      * @param EviewApplication
      */

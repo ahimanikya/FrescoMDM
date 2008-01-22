@@ -90,7 +90,7 @@ public class TemplateObjects {
             mMatchTypePersonDOB = "Person.DOB";
             mMatchTypePersonGender = "Person.Gender";
             mMatchTypeBusiness = "Business";
-        } else { // eView
+        } else { // Master Index
             mMatchTypePersonLastName = "PersonLastName";
             mMatchTypePersonFirstName = "PersonFirstName";
             mMatchTypePersonSSN = MATCHTYPE_NONE;

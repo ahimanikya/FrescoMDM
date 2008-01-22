@@ -35,7 +35,7 @@ import org.openide.loaders.DataObject;
 
 
 /**
- * Used by Netbeans Eview Project to retrieve Eview files from Netbeans Installation and Project location.   
+ * Used by Netbeans Master Index Project to retrieve files from Netbeans Installation and Project location.   
  */
     public class EviewRepository {
     /*
