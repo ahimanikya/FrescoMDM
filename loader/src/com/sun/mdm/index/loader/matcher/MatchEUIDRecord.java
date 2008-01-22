@@ -58,9 +58,9 @@ import com.sun.mdm.index.dataobject.DataObject;
 			} else if (euid1.compareTo(record2.euid1) > 0) {
 				return 1;
 			} else  {
-				if (euid2.compareTo(record2.euid1) < 0) {
+				if (euid2.compareTo(record2.euid2) < 0) {
 					return -1;
-				} else if (euid2.compareTo(record2.euid1) > 0) {
+				} else if (euid2.compareTo(record2.euid2) > 0) {
 					return 1;
 				} else {
 					return 0;
