@@ -193,6 +193,7 @@ public class BulkMatcherLoader {
 	 deleteSBRMatchDir();
 	 
 	 logger.info("Potential Duplicates completed");
+	 System.exit(0);
 	}
 	
 	private void loadConfig() throws Exception {
