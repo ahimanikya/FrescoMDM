@@ -1595,10 +1595,10 @@ public class MatchFieldDef {
         for (int k=0; k<alTargetMapping.size(); k++) {
             TargetMapping targetMapping = (TargetMapping) alTargetMapping.get(k);
             bufSegment.append(Utils.TAB6 + Utils.startTag(mTagTargetMapping));
-            bufSegment.append(Utils.TAB7 + Utils.startTagNoLine(mTagStandardizedTargetFieldName) + 
-                              targetMapping.getFieldName() + Utils.endTag(mTagStandardizedTargetFieldName));
             bufSegment.append(Utils.TAB7 + Utils.startTagNoLine(mTagStandardizedObjectFieldId) + 
                               targetMapping.getFieldId() + Utils.endTag(mTagStandardizedObjectFieldId));
+            bufSegment.append(Utils.TAB7 + Utils.startTagNoLine(mTagStandardizedTargetFieldName) + 
+                              targetMapping.getFieldName() + Utils.endTag(mTagStandardizedTargetFieldName));
             bufSegment.append(Utils.TAB6 + Utils.endTag(mTagTargetMapping));
         }
         bufSegment.append(Utils.TAB5 + Utils.endTag(mTagStandardizationTargets));
@@ -1655,10 +1655,10 @@ public class MatchFieldDef {
         
         bufSegment.append(Utils.TAB5 + Utils.startTag(mTagNormalizationTargets));
         bufSegment.append(Utils.TAB6 + Utils.startTag(mTagTargetMapping));
-        bufSegment.append(Utils.TAB7 + Utils.startTagNoLine(mTagStandardizedTargetFieldName) + 
-                          group.getNormalizedSourceFieldName() + Utils.endTag(mTagStandardizedTargetFieldName));
         bufSegment.append(Utils.TAB7 + Utils.startTagNoLine(mTagStandardizedObjectFieldId) + 
                           group.getNormalizedFieldId() + Utils.endTag(mTagStandardizedObjectFieldId));
+        bufSegment.append(Utils.TAB7 + Utils.startTagNoLine(mTagStandardizedTargetFieldName) + 
+                          group.getNormalizedSourceFieldName() + Utils.endTag(mTagStandardizedTargetFieldName));
         bufSegment.append(Utils.TAB6 + Utils.endTag(mTagTargetMapping));
         bufSegment.append(Utils.TAB5 + Utils.endTag(mTagNormalizationTargets));
                                                 
