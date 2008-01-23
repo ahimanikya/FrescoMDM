@@ -93,7 +93,6 @@ public class MergeMultipleEnterpriseObject extends TestCase {
         // This image is different from the one in eoList, which has
         // Update Logs that cannot be present for this junit test.
         eo3 = mc.getEnterpriseObject(euid3);
-        String calcOnly = "false";
         
         String[] sourceEUIDs = {euid1, euid2};
         

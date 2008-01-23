@@ -1675,12 +1675,12 @@ public EnterpriseObject previewUndoAssumedMatch(
 	/**
 	 * Merges multiple enterprise objects based on the specified EUIDs and enterprise
 	 * object. The source EUIDs will each be successively merged
-     * into the destination EO.  For example, sourceEUIDs[0] will be merged into
-     * the destination EO.  Then sourceEUIDs[1] will be merged into the destination
-     * EO.  Next, sourceEUIDS[2] will be merged into the destination EO.  
-     * If there are n merges, there will be n merge transaction log entries.  All of
-     * these transactions must be unmerged in order to restore the state prior to the
-     * multiple merge. This merge method takes the revision numbers of the SBRs so you
+         * into the destination EO.  For example, sourceEUIDs[0] will be merged into
+         * the destination EO.  Then sourceEUIDs[1] will be merged into the destination
+         * EO.  Next, sourceEUIDS[2] will be merged into the destination EO.  
+         * If there are n merges, there will be n merge transaction log entries.  All of
+         * these transactions must be unmerged in order to restore the state prior to the
+         * multiple merge. This merge method takes the revision numbers of the SBRs so you
 	 * can check for updates before finalizing the transaction, and also allows
 	 * you to perform additional actions against the surviving enterprise object
 	 * after the merge is performed. When this method is called with
