@@ -98,7 +98,7 @@
 			<property name="matchAnalyzerMode" value="false" />
 
 			<property name="rmiPort" value="9999" />
-			<property name="workingDir" value="/eview/loader" />
+			<property name="workingDir" value="test/data/eview/loader" />
 			<property name="ftp.workingDir" value="/loader" />
 
 			<property name="numBlockBuckets" value="5" />
@@ -147,7 +147,7 @@
 				<bean id="dataObjectReader"
 					class="com.sun.mdm.index.dataobject.DataObjectFileReader" singleton="false">
 					<constructor-arg type="java.lang.String"
-						value="C:/test/loader/finalInputData.txt" />
+						value="C:/test/loader/finalUniqueInputData.txt" />
 					<constructor-arg type="boolean" value="false" />
 				</bean>
 			</beans>
