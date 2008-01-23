@@ -335,6 +335,9 @@ public class ProxyInitialContext
                 postConstructMethod.invoke(mManualEJBInstance,null);
             }            
         }catch(Exception ex){
+            System.err.println("BusinessInterface"+ BusinessInterface.getName());
+            System.err.println("ejbImplClass"+ ejbImplClass.getName());
+            ex.printStackTrace();
             throw ex;
         }
         return mManualEJBInstance;
