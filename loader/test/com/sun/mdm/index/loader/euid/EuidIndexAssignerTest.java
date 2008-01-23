@@ -83,7 +83,7 @@ public class EuidIndexAssignerTest extends TestCase {
 	 * {@link com.sun.mdm.index.loader.euid.EuidIndexAssigner#assignEuids()}.
 	 */
 	public void testAssignEuids() throws Exception {
-		String euid = "/eView/loader/euid/euidIndex.txt";
+		String euid = "test/data/loader/loader-1/euid/euidIndex.txt";
 
 		EuidIndexAssigner ea = new EuidIndexAssigner();
 
@@ -113,7 +113,7 @@ public class EuidIndexAssignerTest extends TestCase {
 
 	public void testStart() throws Exception {
 
-		String euid = "/eView/loader/euid/euidIndex.txt";
+		String euid = "test/data/loader/loader-1/euid/euidIndex.txt";
 
 		HashMap<String, ArrayList<Long>> map = new HashMap<String, ArrayList<Long>>();
 
@@ -175,7 +175,7 @@ public class EuidIndexAssignerTest extends TestCase {
 	}
 
 	private void createMatchFile() {
-		String s = "/eView/loader/match/stage/finalMatch";
+		String s = "test/data/loader/loader-1/match/stage/finalMatch";
 
 		try {
 			RandomAccessFile match = new RandomAccessFile(s, "rw");
@@ -211,7 +211,7 @@ public class EuidIndexAssignerTest extends TestCase {
 
 	public void _testWritingSparseFile() throws Exception {
 
-		RandomAccessFile file = new RandomAccessFile("/eview/test.txt", "rw");
+		RandomAccessFile file = new RandomAccessFile("test/data/loader/loader-1/test.txt", "rw");
 
 		file.setLength(0);
 
@@ -228,7 +228,7 @@ public class EuidIndexAssignerTest extends TestCase {
 
 		logger.info("time take to write 5 gb file in sec: " + (t2 - t1) / 1000);
 
-		file = new RandomAccessFile("/eview/test.txt", "rw");
+		file = new RandomAccessFile("test/data/loader/loader-1/test.txt", "rw");
 
 		byte[] bs = new byte[10];
 		file.setLength(0);
@@ -252,7 +252,7 @@ public class EuidIndexAssignerTest extends TestCase {
 
 	public void _testDigit() throws Exception {
 
-		RandomAccessFile file = new RandomAccessFile("/eview/test.txt", "rw");
+		RandomAccessFile file = new RandomAccessFile("test/data/loader/loader-1/test.txt", "rw");
 
 		file.setLength(10000000);
 
