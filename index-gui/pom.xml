@@ -112,7 +112,10 @@
                                 <copy file="${settings.localRepository}/org/apache/lucene/lucene-core/2.2.0/lucene-core-2.2.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/lucene-core.jar"></copy>
                                 <unzip src="${settings.localRepository}/mural/matcher-resources/1.0/matcher-resources-1.0.jar" dest="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates"></unzip>
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/standardizer">
-                                    <fileset dir="${basedir}/../index-core/src/main/resources/matchengine/standardizer"></fileset>   
+                                    <fileset dir="${basedir}/../index-core/src/main/resources/matchengine/standardizer">
+                                        <exclude name="standardizer-resources.jar"></exclude>
+                                        <exclude name="deployment-files.zip"></exclude>
+                                    </fileset>   
                                 </copy>                                    
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/report/lib">
                                     <fileset dir="${basedir}/../report/target">
