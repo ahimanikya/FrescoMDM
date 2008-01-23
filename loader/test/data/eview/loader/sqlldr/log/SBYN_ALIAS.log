@@ -1,0 +1,31 @@
+
+SQL*Loader: Release 9.2.0.1.0 - Production on Tue Jan 22 17:33:18 2008
+
+Copyright (c) 1982, 2002, Oracle Corporation.  All rights reserved.
+
+Control File:   control/SBYN_ALIAS.ctl
+Data File:      ../masterindex/SBYN_ALIAS.data
+  File processing option string: "str '$$$'"
+  Bad File:     bad/SBYN_ALIAS.bad
+  Discard File: discard/SBYN_ALIAS.discard 
+ (Allow all discards)
+
+Number to load: ALL
+Number to skip: 0
+Errors allowed: 50
+Continuation:    none specified
+Path used:      Direct - with parallel option.
+
+Table SBYN_ALIAS, loaded from every logical record.
+Insert option in effect for this table: APPEND
+TRAILING NULLCOLS option in effect
+
+   Column Name                  Position   Len  Term Encl Datatype
+------------------------------ ---------- ----- ---- ---- ---------------------
+PERSONID                            FIRST     *   |  O(") CHARACTER            
+ALIASID                              NEXT     *   |  O(") CHARACTER            
+FIRSTNAME                            NEXT     *   |  O(") CHARACTER            
+MIDDLENAME                           NEXT     *   |  O(") CHARACTER            
+LASTNAME                             NEXT     *   |  O(") CHARACTER            
+
+SQL*Loader-937: parallel load requested and SBYN_ALIAS has enabled triggers or constraints

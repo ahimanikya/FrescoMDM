@@ -1,0 +1,1 @@
+sqlldr  userid=sujit/sujit@mdm.stc.com control=control/SBYN_ASSUMEDMATCH.ctl bad=bad/SBYN_ASSUMEDMATCH.bad log=log/SBYN_ASSUMEDMATCH.log direct=true parallel=true discard=discard/SBYN_ASSUMEDMATCH.discard

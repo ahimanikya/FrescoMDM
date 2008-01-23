@@ -1,0 +1,1 @@
+sqlldr  userid=sujit/sujit@mdm.stc.com control=control/SBYN_PERSONSBR.ctl bad=bad/SBYN_PERSONSBR.bad log=log/SBYN_PERSONSBR.log direct=true parallel=true discard=discard/SBYN_PERSONSBR.discard

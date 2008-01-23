@@ -1,0 +1,15 @@
+start SBYN_SYSTEMOBJECT.bat
+start SBYN_SYSTEMSBR.bat
+start SBYN_OVERWRITE.bat
+start SBYN_ENTERPRISE.bat
+start SBYN_TRANSACTION.bat
+start SBYN_ASSUMEDMATCH.bat
+start SBYN_POTENTIALDUPLICATES.bat
+start SBYN_PERSON.bat
+start SBYN_PERSONSBR.bat
+start SBYN_ALIAS.bat
+start SBYN_ALIASSBR.bat
+start SBYN_ADDRESS.bat
+start SBYN_ADDRESSSBR.bat
+start SBYN_PHONE.bat
+start SBYN_PHONESBR.bat

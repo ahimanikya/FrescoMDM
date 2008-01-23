@@ -1,0 +1,36 @@
+
+SQL*Loader: Release 9.2.0.1.0 - Production on Tue Jan 22 17:33:18 2008
+
+Copyright (c) 1982, 2002, Oracle Corporation.  All rights reserved.
+
+Control File:   control/SBYN_SYSTEMOBJECT.ctl
+Data File:      ../masterindex/SBYN_SYSTEMOBJECT.data
+  File processing option string: "str '$$$'"
+  Bad File:     bad/SBYN_SYSTEMOBJECT.bad
+  Discard File: discard/SBYN_SYSTEMOBJECT.discard 
+ (Allow all discards)
+
+Number to load: ALL
+Number to skip: 0
+Errors allowed: 50
+Continuation:    none specified
+Path used:      Direct - with parallel option.
+
+Table SBYN_SYSTEMOBJECT, loaded from every logical record.
+Insert option in effect for this table: APPEND
+TRAILING NULLCOLS option in effect
+
+   Column Name                  Position   Len  Term Encl Datatype
+------------------------------ ---------- ----- ---- ---- ---------------------
+SYSTEMCODE                          FIRST     *   |  O(") CHARACTER            
+LID                                  NEXT     *   |  O(") CHARACTER            
+CHILDTYPE                            NEXT     *   |  O(") CHARACTER            
+CREATEUSER                           NEXT     *   |  O(") CHARACTER            
+CREATEFUNCTION                       NEXT     *   |  O(") CHARACTER            
+CREATEDATE                           NEXT     *   |  O(") DATE dd-mm-yy HH24:MI:SS
+UPDATEUSER                           NEXT     *   |  O(") CHARACTER            
+UPDATEFUNCTION                       NEXT     *   |  O(") CHARACTER            
+UPDATEDATE                           NEXT     *   |  O(") DATE dd-mm-yy HH24:MI:SS
+STATUS                               NEXT     *   |  O(") CHARACTER            
+
+SQL*Loader-937: parallel load requested and SBYN_SYSTEMOBJECT has enabled triggers or constraints

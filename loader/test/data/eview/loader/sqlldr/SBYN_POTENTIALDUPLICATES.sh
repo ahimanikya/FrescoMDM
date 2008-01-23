@@ -1,0 +1,1 @@
+sqlldr  userid=sujit/sujit@mdm.stc.com control=control/SBYN_POTENTIALDUPLICATES.ctl bad=bad/SBYN_POTENTIALDUPLICATES.bad log=log/SBYN_POTENTIALDUPLICATES.log direct=true parallel=true discard=discard/SBYN_POTENTIALDUPLICATES.discard

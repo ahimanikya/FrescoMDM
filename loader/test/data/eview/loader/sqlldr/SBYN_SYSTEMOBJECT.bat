@@ -1,0 +1,1 @@
+sqlldr  userid=sujit/sujit@mdm.stc.com control=control/SBYN_SYSTEMOBJECT.ctl bad=bad/SBYN_SYSTEMOBJECT.bad log=log/SBYN_SYSTEMOBJECT.log direct=true parallel=true discard=discard/SBYN_SYSTEMOBJECT.discard
