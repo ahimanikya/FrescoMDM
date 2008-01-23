@@ -67,9 +67,12 @@
 									<then>
 										<copy
 											todir="${install.dir}/${netbeans.cluster}/modules/ext/eview/loader">
-											<fileset dir="lib"></fileset>
+											<fileset dir="lib">
+												<exclude name="resources.jar"/>
+											</fileset>
 											<fileset dir="target">
 												<include name="loader.jar" />
+												
 											</fileset>
 										</copy>
 									</then>
