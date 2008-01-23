@@ -61,8 +61,8 @@ import com.sun.mdm.index.loader.blocker.BlockDistributor;
 	private Map<MatchRecord, MatchRecord> matchTree_ ;
 	private Bucket.MatchCursor matchCursor_;
 	private CountDownLatch endGate_;
-	private SbmeMatcher matchEngine_ ;
-	//private NewMatcher matchEngine_;
+	//private SbmeMatcher matchEngine_ ;
+	private MatcherAdapter matchEngine_;
 	private static Logger logger = Logger.getLogger(MatcherTask.class
 			.getName());
 	private WeightAnalyzer matchAnalyzer_;
@@ -80,8 +80,8 @@ import com.sun.mdm.index.loader.blocker.BlockDistributor;
 		matchTree_ = map;
 		matchCursor_ = cursor;
 		endGate_ = endGate;
-		//matchEngine_ = new NewMatcher(tupleCursor_.matchFieldIDs_);
-		matchEngine_ = new SbmeMatcher(tupleCursor_.matchFieldIDs_);
+		matchEngine_ = new MatcherAdapter(tupleCursor_.matchFieldIDs_);
+		//matchEngine_ = new SbmeMatcher(tupleCursor_.matchFieldIDs_);
 	    isSBR_ = isSBR;
 	}
 	
