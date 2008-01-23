@@ -1672,6 +1672,90 @@ public EnterpriseObject previewUndoAssumedMatch(
         return mergeResult;
     }
     
+	/**
+	 * Merges multiple enterprise objects based on the specified EUIDs and enterprise
+	 * object. The source EUIDs will each be successively merged
+     * into the destination EO.  For example, sourceEUIDs[0] will be merged into
+     * the destination EO.  Then sourceEUIDs[1] will be merged into the destination
+     * EO.  Next, sourceEUIDS[2] will be merged into the destination EO.  
+     * If there are n merges, there will be n merge transaction log entries.  All of
+     * these transactions must be unmerged in order to restore the state prior to the
+     * multiple merge. This merge method takes the revision numbers of the SBRs so you
+	 * can check for updates before finalizing the transaction, and also allows
+	 * you to perform additional actions against the surviving enterprise object
+	 * after the merge is performed. When this method is called with
+	 * calculateOnly set to false, the application changes the status of the
+	 * merged enterprise object to "merged" and deletes all potential duplicate
+	 * listings for that object. If the update mode is set to pessimistic, the
+	 * application checks whether any key fields (that is, fields used for
+	 * matching or blocking) were updated in the SBR of the surviving enterprise
+	 * object. If key fields were updated, potential duplicates are recalculated
+	 * for the surviving object.
+	 * <p>
+	 * The SBR revision numbers of both the surviving and non-surviving
+	 * enterprise objects are passed as arguments. These are compared to the
+	 * SBRs stored in the database. If they differ, it means that either the
+	 * source or destination record was modified by another user. In this case,
+	 * the merge should not be allowed.
+	 * <p>
+	 * 
+	 * @param sourceEUIDs
+	 *            The EUIDs of the non-surviving enterprise objects.
+	 * @param destinationEO
+	 *            The enterprise object that will survive after the merge
+	 *            process.
+	 * @param srcRevisionNumbers
+	 *            The SBR revision numbers of the non-surviving enterprise
+	 *            object.
+	 * @param destRevisionNumber
+	 *            The SBR revision number of the surviving enterprise object.
+	 * @param calculateOnly
+	 *            A Boolean indicator of whether to commit changes to the
+	 *            database or to simply compute the merge results. Specify
+	 *            <b>false</b> to commit the changes.
+	 * @return <CODE>MergeResult</CODE>[] - The results of the merge operations.
+	 * @exception ProcessingException
+	 *                Thrown if an error occurs during the merge process.
+	 * @exception UserException
+	 *                Thrown if a parameter is invalid.
+	 * @include
+	 */
+    public MergeResult[] mergeMultipleEnterpriseObjects(
+            String[] sourceEUIDs,
+            EnterpriseObject destinationEO,
+            String[] srcRevisionNumbers,
+            String destRevisionNumber,
+            boolean calculateOnly)
+    throws ProcessingException, UserException{
+        MergeResult[] mergeResults = null;
+        Connection con = null;
+
+        try {
+            mControllerImpl.beginTransaction();
+            con = mControllerImpl.getConnection();
+            mergeResults = mControllerImpl.mergeMultipleEnterpriseObjects(con, 
+                                                                sourceEUIDs, 
+                                                                destinationEO, 
+                                                                srcRevisionNumbers, 
+                                                                destRevisionNumber, 
+                                                                calculateOnly);
+            if (!calculateOnly) {
+                mControllerImpl.commitTransaction(con);
+            } else {
+                mControllerImpl.rollbackTransaction(con);
+            }
+        } catch (ProcessingException e) {
+            mControllerImpl.rollbackTransaction(con);
+            throw e;
+        } catch (UserException e) {
+            mControllerImpl.rollbackTransaction(con);
+            throw e;
+        } finally {
+            mControllerImpl.releaseResources( con );
+        }
+        return mergeResults;
+    }
+    
     
     /**
      * Unmerges the two enterprise objects that were involved in the most

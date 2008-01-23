@@ -71,6 +71,8 @@ public class MasterControllerSet2Test extends TestSuite {
         suite.addTestSuite(CyclicMergeSystemObject.class);
         suite.addTestSuite(DeferredPessimisticModeSystemMerge.class);
         
+        suite.addTestSuite(MergeMultipleEnterpriseObject.class);
+        
         return suite;
     }
     

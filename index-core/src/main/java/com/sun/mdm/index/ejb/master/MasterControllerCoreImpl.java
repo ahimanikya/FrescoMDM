@@ -1004,7 +1004,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 user = getCallerUserId();
                 sysobj.setUpdateUser(user);
             }
-            // sysobj.setCreateUser(user);
+//            sysobj.setCreateUser(user);
 
             UpdateResult result = mUpdate.createEnterpriseObject(con, sysobj);
             eo = result.getEnterpriseObject1();
@@ -1504,7 +1504,6 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             }
             euid = mQueryHelper.getEUID(con, systemKey);
             if (euid != null) {
-
                 if (userLogics.disallowUpdate(sysObj)) {
                     if (mLogger.isLoggable(Level.FINE)) {
                         mLogger.fine("processMatch(): Update disallowed: "
@@ -2895,6 +2894,123 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         return mergeResult;
     }
 
+    /**
+     * Merge multiple enterprise records based on the given source EUIDs and the
+     * destination EO.  The source EUIDs will each be successively merged
+     * into the destination EO.  For example, sourceEUIDs[0] will be merged into
+     * the destination EO.  Then sourceEUIDs[1] will be merged into the destination
+     * EO.  Next, sourceEUIDS[2] will be merged into the destination EO.  
+     * If there are n merges, there will be n merge transaction log entries.  All of
+     * these transactions must be unmerged in order to restore the state prior to the
+     * multiple merge.
+     * 
+     * @param con  Database connection handle.
+     * @param sourceEUIDs  Array of source EUIDs to be merged.
+     * @param destinationEO  The EnterpriseObject to be kept.
+     * @param srcRevisionNumbers  The SBR revision numbers of the Enterprise
+     * Objects to be merged.
+     * @param destRevisionNumber  The SBR revision number of the EUID to be kept.
+     * @param calculateOnly  Indicate whether to commit changes to DB or just compute the
+     * MergeResult.
+     * @exception ProcessingException  An error has occured.
+     * @exception UserException  A user error occured
+     * @return Results of merge operations.
+     */
+    public MergeResult[] mergeMultipleEnterpriseObjects(Connection con, 
+                                            String[] sourceEUIDs,
+                                            EnterpriseObject destinationEO, 
+                                            String[] srcRevisionNumbers,
+                                            String destRevisionNumber, 
+                                            boolean calculateOnly)
+            throws ProcessingException, UserException {
+
+        // check if the number of source EUIDs matches the number of 
+        // source revision numbers
+    
+        if (sourceEUIDs.length != srcRevisionNumbers.length) {
+            throw new ProcessingException(mLocalizer.t("MSC583: {0} EnterpriseObjects " + 
+                        "are to be merged, but only {1} revision numbers were " +
+                        "supplied.", sourceEUIDs.length, srcRevisionNumbers.length));
+        }
+        
+        int sourceEUIDsCount = sourceEUIDs.length;
+        if (mLogger.isLoggable(Level.FINER)) {
+            StringBuffer sb = new StringBuffer();
+            sb.append("[");
+            for (int i = 0; i < sourceEUIDs.length; i ++) {
+                sb.append(sourceEUIDs[i]);
+                if (i < sourceEUIDs.length - 1) {
+                    sb.append(", ");
+                }
+            }
+            sb.append("]");
+            mLogger.finer("mergeMultipleEnterpriseObject(): invoked with source " +
+                    "EUIDs: " + sb.toString() + ", destination " +
+                    "EUID: " + destinationEO.getEUID() + "calculateOnly: " + 
+                    calculateOnly + ", updated destination image: " + 
+                    destinationEO.toString());
+        } else if (mLogger.isLoggable(Level.FINE)) {
+            StringBuffer sb = new StringBuffer();
+            sb.append("[");
+            for (int i = 0; i < sourceEUIDs.length; i ++) {
+                sb.append(sourceEUIDs[i]);
+                if (i < sourceEUIDs.length - 1) {
+                    sb.append(", ");
+                }
+            }
+            sb.append("]");
+            mLogger.fine("mergeEnterpriseObject(): invoked with source EUIDs: "
+                    + sb.toString() + " destination EUID: " 
+                    + destinationEO.getEUID()
+                    + "calculateOnly: " + calculateOnly
+                    + " and updated destination image (set log to FINER to view)");
+        }
+        
+        validateEnterpriseObject(con, destinationEO);
+        MergeResult[] mergeResults = new MergeResult[sourceEUIDsCount];
+        EnterpriseObject tempDestinationEO = destinationEO;
+        String tempDestRevisionNumber = destRevisionNumber;
+        try {
+
+            // Get original values if pessimistic mode requires it
+            Object[] destMatchFields = null;
+            if (!calculateOnly && pessimisticModeEnabled) {
+                EnterpriseObject origDestinationEO = mTrans
+                        .getEnterpriseObject(con, destinationEO.getEUID());
+                destMatchFields = mMatchFieldChange
+                        .getMatchFields(origDestinationEO);
+            }
+            // Merge all the EnterpriseObjects excluding the final destination
+            // EO.  They are merged in order.  For example, sourceEUIDs[0] 
+            // will be merged into the destination.  Then sourceEUIDs[1] will
+            // be merged into destination, and so on.
+            
+            MergeResult mergeResult = new MergeResult();
+            for (int i = 0; i < sourceEUIDs.length; i++) {
+                if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine("mergeEnterpriseObject(): invoked with source EUIDs: "
+                                    + sourceEUIDs.toString() + " destination EUID: " 
+                                    + destinationEO.getEUID()
+                                    + "calculateOnly: " + calculateOnly
+                                    + " and updated destination image (set log to FINER to view)");
+                }
+                mergeResult 
+                        = mergeEnterpriseObject(con, sourceEUIDs[i],
+                                                tempDestinationEO, srcRevisionNumbers[i],
+                                                tempDestRevisionNumber, calculateOnly);
+                mergeResults[i] = mergeResult;
+                tempDestinationEO = mTrans.getEnterpriseObject(con, destinationEO.getEUID());
+                tempDestRevisionNumber = tempDestinationEO.getSBR().getRevisionNumber().toString();
+            }
+        } catch (UserException e) {
+            throw e;
+        } catch (Exception e) {
+            throwProcessingException(e);
+        }
+        return mergeResults;
+        
+    }        
+    
     /**
      * Merge the two lids for the given system. Note that the keys may both
      * belong to a single EO, or may belong to two different EO's.
@@ -5433,7 +5549,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             throws ProcessingException {
 
         sendAlert(e.getClass().getName() + ": " + e.getMessage());
-        throw new ProcessingException(mLocalizer.t("MSC582: MasterControllerImpl encountered an ProcessingException: {0}", e));
+        throw new ProcessingException(mLocalizer.t("MSC582: MasterControllerImpl encountered an " + 
+                                                   "ProcessingException: name={0}, message={1}", 
+                                                   e.getClass().getName(), e.getMessage()));
     }
 
     private synchronized void setMBeanServer() {
@@ -5471,7 +5589,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 mMBeanServer.invoke(mMBeanObjectName, "logAlert", obj, sig);
             }
         } catch (Exception ex) {
-            mLogger.warn(mLocalizer.x("MSC018: sendAlert(): error sending message: {0}", ex.getMessage()));
+            mLogger.warn(mLocalizer.x("MSC018: sendAlert(): error sending message. This is the original message: " +
+                                        "\"{0}\".  This is the exception: \"{1}\"", message, ex.getMessage()));
         }
     }
 
@@ -5484,7 +5603,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                         sig);
             }
         } catch (Exception ex) {
-            mLogger.warn(mLocalizer.x("MSC019: sendCriticalError(): error sending message: {0}", ex.getMessage()));
+            mLogger.warn(mLocalizer.x("MSC019: sendCriticalError(): error sending message. This is the original message: " +
+                                        "\"{0}\".  This is the exception: \"{1}\"", message, ex.getMessage()));
         }
     }
 
