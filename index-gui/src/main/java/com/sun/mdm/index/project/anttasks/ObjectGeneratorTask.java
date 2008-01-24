@@ -38,6 +38,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.taskdefs.Delete;
 import org.xml.sax.InputSource;
 
 /**
@@ -72,20 +73,7 @@ public class ObjectGeneratorTask extends Task {
         }
     }
     
-    public void generateFiles(EIndexObject eo ) throws FileNotFoundException, TemplateWriterException, ParserException, IOException{
- 
-        File destDir = new File(mDestDir , "com/sun/mdm/index/objects");
-        if (destDir.exists()){
-            destDir.delete();            
-        }
-        destDir = new File(mDestDir, "com/sun/mdm/index/ops");
-        if (destDir.exists()){
-            destDir.delete();            
-        }
-        destDir = new File(mDestDir, "com/sun/mdm/index/webservice");
-        if (destDir.exists()){
-            destDir.delete();            
-        }
+    public void generateFiles(EIndexObject eo ) throws FileNotFoundException, TemplateWriterException, ParserException, IOException{      
         File newPath = null;
         newPath = new File(mDestDir, "com/sun/mdm/index/objects");
         newPath.mkdirs();

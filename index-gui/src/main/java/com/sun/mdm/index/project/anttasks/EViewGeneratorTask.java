@@ -188,7 +188,15 @@ public class EViewGeneratorTask extends Task {
         generateFolder.mkdirs();
                
         File clientdir = new File(generatePath,"client/java");
+        //delete any old files
+        Delete delete = (Delete) getProject().createTask("delete");
+        delete.setDir(clientdir);
+        delete.init();
+        delete.setLocation(getLocation());
+        delete.execute();
+        
         clientdir.mkdirs();
+        
         ObjectGeneratorTask objectGenerator = new ObjectGeneratorTask();
         objectGenerator.setDestdir(clientdir);
         objectGenerator.setObjectFile(objectFile);
@@ -317,6 +325,13 @@ public class EViewGeneratorTask extends Task {
         Path srcDir= new Path(getProject(),generatePath+"/client/java");
         javac.setSrcdir(srcDir);
         File destDir = new File(generatePath,"client/classes");
+        //delete old class file
+        Delete delete = (Delete) getProject().createTask("delete");
+        delete.setDir(destDir);
+        delete.init();
+        delete.setLocation(getLocation());
+        delete.execute();
+        
         destDir.mkdirs();
         javac.setDestdir(destDir);
         Reference ref= new Reference(getProject(), "generate.class.path");       
