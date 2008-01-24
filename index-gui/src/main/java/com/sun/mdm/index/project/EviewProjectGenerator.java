@@ -93,8 +93,8 @@ public class EviewProjectGenerator {
     public static String[] excludedFiles = {
             "build.xml", // NOI18N
             "build-impl.xml", // NOI18N   
-            "genfiles.properties", // NOI18N 
-            "private.properties" // NOI18N   
+            "genfiles.properties" // NOI18N 
+            //"private.properties" // NOI18N   
     };
     private static String EVIEW_ENTERPRISE_PROJECT_EJB = "EviewEnterpriseApplication-ejb";
     private static String EVIEW_ENTERPRISE_PROJECT_WAR = "EviewEnterpriseApplication-war";
@@ -236,7 +236,7 @@ public class EviewProjectGenerator {
             FileObject standardizationEngineFolder = srcRoot.createFolder(EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER); // NOI18N
             try {
                 FileObject repImage = repository.getInstalledFile(EviewProjectProperties.STAND_REPOSITORY_ZIP);
-                IOUtils.extract(new ZipFile(repImage.getPath()), FileUtil.toFile(standardizationEngineFolder));
+                IOUtils.extract(new ZipFile(FileUtil.toFile(repImage).getAbsolutePath()), FileUtil.toFile(standardizationEngineFolder));
                 StandardizationIntrospector introspector = eviewApplication.getStandardizationIntrospector();
             } catch (Exception ex) {
                 throw new IOException(ex.toString());
@@ -276,7 +276,7 @@ public class EviewProjectGenerator {
         File deployAntPropsFile = AntDeploymentHelper.getDeploymentPropertiesFile(serverInstanceID);
         //set private property of ejb project
         FileObject ejbProjDir =projectDir.getFileObject(mainProjectName+"-ejb");
-        FileOutputStream propsFile = new FileOutputStream(ejbProjDir.getPath()+"/nbproject/private/private.properties");
+        FileOutputStream propsFile = new FileOutputStream(FileUtil.toFile(ejbProjDir).getAbsolutePath()+"/nbproject/private/private.properties");
         EditableProperties props = new EditableProperties();
         //props.load(propsFile.getInputStream());
         props.setProperty(EviewProjectProperties.J2EE_SERVER_INSTANCE, serverInstanceID);
@@ -311,7 +311,7 @@ public class EviewProjectGenerator {
         propsFile.close();
         //set private property of web project
         FileObject webProjDir =projectDir.getFileObject(mainProjectName+"-war");
-        propsFile = new FileOutputStream(webProjDir.getPath()+"/nbproject/private/private.properties");
+        propsFile = new FileOutputStream(FileUtil.toFile(webProjDir).getAbsolutePath()+"/nbproject/private/private.properties");
         props = new EditableProperties();
         //props.load(propsFile.getInputStream());
         props.setProperty(EviewProjectProperties.J2EE_SERVER_INSTANCE, serverInstanceID);
