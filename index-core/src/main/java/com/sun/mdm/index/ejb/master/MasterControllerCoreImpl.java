@@ -5549,7 +5549,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             throws ProcessingException {
 
         sendAlert(e.getClass().getName() + ": " + e.getMessage());
-        throw new ProcessingException(mLocalizer.t("MSC582: MasterControllerImpl encountered an " + 
+        throw new ProcessingException(mLocalizer.t("MSC582: MasterControllerImpl encountered a " + 
                                                    "ProcessingException: name={0}, message={1}", 
                                                    e.getClass().getName(), e.getMessage()));
     }
