@@ -269,12 +269,13 @@ public class EViewGeneratorTask extends Task {
         }
         properties.store(new FileOutputStream(new File(repositoryLocation, PROPERTIES_RESOURCE_NAME)), "Generated");
 
-        //copy match engine file  
+        //copy match engine file        
         destDir = new File(projPath + File.separator + EviewProjectProperties.EVIEW_GENERATED_FOLDER +
                 File.separator + "resource" + File.separator + "match" );
         srcDir = new File(mSrcdir + File.separator + EviewProjectProperties.MATCH_ENGINE_FOLDER);
         srcfileSet = new FileSet(); 
         srcfileSet.setDir(srcDir);
+        srcfileSet.setExcludes("*.jar");
         copy = (Copy) getProject().createTask("copy");
         copy.setTodir(destDir);
         copy.addFileset(srcfileSet);
@@ -382,6 +383,19 @@ public class EViewGeneratorTask extends Task {
         copy.setLocation(getLocation());
         copy.execute();
         
+        //copy match engine jar files from configuration folder to lib directory 
+        srcDir = new File(mSrcdir + File.separator + EviewProjectProperties.MATCH_ENGINE_FOLDER);
+        srcFileSet = new FileSet();  
+        srcFileSet.setDir(srcDir);         
+        srcFileSet.setIncludes("*.jar" );
+        copy = (Copy) getProject().createTask("copy");
+        copy.init();
+        copy.setTodir(destDir);
+        copy.setFlatten(true);
+        copy.addFileset(srcFileSet);
+        copy.setLocation(getLocation());
+        copy.execute();
+                
         // make resources.jar
         generate_eview_resources_jar();
         generate_client_jar();

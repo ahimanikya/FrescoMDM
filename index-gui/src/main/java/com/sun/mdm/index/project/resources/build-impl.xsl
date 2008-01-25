@@ -166,7 +166,6 @@ is divided into following sections:
                     <pathelement location="${{module.install.dir}}/ext/eview/com-sun-mdm-index-project-anttasks.jar" />
                     <pathelement location="${{module.install.dir}}/com-sun-mdm-index-project.jar" />
                     <pathelement location="${{module.install.dir}}/ext/eview/index-core.jar" />
-                    <pathelement location="${{module.install.dir}}/ext/eview/standardizer/lib/mdm-standardizer.jar" />
                     <pathelement location="${{module.install.dir}}/ext/eview/standardizer/lib/commons-logging-1.0.4.jar"/>
                 </path>
                 <taskdef name="generate-mdm-index-files"
