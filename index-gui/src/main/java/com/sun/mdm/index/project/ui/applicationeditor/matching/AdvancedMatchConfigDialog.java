@@ -43,7 +43,6 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
     private static Map mMapNullFields2 = new HashMap();
     private Map mMapDescKeyFunctions = new HashMap();
     private Map mMapRequiredExtraParameters = new HashMap();
-    private String mCoparatorListPath;
     private static Map<String, Map<String, ArrayList>> mMapParams;
     
     /** Creates new form AdvancedMatchConfigDialog */

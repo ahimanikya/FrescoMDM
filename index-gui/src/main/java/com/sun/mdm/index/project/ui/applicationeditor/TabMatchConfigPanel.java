@@ -31,6 +31,9 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
+import java.io.File;
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
 
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
@@ -76,7 +79,8 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
         mEviewEditorMainApp = eviewEditorMainApp;
         bCheckedOut = eviewEditorMainApp.isCheckedOut();
         mEviewApplication = eviewApplication;
-        mCoparatorListPath = mEviewApplication.getComparatorListFile().getPath();
+        FileObject fo = mEviewApplication.getComparatorListFile();
+        mCoparatorListPath = FileUtil.toFile(fo).getAbsolutePath();
         mMasterType = mEviewApplication.getMasterType(false);
         mMatchFieldDef = mEviewApplication.getMatchFieldDef(false);
         parameterDuplicateThreshold = mMasterType.getDecisionMakerConfigParameterByName(MasterType.DUPLICATETHRESHOLD);
