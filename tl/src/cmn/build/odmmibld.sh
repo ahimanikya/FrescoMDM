@@ -66,7 +66,7 @@ Options:
  -popmaven       populate the remote maven repository defined by REMOTE_MAVEN_REPOS with build artifacts . DEFAULT FOR RELEASE BUILD.
  -nopopmaven     do not populate any remote maven repository.  DEVELOPER DEFAULT.
  -fast|-fastupdate
-                 Short-hand for:  $p -update -noregress -nojavadoc
+                 Short-hand for:  $p -update -junit -nojavadoc --> NEED TO ADD KH
  -integreport    Create integration report. DEFAULT FOR RELEASE BUILD.
  -nointegreport  Do not create integration report. DEFAULT FOR DEVELOPER BUILD.
  -taskreport     Create project task report. DEFAULT FOR PRIMARY RELEASE BUILD.
@@ -82,13 +82,8 @@ Options:
  -noinstall      Do not build the installer.  DEVELOPER DEFAULT.
  -pushkit        Push kits to a location other than the usual kitroot.
  -nopushkit      Do not push kits to a location other than the usual kitroot (DEFAULT)
- -regress        Run all junit and jregress tests (default).
- -jregress       Run the jregress tests (DEFAULT)
- -junit          Run the junit tests (DEFAULT)
- -noregress      Do not run junit or jregress tests.
-
- -nojregress     Do not run the jregress tests.
- -nojunit        Do not run the junit tests.
+ -junit          Run the junit tests 
+ -nojunit        Do not run the junit tests. (DEFAULT)
  -ant_output     Send the ANT build output to the terminal as well as to
                  the log file.
  -verbose        Tell ant to be verbose.
@@ -136,14 +131,11 @@ parse_args()
     BLDNUM_ARG=NULL
     ANT_PROPS=
     VERBOSE_ARG=
-    REGRESS_PRODUCT=openesb
+    REGRESS_PRODUCT=odmmi
     DOMAVEN_UPDATE=1
     DOMAVEN_POP=0
     DOTASK_REPORT=0
     DEBUG=0
-    DOREGRESS=1
-    DOJUNIT=1
-    DOJREGRESS=1
     DOPUSHKIT=0
     DOINSTALL=0
 
@@ -162,6 +154,7 @@ parse_args()
         DOUPDATE=1
         DOMAVEN_UPDATE=1
         DOJAVADOC=1
+        DOJUNIT=1
         #do not ignore build failures, even for release,
         #as this leaves appserver instances running.  RT 3/2/06
         KEEPON=0
@@ -191,6 +184,7 @@ parse_args()
         DOINTEGREPORT=0
         DORELEASE=0
         DOINSTALL=0
+        DOJUNIT=0
         DOBUILD=1
         DOJAVADOC=1
         DOARCHIVEDOC=0
@@ -251,23 +245,6 @@ parse_args()
         -nokeepon )
             KEEPON=0
             ;;
-        -regress )
-            #useful with -fast option.
-            DOREGRESS=1
-            DOJUNIT=1
-            DOJREGRESS=1
-            ;;
-        -noregress )
-            DOREGRESS=0
-            DOJUNIT=0
-            DOJREGRESS=0
-            ;;
-        -jregress )
-            DOJREGRESS=1
-            ;;
-        -nojregress )
-            DOJREGRESS=0
-            ;;
         -junit )
             DOJUNIT=1
             ;;
@@ -326,9 +303,7 @@ parse_args()
         -fast|-fastupdate )
             DOUPDATE=1
             #only run junit tests (this will force use to compile tests):
-            DOREGRESS=1
-            DOJUNIT=1
-            DOJREGRESS=0
+            DOJUNIT=0
             DOJAVADOC=0
             ;;
         -integreport )
@@ -340,15 +315,6 @@ parse_args()
         -verbose )
             VERBOSE_ARG="-verbose"
             ;;
-        -product )
-            if [ $# -gt 0 ]; then
-                REGRESS_PRODUCT=$1; shift
-            else
-                echo "${p}: -product requires the name of the top-level bom (shasta/whitney)"
-                usage 1
-            fi
-            ;;
-
         -D*=* )
             if [ -z "$ANT_PROPS" ]; then
                 ANT_PROPS="$arg"
@@ -388,17 +354,6 @@ parse_args()
         fi
     fi
 
-    #!junit and !jregress => !regress
-    if [ $DOJUNIT -eq 0 -a $DOJREGRESS -eq 0 ]; then
-        DOREGRESS=0
-    fi
-
-    #converse is also true:
-    if [ $DOREGRESS -eq 0 ]; then
-        DOJUNIT=0
-        DOJREGRESS=0
-    fi
-
     ### NOTE: more option setup in set_global_vars.
 }
 
@@ -430,8 +385,6 @@ $1 OPTION SETTINGS FOR $p -
     DOUPDATE is        $DOUPDATE
 
     DOBUILD is         $DOBUILD
-    DOREGRESS is       $DOREGRESS
-    DOJREGRESS is      $DOJREGRESS
     DOJUNIT is         $DOJUNIT
 
     DOJAVADOC is       $DOJAVADOC
@@ -444,8 +397,6 @@ $1 OPTION SETTINGS FOR $p -
 
     DOINTEGREPORT is   $DOINTEGREPORT
     DOTASK_REPORT is   $DOTASK_REPORT
-
-    REGRESS_PRODUCT is $REGRESS_PRODUCT
 
 EOF
 
@@ -469,7 +420,6 @@ show_build_environment()
     POPMAVENLOG is  $POPMAVENLOG
     PUSHKITLOG is   $PUSHKITLOG
     UNITTESTLOG is  $UNITTESTLOG
-    REGRESSLOG is   $REGRESSLOG
 
     INSTALLOG is         $INSTALLOG
     INSTALLER_TESTLOG is $INSTALLER_TESTLOG is
@@ -541,12 +491,6 @@ has_ant_errors()
     grep 'Tests run:' $1 | grep -v 'Failures: 0, Errors: 0,' > /dev/null
     if [ $? -eq 0 ]; then
         #we found something matching, which means we had failures:
-        return 1
-    fi
-
-    #check for jregress errors:
-    egrep '\*TIMED OUT\*|\*FAILED\*| Connection refused' $1 > /dev/null
-    if [ $? -eq 0 ]; then
         return 1
     fi
 
@@ -639,6 +583,14 @@ set_global_vars()
       #if we incorporte offline options into MAVEN_OPTIONS,
       #then don't repeat for offline #build steps:
       MAVEN_OFFLINE=
+    fi
+
+    if [ $DOJUNIT -eq 1 ]; then
+        #Make sure required environment is defined:
+        if [ x$RUN_JUNIT = x ]; then
+            DOJUNIT=0
+            bldmsg -error -p $p "turning off -junit because RUN_JUNIT is not set to oracle"
+        fi
     fi
 
     if [ $DOMAVEN_POP -eq 1 ]; then
@@ -749,7 +701,7 @@ set_global_vars()
     ANTLOGDIR=$LOGDIR/antlogs
 
     export CLEANLOG BUILDLOG RELEASELOG INSTALLOG POPMAVENLOG
-    export UNITTESTLOG REGRESSLOG UPDATELOG INTEGRATIONLOG PUSHKITLOG
+    export UNITTESTLOG UPDATELOG INTEGRATIONLOG PUSHKITLOG
     export JAVADOCLOG INSTALLER_TESTLOG 
 
     CLEANLOG=$LOGDIR/javaClean.log
@@ -760,7 +712,6 @@ set_global_vars()
     INSTALLER_TESTLOG=$LOGDIR/installerTest.log
     PUSHKITLOG=$LOGDIR/pushkit.log
     UNITTESTLOG=$LOGDIR/runUnitTests.log
-    REGRESSLOG=$LOGDIR/runSystemTests.log
     UPDATELOG=$LOGDIR/cvs_update.log
     INTEGRATIONLOG=$LOGDIR/integ_${PRODUCT}.txt
     JAVADOCLOG=$LOGDIR/javadoc.log
@@ -863,23 +814,6 @@ set_global_vars()
     fi
 
     EXCEPTION_INDEX=$LOGDIR/_EXCEPTIONS.html
-
-    #########
-    # REGRESS PRODUCT TARGET
-    #########
-    case $REGRESS_PRODUCT in
-    shasta )
-        ;;
-    whitney )
-        ;;
-    openesb )
-        REGRESS_PRODUCT=shasta
-        ;;
-    * )
-        bldmsg -error -p $p "Unrecognized -product arg, '$REGRESS_PRODUCT' - defaulting to 'shasta'"
-        REGRESS_PRODUCT=shasta
-        ;;
-    esac
 
     return 0
 }
@@ -1216,41 +1150,6 @@ clean_build_tree()
 }
 
 
-map_regress_port()
-#
-# Usage: realport=`map_regress_port $kitport`
-#
-#NOTE:  this is to make sure <FORTE_PORT> macros in the boms are analyzed
-#       correctly.
-{
-    if [ "$1" = "" ]; then
-        bldmsg -error -p $p/map_regress_port "Usage: map_regress_port regress_port_name" 1>&2
-        echo "NULL_PORT"
-        return 1
-    fi
-
-    case $1 in
-    redhat )
-        echo linux
-        ;;
-    sollassen )
-        echo solsparc
-        ;;
-    nt5 )
-        echo nt
-        ;;
-    xp )
-        echo nt
-        ;;
-    * )
-        echo $1
-        ;;
-    esac
-
-    return 0
-}
-
-
 make_release()
 #this routine is normally only called on primary port
 {
@@ -1512,23 +1411,16 @@ run_unit_tests()
     run_tests_status=0
 
     ######
-    #junit (and junitreport happens automatically here)
+    #junit 
     ######
     bldmsg -markbeg ${p}:junit
-    #NOTE:  changing target to install to work-around maven lifecycle bug that evokes
-    #errors in the maven-dependency plugin in packaging projects when running "test" or "test-compile".
-    #RT 2/2/07
-    #
-    #Changing target to package, to see if we can avoid writing on local repos again while
-    #potentially other tasks are running.  RT 2/13/07
-    #
-    cmd="mvn $MAVEN_OPTIONS -DSRCROOT='$JV_SRCROOT' -Dmaven.repo.local='$JV_SRCROOT/m2/repository' -Dmaven.test.skip=false -DBUILD_NUMBER=$BLDNUM package"
-    bldmsg -mark -p $p/run_tests `echo $cmd`
+    cmd="mvn $MAVEN_OPTIONS -DSRCROOT='$JV_SRCROOT' -Dmaven.repo.local='$JV_SRCROOT/m2/repository' -DBUILD_NUMBER=$BLDNUM test"
+    bldmsg -mark -p $p/run_unit_tests `echo $cmd`
     eval $cmd
     status=$?
     if [ $status -ne 0 ]; then
         run_tests_status=1
-        bldmsg -error -p $p/run_tests Junit test step FAILED
+        bldmsg -error -p $p/run_unit_tests junit test step FAILED
     fi
     bldmsg -markend -status $status ${p}:junit
     bld_reset_watchdog
@@ -1541,9 +1433,9 @@ run_unit_tests()
     ############
 
     #archive junit report:
-    if [ -d "$SRCROOT/bld/junit" ]; then
+    if [ -d "$SRCROOT/index-core/target/JUnitReport" ]; then
         bldmsg -mark -p $p/run_tests Archive junit test results
-        cp -rp $SRCROOT/bld/junit $LOGDIR
+        cp -rp $SRCROOT/index-core/target/JUnitReport $LOGDIR
         if [ $? -ne 0 ]; then
             run_tests_status=1
             bldmsg -error -p $p/run_tests Archive junit test results FAILED
@@ -1551,77 +1443,6 @@ run_unit_tests()
     fi
     bld_reset_watchdog
 
-    return $run_tests_status
-}
-
-run_system_tests()
-{
-    if [ $TESTMODE -eq 1 ]; then
-        return 0
-    fi
-
-    bldmsg "BUILDRESULTS_TYPE=jbi_regress"
-
-    run_tests_status=0
-
-    #########
-    #jregress
-    #########
-    bldmsg -markbeg ${p}:jregress
-
-    ### Run jbi standalone regress tests first because they are quick. can be run offline:
-    cd $SRCROOT/esb-test
-    cmd="mvn $MAVEN_OFFLINE $MAVEN_OPTIONS -DSRCROOT='$JV_SRCROOT' -Dmaven.repo.local='$JV_SRCROOT/m2/repository' -DBUILD_NUMBER=$BLDNUM -Dtest_target=openesb:jbise_jregress_no_report"
-    bldmsg -mark -p $p/run_tests `echo $cmd`
-    eval $cmd
-    status=$?
-    if [ $status -ne 0 ]; then
-        run_tests_status=1
-        bldmsg -error -p $p/run_tests jregress step FAILED
-    fi
-    bld_reset_watchdog
-
-    ### Run standard jregress tests.  can be run offline:
-    cd $SRCROOT/esb-test
-    cmd="mvn $MAVEN_OFFLINE $MAVEN_OPTIONS -DSRCROOT='$JV_SRCROOT' -Dmaven.repo.local='$JV_SRCROOT/m2/repository' -DBUILD_NUMBER=$BLDNUM -Dtest_target=openesb:jregress_no_report"
-    bldmsg -mark -p $p/run_tests `echo $cmd`
-    eval $cmd
-    status=$?
-    if [ $status -ne 0 ]; then
-        run_tests_status=1
-        bldmsg -error -p $p/run_tests jregress step FAILED
-    fi
-
-    bld_reset_watchdog
-
-    bldmsg -markend -status $status ${p}:jregress
-
-    bld_reset_watchdog
-
-    ###############
-    #jregressreport
-    ###############
-    #run jregress report from maven harness.  can be run offline:
-    cd $SRCROOT/esb-test
-    cmd="mvn $MAVEN_OFFLINE $MAVEN_OPTIONS -Das8base=$JV_AS8BASE -DSRCROOT='$JV_SRCROOT' -Dmaven.repo.local='$JV_SRCROOT/m2/repository' -DBUILD_NUMBER=$BLDNUM -Dtest_target=openesb:jregress_report"
-    eval $cmd
-    if [ $? -ne 0 ]; then
-        run_tests_status=1
-        bldmsg -error -p $p/run_tests jregress report step FAILED
-    fi
-
-    #archive jregress summary log & server logs:
-    if [ -d "$SRCROOT/bld/server-logs" ]; then
-        bldmsg -mark -p $p/run_tests Archive server logs
-        cp -rp $SRCROOT/bld/server-logs $LOGDIR
-        if [ $? -ne 0 ]; then
-            run_tests_status=1
-            bldmsg -error -p $p/run_tests Archive junit test results FAILED
-        fi
-    fi
-    bld_reset_watchdog
-
-    cd $SRCROOT
     return $run_tests_status
 }
 
@@ -1637,14 +1458,14 @@ build_summary()
 
     #write the summary header:
     cat >> "$TEST_SUMMARY_REPORT" << EOF
-TEST RESULTS $date ($host/$FORTE_PORT/${BLDNUM}):
+    TEST RESULTS $date ($host/$FORTE_PORT/${BLDNUM}):
     $jdk_version
     ODMMI Codeline = open-dm-mi{$CVS_BRANCH_NAME}
 
 EOF
 
     # if no tests were run ...
-    if [ $DOREGRESS -eq 0 ]; then
+    if [ $DOJUNIT -eq 0 ]; then
         cat >> "$TEST_SUMMARY_REPORT" << EOF
 NO TESTS RUN
 
@@ -1652,16 +1473,21 @@ EOF
     ##
     else
         #... we ran some tests:
-        junit_summary="NO JUNIT TEST RESULTS"
+        #junit_summary="NO JUNIT TEST RESULTS"
+
         if [ -r "$UNITTESTLOG"  ]; then
-            junit_summary=`sed -n -e "/${PRODUCT}:junit_report/,/junit.failure.list/p" "$UNITTESTLOG" | grep 'junit[\._]'`
-            [ "$junit_summary" = "" ] && junit_summary="NO JUNIT TEST RESULTS"
+           junit_summary=`junitreport $UNITTESTLOG`
         fi
 
-        cat >> "$TEST_SUMMARY_REPORT" << EOF
-$junit_summary
+        #if [ -r "$UNITTESTLOG"  ]; then
+        #    junit_summary=`sed -n -e "/${PRODUCT}:junit_report/,/junit.failure.list/p" "$UNITTESTLOG" | grep 'junit[\._]'`
+        #    [ "$junit_summary" = "" ] && junit_summary="NO JUNIT TEST RESULTS"
+        #fi
 
-$jregress_summary
+        cat >> "$TEST_SUMMARY_REPORT" << EOF
+ 
+    JUNIT Report:  
+$junit_summary
 
 EOF
     ##
@@ -1951,40 +1777,28 @@ BG_RESULTS=$LOGDIR/background_results.sh
 run_background_tasks > $BG_LOG &
 bgpid=$!
 
-# TURNING OFF FOR NOW - KH
-#track total time for all tests:
-#if [ $DOREGRESS -eq 1 -a $BUILD_FAILED -eq 0 ]; then
-#    bldmsg -mark Testing $PRODUCT - Log is $REGRESSLOG
-#    bldmsg -markbeg ${p}:run_tests
-#fi
-
-# TURNING OFF FOR NOW - KH
 ######
 #junit
 ######
-#if [ $DOJUNIT -eq 1 -a $BUILD_FAILED -eq 0 ]; then
-#    run_unit_tests >> $UNITTESTLOG 2>&1
-#    status=$?
-#    bld_reset_watchdog
-#
-#    #scan for ignored ant task errors:
-#    if [ $status -eq 0 ]; then
-#        has_ant_errors $UNITTESTLOG
-#        status=$?
-#    fi
-#
-#    if [ $status -ne 0 ]; then
-#        bldmsg -error -p $p One or more unit tests failed. Check $UNITTESTLOG for errors.
-#        BUILD_STATUS=1
-#    fi
-#elif [ $DOJUNIT -eq 1  -a $BUILD_FAILED -ne 0 ]; then
-#    bldmsg -error Skipping unit tests because build step failed
-#fi
+if [ $DOJUNIT -eq 1 -a $BUILD_FAILED -eq 0 ]; then
+    run_unit_tests >> $UNITTESTLOG 2>&1
+    status=$?
+    bld_reset_watchdog
 
-# TURNING OFF FOR NOW - KH
-#if [ $DOREGRESS -eq 1 -a $BUILD_FAILED -eq 0 ]; then
-#    bldmsg -markend -status $status ${p}:run_tests
-#fi
+    #scan for ignored ant task errors:
+    if [ $status -eq 0 ]; then
+        has_ant_errors $UNITTESTLOG
+        status=$?
+    fi
+
+    if [ $status -ne 0 ]; then
+        bldmsg -error -p $p One or more unit tests failed. Check $UNITTESTLOG for errors.
+        BUILD_STATUS=1
+    fi
+elif [ $DOJUNIT -eq 1  -a $BUILD_FAILED -ne 0 ]; then
+    bldmsg -error Skipping unit tests because build step failed
+fi
+
 
 #########
 #WAIT FOR background tasks if necessary:
