@@ -93,12 +93,12 @@ public class EviewProjectGenerator {
     public static String[] excludedFiles = {
             "build.xml", // NOI18N
             "build-impl.xml", // NOI18N   
-            "genfiles.properties" // NOI18N 
-            //"private.properties" // NOI18N   
+            "genfiles.properties", // NOI18N 
+            "private.properties" // NOI18N   
     };
     private static String EVIEW_ENTERPRISE_PROJECT_EJB = "EviewEnterpriseApplication-ejb";
     private static String EVIEW_ENTERPRISE_PROJECT_WAR = "EviewEnterpriseApplication-war";
-    
+    private static String PRIVATE_PROPERTIES = File.separator + "nbproject" + File.separator + "private" + File.separator + "private.properties";
     private EviewProjectGenerator() {}
 
     /**
@@ -276,7 +276,7 @@ public class EviewProjectGenerator {
         File deployAntPropsFile = AntDeploymentHelper.getDeploymentPropertiesFile(serverInstanceID);
         //set private property of ejb project
         FileObject ejbProjDir =projectDir.getFileObject(mainProjectName+"-ejb");
-        FileOutputStream propsFile = new FileOutputStream(FileUtil.toFile(ejbProjDir).getAbsolutePath()+"/nbproject/private/private.properties");
+        FileOutputStream propsFile = new FileOutputStream(FileUtil.toFile(ejbProjDir).getAbsolutePath() + PRIVATE_PROPERTIES);
         EditableProperties props = new EditableProperties();
         //props.load(propsFile.getInputStream());
         props.setProperty(EviewProjectProperties.J2EE_SERVER_INSTANCE, serverInstanceID);
@@ -311,7 +311,7 @@ public class EviewProjectGenerator {
         propsFile.close();
         //set private property of web project
         FileObject webProjDir =projectDir.getFileObject(mainProjectName+"-war");
-        propsFile = new FileOutputStream(FileUtil.toFile(webProjDir).getAbsolutePath()+"/nbproject/private/private.properties");
+        propsFile = new FileOutputStream(FileUtil.toFile(webProjDir).getAbsolutePath()+ PRIVATE_PROPERTIES);
         props = new EditableProperties();
         //props.load(propsFile.getInputStream());
         props.setProperty(EviewProjectProperties.J2EE_SERVER_INSTANCE, serverInstanceID);
