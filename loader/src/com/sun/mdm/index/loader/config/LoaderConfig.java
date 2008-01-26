@@ -259,7 +259,7 @@ public class LoaderConfig {
 					.newDocumentBuilder();
 
 			String targetXmlString = "<?xml version='1.0' encoding='UTF-8'?>"
-					+ "<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN 2.0//EN' 'http://www.springframework.org/dtd/spring-beans-2.0.dtd'>"
+					+ "<!DOCTYPE beans>"
 					+ "<beans/>";
 			Document targetDocument = documentBuilder.parse(new InputSource(
 					new StringReader(targetXmlString)));
