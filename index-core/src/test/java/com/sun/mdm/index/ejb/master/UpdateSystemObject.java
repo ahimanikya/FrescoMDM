@@ -25,19 +25,15 @@ package com.sun.mdm.index.ejb.master;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import com.sun.mdm.index.ejb.master.helper.CreateEnterpriseObjectHelper;
-import com.sun.mdm.index.ejb.master.helper.LookupPotentialDuplicatesHelper;
 import com.sun.mdm.index.ejb.master.helper.ClearDb;
 import com.sun.mdm.index.ejb.master.helper.MCFactory;
+import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.objects.PersonObject;
 import com.sun.mdm.index.objects.AddressObject;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SystemObjectPK;
-import com.sun.mdm.index.master.UserException;
-import com.sun.mdm.index.master.search.potdup.PotentialDuplicateIterator;
-import java.util.Collection;
-import java.util.Iterator;
 
 /** Test class for updateEnterpriseObject MC method
  * @author Dan Cidon
@@ -130,16 +126,16 @@ public class UpdateSystemObject extends TestCase {
         personNode = (PersonObject) sysObj.getObject();
         assertTrue(personNode != null);
         personNode.setFirstName("CHANGED3");
-        boolean flag = false;
+        int flag = -1;
         try {
         	controller.updateSystemObject(sysObj, revisionNumber); 
-        } catch (UserException ue) {
-        	String msg = ue.getMessage();
-        	flag = msg.endsWith("has been modified by another user.");
+        } catch (ProcessingException ue) {
+                String msg = ue.getMessage();
+                flag = msg.indexOf("has been modified by another user");
         }
         
         //Caught the exception
-        assertTrue(flag);      
+        assertTrue(flag!=-1);      
         
         //Check name change has been overwritten
         eo = controller.getEnterpriseObject(new SystemObjectPK("SiteA", "0001"));
