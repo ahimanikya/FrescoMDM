@@ -148,14 +148,14 @@ public class LoaderEuidGeneratorTest extends TestCase {
 		
 		
 		
-		e = new DefaultEuidGenerator();
-		e.setParameter("IdLength", Integer.valueOf(params.get("IdLength")));
-		e.setParameter("ChecksumLength", Integer.valueOf(params.get("ChecksumLength")));
-		e.setParameter("ChunkSize", Integer.valueOf(params.get("ChunkSize")));
-		
-		String s = e.getNextEUID(c);
-		
-		s.toString();
+//		e = new DefaultEuidGenerator();
+//		e.setParameter("IdLength", Integer.valueOf(params.get("IdLength")));
+//		e.setParameter("ChecksumLength", Integer.valueOf(params.get("ChecksumLength")));
+//		e.setParameter("ChunkSize", Integer.valueOf(params.get("ChunkSize")));
+//		
+//		String s = e.getNextEUID(c);
+//		
+//		s.toString();
 		
 		
 		
