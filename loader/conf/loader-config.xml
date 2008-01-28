@@ -123,7 +123,7 @@
 
 			<!-- cluster database properties -->
 			<property name="cluster.database" value="Oracle" />
-			<property name="cluster.database.url" value="jdbc:oracle:thin:@sbiswas-acer:1521:mural" />
+			<property name="cluster.database.url" value="jdbc:oracle:thin:@sbiswas-acer.stc.com:1521:mural" />
 			<property name="cluster.database.user" value="sujit" />
 			<property name="cluster.database.password" value="sujit" />
 			<property name="cluster.database.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
@@ -147,7 +147,7 @@
 				<bean id="dataObjectReader"
 					class="com.sun.mdm.index.dataobject.DataObjectFileReader" singleton="false">
 					<constructor-arg type="java.lang.String"
-						value="C:/test/loader/finalUniqueInputData.txt" />
+						value="test/data/loader/finalUniqueInputData.txt" />
 					<constructor-arg type="boolean" value="false" />
 				</bean>
 			</beans>
