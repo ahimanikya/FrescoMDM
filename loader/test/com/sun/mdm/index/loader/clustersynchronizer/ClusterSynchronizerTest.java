@@ -466,9 +466,9 @@ public class ClusterSynchronizerTest extends TestCase {
 		truncateClusterBucketTable();
 		truncateLoaderTable();
 		
-		LoaderConfig c1 = new LoaderConfig("test/data/loader/loader-1/loader-config.xml");
+		LoaderConfig c1 = new XLoaderConfig("test/data/loader/loader-1/loader-config.xml");
 		
-		LoaderConfig c2 = new LoaderConfig("test/data/loader/loader-2/loader-config.xml");
+		LoaderConfig c2 = new XLoaderConfig("test/data/loader/loader-2/loader-config.xml");
 		
 		
 		ClusterSynchronizer cs1 = new ClusterSynchronizer(c1);
