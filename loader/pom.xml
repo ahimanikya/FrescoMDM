@@ -40,7 +40,8 @@
                <artifactId>maven-surefire-plugin</artifactId>
                <version>2.3</version>
                <configuration>
-                   <skipExec>true</skipExec>
+                   <!--skipExec>true</skipExec-->
+                   <testFailureIgnore>true</testFailureIgnore>
                </configuration>
            </plugin> 
 			<plugin>
