@@ -93,12 +93,12 @@ public class LoaderConfig {
 
 	private static String default_config_file = "conf/loader-config.xml";
 
-	public LoaderConfig(String configFile) {
+	protected LoaderConfig(String configFile) {
 		super();
 		init(configFile);
 	}
 
-	public LoaderConfig() {
+	protected LoaderConfig() {
 		super();
 		// TODO read from system property
 		init(default_config_file);
