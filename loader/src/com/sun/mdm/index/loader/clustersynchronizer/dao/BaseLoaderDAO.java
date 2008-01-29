@@ -85,7 +85,9 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 
 		PreparedStatement ps = null;
 		try {
-			ps = prepareStatement(insert_loader_sql);
+			Connection c = DAOFactory.getConnection();
+			PreparedStatement ps1 = c.prepareStatement(insert_loader_sql);
+			ps = ps1;
 
 			ps.setString(1, loaderName);
 			ps.setString(2, hostname);
@@ -98,6 +100,7 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 			ps.executeUpdate();
 
 			ps.close();
+			c.close();
 
 		} catch (SQLException e) {
 			logger.info(e.getMessage());
@@ -133,7 +136,9 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 	public void setClusterState(int state) {
 		PreparedStatement ps = null;
 		try {
-			ps = prepareStatement(update_loader_sql);
+			Connection c = DAOFactory.getConnection();
+			PreparedStatement ps1 = c.prepareStatement(update_loader_sql);
+			ps = ps1;
 
 			ps.setInt(1, state);
 			ps.setInt(2, 1);
@@ -147,6 +152,7 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 			}
 
 			ps.close();
+			c.close();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -163,7 +169,9 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 	public void setLoaderState(int state) {
 		PreparedStatement ps = null;
 		try {
-			ps = prepareStatement(update_loader_state_sql);
+			Connection c = DAOFactory.getConnection();
+			PreparedStatement ps1 = c.prepareStatement(update_loader_state_sql);
+			ps = ps1;
 
 			ps.setInt(1, state);
 			ps.setString(2, getLoaderName());
@@ -177,6 +185,7 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 			}
 
 			ps.close();
+			c.close();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -210,7 +219,9 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 
 		PreparedStatement ps = null;
 		try {
-			ps = prepareStatement(sql);
+			Connection c = DAOFactory.getConnection();
+			PreparedStatement ps1 = c.prepareStatement(sql);
+			ps = ps1;
 
 			ResultSet rs = ps.executeQuery();
 
@@ -224,6 +235,7 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 
 			rs.close();
 			ps.close();
+			c.close();
 		} catch (SQLException e) {
 			logger.info(e.getMessage());
 			// e.printStackTrace();
@@ -288,7 +300,9 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 
 		PreparedStatement ps = null;
 		try {
-			ps = prepareStatement(get_state_sql);
+			Connection c = DAOFactory.getConnection();
+			PreparedStatement ps1 = c.prepareStatement(get_state_sql);
+			ps = ps1;
 
 			ps.setInt(1, 1);
 			// ps.setString(2, getHostname());
@@ -301,6 +315,7 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 
 			rs.close();
 			ps.close();
+			c.close();
 		} catch (SQLException e) {
 			logger.info(e.getMessage());
 			// e.printStackTrace();
@@ -313,7 +328,9 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 
 		PreparedStatement ps = null;
 		try {
-			ps = prepareStatement(select_analysis_ready_sql);
+			Connection c = DAOFactory.getConnection();
+			PreparedStatement ps1 = c.prepareStatement(select_analysis_ready_sql);
+			ps = ps1;
 
 			ResultSet rs = ps.executeQuery();
 
@@ -323,6 +340,7 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 
 			rs.close();
 			ps.close();
+			c.close();
 		} catch (SQLException e) {
 			logger.info(e.getMessage());
 			// e.printStackTrace();
@@ -408,7 +426,9 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 
 		PreparedStatement ps = null;
 		try {
-			ps = prepareStatement(get_workingDir_sql);
+			Connection c = DAOFactory.getConnection();
+			PreparedStatement ps1 = c.prepareStatement(get_workingDir_sql);
+			ps = ps1;
 
 			ps.setInt(1, 1);
 
@@ -420,22 +440,12 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 
 			rs.close();
 			ps.close();
+			c.close();
 		} catch (SQLException e) {
 			logger.info(e.getMessage());
 			// e.printStackTrace();
 		}
 		return workingDir;
-	}
-
-	/**
-	 * @return
-	 * @throws SQLException
-	 */
-	protected PreparedStatement prepareStatement(String statement)
-			throws SQLException {
-		Connection c = DAOFactory.getConnection();
-		PreparedStatement ps = c.prepareStatement(statement);
-		return ps;
 	}
 
 	/**
@@ -450,7 +460,9 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 
 		int isMaster = isMasterLoader() ? 1 : 0;
 		try {
-			ps = prepareStatement(insert_analysis_sql);
+			Connection c = DAOFactory.getConnection();
+			PreparedStatement ps1 = c.prepareStatement(insert_analysis_sql);
+			ps = ps1;
 
 			ps.setInt(1, ClusterState.ANALYSIS_READY);
 			ps.setInt(2, isMaster);// isMaster=true or false
@@ -464,6 +476,7 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 			}
 
 			ps.close();
+			c.close();
 
 		} catch (SQLException e) {
 			logger.info(e.getMessage());
@@ -515,7 +528,9 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 
 		PreparedStatement ps = null;
 		try {
-			ps = prepareStatement(select_analysis_done_sql);
+			Connection c = DAOFactory.getConnection();
+			PreparedStatement ps1 = c.prepareStatement(select_analysis_done_sql);
+			ps = ps1;
 
 			ResultSet rs = ps.executeQuery();
 
@@ -531,6 +546,7 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 
 			rs.close();
 			ps.close();
+			c.close();
 		} catch (SQLException e) {
 			logger.info(e.getMessage());
 		}
@@ -547,7 +563,9 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 
 		PreparedStatement ps = null;
 		try {
-			ps = prepareStatement(update_analysis_done_sql);
+			Connection c = DAOFactory.getConnection();
+			PreparedStatement ps1 = c.prepareStatement(update_analysis_done_sql);
+			ps = ps1;
 
 			ps.setString(1, loaderName);
 
@@ -558,6 +576,7 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 			}
 
 			ps.close();
+			c.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -97,7 +97,9 @@ public abstract class BaseBucketDAO implements BucketDAO {
 
 		PreparedStatement ps = null;
 		try {
-			ps = prepareStatement(bucket_update);
+			Connection c = DAOFactory.getConnection();
+			PreparedStatement ps1 = c.prepareStatement(bucket_update);
+			ps = ps1;
 
 			ps.setInt(1, b.getVersionno() + 1);
 			ps.setInt(2, ASSIGNED);
@@ -110,6 +112,7 @@ public abstract class BaseBucketDAO implements BucketDAO {
 			int status = ps.executeUpdate();
 
 			ps.close();
+			c.close();
 
 			return status;
 
@@ -122,19 +125,10 @@ public abstract class BaseBucketDAO implements BucketDAO {
 			}
 
 			logger.info(e.getMessage());
+		}finally{
+			
 		}
 		return 0;
-	}
-
-	/**
-	 * @return
-	 * @throws SQLException
-	 */
-	protected PreparedStatement prepareStatement(String statement)
-			throws SQLException {
-		Connection c = DAOFactory.getConnection();
-		PreparedStatement ps = c.prepareStatement(statement);
-		return ps;
 	}
 
 	/*
@@ -269,7 +263,9 @@ public abstract class BaseBucketDAO implements BucketDAO {
 
 		PreparedStatement ps = null;
 		try {
-			ps = prepareStatement(bucket_status_update);
+			Connection c = DAOFactory.getConnection();
+			PreparedStatement ps1 = c.prepareStatement(bucket_status_update);
+			ps = ps1;
 
 			ps.setInt(1, state);
 
@@ -280,6 +276,7 @@ public abstract class BaseBucketDAO implements BucketDAO {
 			ps.executeUpdate();
 
 			ps.close();
+			c.close();
 
 		} catch (SQLException e) {
 			logger.info(e.getMessage());
@@ -371,7 +368,9 @@ public abstract class BaseBucketDAO implements BucketDAO {
 
 		PreparedStatement ps = null;
 		try {
-			ps = prepareStatement(select_count_bucket_type_done_sql);
+			Connection c = DAOFactory.getConnection();
+			PreparedStatement ps1 = c.prepareStatement(select_count_bucket_type_done_sql);
+			ps = ps1;
 
 			ps.setInt(1, bucketType);
 			ps.setInt(2, status);
@@ -380,6 +379,7 @@ public abstract class BaseBucketDAO implements BucketDAO {
 			bucket_done_count = rs.getInt(1);
 			rs.close();
 			ps.close();
+			c.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -396,7 +396,9 @@ public abstract class BaseBucketDAO implements BucketDAO {
 
 		PreparedStatement ps = null;
 		try {
-			ps = prepareStatement(select_count_bucket_type_sql);
+			Connection c = DAOFactory.getConnection();
+			PreparedStatement ps1 = c.prepareStatement(select_count_bucket_type_sql);
+			ps = ps1;
 
 			ps.setInt(1, bucketType);
 			ResultSet rs = ps.executeQuery();
@@ -404,6 +406,7 @@ public abstract class BaseBucketDAO implements BucketDAO {
 			bucket_count = rs.getInt(1);
 			rs.close();
 			ps.close();
+			c.close();
 
 		} catch (SQLException e) {
 			logger.info(e.getMessage());

@@ -23,6 +23,7 @@
 
 package com.sun.mdm.index.loader.clustersynchronizer.dao.mssql;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,6 +32,7 @@ import java.util.logging.Logger;
 
 import com.sun.mdm.index.loader.clustersynchronizer.Bucket;
 import com.sun.mdm.index.loader.clustersynchronizer.dao.BaseBucketDAO;
+import com.sun.mdm.index.loader.clustersynchronizer.dao.DAOFactory;
 
 /**
  * @author Sujit Biswas
@@ -57,7 +59,9 @@ public class MssqlBucketDAO extends BaseBucketDAO {
 
 		PreparedStatement ps = null;
 		try {
-			ps = prepareStatement(bucket_insert);
+			Connection c = DAOFactory.getConnection();
+			PreparedStatement ps1 = c.prepareStatement(bucket_insert);
+			ps = ps1;
 
 			
 			ps.setInt(1, sequence());
@@ -71,6 +75,7 @@ public class MssqlBucketDAO extends BaseBucketDAO {
 			int status = ps.executeUpdate();
 
 			ps.close();
+			c.close();
 
 			return status;
 
@@ -87,7 +92,9 @@ public class MssqlBucketDAO extends BaseBucketDAO {
 
 		PreparedStatement ps = null;
 		try {
-			ps = prepareStatement(bucket_select);
+			Connection c = DAOFactory.getConnection();
+			PreparedStatement ps1 = c.prepareStatement(bucket_select);
+			ps = ps1;
 
 			ps.setInt(1, NEW);
 			ps.setInt(2, bucketType);
@@ -99,6 +106,7 @@ public class MssqlBucketDAO extends BaseBucketDAO {
 			}
 			rs.close();
 			ps.close();
+			c.close();
 		} catch (SQLException e) {
 			logger.info(e.getMessage());
 			// e.printStackTrace();
