@@ -610,13 +610,35 @@ public class EViewGeneratorTask extends Task {
             Document doc = builder.parse(masterFile);
             return doc;
     }
-
+    
     private void generateWarFiles() {
+        String edmVersion = getProject().getProperty("edm-version");
+        String edmWarName ="mi-edm.war";
+        boolean jspExcluded =true;
+        if (null!=edmVersion && edmVersion.equalsIgnoreCase("mi-edm")){
+            edmWarName="mi-edm.war";
+            jspExcluded =false;
+        }else{
+            edmWarName = "edm.war";
+            jspExcluded =true;
+        }
 
-        File srcFile = new File(mTemplateDir, "repository/edm.war");
+        
         File destDir = new File(mWardir,"web" );
+        Delete delete = (Delete) getProject().createTask("delete");
+        delete.setDir(destDir);
+        delete.init();
+        delete.setLocation(getLocation());
+        delete.execute();
+        destDir.mkdir();
+        
+        File srcFile = new File(mTemplateDir, "repository/"+edmWarName);
         PatternSet patternSet = new PatternSet();
-        patternSet.setExcludes("**/*.jsp, **/META-INF/**");
+        //patternSet.setExcludes("**/*.jsp, **/META-INF/**");
+        patternSet.setExcludes("**/META-INF/**");
+        if (jspExcluded==true){
+            patternSet.setExcludes("**/*.jsp");
+        }        
         Expand expand = (Expand) getProject().createTask("unzip");
         expand.init();
         expand.setSrc(srcFile);
@@ -624,13 +646,16 @@ public class EViewGeneratorTask extends Task {
         expand.addPatternset(patternSet);
         expand.setLocation(getLocation());
         expand.execute();
-
-        srcFile = new File(mSrcdir, EviewProjectProperties.CONFIGURATION_FOLDER + "/edm.xml");
+        
+        FileSet srcFileSet = new FileSet(); 
+        File srcDir = new File(mSrcdir, EviewProjectProperties.CONFIGURATION_FOLDER);
         destDir = new File(mWardir, "web/WEB-INF/classes");
+        srcFileSet.setDir(srcDir);
+        srcFileSet.setIncludes( "edm.xml, roles.xml"); 
         Copy copy = (Copy) getProject().createTask("copy");
         copy.init();
         copy.setTodir(destDir);
-        copy.setFile(srcFile);
+        copy.addFileset(srcFileSet);
         copy.setLocation(getLocation());
         copy.execute();
     }
