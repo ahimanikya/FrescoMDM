@@ -91,11 +91,15 @@ public class ImportComparatorAction extends CookieAction {
                             EviewMatchEngineFolderCookie cookie = activatedNodes[0].getCookie(EviewMatchEngineFolderCookie.class);
                             EviewMatchEngineFolderNode matchEngineFolderNode = cookie.getEviewMatchEngineFolderNode();
                             FileObject fobjMatchEngine = matchEngineFolderNode.getFileObject();
-
+                            FileObject fobjMatchEngineLib = fobjMatchEngine.getFileObject("lib");
+                            if (fobjMatchEngineLib == null) {
+                                fobjMatchEngineLib = fobjMatchEngine.createFolder("lib");
+                            }
+                            
                             File selectedFile = fc.getSelectedFile();
                             String pathSelectedFile = selectedFile.getAbsolutePath();
                             FileObject fo = FileUtil.toFileObject(selectedFile);
-                            FileUtil.copyFile(fo, fobjMatchEngine, fo.getName());                            
+                            FileUtil.copyFile(fo, fobjMatchEngineLib, fo.getName());                            
                         }                          
                     } catch (Exception e) {
                         mLog.severe(NbBundle.getMessage(ImportComparatorAction.class, "MSG_FAILED_To_Import_Comparator_Plugin")); // NOI18N
