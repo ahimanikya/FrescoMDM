@@ -128,6 +128,8 @@ public class ScriptGeneratorTest extends TestCase {
 		for (String key : dataObjectWriterMap.keySet()) {
 			dataObjectWriterMap.get(key).close();
 		}
+		
+		conn.close();
 	}
 
 	/**
@@ -458,6 +460,7 @@ public class ScriptGeneratorTest extends TestCase {
 	private void truncateClusterBucketTable() throws SQLException {
 		Connection c = DAOFactory.getConnection();
 		c.createStatement().executeUpdate("delete from cluster_bucket");
+		c.close();
 	}
 
 	/**
@@ -466,6 +469,7 @@ public class ScriptGeneratorTest extends TestCase {
 	private void truncateLoaderTable() throws SQLException {
 		Connection c = DAOFactory.getConnection();
 		c.createStatement().executeUpdate("delete from loader");
+		c.close();
 	}
 
 }

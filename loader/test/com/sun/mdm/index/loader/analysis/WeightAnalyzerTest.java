@@ -191,6 +191,7 @@ public class WeightAnalyzerTest extends TestCase {
 	private void truncateAnalysisStateTable() throws SQLException {
 		Connection c = DAOFactory.getConnection();
 		c.createStatement().executeUpdate("truncate table analysis_state");
+		c.close();
 
 	}
 

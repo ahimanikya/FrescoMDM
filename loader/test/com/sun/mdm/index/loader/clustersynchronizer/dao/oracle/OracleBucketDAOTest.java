@@ -280,5 +280,6 @@ public class OracleBucketDAOTest extends TestCase {
 	private void truncateClusterBucketTable() throws SQLException {
 		Connection c = OracleDAOFactory.getConnection();
 		c.createStatement().executeUpdate("delete from cluster_bucket");
+		c.close();
 	}
 }

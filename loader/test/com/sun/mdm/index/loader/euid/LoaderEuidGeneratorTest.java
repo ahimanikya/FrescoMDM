@@ -146,7 +146,7 @@ public class LoaderEuidGeneratorTest extends TestCase {
 		
 		ps.close();
 		
-		
+		c.close();
 		
 //		e = new DefaultEuidGenerator();
 //		e.setParameter("IdLength", Integer.valueOf(params.get("IdLength")));
