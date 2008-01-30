@@ -133,7 +133,7 @@
 
 
 			<!-- ftp properties -->
-			<property name="ftp.server" value="sbiswas-tecra" />
+			<property name="ftp.server" value="sbiswas-acer.stc.com" />
 			<property name="ftp.username" value="loader" />
 			<property name="ftp.password" value="loader" />
 
@@ -141,7 +141,7 @@
 
 			<!-- cluster database properties -->
 			<property name="cluster.database" value="Oracle" />
-			<property name="cluster.database.url" value="jdbc:oracle:thin:@sbiswas-acer:1521:mural" />
+			<property name="cluster.database.url" value="jdbc:oracle:thin:@sbiswas-acer.stc.com:1521:mural" />
 			<property name="cluster.database.user" value="sujit" />
 			<property name="cluster.database.password" value="sujit" />
 			<property name="cluster.database.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
