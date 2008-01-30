@@ -60,7 +60,7 @@
                                         <include name="com/sun/mdm/index/project/anttasks/**/*.xml"></include>
                                     </fileset>
                                 </jar>
-                                <delete dir="${project.build.directory}/classes/com/sun/mdm/index/project/anttasks"></delete>
+                                <!--delete dir="${project.build.directory}/classes/com/sun/mdm/index/project/anttasks"></delete-->
                             </tasks>          
                         </configuration>
                     </execution>	     	            
@@ -86,6 +86,7 @@
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository">
                                     <fileset dir="${basedir}/../index-core/src/main/resources">
                                         <include name="edm.war"></include>
+                                        <include name="mi-edm.war"></include>
                                     </fileset>
                                     <fileset dir="${basedir}/../index-core/src/main/resources/matchengine">
                                         <include name="stc_sbme.jar"></include>
@@ -172,6 +173,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-install-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <skipExec>true</skipExec>
+                </configuration>
             </plugin>
         </plugins>
     </build>
