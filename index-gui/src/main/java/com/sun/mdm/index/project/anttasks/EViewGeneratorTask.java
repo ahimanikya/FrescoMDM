@@ -275,7 +275,7 @@ public class EViewGeneratorTask extends Task {
         srcDir = new File(mSrcdir + File.separator + EviewProjectProperties.MATCH_ENGINE_FOLDER);
         srcfileSet = new FileSet(); 
         srcfileSet.setDir(srcDir);
-        srcfileSet.setExcludes("*.jar");
+        srcfileSet.setExcludes("lib/**");
         copy = (Copy) getProject().createTask("copy");
         copy.setTodir(destDir);
         copy.addFileset(srcfileSet);
@@ -387,7 +387,7 @@ public class EViewGeneratorTask extends Task {
         srcDir = new File(mSrcdir + File.separator + EviewProjectProperties.MATCH_ENGINE_FOLDER);
         srcFileSet = new FileSet();  
         srcFileSet.setDir(srcDir);         
-        srcFileSet.setIncludes("*.jar" );
+        srcFileSet.setIncludes("lib/*.jar" );
         copy = (Copy) getProject().createTask("copy");
         copy.init();
         copy.setTodir(destDir);
