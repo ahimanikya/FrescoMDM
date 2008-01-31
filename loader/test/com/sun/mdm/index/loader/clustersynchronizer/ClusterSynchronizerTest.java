@@ -46,7 +46,7 @@ public class ClusterSynchronizerTest extends TestCase {
 
 	//private static final int five_second = 5000;
 
-	private static final int half_second = 500;
+	private static final int five_second = 5000;
 
 	private static Logger logger = Logger
 			.getLogger(ClusterSynchronizerTest.class.getName());
@@ -245,7 +245,7 @@ public class ClusterSynchronizerTest extends TestCase {
 		long t_2 = System.currentTimeMillis();
 
 		logger.info("time taken in sec to check match done " + (t_2 - t_1));
-		assertTrue(t_2 - t_1 < half_second);
+		assertTrue(t_2 - t_1 < five_second);
 
 	}
 
@@ -296,7 +296,7 @@ public class ClusterSynchronizerTest extends TestCase {
 		long t_2 = System.currentTimeMillis();
 
 		logger.info("time taken in sec to check match done " + (t_2 - t_1));
-		assertTrue(t_2 - t_1 < half_second);
+		assertTrue(t_2 - t_1 < five_second);
 
 	}
 
@@ -345,7 +345,7 @@ public class ClusterSynchronizerTest extends TestCase {
 		long t_2 = System.currentTimeMillis();
 
 		logger.info("time taken in sec to check SBR done " + (t_2 - t_1));
-		assertTrue(t_2 - t_1 < half_second);
+		assertTrue(t_2 - t_1 < five_second);
 	}
 
 	public void testWaitMasterIndexGenerationReady() throws Exception {
@@ -370,7 +370,7 @@ public class ClusterSynchronizerTest extends TestCase {
 
 			logger.info("time taken in sec to check master index ready "
 					+ (t_2 - t_1));
-			assertTrue(t_2 - t_1 < half_second);
+			assertTrue(t_2 - t_1 < five_second);
 
 			assertTrue(true);
 		} catch (TimeOutException e) {
@@ -400,7 +400,7 @@ public class ClusterSynchronizerTest extends TestCase {
 
 			logger.info("time taken in sec to check sbr match ready "
 					+ (t_2 - t_1));
-			assertTrue(t_2 - t_1 < half_second);
+			assertTrue(t_2 - t_1 < five_second);
 
 			assertTrue(true);
 		} catch (TimeOutException e) {
@@ -436,7 +436,7 @@ public class ClusterSynchronizerTest extends TestCase {
 
 			logger.info("time taken in sec to check  match ready "
 					+ (t_2 - t_1));
-			assertTrue(t_2 - t_1 < half_second);
+			assertTrue(t_2 - t_1 < five_second);
 
 			assertTrue(true);
 		} catch (TimeOutException e) {

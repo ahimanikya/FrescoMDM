@@ -151,11 +151,28 @@ public class ScriptGeneratorTest extends TestCase {
 
 		File f = new File(sqlLoaderDir);
 
-		String os = System.getProperty("os.name");
+		
+		String osName = System.getProperty("os.name", "");
+
+		boolean isWindows = false;
+
+		if (osName.indexOf("Windows") >= 0) {
+			isWindows = true;
+		}
+
+	
+		
 
 		for (int i = 0; i < tables.length; i++) {
 
 			String command = "cmd /C " + tables[i];
+			
+			if (isWindows) {
+				command = "cmd /C " + tables[i] + ".bat";
+			} else {
+				command = "bash -c " + tables[i] + ".sh";
+			}
+			
 
 			Runtime.getRuntime().exec(command);
 
