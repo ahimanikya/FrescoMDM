@@ -1,6 +1,7 @@
 #
 # BOM to publish repackaged glassfish bundle with latest kenai kit
 #
+#
 
 set SRC_DIR <SRCROOT>/index-gui/target
 set DST_DIR .
@@ -9,3 +10,8 @@ open-dm-mi-netbeans.zip|0444|bin|<SRC_DIR>|open-dm-mi-netbeans.zip|<DST_DIR>
 
 set SRC_DIR <SRCROOT>/bld/release
 version.txt|0444|bin|<SRC_DIR>|version.txt|<DST_DIR>
+
+
+set SRC_DIR <SRCROOT>/index-webapp/target
+index-webapp.war|0444|bin|<SRC_DIR>|index-webapp.war|<DST_DIR>
+
