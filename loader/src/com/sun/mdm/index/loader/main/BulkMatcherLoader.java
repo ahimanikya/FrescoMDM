@@ -80,7 +80,7 @@ public class BulkMatcherLoader {
 	private boolean delInterMediateDir = true;
 	public BulkMatcherLoader() throws Exception {
 		new LoaderLogManager().init();
-		logger.info("loader started");
+		logger.info("bulk_boader_started");
 		loadConfig();
 		clusterSynchronizer_ = ClusterSynchronizer.getInstance();
 		
@@ -102,32 +102,32 @@ public class BulkMatcherLoader {
 		
 		ConfigurationService.getInstance();
 		
-		logger.info("configuation loaded");
+		logger.info("configuation_loaded");
 		
 		if (isMasterLoader_) {
-		   logger.info("Master Loader:" + loaderName);
+		   logger.info("master_loader:" + loaderName);
 		} else {
-		   logger.info("Slave Loader:" + loaderName);
+		   logger.info("slave_loader:" + loaderName);
 		}
 	}
 	
 	public void bulkMatchLoad() throws Exception {	
 		
 	 if (isMasterLoader_) { 
-		 logger.info("block distribution started");
+		 logger.info("block_distribution_started");
 		clusterSynchronizer_.setClusterState(ClusterState.BLOCK_DISTRIBUTION);		
 	    BlockDistributor blockDistributor = new BlockDistributor(matchPaths_, inputLookup_, blockLk_, false);	
 	    blockDistributor.distributeBlocks();
-	    logger.info("block distribution completed");
+	    logger.info("block_distribution_completed");
 	    clusterSynchronizer_.setClusterState(ClusterState.MATCHING);	    
 	 } else {
-		 logger.info("waiting for block distribution to be completed");
+		 logger.info("waiting_for_block_distribution");
 		 clusterSynchronizer_.waitMatchingReady();		 
 	 }
-	 logger.info("Matcher started");	
+	 logger.info("matcher_started");	
 	 Matcher matcher = new Matcher(matchPaths_, matchTypes_, blockLk_, false);
 	 matcher.match();
-	 logger.info("Matching Done"); 
+	 logger.info("matching_done"); 
 	  
 
 	 deleteBlockDir();
@@ -135,7 +135,7 @@ public class BulkMatcherLoader {
 	 if (ismatchAnalyzer) {
 		 return;
 	 }
-	  logger.info("EUID Assigner started");	
+	  logger.info("EUID_Assigner_started");	
 	  
 	  if (isMasterLoader_) { 
 	    EuidIndexAssigner euidAssigner = new EuidIndexAssigner();
@@ -147,9 +147,9 @@ public class BulkMatcherLoader {
      
      deleteMatchDir();
 	  
-	  logger.info("EUID Assigner Done");
+	  logger.info("EUID_Assigner_Done");
 	  	  	  
-	  logger.info("Master Index Generation started");	
+	  logger.info("master_index_generation_started");	
 	  MasterIndex masterIndex = new MasterIndex();
 	  masterIndex.generateMasterIndex();	  
 	  
@@ -164,18 +164,18 @@ public class BulkMatcherLoader {
 	  
 	  deleteEUIDDir();
 	  
-	  logger.info("Master Index Generation completed");
+	  logger.info("master_index_generation_completed");
 	  
-	  logger.info("Potential Duplicates started");
+	  logger.info("potential_duplicates_started");
 	  
 	  if (isMasterLoader_) { 	 
 			clusterSynchronizer_.setClusterState(ClusterState.POT_DUPLICATE_BLOCK);							
 		    BlockDistributor blockDistributor = new BlockDistributor(sbrmatchPaths_, sbrLookup_, sbrblockLk_, true);	
 		    blockDistributor.distributeBlocks();
-		    logger.info("Pot Dups SBR block distribution completed");
+		    //logger.info("Pot Dups SBR block distribution completed");
 		    clusterSynchronizer_.setClusterState(ClusterState.POT_DUPLICATE_MATCH);	    
 		 } else {
-			 logger.info("waiting for Pot Dup SBR block distribution to be completed");
+			 //logger.info("waiting for Pot Dup SBR block distribution to be completed");
 			 clusterSynchronizer_.waitSBRMatchingReady();		 
 		 }
 		 
@@ -192,7 +192,7 @@ public class BulkMatcherLoader {
 		   	  
 	 deleteSBRMatchDir();
 	 
-	 logger.info("Potential Duplicates completed");
+	 logger.info("potential_duplicates_completed");
 	 System.exit(0);
 	}
 	
