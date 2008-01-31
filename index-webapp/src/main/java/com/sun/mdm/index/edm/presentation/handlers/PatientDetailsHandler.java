@@ -1072,6 +1072,7 @@ public String performSubmit() throws ProcessingException, UserException {
             finalMergredDestnEOArrayList.add(finalMergredDestnEO);
             session.removeAttribute("mergedEOMap");
             session.removeAttribute("enterpriseArrayList");
+            session.removeAttribute("finalArrayList");
             
             session.setAttribute("enterpriseArrayList", finalMergredDestnEOArrayList);
             

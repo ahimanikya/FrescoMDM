@@ -154,15 +154,14 @@ public class DuplicateReportHandler    {
         List transactionFields = reportConfig.getTransactionFields();
         if (transactionFields != null) {
             Iterator iter = transactionFields.iterator();
-            DuplicateRecords duplicateRecords = new DuplicateRecords();
             EnterpriseObject eo = null;
             Object obj = null;
             MasterControllerService masterControllerService = new MasterControllerService();
-            
             while (iter.hasNext()) {
-                String field = (String) iter    .next();
+                String field = (String) iter.next();
                 String val = reportRow.getValue(field).toString();
                  if (field.equalsIgnoreCase("EUID1"))  {
+                     DuplicateRecords duplicateRecords = new DuplicateRecords();
                      duplicateRecords.setEuid(val);
                      eo = masterControllerService.getEnterpriseObject(val.toString());
                      obj = EPathAPI.getFieldValue("Person.FirstName", eo.getSBR().getObject());
@@ -180,20 +179,35 @@ public class DuplicateReportHandler    {
                      obj = EPathAPI.getFieldValue("Person.DOB", eo.getSBR().getObject());
                      SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
                      String dob = simpleDateFormatFields.format(obj);
-                     duplicateRecords.setDob(dob);                    
-                }  else if (field.equalsIgnoreCase("EUID2")){
-                    duplicateRecords.setSsn(val);
-                }  else if (field.equalsIgnoreCase("ID")){
-                   duplicateRecords.setDob(val);
-                }  else if (field.equalsIgnoreCase("Status")){
-                    duplicateRecords.setAddressLine1(val);                  
-                }
+                     duplicateRecords.setDob(dob);
+                     vOList.add(duplicateRecords);
+                }  else if (field.equalsIgnoreCase("EUID2"))  {
+                    DuplicateRecords duplicateRecords = new DuplicateRecords();
+                    duplicateRecords.setEuid(val); 
+                    eo = masterControllerService.getEnterpriseObject(val.toString());
+                     obj = EPathAPI.getFieldValue("Person.FirstName", eo.getSBR().getObject());
+                     //Set the First Name Values in VO
+                     duplicateRecords.setFirstName((String) obj);
+
+                     obj = EPathAPI.getFieldValue("Person.LastName", eo.getSBR().getObject());
+                     //Set the Last Name Values in VO
+                     duplicateRecords.setLastName((String) obj);
+
+                     obj = EPathAPI.getFieldValue("Person.SSN", eo.getSBR().getObject());
+                     //Set the Last Name Values in VO       
+                     duplicateRecords.setSsn((String) obj);
+
+                     obj = EPathAPI.getFieldValue("Person.DOB", eo.getSBR().getObject());
+                     SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+                     String dob = simpleDateFormatFields.format(obj);
+                     duplicateRecords.setDob(dob);   
+                     vOList.add(duplicateRecords);
+                }  
+    
                 //Populate Hash Table as backup
                 //duplicateRecordsResultsHash.put(field, val);
                 rptFields.add(new ReportField(val));
             }
-            vOList.add(duplicateRecords);
-            
         }
         
         EPathArrayList objectFields = reportConfig.getObjectFields();
@@ -314,8 +328,13 @@ public class DuplicateReportHandler    {
                     Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
                    }
         }
+         if (getReportFunction() != null && getReportFunction().length() > 0)    {
+             pdrConfig.setSystemCode(getReportFunction());
+         }
+         
          if (this.getReportSize() != null && this.getReportSize().length() > 0)    {
             String message = edmValidation.validateNumber(this.getReportSize());
+            pdrConfig.setMaxResultSize(new Integer(this.getReportSize()));        
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ReportSize:: " + errorMessage, errorMessage));
@@ -329,11 +348,11 @@ public class DuplicateReportHandler    {
         pdrConfig.addTransactionField(PotentialDuplicateReport.EUID2, "EUID2", 20);        
         pdrConfig.addTransactionField(PotentialDuplicateReport.ID, "ID", 20);
         //pdrConfig.addTransactionField(PotentialDuplicateReport.SYSTEM_CODE, "SystemCode", 10);        
-        pdrConfig.addTransactionField(PotentialDuplicateReport.WEIGHT, "Weight", 20);        
+        //pdrConfig.addTransactionField(PotentialDuplicateReport.WEIGHT, "Weight", 20);        
         //pdrConfig.addTransactionField(PotentialDuplicateReport.REASON, "Reason", 20);        
-        pdrConfig.addTransactionField(PotentialDuplicateReport.STATUS, "Status", 20);  
+        //pdrConfig.addTransactionField(PotentialDuplicateReport.STATUS, "Status", 20);  
        
-        pdrConfig.setMaxResultSize(new Integer("20"));        
+        
             
         /* Commented for now, will be used later
         EPath[] a =  fields.toArray();        

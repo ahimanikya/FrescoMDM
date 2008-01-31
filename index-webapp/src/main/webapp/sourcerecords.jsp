@@ -2491,17 +2491,13 @@
                                                                     <tr>
                                                                         <td class="<%=menuClass%>"><%=dupHeading%></td>
                                                                     </tr> 
-                                                                    <h:form>
                                                                         <tr>
                                                                             <td valign="top" class="<%=dupfirstBlue%>">
-                                                                            <h:commandLink styleClass="dupbtn" 
-                                                                                           actionListener="#{SourceMergeHandler.keepLidsAction}">
-                                                                                <f:attribute name="sourceLID" value="<%=LIDVaueExpression%>"/>
-                                                                                <%=soHashMap.get("LID")%>
-                                                                            </h:commandLink>   
+                                                                                <a  href="#" class="dupbtn">
+                                                                                  <%=soHashMap.get("LID")%>
+                                                                               </a>   
                                                                             </td>
                                                                         </tr>
-                                                                    </h:form>
                                                                 </table>
                                                             </div>
                                                         </div>

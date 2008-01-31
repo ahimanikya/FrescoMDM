@@ -451,7 +451,7 @@ public class MasterControllerService {
      * @return none
      * @exception ProcessingException, UserException, ObjectException.
      */
-    void insertAuditLog(String userName, String euid1, String euid2, String function, int screeneID, String detail)
+    public void insertAuditLog(String userName, String euid1, String euid2, String function, int screeneID, String detail)
             throws ProcessingException, UserException, ObjectException {
         if (userName != null && euid1 != null && function != null && detail != null) {
             String[] primaryObjType = ConfigManager.getInstance().getRootNodeNames();
@@ -711,6 +711,23 @@ public class MasterControllerService {
         }
         return minorObject;
     }
+    
+    public ObjectNode modifyMinorObjectSBR(ObjectNode minorObject, HashMap hm, SBR sbr) throws ObjectException, ValidationException {
+        for (Object obj : hm.keySet()) {
+            Object value = hm.get(obj);
+            //System.out.println("===> IN MODIFYING MINOR OBJECTS===> " + obj + "< ===>" + value );
+            //Check the hash map objects for not MINOR_OBJECT_TYPE,MINOR_OBJECT_UPDATE ,HASH_MAP_TYPE,LID,SYSTEM_CODE 
+            if (!obj.equals(MasterControllerService.MINOR_OBJECT_TYPE) 
+                && !obj.equals(MasterControllerService.LID)
+                && !obj.equals(MasterControllerService.SYSTEM_CODE)
+                && !obj.equals(MasterControllerService.MINOR_OBJECT_UPDATE)
+                && !obj.equals(MasterControllerService.MINOR_OBJECT_ID)
+                && !obj.equals(MasterControllerService.HASH_MAP_TYPE)) {
+                setObjectNodeFieldValue(minorObject, (String) obj, (String) value, sbr);
+            } // Example Key: City Value: Bangalore
+        }
+        return minorObject;
+    }
 
     public SystemObject addMinorObjects(SystemObject systemObject, ArrayList minorObjects) throws ObjectException, ValidationException, UserException, ProcessingException {
         for (Object minorObj : minorObjects) {
@@ -780,14 +797,14 @@ public class MasterControllerService {
                         throw new UserException("Hashmap should provide MINOR_OBJECT_TYPE, MINOR_OBJECT_ID for adding a MinorObject");
                     }
                     ObjectNode child = systemObject.getObject().getChild(type, id);
-                    modifyMinorObject(child, hm);
+                    modifyMinorObjectSBR(child, hm, eo.getSBR());
                 } else if (hm.get(MasterControllerService.HASH_MAP_TYPE).equals(MasterControllerService.SBR_UPDATE)) {
                     SystemObject systemObject = eo.getSBR();
                     modifySBR(eo.getSBR(), hm);
                 }
             }
         }
-        if (eo != null) {
+        if (eo != null) {            
             updateEnterpriseObject(eo);
         } else {
             updateEnterpriseObject(localEO);

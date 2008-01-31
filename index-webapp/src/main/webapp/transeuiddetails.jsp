@@ -56,9 +56,9 @@
             <table cellspacing="5" cellpadding="0" border="0">
                 <tr>
                     <td>
-                        <h:outputLink   styleClass="button" action="{NavigationHandler.toTransactions}">
+                        <a class="button" href='transactions.jsf'>
                             <span><h:outputText value="#{msgs.view_list_but_text}"/></span>
-                        </h:outputLink>
+                        </a>
     
                     </td>
                 </tr>

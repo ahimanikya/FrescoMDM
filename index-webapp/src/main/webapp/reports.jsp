@@ -1443,9 +1443,9 @@
                                                                 </td>
                                                             </tr>    
                                                             <tr>
-                                                                <td><nobr><h:outputLabel for="function" value="#{msgs.transaction_function}" /></nobr></td>
+                                                                <td><nobr><h:outputLabel for="function" value="#{msgs.potential_dup_table_system_column}" /></nobr></td>
                                                                 <td>
-                                                                    <h:selectOneMenu   label="#{DuplicateReportHandler.source}" value="#{DuplicateReportHandler.source}">
+                                                                    <h:selectOneMenu   label="#{ReportHandler.reportFunction}" value="#{ReportHandler.reportFunction}">
                                                                         <f:selectItem itemLabel="" itemValue="" />
                                                                         <f:selectItems  value="#{TransactionHandler.selectOptions}" />
                                                                     </h:selectOneMenu>

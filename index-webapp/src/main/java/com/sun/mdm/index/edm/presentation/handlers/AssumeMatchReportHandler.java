@@ -202,28 +202,28 @@ public class AssumeMatchReportHandler  {
                 String field = (String) i.next();
                 String val = reportRow.getValue(field).toString();
                 if (field.equalsIgnoreCase("EUID")) {
-                    System.out.println("Field " + field + " Value " + val + " Group Index " + groupIndex + " VoIndex " + voIndex);                    
+                    //System.out.println("Field " + field + " Value " + val + " Group Index " + groupIndex + " VoIndex " + voIndex);                    
                     if (groupIndex == 0) {
                         assumematchesRecordsVO[voIndex].setEuid(val);
                     }
                     eo = masterControllerService.getEnterpriseObject(val.toString());
                     obj = EPathAPI.getFieldValue("Person.FirstName", eo.getSBR().getObject());
-                    System.out.println("First Name:: " + obj.toString());
+                    //System.out.println("First Name:: " + obj.toString());
                     //Set the First Name Values in VO
                     assumematchesRecordsVO[voIndex].getFirstName().add(obj);
 
                     obj = EPathAPI.getFieldValue("Person.LastName", eo.getSBR().getObject());
-                    System.out.println("Last Name:: " + obj.toString());
+                    //System.out.println("Last Name:: " + obj.toString());
                     //Set the Last Name Values in VO
                     assumematchesRecordsVO[voIndex].getLastName().add(obj);
 
                     obj = EPathAPI.getFieldValue("Person.SSN", eo.getSBR().getObject());
-                    System.out.println("SSN :: " + obj.toString());
+                    //System.out.println("SSN :: " + obj.toString());
                     //Set the Last Name Values in VO       
                     assumematchesRecordsVO[voIndex].getSsn().add(obj);
 
                     obj = EPathAPI.getFieldValue("Person.DOB", eo.getSBR().getObject());
-                    System.out.println("DOB :: " + obj.toString());
+                    //System.out.println("DOB :: " + obj.toString());
                     SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
                     String dob = simpleDateFormatFields.format(obj);
                     assumematchesRecordsVO[voIndex].getDob().add(dob);
@@ -235,17 +235,17 @@ public class AssumeMatchReportHandler  {
                     if (groupIndex == 0) {
                         assumematchesRecordsVO[voIndex].setSystemCode(val);
                     }
-                    System.out.println("Field " + field + " Value " + val + " Group Index " + groupIndex + " VoIndex " + voIndex);                    
+                    //System.out.println("Field " + field + " Value " + val + " Group Index " + groupIndex + " VoIndex " + voIndex);                    
                 } else if (field.equalsIgnoreCase("LID")) {
                     if (groupIndex == 0) {
                         assumematchesRecordsVO[voIndex].setLocalId(val);
                     }
-                    System.out.println("Field " + field + " Value " + val + " Group Index " + groupIndex + " VoIndex " + voIndex);                    
+                    //System.out.println("Field " + field + " Value " + val + " Group Index " + groupIndex + " VoIndex " + voIndex);                    
                 } else if (field.equalsIgnoreCase("Weight")) {
                     if (groupIndex == 0) {
                         assumematchesRecordsVO[voIndex].setWeight(val);
                     }
-                    System.out.println("Field " + field + " Value " + val + " Group Index " + groupIndex + " VoIndex " + voIndex);                    
+                    //System.out.println("Field " + field + " Value " + val + " Group Index " + groupIndex + " VoIndex " + voIndex);                    
                 }
             }
         }
@@ -415,6 +415,7 @@ public class AssumeMatchReportHandler  {
         }
           if (this.getReportSize() != null && this.getReportSize().length() > 0)    {
             String message = edmValidation.validateNumber(this.getReportSize());
+            amrc.setMaxResultSize(new Integer(this.getReportSize()));
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ReportSize:: " + errorMessage, errorMessage));
@@ -427,8 +428,6 @@ public class AssumeMatchReportHandler  {
         amrc.addTransactionField("LID", "Local Id", 20);
         amrc.addTransactionField("Weight", "Weight", 10);
         amrc.addTransactionField("EUID", "EUID", 20);
-        
-        amrc.setMaxResultSize(new Integer("20"));        
         // Set labels, path and other UI attributes here        
 
         if (errorMessage != null && errorMessage.length() != 0)  {            
