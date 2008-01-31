@@ -1,0 +1,1289 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+
+     
+/*
+ * SourceHandler.java 
+ * Created on September 12, 2007
+ * Author : Rajanikanth
+ *  
+ */
+
+
+package com.sun.mdm.index.edm.presentation.handlers;
+
+import com.sun.mdm.index.edm.services.configuration.ConfigManager;
+import com.sun.mdm.index.edm.services.configuration.FieldConfig;
+import com.sun.mdm.index.edm.services.configuration.FieldConfigGroup;
+import com.sun.mdm.index.edm.services.configuration.ObjectNodeConfig;
+import com.sun.mdm.index.edm.services.configuration.ScreenObject;
+import com.sun.mdm.index.edm.services.configuration.SearchResultsConfig;
+import com.sun.mdm.index.edm.services.configuration.SearchScreenConfig;
+import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
+import com.sun.mdm.index.master.ProcessingException;
+import com.sun.mdm.index.master.UserException;
+import com.sun.mdm.index.objects.EnterpriseObject;
+import com.sun.mdm.index.objects.SystemObject;
+import com.sun.mdm.index.objects.epath.EPathArrayList;
+import com.sun.mdm.index.objects.epath.EPathException;
+import com.sun.mdm.index.objects.exception.ObjectException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.event.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+
+public class SourceHandler {
+
+    private static final String SEARCH_SOURCE_SUCCESS = "success";
+
+    // Create fields for non updateable fields as per screen config array
+    private String EUID;
+    private String SystemCode;
+    private String LID;
+    private String create_start_date;
+    private String create_end_date;
+    private String create_start_time;
+    private String create_end_time;
+    private String Status;
+
+    // Create fields for updateable fields as per screen config array like firstname,lastname...etc (Person, Address, Auxiliary, Comment and Alias)
+    private HashMap updateableFeildsMap =  new HashMap();    
+
+    //Arraylist to display EDM driven search criteria.
+    private ArrayList searchScreenConfigArray;
+    
+    //Arraylist to display EDM driven search results.
+    private ArrayList searchResultsConfigArray;
+
+    //Get the session variable from faces context
+    HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    
+    //Get the session variable from faces context
+    HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+    
+    //Get the screen object from session
+    ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+
+    //sub screen tab name for each tab on the source records page
+    private String subScreenTab = "View/Edit";
+
+    //sub screen tab name for each tab on the source records page
+    private String searchType = "Basic Search";
+
+    //Arraylist to display EDM driven search criteria viewEdit.
+    private ArrayList viewEditScreenConfigArray;
+
+    //Arraylist to display EDM driven search criteria Add screen.
+    private ArrayList addScreenConfigArray;
+    
+    //Arraylist to display EDM driven search criteria merge.
+    private ArrayList mergeScreenConfigArray;
+
+    //Arraylist to display EDM driven search criteria viewEdit.
+    private ArrayList viewEditResultsConfigArray;
+    
+    private static final String  VALIDATION_ERROR     = "validationfailed";
+
+    //Hash map for single SO  for view
+    private HashMap singleSOHashMap = new HashMap();
+    
+    //Array list for all person fields
+    private ArrayList allFieldConfigs;
+
+    //Array list for all person fields
+    private ArrayList personFieldConfigs;
+    //Array list for all address fields
+    private ArrayList addressFieldConfigs;
+    //Array list for all person fields
+    private ArrayList phoneFieldConfigs;
+    //Array list for all person fields
+    private ArrayList aliasFieldConfigs;
+    //Array list for all person fields
+    private ArrayList auxIdFieldConfigs;
+    //Array list for all person fields
+    private ArrayList commentFieldConfigs;
+
+    MasterControllerService  masterControllerService = new MasterControllerService();
+    
+    
+    //Hash map for single SO  for view
+    private ArrayList singleSOHashMapArrayList = new ArrayList();
+
+    //Hash map arraylist for single SO 
+    private ArrayList singleAddressHashMapArrayList = new ArrayList();
+    
+    //Hash map arraylist for single SO Address
+    private ArrayList singleAliasHashMapArrayList = new ArrayList();
+    
+    //Hash map arraylist for single SO Phone
+    private ArrayList singlePhoneHashMapArrayList = new ArrayList();
+    
+    //Hash map arraylist for single SO AuxId
+    private ArrayList singleAuxIdHashMapArrayList = new ArrayList();
+    
+    //Hash map arraylist for single SO Comment
+    private ArrayList singleCommentHashMapArrayList = new ArrayList();
+
+    //Hash map for single SO Adress
+    private ArrayList singleSOKeyArrayList = new ArrayList();
+
+    
+    //Hash map for single SO  EDITING
+    private HashMap editSingleSOHashMap = new HashMap();
+
+    private HashMap editSoAddressHashMap = new HashMap();
+    private HashMap editSoPhoneHashMap = new HashMap();
+    private HashMap editSoAliasHashMap = new HashMap();
+    private HashMap editSoAuxIdHashMap = new HashMap();
+    private HashMap editSoCommentHashMap = new HashMap();
+
+    public static final String UPDATE_SUCCESS = "UPDATE SUCCESS";
+    
+    //Hash map for single SO  EDITING
+    private HashMap readOnlySingleSOHashMap = new HashMap();
+    
+    
+    /** Creates a new instance of SourceHandler */
+    public SourceHandler() {
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public String performSubmit() {
+
+        // set the tab name to be view/edit
+        session.setAttribute("tabName", "View/Edit");
+        
+        ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        //get the hidden fields search type from the form usin the facesContext
+        // get the array list as per the search
+        ArrayList fieldConfigArrayList  = this.getViewEditScreenConfigArray();
+        Iterator fieldConfigArrayIter =  fieldConfigArrayList.iterator();
+        int totalFields = fieldConfigArrayList.size();
+        int countMenuFields = 0;
+        int countEmptyFields = 0;
+        while(fieldConfigArrayIter.hasNext())  {           
+             FieldConfig  fieldConfig = (FieldConfig) fieldConfigArrayIter.next();
+             String feildValue = (String) this.getUpdateableFeildsMap().get(fieldConfig.getName());                          
+            
+             if (fieldConfig.getName().equalsIgnoreCase("SystemCode")) {
+                this.setSystemCode(feildValue);
+             }
+
+             if("MenuList".equalsIgnoreCase(fieldConfig.getGuiType()) && feildValue == null)  {
+                 countMenuFields++;     
+             } else if(!"MenuList".equalsIgnoreCase(fieldConfig.getGuiType()) && feildValue != null && feildValue.trim().length() == 0)  { 
+               countEmptyFields++;       
+             }
+        }
+        String lid = this.getLID().replaceAll("-", ""); 
+        this.setLID(lid);
+        
+        //Checking one of many condition here   
+        if( (totalFields > 0 && countEmptyFields+countMenuFields == totalFields)   && // all updateable fields are left blank
+           (this.getEUID() == null || (this.getEUID()  != null && this.getEUID().trim().length() == 0))  &&
+           (this.getLID()  == null || (this.getLID()  != null && this.getLID().trim().length() == 0))  &&
+           (this.getCreate_start_date()  == null || (this.getCreate_start_date()  != null && this.getCreate_start_date().trim().length() == 0))  &&
+           (this.getCreate_start_time()  == null || (this.getCreate_start_time()  != null && this.getCreate_start_time().trim().length() == 0))  &&
+           (this.getCreate_end_date()  == null  || (this.getCreate_end_date()  != null && this.getCreate_end_date().trim().length() == 0))  &&
+           (this.getCreate_end_time()  == null || (this.getCreate_end_time()  != null && this.getCreate_end_time().trim().length() == 0))  &&
+           (this.getSystemCode()  == null) &&  
+           (this.getStatus()  == null ) 
+           )  {
+                String errorMessage = bundle.getString("potential_dup_search_error");
+                FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+                return VALIDATION_ERROR;  
+        }
+        
+        //get array of lids 
+        String lids[] = this.getStringEUIDs(this.getLID());
+        //instantiate master controller service
+        SystemObject singleSystemObject = null;
+        SystemObject[] systemObjectArrays = null;
+        ArrayList systemObjectsMapList = new ArrayList();
+        EPathArrayList ePathArrayList = new EPathArrayList();
+        ArrayList newArrayList  = this.getViewEditResultsConfigArray();
+        try {
+            for (int i = 0; i < newArrayList.size(); i++) {
+                FieldConfig fieldConfig = (FieldConfig) newArrayList.get(i);
+                ePathArrayList.add(fieldConfig.getFullFieldName());
+            }
+        } catch (EPathException ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+          SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+          String createDate = null;
+        try {
+            if (lids.length == 1) { // only sigle LID entered by the user
+                // only sigle LID entered by the user
+                singleSystemObject = masterControllerService.getSystemObject(this.SystemCode, lids[0]);
+                if(singleSystemObject == null) {
+                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("system_object_not_found_error_message"), bundle.getString("system_object_not_found_error_message")));
+                  return this.SEARCH_SOURCE_SUCCESS;
+                }
+                EPathArrayList personEPathArrayList = buildSystemObjectEpaths("Person");
+
+                HashMap systemObjectMap = masterControllerService.getSystemObjectAsHashMap(singleSystemObject, personEPathArrayList);
+                session.setAttribute("singleSystemObjectLID", singleSystemObject);
+                session.setAttribute("systemObjectMap", systemObjectMap);
+                //set the single SO hash map for single so
+                this.setSingleSOHashMap(systemObjectMap);
+                
+                ArrayList addressMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObject, buildSystemObjectEpaths("Address"),"Address",null);
+                this.setSingleAddressHashMapArrayList(addressMapArrayList);
+
+                ArrayList phoneMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObject, buildSystemObjectEpaths("Phone"),"Phone",null);
+                this.setSinglePhoneHashMapArrayList(phoneMapArrayList);                
+                
+                ArrayList aliasMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObject, buildSystemObjectEpaths("Alias"),"Alias",null);
+                this.setSingleAliasHashMapArrayList(aliasMapArrayList);                
+                
+                ArrayList auxIdMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObject, buildSystemObjectEpaths("AuxId"),"AuxId",null);
+                this.setSingleAuxIdHashMapArrayList(auxIdMapArrayList);                
+                
+                ArrayList commentMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObject, buildSystemObjectEpaths("Comment"),"Comment",null);
+                this.setSingleCommentHashMapArrayList(commentMapArrayList);                
+
+               
+                //set the single hash map array list with person, array list of addresses,phones...etc
+                //this.setSingleSOHashMapArrayList(systemObjectMapArrayList);
+                
+                //ArrayList keySetList = buildSOKeyList(systemObjectMapArrayList);
+   
+                //set the key list in the handler
+                 //this.setSingleSOKeyArrayList(keySetList);     
+                 
+                //session.setAttribute("singleSystemObject", singleSystemObject);
+                session.setAttribute("keyFunction","viewSO");
+                
+            } else if (lids.length > 1) {
+                // only sigle LID entered by the user
+                systemObjectArrays = masterControllerService.getSystemObjects(this.SystemCode, lids);
+                HashMap valueHasphMap = new HashMap();
+                for (int i = 0; i < systemObjectArrays.length; i++) {
+                    SystemObject systemObject = systemObjectArrays[i];
+                    valueHasphMap = masterControllerService.getSystemObjectAsHashMap(systemObject, ePathArrayList);
+                    valueHasphMap.put("LID", systemObject.getLID());// add lid here
+                    EnterpriseObject enterpriseObject =  masterControllerService.getEnterpriseObjectForSO(systemObject);
+                    valueHasphMap.put("EUID", enterpriseObject.getEUID());// add euid here
+                    valueHasphMap.put("Source", systemObject.getSystemCode());// add euid here
+                    createDate = simpleDateFormatFields.format(systemObject.getCreateDateTime());
+                    valueHasphMap.put("DateTime", createDate);// add CreateDateTime
+                    
+                    systemObjectsMapList.add(valueHasphMap);
+                }
+                // add systemObjectsMapList in the session for retrieving first name...etc in the output
+                session.setAttribute("systemObjectsMapList", systemObjectsMapList);
+                session.setAttribute("viewEditResultsConfigArray", this.getViewEditResultsConfigArray());
+                session.removeAttribute("keyFunction");
+            }
+
+        } catch (ProcessingException ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserException ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return this.SEARCH_SOURCE_SUCCESS;
+    }
+
+    
+    // added by samba for testing source record search.
+    public static void main(String args[]) throws ProcessingException, UserException {
+        SourceHandler sourceHandler = new SourceHandler();
+
+    }
+
+
+
+    //getter and setter methods for updateable fields.
+    public String getEUID() {
+        return EUID;
+    }
+
+    public void setEUID(String EUID) {
+        this.EUID = EUID;
+    }
+
+    public String getSystemCode() {
+        return SystemCode;
+    }
+
+    public void setSystemCode(String SystemCode) {
+        this.SystemCode = SystemCode;
+    }
+
+    public String getLID() {
+        return LID;
+    }
+
+    /**
+     * 
+     * @param LID
+     */
+    public void setLID(String LID) {
+        this.LID = LID;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public String getCreate_start_date() {
+        return create_start_date;
+    }
+
+    /**
+     * 
+     * @param create_start_date
+     */
+    public void setCreate_start_date(String create_start_date) {
+        this.create_start_date = create_start_date;
+    }
+
+    public String getCreate_end_date() {
+        return create_end_date;
+    }
+
+    public void setCreate_end_date(String create_end_date) {
+        this.create_end_date = create_end_date;
+    }
+
+    public String getCreate_start_time() {
+        return create_start_time;
+    }
+
+    public void setCreate_start_time(String create_start_time) {
+        this.create_start_time = create_start_time;
+    }
+
+    public String getCreate_end_time() {
+        return create_end_time;
+    }
+
+    public void setCreate_end_time(String create_end_time) {
+        this.create_end_time = create_end_time;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String Status) {
+        this.Status = Status;
+    }
+
+    public HashMap getUpdateableFeildsMap() {
+        return updateableFeildsMap;
+    }
+
+    /**
+     * 
+     * @param updateableFeildsMap
+     */
+    public void setUpdateableFeildsMap(HashMap updateableFeildsMap) {
+        this.updateableFeildsMap = updateableFeildsMap;
+    }
+
+
+    /**
+     * 
+     * @return
+     */
+    public ArrayList getSearchResultsConfigArray() {
+        return searchResultsConfigArray;
+    }
+
+    /**
+     * 
+     * @param searchResultsConfigArray
+     */
+    public void setSearchResultsConfigArray(ArrayList searchResultsConfigArray) {
+        this.searchResultsConfigArray = searchResultsConfigArray;
+    }
+
+    public String getSubScreenTab() {
+        return subScreenTab;
+    }
+
+    public void setSubScreenTab(String subScreenTab) {
+        this.subScreenTab = subScreenTab;
+    }
+
+    public String getSearchType() {
+        return searchType;
+    }
+
+    public void setSearchType(String searchType) {
+        this.searchType = searchType;
+    }
+
+    /**
+     * 
+     * @param event
+     */
+    public void setSearchTypeAction(ActionEvent event){
+        // set the tab name to be view/edit
+        session.setAttribute("tabName", "View/Edit");
+
+
+        String searchTypeValue = (String) event.getComponent().getAttributes().get("searchType");
+        //set the search type as per the form
+        this.setSearchType(searchTypeValue);    
+   }
+    
+    /**
+     * 
+     * @param event
+     */
+    public void deleteSOAddress(ActionEvent event){
+        // set the tab name to be view/edit
+        session.setAttribute("tabName", "View/Edit");       
+   }
+
+    /**
+     * 
+     * @param event
+     */
+    public void addSOAddress(ActionEvent event){
+        // set the tab name to be view/edit
+        session.setAttribute("tabName", "View/Edit");
+   }
+
+    /**
+     * 
+     * @param event
+     */
+    public void removeSingleLID(ActionEvent event){
+        // set the tab name to be view/edit
+            session.setAttribute("tabName", "View/Edit");
+            session.removeAttribute("singleSystemObjectLID");   
+   }
+    
+    /**
+     * 
+     * @param event
+     */
+    public void editLID(ActionEvent event){
+        // set the tab name to be view/edit
+        session.setAttribute("tabName", "View/Edit");
+        try {
+            SystemObject singleSystemObjectEdit = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");
+            EPathArrayList personEPathArrayList = buildPersonEpaths();
+            HashMap editSystemObjectMap = masterControllerService.getSystemObjectAsHashMap(singleSystemObjectEdit, personEPathArrayList);
+
+            session.setAttribute("singleSystemObjectLID", singleSystemObjectEdit);
+            session.setAttribute("systemObjectMap", editSystemObjectMap);
+            
+            //set the single SO hash map for single so EDITING
+            this.setEditSingleSOHashMap(editSystemObjectMap);
+            this.setReadOnlySingleSOHashMap(editSystemObjectMap);
+            
+            //set address array list of hasmap for editing
+            ArrayList addressMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, buildSystemObjectEpaths("Address"), "Address",null);
+            this.setSingleAddressHashMapArrayList(addressMapArrayList);
+
+            //set phone array list of hasmap for editing
+            ArrayList phoneMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, buildSystemObjectEpaths("Phone"), "Phone",null);
+            this.setSinglePhoneHashMapArrayList(phoneMapArrayList);
+           
+            //set alias array list of hasmap for editing
+            ArrayList aliasMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, buildSystemObjectEpaths("Alias"), "Alias",null);
+            this.setSingleAliasHashMapArrayList(aliasMapArrayList);
+           
+            //set auxid array list of hasmap for editing
+            ArrayList auxIdMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, buildSystemObjectEpaths("AuxId"), "AuxId",null);
+            this.setSingleAuxIdHashMapArrayList(auxIdMapArrayList);
+
+            //set comment array list of hasmap for editing
+            ArrayList commentMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, buildSystemObjectEpaths("Comment"), "Comment",null);
+            this.setSingleCommentHashMapArrayList(commentMapArrayList);
+
+            session.setAttribute("keyFunction", "editSO");
+        } catch (ObjectException ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (EPathException ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   }
+    
+    /**
+     * 
+     * @param event
+     */
+    public void activateSO(ActionEvent event){
+        // set the tab name to be view/edit
+        session.setAttribute("tabName", "View/Edit");
+    
+        try {
+            SystemObject systemObject = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");
+                masterControllerService.activateSystemObject(systemObject);             
+            SystemObject updatedSystemObject = masterControllerService.getSystemObject(systemObject.getSystemCode(), systemObject.getLID());
+    
+            //Keep the updated SO in the session again
+            session.setAttribute("singleSystemObjectLID", updatedSystemObject);
+            session.setAttribute("keyFunction", "editSO");
+                        
+        } catch (ProcessingException ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserException ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   }
+    /**
+     * 
+     * @param event
+     */
+    public void deactivateSO(ActionEvent event){
+        // set the tab name to be view/edit
+        session.setAttribute("tabName", "View/Edit");
+
+        try {
+            SystemObject systemObject = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");          
+            masterControllerService.deactivateSystemObject(systemObject);
+            SystemObject updatedSystemObject = masterControllerService.getSystemObject(systemObject.getSystemCode(), systemObject.getLID());
+
+            //Keep the updated SO in the session again
+            session.setAttribute("singleSystemObjectLID", updatedSystemObject);
+            session.setAttribute("keyFunction","editSO");
+        } catch (ObjectException ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ProcessingException ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserException ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          //session.setAttribute("keyFunction","editSO");
+   }
+    
+    /**
+     * 
+     * @return 
+     */
+    public String updateSO(){
+            // set the tab name to be view/edit
+            session.setAttribute("tabName", "View/Edit");       
+        try {
+             // To recognize which operation/object type             
+             this.getEditSingleSOHashMap().put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SYSTEM_OBJECT_UPDATE);
+             SystemObject systemObject = (SystemObject) session.getAttribute("singleSystemObjectLID");
+             //get the enterprise object for the system object
+             EnterpriseObject  sysEnterpriseObject = masterControllerService.getEnterpriseObjectForSO(systemObject);
+             
+            // add so to the array list
+            //call modifySystemObjects to update the
+            masterControllerService.modifySystemObject(systemObject, this.getEditSingleSOHashMap());
+            
+            //Keep the updated SO in the session again
+            //SystemObject updatedSystemObject = masterControllerService.getSystemObject(systemObject.getSystemCode(), systemObject.getLID());
+
+            //session.setAttribute("singleSystemObjectLID", updatedSystemObject);
+            session.setAttribute("keyFunction","editSO");
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return UPDATE_SUCCESS;
+          //session.setAttribute("keyFunction","viewSO");
+   }
+    /**
+     * 
+     * @param event
+     */
+    public void viewEUID(ActionEvent event){
+            
+        // set the tab name to be view/edit
+        session.setAttribute("tabName", "View/Edit");            
+        
+            SystemObject systemObject = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");
+            EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(systemObject);
+            ArrayList newEOArrayList = new ArrayList();
+            newEOArrayList.add(eo);
+            session.setAttribute("enterpriseArrayList",newEOArrayList);          
+   }
+
+    /**
+     * 
+     * @param event
+     */
+    public void setLIDValue(ActionEvent event){
+        // set the tab name to be view/edit
+        session.setAttribute("tabName", "View/Edit");
+        
+        try {
+            String sourceLID = (String) event.getComponent().getAttributes().get("sourceLID");
+            String sourceSystem = (String) event.getComponent().getAttributes().get("sourceSystem");
+            SystemObject systemObject = masterControllerService.getSystemObject(sourceSystem, sourceLID);
+            EPathArrayList  personEPathArrayList  = buildPersonEpaths();
+            HashMap systemObjectMap = masterControllerService.getSystemObjectAsHashMap(systemObject, personEPathArrayList);
+            
+                //set the single SO hash map for single so
+                this.setSingleSOHashMap(systemObjectMap);
+                
+                ArrayList addressMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, buildSystemObjectEpaths("Address"),"Address",null);
+                this.setSingleAddressHashMapArrayList(addressMapArrayList);
+
+                ArrayList phoneMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, buildSystemObjectEpaths("Phone"),"Phone",null);
+                this.setSinglePhoneHashMapArrayList(phoneMapArrayList);                
+                
+                ArrayList aliasMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, buildSystemObjectEpaths("Alias"),"Alias",null);
+                this.setSingleAliasHashMapArrayList(aliasMapArrayList);                
+                
+                ArrayList auxIdMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, buildSystemObjectEpaths("AuxId"),"AuxId",null);
+                this.setSingleAuxIdHashMapArrayList(auxIdMapArrayList);                
+                
+                ArrayList commentMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, buildSystemObjectEpaths("Comment"),"Comment",null);
+                this.setSingleCommentHashMapArrayList(commentMapArrayList);                
+            
+            session.setAttribute("singleSystemObjectLID", systemObject);
+            session.setAttribute("systemObjectMap", systemObjectMap);
+            session.setAttribute("keyFunction","viewSO");
+            
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+   }
+
+    public ArrayList getViewEditScreenConfigArray() {
+        ArrayList basicSearchFieldConfigs;
+        
+        ArrayList subScreenObjectList = screenObject.getSubscreensConfig();
+        ScreenObject subScreenObject = null;
+
+        // build the screen  as per the subscreen title (this.getSubScreenTab())
+        for (int i = 0; i < subScreenObjectList.size(); i++) {
+            ScreenObject object = (ScreenObject) subScreenObjectList.get(i);
+            if(object.getDisplayTitle().equalsIgnoreCase("View/Edit")) {
+                subScreenObject = object;
+            }
+        }
+
+        //Get the screen config array
+        ArrayList screenConfigArray = subScreenObject.getSearchScreensConfig();
+        Iterator iteratorScreenConfig = screenConfigArray.iterator();
+
+        while (iteratorScreenConfig.hasNext()) {
+            SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
+
+            //get the field config as per the search type
+            if (this.getSearchType().equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
+                // Get an array list of field config groups
+                basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
+                Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
+                //Iterate the the FieldConfigGroup array list
+                while (basicSearchFieldConfigsIterator.hasNext()) {
+                    //Build array of field config groups 
+                    FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
+
+                    //Build array of field configs from 
+                    viewEditScreenConfigArray = basicSearchFieldGroup.getFieldConfigs();
+                }
+            }
+        }
+        return viewEditScreenConfigArray;
+    }
+
+    public void setViewEditScreenConfigArray(ArrayList viewEditScreenConfigArray) {
+        this.viewEditScreenConfigArray = viewEditScreenConfigArray;
+    }
+
+    public ArrayList getAddScreenConfigArray() {
+        ArrayList basicSearchFieldConfigs;
+        
+        ArrayList subScreenObjectList = screenObject.getSubscreensConfig();
+        ScreenObject subScreenObject = null;
+
+        // build the screen  as per the subscreen title "Add"
+        for (int i = 0; i < subScreenObjectList.size(); i++) {
+            ScreenObject object = (ScreenObject) subScreenObjectList.get(i);
+            if(object.getDisplayTitle().equalsIgnoreCase("Add")) {
+                subScreenObject = object;
+            }
+        }
+        
+        //Get the screen config array
+        ArrayList screenConfigArray = subScreenObject.getSearchScreensConfig();
+        Iterator iteratorScreenConfig = screenConfigArray.iterator();
+
+        while (iteratorScreenConfig.hasNext()) {
+            SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
+            //get the field config as per the search type
+            if (this.getSearchType().equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
+                // Get an array list of field config groups
+                basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
+                Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
+                //Iterate the the FieldConfigGroup array list
+                while (basicSearchFieldConfigsIterator.hasNext()) {
+                    //Build array of field config groups 
+                    FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
+
+                    //Build array of field configs from 
+                    addScreenConfigArray = basicSearchFieldGroup.getFieldConfigs();
+                }
+            }
+        }
+        return addScreenConfigArray;
+    }
+
+    public void setAddScreenConfigArray(ArrayList addScreenConfigArray) {
+        this.addScreenConfigArray = addScreenConfigArray;
+    }
+
+    public ArrayList getMergeScreenConfigArray() {
+        ArrayList basicSearchFieldConfigs;
+        
+        ArrayList subScreenObjectList = screenObject.getSubscreensConfig();
+        ScreenObject subScreenObject = null;
+
+        // build the screen  as per the subscreen title "Merge"
+        for (int i = 0; i < subScreenObjectList.size(); i++) {
+            ScreenObject object = (ScreenObject) subScreenObjectList.get(i);
+            if(object.getDisplayTitle().equalsIgnoreCase("Merge")) {
+                subScreenObject = object;
+            }
+        }
+        
+        //Get the screen config array
+        ArrayList screenConfigArray = subScreenObject.getSearchScreensConfig();
+        Iterator iteratorScreenConfig = screenConfigArray.iterator();
+
+        while (iteratorScreenConfig.hasNext()) {
+            SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
+            //get the field config as per the search type
+                // Get an array list of field config groups
+                basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
+                Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
+                //Iterate the the FieldConfigGroup array list
+                while (basicSearchFieldConfigsIterator.hasNext()) {
+                    //Build array of field config groups 
+                    FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
+
+                    //Build array of field configs from 
+                    mergeScreenConfigArray = basicSearchFieldGroup.getFieldConfigs();
+                }
+        }
+        
+        return mergeScreenConfigArray;
+    }
+
+    public void setMergeScreenConfigArray(ArrayList mergeScreenConfigArray) {
+        this.mergeScreenConfigArray = mergeScreenConfigArray;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public ArrayList getSearchScreenConfigArray() {
+        ArrayList basicSearchFieldConfigs;
+        
+        ArrayList subScreenObjectList = screenObject.getSubscreensConfig();
+        ScreenObject subScreenObject = null;
+
+        // build the screen  as per the subscreen title (this.getSubScreenTab())
+        for (int i = 0; i < subScreenObjectList.size(); i++) {
+            ScreenObject object = (ScreenObject) subScreenObjectList.get(i);
+            if(object.getDisplayTitle().equalsIgnoreCase(this.getSubScreenTab())) {
+                subScreenObject = object;
+            }
+        }
+        
+        //Get the screen config array
+        ArrayList screenConfigArray = subScreenObject.getSearchScreensConfig();
+        Iterator iteratorScreenConfig = screenConfigArray.iterator();
+
+        while (iteratorScreenConfig.hasNext()) {
+            SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
+            //get the field config as per the search type
+            if (this.getSearchType().equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
+                // Get an array list of field config groups
+                basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
+                Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
+                //Iterate the the FieldConfigGroup array list
+                while (basicSearchFieldConfigsIterator.hasNext()) {
+                    //Build array of field config groups 
+                    FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
+
+                    //Build array of field configs from 
+                    searchScreenConfigArray = basicSearchFieldGroup.getFieldConfigs();
+                }
+            }
+        }
+        return searchScreenConfigArray;
+    }
+
+    /**
+     * 
+     * @param searchScreenConfigArray
+     */
+    public void setSearchScreenConfigArray(ArrayList searchScreenConfigArray) {
+        this.searchScreenConfigArray = searchScreenConfigArray;
+    }
+
+    public ArrayList getViewEditResultsConfigArray() {
+        ArrayList subScreenObjectList = screenObject.getSubscreensConfig();
+        ScreenObject subScreenObject = null;
+
+        // build the screen  as per the subscreen title (this.getSubScreenTab())
+        for (int i = 0; i < subScreenObjectList.size(); i++) {
+            ScreenObject object = (ScreenObject) subScreenObjectList.get(i);
+            if (object.getDisplayTitle().equalsIgnoreCase("View/Edit")) {
+                subScreenObject = object;
+            }
+        }
+        ArrayList resultsScreenConfigArray = subScreenObject.getSearchResultsConfig();
+        Iterator iteratorScreenConfig = resultsScreenConfigArray.iterator();
+
+        while (iteratorScreenConfig.hasNext()) {
+            SearchResultsConfig objSearchScreenConfig = (SearchResultsConfig) iteratorScreenConfig.next();
+
+            // Get an array list of field config groups
+            ArrayList basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
+            Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
+            //Iterate the the FieldConfigGroup array list
+            while (basicSearchFieldConfigsIterator.hasNext()) {
+                //Build array of field config groups 
+                FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
+
+                //Build array of field configs from 
+                viewEditResultsConfigArray = basicSearchFieldGroup.getFieldConfigs();
+            }
+        }
+        return viewEditResultsConfigArray;
+    }
+
+    public void setViewEditResultsConfigArray(ArrayList viewEditResultsConfigArray) {
+        this.viewEditResultsConfigArray = viewEditResultsConfigArray;
+    }
+
+    /**
+     * 
+     * @param euids
+     * @return
+     */
+    public String[] getStringEUIDs(String euids) {
+       
+        StringTokenizer stringTokenizer = new StringTokenizer(euids,",");
+        String[] euidsArray = new String[stringTokenizer.countTokens()];
+        int i =0;
+        while(stringTokenizer.hasMoreTokens())  {
+            euidsArray[i] = new String(stringTokenizer.nextElement().toString());
+            i++;
+        }
+        return euidsArray;
+    }
+
+    public EPathArrayList buildPersonEpaths() {
+        EPathArrayList ePathArrayList = new EPathArrayList();
+        try {
+            ConfigManager.init();
+            String rootName = screenObject.getRootObj().getName();
+            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(rootName);
+            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
+
+            //Build Person Epath Arraylist
+            for (int i = 0; i < allFeildConfigs.length; i++) {
+                FieldConfig fieldConfig = allFeildConfigs[i];
+                if(!(rootName+ ".EUID").equalsIgnoreCase(fieldConfig.getFullFieldName())) {
+                  ePathArrayList.add(fieldConfig.getFullFieldName());
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ePathArrayList;
+
+    }
+
+    public EPathArrayList buildSystemObjectEpaths(String objectType) {
+        EPathArrayList ePathArrayList = new EPathArrayList();
+        try {
+            ConfigManager.init();
+            ObjectNodeConfig objectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(objectType);
+            FieldConfig[] allFeildConfigs = objectNodeConfig.getFieldConfigs();
+            String rootName = screenObject.getRootObj().getName();
+
+            //Build Person Epath Arraylist
+            for (int i = 0; i < allFeildConfigs.length; i++) {
+                FieldConfig fieldConfig = allFeildConfigs[i];
+                if(!(rootName+ ".EUID").equalsIgnoreCase(fieldConfig.getFullFieldName())) {
+                  ePathArrayList.add(fieldConfig.getFullFieldName());
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ePathArrayList;
+
+    }
+
+    public HashMap getSingleSOHashMap() {
+        return singleSOHashMap;
+    }
+
+    public void setSingleSOHashMap(HashMap singleSOHashMap) {
+        this.singleSOHashMap = singleSOHashMap;
+    }
+
+    public ArrayList getAllFieldConfigs() {
+        ArrayList newArrayList = new ArrayList();
+        try {
+            ConfigManager.init();
+    
+            String rootName  = screenObject.getRootObj().getName();
+            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(rootName);
+            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
+
+            //Build Person Epath Arraylist
+            for (int i = 0; i < allFeildConfigs.length; i++) {
+                FieldConfig fieldConfig = allFeildConfigs[i];
+                if(!"Person.EUID".equalsIgnoreCase(fieldConfig.getFullFieldName())) {
+                  newArrayList.add(fieldConfig);
+                }
+            }
+
+            ObjectNodeConfig[] childObjectNodeConfig = personObjectNodeConfig.getChildConfigs();
+            for (int i = 0; i < childObjectNodeConfig.length; i++) {
+                ObjectNodeConfig objectNodeConfig = childObjectNodeConfig[i];
+                FieldConfig[] allChildFeildConfigs = objectNodeConfig.getFieldConfigs();
+                for (int j = 0; j < allChildFeildConfigs.length; j++) {
+                    FieldConfig fieldConfig = allChildFeildConfigs[j];
+                    //not adding Auxid  as it unable to fetch the "Auxiliary ID Type" Menu list
+                    // will be reverted to get all child field configs once issue is fixed.
+                    if(!"AuxId".equalsIgnoreCase(objectNodeConfig.getName())) {
+                      newArrayList.add(fieldConfig);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        allFieldConfigs = newArrayList;//store all the fields in the arraylist
+        return allFieldConfigs;
+    }
+
+    public void setAllFieldConfigs(ArrayList allFieldConfigs) {
+        this.allFieldConfigs = allFieldConfigs;
+    }
+
+    public ArrayList getSingleSOHashMapArrayList() {
+        return singleSOHashMapArrayList;
+    }
+
+    public void setSingleSOHashMapArrayList(ArrayList singleSOHashMapArrayList) {
+        this.singleSOHashMapArrayList = singleSOHashMapArrayList;
+    }
+
+    public ArrayList getSingleSOKeyArrayList() {
+        return singleSOKeyArrayList;
+    }
+
+    public void setSingleSOKeyArrayList(ArrayList singleSOKeyArrayList) {
+        this.singleSOKeyArrayList = singleSOKeyArrayList;
+    }
+
+    private ArrayList buildSOKeyList(ArrayList systemObjectMapArrayList) {
+        ArrayList soKeySetList = new ArrayList();
+        //loop through the  systemObjectMapArrayList
+        for (int i = 0; i < systemObjectMapArrayList.size(); i++) {
+            HashMap objectHashMap = (HashMap) systemObjectMapArrayList.get(i);
+            Set soKeySet = objectHashMap.keySet();
+            Object[] soKeySetObj = soKeySet.toArray();
+            //build the key set and add to the arraylist
+            for (int j = 0; j < soKeySetObj.length; j++) {
+                String objectKeySetString = (String) soKeySetObj[j];
+                soKeySetList.add(objectKeySetString);
+            }
+
+        }
+        return soKeySetList;
+    }
+
+    public ArrayList getSingleAddressHashMapArrayList() {
+        return singleAddressHashMapArrayList;
+    }
+
+    public void setSingleAddressHashMapArrayList(ArrayList singleAddressHashMapArrayList) {
+        this.singleAddressHashMapArrayList = singleAddressHashMapArrayList;
+    }
+
+    public ArrayList getSingleAliasHashMapArrayList() {
+        return singleAliasHashMapArrayList;
+    }
+
+    public void setSingleAliasHashMapArrayList(ArrayList singleAliasHashMapArrayList) {
+        this.singleAliasHashMapArrayList = singleAliasHashMapArrayList;
+    }
+
+    public ArrayList getSinglePhoneHashMapArrayList() {
+        return singlePhoneHashMapArrayList;
+    }
+
+    public void setSinglePhoneHashMapArrayList(ArrayList singlePhoneHashMapArrayList) {
+        this.singlePhoneHashMapArrayList = singlePhoneHashMapArrayList;
+    }
+
+    public ArrayList getSingleAuxIdHashMapArrayList() {
+        return singleAuxIdHashMapArrayList;
+    }
+
+    public void setSingleAuxIdHashMapArrayList(ArrayList singleAuxIdHashMapArrayList) {
+        this.singleAuxIdHashMapArrayList = singleAuxIdHashMapArrayList;
+    }
+
+    public ArrayList getSingleCommentHashMapArrayList() {
+        return singleCommentHashMapArrayList;
+    }
+
+    public void setSingleCommentHashMapArrayList(ArrayList singleCommentHashMapArrayList) {
+        this.singleCommentHashMapArrayList = singleCommentHashMapArrayList;
+    }
+
+    public ArrayList getAddressFieldConfigs() {
+        ArrayList newArrayList = new ArrayList();
+        try {
+            ConfigManager.init();
+            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig("Address");
+            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
+
+            //Build Person Epath Arraylist
+            for (int i = 0; i < allFeildConfigs.length; i++) {
+                FieldConfig fieldConfig = allFeildConfigs[i];
+                  newArrayList.add(fieldConfig);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        addressFieldConfigs = newArrayList;//store all the fields in the arraylist
+
+        return addressFieldConfigs;
+    }
+
+    public void setAddressFieldConfigs(ArrayList addressFieldConfigs) {
+        this.addressFieldConfigs = addressFieldConfigs;
+    }
+
+    public ArrayList getPhoneFieldConfigs() {
+        ArrayList newArrayList = new ArrayList();
+        try {
+            ConfigManager.init();
+            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig("Phone");
+            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
+
+            //Build Person Epath Arraylist
+            for (int i = 0; i < allFeildConfigs.length; i++) {
+                FieldConfig fieldConfig = allFeildConfigs[i];
+                  newArrayList.add(fieldConfig);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        phoneFieldConfigs = newArrayList;//store all the fields in the arraylist
+        return phoneFieldConfigs;
+    }
+
+    public void setPhoneFieldConfigs(ArrayList phoneFieldConfigs) {
+        this.phoneFieldConfigs = phoneFieldConfigs;
+    }
+
+    public ArrayList getAliasFieldConfigs() {
+        ArrayList newArrayList = new ArrayList();
+        try {
+            ConfigManager.init();
+            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig("Alias");
+            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
+
+            //Build Person Epath Arraylist
+            for (int i = 0; i < allFeildConfigs.length; i++) {
+                FieldConfig fieldConfig = allFeildConfigs[i];
+                newArrayList.add(fieldConfig);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        aliasFieldConfigs = newArrayList;//store all the fields in the arraylist
+        return aliasFieldConfigs;
+    }
+
+    public void setAliasFieldConfigs(ArrayList aliasFieldConfigs) {
+        this.aliasFieldConfigs = aliasFieldConfigs;
+    }
+
+    public ArrayList getAuxIdFieldConfigs() {
+        ArrayList newArrayList = new ArrayList();
+        try {
+            ConfigManager.init();
+            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig("AuxId");
+            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
+
+            //Build Person Epath Arraylist
+            for (int i = 0; i < allFeildConfigs.length; i++) {
+                FieldConfig fieldConfig = allFeildConfigs[i];
+                  newArrayList.add(fieldConfig);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        auxIdFieldConfigs = newArrayList;//store all the fields in the arraylist
+        return auxIdFieldConfigs;
+    }
+
+    public void setAuxIdFieldConfigs(ArrayList auxIdFieldConfigs) {
+        this.auxIdFieldConfigs = auxIdFieldConfigs;
+    }
+
+    public ArrayList getCommentFieldConfigs() {
+        ArrayList newArrayList = new ArrayList();
+        try {
+            ConfigManager.init();
+            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig("Comment");
+            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
+
+            //Build Person Epath Arraylist
+            for (int i = 0; i < allFeildConfigs.length; i++) {
+                FieldConfig fieldConfig = allFeildConfigs[i];
+                  newArrayList.add(fieldConfig);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        commentFieldConfigs = newArrayList;//store all the fields in the arraylist
+        return commentFieldConfigs;
+    }
+
+    public void setCommentFieldConfigs(ArrayList commentFieldConfigs) {
+        this.commentFieldConfigs = commentFieldConfigs;
+    }
+
+    public ArrayList getPersonFieldConfigs() {
+        ArrayList newArrayList = new ArrayList();
+        try {
+            ConfigManager.init();
+            
+            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(screenObject.getRootObj().getName());
+            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
+
+            //Build Person Epath Arraylist
+            for (int i = 0; i < allFeildConfigs.length; i++) {
+                FieldConfig fieldConfig = allFeildConfigs[i];
+               
+                String strCheckEuid = screenObject.getRootObj().getName()+".EUID";
+               
+                if(!strCheckEuid.equalsIgnoreCase(fieldConfig.getFullFieldName())) {
+                  newArrayList.add(fieldConfig);
+                }
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        personFieldConfigs = newArrayList;//store all the fields in the arraylist
+        return personFieldConfigs;
+    }
+
+    public void setPersonFieldConfigs(ArrayList personFieldConfigs) {
+        this.personFieldConfigs = personFieldConfigs;
+    }
+
+    public HashMap getEditSingleSOHashMap() {
+        return editSingleSOHashMap;
+    }
+
+    public void setEditSingleSOHashMap(HashMap editSingleSOHashMap) {
+        this.editSingleSOHashMap = editSingleSOHashMap;
+    }
+
+    public HashMap getReadOnlySingleSOHashMap() {
+        return readOnlySingleSOHashMap;
+    }
+
+    public void setReadOnlySingleSOHashMap(HashMap readOnlySingleSOHashMap) {
+        this.readOnlySingleSOHashMap = readOnlySingleSOHashMap;
+    }
+
+    public HashMap getEditSoAddressHashMap() {
+        return editSoAddressHashMap;
+    }
+
+    public void setEditSoAddressHashMap(HashMap editSoAddressHashMap) {
+        this.editSoAddressHashMap = editSoAddressHashMap;
+    }
+
+    public HashMap getEditSoPhoneHashMap() {
+        return editSoPhoneHashMap;
+    }
+
+    public void setEditSoPhoneHashMap(HashMap editSoPhoneHashMap) {
+        this.editSoPhoneHashMap = editSoPhoneHashMap;
+    }
+
+    public HashMap getEditSoAliasHashMap() {
+        return editSoAliasHashMap;
+    }
+
+    public void setEditSoAliasHashMap(HashMap editSoAliasHashMap) {
+        this.editSoAliasHashMap = editSoAliasHashMap;
+    }
+
+    public HashMap getEditSoAuxIdHashMap() {
+        return editSoAuxIdHashMap;
+    }
+
+    public void setEditSoAuxIdHashMap(HashMap editSoAuxIdHashMap) {
+        this.editSoAuxIdHashMap = editSoAuxIdHashMap;
+    }
+
+    public HashMap getEditSoCommentHashMap() {
+        return editSoCommentHashMap;
+    }
+
+    public void setEditSoCommentHashMap(HashMap editSoCommentHashMap) {
+        this.editSoCommentHashMap = editSoCommentHashMap;
+    }
+}
