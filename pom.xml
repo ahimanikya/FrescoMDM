@@ -14,6 +14,7 @@
         <module>loader</module>
         <module>report</module>
         <module>index-gui</module>
+        <module>index-webapp</module>
     </modules>
     <build>
         <plugins>
