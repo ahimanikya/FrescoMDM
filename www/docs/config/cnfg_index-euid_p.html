@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+
+<a name="top"></a>
+<h1>Configuring Master Indexes</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+<a name="cnfg_index-euid_p"></a>
+
+<h2>Configuring the EUID Generator</h2>
+<p>The <a name="indexterm-181"></a>EUID Generator controls how the enterprise-wide unique identifiers (EUIDs) are created by the
+master index application, including the length of the ID and the checksum value.
+The EUID generator can only be configured by modifying the Threshold file (<tt>master.xml</tt>)
+directly. You can customize the EUID Generator by performing any of the following
+actions:</p>
+<ul><li><p><a href="#cnfg_index-euid-class_t">Specifying the EUID Generator Class</a></p></li>
+<li><p><a href="#cnfg_index-euid-lnth_t">Specifying the EUID Length</a></p></li>
+<li><p><a href="#cnfg_index-checksum_t">Specifying a Checksum Length</a></p></li>
+<li><p><a href="#cnfg_index-chunksize_t">Specifying the Chunk Size</a></p></li>
+<li><p><a href="#cnfg_index-euid-param_t">Adding and Deleting EUID Generator Parameters</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_index-euid-class_t"></a><h3>Specifying the EUID Generator Class</h3>
+<p>The default EUID generator creates sequential EUIDs based on the value specified for
+the EUID sequence in the sbyn_seq_table database table. If you create a new
+EUID generator class to process EUIDs differently, you must specify the name of
+the new class in the <i>euid-generator-class</i> element of the Threshold file (<tt>master.xml</tt>).</p>
+
+<a name="gentextid-2277"></a><h5>To Specify the EUID Generator Class</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click master.xml.</b></li>
+<li><b>Scroll to the <i>EuidGeneratorConfig</i> element.</b></li>
+<li><b>Change the value of the <i>euid-generator-class</i> element to the path and name of
+the new EUID generator class. </b><p>For example:</p><pre>&lt;euid-generator-class>com.sun.mdm.index.idgen.impl.MyEuidGenerator
+&lt;/euid-generator-class></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-euid-lnth_t"></a><h3>Specifying the EUID Length</h3>
+<p><a name="indexterm-182"></a><a name="indexterm-183"></a><a name="indexterm-184"></a><a name="indexterm-185"></a>By default, the length of the EUIDs generated by the master index application
+is 10 characters. You can modify this value if needed. You can also
+specify a new starting EUID number. This is described in <a href="https://open-dm-mi.dev.java.net/www/docs/dev/landingpage.html">Developing Master Indexes</a>.</p><p><a name="indexterm-186"></a>If you increase the length of the EUIDs to longer than 20
+characters, or if the EUID length plus the checksum length is longer than
+20 characters, you need to increase the length of the EUID columns in
+the script that creates the database tables.</p>
+
+<a name="gentextid-2301"></a><h5>To specify the EUID length</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click master.xml.</b></li>
+<li><b><a name="indexterm-187"></a>Scroll to the first <i>parameter</i> element, IdLength, in the <i>EuidGeneratorConfig</i> element.</b></li>
+<li><b>Change the value of the <i>parameter-value</i> element to the desired length of the
+EUID. </b><p>For example:</p><pre>&lt;parameter>
+   &lt;parameter-name>IdLength&lt;/parameter-name>
+   &lt;parameter-type>java.lang.Integer&lt;/parameter-type>
+   &lt;parameter-value>12&lt;/parameter-value>
+&lt;/parameter></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-checksum_t"></a><h3>Specifying a Checksum Length</h3>
+<p><a name="indexterm-188"></a>A checksum value is a number appended to the end of each EUID
+that allows systems to validate EUIDs to ensure accurate identification of records throughout
+the network. For detailed information about checksum values and how they work, see
+<a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/landingpage.html">Understanding Master Index Configuration Options</a>.</p><p>If you specify <b>0</b> (zero), checksum values are not used for validation. If
+the EUID length plus the checksum length is greater than 20, you need
+to increase the length of the EUID columns in the database creation scripts.</p>
+
+<a name="gentextid-2324"></a><h5>To specify a checksum length</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click master.xml.</b></li>
+<li><b><a name="indexterm-189"></a>Scroll to the second <i>parameter</i> element, ChecksumLength, in the <i>EuidGeneratorConfig</i> element.</b></li>
+<li><b>Change the value of the <i>parameter-value</i> element to the desired length of the
+checksum value. </b><p>For example:</p><pre>&lt;parameter>
+   &lt;parameter-name>ChecksumLength&lt;/parameter-name>
+   &lt;parameter-type>java.lang.Integer&lt;/parameter-type>
+   &lt;parameter-value>2&lt;/parameter-value>
+&lt;/parameter></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-chunksize_t"></a><h3>Specifying the Chunk Size</h3>
+<p>You can specify a number of EUIDs to be allocated at one
+time to the EUID generator. This allows the generator to assign EUIDs to
+a number of records without needing to query the sbyn_seq_table database table, which
+improves performance. For detailed information about the chunk size and how EUIDs are allocated,
+see <a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/landingpage.html">Understanding Master Index Configuration Options</a>.</p>
+
+<a name="gentextid-2344"></a><h5>To specify the chunk size</h5>
+<ol>
+<li><b><a name="indexterm-190"></a>In the Projects window, expand the Configuration node in the Project you want to
+modify, and then double-click master.xml.</b></li>
+<li><b>Scroll to the third <i>parameter</i> element, ChunkSize, in the <i>EuidGeneratorConfig</i> element.</b></li>
+<li><b>Change the value of the <i>parameter-value</i> element to the desired chunk size. </b><p>For example:</p><pre>&lt;parameter>
+    &lt;parameter-name>EuidGeneratorConfig&lt;/parameter-name>
+    &lt;parameter-type>java.lang.Integer&lt;/parameter-type>
+    &lt;parameter-value>100&lt;/parameter-value>
+&lt;/parameter></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-euid-param_t"></a><h3>Adding and Deleting EUID Generator Parameters</h3>
+<p>You cannot add or delete parameters for the default EUID Generator class, but
+if you create a custom EUID generator class, you can create additional parameters
+for the new class and delete the existing parameters if they are not
+used.</p>
+
+<a name="gentextid-2363"></a><h5>To add and delete EUID generator parameters</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click master.xml.</b></li>
+<li><b>Scroll to the <i>EuidGeneratorConfig</i> element.</b></li>
+<li><b>To add a parameter, create a new <i>parameter</i> element inside the <i>parameters</i> element,
+but outside any existing <i>parameter</i> elements. Add the following elements:</b><ul>
+<li><b><i>parameter-name</i> &mdash; The name of the parameter. </b></li>
+<li><b><i>parameter-type</i> &mdash; The type of parameter. Valid values are <tt>java.lang.Long, java.lang.Short</tt>, <tt>java.lang.Byte</tt>, <tt>java.lang.String</tt>, <tt>java.lang.Integer</tt>,
+<tt>java.lang.Boolean</tt>, <tt>java.lang.Double</tt>, or <tt>java.lang.Float</tt>.</b></li>
+<li><b><i>parameter-value</i> &mdash; The value of the parameter.</b><p>For example:</p><pre>&lt;parameters>
+    &lt;parameter>
+      &lt;parameter-name>IdLength&lt;/parameter-name>
+      &lt;parameter-type>java.lang.Integer&lt;/parameter-type>
+      &lt;parameter-value>10&lt;/parameter-value>
+    &lt;/parameter>
+    <b>&lt;parameter></b>
+      <b>&lt;parameter-name>IncrementBy&lt;/parameter-name></b>
+      <b>&lt;parameter-type>java.lang.Integer&lt;/parameter-type></b>
+      <b>&lt;parameter-value>5&lt;/parameter-value></b>
+   <b>&lt;/parameter></b>
+&lt;/parameters></pre></li></ul></li>
+<li><b>To delete a parameter, do the following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b>Scroll to the <i>parameter</i> element you want to delete.</b></li>
+<li><b>Remove all text between and including the <b>parameter</b> element.</b><p>For example, to remove the <i>IncrementBy</i> parameter in the sample below, delete
+all boldface text.</p><pre>&lt;parameters>
+    &lt;parameter>
+       &lt;parameter-name>IdLength&lt;/parameter-name>
+       &lt;parameter-type>java.lang.Integer&lt;/parameter-type>
+       &lt;parameter-value>10&lt;/parameter-value>
+    &lt;/parameter>
+    <b>&lt;parameter></b>
+       <b>&lt;parameter-name>StartNumber&lt;/parameter-name></b>
+       <b>&lt;parameter-type>java.lang.Integer&lt;/parameter-type></b>
+       <b>&lt;parameter-value>1000000001&lt;/parameter-value></b>
+    <b>&lt;/parameter></b>
+&lt;/parameters></pre></li></ol></li>
+<li><b>To remove all parameters, remove all text between and including the <i>parameters</i> element.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1" style="bold">Table of Contents</p>
+<p><a href="bookoverview.html">Master Index Configuration Overview</a></p>
+<p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p>
+<p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
+<p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p>
+<p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p>
+<p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p>
+<p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p>
+<p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p>
+<p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p>
+<p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p>
+<p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p>
+<p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p>
+<p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p>
+<p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p>
+<p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p>
+<p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p>
+<p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p>
+<p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p>
+<p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p>
+<p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p>
+<p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p>
+<p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p>
+<p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p>
+<p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p>
+<p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

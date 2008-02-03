@@ -1,0 +1,384 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+  <head>
+  <style type="text/css"> /* <![CDATA[ */
+  @import "/branding/css/tigris.css";
+  @import "/branding/css/inst.css";
+  /* ]]> */</style>
+  <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+  <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+   <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+  <style type="text/css">
+     /* <![CDATA[ */
+     @import "/branding/css/alm.css";
+    /* ]]> */
+  </style>
+
+ <link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+ <title>Developing Master Indexes With Master Index Studio</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+ <meta http-equiv="Content-Style-Type" content="text/css" >
+ <meta name="version" content="4.5.2.148.4" />
+  <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+  <meta name="author" content="Carol Thom"> <!--Optional tag-->
+  <meta name="keywords" content="">
+
+   <style type="text/css">
+
+     @import url("../../css/netbeans.css");
+
+     #cnlogo            {display: none}
+     #collabnet         {display: none}
+     .topline           {display: none}
+     #toptabs           {display: none}
+     #breadcrumbs       {display: none}
+     #navcol            {display: none}
+     #bodycol .infomark {display: none}
+     #footer            {display: inherit}
+
+   </style>
+
+
+ </head>
+<body>
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+<!-- Servlet-Specific template -->
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+
+<a name="top"></a>
+<h1>Developing Master Indexes With Master Index Studio</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+
+
+<a name="dsgn_eview-application_p"></a>
+
+<h2>Creating a Master Index Application</h2>
+<p><a name="indexterm-11"></a><a name="indexterm-12"></a>The wizard provides a simple method for you to create the object definition
+and the runtime configuration files for your master index application. This section provides
+instructions for creating a new Project and using the wizard to create the
+configuration files for the master index application. To create the initial master index
+framework, follow these steps.</p>
+<ul><li><p><a href="#dsgn_eview-wizard_t">Step 1: Create a Project and Start the Wizard</a></p></li>
+<li><p><a href="#dsgn_eview-name-app_t">Step 2: Name the Master Index Application</a></p></li>
+<li><p><a href="#dsgn_eview-systems_t">Step 3: Define Source Systems</a></p></li>
+<li><p><a href="#dsgn_eview-deployment_t">Step 4: Define the Deployment Environment</a></p></li>
+<li><p><a href="#dsgn_eview-objects_t">Step 5: Define Parent and Child Objects</a></p></li>
+<li><p><a href="#dsgn_eview-fields_t">Step 6: Define the Fields for Each Object</a></p></li>
+<li><p><a href="#dsgn_eview-wizard-gen_t">Step 7: Generate the Project Files</a></p></li>
+<li><p><a href="#dsgn_eview-config-file_t">Step 8: Review the Configuration Files</a></p></li></ul>
+
+
+<div class="indent"><a name="dsgn_eview-wizard_t"></a><h3>Step 1: Create a Project and Start the Wizard</h3>
+<p>When you create a new Master Index Project in NetBeans, the wizard for
+creating a master index application automatically appears.</p>
+
+<a name="gentextid-254"></a><h5>To create a Project and start the wizard</h5>
+<ol>
+<li><b><a name="indexterm-13"></a>On the NetBeans toolbar, click New Project.</b></li>
+<li><b>Under Categories, select CAPS.</b></li>
+<li><b>Under Projects, select Master Index Application and then click Next.</b></li>
+<li><b>Enter the Project name and the path where you want to store
+the Project files in the upper portion of the window.</b></li>
+<li><b>Enter the application server and J2EE version you are using in the lower
+portion of the window. </b></li>
+<li><b>To make the Master Index Project a main Project, select Set as Main
+Project.</b></li>
+<li><b>Click Next.</b></li>
+<li><b>Continue to <a href="#dsgn_eview-name-app_t">Step 2: Name the Master Index Application</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="dsgn_eview-name-app_t"></a><h3>Step 2: Name the Master Index Application</h3>
+<p><a name="indexterm-14"></a>Before you can configure the new master index application, you must give the
+master index application a unique name.</p>
+
+<a name="gftkn"></a><h5>To name the master index application</h5>
+<ol>
+<li><b>Complete <a href="#dsgn_eview-wizard_t">Step 1: Create a Project and Start the Wizard</a>.</b></li>
+<li><b><a name="indexterm-15"></a><a name="indexterm-16"></a>In the Application field of the Name Application window, enter a name for
+the new master index application, and then click Next.</b><p><a name="indexterm-17"></a>The Define Source Systems window appears.</p></li>
+<li><b>Continue to <a href="#dsgn_eview-systems_t">Step 3: Define Source Systems</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="dsgn_eview-systems_t"></a><h3>Step 3: Define Source Systems</h3>
+<p><a name="indexterm-18"></a><a name="indexterm-19"></a>After you specify a name for the new master index application, you need
+to specify the processing codes for the source systems that will be integrated
+into the master index system.</p>
+
+<a name="gentextid-296"></a><h5>To define source systems</h5>
+<ol>
+<li><b>Complete <a href="#dsgn_eview-name-app_t">Step 2: Name the Master Index Application</a>.</b></li>
+<li><b><a name="indexterm-20"></a><a name="indexterm-21"></a>In the Name field of the Define Source Systems window, enter the processing
+code of one of the source systems that will share data in the
+master index system, and then click Add.</b><p>You can enter any of the following characters:</p>
+<ul><li><p>! _ ~ ( ) { } + \Q # $ % &amp; : ; - /</p></li>
+<li><p>a-z</p></li>
+<li><p>A-Z</p></li>
+<li><p>0-9</p></li>
+<li><p>&thorn; &yuml; &THORN; &szlig; &rsquo;&agrave;-&ouml; &oslash;-&yacute; &Agrave;-&Ouml; &Oslash;-&Yacute;</p><p><a name="indexterm-22"></a>The value you entered appears in the Systems box.</p>
+<hr><p><b>Note - </b>Be sure to enter the processing code of the system and not the name. This value is entered in the Best Record file (<tt>update.xml</tt>) for defining survivor strategies for the SBR. </p>
+<hr>
+</li></ul>
+</li>
+<li><b>Do any of the following:</b><ul>
+<li><b>To define additional systems, repeat the above step for each source system that
+will share information with the master index application.</b></li>
+<li><b>To remove a system from the list, highlight the name of that
+system in the Systems box, and then click Remove.</b></li>
+<li><b>To remove all systems from the list, click Remove All.</b></li></ul></li>
+<li><b>When you have defined all required source systems, click Next.</b><p><a name="indexterm-23"></a>The Define Deployment Environment window appears.</p></li>
+<li><b>Continue to <a href="#dsgn_eview-deployment_t">Step 4: Define the Deployment Environment</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="dsgn_eview-deployment_t"></a><h3>Step 4: Define the Deployment Environment</h3>
+<p><a name="indexterm-24"></a>Once you define systems, you must specify information about the deployment environment, including
+the database and match engine vendors.</p>
+
+<a name="gentextid-342"></a><h5>To define the deployment environment</h5>
+<ol>
+<li><b>Complete <a href="#dsgn_eview-systems_t">Step 3: Define Source Systems</a>.</b></li>
+<li><b><a name="indexterm-25"></a>On the Define Deployment Environment window, enter the following information:</b>
+<ul><li><p><a name="indexterm-26"></a><b>Database</b> &mdash; The type of database being used for the master index application. You can select Oracle or SQL Server.</p></li>
+<li><p><a name="indexterm-27"></a><b>Match Engine</b> &mdash; The type of match and standardization engine to use for the implementation. Currently, the only option is the Mural Match Engine.</p></li>
+<li><p><a name="indexterm-28"></a><a name="indexterm-29"></a><a name="indexterm-30"></a><b>Date Format</b> &mdash; The date format for the master index system. This defines how dates should be entered and how they appear on the EDM. You can select MM/dd/yyyy, dd/MM/yyyy, or yyyy/MM/dd.</p></li>
+<li><p><b>Transaction Mode</b> &mdash; An indicator of whether transactions are distributed. Select one of the following options:</p>
+<ul><li><p><b>XA (across applications)</b>, if the transactions will be distributed across multiple applications</p></li>
+<li><p><b>XA (within application only)</b>, if the transactions will be distributed just across the master index application.</p></li>
+<li><p><b>Local</b>, if the transactions will not be distributed.</p></li></ul>
+</li></ul>
+</li>
+<li><b>When you have defined the deployment environment fields, click Next.</b></li>
+<li><b>Continue to <a href="#dsgn_eview-objects_t">Step 5: Define Parent and Child Objects</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="dsgn_eview-objects_t"></a><h3>Step 5: Define Parent and Child Objects</h3>
+<p><a name="indexterm-31"></a><a name="indexterm-32"></a><a name="indexterm-33"></a>After you define the deployment environment for the master index application, you can
+begin to define the structure of the object you want to index. The
+primary object will be the parent object for any other objects defined. Child
+objects are not required if all information is stored under the parent object.</p><p><a name="indexterm-34"></a><a name="indexterm-35"></a>You can create new undefined objects, create objects using predefined templates, or use
+a combination of both methods to create the objects in your enterprise object.
+Perform any of the following actions to define the objects in the enterprise
+object.</p>
+<ul><li><p><a href="#gftij">Creating Undefined Objects</a></p></li>
+<li><p><a href="#gftkk">Creating Objects from a Template</a></p></li>
+<li><p><a href="#gftkb">Deleting an Object from the Structure</a></p></li></ul>
+<p>Complete<a href="#dsgn_eview-deployment_t">Step 4: Define the Deployment Environment</a> before performing these procedures.</p>
+<hr><p><b>Note - </b>The names of database constraints are created based on the parent and child
+object names. Due to database naming restrictions, the length of the parent object
+name plus the length of any of the child object names must be
+21 characters or less.  </p>
+<hr>
+
+
+<div class="indent"><a name="gftij"></a><h3>Creating Undefined Objects</h3>
+<p><a name="indexterm-36"></a>When you create undefined objects, you create an empty object with no predefined
+fields or child objects.</p>
+
+<a name="gfuzk"></a><h5>To create undefined parent and child objects</h5>
+<ol>
+<li><b><a name="indexterm-37"></a><a name="indexterm-38"></a><a name="indexterm-39"></a>On the Define Enterprise Object window, click Add Primary Object.</b><p>The initial node appears on the tree. By default, the name of the
+field is the same as the name of the application you defined in
+<a href="#dsgn_eview-name-app_t">Step 2: Name the Master Index Application</a>.</p></li>
+<li><b>Accept the default name by pressing Enter, or type a new name and
+press Enter.</b></li>
+<li><b><a name="indexterm-40"></a><a name="indexterm-41"></a>To create a new child object, select the primary object created above and
+then click Add Sub Object.</b><p>The new child node appears on the tree.</p></li>
+<li><b>Accept the default name by pressing Enter, or type a new name and
+press Enter.</b></li>
+<li><b>Repeat the previous two steps for each child object.</b></li>
+<li><b>Continue to <a href="#dsgn_eview-fields_t">Step 6: Define the Fields for Each Object</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="gftkk"></a><h3>Creating Objects from a Template</h3>
+<p><a name="indexterm-42"></a><a name="indexterm-43"></a>When you create objects from a template, secondary objects and fields are predefined.
+You can modify the objects, fields, and field properties in a template to
+suit your processing needs.</p>
+
+<a name="gentextid-436"></a><h5>To create parent and child objects from a template</h5>
+<ol>
+<li><b><a name="indexterm-44"></a>To create a complete object structure from a template, click Templates on the Define
+Enterprise Object toolbar, and select the template you want to use.</b><p>The objects and fields from the template appear in the tree-view panel in
+the center of the window.</p></li>
+<li><b>To create a child object from a template after creating the parent object,
+right-click the parent object, point to Template, and then select the name of
+the template you want to use.</b><p>The new object and any defined fields appear in the object tree.</p></li>
+<li><b>If necessary, change the name of the new object by doing the
+following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b>Click twice on the name.</b></li>
+<li><b>Type the new name.</b></li>
+<li><b>Press Enter.</b></li></ol></li>
+<li><b>Repeat steps 2 and 3 for each child object template you want
+to create.</b></li>
+<li><b>Continue to <a href="#dsgn_eview-fields_t">Step 6: Define the Fields for Each Object</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="gftkb"></a><h3>Deleting an Object from the Structure</h3>
+<p><a name="indexterm-45"></a>If you add an object in error, or do not want to
+use one of the objects in a predefined template, you can delete the
+object from the structure.</p>
+
+<a name="gentextid-463"></a><h5>To delete an object from the structure</h5>
+<ol>
+<li><b>On the Define Enterprise Object window, select the object you want to remove.</b></li>
+<li><b>Do any of the following:</b><ul>
+<li><b>Right-click in the object tree panel, and then select Delete.</b></li>
+<li><b>Press the Delete key.</b></li>
+<li><b>In the wizard toolbar, click Delete.</b><p>The object and any fields associated with that object are deleted. If you
+remove the parent object, all child objects are deleted.</p></li></ul></li></ol></div>
+</div>
+
+
+<div class="indent"><a name="dsgn_eview-fields_t"></a><h3>Step 6: Define the Fields for Each Object</h3>
+<p><a name="indexterm-46"></a>After you define all the parent and child objects for your enterprise object,
+you need to define the fields in each object. Every field has
+a set of properties that must be configured before creating the master index
+configuration files. If you chose a predefined template to create your objects, be
+sure to check the properties for all predefined fields to be sure they
+are configured correctly for your implementation.</p><p>After you define the parent and child objects, you can perform any
+of the following actions to define the fields for those objects.</p>
+<ul><li><p><a href="#gftjs">Adding a Field</a></p></li>
+<li><p><a href="#gftki">Configuring Field Properties</a></p></li>
+<li><p><a href="#gftix">Deleting a Field</a></p></li></ul>
+
+
+<div class="indent"><a name="gftjs"></a><h3>Adding a Field</h3>
+<p><a name="indexterm-47"></a>If you created an empty object in <a href="#dsgn_eview-objects_t">Step 5: Define Parent and Child Objects</a>, you need to create each
+field that belongs to the object. If you created objects using a predefined
+template, you can add new fields to the object if needed.</p>
+
+<a name="gentextid-496"></a><h5>To add a field</h5>
+<ol>
+<li><b>Complete <a href="#dsgn_eview-objects_t">Step 5: Define Parent and Child Objects</a>.</b></li>
+<li><b>In the object tree panel of the Define Enterprise Object window, do one
+of the following:</b><ul>
+<li><b><a name="indexterm-48"></a><a name="indexterm-49"></a>To add the field to the end of the object&rsquo;s field list, select
+the name of the object to which you want to add a new
+field and then click Add Field.</b></li>
+<li><b>To add the field immediately following an existing field, select the field after
+which you want to add the new field and then click Add
+Field.</b><p>The tree expands and a new field is inserted.</p></li></ul></li>
+<li><b>Do one of the following:</b><ul>
+<li><b>To accept the default name, press Enter. </b></li>
+<li><b>To change the name, type the new name and then press Enter.</b><p>For information about field name restrictions, see <a href="dsgn_eview-fields_r.html#dsgn-eview-fieldname_c">Master Index Wizard Field Name Restrictions</a>.</p></li></ul></li>
+<li><b>Continue to <a href="#gftki">Configuring Field Properties</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="gftki"></a><h3>Configuring Field Properties</h3>
+<p><a name="indexterm-50"></a>When you create a field, a set of default properties is defined for
+that field. You can modify the property configuration for each field to suit
+your data processing, storage, and display requirements. After you modify a property value,
+press  <tt>Enter</tt> to apply the change.</p>
+
+<a name="gentextid-528"></a><h5>To configure field properties</h5>
+<ol>
+<li><b>Complete the steps under <a href="#gftjs">Adding a Field</a>.</b></li>
+<li><b>In the object tree panel of the Define Enterprise Object window, select the
+field you want to configure.</b></li>
+<li><b>On the Properties page in the right side of the window, modify the
+value of any of the properties listed in <a href="dsgn_eview-fields_r.html#dsgn_eview-field-props_r">Wizard General Field Properties</a>.</b></li>
+<li><b>On the right side of the window, click the EDM tab, and
+then modify the value of any of the properties listed in <a href="dsgn_eview-fields_r.html#dsgn_eview-edm-props_r">Wizard EDM Field Properties</a>.</b></li>
+<li><b>When you have created and configured all of the necessary fields for each
+object, click Next.</b></li>
+<li><b>Continue to <a href="#dsgn_eview-wizard-gen_t">Step 7: Generate the Project Files</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="gftix"></a><h3>Deleting a Field</h3>
+<p><a name="indexterm-51"></a>If you add a field in error, or do not need one
+of the predefined fields from a template, you can delete the field.</p>
+
+<a name="gentextid-550"></a><h5>To delete a field</h5>
+<ol>
+<li><b>In the object tree panel of the Define Enterprise Object window, select the
+field you want to delete.</b></li>
+<li><b>Right-click in the object tree panel.</b></li>
+<li><b>From the context menu, select Delete.</b><p>The field is removed from the object tree.</p></li></ol></div>
+</div>
+
+
+<div class="indent"><a name="dsgn_eview-wizard-gen_t"></a><h3>Step 7: Generate the Project Files</h3>
+<p><a name="indexterm-52"></a><a name="indexterm-53"></a>Once you have named the application and configured the source systems, deployment environment, objects,
+and fields for the master index application, you need to generate the configuration
+files and database scripts. Review the configuration files to be sure the application
+is set up correctly for your data processing environment.</p>
+<hr><p><b>Note - </b>Modifying the configuration files is not covered in this document. For instructions on
+configuring a master index application, see <a href="https://open-dm-mi.dev.java.net/www/docs/config/landingpage.html">Configuring Master Index Applications</a>.</p>
+<hr>
+
+
+<a name="gentextid-567"></a><h5>To generate the configuration files</h5>
+<ol>
+<li><b>Complete <a href="#dsgn_eview-fields_t">Step 6: Define the Fields for Each Object</a>.</b></li>
+<li><b>Verify that all of the information you have entered is complete and correct.</b></li>
+<li><b>On the Generate Configuration Files window, click Finish.</b><p>The configuration files are generated, and are stored in the eGate Repository.</p></li>
+<li><b>Continue to <a href="#dsgn_eview-config-file_t">Step 8: Review the Configuration Files</a>.</b></li></ol></div>
+
+
+<div class="indent"><a name="dsgn_eview-config-file_t"></a><h3>Step 8: Review the Configuration Files</h3>
+<p>After the wizard is complete, several nodes representing the master index configuration files
+are placed in the Project for the master index application. Verify that the
+configuration files are customized correctly for your implementation. If you need to modify
+the configuration files, see <a href="https://open-dm-mi.dev.java.net/www/docs/config/landingpage.html">Configuring Master Index Applications</a> for information about configuration tasks. For information about
+the configuration files and configurable options, see <a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/landingpage.html">Understanding Master Index Configuration Options</a>.</p></div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1">Table of Contents</p>
+<p class="toc level2"><a href="dsgn_eview-overview_c.html">Master Index Development Process Overview</a></p>
+<p class="toc level2"><a href="dsgn_eview-runtime_c.html">How the Framework Corresponds to the Runtime Environment</a></p>
+<p class="toc level2"><a href="dsgn_eview-prep_c.html">Before you Begin</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-application_p.html">Creating a Master Index Application</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-fields_r.html">Master Index Wizard Field Properties and Name Restrictions</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_c.html">Using Custom Plug-ins to Define Custom Transaction Processing</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins2_c.html">Using Custom Plug-Ins to Define Custom Components</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_t.html">Implementing Custom Plug-ins</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-generate_t.html">Generating the Master Index Application</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database_c.html">Master Index Database Scripts and Design</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database_t.html">Creating the Database</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-dbs-delete_t.html">Deleting Tables</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database-con_p.html">Defining a Database Connection Pool</a></p>
+</div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

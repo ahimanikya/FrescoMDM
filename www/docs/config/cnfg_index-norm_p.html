@@ -1,0 +1,437 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+
+<a name="top"></a>
+<h1>Configuring Master Indexes</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+<a name="cnfg_index-norm_p"></a>
+
+<h2>Defining Normalization Rules</h2>
+<p>Normalization is a part of the standardization process, and is the process of
+changing non-standard values to a common, standard value. For example, the first name
+a person uses might not be their given name, but might be
+a nickname instead. To ensure that a proper match is made between first
+names, nicknames are normalized based on a configurable list. For example, the common value
+for &ldquo;Liz&rdquo; and &ldquo;Elizabeth&rdquo; would be &ldquo;Elizabeth&rdquo;.</p><p><a name="indexterm-191"></a><a name="indexterm-192"></a><a name="indexterm-193"></a><a name="indexterm-194"></a>Normalization is defined in the Match Field file (<tt>mefa.xml</tt>). You can define normalization
+by either using the Configuration Editor or modifying the XML file directly. The
+changes you make on the Normalization page of the Configuration Editor are reflected
+in the normalization structures of the Match Field file. The Configuration Editor provides
+a simplified way of defining normalization. Perform any of the following tasks to
+define normalization:</p>
+<ul><li><p><a href="#cnfg_index-norm-def_t">Defining a Field to be Normalized</a></p></li>
+<li><p><a href="#cnfg_index-norm-mod_t">Modifying a Normalization Definition</a></p></li>
+<li><p><a href="#cnfg_index-norm-del_t">Deleting a Normalization Definition</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_index-norm-def_t"></a><h3>Defining a Field to be Normalized</h3>
+<p>When you define a field for normalization, you define which field contains the
+data that needs to be normalized and which field will contain the
+normalized data. You can also specify one or more national domains to use
+for normalization. A sample normalization structure for the XML file appears at the
+end of these instructions.</p>
+
+<a name="gentextid-2443"></a><h5>To Define a Field to be Normalized (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Click the Normalization tab.</b><p>The Normalization page appears. </p></li>
+<li><b>Click Add.</b><p>The Normalized Field dialog box appears.</p></li>
+<li><b>Enter or select a value for each of the fields described in
+<a href="#cnfg_index-norm_r">Normalization and Standardization Structure Fields and Elements</a>.</b></li>
+<li><b>To define a national locale for the standardization engine to use, do the
+following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b><a name="indexterm-195"></a>Click Add in the Locale Codes section.</b></li>
+<li><b>On the Locale Codes dialog box, enter values in the fields described in
+<a href="#cnfg_index-norm-locale_r">Locale Codes Fields and Elements</a>.</b></li>
+<li><b>Click OK.</b><p>If you selected the multiple domain selector, you can add multiple locales; otherwise,
+you can have one default locale and one defined locale.</p></li></ol></li>
+<li><b>On the Normalized Field dialog box, click OK.</b><p>The new normalization definition appears in the list.</p></li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li>
+<li><b>In the confirmation dialog box, enter a check-in comment, if any, and click
+OK.</b></li></ol>
+
+<a name="gentextid-2478"></a><h5>To Define a Field to be Normalized (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click mefa.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>In the <i>structures-to-normalize</i> element, create and name a new <a name="indexterm-196"></a><i>group</i> element.</b><p>Make sure the new element falls within the <i>structures-to-normalize</i> element, but outside
+any existing <i>group</i> tags.</p></li>
+<li><b>In the new <i>group</i> element, define the standardization-type and domain-selector attributes (these are
+described in <a href="#cnfg_index-norm_r">Normalization and Standardization Structure Fields and Elements</a>. </b></li>
+<li><b>If you specified the multiple domain selector for the <i>domain-selector</i> attribute, do
+the following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b>In the <i>group</i> element, for each domain you want to use, create a
+<i>locale-field-name</i> element and a <i>locale-maps</i> element (described in <a href="#cnfg_index-norm_r">Normalization and Standardization Structure Fields and Elements</a> and <a href="#cnfg_index-norm-locale_r">Locale Codes Fields and Elements</a>).</b></li>
+<li><b>For each domain you want to use, define a <i>locale-codes</i>, <i>value</i>, and
+<i>locale</i> element (described in <a href="#cnfg_index-norm-locale_r">Locale Codes Fields and Elements</a>).</b></li></ol></li>
+<li><b>To specify the source fields to normalize, do the following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b><a name="indexterm-197"></a>Create a new <i>unnormalized-source-fields</i> element in the <i>group</i> element.</b></li>
+<li><b><a name="indexterm-198"></a>Create a <i>source-mapping</i> element in the new <i>unnormalized-source-fields</i> element.</b></li>
+<li><b>Define the <i>unnormalized-source-field-name</i> and <i>standardized-object-field-id</i> elements (these are described in<a href="#cnfg_index-norm_r">Normalization and Standardization Structure Fields and Elements</a>).</b></li></ol></li>
+<li><b>To map the normalized data to destination fields, do the following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b><a name="indexterm-199"></a>Create a new <i>normalization-targets</i> element under the <i>unnormalized-source-fields</i> element that defines the field to
+map.</b></li>
+<li><b><a name="indexterm-200"></a>Create a <i>target-mapping</i> element in the new <i>normalization-targets</i> element.</b></li>
+<li><b>Define the <i>standardized-object-field-id</i> and <i>standardized-target-field-name</i> elements (these are described in <a href="#cnfg_index-norm_r">Normalization and Standardization Structure Fields and Elements</a>.</b></li></ol></li>
+<li><b>Save and close the file.</b></li></ol><a name="gfxnm"></a>Example&nbsp;1-2 First and Last Name Normalization<pre>&lt;structures-to-normalize>
+         &lt;group standardization-type="PersonName" domain-selector=
+          &rdquo;com.sun.mdm.index.matching.impl.MultiDomainSelector">
+            &lt;locale-field-name>Person.PobCountry&lt;/locale-field-name>
+            &lt;locale-maps>
+              &lt;locale-codes>
+                &lt;value>GB&lt;/value>
+                &lt;locale>UK&lt;/locale>
+              &lt;/locale-codes>
+              &lt;locale-codes>
+                &lt;value>UNST&lt;/value>
+                &lt;locale>US&lt;/locale>
+              &lt;/locale-codes>
+              &lt;locale-codes>
+                &lt;value>Default&lt;/value>
+                &lt;locale>US&lt;/locale>
+              &lt;/locale-codes>
+            &lt;/locale-maps>
+            &lt;unnormalized-source-fields>
+               &lt;source-mapping>
+                  &lt;unnormalized-source-field-name>
+                   Person.Alias[*].FirstName
+                  &lt;/unnormalized-source-field-name>
+                  &lt;standardized-object-field-id>FirstName
+                  &lt;/standardized-object-field-id>
+               &lt;/source-mapping>
+               &lt;source-mapping>
+                  &lt;unnormalized-source-field-name>
+                   Person.Alias[*].LastName
+                  &lt;/unnormalized-source-field-name>
+                  &lt;standardized-object-field-id>LastName
+                  &lt;/standardized-object-field-id>
+               &lt;/source-mapping>
+            &lt;/unnormalized-source-fields>
+            &lt;normalization-targets>
+               &lt;target-mapping>
+                  &lt;standardized-object-field-id>FirstName
+                  &lt;/standardized-object-field-id>
+                  &lt;standardized-target-field-name>
+                     Person.Alias[*].StdFirstName
+                  &lt;/standardized-target-field-name>
+               &lt;/target-mapping>
+               &lt;target-mapping>
+                  &lt;standardized-object-field-id>LastName
+                  &lt;/standardized-object-field-id>
+                  &lt;standardized-target-field-name>
+                     Person.Alias[*].StdLastName
+                  &lt;/standardized-target-field-name>
+               &lt;/target-mapping>
+            &lt;/normalization-targets>
+         &lt;/group></pre></div>
+
+
+<div class="indent"><a name="cnfg_index-norm_r"></a><h3>Normalization and Standardization Structure Fields and Elements</h3>
+<p>The following table lists and describes the Configuration Editor fields and their corresponding
+XML elements that define the fields to be normalized or standardized in the
+master index application.</p><p><a name="indexterm-201"></a> You can specify one or more national domains for data to
+be standardized. For single domains, you only need to specify the domain if
+you need to standardize data that is not from the United States. If
+you are standardizing data from multiple nations, you will use the multiple domain
+selector. This requires that one field in the object structure identify which national
+domain to use for each field that will be standardized. For example, the
+value of the Country field in a system record could be used to
+tell the standardization engine which domain to use for a particular set of
+data. If you specified the multiple domain selector in the <i>domain-selector</i> element, you must
+also define the identifying field and then map the values that can
+be populated into that field to their corresponding national domain (or <b>locale</b>).</p><p><a name="indexterm-202"></a>The following rules apply to the multiple domain selector.</p>
+<ul><li><p><a name="indexterm-203"></a>You can specify a value of &ldquo;Default&rdquo; for the identifying field. The corresponding national domain will be used if the identifying field is blank, contains the value &ldquo;Default&rdquo;, or contains a value not defined by any of the <i>value</i> elements.</p></li>
+<li><p>If a &ldquo;Default&rdquo; value is not defined, the system default domain, United States, is used as the default.</p></li></ul>
+<table><col width="25.00*"><col width="25.00*"><col width="50.00*"><tr><th align="left" valign="top" scope="column"><p><a name="indexterm-204"></a>Configuration Editor Field</p></th>
+<th align="left" valign="top" scope="column"><p>XML File Element or Attribute</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-205"></a>Type</p></td>
+<td align="left" valign="top" scope="row"><p>standardization-type</p></td>
+<td align="left" valign="top" scope="row"><p>The type of standardization to perform on
+the source fields. This is specific to the type of data being processed.
+For more information, see <a href="https://open-dm-dq.dev.java.net/www/docs/sme/landingpage.html">Understanding the Mural Match Engine</a>.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-206"></a>Domain Selector</p></td>
+<td align="left" valign="top" scope="row"><p>domain-selector</p></td>
+<td align="left" valign="top" scope="row"><p>The Java class used by the match
+engine to determine the nationality of the data being processed. For the Mural
+Match Engine, the following classes can be specified. If no selector is specified,
+the default is US. The Mural Match Engine supports Australian, French, United Kingdom,
+and United States domains. Possible values for this field are:</p>
+<ul><li><p>com.sun.mdm.index.matching.impl. SingleDomainSelectorAU</p></li>
+<li><p>com.sun.mdm.index.matching.impl. SingleDomainSelectorFR</p></li>
+<li><p>com.sun.mdm.index.matching.impl. SingleDomainSelectorUK</p></li>
+<li><p>com.sun.mdm.index.matching.impl. SingleDomainSelectorUS</p></li>
+<li><p>com.sun.mdm.index.matching.impl. MultipleDomainSelector</p></li></ul>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Locale Field Name</p></td>
+<td align="left" valign="top" scope="row"><p>locale-field-name</p></td>
+<td align="left" valign="top" scope="row"><p>The ePath
+to an identifying field in the object structure that will identify which of
+the defined Locale Code (element <i>locale-codes</i>) to use. If no field is specified
+for the Mural Match Engine, the standardization engine defaults to the United States
+domain, regardless of whether any Locale Codes are defined. This field must be
+contained in the object that contains the fields defined for normalization in this
+structure.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-207"></a>Unnormalized Source</p></td>
+<td align="left" valign="top" scope="row"><p>unnormalized-source- field-name</p></td>
+<td align="left" valign="top" scope="row"><p>The field that contains the data to be normalized. The field
+is designated by its ePath (for example, Person.FirstName).</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-208"></a>Unnormalized Standardization Component</p></td>
+<td align="left" valign="top" scope="row"><p>standardized-object- field-id</p></td>
+<td align="left" valign="top" scope="row"><p>An identification code
+that identifies the field to normalize to the standardization engine. This ID is
+specific to the standardization engine and must correspond to a field ID defined
+by that engine. For more information, see <a href="https://open-dm-dq.dev.java.net/www/docs/sme/landingpage.html">Understanding the Mural Match Engine</a>.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-209"></a>Normalized Standardization Component</p></td>
+<td align="left" valign="top" scope="row"><p>standardized-object- field-id</p></td>
+<td align="left" valign="top" scope="row"><p>An identification code
+that identifies the field that will contain the normalized data to the standardization
+engine. This is specific to the standardization engine in use and must correspond
+to a field ID defined by that engine. For more information, see <a href="https://open-dm-dq.dev.java.net/www/docs/sme/landingpage.html">Understanding the Mural Match Engine</a>.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-210"></a>Normalized Target</p></td>
+<td align="left" valign="top" scope="row"><p>standardized-target-
+field-name</p></td>
+<td align="left" valign="top" scope="row"><p>The field that will store the normalized data. The field is designated by
+its ePath (for example, Person.Alias[*].StdLastName).</p></td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="cnfg_index-norm-locale_r"></a><h3>Locale Codes Fields and Elements</h3>
+<p>The following table lists and describes the Configuration Editor fields and XML elements
+that define a national locale for normalization or standardization. In the XML file,
+each value and locale pair are defined within a <i>locale_codes</i> element. A
+list of <i>locale_codes</i> elements can be defined in the <i>locale_maps</i> element.</p><table><col width="25*"><col width="25*"><col width="50*"><tr><th align="left" valign="top" scope="column"><p>Configuration Editor Field</p></th>
+<th align="left" valign="top" scope="column"><p>XML
+File Element or Attribute</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-211"></a>Values</p></td>
+<td align="left" valign="top" scope="row"><p>value</p></td>
+<td align="left" valign="top" scope="row"><p>A value that, when contained in the field specified
+by the Locale Field Name field (or the <i>locale-field-name</i> element), indicates that the standardization
+engine will use the corresponding Locale field or element to determine which national
+domain to use to standardize the data. To specify a default domain, enter
+&ldquo;Default&rdquo;. </p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-212"></a>Locale</p></td>
+<td align="left" valign="top" scope="row"><p>locale</p></td>
+<td align="left" valign="top" scope="row"><p>A domain code indicating which national domain to use to standardize data
+when the identifying field value in a transaction matches the corresponding Value field
+or element. Select one of the following codes.</p>
+<ul><li><p><a name="indexterm-213"></a><b>AU</b> - Australia</p></li>
+<li><p><a name="indexterm-214"></a><b>FR</b> - France</p></li>
+<li><p><a name="indexterm-215"></a><b>UK</b> - United Kingdom</p></li>
+<li><p><a name="indexterm-216"></a><b>US</b> - United States</p></li></ul>
+</td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="cnfg_index-norm-mod_t"></a><h3>Modifying a Normalization Definition</h3>
+<p><a name="indexterm-217"></a>Once you create a normalization definition, you can modify it as needed. Use
+caution when modifying normalization definitions once a system is in production. This can
+cause unexpected match results.</p>
+
+<a name="gentextid-2709"></a><h5>To Modify a Normalization Definition (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Click the Normalization tab.</b><p>The Normalization page appears.</p></li>
+<li><b>In the Normalization Mappings list, click the definition you want to modify.</b></li>
+<li><b>Click Edit.</b></li>
+<li><b>Do any of the following:</b><ul>
+<li><b>Modify any of the fields described in <a href="#cnfg_index-norm_r">Normalization and Standardization Structure Fields and Elements</a>.</b></li>
+<li><b>To modify a local code, select the code under Locale Codes, and then
+click Edit. Modify the value or locale.</b></li>
+<li><b><a name="indexterm-218"></a>To remove a locale code, select the code under Locale Codes, and then
+click Remove. Click Yes on the dialog box that appears.</b></li>
+<li><b>Click OK.</b></li></ul></li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-2737"></a><h5>To Modify a Normalization Structure (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click mefa.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>structures-to-normalize</i> element in the <i>StandardizationConfig</i> element.</b></li>
+<li><b>To modify the normalization type, change the value of the <a name="indexterm-219"></a><i>standardization-type</i> attribute.</b></li>
+<li><b>To change the national domain (for Mural Match Engine implementations), change the value
+of the <a name="indexterm-220"></a><i>domain-selector</i> element as described in <a href="#cnfg_index-norm_r">Normalization and Standardization Structure Fields and Elements</a>.</b></li>
+<li><b>To modify an existing source field, scroll to the <a name="indexterm-221"></a><i>unnormalized-source-fields</i> element in
+the appropriate <a name="indexterm-222"></a><i>group</i> element, and then change the value of any source field
+elements (these are described in <a href="#cnfg_index-norm_r">Normalization and Standardization Structure Fields and Elements</a>.</b></li>
+<li><b>To modify an existing destination field, scroll to the <i>normalization-targets</i> element in
+the appropriate <i>group</i> element, and then change the value of any target field
+elements (these are described in <a href="#cnfg_index-norm_r">Normalization and Standardization Structure Fields and Elements</a>).</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-norm-del_t"></a><h3>Deleting a Normalization Definition</h3>
+<p>If a defined normalization structure is not required, you can delete the normalization
+structure from the standardization configuration. If no data requires normalization, you can delete
+all normalization structures. It is not recommend that you delete a normalization definition
+once a system is in production. This can cause unexpected match results.</p>
+
+<a name="gentextid-2772"></a><h5>To Delete a Normalization Definition</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>In the Configuration Editor toolbar, click the Normalization tab.</b><p>The Normalization page appears.</p></li>
+<li><b><a name="indexterm-223"></a>In the Normalization Mappings list, click the definition you want to delete.</b></li>
+<li><b>Click Remove.</b></li>
+<li><b>On the Configuration Editor toolbar, click Save. </b></li></ol>
+
+<a name="gentextid-2788"></a><h5>To Delete a Normalization Structure</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click mefa.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>structures-to-normalize</i> element in the <i>StandardizationConfig</i> element.</b></li>
+<li><b>Do either of the following:</b><ul>
+<li><b>To delete an existing normalization structure, delete all text between and including the
+<i>group</i> element that defines the structure. </b></li>
+<li><b>To specify that no objects require normalization, delete all text between, but not
+including, the <i>structures-to-normalize</i> element.</b></li></ul></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1" style="bold">Table of Contents</p>
+<p><a href="bookoverview.html">Master Index Configuration Overview</a></p>
+<p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p>
+<p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
+<p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p>
+<p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p>
+<p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p>
+<p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p>
+<p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p>
+<p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p>
+<p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p>
+<p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p>
+<p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p>
+<p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p>
+<p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p>
+<p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p>
+<p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p>
+<p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p>
+<p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p>
+<p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p>
+<p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p>
+<p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p>
+<p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p>
+<p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p>
+<p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p>
+<p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+
+<a name="top"></a>
+<h1>Configuring Master Indexes</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+
+
+<a name="landingpage"></a><h3>Configuring Sun Master Indexes</h3><p>This page provides links to task, conceptual, and reference information for configuring a
+master index application. These are the tasks you can perform after you create
+the master index framework.</p><p><a name="whatyouneed"></a><b>What you need to know</b></p><p>These topics provide information you should to know before you start customizing a
+master index application. </p>
+<ul><li><p><a href="bookoverview.html#cnfg_index-files-about_c">About the Configuration Files</a></p></li>
+<li><p><a href="bookoverview.html#cnfg_index-modxml-about_c">Modifying the XML Files Directly</a></p></li>
+<li><p><a href="bookoverview.html#cnfg_index-config-ed-about_c">Using the Configuration Editor</a></p></li>
+<li><p><a href="bookoverview.html#cnfg_index-version_c">Maintaining Version Control in the Configuration Editor</a></p></li></ul>
+<p><b>What you need to do</b></p><p>These topics provide instructions on how to configure the components of a master
+index application, either by modifying the XML files directly or by using the
+graphical Configuration Editor.</p>
+<ul><li><p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p></li>
+<li><p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p></li>
+<li><p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p></li>
+<li><p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p></li>
+<li><p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p></li>
+<li><p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p></li>
+<li><p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p></li>
+<li><p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p></li>
+<li><p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p></li>
+<li><p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p></li>
+<li><p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p></li>
+<li><p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p></li>
+<li><p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p></li>
+<li><p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p></li>
+<li><p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p></li>
+<li><p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p></li>
+<li><p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p></li>
+<li><p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p></li>
+<li><p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p></li>
+<li><p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p></li>
+<li><p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p></li>
+<li><p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p></li>
+<li><p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></li></ul>
+<p><b>More Information</b></p><p>These links provide additional information you should know when configuring a master index
+application. </p>
+<ul><li><p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p></li>
+<li><p><a href="cnfg_index-query-basic_t.html#cnfg_index-query-fields_r">Query Builder Dialog Box Fields and XML Elements</a></p></li>
+<li><p><a href="cnfg_index-query-block_p.html#cnfg_index-query-block_r">Query Block Fields and XML Elements</a></p></li>
+<li><p><a href="cnfg_index-norm_p.html#cnfg_index-norm_r">Normalization and Standardization Structure Fields and Elements</a></p></li>
+<li><p><a href="cnfg_index-norm_p.html#cnfg_index-norm-locale_r">Locale Codes Fields and Elements</a></p></li>
+<li><p><a href="cnfg_index-phon_p.html#cnfg_index-phon-field_r">Phonetic Encoding Fields and Elements</a></p></li>
+<li><p><a href="cnfg_index-phon_p.html#cnfg_index-phon-enc_r">Encoder Elements and Encoder Types</a></p></li>
+<li><p><a href="cnfg_index-survivor_p.html#cnfg_index-surv-calc_r">Default Survivor Strategy Parameter Elements</a></p></li>
+<li><p><a href="cnfg_index-survivor_p.html#cnfg_index-weight-calc_r">Weighted Calculator Parameter Elements</a></p></li>
+<li><p><a href="cnfg_index-engines_p.html#cnfg_index-engine-comp_r">Match Comparator Configuration Fields and Columns</a></p></li>
+<li><p><a href="cnfg_index-edm-display_p.html#cnfg_index-edm-fld-props_r">EDM Field Configuration Elements</a></p></li>
+<li><p><a href="cnfg_index-edm-search_p.html#cnfg_index-search-def_r">EDM Search Page Definition Elements</a></p></li>
+<li><p><a href="cnfg_index-edm-search_p.html#cnfg_index-search-fields_r">EDM Search Field Definition Elements</a></p></li>
+<li><p><a href="cnfg_index-edm-search_p.html#cnfg_index-search-opts_r">EDM Search Option Elements</a></p></li>
+<li><p><a href="cnfg_index-edm-pages_p.html#cnfg_index-edm-report-pg_r">Reports Page Configuration Elements</a></p></li>
+<li><p><a href="cnfg_index-edm-pages_p.html#cnfg_index-edm-reports_r">Report Configuration Elements</a></p></li></ul>
+
+
+
+<!-- End Content Area -->
+
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1" style="bold">Table of Contents</p>
+<p><a href="bookoverview.html">Master Index Configuration Overview</a></p>
+<p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p>
+<p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
+<p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p>
+<p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p>
+<p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p>
+<p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p>
+<p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p>
+<p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p>
+<p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p>
+<p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p>
+<p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p>
+<p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p>
+<p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p>
+<p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p>
+<p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p>
+<p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p>
+<p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p>
+<p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p>
+<p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p>
+<p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p>
+<p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p>
+<p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p>
+<p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p>
+<p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

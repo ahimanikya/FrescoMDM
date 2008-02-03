@@ -1,0 +1,383 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+
+<a name="top"></a>
+<h1>Configuring Master Indexes</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+<a name="cnfg_index-query-mod_p"></a>
+
+<h2>Modifying Queries</h2>
+<p><a name="indexterm-137"></a><a name="indexterm-138"></a><a name="indexterm-139"></a><a name="indexterm-140"></a>By default, two basic queries and one blocking query are predefined in the
+Candidate Select file (<tt>query.xml</tt>) and you can create additional queries. Once a query is
+defined, you can modify it as needed. If you make changes to a
+query defined for a search in the EDM, you might need to
+modify the search definition in the Enterprise Data Manager file (<tt>edm.xml</tt>). For example, if
+you deselect the Use Wildcard option for a query and the wildcard feature
+is enabled for that query in the EDM, you need to disable
+that feature in the Enterprise Data Manager file. </p><p>You can customize the queries used in your implementation by performing any of
+the following actions. </p>
+<ul><li><p><a href="#cnfg_query-basic_t">Modifying a Query</a></p></li>
+<li><p><a href="#cnfg_index-add-block_t">Adding a Query Block to a Query</a></p></li>
+<li><p><a href="#cnfg_index-mod-block_t">Modifying a Query Block for a Query</a></p></li>
+<li><p><a href="#cnfg_index-del-block_t">Deleting a Query Block From a Query</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_query-basic_t"></a><h3>Modifying a Query</h3>
+<p><a name="indexterm-141"></a>Once you define a basic query, you can modify the attributes and parameters
+for that query. If you defined a custom query, you might need
+to modify certain elements of the query directly in the XML file instead
+of through the Configuration Editor. </p>
+
+<a name="gentextid-1448"></a><h5>To Modify a Basic Query (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Click the Query tab.</b><p>The Query page appears.</p></li>
+<li><b>Do one of the following:</b><ul>
+<li><b>To modify a blocking query, select the query to modify in the Blocking
+Queries section, and then click Edit.</b><p>The Blocking Query Builder dialog box appears.</p></li>
+<li><b>To modify a basic query, select the query to modify in the
+Basic Queries section, and then click Edit.</b><p>The Basic Query Builder dialog box appears.</p></li></ul></li>
+<li><b>Modify any of the fields and configuration options described in <a href="cnfg_index-query-basic_t.html#cnfg_index-query-fields_r">Query Builder Dialog Box Fields and XML Elements</a>.</b></li>
+<li><b>For blocking queries, you can modify query blocks by performing any of the
+following procedures:</b><ul>
+<li><b><a href="#cnfg_index-add-block_t">Adding a Query Block to a Query</a></b></li>
+<li><b><a href="#cnfg_index-mod-block_t">Modifying a Query Block for a Query</a></b></li>
+<li><b><a href="#cnfg_index-del-block_t">Deleting a Query Block From a Query</a></b></li></ul></li>
+<li><b>When you are done editing the query, click OK.</b></li>
+<li><b>On the Configuration Editor toolbar, click Save. </b></li></ol>
+
+<a name="gentextid-1485"></a><h5>To Modify a Query (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click query.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>query-builder</i> element that contains the query you want to modify.</b></li>
+<li><b>Modify any of the attributes listed in <a href="cnfg_index-query-basic_t.html#cnfg_index-query-fields_r">Query Builder Dialog Box Fields and XML Elements</a>. </b><p>For example:</p><pre>&lt;query-builder name="ALPHA-SEARCH" class=
+  "com.sun.mdm.index.querybuilder.MyQueryBuilder"
+  parser-class=
+  "com.sun.mdm.index.configurator.impl.querybuilder.KeyValueConfiguration"
+   standardize="true" phoneticize="false">
+&lt;/query-builder></pre></li>
+<li><b>To add a new query parameter (for custom query builders only):</b><ol style="list-style-type: lower-alpha">
+
+<li><b><a name="indexterm-142"></a>Add a new <i>config</i> element between the <i>query-builder</i> tags. </b></li>
+<li><b><a name="indexterm-143"></a><a name="indexterm-144"></a><a name="indexterm-145"></a>In the new <i>config</i> element, create an <i>option</i> element and then define <i>key</i> and
+<i>value</i> attributes for the new element. </b><p>For example:</p><pre>&lt;config>
+ &lt;option key="SearchAlias" value="true"/>
+&lt;/config></pre><p>See <a href="cnfg_index-query-basic_t.html#cnfg_index-query-fields_r">Query Builder Dialog Box Fields and XML Elements</a> for information about the key and value pairs available to the
+default basic queries.</p></li></ol></li>
+<li><b>To modify a parameter, scroll to the <i>option</i> element that defines the parameter
+and then change the value of the <i>value</i> attribute.</b></li>
+<li><b>To delete a parameter, scroll to the <i>config</i> element of that query, and
+then delete the <i>option</i> element containing the parameter to remove. </b><p>For example, to remove the SearchAlias parameter in the following sample, delete the
+boldface text.</p><pre>&lt;config>
+   <b>&lt;option key="SearchAlias" value="true"/></b>
+ &lt;option key="UseWildCard" value="false"/>
+&lt;/config></pre></li>
+<li><b>For blocking queries, you can modify query blocks by performing any of the
+following procedures:</b><ul>
+<li><b><a href="#cnfg_index-add-block_t">Adding a Query Block to a Query</a></b></li>
+<li><b><a href="#cnfg_index-mod-block_t">Modifying a Query Block for a Query</a></b></li>
+<li><b><a href="#cnfg_index-del-block_t">Deleting a Query Block From a Query</a></b></li></ul></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-add-block_t"></a><h3>Adding a Query Block to a Query</h3>
+<p><a name="indexterm-146"></a>Some query blocks might be predefined for you based on information you specified
+in the wizard. You can create additional query blocks for a blocking query.
+</p>
+
+<a name="gentextid-1548"></a><h5>To Add a Query Block (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Click the Query tab.</b><p>The Query page appears.</p></li>
+<li><b>In the Blocking Queries section, select the query you want to modify and
+then click Edit.</b><p>The Blocking Query Builder dialog box appears.</p></li>
+<li><b>In the Block Definitions section, click Add.</b><p>The Block Definition dialog box appears.</p></li>
+<li><b><a name="indexterm-147"></a>In the Block Name field, enter a unique name for the query block.</b></li>
+<li><b><a name="indexterm-148"></a>(Optional) In the Hint field, define an Oracle or SQL Server hint for
+the query block. For SQL Server, you can only use OPTION hints.</b></li>
+<li><b><a name="indexterm-149"></a>In the Block By section, click Add.</b><p>The Block Rule dialog box appears, where you can specify a field to
+include in the query block.</p></li>
+<li><b>Enter values for the fields on the dialog box as described in
+<a href="cnfg_index-query-block_p.html#cnfg_index-query-block_r">Query Block Fields and XML Elements</a>, and then click OK.</b></li>
+<li><b>Repeat the previous two steps for each field to add to the
+query block.</b></li>
+<li><b>When you are done, click OK on the Block Definition dialog box.</b></li>
+<li><b>On the Blocking Query Builder dialog box, click OK.</b></li>
+<li><b>On the Configuration Editor toolbar, click Save. </b></li></ol>
+
+<a name="gentextid-1584"></a><h5>To Add a Query Block (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click query.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>query-builder</i> element that contains the blocking query to configure.</b></li>
+<li><b>If a <i>config</i> element does not exist for the query, create one between
+the <i>query-builder</i> tags.</b></li>
+<li><b><a name="indexterm-150"></a><a name="indexterm-151"></a><a name="indexterm-152"></a>In the <i>config</i> element, create a new <i>block-definition</i> element with a <i>number</i> attribute
+and assign a unique ID code to the <i>number</i> attribute. </b><p>For example:</p><pre>   <b>&lt;config></b>
+      <b>&lt;block-definition number="ID1"></b>
+      <b>&lt;/block-definition></b>
+   <b>&lt;/config></b>
+&lt;/query-builder></pre></li>
+<li><b>To add a hint, create and define a new <i>hint</i> element in the
+new <i>block-definition</i> element.</b><p>The following example illustrates an Oracle hint.</p><pre>&lt;config>
+   &lt;block-definition number="ID1">
+   <b>&lt;hint>FIRST_ROWS_100&lt;/hint></b>
+   &lt;/block-definition>
+&lt;config></pre></li>
+<li><b><a name="indexterm-153"></a>In the new <i>block-definition</i> element, create a <i>block-rule</i> element.</b></li>
+<li><b><a name="indexterm-154"></a><a name="indexterm-155"></a>For each field in the data block, define the elements described in <a href="cnfg_index-query-block_p.html#cnfg_index-query-block_r">Query Block Fields and XML Elements</a>.</b><p>For example:</p><pre>&lt;config>
+   &lt;block-definition number="ID1">
+      &lt;hint>FIRST_ROWS_100&lt;/hint>
+      &lt;block-rule>
+         &lt;equals>
+            &lt;field>Enterprise.SystemSBR.Person.FirstNamePh&lt;/field>
+            &lt;source>Person.FirstNamePh&lt;/source>
+         &lt;/equals>
+         &lt;equals>
+            &lt;field>Enterprise.SystemSBR.Person.LastNamePh&lt;/field>
+            &lt;source>Person.LastNamePh&lt;/source>
+         &lt;/equals>
+         &lt;range>
+            &lt;field>Enterprise.SystemSBR.Person.DateOfBirth&lt;/field>
+            &lt;source>Person.DateOfBirth&lt;/source>
+            &lt;default>
+               &lt;lower-bound type=&rdquo;offset&rdquo;>-5&lt;/lower-bound>
+               &lt;upper-bound type=&rdquo;constant&rdquo;>2006-01-01
+               &lt;/upper-bound>
+            &lt;/default>
+         &lt;/range>
+      &lt;/block-rule>
+   &lt;/block-definition>
+&lt;config></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-mod-block_t"></a><h3>Modifying a Query Block for a Query</h3>
+<p><a name="indexterm-156"></a><a name="indexterm-157"></a>Once block definitions are created for a blocking query, you can modify those
+definitions if needed. You can add, modify, and remove block fields. When adding
+or removing fields from a query block, verify that the query will still
+include all the needed fields.</p>
+
+<a name="gentextid-1637"></a><h5>To Modify a Query Block (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Click the Query tab.</b><p>The Query page appears.</p></li>
+<li><b>In the Blocking Queries section, select the query you want to modify and
+then click Edit.</b><p>The Blocking Query Builder dialog box appears.</p></li>
+<li><b>In the Block Definitions section, select the block to modify and then click
+Edit.</b><p>The Block Definition dialog box appears.</p></li>
+<li><b>Do any of the following:</b><ul>
+<li><b>To add a new field, click Add, enter the fields described in
+<a href="cnfg_index-query-block_p.html#cnfg_index-query-block_r">Query Block Fields and XML Elements</a>, and then click OK.</b></li>
+<li><b>To edit an existing field, select the field you want to modify, click
+Edit, modify any of the fields described in <a href="cnfg_index-query-block_p.html#cnfg_index-query-block_r">Query Block Fields and XML Elements</a>, and then click OK.</b></li>
+<li><b>To delete an existing field, select the field you want to delete, click
+Remove, and then click Yes on the dialog box that appears.</b></li></ul></li>
+<li><b>When you are done modifying the query block, click OK.</b></li>
+<li><b>On the Blocking Query Builder dialog box, click OK.</b></li>
+<li><b>On the Configuration Editor toolbar, click Save.  </b></li></ol>
+
+<a name="gentextid-1669"></a><h5>To Modify a Query Block (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click query.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>block-rule</i> element containing the query block you want to modify.</b></li>
+<li><b>To add a new blocking field, add and populate the elements described in
+<a href="cnfg_index-query-block_p.html#cnfg_index-query-block_r">Query Block Fields and XML Elements</a>.</b><p>For example:</p><pre>&lt;block-rule>
+  &lt;equals>
+   &lt;field>Enterprise.SystemSBR.Person.DOB&lt;/field>
+   &lt;source>Person.DOB&lt;/source>
+  &lt;/equals>
+  ...</pre></li>
+<li><b>To edit an existing field, modify any of the elements described in <a href="cnfg_index-query-block_p.html#cnfg_index-query-block_r">Query Block Fields and XML Elements</a>.</b></li>
+<li><b>To delete an existing field, delete all text between and including the search
+type elements that define the field (such as <i>equals</i>, <i>range</i>, <i>not-equals</i>, and
+so on).</b><p>For example, to delete the DOB field defined above, you would delete the
+text between and including the <i>equals</i> elements.</p></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-del-block_t"></a><h3>Deleting a Query Block From a Query</h3>
+<p><a name="indexterm-158"></a>Once you create a block definition, you can delete it if needed. When
+deleting a query block, verify that the query will still include all the
+needed fields.</p>
+
+<a name="gentextid-1698"></a><h5>To Delete a Query Block (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Click the Query tab.</b><p>The Query page appears.</p></li>
+<li><b>In the Blocking Queries section, select the query you want to modify and
+then click Edit.</b><p>The Blocking Query Builder dialog box appears.</p></li>
+<li><b>In the Block Definitions section, select the definition you want to delete.</b></li>
+<li><b>Click Remove.</b></li>
+<li><b> On the confirmation dialog box, click Yes.</b></li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-1718"></a><h5>To Delete a Query Block (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click query.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>query-builder</i> element that contains the blocking query to modify.</b></li>
+<li><b>In that <i>query-builder</i> element, delete all text between and including the <i>block-definition</i> element defining
+the data block to remove.</b><p>For example, in the sample below, to delete the SSN block you would
+delete the boldface text.</p><pre>&lt;config>
+   <b>&lt;block-definition number="ID000007"></b>
+      <b>&lt;block-rule></b>
+         <b>&lt;equals></b>
+            <b>&lt;field>Enterprise.SystemSBR.Person.SSN&lt;/field></b>
+            <b>&lt;source>Person.SSN&lt;/source></b>
+         <b>&lt;/equals></b>
+      <b>&lt;/block-rule></b>
+   <b>&lt;/block-definition></b>
+ &lt;block-definition number="ID000008">
+ &lt;block-rule>
+          &lt;equals>
+             &lt;field>Enterprise.SystemSBR.Person.DOB&lt;/field>
+             &lt;source>Person.DOB&lt;/source>
+          &lt;/equals>
+ &lt;/block-rule>
+ &lt;/block-definition></pre>
+<hr><p><b>Note - </b>Each blocking query must contain one <i>config</i> element, and the <i>config</i> element must
+contain at least one block definition.</p>
+<hr>
+</li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1" style="bold">Table of Contents</p>
+<p><a href="bookoverview.html">Master Index Configuration Overview</a></p>
+<p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p>
+<p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
+<p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p>
+<p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p>
+<p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p>
+<p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p>
+<p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p>
+<p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p>
+<p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p>
+<p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p>
+<p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p>
+<p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p>
+<p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p>
+<p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p>
+<p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p>
+<p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p>
+<p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p>
+<p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p>
+<p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p>
+<p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p>
+<p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p>
+<p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p>
+<p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p>
+<p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

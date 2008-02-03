@@ -1,0 +1,328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+<a name="top"></a>
+<h1>Developing Master Indexes With Master Index Studio</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+<a name="dsgn_eview-fields_r"></a>
+
+<h2>Master Index Wizard Field Properties and Name Restrictions</h2>
+<p>When you create fields in the object structure of the master index
+application, you can specify several properties for each field, such as whether the
+field is required, whether the field will appear as a drop-down menu on
+the EDM, whether the field will be used in a blocking query, and
+so on. There are also some restrictions for how fields can be named
+and how the properties are defined. </p><p>The following topics provide information about the naming restrictions and about the field
+properties of the wizard.</p>
+<ul><li><p><a href="#dsgn-eview-fieldname_c">Master Index Wizard Field Name Restrictions</a></p></li>
+<li><p><a href="#dsgn_eview-field-props_r">Wizard General Field Properties</a></p></li>
+<li><p><a href="#dsgn_eview-edm-props_r">Wizard EDM Field Properties</a></p></li></ul>
+
+
+<div class="indent"><a name="dsgn-eview-fieldname_c"></a><h3>Master Index Wizard Field Name Restrictions</h3>
+<p>When you name the fields in your object structure, be sure to
+keep the following guidelines in mind to avoid errors when compiling or running
+the master index application.</p>
+<ul><li><p>Master Index Studio automatically creates a field for each object named <i>object</i>Id, where <i>object</i> is the name of an object or sub-object. You cannot create fields with those names. For example, you cannot create a field named &ldquo;AddressId&rdquo; if there is an Address object in the object structure.</p></li>
+<li><p><a name="indexterm-54"></a>If you enter a field name longer than 20 characters, a warning dialog box appears. While most databases can handle names up to at least 30 characters, Master Index Studio appends text to the end of fields defined for phonetic encoding or standardization. For fields that will be parsed, normalized, or phonetically encoded, make sure the name of the original field does not exceed 20 characters. Any other field can have a name up to 30 characters long. For information about the names of the fields automatically created by the wizard, see <a href="https://open-dm-mi-dev.java.net/www/docs/process/landingpage.html">Understanding Master Index Processing</a>.</p></li>
+<li><p>Do not use characters or names restricted by the database platform (Oracle or SQL Server), Java, or XML in field names.</p></li></ul>
+</div>
+
+
+<div class="indent"><a name="dsgn_eview-field-props_r"></a><h3>Wizard General Field Properties</h3>
+<p>The following table lists and describes the properties you can define on the
+General Properties page of the wizard.</p><table><col width="20%"><col width="80%"><tr><th align="left" valign="top" scope="column"><p></a>Property</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p></a>Data Type</p></td>
+<td align="left" valign="top" scope="row"><p>The master index data type of
+the field. The following data types are supported:</p>
+<ul><li><p><b>string</b> - Contains a string of characters.</p></li>
+<li><p><b>date</b> - Contains a date value.</p></li>
+<li><p><b>float</b> - Contains a floating point integer.</p></li>
+<li><p><b>int</b> - Contains an integer.</p></li>
+<li><p><b>char</b> - Contains a single character.</p></li>
+<li><p><b>boolean</b> - Contains either <tt><b>true</b></tt> or <tt><b>false</b></tt>.</p></li></ul>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-57"></a>Match Type</p></td>
+<td align="left" valign="top" scope="row"><p>The type of matching to
+be performed against the field, if the field is to be used for
+match weight generation. You must define at least one field for matching or
+no weights will be generated.</p><p>The match types you specify here define the
+structure of the Match Field file (<tt>mefa.xml</tt>), including the match string. The match types
+in the Match Field file might differ from the wizard match types.
+See <a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/landingpage.html">Understanding Master Index Configuration Options</a> for information about the available options for this field and how
+the wizard match types correlate to the Match Field file types.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-58"></a>Blocking</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of
+whether the field will be used in the blocking query. Specify <tt><b>true</b></tt> to
+add the field to the blocking query; specify <tt><b>false</b></tt> to omit it from
+the blocking query.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-59"></a>Key Type</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the field is used to
+identify unique objects. For example, a business index might store several addresses for
+each business. Each address is assigned an address type and each business can
+only have one address of each type. Specify <tt><b>true</b></tt> if the field is a
+unique record identifier, or <tt><b>false</b></tt> if it is not.</p><p>Key type fields should
+also be required fields (see below), unless a combination of fields are specified
+as key types for an object.</p>
+<hr><p><b>Note - </b> It is recommended that each child
+object contain a key type field, but this is not required. If child
+objects do not contain one or more key type fields, each enterprise object
+might accumulate a very large number of child objects depending on the survivor
+strategy used.</p>
+<hr>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-60"></a>Updateable</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the field can be updated from the
+EDM and external system messages. Specify <tt><b>true</b></tt> if the field can be updated or
+<tt><b>false</b></tt> if it cannot.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-61"></a>Required</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the field is required in
+order to save an enterprise object to the database. Specify <tt><b>true</b></tt> if the
+field is required or <tt><b>false</b></tt> if it is not. If only one key
+type field is defined for an object, that field should be required.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-62"></a>Size</p></td>
+<td align="left" valign="top" scope="row"><p>The number
+of characters allowed in each field. This determines the number of characters allowed
+in the database columns and defines the maximum number of characters that can
+be entered into each field on the EDM.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-63"></a>Pattern</p></td>
+<td align="left" valign="top" scope="row"><p>The required data pattern for
+the field. For more information about possible values and using Java patterns, see
+&ldquo;Patterns&rdquo; in the class list for <a name="indexterm-64"></a><tt>java.util.regex</tt> in the Javadocs provided with the
+J2SE Platform. You might want to define patterns for date, telephone, or SSN
+fields. Note that for the EDM, the pattern is further restricted by the
+value entered for the input mask described in the previous table. If no
+input mask is specified, all regex patterns are supported.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-65"></a>Code Module</p></td>
+<td align="left" valign="top" scope="row"><p><a name="indexterm-66"></a><a name="indexterm-67"></a>The identification code for the
+drop-down list that appears for this field in the EDM.</p>
+<hr><p><b>Note - </b>This value must
+match an entry in the code column of the sbyn_common_header database table and,
+by default, an entry for the code you enter is created in the
+Code List database script. You can further customize code lists in the script
+after completing the wizard.</p>
+<hr>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-68"></a>User Code</p></td>
+<td align="left" valign="top" scope="row"><p>The processing code for the drop-down list that
+appears for the fields defined by the Constrained By property. For more information,
+see the description of the Constrained By property below.</p>
+<hr><p><b>Note - </b><a name="indexterm-69"></a>This must match an entry in
+the code_list column of the sbyn_user_code database table.</p>
+<hr>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-70"></a>Constrained By</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the field
+that contains the corresponding User Code value (described above). The User Code and
+Constrained By properties are used in conjunction to fulfill two purposes. The first
+purpose is to define a drop-down list for the field that contains the
+User Code value. The second purpose is to validate the field that contains
+the Constrained By value against definitions for the field with the User Code
+value.</p><p>For example, if you store non-unique IDs such as credit card numbers or
+insurance policy numbers, you could create a field named ID Type that
+has a User Code value of CREDCARD, which is also defined as a
+code in the sbyn_user_code table. This gives the ID Type field a drop-down
+list based on the definitions for CREDCARD in the sbyn_user_code table. You could
+then create a field named ID that would be constrained by the formats
+defined for the ID Type field. Any IDs you enter would be validated
+against the value of the ID Type field.</p></td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="dsgn_eview-edm-props_r"></a><h3>Wizard EDM Field Properties</h3>
+<p>The following table lists and describes the field properties you can define on
+the EDM Field Properties page of the wizard.</p><table><col width="20%"><col width="80%"><tr><th align="left" valign="top" scope="column"><p><a name="indexterm-71"></a>Property</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-72"></a>Display Name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the
+field as it will appear on the EDM.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-73"></a>Input Mask</p></td>
+<td align="left" valign="top" scope="row"><p>A mask used by
+the GUI to add punctuation to a field. For example, if users enter
+the date in the format MMDDYYYY, you can add an input mask
+to display the dates as MM/DD/YYYY. Use the value mask (described below) to
+strip the punctuation from the value before storing it in the database.</p><p>To define
+an input mask, enter a character type for each character in the field
+and place any necessary punctuation between the character types. For example, the input
+mask for the above date format is DD/DD/DDDD.</p>
+<ul><li><p><b>D</b> &mdash; indicates a numeric character.</p></li>
+<li><p><b>L</b> &mdash; indicates an alphabetic character.</p></li>
+<li><p><b>A</b> &mdash; indicates an alphanumeric character.</p></li></ul>
+<p>Note that the value you
+enter can further restrict the data pattern for the field (this is the
+Pattern field property described in <a href="#dsgn_eview-field-props_r">Wizard General Field Properties</a>). The following character types can be used.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-74"></a>Value
+Mask</p></td>
+<td align="left" valign="top" scope="row"><p>A mask used by the index to strip any extra characters that
+were added by the input mask (see above). This mask ensures that data
+is stored in the database in the correct format.</p><p>To specify a value mask,
+type the same value as is entered for the input mask, but type
+an &ldquo;x&rdquo; in place of each punctuation mark. For example, if an SSN
+field has an input mask of DDD-DD-DDDD, specify a value mask of DDDxDDxDDDD
+to strip the dashes before storing the SSN. A value mask is
+not required for date fields.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-75"></a>Search Screen</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the field appears on
+the search windows of the EDM. Specify <tt><b>true</b></tt> to display the field or
+<tt><b>false</b></tt> to hide it.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-76"></a>Required</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the field must be populated
+on the search windows of the EDM when performing a search. This property
+can only be modified if the Search Screen property is set to <tt><b>true</b></tt>
+(see above). Specify <tt><b>true</b></tt> to make the field required or specify <tt><b>false</b></tt> to
+make it optional. You can also specify <tt><b>oneof</b></tt> to create a group of
+fields of which at least one must be populated to perform a search.
+(Be sure to specify <tt><b>oneof</b></tt> for each field in the group.)</p>
+<hr><p><b>Tip - </b> If a
+field is required for a search, the field should also be required for
+creating a record (by specifying true for the Required property on the Properties
+page). Otherwise, searches performed from the EDM could result in no matches even
+though possible matches exist.</p>
+<hr>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-77"></a>Search Result</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the field appears on
+the search results windows of the EDM. Specify <tt><b>true</b></tt> to display the field,
+or <tt><b>false</b></tt> to hide it.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-78"></a>Report</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the field appears on
+the reports generated from the EDM. Specify <tt><b>true</b></tt> to display the field on
+the reports; otherwise specify <tt><b>false</b></tt>.</p></td>
+</tr>
+</table></div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1">Table of Contents</p>
+<p class="toc level2"><a href="dsgn_eview-overview_c.html">Master Index Development Process Overview</a></p>
+<p class="toc level2"><a href="dsgn_eview-runtime_c.html">How the Framework Corresponds to the Runtime Environment</a></p>
+<p class="toc level2"><a href="dsgn_eview-prep_c.html">Before you Begin</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-application_p.html">Creating a Master Index Application</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-fields_r.html">Master Index Wizard Field Properties and Name Restrictions</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_c.html">Using Custom Plug-ins to Define Custom Transaction Processing</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins2_c.html">Using Custom Plug-Ins to Define Custom Components</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_t.html">Implementing Custom Plug-ins</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-generate_t.html">Generating the Master Index Application</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database_c.html">Master Index Database Scripts and Design</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database_t.html">Creating the Database</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-dbs-delete_t.html">Deleting Tables</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database-con_p.html">Defining a Database Connection Pool</a></p>
+</div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

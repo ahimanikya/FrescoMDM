@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+<a name="top"></a>
+<h1>Developing Master Indexes With Master Index Studio</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+<a name="dsgn_eview-generate_t"></a>
+
+<h2>Generating the Master Index Application</h2>
+<p>Before you generate the application, review the configuration files and make any necessary
+modifications (see <a href="https://open-dm-mi.dev.java.net/www/docs/config/landingpage.html">Configuring Master Indexes</a> for more information). Once all modifications to the configuration files
+are complete and any custom plug-ins are built, generate the master index application
+to create or update the application components. If you modify any of the
+configuration files, match and standardization engine files, or custom plug-ins after you generate the
+application, you need to regenerate the application to update the custom components. </p>
+<hr><p><b>Note - </b>If any errors occur while compiling the application, they appear in the output
+panel in the bottom of the window. This window also displays the status
+of the generate process.</p>
+<hr>
+
+
+<a name="gentextid-1184"></a><h4>To generate the application for the first time</h4><ol>
+<li><b>Save any configuration changes to the master index Project.</b></li>
+<li><b>Right-click the master index application in the Projects window.</b></li>
+<li><b>Select Generate. </b><p>The Project components are generated. This might take a few minutes.</p></li>
+<li><b>On the NetBeans toolbar, click Save.</b></li>
+<li><b>If you are using command line reports, do the following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b>Export the generated <tt></tt><i>Application</i><tt>_stc_eindex_client.jar</tt> and <tt></tt><i>Application</i><tt>_stc_eindex_util.jar</tt> files to the <tt>/lib</tt> subdirectory in
+the reports home directory.</b></li>
+<li><b>In the <tt>/lib</tt> subdirectory, rename <tt></tt><i>Application</i><tt>_stc_eindex_client.jar</tt>to <tt>stc_eindex_client.jar</tt> and rename <tt></tt><i>Application</i><tt>stc_eindex_util.jar</tt> to <tt>stc_eindex_util.jar</tt>.</b></li></ol></li></ol>
+
+<a name="gentextid-1216"></a><h4>To regenerate the application</h4><ol>
+<li><b>Save any configuration changes to the master index Project.</b></li>
+<li><b>Right-click the master index application in the Projects window.</b></li>
+<li><b>Select Generate, and then click Yes on the dialog box that appears.
+</b><p>The application components are regenerated. This might take a few minutes. The output
+panel displays the status and any errors that occur.</p></li>
+<li><b>On the NetBeans toolbar, click Save.</b></li>
+<li><b>TBD &mdash; Check whether Project referencing the master index files need to be
+updated. If not, remove this task.</b></li>
+<li><b>If you are using command line reports, do the following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b>Export the regenerated<tt></tt><i>Application</i><tt>_stc_eindex_client.jar</tt> and <tt></tt><i>Application</i><tt>_stc_eindex_util.jar</tt> files to the <tt>/lib</tt> subdirectory in the reports
+home directory.</b></li>
+<li><b>In the <tt>/lib</tt> subdirectory, rename <tt></tt><i>Application</i><tt>_stc_eindex_client.jar</tt>to <tt>stc_eindex_client.jar</tt> and rename <tt></tt><i>Application</i><tt>stc_eindex_util.jar</tt> to <tt>stc_eindex_util.jar</tt>.</b></li></ol></li></ol>
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1">Table of Contents</p>
+<p class="toc level2"><a href="dsgn_eview-overview_c.html">Master Index Development Process Overview</a></p>
+<p class="toc level2"><a href="dsgn_eview-runtime_c.html">How the Framework Corresponds to the Runtime Environment</a></p>
+<p class="toc level2"><a href="dsgn_eview-prep_c.html">Before you Begin</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-application_p.html">Creating a Master Index Application</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-fields_r.html">Master Index Wizard Field Properties and Name Restrictions</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_c.html">Using Custom Plug-ins to Define Custom Transaction Processing</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins2_c.html">Using Custom Plug-Ins to Define Custom Components</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_t.html">Implementing Custom Plug-ins</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-generate_t.html">Generating the Master Index Application</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database_c.html">Master Index Database Scripts and Design</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database_t.html">Creating the Database</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-dbs-delete_t.html">Deleting Tables</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database-con_p.html">Defining a Database Connection Pool</a></p>
+</div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

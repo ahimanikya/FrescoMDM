@@ -1,0 +1,260 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+
+<a name="top"></a>
+<h1>Configuring Master Indexes</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+
+<a name="cnfg_index-query-basic_t"></a>
+
+<h2>Creating a Basic Query</h2>
+<p>By default, two basic queries are predefined in the Candidate Select file &mdash;
+one phonetic and one exact alphanumeric. If the default queries do not meet
+your query requirements, you can define new queries for the master index application.
+You can either use an existing query builder class or create a custom
+query builder by creating a custom plug-in (for more information, see <a href="https://open-dm-mi.dev.java.net/www/docs/dev/landingpage.html">Developing Master Indexes</a>). </p><p>The changes you make on the Query page of the Configuration Editor
+are reflected in the Candidate Select file (<tt>query.xml</tt>). For more information about this file
+and the configurable query options, see <a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/landingpage.html">Understanding Master Index Configuration Options</a>. If you create a new query
+to use from the EDM, make sure to add that query to one
+of the search definitions in the Enterprise Data Manager file (<tt>edm.xml</tt>). Unless
+specifically defined for range searching in the Enterprise Data Manager file, basic queries
+use exact searching. No configuration is required in the Candidate Select file for
+basic exact or range searching.</p><p>You can create basic queries either through the Configuration Editor or by modifying
+the XML file directly. Both methods are described here.</p>
+
+<a name="gentextid-1009"></a><h4>To Create a Basic Query (Configuration Editor)</h4><ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Click the Query tab.</b><p>The Query page appears, as shown below.</p></li>
+<li><b>In the Basic Queries section, click Add.</b><p>The Basic Query Builder dialog box appears.</p></li>
+<li><b>Enter values and select options for the fields described in <a href="#cnfg_index-query-fields_r">Query Builder Dialog Box Fields and XML Elements</a>.</b></li>
+<li><b>On the Configuration Editor toolbar, click Save.   </b></li></ol>
+
+<a name="gentextid-1028"></a><h4>To Create a Basic Query (XML Editor)</h4><ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click query.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b><a name="indexterm-100"></a>Create a new <i>query-builder</i> element in the <i>QueryBuilderConfig</i> element.</b><p>Make sure the new element is created outside of any existing <i>query-builder</i> elements.</p></li>
+<li><b>For the new <i>query-builder</i> element, define the query-builder attributes listed in <a href="#cnfg_index-query-fields_r">Query Builder Dialog Box Fields and XML Elements</a>. </b><p>For example:</p><pre>&lt;query-builder name="PHONETIC-SEARCH" class=
+  "com.sun.mdm.index.user.CustomQueryBuilder"
+  parser-class=
+  "com.sun.mdm.index.configurator.impl.querybuilder.KeyValueConfiguration"
+   standardize="false" phoneticize="true">
+&lt;/query-builder></pre></li>
+<li><b>To configure the query to use wildcard characters, do the following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b><a name="indexterm-101"></a>Add a new <i>config</i> element after the opening <i>query-builder</i> element.</b><p>For example:</p><pre>&lt;query-builder name="ALPHA-SEARCH" class=
+  "com.sun.mdm.index.querybuilder.BasicQueryBuilder"
+  parser-class=
+  "com.sun.mdm.index.configurator.impl.querybuilder.KeyValueConfiguration"
+  standardize="true" phoneticize="true">
+   <b>&lt;config></b>
+   <b>&lt;/config></b>
+&lt;/query-builder></pre></li></ol></li>
+<li><b><a name="indexterm-102"></a><a name="indexterm-103"></a><a name="indexterm-104"></a>In the new <i>config</i> element, create an <i>option</i> element and then define <i>key</i> and
+<i>value</i> attributes for the new element. </b><p>For example:</p><pre>&lt;config>
+ &lt;option key="UseWildcard" value="true"/>
+&lt;/config></pre>
+<hr><p><b>Note - </b>For the default basic query, only the <i>UseWildcard</i> parameter is supported, but if
+you create a custom basic query builder, you can use these elements to
+define additional parameters. For more information, see <a href="#cnfg_index-query-fields_r">Query Builder Dialog Box Fields and XML Elements</a>.</p>
+<hr>
+</li>
+<li><b>Save and close the file.</b></li></ol>
+
+<div class="indent"><a name="cnfg_index-query-fields_r"></a><h3>Query Builder Dialog Box Fields and XML Elements</h3>
+<p>The following table lists and describes the fields on the Basic Query Builder
+and Blocking Query Builder dialog boxes on the Configuration Editor, along with the
+corresponding elements and attributes in the Candidate Select file (<tt>query.xml</tt>).</p><table><col width="20.00*"><col width="20.00*"><col width="60.00*"><tr><th align="left" valign="top" scope="column"><p>Configuration Editor Field</p></th>
+<th align="left" valign="top" scope="column"><p>XML Element/Attribute</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-105"></a><a name="indexterm-106"></a>Query
+Builder Name</p></td>
+<td align="left" valign="top" scope="row"><p>query-builder/name</p></td>
+<td align="left" valign="top" scope="row"><p>A unique ID that identifies the Query Builder and is referenced
+from the Enterprise Data Manager file (<tt>edm.xml</tt>) when specifying the query to use on
+a search page. It is also referenced from the Match Field file (<tt>mefa.xml</tt>)
+when specifying the query to use for matching. No spaces are allowed in
+the name.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-107"></a>Query Builder Class</p></td>
+<td align="left" valign="top" scope="row"><p>query-builder/class</p></td>
+<td align="left" valign="top" scope="row"><p>The fully qualified name of the query class. Two default
+Query Builder classes are provided.</p>
+<ul><li><p><tt>com.sun.mdm.index.querybuilder.BasicQueryBuilder</tt> &mdash; Builds dynamic queries using all the available input fields. When configured to use normalized and phonetic data, this query performs phonetic searches; when configured to not use normalized and phonetic data, this query is used for exact alphanumeric searches.</p></li>
+<li><p><tt>com.sun.mdm.index.querybuilder.BlockerQueryBuilder</tt> &mdash; Builds queries using the criteria defined in the block definitions defined for the query. When a blocker query is performed, the application searches only on the blocks for which they query has complete data.</p></li></ul>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-108"></a>Parser Class</p></td>
+<td align="left" valign="top" scope="row"><p>query-builder/ parser-class</p></td>
+<td align="left" valign="top" scope="row"><p>The fully qualified name of the class
+that parses the configuration elements for each query. The default parser class is
+<tt>com.sun.mdm.index.configurator.impl.querybuilder. KeyValueConfiguration</tt>.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-109"></a>Standardize</p></td>
+<td align="left" valign="top" scope="row"><p>query-builder/ standardize</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether any of the query criteria is standardized
+before being passed to the query. On the Configuration Editor, select this check box
+if any search fields are standardized. In the XML file, enter <b>true</b>
+if any search fields are standardized; otherwise enter <b>false</b>.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-110"></a>Phoneticize</p></td>
+<td align="left" valign="top" scope="row"><p>query-builder/ phoneticize</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether
+any of the query criteria is phonetically encoded before being passed to the
+query. On the Configuration Editor, select this check box if any search fields
+are phonetically encoded.  In the XML file, enter <b>true</b> if any search
+fields are phonetically encoded; otherwise enter <b>false</b>.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Use Wildcard</p></td>
+<td align="left" valign="top" scope="row"><p>option/key</p><p>option/value</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether wildcard characters
+are allowed when executing this search. This parameter is available for basic queries
+only. On the Configuration Editor, select this check box if wildcard characters are
+allowed in any of the search fields. </p><p>In the XML file, each <i>option</i>
+element configures one parameter for the query and contains a <i>key</i> and <i>value</i>
+pair. The <i>key</i> attribute names the parameter. For the default basic query, the
+name is <a name="indexterm-111"></a><i>UseWildCard</i>. The <i>value</i> attribute specifies the value of the corresponding <i>key</i>
+attribute. For the <i>UseWildCard</i> parameter, specify <tt><b>true</b></tt> to allow wildcard characters for that query
+type; otherwise specify <tt><b>false</b></tt>.</p><p>When wildcard characters are enabled, you can enter a
+percent sign (%) into search criteria to represent multiple unknown characters.</p>
+<hr><p><b>Note - </b>If you define
+a custom query, you can use key and value options to define any
+required parameters.</p>
+<hr>
+</td>
+</tr>
+</table></div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1" style="bold">Table of Contents</p>
+<p><a href="bookoverview.html">Master Index Configuration Overview</a></p>
+<p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p>
+<p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
+<p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p>
+<p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p>
+<p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p>
+<p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p>
+<p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p>
+<p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p>
+<p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p>
+<p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p>
+<p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p>
+<p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p>
+<p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p>
+<p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p>
+<p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p>
+<p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p>
+<p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p>
+<p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p>
+<p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p>
+<p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p>
+<p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p>
+<p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p>
+<p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p>
+<p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+
+<a name="top"></a>
+<h1>Configuring Master Indexes</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+<a name="bookoverview"></a>
+
+<h2>Master Index Configuration Overview</h2>
+<p>Master Index Studio provides a very flexible framework for creating a master index
+application that is customized for your requirements. A Master Index Studio Project includes
+several files in XML format that define the configuration of the runtime environment.
+You can configure Master Index Studio by modifying the XML files directly or
+by using the Configuration Editor. Make sure to verify the configuration of the
+application before deploying the Project.</p>
+<hr><p><b>Note - </b>It is helpful to review the information provided in <a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/langingpage.html">Understanding Master Index Configuration Options</a> to learn about
+the relationships between the files and what can be configured. There are also
+certain portions of the configuration that can only be modified directly in the
+XML files. </p>
+<hr>
+<p>The following topics provide an overview of the configuration files and editors.</p>
+<ul><li><p><a href="#cnfg_index-files-about_c">About the Configuration Files</a></p></li>
+<li><p><a href="#cnfg_index-modxml-about_c">Modifying the XML Files Directly</a></p></li>
+<li><p><a href="#cnfg_index-config-ed-about_c">Using the Configuration Editor</a></p></li>
+<li><p><a href="#cnfg_index-version_c">Maintaining Version Control in the Configuration Editor</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_index-files-about_c"></a><h3>About the Configuration Files</h3>
+<p>Several XML configuration files define primary characteristics of the master index application, such
+as how data is processed, queried, and matched. These files configure runtime components
+of the master index application.</p>
+
+<div class="indent"><a name="agyau"></a><h3>Object Definition (object.xml)</h3>
+<a name="indexterm-1"></a><a name="indexterm-2"></a><a name="indexterm-3"></a><a name="indexterm-4"></a><p>In the wizard, you define the objects and fields contained in the
+object structure, along with properties for those fields. The information you specify is written
+to the Object Definition file (<tt>object.xml</tt>) in the master index Project. This file
+defines the objects stored in the master index application and their relationships to
+one another. It also defines the fields contained in each object, as well
+as certain properties of each field, such as length, data type, whether it
+is required, whether it is a unique key, and so on. This file
+contains one parent object; all other objects must be child objects to that
+parent object. The object structure you define in the Object Definition file determines
+the structure of the database tables that store object data, the structure of
+the Java API, and the structure of the OTD generated for the Project.</p></div>
+
+
+<div class="indent"><a name="agyav"></a><h3>Candidate Select (query.xml)</h3>
+<a name="indexterm-5"></a><a name="indexterm-6"></a><a name="indexterm-7"></a><a name="indexterm-8"></a><p>The Candidate Select file (<tt>query.xml</tt>) configures the <b>Query Builder</b> component of the master index
+application and defines the available queries. In this file, you define the types
+of queries that can be performed from the EDM and the queries that
+are used during the match process. You can define both phonetic and alphanumeric
+searches for the EDM. By default, these are called <b>basic queries</b>. You can also define
+<b>blocking queries</b>, which define blocks of criteria fields for the match process. The master
+index application queries the database using the criteria defined in each block, one
+at a time. After completing a query on the criteria defined in one
+block, it performs another pass using the next block of defined criteria. Blocking
+queries can also be used in place of the basic phonetic query in
+the EDM.</p></div>
+
+
+<div class="indent"><a name="agyaw"></a><h3>Match Field (mefa.xml)</h3>
+<a name="indexterm-9"></a><a name="indexterm-10"></a><a name="indexterm-11"></a><a name="indexterm-12"></a><a name="indexterm-13"></a><a name="indexterm-14"></a><a name="indexterm-15"></a><p>The Match Field file (<tt>mefa.xml</tt>) configures the <b>Matching Service</b> by specifying the fields
+to be standardized and the fields to be used for matching fields, as
+well as defining how the fields are standardized and matched. It also specifies
+the match and standardization engines to use and the query process for matching.
+Standardization includes defining fields to be reformatted (or parsed), normalized, or converted to their
+phonetic version. For matching, you must also define the data string to be
+passed to the match engine. The rules you define for standardization and matching
+are dependent on the match engine in use. <a href="https://open-dm-dq.dev.java.net/www/docs/sme/landingpage.html">Understanding the Mural Match Engine</a> describes the rules for
+the Mural Match Engine.</p><p>The Threshold file, described below, also configures the match process by defining certain
+match parameters that define weight thresholds, how assumed matches are processed, and how
+potential duplicates are processed. It also specifies the query to use for matching.</p></div>
+
+
+<div class="indent"><a name="agyax"></a><h3>Threshold (master.xml)</h3>
+<a name="indexterm-16"></a><a name="indexterm-17"></a><a name="indexterm-18"></a><p>The Threshold file (<tt>master.xml</tt>) configures the <b>Manager Service</b> and defines properties of the
+match process. You specify the match and duplicate thresholds in this file, and
+define certain system parameters, such as the update mode, how to process records
+above the match threshold, how to manage same system matches, and whether merged
+records can be updated. This file also specifies which of the queries defined
+in the Query Builder to use for matching queries.</p><p><a name="indexterm-19"></a><a name="indexterm-20"></a><a name="indexterm-21"></a>The Threshold file also configures the EUIDs assigned by the master index application.
+You can specify an EUID length, whether a checksum value is used for
+additional verification, and a &ldquo;chunk size&rdquo;. Specifying a chunk size allows the EUID
+generator to obtain a block of EUIDs from the sbyn_seq_table database table so
+it does not need to query the table each time it generates a
+new EUID.</p></div>
+
+
+<div class="indent"><a name="agyay"></a><h3>Best Record (update.xml)</h3>
+<a name="indexterm-22"></a><a name="indexterm-23"></a><p><a name="indexterm-24"></a><a name="indexterm-25"></a>The Best Record file (<tt>update.xml</tt>) allows you to define formulas that determine
+which data in an enterprise record should be considered the most reliable and
+how updates to the single best record (SBR) will be handled. The survivor
+calculator uses these formulas to decide what data from each system record to
+include in each object&rsquo;s SBR. The SBR is the portion of the enterprise
+record that represents the data that is considered to be the most accurate
+and current for an entity.</p><p>The SBR is defined by a mapping of fields from external system
+records. Since there might be many external systems, you can optionally specify a
+strategy to select the value for an SBR field from the list of
+external values. You can also specify any additional fields that might be required
+by the selection strategy to determine which external system contains the best data,
+such as the object&rsquo;s update date and time.</p><p><a name="indexterm-26"></a> You can create Java classes that define special processing to perform against
+a record when the record is created, updated, merged, or unmerged. These classes
+must be created in the Source Packages folder of the EJB Project and can
+be specified for each transaction type in the Best Record file.</p></div>
+
+
+<div class="indent"><a name="agyaz"></a><h3>Field Validation (validation.xml)</h3>
+<a name="indexterm-27"></a><a name="indexterm-28"></a><a name="indexterm-29"></a><p>By default, the Field Validation file (<tt>validation.xml</tt>) defines certain validations for the local
+identifiers assigned by each external system. You can create custom Java classes that
+define rules for validating field values before they are saved to the master
+index database. You can then specify the Java classes in the Field Validation
+file to make them part of the Master Index Studio application.</p></div>
+
+
+<div class="indent"><a name="agybb"></a><h3>Enterprise Data Manager (edm.xml)</h3>
+<a name="indexterm-30"></a><a name="indexterm-31"></a><p>The Enterprise Data Manager file (<tt>edm.xml</tt>) configures the appearance and certain processing properties
+of the EDM. In this file, you define each object and field that
+appears on the EDM, along with the properties of each field, such as
+the field type and length, field labels, format masks, and so on. You
+can also define the order in which objects and fields appear on the
+EDM pages.</p><p>This file defines several additional properties of the EDM, including the types of
+searches available, whether wildcard characters can be used, the criteria for the searches,
+and the results fields that appear. You can also specify whether an audit
+log is maintained of each instance data is accessed through the EDM. For
+healthcare-based master index applications this supports the privacy rules mandated by the
+HIPAA regulation for healthcare.</p><p>Finally, the Enterprise Data Manager file defines certain implementation information, such as the
+application server in use, debugging rules, and security activation.</p><p>The files that configure the components of the master index application are created
+by the wizard and define characteristics of the application, such as how data
+is processed, queried, and matched, and how it appears on the Enterprise Data
+Manager (EDM). These files configure the runtime components of the master index application.</p></div>
+</div>
+
+
+<div class="indent"><a name="cnfg_index-modxml-about_c"></a><h3>Modifying the XML Files Directly</h3>
+<p>Make sure that when you modify the configuration files directly, you use the
+Check Out and Check In commands to maintain version control. Version control is
+automatic with the Configuration Editor. If you open and modify a file without
+first checking the file out, a warning appears when you try to save
+the file. This warning lets you save and check out the file
+in one step. Also, be sure to verify that the modifications are valid
+by verifying the XML syntax. After modifying each file, save the changes.</p><p><a name="indexterm-32"></a><a name="indexterm-33"></a>There are a few restraints on modifying these files. In addition to the
+general rules listed below, the match engine you choose might place other requirements
+on customizations. Be sure to review <a href="https://open-dm-dq.dev.java.net/www/docs/sme/landingpage.html">Understanding the Mural Match Engine</a> before modifying the Match Field file.</p>
+<ul><li><p><a name="indexterm-34"></a>All fields specified in any of the configuration files must be included in the Object Definition file.</p></li>
+<li><p><a name="indexterm-35"></a><a name="indexterm-36"></a>If you add fields to the object structure, make sure you add them to the survivor calculator in the Best Record file.</p></li>
+<li><p><a name="indexterm-37"></a>If you define additional fields for normalization, parsing, or phonetic encoding, make sure to add the normalized, parsed, and phonetic fields to the Object Definition file and, optionally, the blocking query.</p></li>
+<li><p>After modifying any of the configuration files, you must regenerate the master index application and redeploy the Project. You must also refresh any client Projects that reference the master index server Project.</p></li></ul>
+</div>
+
+
+<div class="indent"><a name="cnfg_index-config-ed-about_c"></a><h3>Using the Configuration Editor</h3>
+<p><a name="indexterm-38"></a>The Configuration Editor has built in validations to ensure that integrity is maintained
+between the configuration files. For example, it does not allow you to define
+a field for normalization if that field is not already defined in the
+object structure. While you can use the Configuration Editor to modify most of
+the Master Index Studio configuration files, some elements can only be modified using
+the XML editor. Following is a summary of which features can be configured
+using the Configuration Editor and which need to be modified using an XML
+editor.</p>
+
+<div class="indent"><a name="gfxey"></a><h3>Object Definition File (object.xml)</h3>
+<p><a name="indexterm-39"></a>You can modify most elements of the Object Definition file using the Configuration Editor.
+The following can only be modified using the XML editor:</p>
+<ul><li><p>Database type</p></li>
+<li><p>Date format</p></li>
+<li><p>Maximum field value</p></li>
+<li><p>Minimum field value</p></li></ul>
+<p>It is not recommended you change the database type, but if you
+modify the database type or date format elements, you need to regenerate the
+application to create the updated database scripts. This does not recreate the Systems or
+Code Lists scripts; that needs to be done manually.</p></div>
+
+
+<div class="indent"><a name="gfxez"></a><h3>Candidate Select File (query.xml)</h3>
+<p>You can modify all elements in the <a name="indexterm-40"></a>Candidate Select file using the
+Configuration Editor. If you create a query to use in the Enterprise Data
+Manager (EDM) or to use for the matching query, you need to add
+the query to the appropriate file (Threshold or Enterprise Data Manager file) manually.</p></div>
+
+
+<div class="indent"><a name="gfxfg"></a><h3>Threshold File (master.xml)</h3>
+<p><a name="indexterm-41"></a>Most elements in the Threshold file cannot be modified using the Configuration Editor.
+You can modify the duplicate and match thresholds from the Configuration Editor.</p></div>
+
+
+<div class="indent"><a name="gfxfp"></a><h3>Match Field File (mefa.xml)</h3>
+<p>You can use the Configuration Editor to modify all commonly modified elements in
+the <a name="indexterm-42"></a>Match Field file, including defining standardization structures, normalization structures, and phonetic encoding. If
+you create custom classes to implement a block picker, pass controller, match engine,
+or standardization engine, you need to specify the implementation classes in this file
+using the XML editor.</p></div>
+
+
+<div class="indent"><a name="gfxfl"></a><h3>Best Record File (update.xml)</h3>
+<p><a name="indexterm-43"></a>Best Record file is not modified using the Configuration Editor. If you make
+any changes to the object structure (either through the Configuration Editor or XML
+editor) review this file to verify that all fields or objects are included
+in the survivor strategy and that the field and object names are correct.</p></div>
+
+
+<div class="indent"><a name="gfxds"></a><h3>Field Validation File (validation.xml)</h3>
+<p><a name="indexterm-44"></a>The Field Validation file is not modified using the Configuration Editor. If you
+create a custom field validation class, you need to specify the implementation class in
+this file using the XML editor.</p></div>
+
+
+<div class="indent"><a name="gfxel"></a><h3>Enterprise Data Manager File (edm.xml)</h3>
+<p><a name="indexterm-45"></a>Most elements in the Enterprise Data Manager file are not modified using the
+Configuration Editor. You can add and delete fields that appear on the EDM
+and modify the display name and the value and input masks. All other
+field properties can only be modified using the XML editor.</p><p>Field integrity is maintained when you delete a field using the Configuration Editor.
+The field is automatically deleted from the EDM object structure and from any
+EDM page definitions that include the field, such as a search page or
+report.</p></div>
+
+
+<div class="indent"><a name="gfxfd"></a><h3>Match Configuration File (matchConfigFile.cfg)</h3>
+<p><a name="indexterm-46"></a>You can modify all components of the Match Configuration file using the Configuration Editor,
+including adding and removing comparators. The Configuration Editor does not validate the extra
+parameters that can be used for certain comparators, so you should verify your
+changes by reviewing the match configuration file manually.</p></div>
+</div>
+
+
+<div class="indent"><a name="cnfg_index-version_c"></a><h3>Maintaining Version Control in the Configuration Editor</h3>
+<p>The Configuration Editor supports version control for the XML configuration files. You can
+manually check the master index configuration files in and out of the Repository,
+or you can let the Configuration Editor perform version control for you when
+you open and close the editor.</p>
+
+<div class="indent"><a name="gfxsz"></a><h3>Checking Configuration Files Out</h3>
+<p>If you access the Configuration Editor when all of the configuration files are
+already checked out, the Configuration Editor opens immediately. If any of the configuration
+files are checked in, a dialog box appears that allows you to choose
+whether to check out and open the files in edit mode or to
+open the files in view-only mode without checking them out.</p></div>
+
+
+<div class="indent"><a name="gfxsu"></a><h3>Checking Configuration Files In</h3>
+<p>After you modify properties in the Configuration Editor, click Save in the Configuration
+Editor toolbar to save the configuration files to the work space. This does
+not check the files back in to the Repository. To check the files
+in, you need to close the editor.</p>
+
+<a name="gentextid-329"></a><h5>To Check Files in With the Configuration Editor</h5>
+<ol>
+<li><b>When you are done making changes, click the Close icon in the upper
+right corner of the Configuration Editor.</b></li>
+<li><b>If there are any unsaved changes, a confirmation dialog box appears. Click Yes
+to save the changes.</b><p>The Check In dialog box appears.</p></li>
+<li><b>Do one of the following:</b><ul>
+<li><b>To close the editor without checking in the files, click Cancel.</b></li>
+<li><b>To check in the files and close the editor, enter a check-in
+comment and then click Check In.</b><p>The dialog box and editor close, and the files are checked in.</p>
+<hr><p><b>Note - </b>If you close the Configuration Editor without making any changes, a dialog box
+gives you the option to undo the checkout of the configuration files instead
+of checking them back in at a new revision level.</p>
+<hr>
+</li></ul></li></ol></div>
+</div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1" style="bold">Table of Contents</p>
+<p><a href="bookoverview.html">Master Index Configuration Overview</a></p>
+<p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p>
+<p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
+<p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p>
+<p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p>
+<p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p>
+<p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p>
+<p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p>
+<p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p>
+<p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p>
+<p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p>
+<p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p>
+<p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p>
+<p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p>
+<p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p>
+<p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p>
+<p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p>
+<p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p>
+<p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p>
+<p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p>
+<p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p>
+<p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p>
+<p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p>
+<p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p>
+<p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,466 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+
+<a name="top"></a>
+<h1>Configuring Master Indexes</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+<a name="cnfg_index-object_t"></a>
+
+<h2>Configuring the Object Structure</h2>
+<p>After you create the master index framework and create the configuration files, you
+can modify the object structure that you defined. <a name="indexterm-47"></a><a name="indexterm-48"></a>The properties for the
+objects and fields you will store in the master index database are defined
+in the Object Definition file (<tt>object.xml</tt>). For more information about this file and the
+configurable options, see <a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/landingpage.html">Understanding Master Index Configuration Options</a>. You can configure the object structure either through the
+Configuration Editor or by modifying the XML file directly. Both methods are described
+here.</p><p><a name="indexterm-49"></a><a name="indexterm-50"></a>The object tree in the Configuration Editor corresponds to the Object Definition file
+(<tt>object.xml</tt>) in the master index application. Any changes you make to the object
+structure in the Configuration Editor are reflected in the Object Definition file, and EDM
+field property changes are also reflected in the Enterprise Data Manager file (<tt>edm.xml</tt>).
+If you modify the XML file directly, you need to update the Enterprise
+Data Manager file manually.</p><p>Changing the object structure might also require that you make corresponding changes to
+the other configuration files. For example, if you add a new field to
+the Object Definition file that you want to include in queries and
+matching, you need to make the corresponding changes to the Candidate Select, Match Field,
+and Best Record files. Only changes made before generating the Project take effect
+for the new application. </p><p>Perform any of the following actions to configure the object structure.</p>
+<ul><li><p><a href="#cnfg_object-create_t">Adding an Object to the Object Structure</a></p></li>
+<li><p><a href="#cnfg_object-modify_t">Modifying an Object's Name</a></p></li>
+<li><p><a href="#cnfg_object-delete_t">Deleting an Object From the Object Structure</a></p></li>
+<li><p><a href="#cnfg_field-add_t">Adding a Field to the Object Structure</a></p></li>
+<li><p><a href="#cnfg_field-delete_t">Deleting a Field from the Object Structure</a></p></li>
+<li><p><a href="#cnfg_field-props_t">Modifying Field Properties</a></p></li>
+<li><p><a href="#cnfg_index-object-rel_t">Defining Relationships Between Objects</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_object-create_t"></a><h3>Adding an Object to the Object Structure</h3>
+<p><a name="indexterm-51"></a>You can add new objects to the object structure as needed. Note that
+the object structure can contain only one parent object but multiple child objects.
+If you use the Configuration Editor, you can either create an undefined object
+or create an object from a predefined template. A predefined object includes a
+set of predefined fields as well.</p>
+<hr><p><b>Note - </b>Due to database naming constraints, the length of the name of the parent
+object plus the length of any child object names must be 21
+characters or less.</p>
+<hr>
+
+
+<a name="gentextid-388"></a><h5>To Add an Undefined Object (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Select the parent object, and then click Add Sub Object Node on the
+Configuration Editor toolbar.</b><p>The object structure expands, and a new child object appears at the bottom
+of the object structure.</p></li>
+<li><b>Type a new name for the object, and then press Enter.</b></li>
+<li><b>Define the fields for the new object, as described in <a href="#cnfg_field-add_t">Adding a Field to the Object Structure</a>.</b></li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-405"></a><h5>To Add a Predefined Object (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Select the parent object, click Templates in the toolbar, and then select the
+template you want to use.</b><p>The new child object and any defined fields appear in the object tree.</p></li>
+<li><b>To change the name of the new object, double-click the object name, type
+the new name, and then press Enter.</b></li>
+<li><b>Do any of the following: </b><ul>
+<li><b>Add fields to the new object, as described in <a href="#cnfg_field-add_t">Adding a Field to the Object Structure</a>.</b></li>
+<li><b>Delete fields from the new objects, as described in <a href="#cnfg_field-delete_t">Deleting a Field from the Object Structure</a>.</b></li>
+<li><b>Modify the properties of the fields in the object, as described in <a href="#cnfg_field-props_t">Modifying Field Properties</a>.</b></li></ul></li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-430"></a><h5>To Add an Undefined Object (XML editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click object.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the location where you want to create the new object (after
+the <i>database</i> element but before <i>relationships</i>).</b></li>
+<li><b><a name="indexterm-52"></a><a name="indexterm-53"></a>Create a <i>nodes</i> element.</b></li>
+<li><b>Create and name a <i>tag</i> element within the new <i>nodes</i> element (the value
+of the <i>tag</i> element is the name of the object you are defining).</b><p>Make sure the new <i>nodes</i> element does not fall within any existing
+<i>nodes</i> elements. For example:</p><pre>&lt;nodes>
+   &lt;tag>Person&lt;/tag>
+   ...
+&lt;/nodes>
+<b>&lt;nodes></b>
+   <b>&lt;tag>Address&lt;/tag></b>
+<b>&lt;/nodes></b></pre></li>
+<li><b>Define the fields for the new object, as described in <a href="#cnfg_field-add_t">Adding a Field to the Object Structure</a>.</b></li>
+<li><b>Define the relationship of the new object to the existing objects, as described
+in <a href="#cnfg_index-object-rel_t">Defining Relationships Between Objects</a>.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_object-modify_t"></a><h3>Modifying an Object's Name</h3>
+<p>You can modify the name of an object in the Object Definition
+file, but you must also make the corresponding changes to the remaining configuration files.
+</p>
+
+<a name="gentextid-467"></a><h5>To Modify an Object's Name (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Click the plus sign next to the parent object to expand the
+object structure.</b></li>
+<li><b>Click twice on the name of the object you want to change.</b></li>
+<li><b>Type in the new name, and then press Enter</b></li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-482"></a><h5>To Modify an Object's Name (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click object.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>tag</i> element defining the object you want to modify.</b></li>
+<li><b>Change the value of the <i>tag</i> element. For example:</b><pre>  &lt;tag>Person&lt;/tag></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_object-delete_t"></a><h3>Deleting an Object From the Object Structure</h3>
+<p><a name="indexterm-54"></a>If you define an object in error, you can remove the object
+from the Object Definition file. If you modify the XML file directory, you
+must also remove the relationship definition for the object. Remember to make the corresponding
+changes to the remaining configuration files.</p>
+
+<a name="gentextid-500"></a><h5>To Delete an Object (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Expand the object structure by clicking the plus sign by the parent object.</b></li>
+<li><b>Do any of the following:</b><ul>
+<li><b>Right-click in the object tree panel, and then click Delete.</b></li>
+<li><b>Press the Delete key.</b></li>
+<li><b>In the Configuration Editor toolbar, click Delete.</b></li></ul></li>
+<li><b>On the confirmation dialog box, click Yes.</b><p>The object and any fields associated with that object are deleted. If you
+remove the parent object, all child objects are also removed.</p></li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-523"></a><h5>To Delete an Object (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click object.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>nodes</i> element containing the object you want to delete.</b></li>
+<li><b>Delete all text between and including the <i>nodes</i> tags that contain the object
+tag.</b><p>For example, to delete the Address object below, delete the boldface text.</p><pre>&lt;nodes>
+   &lt;tag>Person&lt;/tag>
+&lt;/nodes>
+<b>&lt;nodes></b>
+   <b>&lt;tag>Address&lt;/tag></b>
+<b>&lt;/nodes></b></pre></li>
+<li><b>Remove the object name from the relationship list, as described in <a href="#cnfg_index-object-rel_t">Defining Relationships Between Objects</a>.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_field-add_t"></a><h3>Adding a Field to the Object Structure</h3>
+<p><a name="indexterm-55"></a>Once you define an object in the Object Definition file, you can add
+new fields to the object and configure certain properties for those fields. Be
+sure to add the field to any relevant structures in the remaining
+configuration files. For information about field naming restrictions, see <a href="cnfg_index-fields_r.html#cnfg_index-fieldname_r">Master Index Field Name Restrictions</a>.</p>
+
+<a name="gentextid-549"></a><h5>To Add a Field (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Expand the object structure until you see the object to which you want
+to add a field.</b></li>
+<li><b>In the object tree panel, do one of the following:</b><ul>
+<li><b><a name="indexterm-56"></a><a name="indexterm-57"></a>To add the field to the end of the object&rsquo;s field list, select
+the name of the object to which you want to add a new
+field and then click Add Field in the toolbar.</b></li>
+<li><b>To add the field immediately following an existing field, select the field after
+which you want to add the new field and then click Add
+Field in the toolbar.</b><p>The tree expands and a new field is inserted.</p></li></ul></li>
+<li><b>To change the name, double-click the new field, type the new name and
+press Enter.</b></li>
+<li><b>Continue to <a href="#cnfg_field-props_t">Modifying Field Properties</a>.</b></li></ol>
+
+<a name="gentextid-573"></a><h5>To Add a Field (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click object.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b><a name="indexterm-58"></a>Scroll to the <i>tag</i> element defining the object to which you want to add
+a field.</b></li>
+<li><b><a name="indexterm-59"></a>Under the <i>tag</i> element, create a new <i>fields</i> element. </b><p>For example:</p><pre>&lt;nodes>
+   &lt;tag>Address&lt;/tag>
+   <b>&lt;fields></b>
+   <b>&lt;/fields></b>
+&lt;nodes></pre></li>
+<li><b>Specify the field properties described in <a href="cnfg_index-fields_r.html#cnfg_index-fieldxml_r">Field Property Elements in the Object Definition File</a> within the new <i>fields</i> tags.
+</b><p>For example:</p><pre>&lt;fields>
+   &lt;field-name>AddressType&lt;/field-name>
+   &lt;field-type>string&lt;/field-type>
+   &lt;size>8&lt;/size>
+   &lt;updateable>true&lt;/updateable>
+   &lt;required>true&lt;/required>
+   &lt;code-module>ADDRTYPE&lt;/code-module>
+   &lt;pattern/>
+   &lt;key-type>true&lt;/key-type>
+&lt;/fields></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_field-delete_t"></a><h3>Deleting a Field from the Object Structure</h3>
+<p><a name="indexterm-60"></a>If a field is defined for an object but does not belong
+to that object, you can delete the field from the object structure. Make
+the corresponding changes to the remaining configuration files.</p>
+
+<a name="gentextid-603"></a><h5>To Delete a Field (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Expand the object structure until the field you want to delete is visible.</b></li>
+<li><b>Select the field and do any of the following:</b><ul>
+<li><b>Right-click in the object tree panel, and then click Delete.</b></li>
+<li><b>Press the Delete key.</b></li>
+<li><b>In the Configuration Editor toolbar, click Delete.</b></li></ul></li>
+<li><b>On the confirmation dialog, click Yes.</b><p>The field is removed from the object tree.</p></li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-626"></a><h5>To Delete a Field (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click object.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>tag</i> element defining the object from which you want to
+delete a field.</b></li>
+<li><b>Scroll to the fields element containing the field to delete, and then delete
+all text between and including the <i>fields</i> tags defining that field.</b><p>For example, to delete the AddressLine1 field below, delete all text in the
+sample.</p><pre>&lt;fields>
+   &lt;field-name>AddressLine1&lt;/field-name>
+   &lt;field-type>string&lt;/field-type>
+   &lt;size>5&lt;/size>
+   &lt;updateable>true&lt;/updateable>
+   &lt;required>false&lt;/required>
+   &lt;key-type>false&lt;/key-type>
+   &lt;code-module/>
+   &lt;pattern/>
+   &lt;key-type/>
+&lt;/fields></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_field-props_t"></a><h3>Modifying Field Properties</h3>
+<p><a name="indexterm-61"></a>Every field in the object structure has a set of properties that must
+be configured before deploying the master index application. When a field is created,
+a set of default properties are defined for that field. You can modify
+the property configuration for each field to suit your data processing, storage, and
+display requirements. Field properties include general field attributes, such as the name, length,
+and data type, and EDM field properties, such as the display name for
+the field and display formatting.</p>
+<hr><p><b>Note - </b>On the Configuration Editor, the fields in the EDM section cannot be configured
+if the field is not defined to appear on the EDM (that
+is, it does not appear in the Enterprise Data Manager file).</p>
+<hr>
+
+
+<a name="gentextid-647"></a><h5>To Modify Field Properties (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Expand the object structure until the field you want to configure is visible.</b></li>
+<li><b>In the object structure, select the field to configure.</b><p>The General Properties page appears.</p></li>
+<li><b>On the Properties page in the right side of the window, modify the
+value of any of the properties listed in <a href="cnfg_index-fields_r.html#cnfg_index-fieldeditor_c">Configuration Editor Field Properties</a>.</b>
+<hr><p><b>Note - </b>After you modify a property value, press  Enter to apply the
+change.</p>
+<hr>
+</li>
+<li><b><a name="indexterm-62"></a><a name="indexterm-63"></a>To view or modify matching properties, click the Matching tab and configure the
+properties as described in <a href="cnfg_index-engines_p.html#gfxvt">To Configure the Comparison Functions (Configuration Editor)</a>. </b><p>This tab is only visible for fields that have a value in the
+Match Type field.</p></li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-673"></a><h5>To Modify Field Properties (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click object.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>tag</i> element defining the object to modify, and then to
+the fields element containing the field to modify.</b></li>
+<li><b><a name="indexterm-64"></a>Modify the value of the any of the elements described in <a href="cnfg_index-fields_r.html#cnfg_index-fieldxml_r">Field Property Elements in the Object Definition File</a>. </b>
+<hr><p><b>Note - </b>If you modify the name of a field, make the corresponding changes to
+the remaining configuration files.</p>
+<hr>
+</li>
+<li><b>Save and close the file.</b></li></ol><a name="gfwsj"></a>Example&nbsp;1-1 Field Properties in the Object Definition File<p>The following example defines an address type field that is required in order
+to enter a record, and that uniquely identifies each address object in a
+record. It also defines a list, named ADDRTYPE, from which EDM users can
+select a value to enter into the field. </p><pre>&lt;field-name>AddressType&lt;/field-name>
+&lt;field-type>string&lt;/field-type>
+&lt;size>8&lt;/size>
+&lt;updateable>true&lt;/updateable>
+&lt;required>true&lt;/required>
+&lt;pattern>&lt;/pattern>
+&lt;code-module>ADDRTYPE&lt;/code-module>
+&lt;key-type>true&lt;/key-type></pre><p>The following example defines an employee ID field where the must be equal
+to or greater than 100001 and less than or equal to 199999.
+Only the characters 0&ndash;9 are allowed.</p><pre>&lt;field-name>EmployeeID&lt;/field-name>
+&lt;field-type>string&lt;/field-type>
+&lt;size>6&lt;/size>
+&lt;updateable>true&lt;/updateable>
+&lt;required>true&lt;/required>
+&lt;minimum-value>100001&lt;/minimum-value>
+&lt;maximum-value>199999&lt;/maximum-value>
+&lt;pattern>[0-9]{6}&lt;/pattern>
+&lt;key-type>false&lt;/key-type></pre></div>
+
+
+<div class="indent"><a name="cnfg_index-object-rel_t"></a><h3>Defining Relationships Between Objects</h3>
+<p><a name="indexterm-65"></a>Once all objects are customized, you must define relationships between those objects if
+you are modifying the XML file directly. If you are using the Configuration
+Editor, the relationships are automatically defined in the object tree.</p>
+
+<a name="gentextid-698"></a><h5>To Define Object Relationships (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click object.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b><a name="indexterm-66"></a>Scroll to the <i>relationships</i> element near the end of the file.</b></li>
+<li><b><a name="indexterm-67"></a>To specify a new parent object, modify the value of the <i>name</i> element.
+</b><p>For example:</p><pre>&lt;name>Individual&lt;/name></pre>
+<hr><p><b>Note - </b>This is not recommended. Changing the parent name requires changing all instances of
+the name in all configuration files. To change the parent object name, use
+the Configuration Editor, which automatically propagates the change.</p>
+<hr>
+</li>
+<li><b>To change the name of a child object, modify the value of
+the appropriate <i>children</i> element. </b><p>For example:</p><pre>&lt;children>Telephone&lt;/children></pre></li>
+<li><b><a name="indexterm-68"></a>To add a child object, create and name a new <i>children</i> element. </b><p>For example:</p><pre>&lt;children>Telephone&lt;/children>
+&lt;children>Comments&lt;/children></pre></li>
+<li><b>To delete a child object, delete all text between and including the appropriate
+<i>children</i> element.</b></li>
+<li><b>Save and close the file.</b>
+<hr><p><b>Note - </b>You can only specify one  <i>name</i> element. The values you specify for
+the  <i>name</i> and  <i>children</i> elements must match an object name
+specified in the  <i>nodes</i> elements earlier in the file. </p>
+<hr>
+</li></ol></div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1" style="bold">Table of Contents</p>
+<p><a href="bookoverview.html">Master Index Configuration Overview</a></p>
+<p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p>
+<p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
+<p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p>
+<p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p>
+<p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p>
+<p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p>
+<p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p>
+<p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p>
+<p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p>
+<p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p>
+<p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p>
+<p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p>
+<p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p>
+<p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p>
+<p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p>
+<p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p>
+<p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p>
+<p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p>
+<p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p>
+<p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p>
+<p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p>
+<p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p>
+<p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p>
+<p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

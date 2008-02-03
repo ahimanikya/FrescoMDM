@@ -1,0 +1,351 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+
+<a name="top"></a>
+<h1>Configuring Master Indexes</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+<a name="cnfg_index-dm_p"></a>
+
+<h2>Configuring the Decision Maker</h2>
+<p>The <a name="indexterm-173"></a>Decision Maker is configured in the Threshold file (<tt>master.xml</tt>) and defines
+how to handle certain decision points in the matching process, such as weight
+thresholds, how to handle multiple records above the match threshold, and whether records
+originating from the same system can be automatically matched. You can customize the
+Decision Maker by performing any of the following actions:</p>
+<ul><li><p><a href="#cnfg_index-dm-class_t">Specifying the Decision Maker Class</a></p></li>
+<li><p><a href="#cnfg_index-1match_t">Modifying the OneExactMatch Parameter</a></p></li>
+<li><p><a href="#cnfg_index-samesystem_t">Modifying the SameSystemMatch Parameter</a></p></li>
+<li><p><a href="#cnfg_index-dup_t">Specifying the Duplicate Threshold</a></p></li>
+<li><p><a href="#cnfg_index-matchthres_t">Specifying the Match Threshold</a></p></li>
+<li><p><a href="#cnfg_index-dmparam_t">Adding and Deleting Decision Maker Parameters</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_index-dm-class_t"></a><h3>Specifying the Decision Maker Class</h3>
+<p>If you create your own Decision Maker class, you can specify the
+new class to be used by changing the value of the <i>decision-maker-class</i> element.</p>
+
+<a name="gentextid-2028"></a><h5>To Specify the Decision Maker Class</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click master.xml.</b></li>
+<li><b>Scroll to the <i>DecisionMakerConfig</i> element.</b></li>
+<li><b>Change the value of the <i>decision-maker-class</i> element to the path and name of
+the new Decision Maker class.</b><p> For example:</p><pre>&lt;decision-maker-class>com.sun.mdm.index.decision.impl.MyDecisionMaker
+&lt;/decision-maker-class></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-1match_t"></a><h3>Modifying the OneExactMatch Parameter</h3>
+<p>The <a name="indexterm-174"></a><i>OneExactMatch</i> parameter determines how records above the match threshold are processed. This
+parameter can only be modified directly in the XML file. For more information,
+see <a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/landingpage.html">Understanding Master Index Configuration Options</a> and <a href="http://docs.sun.com/doc/820-2667"><i>Understanding Sun Master Index Processing (Classic)</i></a><a href="http://docs.sun.com/doc/820-3895"><i>Understanding Sun Master Index Processing (Modern)</i></a><a href="https://open-dm-mi.dev.java.net/www/docs/process/landingpage.html">Understanding Master Index Processing</a>.</p>
+
+<a name="gentextid-2053"></a><h5>To Enable One Exact Match Processing</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click master.xml.</b></li>
+<li><b>Scroll to the <i>OneExactMatch</i> element in the <i>DecisionMakerConfig</i> element.</b></li>
+<li><b>Change the value of the <i>parameter-value</i> element to <tt><b>true</b></tt>. </b><p>For example:</p><pre>&lt;parameter>
+   &lt;parameter-name>OneExactMatch&lt;/parameter-name>
+ &lt;parameter-type>java.lang.Boolean&lt;/parameter-type>
+ &lt;parameter-value>true&lt;/parameter-value>
+&lt;/parameter></pre></li>
+<li><b>Save and close the file.</b></li></ol>
+
+<a name="gentextid-2070"></a><h5>To Disable One Exact Match Processing</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click master.xml.</b></li>
+<li><b>Scroll to the <i>OneExactMatch</i> element in the <i>DecisionMakerConfig</i> element.</b></li>
+<li><b>Change value of the <i>parameter-value</i> element to <tt><b>false</b></tt>. </b><p>For example:</p><pre>&lt;parameter>
+ &lt;parameter-name>OneExactMatch&lt;/parameter-name>
+ &lt;parameter-type>java.lang.Boolean&lt;/parameter-type>
+ &lt;parameter-value>false&lt;/parameter-value>
+&lt;/parameter></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-samesystem_t"></a><h3>Modifying the SameSystemMatch Parameter</h3>
+<p>The <a name="indexterm-175"></a><i>SameSystemMatch</i> parameter determines whether two records with local IDs from the same
+system can be merged automatically. If your local systems contain reliable data, and
+rarely duplicate their own records, set this parameter to <tt><b>true</b></tt>. This parameter can
+only be modified directly through the XML file. </p>
+
+<a name="gentextid-2092"></a><h5>To Allow Same System Records to be Automatically Merged</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click master.xml.</b></li>
+<li><b>Scroll to the <i>SameSystemMatch</i> element in the <i>DecisionMakerConfig</i> element.</b></li>
+<li><b>Change the value of the <i>parameter-value</i> element to <tt><b>true</b></tt>. </b><p>For example:</p><pre>&lt;parameter>
+ &lt;parameter-name>SameSystemMatch&lt;/parameter-name>
+ &lt;parameter-type>java.lang.Boolean&lt;/parameter-type>
+ &lt;parameter-value>true&lt;/parameter-value>
+&lt;/parameter></pre></li>
+<li><b>Save and close the file.</b></li></ol>
+
+<a name="gentextid-2109"></a><h5>To Prevent Same System Records From Being Automatically Merged</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click master.xml.</b></li>
+<li><b>Scroll to the <i>SameSystemMatch</i> element in the <i>DecisionMakerConfig</i> element.</b></li>
+<li><b>Change the value of the <i>parameter-value</i> element to <tt><b>false</b></tt>. </b><p>For example:</p><pre>&lt;parameter>
+ &lt;parameter-name>SameSystemMatch&lt;/parameter-name>
+ &lt;parameter-type>java.lang.Boolean&lt;/parameter-type>
+ &lt;parameter-value>false&lt;/parameter-value>
+&lt;/parameter></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-dup_t"></a><h3>Specifying the Duplicate Threshold</h3>
+<p>The <a name="indexterm-176"></a>duplicate threshold is the lowest matching probability weight at which two records
+are considered potential duplicates of one another. Any records with lower probability weights are
+not considered to be possible matches. Any records between the duplicate and match
+thresholds are flagged as potential duplicates, and must be resolved manually. You can
+configure the duplicate threshold by using the Configuration Editor or by modifying the
+XML file directly.</p>
+
+<a name="gentextid-2129"></a><h5>To Specify the Duplicate Threshold (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b><a name="indexterm-177"></a>Click the Matching tab.</b></li>
+<li><b>In the Duplicate Threshold field, enter the lowest weight at which two records
+should be considered a potential match.</b>
+<hr><p><b>Note - </b>This value can be any float value lower than the match threshold but
+higher than the lowest possible matching probability weight.</p>
+<hr>
+</li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-2144"></a><h5>To Specify the Duplicate Threshold (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click master.xml.</b></li>
+<li><b>Scroll to the <i>DuplicateThreshold</i> element in the <i>DecisionMakerConfig</i> element.</b></li>
+<li><b>Change the value of the <i>parameter-value</i> element. For example:</b><pre>&lt;parameter>
+   &lt;parameter-name>DuplicateThreshold&lt;/parameter-name>
+   &lt;parameter-type>java.lang.Float&lt;/parameter-type>
+   &lt;parameter-value>7.9&lt;/parameter-value>
+&lt;/parameter></pre>
+<hr><p><b>Note - </b>This value can be any float value lower than the match threshold but
+higher than the lowest possible matching probability weight.</p>
+<hr>
+</li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-matchthres_t"></a><h3>Specifying the Match Threshold</h3>
+<p>The <a name="indexterm-178"></a>match threshold specifies the matching probability weight at which two records will
+be automatically merged, depending on the value of the <i>OneExactMatch</i> parameter and the number
+of records at or above the match threshold. You can configure the match
+threshold by using the Configuration Editor or by modifying the XML file directly.</p>
+
+<a name="gentextid-2165"></a><h5>To Specify the Match Threshold (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b><a name="indexterm-179"></a>Click the Matching tab.</b></li>
+<li><b>In the Match Threshold field, enter the lowest weight at which two records
+should be considered a match.</b>
+<hr><p><b>Note - </b>This value can be any float value higher than the duplicate threshold but
+lower than the highest possible matching probability weight.</p>
+<hr>
+</li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-2180"></a><h5>To specify the match threshold (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click master.xml.</b></li>
+<li><b>Scroll to the <i>MatchThreshold</i> element in the <i>DecisionMakerConfig</i> element.</b></li>
+<li><b>Change the value of the <i>parameter-value</i> element. </b><p>For example:</p><pre>&lt;parameter>
+   &lt;parameter-name>MatchThreshold&lt;/parameter-name>
+   &lt;parameter-type>java.lang.Float&lt;/parameter-type>
+   &lt;parameter-value>28.5&lt;/parameter-value>
+&lt;/parameter></pre>
+<hr><p><b>Note - </b>This value can be any float value higher than the duplicate threshold but
+lower than the highest possible matching probability weight.</p>
+<hr>
+</li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-dmparam_t"></a><h3>Adding and Deleting Decision Maker Parameters</h3>
+<p>New <a name="indexterm-180"></a>parameters cannot be used with the default Decision Maker class and existing
+parameters should not be deleted. If you create a custom Decision Maker class,
+you might need to add new parameters or delete existing ones for the
+new class. You can only perform this task by modifying the XML file
+directly.</p>
+
+<a name="gentextid-2201"></a><h5>To add a new Decision Maker parameter </h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click master.xml.</b></li>
+<li><b>Scroll to the <i>DecisionMakerConfig</i> element.</b></li>
+<li><b>To add a new parameter, create a <i>parameter</i> element inside the <i>parameters</i> element,
+but outside any existing <i>parameter</i> elements. Define the following elements:</b><ul>
+<li><b><i>parameter-name</i> &mdash; The name of the parameter.</b></li>
+<li><b><i>parameter-type</i> &mdash; The type of parameter. Valid values are <tt>java.lang.Long, java.lang.Short</tt>, <tt>java.lang.Byte</tt>, <tt>java.lang.String</tt>, <tt>java.lang.Integer</tt>,
+<tt>java.lang.Boolean</tt>, <tt>java.lang.Double</tt>, or <tt>java.lang.Float</tt>.</b></li>
+<li><b><i>parameter-value</i> &mdash; The value of the parameter.</b><p>For example:</p><pre>&lt;parameters>
+   &lt;parameter>
+      &lt;parameter-name>OneExactMatch&lt;/parameter-name>
+      &lt;parameter-type>java.lang.Boolean&lt;/parameter-type>
+      &lt;parameter-value>false&lt;/parameter-value>
+   &lt;/parameter>
+   <b>&lt;parameter></b>
+      <b>&lt;parameter-name>MaxDuplicates&lt;/parameter-name></b>
+      <b>&lt;parameter-type>java.lang.Boolean&lt;/parameter-type></b>
+      <b>&lt;parameter-value>5&lt;/parameter-value></b>
+   <b>&lt;/parameter></b>
+&lt;/parameters></pre></li></ul></li>
+<li><b>To delete a parameter, remove all text between and including the parameter element.</b><p>For example, to delete the <i>ExtensiveSearch</i> parameter in the following sample, you
+would delete the boldface text.</p><pre>&lt;parameters>
+   &lt;parameter>
+      &lt;parameter-name>OneExactMatch&lt;/parameter-name>
+      &lt;parameter-type>java.lang.Boolean&lt;/parameter-type>
+      &lt;parameter-value>false&lt;/parameter-value>
+   &lt;/parameter>
+   <b>&lt;parameter></b>
+      <b>&lt;parameter-name>ExtensiveSearch&lt;/parameter-name></b>
+      <b>&lt;parameter-type>java.lang.Boolean&lt;/parameter-type></b>
+      <b>&lt;parameter-value>true&lt;/parameter-value></b>
+   <b>&lt;/parameter></b>
+&lt;/parameters></pre></li>
+<li><b>To remove all parameters, remove all text between and including the starting and
+ending <i>parameters</i> element.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1" style="bold">Table of Contents</p>
+<p><a href="bookoverview.html">Master Index Configuration Overview</a></p>
+<p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p>
+<p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
+<p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p>
+<p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p>
+<p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p>
+<p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p>
+<p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p>
+<p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p>
+<p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p>
+<p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p>
+<p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p>
+<p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p>
+<p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p>
+<p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p>
+<p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p>
+<p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p>
+<p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p>
+<p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p>
+<p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p>
+<p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p>
+<p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p>
+<p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p>
+<p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p>
+<p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

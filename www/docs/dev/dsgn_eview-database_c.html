@@ -1,0 +1,313 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+<!-- Servlet-Specific template -->
+
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+<a name="top"></a>
+<h1>Developing Master Indexes With Master Index Studio</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+<a name="dsgn_eview-database_c"></a>
+
+<h2>Master Index Database Scripts and Design</h2>
+<p>Before you create the master index database, familiarize yourself with the database scripts
+and the database structure. Analyze your database requirements, including hardware considerations, startup data,
+indexing needs, performance, and so on.</p><p>The following topics provide information to help you in your analysis. </p>
+<ul><li><p><a href="#dsgn_eview-dbs-scripts_c">Database Scripts</a></p></li>
+<li><p><a href="#dsgn_eview-dbs-req_c">Database Requirements</a></p></li>
+<li><p><a href="#dsgn_eview-dbs-struct_c">Database Structure</a></p></li>
+<li><p><a href="#dsgn_eview-dbs-design_c">Designing the Database</a></p></li></ul>
+
+<ul><li><p><a href="dsgn_eview-database_t.html#dsgn_eview-db-systems_r">Database Table Description for sbyn_systems</a></p></li>
+<li><p><a href="dsgn_eview-database_t.html#dsgn_eview-user-code_r">Database Table Description for sbyn_user_code </a></p></li></ul>
+
+
+<div class="indent"><a name="dsgn_eview-dbs-scripts_c"></a><h3>Database Scripts</h3>
+<p><a name="indexterm-114"></a><a name="indexterm-115"></a><a name="indexterm-116"></a><a name="indexterm-117"></a><a name="indexterm-118"></a><a name="indexterm-119"></a><a name="indexterm-120"></a><a name="indexterm-121"></a><a name="indexterm-122"></a><a name="indexterm-123"></a><a name="indexterm-124"></a><a name="indexterm-125"></a><a name="indexterm-126"></a><a name="indexterm-127"></a><a name="indexterm-128"></a>The wizard creates SQL scripts based on information you specified about code lists
+and external systems that you can use to define startup data for the
+master index application. When you generate the application, additional scripts are generated for
+creating or dropping database tables. These scripts appear under the Database Script node of
+the master index Project, and are named <tt>create.sql</tt>, <tt>systems.sql</tt>, <tt>codelist.sql</tt>, and <tt>drop.sql</tt>. You can
+modify these scripts as needed to customize the tables, indexes, startup data, and
+database distribution. You can also create new database scripts if needed.</p></div>
+
+
+<div class="indent"><a name="dsgn_eview-dbs-req_c"></a><h3>Database Requirements</h3>
+<p><a name="indexterm-129"></a><a name="indexterm-130"></a>When configuring the master index database, there are several factors to consider, including
+basic software requirements, operating systems, disk space, and so on. This section provides
+a summary of requirements for the database. For more detailed information about designing
+and implementing the database, refer to the appropriate Oracle or SQL Server documentation. The
+person responsible for the database configuration should be an Oracle or SQL Server
+database administrator familiar with the master index database and with your data processing
+requirements.</p>
+
+<div class="indent"><a name="ahaka"></a><h3>Database Platform Requirements</h3>
+<p><a name="indexterm-131"></a>The master index database can be run on SQL Server 2005 or
+on Oracle 9<b>i</b> or 10<b>g</b>. You must have this software installed before beginning the
+database installation. Make sure you also install the latest patches for the version
+you are using.</p></div>
+
+
+<div class="indent"><a name="ahakb"></a><h3>Operating System Requirements</h3>
+<p><a name="indexterm-132"></a>The database can be installed on any operating system supported by the database
+platform you are using. See the Oracle or SQL Server documentation for more
+information.</p></div>
+
+
+<div class="indent"><a name="ahakc"></a><h3>Hardware Requirements</h3>
+<p><a name="indexterm-133"></a>This section describes the minimum recommended hardware configuration for a database installation. These
+requirements are based on the minimum requirements recommended by Oracle and SQL Server
+for a typical installation. Depending on the size of the database and expected
+volume, you should increase these recommendations as needed. See your Oracle or SQL
+Server documentation for more information and for supported operating systems.</p>
+
+<div class="indent"><a name="ahakd"></a><h3>Oracle Database</h3>
+<p>For a Windows database server, the following configuration is recommended as a minimal
+installation:</p>
+<ul><li><p>Windows 2000 SP3 or later, Windows XP SP2, or Windows Server 2003</p></li>
+<li><p>Pentium 266 or later</p></li>
+<li><p>1 GB RAM (increase this based on the number of users, connections to the database, and volume)</p></li>
+<li><p>Virtual memory should be double the amount of RAM</p></li>
+<li><p>3 GB disk space plus an additional 2 KB for each system record to be stored in the database (note that this is a conservative estimate per system record, assuming that most records do not contain complete data). This depends on the Oracle environment you install. Enterprise Edition can take up to 5 GB.</p></li>
+<li><p>256-color video</p></li></ul>
+<p>For a UNIX database server, the following configuration is recommended as a minimal
+installation:</p>
+<ul><li><p>256 MB RAM (increase this based on the number of users and connections to the database)</p></li>
+<li><p>Swap space should be a minimum of twice the amount of RAM</p></li>
+<li><p>2 GB disk space plus an additional 2 KB for each system record to be stored in the database (note that this is a conservative estimate per system record, assuming that most records do not contain complete data).</p>
+<hr><p><b>Note - </b>Disk space recommendations do not take into account the volume and processing requirements or the number of users. These are minimal requirements to install a generic database. At a minimum, the empty database and the database software will require 2.5 GB of disk space. </p>
+<hr>
+</li></ul>
+</div>
+
+
+<div class="indent"><a name="ahake"></a><h3>Microsoft SQL Server</h3>
+<p>The following configuration is recommended as a minimal installation for a SQL Server
+database.</p>
+<ul><li><p>Pentium III-compatible processor or higher</p></li>
+<li><p>512 MB RAM as a minimum; at least 1 GB is recommended (increase this based on the number of users, connections to the database, and volume)</p></li>
+<li><p>3 GB disk space plus an additional 2 KB for each system record to be stored in the database (note that this is a conservative estimate per system record, assuming that most records do not contain complete data). This depends on the SQL Server environment you install.</p></li>
+<li><p>VGA or higher resolution</p>
+<hr><p><b>Note - </b>Disk space recommendations do not take into account the volume and processing requirements or the number of users. These are minimal requirements to install a generic database. At a minimum, the empty database and the database software will require 1.6 GB of disk space. </p>
+<hr>
+</li></ul>
+</div>
+</div>
+</div>
+
+
+<div class="indent"><a name="dsgn_eview-dbs-struct_c"></a><h3>Database Structure</h3>
+<p><a name="indexterm-134"></a>The master index database contains some common tables that are created for all
+implementations and some that are customized for each implementation. The common tables include
+standard Oracle or SQL Server tables and supporting tables, such as sbyn_seq_table, sbyn_common_header,
+and sbyn_common_detail. These tables do not store information about the enterprise object structure you
+defined. The names of the tables that store information about the enterprise object
+are customized based on the object structure.</p><p>Two tables store information about the primary, or parent, object you defined: sbyn_<i>parent_object</i>
+and sbyn_<i>parent_object</i>sbr, where <i>parent_object</i> is the name you specified for the parent object
+in the object structure. The sbyn_<i>parent_object</i> table stores parent object data from
+each local system and the sbyn_<i>parent_object</i>sbr table stores the parent object data contained in
+the SBRs. Similar tables are created for each child object you defined in
+the object structure.</p><p>For a complete description of the database tables, see <a href="https://open-dm-mi.dev.java.net/www/docs/process/landingpage.html">Understanding Master Index Processing</a>.</p></div>
+
+
+<div class="indent"><a name="dsgn_eview-dbs-design_c"></a><h3>Designing the Database</h3>
+<p><a name="indexterm-135"></a>In designing the database, there are several factors to consider, such as the
+volume of data stored in the database and the number of transactions processed
+by the database daily. The master index database should be created in its
+own tablespaces. The following sections describe some of the analyses to perform along
+with considerations to take into account when designing the database.</p>
+
+<div class="indent"><a name="ahakh"></a><h3>Designing for Performance Optimization</h3>
+<p><a name="indexterm-136"></a><a name="indexterm-137"></a>The Oracle and SQL Server installation guides provide detailed information about installing the
+database software for optimal performance. Both database platforms include guides containing information about
+monitoring and fine-tuning your database, including tuning memory, swap space, I/O, CPU usage, block
+and file size, and so on. You should be familiar with these
+concepts prior to creating the database.</p></div>
+
+
+<div class="indent"><a name="ahaki"></a><h3>Data Structure Analysis</h3>
+<p><a name="indexterm-138"></a>Before defining the object structure, you analyzed the structure of the legacy data
+to help you define the object structure and the attributes of each field.
+You can use this data analysis to determine the amount of data that
+will be stored in the database, which will help you size the
+master index database and decide how to best distribute the database. Knowing the
+volume of existing data plus the expected daily transaction volume will help you plan
+the requirements of the database server, such as networking needs, disk space, memory,
+swap space, and so on.</p><p>The data structure analysis also helps you determine the processing codes and descriptions
+to enter in the common tables (described below), and should help you determine
+any default values that have been entered into certain fields that could skew
+the matching probability weights.</p></div>
+
+
+<div class="indent"><a name="ahakj"></a><h3>Common Table Data</h3>
+<p><a name="indexterm-139"></a><a name="indexterm-140"></a><a name="indexterm-141"></a>Common table data analysis involves gathering information about the abbreviations used for specific
+data elements in each sending system, such as system codes and codes for
+certain attributes of the objects in your database. For example, if you are indexing
+person objects, there might be processing codes for genders, such as F for
+female, M for male, and so on. The processing codes and their descriptions
+are stored in a set of database tables known as common maintenance tables.
+The wizard creates a script to help you load the processing codes into
+the database.</p><p><a name="indexterm-142"></a>When an enterprise object appears on the EDM, the master index application translates
+the processing codes defined in the common tables into their descriptions so the
+user is not required to decipher each code. The data elements stored in
+the common maintenance tables are also used to populate the drop-down lists that
+appear for certain fields in the EDM. Users can select from these options
+to populate the associated fields.</p></div>
+
+
+<div class="indent"><a name="ahakk"></a><h3>User Code Data</h3>
+<p><a name="indexterm-143"></a>User code data analysis involves gathering information about the abbreviations used for specific data
+elements in each sending system for a field whose format or possible values
+are constrained by a separate field. For example, if you store credit card
+information, you might have a drop-down list in the Credit Card field for
+each credit card type. The format of the field that stores the
+credit card number is dependent on the type of credit card you select.
+You could also use user code data to validate cities with postal codes.
+The abbreviations and related constraint information are stored in the sbyn_user_code table.</p></div>
+
+
+<div class="indent"><a name="ahakl"></a><h3>Database Considerations</h3>
+<p><a name="indexterm-144"></a>When you create the master index database, you need to consider several factors,
+such as sizing, distribution, indexes, and extents. By default, all of the master
+index database tables for an Oracle database are installed in the system tablespace.
+You should install the master index tables in different tablespaces, depending on the
+original size and expected volume of the database. For SQL Server, the master
+index tables belong to &ldquo;dbo&rdquo; by default.</p>
+
+<div class="indent"><a name="ahakm"></a><h3>Database Sizing</h3>
+<p>To begin the database installation, you first create an Oracle or SQL Server
+database instance using the provided configuration tools. Use the tools provided by Oracle
+or Microsoft to define the tablespace and extent sizing for the database.</p></div>
+
+
+<div class="indent"><a name="ahakn"></a><h3>Database Distribution</h3>
+<p>When you create the database instance, you can define the distribution of your
+system tables, data tables, rollback logs, dump files, control files, and so on.
+Use internal policies regarding relational database distribution to determine how to best distribute
+your master index database.</p></div>
+
+
+<div class="indent"><a name="ahako"></a><h3>Database Indexes</h3>
+<p><a name="indexterm-145"></a><a name="indexterm-146"></a>By default, indexes are defined for the following tables: sbyn_appl, sbyn_common_header, sbyn_common_detail, sbyn_enterprise, sbyn_transaction,
+sbyn_assumedmatch, sbyn_potentialduplicates, sbyn_audit, and sbyn_merge. You can create additional indexes against the database to
+optimize the searching and matching processes. At a minimum, it is recommended that
+all combinations of fields used for blocking or matching be indexed. For each
+query block defined in the blocking query, create an index containing the fields
+in that block.</p><p>The following indexes are automatically created to improve performance when running large reports
+from the command line or EDM.</p><p><tt>CREATE INDEX SBYN_POTENTIALDUPLICATES3 ON SBYN_POTENTIALDUPLICATES (TRANSACTIONNUMBER ASC); </tt></p><p><tt>CREATE INDEX SBYN_ASSUMEDMATCH2 ON SBYN_ASSUMEDMATCH (TRANSACTIONNUMBER ASC); </tt></p><p><tt>CREATE INDEX SBYN_TRANSACTION4 on SBYN_TRANSACTION (EUID2 ASC, TIMESTAMP ASC); </tt> </p><p><tt>CREATE INDEX SBYN_TRANSACTION3 on SBYN_TRANSACTION (TIMESTAMP ASC, TRANSACTIONNUMBER ASC);</tt></p>
+<hr><p><b>Note - </b>To improve performance, these four indexes should be dropped prior to performing an
+initial load or batch load of data. They can be recreated once the
+load is complete if you are running the provided reports.</p>
+<hr>
+</div>
+</div>
+</div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1">Table of Contents</p>
+<p class="toc level2"><a href="dsgn_eview-overview_c.html">Master Index Development Process Overview</a></p>
+<p class="toc level2"><a href="dsgn_eview-runtime_c.html">How the Framework Corresponds to the Runtime Environment</a></p>
+<p class="toc level2"><a href="dsgn_eview-prep_c.html">Before you Begin</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-application_p.html">Creating a Master Index Application</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-fields_r.html">Master Index Wizard Field Properties and Name Restrictions</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_c.html">Using Custom Plug-ins to Define Custom Transaction Processing</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins2_c.html">Using Custom Plug-Ins to Define Custom Components</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_t.html">Implementing Custom Plug-ins</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-generate_t.html">Generating the Master Index Application</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database_c.html">Master Index Database Scripts and Design</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database_t.html">Creating the Database</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-dbs-delete_t.html">Deleting Tables</a></p>
+</div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

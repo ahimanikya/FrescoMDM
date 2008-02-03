@@ -1,0 +1,290 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+<a name="top"></a>
+<h1>Developing Master Indexes With Master Index Studio</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+<a name="dsgn_eview-plug-ins_c"></a>
+
+<h2>Using Custom Plug-ins to Define Custom Transaction Processing</h2>
+<p><a name="indexterm-79"></a>You can add custom processing to the master index application by adding your
+own code to new Java classes in the EJB Project for the
+master index application. These classes are called custom plug-ins. This ability allows you to
+tailor how messages are processed by the master index application. Plug-ins can be
+used to customize field validations, update policies, match processing logic, and record retrieval,
+and to create custom components for the master index application, such as custom
+phonetic encoders, block pickers, or query builders.  You can create as many classes
+as you need to carry out the custom processes.</p><p>The following sections describe custom plug-ins that define custom processing. These are explained
+more fully in <a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/landingpage.html">Understanding Master Index Configuration Options</a>.</p>
+<ul><li><p><a href="#dsgn_eview-update_c">Update Policies</a> &mdash; Define custom processing logic to perform against the resulting record of a transaction before it is stored in the database.</p></li>
+<li><p><a href="#dsgn_eview-field-val_c">Field Validations</a> &mdash; Define validations to perform against specific fields, such as checking the local ID length and format.</p></li>
+<li><p><a href="#dsgn_eview-field-mask_c">Field Masking</a> &mdash; Define how the values for sensitive fields are hidden on the EDM from users who do not have permission to view them.</p></li>
+<li><p><a href="#dsgn_eview-match-logic_c">Match Processing Logic</a> &mdash; Define custom logic based on predefined decision points for how records are matched during a transaction.</p></li>
+<li><p><a href="#dsgn_eview-custom-except_c">Custom Plug-in Exception Processing</a> &mdash; Define how exceptions are handled by the custom plug-ins you create.</p></li></ul>
+
+
+<div class="indent"><a name="dsgn_eview-update_c"></a><h3>Update Policies</h3>
+<p><a name="indexterm-80"></a>For the primary transactions performed by the master index application, you can define
+additional custom processing to perform against the record that results from a transaction.
+The policies you define are invoked by the Update Manager and are applied
+to the resulting records after they are processed by the survivor calculator. The
+modifications made to a record by an update policy determine how the record
+is stored in the database. By creating custom plug-ins, you can create additional
+Java classes to support the update policies you define.</p><p>Update policies are specified in the <i>UpdatePolicy</i> section of the Best Record file
+(<tt>update.xml</tt>), and there are several different types. Each policy modifies an enterprise object
+(class <tt>com.sun.mdm.index.objects.EnterpriseObject</tt>) and must implement <tt>com.sun.mdm.index.update.UpdatePolicy</tt>, which contains one method, <tt>applyUpdatePolicy</tt>. The syntax is
+as follows:</p><p><tt>public EnterpriseObject applyUpdatePolicy(EnterpriseObject before, EnterpriseObject after)</tt></p><p>This method throws two exceptions: <tt>com.sun.mdm.index.master.UserException</tt> and <tt>com.sun.mdm.index.objects.exception.ObjectException</tt>.</p>
+
+<div class="indent"><a name="ahair"></a><h3>Enterprise Merge Policy</h3>
+<p><a name="indexterm-81"></a><a name="indexterm-82"></a><a name="indexterm-83"></a>The enterprise merge policy defines additional processing to perform after two enterprise objects
+are merged. The processing defined in this policy acts against the surviving record
+of the merge. In the <i>EnterpriseMergePolicy</i> element in the Best Record file,
+enter the fully qualified name of this custom plug-in.</p></div>
+
+
+<div class="indent"><a name="ahais"></a><h3>Enterprise Unmerge Policy</h3>
+<p><a name="indexterm-84"></a><a name="indexterm-85"></a><a name="indexterm-86"></a>The enterprise unmerge policy defines additional processing to perform after an unmerge transaction occurs.
+The processing defined in this policy acts against the surviving record of the
+merge transaction that was unmerged. In the <i>EnterpriseUnmergePolicy</i> element of the Best
+Record file, enter the fully qualified name of this custom plug-in.</p></div>
+
+
+<div class="indent"><a name="ahait"></a><h3>Enterprise Update Policy</h3>
+<p><a name="indexterm-87"></a><a name="indexterm-88"></a><a name="indexterm-89"></a>The enterprise update policy defines additional processing to perform after a record is
+updated. In the <i>EnterpriseUpdatePolicy</i> element of the Best Record file, enter the fully qualified
+name of this custom plug-in.</p></div>
+
+
+<div class="indent"><a name="ahaiu"></a><h3>Enterprise Create Policy</h3>
+<p><a name="indexterm-90"></a><a name="indexterm-91"></a><a name="indexterm-92"></a>The enterprise create policy defines additional processing to perform after a new record
+is inserted into the master index database. In the <i>EnterpriseCreatePolicy</i> element of the Best
+Record file, enter the fully qualified name of this custom plug-in.</p></div>
+
+
+<div class="indent"><a name="ahaiv"></a><h3>System Merge Policy</h3>
+<p><a name="indexterm-93"></a><a name="indexterm-94"></a><a name="indexterm-95"></a>The system merge policy defines additional processing to perform after two system objects
+are merged. The processing defined in this file acts against the surviving enterprise
+record of the merge (and not the system record). In the <i>SystemMergePolicy</i> element of
+the Best Record file, enter the fully qualified name of this custom
+plug-in.</p></div>
+
+
+<div class="indent"><a name="ahaiw"></a><h3>System Unmerge Policy</h3>
+<p><a name="indexterm-96"></a><a name="indexterm-97"></a><a name="indexterm-98"></a>The system unmerge policy defines additional processing to perform after system objects are
+unmerged. The processing defined in this file acts against the surviving enterprise record
+of the system merge transaction that was unmerged. In the <i>SystemUnmergePolicy</i> element in the
+Best Record file, enter the fully qualified name of this custom plug-in.</p></div>
+
+
+<div class="indent"><a name="ahaix"></a><h3>Undo Assumed Match Policy</h3>
+<p><a name="indexterm-99"></a><a name="indexterm-100"></a>The undo assumed match policy defines additional processing to perform after an assumed
+match transaction is reversed. In the <i>UndoAssumeMatchPolicy</i> element in the Best Record file, enter
+the fully qualified name of this custom plug-in.</p></div>
+</div>
+
+
+<div class="indent"><a name="dsgn_eview-field-val_c"></a><h3>Field Validations</h3>
+<p><a name="indexterm-101"></a>You can define validations to be performed against certain fields before information is entered
+into the master index database. Once you create the custom plug-ins containing the
+validation logic, enter the name of the plug-in in the Field Validation file
+(<tt>validation.xml</tt>). Follow these guidelines when implementing custom field validators.</p>
+<ul><li><p>The custom validation classes must implement <tt>com.sun.mdm.index.objects.validation.ObjectValidator</tt>.</p></li>
+<li><p>The exception thrown is <tt>com.sun.mdm.index.objects.validation.exception.ValidationException</tt>.</p></li></ul>
+<p>One default field validator, <i>validate-local-id</i>, is provided to validate system and local ID
+fields before processing data into the database. This is described in <a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/landingpage.html">Understanding Master Index Configuration Options</a>.</p></div>
+
+
+<div class="indent"><a name="dsgn_eview-field-mask_c"></a><h3>Field Masking</h3>
+<p><a name="indexterm-102"></a><a name="indexterm-103"></a><a name="indexterm-104"></a>There might be instances where you want to mask certain data in records
+from general users of the Enterprise Data Manager and only allow access by
+administrators. To do this, you can create a custom plug-in that displays asterisks
+(or other symbols) in place of the field values on the EDM. Once
+you define the custom plug-in, specify the name of the custom plug-in Java
+class in the <i>object-sensitive-plug-in-class</i> element of the Enterprise Data Manager configuration file
+(<tt>edm.xml</tt>).</p></div>
+
+
+<div class="indent"><a name="dsgn_eview-match-logic_c"></a><h3>Match Processing Logic</h3>
+<p>You can implement custom plug-ins that customize the way the execute match methods
+process data into the master index application. When a record is entered into
+the master index system, match processing is performed by calling one of the
+following &ldquo;execute match&rdquo; functions from the <tt>MasterController</tt> class.</p>
+<ul><li><p><tt>executeMatch</tt></p></li>
+<li><p><tt>executeMatchUpdate</tt></p></li>
+<li><p><tt>executeMatchDupRecalc</tt></p></li>
+<li><p><tt>executeMatchUpdateDupRecalc</tt></p></li>
+<li><p><tt>executeMatchGui</tt> (this method is only called by the EDM)</p></li></ul>
+<p>These methods contain standard logic for processing records through the master index database,
+weighting incoming records against existing records, and then using those weights to determine
+whether to insert a new record or update an existing record. In addition
+to configuring the match processing logic in the Threshold file (<tt>master.xml</tt>), you can
+customize certain aspects of the processing logic using custom plug-ins that contain functions found
+in the <tt>ExecuteMatchLogics</tt> class.</p>
+
+<div class="indent"><a name="ahajc"></a><h3>Custom Match Processing Logic Methods</h3>
+<p><a name="indexterm-105"></a>There are five decision branches where custom logic can be inserted. At specific
+points in match processing, the execute match methods look for the value of
+the methods listed below. For more information about the methods, see the Javadocs
+for the master index. These methods are contained in the <tt>ExecuteMatchLogics</tt> class in
+the package <tt>com.sun.mdm.index.master</tt>. For information about where the decision points are reached in
+the processing logic and how to change the logic, see <a href="https://open-dm-mi.dev.java.net/www/docs/process/landingpage.html">Understanding Master Index Processing</a>. The following methods
+specify the custom logic.</p>
+<ul><li><p><tt>bypassMatching</tt> - Indicates whether to perform the match process on incoming records or to bypass the match process.</p></li>
+<li><p><tt>disallowAdd</tt> - Indicates whether an incoming message can be inserted as a new record.</p></li>
+<li><p><tt>disallowUpdate</tt> - Indicates whether an incoming record can update an existing record.</p></li>
+<li><p><tt>rejectAssumedMatch</tt> - Indicates whether to accept or reject an assumed match of two records.</p></li>
+<li><p><tt>rejectUpdate</tt> - Indicates whether to accept or reject an update to an existing record.</p></li></ul>
+</div>
+
+
+<div class="indent"><a name="ahajd"></a><h3>Custom Match Processing Logic Plug-in Requirements</h3>
+<p>The custom plug-ins you create to define custom execute match logic must extend
+the <tt>ExecuteMatchLogics</tt> class. In addition, the following classes must be imported into the
+custom plug-in.</p>
+<ul><li><p><tt>com.sun.mdm.index.objects.SystemObject</tt></p></li>
+<li><p><tt>com.sun.mdm.index.objects.EnterpriseObject</tt></p></li>
+<li><p><tt>com.sun.mdm.index.objects.exception.ObjectException</tt></p></li>
+<li><p><tt>com.sun.mdm.index.master.ExecuteMatchLogics</tt></p></li>
+<li><p><tt>com.sun.mdm.index.master.CustomizationException</tt></p></li></ul>
+</div>
+
+
+<div class="indent"><a name="ahaje"></a><h3>Threshold File Customization</h3>
+<p>If you create a custom plug-in that defines custom processing logic for the
+execute match methods, you must specify those custom plug-ins in the Threshold file
+(<tt>master.xml</tt>) of the master index Project. If you create a plug-in for customizing
+logic in the execute match methods used by the back-end, specify the name
+of that class in the <i>logic-class</i> element. If you create a plug-in for
+the EDM, specify the name of that class in the <i>logic-class-gui</i> element.
+For example:</p><pre>&lt;logic-class>com.sun.mdm.index.user.CustomCollaboration&lt;/logic-class>
+&lt;logic-class-gui>com.sun.mdm.index.user.CustomEDM&lt;/logic-class-gui></pre><p>For more information about the Threshold file, see <a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/landingpage.html">Understanding Master Index Configuration Options</a>.</p></div>
+</div>
+
+
+<div class="indent"><a name="dsgn_eview-custom-except_c"></a><h3>Custom Plug-in Exception Processing</h3>
+<p>If a custom plug-in throws an exception of the class <tt>ObjectException</tt> or
+<tt>SystemObjectException</tt>, multiple stack traces are logged in the server log file, which can
+make operational management tasks more difficult. For cases where you do not want
+stack traces to be logged, configure your custom plug-ins to throw exceptions of
+the class <tt>UserException</tt> or one of its derived classes (<tt>DataModifiedException</tt> or <tt>ValidationException</tt>).
+This is useful for user errors on the Enterprise Data Manager (EDM). When
+one of these exceptions is thrown, no stack trace is entered in the
+log file but an error message still appears on the EDM.</p><p>For more information about these exception classes, see the Javadocs for Master Index
+Studio.</p></div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1">Table of Contents</p>
+<p class="toc level2"><a href="dsgn_eview-overview_c.html">Master Index Development Process Overview</a></p>
+<p class="toc level2"><a href="dsgn_eview-runtime_c.html">How the Framework Corresponds to the Runtime Environment</a></p>
+<p class="toc level2"><a href="dsgn_eview-prep_c.html">Before you Begin</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-application_p.html">Creating a Master Index Application</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-fields_r.html">Master Index Wizard Field Properties and Name Restrictions</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_c.html">Using Custom Plug-ins to Define Custom Transaction Processing</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins2_c.html">Using Custom Plug-Ins to Define Custom Components</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_t.html">Implementing Custom Plug-ins</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-generate_t.html">Generating the Master Index Application</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database_c.html">Master Index Database Scripts and Design</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database_t.html">Creating the Database</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-dbs-delete_t.html">Deleting Tables</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database-con_p.html">Defining a Database Connection Pool</a></p>
+</div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

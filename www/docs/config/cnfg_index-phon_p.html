@@ -1,0 +1,429 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+
+
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+
+<a name="top"></a>
+<h1>Configuring Master Indexes</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+
+<a name="cnfg_index-phon_p"></a>
+
+<h2>Defining Phonetic Encoding</h2>
+<p>Master Index Studio provides configurable phonetic encoding capabilities. Phonetic encoding is a part
+of the standardization process, and is the process of changing the value of
+a data field to its phonetic equivalent. It is used to retrieve records
+with similar field values from the database for matching. You can specify which
+fields will be phonetically encoded before matching and how they will be encoded.
+There are several different encoders you can use for this purpose. This is
+most commonly done for first names and street names. </p><p><a name="indexterm-263"></a><a name="indexterm-264"></a><a name="indexterm-265"></a><a name="indexterm-266"></a>Phonetic encoding is defined in the Match Field file (<tt>mefa.xml</tt>). You can
+define phonetic encoding by either using the Configuration Editor or modifying the XML
+file directly. The changes you make on the Phoneticized Field page of the
+Configuration Editor are reflected in the phonetic encoding structures and the match service
+section of the Match Field file. The Configuration Editor provides a simplified way
+of defining phonetic encoding. Perform any of the following tasks to define phonetic
+encoding rules:</p>
+<ul><li><p><a href="#cnfg_index-phon-def_t">Defining Fields for Phonetic Encoding</a></p></li>
+<li><p><a href="#cnfg_index-phon-mod_t">Modifying a Phonetic Encoding Definition</a></p></li>
+<li><p><a href="#cnfg_index-phon-del_t">Deleting a Phonetic Encoding Definition</a></p></li>
+<li><p><a href="#cnfg_index-phon-enc-def_t">Defining a Phonetic Encoder</a></p></li>
+<li><p><a href="#cnfg_index-phon-enc-mod_t">Modifying a Phonetic Encoder</a></p></li>
+<li><p><a href="#cnfg_index-phon-enc-del_t">Deleting a Phonetic Encoder</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_index-phon-def_t"></a><h3>Defining Fields for Phonetic Encoding</h3>
+<p>Some of the data stored in the master index application needs to
+be converted into its phonetic version before the match process occurs. You can specify
+the fields you want to be phonetically encoded, the fields that will store
+the encoded values, and the type of phonetic encoder, such as NYSIIS or
+Soundex, to use for each field. A sample phonetic encoding structure for the
+XML file is included at the end of these instructions.</p>
+
+<a name="gentextid-3175"></a><h5>To Define a Field for Phonetic Encoding (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Click the Phoneticized Fields tab.</b><p>The Phoneticized Field page appears.</p></li>
+<li><b>In the Phoneticized Fields section, click Add.</b><p>The Phoneticized Field dialog box appears.</p></li>
+<li><b>Select values for the fields described in <a href="#cnfg_index-phon-field_r">Phonetic Encoding Fields and Elements</a>.</b></li>
+<li><b>Click OK.</b><p>The phonetic encoding definition is added to the Phoneticized Fields list.</p></li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-3195"></a><h5>To Define a Field for Phonetic Encoding (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click mefa.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b><a name="indexterm-267"></a>Scroll to the <i>phoneticize-fields</i> element in the <i>PhoneticEncodersConfig</i> element.</b></li>
+<li><b><a name="indexterm-268"></a>Create a new <i>phoneticize-field</i> element within the <i>phoneticize-fields</i>element. </b></li>
+<li><b><a name="indexterm-269"></a>In the new <i>phoneticize-field</i> element, create and define the elements described in <a href="#cnfg_index-phon-field_r">Phonetic Encoding Fields and Elements</a>.</b></li>
+<li><b>Save and close the file.</b></li></ol><a name="gfxpc"></a>Example&nbsp;1-4 Phonetic Encoding Structure<pre>&lt;phoneticize-fields>
+   &lt;phoneticize-field>
+      &lt;unphoneticized-source-field-name>Person.FirstName
+      &lt;/unphoneticized-source-field-name>
+      &lt;phoneticized-target-field-name>Person.FirstNamePhoneticCode
+      &lt;/phoneticized-target-field-name>
+      &lt;encoding-type>Soundex&lt;/encoding-type>
+   &lt;/phoneticize-field>
+&lt;/phoneticize-fields></pre></div>
+
+
+<div class="indent"><a name="cnfg_index-phon-field_r"></a><h3>Phonetic Encoding Fields and Elements</h3>
+<p>The following table lists and describes the Configuration Editor fields and XML file
+elements used to define how fields will be phonetically encoded.</p><table><col width="25.00*"><col width="25.00*"><col width="50.00*"><tr><th align="left" valign="top" scope="column"><p>Configuration Editor Field</p></th>
+<th align="left" valign="top" scope="column"><p>XML
+File Element</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Unphoneticized Source</p></td>
+<td align="left" valign="top" scope="row"><p><a name="indexterm-270"></a>unphoneticized-source- field-name</p></td>
+<td align="left" valign="top" scope="row"><p>The ePath of the source field in the system
+object that contains the data to be phonetically encoded (for example, Person.Address[*].StreetName).</p>
+<hr><p><b>Note - </b>This can
+refer to the original field or to a standardized or normalized field.</p>
+<hr>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Phoneticized Target</p></td>
+<td align="left" valign="top" scope="row"><p><a name="indexterm-271"></a>phoneticized-target-
+field-name</p></td>
+<td align="left" valign="top" scope="row"><p>The ePath of the field in the system object that will store
+the phonetically encoded value of the source field.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>NA</p></td>
+<td align="left" valign="top" scope="row"><p><a name="indexterm-272"></a>phoneticized-object- field-id</p></td>
+<td align="left" valign="top" scope="row"><p>A field ID to identify
+the field to the phonetic encoder. This is not currently used with the
+Mural Match Engine, but could be used with a custom match engine.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Encoder</p></td>
+<td align="left" valign="top" scope="row"><p><a name="indexterm-273"></a>encoding-type</p></td>
+<td align="left" valign="top" scope="row"><p>The phonetic
+encoder to use for this field. This must correspond to an encoder defined
+in the Encoders section on the Configuration Editor (or the <i>PhoneticEncodersConfig</i> element of
+the XML file). </p></td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="cnfg_index-phon-mod_t"></a><h3>Modifying a Phonetic Encoding Definition</h3>
+<p><a name="indexterm-274"></a><a name="indexterm-275"></a>Once you create a phonetic encoding definition, you can modify it as needed.
+Use caution when modifying definitions once a system is in production. This can
+cause unexpected match results.</p>
+
+<a name="gentextid-3275"></a><h5>To Modify a Phonetic Encoding Definition (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Click the Phoneticized Fields tab.</b><p>The Phoneticized Field page appears.</p></li>
+<li><b>In the Phoneticized Fields section, select the phonetic encoding definition you want to
+modify, and then click Edit.</b><p>The Phoneticized Field dialog box appears.</p></li>
+<li><b>Modify any of the fields listed in <a href="#cnfg_index-phon-field_r">Phonetic Encoding Fields and Elements</a>, and then click OK.</b></li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-3292"></a><h5>To Modify a Phonetic Encoding Definition (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click mefa.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <a name="indexterm-276"></a><i>phoneticize-fields</i> element.</b></li>
+<li><b>In the <i>phoneticize-field</i> element that defines the phonetic encoding you want to modify,
+change the value of any of the elements described in <a href="#cnfg_index-phon-field_r">Phonetic Encoding Fields and Elements</a>.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-phon-del_t"></a><h3>Deleting a Phonetic Encoding Definition</h3>
+<p><a name="indexterm-277"></a>Once you create a phonetic encoding definition, you can delete it as needed.
+Use caution when deleting definitions once a system is in production. This can
+cause unexpected match results.</p>
+
+<a name="gentextid-3311"></a><h5>To Delete a Phonetic Encoding Definition (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Click the Phoneticized Fields tab.</b><p>The Phoneticized Field page appears.</p></li>
+<li><b>In the Phoneticized Fields section, select the phonetic encoding definition you want to
+delete.</b></li>
+<li><b>Click Remove.</b></li>
+<li><b>Click Yes on the dialog that appears.</b></li>
+<li><b>On the Configuration Editor toolbar, click Save.   </b></li></ol>
+
+<a name="gentextid-3328"></a><h5>To Delete a Phonetic Encoding Definition (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click mefa.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>phoneticize-fields</i> element in the <i>PhoneticEncodersConfig</i> element.</b></li>
+<li><b>Do either of the following:</b><ul>
+<li><b>To delete a field currently specified for phonetic conversion, delete all text between
+and including the <i>phoneticize-field</i> element that defines the field. </b><p>Using the example below, to delete the first name phonetic field, delete the
+boldface text.</p><pre>&lt;phoneticize-fields>
+   &lt;phoneticize-field>
+      &lt;unphoneticized-source-field-name>Person.LastName
+      &lt;/unphoneticized-source-field-name>
+      &lt;phoneticized-target-field-name>Person.LastNamePhoneticCode
+      &lt;/phoneticized-target-field-name>
+      &lt;encoding-type>NYSIIS&lt;/encoding-type>
+   &lt;/phoneticize-field>
+   <b>&lt;phoneticize-field></b>
+      <b>&lt;unphoneticized-source-field-name>Person.FirstName</b>
+      <b>&lt;/unphoneticized-source-field-name></b>
+      <b>&lt;phoneticized-target-field-name>Person.FirstNamePhoneticCode</b>
+      <b>&lt;/phoneticized-target-field-name></b>
+      <b>&lt;encoding-type>Soundex&lt;/encoding-type></b>
+   <b>&lt;/phoneticize-field></b>
+&lt;/phoneticize-fields></pre></li>
+<li><b>To delete all fields currently specified for phonetic conversion, delete all text between,
+but not including, the <i>phoneticize-fields</i> element.</b></li></ul></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-phon-enc-def_t"></a><h3>Defining a Phonetic Encoder</h3>
+<p>Each type of phonetic encoder provided with Master Index Studio is defined in
+the <i>PhoneticEncodersConfig</i> section of the Match Field file (<tt>mefa.xml</tt>). They are listed in
+the Encoders section of the Configuration Editor.</p>
+
+<a name="gentextid-3362"></a><h5>To Define a Phonetic Encoder (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Click the Phoneticized Fields tab.</b><p>The Phoneticized Field page appears.</p></li>
+<li><b>In the Encoders section, click Add.</b><p>The Phonetic Encoder dialog box appears.</p></li>
+<li><b><a name="indexterm-278"></a><a name="indexterm-279"></a>In the Encoder field, enter a descriptive name for the encoder.</b></li>
+<li><b><a name="indexterm-280"></a>In the Implementation Class field, enter the fully qualified Java path of the class
+to use for the encoder.</b>
+<hr><p><b>Note - </b>For more information about the encoder class paths, see <a href="#cnfg_index-phon-enc_r">Encoder Elements and Encoder Types</a>.</p>
+<hr>
+</li>
+<li><b>Click OK.</b><p>The phonetic encoder is added to the Encoders list.</p></li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-3389"></a><h5>To Define a Phonetic Encoder (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click mefa.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>PhoneticEncodersConfig</i> section.</b></li>
+<li><b><a name="indexterm-281"></a>Create a new <i>encoder</i> element, and then define the elements described in <a href="#cnfg_index-phon-enc_r">Encoder Elements and Encoder Types</a>.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-phon-enc_r"></a><h3>Encoder Elements and Encoder Types</h3>
+<p>The following tables list and describe the elements that configure the phonetic encoders
+used by the master index application, and list the encoding types supported by
+the Mural Match Engine.</p><table><col width="25.00*"><col width="75.00*"><tr><th align="left" valign="top" scope="column"><p>Element</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-282"></a>encoding-type</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the phonetic encoder, such as NYSIIS,
+Soundex, or Metaphone.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-283"></a>encoder-implementation- class</p></td>
+<td align="left" valign="top" scope="row"><p>The fully qualified name of the Java class that
+determines the behavior of the phonetic encoder. The following table lists and describes
+the default classes.</p></td>
+</tr>
+</table><p>The following table lists the phonetic encoders supported by the Mural Match
+Engine along with the names of their default classes.</p><table><col width="25.00*"><col width="75.00*"><tr><th align="left" valign="top" scope="column"><p>Encoding Type</p></th>
+<th align="left" valign="top" scope="column"><p>class-name</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>NYSIIS</p></td>
+<td align="left" valign="top" scope="row"><p>com.sun.mdm.index.phonetic.impl.Nysiis</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Soundex</p></td>
+<td align="left" valign="top" scope="row"><p>com.sun.mdm.index.phonetic.impl.Soundex</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Metaphone</p></td>
+<td align="left" valign="top" scope="row"><p>com.sun.mdm.index.phonetic.impl.Metaphone</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Double Metaphone</p></td>
+<td align="left" valign="top" scope="row"><p>com.sun.mdm.index.phonetic.impl.DoubleMetaphone</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>Refined Soundex</p></td>
+<td align="left" valign="top" scope="row"><p>com.sun.mdm.index.phonetic.impl.RefinedSoundex</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>French Soundex</p></td>
+<td align="left" valign="top" scope="row"><p>com.sun.mdm.index.phonetic.impl.SoundexFR</p></td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="cnfg_index-phon-enc-mod_t"></a><h3>Modifying a Phonetic Encoder</h3>
+<p>Once you define a <a name="indexterm-284"></a>phonetic encoder, you can modify the implementation class. Use
+caution when modifying definitions once a system is in production. This can cause
+unexpected match results.</p>
+
+<a name="gentextid-3475"></a><h5>To Modify a Phonetic Encoder (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Click the Phoneticized Fields tab.</b><p>The Phoneticized Field page appears.</p></li>
+<li><b>In the Encoders section, select the encoder you want to modify and then
+click Edit.</b><p>The Phonetic Encoder dialog box appears.</p></li>
+<li><b>Change the implementation class, and then click OK.</b></li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-3491"></a><h5>To Modify a Phonetic Encoder (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click mefa.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>PhoneticEncodersConfig</i> section.</b></li>
+<li><b>Modify the value of any of the elements in the <a name="indexterm-285"></a><i>encoder</i> element
+you want to modify (for more information, see <a href="#cnfg_index-phon-enc_r">Encoder Elements and Encoder Types</a>.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-phon-enc-del_t"></a><h3>Deleting a Phonetic Encoder</h3>
+<p><a name="indexterm-286"></a>Once you define a phonetic encoder, you can delete it if needed. Use
+caution when deleting encoders once a system is in production. This can cause
+unexpected match results. If you delete an encoder that is referenced by a
+phonetic encoding definition, make sure to modify the definition by referencing an existing
+encoder.</p>
+
+<a name="gentextid-3510"></a><h5>To Delete a Phonetic Encoder (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>In the Configuration Editor toolbar, click the Phoneticized Fields tab.</b><p>The Phoneticized Field page appears.</p></li>
+<li><b>In the Encoders section, select the encoder you want to delete.</b></li>
+<li><b>Click Remove.</b></li>
+<li><b>Click Yes on the dialog box that appears.</b></li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-3527"></a><h5>To Delete a Phonetic Encoder (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click mefa.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>PhoneticEncodersConfig</i> section.</b></li>
+<li><b><a name="indexterm-287"></a>Delete the text between and including the <i>encoder</i> element the defines the encoder you
+want to remove.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1" style="bold">Table of Contents</p>
+<p><a href="bookoverview.html">Master Index Configuration Overview</a></p>
+<p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p>
+<p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
+<p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p>
+<p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p>
+<p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p>
+<p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p>
+<p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p>
+<p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p>
+<p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p>
+<p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p>
+<p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p>
+<p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p>
+<p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p>
+<p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p>
+<p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p>
+<p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p>
+<p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p>
+<p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p>
+<p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p>
+<p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p>
+<p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p>
+<p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p>
+<p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p>
+<p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,610 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+
+
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+
+<a name="top"></a>
+<h1>Configuring Master Indexes</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+<a name="cnfg_index-edm-display_p"></a>
+
+<h2>Configuring the EDM Appearance</h2>
+<p>You can modify the configuration of the fields and objects to specify how
+they appear on the EDM pages by modifying the Enterprise Data Manager file
+(<tt>edm.xml</tt>). You can perform any of the following actions to customize the general
+appearance of the EDM. Though some appearance options can be configured using the
+Configuration Editor, it is best to modify the XML file directly.</p>
+<ul><li><p><a href="#cnfg_index-edm-objects_t">Adding Objects to the EDM</a></p></li>
+<li><p><a href="#cnfg_index-edm-obj-mod_t">Modifying EDM Objects</a></p></li>
+<li><p><a href="#cnfg_index-edm-obj-del_t">Deleting Objects From the EDM</a></p></li>
+<li><p><a href="#cnfg_index-edm-fld-add_t">Adding Fields to the EDM</a></p></li>
+<li><p><a href="#cnfg_index-edm-fld-props_r">EDM Field Configuration Elements</a></p></li>
+<li><p><a href="#cnfg_index-edm-fld-del_t">Deleting Fields From the EDM</a></p></li>
+<li><p><a href="#cnfg_index-edm-fld-nm_t">Modifying EDM Field Display Options</a></p></li>
+<li><p><a href="#cnfg_index-edm-ddlist_t">Specifying a Drop-down List for an EDM Field</a></p></li>
+<li><p><a href="#cnfg_index-edm-fld-format_t">Specifying an EDM Field's Length and Format</a></p></li>
+<li><p><a href="#cnfg_index-edm-fld-data_t">Modifying an EDM Field's Data Type</a></p></li>
+<li><p><a href="#cnfg_index-edm-fld-key_t">Defining Key Fields for an Object</a></p></li>
+<li><p><a href="#cnfg_index-edm-fld-mask_t">Masking Field Values on the EDM</a></p></li>
+<li><p><a href="#cnfg_index-edm-relat_t">Defining Object Relationships</a></p></li>
+<li><p><a href="#cnfg_index-edm-local-id_t">Defining Local ID Labels</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_index-edm-objects_t"></a><h3>Adding Objects to the EDM</h3>
+<p>You can define additional objects for the EDM as long as those
+objects are defined in the Object Definition. Each object can only contain the
+fields that are also defined for that object in the Object Definition.</p>
+
+<a name="gentextid-4693"></a><h5>To Add an Object to the EDM</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>In the nodes list of the file, create a new <i>node-</i><i>object</i> element,
+substituting the object name for <b>object</b>, as shown below.</b><pre>&lt;node-Phone>
+&lt;/node-Phone></pre></li>
+<li><b>For any child objects, define the following attributes.</b>
+<ul><li><p><i>display-order</i> &mdash; The order in which the child object types are displayed in the tree view pane on the EDM pages.</p></li>
+<li><p><i>merge-must-delete </i>&mdash; An indicator of whether EDM users must specify which the instances of the child object type to retain during a system record merge. Specify &ldquo;false&rdquo; to allow EDM users to select the child objects to retain or to accept the default objects (the default objects are those in the destination system). Specify &ldquo;true&rdquo; to force the user to select the child objects to retain. This allows you to hide certain child object types on the EDM while forcing the user to specify which visible child objects to retain.</p><p>For example:</p><pre>&lt;node-Phone display-order="3" merge-must-delete="false">
+&lt;/node-Phone></pre></li></ul>
+</li>
+<li><b>Define fields for the new object, as described in <a href="#cnfg_index-edm-fld-add_t">Adding Fields to the EDM</a>.</b></li>
+<li><b>Define the relationship of the object, as described in <a href="#cnfg_index-edm-relat_t">Defining Object Relationships</a>.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-edm-obj-mod_t"></a><h3>Modifying EDM Objects</h3>
+<p>Once an <a name="indexterm-386"></a>object is defined in the Enterprise Data Manager file, you can
+modify the name if necessary. Only modify the name of an object if
+you modify the corresponding object name in Object Definition and the remaining configuration
+files. It is not recommended that the parent object name be changed.</p>
+
+<a name="gentextid-4727"></a><h5>To Modify an EDM Object</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>node</i> element naming the object to modify.</b></li>
+<li><b>To modify the object name, change the value of the <a name="indexterm-387"></a><i>node</i> element to
+<i>node-</i><i>object_name</i>, where <i>object_name</i> is the new name for the object.</b><p>For example:</p><pre>&lt;edm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="EDM.xsd">
+   &lt;node-Person></pre></li>
+<li><b>To modify the location of the object in the EDM tree structure, change
+the value of the display-order element.</b><p>For example:</p><pre>&lt;node-Alias display-order="2"></pre></li>
+<li><b>If necessary, renumber the order of other child objects so they are sequential.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-edm-obj-del_t"></a><h3>Deleting Objects From the EDM</h3>
+<p>Once an object is defined in the Enterprise Data Manager file, you
+can delete the object if necessary. If the object remains defined in the
+Object Definition file, then the object is still a part of the enterprise
+record, but does not appear on the EDM.</p>
+
+<a name="gentextid-4755"></a><h5>To Delete an Object</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>node</i> element naming the object to delete.</b></li>
+<li><b>Delete all text between and including the <i>node</i> element for that object.</b><p>Using the sample below, to delete the Phone object, delete all the text
+in the sample.</p><pre>&lt;node-Phone display-order="3" merge-must-delete="false">
+   &lt;field-PhoneType>
+      &lt;display-name>Phone Type&lt;/display-name>
+      &lt;display-order>1&lt;/display-order>
+      &lt;max-length>8&lt;/max-length>
+      &lt;gui-type>MenuList&lt;/gui-type>
+      &lt;value-list>PHONTYPE&lt;/value-list>
+      &lt;value-type>string&lt;/value-type>
+      &lt;key-type>true&lt;/key-type>
+   &lt;/field-PhoneType>
+   &lt;field-Phone>
+      &lt;display-name>Phone&lt;/display-name>
+      &lt;display-order>2&lt;/display-order>
+      &lt;max-length>20&lt;/max-length>
+      &lt;gui-type>TextBox&lt;/gui-type>
+      &lt;value-type>string&lt;/value-type>
+      &lt;input-mask>(DDD)DDD-DDDD&lt;/input-mask>
+      &lt;value-mask>xDDDxDDDxDDDD&lt;/value-mask>
+   &lt;/field-Phone>
+&lt;/node-Phone></pre></li>
+<li><b>If necessary, renumber the order of the remaining objects so they are sequential.</b></li>
+<li><b>Delete the relationship of the object, as described in <a href="cnfg_index-object_t.html#cnfg_index-object-rel_t">Defining Relationships Between Objects</a>.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-edm-fld-add_t"></a><h3>Adding Fields to the EDM</h3>
+<p>You can define new fields for an object in the Enterprise Data
+Manager file, but the field must correspond with a field defined for that
+object in the Object Definition file. The fields defined in the Enterprise Data
+Manager file appear on the EDM windows.</p>
+
+<a name="gentextid-4778"></a><h5>To Define new Fields</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>node</i> element that defines the object to which you want
+to add a field.</b></li>
+<li><b>In the <i>node</i> element, create a new element named <i>field-</i><i>field_name</i>, where <i>field_name</i> is the
+name of the <a name="indexterm-388"></a>field as it appears in the Object Definition file. </b><p>For example:</p><pre>&lt;node-Person>
+   <b>&lt;field-LastName></b>
+   <b>&lt;/field-LastName></b>
+&lt;/node></pre></li>
+<li><b>Define and configure the elements listed in<a href="#cnfg_index-edm-fld-props_r">EDM Field Configuration Elements</a> for the new <i>field-</i><i>field_name</i> element. </b><p>For example:</p><pre>&lt;field-LastName>
+   &lt;display-name>LastName&lt;/display-name>
+   &lt;display-order>2&lt;/display-order>
+   &lt;max-length>40&lt;/max-length>
+   &lt;gui-type>TextBox&lt;/gui-type>
+   &lt;value-type>string&lt;/value-type>
+   &lt;key-type>false&lt;/key-type>
+&lt;/field-LastName></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-edm-fld-props_r"></a><h3>EDM Field Configuration Elements</h3>
+<p>The following table lists and describes the XML elements that define the fields
+that appear on the Enterprise Data Manager.</p><table><col width="25.00*"><col width="75.00*"><tr><th align="left" valign="top" scope="column"><p>Element</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-389"></a>display-name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the field as
+it will appear on the EDM.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-390"></a>display-order</p></td>
+<td align="left" valign="top" scope="row"><p>The order in which the field appears
+on the EDM. For example, specify <b>1</b> to indicate this is the
+first field on the EDM pages, <b>2</b> to indicate it is the second
+field, and so on.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-391"></a>max-length</p></td>
+<td align="left" valign="top" scope="row"><p>The maximum number of characters displayed on the EDM for
+the field.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-392"></a>gui-type</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of the type of display for the field. Specify
+<b>TextBox</b> for a standard data entry field; <b>MenuList</b> for a field that
+must be populated by selecting from a drop-down list; or <b>TextArea</b> for a long
+field that requires a scrollbar, such as a comments field.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-393"></a>value-type</p></td>
+<td align="left" valign="top" scope="row"><p>The Master Index
+Studio data type for the data populated in the field. Enter one of
+the following values:</p>
+<ul><li><p><b>string</b> - Fields of this type contain a string of characters.</p></li>
+<li><p><b>date</b> - Fields of this type contain a date value.</p></li>
+<li><p><b>float</b> - Fields of this type contain a floating point integer.</p></li>
+<li><p><b>int</b> - Fields of this type contain an integer.</p></li>
+<li><p><b>char</b> - Fields of this type contain a single character.</p></li>
+<li><p><b>boolean</b> - Fields of this type can contain either &ldquo;true&rdquo; or &ldquo;false&rdquo;.</p></li></ul>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-394"></a>input-mask</p></td>
+<td align="left" valign="top" scope="row"><p>A mask used by the EDM to add punctuation to
+a <a name="indexterm-395"></a>field. You can add an input mask to display telephone numbers as
+&ldquo;(123)456-7890&rdquo; even though no punctuation is entered.</p><p>To define an input mask, type a
+character type for each character in the field, and place any necessary punctuation
+between the character types. For example, the input mask for the above telephone
+format is &ldquo;(DDD)DDD-DDDD&rdquo;. The following character types are allowed:</p>
+<ul><li><p><b>D</b> - indicates a numeric character.</p></li>
+<li><p><b>L</b> - indicates an alphabetic character.</p></li>
+<li><p><b>A</b> - indicates an alphanumeric character.</p>
+<hr><p><b>Note - </b>If the length of the input mask is greater than the value specified for the max-length element, the length of the input mask is used.</p>
+<hr>
+</li></ul>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-396"></a>value-mask</p></td>
+<td align="left" valign="top" scope="row"><p>A mask used by the
+master index application to strip any extra characters that were added by the
+input mask. This mask ensures that data is stored in the database in
+the correct format. This mask must be the same length as the input
+mask.</p><p>To specify a value mask, type the same value as is entered
+for the input mask, but type an &ldquo;x&rdquo; in place of each punctuation
+mark. For example, if an SSN field has an input mask of DDD-DD-DDDD,
+you need to specify a value mask of DDDxDDxDDDD to strip the dashes
+before storing the SSN. A value mask is not required for date fields.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-397"></a>value-list</p></td>
+<td align="left" valign="top" scope="row"><p>The
+<a name="indexterm-398"></a>name of the menu list used to populate the drop-down list for the
+field. This is required if the <i>gui-type</i> specified is MenuList, and must match a
+code of an element in the sbyn_common_header database table.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-399"></a><a name="indexterm-400"></a><a name="indexterm-401"></a>key-type</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether
+the field (or a combination of key fields) must be unique in an
+enterprise record. Unique key fields identify unique child objects in an enterprise object.
+Specify <b>true</b> to indicate the field is a key field; specify <b>false</b> if it
+is not.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-402"></a><a name="indexterm-403"></a><a name="indexterm-404"></a><a name="indexterm-405"></a>is-sensitive</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether the value of the field is hidden
+on the EDM for records with a VIP status of &ldquo;VIP&rdquo;. Only users
+with the eView.Admin or eView.VIP user roles can view the hidden information. Specify
+<b>true</b> to hide the field value; specify <b>false</b> (or remove the <i>is-sensitive</i>
+element) to display the field value.</p>
+<hr><p><b>Note - </b>This element is only used if the <i>object-sensitive-plug-in-class</i>
+in the <i>impl-details</i> section is populated.</p>
+<hr>
+</td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="cnfg_index-edm-fld-del_t"></a><h3>Deleting Fields From the EDM</h3>
+<p>If a <a name="indexterm-406"></a>field is defined in an object in the Enterprise Data
+Manager file, that field appears on the EDM windows. If there are any
+fields defined in the object structure that you do not want to display
+on the EDM, you can remove the field definition from the Enterprise Data
+Manager file.</p>
+<hr><p><b>Note - </b>If you remove a unique key type field, you must write a
+custom plug-in that will automatically populate a value into the field in order
+to meet key field constraints.</p>
+<hr>
+
+
+<a name="gentextid-4940"></a><h5>To Hide a Field on the EDM</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>field</i> element that defines the field you want to remove.</b></li>
+<li><b>Delete the field elements that define the field you want to remove.
+</b><p>For example, to hide the Social Security Number field on the EDM,
+you would delete the bold text in the following excerpt.</p><pre>&lt;node-Person>
+   <b>&lt;field-SSN></b>
+      <b>&lt;display-order>5&lt;/display-order></b>
+      <b>&lt;max-length>15&lt;/max-length></b>
+      <b>&lt;gui-type>TextBox&lt;/gui-type></b>
+      <b>&lt;value-type>string&lt;/value-type></b>
+      <b>&lt;key-type>false&lt;/key-type></b>
+   <b>&lt;/field-SSN></b>
+&lt;/node></pre></li>
+<li><b>If necessary, renumber the remaining fields, as described in <a href="#cnfg_index-edm-fld-nm_t">Modifying EDM Field Display Options</a>.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-edm-fld-nm_t"></a><h3>Modifying EDM Field Display Options</h3>
+<p>Once a <a name="indexterm-407"></a>field is defined for an object in the Enterprise Data
+Manager file, you can change the name that appears on the EDM for
+that field, the location of the field, and the type for the field
+(such as text box, menu list, and so on).</p>
+
+<a name="gentextid-4968"></a><h5>To Modify a Field&rsquo;s Display Options</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>node</i> element that defines the object that contains the field
+you want to modify.</b></li>
+<li><b>Scroll to the <i>field-</i><i>field_name</i> element you want to modify, where <i>field_name</i> is the
+name of the field as it appears in the Object Definition file.</b></li>
+<li><b>To modify the field label, change the value of the <a name="indexterm-408"></a><i>display-name</i> element.
+</b><p>For example:</p><pre>&lt;display-name>Last Name&lt;/display-name></pre></li>
+<li><b>To modify the location of the field on the EDM, change the
+value of the <a name="indexterm-409"></a><a name="indexterm-410"></a><i>display-order</i> element. </b><p>For example:</p><pre>&lt;display-order>1&lt;/display-order></pre>
+<hr><p><b>Note - </b>If you change the order of one field, you must change the
+order of at least one other field to maintain sequential numbering. For example, if
+you change a field&rsquo;s location from &ldquo;2&rdquo; to &ldquo;1&rdquo;, you must then change
+the location of the field originally specified for location 1.</p>
+<hr>
+</li>
+<li><b>To modify the type of field to display, change the value of
+the <a name="indexterm-411"></a><i>gui-type</i> element. </b><p>For example:</p><pre>&lt;gui-type>TextBox&lt;/gui-type></pre>
+<hr><p><b>Note - </b>You can enter TextBox (for a standard field), MenuList (for a field whose
+value must be selected from a drop-down list), or TextArea (for a long
+field that requires a scrollbar).</p>
+<hr>
+</li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-edm-ddlist_t"></a><h3>Specifying a Drop-down List for an EDM Field</h3>
+<p>Once a <a name="indexterm-412"></a><a name="indexterm-413"></a>field is defined for an object in the Enterprise Data
+Manager file, you can specify or change the name of the drop-down list
+for the field.</p>
+
+<a name="gentextid-5011"></a><h5>To Specify a Drop-Down List</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>node</i> element that defines the object containing the field you
+want to modify.</b></li>
+<li><b>Scroll to the <i>field-</i><i>field_name</i> element you want to modify, where <i>field_name</i> is the
+name of the field as it appears in the Object Definition file.</b></li>
+<li><b>Change the value of the <a name="indexterm-414"></a><i>value-list</i> element.</b><p>If the element does not exist for the field, create a new <i>value-list</i>
+element. For example:</p><pre>&lt;value-list>State&lt;/value-list></pre>
+<hr><p><b>Note - </b>The value of the <i>gui-type</i> element for the field must be &ldquo;MenuList&rdquo; if
+you specify a drop-down list. The <i>value-list</i> element must match a code
+column value in the sbyn_common_header database table unless the drop-down list is populated
+by information in the sbyn_user_code table (as they might be for auxiliary IDs).
+In this case, the <i>value-list</i> element must match a code_list column value
+in sbyn_user_code.</p>
+<hr>
+</li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-edm-fld-format_t"></a><h3>Specifying an EDM Field&rsquo;s Length and Format</h3>
+<p>Once a <a name="indexterm-415"></a>field is defined for an object in the Enterprise Data
+Manager file, you can change the number of characters that can be entered
+for the field in the EDM. You can also specify whether to automatically
+enter punctuation into a field on the EDM, but remove the punctuation in
+the database.</p>
+<hr><p><b>Note - </b>Field length is constrained by the length of the database column containing this
+field and the length defined in the Object Definition file.</p>
+<hr>
+
+
+<a name="gentextid-5044"></a><h5>To Modify a Field&rsquo;s Length and Format</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>node</i> element that defines the object containing the field you
+want to modify.</b></li>
+<li><b>Scroll to the <i>field-</i><i>field_name</i> element you want to modify, where <i>field_name</i> is the
+name of the field as it appears in the Object Definition file.</b></li>
+<li><b>To modify the length of a field, change the value of the
+<a name="indexterm-416"></a><i>max-length</i> element. </b><p>For example:</p><pre>&lt;max-length>100&lt;/max-length></pre></li>
+<li><b>To modify the format of the field, change the value of the
+<a name="indexterm-417"></a><i>input-mask</i> and <a name="indexterm-418"></a><i>value-mask</i> elements.</b><p>If the element does not exist for the field, create new <i>input-mask</i>
+and <i>value-mask</i> elements. For example:</p><pre>&lt;input-mask>(DDD)DDD-DDDD&lt;/input-mask>
+&lt;value-mask>xDDDxDDDxDDDD&lt;/value-mask></pre>
+<hr><p><b>Note - </b>If an input mask is defined, in most cases a value mask
+must also be defined. For information about input and value masks, see <a href="#cnfg_index-edm-fld-props_r">EDM Field Configuration Elements</a>.</p>
+<hr>
+</li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-edm-fld-data_t"></a><h3>Modifying an EDM Field's Data Type</h3>
+<p>Each <a name="indexterm-419"></a>field on the EDM requires a specific type of data to
+be entered. For example, name fields generally require a data string and date
+fields require a valid date or numeric characters. The type of data defined
+for each field must correspond with the field type defined for that field
+in the Object Definition file and in the database.</p>
+
+<a name="gentextid-5082"></a><h5>To Modify the Data Type</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>node</i> element that defines the object that contains the field
+you want to modify.</b></li>
+<li><b>Scroll to the <i>field-</i><i>field_name</i> element you want to modify, where <i>field_name</i> is the
+name of the field as it appears in the Object Definition file.</b></li>
+<li><b>Change the value of the <a name="indexterm-420"></a><i>value-type</i> element. </b><p>For example:</p><pre>&lt;value-type>string&lt;/value-type></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-edm-fld-key_t"></a><h3>Defining Key Fields for an Object</h3>
+<p>You can specify that a certain <a name="indexterm-421"></a><a name="indexterm-422"></a><a name="indexterm-423"></a>field or combination of fields be
+unique in a system object. An example of a unique fields would be
+the address type if only one address of each type is allowed. A
+field&rsquo;s key type status in the Enterprise Data Manager file must match its
+key type status in the Object Definition file.</p>
+
+<a name="gentextid-5109"></a><h5>To Modify the Key Status</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>node</i> element that defines the object containing the field you
+want to modify.</b></li>
+<li><b>Scroll to the <i>field-</i><i>field_name</i> element you want to modify, where <i>field_name</i> is the
+name of the field as it appears in the Object Definition file.</b></li>
+<li><b>To define a field as a key field, change the value of
+the <a name="indexterm-424"></a><i>key-type</i> element to &ldquo;true&rdquo;.</b></li>
+<li><b>To define a field that is not a key field, change the
+value of the <i>key-type</i> element to &ldquo;false&rdquo;.</b><p>For example:</p><pre>&lt;key-type>false&lt;/key-type></pre>
+<hr><p><b>Note - </b>You can specify that a combination of fields be unique rather than just
+a single field.
+
+   </p>
+<hr>
+</li>
+<li><b>If a combination of fields must be unique for an object rather than
+just one single field, set the <i>key-type</i> element to &ldquo;true&rdquo; for each field.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-edm-fld-mask_t"></a><h3>Masking Field Values on the EDM</h3>
+<p>You can specify that the values of certain <a name="indexterm-425"></a><a name="indexterm-426"></a><a name="indexterm-427"></a><a name="indexterm-428"></a>fields be hidden on the
+EDM from users without the appropriate access permissions. You can create a custom
+plug-in that uses the value of the VIP Flag field to determine whether
+the values of specified fields are hidden (typically in records with a VIP
+status of &ldquo;VIP&rdquo; or &ldquo;Employee&rdquo;). In records with any other VIP status, the
+field values would be visible regardless of whether the field is marked for
+masking. </p><p>This option is only available if the <i>object-sensitive-plug-in-class</i> element in the <i>impl-details</i>
+section is populated (by default, it is empty).</p>
+<hr><p><b>Note - </b>To mask field values, you must define a custom plug-in to implement the
+masking rules.
+     </p>
+<hr>
+
+
+<a name="gentextid-5150"></a><h5>To Mask Field Values on the EDM</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>node</i> element that defines the object containing the field you
+want to modify.</b></li>
+<li><b>Scroll to the <i>field-</i><i>field_name</i> element you want to modify, where <i>field_name</i> is the
+name of the field as it appears in the Object Definition file.</b></li>
+<li><b>Change the value of the <a name="indexterm-429"></a><i>is-sensitive</i> element to &ldquo;true&rdquo;.</b><p>If the element does not exist for the field, create a new
+<i>is-sensitive</i> element. For example:</p><pre>&lt;is-sensitive>true&lt;/is-sensitive></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-edm-relat_t"></a><h3>Defining Object Relationships</h3>
+<p>The <a name="indexterm-430"></a>relationships in the Enterprise Data Manager file are predefined based on the
+information you provided when you created the object structure definition (the Object Definition
+file). The relationship structure in the Enterprise Data Manager file should match that
+of the Object Definition file.</p>
+
+<a name="gentextid-5176"></a><h5>To Define Relationships</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <a name="indexterm-431"></a><i>relationships</i> element.</b></li>
+<li><b>Specify the name of the parent object in the <a name="indexterm-432"></a><i>name</i> element.</b></li>
+<li><b>Specify the name of the children objects in the <a name="indexterm-433"></a><i>children</i> elements. </b><p>For example:</p><pre>&lt;relationships>
+   &lt;name>Person&lt;/name>
+   &lt;children>Alias&lt;/children>
+   &lt;children>Address&lt;/children>
+   &lt;children>Phone&lt;/children>
+   &lt;children>AuxId&lt;/children>
+&lt;/relationships></pre></li>
+<li><b>To remove a child object from the relationships list, delete the <i>children</i>
+element defining the object you want to delete.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-edm-local-id_t"></a><h3>Defining Local ID Labels</h3>
+<p>The <a name="indexterm-434"></a><a name="indexterm-435"></a><a name="indexterm-436"></a><i>system-display-name-overrides</i> element, which is nested in the <i>gui-definition</i> element, defines alternate
+names for the local ID headings and fields. The names defined here replace
+the default local ID heading and field names on all pages, including the
+search result column names. The <i>system-display-name-overrides</i> element is optional, and if it does not
+exist the label names default to &ldquo;Local ID&rdquo;. If the value of either
+of the sub-elements is missing, the label names also default to &ldquo;Local ID&rdquo;.</p>
+
+<a name="gentextid-5209"></a><h5>To Define Local ID Labels</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>system-display-name-overrides</i> element in the <i>gui-definition</i> element.</b></li>
+<li><b>Modify any of the following elements. </b>
+<ul><li><p><i>local-id-header</i> &mdash; The name to use for the header label of the local ID search section of the EDM Lookup window.</p></li>
+<li><p><i>local-id</i> &mdash; The name to use for all fields and columns containing local IDs. In fields where the local ID label is abbreviated to &ldquo;LID1&rdquo; or &ldquo;LID2&rdquo;, the name becomes <i>local-id</i>1 or <i>local-id</i>2 (where <i>local-id</i> is the value specified for this element).</p></li></ul>
+<p>For example:</p><pre>   &lt;gui-definition>
+      &lt;system-display-name-overrides>
+         &lt;local-id-header>System Identifier&lt;/local-id-header>
+         &lt;local-id>System ID&lt;/local-id>
+      &lt;/system-display-name-overrides>
+      ...</pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1" style="bold">Table of Contents</p>
+<p><a href="bookoverview.html">Master Index Configuration Overview</a></p>
+<p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p>
+<p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
+<p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p>
+<p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p>
+<p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p>
+<p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p>
+<p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p>
+<p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p>
+<p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p>
+<p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p>
+<p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p>
+<p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p>
+<p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p>
+<p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p>
+<p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p>
+<p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p>
+<p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p>
+<p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p>
+<p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p>
+<p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p>
+<p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p>
+<p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p>
+<p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p>
+<p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

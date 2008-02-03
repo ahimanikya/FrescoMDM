@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+
+<a name="top"></a>
+<h1>Configuring Master Indexes</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+
+<a name="cnfg_index-match-string_p"></a>
+
+<h2>Defining the Match String</h2>
+<p><a name="indexterm-288"></a><a name="indexterm-289"></a>The match string defines the fields that are passed to the match engine
+for probabilistic weighting. By default, the fields defined for matching are the fields
+you specified for matching in the wizard or Configuration Editor. You can modify
+and delete fields in the match string if necessary. At least one field
+must be defined in the match string or no weights will be generated.</p><p>If you do modify the match string, you might need to make
+corresponding changes to the match engine configuration files as well. For more information about
+modifying these files, see the appropriate match engine implementation guide.</p><p> Perform either of the following tasks to define the match string.
+</p>
+<ul><li><p><a href="#cnfg_index-match-str-create_t">Creating the Match String</a></p></li>
+<li><p><a href="#cnfg-index-match-str-mod_t">Modifying the Match String</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_index-match-str-create_t"></a><h3>Creating the Match String</h3>
+<p>A default match string is predefined based on the match type information you
+specified in the wizard. If no match types were defined using the
+wizard, the structure of the match string is still defined but with no
+fields. For more information about Mural Match Engine match types and field IDs,
+see <a href="https://open-dm-dq.dev.java.net/www/docs/sme/landingpage.html">Understanding the Mural Match Engine</a>.</p>
+
+<a name="gentextid-3558"></a><h5>To Create the Match String (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Expand the object structure so all fields are visible.</b></li>
+<li><b>To add a field to the match string, click on the field
+name and then select a value for the Match Type field on the
+Properties page.</b><p>The field is added to the match string.</p></li>
+<li><b>Perform the previous step for each field in the match string.</b></li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-3574"></a><h5>To Create the Match String (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click mefa.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>In the <i>MatchingConfig</i> element, scroll to the <i>match-columns</i> element in the <i>match-system-object</i> element.</b></li>
+<li><b>To add a field to the match string, do the following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b>In the <i>match-columns</i> element, create a new <a name="indexterm-290"></a><i>match-column</i> element.</b></li>
+<li><b>In the new <i>match-column</i> element, create and define a <i>column-name</i> element. </b><p>Enter the fully qualified field name of the field on which to match
+(for example, Enterprise.SystemSBR.Person.Address.City). </p></li>
+<li><b>Following the column-name element, create and define a match-type element. </b><p>Enter an ID that identifies the field to the match engine. For the
+Mural Match Engine, this value must correspond to a defined match type.
+</p><p>For example:</p><pre>&lt;match-system-object>
+   &lt;object-name>Address&lt;/object-name>
+   &lt;match-columns>
+     &lt;match-column>
+       &lt;column-name>Enterprise.SystemSBR.Person.Address.StreetName
+       &lt;/column-name>
+       &lt;match-type>StreetName&lt;/match-type>
+     &lt;/match-column>
+   &lt;/match-columns>
+&lt;/match-system-object></pre></li></ol></li>
+<li><b>Repeat the previous step for each field to add to the match
+string.</b></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg-index-match-str-mod_t"></a><h3>Modifying the Match String</h3>
+<p>Once you define a match string, you can modify or delete information about
+the fields in the match string as necessary. This should only be
+done prior to moving to production. Otherwise, unexpected matching results might occur. For more
+information about Mural Match Engine match types and field IDs, see <a href="https://open-dm-dq.dev.java.net/www/docs/sme/landingpage.html">Understanding the Mural Match Engine</a>.</p>
+
+<a name="gentextid-3610"></a><h5>To Modify the Match String (Configuration Editor)</h5>
+<ol>
+<li><b>In the Projects window, right-click the Configuration node in the Project you want
+to modify, and then click Edit.</b><p>The Configuration Editor appears.</p></li>
+<li><b>Expand the object structure so all fields are visible.</b></li>
+<li><b>To add a field to the match string, click the field name
+and then select a value for the Match Type field on the Properties
+page.</b><p>The field is added to the match string.</p></li>
+<li><b>To modify the match type specified for a field, click the name of
+the field defined for matching and then select a new value for
+the Match Type field on the Properties page.</b></li>
+<li><b>To remove a field from the match string, click the name of
+the field defined for matching and then select <tt><b>None</b></tt> for the Match Type field
+on the Properties page.</b></li>
+<li><b>On the Configuration Editor toolbar, click Save.</b></li></ol>
+
+<a name="gentextid-3629"></a><h5>To Modify the Match String (XML Editor)</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click mefa.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>MatchingConfig</i> element, and then scroll to the <i>match-system-object</i> element.</b></li>
+<li><b>To add a field to the match string, do the following:</b><ol style="list-style-type: lower-alpha">
+
+<li><b>In the <i>match-columns</i> element, create a new <a name="indexterm-291"></a><i>match-column</i> element.</b></li>
+<li><b>In the new <i>match-column</i> element, create and define a <i>column-name</i> element. </b><p>Enter the fully qualified field name of the field on which to match
+(for example, Enterprise.SystemSBR.Person.Address.City). </p></li>
+<li><b>Following the <i>column-name</i> element, create and define a <i>match-type</i> element. </b><p>Enter an ID that identifies the field to the match engine. For the
+Mural Match Engine, this value must correspond to a defined match type. </p><p>For example:</p><pre>&lt;match-system-object>
+   &lt;object-name>Address&lt;/object-name>
+   &lt;match-columns>
+     &lt;match-column>
+       &lt;column-name>Enterprise.SystemSBR.Person.Address.StreetName
+       &lt;/column-name>
+       &lt;match-type>StreetName&lt;/match-type>
+     &lt;/match-column>
+   &lt;/match-columns>
+&lt;/match-system-object></pre></li></ol></li>
+<li><b>To change a field used in the match string, change the value
+of the <i>column-name</i> element. </b><p>Enter the fully qualified field name of the new field (for example, Enterprise.SystemSBR.Person.FirstName).</p></li>
+<li><b>To change the type of matching to perform for a field, change the
+value of the <i>match-type</i> element.</b><p>Enter an ID that identifies the field to the match engine. For the
+Mural Match Engine, this value must correspond to a defined match type. </p></li>
+<li><b>To delete a field from the match string, delete all text between and
+including the <a name="indexterm-292"></a><i>match-column</i> element defining the field you want to delete.</b><p>Using the example below, to delete the ZipCode field from the match string,
+delete the boldface text.</p><pre>&lt;match-system-object>
+  &lt;object-name>Address&lt;/object-name>
+  &lt;match-columns>
+     &lt;match-column>
+       &lt;column-name>Enterprise.SystemSBR.Person.Address.StreetName
+       &lt;/column-name>
+       &lt;match-type>StreetName&lt;/match-type>
+     &lt;/match-column>
+     <b>&lt;match-column></b>
+       <b>&lt;column-name>Enterprise.SystemSBR.Person.Address.HouseNo</b>
+       <b>&lt;/column-name></b>
+       <b>&lt;match-type>HouseNumber&lt;/match-type></b>
+     <b>&lt;/match-column></b></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1" style="bold">Table of Contents</p>
+<p><a href="bookoverview.html">Master Index Configuration Overview</a></p>
+<p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p>
+<p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
+<p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p>
+<p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p>
+<p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p>
+<p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p>
+<p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p>
+<p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p>
+<p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p>
+<p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p>
+<p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p>
+<p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p>
+<p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p>
+<p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p>
+<p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p>
+<p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p>
+<p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p>
+<p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p>
+<p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p>
+<p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p>
+<p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p>
+<p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p>
+<p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p>
+<p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

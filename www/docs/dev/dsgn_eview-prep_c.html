@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+<a name="top"></a>
+<h1>Developing Master Indexes With Master Index Studio</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+<a name="dsgn_eview-prep_c"></a>
+
+<h2>Before you Begin</h2>
+<p><a name="indexterm-7"></a>Creating a master index application requires in-depth analyses of your business requirements, legacy data,
+and data processing requirements. After the initial analysis, you can plan and design
+how you will create the master index application framework and how you will
+customize that configuration after creating the framework. After creating the master index application,
+you should perform an in-depth data analysis using the tools provided. This analysis
+will help you define matching and standardization rules and logic. </p><p>The following topics provide information about what you need to know and do
+before you begin to create a master index application.</p>
+<ul><li><p><a href="#dsgn_eview-analyze_c">Preliminary Data Analysis</a></p></li>
+<li><p><a href="#dsgn_eview-plan_c">Project Planning</a></p></li>
+<li><p><a href="#dsgn_eview-checklist_c">Project Initiation Checklist</a></p></li></ul>
+
+
+<div class="indent"><a name="dsgn_eview-analyze_c"></a><h3>Preliminary Data Analysis</h3>
+<a name="indexterm-8"></a><a name="indexterm-9"></a><p>Before creating the master index application, perform a preliminary analysis against the data
+that will be stored in the index database to determine the structure of
+the records. Analyzing your data requires reviewing the message structure of each legacy
+system that will share data with the master index application. The master index
+application does not need to store every field from every system, so you
+can narrow the master index application object structure to just the pertinent fields
+from each system. However, the master index application stores the same fields for
+each system. A more in-depth analysis of the field values in the legacy
+data occurs after the initial master index application framework is created.</p></div>
+
+
+<div class="indent"><a name="dsgn_eview-plan_c"></a><h3>Project Planning</h3>
+<a name="indexterm-10"></a><p>Before you create the Master Index Studio Project, analyze the business requirements and
+determine which Project components will help you meet those requirements. Planning the Project
+includes defining how each external system will share information with the master index
+application and how the master index application will share information with those external
+systems. In addition, you can incorporate master index Java methods that define how
+the master index application processes incoming data. Master index methods can also be
+used to transform the data sent from external systems into a format that
+can be read by the master index application.</p><p>An additional consideration is whether to integrate the master index methods into a
+Business Process.</p></div>
+
+
+<div class="indent"><a name="dsgn_eview-checklist_c"></a><h3>Project Initiation Checklist</h3>
+<p>Before you begin developing your master index application, make sure you have obtained
+the following information:</p>
+<ul><li><p>The primary object to be indexed, such as a person, customer, business, and so on</p></li>
+<li><p>Any secondary objects, such as telephone numbers and addresses</p></li>
+<li><p>All fields to be stored in the index for both the primary and secondary objects</p></li>
+<li><p>The name of each field as it appears on the EDM and whether the field will be a standard text field or will be populated from a menu list (if a field will be populated from a menu list, you should also define an eight-character name for the list)</p></li>
+<li><p>The fields that are required in order to add a record or that are required for queries</p></li>
+<li><p>The fields that will appear on reports</p></li>
+<li><p>The fields that must be unique to an enterprise record (in other words, they uniquely identify a child object within an enterprise record)</p></li>
+<li><p>The fields that will be used for matching</p></li>
+<li><p>The fields that will need to be parsed or normalized prior to matching</p></li>
+<li><p>Any special formatting requirements, such as character types, the data type, minimum and maximum values, and field size</p></li>
+<li><p>The fields that will appear on EDM search and search results windows</p></li>
+<li><p>The processing codes for the source systems being integrated into the index</p></li></ul>
+</div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1">Table of Contents</p>
+<p class="toc level2"><a href="dsgn_eview-overview_c.html">Master Index Development Process Overview</a></p>
+<p class="toc level2"><a href="dsgn_eview-runtime_c.html">How the Framework Corresponds to the Runtime Environment</a></p>
+<p class="toc level2"><a href="dsgn_eview-prep_c.html">Before you Begin</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-application_p.html">Creating a Master Index Application</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-fields_r.html">Master Index Wizard Field Properties and Name Restrictions</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_c.html">Using Custom Plug-ins to Define Custom Transaction Processing</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins2_c.html">Using Custom Plug-Ins to Define Custom Components</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_t.html">Implementing Custom Plug-ins</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-generate_t.html">Generating the Master Index Application</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database_c.html">Master Index Database Scripts and Design</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database_t.html">Creating the Database</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-dbs-delete_t.html">Deleting Tables</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database-con_p.html">Defining a Database Connection Pool</a></p>
+</div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

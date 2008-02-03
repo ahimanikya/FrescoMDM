@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+
+<a name="top"></a>
+<h1>Configuring Master Indexes</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+<a name="cnfg_index-update-pol_p"></a>
+
+<h2>Configuring Update Policies</h2>
+<p><a name="indexterm-330"></a>When the Best Record file (<tt>update.xml</tt>) is generated, no Java classes are defined
+for the update policies. You can use standard Master Index Studio classes, or
+create custom update policy classes and specify that the custom classes be used
+instead. Custom update policies must implement <tt>com.sun.mdm.index.update.UpdatePolicy</tt> and must be defined as custom classes
+in the Master Index Studio Project to be recognized as an update policy.
+The names of the custom plug-ins you create are the values you enter
+for the update policies. You can also set the update policy flag to
+specify whether the policies are performed when no changes are made to an
+existing record.</p><p>Perform the following tasks to configure the update policies:</p>
+<ul><li><p><a href="#cnfg_index-def-update_t">Defining Update Policies</a></p></li>
+<li><p><a href="#cnfg_index-update-flag_t">Setting the Update Policy Flag</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_index-def-update_t"></a><h3>Defining Update Policies</h3>
+<p>You can define update policies for any of the seven update policy
+elements. You do not need to specify a policy for each element.</p>
+
+<a name="gentextid-4225"></a><h5>To Define Update Policies</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click update.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>UpdateManagerConfig</i> section of the file.</b></li>
+<li><b>Do any of the following:</b><ul>
+<li><b>To modify the merge policy for enterprise objects, change the value of the
+<a name="indexterm-331"></a><i>EnterpriseMergePolicy</i> element to the fully qualified name of the new Java class. </b><p>For example:</p><pre>   &lt;EnterpriseMergePolicy>com.sun.mdm.index.user.MyEntMergePolicy
+   &lt;/EnterpriseMergePolicy></pre></li>
+<li><b>To modify the unmerge policy for enterprise objects, change the value of the
+<a name="indexterm-332"></a><i>EnterpriseUnmergePolicy</i> element to the fully qualified name of the new Java class. </b><p>For example:</p><pre>   &lt;EnterpriseUnmergePolicy>com.sun.mdm.index.user.MyEntUnmergePolicy
+   &lt;/EnterpriseUnmergePolicy></pre></li>
+<li><b>To modify the update policy for enterprise objects, change the value of the
+<a name="indexterm-333"></a><i>EnterpriseUpdatePolicy</i> element to the fully qualified name of the new Java class. </b><p>For example:</p><pre>   &lt;EnterpriseUpdatePolicy>com.sun.mdm.index.user.MyEntUpdatePolicy
+   &lt;/EnterpriseUpdatePolicy></pre></li>
+<li><b>To modify the create policy for enterprise objects, change the value of the
+<a name="indexterm-334"></a><i>EnterpriseCreatePolicy</i> element to the fully qualified name of the new Java class. </b><p>For example:</p><pre>   &lt;EnterpriseCreatePolicy>com.sun.mdm.index.user.MyCreatePolicy
+   &lt;/EnterpriseCreatePolicy></pre></li>
+<li><b>To modify the merge policy for system objects, change the value of the
+<a name="indexterm-335"></a><i>SystemMergePolicy</i> element to the fully qualified name of the new merge policy Java
+class. </b><p>For example:</p><pre>   &lt;SystemMergePolicy>com.sun.mdm.index.user.MySysMergePolicy
+   &lt;/SystemMergePolicy></pre></li>
+<li><b>To modify the unmerge policy for system objects, change the value of the
+<a name="indexterm-336"></a><i>SystemUnmergePolicy</i> element to the fully qualified name of the new Java class. </b><p>For example:</p><pre>   &lt;SystemUnmergePolicy>com.sun.mdm.index.user.MySysUnmergePolicy
+   &lt;/SystemUnmergePolicy></pre></li>
+<li><b>To modify the assumed match policy, change the value of the <a name="indexterm-337"></a><i>UndoAssumeMatchPolicy</i>
+element to the fully qualified name of the new Java class. </b><p>For example:</p><pre>
+&lt;UndoAssumeMatchPolicy>com.sun.mdm.index.user.MyUndoAsmMatchPolicy
+   &lt;/UndoAssumeMatchPolicy></pre></li></ul></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-update-flag_t"></a><h3>Setting the Update Policy Flag</h3>
+<p>The update flag determines whether update policies are performed against a record when
+a transaction does not cause any changes to the record&rsquo;s data.</p>
+
+<a name="gentextid-4283"></a><h5>To Set the Update Policy Flag</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click update.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>UpdateManagerConfig</i> section of the file.</b></li>
+<li><b>To specify that update policies are not performed when no updates are made,
+set the <i>SkipUpdateIfNoChange</i> element to &ldquo;true&rdquo;. </b><p>For example:</p><pre>&lt;SkipUpdateIfNoChange>true&lt;/SkipUpdateIfNoChange></pre></li>
+<li><b>To specify that update policies are performed even though no updates are made,
+set the <i>SkipUpdateIfNoChange</i> element to &ldquo;false&rdquo;. </b><p>For example:</p><pre>&lt;SkipUpdateIfNoChange>false&lt;/SkipUpdateIfNoChange></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1" style="bold">Table of Contents</p>
+<p><a href="bookoverview.html">Master Index Configuration Overview</a></p>
+<p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p>
+<p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
+<p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p>
+<p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p>
+<p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p>
+<p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p>
+<p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p>
+<p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p>
+<p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p>
+<p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p>
+<p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p>
+<p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p>
+<p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p>
+<p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p>
+<p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p>
+<p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p>
+<p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p>
+<p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p>
+<p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p>
+<p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p>
+<p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p>
+<p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p>
+<p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p>
+<p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

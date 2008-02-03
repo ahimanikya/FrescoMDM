@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+<body>
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+<!-- Servlet-Specific template -->
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+<a name="top"></a>
+<h1>Developing Master Indexes With Master Index Studio</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+<a name="dsgn_eview-database-con_p"></a>
+
+<h2>Defining a Database Connection Pool</h2>
+<p><a name="indexterm-201"></a>To set up the connection pool, you need to create the connection pool
+and then define a JDBC resource. This section provides general instructions for setting up
+the connection pool. For more information about the procedures in this section, see
+the online help provided with the Sun Java System Application Server or GlassFish Admin Console.</p>
+<hr><p><b>Note - </b>If you are using an Oracle database, before you create the connection pool
+you need to install the Oracle driver on the application server or
+copy the  <tt>ojdbc14.jar</tt> file from your Oracle client installation (<tt></tt><i>Oracle_client</i><tt>\jdbc\lib</tt>) to  <tt></tt><i>app_server_home</i><tt>\lib</tt>. </p>
+<hr>
+<p>Perform the following steps to define database connectivity through the application server:</p>
+<ul><li><p><a href="#dsgn_eview-database-pool_t">Step 1: Create a JDBC Connection Pool</a></p></li>
+<li><p><a href="#dsgn_eview-database-res_t">Step 2: Create a JDBC Resource</a></p></li></ul>
+
+
+<div class="indent"><a name="dsgn_eview-database-pool_t"></a><h3>Step 1: Create a JDBC Connection Pool</h3>
+<p>The JDBC connection pool provides connections for the master index database. Before proceeding,
+make sure you have the relevant information about the master index database (such
+as the database name, URL, and administrator login credentials).</p>
+
+<a name="gentextid-2060"></a><h5>To create a JDBC connection pool</h5>
+<ol>
+<li><b>Log in to the Sun Java System Application Server Admin Console.</b><p>You can access the console from the Services window in NetBeans. </p></li>
+<li><b>In the left portion of the Admin Console, expand Resources, expand JDBC, and
+then select Connection Pools.</b></li>
+<li><b>On the Create Connection Pool page, click New.</b></li>
+<li><b>In the Name field, enter a name for the connection pool. </b></li>
+<li><b>In the Resource Type field, select the Java class for the connection pool
+(<tt>javax.sql.XADataSource</tt>).</b></li>
+<li><b>In the Database Vendor field, select the database platform of the master index
+database.</b></li>
+<li><b>In the DataSource Classname field, enter the Java class for the data source,
+or accept the default value if it is provided. </b></li>
+<li><b>Modify the Pool Settings properties according to your business practices.</b></li>
+<li><b>Modify the Connection Validation properties according to your business practices.</b></li>
+<li><b>Modify the Transaction properties according to whether the application supports transactional processing.</b></li>
+<li><b>In the additional properties section, enter the values for the master index database.
+Be sure to enter the following information at a minimum:</b>
+<ul><li><p>URL &mdash; The URL that points to the database. For information on the syntax of the URL, see <a href="dsgn_eview-database_t.html#dsgn_eview-dbs-install_t">Step 8: Modify the Database</a>.</p></li>
+<li><p>user &mdash; The login ID for the user you created in <a href="dsgn_eview-database_t.html#dsgn_eview-dbs-create_t">Step 2: Create a Database and User</a>.</p></li>
+<li><p>password &mdash; The password for the above user.</p></li></ul>
+</li></ol></div>
+
+
+<div class="indent"><a name="dsgn_eview-database-res_t"></a><h3>Step 2: Create a JDBC Resource</h3>
+<p>A JDBC resource (also known as a data source) gives the master
+index application the ability to connect to the database.</p>
+
+<a name="gentextid-2098"></a><h5>To create a JDBC resource</h5>
+<ol>
+<li><b>In the left portion of the Admin Console, expand Resources, expand JDBC, and
+then select JDBC Resources.</b></li>
+<li><b>On the Create JDBC Resource page, click New.</b></li>
+<li><b>In the JNDI Name field, enter a unique name for the JDBC
+resource.</b><p>The name must be in the form <tt><b>jdbc/</tt><i>parent_object</i><tt>DataSource</b></tt>, where <i>parent_object</i> is the
+name of the primary object in the master index. For example, <tt><b>jdbc/PersonDataSource</b></tt>.</p></li>
+<li><b>In the Pool Name field, enter the name of the JDBC connection pool
+you created in <a href="#dsgn_eview-database-pool_t">Step 1: Create a JDBC Connection Pool</a>. </b></li>
+<li><b>(Optional) In the Description field, enter a brief description of the resource.</b></li>
+<li><b>In the Status field, select the Enabled check box.</b></li>
+<li><b>Click OK.</b></li></ol></div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1">Table of Contents</p>
+<p class="toc level2"><a href="dsgn_eview-overview_c.html">Master Index Development Process Overview</a></p>
+<p class="toc level2"><a href="dsgn_eview-runtime_c.html">How the Framework Corresponds to the Runtime Environment</a></p>
+<p class="toc level2"><a href="dsgn_eview-prep_c.html">Before you Begin</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-application_p.html">Creating a Master Index Application</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-fields_r.html">Master Index Wizard Field Properties and Name Restrictions</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_c.html">Using Custom Plug-ins to Define Custom Transaction Processing</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins2_c.html">Using Custom Plug-Ins to Define Custom Components</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_t.html">Implementing Custom Plug-ins</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-generate_t.html">Generating the Master Index Application</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database_c.html">Master Index Database Scripts and Design</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database_t.html">Creating the Database</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-dbs-delete_t.html">Deleting Tables</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database-con_p.html">Defining a Database Connection Pool</a></p>
+</div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>

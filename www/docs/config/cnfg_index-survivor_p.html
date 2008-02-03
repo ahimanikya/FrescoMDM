@@ -1,0 +1,526 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+
+
+
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse">
+		<td class="valign-top b-right full-width"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+
+<a name="top"></a>
+<h1>Configuring Master Indexes</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+<a name="cnfg_index-survivor_p"></a>
+
+<h2>Defining the Survivor Calculator</h2>
+<p>The survivor calculator is configured in the Best Record file (<tt>update.xml</tt>) and
+defines how field values are populated into the single best record, along with
+the type of survivor strategy to use for each field. If no strategy
+is defined for a field, the default survivor strategy is used to populate
+that field in the SBR. Before you begin to define the survivor calculator,
+make sure you know which fields to include in the SBR (typically, all
+but phonetic and standardized fields are configured here), and how those fields should
+be updated.</p><p>The survivor calculator can only be configured by modifying the XML file directly.
+Perform the following tasks to configure the survivor calculator. </p>
+<ul><li><p><a href="#cnfg_index-srv-hlpr_t">Specifying the Survivor Helper</a></p></li>
+<li><p><a href="#cnfg_index-sur-strat_t">Specifying a Default Survivor Strategy</a></p></li>
+<li><p><a href="#cnfg_index-sbr_t">Defining the Single Best Record Structure</a></p></li>
+<li><p><a href="#cnfg_index-surv-field_t">Defining a Survivor Strategy for a Field or Object</a></p></li>
+<li><p><a href="#cnfg_index-custom-strat_t">Defining Custom Weighted Strategies</a></p></li></ul>
+
+
+<div class="indent"><a name="cnfg_index-srv-hlpr_t"></a><h3>Specifying the Survivor Helper</h3>
+<p>The <a name="indexterm-299"></a>survivor helper class determines how to retrieve values from system records and
+how to set them in the SBR. The default class is <tt>com.sun.mdm.index.survivor.impl.DefaultSurvivorHelper</tt>,
+which uses the ePath method to retrieve and set the values. You can
+create a custom survivor helper class to support other methods for retrieving and
+setting values. If you implement a custom survivor helper class, it must extend<tt> com.sun.mdm.index.survivor.AbstractSurvivorHelper</tt>.</p>
+
+<a name="gentextid-3752"></a><h5>To Specify the Survivor Helper</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click update.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b><a name="indexterm-300"></a>Scroll to the <i>helper-class</i> element in the<i> SurvivorHelperConfig</i> element.</b></li>
+<li><b>Change the value of the <i>helper-class</i> element to the fully qualified name of
+new helper class. </b><p>For example:</p><pre>&lt;helper-class>com.sun.mdm.index.survivor.impl.MySurvivorHelper
+&lt;/helper-class></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-sur-strat_t"></a><h3>Specifying a Default Survivor Strategy</h3>
+<p><a name="indexterm-301"></a>The default survivor strategy specifies the name of the Java class that defines
+the survivor calculation strategy to use for most of the fields in the
+SBR. By defining a default strategy, you do not need to define a
+strategy for every candidate field; you only need to define a strategy for
+fields that do not use the default strategy.</p>
+<hr><p><b>Note - </b>If you create a customized class for the default survivor strategy, make sure
+the class implements <tt>com.sun.mdm.index.survivor.SurvivorStrategyInterface</tt> and is accessible by the EJB class loader.
+
+   </p>
+<hr>
+
+
+<a name="gentextid-3776"></a><h5>To Specify a Default Survivor Strategy</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click update.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b><a name="indexterm-302"></a>Scroll to the <i>default-survivor-strategy</i> element in the<i> SurvivorHelperConfig</i> element.</b></li>
+<li><b><a name="indexterm-303"></a>To change the name of the default class, modify the value of the
+<i>strategy-class</i> element to the fully qualified name of the new default strategy class.
+</b><p>For example:</p><pre>&lt;default-survivor-strategy>
+   &lt;strategy-class>com.sun.mdm.index.survivor.impl.MySurvivorStrategy
+   &lt;/strategy-class>
+&lt;/default-survivor-strategy></pre></li>
+<li><b>Configure the strategy parameters, as described in <a href="#agyix">Configuring the Default Survivor Strategy</a> below.</b></li>
+<li><b>Save and close the file.</b></li></ol>
+
+<div class="indent"><a name="agyix"></a><h3>Configuring the Default Survivor Strategy</h3>
+<p>Once you define a default survivor strategy, you might need to specify certain
+parameters for the strategy. One parameter is required for the <i>WeightedSurvivorStrategy</i> and
+for the<i> DefaultSurvivorStrategy</i>. If you create a custom strategy, additional parameters may be used.</p>
+
+<a name="gentextid-3802"></a><h5>To Configure the Default Survivor Strategy</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click update.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b><a name="indexterm-304"></a><a name="indexterm-305"></a>Scroll to the <i>default-survivor-strategy</i> element, and then to the <i>strategy-class</i> element.</b></li>
+<li><b>Do any of the following:</b><ul>
+<li><b><a name="indexterm-306"></a>To modify an existing parameter value, scroll to the parameter you want to
+modify, and then change the value of the <i>parameter-value</i> element. </b><p>For example:</p><pre>&lt;default-survivor-strategy>
+   &lt;strategy-class>com.sun.mdm.index.survivor.impl.MySurvivorStrategy
+   &lt;/strategy-class>
+   &lt;parameters>
+      &lt;parameter>
+         &lt;parameter-name>ConfigModuleName&lt;/parameter-name>
+         &lt;parameter-type>java.lang.String&lt;/parameter-type>
+         <b>&lt;parameter-value>MySurvivorCalculator&lt;/parameter-value></b>
+      &lt;/parameter>
+   &lt;/parameters>
+&lt;/default-survivor-strategy></pre></li>
+<li><b>To add a new parameter, create a new <i>parameter</i> element within the<i> parameters</i> element,
+and then define the parameter elements described in <a href="#cnfg_index-surv-calc_r">Default Survivor Strategy Parameter Elements</a>.</b></li>
+<li><b>To delete a parameter, scroll to the<i> parameters</i> element, and then delete all text
+between and including the<i> parameter</i> element that define the parameter.</b></li>
+<li><b>To delete all parameters, delete the all text between and including the <i>parameters</i>
+element.</b></li></ul></li>
+<li><b>Save and close the file.</b></li></ol></div>
+</div>
+
+
+<div class="indent"><a name="cnfg_index-surv-calc_r"></a><h3>Default Survivor Strategy Parameter Elements</h3>
+<p>The following table lists and describes the elements that configure the parameters for
+the default survivor strategy in the Best Record file (<tt>update.xml</tt>).</p><table><col width="25.00*"><col width="75.00*"><tr><th align="left" valign="top" scope="column"><p>Element</p></th>
+<th align="left" valign="top" scope="column"><p>Value</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-307"></a>description</p></td>
+<td align="left" valign="top" scope="row"><p>This is an
+optional element that briefly describes the parameter. Note that there are no parameters
+to define for the<i> UnionSurvivorStrategy</i>.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-308"></a>parameter-name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the parameter.</p>
+<ul><li><p>For the<i> DefaultSurvivorStrategy</i>, this value is &ldquo;preferredSystem&rdquo;.</p></li>
+<li><p>For the<i> WeightedSurvivorStrategy</i>, this value is &ldquo;ConfigurationModuleName&rdquo;.</p></li>
+<li><p>This is not used for the<i> UnionSurvivorStrategy</i>.</p></li></ul>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-309"></a>parameter-type</p></td>
+<td align="left" valign="top" scope="row"><p>The Java data type for
+the parameter value. For both the<i> DefaultSurvivorStrategy</i> and the<i> WeightedSurvivorStrategy</i>, this value is<tt> java.lang.String</tt>.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-310"></a>parameter-value</p></td>
+<td align="left" valign="top" scope="row"><p>The value of
+the named parameter.</p>
+<ul><li><p>For the<i> DefaultSurvivorStrategy</i>, this is the processing code of the source system from which the SBR field value is retrieved.</p></li>
+<li><p>For the<i> WeightedSurvivorStrategy</i>, this is the name of the<i> module-name</i> element that defines the weighted calculator to use as the default strategy (by default,<i> WeightedSurvivorCalculator</i>).</p></li></ul>
+</td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="cnfg_index-sbr_t"></a><h3>Defining the Single Best Record Structure</h3>
+<p>In order for a field to be populated in the <a name="indexterm-311"></a>SBR, that field
+must be defined in the candidate field list of the survivor helper. By
+default, all the fields that were specified in the wizard are also
+defined here. Any candidate fields defined for the SBR must also be defined
+in Object Definition. If you add a field to the Object Definition, you
+should also add the field here.</p>
+
+<a name="gentextid-3902"></a><h5>To Specify a Candidate Field</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click update.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <a name="indexterm-312"></a><i>candidate-definitions</i> element in the <i>SurvivorHelperConfig</i> element.</b></li>
+<li><b>Do any of the following:</b><ul>
+<li><b>To add a new candidate field, add a new <a name="indexterm-313"></a><i>candidate-field</i> element within the
+<i>candidate-definitions</i> tags, and then name the new element using the ePath of the
+field. </b><p>For example:</p><pre>   &lt;candidate-definitions>
+      &lt;candidate-field name="Person.LastName"/>
+      <b>&lt;candidate-field name="Person.DateOfBirth"/></b>
+   &lt;candidate-definitions></pre></li>
+<li><b>To modify an existing candidate field, scroll to the <i>candidate-field</i> element you
+want to modify, and then change the name of the element.</b></li>
+<li><b>If any of the updated fields do not use the default strategy, define
+a strategy for those fields, as described in <a href="#cnfg_index-surv-field_t">Defining a Survivor Strategy for a Field or Object</a>.</b></li></ul></li>
+<li><b>Save and close the file.</b></li></ol>
+
+<div class="indent"><a name="agyiz"></a><h3>Deleting Candidate Fields</h3>
+<p>Once a field is defined in the candidate field list, you can
+delete the field if you do not want to include the field in
+the SBR. If you delete a field from the Object Definition, make sure
+to delete the field here as well.</p>
+
+<a name="gentextid-3934"></a><h5>To Delete a Candidate Field</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click update.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>candidate-definitions</i> element in the <i>SurvivorHelperConfig</i> element.</b></li>
+<li><b>Delete all text between and including the appropriate <i>candidate-field</i> element.</b><p>Using the example below, to delete the Religion field, delete the boldface text;
+to delete the Alias object, delete the plain text.</p><pre><b>&lt;candidate-field name="Person.Religion"/></b>
+&lt;candidate-field name="Person.Alias[*].*"/>
+   &lt;system-fields>
+      &lt;field-name>LastModified&lt;/field-name>
+   &lt;/system-fields>
+   &lt;survivor-strategy>
+      &lt;strategy-class>com.sun.mdm.index.user.MyStrategy
+      &lt;/strategy-class>
+   &lt;/survivor-strategy>
+&lt;/candidate-field></pre>
+<hr><p><b>Note - </b>You cannot delete all candidate fields; at a minimum, the match fields must
+be defined.</p>
+<hr>
+</li>
+<li><b>Save and close the file.</b></li></ol></div>
+</div>
+
+
+<div class="indent"><a name="cnfg_index-surv-field_t"></a><h3>Defining a Survivor Strategy for a Field or Object</h3>
+<p>To use a <a name="indexterm-314"></a>strategy for a specific field other than the strategy defined
+in the <i>default-survivor-strategy</i> element, you must specify the new strategy for the appropriate
+<i>candidate-field</i> element. A <i>candidate-field</i> element can represent a field or child object. You do
+not need to specify a strategy for any fields that use the default
+survivor strategy.</p>
+
+<a name="gentextid-3960"></a><h5>To Define a Survivor Strategy for a Field</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click update.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>candidate-definitions</i> element in the <i>SurvivorHelperConfig</i> element.</b></li>
+<li><b><a name="indexterm-315"></a><a name="indexterm-316"></a>In the <i>candidate-field</i> element for which you want to specify a new
+strategy, create a new <i>survivor-strategy</i> element. </b><p>For example:</p><pre>&lt;candidate-field name="Person.Alias[*].*">
+   <b>&lt;survivor-strategy></b>
+   <b>&lt;/survivor-strategy></b>
+&lt;/candidate-field></pre></li>
+<li><b>In the new <i>survivor-strategy</i> element, create and name a new <a name="indexterm-317"></a><i>strategy-class</i> element.</b><p>Make sure to specify the fully qualified name of the Java class for
+the strategy. For example:</p><pre>&lt;candidate-field name="Person.Alias[*].*">
+   <b>&lt;survivor-strategy></b>
+      <b>&lt;strategy-class></b>
+       <b>com.sun.mdm.index.survivor.impl.UnionSurvivorStrategy</b>
+      <b>&lt;/strategy-class></b>
+   <b>&lt;/survivor-strategy></b>
+&lt;/candidate-field></pre>
+<hr><p><b>Note - </b>To specify the default survivor strategy for a field, make sure the corresponding
+<i>candidate-field</i> element does not contain a <i>survivor-strategy</i> element. If you implement a custom strategy
+class, that class must be defined as a custom plug-in.</p>
+<hr>
+</li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-custom-strat_t"></a><h3>Defining Custom Weighted Strategies</h3>
+<p>The <i>WeightedCalculator</i> element defines the Java class used for weighted survivor calculations. If
+the weighted calculator is defined as the <i>default-survivor-strategy</i>, then the strategies you define here
+are used for all candidate fields for which no specific survivor strategy is
+defined. The <a name="indexterm-318"></a>weighted calculator defines a default strategy to use for most fields,
+and specialized strategies to use for specific fields.</p><p>Configuring the weighted calculator involves the following tasks.</p>
+<ul><li><p><a href="#agyjc">Defining Custom Weighted Strategies</a></p></li>
+<li><p><a href="#cnfg_index-weight-strat_t">Configuring Weighted Strategies</a></p></li>
+<li><p><a href="#agyje">Modifying Weighted Calculator Parameters</a></p></li>
+<li><p><a href="#agyjf">Deleting Weighted Calculator Parameters</a></p></li></ul>
+
+
+<div class="indent"><a name="agyjc"></a><h3>Defining Custom Weighted Strategies</h3>
+<p><a name="indexterm-319"></a>The <i>WeightedCalculator</i> element defines both default and custom survivor strategies. You can override
+the default weighted calculator strategy for certain fields by defining custom strategies for those
+fields in the <i>candidate-field</i> elements of the <i>WeightedCalculator</i> element.</p>
+
+<a name="gentextid-4023"></a><h5>To Define Custom Weighted Calculators</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click update.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>WeightedCalculator</i> element.</b></li>
+<li><b><a name="indexterm-320"></a>Add and name a new <i>candidate-field</i> element in the <i>WeightedCalculator</i>.</b><p>For example:</p><pre>&lt;WeightedCalculator module-name="WeightedSurvivorCalculator"
+ parser-class=
+ "com.sun.mdm.index.configurator.impl.WeightedCalculatorConfig">
+   <b>&lt;candidate-field name="Person.DOB"></b>
+   <b>&lt;/candidate-field></b></pre></li>
+<li><b><a name="indexterm-321"></a>Create one or more <i>parameter</i> elements for the new candidate field.</b><pre>&lt;candidate-field name="Person.DOB">
+   <b>&lt;parameter></b>
+   <b>&lt;/parameter></b>
+   <b>&lt;parameter></b>
+   <b>&lt;/parameter></b>
+&lt;/candidate-field></pre></li>
+<li><b>For each new <i>parameter</i> element, define the elements listed in <a href="#cnfg_index-weight-calc_r">Weighted Calculator Parameter Elements</a>.</b><pre>&lt;candidate-field name="Person.DOB">
+   &lt;parameter>
+      <b>&lt;quality>SourceSystem&lt;/quality></b>
+      <b>&lt;preference>CDI&lt;/preference></b>
+      <b>&lt;utility>80.0&lt;/utility></b>
+   &lt;/parameter>
+   &lt;parameter>
+      <b>&lt;quality>MostRecentModified&lt;/quality></b>
+      <b>&lt;utility>75.0&lt;/utility></b>
+   &lt;/parameter>
+&lt;/candidate-field></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="cnfg_index-weight-strat_t"></a><h3>Configuring Weighted Strategies</h3>
+<p><a name="indexterm-322"></a><a name="indexterm-323"></a><a name="indexterm-324"></a>The wizard creates a default weighted strategy that defines a general weighting structure
+to be used by most fields. Unless custom weighted calculator strategies are defined
+for a field, the default strategies defined in the <i>default-parameters</i> element are used
+for each field using the weighted calculator.</p>
+
+<a name="gentextid-4068"></a><h5>To Add Default Weighted Calculator Parameters</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click update.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b><a name="indexterm-325"></a>Scroll to the <i>default-parameters</i> element in the <i>WeightedCalculator</i> element.</b></li>
+<li><b><a name="indexterm-326"></a>Create new a new <i>parameter</i> element within the <i>default-parameters</i> element, but outside any existing
+<i>parameter</i> elements.</b></li>
+<li><b>In the new <i>parameter</i> element, define the elements listed in <a href="#cnfg_index-weight-calc_r">Weighted Calculator Parameter Elements</a>. </b><p>For example:</p><pre>&lt;default-parameters>
+   &lt;parameter>
+      &lt;quality>SourceSystem&lt;/quality>
+      &lt;preference>CDA&lt;/preference>
+      &lt;utility>80.0&lt;/utility>
+   &lt;/parameter>
+   <b>&lt;parameter></b>
+      <b>&lt;quality>MostRecentModified&lt;/quality></b>
+      <b>&lt;utility>75.0&lt;/utility></b>
+   <b>&lt;/parameter></b>
+&lt;/default-parameters></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="agyje"></a><h3>Modifying Weighted Calculator Parameters</h3>
+<p>Once a candidate field is specified and custom weighted calculators are defined for
+the field, you can modify the parameters. You can also modify any existing
+default weighted calculator parameters.</p>
+
+<a name="gentextid-4099"></a><h5>To Modify Weighted Calculator Parameters</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click update.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>WeightedCalculator</i> element.</b></li>
+<li><b>Do either of the following:</b><ul>
+<li><b>To modify a custom weighted calculator parameter, scroll to the <i>candidate-field</i> element
+naming the field to modify.</b></li>
+<li><b>To modify a default weighted calculator parameter, scroll to the <i>default-parameters</i> element.</b></li></ul></li>
+<li><b>Modify the value of any of the elements listed in <a href="#cnfg_index-weight-calc_r">Weighted Calculator Parameter Elements</a>.</b><p>For example:</p><pre>&lt;parameter>
+   &lt;quality>SourceSystem&lt;/quality>
+   &lt;preference>DDI&lt;/preference>
+   &lt;utility>60.0&lt;/utility>
+&lt;/parameter></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+
+
+<div class="indent"><a name="agyjf"></a><h3>Deleting Weighted Calculator Parameters</h3>
+<p>Once default and custom parameters are defined, they can be deleted if necessary.
+If a candidate field is defined for custom weighted calculations, you can specify
+that the field use the default weighted calculator instead by removing the entire
+field from the <i>candidate-fields</i> list.</p>
+
+<a name="gentextid-4127"></a><h5>To Delete Weighted Calculator Parameters</h5>
+<ol>
+<li><b>In the Projects window, expand the Configuration node in the Project you want
+to modify, and then double-click update.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+<li><b>Scroll to the <i>WeightedCalculator</i> element, and then to the <i>candidate-field</i> element identifying the field
+you want to delete.</b></li>
+<li><b>Do either of the following:</b><ul>
+<li><b>To delete a custom weighted calculator parameter, scroll to the <i>candidate-field</i> element
+naming the field to modify.</b></li>
+<li><b>To delete a default weighted calculator parameter, scroll to the <i>default-parameters</i> element.</b></li></ul></li>
+<li><b>To delete an existing parameter, scroll to the <i>parameter</i> element you want to
+delete, and then remove all text between and including the <i>parameter</i> element.</b><p>For example, to delete the SourceSystem parameter below, delete the boldface text.</p><pre><b>&lt;parameter></b>
+   <b>&lt;quality>SourceSystem&lt;/quality></b>
+   <b>&lt;preference>CDI&lt;/preference></b>
+   <b>&lt;utility>80.0&lt;/utility></b>
+<b>&lt;/parameter></b>
+&lt;parameter>
+   &lt;quality>MostRecentModified&lt;/quality>
+   &lt;utility>75.0&lt;/utility>
+&lt;/parameter></pre>
+<hr><p><b>Note - </b>At least one parameter must be defined for the <i>default-parameter</i> element; you
+cannot delete all parameters from this section. You cannot delete all parameters from
+a candidate field, but you can delete the entire candidate field (see below
+for more information).</p>
+<hr>
+</li>
+<li><b>To delete a field from the candidate field list, delete all text between
+and including the <i>candidate-field</i> tags for the field you want to delete.</b><p>Using the following example, to delete the Person.DOB candidate field from the custom
+calculator, delete all the text below.</p><pre>&lt;candidate-field name="Person.DOB">
+   &lt;parameter>
+      &lt;quality>SourceSystem&lt;/quality>
+      &lt;preference>CDI&lt;/preference>
+      &lt;utility>80.0&lt;/utility>
+   &lt;/parameter>
+   &lt;parameter>
+      &lt;quality>MostRecentModified&lt;/quality>
+      &lt;utility>75.0&lt;/utility>
+   &lt;/parameter>
+&lt;/candidate-field></pre></li>
+<li><b>Save and close the file.</b></li></ol></div>
+</div>
+
+
+<div class="indent"><a name="cnfg_index-weight-calc_r"></a><h3>Weighted Calculator Parameter Elements</h3>
+<p>The following table lists and describes the elements that configure the parameters for
+the weighted calculator in the Best Record file (<tt>update.xml</tt>).</p><table><col width="25.00*"><col width="75.00*"><tr><th align="left" valign="top" scope="column"><p>Element</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-327"></a>quality</p></td>
+<td align="left" valign="top" scope="row"><p>The type of weighted
+calculation to perform, such as:</p>
+<ul><li><p>SourceSystem</p></li>
+<li><p>SystemAgreement</p></li>
+<li><p>MostRecentModified</p><p>For more information about these qualities, see <a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/landingpage.html">Understanding Master Index Configuration Options</a>.</p></li></ul>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-328"></a>preference</p></td>
+<td align="left" valign="top" scope="row"><p>The preferred value for the specified quality. This
+element is only used for the SourceSystem quality and the preference must be
+a source system code.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-329"></a>utility</p></td>
+<td align="left" valign="top" scope="row"><p>A value that indicates the reliability of the specified quality
+for determining the best field value for the SBR. You define the scale
+for the utility values.</p></td>
+</tr>
+</table></div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right" width="10px"><!-- right content column -->
+<p class="h1" style="bold">Table of Contents</p>
+<p><a href="bookoverview.html">Master Index Configuration Overview</a></p>
+<p><a href="cnfg_index-object_t.html">Configuring the Object Structure</a></p>
+<p><a href="cnfg_index-fields_r.html">Master Index Field Properties and Name Restrictions</a></p>
+<p><a href="cnfg_index-query-basic_t.html">Creating a Basic Query</a></p>
+<p><a href="cnfg_index-query-block_p.html">Creating Blocking Queries</a></p>
+<p><a href="cnfg_index-query-mod_p.html">Modifying Queries</a></p>
+<p><a href="cnfg_index-query-del_t.html">Deleting a Query</a></p>
+<p><a href="cnfg_index-mc_p.html">Configuring the Master Controller</a></p>
+<p><a href="cnfg_index-dm_p.html">Configuring the Decision Maker</a></p>
+<p><a href="cnfg_index-euid_p.html">Configuring the EUID Generator</a></p>
+<p><a href="cnfg_index-norm_p.html">Defining Normalization Rules</a></p>
+<p><a href="cnfg_index-stand_p.html">Defining Standardization Rules</a></p>
+<p><a href="cnfg_index-phon_p.html">Defining Phonetic Encoding</a></p>
+<p><a href="cnfg_index-match-string_p.html">Defining the Match String</a></p>
+<p><a href="cnfg_index-query-proc_t.html">Defining how Query Blocks are Processed</a></p>
+<p><a href="cnfg_index-survivor_p.html">Defining the Survivor Calculator</a></p>
+<p><a href="cnfg_index-sbr-filter_t.html">Filtering SBR Values</a></p>
+<p><a href="cnfg_index-update-pol_p.html">Configuring Update Policies</a></p>
+<p><a href="cnfg_index-validation_t.html">Defining Custom Field Validations</a></p>
+<p><a href="cnfg_index-engines_p.html">Configuring the Match and Standardization Engines</a></p>
+<p><a href="cnfg_index-edm-display_p.html">Configuring the EDM Appearance</a></p>
+<p><a href="cnfg_index-edm-search_p.html">Configuring the EDM Search Pages</a></p>
+<p><a href="cnfg_index-edm-pages_p.html">Configuring EDM Page Layouts</a></p>
+<p><a href="cnfg_index-edm-impl_p.html">Configuring EDM Implementation Information</a></p>
+<p><a href="cnfg_index-msg-local_t.html">Localizing Log and Exception Messages</a></p></div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>
