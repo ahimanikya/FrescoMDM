@@ -430,4 +430,4 @@ CVSIGNORE="Makefile bld target"
 
 #finally, set the current release tag:
 export REV
-REV="SM06"
+REV="SM07"

@@ -395,4 +395,4 @@ setenv CVS_CO_ROOT "${SRCROOT}/.."
 setenv CVSIGNORE "Makefile bld target"
 
 #finally, set the current release tag:
-setenv REV "SM06"
+setenv REV "SM07"
