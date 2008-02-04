@@ -97,7 +97,7 @@ used to customize field validations, update policies, match processing logic, an
 and to create custom components for the master index application, such as custom
 phonetic encoders, block pickers, or query builders.  You can create as many classes
 as you need to carry out the custom processes.</p><p>The following sections describe custom plug-ins that define custom processing. These are explained
-more fully in <a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/landingpage.html">Understanding Master Index Configuration Options</a>.</p>
+more fully in <a href="https://open-dm-mi.dev.java.net/docs/config_concepts/landingpage.html" target="_blank">Understanding Master Index Configuration Options</a>.</p>
 <ul><li><p><a href="#dsgn_eview-update_c">Update Policies</a> &mdash; Define custom processing logic to perform against the resulting record of a transaction before it is stored in the database.</p></li>
 <li><p><a href="#dsgn_eview-field-val_c">Field Validations</a> &mdash; Define validations to perform against specific fields, such as checking the local ID length and format.</p></li>
 <li><p><a href="#dsgn_eview-field-mask_c">Field Masking</a> &mdash; Define how the values for sensitive fields are hidden on the EDM from users who do not have permission to view them.</p></li>
@@ -173,7 +173,7 @@ validation logic, enter the name of the plug-in in the Field Validation file
 <ul><li><p>The custom validation classes must implement <tt>com.sun.mdm.index.objects.validation.ObjectValidator</tt>.</p></li>
 <li><p>The exception thrown is <tt>com.sun.mdm.index.objects.validation.exception.ValidationException</tt>.</p></li></ul>
 <p>One default field validator, <i>validate-local-id</i>, is provided to validate system and local ID
-fields before processing data into the database. This is described in <a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/landingpage.html">Understanding Master Index Configuration Options</a>.</p></div>
+fields before processing data into the database. This is described in <a href="https://open-dm-mi.dev.java.net/docs/config_concepts/landingpage.html" target="_blank">Understanding Master Index Configuration Options</a>.</p></div>
 
 
 <div class="indent"><a name="dsgn_eview-field-mask_c"></a><h3>Field Masking</h3>
@@ -209,7 +209,7 @@ points in match processing, the execute match methods look for the value of
 the methods listed below. For more information about the methods, see the Javadocs
 for the master index. These methods are contained in the <tt>ExecuteMatchLogics</tt> class in
 the package <tt>com.sun.mdm.index.master</tt>. For information about where the decision points are reached in
-the processing logic and how to change the logic, see <a href="https://open-dm-mi.dev.java.net/www/docs/process/landingpage.html">Understanding Master Index Processing</a>. The following methods
+the processing logic and how to change the logic, see <a href="https://open-dm-mi.dev.java.net/docs/process/landingpage.html" target="_blank">Understanding Master Index Processing</a>. The following methods
 specify the custom logic.</p>
 <ul><li><p><tt>bypassMatching</tt> - Indicates whether to perform the match process on incoming records or to bypass the match process.</p></li>
 <li><p><tt>disallowAdd</tt> - Indicates whether an incoming message can be inserted as a new record.</p></li>
@@ -239,7 +239,7 @@ logic in the execute match methods used by the back-end, specify the name
 of that class in the <i>logic-class</i> element. If you create a plug-in for
 the EDM, specify the name of that class in the <i>logic-class-gui</i> element.
 For example:</p><pre>&lt;logic-class>com.sun.mdm.index.user.CustomCollaboration&lt;/logic-class>
-&lt;logic-class-gui>com.sun.mdm.index.user.CustomEDM&lt;/logic-class-gui></pre><p>For more information about the Threshold file, see <a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/landingpage.html">Understanding Master Index Configuration Options</a>.</p></div>
+&lt;logic-class-gui>com.sun.mdm.index.user.CustomEDM&lt;/logic-class-gui></pre><p>For more information about the Threshold file, see <a href="https://open-dm-mi.dev.java.net/docs/config_concepts/landingpage.html" target="_blank">Understanding Master Index Configuration Options</a>.</p></div>
 </div>
 
 

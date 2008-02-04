@@ -101,7 +101,7 @@ several files in XML format that define the configuration of the runtime environ
 You can configure Master Index Studio by modifying the XML files directly or
 by using the Configuration Editor. Make sure to verify the configuration of the
 application before deploying the Project.</p>
-<hr><p><b>Note - </b>It is helpful to review the information provided in <a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/langingpage.html">Understanding Master Index Configuration Options</a> to learn about
+<hr><p><b>Note - </b>It is helpful to review the information provided in <a href="https://open-dm-mi.dev.java.net/docs/config_concepts/langingpage.html" target="_blank">Understanding Master Index Configuration Options</a> to learn about
 the relationships between the files and what can be configured. There are also
 certain portions of the configuration that can only be modified directly in the
 XML files. </p>
@@ -154,7 +154,7 @@ the match and standardization engines to use and the query process for matching.
 Standardization includes defining fields to be reformatted (or parsed), normalized, or converted to their
 phonetic version. For matching, you must also define the data string to be
 passed to the match engine. The rules you define for standardization and matching
-are dependent on the match engine in use. <a href="https://open-dm-dq.dev.java.net/www/docs/sme/landingpage.html">Understanding the Mural Match Engine</a> describes the rules for
+are dependent on the match engine in use. <a href="https://open-dm-dq.dev.java.net/docs/sme/landingpage.html" target="_blank">Understanding the Mural Match Engine</a> describes the rules for
 the Mural Match Engine.</p><p>The Threshold file, described below, also configures the match process by defining certain
 match parameters that define weight thresholds, how assumed matches are processed, and how
 potential duplicates are processed. It also specifies the query to use for matching.</p></div>
@@ -228,7 +228,7 @@ the file. This warning lets you save and check out the file
 in one step. Also, be sure to verify that the modifications are valid
 by verifying the XML syntax. After modifying each file, save the changes.</p><p><a name="indexterm-32"></a><a name="indexterm-33"></a>There are a few restraints on modifying these files. In addition to the
 general rules listed below, the match engine you choose might place other requirements
-on customizations. Be sure to review <a href="https://open-dm-dq.dev.java.net/www/docs/sme/landingpage.html">Understanding the Mural Match Engine</a> before modifying the Match Field file.</p>
+on customizations. Be sure to review <a href="https://open-dm-dq.dev.java.net/docs/sme/landingpage.html" target="_blank">Understanding the Mural Match Engine</a> before modifying the Match Field file.</p>
 <ul><li><p><a name="indexterm-34"></a>All fields specified in any of the configuration files must be included in the Object Definition file.</p></li>
 <li><p><a name="indexterm-35"></a><a name="indexterm-36"></a>If you add fields to the object structure, make sure you add them to the survivor calculator in the Best Record file.</p></li>
 <li><p><a name="indexterm-37"></a>If you define additional fields for normalization, parsing, or phonetic encoding, make sure to add the normalized, parsed, and phonetic fields to the Object Definition file and, optionally, the blocking query.</p></li>

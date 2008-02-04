@@ -478,7 +478,7 @@ mask is <b>DDxDDDxDDD</b>. This strips the hyphens before storing the ID.</p></t
 
 <div class="indent"><a name="dsgn_eview-dbs-custom_t"></a><h3>Step 7: Create Custom Scripts (Optional)</h3>
 <p><a name="indexterm-195"></a><a name="indexterm-196"></a>You can insert additional information into the database by creating a custom script.
-For information about the structure of the master index database, see <a href="https://open-dm-mi.dev.java.net/www/docs/process/landingpage.html">Understanding Master Index Processing</a>.</p>
+For information about the structure of the master index database, see <a href="https://open-dm-mi.dev.java.net/docs/process/landingpage.html" target="_blank">Understanding Master Index Processing</a>.</p>
 
 <a name="gentextid-1976"></a><h5>To create a custom script</h5>
 <ol>
@@ -507,7 +507,7 @@ created.</b></li></ol></div>
 <div class="indent"><a name="dsgn_eview-dbs-euid_t"></a><h3>Step 9: Specify a Starting EUID (Optional)</h3>
 <p><a name="indexterm-197"></a><a name="indexterm-198"></a>By default, the EUIDs assigned by the master index application start with &ldquo;0&rdquo;, with
 padded zeroes added to the left to make the EUID number the
-correct length (for more information, see <a href="https://open-dm-mi.dev.java.net/www/docs/config_concepts/landingpage.html">Understanding Master Index Configuration Options</a>). You can modify this numbering format by
+correct length (for more information, see <a href="https://open-dm-mi.dev.java.net/docs/config_concepts/landingpage.html" target="_blank">Understanding Master Index Configuration Options</a>). You can modify this numbering format by
 changing the value of the seq_name column of the sbyn_seq_table database table where
 the sequence name is &ldquo;EUID&rdquo;. For example:</p><p><tt>update sbyn_seq_table set seq_count=1000000001 where seq_name=&rsquo;EUID&rsquo;;</tt></p></div>
 

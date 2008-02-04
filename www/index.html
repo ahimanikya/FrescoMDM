@@ -47,13 +47,13 @@ any&nbsp;<span style=""></span>domain
 specific master index through the matching, de-duplication,<span style="">&nbsp;</span>merging, and
 cleansing of data from various data sources.<br>
 <br>
-Open Master Index is the true and reliable alternative to proprietary,
+Master Index Studio is the true and reliable alternative to proprietary,
 closed-source MDM, Customer Data Integration (CDI)<span style="font-size: 10pt; font-family: &quot;Tahoma&quot;,&quot;sans-serif&quot;; color: windowtext;"></span>,
-and product information management (PIM) products. Master Index
+and product information management (PIM) products. Master Index Studio
 leverages other open source projects and open standards, with extensive
 potential to jump-start and leverage auxiliary open-source efforts.
 Developers have the tools and runtime environment to create robust MDM
-applications<br>
+applications.<br>
 <br>
 <span style="font-size: 10pt; font-family: &quot;Tahoma&quot;,&quot;sans-serif&quot;; color: windowtext;"></span><br>
 <br>
@@ -116,7 +116,7 @@ configuration.</td>
 </ul>
 </td>
 <td style="width: 95%;"><span style=""></span><a href="https://open-dm-ds.dev.java.net/"><span style="font-weight: bold; color: rgb(62, 106, 143);"></span></a>Provides
-a pluggable framework for incorporating industry specific business
+a pluggable framework for incorporating industry-specific business
 logic.</td>
 </tr>
 <tr>
@@ -128,7 +128,7 @@ logic.</td>
 <td></td>
 <td style="text-align: left; vertical-align: top; width: 31px;"><a href="https://open-dm-mi.dev.java.net/servlets/ProjectMembershipRequest"><img style="border: 0px solid ; width: 60px; height: 60px;" src="images/Community.gif" alt=""></a></td>
 <td style="width: 95%;"><span style="font-weight: bold;"><span style="color: rgb(238, 107, 0);">Join our community!</span>
-- </span>Would you like to help expand or improve Mural? Do you
+ </span>Would you like to help expand or improve Open-DM-MI? Do you
 have tips and tricks to share? Sign up here and join us!<br>
 <table style="text-align: left; width: 478px; height: 32px;" border="0" cellpadding="2" cellspacing="2">
 <tbody>
@@ -146,10 +146,21 @@ Governance</a></td>
 </tr>
 <tr>
 <td></td>
+<td style="text-align: left; vertical-align: top; width: 31px;"><a href="https://open-dm-mi.dev.java.net/docs/DocumentationByTitle.html"><img style="border: 0px solid ; width: 60px; height: 60px;" src="images/Documents.gif" alt=""></a></td>
+<td style="text-align: left; vertical-align: top; width: 95%;"><span style="font-weight: bold; color: rgb(238, 107, 0);"><br>
+Documentation!</span>
+- Learn about open master index, how to access and build the files, and how to work with Master Index Studio. <a href="https://open-dm-mi.dev.java.net/docs/DocumentationByTitle.html">here</a>!</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr><tr>
+<td></td>
 <td style="text-align: left; vertical-align: top; width: 31px;"><a href="https://open-dm-mi.dev.java.net/servlets/ProjectNewsList"><img style="border: 0px solid ; width: 60px; height: 60px;" src="images/News.gif" alt=""></a></td>
 <td style="text-align: left; vertical-align: top; width: 95%;"><span style="font-weight: bold; color: rgb(238, 107, 0);"><br>
 News!</span>
-- Read the latest breaking news about Master Index. &nbsp;Stay
+- Read the latest breaking news about Master Index Studio. &nbsp;Stay
 tuned to
 your community <a href="https://open-dm-mi.dev.java.net/servlets/ProjectNewsList">here</a>!</td>
 </tr>
@@ -161,6 +172,20 @@ your community <a href="https://open-dm-mi.dev.java.net/servlets/ProjectNewsList
 <tr style="font-weight: bold; text-decoration: underline;">
 <td colspan="3" rowspan="1"><big>Architecture:</big></td>
 </tr>
+</tr>
+<tr>
+<td colspan="3" rowspan="1">The diagrams below illustrate the architecture of the runtime and design environments for Master Index Studio. In the design environment, the user defines the data structure of business objects to be stored and cross referenced and also defines the logic that determines how data is updated, standardized, weighted, and matched in the master index. After the master index framework is configured, Master Index Studio creates a master index application (EJB) that can be deployed in the application server.<br />
+<br />
+In the runtime environment, information enters the master index system from the Enterprise Data Manager (a web-based user interface) or from external systems. The master index application uses the configured and predefined logic to determine how the new information is handled.
+</td>
+</tr>
 <tr>
 <td></td>
-<td colspan="2" rowspan="1"><img style="width: 1024px; height: 625px;" alt="Architecture" src="images/Master-Index-Diagram.gif"></td></tr></tbody></table></body></html>
+<td colspan="2" rowspan="1"><img width="90%" alt="Design Time Architecture" src="images/Master-Index-Diagram-Design.gif"></td></tr>
+<tr>
+<td></td>
+<td colspan="2" rowspan="1"><img width="90%" alt="Runtime Architecture" src="images/Master-Index-Diagram-Runtime.gif"></td></tr>
+</tbody>
+</table>
+</body>
+</html>
