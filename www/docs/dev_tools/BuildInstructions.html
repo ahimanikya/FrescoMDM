@@ -82,8 +82,8 @@
 <li>Install Subversion to access Open-DM-MI source files. You can download Subversion from <a href="http://subversion.tigris.org/project_packages.html" target="_blank">http://subversion.tigris.org/project_packages.html</a>. For Windows, download the packages built against Apache 2.0.</li>
 <li>Install one of the following combinations:
 <ul>
-<li><a href="https://glassfish.dev.java.net/public/downloadsindex.html" target="_blank">GlassFish</a> (or the Sun Java System Application Server) and <a href="http://www.netbeans.org/" target="_blank">Netbeans</a></li>
-<li><a href="https://open-esb.dev.java.net/Downloads_OpenESB_Addons_NB6.html" target="_blank">Open ESB</a></li>
+<li><a href="https://glassfish.dev.java.net/public/downloadsindex.html" target="_blank">GlassFish</a> (the Sun Java System Application Server 9.1) and <a href="http://www.netbeans.org/" target="_blank">Netbeans 6.1</a></li>
+<!-- <li><a href="https://open-esb.dev.java.net/Downloads_OpenESB_Addons_NB6.html" target="_blank">Open ESB</a></li>-->
 <li>Java CAPS 6 (note that this is in development and not generally available at this time)</li>
 </ul>
 <li>Download the database drivers.</li>
@@ -123,18 +123,13 @@ where <i>user_name</i> is your username in the Open-DM-DQ project.</p></li>
 </ul>
 </li>
 </ul>
-<h3><b>Build Mural Master Index </b></h3>
-<p>You can build Open-DM-MI either with or without running JUnit tests. To run the build, navigate to <i>working_folder</i>\open-dm-mi and run the following two commands in the order given:</p>
-<p><code>&#160;&#160;&#160;env</code><br />
-<code>&#160;&#160;&#160;mvn install</code></p>
-<p><b>Note: </b><code>mvn install</code> runs JUnit test when it builds. To run the build without JUnit tests, run the following command instead: <br />
-<code>&#160;&#160;&#160;mvn install -Dmaven.test.skip=true</code></p>
 <h3><b>Create the Database for JUnit Tests</b></h3>
-<p>To create the database, run the scripts provided for the database platform or platforms you are using.
+<p>To create the database for the JUnit tests, run the scripts provided for the database platform or platforms you are using. You do not need to perform this step if you do not need to run the JUnit tests.
 <ul>
 <li>For Oracle, run the scripts at \open-dm-mi\index-core\src\test\eindex-templates\database-scripts\oracle</li>
 <li>For SQL Server, run the scripts at \open-dm-miindex-core\src\test\eindex-templates\database-scripts\sqlserver</li>
 </ul></p>
+<p>Run create.sql first, followed by createUserIndex.sql, systems.sql, and codelist.sql. You do not need to run createuserCodeData.sql. Run drop.sql and dropUserIndex.sql if you need to remove the database for any reason.</p>
 <p>After you create the database, set the connection properties.
 <ul>
 <li>For Oracle, set the properties in the file \open-dm-mi\index-core\src\test\java\com\sun\mdm\index\util\ejbproxy\ProxyJNDI.properties.Oracle </li>
@@ -142,6 +137,12 @@ where <i>user_name</i> is your username in the Open-DM-DQ project.</p></li>
 </ul></p>
 <p>To run the JUnit test after creating the database and configuring the connection properties, run the following command:</p>
 <p><code>&#160;&#160;&#160;mvn test</code></p>
+<h3><b>Build Mural Master Index </b></h3>
+<p>You can build Open-DM-MI either with or without running JUnit tests. To run the build, navigate to <i>working_folder</i>\open-dm-mi and run the following two commands in the order given:</p>
+<p><code>&#160;&#160;&#160;env</code><br />
+<code>&#160;&#160;&#160;mvn install</code></p>
+<p><b>Note: </b><code>mvn install</code> runs JUnit test when it builds. To run the build without JUnit tests, run the following command instead: <br />
+<code>&#160;&#160;&#160;mvn install -Dmaven.test.skip=true</code></p>
 
 <!-- End Content Area -->
 

@@ -1,0 +1,580 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+
+ <head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="/branding/css/print.css" media="print" />
+ <script src="/branding/scripts/tigris.js" type="text/javascript"></script>
+  <script src="/branding/scripts/alm.js" type="text/javascript"></script>
+ <style type="text/css">
+    /* <![CDATA[ */
+    @import "/branding/css/alm.css";
+   /* ]]> */
+ </style>
+
+<link rel="stylesheet" type="text/css" href="http://open-dm-mi.dev.java.net/www/css/netbeans.css">
+
+<title>Developing Master Indexes With Master Index Studio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<meta http-equiv="Content-Style-Type" content="text/css" >
+<meta name="version" content="4.5.2.148.4" />
+ <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
+ <meta name="author" content="Carol Thom"> <!--Optional tag-->
+ <meta name="keywords" content="">
+
+  <style type="text/css">
+
+    @import url("../../css/netbeans.css");
+
+    #cnlogo            {display: none}
+    #collabnet         {display: none}
+    .topline           {display: none}
+    #toptabs           {display: none}
+    #breadcrumbs       {display: none}
+    #navcol            {display: none}
+    #bodycol .infomark {display: none}
+    #footer            {display: inherit}
+
+  </style>
+
+
+</head>
+
+
+
+<body>
+
+
+
+
+
+
+ <!-- begin TopTabs  -->
+
+<!-- end TopTabs -->
+
+
+
+
+
+
+<!-- Servlet-Specific template -->
+
+<p><img src="../../images/MiBanner.gif"> </p>
+<hr width="98%"></hr>
+
+		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
+		<table id="floating-contenttable" class="colapse" background-color="#FFFFFF">
+		<td class="valign-top b-right full-width" background-color="#FFFFFF"><!-- main content column -->
+						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+                        <div style="_width:95%;"><!-- IE hack-->
+
+<!-- Begin Content Area -->
+<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
+<!--     Use is subject to license terms.-->
+
+<a name="top"></a>
+<h1>Understanding Master Index Configuration Options</h1>
+<h1 style="bold">DRAFT VERSION</h1>
+<div class="articledate" style="margin-left: 0px;font-style:italic;">
+  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+    <br>
+    February 2008</em> <br>
+    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+</div>
+
+<a name="cnfg_index-master_c"></a><h3>Threshold Configuration</h3><p><a name="indexterm-140"></a>The Threshold file (<tt>master.xml</tt>) defines certain system parameters, such as matching thresholds and EUID
+properties, for the Manager Service. It also specifies the blocking query to use
+for match processing. This chapter describes the Manager Service and the Threshold file.
+It includes the following topics:</p>
+<ul><li><p><a href="#agydz">About Threshold Configuration</a></p></li>
+<li><p><a href="#agyea">Manager Service Components</a></p></li>
+<li><p><a href="#agyer">The Threshold File</a></p></li></ul>
+
+
+<a name="agydz"></a>
+
+<h2>About Threshold Configuration</h2>
+<p><a name="indexterm-141"></a><a name="indexterm-142"></a>The Threshold file (<tt>master.xml</tt>) specifies information for the main interface of the indexing
+system, the Manager Service. This interface coordinates all components of the master index
+application, including the database, master index Project, Enterprise Data Manager, runtime environment, and match
+engine. The main interface is a stateless session bean, though some methods return
+objects that have handles to stateful beans.</p>
+
+<a name="agyea"></a>
+
+<h2>Manager Service Components</h2>
+<p><a name="indexterm-143"></a><a name="indexterm-144"></a><a name="indexterm-145"></a><a name="indexterm-146"></a>The Threshold file defines certain properties of the match process, such as duplicate
+and match thresholds, the query to use for matching, logic for automatic merges,
+and properties of the EUIDs assigned by the master index application (such as
+their length and whether a checksum value is used). It also defines the
+update mode (optimistic or pessimistic) and merged record updates. The following Manager Service
+components are configured by the Threshold file:</p>
+<ul><li><p><a href="#agyeb">Master Controller Configuration</a></p></li>
+<li><p><a href="#agyeg">Decision Maker</a></p></li>
+<li><p><a href="#agyel">EUID Generator</a></p></li></ul>
+
+
+<div class="indent"><a name="agyeb"></a><h3>Master Controller Configuration</h3>
+<p>The <i>MasterControllerConfig</i> element of the Threshold file controls four components of the matching
+and update process.</p>
+<ul><li><p><a href="#agyec">Custom Logic Classes in the Threshold File</a></p></li>
+<li><p><a href="#agyed">Update Mode in the Threshold File</a></p></li>
+<li><p><a href="#agyee">Merged Record Updates in the Threshold File</a></p></li>
+<li><p><a href="#agyef">Blocking Query in the Threshold File</a></p></li></ul>
+
+
+<div class="indent"><a name="agyec"></a><h3>Custom Logic Classes in the Threshold File</h3>
+<p><a name="indexterm-147"></a><a name="indexterm-148"></a>Custom logic classes specify any custom plug-ins created for the master index Project
+that define custom processing for the execute match methods. If no classes are
+specified, execute match processing is carried out using the default logic (this is
+described in <a href="https://open-dm-mi.dev.java.net/docs/process/landingpage.html">Understanding Master Index Processing</a>).</p></div>
+
+
+<div class="indent"><a name="agyed"></a><h3>Update Mode in the Threshold File</h3>
+<p><a name="indexterm-149"></a><a name="indexterm-150"></a>The update mode specifies whether a record&rsquo;s potential duplicate list is reevaluated when
+key fields are updated in the record. Performing the reevaluation helps keep the
+potential duplicate list current, but requires more system resources. There are two update modes.</p>
+<ul><li><p><b>Pessimistic</b> &mdash; In this mode, a record&rsquo;s potential duplicates are reevaluated whenever updates are made to the record&rsquo;s key fields. Key fields are fields involved in blocking and matching.</p></li>
+<li><p><b>Optimistic</b> &mdash; In this mode, potential duplicates are not reevaluated when key fields are updated in a record. After an update, the potential duplicate list for a record remains the same as before the update occurred.</p></li></ul>
+</div>
+
+
+<div class="indent"><a name="agyee"></a><h3>Merged Record Updates in the Threshold File</h3>
+<p><a name="indexterm-151"></a><a name="indexterm-152"></a>The merge update status determines whether changes can be made to records that
+have a status of &ldquo;merged&rdquo;. These are the EUID records that are not
+retained after a merge. For example, when an incoming record is an assumed
+match with an SBR that has a status of &ldquo;merged&rdquo;, the master index
+application checks the value of the <i>merged-record-update</i> element. If the element is set to
+&ldquo;Enabled&rdquo;, the merged SBR is updated with the new information. If the element
+is set to &ldquo;Disabled&rdquo;, an exception is thrown and the update is not
+performed. Typically, it is recommended that merged records not be updated.</p></div>
+
+
+<div class="indent"><a name="agyef"></a><h3>Blocking Query in the Threshold File</h3>
+<p><a name="indexterm-153"></a><a name="indexterm-154"></a><a name="indexterm-155"></a>The blocking query, specified by the <i>query-builder</i> element, identifies one of the queries defined
+in the Candidate Select file (<tt>query.xml</tt>) as the query to use for match
+processing. This query is used by the master index application when searching for
+a candidate pool of possible matches to an incoming record. If the query
+takes any parameters, they are defined using the <i>option</i> element.</p></div>
+
+
+<div class="indent"><a name="gfxsc"></a><h3>Transactional Support</h3>
+<p>Master Index Studio supports local and distributed transaction processing. You can configure the
+master index application to distribute transactions across applications, to distribute transactions only within
+the master index application, or to not use distributed transactions at all. This
+is defined in the <i>transaction</i> element.</p></div>
+</div>
+
+
+<div class="indent"><a name="agyeg"></a><h3>Decision Maker</h3>
+<p><a name="indexterm-156"></a>The <i>DecisionMakerConfig</i> element of the Threshold file allows you to specify how
+the Manager Service evaluates query results. For the default Decision Maker, you can
+configure these parameters:</p>
+<ul><li><p><a href="#agyeh">OneExactMatch</a></p></li>
+<li><p><a href="#agyei">SameSystemMatch</a></p></li>
+<li><p><a href="#agyej">DuplicateThreshold</a></p></li>
+<li><p><a href="#agyek">MatchThreshold</a></p></li></ul>
+<p>When the master index application processes an incoming record, it compares the new
+record against existing records in the database and assigns a matching weight between
+possible matches with the incoming record. The master index application uses the values
+that you specify in this section to determine how to handle records that
+fall within certain matching weight ranges. Records with a matching weight above the
+duplicate threshold are treated as potential duplicates; records with a matching weight above
+the match threshold are treated as potential duplicates or assumed matches, depending on
+the value of the <i>OneExactMatch</i> parameter and the number of records with
+a matching weight above the match threshold.</p>
+
+<div class="indent"><a name="agyeh"></a><h3>OneExactMatch</h3>
+<p><a name="indexterm-157"></a>This parameter specifies logic for assumed matches. If <i>OneExactMatch</i> is set to true and
+there is more than one record above the match threshold, then none of
+the records are considered an assumed match and all are flagged as potential
+duplicates.  If <i>OneExactMatch</i> is set to false and there is more than
+one record above the match threshold, then the record with the highest matching
+weight is considered an assumed match and the rest are flagged as potential
+duplicates.</p></div>
+
+
+<div class="indent"><a name="agyei"></a><h3>SameSystemMatch</h3>
+<p><a name="indexterm-158"></a>This parameter indicates whether the master index application will match two records that originated
+from the same system whose matching weight falls above the match threshold. If
+<i>SameSystemMatch</i> is set to true, no assumed matches are made between records associated
+with the same system. If <i>SameSystemMatch</i> is set to false, assumed matches
+can be made between records associated with the same system.</p></div>
+
+
+<div class="indent"><a name="agyej"></a><h3>DuplicateThreshold</h3>
+<p><a name="indexterm-159"></a><a name="indexterm-160"></a><a name="indexterm-161"></a>The duplicate threshold specifies the matching probability weight at or above which two
+records are considered to be potentially represent the same object. Records with matching
+weights between the duplicate and match thresholds are always flagged as potential duplicates.
+A thorough data analysis combined with testing will help determine the best value
+for the duplicate and match thresholds.</p></div>
+
+
+<div class="indent"><a name="agyek"></a><h3>MatchThreshold</h3>
+<p><a name="indexterm-162"></a>The match threshold specifies the matching probability weight at or above which two
+records are assumed to be a match and are automatically merged in the
+master index database.</p></div>
+</div>
+
+
+<div class="indent"><a name="agyel"></a><h3>EUID Generator</h3>
+<p><a name="indexterm-163"></a>The EUID generator controls how EUIDs are created for each unique record in
+the master index database. For the default EUID generator, you can define three
+parameters.</p>
+<ul><li><p><a href="#agyem">IdLength</a></p></li>
+<li><p><a href="#agyen">ChecksumLength</a></p></li>
+<li><p><a href="#agyeq">ChunkSize</a></p></li></ul>
+
+
+<div class="indent"><a name="agyem"></a><h3>IdLength</h3>
+<p><a name="indexterm-164"></a><a name="indexterm-165"></a><a name="indexterm-166"></a><a name="indexterm-167"></a>This parameter defines the length of the EUIDs created by the master index
+application. By default, the length of the EUID columns in the master index
+database is 20. If you choose an ID length larger than 20, make
+sure to manually modify the length of the EUID columns in the database
+creation scripts.</p></div>
+
+
+<div class="indent"><a name="agyen"></a><h3>ChecksumLength</h3>
+
+
+<div class="indent"><a name="agyeo"></a><h3>Description</h3>
+<p><a name="indexterm-168"></a><a name="indexterm-169"></a>The <i>ChecksumLength</i> parameter allows you to specify the length of a checksum value.
+Checksum values help validate EUIDs to ensure accurate identification of records as they
+are transmitted throughout the system. The checksum process attaches a number, generated through an
+algorithm, to the end of a new EUID. When a host system
+receives this number, it strips off the checksum digits to obtain the EUID,
+and then recalculates the checksum using the same algorithm process. If the checksum
+values agree, the host system knows the EUID number is correct. Specify &ldquo;0&rdquo; (zero)
+if you do not want to use the checksum function.</p></div>
+
+
+<div class="indent"><a name="agyep"></a><h3>Checksum Values and EUID Lengths</h3>
+<p><a name="indexterm-170"></a><a name="indexterm-171"></a>Using a checksum value affects the <i>IdLength</i> parameter. If you specify a
+checksum length greater than 0, the EUID generator creates sequential EUIDs based on
+the sbyn_seq_table table, and then appends the checksum value to the end of
+the EUID to determine the final EUID number. For example, if you set
+<i>IdLength</i> to 8 and <i>CheckSum</i> to 2, then the EUIDs assigned by the master
+index application will be 10 characters long. If the next sequence number is
+10908000, the EUID assigned to the next record is 10908000 plus the checksum
+(it might be 1090800034, for example). The next EUID would be 10908001 plus
+the checksum (1090800125, for example). The first eight digits are sequential, but the
+last two digits are seemingly arbitrary.</p><p>If you use a checksum value, make sure to take into consideration
+the total length of the EUIDs (<i>IdLength</i> plus <i>ChecksumLength</i>) when determining the length
+of the EUID columns in the database.</p></div>
+</div>
+
+
+<div class="indent"><a name="agyeq"></a><h3>ChunkSize</h3>
+<p><a name="indexterm-172"></a><a name="indexterm-173"></a>For efficiency, the default EUID generator does not need to query the sbyn_seq_table
+table in the database each time a new EUID is created. Instead, you
+can specify a number of EUIDs to be allocated in chunks to the
+EUID generator. For example, if you specify a chunk size of 1000, EUIDs
+are allocated to the generator 1000 ID numbers at a time. The generator
+can process up to 1000 new records and assign all 1000 numbers without
+needing to query sbyn_seq_table. When all 1000 EUIDs are used, another 1000 are
+allocated. If the server running the master index application is reset before all
+1000 numbers are used, the unused numbers are discarded and never used, meaning
+that EUIDs might not always be assigned sequentially.</p><p>Specifying a chunk size affects the numbering of the EUID column in the
+sbyn_seq_table. If you specify a chunk size of 1, then each time
+a new EUID is assigned, the value of the EUID column increases by
+one. If you specify a larger chunk size, then the value of the
+EUID column increases by the value of the chunk size each time the
+allocated EUIDs are used. For example, if you specify a chunk size of
+1000, the beginning EUID sequence number is 1000, even though EUIDs are assigned
+beginning with 0001, then 0002, and so on. When the first 1000 EUIDs
+are assigned, another 1000 EUID numbers are allocated to the generator and the
+EUID column changes from 1000 to 2000.</p></div>
+</div>
+
+
+<a name="agyer"></a>
+
+<h2>The Threshold File</h2>
+<p>The properties of the Manager Service are defined in the Threshold file (<tt>master.xml</tt>)
+in XML format. The information entered into the default configuration file is standard
+across all implementations, so the file will require some customization.</p>
+
+<div class="indent"><a name="agyes"></a><h3>Modifying the Threshold File</h3>
+<p><a name="indexterm-174"></a>You can modify the Threshold file at any time, but you must
+regenerate the application and redeploy the Project after making any changes to the
+file. Use caution when updating this file after moving into production, since changing certain
+properties, such as the blocking query, can cause unexpected matching and weighting results.
+The possible modifications to this file are restricted by the schema definition, so
+be sure to validate the file after making any changes.</p></div>
+
+
+<div class="indent"><a name="agyet"></a><h3>Threshold File Structure</h3>
+<p><a name="indexterm-175"></a><a name="indexterm-176"></a>This section describes the structure of the XML file, general requirements, and constraints.
+It also provides a sample implementation.</p>
+
+<div class="indent"><a name="agyeu"></a><h3>Threshold File Description</h3>
+<p><a href="#agyev">Table&nbsp;5-1</a> lists each element in the Threshold file and provides a description of
+each element along with any requirements or constraints for each element.</p><a name="agyev"></a><h6>Table&nbsp;5-1 Threshold File Structure</h6><table><col width="25*"><col width="75*"><tr><th align="left" valign="top" scope="column"><p>Element/Attribute</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-177"></a>MasterControllerConfig</p></td>
+<td align="left" valign="top" scope="row"><p>The configuration class
+for the Manager Service. The attributes define the module name and Java class.
+The default values should not be changed.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-178"></a>logic-class</p></td>
+<td align="left" valign="top" scope="row"><p>A custom plug-in that defines custom
+processing logic for the execute match functions that can be called from Collaborations
+and Business Processes. This element is optional.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-179"></a>logic-class-gui</p></td>
+<td align="left" valign="top" scope="row"><p>A custom plug-in that defines custom processing
+logic for the execute match function that is called from the Enterprise Data
+Manager (EDM). This element is optional.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-180"></a>update-mode</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether to recalculate potential duplicates
+when a record is updated. Specify Pessimistic to recalculate potential duplicates; specify Optimistic to
+prevent potential duplicate recalculation on updates.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-181"></a>merged-record-update</p></td>
+<td align="left" valign="top" scope="row"><p>An indicator of whether records with a
+status of Merged can be updated. Specify <tt><b>Enabled</b></tt> to allow updates of merged
+records; specify <tt><b>Disabled</b></tt> to ensure that records with a Merged status are not updated.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-182"></a>execute-match</p></td>
+<td align="left" valign="top" scope="row"><p>Specifies
+the blocking query to use for match processing.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-183"></a>query-builder</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the blocking
+query to use for match processing. The name must match a query defined
+in the Candidate Select file.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-184"></a>option</p></td>
+<td align="left" valign="top" scope="row"><p>Optional parameters for the blocking query. Currently parameters
+are not used by any predefined blocking queries.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>option/<a name="indexterm-185"></a>key</p></td>
+<td align="left" valign="top" scope="row"><p>A parameter for the blocking query.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>option/<a name="indexterm-186"></a>value</p></td>
+<td align="left" valign="top" scope="row"><p>The
+value of the key specified by the corresponding <i>key</i> attribute.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-187"></a>transaction</p></td>
+<td align="left" valign="top" scope="row"><p>The transaction mode
+for the master index application. Specify one of the following values:</p>
+<ul><li><p>LOCAL &ndash; Transactions are not distributed.</p></li>
+<li><p>CONTAINER &ndash; Transactions are distributed across applications.</p></li>
+<li><p>BEAN &ndash; Transactions are distributed within the master index application.</p></li></ul>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-188"></a>DecisionMakerConfig</p></td>
+<td align="left" valign="top" scope="row"><p>The configuration class
+for the Decision Maker. The attributes define the module name and Java class.
+The default values should not be changed.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-189"></a>decision-maker-class</p></td>
+<td align="left" valign="top" scope="row"><p>The Java class that contains the
+methods used by the Decision Maker class. The default value, <tt>com.sun.mdm.index.decision.impl.DefaultDecisionMaker</tt>, should not
+need to be changed, but you can implement a custom Decision Maker class.
+The default class accepts the parameters described below.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-190"></a>parameters</p></td>
+<td align="left" valign="top" scope="row"><p>A list of parameters for
+the Decision Maker class.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-191"></a>parameter</p></td>
+<td align="left" valign="top" scope="row"><p>A definition of a Decision Maker parameter. The <i>parameters</i>
+element can contain multiple <i>parameter</i> elements, each defining one parameter.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-192"></a>description</p></td>
+<td align="left" valign="top" scope="row"><p>A brief description of the
+parameter. This element is optional.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-193"></a>parameter-name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the parameter. The default Decision
+Maker class takes the following parameters (see <a href="#agyeg">Decision Maker</a> for more information about these parameters).</p>
+<ul><li><p><b>OneExactMatch</b> - A Boolean indicator of whether an assumed match is made when there are more than one record above the match threshold.</p></li>
+<li><p><b>SameSystemMatch</b> - A Boolean indicator of whether an assumed match can be made between two records that originate from the same external system.</p></li>
+<li><p><b>DuplicateThreshold</b> - The lowest match weight at which two records are considered to be potential duplicates.</p></li>
+<li><p><b>MatchThreshold</b> - The lowest match weight at which two records are assumed to be a match of one another.</p></li></ul>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-194"></a>parameter-type</p></td>
+<td align="left" valign="top" scope="row"><p>The
+type of parameter. Valid values are <tt>java.lang.Long, java.lang.Short</tt>, <tt>java.lang.Byte</tt>, <tt>java.lang.String</tt>, <tt>java.lang.Integer</tt>, <tt>java.lang.Boolean</tt>, <tt>java.lang.Double</tt>,
+or <tt>java.lang.Float</tt>.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-195"></a>parameter-value</p></td>
+<td align="left" valign="top" scope="row"><p>The value of the parameter. For <i>OneExactMatch</i> and <i>SameSystemMatch</i>, this must
+be a Boolean value. For <i>MatchThreshold</i> and <i>DuplicateThreshold</i>, this must be a Float
+value.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-196"></a>EuidGeneratorConfig</p></td>
+<td align="left" valign="top" scope="row"><p>The configuration class for the EUID Generator. The attributes define the module name
+and Java class. The default values should not be changed.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-197"></a>euid-generator-class</p></td>
+<td align="left" valign="top" scope="row"><p>The Java class
+used by the master index application to generate new EUIDs. The default class
+is <tt>com.sun.mdm.index.idgen.impl.DefaultEuidGenerator</tt>, which assigns sequential EUIDs based on the three parameters described below.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-198"></a>parameters</p></td>
+<td align="left" valign="top" scope="row"><p>A
+list of parameters for the EUID Generator class.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-199"></a>parameter</p></td>
+<td align="left" valign="top" scope="row"><p>A parameter definition. The <i>parameters</i>
+element can contain multiple <i>parameter</i> elements, each defining one parameter.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-200"></a>description</p></td>
+<td align="left" valign="top" scope="row"><p>A brief description of the
+parameter. This element is optional.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-201"></a>parameter-name</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the parameter. The default <a name="indexterm-202"></a><a name="indexterm-203"></a><a name="indexterm-204"></a>EUID
+Generator class takes the following parameters (see <a href="#agyel">EUID Generator</a> for more information about these parameters).</p>
+<ul><li><p><b>IdLength</b> - The length of the EUIDs generated by the master index application.</p></li>
+<li><p><b>CheckSum</b> - The length of the checksum value used to validate EUIDs.</p></li>
+<li><p><b>ChunkSize</b> - The number of EUIDs allocated to the server at one time.</p></li></ul>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-205"></a>parameter-type</p></td>
+<td align="left" valign="top" scope="row"><p>The
+type of parameter. Valid values are <tt>java.lang.Long, java.lang.Short</tt>, <tt>java.lang.Byte</tt>, <tt>java.lang.String</tt>, <tt>java.lang.Integer</tt>, <tt>java.lang.Boolean</tt>, <tt>java.lang.Double</tt>,
+or <tt>java.lang.Float</tt>.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p><a name="indexterm-206"></a>parameter-value</p></td>
+<td align="left" valign="top" scope="row"><p>The value of the parameter. For the default parameters, the values
+are all integers.</p></td>
+</tr>
+</table></div>
+
+
+<div class="indent"><a name="agyew"></a><h3>Threshold File Example</h3>
+<p>Below is a sample of the Threshold file configuration.</p><pre>&lt;MasterControllerConfig module-name="MasterController"
+parser-class="com.sun.mdm.index.configurator.impl.master.MasterControllerConfiguration">
+   &lt;logic-class>CustomMatchLogic&lt;/logic-class>
+   &lt;logic-class-gui>CustomMatchLogicEdm&lt;/logic-class-gui>
+   &lt;update-mode>Pessimistic&lt;/update-mode>
+   &lt;merged-record-update>Disabled&lt;/merged-record-update>
+   &lt;execute-match>
+      &lt;query-builder name="BLOCKER-SEARCH">&lt;/query-builder>
+   &lt;/execute-match>
+&lt;/MasterControllerConfig>
+&lt;DecisionMakerConfig module-name="DecisionMaker"
+parser-class="com.sun.mdm.index.configurator.impl.decision.DecisionMakerConfiguration">
+   &lt;decision-maker-class>
+      com.sun.mdm.index.decision.impl.DefaultDecisionMaker
+   &lt;/decision-maker-class>
+   &lt;parameters>
+      &lt;parameter>
+         &lt;parameter-name>OneExactMatch&lt;/parameter-name>
+         &lt;parameter-type>java.lang.Boolean&lt;/parameter-type>
+         &lt;parameter-value>false&lt;/parameter-value>
+      &lt;/parameter>
+      &lt;parameter>
+         &lt;parameter-name>SameSystemMatch&lt;/parameter-name>
+         &lt;parameter-type>java.lang.Boolean&lt;/parameter-type>
+         &lt;parameter-value>true&lt;/parameter-value>
+      &lt;/parameter>
+      &lt;parameter>
+         &lt;parameter-name>DuplicateThreshold&lt;/parameter-name>
+         &lt;parameter-type>java.lang.Float&lt;/parameter-type>
+         &lt;parameter-value>7.25&lt;/parameter-value>
+      &lt;/parameter>
+      &lt;parameter>
+         &lt;parameter-name>MatchThreshold&lt;/parameter-name>
+         &lt;parameter-type>java.lang.Float&lt;/parameter-type>
+         &lt;parameter-value>29.0&lt;/parameter-value>
+      &lt;/parameter>
+   &lt;/parameters>
+&lt;/DecisionMakerConfig>
+&lt;EuidGeneratorConfig module-name="EuidGenerator" parser-class=
+"com.sun.mdm.index.configurator.impl.idgen.EuidGeneratorConfiguration">
+   &lt;euid-generator-class>
+      com.sun.mdm.index.idgen.impl.DefaultEuidGenerator
+   &lt;/euid-generator-class>
+   &lt;parameters>
+      &lt;parameter>
+         &lt;parameter-name>IdLength&lt;/parameter-name>
+         &lt;parameter-type>java.lang.Integer&lt;/parameter-type>
+         &lt;parameter-value>10&lt;/parameter-value>
+      &lt;/parameter>
+      &lt;parameter>
+         &lt;parameter-name>ChecksumLength&lt;/parameter-name>
+         &lt;parameter-type>java.lang.Integer&lt;/parameter-type>
+         &lt;parameter-value>0&lt;/parameter-value>
+      &lt;/parameter>
+      &lt;parameter>
+         &lt;parameter-name>ChunkSize&lt;/parameter-name>
+         &lt;parameter-type>java.lang.Integer&lt;/parameter-type>
+         &lt;parameter-value>1000&lt;/parameter-value>
+      &lt;/parameter>
+   &lt;/parameters>
+&lt;/EuidGeneratorConfig></pre></div>
+</div>
+
+
+
+<!-- End Content Area -->
+<td class="valign-top" >
+	<div id="floating-col-right"><!-- right content column -->
+<p><b><a href="landingpage.html">1.&nbsp;&nbsp;Understanding Master Index Configuration Options</a></b></p>
+<p class="toc level2"><a href="landingpage.html#cnfg_index-overview_r">About Master Index Studio</a></p>
+<p class="toc level2 tocsp"><a href="landingpage.html#cnfg_index-bk-overview_r">About This Document</a></p>
+<p><b><a href="cnfg_index-overview_c.html.">2.&nbsp;&nbsp;Configuration Overview</a></b></p>
+<p class="toc level2"><a href="cnfg_index-overview_c.html#agyat">About the Configuration Files</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-overview_c.html#agybc">Using the Editors</a></p>
+<p><b><a href="cnfg_index-object_c.html">3.&nbsp;&nbsp;Object Definition</a></b></p>
+<p class="toc level2"><a href="cnfg_index-object_c.html#agycc">About the Object Definition</a></p>
+<p class="toc level2"><a href="cnfg_index-object_c.html#agycd">Object Definition Components</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-object_c.html#agych">The Object Definition File</a></p>
+<p><b><a href="cnfg_index-query_c.html">4.&nbsp;&nbsp;Candidate Select Configuration</a></b></p>
+<p class="toc level2"><a href="cnfg_index-query_c.html#agycx">About Candidate Select Configuration</a></p>
+<p class="toc level2"><a href="cnfg_index-query_c.html#agycy">Query Builder Components</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-query_c.html#agydc">Range Searching</a></p>
+<p class="toc level2"><a href="cnfg_index-query_c.html#agydd">The Candidate Select File</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-query_c.html#agymf">Range Search Processing</a></p>
+<p><b><a href="cnfg_index-master_c.html">5.&nbsp;&nbsp;Threshold Configuration</a></b></p>
+<p class="toc level2"><a href="cnfg_index-master_c.html#agydz">About Threshold Configuration</a></p>
+<p class="toc level2"><a href="cnfg_index-master_c.html#agyea">Manager Service Components</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-master_c.html#agyer">The Threshold File</a></p>
+<p><b><a href="cnfg_index-mefa_c.html">6.&nbsp;&nbsp;Match Field Configuration</a></b></p>
+<p class="toc level2"><a href="cnfg_index-mefa_c.html#agyfv">About Match Field Configuration</a></p>
+<p class="toc level2"><a href="cnfg_index-mefa_c.html#agyfw">Matching Service Components</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-mefa_c.html#agygg">Sample Standardization and Matching Sequence</a></p>
+<p class="toc level2"><a href="cnfg_index-mefa_c.html#agygh">The Match Field File</a></p>
+<p><b><a href="cnfg_index-survivior_c.html">7.&nbsp;&nbsp;Best Record Configuration</a></b></p>
+<p class="toc level2"><a href="cnfg_index-survivior_c.html#agyia">About the Update Manager</a></p>
+<p class="toc level2"><a href="cnfg_index-survivior_c.html#agyib">The Survivor Calculator and the SBR</a></p>
+<p class="toc level2"><a href="cnfg_index-survivior_c.html#agyic">Update Manager Components</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-survivior_c.html#agyim">The Best Record File</a></p>
+<p><b><a href="cnfg_index-validate_c.html">8.&nbsp;&nbsp;Field Validation Configuration</a></b></p>
+<p class="toc level2"><a href="cnfg_index-validate_c.html#agyjl">Field Validation Custom Plug-ins</a></p>
+<p class="toc level2"><a href="cnfg_index-validate_c.html#agyjm">The Field Validation File</a></p>
+<p><b><a href="cnfg_index-edm_c.html">9.&nbsp;&nbsp;Enterprise Data Manager Configuration</a></b></p>
+<p class="toc level2"><a href="cnfg_index-edm_c.html#agyjt">About the EDM</a></p>
+<p class="toc level2"><a href="cnfg_index-edm_c.html#agyju">EDM Configuration Components</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-edm_c.html#agykd">The Enterprise Data Manager File</a></p>
+<p><b><a href="cnfg_index-epaths_c.html">10.&nbsp;&nbsp;Field Notations</a></b></p>
+<p class="toc level2"><a href="cnfg_index-epaths_c.html#agymw">ePath Notation</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-epaths_c.html#agymz">Qualified Field Name Notation</a></p>
+<p class="toc level2 tocsp"><a href="cnfg_index-epaths_c.html#agync">Simple Field Name Notation</a></p>
+</div>
+</div>
+					</td></tr></table></div></div>
+	</td></tr></div>
+	</div>
+	<!-- /Servlet-Specific template -->
+
+<!-- end of right navigation -->
+
+
+
+</div>
+</div>
+</body>
+</html>
