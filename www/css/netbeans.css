@@ -339,9 +339,9 @@
       /* layer holding right content column*/
       #floating-col-right {
         /*float:right;*/
-        width:150px;
+        width:230px;
         padding: 0px 0px 0px 0px;
-        margin: 10px;
+        margin:-1px;
       }
 
       #floating-col-right h2 {
