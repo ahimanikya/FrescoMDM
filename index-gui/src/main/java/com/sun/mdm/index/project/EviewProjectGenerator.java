@@ -117,6 +117,7 @@ public class EviewProjectGenerator {
         String mainProjectName = (String) wDesc.getProperty(WizardProperties.NAME);
         String j2eeLevel = (String)wDesc.getProperty(WizardProperties.J2EE_LEVEL);
         String autoGenerate = (String) wDesc.getProperty(Properties.PROP_AUTO_GENERATE);
+        String masterIndexEDM = (String) wDesc.getProperty(Properties.PROP_MASTER_INDEX_EDM);
 
         try{
            createEjbWar(fo, mainProjectName, serverInstanceID, j2eeLevel);           
@@ -217,7 +218,7 @@ public class EviewProjectGenerator {
             strXml = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_UPDATE_CONFIG_FILE).toString();
             repository.createConfigurationFile(configurationFolder, EviewProjectProperties.UPDATE_XML, strXml);
             
-            FileObject schemaFolder = getSchemaFiles(configurationFolder, EviewProjectProperties.SCHEMA_FOLDER, EviewProjectProperties.SCHEMA_TEMPLATE_LOCATION);
+            FileObject schemaFolder = getConfigSchemaFiles(configurationFolder, EviewProjectProperties.SCHEMA_FOLDER, EviewProjectProperties.SCHEMA_TEMPLATE_LOCATION);
             
             // *** Sub folder - Database Script ***
             FileObject dbscriptFolder = srcRoot.createFolder(EviewProjectProperties.DATABASE_SCRIPT_FOLDER); // NOI18N
@@ -231,7 +232,9 @@ public class EviewProjectGenerator {
         
             // *** Sub folder - Match Engine ***
             FileObject matchEngineFolder = getTemplates(srcRoot, EviewProjectProperties.MATCH_ENGINE_FOLDER, EviewProjectProperties.MATCH_TEMPLATE_LOCATION);
-         
+            getSchemaFile(matchEngineFolder, EviewProjectProperties.SCHEMA_FOLDER, EviewProjectProperties.MATCH_TEMPLATE_LOCATION,
+                                        EviewProjectProperties.MATCH_COMPARATOR_XSD);
+            
             // *** Sub folder - Standardization ***
             FileObject standardizationEngineFolder = srcRoot.createFolder(EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER); // NOI18N
             try {
@@ -243,6 +246,9 @@ public class EviewProjectGenerator {
             }
             // *** Sub folder - Filter ***
             FileObject filterFolder = getTemplates(srcRoot, EviewProjectProperties.FILTER_FOLDER, EviewProjectProperties.FILTER_TEMPLATE_LOCATION);
+            getSchemaFile(filterFolder, EviewProjectProperties.SCHEMA_FOLDER, EviewProjectProperties.FILTER_TEMPLATE_LOCATION,
+                                        EviewProjectProperties.FILTER_XSD);
+
     }
     
     private static void createEjbWar(FileObject projectDir, String mainProjectName, String serverInstanceID, String j2eeLevel )
@@ -415,14 +421,16 @@ public class EviewProjectGenerator {
                         FileUtil.copyFile(file2, folder2, file2.getName());
                     }
                 } else {
-                    FileUtil.copyFile(file, folder, file.getName());
+                    if (file.isData() && !file.getExt().equals("xsd")) {
+                        FileUtil.copyFile(file, folder, file.getName());
+                    }
                 }
             }
         }
         return folder;
     }
 
-    private static FileObject getSchemaFiles(FileObject parent, String folderName, String templateLocation) throws IOException {
+    private static FileObject getConfigSchemaFiles(FileObject parent, String folderName, String templateLocation) throws IOException {
         FileObject folder = parent.createFolder(folderName);
         File f = InstalledFileLocator.getDefault().locate(templateLocation, "", false);
         if (f != null) {
@@ -439,6 +447,22 @@ public class EviewProjectGenerator {
                      file.getNameExt().equals(EviewProjectProperties.UPDATE_XSD) ||
                      file.getNameExt().equals(EviewProjectProperties.SECURITY_XSD) ||
                      file.getNameExt().equals(EviewProjectProperties.VALIDATION_XSD))) {
+                    FileUtil.copyFile(file, folder, file.getName());
+                }
+            }
+        }
+        return folder;
+    }
+
+    private static FileObject getSchemaFile(FileObject parent, String folderName, String templateLocation, String schemaFile) throws IOException {
+        FileObject folder = parent.createFolder(folderName);
+        File f = InstalledFileLocator.getDefault().locate(templateLocation, "", false);
+        if (f != null) {
+            FileObject fTemplates = FileUtil.toFileObject(f);
+            FileObject[] files = fTemplates.getChildren();
+            for (int i = 0; i < files.length; i++) {
+                FileObject file = files[i];
+                if (file.isData() && file.getNameExt().equals(schemaFile)) {
                     FileUtil.copyFile(file, folder, file.getName());
                 }
             }

@@ -50,7 +50,8 @@ public class EviewProjectProperties {
     public static final String DATABASE_SCRIPT_FOLDER = "DatabaseScript"; //NOI18N
     // Filter Folder
     public static final String FILTER_FOLDER = "Filter"; //NOI18N
-    public static final String FILTER_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/filter";        
+    public static final String FILTER_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/filter";
+    public static final String FILTER_XSD = "filter.xsd";
     // Master Index Custom Plug-ins Folder
     public static final String CUSTOM_PLUG_INS_FOLDER = "CustomPlug-ins"; //NOI18N
     public static final String J2EE_MODULES_FOLDER = "J2EE Modules"; //NOI18N
@@ -74,6 +75,7 @@ public class EviewProjectProperties {
     
     public static final String MATCH_CONFIG_FILE = "matchConfigFile.cfg";
     public static final String MATCH_COMPARATOR_XML = "comparatorsList.xml";
+    public static final String MATCH_COMPARATOR_XSD = "comparatorsList.xsd";
     
     public static final String SYSTEMS_SQL = "systems.sql";
     public static final String CODELIST_SQL = "codelist.sql";
