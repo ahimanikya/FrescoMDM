@@ -34,10 +34,22 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="SecurityPlugInClass"/>
+			    <xs:element name="role" type="roleType" maxOccurs="unbounded"></xs:element>
 			</xs:sequence>
 			<xs:attribute name="module-name" type="xs:string" use="required"/>
 			<xs:attribute name="parser-class" type="xs:string" use="required"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="SecurityPlugInClass" type="xs:string"/>
+    <xs:complexType name="operationsType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" maxOccurs="unbounded"></xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="roleType">
+        <xs:sequence>
+            <xs:element name="role-name" type="xs:string"></xs:element>
+            <xs:element name="operations" type="operationsType"></xs:element>
+        </xs:sequence>
+    </xs:complexType>
 </xs:schema>
