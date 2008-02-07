@@ -43,12 +43,4 @@ class EviewStandardizationVariantCookie implements Node.Cookie {
     public EviewStandardizationDataTypeNode getEviewStandardizationDataTypeNode() {
         return mEviewStandardizationDataTypeNode;
     }
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getEviewNodePath() {
-        return mEviewStandardizationDataTypeNode.getDataObject().getPrimaryFile().getPath();
-    }
 }

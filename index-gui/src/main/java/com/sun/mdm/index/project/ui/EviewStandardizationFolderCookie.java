@@ -43,12 +43,4 @@ class EviewStandardizationFolderCookie implements Node.Cookie {
     public EviewStandardizationFolderNode getEviewStandardizationFolderNode() {
         return mEviewStandardizationFolderNode;
     }
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getEviewNodePath() {
-        return mEviewStandardizationFolderNode.getDataObject().getPrimaryFile().getPath();
-    }
 }

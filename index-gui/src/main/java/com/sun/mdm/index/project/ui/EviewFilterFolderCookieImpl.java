@@ -41,12 +41,4 @@ class EviewFilterFolderCookieImpl implements EviewFilterCookie {
     public EviewFilterFolderNode getEviewFilterFolderNode() {
         return mEviewFilterFolderNode;
     }
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getEviewNodePath() {
-        return mEviewFilterFolderNode.getDataObject().getPrimaryFile().getPath();
-    }
 }

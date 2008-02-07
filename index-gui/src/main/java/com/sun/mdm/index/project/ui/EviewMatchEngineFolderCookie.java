@@ -43,12 +43,4 @@ class EviewMatchEngineFolderCookie implements Node.Cookie {
     public EviewMatchEngineFolderNode getEviewMatchEngineFolderNode() {
         return mEviewMatchEngineFolderNode;
     }
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getEviewNodePath() {
-        return mEviewMatchEngineFolderNode.getDataObject().getPrimaryFile().getPath();
-    }
 }

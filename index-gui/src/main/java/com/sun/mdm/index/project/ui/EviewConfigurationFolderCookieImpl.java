@@ -46,13 +46,4 @@ class EviewConfigurationFolderCookieImpl implements EviewCookie {
     public EviewConfigurationNode getEviewNode() {
         return null;
     }
-    
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getEviewNodePath() {
-        return mEviewConfigurationFolderNode.getDataObject().getPrimaryFile().getPath();
-    }
 }

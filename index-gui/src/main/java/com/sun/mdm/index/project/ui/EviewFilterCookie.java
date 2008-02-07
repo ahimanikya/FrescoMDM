@@ -32,12 +32,4 @@ public interface EviewFilterCookie extends Node.Cookie {
      * @return DOCUMENT ME!
      */
     public EviewFilterFolderNode getEviewFilterFolderNode();
-    
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getEviewNodePath();
-    
 }

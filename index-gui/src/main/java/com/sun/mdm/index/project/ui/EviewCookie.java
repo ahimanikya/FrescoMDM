@@ -39,11 +39,4 @@ public interface EviewCookie extends Node.Cookie {
      * @return DOCUMENT ME!
      */
     public EviewConfigurationFolderNode getEviewFolderNode();
-    
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getEviewNodePath();
 }
