@@ -91,7 +91,7 @@ public class WeightedSurvivorStrategy3Test extends TestCase {
         
 
         //stcRoot = System.getProperty("stc.root");
-        stcRoot = System.getProperty("test.src.dir");
+        //stcRoot = System.getProperty("test.src.dir");
         InputStream fs = null;
         if (stcRoot != null)  {
             fs = new FileInputStream(stcRoot 
@@ -135,9 +135,9 @@ public class WeightedSurvivorStrategy3Test extends TestCase {
         String lid1  = new String("4568915614");
 
         PhoneObject phone2 = new PhoneObject();
-        phone2.setPhoneType(testPhoneType1);
+        phone2.setPhoneType(testPhoneType0);
         phone2.setPhone(testPhone0);
-        
+        phone2.setPhoneExt("1234");
         SystemField testField20 = new SystemField("Phone", phone2);
         SystemFieldList sysFieldList2 = new SystemFieldList();
         sysFieldList2.add(testField20);
@@ -156,10 +156,7 @@ public class WeightedSurvivorStrategy3Test extends TestCase {
         if (values != null)  {
             //  Only testphone0 should be present.
             int index = values.indexOf(testPhone0);
-            System.out.println("XXXXXXXXXXXXXXX"+values);
-            System.out.println("XXXXXXXXXindex"+index);
             if (index == -1)  {
-                System.out.println("XXXXXXXXXXXXXXX1");
                 System.out.println("Error: phone " + testPhone0 + " not found but expected");
                 return false;
             }  else  {
@@ -172,20 +169,20 @@ public class WeightedSurvivorStrategy3Test extends TestCase {
                 System.out.println("Error: phone " + testPhone1 + " found but not expected");
                 return false;
             }
-            //  testPhoneType1 should be the phone type
+            //  testPhoneType0 should be the phone type
             index = values.indexOf(testPhoneType0);
             if (index == -1)  {
-                System.out.println("Phone type " + testPhoneType0 + " not found (expected result)");
-            }  else  {
-                System.out.println("Error: phone type " + testPhoneType0 + " found but not expected");
+                System.out.println("Error: phone type " + testPhoneType0 + " not found but expected");
                 return false;
+            }  else  {
+                System.out.println("Phone type " + testPhoneType0 + " found (expected result)");                
             }
             index = values.indexOf(testPhoneType1);
             if (index == -1)  {
-                System.out.println("Error: phone type " + testPhoneType1 + " not found but expected");
-                return false;
+                System.out.println("Phone type " + testPhoneType1 + " not found but expected");                
             }  else  {
-                System.out.println("Phone type " + testPhoneType1 + " found (expected result)");
+                System.out.println("Error: Phone type " + testPhoneType1 + " found but not expected");
+                return false;
             }
         }  else {
             return false;
