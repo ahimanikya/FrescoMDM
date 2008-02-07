@@ -117,7 +117,7 @@ public class EviewProjectGenerator {
         String mainProjectName = (String) wDesc.getProperty(WizardProperties.NAME);
         String j2eeLevel = (String)wDesc.getProperty(WizardProperties.J2EE_LEVEL);
         String autoGenerate = (String) wDesc.getProperty(Properties.PROP_AUTO_GENERATE);
-        String masterIndexEDM = (String) wDesc.getProperty(Properties.PROP_MASTER_INDEX_EDM);
+        //String masterIndexEDM = (String) wDesc.getProperty(Properties.PROP_MASTER_INDEX_EDM);
 
         try{
            createEjbWar(fo, mainProjectName, serverInstanceID, j2eeLevel);           
