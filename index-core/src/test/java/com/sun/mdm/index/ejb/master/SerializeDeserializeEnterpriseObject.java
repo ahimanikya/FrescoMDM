@@ -39,6 +39,7 @@ import com.sun.mdm.index.master.search.transaction.TransactionIterator;
 import java.util.Date;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -46,6 +47,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Properties;
 
 /** Test class for Person searches as defined in the
 * eIndex50.xml file
@@ -65,7 +67,7 @@ public class SerializeDeserializeEnterpriseObject extends TestCase {
     * @throws Exception an error occured
     */
    public void testSerializeDeserializeEnterpriseObject() throws Exception {
-       // Create EO 1 and 2
+       // Create EO 1 and 2       
        CreateEnterpriseObjectHelper helper = new CreateEnterpriseObjectHelper();
        helper.clearDb();
        
@@ -116,7 +118,10 @@ public class SerializeDeserializeEnterpriseObject extends TestCase {
       ObjectOutputStream objectOut = null;
       
       try{
-         OutputStream out = new FileOutputStream("c:/temp/test.ser");
+         Properties props = System.getProperties();
+         String basedir= props.getProperty("basedir");
+         File outfile= new File(basedir,"target/test-classes/setest.ser");
+         OutputStream out = new FileOutputStream(outfile);
          OutputStream outBuffer = new BufferedOutputStream(out);
          objectOut = new ObjectOutputStream(outBuffer);
          objectOut.writeObject(object);
@@ -134,7 +139,10 @@ public class SerializeDeserializeEnterpriseObject extends TestCase {
    public Object readObject()throws Exception {
    	Object object = null;
    	try{
-       	InputStream in = new FileInputStream("c:/temp/test.ser");
+   	    Properties props = System.getProperties();
+        String basedir= props.getProperty("basedir");
+        File infile= new File(basedir,"target/test-classes/setest.ser");
+       	InputStream in = new FileInputStream(infile);
        	InputStream inBuffer = new BufferedInputStream(in);
        	ObjectInputStream objectIn = new ObjectInputStream(inBuffer);
        	object = objectIn.readObject();
