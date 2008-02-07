@@ -117,8 +117,11 @@ public class EviewProjectGenerator {
         String mainProjectName = (String) wDesc.getProperty(WizardProperties.NAME);
         String j2eeLevel = (String)wDesc.getProperty(WizardProperties.J2EE_LEVEL);
         String autoGenerate = (String) wDesc.getProperty(Properties.PROP_AUTO_GENERATE);
-        //String masterIndexEDM = (String) wDesc.getProperty(Properties.PROP_MASTER_INDEX_EDM);
-
+        String masterIndexEDM = (String) wDesc.getProperty(Properties.PROP_MASTER_INDEX_EDM);
+        String edmVersion = "edm";
+        if (masterIndexEDM.equalsIgnoreCase("yes")){
+            edmVersion = "master-index-edm";
+        }
         try{
            createEjbWar(fo, mainProjectName, serverInstanceID, j2eeLevel);           
             //FileObject j2eeModulesFolder = srcRoot.createFolder(EviewRepository.J2EE_MODULES_FOLDER); // NOI18N        
@@ -141,7 +144,9 @@ public class EviewProjectGenerator {
                        EviewProjectProperties.JAVA_EE_SE_COMPONENT_NAME);
         ep.setProperty(EviewProjectProperties.SE_DEPLOYMENT_JAR,
                        "${dist.dir}/jbi/${jbi.jar}");
-        ep.setProperty(EviewProjectProperties.SRC_DIR,"src"); 
+        ep.setProperty(EviewProjectProperties.SRC_DIR,"src");
+        ep.setProperty(EviewProjectProperties.EDM_VERSION, edmVersion);
+        
         h.putProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH, ep);
                
         // set private properties

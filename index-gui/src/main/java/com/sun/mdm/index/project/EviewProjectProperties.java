@@ -92,7 +92,7 @@ public class EviewProjectProperties {
     public static final String JBI_SE_TYPE = "com.sun.jbi.ui.devtool.jbi.setype.prefix";
     public static final String ARTIFACT_TYPE_JBI_ASA = "CAPS.asa";
     public static final String JAVA_EE_SE_COMPONENT_NAME = "sun-javaee-engine";
-    
+    public static final String EDM_VERSION = "edm-version";
     //following properties are from ear project
     public static final String WEB_PROJECT_NAME = "web.project.name"; //NOI18N
     public static final String JAVA_PLATFORM = "platform.active"; //NOI18N

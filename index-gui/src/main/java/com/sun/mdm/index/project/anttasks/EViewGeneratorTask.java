@@ -615,7 +615,7 @@ public class EViewGeneratorTask extends Task {
         String edmVersion = getProject().getProperty("edm-version");
         String edmWarName ="edm.war";
         boolean jspExcluded =true;
-        if (null!=edmVersion && edmVersion.equalsIgnoreCase("mi-edm")){
+        if (null!=edmVersion && edmVersion.equalsIgnoreCase("master-index-edm")){
             edmWarName="index-webapp.war";
         }else{
             edmWarName = "edm.war";
