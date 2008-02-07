@@ -113,7 +113,7 @@ public class EViewGeneratorTask extends Task {
     public void execute() throws BuildException{  
         
         if (mSrcdir == null){
-            throw new BuildException ("Must specify the eView source directory");
+            throw new BuildException ("Must specify the Master Index source directory");
         }
         if (mEjbdir == null){
             throw new BuildException ("Must specify the ejb project directory");
