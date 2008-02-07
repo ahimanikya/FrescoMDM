@@ -42,6 +42,8 @@ public abstract class Properties {
     public static final String PROP_SOURCE_SYSTEMS = "MySourceSystems";
     /** Target XA Transaction */
     public static final String PROP_TRANSACTION = "CONTAINER";
+    /** Target XA Transaction */
+    public static final String PROP_MASTER_INDEX_EDM = "MasterIndexEDM";
 
     // xml content of configuration files
     /** Object definition file  */

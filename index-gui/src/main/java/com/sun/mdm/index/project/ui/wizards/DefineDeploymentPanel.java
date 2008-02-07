@@ -151,11 +151,13 @@ public class DefineDeploymentPanel implements WizardDescriptor.Panel {
             TemplateObjects.setMatchTypes(matchEngine);
             wiz.putProperty(Properties.PROP_DATE_FORMAT, mComponent.getDateFormat());
             wiz.putProperty(Properties.PROP_TRANSACTION, mComponent.getTransaction());
+            wiz.putProperty(Properties.PROP_MASTER_INDEX_EDM, mComponent.getMasterIndexEDM());
         } catch (Exception e) {
             wiz.putProperty(Properties.PROP_DATABASE, "");
             wiz.putProperty(Properties.PROP_MATCH_ENGINE, "");
             wiz.putProperty(Properties.PROP_DATE_FORMAT, "");
             wiz.putProperty(Properties.PROP_TRANSACTION, "");
+            wiz.putProperty(Properties.PROP_MASTER_INDEX_EDM, "");
         }
     }
 }

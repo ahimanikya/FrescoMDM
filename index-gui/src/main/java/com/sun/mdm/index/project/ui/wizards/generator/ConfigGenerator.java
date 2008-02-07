@@ -30,7 +30,10 @@ import org.openide.WizardDescriptor;
 import com.sun.mdm.index.project.ui.wizards.Properties;
 
 public class ConfigGenerator {
-
+    /**
+     * The configuration identifier for EDM 
+     */
+    public static final String CONFIG_EDM = "EDM";
     /**
      * The configuration identifier for mefa 
      */
@@ -65,6 +68,7 @@ public class ConfigGenerator {
      */        
     protected static String defaultFragmentDir = "fragments" + java.io.File.separator + "default";   
     
+    private static String edm;
     private static String mefa;
     private static String query;
     private static String update;
@@ -74,7 +78,7 @@ public class ConfigGenerator {
     private static String validation;
     
     /**
-     * Generates the Master Index configurations mefa, master, query, update, validation
+     * Generates the Master Index configurations edm, mefa, master, query, update, validation
      * @param genpath an optional path to write the configuration files to. Passing in <code>null<code>
      * will mean that no files are written, the generated configurations will be returned as Strings
      * from the method.
@@ -86,38 +90,38 @@ public class ConfigGenerator {
     public static HashMap generate(String genpath, ConfigSettings settings, WizardDescriptor wiz) 
             throws ConfigGeneratorException {
                 
-        // TODO: log as debug        
-        //System.out.println("generate start.");        
         HashMap configs = new HashMap();
         try {
-            // TODO: This should write to the repository or optionally to the bbe.home/dist/config directory.
+            if (settings.getMasterIndexEDM() == true) {
+                EDMWriter edmW = new EDMWriter(genpath, settings);
+                edm = edmW.generate();
+                configs.put(CONFIG_EDM, edm);
+                if (wiz != null) {
+                    wiz.putProperty(Properties.PROP_XML_GUI_CONFIG_FILE, edm);
+                }
+            }
+
             MefaWriter mefaW = new MefaWriter(genpath, settings);
             mefa = mefaW.generate();
             configs.put(CONFIG_MEFA, mefa);
             if (wiz != null) {
                 wiz.putProperty(Properties.PROP_XML_MEFA_CONFIG_FILE, mefa);
             }
-            //System.out.println("mefa=" + mefa);
-            // TODO: log as debug
-            //System.out.println("Generating - mefa");
+
             MasterWriter masterW = new MasterWriter(genpath, settings);
             master = masterW.generate();
             configs.put(CONFIG_MASTER, master);
             if (wiz != null) {
                 wiz.putProperty(Properties.PROP_XML_MASTER_CONFIG_FILE, master);
             }
-            //System.out.println("master=" + master);
-            // TODO: log as debug
-            //System.out.println("Generating - master");            
+
             QueryWriter queryW = new QueryWriter(genpath, settings);
             query = queryW.generate();
             configs.put(CONFIG_QUERY, query);
             if (wiz != null) {
                 wiz.putProperty(Properties.PROP_XML_QUERY_CONFIG_FILE, query);
             }
-            //System.out.println("query=" + query);
-            // TODO: log as debug
-            //System.out.println("Generating - query");            
+
             UpdateWriter updateW = new UpdateWriter(genpath, settings);
             update = updateW.generate();
             configs.put(CONFIG_UPDATE, update);
@@ -133,8 +137,6 @@ public class ConfigGenerator {
             if (wiz != null) {
                 wiz.putProperty(Properties.PROP_XML_VALID_CONFIG_FILE, validation);
             }
-            // TODO: log as debug
-            //System.out.println("Generating - validation");
             
             SecurityWriter securityW = new SecurityWriter(genpath, settings);
             String security = securityW.generate();
@@ -143,7 +145,6 @@ public class ConfigGenerator {
                 wiz.putProperty(Properties.PROP_XML_SECURITY_CONFIG_FILE, security);
             }
             
-            // TODO: save in repository as an option
             if (genpath != null) {
                 String mPath = genpath;
                 String mefaFileName = mPath + java.io.File.separator + "mefa.xml";
@@ -180,8 +181,6 @@ public class ConfigGenerator {
         } catch (Exception ex) {
             throw new ConfigGeneratorException("Failed to generate configuration: " + ex.getMessage(), ex);
         }
-        // TODO: log as debug
-        // System.out.println("generate complete.");
         return configs;
     }    
     
@@ -191,9 +190,6 @@ public class ConfigGenerator {
      * @return the available match types
      */
     public static MatchType[] getMatchTypes(String matchEngineType) {
-        
-        // TODO: Retrieve from repository, fragment definitions
-        
         MatchType[] matchTypes = null;
         matchTypes = new MatchType[8];
         int matchTypeIndex = 0;
@@ -203,7 +199,6 @@ public class ConfigGenerator {
         matchType.setDescription("Address"); // Properties file
         
         java.util.HashMap fragmentIDToGenerator = new java.util.HashMap();
-        
         
         fragmentIDToGenerator.put(MefaWriter.FRAGMENT_TYPE_STANDARDIZATION, 
             "com.sun.mdm.index.project.ui.wizards.generator.MefaStandardizationWriter");
@@ -427,16 +422,9 @@ public class ConfigGenerator {
             is = ConfigGenerator.class.getResourceAsStream(replacedWithSlash);            
         }
         if (is != null) {
-            // TODO: log as debug.
-            //System.out.println("getFragmentTemplateWriter for " 
-            //    + (matchType == null ? "null" : matchType.getMatchTypeID())
-            //    + " " + templateName);
             writer = new TemplateWriter(is, templateName);        
         } else {
             writer = null;
-            //TODO: log as debug, this is not an error in itself
-            //System.out.println("No template " + templateName + " for matchType "
-            //    + (matchType == null ? "null" : matchType.getMatchTypeID()));
         }
         return writer;
     }

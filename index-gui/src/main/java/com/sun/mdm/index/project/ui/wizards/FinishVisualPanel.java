@@ -34,7 +34,8 @@ public class FinishVisualPanel extends javax.swing.JPanel {
      * use this handle to do so.
      */
     private final FinishPanel panel;
-    javax.swing.JCheckBox mAutoGenerateOption = new javax.swing.JCheckBox("Generate the remaining Master Index application files now.");
+    javax.swing.JCheckBox mAutoGenerateOption = new javax.swing.JCheckBox(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
+                "LBL_Auto_Generate_Files"));
 
     /**
      * Create the wizard panel and set up some basic properties.

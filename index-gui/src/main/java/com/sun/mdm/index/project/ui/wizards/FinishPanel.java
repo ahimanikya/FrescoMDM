@@ -97,6 +97,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     String mMatchEngine;
     String mDateFormat;
     String mTransaction;
+    String mMasterIndexEDM;
     ArrayList mList = new ArrayList();
     final boolean bDEBUG = false;
 
@@ -113,7 +114,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
     /**
      *
-     *@return DefineDeploymentVisualPanel
+     *@return FinishVisualPanel
      */
     public Component getComponent() {
         if (mComponent == null) {
@@ -224,6 +225,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         mMatchEngine = wiz.getProperty(Properties.PROP_MATCH_ENGINE).toString();
         mDateFormat = wiz.getProperty(Properties.PROP_DATE_FORMAT).toString();
         mTransaction = wiz.getProperty(Properties.PROP_TRANSACTION).toString();
+        mMasterIndexEDM = wiz.getProperty(Properties.PROP_MASTER_INDEX_EDM).toString();
         
         mEntityTreeModel = DefineEntityVisualPanel.getTreeModel();
         mRootNode = (EntityNode) mEntityTreeModel.getRoot();
@@ -231,7 +233,9 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
         createRuntimeConfig(wiz);
         createObjectXml(wiz);
-        createEDMXml(wiz);
+        if (mMasterIndexEDM.equals("No")) {
+            createClassicEDMXml(wiz);
+        }
         createDatabaseCodeList(wiz);
         createDatabaseSystemList(wiz);
 
@@ -531,7 +535,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         }
     }
 
-    private void createEDMXml(WizardDescriptor wiz) {
+    private void createClassicEDMXml(WizardDescriptor wiz) {
         // create EDM.xml
         String tagHeaderEDM = "<edm xmlns:xsi=" +
             "\"http://www.w3.org/2001/XMLSchema-instance" +
@@ -640,7 +644,14 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
                 mConfigSettings.setSourceSystems(sourceSystems);
 
-                //
+                // New MI EDM
+                if (mMasterIndexEDM.equals("Yes")) {
+                    ArrayList alEdmAllNodes = getAlAllNodesForGUI(mPrimaryNode);
+                    ArrayList alSubObjects = getSubObjects();
+                    mConfigSettings.setEdmAllNodes(alEdmAllNodes);
+                    mConfigSettings.setSubObjects(alSubObjects);
+                    mConfigSettings.setMasterIndexEDM(true);
+                }
                 ConfigGenerator.generate(null, mConfigSettings, wiz);
             }
         } catch (Exception e) {
@@ -843,6 +854,32 @@ public class FinishPanel implements WizardDescriptor.Panel {
         return nodes;
     }
 
+    private ArrayList getAlAllNodesForGUI(EntityNode currentNode) {
+        ArrayList nodes = new ArrayList();
+        int cnt = currentNode.getChildCount();
+
+        if (cnt > 0) {
+            int i = 0;
+
+            if (currentNode.isPrimary()) {
+                EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
+                nodes.add(getFieldNodesForGUI(targetNode, currentNode.getName(), i));
+                i = 1;
+            }
+
+            int j = 1;
+            for (; i < cnt; i++) {
+                EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
+
+                if (subNode.isSub()) {
+                    nodes.add(getFieldNodesForGUI(subNode, subNode.getName(), j++));
+                }
+            }
+        }
+
+        return nodes;
+    }
+
     /** Get all nodes for current node
      *  For EDM.xml
      *
@@ -904,6 +941,33 @@ public class FinishPanel implements WizardDescriptor.Panel {
         relationships += "    </relationships>\n";
 
         return relationships;
+    }
+    
+    private ArrayList getSubObjects() {
+        ArrayList relationships = new ArrayList();
+        int cnt = mPrimaryNode.getChildCount();
+        int subNodeCnt = cnt - mPrimaryNode.getFieldCnt();
+        if (subNodeCnt > 0) {
+            for (int i = 0; i < cnt; i++) {
+                EntityNode subNode = (EntityNode) mPrimaryNode.getChildAt(i);
+
+                if (subNode.isSub()) {
+                    relationships.add("        " + "<children>" + subNode.getName() + "</children>");
+                }
+            }
+        }
+        return relationships;
+    }
+    
+    private ArrayList getAlGUIDefinition() {
+        ArrayList guiDefinition = new ArrayList();
+        //guiDefinition.add(getRecordDetails());
+        //guiDefinition.add(getTransactions());
+        //guiDefinition.add(getDuplicateRecords());
+        //guiDefinition.add(getAssumedMatches());
+        //guiDefinition.add(getReports());
+        guiDefinition.add(getAuditLog());
+        return guiDefinition;
     }
 
     /** Get gui definition
@@ -1341,15 +1405,17 @@ public class FinishPanel implements WizardDescriptor.Panel {
     }
 
     private String getImpl() {
-        String implDetails = "    <impl-details>\n" +
-            ("        <master-controller-jndi-name>ejb/" + mViewName + "MasterController</master-controller-jndi-name>\n" +
+        String implDetails = 
+            "    <impl-details>\n" +
+            "        <master-controller-jndi-name>ejb/" + mViewName + "MasterController</master-controller-jndi-name>\n" +
             "        <validation-service-jndi-name>ejb/" + mViewName + "CodeLookup</validation-service-jndi-name>\n" +
             "        <usercode-jndi-name>ejb/" + mViewName + "UserCodeLookup</usercode-jndi-name>\n" +
             "        <reportgenerator-jndi-name>ejb/" + mViewName + "ReportGenerator</reportgenerator-jndi-name>\n" +
             "        <debug-flag>true</debug-flag>\n" + 
             "        <debug-dest>console</debug-dest>\n" +
             "        <enable-security>false</enable-security>\n" +
-            "    </impl-details>\n");
+            "        <object-sensitive-plug-in-class>com.stc.eindex.security.VIPObjectSensitivePlugIn</object-sensitive-plug-in-class>\n" +
+            "    </impl-details>\n";
 
         return implDetails;
     }

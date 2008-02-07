@@ -39,11 +39,13 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabelDatabase;
     private javax.swing.JLabel jLabelMatchEngine;
     private javax.swing.JLabel jLabelDateFormat;
-    private javax.swing.JLabel lblTransaction;    
+    private javax.swing.JLabel lblTransaction;
     private javax.swing.JComboBox cbDatabase;
     private javax.swing.JComboBox cbMatchEngine;
     private javax.swing.JComboBox cbDateFormat;
     private javax.swing.JComboBox jComboBoxTransactions;
+    private javax.swing.JCheckBox jCheckBoxMasterEDM = new javax.swing.JCheckBox(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
+                "LBL_static_MasterEDM"));
 
     /**
      * Create the wizard panel and set up some basic properties.
@@ -146,14 +148,20 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
         add(cbMatchEngine);
         add(cbDateFormat);
         add(jComboBoxTransactions);
+        
         jLabelDatabase.setBounds(0, 30, 100, 30);
         jLabelMatchEngine.setBounds(0, 65, 100, 30);
         jLabelDateFormat.setBounds(0, 100, 100, 30);
         lblTransaction.setBounds(0, 135, 100, 30);
+        //lblMasterEDM.setBounds(0, 170, 100, 30);
         cbDatabase.setBounds(110, 30, 250, 30);
         cbMatchEngine.setBounds(110, 65, 250, 30);
         cbDateFormat.setBounds(110, 100, 250, 30);
         jComboBoxTransactions.setBounds(110, 135, 250, 30);
+        
+        add(jCheckBoxMasterEDM);
+        jCheckBoxMasterEDM.setSelected(false);
+        jCheckBoxMasterEDM.setBounds(0, 170, 200, 30);
     }
 
     // End of variables declaration
@@ -226,4 +234,10 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
         setName(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
                 "TITLE_DefineDeploymentEnvironment"));
     }
+    
+    
+    public String getMasterIndexEDM() {
+        return this.jCheckBoxMasterEDM.isSelected() ? "Yes" : "No";
+    }
+
 }

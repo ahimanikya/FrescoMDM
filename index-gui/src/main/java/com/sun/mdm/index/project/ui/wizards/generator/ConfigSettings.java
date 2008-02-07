@@ -22,6 +22,8 @@
  */
 package com.sun.mdm.index.project.ui.wizards.generator;
 
+import java.util.ArrayList;
+
 /**
  * The Configuration settings for the complete object model,
  * including each field
@@ -35,6 +37,9 @@ public class ConfigSettings {
     private String duplicateThreshold = "7.25";
     private String matchThreshold = "29.0";
     private String transaction = "CONTAINER";
+    private ArrayList edmAllNodes;
+    private ArrayList subObjects;
+    private boolean bMasterIndexEDM = false;
 
     /**
      * Get the name of the primary node, e.g. 'Company'
@@ -162,5 +167,50 @@ public class ConfigSettings {
     public void setTransaction(String val) {
         transaction = val;
     }
+    
+    /**
+     * @return allNodes
+     */
+    public ArrayList getEdmAllNodes() {
+        return edmAllNodes;
+    }
+    
+    /**
+     * Set allNodes
+     * @param val 
+     */
+    public void setEdmAllNodes(ArrayList val) {
+        edmAllNodes = val;
+    }
+    
+    /**
+     * @return Relationships
+     */
+    public ArrayList getSubObjects() {
+        return subObjects;
+    }
 
+    /**
+     * Set Relationships
+     * @param val 
+     */
+    public void setSubObjects(ArrayList val) {
+        subObjects = val;
+    }
+    
+    /**
+     * get MasterEindexEDM
+     * @return boolean bMasterIndexEDM
+     */
+    public boolean getMasterIndexEDM() {
+        return bMasterIndexEDM ;
+    }
+    
+    /**
+     * set MasterEindexEDM
+     * @param boolean val
+     */
+    public void setMasterIndexEDM(boolean val) {
+        bMasterIndexEDM = val;
+    }
 }
