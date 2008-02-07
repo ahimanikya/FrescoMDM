@@ -86,7 +86,9 @@
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository">
                                     <fileset dir="${basedir}/../index-core/src/main/resources">
                                         <include name="edm.war"></include>
-                                        <include name="mi-edm.war"></include>
+                                    </fileset>
+                                    <fileset dir="${basedir}/../index-webapp/target">
+                                        <include name="index-webapp.war"></include>
                                     </fileset>
                                     <fileset dir="${basedir}/../index-core/src/main/resources/matchengine">
                                         <include name="stc_sbme.jar"></include>

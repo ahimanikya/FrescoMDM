@@ -613,16 +613,13 @@ public class EViewGeneratorTask extends Task {
     
     private void generateWarFiles() {
         String edmVersion = getProject().getProperty("edm-version");
-        String edmWarName ="mi-edm.war";
+        String edmWarName ="edm.war";
         boolean jspExcluded =true;
         if (null!=edmVersion && edmVersion.equalsIgnoreCase("mi-edm")){
-            edmWarName="mi-edm.war";
-            jspExcluded =false;
+            edmWarName="index-webapp.war";
         }else{
             edmWarName = "edm.war";
-            jspExcluded =true;
         }
-
         
         File destDir = new File(mWardir,"web" );
         Delete delete = (Delete) getProject().createTask("delete");
