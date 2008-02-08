@@ -185,11 +185,6 @@ public class ObjectNodeConfig implements java.io.Serializable, Comparable {
         return config;
     }
 
-    /*
-          return all fields of ObjectNodeConfig object
-          @return all the fields value (FieldCofnig) of ObjectNodeConfig object
-          @return FieldConfig[]
-      */
 
     /**
      * @todo Document: Getter for FieldConfigs attribute of the ObjectNodeConfig

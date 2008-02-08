@@ -462,7 +462,7 @@ public class MasterControllerService {
      * @return none
      * @exception ProcessingException, UserException, ObjectException.
      */
-    void insertAuditLog(String userName, String euid1, String euid2, String function, int screeneID, String detail)
+    public void insertAuditLog(String userName, String euid1, String euid2, String function, int screeneID, String detail)
             throws ProcessingException, UserException, ObjectException {
         if (userName != null && euid1 != null && function != null && detail != null) {
             String[] primaryObjType = ConfigManager.getInstance().getRootNodeNames();
@@ -640,14 +640,14 @@ public class MasterControllerService {
 
     // added by samba
     public SystemObject createSystemObject(String systemCode, String LID, HashMap hm) throws ObjectException, ValidationException, Exception {
-        Integer screenID = new Integer("5"); // this is for SourceRecords.
-        String rootNodeName = ConfigManager.getInstance().getScreen(screenID).getRootObj().getName();
+
+        //System.out.println("===>: " + this.rootNodeName);
         ObjectNode majorObject = SimpleFactory.create(rootNodeName);
 
         Date dateTime = new Date();
-        SystemObject sysObj = new SystemObject(systemCode, LID, rootNodeName,
-                "active", "eview", "Add",
-                dateTime, "eview", "Add", dateTime, majorObject);
+        SystemObject sysObj = new SystemObject(systemCode, LID, this.rootNodeName,
+                "active", "eGate", "Add",
+                dateTime, "eGate", "Add", dateTime, majorObject);
         for (Object obj : hm.keySet()) {
             Object value = hm.get(obj);
             if (!obj.equals(MasterControllerService.SYSTEM_CODE) && !obj.equals(MasterControllerService.LID) && !obj.equals(MasterControllerService.HASH_MAP_TYPE)) {
@@ -729,6 +729,23 @@ public class MasterControllerService {
         }
         return minorObject;
     }
+    
+    public ObjectNode modifyMinorObjectSBR(ObjectNode minorObject, HashMap hm, SBR sbr) throws ObjectException, ValidationException {
+        for (Object obj : hm.keySet()) {
+            Object value = hm.get(obj);
+            //System.out.println("===> IN MODIFYING MINOR OBJECTS===> " + obj + "< ===>" + value );
+            //Check the hash map objects for not MINOR_OBJECT_TYPE,MINOR_OBJECT_UPDATE ,HASH_MAP_TYPE,LID,SYSTEM_CODE 
+            if (!obj.equals(MasterControllerService.MINOR_OBJECT_TYPE) 
+                && !obj.equals(MasterControllerService.LID)
+                && !obj.equals(MasterControllerService.SYSTEM_CODE)
+                && !obj.equals(MasterControllerService.MINOR_OBJECT_UPDATE)
+                && !obj.equals(MasterControllerService.MINOR_OBJECT_ID)
+                && !obj.equals(MasterControllerService.HASH_MAP_TYPE)) {
+                setObjectNodeFieldValue(minorObject, (String) obj, (String) value, sbr);
+            } // Example Key: City Value: Bangalore
+        }
+        return minorObject;
+    }
 
     public SystemObject addMinorObjects(SystemObject systemObject, ArrayList minorObjects) throws ObjectException, ValidationException, UserException, ProcessingException {
         for (Object minorObj : minorObjects) {
@@ -804,14 +821,14 @@ public class MasterControllerService {
                                                              "for adding a MinorObject"));
                     }
                     ObjectNode child = systemObject.getObject().getChild(type, id);
-                    modifyMinorObject(child, hm);
+                    modifyMinorObjectSBR(child, hm, eo.getSBR());
                 } else if (hm.get(MasterControllerService.HASH_MAP_TYPE).equals(MasterControllerService.SBR_UPDATE)) {
                     SystemObject systemObject = eo.getSBR();
                     modifySBR(eo.getSBR(), hm);
                 }
             }
         }
-        if (eo != null) {
+        if (eo != null) {            
             updateEnterpriseObject(eo);
         } else {
             updateEnterpriseObject(localEO);
@@ -1087,7 +1104,6 @@ public class MasterControllerService {
         } else {
             throw new UserException(mLocalizer.t("SRM526: EUID has not been merged or has already been merged"));
         }
-        System.out.println("<<====  " + findMergeType(euid).getFunction());
         MergeResult unmergeEnterpriseObject = null;
         if (findMergeString.endsWith("euidMerge")) {
             unmergeEnterpriseObject = QwsController.getMasterController().unmergeEnterpriseObject(euid, false);
@@ -1198,7 +1214,7 @@ public class MasterControllerService {
         EnterpriseObject newEO = mMc.previewUndoAssumedMatch(assumedMatchId);
         return newEO;
     }
-   
+    
     /** 
      * This method fetches existing assumed Matches
      * @return AssumedMatchIterator
@@ -1220,18 +1236,18 @@ public class MasterControllerService {
      */
     public int countPotentialDuplicates(Timestamp startDate, Timestamp endDate)
             throws ProcessingException, UserException {
-        PotentialDuplicateSearchObject pdso = new PotentialDuplicateSearchObject();
-        pdso.setCreateEndDate(endDate);
-        pdso.setCreateStartDate(startDate);
-        int countPotentialDuplicates = 0;
-            try {
-                countPotentialDuplicates = mMc.countPotentialDuplicates(pdso);
-            } catch (ProcessingException e) {
-            throwProcessingException(e);
-            } catch (RuntimeException e) {
-            throwProcessingException(e);
-            }
-        return countPotentialDuplicates;
+      PotentialDuplicateSearchObject pdso = new PotentialDuplicateSearchObject();
+      pdso.setCreateEndDate(endDate);
+      pdso.setCreateStartDate(startDate);
+      int countPotentialDuplicates = 0;
+        try {
+            countPotentialDuplicates = mMc.countPotentialDuplicates(pdso);
+        } catch (ProcessingException e) {
+        throwProcessingException(e);
+        } catch (RuntimeException e) {
+        throwProcessingException(e);
+        }
+      return countPotentialDuplicates;
     }
     
     /** 
@@ -1243,12 +1259,10 @@ public class MasterControllerService {
      */
     public int countAssumedMatches(Timestamp startDate, Timestamp endDate)
             throws ProcessingException, UserException {
-                
-        AssumedMatchSearchObject amso = new AssumedMatchSearchObject();
-        amso.setCreateEndDate(endDate);
-        amso.setCreateStartDate(startDate);
-        int countAssumedMatches = 0;
-      
+      AssumedMatchSearchObject amso = new AssumedMatchSearchObject();
+      amso.setCreateEndDate(endDate);
+      amso.setCreateStartDate(startDate);
+      int countAssumedMatches = 0;
         try {
             countAssumedMatches = mMc.countAssumedMatches(amso);
         } catch (ProcessingException e) {
@@ -1256,12 +1270,12 @@ public class MasterControllerService {
         } catch (RuntimeException e) {
         throwProcessingException(e);
         }
-        return countAssumedMatches;
+      return countAssumedMatches;
     }
-
+    
     /**
      * 
-     * @param hm contains Key is ePath for the string which the link should persisted, Value as SO from which we should collect the link
+     * @param hm contains Key is ePath for the string which the link should persisted, Value as Value as SO's SystemCode:LID from which we should collect the link
      * @param eo the EnterpriseObject for which the links should be added.
      * @return Modified Enterprise objects with the links.
      * @throws com.sun.mdm.index.master.ProcessingException
@@ -1273,6 +1287,7 @@ public class MasterControllerService {
             String str = (String) obj;
             hashMapNew.put("LINK:" + str, resolveSystemObject((String)hm.get(str),eo));
         }       
+        //EnterpriseObject eo1 = null;
         EnterpriseObject eo1 = QwsController.getMasterController().updateSBR(hashMapNew, eo, false);
         return eo1;        
     }
@@ -1314,13 +1329,14 @@ public class MasterControllerService {
                     hashMapNew.put("LINK:" + str + "@" + minorObjectId, resolveSystemObject((String)hm.get(str),eo));
             }       
         }
+        //EnterpriseObject eo1 = null;
         EnterpriseObject eo1 = QwsController.getMasterController().updateSBR(hashMapNew, eo, false);
         return eo1;
     }
     
     /**
      * 
-     * @param hm contains Key is ePath for the string which the link should persisted, Value as SO from which we should collect the link to remove
+     * @param hm contains Key is ePath for the string which the link should persisted, Value as SO's SystemCode:LID from which we should collect the link to remove
      * @param eo the EnterpriseObject for which the links should be removed.
      * @return Modified Enterprise objects with removed links 
      * @throws com.sun.mdm.index.master.ProcessingException
@@ -1620,7 +1636,7 @@ public class MasterControllerService {
 
     public String getRootNodeName() {
         return rootNodeName;
-}
+    }
 
     public void setRootNodeName(String rootNodeName) {
         this.rootNodeName = rootNodeName;

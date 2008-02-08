@@ -96,39 +96,6 @@ public class SecurityManager {
     }
 
     /**
-     *  Logon 
-     *
-     * @param userid  This is the user's ID for logging in.
-     * @param password  This is the user's password for logging in.
-     * @throws Exception if any errors are encountered.
-     */
-    public static void logon(String userid, String password) 
-            throws UserException{
-        if (userid == null) {
-            throw new UserException(mLocalizer.t("SRS513: Login unsuccessful. " +
-                                                 "User ID is may not be null"));
-        }
-        if (userid.length() == 0) {
-            throw new UserException(mLocalizer.t("SRS514: Login unsuccessful. " + 
-                                                 "User ID is may not be an empty string"));
-        }
-        if (password == null) {
-            throw new UserException(mLocalizer.t("SRS515: Login unsuccessful. " + 
-                                                 "password is may not be null"));
-        }
-        if (password.length() == 0) {
-            throw new UserException(mLocalizer.t("SRS516: Login unsuccessful. " + 
-                                                 "password is may not be an empty string"));
-        }
-        try {
-            Logon.execute(userid, password);
-        } catch (Exception e) {
-            throw new UserException(mLocalizer.t("SRS510: Login unsuccessful: {0}", e.getMessage()));
-        }
-    }
-    
-    
-    /**
      * Initialize the Security Manager.
      *
      * @throws Exception if obtaining/initializing the instance failed
@@ -417,6 +384,7 @@ public class SecurityManager {
     /**
      * @param args the command line arguments
      */
+/*    
     public static void main(String[] args) throws Exception {
         // TODO code application logic here      
         String userid = "eview";
@@ -430,5 +398,5 @@ public class SecurityManager {
         System.out.println("All done.  Bye Bye.");
  
     }
-    
+*/    
 }

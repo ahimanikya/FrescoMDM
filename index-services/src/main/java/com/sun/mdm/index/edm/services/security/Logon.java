@@ -65,8 +65,12 @@ public class Logon {
     public Logon() {
     }
 
-    // logon 
-    public static void  execute (String userid, String password)
+    /*
+     *  Initialize the ConfigurationManager and SecurityManager.
+     *
+     *  @throws Exception if an error is encountered.
+     */
+    public static void  initializeConfigurationSecurity()
         throws Exception {
 
         // Initialize the ConfigManager.
@@ -84,6 +88,15 @@ public class Logon {
             throw new Exception(mLocalizer.t("SRS501: An error occurred in the SecurityManager: {0}", 
                                          QwsUtil.getRootCause(e).getMessage()));
         }
+    }
+    
+    /*
+     *  Initialize the QWS Controller, Validation Service, and Date Service
+     *
+     *  @throws Exception if an error is encountered.
+     */
+    public static void  initializeQWSControllerValidationDate ()
+        throws Exception {
 
         // Check if MasterController is available
         // To get to MasterController, ConfigManager is required. 
@@ -155,22 +168,5 @@ public class Logon {
             }
         }
 
-        UserProfile userProfile = null;
-        // TODO: The signOn still needs to be implemented       
-/*        
-        try {
-            userProfile = QwsController.signOn(userid, request);
-        } catch (Exception e) {
-            mLogger.error("Logon failed: ", e);
-            throw e;
-        }
-        if (userProfile == null) {
-            mLogger.error("Invalid user/password. Please try again.");
-        }  else {
-            // TODO: setup screens for a user.
-            // Check permissions before a user can access an screen or some
-            // type of control (e.g. button, pull-down menu, etc.)
-        }
-*/
     }
 }

@@ -303,6 +303,13 @@ public class ScreenUtil  {
         fieldConfig.setInputMask(inputMask);
 
         searchFieldList.add(fieldConfig);
+        // testing--raymond tam
+        // resume here.  What is this used for?  Recalculating EUID length?
+//        
+//        if (isEuidField) {
+//            euidFields.add(fieldConfig);
+//        }
+
     }
     
     /**
@@ -333,6 +340,13 @@ public class ScreenUtil  {
         fieldConfig.setDisplayOrder(0);
         fieldConfig.setKeyType(false);
         resultFieldList.add(fieldConfig);
+        
+        // testing--raymond tam
+        // resume here.  What is this used for?  Recalculating EUID length?
+//        
+//        if (isEuidField) {
+//            euidFields.add(fieldConfig);
+//        }
     }
     
     /**
