@@ -89,14 +89,13 @@ public class LoginHandler {
         //Logon logon  = new Logon();
         //Use LogOn class here
         try {
-            Logon.execute(this.getUserName(),this.getPassword());
+            Logon.initializeConfigurationSecurity();
             
         } catch(Exception ex) {
             errorMessage = bundle.getString("login_user_login_init_load_message");
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
             return FAIL_INITIALIZATION;
         }
-
         UserProfile userProfile = null;
         String  initialScreenName = "to_screen_8";
 
@@ -106,6 +105,8 @@ public class LoginHandler {
             if(userProfile != null) {
               session.setAttribute("userProfile",userProfile);
             }
+            // Initialize the QWS Controller, Validation, and Date services
+            Logon.initializeQWSControllerValidationDate();
         } catch (Exception e) {
             errorMessage = bundle.getString("login_user_login_failure_message");
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
