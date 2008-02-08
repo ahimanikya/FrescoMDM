@@ -31,8 +31,6 @@
                     <goals><goal>run</goal></goals>
                     <configuration>
                       <tasks>
-                            <echo>Making "${basedir}/target"</echo>
-                          <mkdir dir="${basedir}/target"/>
                           <mkdir dir="${basedir}/target/index-webapp"/>
                           <copy todir="${basedir}/target/index-webapp">
         				        <fileset dir="src/main/webapp/">
@@ -112,7 +110,7 @@
         <dependency>
             <groupId>mural</groupId>
             <artifactId>index-services-jar</artifactId>
-            <version>1.0</version>
+            <version>${mural.currentVersion}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
