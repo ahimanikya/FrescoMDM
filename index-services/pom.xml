@@ -30,7 +30,7 @@
   <groupId>mural</groupId>
   <artifactId>index-services-jar</artifactId>
   <name>Master Index EDM Services</name>
-  <version>${openesb.currentVersion}</version>
+  <version>${mural.currentVersion}</version>
   <url>http://maven.apache.org</url>
   <build>
     <finalName>com-sun-mdm-index-services</finalName>
