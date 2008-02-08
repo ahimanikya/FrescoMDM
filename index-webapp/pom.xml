@@ -12,57 +12,84 @@
     <name>index-webapp</name>
     <version>1.0</version>
     <url>http://maven.apache.org</url>
-    
+
     <build>
         <finalName>index-webapp</finalName>
-        
-        <resources>
+		<resources>
             <resource>
                 <directory>src/main/resources</directory>
-            </resource>
-        </resources>
+           </resource>
+		</resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
+                <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
-                    
-                    <execution>
-                        <id>install-yui4jsf-jar</id>
-                        <phase>process-resources</phase>
-                        <goals><goal>install-file</goal></goals>
-                        <configuration>
-                            <generatePom>true</generatePom>
-                            <packaging>jar</packaging>
-                            <groupId>mural</groupId>
-                            <artifactId>yui4jsf</artifactId>
-                            <version>${mural.currentVersion}</version>
-                            <file>${basedir}/src/main/webapp/WEB-INF/lib/yui4jsf.jar</file>
-                        </configuration>
-                    </execution>
-                    
-                    <execution>
-                        <id>install-eindex-ejb-jar</id>
-                        <phase>process-resources</phase>
-                        <goals><goal>install-file</goal></goals>
-                        <configuration>
-                            <generatePom>true</generatePom>
-                            <packaging>jar</packaging>
-                            <groupId>mural</groupId>
-                            <artifactId>eindex-ejb</artifactId>
-                            <version>${mural.currentVersion}</version>
-                            <file>${basedir}/src/main/webapp/WEB-INF/lib/eindex-ejb.jar</file>
-                        </configuration>
-                    </execution>
-                    
+                  <execution>
+                    <id>copying</id>
+                    <phase>process-resources</phase>
+                    <goals><goal>run</goal></goals>
+                    <configuration>
+                      <tasks>
+                            <echo>Making "${basedir}/target"</echo>
+                          <mkdir dir="${basedir}/target"/>
+                          <mkdir dir="${basedir}/target/index-webapp"/>
+                          <copy todir="${basedir}/target/index-webapp">
+        				        <fileset dir="src/main/webapp/">
+        				            <include name="**/*"/>                    
+        				        </fileset>
+                          </copy>
+                          <copy todir="target/index-webapp/WEB-INF/lib">
+        				        <fileset dir="${basedir}/../index-services/target/">
+        				            <include name="com-sun-mdm-index-services.jar"/>
+        				        </fileset>
+                          </copy>
+                      </tasks>
+                    </configuration>
+                  </execution>
+                 <execution>
+                   <id>remove-java-file</id>
+                   <!--This isn't really a test phase, but it's the best place to put it because -->
+                   <!--there is no other place to put it before the package phase is executed -->
+                   <phase>test</phase>
+                   <goals><goal>run</goal></goals>
+                   <configuration>
+                     <tasks>
+                          <delete>
+        				        <fileset dir="${basedir}/target/classes/jsp" includes="**/*.java"/>                    
+                          </delete>                      
+                     </tasks>
+                   </configuration>
+                 </execution> 
                 </executions>
             </plugin>
+            <plugin>
+              <groupId>org.mortbay.jetty</groupId>
+              <artifactId>maven-jetty-jspc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>jspc</id>
+                <goals>
+                  <goal>jspc</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+                <source>1.5</source> 
+                <target>1.5</target> 
+                <webAppSourceDirectory>${basedir}/src/main/webapp</webAppSourceDirectory>
+                <classesDirectory>${basedir}/target</classesDirectory>
+                <!--generatedClasses>${basedir}/target/classes</generatedClasses> 
+                <packageRoot>edm</packageRoot>
+                <ignoreJspFragmentErrors>true</ignoreJspFragmentErrors>
+                <mergeFragment>false</mergeFragment>
+                <keepSources>false</keepSources-->
+            </configuration>
+          </plugin>
         </plugins>
-        
     </build>
-    
-    
-    
+	 
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -79,6 +106,12 @@
         <dependency>
             <groupId>mural</groupId>
             <artifactId>index-core</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>mural</groupId>
+            <artifactId>index-services-jar</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>
@@ -124,21 +157,10 @@
             <artifactId>jaxws-tools</artifactId>
             <version>2.1EA1</version>
         </dependency>
-        
-        <!--dependency>
-      <groupId>mural</groupId>
-      <artifactId>eindex-ejb</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-     <systemPath>${basedir}/../index-core/lib/eindex-ejb.jar</systemPath>
-	  <systemPath>${basedir}/../index-core/target/test-classes/eindex/build/eindex-ejb.jar</systemPath>
-	  
-    </dependency-->
-  
-        <dependency>
-            <groupId>mural</groupId>
-            <artifactId>yui4jsf</artifactId>
-            <version>${mural.currentVersion}</version>
+      <dependency>
+            <groupId>yui4jsf.jar</groupId>
+            <artifactId>yui4jsf.jar</artifactId>
+            <version>1.0</version>
             <scope>compile</scope>
         </dependency>   
         
