@@ -25,7 +25,6 @@ package com.sun.mdm.index.project.ui;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -144,16 +143,10 @@ public class EviewProjectLogicalViewProvider implements LogicalViewProvider {
         // Private methods -------------------------------------------------
 
         private Action[] getAdditionalActions() {
-
-            ResourceBundle bundle = NbBundle.getBundle(IcanproLogicalViewProvider.class);
-
             return new Action[] {
-                // disable new action at the top...
-                // CommonProjectActions.newFileAction(),
-                // null,
-                ProjectSensitiveActions.projectCommandAction( ActionProvider.COMMAND_BUILD, bundle.getString( "LBL_BuildAction_Name" ), null ), // NOI18N
-                ProjectSensitiveActions.projectCommandAction( ActionProvider.COMMAND_REBUILD, bundle.getString( "LBL_RebuildAction_Name" ), null ), // NOI18N
-                ProjectSensitiveActions.projectCommandAction( ActionProvider.COMMAND_CLEAN, bundle.getString( "LBL_CleanAction_Name" ), null ), // NOI18N
+                ProjectSensitiveActions.projectCommandAction( ActionProvider.COMMAND_BUILD, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_BuildAction_Name" ), null ), // NOI18N
+                ProjectSensitiveActions.projectCommandAction( ActionProvider.COMMAND_REBUILD, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_RebuildAction_Name" ), null ), // NOI18N
+                ProjectSensitiveActions.projectCommandAction( ActionProvider.COMMAND_CLEAN, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_CleanAction_Name" ), null ), // NOI18N
                 null,
                 //ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_GENWSDL, "Generate WSDL", null ), // NOI18N
                 ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_GENEVIEW, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Generate_Master_Index_Files"), null ),
