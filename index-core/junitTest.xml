@@ -50,6 +50,7 @@
     <target name="do-testing">
     
         <junit maxmemory="1024m" printsummary="yes" haltonfailure="no" failureProperty="test.failure" >
+            <sysproperty key="basedir" value="${basedir}"/>
             <classpath>
                 <pathelement path="${run.test.classpath}"/>
             </classpath>
