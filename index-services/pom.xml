@@ -1,0 +1,113 @@
+<?xml version="1.0"?><project>
+<!--
+ # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ #
+ # Copyright 1997-2007 Sun Microsystems, Inc. All Rights Reserved.
+ #
+ # The contents of this file are subject to the terms of the Common 
+ # Development and Distribution License ("CDDL")(the "License"). You 
+ # may not use this file except in compliance with the License.
+ #
+ # You can obtain a copy of the License at
+ # https://open-esb.dev.java.net/public/CDDLv1.0.html
+ # or mural/license.txt. See the License for the specific language 
+ # governing permissions and limitations under the License.  
+ #
+ # When distributing Covered Code, include this CDDL Header Notice 
+ # in each file and include the License file at mural/license.txt.
+ # If applicable, add the following below the CDDL Header, with the 
+ # fields enclosed by brackets [] replaced by your own identifying 
+ # information: "Portions Copyrighted [year] [name of copyright owner]"
+-->
+
+  <parent>
+    <artifactId>open-dm-mi</artifactId>
+    <groupId>mural</groupId>
+    <version>1.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>mural</groupId>
+  <artifactId>index-services-jar</artifactId>
+  <name>Master Index EDM Services</name>
+  <version>${openesb.currentVersion}</version>
+  <url>http://maven.apache.org</url>
+  <build>
+    <finalName>com-sun-mdm-index-services</finalName>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes/>
+      </resource>
+    </resources>
+    <plugins>
+	    <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-compiler-plugin</artifactId>
+	      <configuration>
+	        <source>1.5</source>
+	        <target>1.5</target>
+	      </configuration>
+	    </plugin>
+	    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+            <execution>
+                <id>extract-globalized-messages</id>
+                <phase>process-classes</phase>
+                <goals><goal>run</goal></goals>
+                <configuration>
+                    <tasks>
+                    <taskdef name="i18n" classname="net.java.hulp.i18n.buildtools.I18NTask" classpath="${basedir}/../index-core/src/main/resources/globalization/net.java.hulp.i18ntask.jar"/>
+                    <i18n dir="${project.build.directory}/classes" file="${basedir}/src/main/resources/com/sun/mdm/index/util/services_msgs.properties" prefix="MDM-MI-" strict="false" pattern="([A-Z][A-Z][A-Z]\d\d\d)(: )(.*)" />               
+                    </tasks> 
+                </configuration>
+            </execution>
+        </executions>
+      </plugin>
+	  </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>mural</groupId>
+        <artifactId>i18n</artifactId>
+        <version>${mural.currentVersion}</version>
+    </dependency>
+    <dependency>
+	      <groupId>ant-contrib</groupId>
+	      <artifactId>ant-contrib</artifactId>
+	      <version>1.0b2</version>
+	      <scope>provided</scope>
+	  </dependency>
+	<dependency>
+		<groupId>mural</groupId>
+		<artifactId>index-core</artifactId>
+		<version>${mural.currentVersion}</version>
+	</dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javaee</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>5</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>appserv-rt</groupId>
+      <artifactId>appserv-rt.jar</artifactId>
+      <version>5</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+</project>
