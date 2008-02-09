@@ -50,24 +50,24 @@
 	      </configuration>
 	    </plugin>
 	    <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-            <execution>
-                <id>extract-globalized-messages</id>
-                <phase>process-classes</phase>
-                <goals><goal>run</goal></goals>
-                <configuration>
-                    <tasks>
-                    <taskdef name="i18n" classname="net.java.hulp.i18n.buildtools.I18NTask" classpath="${basedir}/../index-core/src/main/resources/globalization/net.java.hulp.i18ntask.jar"/>
-                    <i18n dir="${project.build.directory}/classes" file="${basedir}/src/main/resources/com/sun/mdm/index/util/services_msgs.properties" prefix="MDM-MI-" strict="false" pattern="([A-Z][A-Z][A-Z]\d\d\d)(: )(.*)" />               
-                    </tasks> 
-                </configuration>
-            </execution>
-        </executions>
-      </plugin>
-	  </plugins>
-  </build>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>extract-globalized-messages</id>
+                    <phase>process-classes</phase>
+                    <goals><goal>run</goal></goals>
+                    <configuration>
+                        <tasks>
+                        <taskdef name="i18n" classname="net.java.hulp.i18n.buildtools.I18NTask" classpath="${basedir}/../index-core/src/main/resources/globalization/net.java.hulp.i18ntask.jar"/>
+                        <i18n dir="${project.build.directory}/classes" file="${basedir}/src/main/resources/com/sun/mdm/index/util/services_msgs.properties" prefix="MDM-MI-" strict="false" pattern="([A-Z][A-Z][A-Z]\d\d\d)(: )(.*)" />               
+                        </tasks> 
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+        </plugins>
+    </build>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -103,11 +103,11 @@
       <version>5</version>
       <scope>provided</scope>
     </dependency>
-    <dependency>
+    <!--dependency>
       <groupId>appserv-rt</groupId>
       <artifactId>appserv-rt.jar</artifactId>
       <version>5</version>
       <scope>provided</scope>
-    </dependency>
+    </dependency-->
   </dependencies>
 </project>
