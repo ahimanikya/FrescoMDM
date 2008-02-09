@@ -63,9 +63,13 @@ public class Logon {
     /** Creates a new instance of Logon */
     public Logon() {
     }
-
-    // logon 
-    public static void  execute (String userid, String password)
+    
+    /*
+     *  Initialize the ConfigurationManager and SecurityManager.
+     *
+     *  @throws Exception if an error is encountered.
+     */
+    public static void  initializeConfigurationSecurity()
         throws Exception {
 
         // Initialize the ConfigManager.
@@ -85,6 +89,15 @@ public class Logon {
                            + QwsUtil.getRootCause(e).getMessage());
             throw e;
         }
+    }
+    
+    /*
+     *  Initialize the QWS Controller, Validation Service, and Date Service
+     *
+     *  @throws Exception if an error is encountered.
+     */
+    public static void  initializeQWSControllerValidationDate ()
+        throws Exception {
 
         // Check if MasterController is available
         // To get to MasterController, ConfigManager is required. 
@@ -106,8 +119,6 @@ public class Logon {
                                               .getConfigurationValue("EUID_LENGTH"))
                                               .intValue();
             } catch (Exception e) {
-                // UserException doesn't need a stack trace, and ProcessingException
-                // stack trace is already logged in the MC.
                 if (e instanceof UserException) {          
                     if (mLogger.isInfoEnabled()) {
                         mLogger.info("Failed to get length of EUID: " 
@@ -138,7 +149,7 @@ public class Logon {
                 DateUtil.init();
             } catch (Exception e) {
                 mLogger.error("Failed to instantiate Date Utility: " 
-                               + QwsUtil.getRootCause(e).getMessage());
+                              + QwsUtil.getRootCause(e).getMessage());
                 throw e;
             }
         } else {
@@ -149,7 +160,7 @@ public class Logon {
             try {
                ValidationService.init();
             } catch (Exception e) {
-                mLogger.error("Failed to instantiate CodeLookup manager: " 
+                mLogger.error("Failed to instantiate ValidationService: " 
                               + QwsUtil.getRootCause(e).getMessage());
                 throw e;
             }
@@ -164,22 +175,6 @@ public class Logon {
             }
         }
 
-        UserProfile userProfile = null;
-        // TODO: The signOn still needs to be implemented       
-/*        
-        try {
-            userProfile = QwsController.signOn(userid, request);
-        } catch (Exception e) {
-            mLogger.error("Logon failed: ", e);
-            throw e;
-        }
-        if (userProfile == null) {
-            mLogger.error("Invalid user/password. Please try again.");
-        }  else {
-            // TODO: setup screens for a user.
-            // Check permissions before a user can access an screen or some
-            // type of control (e.g. button, pull-down menu, etc.)
-        }
-*/
     }
+    
 }
