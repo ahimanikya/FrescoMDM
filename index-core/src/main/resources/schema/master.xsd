@@ -38,6 +38,7 @@
 				<xs:element ref="update-mode"/>
 				<xs:element ref="merged-record-update"/>
 				<xs:element ref="execute-match"/>
+				<xs:element ref="transaction"/>
 			</xs:sequence>
 			<xs:attribute name="module-name" type="xs:string" use="required"/>
 			<xs:attribute name="parser-class" type="xs:string" use="required"/>
@@ -63,6 +64,16 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="transaction">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="CONTAINER"/>
+				<xs:enumeration value="BEAN"/>
+                                <xs:enumeration value="LOCAL"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+
 	<xs:element name="option">
 		<xs:complexType>
 			<xs:attribute name="key" type="xs:string" use="required"/>
