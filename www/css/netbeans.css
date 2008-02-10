@@ -23,7 +23,7 @@
 
      
       h1 A:link:hover, h1 A:visited:hover  {
-        font-weight:bold;
+        font-weight:bold; text-decoration: underline;
       }
 
       h2 {
