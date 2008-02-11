@@ -78,18 +78,21 @@ import com.sun.mdm.index.page.PageException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import net.java.hulp.i18n.LocalizationSupport;
+import net.java.hulp.i18n.Logger;
+
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.logging.Level;
 import java.sql.Timestamp;
 
 public class MasterControllerService {
 
-    private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.services.master.MasterControllerService");
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.services.master.MasterControllerService");
+    private transient static final Localizer mLocalizer = Localizer.get();
     public static final String LID = "LID";
     public static final String SYSTEM_CODE = "SYSTEM_CODE";
     public static final String MINOR_OBJECT_TYPE = "MINOR_OBJECT_TYPE";
@@ -154,7 +157,8 @@ public class MasterControllerService {
             MergeResult mresult = QwsController.getMasterController().mergeEnterpriseObject(sourceEUID, destEUID, false);
             return mresult;
         } else {
-            throw new UserException("None of sourceEO a nd destinationEO can be null");//user exception
+            throw new UserException(mLocalizer.t("SRM501: Enterprise Objects could not be merged.  " +
+                                                 "Neither the sourceEO nor destinationEO can be null"));
         }
     }
 
@@ -173,7 +177,7 @@ public class MasterControllerService {
             MergeResult mresult = QwsController.getMasterController().unmergeEnterpriseObject(activeEUID, srcRevisionNumber, false);
             return mresult;
         } else {
-            throw new UserException("EnterpriseObject can not be null"); //user exception
+            throw new UserException(mLocalizer.t("SRM502: A null EnterpriseObject cannot be unmerged")); //user exception
         }
     }
 
@@ -207,7 +211,7 @@ public class MasterControllerService {
                     destRevisionNumber, false);
             return mresult;
         } else {
-            throw new UserException("One of the required field is null"); //user exception
+            throw new UserException(mLocalizer.t("SRM503: One of the required fields is null")); //user exception
         }
     }
 
@@ -226,7 +230,8 @@ public class MasterControllerService {
             MergeResult mresult = QwsController.getMasterController().mergeEnterpriseObject(sourceEUID, destEUID, true);
             return mresult.getDestinationEO();
         } else {
-            throw new UserException("None of sourceEO and destinationEO can be null"); //user exception
+            throw new UserException(mLocalizer.t("SRM504: Could not retrieve the post-merge " + 
+                                                 "image.  Neither the sourceEO nor destinationEO can be null")); //user exception
         }
     }
 
@@ -276,7 +281,8 @@ public class MasterControllerService {
             list.add(1, origDestEO);
             return list;
         } else {
-            throw new UserException("EnterpriseObject can not be null"); //user exception
+            throw new UserException(mLocalizer.t("SRM505: Could not retrieve the post-unmerge " + 
+                                                 "image.  The EnterpriseObject cannot be null")); //user exception
         }
     }
 
@@ -313,7 +319,9 @@ public class MasterControllerService {
             list.add(1, mresult.getDestinationEO());
             return list;
         } else {
-            throw new UserException("None of systemCode, sourceLID, destinationLID, finalSOImage, sourceEO and destinationEO can be null"); //user exception
+            throw new UserException(mLocalizer.t("SRM506: None of systemCode, sourceLID, " + 
+                                                 "destinationLID, finalSOImage, sourceEO " + 
+                                                 "and destinationEO can be null")); //user exception
         }
     }
 
@@ -341,7 +349,9 @@ public class MasterControllerService {
             list.add(1, mresult.getDestinationEO());
             return list;
         } else {
-            throw new UserException("None of systemCode, sourceLID, destinationLID and EnterpriseObject can be null"); //user exception
+            throw new UserException(mLocalizer.t("SRM507: None of systemCode, sourceLID, " + 
+                                                 "destinationLID and EnterpriseObject can " + 
+                                                 "be null")); //user exception
         }
     }
 
@@ -356,7 +366,7 @@ public class MasterControllerService {
         if (eo != null) {
             QwsController.getMasterController().updateEnterpriseObject(eo);
         } else {
-            throw new UserException("EnterpriseObject can not be null"); //user exception
+            throw new UserException(mLocalizer.t("SRM508: An null EnterpriseObject cannot be updated")); //user exception
         }
     }
 
@@ -410,7 +420,8 @@ public class MasterControllerService {
                 }
 
         } else {
-            throw new UserException("EnterpriseObject can not be null"); //user exception
+            throw new UserException(mLocalizer.t("SRM509: The System Object cannot " + 
+                                                 "be added to a null EnterpriseObject")); //user exception
         }
     }
 
@@ -431,7 +442,7 @@ public class MasterControllerService {
                 majorObject.deleteChild(minorObject);
             }
         } else {
-            throw new UserException("None of majorObject and minorObject can be null"); //user exception
+            throw new UserException(mLocalizer.t("SRM510: Neither the majorObject noe minorObject can be null")); //user exception
         }
         return majorObject;//which object to return, please validate; ideally it should not return anything.
     }
@@ -454,7 +465,7 @@ public class MasterControllerService {
             AuditDataObject ado = new AuditDataObject("", primaryObjType[0], euid1, euid2, function, detail, new Date(), userName);
             QwsController.getMasterController().insertAuditLog(ado);
         } else {
-            throw new UserException("None of userName, euid1, function and detail can be null"); //user exception
+            throw new UserException(mLocalizer.t("SRM511: userName, euid1, function or detail cannot be null")); //user exception
         }
 
     }
@@ -496,11 +507,12 @@ public class MasterControllerService {
     }
 
     private void throwProcessingException(Exception e) throws ProcessingException {
-        mLogger.error("ProcessingException", e);
         if (e instanceof ProcessingException) {
             throw (ProcessingException) e;
         } else {
-            throw new ProcessingException(e);
+            throw new ProcessingException(mLocalizer.t("SRM500: MasterControllerService encountered an " + 
+                                                       "ProcessingException: name={0}, message={1}", 
+                                                       e.getClass().getName(), e.getMessage()));
         }
     }
 
@@ -510,7 +522,8 @@ public class MasterControllerService {
             PotentialDuplicateIterator pdi = mMc.lookupPotentialDuplicates(pdso);
             return pdi;
         } catch (Exception e) {
-            throw new ProcessingException(e);
+            throw new ProcessingException(mLocalizer.t("SRM512: Could not retrieve potential duplicates: {0}", 
+                                                       e.getMessage()));
         }
 
     }
@@ -522,14 +535,15 @@ public class MasterControllerService {
 
             return iteratorTransactionHistory;
         } catch (Exception e) {
-            throw new ProcessingException(e);
+            throw new ProcessingException(mLocalizer.t("SRM513: Could not retrieve transaction history: {0}", 
+                                                       e.getMessage()));
         }
 
     }
 
     public AuditIterator lookupAuditLog(AuditSearchObject obj) throws ProcessingException, UserException {
         if (obj == null) {
-            throw new ProcessingException("AuditSearchObject can not null");
+            throw new ProcessingException(mLocalizer.t("SRM514: AuditSearchObject cannot be null."));
         }
         AuditIterator auditIterator = QwsController.getMasterController().lookupAuditLog(obj);
         return auditIterator;
@@ -543,7 +557,7 @@ public class MasterControllerService {
 
     public MergeHistoryNode getMergeHistory(String euid) throws ProcessingException, UserException {
         if (euid == null) {
-            throw new UserException("euid should not be null");
+            throw new UserException(mLocalizer.t("SRM515: Could not retrieve merge history.  EUID cannot be null"));
         }
         MergeHistoryNode mergeHistoryNode = QwsController.getMasterController().getMergeHistory(euid);
         return mergeHistoryNode;
@@ -551,7 +565,7 @@ public class MasterControllerService {
 
     public EnterpriseObjectHistory viewMergeRecords(String transactionNumber) throws ProcessingException, UserException {
         if (transactionNumber == null) {
-            throw new UserException("euid should not be null");
+            throw new UserException(mLocalizer.t("SRM516: Could not view merge records.  EUID cannot be null"));
         }
         TransactionSummary transactionSummary1 = QwsController.getMasterController().lookupTransaction(transactionNumber);
         EnterpriseObjectHistory enterpriseObjectHistory = transactionSummary1.getEnterpriseObjectHistory();
@@ -599,7 +613,9 @@ public class MasterControllerService {
         try {
             QwsController.getMasterController().resolvePotentialDuplicate(id, flag);
         } catch (Exception e) {
-            throw new ProcessingException(e);
+            throw new ProcessingException(mLocalizer.t("SRM517: Could not resolve a potential duplicate. " + 
+                                                       "Potential Duplicate ID={0}, flag={1}, error={2}", 
+                                                       id, String.valueOf(flag), e.getMessage()));
         }
     }
 
@@ -607,7 +623,9 @@ public class MasterControllerService {
         try {
             QwsController.getMasterController().unresolvePotentialDuplicate(id);
         } catch (Exception e) {
-            throw new ProcessingException(e);
+            throw new ProcessingException(mLocalizer.t("SRM518: Could not unresolve a potential duplicate. " + 
+                                                       "Potential Duplicate ID={0}, error={2}", 
+                                                       id, e.getMessage()));
         }
     }
 
@@ -730,7 +748,8 @@ public class MasterControllerService {
             try {
                 hm = (HashMap) minorObj;
             } catch (ClassCastException ese) {
-                throw new UserException("minorObjects should be type of HashMap " + minorObjects);
+                throw new ProcessingException(mLocalizer.t("SRM519: minorObjects should be type of HashMap: ", 
+                                                           ese.getMessage()));
             }
             String objectType = (String) hm.get(MINOR_OBJECT_TYPE);
             addMinorObject(systemObject, objectType, hm);
@@ -771,7 +790,8 @@ public class MasterControllerService {
                 try {
                     hm = (HashMap) obj;
                 } catch (ClassCastException cce) {
-                    throw new UserException("ChangedSBR should contain SystemObjects only ");
+                    throw new UserException(mLocalizer.t("SRM520: ChangedSBR should contain only SystemObjects: ", 
+                                                               cce.getMessage()));
                 }
                 if (hm.get(MasterControllerService.HASH_MAP_TYPE).equals(MasterControllerService.MINOR_OBJECT_BRAND_NEW)) {
                     addMinorObject(eo.getSBR(), (String) hm.get(MasterControllerService.MINOR_OBJECT_TYPE), hm);
@@ -780,7 +800,9 @@ public class MasterControllerService {
                     String type = (String) hm.get(MasterControllerService.MINOR_OBJECT_TYPE);
                     String id = (String) hm.get(MasterControllerService.MINOR_OBJECT_ID);
                     if (type == null || id == null) {
-                        throw new UserException(" Hashmap should provide MINOR_OBJECT_TYPE, MINOR_OBJECT_ID for removing a MinorObject");
+                        throw new UserException(mLocalizer.t("SRM521: Hashmap should provide " +
+                                                             "MINOR_OBJECT_TYPE, MINOR_OBJECT_ID " +
+                                                             "for removing a MinorObject"));
                     }
                     ObjectNode child = systemObject.getObject().getChild(type, id);
                     removeMinorObject(child, hm);
@@ -789,7 +811,9 @@ public class MasterControllerService {
                     String type = (String) hm.get(MasterControllerService.MINOR_OBJECT_TYPE);
                     String id = (String) hm.get(MasterControllerService.MINOR_OBJECT_ID);
                     if (type == null || id == null) {
-                        throw new UserException("Hashmap should provide MINOR_OBJECT_TYPE, MINOR_OBJECT_ID for adding a MinorObject");
+                        throw new UserException(mLocalizer.t("SRM522: Hashmap should provide " +
+                                                             "MINOR_OBJECT_TYPE, MINOR_OBJECT_ID " +
+                                                             "for adding a MinorObject"));
                     }
                     ObjectNode child = systemObject.getObject().getChild(type, id);
                     modifyMinorObjectSBR(child, hm, eo.getSBR());
@@ -815,7 +839,9 @@ public class MasterControllerService {
             try {
                 hm = (HashMap) obj;
             } catch (ClassCastException cce) {
-                throw new UserException(" Arguement systemObjects should contain SystemObjects only ");
+                throw new UserException(mLocalizer.t("SRM523: SystemObjects could not be modified." +
+                                                     "systemObjects[] should contain only SystemObjects: {0}",
+                                                     cce.getMessage()));
             }
             if (hm.get(MasterControllerService.HASH_MAP_TYPE).equals(MasterControllerService.SYSTEM_OBJECT_UPDATE)) {
                 SystemObject so = eo.getSystemObject((String) hm.get(MasterControllerService.SYSTEM_CODE), (String) hm.get(MasterControllerService.LID));
@@ -841,7 +867,7 @@ public class MasterControllerService {
                 String type = (String) hm.get(MasterControllerService.MINOR_OBJECT_TYPE);
                 String id = (String) hm.get(MasterControllerService.MINOR_OBJECT_ID);
                 if (type == null || id == null) {
-                    throw new UserException("Hashmap should provide MINOR_OBJECT_TYPE, MINOR_OBJECT_ID for removing a MinorObject");
+                    throw new UserException(mLocalizer.t("SRM524: Hashmap should provide MINOR_OBJECT_TYPE, MINOR_OBJECT_ID for removing a MinorObject"));
                 }
                 ObjectNode child = systemObject.getObject().getChild(type, id);
                 removeMinorObject(child, hm);
@@ -850,7 +876,7 @@ public class MasterControllerService {
                 String type = (String) hm.get(MasterControllerService.MINOR_OBJECT_TYPE);
                 String id = (String) hm.get(MasterControllerService.MINOR_OBJECT_ID);
                 if (type == null || id == null) {
-                    throw new UserException(" Hashmap should provide MINOR_OBJECT_TYPE, MINOR_OBJECT_ID for adding a MinorObject");
+                    throw new UserException(mLocalizer.t("SRM525: Hashmap should provide MINOR_OBJECT_TYPE, MINOR_OBJECT_ID for ading a MinorObject"));
                 }
                 ObjectNode child = systemObject.getObject().getChild(type, id);
                 modifyMinorObject(child, hm);
@@ -1057,9 +1083,9 @@ public class MasterControllerService {
             systemObjectPK.systemCode = so.getSystemCode();
             enterpriseObject = QwsController.getMasterController().getEnterpriseObject(systemObjectPK);
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(MasterControllerService.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.severe(mLocalizer.x("SRM001: Could not retrieve an EnterpriseObject: {0}", ex.getMessage()));
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(MasterControllerService.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.severe(mLocalizer.x("SRM002: Could not retrieve an EnterpriseObject: {0}", ex.getMessage()));
         }
         return enterpriseObject;
 
@@ -1071,7 +1097,7 @@ public class MasterControllerService {
         if (findMergeType(euid) != null) {
             findMergeString = findMergeType(euid).getFunction();
         } else {
-            throw new UserException("EUID has not been merged or has already been merged");
+            throw new UserException(mLocalizer.t("SRM526: EUID has not been merged or has already been merged"));
         }
         MergeResult unmergeEnterpriseObject = null;
         if (findMergeString.endsWith("euidMerge")) {
@@ -1325,11 +1351,15 @@ public class MasterControllerService {
                 if (keys.contains(str)) {
                     overWrite.setRemoveFlag(true);
                 } else {
-                    mLogger.debug(" LINK for " + str + " is Not available");
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine(" LINK for " + str + " is Not available");
+                    }
                 }
             }
         } else {
-            mLogger.debug("There exist no links to delete");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("There are no links to delete");
+            }
         }
         // EnterpriseObject eo1 = QwsController.getMasterController().updateSBR(hashMapew, eo, true);
         return eo;
@@ -1363,11 +1393,15 @@ public class MasterControllerService {
                     if (keys.contains(str) && objId.equals(hm.get(MINOR_OBJECT_ID))) {
                         overWrite.setRemoveFlag(true);
                     } else {
-                        mLogger.debug(" LINK for " + str + " is Not available");
+                        if (mLogger.isLoggable(Level.FINE)) {
+                            mLogger.fine(" LINK for " + str + " is Not available");
+                        }
                     }
                 }
             } else {
-                mLogger.debug("There exist no links to delete");
+                if (mLogger.isLoggable(Level.FINE)) {
+                    mLogger.fine("There are no links to delete");
+                }
             }
         }
         // EnterpriseObject eo1 = QwsController.getMasterController().updateSBR(hashMapew, eo, true);
@@ -1401,7 +1435,9 @@ public class MasterControllerService {
                 }
             }
         } else {
-             mLogger.debug("There exist no links.");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("No links exist.");
+            }
         }
         return hm;
     }
@@ -1433,7 +1469,9 @@ public class MasterControllerService {
                 }
             }
         } else {
-             mLogger.debug("There exist no links.");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("No links exist.");
+            }
         }
         return hm;
     }
@@ -1471,7 +1509,9 @@ public class MasterControllerService {
                 }
             }
         } else {
-             mLogger.debug("There exist no links.");
+            if (mLogger.isLoggable(Level.FINE)) {
+                mLogger.fine("No links exist.");
+            }
         }
         return hm;
     }
@@ -1543,7 +1583,8 @@ public class MasterControllerService {
     public String deactivateEnterpriseObject(String euid) throws ProcessingException, UserException {
         String eoStatus = null;
         if (euid == null) {
-            throw new ProcessingException("EUID can not be null");
+            throw new UserException(mLocalizer.t("SRM527: Could not deactivate an Enterprise Object." +
+                                                 "EUID has not been merged or has already been merged."));
         }
         QwsController.getMasterController().deactivateEnterpriseObject(euid);
         eoStatus = QwsController.getMasterController().getEnterpriseObject(euid).getStatus();
@@ -1553,7 +1594,8 @@ public class MasterControllerService {
     public String activateEnterpriseObject(String euid) throws ProcessingException, UserException {
         String eoStatus = null;
         if (euid == null) {
-            throw new ProcessingException("EUID can not be null");
+            throw new UserException(mLocalizer.t("SRM528: Could not deactivate an Enterprise Object." +
+                                                 "EUID cannot be null."));
         }
         QwsController.getMasterController().activateEnterpriseObject(euid);
         eoStatus = QwsController.getMasterController().getEnterpriseObject(euid).getStatus();
