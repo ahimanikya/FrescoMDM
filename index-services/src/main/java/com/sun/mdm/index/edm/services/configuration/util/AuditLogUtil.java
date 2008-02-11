@@ -115,8 +115,9 @@ public class AuditLogUtil extends ScreenUtil {
             ObjectField.OBJECTMETA_STRING_TYPE, false, searchFieldList);
         addSearchField(nodeConfigObj.getName(), FIELD_NAME_FUNCTION, "Function",
             FieldConfig.GUI_TYPE_MENULIST, 
-        ValidationService.CONFIG_MODULE_FUNCTION, DEFAULT_FIELD_LENGTH, null,
+        ValidationService.CONFIG_MODULE_AUDIT_FUNCTION, DEFAULT_FIELD_LENGTH, null,
             ObjectField.OBJECTMETA_STRING_TYPE, false, searchFieldList);
+		//added CONFIG_MODULE_AUDIT_FUNCTION to get the audit log fields.
     }
     
     /**
