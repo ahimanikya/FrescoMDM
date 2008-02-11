@@ -343,8 +343,8 @@ public class SourceMergeHandler {
         try{
             SystemObject sourceSO = masterControllerService.getSystemObject(this.source,sbrLID);
             SystemObject destinationSO = masterControllerService.getSystemObject(this.source,destnId);
-            
-            SystemObject finalMergredDestnSOPreview  = masterControllerService.getPostMergeSystemObject(this.source, sbrLID, destnId, mergedHashMapValueExpression);
+
+            SystemObject finalMergredDestnSOPreview  = masterControllerService.getPostMergeSystemObject(this.source, sbrLID, destnId);
             
             request.setAttribute("mergedSOMap", getSystemObjectAsHashMap(finalMergredDestnSOPreview));
             
