@@ -232,28 +232,24 @@ public class MasterControllerService {
 
     public SystemObject mergeSystemObject(String systemCode, String sourceLID, String destLID, HashMap hm) throws ProcessingException, UserException, ObjectException, ValidationException, Exception {
 
-        SystemObjectPK sourceSytemObjectPK = new SystemObjectPK(systemCode, sourceLID);
-        SystemObject sourceSO = QwsController.getMasterController().getSystemObject(sourceSytemObjectPK);
         SystemObjectPK destSytemObjectPK = new SystemObjectPK(systemCode, destLID);
         SystemObject destSO = QwsController.getMasterController().getSystemObject(destSytemObjectPK);
-        EnterpriseObject sourceEO = QwsController.getMasterController().getEnterpriseObject(sourceSytemObjectPK);
-        EnterpriseObject destEO = QwsController.getMasterController().getEnterpriseObject(destSytemObjectPK);
+        
         modifySystemObject(destSO, hm);
+  
         MergeResult mergeResult = QwsController.getMasterController().mergeSystemObject(systemCode, sourceLID, destLID, destSO.getObject(), false);
         return mergeResult.getDestinationEO().getSystemObject(systemCode, destLID);
 
     }
 
-        public SystemObject getPostMergeSystemObject(String systemCode, String sourceLID, String destLID, HashMap hm) throws ProcessingException, UserException, ObjectException, ValidationException, Exception {
+   public SystemObject getPostMergeSystemObject(String systemCode, String sourceLID, String destLID) throws ProcessingException, UserException, ObjectException, ValidationException, Exception {
 
-        SystemObjectPK sourceSytemObjectPK = new SystemObjectPK(systemCode, sourceLID);
-        SystemObject sourceSO = QwsController.getMasterController().getSystemObject(sourceSytemObjectPK);
         SystemObjectPK destSytemObjectPK = new SystemObjectPK(systemCode, destLID);
+
         SystemObject destSO = QwsController.getMasterController().getSystemObject(destSytemObjectPK);
-        EnterpriseObject sourceEO = QwsController.getMasterController().getEnterpriseObject(sourceSytemObjectPK);
-        EnterpriseObject destEO = QwsController.getMasterController().getEnterpriseObject(destSytemObjectPK);
-        modifySystemObject(destSO, hm);
+        System.out.println("==> getPostMergeSystemObject" + systemCode + "==>: " +  destLID);
         MergeResult mergeResult = QwsController.getMasterController().mergeSystemObject(systemCode, sourceLID, destLID, destSO.getObject(), true);
+        
         return mergeResult.getDestinationEO().getSystemObject(systemCode, destLID);
 
     }
@@ -711,7 +707,6 @@ public class MasterControllerService {
         }
         return minorObject;
     }
-    
     public ObjectNode modifyMinorObjectSBR(ObjectNode minorObject, HashMap hm, SBR sbr) throws ObjectException, ValidationException {
         for (Object obj : hm.keySet()) {
             Object value = hm.get(obj);
@@ -804,7 +799,7 @@ public class MasterControllerService {
                 }
             }
         }
-        if (eo != null) {            
+        if (eo != null) {
             updateEnterpriseObject(eo);
         } else {
             updateEnterpriseObject(localEO);
@@ -1599,4 +1594,83 @@ public class MasterControllerService {
     public void setRootNodeName(String rootNodeName) {
         this.rootNodeName = rootNodeName;
     }
+//	Added By Anil
+	     /**
+     * Merge multiple enterprise records based on the given source EUIDs and the
+     * destination EO.  The source EUIDs will each be successively merged
+     * into the destination EO.  For example, sourceEUIDs[0] will be merged into
+     * the destination EO.  Then sourceEUIDs[1] will be merged into the destination
+     * EO.  Next, sourceEUIDS[2] will be merged into the destination EO.  
+     * If there are n merges, there will be n merge transaction log entries.  All of
+     * these transactions must be unmerged in order to restore the state prior to the
+     * multiple merge.
+     * 
+     * @param con  Database connection handle.
+     * @param sourceEUIDs  Array of source EUIDs to be merged.
+     * @param destinationEO  The EnterpriseObject to be kept.
+     * @param srcRevisionNumbers  The SBR revision numbers of the Enterprise
+     * Objects to be merged.
+     * @param destRevisionNumber  The SBR revision number of the EUID to be kept.
+     * @param calculateOnly  Indicate whether to commit changes to DB or just compute the
+     * MergeResult. in actual merge it should be <b> false </b>
+     * @exception ProcessingException  An error has occured.
+     * @exception UserException  A user error occured
+     * @return Results of merge operations.
+     */
+    public EnterpriseObject  mergeMultipleEnterpriseObjects(String sourceEUIDs[],EnterpriseObject destinationEO,String srcRevisionNumbers[], String destRevisionNumber) throws ProcessingException, UserException{
+       
+        EnterpriseObject resultEo = null;
+        if ((sourceEUIDs != null || sourceEUIDs.length != 0) && destinationEO != null && (srcRevisionNumbers.length != 0 || srcRevisionNumbers != null)) {
+            MergeResult[] mresult = QwsController.getMasterController().mergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber, false);
+
+            if (mresult != null && mresult.length != 0) {
+                resultEo = mresult[(mresult.length - 1)].getDestinationEO();
+            }
+            return resultEo;
+
+        } else {
+            throw new UserException("None of sourceEOs and destinationEO can be null");//user exception
+        }       
+    }
+    
+   //Added By Anil
+     /**
+     * Merge multiple enterprise records based on the given source EUIDs and the
+     * destination EO.  The source EUIDs will each be successively merged
+     * into the destination EO.  For example, sourceEUIDs[0] will be merged into
+     * the destination EO.  Then sourceEUIDs[1] will be merged into the destination
+     * EO.  Next, sourceEUIDS[2] will be merged into the destination EO.  
+     * If there are n merges, there will be n merge transaction log entries.  All of
+     * these transactions must be unmerged in order to restore the state prior to the
+     * multiple merge.
+     * 
+     * @param con  Database connection handle.
+     * @param sourceEUIDs  Array of source EUIDs to be merged.
+     * @param destinationEO  The EnterpriseObject to be kept.
+     * @param srcRevisionNumbers  The SBR revision numbers of the Enterprise
+     * Objects to be merged.
+     * @param destRevisionNumber  The SBR revision number of the EUID to be kept.
+     * @param calculateOnly  Indicate whether to commit changes to DB or just compute the
+     * MergeResult. in this Post merge it should be <b> true </b>
+     * @exception ProcessingException  An error has occured.
+     * @exception UserException  A user error occured
+     * @return Results of merge operations.
+     */
+    
+    public EnterpriseObject  getPostMergeMultipleEnterpriseObjects(String sourceEUIDs[],EnterpriseObject destinationEO,String srcRevisionNumbers[], String destRevisionNumber) throws ProcessingException, UserException{
+       
+        EnterpriseObject resultEo = null;
+        if ((sourceEUIDs != null || sourceEUIDs.length != 0) && destinationEO != null && (srcRevisionNumbers.length != 0 || srcRevisionNumbers != null)) {
+            MergeResult[] mresult = QwsController.getMasterController().mergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber, true);
+
+            if (mresult != null && mresult.length != 0) {
+                resultEo = mresult[(mresult.length - 1)].getDestinationEO();
+            }
+            return resultEo;
+
+        } else {
+            throw new UserException("None of sourceEOs and destinationEO can be null");//user exception
+        }       
+    }
+    
 }
