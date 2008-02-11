@@ -112,6 +112,8 @@ public class FieldConfig implements java.io.Serializable, Comparable {
     //Adding the following variable for getting the select options if the FieldConfig type is "Menu List"
     private ArrayList<SelectItem> selectOptions = new ArrayList();
     
+    private boolean range;
+    
     
     
     // --------------------------------------------------------- Public Methods
@@ -261,6 +263,7 @@ public class FieldConfig implements java.io.Serializable, Comparable {
      * @return the dislay name
      */
     public String getDisplayName() {
+        //System.out.println("USAGEEE" + this.usage);
         // RANGE_SEARCH: append From or To when necessary
         if (this.usage == null) {
             // RANGE_SEARCH: default usage is null, and display name should be left as is
@@ -884,4 +887,24 @@ public class FieldConfig implements java.io.Serializable, Comparable {
     public void setSelectOptions(ArrayList<SelectItem> selectOptions) {
         this.selectOptions = selectOptions;
     }
+
+    /**
+     * Added on:  02/06/2008
+
+     * getter method for the range field
+     * 
+     * @return boolean
+     */    
+    public boolean isRange() {
+        if(getIndex(getFullName()) !=0 ) {
+            range = true;
+        }
+        return range;
+    }
+
+    public void setRange(boolean range) {
+        this.range = range;
+    }
+
+    
 }
