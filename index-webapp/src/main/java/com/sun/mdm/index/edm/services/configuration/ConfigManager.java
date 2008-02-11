@@ -162,6 +162,11 @@ public class ConfigManager implements java.io.Serializable {
     private String securityEnabled = null;
     private ObjectSensitivePlugIn security = null;
     
+    
+    // introduced new element which will be used while reading EDM.xml file.
+    private Element pageDefElement = null;
+    
+    
     /**
      * Constructor for the ConfigManager object
      */
@@ -1561,10 +1566,14 @@ public class ConfigManager implements java.io.Serializable {
             } else if (element.getTagName().equalsIgnoreCase("gui-definition")) {
               try {
                   ChildElementIterator guiIter = new ChildElementIterator(element);
+                                    
                   while ( guiIter.hasNext() ) {
                       Element guiElement = (Element)guiIter.next();
                     if (guiElement.getTagName().equalsIgnoreCase("page-definition")
                         || guiElement.getTagName().equalsIgnoreCase("system-display-name-overrides")) {
+                        
+                        // Assigning this element to global variable which will be useful in getScreenObjectFromScreenName()
+                        pageDefElement= guiElement;                        
                         buildQwsConfig(guiElement);
                     }
                 }
@@ -1693,5 +1702,74 @@ public class ConfigManager implements java.io.Serializable {
             ScreenObject scrObj = getScreen(screenID);
             scrObj.setEuidLength(euidLength);
         }
+    }
+    /**
+     * after reading EDM.xml file in read(InputStream input) <page-definition>
+     * element assigned to pageDefElement. This method simply returns 
+     * pageDefElement.
+     * 
+     */
+    public Element getPageDefinitionElement(){
+        return this.pageDefElement;
+    }
+    
+    /* Returns the corresponding screenobject for given Screen name 
+     * @param edmScreenName is the screen Name. Example: record-details,transactions,duplicate-records
+     * @return  ScreenObjet of corresponding Screen name
+     */ 
+     public ScreenObject getScreenObjectFromScreenName(String edmScreenName) throws Exception {
+        ChildElementIterator screenNameIterator = null;
+        ScreenObject screenObject = null;
+        Element guiElement = getPageDefinitionElement();
+        
+        System.out.println("guiElement from screen obj"+guiElement);
+        screenNameIterator = new ChildElementIterator(guiElement);
+        String screenID = null;
+        try {
+            while (screenNameIterator.hasNext()) {
+
+                Element screenName = (Element) screenNameIterator.next();
+                if (screenName.getTagName().equalsIgnoreCase(edmScreenName)) {
+                    screenID = NodeUtil.getChildNodeText(screenName, "screen-id");                 
+                }
+            }
+        } catch (Exception ex) {  // exception error already logged
+            mLogger.error("Error occurs in gui definition: " + ex.getMessage());
+        }if (screenID != null) {
+            screenObject = getScreen(new Integer(screenID));
+        }
+        return screenObject;
+    }
+/* Returns All the screen Objects
+ * it read all the screen names from EDM.xml and retrieves all the screen ids 
+ * then it returns the Screenobject.finally List of screen objects will get returned
+ * @return  ArrayList of ScreenObjects
+ */ 
+      public ArrayList getAllScreenObjects() throws Exception {
+        ChildElementIterator screenNameIterator = null;
+        ScreenObject screenObject = null;
+        Element guiElement = getPageDefinitionElement();
+        screenNameIterator = new ChildElementIterator(guiElement);
+        String screenID = null;
+        ArrayList screnObjArrylist = null;
+        try {
+            screnObjArrylist = new ArrayList();
+            while (screenNameIterator.hasNext()) {
+                
+                Element screenName = (Element) screenNameIterator.next();
+                if (!screenName.getTagName().equalsIgnoreCase("initial-screen-id")){                    
+                    screenID = NodeUtil.getChildNodeText(screenName, "screen-id");                    
+                }
+                
+                if (screenID != null) {
+                    screenObject = getScreen(new Integer(screenID));
+                    screnObjArrylist.add(screenObject);
+                }
+
+            }
+        } catch (Exception ex) {  // exception error already logged
+            mLogger.error("Error occurs in gui definition: " + ex.getMessage());
+        }
+        return screnObjArrylist;
     }
 }
