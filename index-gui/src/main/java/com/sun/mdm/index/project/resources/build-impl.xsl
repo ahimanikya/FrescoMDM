@@ -266,7 +266,9 @@ is divided into following sections:
                 <jar destfile="cleanser-generated/cleanser/lib/resources.jar" basedir="files-generated/resource"/>
                 <copy file="files-generated/resource/object.xml" todir="cleanser-generated/cleanser"/>
                 <copy file="lib/master-index-client.jar" todir="cleanser-generated/cleanser/lib"/>
-                
+                <copy todir="cleanser-generated/cleanser/lib">
+                    <fileset dir="${{module.install.dir}}/ext/eview/standardizer/lib"/>
+                </copy>
                 <zip destfile="cleanser-generated/cleanser.zip" basedir="cleanser-generated" excludes="cleanser.zip"/>
                 <delete dir="cleanser-generated/cleanser"/>
             </target>
