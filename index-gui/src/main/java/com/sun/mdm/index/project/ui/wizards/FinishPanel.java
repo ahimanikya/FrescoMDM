@@ -1414,7 +1414,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
             "        <debug-flag>true</debug-flag>\n" + 
             "        <debug-dest>console</debug-dest>\n" +
             "        <enable-security>false</enable-security>\n" +
-            "        <object-sensitive-plug-in-class>com.stc.eindex.security.VIPObjectSensitivePlugIn</object-sensitive-plug-in-class>\n" +
+            "        <object-sensitive-plug-in-class></object-sensitive-plug-in-class>\n" +
             "    </impl-details>\n";
 
         return implDetails;
