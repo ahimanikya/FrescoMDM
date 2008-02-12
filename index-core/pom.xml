@@ -55,7 +55,9 @@
                         <goals><goal>run</goal></goals>
                         <configuration>
                             <tasks>
-                            <taskdef name="i18n" classname="net.java.hulp.i18n.buildtools.I18NTask" classpath="${basedir}/src/main/resources/globalization/net.java.hulp.i18ntask.jar"/>
+                            <taskdef name="i18n" classname="net.java.hulp.i18n.buildtools.I18NTask">
+                                <classpath refid="maven.test.classpath"/>
+                            </taskdef>
                             <i18n dir="${project.build.directory}/classes" file="${basedir}/src/main/resources/com/sun/mdm/index/util/msgs.properties" prefix="MDM-MI-" strict="false" pattern="([A-Z][A-Z][A-Z]\d\d\d)(: )(.*)" />               
                             </tasks> 
                         </configuration>
@@ -401,19 +403,6 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>install-i18n</id>
-                        <phase>process-resources</phase>
-                        <goals><goal>install-file</goal></goals>
-                        <configuration>
-                            <generatePom>true</generatePom>
-                            <packaging>jar</packaging>
-                            <groupId>mural</groupId>
-                            <artifactId>i18n</artifactId>
-                            <version>${mural.currentVersion}</version>
-                            <file>${basedir}/src/main/resources/globalization/net.java.hulp.i18n.jar</file>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>install-spring-javaconfig</id>
                         <phase>process-resources</phase>
                         <goals><goal>install-file</goal></goals>
@@ -610,9 +599,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>mural</groupId>
-            <artifactId>i18n</artifactId>
-            <version>${mural.currentVersion}</version>
+            <groupId>net.java.hulp.i18ntask</groupId>
+            <artifactId>net.java.hulp.i18ntask</artifactId>
+            <version>2.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>oracle.jdbc</groupId>
