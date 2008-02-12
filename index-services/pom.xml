@@ -59,8 +59,10 @@
                     <goals><goal>run</goal></goals>
                     <configuration>
                         <tasks>
-                        <taskdef name="i18n" classname="net.java.hulp.i18n.buildtools.I18NTask" classpath="${basedir}/../index-core/src/main/resources/globalization/net.java.hulp.i18ntask.jar"/>
-                        <i18n dir="${project.build.directory}/classes" file="${basedir}/src/main/resources/com/sun/mdm/index/util/services_msgs.properties" prefix="MDM-MI-" strict="false" pattern="([A-Z][A-Z][A-Z]\d\d\d)(: )(.*)" />               
+                            <taskdef name="i18n" classname="net.java.hulp.i18n.buildtools.I18NTask">
+                                <classpath refid="maven.test.classpath"/>
+                            </taskdef>
+                            <i18n dir="${project.build.directory}/classes" file="${basedir}/src/main/resources/com/sun/mdm/index/util/services_msgs.properties" prefix="MDM-MI-" strict="false" pattern="([A-Z][A-Z][A-Z]\d\d\d)(: )(.*)" />               
                         </tasks> 
                     </configuration>
                 </execution>
@@ -76,9 +78,14 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>mural</groupId>
-        <artifactId>i18n</artifactId>
-        <version>${mural.currentVersion}</version>
+        <groupId>net.java.hulp.i18ntask</groupId>
+        <artifactId>net.java.hulp.i18ntask</artifactId>
+        <version>2.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+        <groupId>net.java.hulp.i18n</groupId>
+        <artifactId>net.java.hulp.i18n</artifactId>
+        <version>2.1-SNAPSHOT</version>
     </dependency>
     <dependency>
 	      <groupId>ant-contrib</groupId>
