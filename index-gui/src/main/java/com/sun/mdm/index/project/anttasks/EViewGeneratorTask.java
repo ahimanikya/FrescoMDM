@@ -434,12 +434,17 @@ public class EViewGeneratorTask extends Task {
         try {
             File outFile = new File(mEjbdir, "src/conf/sun-ejb-jar.xml");
             
+            File outFileTemp = new File(mEjbdir, "src/conf/sun-ejb-jar.xml.tmpl");
             
             
             if(!isSecurityEnable()){
             	if(outFile.exists())
-            		outFile.delete();
+            		outFile.renameTo(outFileTemp);
             	return;
+            }
+            
+            if(!outFile.exists()){
+            	outFileTemp.renameTo(outFile);
             }
             
             
