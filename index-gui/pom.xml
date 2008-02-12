@@ -107,6 +107,8 @@
                                         <include name="index-core.jar"></include>                 
                                     </fileset>
                                 </copy>
+                                <copy file="${settings.localRepository}/net/java/hulp/i18n/net.java.hulp.i18n/2.1-SNAPSHOT/net.java.hulp.i18n-2.1-SNAPSHOT.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/net.java.hulp.i18n.jar"></copy>
+                                <copy file="${settings.localRepository}/net/java/hulp/i18ntask/net.java.hulp.i18ntask/2.1-SNAPSHOT/net.java.hulp.i18ntask-2.1-SNAPSHOT.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/net.java.hulp.i18ntask.jar"></copy>
                                 <copy file="${settings.localRepository}/mural/matcher/1.0/matcher-1.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/matcher.jar"></copy>
                                 <copy file="${settings.localRepository}/org/apache/lucene/lucene-core/2.2.0/lucene-core-2.2.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/lucene-core.jar"></copy>
                                 <unzip src="${settings.localRepository}/mural/matcher-resources/1.0/matcher-resources-1.0.jar" dest="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates"></unzip>
