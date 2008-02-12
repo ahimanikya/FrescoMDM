@@ -39,10 +39,12 @@ public class SecurityManager {
 
 	private static final String EVIEW_ADMIN = "eView.Admin";
 	private static final String MASTER_INDEX_ADMIN = "MasterIndex.Admin";
-	
+
 	private SessionContext context;
 	private String method;
 	private Document doc;
+
+	private boolean onSwitch = true;
 
 	private HashMap<String, HashSet<String>> roleMap = new HashMap<String, HashSet<String>>();
 
@@ -62,6 +64,15 @@ public class SecurityManager {
 		init();
 
 	}
+	
+	protected SecurityManager(SessionContext context, FileInputStream file) {
+		this.context = context;
+
+		doc = getDocument(file);
+
+		init();
+
+	}
 
 	private void init() {
 
@@ -70,6 +81,18 @@ public class SecurityManager {
 			XPath xpath = XPathFactory.newInstance().newXPath();
 
 			try {
+
+				Element switchE = (Element) xpath.evaluate(
+						"//Configuration/SecurityConfig/switch", doc,
+						XPathConstants.NODE);
+
+				if (switchE != null) {
+					String s = switchE.getTextContent();
+					if (!"ON".equalsIgnoreCase(s.trim())) {
+						onSwitch = false;
+					}
+				}
+
 				NodeList elements = (NodeList) xpath.evaluate(
 						"//Configuration/SecurityConfig/role", doc,
 						XPathConstants.NODESET);
@@ -117,6 +140,10 @@ public class SecurityManager {
 
 	public boolean checkAccess() throws ProcessingException {
 
+		
+		if(!onSwitch)
+			return true;
+		
 		mLogger.fine(mLocalizer.x("MSC901: caller principal: {0}", context
 				.getCallerPrincipal()));
 		mLogger.fine(mLocalizer.x("MSC902: caller role is Admin? :  {0}",
@@ -140,8 +167,8 @@ public class SecurityManager {
 	private boolean checkMethodPermission() {
 
 		HashSet<String> roles = roleMap.get(method);
-		
-		if(roles == null){
+
+		if (roles == null) {
 			return false;
 		}
 
@@ -173,7 +200,8 @@ public class SecurityManager {
 			b = context.isCallerInRole(MASTER_INDEX_ADMIN);
 		}
 		if (!b) {
-			b = MASTER_INDEX_ADMIN.equals(context.getCallerPrincipal().getName());
+			b = MASTER_INDEX_ADMIN.equals(context.getCallerPrincipal()
+					.getName());
 		}
 
 		return b;
@@ -211,18 +239,12 @@ public class SecurityManager {
 	}
 
 	public static void main(String[] args) {
-		SecurityManager sm = new SecurityManager(null);
-
-		File f = new File("trunk/index-core/src/test/resources/security.txt");
-
+		
 		try {
-			if (f.exists()) {
-				sm.doc = sm.getDocument(new FileInputStream(f));
+		File f = new File("index-core/src/test/resources/security.txt");
+		SecurityManager sm = new SecurityManager(null,new FileInputStream(f));
+		
 
-				sm.init();
-
-				sm.toString();
-			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
