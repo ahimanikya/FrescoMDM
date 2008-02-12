@@ -433,6 +433,16 @@ public class EViewGeneratorTask extends Task {
 
         try {
             File outFile = new File(mEjbdir, "src/conf/sun-ejb-jar.xml");
+            
+            
+            
+            if(!isSecurityEnable()){
+            	if(outFile.exists())
+            		outFile.delete();
+            	return;
+            }
+            
+            
             InputStream is = getClass()
                             .getClassLoader()
                             .getResourceAsStream(
@@ -462,7 +472,35 @@ public class EViewGeneratorTask extends Task {
 
     }
 
-    private String getRoleMapping() throws ParserConfigurationException, SAXException, IOException {
+    private boolean isSecurityEnable() throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+    	
+    	boolean onSwitch=true;
+    	
+    	File securityFile = new File(mSrcdir, 
+                EviewProjectProperties.CONFIGURATION_FOLDER + "/security.xml");
+        Document doc = getDocument(securityFile);
+        ArrayList<String> list = new ArrayList<String>();
+
+        if (doc != null) {
+
+            XPath xpath = XPathFactory.newInstance().newXPath();
+
+            Element switchE = (Element) xpath.evaluate(
+					"//Configuration/SecurityConfig/switch", doc,
+					XPathConstants.NODE);
+
+			if (switchE != null) {
+				String s = switchE.getTextContent();
+				if (!"ON".equalsIgnoreCase(s.trim())) {
+					onSwitch = false;
+				}
+			}
+            
+        }
+		return onSwitch;
+	}
+
+	private String getRoleMapping() throws ParserConfigurationException, SAXException, IOException {
 
         ArrayList<String> list = getSecurityRoles();
 
