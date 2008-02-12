@@ -106,10 +106,6 @@
                                     <fileset dir="${basedir}/../index-core/target">
                                         <include name="index-core.jar"></include>                 
                                     </fileset>
-                                    <fileset dir="${basedir}/../index-core/src/main/resources/globalization">
-                                        <include name="net.java.hulp.i18n.jar"></include>                 
-                                        <include name="net.java.hulp.i18ntask.jar"></include>                 
-                                    </fileset>                                    
                                 </copy>
                                 <copy file="${settings.localRepository}/mural/matcher/1.0/matcher-1.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/matcher.jar"></copy>
                                 <copy file="${settings.localRepository}/org/apache/lucene/lucene-core/2.2.0/lucene-core-2.2.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/lucene-core.jar"></copy>
