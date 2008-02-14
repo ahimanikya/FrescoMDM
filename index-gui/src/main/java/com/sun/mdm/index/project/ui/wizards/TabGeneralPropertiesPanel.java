@@ -1,0 +1,697 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
+ */
+package com.sun.mdm.index.project.ui.wizards;
+
+import com.sun.mdm.index.project.ui.wizards.generator.ConfigGenerator;
+import com.sun.mdm.index.project.ui.wizards.generator.MatchType;
+import com.sun.mdm.index.parser.FieldDef;
+
+public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
+    private String mOriginalDataSize;
+    private String MATCH_TYPE_NONE = java.util.ResourceBundle.getBundle("com/sun/mdm/index/project/ui/applicationeditor/Bundle").getString("MSG_None");
+    private boolean bCheckedOut = true;
+    private EntityNode mEntityNode;
+    
+    /** Creates new form TabGeneralPropertiesPanel */
+    public TabGeneralPropertiesPanel(EntityNode entityNode) {
+        initComponents();
+        mEntityNode = entityNode;
+        cbDataType.addItemListener(new java.awt.event.ItemListener() {
+                public void itemStateChanged(java.awt.event.ItemEvent e) {
+                    String type = (String) cbDataType.getSelectedItem();
+                    if (type.equals("char") || type.equals("boolean")) {
+                        setDataSize(1);
+                    }
+                }
+            });
+        MatchType[] matchTypes;
+        matchTypes = ConfigGenerator.getMatchTypes(DefineDeploymentPanel.matchEngine);
+        setMatchTypeComboBox(matchTypes);
+        
+        addListeners1();
+        loadProperties(entityNode.getFieldDef());
+        // add other listeners after properties are loaded
+        addListeners2();
+        enableComponents();
+    }
+    
+    private void enableComponents() {
+        this.txtName.setEnabled(bCheckedOut);
+        this.cbDataType.setEnabled(bCheckedOut);
+        this.cbMatchType.setEnabled(bCheckedOut);
+        //this.chkBlocking.setEnabled(bCheckedOut);
+        this.chkKeyType.setEnabled(bCheckedOut);
+        this.chkUpdateable.setEnabled(bCheckedOut);
+        this.chkRequired.setEnabled(bCheckedOut);
+        this.spFieldSize.setEnabled(bCheckedOut);
+        this.txtPattern.setEnabled(bCheckedOut);
+        this.txtCodeModule.setEnabled(bCheckedOut);
+        this.txtUserCode.setEnabled(bCheckedOut);        
+        this.txtConstrainedBy.setEnabled(bCheckedOut);
+    }
+    
+    private void addListeners1() {
+        txtName.addFocusListener(new java.awt.event.FocusListener() {
+                String oldName;
+                public void focusGained(java.awt.event.FocusEvent ev) {
+                    oldName = txtName.getText();
+                    txtName.selectAll();
+                }
+
+                public void focusLost(java.awt.event.FocusEvent ev) {
+                    String newName = txtName.getText();
+                    if (!oldName.equals(newName) && com.sun.mdm.index.project.ui.applicationeditor.EntityNode.checkNodeNameValue(newName)) {
+                        txtName.setText(newName);
+                        mEntityNode.setNodeName(newName);
+                    }
+                }
+            });
+        txtName.addKeyListener(new java.awt.event.KeyAdapter() {
+                @Override
+                public void keyReleased(java.awt.event.KeyEvent evt) {
+                    onNameKeyReleased(evt);
+                    char c = evt.getKeyChar();
+                    if (c == '\n') {
+                        cbDataType.requestFocus();
+                    }
+                }
+                @Override
+                public void keyTyped(java.awt.event.KeyEvent evt) {
+                    onNameKeyTyped(evt);}
+        });
+        
+        chkBlocking.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent e) {
+            }
+        });
+    }
+    
+    private void addListeners2() {
+        cbMatchType.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent e) {
+                String matchType = (String) cbMatchType.getSelectedItem();
+                if (matchType == null) {
+                    matchType = MATCH_TYPE_NONE;
+                }
+
+                if (matchType.equals(MATCH_TYPE_NONE)) {
+                    // disable Matching Tab
+                    //btnMatchTypeAutoGen.setEnabled(false);
+                } else {
+                    // enable Matching Tab
+                    //btnMatchTypeAutoGen.setEnabled(true);
+                }
+            }
+        });
+        
+        this.cbDataType.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent e) {
+            }
+        });
+        
+        this.chkKeyType.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            }
+        });
+
+        this.chkRequired.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            }
+        });
+        
+        this.chkUpdateable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            }
+        });
+        
+        this.spFieldSize.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent e) {
+                if (!mOriginalDataSize.equals(getDataSize())) {
+                    
+                }
+            }
+        });
+        
+        this.txtPattern.addKeyListener(new java.awt.event.KeyAdapter() {
+                @Override
+                public void keyReleased(java.awt.event.KeyEvent evt) {
+                    onTextFieldKeyReleased(evt);
+                    char c = evt.getKeyChar();
+                    if (c == '\n') {
+                        txtCodeModule.requestFocus();
+                    }
+                }
+                @Override
+                public void keyTyped(java.awt.event.KeyEvent evt) {
+                    // Allow regex patterns
+                    onTextFieldKeyTyped(evt);
+                }
+        });
+        
+        this.txtCodeModule.addKeyListener(new java.awt.event.KeyAdapter() {
+                @Override
+                public void keyReleased(java.awt.event.KeyEvent evt) {
+                    onTextFieldKeyReleased(evt);
+                    char c = evt.getKeyChar();
+                    if (c == '\n') {
+                        txtUserCode.requestFocus();
+                    }
+                }
+                @Override
+                public void keyTyped(java.awt.event.KeyEvent evt) {
+                    onTextFieldKeyTyped(evt);
+                }
+        });
+        
+        this.txtUserCode.addKeyListener(new java.awt.event.KeyAdapter() {
+                @Override
+                public void keyReleased(java.awt.event.KeyEvent evt) {
+                    onTextFieldKeyReleased(evt);
+                    char c = evt.getKeyChar();
+                    if (c == '\n') {
+                        txtConstrainedBy.requestFocus();
+                    }
+                }
+                @Override
+                public void keyTyped(java.awt.event.KeyEvent evt) {
+                    onTextFieldKeyTyped(evt);
+                }
+        });
+        
+        this.txtConstrainedBy.addKeyListener(new java.awt.event.KeyAdapter() {
+                @Override
+                public void keyReleased(java.awt.event.KeyEvent evt) {
+                    onTextFieldKeyReleased(evt);
+                    char c = evt.getKeyChar();
+                    if (c == '\n') {
+                        txtName.requestFocus();
+                    }
+                }
+                @Override
+                public void keyTyped(java.awt.event.KeyEvent evt) {
+                    onTextFieldKeyTyped(evt);
+                }
+        });
+    }
+    
+    /**
+     *param FieldDef
+     */
+    public void loadProperties(FieldDef fieldDef) {
+        if (fieldDef != null) {
+            setFieldName(fieldDef.getFieldName());
+            setDataType(fieldDef.getFieldType());
+            String matchType = fieldDef.getMatchType();
+            if (matchType != null) {
+                cbMatchType.setSelectedItem(matchType);
+            } else {
+                cbMatchType.setSelectedIndex(0);
+            }
+            setBlockOn(fieldDef.isBlockOn());
+            setKeyType(fieldDef.isKeyType());
+            setUpdateable(fieldDef.isUpdateable());
+            setRequired(fieldDef.isRequired());
+            setDataSize(fieldDef.getFieldSize());
+            setPattern(fieldDef.getPattern());
+            setCodeModule(fieldDef.getCodeModule());
+            setUserCode(fieldDef.getUserCode());
+            setConstraintBy(fieldDef.getConstraintBy());
+        } else {
+            // set defaults
+        }
+    }
+    
+    private void ConfigureBlockingActionPerformed(java.awt.event.ActionEvent evt) {
+        //java.awt.Frame parentWindow = (java.awt.Frame) WindowManager.getDefault().getMainWindow();
+        //BlockingConfigurationPanel mBlockingConfigurationPanel = new BlockingConfigurationPanel(parentWindow);
+        //mBlockingConfigurationPanel.show();
+        //EviewEditorMainPanel.invokeBlockingAction();
+    }
+
+    private void onNameKeyTyped(java.awt.event.KeyEvent evt) {
+        char c = evt.getKeyChar();
+        if (!Character.isLetterOrDigit(c) && c != '-' && c != '_' && c != '\b' && c != '\n' || c == ' ') {
+            java.awt.Toolkit.getDefaultToolkit().beep();
+            evt.consume();
+        }
+    }
+    
+    private void onNameKeyReleased(java.awt.event.KeyEvent evt) {
+        //String newName = txtName.getText();
+    }
+
+    /*
+     * Check if char entered will cause xml to break
+     * such as < > /
+     */
+    private void onTextFieldKeyTyped(java.awt.event.KeyEvent evt) {
+        char c = evt.getKeyChar();
+        if (!Character.isLetterOrDigit(c) && 
+                c != ' ' &&
+                c != '-' && c != '_' && 
+                c != '(' && c != ')' && 
+                c != '[' && c != ']' && 
+                c != '{' && c != '}' && 
+                c != '\b' && c != '\n') {
+            java.awt.Toolkit.getDefaultToolkit().beep();
+            evt.consume();
+        }
+    }
+
+    private void onTextFieldKeyReleased(java.awt.event.KeyEvent evt) {
+    }
+
+    /**
+     *@return DataType
+     */
+    public void setFieldName(String name) {
+        if (!name.equals(txtName.getText())) {
+            txtName.setText(name);
+        }
+    }
+
+    /**
+     *@return Field Name
+     */
+    public String getFieldName() {
+        return this.txtName.getText();
+    }
+
+    /**
+     *@return DataType
+     */
+    private void setDataType(String dataType) {
+        if (dataType.equals("byte")) {
+            dataType = "char";
+        }
+        this.cbDataType.setSelectedItem(dataType);
+    }
+
+    /**
+     *@return DataType
+     */
+    public String getDataType() {
+        String dataType = this.cbDataType.getSelectedItem().toString();
+        if (dataType.equals("char")) {
+            dataType = "byte";
+        }
+        return dataType;
+    }
+   
+    /**
+     * Should be called from TabMatchConfigPanel when match type list is changed
+     *@param alMatchTypes
+     */
+    public void setMatchTypeComboBox(MatchType[] matchTypes) {
+        cbMatchType.removeAllItems();
+        cbMatchType.addItem(MATCH_TYPE_NONE);
+        if (matchTypes != null) {
+            for (int i = 0; i < matchTypes.length; i++) {
+                cbMatchType.addItem(matchTypes[i].getMatchTypeID());
+            }
+        }
+    }
+    
+    private String getEnterpriseFieldName(EntityNode parentNode, String fieldName) {
+        String fullFieldName;
+        if (parentNode.isSub()) {
+            EntityNode grandParentNode = (EntityNode) parentNode.getParent();
+            fullFieldName = "Enterprise.SystemSBR." + grandParentNode.getName() + "." + parentNode.getName() + "[*]." + fieldName;
+        } else {
+            fullFieldName = "Enterprise.SystemSBR." + parentNode.getName() + "." + fieldName;
+        }
+        return fullFieldName;
+    }
+    
+    /**
+     *@return MatchType
+     */
+    public String getMatchType() {
+        String matchType = (String) this.cbMatchType.getSelectedItem();
+        if (matchType == null) {
+            matchType = MATCH_TYPE_NONE;
+        }
+
+        return matchType;
+    }
+
+    /**
+     *@return Blocking
+     */
+    public void setBlockOn(boolean bBlocking) {
+        chkBlocking.setSelected(bBlocking);
+    }
+
+    /**
+     *@return Blocking
+     */
+    public String getBlocking() {
+        return chkBlocking.isSelected() ? "true" : "false";
+    }
+
+    /**
+     *@param keyType
+     */
+    private void setKeyType(boolean keyType) {
+        chkKeyType.setSelected(keyType);
+    }
+    /**
+     *@return KeyType
+     */
+    public String getKeyType() {
+        return chkKeyType.isSelected() ? "true" : "false";
+    }
+
+    /**
+     *@param Required
+     */
+    private void setRequired(boolean required) {
+        chkRequired.setSelected(required);
+    }
+
+    /**
+     *@return Required
+     */
+    public String getRequired() {
+        return chkRequired.isSelected() ? "true" : "false";
+    }
+
+    /**
+     *@param Updateable
+     */
+    private void setUpdateable(boolean updateable) {
+        chkUpdateable.setSelected(updateable);
+    }
+
+    /**
+     *@return Updateable
+     */
+    public String getUpdateable() {
+        return chkUpdateable.isSelected() ? "true" : "false";
+    }
+
+    /**
+     *@param DataSize
+     */
+    private void setDataSize(int dataSize) {
+        mOriginalDataSize = String.valueOf(dataSize);
+        Integer size = Integer.valueOf(mOriginalDataSize);
+        spFieldSize.setValue(size);
+    }
+
+    /**
+     *@return DataSize
+     */
+    public String getDataSize() {
+        return this.spFieldSize.getValue().toString();
+    }
+
+    /**
+     *@param Pattern
+     */
+    private void setPattern(String pattern) {
+        this.txtPattern.setText(pattern);
+    }
+
+    /**
+     *@return Pattern
+     */
+    public String getPattern() {
+        return this.txtPattern.getText();
+    }
+
+    /**
+     *@param Code Module
+     */
+    private void setCodeModule(String codeModule) {
+        this.txtCodeModule.setText(codeModule);
+    }
+
+    /**
+     *@return Code Module
+     */
+    public String getCodeModule() {
+        return this.txtCodeModule.getText();
+    }
+
+    /**
+     *@param User Code
+     */
+    private void setUserCode(String userCode) {
+        this.txtUserCode.setText(userCode);
+    }
+
+    /**
+     *@return User Code
+     */
+    public String getUserCode() {
+        return this.txtUserCode.getText();
+    }
+
+    /**
+     *@param Constrained By
+     */
+    private void setConstraintBy(String constrainedBy) {
+        this.txtConstrainedBy.setText(constrainedBy);
+    }
+
+    /**
+     *@return Constrained By
+     */
+    public String getConstraintBy() {
+        return this.txtConstrainedBy.getText();
+    }
+    
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabelName = new javax.swing.JLabel();
+        txtName = new javax.swing.JTextField();
+        jLabelDataType = new javax.swing.JLabel();
+        cbDataType = new javax.swing.JComboBox();
+        jLabelMatchType = new javax.swing.JLabel();
+        cbMatchType = new javax.swing.JComboBox();
+        jLabelBlocking = new javax.swing.JLabel();
+        chkBlocking = new javax.swing.JCheckBox();
+        jLabelKeyType = new javax.swing.JLabel();
+        chkKeyType = new javax.swing.JCheckBox();
+        jLabelUpdateable = new javax.swing.JLabel();
+        chkUpdateable = new javax.swing.JCheckBox();
+        jLabelRequired = new javax.swing.JLabel();
+        chkRequired = new javax.swing.JCheckBox();
+        jLabelFieldSize = new javax.swing.JLabel();
+        spFieldSize = new javax.swing.JSpinner();
+        jLabelPattern = new javax.swing.JLabel();
+        txtPattern = new javax.swing.JTextField();
+        jLabelCodeModule = new javax.swing.JLabel();
+        txtCodeModule = new javax.swing.JTextField();
+        jLabelUserCode = new javax.swing.JLabel();
+        txtUserCode = new javax.swing.JTextField();
+        jLabelConstrainedBy = new javax.swing.JLabel();
+        txtConstrainedBy = new javax.swing.JTextField();
+
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/sun/mdm/index/project/ui/applicationeditor/Bundle"); // NOI18N
+        jLabelName.setText(bundle.getString("MSG_Name")); // NOI18N
+
+        jLabelDataType.setText(bundle.getString("MSG_DataType")); // NOI18N
+
+        cbDataType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "string", "char", "date", "int", "float", "boolean" }));
+
+        jLabelMatchType.setText(bundle.getString("MSG_MatchType")); // NOI18N
+
+        jLabelBlocking.setText(bundle.getString("MSG_Blocking")); // NOI18N
+
+        chkBlocking.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        chkBlocking.setMargin(new java.awt.Insets(0, 0, 0, 0));
+
+        jLabelKeyType.setText(bundle.getString("MSG_KeyType")); // NOI18N
+
+        chkKeyType.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        chkKeyType.setMargin(new java.awt.Insets(0, 0, 0, 0));
+
+        jLabelUpdateable.setText(bundle.getString("MSG_Updateable")); // NOI18N
+
+        chkUpdateable.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        chkUpdateable.setMargin(new java.awt.Insets(0, 0, 0, 0));
+
+        jLabelRequired.setText(bundle.getString("MSG_Required")); // NOI18N
+
+        chkRequired.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        chkRequired.setMargin(new java.awt.Insets(0, 0, 0, 0));
+
+        jLabelFieldSize.setText(bundle.getString("MSG_FieldSize")); // NOI18N
+
+        jLabelPattern.setText(bundle.getString("MSG_Pattern")); // NOI18N
+
+        jLabelCodeModule.setText(bundle.getString("MSG_CodeModule")); // NOI18N
+
+        txtCodeModule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodeModuleActionPerformed(evt);
+            }
+        });
+
+        jLabelUserCode.setText(bundle.getString("MSG_UserCode")); // NOI18N
+
+        jLabelConstrainedBy.setText(bundle.getString("MSG_ConstrainedBy")); // NOI18N
+
+        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(txtName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelDataType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(cbDataType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 130, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelMatchType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(cbMatchType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 130, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelBlocking, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(chkBlocking))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelKeyType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(chkKeyType))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelUpdateable, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(chkUpdateable))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(chkRequired))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelFieldSize, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(spFieldSize, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelPattern, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(txtPattern, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelCodeModule, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(txtCodeModule, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelUserCode, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(txtUserCode, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelConstrainedBy, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(txtConstrainedBy, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(txtName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(5, 5, 5)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelDataType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(cbDataType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(5, 5, 5)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelMatchType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(cbMatchType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(3, 3, 3)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelBlocking, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(chkBlocking, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelKeyType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(chkKeyType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelUpdateable, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(chkUpdateable, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(chkRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(5, 5, 5)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelFieldSize, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(spFieldSize, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(5, 5, 5)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelPattern, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(txtPattern, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(5, 5, 5)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelCodeModule, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(txtCodeModule, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelUserCode, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(txtUserCode, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(5, 5, 5)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelConstrainedBy, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(txtConstrainedBy, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void txtCodeModuleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodeModuleActionPerformed
+// TODO add your handling code here:
+    }//GEN-LAST:event_txtCodeModuleActionPerformed
+    
+    
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox cbDataType;
+    private javax.swing.JComboBox cbMatchType;
+    private javax.swing.JCheckBox chkBlocking;
+    private javax.swing.JCheckBox chkKeyType;
+    private javax.swing.JCheckBox chkRequired;
+    private javax.swing.JCheckBox chkUpdateable;
+    private javax.swing.JLabel jLabelBlocking;
+    private javax.swing.JLabel jLabelCodeModule;
+    private javax.swing.JLabel jLabelConstrainedBy;
+    private javax.swing.JLabel jLabelDataType;
+    private javax.swing.JLabel jLabelFieldSize;
+    private javax.swing.JLabel jLabelKeyType;
+    private javax.swing.JLabel jLabelMatchType;
+    private javax.swing.JLabel jLabelName;
+    private javax.swing.JLabel jLabelPattern;
+    private javax.swing.JLabel jLabelRequired;
+    private javax.swing.JLabel jLabelUpdateable;
+    private javax.swing.JLabel jLabelUserCode;
+    private javax.swing.JSpinner spFieldSize;
+    private javax.swing.JTextField txtCodeModule;
+    private javax.swing.JTextField txtConstrainedBy;
+    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtPattern;
+    private javax.swing.JTextField txtUserCode;
+    // End of variables declaration//GEN-END:variables
+    
+}

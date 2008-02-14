@@ -182,7 +182,7 @@ public class EntityNode extends DefaultMutableTreeNode {
             String defaultConstraintBy, boolean defaultGenerateReport) {
         this(entityTree, nodeName, nodeType);
         mDisplayOrder = displayOrder;
-        mFieldDef = new FieldDef(nodeName, nodeType, defaultKeyType, defaultUpdateable,
+        mFieldDef = new FieldDef(nodeName, defaultDataType, null, defaultBlocking, defaultKeyType, defaultUpdateable,
                         defaultRequired, defaultDataSize, defaultPattern, defaultCodeModule,
                         defaultUserCode, defaultConstraintBy);
     }

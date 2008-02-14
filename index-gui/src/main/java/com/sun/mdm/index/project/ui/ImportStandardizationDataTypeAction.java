@@ -28,16 +28,18 @@ import org.openide.util.HelpCtx;
 import org.openide.util.RequestProcessor;
 import org.openide.util.NbBundle;
 import org.openide.nodes.Node;
-import org.openide.filesystems.FileUtil;
 import org.openide.filesystems.FileObject;
+import org.openide.NotifyDescriptor;
+import org.openide.DialogDisplayer;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import java.io.File;
-import java.util.jar.JarFile;
 import java.util.zip.ZipFile;
 import java.awt.Cursor;
+import org.netbeans.api.progress.ProgressHandle;
+import org.netbeans.api.progress.ProgressHandleFactory;
 
 import com.sun.mdm.index.project.EviewApplication;
 import com.sun.mdm.standardizer.introspector.Descriptor;
@@ -48,14 +50,13 @@ import com.sun.mdm.standardizer.introspector.StandardizationIntrospector;
  * 
  */
 public class ImportStandardizationDataTypeAction extends CookieAction {
-   
+    private ProgressHandle mLoadProgress = null;
+
     /**
      * The log4j logger
      */
     private static final java.util.logging.Logger mLog = java.util.logging.Logger.getLogger(
-            ImportStandardizationDataTypeAction.class.getName()        
-                
-        );
+            ImportStandardizationDataTypeAction.class.getName());
 
     /**
      * Gets the help context.
@@ -84,14 +85,22 @@ public class ImportStandardizationDataTypeAction extends CookieAction {
         try {
             RequestProcessor.getDefault().post(new Runnable() {
                 public void run() {
-                    final JFileChooser fc = new JFileChooser();
+                    JFileChooser fc = new JFileChooser();
+                    String descDT = "Unknown Description";
+                    String nameVariant = "Unknown Name";
                     try {
                         fc.setMultiSelectionEnabled(false);
-                        fc.setFileFilter(new ZipFileFilter()); // jar with dataTypeDescriptor.xml
+                        fc.setFileFilter(new ZipFileFilter()); // look for implementation zip
                         fc.setAcceptAllFileFilterUsed(false);
             
                         int returnVal = fc.showOpenDialog(null);
                         if (returnVal == JFileChooser.APPROVE_OPTION) {
+                            /*
+                            mLoadProgress = ProgressHandleFactory.createHandle(
+                                NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_Importing_Standardization_Plugin"));
+                            mLoadProgress.start();
+                            mLoadProgress.switchToIndeterminate();
+                            */
                             fc.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                             
                             EviewStandardizationFolderCookie cookie = activatedNodes[0].getCookie(EviewStandardizationFolderCookie.class);
@@ -107,19 +116,33 @@ public class ImportStandardizationDataTypeAction extends CookieAction {
                             EviewApplication eviewApplication = standardizationFolderNode.getEviewApplication();
                             StandardizationIntrospector introspector = eviewApplication.getStandardizationIntrospector();
                             Descriptor dataTypeDescriptor = introspector.deploy(zipDataType);
+                            descDT = dataTypeDescriptor.getDescription();
+                            nameVariant = dataTypeDescriptor.getName();
                         }                          
                     } catch (Exception e) {
                         mLog.severe(NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_FAILED_To_Import_Standardization_Plugin")); // NOI18N
                         ErrorManager.getDefault().log(ErrorManager.ERROR, e.getMessage());
                         ErrorManager.getDefault().notify(ErrorManager.ERROR, e);
                     } finally {
+                        String msg = NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_Imported_Standardization_Plugin", descDT, nameVariant);
+                        mLog.info(msg);
+                        NotifyDescriptor desc = new NotifyDescriptor.Message(msg);
+                        DialogDisplayer.getDefault().notify(desc);
                         fc.setCursor(Cursor.getDefaultCursor());
+                        /*
+                        if (mLoadProgress != null) {
+                            mLoadProgress.finish();
+                        }
+                         */
                     }
                 }
             });
         } catch (Exception ex) {
-            mLog.severe(NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_FAILED_To_Perform") + ex.getMessage());
-        }           
+            String msg = NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_FAILED_To_Perform") + ex.getMessage();
+            mLog.info(msg);
+            NotifyDescriptor desc = new NotifyDescriptor.Message(msg);
+            DialogDisplayer.getDefault().notify(desc);
+        }
     }
 
     @Override

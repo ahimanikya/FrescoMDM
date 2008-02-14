@@ -108,7 +108,6 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
      * use this handle to do so.
      */
     private final DefineEntityPanel panel;
-    private JTable mEDMTable;
     private String mViewName;
     private JSplitPane mSplitPane = null;
     private JScrollPane mEntityTreePane;
@@ -164,7 +163,7 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
     }
 
     private void createEntityTree() {
-        mRootNode = new EntityNode(mViewName, EntityNode.getRootNodeType());
+        mRootNode = new EntityNode(null, mViewName, EntityNode.getRootNodeType());
         mEntityTree = new JTree(mRootNode);
         mEntityTree.setEditable(true);
         mEntityTree.setDragEnabled(true);
@@ -251,7 +250,7 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         mSplitPane.setDividerLocation(200);
 
         //Provide minimum sizes for the two components in the split pane
-        Dimension minimumSize = new Dimension(150, 100);
+        Dimension minimumSize = new Dimension(180, 350);
         mEntityTreePane.setMinimumSize(minimumSize);
     }
 
@@ -350,8 +349,7 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
 
     private void addPrimaryEntity() {
         // add a 1st level node to the tree
-        EntityNode childNode = new EntityNode(mViewName,
-                EntityNode.getPrimaryNodeType());
+        EntityNode childNode = new EntityNode(mEntityTree, mViewName, EntityNode.getPrimaryNodeType());
         DefaultTreeModel model = (DefaultTreeModel) mEntityTree.getModel();
 
         model.insertNodeInto(childNode, mRootNode, mRootNode.getChildCount());
@@ -377,7 +375,7 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
             EntityNode parentNode = (EntityNode) path.getLastPathComponent();
             String nodeName = EntityNode.getSubNodeType() +
                                 (parentNode.getChildCount() - parentNode.getFieldCnt());
-            EntityNode childNode = new EntityNode(nodeName, EntityNode.getSubNodeType());
+            EntityNode childNode = new EntityNode(mEntityTree, nodeName, EntityNode.getSubNodeType());
             DefaultTreeModel model = (DefaultTreeModel) mEntityTree.getModel();
             model.insertNodeInto(childNode, parentNode,
                 parentNode.getChildCount());
@@ -411,7 +409,7 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
                 insertIdx = parentNode.getIndex(fieldNode) + 1;
             }
 
-            EntityNode childNode = new EntityNode(parentNode.getName() + EntityNode.getFieldNodeType() +
+            EntityNode childNode = new EntityNode(mEntityTree, parentNode.getName() + EntityNode.getFieldNodeType() +
                     fieldCnt, EntityNode.getFieldNodeType(), "string");
 
             //childNode.setDisplayOrder(fieldCnt + 1);
@@ -470,22 +468,22 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
             if (commandName.equals(NbBundle.getMessage(
                             DefineEntityVisualPanel.class,
                             "MSG_menu_AddSubNodeAlias"))) {
-                newNode = TemplateObjects.addSubNodeAlias(getTreeModel(),
+                newNode = TemplateObjects.addSubNodeAlias(mEntityTree, 
                         parentNode);
             } else if (commandName.equals(NbBundle.getMessage(
                             DefineEntityVisualPanel.class,
                             "MSG_menu_AddSubNodeAddress"))) {
-                newNode = TemplateObjects.addSubNodeAddress(getTreeModel(),
+                newNode = TemplateObjects.addSubNodeAddress(mEntityTree, 
                         parentNode);
             } else if (commandName.equals(NbBundle.getMessage(
                             DefineEntityVisualPanel.class,
                             "MSG_menu_AddSubNodePhone"))) {
-                newNode = TemplateObjects.addSubNodePhone(getTreeModel(),
+                newNode = TemplateObjects.addSubNodePhone(mEntityTree, 
                         parentNode);
             } else if (commandName.equals(NbBundle.getMessage(
                             DefineEntityVisualPanel.class,
                             "MSG_menu_AddSubNodeAuxId"))) {
-                newNode = TemplateObjects.addSubNodeAuxId(getTreeModel(),
+                newNode = TemplateObjects.addSubNodeAuxId(mEntityTree, 
                         parentNode);
             } else if (commandName.equals(NbBundle.getMessage(
                             DefineEntityVisualPanel.class,
@@ -806,10 +804,10 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
 
                 //
                 if (i == 0) {
-                    childNode = new EntityNode(node.getTag(),
+                    childNode = new EntityNode(mEntityTree, node.getTag(),
                             EntityNode.getPrimaryNodeType());
                 } else {
-                    childNode = new EntityNode(node.getTag(),
+                    childNode = new EntityNode(mEntityTree, node.getTag(),
                             EntityNode.getSubNodeType());
                 }
 
@@ -845,6 +843,14 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         return msg;
     }
     
+    
+    /**
+    *@return Entity tree model
+    */
+    public static JTree getEntityTree() {
+        return mEntityTree;
+    }
+
     /**
     *@return Entity tree model
     */

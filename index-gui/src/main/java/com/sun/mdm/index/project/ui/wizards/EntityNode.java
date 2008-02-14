@@ -25,6 +25,9 @@ package com.sun.mdm.index.project.ui.wizards;
 import org.openide.util.NbBundle;
 import javax.swing.JTabbedPane;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.JTree;
+import javax.swing.tree.TreePath;
+import com.sun.mdm.index.parser.FieldDef;
 
 public class EntityNode extends DefaultMutableTreeNode {
     static final String NODE_ROOT = NbBundle.getMessage(EntityNode.class,
@@ -42,18 +45,18 @@ public class EntityNode extends DefaultMutableTreeNode {
     JTabbedPane mEntityProperty = null;
     PropertySheetModel mPropertySheetModel = null;
     int mDisplayOrder = 0;
-
+    FieldDef mFieldDef = null;
+    private JTree mEntityTree = null;
     /** Creates a new instance of EntityNodes
      *
      *@param nodeName node name
      *@param nodeType node type
      */
-    public EntityNode(String nodeName, String nodeType) {
+    public EntityNode(JTree entityTree, String nodeName, String nodeType) {
         super(nodeName);
+        this.mEntityTree = entityTree;
         this.mNodeName = nodeName;
         this.mNodeType = nodeType;
-
-        //EntityNodeKeyListener myKeyListener = new EntityNodeKeyListener();
     }
 
     /** Creates a new instance of EntityNodes
@@ -62,27 +65,22 @@ public class EntityNode extends DefaultMutableTreeNode {
      *@param nodeType node type
      *@param defaultDataType default data type
      */
-    public EntityNode(String nodeName, String nodeType, String defaultDataType) {
+    public EntityNode(JTree entityTree, String nodeName, String nodeType, String defaultDataType) {
         super(nodeName);
+        this.mEntityTree = entityTree;
         this.mNodeName = nodeName;
         this.mNodeType = nodeType;
-        mPropertySheetModel = new PropertySheetModel(nodeName, defaultDataType);
-    }
+        mFieldDef = new FieldDef(nodeName, 
+                            defaultDataType,
+                            null,
+                            false,
+                            false,
+                            false,
+                            false,
+                            8, "", "",
+                            "", "");
 
-    /** Creates a new instance of EntityNodes
-     *
-     *@param nodeName node name
-     *@param nodeType node type
-     *@param defaultDataType default data type
-     *@param displayOrder gui display order
-     */
-    public EntityNode(String nodeName, String nodeType, String defaultDataType,
-        int displayOrder) {
-        super(nodeName);
-        this.mNodeName = nodeName;
-        this.mNodeType = nodeType;
-        this.mDisplayOrder = displayOrder;
-        mPropertySheetModel = new PropertySheetModel(nodeName, defaultDataType);
+        mPropertySheetModel = new PropertySheetModel(nodeName, defaultDataType, this);
     }
 
     /** Creates a new instance of EntityNodes
@@ -105,26 +103,38 @@ public class EntityNode extends DefaultMutableTreeNode {
      *@param defaultPattern for pattern
      *@param defaultBlocking for blocking
      */
-    public EntityNode(String nodeName, String defaultDisplayName,
-        String nodeType, String defaultDataType, int displayOrder,
-        String defaultInputMask, String defaultValueMask,
-        String defaultSearchable, String defaultDisplayedInResult,
-        String defaultKeyType, String defaultUpdateable,
-        String defaultRequired, String defaultMatchType,
-        String defaultDataSize, String defaultCodeModule,
-        String defaultPattern,  String defaultBlocking, 
-        String defaultUserCode, String defaultConstraintBy,
-        String defaultGenerateReport) {
+    public EntityNode(JTree entityTree, 
+            String nodeName, String defaultDisplayName,
+            String nodeType, String defaultDataType, int displayOrder,
+            String defaultInputMask, String defaultValueMask,
+            String defaultSearchable, String defaultDisplayedInResult,
+            String defaultKeyType, String defaultUpdateable,
+            String defaultRequired, String defaultMatchType,
+            String defaultDataSize, String defaultCodeModule,
+            String defaultPattern,  String defaultBlocking, 
+            String defaultUserCode, String defaultConstraintBy,
+            String defaultGenerateReport) {
         super(nodeName);
+        this.mEntityTree = entityTree;
         this.mNodeName = nodeName;
         this.mNodeType = nodeType;
         this.mDisplayOrder = displayOrder;
+        mFieldDef = new FieldDef(nodeName,
+                            defaultDataType,
+                            defaultMatchType,
+                            defaultBlocking.equals("true") ? true : false,
+                            defaultKeyType.equals("true") ? true : false,
+                            defaultUpdateable.equals("true") ? true : false,
+                            defaultRequired.equals("true") ? true : false,
+                            Integer.parseInt(defaultDataSize), defaultPattern, defaultCodeModule,
+                            defaultUserCode, defaultConstraintBy);
+
         mPropertySheetModel = new PropertySheetModel(defaultDisplayName,
                 defaultDataType, defaultInputMask, defaultValueMask,
                 defaultSearchable, defaultDisplayedInResult, defaultKeyType,
                 defaultUpdateable, defaultRequired, defaultMatchType,
                 defaultDataSize, defaultCodeModule, defaultPattern,
-                defaultBlocking, defaultUserCode, defaultConstraintBy, defaultGenerateReport);
+                defaultBlocking, defaultUserCode, defaultConstraintBy, defaultGenerateReport, this);
     }
 
     /** Set the node name
@@ -134,6 +144,24 @@ public class EntityNode extends DefaultMutableTreeNode {
     public void setName(String nodeName) {
         this.mNodeName = nodeName;
         this.setUserObject(nodeName);
+        if (mPropertySheetModel != null) {
+            mPropertySheetModel.setFieldName(nodeName);
+        }
+    }
+
+    
+    /** Set the node name
+     *
+     *@param nodeName name
+     */
+    public void setNodeName(String nodeName) {
+        this.mNodeName = nodeName;
+        this.setUserObject(nodeName);
+
+        if (this.mEntityTree != null) {
+            this.mEntityTree.clearSelection();
+            this.mEntityTree.setSelectionPath(new TreePath(this));
+        }
     }
 
     /**
@@ -156,39 +184,35 @@ public class EntityNode extends DefaultMutableTreeNode {
      *@return JPanel that contains properties
      */
     public JTabbedPane getPropertySheet() {
-        if (isField() && (mEntityProperty == null)) {
-            mEntityProperty = mPropertySheetModel.getPropertySheet();
-        }
-
-        return mEntityProperty;
+        return mPropertySheetModel.getPropertySheet();
     }
 
     /**
      *@return if it is a PrimaryNode
      */
     public boolean isPrimary() {
-        return (this.mNodeType == NODE_PRIMARY);
+        return (this.mNodeType.equals(NODE_PRIMARY));
     }
 
     /**
      *@return if it is a PrimaryFieldsNode
      */
     public boolean isPrimaryFields() {
-        return (this.mNodeType == NODE_PRIMARY_FIELDS);
+        return (this.mNodeType.equals(NODE_PRIMARY_FIELDS));
     }
 
     /**
      *@return if it is a SubNode
      */
     public boolean isSub() {
-        return (this.mNodeType == NODE_SUB);
+        return (this.mNodeType.equals(NODE_SUB));
     }
 
     /**
      *@return if it is a FieldNode
      */
     public boolean isField() {
-        return (this.mNodeType == NODE_FIELD);
+        return (this.mNodeType.equals(NODE_FIELD));
     }
 
     /**
@@ -244,7 +268,7 @@ public class EntityNode extends DefaultMutableTreeNode {
     public String getMatchType() {
         String matchType = mPropertySheetModel.getMatchType();
 
-        if (matchType == "None") {
+        if (matchType.equals("None")) {
             matchType = null;
         }
 
@@ -255,7 +279,7 @@ public class EntityNode extends DefaultMutableTreeNode {
      *@return Blocking
      */
     public boolean getBlocking() {
-        return (mPropertySheetModel.getBlocking() == "true");
+        return (mPropertySheetModel.getBlocking().equals("true"));
     }
 
     /**
@@ -410,6 +434,23 @@ public class EntityNode extends DefaultMutableTreeNode {
      */
     public static String getFieldNodeType() {
         return NODE_FIELD;
+    }
+    
+    public FieldDef getFieldDef() {
+        return this.mFieldDef;
+    }
+     
+    public String getEnterpriseFieldName() {
+        EntityNode parentNode = (EntityNode) this.getParent();
+        String fieldName = this.getName();
+        String fullFieldName;
+        if (parentNode.isSub()) {
+            EntityNode grandParentNode = (EntityNode) parentNode.getParent();
+            fullFieldName = "Enterprise.SystemSBR." + grandParentNode.getName() + "." + parentNode.getName() + "[*]." + fieldName;
+        } else {
+            fullFieldName = "Enterprise.SystemSBR." + parentNode.getName() + "." + fieldName;
+        }
+        return fullFieldName;
     }
 
 }

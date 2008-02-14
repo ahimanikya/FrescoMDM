@@ -23,6 +23,7 @@
 package com.sun.mdm.index.project.ui.wizards;
 
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.JTree;
 
 public class TemplateCompany {
     /** Creates a new instance of TemplateCompany
@@ -32,15 +33,15 @@ public class TemplateCompany {
      */
     public TemplateCompany(EntityNode rootNode) {
         EntityNode primaryNode;
-        DefaultTreeModel model = DefineEntityVisualPanel.getTreeModel();
+        JTree entityTree = DefineEntityVisualPanel.getEntityTree();
 
         // Add Person Node to the Primary
-        primaryNode = TemplateObjects.addSubNodeCompany(model, rootNode);
+        primaryNode = TemplateObjects.addSubNodeCompany(entityTree, rootNode);
 
         // Add Phone Node to the Primary
-        TemplateObjects.addSubNodePhone(model, primaryNode);
+        TemplateObjects.addSubNodePhone(entityTree, primaryNode);
 
         // Add Address Node to the Primary
-        TemplateObjects.addSubNodeAddress(model, primaryNode);
+        TemplateObjects.addSubNodeAddress(entityTree, primaryNode);
     }
 }
