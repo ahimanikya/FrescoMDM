@@ -5549,9 +5549,14 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             throws ProcessingException {
 
         sendAlert(e.getClass().getName() + ": " + e.getMessage());
+        StackTraceElement stackElements[] = e.getStackTrace();
+        String stackMsgs = new String();
+        for (int i = 0; i < stackElements.length; i++) {
+            stackMsgs += "\n" + stackElements[i].toString();
+        }
         throw new ProcessingException(mLocalizer.t("MSC582: MasterControllerImpl encountered a " + 
-                                                   "ProcessingException: name={0}, message={1}", 
-                                                   e.getClass().getName(), e.getMessage()));
+                                                   "ProcessingException: name={0}, message={1}, stack trace={2}", 
+                                                   e.getClass().getName(), e.getMessage(), stackMsgs));
     }
 
     private synchronized void setMBeanServer() {
