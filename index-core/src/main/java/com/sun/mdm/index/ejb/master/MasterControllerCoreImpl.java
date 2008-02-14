@@ -800,7 +800,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     .getTransactionResult().getTMID(), eo);
         } catch (UserException e) {
             throw new UserException(mLocalizer.t("MSC505: Could not activate a SystemObject due to a " + 
-                                                 "UserException: {0}", e));
+                                                 "UserException: {0}", e.getMessage()));
         } catch (Exception e) {
             throwProcessingException(e);
         }
@@ -3123,7 +3123,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
         } catch (UserException e) {
             throw new UserException(mLocalizer.t("MSC560: Could not merge " + 
-                            "SystemObjects: {0}", e));
+                            "SystemObjects: {0}", e.getMessage()));
         } catch (Exception e) {
             throwProcessingException(e);
         }
@@ -3273,7 +3273,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
         } catch (UserException e) {
             throw new UserException(mLocalizer.t("MSC533: Could not merge " + 
-                            "SystemObjects: {0}", e));
+                            "SystemObjects: {0}", e.getMessage()));
         } catch (Exception e) {
 
             throwProcessingException(e);
@@ -3364,7 +3364,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
         } catch (UserException e) {
             throw new UserException(mLocalizer.t("MSC536: Could not merge " + 
-                "SystemObjects: {0}", e));
+                "SystemObjects: {0}", e.getMessage()));
         } catch (Exception e) {
             throwProcessingException(e);
         }
