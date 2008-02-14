@@ -1426,6 +1426,20 @@ run_unit_tests()
     bld_reset_watchdog
 
 
+    #####
+    # run the surefire report
+    #####
+    cmd="mvn $MAVEN_OPTIONS -DSRCROOT='$JV_SRCROOT' -Dmaven.repo.local='$JV_SRCROOT/m2/repository' -DBUILD_NUMBER=$BLDNUM surefire-report:report-only"
+    bldmsg -mark -p $p/run_unit_tests `echo $cmd`
+    eval $cmd
+    status=$?
+    if [ $status -ne 0 ]; then
+        run_tests_status=1
+        bldmsg -error -p $p/run_unit_tests surefire report step FAILED
+    fi
+    bldmsg -markend -status $status ${p}:junit
+    bld_reset_watchdog
+
 
 
     ############
@@ -1439,6 +1453,17 @@ run_unit_tests()
         if [ $? -ne 0 ]; then
             run_tests_status=1
             bldmsg -error -p $p/run_tests Archive junit test results FAILED
+        fi
+    fi
+    bld_reset_watchdog
+
+    #archive surefire report:
+    if [ -d "$SRCROOT/target/site" ]; then
+        bldmsg -mark -p $p/run_tests Archive surefire test results
+        cp -rp $SRCROOT/target/site $LOGDIR/surefire_tests
+        if [ $? -ne 0 ]; then
+            run_tests_status=1
+            bldmsg -error -p $p/run_tests Archive surefire test results FAILED
         fi
     fi
     bld_reset_watchdog
