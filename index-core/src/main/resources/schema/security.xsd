@@ -34,7 +34,16 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="SecurityPlugInClass" />
-				<xs:element name="switch" type="xs:string"></xs:element>
+
+				<xs:element name="ejbSecurity">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="ON" />
+							<xs:enumeration value="OFF" />
+						</xs:restriction>
+					</xs:simpleType>
+
+				</xs:element>
 				<xs:element name="role" type="roleType" maxOccurs="unbounded"></xs:element>
 
 			</xs:sequence>

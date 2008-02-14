@@ -83,7 +83,7 @@ public class SecurityManager {
 			try {
 
 				Element switchE = (Element) xpath.evaluate(
-						"//Configuration/SecurityConfig/switch", doc,
+						"//Configuration/SecurityConfig/ejbSecurity", doc,
 						XPathConstants.NODE);
 
 				if (switchE != null) {
@@ -243,7 +243,7 @@ public class SecurityManager {
 		try {
 		File f = new File("index-core/src/test/resources/security.txt");
 		SecurityManager sm = new SecurityManager(null,new FileInputStream(f));
-		
+		sm.toString();
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
