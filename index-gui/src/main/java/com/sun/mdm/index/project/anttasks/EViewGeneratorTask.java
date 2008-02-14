@@ -519,7 +519,7 @@ public class EViewGeneratorTask extends Task {
 			XPath xpath = XPathFactory.newInstance().newXPath();
 
 			Element switchE = (Element) xpath.evaluate(
-					"//Configuration/SecurityConfig/switch", doc,
+					"//Configuration/SecurityConfig/ejbSecurity", doc,
 					XPathConstants.NODE);
 
 			if (switchE != null) {
