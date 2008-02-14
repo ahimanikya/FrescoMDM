@@ -86,6 +86,7 @@ public class FieldDef {
     
     private String strFieldName;
     private String strFieldType;
+    private boolean blocking;
     private boolean keytype;
     private boolean updateable;
     private boolean required;
@@ -121,12 +122,16 @@ public class FieldDef {
      * @param constrainedBy
      */
     public FieldDef(String fieldName, String fieldType, 
+            String strMatchType,
+            boolean b,
             boolean k, boolean u,
             boolean r, int fieldSize, 
             String pattern, String codeModule, 
             String userCode, String constrainedBy) {
         strFieldName = fieldName;
         strFieldType = fieldType;
+        sMatchType = strMatchType;
+        blocking = b;
         keytype = k;
         updateable = u;
         required = r;
@@ -177,6 +182,14 @@ public class FieldDef {
      */
     public int getFieldSize() {
         return size;
+    }
+    
+    
+    /**
+     * @return boolean ret boolean
+     */
+    public boolean isBlockOn() {
+        return blocking;
     }
 
 
