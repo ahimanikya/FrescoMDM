@@ -25,7 +25,7 @@
 <nbm>
    <moduleType>normal</moduleType>
    <codeNameBase>com.sun.mdm.index.project</codeNameBase>
-   <cluster>soa1</cluster>
+   <cluster>soa2</cluster>
    <manifest>src/main/nbm/manifest.mf</manifest>
    <!--distributionUrl>http://mevenide.codehaus.org/nbm_release2</distributionUrl-->
    <!--licenseName>Apache License, Version 2.0</licenseName-->

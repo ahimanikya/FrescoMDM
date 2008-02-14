@@ -101,64 +101,6 @@
                                         <include name="com/sun/mdm/index/project/generator/**/*.tmpl"/>
                                     </fileset>
                                 </copy>
-                                
-                                <!--mkdir dir="${project.build.testOutputDirectory}/modules/ext/eview"/>
-                                <jar destfile="${project.build.testOutputDirectory}/modules/ext/eview/index-core.jar" 
-                                basedir="${project.build.directory}/classes"/>
-                                <copy todir="${project.build.testOutputDirectory}/modules/ext/eview">
-                                    <fileset dir="${basedir}/src/main/resources/globalization">
-                                        <include name="net.java.hulp.i18n.jar"/>                 
-                                        <include name="net.java.hulp.i18ntask.jar"/>                 
-                                    </fileset>
-                                    <fileset dir="${basedir}/src/main/resources/matchengine">
-                                        <include name="sun_matcher.jar"/>
-                                    </fileset>
-                                </copy>
-                                <copy todir="${project.build.testOutputDirectory}/modules/ext/eview/repository">
-                                    <fileset dir="${project.build.directory}">
-                                        <include name="ejb-source.zip"/>
-                                    </fileset>
-                                     <fileset dir="${basedir}/src/main/resources">
-                                        <include name="edm.war"/>
-                                    </fileset>
-                                    <fileset dir="${basedir}/src/main/resources/matchengine">
-                                        <include name="stc_sbme.jar"/>
-                                    </fileset>
-                                </copy>
-                                                             
-                                <delete dir="${project.build.testOutputDirectory}/eindex"/>
-                                <copy todir="${project.build.testOutputDirectory}/eindex">
-                                    <fileset dir="${basedir}/src/test/eindex-templates/eindex"/>
-                                </copy>
-                                <taskdef name="propertyfile" classname="org.apache.tools.ant.taskdefs.optional.PropertyFile">
-                                    <classpath refid="maven.test.classpath"/>
-                                </taskdef>
-                                <mkdir dir="${project.build.testOutputDirectory}/eindex/nbproject/private"/>
-                                <propertyfile file="${project.build.testOutputDirectory}/eindex/nbproject/private/private.properties">
-                                    <entry key="module.install.dir"
-                                        value="${project.build.testOutputDirectory}/modules"/>
-                                </propertyfile>
-                                <mkdir dir="${project.build.testOutputDirectory}/eindex/eindex-ejb/nbproject/private"/>
-                                <propertyfile file="${project.build.testOutputDirectory}/eindex/eindex-ejb/nbproject/private/private.properties">
-                                    <entry key="j2ee.platform.classpath"
-                                        value="${settings.localRepository}/javaee/javaee-api/5/javaee-api-5.jar"/>
-                                </propertyfile>
-
-                                 <path id="mdm_gen_classpath">
-                                    <path refid="maven.test.classpath"/>
-                                </path>
-                                <ant antfile="${project.build.testOutputDirectory}/eindex/build.xml" 
-                                    target="gen-mdm-index-files" inheritAll="false" inheritrefs="false">                                   
-                                    <property name="mdm.gen.classpath" refid="maven.test.classpath"/>
-                                </ant>
-                                <ant antfile="${project.build.testOutputDirectory}/eindex/build.xml" 
-                                    target="dist" inheritAll="false" inheritrefs="false">
-                                    <property name="mdm.gen.classpath" refid="maven.test.classpath"/>
-                                    <property name="build.compiler" value="extJavac"/>
-                                </ant>
-                                <copy todir="${project.build.testOutputDirectory}">
-                                    <fileset dir="${project.build.testOutputDirectory}/eindex/eindex-ejb/build/jar"/>
-                                </copy!-->
                                  <taskdef name="object-gen" classname="com.sun.mdm.index.project.anttasks.ObjectGeneratorTask">
                                     <classpath refid="maven.test.classpath"/>
                                 </taskdef>

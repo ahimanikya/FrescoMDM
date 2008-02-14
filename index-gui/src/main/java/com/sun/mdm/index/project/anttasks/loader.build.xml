@@ -5,7 +5,7 @@
 <project name="loader" default="default" basedir=".">
 
 
-	<property name="workingDir" value="/eview/loader" />
+	<property name="workingDir" value="/mdm/loader" />
 
 
 	<target name="default" depends="clean,generate-sqlldr-scripts">

@@ -85,9 +85,9 @@ is divided into following sections:
             </and>
         </condition>
         <path id="mdm_gen_classpath_id">        
-            <pathelement location="${module.install.dir}/ext/eview/com-sun-mdm-index-project-anttasks.jar"/>
+            <pathelement location="${module.install.dir}/ext/mdm/com-sun-mdm-index-project-anttasks.jar"/>
             <pathelement location="${module.install.dir}/com-sun-mdm-index-project.jar"/>
-            <pathelement location="${module.install.dir}/ext/eview/index-core.jar"/>
+            <pathelement location="${module.install.dir}/ext/mdm/index-core.jar"/>
         </path>
         <property name="mdm.gen.classpath" refid="mdm_gen_classpath_id"/>
         <taskdef name="generate-mdm-index-files" classname="com.sun.mdm.index.project.anttasks.EViewGeneratorTask">

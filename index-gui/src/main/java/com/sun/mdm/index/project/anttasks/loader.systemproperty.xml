@@ -9,7 +9,7 @@
 			<property name="matchAnalyzerMode" value="false" />
 
 			<property name="rmiPort" value="9999" />
-			<property name="workingDir" value="/eview/loader" />
+			<property name="workingDir" value="/mdm/loader" />
 			<property name="ftp.workingDir" value="/loader" />
 
 			<property name="numBlockBuckets" value="5" />

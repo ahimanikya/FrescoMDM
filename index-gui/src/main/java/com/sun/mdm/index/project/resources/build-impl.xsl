@@ -163,10 +163,10 @@ is divided into following sections:
                     </and>
                 </condition>
                 <path id="generate.class.path">
-                    <pathelement location="${{module.install.dir}}/ext/eview/com-sun-mdm-index-project-anttasks.jar" />
+                    <pathelement location="${{module.install.dir}}/ext/mdm/com-sun-mdm-index-project-anttasks.jar" />
                     <pathelement location="${{module.install.dir}}/com-sun-mdm-index-project.jar" />
-                    <pathelement location="${{module.install.dir}}/ext/eview/index-core.jar" />
-                    <pathelement location="${{module.install.dir}}/ext/eview/standardizer/lib/commons-logging-1.0.4.jar"/>
+                    <pathelement location="${{module.install.dir}}/ext/mdm/index-core.jar" />
+                    <pathelement location="${{module.install.dir}}/ext/mdm/standardizer/lib/commons-logging-1.0.4.jar"/>
                 </path>
                 <taskdef name="generate-mdm-index-files"
                          classname="com.sun.mdm.index.project.anttasks.EViewGeneratorTask">
@@ -177,10 +177,10 @@ is divided into following sections:
                          classname="com.sun.mdm.index.project.anttasks.LoaderGeneratorTask">
                     <classpath>
                         <pathelement
-                            location="${{module.install.dir}}/ext/eview/com-sun-mdm-index-project-anttasks.jar" />
+                            location="${{module.install.dir}}/ext/mdm/com-sun-mdm-index-project-anttasks.jar" />
                         <pathelement
                             location="${{module.install.dir}}/com-sun-mdm-index-project.jar" />
-                        <pathelement location="${{module.install.dir}}/ext/eview/index-core.jar" />
+                        <pathelement location="${{module.install.dir}}/ext/mdm/index-core.jar" />
                     </classpath>
                 </taskdef>
                 
@@ -243,7 +243,7 @@ is divided into following sections:
                     <fileset dir="lib">
                         <include name="*.jar" />
                     </fileset>
-                    <fileset dir="${{module.install.dir}}/ext/eview/loader">
+                    <fileset dir="${{module.install.dir}}/ext/mdm/loader">
                         <include name="*.jar" />
                     </fileset>
                 </copy>
@@ -261,13 +261,13 @@ is divided into following sections:
             <target name="gen-cleanser-zip" depends="pre-pre-compile" description="generate cleanser zip">
                 <mkdir dir="cleanser-generated/cleanser"/>
                 <copy todir="cleanser-generated/cleanser">
-                    <fileset dir="${{module.install.dir}}/ext/eview/dataanalysis/cleanser"/>
+                    <fileset dir="${{module.install.dir}}/ext/mdm/dataanalysis/cleanser"/>
                 </copy>
                 <jar destfile="cleanser-generated/cleanser/lib/resources.jar" basedir="files-generated/resource"/>
                 <copy file="files-generated/resource/object.xml" todir="cleanser-generated/cleanser"/>
                 <copy file="lib/master-index-client.jar" todir="cleanser-generated/cleanser/lib"/>
                 <copy todir="cleanser-generated/cleanser/lib">
-                    <fileset dir="${{module.install.dir}}/ext/eview/standardizer/lib"/>
+                    <fileset dir="${{module.install.dir}}/ext/mdm/standardizer/lib"/>
                 </copy>
                 <zip destfile="cleanser-generated/cleanser.zip" basedir="cleanser-generated" excludes="cleanser.zip"/>
                 <delete dir="cleanser-generated/cleanser"/>
@@ -277,7 +277,7 @@ is divided into following sections:
                 
                 <mkdir dir="profiler-generated/profiler"/>
                 <copy todir="profiler-generated/profiler">
-                    <fileset dir="${{module.install.dir}}/ext/eview/dataanalysis/profiler"/>
+                    <fileset dir="${{module.install.dir}}/ext/mdm/dataanalysis/profiler"/>
                 </copy>
                 
                 <copy file="files-generated/resource/object.xml" todir="profiler-generated/profiler"/>
@@ -288,7 +288,7 @@ is divided into following sections:
             
             <target name="gen-bulkloader-zip" depends="gen-mdm-index-files" description="generate bulk loader zip">
                 <mkdir dir="bulkloader-generated"/>
-                <zip destfile="bulkloader-generated/bulkloader.zip" basedir="${{module.install.dir}}/ext/eview/bulkloader" excludes="bulkloader.zip"/>
+                <zip destfile="bulkloader-generated/bulkloader.zip" basedir="${{module.install.dir}}/ext/mdm/bulkloader" excludes="bulkloader.zip"/>
             </target>
             
             <target name="dist_se">

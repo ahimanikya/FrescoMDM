@@ -124,7 +124,7 @@ public class EViewGeneratorTask extends Task {
 		}
 		if (mTemplateDir == null) {
 			String modulePath = getProject().getProperty("module.install.dir");
-			mTemplateDir = new File(modulePath + "/ext/eview");
+			mTemplateDir = new File(modulePath + "/ext/mdm");
 		}
 
 		// need to regenerate if source files have been modified
@@ -768,7 +768,7 @@ public class EViewGeneratorTask extends Task {
 
 		destDir.mkdir();
 		String modulePath = getProject().getProperty("module.install.dir");
-		File srcDir = new File(modulePath + "/ext/eview/repository/report");
+		File srcDir = new File(modulePath + "/ext/mdm/repository/report");
 		FileSet srcfileSet = new FileSet();
 		srcfileSet.setDir(srcDir);
 
@@ -784,7 +784,7 @@ public class EViewGeneratorTask extends Task {
 				+ EviewProjectProperties.REPORT_CLIENT_FOLDER + File.separator
 				+ "lib");
 		copy.setTodir(destDir);
-		srcDir = new File(modulePath + "/ext/eview");
+		srcDir = new File(modulePath + "/ext/mdm");
 		srcfileSet = new FileSet();
 		srcfileSet.setDir(srcDir);
 		srcfileSet.setIncludes("index-core.jar");

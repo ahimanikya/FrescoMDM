@@ -25,14 +25,14 @@ package com.sun.mdm.index.project;
 /** Defines constants for properties used in Master Index. 
  */
 public class EviewProjectProperties {
-    
-    public static final String EVIEW_TEMPLATE_LOCATION = "modules/ext/eview/repository/templates";
+    public static final String MODULES_EXT_MDM_LOCATION = "modules/ext/mdm";
+    public static final String EVIEW_TEMPLATE_LOCATION = MODULES_EXT_MDM_LOCATION+ "/repository/templates";
     public static final String MATCH_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/match";
-    public static final String STANDARDIZATION_DEPLOYMENT_LOCATION = "modules/ext/eview/standardizer/deployment";
+    public static final String STANDARDIZATION_DEPLOYMENT_LOCATION = MODULES_EXT_MDM_LOCATION+ "/standardizer/deployment";
     public static final String BUSINESSNAME_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/BusinessName";
     public static final String PERSONNAME_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/PersonName";
     public static final String ADDRESS_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/Address";
-    public static final String SCHEMA_TEMPLATE_LOCATION = "modules/ext/eview/repository/schema";
+    public static final String SCHEMA_TEMPLATE_LOCATION = MODULES_EXT_MDM_LOCATION+ "/repository/schema";
     
     public static final String CONF_FOLDER = "conf"; //NOI18N    
     // Master Index Configuration Folder
@@ -83,7 +83,7 @@ public class EviewProjectProperties {
     public static final String MATCH_ZIP = EVIEW_TEMPLATE_LOCATION + "/match.zip";
     public static final String STAND_ZIP = EVIEW_TEMPLATE_LOCATION + "/stand.zip";
     public static final String TEMPLATE_ZIP = EVIEW_TEMPLATE_LOCATION + "/EviewApplicationTemplateProject.zip";
-    public static final String STAND_REPOSITORY_ZIP = "modules/ext/eview/standardizer/repositoryImage.zip";
+    public static final String STAND_REPOSITORY_ZIP = MODULES_EXT_MDM_LOCATION+"/standardizer/repositoryImage.zip";
     
     public static final String EVIEW_GENERATED_FOLDER = "files-generated";
     public static final String REPORT_CLIENT_FOLDER = "report-client";

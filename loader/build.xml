@@ -72,7 +72,7 @@
     -->
 
 	<target name="-post-jar">
-		<property name="netbean.loader.dir" value="${nbplatform.default.netbeans.dest.dir}/soa1/modules/ext/eview/loader">
+		<property name="netbean.loader.dir" value="${nbplatform.default.netbeans.dest.dir}/soa2/modules/ext/mdm/loader">
 		</property>
 		<mkdir dir="${netbean.loader.dir}" />
 
@@ -94,7 +94,7 @@
            basedir="${build.dir}/classes"
            includes="com/sun/mdm/index/dataobject/**,com/sun/mdm/index/Resource.class,com/sun/mdm/index/resource.properties "/>
         <!--integrate to installer-->
-        <copy todir="${basedir}/../open-dm-mi/index-gui/target/nbm/netbeans/soa1/modules/ext/eview/loader">
+        <copy todir="${basedir}/../open-dm-mi/index-gui/target/nbm/netbeans/soa2/modules/ext/mdm/loader">
 			<fileset dir="lib">
 				<exclude name="index-core.jar" />
 				<exclude name="resources.jar" />

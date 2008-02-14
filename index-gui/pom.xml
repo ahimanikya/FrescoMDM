@@ -53,8 +53,8 @@
                         <goals><goal>run</goal></goals>
                         <configuration>
                             <tasks>
-                                <mkdir dir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview"></mkdir>
-                                <jar jarfile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/com-sun-mdm-index-project-anttasks.jar" compress="false">
+                                <mkdir dir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm"></mkdir>
+                                <jar jarfile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/com-sun-mdm-index-project-anttasks.jar" compress="false">
                                     <fileset dir="${project.build.directory}/classes">
                                         <include name="com/sun/mdm/index/project/anttasks/**/*.class"></include>
                                         <include name="com/sun/mdm/index/project/anttasks/**/*.xml"></include>
@@ -70,7 +70,7 @@
                         <goals><goal>run</goal></goals>
                         <configuration>
                             <tasks>
-                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates">
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/repository/templates">
                                     <fileset dir="${basedir}/src/main/java/com/sun/mdm/index/project">									      
                                         <include name="EviewApplicationTemplateProject.zip"></include>
                                     </fileset>
@@ -78,12 +78,12 @@
                                         <exclude name="match/**"></exclude>
                                     </fileset>
                                 </copy>
-                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/schema">
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/repository/schema">
                                     <fileset dir="${basedir}/../index-core/src/main/resources/schema">
                                         <include name="**/*.xsd"></include>
                                     </fileset>
                                 </copy>
-                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository">
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/repository">
                                     <fileset dir="${basedir}/../index-core/src/main/resources">
                                         <include name="edm.war"></include>
                                     </fileset>
@@ -97,36 +97,36 @@
                                         <include name="ejb-source.zip"></include>                  
                                     </fileset>
                                 </copy>
-                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates/filter">
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/repository/templates/filter">
                                     <fileset dir="${basedir}/../index-core/src/main/resources/filter">
                                         <include name="**/*"></include>
                                     </fileset>
                                 </copy>
-                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview">
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm">
                                     <fileset dir="${basedir}/../index-core/target">
                                         <include name="index-core.jar"></include>                 
                                     </fileset>
                                 </copy>
-                                <copy file="${settings.localRepository}/net/java/hulp/i18n/net.java.hulp.i18n/2.1-SNAPSHOT/net.java.hulp.i18n-2.1-SNAPSHOT.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/net.java.hulp.i18n.jar"></copy>
-                                <copy file="${settings.localRepository}/net/java/hulp/i18ntask/net.java.hulp.i18ntask/2.1-SNAPSHOT/net.java.hulp.i18ntask-2.1-SNAPSHOT.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/net.java.hulp.i18ntask.jar"></copy>
-                                <copy file="${settings.localRepository}/mural/matcher/1.0/matcher-1.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/matcher.jar"></copy>
-                                <copy file="${settings.localRepository}/org/apache/lucene/lucene-core/2.2.0/lucene-core-2.2.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/lucene-core.jar"></copy>
-                                <unzip src="${settings.localRepository}/mural/matcher-resources/1.0/matcher-resources-1.0.jar" dest="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/templates"></unzip>
-                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/standardizer">
+                                <copy file="${settings.localRepository}/net/java/hulp/i18n/net.java.hulp.i18n/2.1-SNAPSHOT/net.java.hulp.i18n-2.1-SNAPSHOT.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/net.java.hulp.i18n.jar"></copy>
+                                <copy file="${settings.localRepository}/net/java/hulp/i18ntask/net.java.hulp.i18ntask/2.1-SNAPSHOT/net.java.hulp.i18ntask-2.1-SNAPSHOT.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/net.java.hulp.i18ntask.jar"></copy>
+                                <copy file="${settings.localRepository}/mural/matcher/1.0/matcher-1.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/matcher.jar"></copy>
+                                <copy file="${settings.localRepository}/org/apache/lucene/lucene-core/2.2.0/lucene-core-2.2.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/lucene-core.jar"></copy>
+                                <unzip src="${settings.localRepository}/mural/matcher-resources/1.0/matcher-resources-1.0.jar" dest="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/repository/templates"></unzip>
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/standardizer">
                                     <fileset dir="${basedir}/../index-core/src/main/resources/matchengine/standardizer">
                                         <exclude name="standardizer-resources.jar"></exclude>
                                         <exclude name="deployment-files.zip"></exclude>
                                     </fileset>   
                                 </copy>                                    
-                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/report/lib">
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/repository/report/lib">
                                     <fileset dir="${basedir}/../report/target">
                                         <include name="master-index-report.jar"></include>                    
                                     </fileset>
                                 </copy>
-                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/repository/report">
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/repository/report">
                                     <fileset dir="${basedir}/../report/src/main/resources"></fileset>
                                 </copy>
-                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/eview/loader">
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/loader">
                                     <fileset dir="${basedir}/../loader/lib">
     		                    		<exclude name="index-core.jar"></exclude>
     		                    		<exclude name="stc_sbme.jar"></exclude>
@@ -154,10 +154,10 @@
                                 <if>
                                     <isset property="install.dir.present"></isset>
                                     <then>
-                                        <delete file="${install.dir}/soa1/update_tracking/com-sun-mdm-index-project.xml"></delete>
-                                        <delete file="${install.dir}/soa1/config/Modules/com-sun-mdm-index-project.xml"></delete>
-                                        <delete file="${install.dir}/soa1/modules/com-sun-mdm-index-project.jar"></delete>
-                                        <delete dir="${install.dir}/soa1/modules/ext/eview"></delete>
+                                        <delete file="${install.dir}/${netbeans.cluster}/update_tracking/com-sun-mdm-index-project.xml"></delete>
+                                        <delete file="${install.dir}/${netbeans.cluster}/config/Modules/com-sun-mdm-index-project.xml"></delete>
+                                        <delete file="${install.dir}/${netbeans.cluster}/modules/com-sun-mdm-index-project.jar"></delete>
+                                        <delete dir="${install.dir}/${netbeans.cluster}/modules/ext/mdm"></delete>
                                         <copy todir="${install.dir}">
                                             <fileset dir="${project.build.directory}/nbm/netbeans">
                                                 <exclude name="module_tracking.xml"></exclude>                
