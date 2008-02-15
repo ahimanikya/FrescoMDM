@@ -15,13 +15,13 @@ function showDuplicatesdiv() {
     document.getElementById("datadiv").style.visibility = "visible";
 }
 function showEoDetails() {
-    //alert(document.getElementById("datadiv").innerHTML);
-    //alert(document.getElementById("eoDatadiv").innerHTML);
+    //////alert(document.getElementById("datadiv").innerHTML);
+    //////alert(document.getElementById("eoDatadiv").innerHTML);
     document.getElementById("allduprecords").style.visibility = "hidden";
     
     document.getElementById("eoDatadiv").innerHTML = document.getElementById("datadiv").innerHTML;
     document.getElementById("eoDatadiv").style.visibility = "visible";
-    //alert(document.getElementById("eoDatadiv").innerHTML);
+    //////alert(document.getElementById("eoDatadiv").innerHTML);
     
 }
 function showBasicSearch()  {
@@ -70,7 +70,7 @@ document.getElementById("preview").style.background = "#cecff9";
 document.getElementById("preview").style.visibility = "visible";
 }
 function populateDuplicatesPreview(divId,previewId)   {
-    alert(document.getElementById(divId).innerHTML);
+    ////alert(document.getElementById(divId).innerHTML);
     document.getElementById(previewId).innerHTML =  document.getElementById(divId).innerHTML;
     document.getElementById(previewId).style.background = "#cecff9";
 }
@@ -81,7 +81,7 @@ function selectOption(num) {
 }
 
 function showSourceDivs(divId)  {
-    ////alert(document.getElementById(divId).innerHTML);
+    ////////alert(document.getElementById(divId).innerHTML);
     document.getElementById("mainDiv").innerHTML = document.getElementById(divId).innerHTML;
 }
 
@@ -104,10 +104,10 @@ function getPosition(e) {
 }
 
 function showConfirm(divId,thisEvent)  {
-    //alert(thisEvent);
+    //////alert(thisEvent);
     var y;
     var x;      
-    //alert(document.getElementById(divId).style.visibility);
+    //////alert(document.getElementById(divId).style.visibility);
 if(document.getElementById(divId).style.visibility == 'hidden') {
         document.getElementById(divId).style.visibility = "visible";
         document.getElementById(divId).style.display = "block";
@@ -122,10 +122,10 @@ if(document.getElementById(divId).style.visibility == 'hidden') {
 }
 
 function showExtraDivs(divId,thisEvent)  {
-    //alert(thisEvent);
+    //////alert(thisEvent);
     var y;
     var x;      
-    //alert(document.getElementById(divId).style.visibility);
+    //////alert(document.getElementById(divId).style.visibility);
     if(document.getElementById(divId).style.visibility == 'hidden') {
         document.getElementById(divId).style.visibility = "visible";
         document.getElementById(divId).style.display = "block";
@@ -147,11 +147,11 @@ function showExtraDivs(divId,thisEvent)  {
 }
 
 function togglePDDivs(divId,x,y)  {
-    //alert(document.getElementById(divId).style.visibility);
+    //////alert(document.getElementById(divId).style.visibility);
     if(document.getElementById(divId).style.visibility == 'hidden') {
         document.getElementById(divId).style.visibility = "visible";
         document.getElementById(divId).style.display = "block";
-    //alert(x+"---"+y);
+    //////alert(x+"---"+y);
     document.getElementById(divId).style.top = y;
     document.getElementById(divId).style.left = x;
 } else {
@@ -163,7 +163,7 @@ function togglePDDivs(divId,x,y)  {
 
 
 function closeExtraDivs(divId,closeId)  {
-    //alert(document.getElementById(divId).style.visibility);
+    //////alert(document.getElementById(divId).style.visibility);
        document.getElementById(divId).style.visibility = "hidden";
        document.getElementById(divId).style.display = "none";
        document.getElementById(divId).innerHTML = "";
@@ -175,11 +175,11 @@ function closeExtraDivs(divId,closeId)  {
 }
 
 function populateExtraDivs(sourceDivId,destnDivId,rootDiv,closeDivId)  {
-        //alert(destnDivId+" destn  <====== > source "+sourceDivId);
-        //alert(" source "+document.getElementById(sourceDivId).innerHTML);
+        //////alert(destnDivId+" destn  <====== > source "+sourceDivId);
+        //////alert(" source "+document.getElementById(sourceDivId).innerHTML);
         
         document.getElementById(destnDivId).innerHTML += document.getElementById(sourceDivId).innerHTML;
-        //alert(document.getElementById(destnDivId).innerHTML);
+        //////alert(document.getElementById(destnDivId).innerHTML);
         document.getElementById(destnDivId).style.visibility = "visible";
         document.getElementById(destnDivId).style.display = "block";
         //close the div after populating
@@ -240,7 +240,7 @@ function populatePreviewDiv(previewDivIndex)   {
     contentDiv      = "mainEuidDataContent"+previewDivIndex;
     extraContentDiv = "dynamicMainEuidContent"+previewDivIndex;
     
-    alert(document.getElementById("showActiveButtonDiv").innerHTML);
+    ////alert(document.getElementById("showActiveButtonDiv").innerHTML);
     // Activate the compare screen buttons
     document.getElementById("showActiveButtonDiv").style.visibility = "visible";
     document.getElementById("showActiveButtonDiv").style.display = "block";
@@ -253,8 +253,8 @@ function populatePreviewDiv(previewDivIndex)   {
     // Change the class name for the divs
     //document.getElementById(mainEuidDiv).className = 'dynaprevieww169';
     //document.getElementById("previewEuidContentDiv"+previewDivIndex).className = 'dynaprevieww169';
-    //alert(document.getElementById(contentDiv).innerHTML);
-    //alert(document.getElementById("previewEuidContentDiv"+previewDivIndex).innerHTML);
+    //////alert(document.getElementById(contentDiv).innerHTML);
+    //////alert(document.getElementById("previewEuidContentDiv"+previewDivIndex).innerHTML);
     
     //document.getElementById("previewEuidContentDivAbove"+previewDivIndex).innerHTML = document.getElementById(contentDiv).innerHTML;
     //document.getElementById("previewEuidContentDivExtra"+previewDivIndex).innerHTML = document.getElementById(extraContentDiv).innerHTML;
@@ -282,8 +282,8 @@ function populateAssociatePreviewDiv(assoDivIndex,previewDivIndex)   {
     // Change the class name for the divs
     document.getElementById(mainEuidDiv).className = 'dynaprevieww169';
     document.getElementById("previewEuidContentDiv"+previewDivIndex).className = 'dynaprevieww169';
-    alert(document.getElementById(contentDiv).innerHTML);
-    alert(document.getElementById("previewEuidContentDiv"+previewDivIndex).innerHTML);
+    //////alert(document.getElementById(contentDiv).innerHTML);
+    //////alert(document.getElementById("previewEuidContentDiv"+previewDivIndex).innerHTML);
     document.getElementById("previewEuidContentDivAbove"+previewDivIndex).innerHTML = document.getElementById(contentDiv).innerHTML;
     document.getElementById("previewEuidContentDivExtra"+previewDivIndex).innerHTML = document.getElementById(extraContentDiv).innerHTML;
     
@@ -357,7 +357,7 @@ function showExtraFields(mainEuidDivId,assDupCount,optionHideDisplay,mainDupCoun
 
 
 
-//alert(mainEuidDivId+"<=main==ass count==>"+assDupCount+"<<<<<<<"+optionHideDisplay);
+//////alert(mainEuidDivId+"<=main==ass count==>"+assDupCount+"<<<<<<<"+optionHideDisplay);
 
 // Show/hide Heading Div id
 document.getElementById("dynamicContent"+mainEuidDivId).style.visibility = optionHideDisplay;
@@ -380,20 +380,20 @@ document.getElementById("dynamicMainEuidButtonContent"+mainEuidDivId).style.visi
 //document.getElementById("dynamicMainEuidButtonContent"+mainEuidDivId).style.height = height;
 document.getElementById("dynamicMainEuidButtonContent"+mainEuidDivId).style.display = displayOption;
 
-//alert(document.getElementById("dynamicMainEuidContent"+mainEuidDivId).style.visibility);
+//////alert(document.getElementById("dynamicMainEuidContent"+mainEuidDivId).style.visibility);
 
 document.getElementById("dynamicMainEuidContent"+mainEuidDivId).style.visibility = optionHideDisplay;
 //document.getElementById("dynamicMainEuidContent"+mainEuidDivId).style.height = height;
 document.getElementById("dynamicMainEuidContent"+mainEuidDivId).style.display = displayOption;
 
-//alert(document.getElementById("previewEuidContentDivExtra"+mainEuidDivId).style.visibility);
+//////alert(document.getElementById("previewEuidContentDivExtra"+mainEuidDivId).style.visibility);
 
 //document.getElementById("previewEuidContentDivExtra"+mainEuidDivId).style.visibility = optionHideDisplay;
 //document.getElementById("previewEuidContentDivExtra"+mainEuidDivId).style.height = height;
 
 // Show/hide Associated Div Id
 for(var i=0;i<assDupCount;i++) {
-    //alert("======1=====");
+    //////alert("======1=====");
     document.getElementById("dynamicAssEuidContent"+mainEuidDivId+i).style.visibility = optionHideDisplay;
     //document.getElementById("dynamicAssEuidContent"+mainEuidDivId+i).style.height = height;
     document.getElementById("dynamicAssEuidContent"+mainEuidDivId+i).style.display = displayOption;
@@ -402,7 +402,7 @@ for(var i=0;i<assDupCount;i++) {
     //document.getElementById("dynamicAssEuidButtonContent"+mainEuidDivId+i).style.height = height;
     document.getElementById("dynamicAssEuidButtonContent"+mainEuidDivId+i).style.display = displayOption;
     
-    //alert(document.getElementById("dynamicAssEuidContent"+mainEuidDivId+i).innerHTML);
+    //////alert(document.getElementById("dynamicAssEuidContent"+mainEuidDivId+i).innerHTML);
     if(optionHideDisplay == 'visible') {
         document.getElementById("dynamicAssAddressEuidDiv"+mainEuidDivId+i).style.visibility = "hidden";
         //document.getElementById("dynamicAssAddressEuidDiv"+mainEuidDivId+i).style.height = "0px";
@@ -415,7 +415,7 @@ for(var i=0;i<assDupCount;i++) {
 }
 
 }
-//alert(document.getElementById("showActivePreviewButtonDiv"+mainEuidDivId).style.visibility);
+//////alert(document.getElementById("showActivePreviewButtonDiv"+mainEuidDivId).style.visibility);
 if(document.getElementById("showActivePreviewButtonDiv"+mainEuidDivId).style.visibility == 'visible')  {
     document.getElementById("showActivePreviewButtonDiv"+mainEuidDivId).className = 'dynaprevieww169';
     document.getElementById("showActivePreviewButtonDiv"+mainEuidDivId).style.visibility = optionHideDisplay;;
@@ -426,15 +426,15 @@ if(document.getElementById("showActivePreviewButtonDiv"+mainEuidDivId).style.vis
 
 // Hide other main divs if any of them is ex
 for(var i=0;i<mainDupCount;i++) {
-    //alert("=======1====="+mainDupCount+"==========="+i);
+    //////alert("=======1====="+mainDupCount+"==========="+i);
     if(optionHideDisplay == 'visible') {
         if(i == mainEuidDivId) {
-            //alert("===showing>>>====1====="+mainEuidDivId+"==========="+i);
+            //////alert("===showing>>>====1====="+mainEuidDivId+"==========="+i);
             document.getElementById("mainEuidDiv"+mainEuidDivId).style.visibility = "visible";
             document.getElementById("mainEuidDiv"+i).style.display = "block";
             document.getElementById("separator"+i).style.display = "block";
         }  else {
-        //alert("===hidinig>>>====1====="+mainEuidDivId+"==========="+i);
+        //////alert("===hidinig>>>====1====="+mainEuidDivId+"==========="+i);
         document.getElementById("mainEuidDiv"+i).style.visibility = "hidden";
         document.getElementById("mainEuidDiv"+i).style.display = "none";
         document.getElementById("separator"+i).style.display = "none";
@@ -460,9 +460,9 @@ document.getElementById("separator"+i).style.display = "block";
 **/
 
 function toggleDifferentPerson(divToAnimate,showHide,AssocDiv,ToggleFlagId,nRows) {
-    //alert ("Div to Animate -> " + divToAnimate);
-    //alert ("Showhide -> " + showHide);   
-    //alert(nRows);
+    //////alert ("Div to Animate -> " + divToAnimate);
+    //////alert ("Showhide -> " + showHide);   
+    //////alert(nRows);
     
     // toggle the visibility of Different Person
     var toggleHide = "'" + "Anim"  + ToggleFlagId + "'" + "," + "'H'," + "'assEuidDataContent" + ToggleFlagId + "','" + ToggleFlagId + "'";
@@ -480,14 +480,14 @@ function toggleDifferentPerson(divToAnimate,showHide,AssocDiv,ToggleFlagId,nRows
         
         
         //Close Animation div
-        // alert(divContent);
+        // ////alert(divContent);
         if (nRows == 2)  {
             document.getElementById(AssocDiv).style.height= '400px';
         } else {
         document.getElementById(AssocDiv).style.height= '200px';
     }
     document.getElementById(AssocDiv).style.display='block';
-    //alert("hello");
+    //////alert("hello");
     document.getElementById(divToAnimate).style.height = '0px';
     document.getElementById(divToAnimate).style.display = 'none';
     
@@ -495,7 +495,7 @@ function toggleDifferentPerson(divToAnimate,showHide,AssocDiv,ToggleFlagId,nRows
 var attribShowLeft = {
     width: { from: 2, to:165}
 };
-//alert("Show");
+//////alert("Show");
 //Close Content div
 var animShowLeft = new YAHOO.util.Anim(divToAnimate, attribShowLeft, 2, YAHOO.util.Easing.easeNone);
 document.getElementById(AssocDiv).style.height='0px';
@@ -508,23 +508,23 @@ if (nRows == 2)  {
 document.getElementById(divToAnimate).style.height = '200px';
 }
 document.getElementById(divToAnimate).style.display = 'block';
-//alert(divToAnimate);
+//////alert(divToAnimate);
 animShowLeft.animate();
 }
 
 var changeFlag = document.getElementById(AssocDiv).innerHTML;
 if ( divContent.indexOf(toggleHide) > 0 )   {
-    //alert("1");
+    //////alert("1");
     changeFlag = changeFlag.replace(toggleHide,toggleShow);
 } else {
-//alert(changeFlag);
-//alert(toggleShow + " -- " +toggleHide);
+//////alert(changeFlag);
+//////alert(toggleShow + " -- " +toggleHide);
 changeFlag = divContent.replace(toggleShow,toggleHide);
-//alert(changeFlag);
+//////alert(changeFlag);
 }
 document.getElementById(AssocDiv).innerHTML = changeFlag ;
 
-//alert(changeFlag);
+//////alert(changeFlag);
 document.getElementById(divToAnimate).innerHTML = '<div class="diffperson">' + divContent+ '</div>';
 }
 
@@ -537,7 +537,7 @@ document.getElementById(divToAnimate).innerHTML = '<div class="diffperson">' + d
 *
 */
 function activePreviewButtons(totalAssociates,assoDivIndex,previewDivIndex)   {
-    //alert(document.getElementById("showCompareButtonDiv"+previewDivIndex).style.visibility);
+    //////alert(document.getElementById("showCompareButtonDiv"+previewDivIndex).style.visibility);
     // Change the class name for the divs
     if(document.getElementById("showCompareButtonDiv"+previewDivIndex).style.visibility == 'hidden') {
         document.getElementById("showActivePreviewButtonDiv"+previewDivIndex).className = 'dynaprevieww169';
@@ -564,13 +564,13 @@ function activePreviewButtons(totalAssociates,assoDivIndex,previewDivIndex)   {
 
 
 function showViewSources(mainDupSources,count,countEnt,totalColumns) {
-//    alert(mainDupSources+"++++++"+count+"====="+countEnt);
-  // alert(document.getElementById("previewPane").style.visibility);
+//    ////alert(mainDupSources+"++++++"+count+"====="+countEnt);
+  // ////alert(document.getElementById("previewPane").style.visibility);
     var divLayerMain;
     //hideOther(mainDupSources,count,countEnt);
     for(var i=0;i<count;i++) {
     divLayerMain = document.getElementById(mainDupSources+countEnt+i);
-    //alert(mainDupSources+countEnt+i);
+    //////alert(mainDupSources+countEnt+i);
     if (divLayerMain.style.display=="none" || divLayerMain.style.display=="") {
         divLayerMain.style.visibility="visible";
         divLayerMain.style.display="block";
@@ -589,13 +589,13 @@ function showViewSources(mainDupSources,count,countEnt,totalColumns) {
 
        //display/hide other divs
        for(var c=0;c<totalColumns;c++) {
-          //alert("=H/D=="+c +"totalColumns"+totalColumns+ "==" +countEnt+"====="+document.getElementById("outerMainContentDivid"+c).style.visibility);
+          //////alert("=H/D=="+c +"totalColumns"+totalColumns+ "==" +countEnt+"====="+document.getElementById("outerMainContentDivid"+c).style.visibility);
           if(c  == countEnt) {
-            //alert("=EQUAL=="+c + "==" +countEnt+"====="+document.getElementById("outerMainContentDivid"+c).style.visibility);
+            //////alert("=EQUAL=="+c + "==" +countEnt+"====="+document.getElementById("outerMainContentDivid"+c).style.visibility);
             document.getElementById("outerMainContentDivid"+c).style.visibility = "visible";
             document.getElementById("outerMainContentDivid"+c).style.display = "block";
          } else {
-            //alert("=NE=="+c + "==" +countEnt+"====="+document.getElementById("outerMainContentDivid"+c).style.visibility);
+            //////alert("=NE=="+c + "==" +countEnt+"====="+document.getElementById("outerMainContentDivid"+c).style.visibility);
            document.getElementById("outerMainContentDivid"+c).style.visibility = "hidden";
            document.getElementById("outerMainContentDivid"+c).style.display = "none";
          }
@@ -609,7 +609,7 @@ function showViewSources(mainDupSources,count,countEnt,totalColumns) {
        document.getElementById("previewPane").style.display="block";
        //display main and other duplicate divs
        for(var c=0;c<totalColumns;c++) {
-            //alert("=H/D=HIHIHIH="+c +"totalColumns"+totalColumns+ "==" +countEnt+"====="+document.getElementById("outerMainContentDivid"+c).style.visibility);
+            //////alert("=H/D=HIHIHIH="+c +"totalColumns"+totalColumns+ "==" +countEnt+"====="+document.getElementById("outerMainContentDivid"+c).style.visibility);
             document.getElementById("outerMainContentDivid"+c).style.visibility = "visible";
             document.getElementById("outerMainContentDivid"+c).style.display = "block";
       }
@@ -618,9 +618,9 @@ function showViewSources(mainDupSources,count,countEnt,totalColumns) {
 }
 } 
 function hideOther(mainDupSources,count,countEnt) {
-    alert(mainDupSources+"+++HIDING+++"+count+"====="+countEnt);
+    //////alert(mainDupSources+"+++HIDING+++"+count+"====="+countEnt);
     var divLayerMain;
-    //alert(divLayerMain.style.visibility);
+    //////alert(divLayerMain.style.visibility);
     for(var i=0;i<count;i++) {
        if( showViewSources == 'mainDupSources') {
             divLayerMain = document.getElementById("mainDupHistory"+countEnt+i);
@@ -670,7 +670,7 @@ function ClearContents(thisForm)  {
 function  confirmResolve(countDupId){
     
     //var confirm_action = confirm("Select the type of resolve<BR> Resolve:<BR> AutoResolve");
-    alert(countDupId + "<=== countDupId");
+    //////alert(countDupId + "<=== countDupId");
     countDupId = 1;
     document.getElementById("potentialDuplicate"+countDupId).style.visibility = "visible";
     document.getElementById("potentialDuplicate"+countDupId).style.display = "block";
@@ -722,8 +722,8 @@ var thisEvent;
 function ajaxURL(url,thisInnerHtmlDivName,e)    {
     innerHtmlDiv = thisInnerHtmlDivName;
 
-    //alert(innerHtmlDiv);
-    //alert(e);    
+    //////alert(innerHtmlDiv);
+    //////alert(e);    
     thisEvent = e;
     document.getElementById(innerHtmlDiv).style.visibility='visible';
     xhr = getXmlHttpObject(ajaxstateChangeHandler); 
@@ -737,14 +737,14 @@ function ajaxURL(url,thisInnerHtmlDivName,e)    {
         if (xhr.readyState == 4 || xhr.readyState == 'complete')        { 
             //Gather the results from the callback 
            var str = xhr.responseText; 
-           //alert(str);
+           //////alert(str);
            //var closeButton ="<a align='right' onclick='javascript:document.getElementById('tree').style.visibility = 'hidden'>Close</a>"; 
            document.getElementById(innerHtmlDiv).innerHTML = xhr.responseText;
            document.getElementById(innerHtmlDiv).style.display = 'block';
            document.getElementById(innerHtmlDiv).style.visibility = 'visible';
            var xpos = thisEvent.layerX? thisEvent.layerX : thisEvent.offsetX? thisEvent.offsetX : 0;
            var ypos = thisEvent.layerY? thisEvent.layerY : thisEvent.offsetY? thisEvent.offsetY : 0;
-           //alert(xpos+'---'+ypos);
+           //////alert(xpos+'---'+ypos);
            var divID = document.getElementById(innerHtmlDiv);
            var x = divID.getElementsByTagName("script");    
            for(var i=0;i<x.length;i++)   {       
@@ -756,7 +756,7 @@ function ajaxURL(url,thisInnerHtmlDivName,e)    {
          }
            //document.getElementById(innerHtmlDiv).style.top = ypos;
            //document.getElementById(innerHtmlDiv).style.left = xpos;
-           //alert(xpos+'---'+ypos);
+           //////alert(xpos+'---'+ypos);
     } 
 
     // XMLHttp send GET request 
@@ -783,13 +783,13 @@ function ajaxURL(url,thisInnerHtmlDivName,e)    {
             } 
             catch(e){ 
             //Object creation errored 
-                alert('IE detected, but object could not be created. Verify that active scripting and activeX controls are enabled'); 
+                ////alert('IE detected, but object could not be created. Verify that active scripting and activeX controls are enabled'); 
                 return; 
             } 
         } 
         else if (is_opera){ 
             //Opera has some issues with xmlHttp object functionality 
-            alert('Opera detected. The page may not behave as expected.'); 
+            ////alert('Opera detected. The page may not behave as expected.'); 
             return; 
         } 
         else{ 
@@ -853,8 +853,7 @@ function submitFormData(form, thisInnerHtmlDivName) {
     var data = getFormData(form);
 
     var url = action;
-    alert(action);
-    
+    ////alert(action);
     function submitCallback() {
         if (xhr.readyState == 4 && xhr.status != 200) {
             alert("Successssss!!!");
@@ -875,3 +874,547 @@ function submitFormData(form, thisInnerHtmlDivName) {
     
     return xhr;
 }
+
+
+
+    var lids="";
+
+    var lidArray = [];
+
+    var alllidsArray = [];
+
+    var alllidsactionText = [];
+
+    function collectLid(euid) {
+
+        var found = "";
+
+        var allLIds = [];
+
+        var allLIdsCheck = [];
+
+        var disableArray = [];
+
+        ////alert("All Action Text " + alllidsactionText);
+
+        for (var i=0; i<alllidsArray.length; i++) { 
+
+            allLIds[i] = alllidsArray[i];
+
+            allLIdsCheck[i] = alllidsArray[i];
+
+            disableArray[i] = alllidsArray[i];
+
+        }
+
+        
+
+        ////alert("initial Array " + alllidsArray);
+
+        for (var i=0; i<lidArray.length; i++) {            
+
+            if (lidArray[i] == euid)   {
+
+                lidArray.splice(i,1);
+
+                ////alert("index " + i + "---" + lidArray);
+
+                found = "true";
+
+            }
+
+            ////alert(" Array[ "+ i+"]"+ lidArray[0]);
+
+        }
+
+        if (found != "true")    {
+
+            lidArray.push(euid);
+
+        }  
+
+        
+
+        ////alert(lidArray.length );
+
+        ////alert("Zero"+ lidArray[0]);
+
+        ////alert("one" + lidArray[1]);
+
+        
+
+        var tab = document.getElementById('mainEuidContent'+euid);
+
+        if (tab.className == 'yellow')   {
+
+            tab.className = 'blue';
+
+        } else {
+
+            tab.className = 'yellow';
+
+        }
+
+        
+
+        var tab = document.getElementById('personEuidDataContent'+euid);
+
+        if (tab.className == 'yellow')   {
+
+            tab.className = 'blue';
+
+        } else {
+
+            tab.className = 'yellow';
+
+        }
+
+ 
+
+        if (lidArray.length == 2)    {
+
+            
+
+            //showAction ButtonDiv
+
+            document.getElementById("previewActionButton").style.visibility = "visible";
+
+            document.getElementById("previewActionButton").style.display = "block";
+
+            var one;
+
+            var two;
+
+            for (var i=0; i<allLIdsCheck.length; i++) {            
+
+                if (allLIdsCheck[i] == lidArray[0])   {
+
+                    one = "Keep LID "+ (i+1);
+
+                }
+
+                if (allLIdsCheck[i] == lidArray[1])   {
+
+                    two = "Keep LID "+ (i+1);
+
+                }
+
+            }
+
+            var system = document.getElementById("basicMergeformData:sourceOption").options[document.getElementById("basicMergeformData:sourceOption").selectedIndex].value;
+
+            ////alert(system)
+
+            document.getElementById("LID1").innerHTML = one;
+
+            document.getElementById("LID2").innerHTML = two;
+
+            
+
+            ////alert("order " + lidArray[0] + ':' + lidArray[1]);
+
+            document.getElementById("previewlid1Form:previewhiddenLid1").value = lidArray[0] + ':' + lidArray[1];
+
+            document.getElementById("previewlid2Form:previewhiddenLid2").value = lidArray[1] + ':'+ lidArray[0];
+
+            //Set System
+
+            document.getElementById("previewlid1Form:previewhiddenLid1source").value = system;
+
+            //alert(document.getElementById("previewlid1Form:previewhiddenLid1source").value);
+
+            document.getElementById("previewlid2Form:previewhiddenLid2source").value = system;
+
+            
+
+            ////alert("All LIDs" + allLIdsCheck);
+
+            ////alert("Pre Disable Array " + disableArray);
+
+            //for (var i=0; i< disableArray.length; i++) { 
+
+            //    //alert("i "+ disableArray[i]);
+
+            // }
+
+ 
+
+            for (var i=0; i< lidArray.length; i++) { 
+
+                ////alert("i "+ disableArray[i]);
+
+                 for (var j=0; j<disableArray.length; j++) {            
+
+                     ////alert("j " + lidArray[j]);
+
+                     if (disableArray[j] == lidArray[i])   {
+
+                         ////alert("Splicing "+ disableArray[j]);
+
+                         disableArray.splice(j,1);
+
+                     }
+
+                 }
+
+            }
+
+            ////alert(" Post Disable Array " + disableArray);
+
+            for (var i=0; i<disableArray.length; i++) {
+
+                ////alert(" Looking for " + disableArray[i]);
+
+                for (var j=0; j<alllidsactionText.length; j++) {
+
+                    if (alllidsactionText[j].lastIndexOf(disableArray[i]) != -1 )  {
+
+                       ////alert( " Found " + document.getElementById('curve' + disableArray[i]).innerHTML);
+
+                       document.getElementById('curve' + disableArray[i]).innerHTML = disableArray[i];
+
+                       document.getElementById('curve' + disableArray[i]).style.cursor= 'not-allowed';
+
+                    }
+
+                }
+
+            }
+
+            
+
+        }  else {
+
+            for (var i=0; i< disableArray.length; i++) { 
+
+                found = false;
+
+                 for (var j=0; j<lidArray.length; j++) {            
+
+                     if (disableArray[i] == lidArray[j])   {
+
+                         disableArray.splice(i,1);
+
+                     }
+
+                 }
+
+            }
+
+        
+
+            ////alert("Unable Array" + disableArray);
+
+            for (var i=0; i<disableArray.length; i++) {
+
+                ////alert(" Looking for " + disableArray[i]);
+
+                for (var j=0; j<alllidsactionText.length; j++) {
+
+                    if (alllidsactionText[j].lastIndexOf(disableArray[i]) != -1 )  {
+
+                       ////alert( " Found " + document.getElementById('curve' + disableArray[i]).innerHTML);
+
+                       document.getElementById('curve' + disableArray[i]).innerHTML = alllidsactionText[j];
+
+                       document.getElementById('curve' + disableArray[i]).style.cursor= 'hand';
+
+                    }
+
+                }
+
+            }
+
+            document.getElementById("previewActionButton").style.visibility = "hidden";
+
+            document.getElementById("previewActionButton").style.display = "none";                        
+
+            document.getElementById('confirmationButton').style.visibility = 'hidden';
+
+        }
+
+    }
+
+
+
+
+    
+function showSearchType(searchId) {
+//    ////alert(searchId);
+//    ////alert(document.getElementById(searchId));
+//    ////alert(document.getElementById(searchId).style.visibility);
+//    ////alert(document.getElementById(searchId).innerHTML);
+    document.getElementById(searchId).style.visibility = "visible";
+    document.getElementById(searchId).style.display = "block";
+//    return searchId;
+}
+
+function pickSearchType(selectOption) {
+//    ////alert(selectOption);
+//    ////alert(selectOption.selectedIndex);
+//    ////alert(selectOption.options.length);
+//    ////alert(selectOption.options[selectOption.selectedIndex].value);
+    var searchId = selectOption.options[selectOption.selectedIndex].value;
+    
+    for(var i=0;i<selectOption.options.length;i++) {
+      if(selectOption.options[i].value == searchId) {
+         document.getElementById(searchId).style.visibility = "visible";
+         document.getElementById(searchId).style.display = "block";
+      } else {
+         document.getElementById(selectOption.options[i].value).style.visibility = "hidden";
+         document.getElementById(selectOption.options[i].value).style.display = "none";
+      }
+   }
+}
+function showExtraLinkDivs(thisEvent,displayName,fieldName)  {
+    var y;
+    var x;      
+    
+    //////alert(document.getElementById(divId).style.visibility);
+    if(document.getElementById('linkSoDiv').style.visibility == 'hidden') {
+        document.getElementById('linkSoDiv').style.visibility = "visible";
+        document.getElementById('linkSoDiv').style.display = "block";
+        if (thisEvent.pageX || thisEvent.pageY) {
+            x = thisEvent.pageX;
+            y = thisEvent.pageY;
+        } else if (thisEvent.clientX || thisEvent.clientY) {
+        x = thisEvent.clientX + document.body.scrollLeft;
+        y = thisEvent.clientY + document.body.scrollTop;
+    }
+    
+    document.getElementById('linkSoDiv').style.top = (y-150);
+    document.getElementById('linkSoDiv').style.left = x;
+} else {
+   document.getElementById('linkSoDiv').style.visibility = "hidden";
+   document.getElementById('linkSoDiv').style.display = "none";
+}
+//////alert(document.getElementById('linkedValueDiv').innerHTML );
+document.getElementById('linkedValueDiv').innerHTML = fieldName;
+document.getElementById('linkedDisplayValueDiv').innerHTML = displayName;
+}
+
+var linkValues="";
+function populateLinkFields() {
+    var sysLidCode = document.linkForm.systemCodeWithLid.options[document.linkForm.systemCodeWithLid.selectedIndex].value;
+    var fieldName = document.getElementById('linkedValueDiv').innerHTML+'>>';
+
+    var linkId  = document.getElementById('linkedValueDiv').innerHTML;
+    
+    document.getElementById('linkSourceDiv:'+linkId).style.visibility = 'hidden';
+    document.getElementById('linkSourceDiv:'+linkId).style.display = 'none';
+    
+    //Person.PersonCatCode:HOSPITAL:1238990001
+     
+    document.getElementById(linkId+':'+sysLidCode).style.visibility = 'visible';
+    document.getElementById(linkId+':'+sysLidCode).style.display = 'block';
+
+    
+    linkValues+=fieldName+sysLidCode+'##';     
+    
+    
+    var hiddenLinkFieldsVar = 'basicAddformData:hiddenLinkFields';
+    
+    document.getElementById('basicAddformData:hiddenLinkFields').value = linkValues;
+
+    document.getElementById('linkSoDiv').style.visibility = "hidden";
+    document.getElementById('linkSoDiv').style.display = "none";
+}
+
+/**************START UNLINK RELATED METHODS**************/
+
+function showExtraUnLinkDivs(thisEvent,displayName,fieldName,fullFieldName)  {
+    //alert("fieldName ==>" + fieldName);
+    var y;
+    var x;      
+    //////alert(document.getElementById(divId).style.visibility);
+    if(document.getElementById('unLinkSoDiv').style.visibility == 'hidden') {
+        document.getElementById('unLinkSoDiv').style.visibility = "visible";
+        document.getElementById('unLinkSoDiv').style.display = "block";
+        if (thisEvent.pageX || thisEvent.pageY) {
+            x = thisEvent.pageX;
+            y = thisEvent.pageY;
+        } else if (thisEvent.clientX || thisEvent.clientY) {
+        x = thisEvent.clientX + document.body.scrollLeft;
+        y = thisEvent.clientY + document.body.scrollTop;
+    }
+    
+    document.getElementById('unLinkSoDiv').style.top = (y-150);
+    document.getElementById('unLinkSoDiv').style.left = x;
+} else {
+   document.getElementById('unLinkSoDiv').style.visibility = "hidden";
+   document.getElementById('unLinkSoDiv').style.display = "none";
+}
+//////alert(document.getElementById('linkedValueDiv').innerHTML );
+document.getElementById('unLinkedValueDiv').innerHTML = fieldName;
+document.getElementById('unLinkedDisplayValueDiv').innerHTML = displayName;
+document.getElementById('unLinkedFullFieldDiv').innerHTML = fullFieldName;
+}
+
+var unLinkValues="";
+function populateUnLinkFields() {
+    var fieldName = document.getElementById('unLinkedValueDiv').innerHTML;
+
+//     //alert("BEFORE" + fieldName);
+     fieldName = fieldName.replace("&gt;&gt;",":");
+    //Person.PersonCatCode:HOSPITAL:1238990001
+    //alert("FLD NAME" + fieldName);
+    
+     var fullFieldName = document.getElementById('unLinkedFullFieldDiv').innerHTML;
+    //alert(fullFieldName);    
+    document.getElementById('linkSourceDivData:'+fullFieldName ).style.visibility = 'visible';
+    document.getElementById('linkSourceDivData:'+fullFieldName ).style.display = 'block';
+    
+    //alert(document.getElementById('linkSourceDivData:'+fullFieldName ).innerHTML);
+    //linkSourceLidDivid
+    //alert(document.getElementById('linkSourceLidDivid' + fieldName).innerHTML);
+    document.getElementById('linkSourceLidDivid' + fieldName).style.visibility = 'hidden';
+    document.getElementById('linkSourceLidDivid' + fieldName).style.display = 'none';
+    
+    
+//    document.getElementById('linkSourceDiv:'+linkId).style.visibility = 'hidden';
+//    document.getElementById('linkSourceDiv:'+linkId).style.display = 'none';
+  
+    
+       ////alert('ADDING');
+       unLinkValues+=fieldName+'##';     
+        //alert("unLinkValues ==> "  +unLinkValues);
+    
+    
+    var hiddenUnLinkFieldsVar = 'basicAddformData:hiddenUnLinkFields';
+    
+//    ////alert(document.getElementById('basicAddformData:hiddenLinkFields'));
+    document.getElementById('basicAddformData:hiddenUnLinkFields').value = unLinkValues;
+   // ////alert(document.getElementById('basicAddformData:hiddenLinkFields').value);
+       
+    document.getElementById('unLinkSoDiv').style.visibility = "hidden";
+    document.getElementById('unLinkSoDiv').style.display = "none";
+}
+/**************END UNLINK RELATED METHODS**************/
+
+
+
+
+var mergeEuids="";
+var sourceEuids="";
+function accumilateMultiMergeEuids(mergeEuidVar) {
+    var tab = document.getElementById('mainEuidContent'+mergeEuidVar);
+    if (tab.className == 'yellow')   {
+        tab.className = 'blue'; 
+    } else {
+       tab.className = 'yellow';
+   }
+
+var tab = document.getElementById('personEuidDataContent'+mergeEuidVar);
+if (tab.className == 'yellow')   {
+    tab.className = 'blue';
+} else {
+tab.className = 'yellow';
+}
+
+mergeEuids+=mergeEuidVar+'##';     
+
+////alert("mergeEuids =>" + mergeEuids);
+
+var mainEuidArray = mergeEuids.split("##");
+var mainEuid = mainEuidArray[0];
+
+document.getElementById('previewForm:destinationEO').value = mainEuid;
+document.getElementById('mergeFinalForm:destinationEO').value = mainEuid;
+
+////alert("mainEuidArray.length =>" + mainEuidArray.length);
+
+document.getElementById('clickButton' + mainEuid).style.cursor= 'not-allowed';
+
+ if(mainEuidArray.length > 2) {
+    document.getElementById('previewForm:previewhiddenMergeEuids').value = mergeEuids;
+    document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value = mergeEuids;
+    
+    ////alert("sources" + document.getElementById('previewForm:previewhiddenMergeEuids').value);
+    ////alert("sources" + document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value);
+    ////alert("mainEuid" + document.getElementById('previewForm:destinationEO').value);
+    document.getElementById('mergeEuidsDiv').style.visibility = "visible";
+    document.getElementById('mergeEuidsDiv').style.display = "block";
+ }
+}
+
+
+
+function finalMultiMergeEuids(mergeDivId,thisEvent)  {
+//    ////alert(mergeDivId);
+    var y;
+    var x;      
+    //////alert(document.getElementById(divId).style.visibility);
+    if(document.getElementById(mergeDivId).style.visibility == 'hidden') {
+        document.getElementById(mergeDivId).style.visibility = "visible";
+        document.getElementById(mergeDivId).style.display = "block";
+        if (thisEvent.pageX || thisEvent.pageY) {
+            x = thisEvent.pageX;
+            y = thisEvent.pageY;
+        } else if (thisEvent.clientX || thisEvent.clientY) {
+        x = thisEvent.clientX + document.body.scrollLeft;
+        y = thisEvent.clientY + document.body.scrollTop;
+    }
+    
+    document.getElementById(mergeDivId).style.top = (y-150);
+    document.getElementById(mergeDivId).style.left = x;
+} else {
+   document.getElementById(mergeDivId).style.visibility = "hidden";
+   document.getElementById(mergeDivId).style.display = "none";
+}
+
+//    ////alert(document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value);
+
+
+//    ////alert(document.getElementById('mergeFinalForm:destinationEO').value);
+
+
+
+}
+ 
+  var euids=""
+   /*Accumulate EUID for the Patient details screen*/
+   function getEUIDS(euid) {
+       //alert(euid);
+       //alert(document.getElementById('yuiform:compareEuids'));
+       euids += euid + "##";
+       document.getElementById('yuiform:compareEuids').value = euids;
+       //alert(document.getElementById('yuiform:compareEuids').value);
+   }
+
+var mergePreEuids="";
+
+function populateMergeFields(fieldName,value) {
+       document.getElementById(fieldName).innerHTML = value;
+       document.getElementById(fieldName).className='highlight';
+       mergePreEuids+=fieldName+"##"+value+'>>';     
+       document.getElementById('mergeFinalForm:selectedMergeFields').value = mergePreEuids;
+       
+}
+
+function showResolveDivs(divId,thisEvent,potDupId)  {
+    //////alert(thisEvent);
+    var y;
+    var x;      
+    //////alert(document.getElementById(divId).style.visibility);
+    if(document.getElementById(divId).style.visibility == 'hidden') {
+        document.getElementById(divId).style.visibility = "visible";
+        document.getElementById(divId).style.display = "block";
+        if (thisEvent.pageX || thisEvent.pageY) {
+            x = thisEvent.pageX;
+            y = thisEvent.pageY;
+        } else if (thisEvent.clientX || thisEvent.clientY) {
+        x = thisEvent.clientX + document.body.scrollLeft;
+        y = thisEvent.clientY + document.body.scrollTop;
+    }
+    
+    document.getElementById(divId).style.top = (y-150);
+    document.getElementById(divId).style.left = x;
+} else {
+   document.getElementById(divId).style.visibility = "hidden";
+   document.getElementById(divId).style.display = "none";
+}
+
+document.getElementById('reportYUISearch:potentialDuplicateId').value = potDupId;
+
+}
+
