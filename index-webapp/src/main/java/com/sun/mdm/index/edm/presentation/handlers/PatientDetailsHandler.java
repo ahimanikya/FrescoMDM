@@ -8,15 +8,10 @@
  */
 package com.sun.mdm.index.edm.presentation.handlers;
 
-import com.sun.mdm.index.edm.common.PullDownListItem;
-import com.sun.mdm.index.edm.control.QwsController;
 import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
-import com.sun.mdm.index.edm.services.configuration.FieldConfigGroup;
-import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.edm.services.configuration.SearchResultsConfig;
 import com.sun.mdm.index.edm.services.configuration.SearchScreenConfig;
-import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.edm.util.QwsUtil;
 import com.sun.mdm.index.master.MergeResult;
 import com.sun.mdm.index.master.ProcessingException;
@@ -25,26 +20,20 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchCriteria;
 import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 import com.sun.mdm.index.master.search.enterprise.EOSearchResultIterator;
 import com.sun.mdm.index.master.search.enterprise.EOSearchResultRecord;
-import com.sun.mdm.index.master.search.merge.MergeHistoryNode;
-import com.sun.mdm.index.master.search.transaction.TransactionIterator;
-import com.sun.mdm.index.master.search.transaction.TransactionSearchObject;
-import com.sun.mdm.index.master.search.transaction.TransactionSummary;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.EnterpriseObjectHistory;
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SystemObject;
-import com.sun.mdm.index.objects.TransactionObject;
 import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathAPI;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.factory.SimpleFactory;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
-import com.sun.mdm.index.page.PageException;
+
 import com.sun.mdm.index.util.LogUtil;
 import com.sun.mdm.index.util.Logger;
-import com.sun.mdm.index.ops.TransactionLog;
 
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
@@ -53,159 +42,299 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpServletRequest;
-import javax.faces.model.SelectItem;
 import com.sun.mdm.index.edm.presentation.valueobjects.PatientDetails;
-import com.sun.mdm.index.edm.presentation.validations.HandlerException;
-import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
-
+import java.util.Set;
 
 /**
  * @author Rajani
  */
-public class PatientDetailsHandler {
+public class PatientDetailsHandler extends ScreenConfiguration {
 
-    private HashMap updateableFeildsMap = new HashMap();    //for EDM driven feilds from the search page
-    private ArrayList searchScreenConfigArray;
-    private ArrayList searchResultsScreenConfigArray;
     private static final String SEARCH_PATIENT_DETAILS = "Record Details";
-    private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler");
 
-    // Create fields for non updateable fields as per screen config array
-    private String EUID;
-    private String SystemCode;
-    private String LID;
-    private String create_start_date;
-    private String create_end_date;
-    private String create_start_time;
-    private String create_end_time;
-    private String Status;
-    private String searchType = "Advanced Person Lookup (Alpha)";
-    //private String searchType = "Simple Person Lookup";
     //result array list for the out put
     private ArrayList resultArrayList = new ArrayList();
     private String[] euidCheckValues;
     private boolean euidCheckboolean;
-    private static final String BASIC_SEARCH_RES = "basicSearchResults";
-    private static final String ADV_SEARCH_RES = "advancedSearchResults";
-    private static final String POT_DUP_SEARCH_RES = "potentialduplicates";
     private static final String VALIDATION_ERROR = "validationfailed";
-    
     private PatientDetails[] patientDetailsVO = null;
-
-    private String resolveType;
+    private String resolveType  = "AutoResolve";
+    private String potentialDuplicateId;
     /**
      * Variable to hold the results defaulted to negative
      */
     private int resultsSize = -1;
-  
-    private ArrayList<SelectItem> possilbeSearchTypes = new ArrayList();
-    HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-    HttpServletRequest httpRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-    ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
-    MasterControllerService masterControllerService = new MasterControllerService();
-    ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
-
     private String singleEUID;
     private String compareEUID;
-     private String euid1 = "EUID 1";
-     private String euid2 = "EUID 2";
-     private String euid3 = "EUID 3"; 
-     private String euid4 = "EUID 4";
-       
+    private String euid1 = "EUID 1";
+    private String euid2 = "EUID 2";
+    private String euid3 = "EUID 3";
+    private String euid4 = "EUID 4";
+    
+    private String compareEuids = new String();
+
+    private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler");
+
+    private String mergeEuids = new String();
+    private String destnEuid  = new String();
+    private String selectedMergeFields = new String();
+
+    
+    CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+    
     /** Creates a new instance of PatientDetailsHandler */
+    
     public PatientDetailsHandler() {
 
     }
-
     /**
-     * 
-     * @return
+    @return String
+    @throws com.sun.mdm.index.master.ProcessingException 
+    @throws com.sun.mdm.index.master.UserException 
      */
-    public HashMap getUpdateableFeildsMap() {
-        return updateableFeildsMap;
-    }
+    public String performSubmit() throws ProcessingException, UserException {
+        //get the hidden fields search type from the form usin the facesContext
+        // get the array list as per the search
+        String errorMessage = null;
+        Date date = null;
 
-    /**
-     * 
-     * @param updateableFeildsMap
-     */
-    public void setUpdateableFeildsMap(HashMap updateableFeildsMap) {
-        this.updateableFeildsMap = updateableFeildsMap;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public ArrayList getSearchScreenConfigArray() {
-            searchScreenConfigArray = screenObject.getSearchScreensConfig();
-           return searchScreenConfigArray;
-    }
-
-    /**
-     * 
-     * @param searchScreenConfigArray
-     */
-    public void setSearchScreenConfigArray(ArrayList searchScreenConfigArray) {
-        this.searchScreenConfigArray = searchScreenConfigArray;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public ArrayList getSearchResultsScreenConfigArray() {
-        ArrayList basicSearchFieldConfigs = null;
-        ArrayList fieldConfigArrayList = null;
         try {
-            ArrayList resultsScreenConfigArray = screenObject.getSearchResultsConfig();
-            Iterator iteratorScreenConfig = resultsScreenConfigArray.iterator();
+            //System.out.println("---------------1-------------------" + super.getUpdateableFeildsMap());
+            //check one of many condtion here
+            if (super.checkOneOfManyCondition()) {
+                errorMessage = bundle.getString("ERROR_one_of_many");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "One of Many :: " + errorMessage));
+                mLogger.error("Validation failed. Message displayed to the user: " + "One of Many :: " + errorMessage);
+                return VALIDATION_ERROR;
+            }
 
-            while (iteratorScreenConfig.hasNext()) {
-                SearchResultsConfig objSearchScreenConfig = (SearchResultsConfig) iteratorScreenConfig.next();
+            //if user enters LID ONLY 
+            if ((super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("SystemCode") == null) {
+                errorMessage = "Please Enter System Code";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID Validation :: " + errorMessage, errorMessage));
+                mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
+                return VALIDATION_ERROR;
 
-                // Get an array list of field config groups
-                basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
-                Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
-                //Iterate the the FieldConfigGroup array list
-                while (basicSearchFieldConfigsIterator.hasNext()) {
-                    //Build array of field config groups 
-                    FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
-                    //Build array of field configs from 
-                    searchResultsScreenConfigArray = basicSearchFieldGroup.getFieldConfigs();
+            }
+            //if user enters LID and SystemCode Validate the LID 
+            if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
+                String LID = (String) super.getUpdateableFeildsMap().get("LID");
+                String SystemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
+                if (SystemCode.trim().length() > 0 && LID.trim().length() == 0) {
+                    errorMessage = "Please Enter LID Value";
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID/SystemCode Validation :: " + errorMessage, errorMessage));
+                    mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
+                    return VALIDATION_ERROR;
+
                 }
             }
 
-        } catch (Exception e) {
-            mLogger.error("Failed Get the Screen Object: ", e);
+
+            //if user enters LID and SystemCode Validate the LID 
+            if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
+                String LID = (String) super.getUpdateableFeildsMap().get("LID");
+                String SystemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
+                if (LID.trim().length() > 0 && SystemCode.trim().length() > 0) {
+                    try {
+                        //remove masking for LID field
+                        LID = LID.replaceAll("-", "");
+                        ////System.out.println("SystemCode" + SystemCode + "LID" + LID);
+                        SystemObject so = masterControllerService.getSystemObject(SystemCode, LID);
+                        if (so == null) {
+                            errorMessage = bundle.getString("system_object_not_found_error_message");
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID/SYSTEM CODE :: " + errorMessage, errorMessage));
+                            mLogger.error("Validation failed. Message displayed to the user: " + "LID/SYSTEM CODE :: " + errorMessage);
+                            return VALIDATION_ERROR;
+                        }
+                    } catch (ProcessingException ex) {
+                        mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
+                        mLogger.error("ProcessingException ex : " + ex.toString());
+                        return VALIDATION_ERROR;
+                    } catch (UserException ex) {
+                        mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
+                        mLogger.error("UserException ex : " + ex.toString());
+                        return VALIDATION_ERROR;
+                    }
+
+                }
+
+            }
+
+            //Validate all date fields entered by the user
+            if (super.validateDateFields().size() > 0) {
+                Object[] messObjs = super.validateDateFields().toArray();
+                for (int i = 0; i < messObjs.length; i++) {
+                    String obj = (String) messObjs[i];
+                    String[] fieldErrors = obj.split(":");
+                    ////System.out.println("===> Field" + fieldErrors[0] + "===> Message" + fieldErrors[1]);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
+                    mLogger.error("Validation failed. Message displayed to the user: " + fieldErrors[0] + " : " + fieldErrors[1]);
+                    return VALIDATION_ERROR;
+                }
+
+            }
+
+            //Validate all time fields entered by the user
+            if (super.validateTimeFields().size() > 0) {
+                Object[] messObjs = super.validateTimeFields().toArray();
+                for (int i = 0; i < messObjs.length; i++) {
+                    String obj = (String) messObjs[i];
+                    String[] fieldErrors = obj.split(":");
+                    ////System.out.println("===> Field" + fieldErrors[0] + "===> Message" + fieldErrors[1]);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
+                    mLogger.error("Validation failed. Message displayed to the user: " + fieldErrors[0] + " : " + fieldErrors[1]);
+                    return VALIDATION_ERROR;
+                }
+
+            }
+
+            // SambaG
+            // Start here
+            ArrayList sResultsConfigArrayList = screenObject.getSearchResultsConfig();
+
+            EPathArrayList resultFields = new EPathArrayList();
+
+            Iterator srcalIterator = sResultsConfigArrayList.iterator();
+            String objectRef = null;
+            while (srcalIterator.hasNext()) {
+                SearchResultsConfig srConfig = (SearchResultsConfig) srcalIterator.next();
+                ArrayList epaths = srConfig.getEPaths();
+                Iterator ePathsIterator = epaths.iterator();
+                while (ePathsIterator.hasNext()) {
+                    String ePathStr = (String) ePathsIterator.next();
+                    resultFields.add("Enterprise.SystemSBR." + ePathStr);
+                    if (objectRef == null) {
+                        int index = ePathStr.indexOf(".");
+                        objectRef = ePathStr.substring(0, index);
+                    }
+                }
+            }
+
+            ArrayList searchScreenArray = super.screenObject.getSearchScreensConfig();
+            Iterator searchScreenArrayIter = searchScreenArray.iterator();
+            String eoSearchOptionQueryBuilder = new String();
+            while (searchScreenArrayIter.hasNext()) {
+                searchScreenConfig = (SearchScreenConfig) searchScreenArrayIter.next();
+                if (searchScreenConfig.getScreenTitle().equalsIgnoreCase(super.getSearchType())) {
+                    //get the EO search option from the EDM.xml file here as per the search type
+                    eoSearchOptionQueryBuilder = searchScreenConfig.getOptions().getQueryBuilder();
+                }
+            }
+
+            resultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
+
+            EOSearchOptions eoSearchOptions = new EOSearchOptions(eoSearchOptionQueryBuilder, resultFields);
+            //System.out.println("eoSearchOptions ==>: " + eoSearchOptions);
+
+            EOSearchCriteria eoSearchCriteria = new EOSearchCriteria();
+
+            HashMap gSearchCriteria = new HashMap();
+            HashMap gSearchCriteriaFromDOB = new HashMap();
+            HashMap gSearchCriteriaToDOB = new HashMap();
+            
+            String feildValue = new String();
+            
+            Object[] fcObjects = getScreenConfigArray().toArray();
+
+            //build the search criteria as per the user inputs from the form   
+            for (int i = 0; i < fcObjects.length; i++) {
+                FieldConfig objectFieldConfig = (FieldConfig) fcObjects[i];
+                String rootNode = objectFieldConfig.getRootObj();
+//                System.out.println(objectFieldConfig.isRange() + "==>: " + objectFieldConfig.getDisplayName() 
+//                                 + "name==> " + objectFieldConfig.getName()
+//                                 + "Value name ==> " + super.getUpdateableFeildsMap().get(objectFieldConfig.getName())
+//                                 + "Value dp ==> " + super.getUpdateableFeildsMap().get(objectFieldConfig.getDisplayName())
+//                                 );
+                
+                //Get the Field Value as per the field config range type
+                if (objectFieldConfig.isRange()) {
+                    feildValue = (String) super.getUpdateableFeildsMap().get(objectFieldConfig.getDisplayName());
+                } else {
+                    feildValue = (String) super.getUpdateableFeildsMap().get(objectFieldConfig.getName());
+                }
+                if (feildValue != null && feildValue.trim().length() > 0) {
+                    //Remove all masking fields from the field valued if any like SSN,LID...etc
+                    feildValue.replaceAll("-", "");
+                    if (objectFieldConfig.getDisplayName().equalsIgnoreCase("DOB From")) {
+                        //System.out.println("DOB FROM Putting ==>: " + objectFieldConfig.getDisplayName() + "feildValue==> " +feildValue);
+                        gSearchCriteriaFromDOB.put(objectFieldConfig.getFullFieldName(), feildValue);
+                    } else if (objectFieldConfig.getDisplayName().equalsIgnoreCase("DOB To")) {
+                        //System.out.println("DOB TO Putting ==>: " + objectFieldConfig.getDisplayName() + "feildValue==> " +feildValue);
+                        gSearchCriteriaToDOB.put(objectFieldConfig.getFullFieldName(), feildValue);
+                    } else {
+                        //System.out.println("OTHER Putting ==>: " + objectFieldConfig.getDisplayName() + "feildValue==> " +feildValue);
+                        gSearchCriteria.put(objectFieldConfig.getFullFieldName(), feildValue);
+                    }
+
+                }
+
+            }
+            
+            //System.out.println("gSearchCriteria==>: " + gSearchCriteria);
+
+            String objRef = objectRef;
+            // following code is from buildObjectNodeFromSearchCriteria()
+            //ObjectNode topNode = SimpleFactory.create(objRef);
+
+            SystemObject sysobj = buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteria);
+            SystemObject sysobj2 = null;
+            SystemObject sysobj3 = null;
+            if (!gSearchCriteriaFromDOB.isEmpty()) {
+                sysobj2 = buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteriaFromDOB);
+                eoSearchCriteria.setSystemObject2(sysobj2); // for dob from
+            }
+            if (!gSearchCriteriaToDOB.isEmpty()) {
+                sysobj3 = buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteriaToDOB);
+                eoSearchCriteria.setSystemObject3(sysobj3); // for dob to
+            }
+            eoSearchCriteria.setSystemObject(sysobj);  // for all search attributes other than dob range
+
+            //System.out.println("eoSearchCriteria ==>: " + eoSearchCriteria);
+
+            EOSearchResultIterator eoSearchResultIterator = masterControllerService.searchEnterpriseObject(eoSearchCriteria, eoSearchOptions);
+            
+            
+            
+            ArrayList arlResultsConfig = screenObject.getSearchResultsConfig();
+
+            EPathArrayList ePathArrayList = compareDuplicateManager.retrievePatientResultsFields(arlResultsConfig);
+
+            while (eoSearchResultIterator.hasNext()) {
+                EOSearchResultRecord eoSearchResultRecord = eoSearchResultIterator.next();
+                ObjectNode objectNode = eoSearchResultRecord.getObject();
+                HashMap fieldvalues = new HashMap();
+
+                for (int m = 0; m < ePathArrayList.size(); m++) {
+                    EPath ePath = ePathArrayList.get(m);
+                    try {
+                        Object value = EPathAPI.getFieldValue(ePath, objectNode);
+                        fieldvalues.put(ePath.getName(), value);
+                    } catch (Exception npe) {
+                    // THIS SHOULD BE FIXED
+                    // npe.printStackTrace();
+                    }
+                }
+                fieldvalues.put("EUID", eoSearchResultRecord.getEUID());
+                //System.out.println("FOR OUT PUT => : " + fieldvalues);
+                resultArrayList.add(fieldvalues);
+            }
+            //System.out.println("resultArrayList => : " + resultArrayList);
+            httpRequest.setAttribute("resultArrayListReq", resultArrayList);
+            setResultsSize(getPatientDetailsVO().length);
+        // End here            
+        // SambaG
+
+        } catch (Exception ex) {
+            mLogger.error("Exception : " + QwsUtil.getRootCause(ex).getMessage());
+            mLogger.error("Exception ex : " + ex.toString());
+            return this.VALIDATION_ERROR;
         }
-        return searchResultsScreenConfigArray;
-    }
-
-    /**
-     * 
-     * @param searchResultsScreenConfigArray
-     */
-    public void setSearchResultsScreenConfigArray(ArrayList searchResultsScreenConfigArray) {
-        this.searchResultsScreenConfigArray = searchResultsScreenConfigArray;
-    }
-
-    /**
-     * 
-     * @param event
-     */
-    public void setSearchTypeField(ActionEvent event) {
-        String searchTypeField = (String) event.getComponent().getAttributes().get("searchType");
-        this.setSearchType(searchTypeField);
+        return this.SEARCH_PATIENT_DETAILS;
     }
 
     /**
@@ -213,11 +342,17 @@ public class PatientDetailsHandler {
      * @param event
      */
     public void setPreviewEnterpriseObjectValues(ActionEvent event) {
-        
+
         String fnameExpression = (String) event.getComponent().getAttributes().get("fnameExpression");
         Object fvalueVaueExpression = (Object) event.getComponent().getAttributes().get("fvalueVaueExpression");
+        HashMap eoMultiMergePreviewMap = (HashMap) httpRequest.getAttribute("eoMultiMergePreview");
+        
+        HashMap mergePersonfieldValuesMapEO = (HashMap) eoMultiMergePreviewMap.get("ENTERPRISE_OBJECT");
+        
 
-        HashMap fieldValuesMerge = (HashMap)session.getAttribute("mergedEOMap");
+       // masterControllerService.modifySBR(sbr, hm);
+
+        HashMap fieldValuesMerge = (HashMap) session.getAttribute("mergedEOMap");
 
         if (fieldValuesMerge != null) {
             fieldValuesMerge.put(fnameExpression, fvalueVaueExpression); //set the value for the preview section
@@ -230,64 +365,77 @@ public class PatientDetailsHandler {
      * 
      * @param event
      */
-    public void makeDifferentPersonAction(ActionEvent event) {
+    public String makeDifferentPersonAction() {
         try {
-            //System.out.println("===== IN RRRRRRRRRRRRRR === > ");
-
-
-            String sourceEUID = (String) event.getComponent().getAttributes().get("sourceEUID");
-            String destinationEUID = (String) event.getComponent().getAttributes().get("destinationEUID");
-
-            //System.out.println("===== resolveType" + this.getResolveType());
-            //System.out.println("===== sourceEUID" + sourceEUID);
-            //System.out.println("===== destinationEUID" + destinationEUID);
-
-
-
-            //get potential duplicate ID
-            String potDupId = masterControllerService.getPotentialDuplicateID(sourceEUID, destinationEUID);
-            //resolve the potential duplicate as per resolve type
-            boolean resolveBoolean = ("AutoResolve".equalsIgnoreCase(this.getResolveType()))?true:false;
-
-            //System.out.println("===== resolveBoolean" + resolveBoolean);
-
-
-            masterControllerService.setAsDifferentPerson(potDupId, resolveBoolean);
             
+            //resolve the potential duplicate as per resolve type
+            boolean resolveBoolean = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? true : false;
+
+            //flag=false incase of autoresolve
+            //flag = true incase of permanant resolve
+
+            masterControllerService.setAsDifferentPerson(this.getPotentialDuplicateId(), resolveBoolean);
+            ArrayList modifiedArrayList = new ArrayList();
+
+            ArrayList eoArrayList = (ArrayList) session.getAttribute("comapreEuidsArrayList");
+            //reset the status and set it back in session
+            for (int i = 0; i < eoArrayList.size(); i++) {
+                HashMap objectHashMap = (HashMap) eoArrayList.get(i);
+                //set the resolve type for the selected potential duplicate
+                if(this.getPotentialDuplicateId().equals((String)objectHashMap.get("PotDupId"))) {
+                  objectHashMap.put("Status", "R");
+                }
+                modifiedArrayList.add(objectHashMap);
+            }
+            session.setAttribute("comapreEuidsArrayList",modifiedArrayList);
+
         } catch (ProcessingException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+   
+        return "Compare Duplicates";
     }
-     /**
+
+    /**
      * 
      * @param event
      */
     public void unresolvePotentialDuplicateAction(ActionEvent event) {
         try {
-            String sourceEUID = (String) event.getComponent().getAttributes().get("sourceEUID");
-            String destinationEUID = (String) event.getComponent().getAttributes().get("destinationEUID");
+//            String sourceEUID = (String) event.getComponent().getAttributes().get("sourceEUID");
+//            String destinationEUID = (String) event.getComponent().getAttributes().get("destinationEUID");
 
             //get potential duplicate ID
-            String potDupId = masterControllerService.getPotentialDuplicateID(sourceEUID, destinationEUID);
-            
+            String potDupId = (String) event.getComponent().getAttributes().get("potDupId");
+            ArrayList eoArrayList = (ArrayList) event.getComponent().getAttributes().get("eoArrayList");
+
+            session.removeAttribute("comapreEuidsArrayList");
+
             //un resolve the potential duplicate as per resolve type
             masterControllerService.unresolvePotentialDuplicate(potDupId);
-            
+            ArrayList modifiedArrayList = new ArrayList();
+            //reset the status and set it back in session
+            for (int i = 0; i < eoArrayList.size(); i++) {
+                HashMap objectHashMap = (HashMap) eoArrayList.get(i);
+                //System.out.println("IN UN RESOLVEEE" + potDupId + "==="+ objectHashMap.get("PotDupId") + "==> ; " + objectHashMap.get("Status") + objectHashMap.keySet());
+                //set the resolve type to "U" (UnResolve)for the selected potential duplicate
+                if(potDupId.equals((String)objectHashMap.get("PotDupId"))) {
+                  objectHashMap.put("Status", "U");
+                }
+                modifiedArrayList.add(objectHashMap);
+            }
+            session.setAttribute("comapreEuidsArrayList",modifiedArrayList);
+
         } catch (ProcessingException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     /**
      * 
      * @param event
@@ -295,11 +443,11 @@ public class PatientDetailsHandler {
     public void getEUIDDetails(ActionEvent event) {
         try {
             String euid = (String) event.getComponent().getAttributes().get("euid");
-            
+
             EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
             ArrayList newEOArrayList = new ArrayList();
             newEOArrayList.add(eo);
-        
+
             session.setAttribute("enterpriseArrayList", newEOArrayList);
 
         } catch (ProcessingException ex) {
@@ -307,7 +455,7 @@ public class PatientDetailsHandler {
         } catch (UserException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-           
+
     }
 
     /**
@@ -340,8 +488,8 @@ public class PatientDetailsHandler {
             //get the merged result for the source and destination using master master controller.
             EnterpriseObject mergeResultEO = masterControllerService.getPostMergeEO(sourceEnterpriseObject, destinationEnterpriseObject);
 
-            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
-            HashMap fieldValuesMergeMap = compareDuplicateManager.getEOFieldValues(mergeResultEO, screenObject, getSearchResultsScreenConfigArray().toArray());
+            
+            HashMap fieldValuesMergeMap = compareDuplicateManager.getEOFieldValues(mergeResultEO, screenObject, super.getResultsConfigArray().toArray());
             //Add the EUID to the hashmap
             fieldValuesMergeMap.put("EUID", mergeResultEO.getEUID());
 
@@ -353,41 +501,240 @@ public class PatientDetailsHandler {
         }
 
     }
+
+        public String previewPostMultiMergedEnterpriseObject() {
+        try {
+            //httpRequest.setAttribute("comapreEuidsArrayList", httpRequest.getAttribute("comapreEuidsArrayList"));
+            //System.out.println("===> " + mergeEuids);
+            
+            //System.out.println("===> " + destnEuid);
+
+            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
+            String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
+
+
+            String[] allEUIDs = mergeEuids.split("##");
+            
+            
+            ArrayList srcsList  = new ArrayList();
+            for (int i = 0; i < allEUIDs.length; i++) {
+                if(i !=0 ) {
+                    srcsList.add(allEUIDs[i]);
+                }
+            }    
+            
+            Object[] sourceEUIDObjs =  srcsList.toArray();
+            
+            String[] sourceEUIDs  = new String[srcsList.size()];
+            
+            String[] srcRevisionNumbers = new String[sourceEUIDs.length];
+            for (int i = 0; i < sourceEUIDObjs.length; i++) {
+                String sourceEuid = (String) sourceEUIDObjs[i];
+                sourceEUIDs[i] = sourceEuid;
+                srcRevisionNumbers[i] = new Integer(masterControllerService.getEnterpriseObject(sourceEuid).getSBR().getRevisionNumber()).toString();
+            }
+
+            httpRequest.setAttribute("sourceEUIDs", sourceEUIDs);
+
+            httpRequest.setAttribute("destnEuid", destnEuid);
+            
+            EnterpriseObject resulteo = masterControllerService.getPostMergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);
+
+            HashMap eoMultiMergePreview = compareDuplicateManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
+
+            httpRequest.setAttribute("eoMultiMergePreview", eoMultiMergePreview);
+
+
+        } catch (ProcessingException ex) {
+            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserException ex) {
+            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return this.SEARCH_PATIENT_DETAILS;
+}
+        
+        
+        
+  public String performMultiMergedEnterpriseObject() {
+        try {
+            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
+
+
+            HashMap eoHashMap = eoHashMap = (HashMap) compareDuplicateManager.getEnterpriseObjectAsHashMap(destinationEO, screenObject).get("ENTERPRISE_OBJECT");
+      
+            String[] selectedFieldsValue = this.selectedMergeFields.split(">>");
+
+
+            //when user modifies the person fields the only  update the enterprise object
+            if (selectedFieldsValue.length > 1) {
+                //Modify destination EO values with selected values 
+                for (int i = 0; i < selectedFieldsValue.length; i++) {
+                    String[] sourceEuidFull = selectedFieldsValue[i].split("##");
+                    eoHashMap.put(sourceEuidFull[0], sourceEuidFull[1]);
+                }
+                //Modify CHANGED sbr values here
+                masterControllerService.modifySBR(destinationEO.getSBR(), eoHashMap);
+
+                masterControllerService.updateEnterpriseObject(destinationEO);
+
+                //get the modifed EO and merge it
+                destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
+            }
+
+            String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
+
+
+            String[] allEUIDs = mergeEuids.split("##");
+            
+            
+            ArrayList srcsList  = new ArrayList();
+            for (int i = 0; i < allEUIDs.length; i++) {
+                if(i !=0 ) {
+                    srcsList.add(allEUIDs[i]);
+                }
+            }    
+            
+            Object[] sourceEUIDObjs =  srcsList.toArray();
+            
+            String[] sourceEUIDs  = new String[srcsList.size()];
+            
+            String[] srcRevisionNumbers = new String[sourceEUIDs.length];
+ 
+            for (int i = 0; i < sourceEUIDObjs.length; i++) {
+                String sourceEuid = (String) sourceEUIDObjs[i];
+                sourceEUIDs[i] = sourceEuid;
+                srcRevisionNumbers[i] = new Integer(masterControllerService.getEnterpriseObject(sourceEuid).getSBR().getRevisionNumber()).toString();
+            }
+
+            EnterpriseObject resulteo = masterControllerService.mergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);              
+            session.removeAttribute("comapreEuidsArrayList");
+           
+           HashMap eoMultiMergePreview = compareDuplicateManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
+
+           ArrayList finalMergeList  = new ArrayList();
+           finalMergeList.add(eoMultiMergePreview);
+
+           session.setAttribute("comapreEuidsArrayList",finalMergeList);
+
+        } catch (ObjectException ex) {
+            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ValidationException ex) {
+            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return this.SEARCH_PATIENT_DETAILS;
+}        
+
+  
+  public void undoMultiMerge(ActionEvent event) {
+      httpRequest.removeAttribute("eoMultiMergePreview");
+  }
     
     
-    public String singleEuidSearch () {
-          NavigationHandler navigationHandler = new NavigationHandler();
-          session.setAttribute("ScreenObject", navigationHandler.getScreenObject(new Integer("1")));
-          
+    
+    
+    
+    public String singleEuidSearch() {
+        NavigationHandler navigationHandler = new NavigationHandler();
+        session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
+
         try {
             ArrayList newArrayList = new ArrayList();
+            HashMap eoMap = new HashMap();
 
             EnterpriseObject enterpriseObject = masterControllerService.getEnterpriseObject(this.getSingleEUID());
             //Throw exception if EO is found null.
             if (enterpriseObject == null) {
-               session.removeAttribute("enterpriseArrayList");
-               String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                session.removeAttribute("enterpriseArrayList");
+                String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
             } else {
-                newArrayList.add(enterpriseObject);
-                session.setAttribute("enterpriseArrayList", newArrayList);
+                eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                newArrayList.add(eoMap);
             }
-        } catch (ProcessingException ex) {
+            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
+    } catch (ProcessingException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "EUID Details";
     }
-    
-        
-    public String compareEuidSearch () {
+
+    public String compareEuidSearch() {
         try {
             NavigationHandler navigationHandler = new NavigationHandler();
-            session.setAttribute("ScreenObject", navigationHandler.getScreenObject(new Integer("1")));
+            session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
             EnterpriseObject enterpriseObject = null;
 
             ArrayList newArrayList = new ArrayList();
+            HashMap eoMap = new HashMap();
+
+            if (this.getEuid1() != null && !"EUID 1".equalsIgnoreCase(this.getEuid1())) {
+                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid1());
+                //Throw exception if EO is found null.
+                if (enterpriseObject == null) {
+                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "EUID 1 :" + errorMessage, errorMessage));
+                } else {
+                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    newArrayList.add(eoMap);
+                }
+            }
+            if (this.getEuid2() != null && !"EUID 2".equalsIgnoreCase(this.getEuid2())) {
+                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid2());
+                //Throw exception if EO is found null.
+                if (enterpriseObject == null) {
+//                    session.removeAttribute("comapreEuidsArrayList");
+                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "EUID 2 :" + errorMessage, errorMessage));
+                } else {
+                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    newArrayList.add(eoMap);
+                }
+            }
+            if (this.getEuid3() != null && !"EUID 3".equalsIgnoreCase(this.getEuid3())) {
+                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid3());
+                //Throw exception if EO is found null.
+                if (enterpriseObject == null) {
+                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "EUID 3 :" + errorMessage, errorMessage));
+                } else {
+                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    newArrayList.add(eoMap);
+                }
+            }
+            if (this.getEuid4() != null && !"EUID 4".equalsIgnoreCase(this.getEuid4())) {
+                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid4());
+                //Throw exception if EO is found null.
+                if (enterpriseObject == null) {
+                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "EUID 4 :" + errorMessage, errorMessage));
+                } else {
+                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    newArrayList.add(eoMap);
+                }
+            }
+           
+//            System.out.println("===> : " + newArrayList);
+            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
+        } catch (ProcessingException ex) {
+            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserException ex) {
+            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "Compare Duplicates";
+    }
+
+    public String lookupEuid1() {
+        try {
+            NavigationHandler navigationHandler = new NavigationHandler();
+            session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
+            EnterpriseObject enterpriseObject = null;
+
+            ArrayList newArrayList = new ArrayList();
+            HashMap eoMap = new HashMap();
 
             if (this.getEuid1() != null && !"EUID 1".equalsIgnoreCase(this.getEuid1())) {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid1());
@@ -397,43 +744,11 @@ public class PatientDetailsHandler {
                     String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 } else {
-                    newArrayList.add(enterpriseObject);
+                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    newArrayList.add(eoMap);
                 }
             }
-            if (this.getEuid2() != null && !"EUID 2".equalsIgnoreCase(this.getEuid2())) {
-                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid2());
-                //Throw exception if EO is found null.
-                if (enterpriseObject == null) {
-                    session.removeAttribute("enterpriseArrayList");
-                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                } else {
-                    newArrayList.add(enterpriseObject);
-                }
-            }
-            if (this.getEuid3() != null && !"EUID 3".equalsIgnoreCase(this.getEuid3())) {
-                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid3());
-                //Throw exception if EO is found null.
-                if (enterpriseObject == null) {
-                    session.removeAttribute("enterpriseArrayList");
-                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                } else {
-                    newArrayList.add(enterpriseObject);
-                }
-            }
-            if (this.getEuid4() != null && !"EUID 4".equalsIgnoreCase(this.getEuid4())) {
-                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid4());
-                //Throw exception if EO is found null.
-                if (enterpriseObject == null) {
-                    session.removeAttribute("enterpriseArrayList");
-                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                } else {
-                    newArrayList.add(enterpriseObject);
-                }
-            }
-            session.setAttribute("enterpriseArrayList", newArrayList);
+            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
@@ -441,41 +756,15 @@ public class PatientDetailsHandler {
         }
         return "EUID Details";
     }
-    
-    public String lookupEuid1 () {
+
+    public String lookupEuid2() {
         try {
             NavigationHandler navigationHandler = new NavigationHandler();
-            session.setAttribute("ScreenObject", navigationHandler.getScreenObject(new Integer("1")));
+            session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
             EnterpriseObject enterpriseObject = null;
 
             ArrayList newArrayList = new ArrayList();
-
-            if (this.getEuid1() != null && !"EUID 1".equalsIgnoreCase(this.getEuid1())) {
-                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid1());
-                //Throw exception if EO is found null.
-                if (enterpriseObject == null) {
-                    session.removeAttribute("enterpriseArrayList");
-                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                } else {
-                    newArrayList.add(enterpriseObject);
-                }
-            }
-            session.setAttribute("enterpriseArrayList", newArrayList);
-        } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return "EUID Details";
-    }
-    public String lookupEuid2 () {
-        try {
-            NavigationHandler navigationHandler = new NavigationHandler();
-            session.setAttribute("ScreenObject", navigationHandler.getScreenObject(new Integer("1")));
-            EnterpriseObject enterpriseObject = null;
-
-            ArrayList newArrayList = new ArrayList();
+            HashMap eoMap = new HashMap();
 
             if (this.getEuid2() != null && !"EUID 2".equalsIgnoreCase(this.getEuid2())) {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid2());
@@ -485,10 +774,11 @@ public class PatientDetailsHandler {
                     String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 } else {
-                    newArrayList.add(enterpriseObject);
+                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    newArrayList.add(eoMap);
                 }
             }
-            session.setAttribute("enterpriseArrayList", newArrayList);
+            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
@@ -496,13 +786,15 @@ public class PatientDetailsHandler {
         }
         return "EUID Details";
     }
-    public String lookupEuid3 () {
+
+    public String lookupEuid3() {
         try {
             NavigationHandler navigationHandler = new NavigationHandler();
-            session.setAttribute("ScreenObject", navigationHandler.getScreenObject(new Integer("1")));
+            session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
             EnterpriseObject enterpriseObject = null;
 
             ArrayList newArrayList = new ArrayList();
+            HashMap eoMap = new HashMap();
 
             if (this.getEuid3() != null && !"EUID 3".equalsIgnoreCase(this.getEuid3())) {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid3());
@@ -512,10 +804,11 @@ public class PatientDetailsHandler {
                     String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 } else {
-                    newArrayList.add(enterpriseObject);
+                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    newArrayList.add(eoMap);
                 }
             }
-            session.setAttribute("enterpriseArrayList", newArrayList);
+            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
@@ -523,13 +816,15 @@ public class PatientDetailsHandler {
         }
         return "EUID Details";
     }
-   public String lookupEuid4 () {
+
+    public String lookupEuid4() {
         try {
             NavigationHandler navigationHandler = new NavigationHandler();
-            session.setAttribute("ScreenObject", navigationHandler.getScreenObject(new Integer("1")));
+            session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
             EnterpriseObject enterpriseObject = null;
 
             ArrayList newArrayList = new ArrayList();
+            HashMap eoMap = new HashMap();
 
             if (this.getEuid4() != null && !"EUID 4".equalsIgnoreCase(this.getEuid4())) {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid4());
@@ -539,10 +834,11 @@ public class PatientDetailsHandler {
                     String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 } else {
-                    newArrayList.add(enterpriseObject);
+                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+                    newArrayList.add(eoMap);
                 }
             }
-            session.setAttribute("enterpriseArrayList", newArrayList);
+            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
@@ -550,242 +846,8 @@ public class PatientDetailsHandler {
         }
         return "EUID Details";
     }
-/**
 
-@return String
-@throws com.sun.mdm.index.master.ProcessingException 
-@throws com.sun.mdm.index.master.UserException 
-*/
-public String performSubmit() throws ProcessingException, UserException {
-        EDMValidation edmValidation = new EDMValidation();
-        ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
-        //get the hidden fields search type from the form usin the facesContext
-        // get the array list as per the search
-        String errorMessage = null;
-        Date date = null;
-        
-    try {
-        int countMenuFields = 0;
-        int countEmptyFields = 0;
-        // get the array list as per the search
-        ArrayList fieldConfigArrayList = this.getFieldConfigArrayListByTitle(this.searchType);
-        Iterator fieldConfigArrayIter = fieldConfigArrayList.iterator();
-        int totalFields = 0;
-        Object[] fieldConfigArrayListObj = fieldConfigArrayList.toArray(); //build array of objects from arraylist
-        int countFields = 0;
-        //loop through array list of field config array lists
-        for (int c = 0; c < fieldConfigArrayListObj.length; c++) {
-            ArrayList fieldConfigList = (ArrayList) fieldConfigArrayListObj[c];
-            Iterator fieldConfigListIter = fieldConfigList.iterator();  
-            while (fieldConfigListIter.hasNext()) {
-                FieldConfig fieldConfig = (FieldConfig) fieldConfigListIter.next();
-                String feildValue = (String) this.getUpdateableFeildsMap().get(fieldConfig.getName());
-                if ("MenuList".equalsIgnoreCase(fieldConfig.getGuiType()) && feildValue == null) {
-                    countMenuFields++;
-                } else if (!"MenuList".equalsIgnoreCase(fieldConfig.getGuiType()) && feildValue != null && feildValue.trim().length() == 0) {
-                    countEmptyFields++;
-                }
-                          
-                totalFields++;
-            }
-        }
 
-        //Checking one of many condition here   
-        if ((totalFields > 0 && countEmptyFields + countMenuFields == totalFields) && // all updateable fields are left blank
-                (this.getEUID() == null || (this.getEUID() != null && this.getEUID().trim().length() == 0)) &&
-                (this.getLID() == null || (this.getLID() != null && this.getLID().trim().length() == 0)) &&
-                (this.getCreate_start_date() == null || (this.getCreate_start_date() != null && this.getCreate_start_date().trim().length() == 0)) &&
-                (this.getCreate_start_time() == null || (this.getCreate_start_time() != null && this.getCreate_start_time().trim().length() == 0)) &&
-                (this.getCreate_end_date() == null || (this.getCreate_end_date() != null && this.getCreate_end_date().trim().length() == 0)) &&
-                (this.getCreate_end_time() == null || (this.getCreate_end_time() != null && this.getCreate_end_time().trim().length() == 0)) &&
-                (this.getSystemCode() == null) &&
-                (this.getStatus() == null)) {
-            errorMessage =  bundle.getString("ERROR_one_of_many");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "One of Many :: " + errorMessage));
-            java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-            return VALIDATION_ERROR;
-        }
-         if (this.getEUID() != null && this.getEUID().length() > 0)    {
-            String message = edmValidation.validateNumber(this.getEUID());
-            if (!"success".equalsIgnoreCase(message)) {
-                errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "EUID:: " + errorMessage, errorMessage));
-                java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                
-            }
-        }   
-      
-         if (this.getLID() != null && this.getLID().length() > 0)    {
-            String message = edmValidation.validateNumber(this.getLID());
-            if (!"success".equalsIgnoreCase(message)) {
-                errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID:: " + errorMessage, errorMessage));
-                java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                
-            }
-        }    
-        
-        // SambaG
-        // Start here
-        ArrayList sResultsConfigArrayList = screenObject.getSearchResultsConfig();
-
-        EPathArrayList resultFields = new EPathArrayList();
-
-        Iterator srcalIterator = sResultsConfigArrayList.iterator();
-        String objectRef = null;
-        while (srcalIterator.hasNext()) {
-            SearchResultsConfig srConfig = (SearchResultsConfig) srcalIterator.next();
-            ArrayList epaths = srConfig.getEPaths();
-            Iterator ePathsIterator = epaths.iterator();
-            while (ePathsIterator.hasNext()) {
-                String ePathStr = (String) ePathsIterator.next();
-                resultFields.add("Enterprise.SystemSBR." + ePathStr);
-                if (objectRef == null) {
-                    int index = ePathStr.indexOf(".");
-                    objectRef = ePathStr.substring(0, index);
-                }
-            }
-        }
-
-        ArrayList searchScreenArray = this.getSearchScreenConfigArray();
-        Iterator searchScreenArrayIter = searchScreenArray.iterator();
-        String eoSearchOptionQueryBuilder = new String();
-        while (searchScreenArrayIter.hasNext()) {
-            SearchScreenConfig searchScreenConfig = (SearchScreenConfig) searchScreenArrayIter.next();
-            if (searchScreenConfig.getScreenTitle().equalsIgnoreCase(this.searchType)) {
-               //get the EO search option from the EDM.xml file here as per the search type
-               eoSearchOptionQueryBuilder = searchScreenConfig.getOptions().getQueryBuilder();
-            }
-        }
-        
-        resultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
-
-        EOSearchOptions eoSearchOptions = new EOSearchOptions(eoSearchOptionQueryBuilder, resultFields);
-        
-        EOSearchCriteria eoSearchCriteria = new EOSearchCriteria();
-
-        HashMap gSearchCriteria = new HashMap();
-        HashMap gSearchCriteriaFromDOB = new HashMap();
-        HashMap gSearchCriteriaToDOB = new HashMap();
-        String feildValue; 
-        //build the search criteria as per the user inputs from the form   
-        for (int c = 0; c < fieldConfigArrayListObj.length; c++) {
-            ArrayList fieldConfigList = (ArrayList) fieldConfigArrayListObj[c];
-            Iterator fieldConfigListIter = fieldConfigList.iterator();
-            while (fieldConfigListIter.hasNext()) {
-                FieldConfig fieldConfig = (FieldConfig) fieldConfigListIter.next();
-                 if (fieldConfig.getDisplayName().equalsIgnoreCase("DOB From") || fieldConfig.getDisplayName().equalsIgnoreCase("DOB To")) {
-                    feildValue = (String) this.getUpdateableFeildsMap().get(fieldConfig.getDisplayName());
-                 } else {
-                   feildValue = (String) this.getUpdateableFeildsMap().get(fieldConfig.getName());
-                 }                   
-                
-                //check if the field value is not null and the size is more than one charector.
-                if (feildValue != null && feildValue.trim().length() > 0) {
-                    if (fieldConfig.getDisplayName().equalsIgnoreCase("DOB From")) {
-                        gSearchCriteriaFromDOB.put(fieldConfig.getFullFieldName(), feildValue);
-                    } else if (fieldConfig.getDisplayName().equalsIgnoreCase("DOB To")) {
-                        gSearchCriteriaToDOB.put(fieldConfig.getFullFieldName(), feildValue);
-                    } else {
-                        if(feildValue !=null && "SSN".equalsIgnoreCase(fieldConfig.getName()) ){
-                            feildValue.replaceAll("-", "");
-                        }
-                        gSearchCriteria.put(fieldConfig.getFullFieldName(), feildValue);
-                    }
-
-                }
-            }
-        }
-        //set the search criteria here
-        //gSearchCriteria.put("Person.FirstName", "Mitch");
-        //gSearchCriteria.put("Person.LastName", "keith");
-        String objRef = objectRef;
-        // following code is from buildObjectNodeFromSearchCriteria()
-        //ObjectNode topNode = SimpleFactory.create(objRef);
-        
-        SystemObject sysobj = buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteria);
-        SystemObject sysobj2= null;
-        SystemObject sysobj3= null;
-        if(!gSearchCriteriaFromDOB.isEmpty()){        
-            sysobj2= buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteriaFromDOB);
-            eoSearchCriteria.setSystemObject2(sysobj2); // for dob from
-        }
-        if(!gSearchCriteriaToDOB.isEmpty()){        
-            sysobj3= buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteriaToDOB);
-            eoSearchCriteria.setSystemObject3(sysobj3); // for dob to
-        }
-        eoSearchCriteria.setSystemObject(sysobj);  // for all search attributes other than dob range
-        
-        
-        EOSearchResultIterator eoSearchResultIteratorSession = masterControllerService.searchEnterpriseObject(eoSearchCriteria, eoSearchOptions);
-
-        EOSearchResultIterator eoSearchResultIterator = masterControllerService.searchEnterpriseObject(eoSearchCriteria, eoSearchOptions);
-        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
-        ArrayList arlResultsConfig = screenObject.getSearchResultsConfig();
-        EPathArrayList ePathArrayList = compareDuplicateManager.retrievePatientResultsFields(arlResultsConfig);
-
-        while (eoSearchResultIterator.hasNext()) {
-            EOSearchResultRecord eoSearchResultRecord = eoSearchResultIterator.next();
-            ObjectNode objectNode = eoSearchResultRecord.getObject();
-            HashMap fieldvalues = new HashMap();
-
-            for (int m = 0; m < ePathArrayList.size(); m++) {
-                EPath ePath = ePathArrayList.get(m);
-                try {
-                    Object value = EPathAPI.getFieldValue(ePath, objectNode);
-                    fieldvalues.put(ePath.getName(), value);
-                } catch (Exception npe) {
-                // THIS SHOULD BE FIXED
-                // npe.printStackTrace();
-                }
-            }
-            fieldvalues.put("EUID", eoSearchResultRecord.getEUID());
-            resultArrayList.add(fieldvalues);
-        }
-        setResultsSize(getPatientDetailsVO().length);
-    // End here            
-    // SambaG
-
-    } catch (Exception exception) {
-        exception.printStackTrace();
-    }
-         return this.SEARCH_PATIENT_DETAILS;
-    }
-    // getFieldConfigArrayListByTitle to get the field configs
-    /**
-     * 
-     * @param screenTitle
-     * @return
-     */
-    public ArrayList getFieldConfigArrayListByTitle(String screenTitle) {
-        ArrayList basicSearchFieldConfigs = null;
-        ArrayList fieldConfigArrayList = new ArrayList();
-        try {
-            ArrayList screenConfigArray = screenObject.getSearchScreensConfig();
-            Iterator iteratorScreenConfig = screenConfigArray.iterator();
-
-            while (iteratorScreenConfig.hasNext()) {
-                SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
-                if (screenTitle.equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
-                    // Get an array list of field config groups
-                    basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
-                    Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
-                    //Iterate the the FieldConfigGroup array list
-                    while (basicSearchFieldConfigsIterator.hasNext()) {
-                        //Build array of field config groups 
-                        FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
-                        //Build array of field configs from 
-                        ArrayList fieldConfigArrayListValue = basicSearchFieldGroup.getFieldConfigs();
-                        fieldConfigArrayList.add(fieldConfigArrayListValue);//Build an Array list of field congfig group arraylist.
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            mLogger.error("Failed Get the Screen Object: ", e);
-        }
-        return fieldConfigArrayList;
-    }
     public String[] getStringEUIDs(String euids) {
 
         StringTokenizer stringTokenizer = new StringTokenizer(euids, ",");
@@ -802,44 +864,58 @@ public String performSubmit() throws ProcessingException, UserException {
      * 
      * @param event
      */
-    public void activateEO(ActionEvent event){
+    public void activateEO(ActionEvent event) {
         try {
-            EnterpriseObject enterpriseObject = (EnterpriseObject) event.getComponent().getAttributes().get("eoValueExpression");
+            String euid = (String) event.getComponent().getAttributes().get("euidValueExpression");
+
+            EnterpriseObject enterpriseObject = masterControllerService.getEnterpriseObject(euid);
+
+            //Activate the enterprise object
             masterControllerService.activateEnterpriseObject(enterpriseObject.getEUID());
+
             EnterpriseObject updatedEnterpriseObject = masterControllerService.getEnterpriseObject(enterpriseObject.getEUID());
-            
+
+            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(updatedEnterpriseObject, screenObject);
+
             ArrayList updatedEOList = new ArrayList();
-            updatedEOList.add(updatedEnterpriseObject);
-            
+            updatedEOList.add(eoMap);
+
             //Keep the updated SO in the session again
-            session.setAttribute("enterpriseArrayList", updatedEOList);
-            
+            httpRequest.setAttribute("comapreEuidsArrayList", updatedEOList);
+
         } catch (ProcessingException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
-                       
-   }
+
+
+    }
+
     /**
      * 
      * @param event
      */
-    public void deactivateEO(ActionEvent event){
+    public void deactivateEO(ActionEvent event) {
         try {
 
-            EnterpriseObject enterpriseObject = (EnterpriseObject) event.getComponent().getAttributes().get("eoValueExpression");
+            String euid = (String) event.getComponent().getAttributes().get("euidValueExpression");
 
+            EnterpriseObject enterpriseObject = masterControllerService.getEnterpriseObject(euid);
+
+
+            //Deactivate the enterprise object
             masterControllerService.deactivateEnterpriseObject(enterpriseObject.getEUID());
 
             EnterpriseObject updatedEnterpriseObject = masterControllerService.getEnterpriseObject(enterpriseObject.getEUID());
 
+            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(updatedEnterpriseObject, screenObject);
+
             ArrayList updatedEOList = new ArrayList();
-            updatedEOList.add(updatedEnterpriseObject);
-            
+            updatedEOList.add(eoMap);
+
             //Keep the updated SO in the session again
-            session.setAttribute("enterpriseArrayList", updatedEOList);
+            httpRequest.setAttribute("comapreEuidsArrayList", updatedEOList);
 
         } catch (ProcessingException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -847,8 +923,8 @@ public String performSubmit() throws ProcessingException, UserException {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-            //Keep the updated SO in the session again
-   }
+    //Keep the updated SO in the session again
+    }
     //get and setters for resultsArray
     public ArrayList getResultArrayList() {
         return resultArrayList;
@@ -856,79 +932,6 @@ public String performSubmit() throws ProcessingException, UserException {
 
     public void setResultArrayList(ArrayList resultArrayList) {
         this.resultArrayList = resultArrayList;
-    }
-
-    //getter and setter methods for the non updateable fields
-    public String getEUID() {
-        return EUID;
-    }
-
-    public void setEUID(String EUID) {
-        this.EUID = EUID;
-    }
-
-    public String getSystemCode() {
-        return SystemCode;
-    }
-
-    public void setSystemCode(String SystemCode) {
-        this.SystemCode = SystemCode;
-    }
-
-    public String getLID() {
-        return LID;
-    }
-
-    public void setLID(String LID) {
-        this.LID = LID;
-    }
-
-    public String getCreate_start_date() {
-        return create_start_date;
-    }
-
-    public void setCreate_start_date(String create_start_date) {
-        this.create_start_date = create_start_date;
-    }
-
-    public String getCreate_end_date() {
-        return create_end_date;
-    }
-
-    public void setCreate_end_date(String create_end_date) {
-        this.create_end_date = create_end_date;
-    }
-
-    public String getCreate_start_time() {
-        return create_start_time;
-    }
-
-    public void setCreate_start_time(String create_start_time) {
-        this.create_start_time = create_start_time;
-    }
-
-    public String getCreate_end_time() {
-        return create_end_time;
-    }
-
-    public void setCreate_end_time(String create_end_time) {
-        this.create_end_time = create_end_time;
-    }
-
-    public String getStatus() {
-        return Status;
-    }
-
-    public void setStatus(String Status) {
-        this.Status = Status;
-    }
-
-    public String getSearchType() {
-        return searchType;
-    }
-
-    public void setSearchType(String searchType) {
-        this.searchType = searchType;
     }
 
     public String[] getEuidCheckValues() {
@@ -945,51 +948,6 @@ public String performSubmit() throws ProcessingException, UserException {
 
     public void setEuidCheckboolean(boolean euidCheckboolean) {
         this.euidCheckboolean = euidCheckboolean;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public ArrayList<SelectItem> getPossilbeSearchTypes() {
-            ArrayList screenConfigArray = screenObject.getSearchScreensConfig();
-            Iterator iteratorScreenConfigIter = screenConfigArray.iterator();
-            SearchScreenConfig objSearchScreenConfig;
-            ArrayList newArrayList = new ArrayList();
-            int count = 1;
-            while(iteratorScreenConfigIter.hasNext()) {
-               objSearchScreenConfig = (SearchScreenConfig)iteratorScreenConfigIter.next() ;
-               SelectItem  selectItem = new SelectItem();
-               selectItem.setLabel(objSearchScreenConfig.getScreenTitle());
-               selectItem.setValue(objSearchScreenConfig.getScreenTitle());
-               newArrayList.add(selectItem);
-               //possilbeSearchTypes.add(selectItem);
-               count++;
-            }
-            possilbeSearchTypes = newArrayList;
-         // returning the arraylist of searchTitles
-        return possilbeSearchTypes;
-    }
-
-    /*
-     * Method used to set the search type when from the select options
-     *
-     * Triggered when value is changed using ValueChangeListener.
-     * @param event
-     */
-    public void changeSearchType(ValueChangeEvent event) {
-        // get the event with the changed values
-        String selectedSearcType = (String) event.getNewValue();
-        
-        this.setSearchType(selectedSearcType);
-    }
-
-    /**
-     * 
-     * @param possilbeSearchTypes
-     */
-    public void setPossilbeSearchTypes(ArrayList<SelectItem> possilbeSearchTypes) {
-        this.possilbeSearchTypes = possilbeSearchTypes;
     }
 
     private SystemObject buildObjectNodeFromSearchCriteria(String objectRef, HashMap gSearchCriteria) throws ObjectException, ValidationException {
@@ -1027,31 +985,31 @@ public String performSubmit() throws ProcessingException, UserException {
         sysobj.setObject(topNode);
         return sysobj;
     }
+
     /**
      * 
      * @param event
      */
     public void mergePreviewEnterpriseObject(ActionEvent event) {
-       
+
         String srcEUIDVaueExpression = (String) event.getComponent().getAttributes().get("mainEOVaueExpression");
         String destnEUIDVaueExpression = (String) event.getComponent().getAttributes().get("duplicateEOVaueExpression");
-        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
         HashMap mergredHashMapVaueExpression = (HashMap) event.getComponent().getAttributes().get("mergedEOValueExpression");
-        String sbrEUID =  (String) mergredHashMapVaueExpression.get("EUID");
-        String destnId = (sbrEUID.equalsIgnoreCase(srcEUIDVaueExpression))?destnEUIDVaueExpression:srcEUIDVaueExpression;
+        String sbrEUID = (String) mergredHashMapVaueExpression.get("EUID");
+        String destnId = (sbrEUID.equalsIgnoreCase(srcEUIDVaueExpression)) ? destnEUIDVaueExpression : srcEUIDVaueExpression;
         SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
         SBR finalSBR = compareDuplicateManager.getEnterpriseObject(sbrEUID).getSBR();
         //Object[] resultsConfigFeilds  = getSearchResultsScreenConfigArray().toArray();
-         SourceHandler sourceHandler = new SourceHandler();
-         Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
-           
+        SourceHandler sourceHandler = new SourceHandler();
+        Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
+
         try {
             for (int ifc = 0; ifc < personConfigFeilds.length; ifc++) {
                 FieldConfig fieldConfig = (FieldConfig) personConfigFeilds[ifc];
 
-                Object strValue =  mergredHashMapVaueExpression.get(fieldConfig.getFullFieldName());
+                Object strValue = mergredHashMapVaueExpression.get(fieldConfig.getFullFieldName());
                 String dateField;
-                String fieldName = fieldConfig.getFullFieldName().substring(fieldConfig.getFullFieldName().indexOf(".")+1, fieldConfig.getFullFieldName().length());
+                String fieldName = fieldConfig.getFullFieldName().substring(fieldConfig.getFullFieldName().indexOf(".") + 1, fieldConfig.getFullFieldName().length());
                 if (strValue != null) {
                     if (fieldConfig.getValueType() == 6) {
                         dateField = simpleDateFormatFields.format(mergredHashMapVaueExpression.get(fieldConfig.getFullFieldName()));
@@ -1065,131 +1023,152 @@ public String performSubmit() throws ProcessingException, UserException {
             }
             EnterpriseObject sourceEO = masterControllerService.getEnterpriseObject(sbrEUID);
             EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnId);
-            
-            MergeResult mergeResult  = masterControllerService.mergeEnterpriseObject(sourceEO, destinationEO);
-            EnterpriseObject  finalMergredDestnEO = mergeResult.getDestinationEO();
+
+            MergeResult mergeResult = masterControllerService.mergeEnterpriseObject(sourceEO, destinationEO);
+            EnterpriseObject finalMergredDestnEO = mergeResult.getDestinationEO();
             ArrayList finalMergredDestnEOArrayList = new ArrayList();
             finalMergredDestnEOArrayList.add(finalMergredDestnEO);
             session.removeAttribute("mergedEOMap");
             session.removeAttribute("enterpriseArrayList");
             session.removeAttribute("finalArrayList");
-            
+
             session.setAttribute("enterpriseArrayList", finalMergredDestnEOArrayList);
-            
+
         } catch (ProcessingException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-      }
+    }
 
-      /**
+    /**
      * 
      * @param event
+     * @throws com.sun.mdm.index.objects.exception.ObjectException 
      */
     public void unmergeEnterpriseObject(ActionEvent event) throws ObjectException {
-        
+
         EnterpriseObject enterpriseObject = (EnterpriseObject) event.getComponent().getAttributes().get("eoValueExpressionunmerge");
         try {
-           MergeResult unMerge = masterControllerService.unMerge(enterpriseObject.getEUID());
-          //httpRequest.setAttribute("unMerged", "unmerge");
+            MergeResult unMerge = masterControllerService.unMerge(enterpriseObject.getEUID());
+        //httpRequest.setAttribute("unMerged", "unmerge");
         } catch (ProcessingException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (RemoteException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
-        
-        }                     
-          
+
+        }
+
     }
-    
-    public void viewMergedRecords(ActionEvent event) throws ObjectException{
-        
+
+    public void viewMergedRecords(ActionEvent event) throws ObjectException {
+
         //HashMap unmergedHashMapValueExpression = (HashMap) event.getComponent().getAttributes().get("unmergedEOValueExpression");
         String transactionNumber = (String) event.getComponent().getAttributes().get("tranNoValueExpressionviewmerge");
         EnterpriseObject enterpriseObject = (EnterpriseObject) event.getComponent().getAttributes().get("eoValueExpressionViewMerge");
         HashMap viewMergeRecordsHashMapValueExpression = (HashMap) event.getComponent().getAttributes().get("viewMergeEOValueExpression");
-            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
-            SourceHandler sourceHandler = new SourceHandler();
-            Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
-            Object[] addressConfigFeilds = sourceHandler.getAddressFieldConfigs().toArray();
-            Object[] aliasConfigFeilds = sourceHandler.getAliasFieldConfigs().toArray();
-            Object[] phoneConfigFeilds = sourceHandler.getPhoneFieldConfigs().toArray();
-            Object[] auxidConfigFeilds = sourceHandler.getAuxIdFieldConfigs().toArray();
-            Object[] commentConfigFeilds = sourceHandler.getCommentFieldConfigs().toArray();
+        
+        SourceHandler sourceHandler = new SourceHandler();
+        Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
+        Object[] addressConfigFeilds = sourceHandler.getAddressFieldConfigs().toArray();
+        Object[] aliasConfigFeilds = sourceHandler.getAliasFieldConfigs().toArray();
+        Object[] phoneConfigFeilds = sourceHandler.getPhoneFieldConfigs().toArray();
+        Object[] auxidConfigFeilds = sourceHandler.getAuxIdFieldConfigs().toArray();
+        Object[] commentConfigFeilds = sourceHandler.getCommentFieldConfigs().toArray();
 
         try {
-          EnterpriseObjectHistory viewMergehist = masterControllerService.viewMergeRecords(transactionNumber);
-          ArrayList mergeEOList = new ArrayList();
-          
-          if(viewMergehist.getBeforeEO1() !=null){
-              mergeEOList.add(viewMergehist.getBeforeEO1());
-          }
-          if(viewMergehist.getBeforeEO2() !=null){
-              mergeEOList.add(viewMergehist.getBeforeEO2());
-          }
+            EnterpriseObjectHistory viewMergehist = masterControllerService.viewMergeRecords(transactionNumber);
+            ArrayList mergeEOList = new ArrayList();
+
+            if (viewMergehist.getBeforeEO1() != null) {
+                mergeEOList.add(viewMergehist.getBeforeEO1());
+            }
+            if (viewMergehist.getBeforeEO2() != null) {
+                mergeEOList.add(viewMergehist.getBeforeEO2());
+            }
 //          if(viewMergehist.getAfterEO() !=null){
 //              mergeEOList.add(viewMergehist.getAfterEO());
 //          }
-          if(viewMergehist.getAfterEO2() !=null){
-              mergeEOList.add(viewMergehist.getAfterEO2());
-          }
+            if (viewMergehist.getAfterEO2() != null) {
+                mergeEOList.add(viewMergehist.getAfterEO2());
+            }
 
-          
-          httpRequest.setAttribute("mergeEOList",mergeEOList);  
-          
-         } catch (Exception ex) {
+
+            httpRequest.setAttribute("mergeEOList", mergeEOList);
+
+        } catch (Exception ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
-       
-        }                     
+
+        }
     }
-    
-     public void viewHistory(ActionEvent event) throws ObjectException{
+
+    public void viewHistory(ActionEvent event) throws ObjectException {
         // session.removeAttribute("eoHistory");  
-          
-        EnterpriseObject enterpriseObject = (EnterpriseObject) event.getComponent().getAttributes().get("eoValueExpression");
-        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
-          
-        try {
-           ArrayList viewHistoryEOList = masterControllerService.viewHistory(enterpriseObject.getEUID());
-          
-           session.setAttribute("eoHistory"+enterpriseObject.getEUID(),viewHistoryEOList);  
-          
-         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
-       
-        }                     
-    }
-   
-      public void removeHistory(ActionEvent event) throws ObjectException{
-           EnterpriseObject enterpriseObject = (EnterpriseObject) event.getComponent().getAttributes().get("eoValueExpression");
-           //System.out.println("Removing from session==:>"  + enterpriseObject.getEUID());
-           session.removeAttribute("eoHistory"+enterpriseObject.getEUID());  
-    }
-    
-     public void viewSource(ActionEvent event) throws ObjectException{
+
+        String euid = (String) event.getComponent().getAttributes().get("euidValueExpression");
         
-        EnterpriseObject enterpriseObject = (EnterpriseObject) event.getComponent().getAttributes().get("eoValueExpression");
-        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
-          
+        ArrayList newArrayListHistory = new ArrayList();
+        EnterpriseObject eoHist = null;
         try {
-            EnterpriseObject eoSource = compareDuplicateManager.getEnterpriseObject(enterpriseObject.getEUID());
-            Collection itemsSource = eoSource.getSystemObjects();
-          
-           httpRequest.setAttribute("itemsSource",itemsSource);  
-          
-         } catch (Exception ex) {
+            ArrayList viewHistoryEOList = masterControllerService.viewHistory(euid);
+            for (int i = 0; i < viewHistoryEOList.size(); i++) {
+                HashMap objectHistMap  = (HashMap) viewHistoryEOList.get(i);
+                String key = (String) objectHistMap.keySet().toArray()[0];
+                
+                //System.out.println(i + "  <==>keysSet " + key + "==> : objectHistMap");
+                HashMap objectHistMapUpdated  = new HashMap();
+                if(objectHistMap.get(key) != null) {
+                    eoHist = (EnterpriseObject) objectHistMap.get(key);
+                    objectHistMapUpdated.put(key, compareDuplicateManager.getEnterpriseObjectAsHashMap(eoHist, screenObject));
+                    newArrayListHistory.add(objectHistMapUpdated);
+                }                
+                               
+            }
+         
+            //System.out.println("FINAL HISTORY LIST" + newArrayListHistory.size());
+            httpRequest.setAttribute("eoHistory" + euid, newArrayListHistory);
+
+        } catch (Exception ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
-       
-        }                     
-    }
-   
-      public void removeSource(ActionEvent event) throws ObjectException{
-           httpRequest.removeAttribute("itemsSource");  
+
+        }
     }
 
-   public PatientDetails[] getPatientDetailsVO() {
+    public void removeHistory(ActionEvent event) throws ObjectException {
+        String euid = (String) event.getComponent().getAttributes().get("euidValueExpression");
+        httpRequest.removeAttribute("eoHistory" + euid);
+    }
+
+    public void viewSource(ActionEvent event) throws ObjectException {
+        String euid = (String) event.getComponent().getAttributes().get("euidValueExpression");
+        
+        ArrayList newArrayList = new ArrayList();
+        try {
+            EnterpriseObject enterpriseObject  = masterControllerService.getEnterpriseObject(euid);
+            Collection itemsSource = enterpriseObject.getSystemObjects();
+            Iterator iterSources  = itemsSource.iterator();
+            while (iterSources.hasNext()) {
+                SystemObject systemObject =(SystemObject)iterSources.next();
+                newArrayList.add(compareDuplicateManager.getSystemObjectAsHashMap(systemObject, screenObject));
+           }
+
+            //System.out.println("newArrayList" + newArrayList.size());
+            httpRequest.setAttribute("eoSources"+enterpriseObject.getEUID(), newArrayList);
+
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+    }
+
+    public void removeSource(ActionEvent event) throws ObjectException {
+        EnterpriseObject enterpriseObject = (EnterpriseObject) event.getComponent().getAttributes().get("eoValueExpression");
+        httpRequest.removeAttribute("eoSources");
+    }
+
+    public PatientDetails[] getPatientDetailsVO() {
         patientDetailsVO = new PatientDetails[this.resultArrayList.size()];
         SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
         int size = this.resultArrayList.size();
@@ -1197,7 +1176,7 @@ public String performSubmit() throws ProcessingException, UserException {
         HashMap values = new HashMap();
         for (int i = 0; i < size; i++) {
             patientDetailsVO[i] = new PatientDetails();
-            values = (HashMap)resultArrayList.get(i);
+            values = (HashMap) resultArrayList.get(i);
             String dateField = simpleDateFormatFields.format(values.get("Person.DOB"));
             patientDetailsVO[i].setEuid((String) values.get("EUID"));
             patientDetailsVO[i].setFirstName((String) values.get("Person.FirstName"));
@@ -1206,7 +1185,7 @@ public String performSubmit() throws ProcessingException, UserException {
             patientDetailsVO[i].setSsn((String) values.get("Person.SSN"));
             patientDetailsVO[i].setAddressLine1((String) values.get("Person.Address.AddressLine1"));
         }
-        
+
         return patientDetailsVO;
     }
 
@@ -1221,7 +1200,6 @@ public String performSubmit() throws ProcessingException, UserException {
     public void setSingleEUID(String singleEUID) {
         this.singleEUID = singleEUID;
     }
-
 
     public String getCompareEUID() {
         return compareEUID;
@@ -1278,6 +1256,92 @@ public String performSubmit() throws ProcessingException, UserException {
     public void setResolveType(String resolveType) {
         this.resolveType = resolveType;
     }
+
+    public String getMergeEuids() {
+        return mergeEuids;
+    }
+
+    public void setMergeEuids(String mergeEuids) {
+        this.mergeEuids = mergeEuids;
+    }
+
+    public String getDestnEuid() {
+        return destnEuid;
+    }
+
+    public void setDestnEuid(String destnEuid) {
+        this.destnEuid = destnEuid;
+    }
+
+    public String getCompareEuids() {
+        return compareEuids;
+    }
+
+    public void setCompareEuids(String compareEuids) {
+        this.compareEuids = compareEuids;
+    }
+
+    /**
+     * 
+     * @return String
+     */
+    public String buildCompareEuids() {
+        ArrayList euidsMapList = new ArrayList();
+        //System.out.println("===> EUIDS " + this.compareEuids);
+
+        String[] euids = this.compareEuids.split("##");
+        for (int i = 0; i < euids.length; i++) {
+            try {
+                String sourceEuid = euids[i];
+                EnterpriseObject eo = masterControllerService.getEnterpriseObject(sourceEuid);
+                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+                euidsMapList.add(eoMap);
+
+             //System.out.println("===> " + sourceEuid + "srcRevisionNumbers" + eo.getEUID());
+            } catch (ProcessingException ex) {
+                java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UserException ex) {
+                java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+        session.setAttribute("comapreEuidsArrayList", euidsMapList);
+        return "Compare Duplicates";
+
+    }
+
+    public String getSelectedMergeFields() {
+        return selectedMergeFields;
+    }
+
+    public void setSelectedMergeFields(String selectedMergeFields) {
+        this.selectedMergeFields = selectedMergeFields;
+    }
+    
+
+    public ArrayList buildEuids(String euid) {
+        ArrayList euidsMapList = new ArrayList();
+        try {
+            EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
+            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+            euidsMapList.add(eoMap);
+        } catch (ProcessingException ex) {
+            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserException ex) {
+            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return euidsMapList;        
+  }
+
+    public String getPotentialDuplicateId() {
+        return potentialDuplicateId;
+    }
+
+    public void setPotentialDuplicateId(String potentialDuplicateId) {
+        this.potentialDuplicateId = potentialDuplicateId;
+    }
+
 }
 
 

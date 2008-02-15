@@ -951,6 +951,27 @@ public class SourceHandler {
 
     }
 
+    public ArrayList buildAllFieldConfigArrayList(String objectType) {
+        ArrayList fcArrayList = new ArrayList();
+        try {
+            ConfigManager.init();
+            ObjectNodeConfig objectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(objectType);
+            FieldConfig[] allFeildConfigs = objectNodeConfig.getFieldConfigs();
+            String rootName = screenObject.getRootObj().getName();
+
+            //Build Person Epath Arraylist
+            for (int i = 0; i < allFeildConfigs.length; i++) {
+                FieldConfig fieldConfig = allFeildConfigs[i];
+                if(!(rootName+ ".EUID").equalsIgnoreCase(fieldConfig.getFullFieldName())) {
+                  fcArrayList.add(fieldConfig.getFullFieldName());
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return fcArrayList;
+
+    }
     public HashMap getSingleSOHashMap() {
         return singleSOHashMap;
     }
@@ -1286,4 +1307,29 @@ public class SourceHandler {
     public void setEditSoCommentHashMap(HashMap editSoCommentHashMap) {
         this.editSoCommentHashMap = editSoCommentHashMap;
     }
+    public HashMap getAllNodeFieldConfigs() {
+         HashMap newHashMap = new HashMap();
+        try {
+
+            String rootNodeName = screenObject.getRootObj().getName();
+
+            ConfigManager.init();
+            ObjectNodeConfig rootNodeObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(rootNodeName);
+
+            //Build and array of field configs for the root node for ex: PERSON
+            newHashMap.put(rootNodeName, rootNodeObjectNodeConfig.getFieldConfigs());
+
+            ObjectNodeConfig[] arrObjectNodeConfig = screenObject.getRootObj().getChildConfigs();
+
+            for (int i = 0; i < arrObjectNodeConfig.length; i++) {
+                ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
+                newHashMap.put(childObjectNodeConfig.getName(), childObjectNodeConfig.getFieldConfigs());
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return newHashMap;
+    }
+
 }

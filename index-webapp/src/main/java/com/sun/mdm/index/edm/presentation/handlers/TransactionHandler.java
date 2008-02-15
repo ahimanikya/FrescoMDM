@@ -40,10 +40,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 
 import com.sun.mdm.index.edm.presentation.valueobjects.Transaction;
-import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.FieldConfigGroup;
-import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.edm.services.configuration.SearchResultsConfig;
 import com.sun.mdm.index.edm.services.configuration.SearchScreenConfig;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
@@ -63,65 +61,25 @@ import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.edm.presentation.validations.HandlerException;
-import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
 import com.sun.mdm.index.objects.EnterpriseObjectHistory;
 import com.sun.mdm.index.objects.exception.ObjectException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import com.sun.mdm.index.util.LogUtil;
+import com.sun.mdm.index.util.Logger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpSession;
-import com.sun.mdm.index.util.LogUtil;
-import java.util.HashMap;
+import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 
-
-public class TransactionHandler {
-    /**
-     * Search Start Date
-     */
-    private String createStartDate = "";
-    /**
-     * Search End Date
-     */
-    private String createEndDate = "";    
-    /**
-     * Search Start Time
-     */ 
-    private String createStartTime = "";
-    /**
-     * Search end Time
-     */
-    private String createEndTime = "";    
-    /**
-     * Search Local ID
-     */
-    private String localid = "";
-    /**
-     * Search EUID
-     */
-    private String euid = "";
-    /**
-     * Search System User
-     */
-    private String systemuser = "";    
-    /**
-     * Search Function
-     */
-    private String function = "";    
-
-    /**
-     * Search Function
-     */    
-    private String source = "";
-    
+public class TransactionHandler extends ScreenConfiguration {
     /**
      * Data Object that holds the search results 
      */    
@@ -137,38 +95,124 @@ public class TransactionHandler {
      * JSF Naviagation String
      */       
     private  static final String TRANSACTIONS_PAGE ="transactions";
-    private  static final String TRANSACTIONS_PAGE_VALIDATIONS_ERROR ="Validation Error";
+    
+    private  static final String VALIDATION_ERROR ="Validation Error";
     
     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     
-    HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-	/** Creates a new instance of TransactionHandler */
+    
+    private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.TransactionHandler");
+
+    String errorMessage = new String();
+    /** Creates a new instance of TransactionHandler */
 
     public TransactionHandler() {
     }
     
-    public String performTransactionSearch() throws HandlerException  {
-        String errorMessage = "success";
-        ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    public String performSubmit() throws HandlerException  {
             try {
-                EPathArrayList arlResultFields = null;
-                ConfigManager configManager = ConfigManager.getInstance();
-                Integer screenID = new Integer("2");
-                ScreenObject objScreenObject = null;
-                TransactionSearchObject tso = null;
-                TransactionIterator iteratorTransaction = null;
+            //System.out.println("---------------1-------------------" + super.getUpdateableFeildsMap() + super.checkOneOfManyCondition());
+            //check one of many condtion here
+            if (super.checkOneOfManyCondition()) {
+                //System.out.println("---------------1-------------------" + super.getUpdateableFeildsMap());
+                errorMessage = bundle.getString("ERROR_one_of_many");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "One of Many :: " + errorMessage));
+                mLogger.error("Validation failed. Message displayed to the user: " + "One of Many :: " + errorMessage);
+                return VALIDATION_ERROR;
+            }
+
+            //if user enters LID ONLY 
+            if ((super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("SystemCode") == null) {
+                errorMessage = "Please Enter System Code";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID Validation :: " + errorMessage, errorMessage));
+                mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
+                return VALIDATION_ERROR;
+
+            }
+            //if user enters LID and SystemCode Validate the LID 
+            if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
+                String LID = (String) super.getUpdateableFeildsMap().get("LID");
+                String SystemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
+                if (SystemCode.trim().length() > 0 && LID.trim().length() == 0) {
+                    errorMessage = "Please Enter LID Value";
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID/SystemCode Validation :: " + errorMessage, errorMessage));
+                    mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
+                    return VALIDATION_ERROR;
+
+                }
+            }
+
+
+            //if user enters LID and SystemCode Validate the LID 
+            if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
+                String LID = (String) super.getUpdateableFeildsMap().get("LID");
+                String SystemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
+                if (LID.trim().length() > 0 && SystemCode.trim().length() > 0) {
+                    try {
+                        //remove masking for LID field
+                        LID = LID.replaceAll("-", "");
+                        ////System.out.println("SystemCode" + SystemCode + "LID" + LID);
+                        SystemObject so = masterControllerService.getSystemObject(SystemCode, LID);
+                        if (so == null) {
+                            errorMessage = bundle.getString("system_object_not_found_error_message");
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID/SYSTEM CODE :: " + errorMessage, errorMessage));
+                            mLogger.error("Validation failed. Message displayed to the user: " + "LID/SYSTEM CODE :: " + errorMessage);
+                            return VALIDATION_ERROR;
+                        }
+                    } catch (ProcessingException ex) {
+                        mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
+                        mLogger.error("ProcessingException ex : " + ex.toString());
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ProcessingException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+                        return VALIDATION_ERROR;
+                    } catch (UserException ex) {
+                        mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
+                        mLogger.error("UserException ex : " + ex.toString());
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "UserException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+                        return VALIDATION_ERROR;
+                    }
+
+                }
+
+            }
+
+            //Validate all date fields entered by the user
+            if (super.validateDateFields().size() > 0) {
+                Object[] messObjs = super.validateDateFields().toArray();
+                for (int i = 0; i < messObjs.length; i++) {
+                    String obj = (String) messObjs[i];
+                    String[] fieldErrors = obj.split(":");
+                    ////System.out.println("===> Field" + fieldErrors[0] + "===> Message" + fieldErrors[1]);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
+                    mLogger.error("Validation failed. Message displayed to the user: " + fieldErrors[0] + " : " + fieldErrors[1]);
+                    return VALIDATION_ERROR;
+                }
+
+            }
+
+            //Validate all time fields entered by the user
+            if (super.validateTimeFields().size() > 0) {
+                Object[] messObjs = super.validateTimeFields().toArray();
+                for (int i = 0; i < messObjs.length; i++) {
+                    String obj = (String) messObjs[i];
+                    String[] fieldErrors = obj.split(":");
+                    ////System.out.println("===> Field" + fieldErrors[0] + "===> Message" + fieldErrors[1]);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
+                    mLogger.error("Validation failed. Message displayed to the user: " + fieldErrors[0] + " : " + fieldErrors[1]);
+                    return VALIDATION_ERROR;
+                }
+
+            }
+            
+            
+
                 
-                objScreenObject = configManager.getScreen(screenID);
-                ArrayList arlScreenConfig = objScreenObject.getSearchScreensConfig();
-                ArrayList arlResultsConfig = objScreenObject.getSearchResultsConfig();
-
-                EPathArrayList resultFields = retrieveResultsFields(arlResultsConfig);
-
-                tso = getTransactionSearchObject();
+                TransactionSearchObject tso = getTransactionSearchObject();
+                
+                //System.out.println("---------------5-------------------" + tso);
+                
                 MasterControllerService objMasterControllerService = new MasterControllerService();
-                iteratorTransaction = objMasterControllerService.lookupTransactionHistory(tso);
 
-                TransactionIterator iteratorTransaction1 = iteratorTransaction;
+                TransactionIterator iteratorTransaction = iteratorTransaction = objMasterControllerService.lookupTransactionHistory(tso);
                 setSearchSize(0);
                 if (iteratorTransaction != null) {
                     TransactionSummary[] tsArray = iteratorTransaction.first(iteratorTransaction.count());
@@ -201,7 +245,7 @@ public class TransactionHandler {
                         if(ts.getEnterpriseObjectHistory().getAfterEO2() != null ) eoArrayList.add(ts.getEnterpriseObjectHistory().getAfterEO2());
                         if(ts.getEnterpriseObjectHistory().getBeforeEO1() != null ) eoArrayList.add(ts.getEnterpriseObjectHistory().getBeforeEO1());
                         if(ts.getEnterpriseObjectHistory().getBeforeEO2() != null ) eoArrayList.add(ts.getEnterpriseObjectHistory().getBeforeEO2());
-                        //System.out.println("HElllllllllllllllll" +eoArrayList.size());
+                        ////System.out.println("HElllllllllllllllll" +eoArrayList.size());
                         if(eoArrayList.size() > 0) {
                            getTransactionsVO()[i].setEoArrayList(eoArrayList);
                            getTransactionsVO()[i].setEoArrayListSize(eoArrayList.size());
@@ -214,104 +258,38 @@ public class TransactionHandler {
                     request.setAttribute("searchSize",new Integer(transactionsVO.length) );
                   //  request.setAttribute("searchSize",new Integer(transactionsVO.length) );
                 }                
-                      
-/**
- * Sridhar Comment : Required code for the Details screen
- * 
-                TransactionSummary[] tranSummary = iteratorTransaction1.first(iteratorTransaction1.count());
-                for (int i=0; i<tranSummary.length;i++)
-                {TransactionSummary ts = tranSummary[i];
-                if (ts.getTransactionObject().getFunction().equalsIgnoreCase("Update")) {
-                EnterpriseObject eo  = ts.getEnterpriseObjectHistory().getBeforeEO1();
-                eo.setEUID("0000000001");
-                System.out.println("getBeforeEO1-start :::::::::::::::::::::::::::::::");
-                test(eo,resultFields);
-                System.out.println("getBeforeEO1-end:::::::::::::::::::::::::::::::");
-                EnterpriseObject eo1 = ts.getEnterpriseObjectHistory().getAfterEO();
-                eo1.setEUID("0000000001");
-                System.out.println("getAfterEO-start>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                test(eo1,resultFields);
-                System.out.println(">getAfterEO-end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                } else if (ts.getTransactionObject().getFunction().equalsIgnoreCase("Add")) {
-                EnterpriseObject eo  = ts.getEnterpriseObjectHistory().getAfterEO();
-                EnterpriseObject eo1 = ts.getEnterpriseObjectHistory().getAfterEO();
-                }else { // if EUIDMerge/LIDMerge/LIDTransfer, pass both EUIDs
-                if (ts.getTransactionObject().getFunction().equalsIgnoreCase("euidMerge") ||
-                ts.getTransactionObject().getFunction().equalsIgnoreCase("lidMerge") ||
-                ts.getTransactionObject().getFunction().equalsIgnoreCase("lidTransfer")) {
-                ts.getEnterpriseObjectHistory().getBeforeEO1().getEUID();
-                ts.getEnterpriseObjectHistory().getAfterEO().getEUID();
-                //.......... line#223
-                }
-                }
-                }
-                EnterpriseObject eo = QwsController.getMasterController().getEnterpriseObject("0000001002");
-                Collection items = eo.getSystemObjects();
-                System.out.println("items"+items);
-                Iterator it = items.iterator();
-                SystemObject so = null;
-                ArrayList resultArrayList= new ArrayList();
-                TransactionSummary[] tsArray = iteratorTransaction.first(iteratorTransaction.count());
-             */                
             } catch (ValidationException ex) {
-                Logger.getLogger(AuditLogHandler.class.getName()).log(Level.INFO, null, ex.getMessage());
-                return TRANSACTIONS_PAGE_VALIDATIONS_ERROR;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ValidationException : " + QwsUtil.getRootCause(ex).getMessage(),ex.toString()));
+                    mLogger.error("ValidationException : " + QwsUtil.getRootCause(ex).getMessage());
+                    mLogger.error("ValidationException ex : " + ex.toString());
+                    return VALIDATION_ERROR;
             } catch (UserException ex) {
-                Logger.getLogger(TransactionHandler.class.getName()).log(Level.SEVERE, TransactionHandler.class.getName() + ":: "+ ex.getMessage(), ex);
-                throw new HandlerException("UserException Occured");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "UserException : " + QwsUtil.getRootCause(ex).getMessage(),ex.toString()));
+                    mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
+                    mLogger.error("UserException ex : " + ex.toString());
+                    return VALIDATION_ERROR;
             } catch (PageException ex) {
-                Logger.getLogger(TransactionHandler.class.getName()).log(Level.SEVERE, TransactionHandler.class.getName() + ":: " + ex.getMessage(), ex);
-                throw new HandlerException("PageException Occured");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "PageException : " + QwsUtil.getRootCause(ex).getMessage(),ex.toString()));
+                    mLogger.error("PageException : " + QwsUtil.getRootCause(ex).getMessage());
+                    mLogger.error("PageException ex : " + ex.toString());
+                    return VALIDATION_ERROR;
             } catch (RemoteException ex) {
-                Logger.getLogger(TransactionHandler.class.getName()).log(Level.SEVERE, TransactionHandler.class.getName() + ":: " + ex.getMessage(), ex);
-                throw new HandlerException("RemoteException Occured");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "RemoteException : " + QwsUtil.getRootCause(ex).getMessage(),ex.toString()));
+                    mLogger.error("RemoteException : " + QwsUtil.getRootCause(ex).getMessage());
+                    mLogger.error("RemoteException ex : " + ex.toString());
+                    return VALIDATION_ERROR;
             } catch (ProcessingException ex) {
-                Logger.getLogger(TransactionHandler.class.getName()).log(Level.SEVERE, TransactionHandler.class.getName() + ":: " + ex.getMessage(), ex);
-                throw new HandlerException("ProcessingException Occured");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ProcessingException : " + QwsUtil.getRootCause(ex).getMessage(),ex.toString()));
+                    mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
+                    mLogger.error("ProcessingException ex : " + ex.toString());
+                    return VALIDATION_ERROR;
             } catch (Exception ex) {
-                Logger.getLogger(TransactionHandler.class.getName()).log(Level.SEVERE, TransactionHandler.class.getName() + ":: " + ex.getMessage(), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Exception : " + QwsUtil.getRootCause(ex).getMessage(),ex.toString()));
+                    mLogger.error("Exception : " + QwsUtil.getRootCause(ex).getMessage());
+                    mLogger.error("Exception ex : " + ex.toString());
+                    return VALIDATION_ERROR;
             }            
             return TRANSACTIONS_PAGE;
-/**
-* Sridhar Comment : Required code for the Details screen
-
-                TransactionSummary[] tranSummary = iteratorTransaction1.first(iteratorTransaction1.count());                
-                for (int i=0; i<tranSummary.length;i++)
-                {TransactionSummary ts = tranSummary[i];
-                   if (ts.getTransactionObject().getFunction().equalsIgnoreCase("Update")) {
-                       EnterpriseObject eo  = ts.getEnterpriseObjectHistory().getBeforeEO1();
-                       eo.setEUID("0000000001");
-                       System.out.println("getBeforeEO1-start :::::::::::::::::::::::::::::::");
-                       test(eo,resultFields);                    
-                       System.out.println("getBeforeEO1-end:::::::::::::::::::::::::::::::");
-                       EnterpriseObject eo1 = ts.getEnterpriseObjectHistory().getAfterEO();
-                       eo1.setEUID("0000000001");                       
-                       System.out.println("getAfterEO-start>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                       test(eo1,resultFields);                    
-                       System.out.println(">getAfterEO-end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                   } else if (ts.getTransactionObject().getFunction().equalsIgnoreCase("Add")) {
-                         EnterpriseObject eo  = ts.getEnterpriseObjectHistory().getAfterEO();
-                         EnterpriseObject eo1 = ts.getEnterpriseObjectHistory().getAfterEO();
-                     }else { // if EUIDMerge/LIDMerge/LIDTransfer, pass both EUIDs                                               
-                            if (ts.getTransactionObject().getFunction().equalsIgnoreCase("euidMerge") ||
-                                ts.getTransactionObject().getFunction().equalsIgnoreCase("lidMerge") ||
-                                ts.getTransactionObject().getFunction().equalsIgnoreCase("lidTransfer")) {
-                                    ts.getEnterpriseObjectHistory().getBeforeEO1().getEUID();
-                                    ts.getEnterpriseObjectHistory().getAfterEO().getEUID();
-                                    //.......... line#223
-                                 }
-                     }       
-                }
-                
-                
-                EnterpriseObject eo = QwsController.getMasterController().getEnterpriseObject("0000001002");
-                Collection items = eo.getSystemObjects();              
-                System.out.println("items"+items);
-                Iterator it = items.iterator();
-                SystemObject so = null;
-                ArrayList resultArrayList= new ArrayList();                                                   
-                TransactionSummary[] tsArray = iteratorTransaction.first(iteratorTransaction.count());
-*/
                 
     }
 
@@ -336,19 +314,19 @@ public class TransactionHandler {
                             {   Object[] obj = fieldvalues.toArray();
                                 
                                 if(obj!=null)
-                                {  //System.out.println(ePath.getFieldTag()+" ---- "+obj[0]);
-                                  //System.out.println(" field "+ePath.getFieldTag());
+                                {  ////System.out.println(ePath.getFieldTag()+" ---- "+obj[0]);
+                                  ////System.out.println(" field "+ePath.getFieldTag());
                                   /*
                                   if(ePath.getFieldTag().equals("FirstName"))
-                                  {System.out.println("FirstName : "+obj[0]);
+                                  {//System.out.println("FirstName : "+obj[0]);
                                   }else if(ePath.getFieldTag().equals("LastName"))
-                                  {System.out.println("LastName : "+obj[0]);
+                                  {//System.out.println("LastName : "+obj[0]);
                                   } 
                                    */ 
                                 }
                             }    
                         }
-                        //System.out.println("--------------------------------------------------");
+                        ////System.out.println("--------------------------------------------------");
                     } 
 
         
@@ -385,9 +363,10 @@ public class TransactionHandler {
             }            
         }
         return c;
-        }catch(Exception e){
-            
-            //System.out.println("*****************************************************"+e.toString());
+        }catch(Exception ex){
+            mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
+            mLogger.error("UserException ex : " + ex.toString());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "UserException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
             return null;
         }
     }
@@ -454,7 +433,7 @@ public class TransactionHandler {
                     String strEPath = (String) ePathsIterator.next();
                     //if(strEPath.equals("Person.SystemCode"))
                     //       strEPath="Person.LastName";
-                    //System.out.println("::::  EPath string: " + strEPath);
+                    ////System.out.println("::::  EPath string: " + strEPath);
                     // copy EPath strings to the EPathArrayList
                     arlResultFields.add("Enterprise.SystemObject." + strEPath);
                     //
@@ -479,7 +458,7 @@ public class TransactionHandler {
             
             MasterControllerService objMasterControllerService = new MasterControllerService();
             EnterpriseObjectHistory viewMergehist = objMasterControllerService.viewMergeRecords(transactionNumber);
-            
+            CompareDuplicateManager compareDuplicateManager=new CompareDuplicateManager();
             TransactionSearchObject transactionSearchObject = new TransactionSearchObject();
             //set the transaction number to the transaction summary object
             transactionSearchObject.getTransactionObject().setTransactionNumber(transactionNumber);
@@ -494,43 +473,69 @@ public class TransactionHandler {
                     if ("euidMerge".equalsIgnoreCase(functionName)) {
                         if (viewMergehist != null) {
                             if (viewMergehist.getBeforeEO1() != null) {
-                                eoArrayList.add(viewMergehist.getBeforeEO1());
+                                //eoArrayList.add(viewMergehist.getBeforeEO1());
+                                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(viewMergehist.getBeforeEO1(), screenObject);
+                                eoArrayList.add(eoMap);
                             }
                             if (viewMergehist.getBeforeEO2() != null) {
-                                eoArrayList.add(viewMergehist.getBeforeEO2());
+                                //eoArrayList.add(viewMergehist.getBeforeEO2());
+                                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(viewMergehist.getBeforeEO2(), screenObject);
+                                eoArrayList.add(eoMap);
                             }
                             if (viewMergehist.getAfterEO2() != null) {
-                                eoArrayList.add(viewMergehist.getAfterEO2());
+                                //eoArrayList.add(viewMergehist.getAfterEO2());
+                                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(viewMergehist.getAfterEO2(), screenObject);
+                                eoArrayList.add(eoMap);
                             }
                         }
 
                     } else {
                         if (ts.getEnterpriseObjectHistory().getAfterEO() != null) {
-                            eoArrayList.add(ts.getEnterpriseObjectHistory().getAfterEO());
+                            //eoArrayList.add(ts.getEnterpriseObjectHistory().getAfterEO());
+                            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getAfterEO(), screenObject);
+                            eoArrayList.add(eoMap);
                         }
                         if (ts.getEnterpriseObjectHistory().getAfterEO2() != null) {
-                            eoArrayList.add(ts.getEnterpriseObjectHistory().getAfterEO2());
+                            //eoArrayList.add(ts.getEnterpriseObjectHistory().getAfterEO2());
+                            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getAfterEO2(), screenObject);
+                            eoArrayList.add(eoMap);
                         }
                         if (ts.getEnterpriseObjectHistory().getBeforeEO1() != null) {
-                            eoArrayList.add(ts.getEnterpriseObjectHistory().getBeforeEO1());
+                            //eoArrayList.add(ts.getEnterpriseObjectHistory().getBeforeEO1());
+                            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getBeforeEO1(), screenObject);
+                            eoArrayList.add(eoMap);
                         }
                         if (ts.getEnterpriseObjectHistory().getBeforeEO2() != null) {
-                            eoArrayList.add(ts.getEnterpriseObjectHistory().getBeforeEO2());
+                            //eoArrayList.add(ts.getEnterpriseObjectHistory().getBeforeEO2());
+                            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getBeforeEO2(), screenObject);
+                            eoArrayList.add(eoMap);
                         }
 
                     }
-                    //System.out.println("HElllllllllllllllll" + eoArrayList);
+                    ////System.out.println("HElllllllllllllllll" + eoArrayList);
                 }
             }
 
         } catch (PageException ex) {
-            Logger.getLogger(TransactionHandler.class.getName()).log(Level.SEVERE, null, ex);
+                        mLogger.error("PageException : " + QwsUtil.getRootCause(ex).getMessage());
+                        mLogger.error("PageException ex : " + ex.toString());
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "PageException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+                        return null;
         } catch (RemoteException ex) {
-            Logger.getLogger(TransactionHandler.class.getName()).log(Level.SEVERE, null, ex);
+                        mLogger.error("RemoteException : " + QwsUtil.getRootCause(ex).getMessage());
+                        mLogger.error("RemoteException ex : " + ex.toString());
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "RemoteException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+                        return null;
         } catch (UserException ex) {
-            Logger.getLogger(TransactionHandler.class.getName()).log(Level.SEVERE, null, ex);
+                        mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
+                        mLogger.error("UserException ex : " + ex.toString());
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "UserException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+                        return null;
         } catch (ProcessingException ex) {
-            Logger.getLogger(TransactionHandler.class.getName()).log(Level.SEVERE, null, ex);
+                        mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
+                        mLogger.error("ProcessingException ex : " + ex.toString());
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ProcessingException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+                        return null;
         }
         return eoArrayList;
          
@@ -540,153 +545,249 @@ public class TransactionHandler {
      public TransactionSearchObject getTransactionSearchObject() throws ProcessingException, ValidationException {
          // From and to date hardcoded here
          TransactionSearchObject transactionSearchObject = new TransactionSearchObject();
-         EDMValidation edmValidation = new EDMValidation();
-         String errorMessage = null;
-         ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+
+        //if user enters LID and SystemCode get the EUID and set it to the amso
+        if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
+            String LID = (String) super.getUpdateableFeildsMap().get("LID");
+            String SystemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
+            if (LID.trim().length() > 0 && SystemCode.trim().length() > 0) {
+                try {
+                    //remove masking for LID field
+                    LID = LID.replaceAll("-", "");
+                    ////System.out.println("SystemCode" + SystemCode + "LID" + LID);
+                    SystemObject so = masterControllerService.getSystemObject(SystemCode, LID);
+                    if (so == null) {
+                        errorMessage = bundle.getString("system_object_not_found_error_message");
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID/SYSTEM CODE:: " + errorMessage, errorMessage));
+                        mLogger.error("Validation failed. Message displayed to the user: " + "LID/SYSTEM CODE:: " + errorMessage);
+                    } else {
+                        EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(so);
+                        transactionSearchObject.setEUID(eo.getEUID());
+                    }
+                } catch (ProcessingException ex) {
+                    mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
+                    mLogger.error("ProcessingException ex : " + ex.toString());
+                } catch (UserException ex) {
+                    mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
+                    mLogger.error("UserException ex : " + ex.toString());
+                }
+
+            }
+
+        }
+
+        //set EUID VALUE IF lid/system code not supplied
+        ////System.out.println("======1======EUID==");
+        if ((super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() == 0) && super.getUpdateableFeildsMap().get("SystemCode") == null) {
+            if (super.getUpdateableFeildsMap().get("EUID") != null && super.getUpdateableFeildsMap().get("EUID").toString().trim().length() > 0) {
+                transactionSearchObject.setEUID((String) super.getUpdateableFeildsMap().get("EUID"));
+            } else {
+                transactionSearchObject.setEUID(null);
+            }
+        }
+
+
+        ////System.out.println("======1=====st=date==");
+        //Set StartDate to the amso  
+        if (super.getUpdateableFeildsMap().get("StartDate") != null && super.getUpdateableFeildsMap().get("StartDate").toString().trim().length() > 0) {
+            ////System.out.println("======11=====st=date==");
+            String startTime = (String) super.getUpdateableFeildsMap().get("StartTime");
+            ////System.out.println("======12=====startTime==" + startTime);
+            String searchStartDate = (String) super.getUpdateableFeildsMap().get("StartDate");
+            ////System.out.println("======13=====searchStartDate==" + searchStartDate);
+            //append the time aling with date
+            if (startTime != null && startTime.trim().length() > 0) {
+                searchStartDate = searchStartDate + " " + startTime;
+            } else {
+                searchStartDate = searchStartDate + " 00:00:00";
+            }
+
+            ////System.out.println("======14=====st=date==" + searchStartDate);
+            Date date = DateUtil.string2Date(searchStartDate);
+            //System.out.println("======15=====st=date==" + date);
+            if (date != null) {
+                transactionSearchObject.setStartDate(new Timestamp(date.getTime()));
+
+            }
+        }
+
+        ////System.out.println("======1=====end=date==");
+
+        //EndDate=02/27/2008, StartDate=02/01/2008, Function=null, SystemUser=, EndTime=, StartTime=
+        //Set StartDate to the amso  
+        if (super.getUpdateableFeildsMap().get("EndDate") != null && super.getUpdateableFeildsMap().get("EndDate").toString().trim().length() > 0) {
+            String endTime = (String) super.getUpdateableFeildsMap().get("EndTime");
+            String searchEndDate = (String) super.getUpdateableFeildsMap().get("EndDate");
+            //append the time aling with date
+            if (endTime != null && endTime.trim().length() > 0) {
+                searchEndDate = searchEndDate + " " + endTime;
+            } else {
+                searchEndDate = searchEndDate + " 23:59:59";
+            }
+            Date date = DateUtil.string2Date(searchEndDate);
+            //System.out.println("======15=====END=date==" + date);
+            if (date != null) {
+                transactionSearchObject.setEndDate(new Timestamp(date.getTime()));
+            }
+        }
+        ////System.out.println("======1=====System User==");
+        //EndTime=, StartTime=, EndDate=, StartDate=, Function=null, SystemUser=, SystemCode=null, LID=, EUID=
+        if (super.getUpdateableFeildsMap().get("SystemUser") != null && super.getUpdateableFeildsMap().get("SystemUser").toString().trim().length() > 0) {
+            transactionSearchObject.setSystemUser((String) super.getUpdateableFeildsMap().get("SystemUser"));
+        } else {
+            transactionSearchObject.setSystemUser(null);
+        }
+
+         if (super.getUpdateableFeildsMap().get("Function") != null && super.getUpdateableFeildsMap().get("Function").toString().trim().length() > 0) {
+            transactionSearchObject.setFunction((String) super.getUpdateableFeildsMap().get("Function"));
+        } else {
+            transactionSearchObject.setFunction(null);
+        }
+     
          transactionSearchObject.setPageSize(10);
          transactionSearchObject.setMaxElements(100);
 
-        // One of Many validation 
-            if ((this.getLocalid() != null && this.getLocalid().trim().length() == 0) &&
-                (this.getEuid() != null && this.getEuid().trim().length() == 0) &&
-                (this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0) &&
-                (this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0) &&
-                (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() == 0) &&
-                (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() == 0)&&
-                (this.getFunction() == null) && //Function
-                (this.getSource() == null ) && //Function
-                (this.getSystemuser() != null && this.getSystemuser().trim().length() == 0)){
-                errorMessage = bundle.getString("ERROR_one_of_many");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "One of Many :: " + errorMessage));
-                Logger.getLogger(TransactionHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-        }
-         
-        
-        //Form Validation of  Start Time
-        if (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)    {
-            String message = edmValidation.validateTime(this.getCreateStartTime());
-            if (!"success".equalsIgnoreCase(message)) {
-                errorMessage = (errorMessage != null && errorMessage.length() > 0?errorMessage:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Create Time From:: " + errorMessage, errorMessage));
-                Logger.getLogger(TransactionHandler.class.getName()).log(Level.WARNING, message, message);
-            }            
-        }
-         
-        //Form Validation of End Time
-        if (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)    {            
-            String message = edmValidation.validateTime(this.getCreateEndTime());
-            if (!"success".equalsIgnoreCase(message)) {
-                errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Create Time To:: " + errorMessage, errorMessage));
-                Logger.getLogger(TransactionHandler.class.getName()).log(Level.WARNING, message, message);
-            }           
-        }    
-        //Form Validation of  Start Date        
-        if (this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() > 0)    {
-            String message = edmValidation.validateDate(this.getCreateStartDate());
-            if (!"success".equalsIgnoreCase(message)) {
-                 errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
-                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 Logger.getLogger(TransactionHandler.class.getName()).log(Level.WARNING, message, message);
-            }
-        }        
-        //Check CreateStartDateField
-        try {         
-            if ((this.getCreateStartDate() != null) && (this.getCreateStartDate().trim().length() > 0)) {                
-                //If Time is supplied append it to the date
-                String searchStartDate = this.getCreateStartDate() + (this.getCreateStartTime() != null? " " + this.getCreateStartTime():" 00:00:00");                                
-                Date date = DateUtil.string2Date(searchStartDate);
-                if (date != null) {
-                    transactionSearchObject.setStartDate(new Timestamp(date.getTime()));
-                }
-            }
-        } catch (ValidationException validationException) {
-            errorMessage = (errorMessage != null && errorMessage.length() > 0? bundle.getString("ERROR_start_date"):bundle.getString("ERROR_start_date"));
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            Logger.getLogger(TransactionHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
-        }
-
-        //Form Validation of  End Date        
-        if (this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() > 0)    {
-            String message = edmValidation.validateDate(this.getCreateEndDate());
-            if (!"success".equalsIgnoreCase(message)) {
-                errorMessage = (errorMessage != null && errorMessage.length() > 0? message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "End Date:: " + errorMessage));
-                Logger.getLogger(TransactionHandler.class.getName()).log(Level.WARNING, message, message);
-            }            
-        }
-
-        //Check CreateEndDateField
-        if ((this.getCreateEndDate() != null) && (this.getCreateEndDate().trim().length() > 0)) {
-            try {
-                //If Time is supplied append it to the date
-                String searchEndDate = this.getCreateEndDate() +  (this.getCreateEndTime() != null? " " +this.getCreateEndTime():" 23:59:59");
-                Date date = DateUtil.string2Date(searchEndDate);
-                if (date != null) {
-                    transactionSearchObject.setEndDate(new Timestamp(date.getTime()));
-                }
-            } catch (ValidationException validationException) {
-                Logger.getLogger(TransactionHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
-                errorMessage = (errorMessage != null && errorMessage.length() > 0?bundle.getString("ERROR_end_date"):bundle.getString("ERROR_end_date"));
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));                
-            }
-        }
-        
-          if (((this.getCreateStartDate() != null) && (this.getCreateStartDate().trim().length() > 0))&&
-           ((this.getCreateEndDate() != null) && (this.getCreateEndDate().trim().length() > 0))){                
-               Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + (this.getCreateStartTime() != null? " " +this.getCreateStartTime(): " 00:00:00"));
-               Date todate = DateUtil.string2Date(this.getCreateEndDate()+(this.getCreateEndTime() != null? " " +this.getCreateEndTime(): " 23:59:59"));
-               long startDate = fromdate.getTime();
-               long endDate = todate.getTime();
-                 if(endDate < startDate){
-                    errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "fromdate :: " + errorMessage));
-                    Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                   }
-        }
-
-        //Form Validation of Local ID
-        if (this.getLocalid() != null && this.getLocalid().length() > 0)    {
-            transactionSearchObject.setLID(this.getLocalid().replaceAll("-",""));
-            String message = edmValidation.validateLocalId(this.getLocalid());
-            if (!"success".equalsIgnoreCase(message)) {
-                errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Local ID:: " + errorMessage, errorMessage));
-                Logger.getLogger(TransactionHandler.class.getName()).log(Level.WARNING, message, message);
-            }
-         } else {
-            transactionSearchObject.setLID(null);
-         }
-        
-         
-        if (this.getEuid() != null && this.getEuid().length() > 0) {
-            transactionSearchObject.setEUID(this.getEuid());
-            String message = edmValidation.validateNumber(this.getEuid());
-            if (!"success".equalsIgnoreCase(message)) {
-                errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "EUID:: " + errorMessage, errorMessage));
-                Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, message, message);
-         }
-        } else {
-            transactionSearchObject.setEUID(null);
-        }
-        
-        if (this.getSystemuser() != null && this.getSystemuser().length() > 0) {
-            transactionSearchObject.setSystemUser(this.getSystemuser());
-          } else {
-            transactionSearchObject.setSystemUser(null);
-        }
-         
-        if (this.getFunction() != null && this.getFunction().length() > 0) {
-            transactionSearchObject.setFunction(this.getFunction());
-          } else {
-            transactionSearchObject.setFunction(null);
-        }
-                 
-        transactionSearchObject.setSystemUser((this.getSystemuser() != null && this.getSystemuser().length() > 0)?this.getSystemuser():null);
-        transactionSearchObject.setFunction((this.getFunction() != null && this.getFunction().length() > 0)?this.getFunction():null);
-        transactionSearchObject.setEUID((this.getEuid() != null && this.getEuid().length() > 0)?this.getEuid():null);
-        transactionSearchObject.setSystemCode((this.getSource() != null && this.getSource().length() > 0)?this.getSource():null);
+//        // One of Many validation 
+//            if ((this.getLocalid() != null && this.getLocalid().trim().length() == 0) &&
+//                (this.getEuid() != null && this.getEuid().trim().length() == 0) &&
+//                (this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0) &&
+//                (this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0) &&
+//                (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() == 0) &&
+//                (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() == 0)&&
+//                (this.getFunction() == null) && //Function
+//                (this.getSource() == null ) && //Function
+//                (this.getSystemuser() != null && this.getSystemuser().trim().length() == 0)){
+//                errorMessage = bundle.getString("ERROR_one_of_many");
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "One of Many :: " + errorMessage));
+//                Logger.getLogger(TransactionHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
+//        }
+//         
+//        
+//        //Form Validation of  Start Time
+//        if (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)    {
+//            String message = edmValidation.validateTime(this.getCreateStartTime());
+//            if (!"success".equalsIgnoreCase(message)) {
+//                errorMessage = (errorMessage != null && errorMessage.length() > 0?errorMessage:message);
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Create Time From:: " + errorMessage, errorMessage));
+//                Logger.getLogger(TransactionHandler.class.getName()).log(Level.WARNING, message, message);
+//            }            
+//        }
+//         
+//        //Form Validation of End Time
+//        if (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)    {            
+//            String message = edmValidation.validateTime(this.getCreateEndTime());
+//            if (!"success".equalsIgnoreCase(message)) {
+//                errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Create Time To:: " + errorMessage, errorMessage));
+//                Logger.getLogger(TransactionHandler.class.getName()).log(Level.WARNING, message, message);
+//            }           
+//        }    
+//        //Form Validation of  Start Date        
+//        if (this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() > 0)    {
+//            String message = edmValidation.validateDate(this.getCreateStartDate());
+//            if (!"success".equalsIgnoreCase(message)) {
+//                 errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
+//                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+//                 Logger.getLogger(TransactionHandler.class.getName()).log(Level.WARNING, message, message);
+//            }
+//        }        
+//        //Check CreateStartDateField
+//        try {         
+//            if ((this.getCreateStartDate() != null) && (this.getCreateStartDate().trim().length() > 0)) {                
+//                //If Time is supplied append it to the date
+//                String searchStartDate = this.getCreateStartDate() + (this.getCreateStartTime() != null? " " + this.getCreateStartTime():" 00:00:00");                                
+//                Date date = DateUtil.string2Date(searchStartDate);
+//                if (date != null) {
+//                    transactionSearchObject.setStartDate(new Timestamp(date.getTime()));
+//                }
+//            }
+//        } catch (ValidationException validationException) {
+//            errorMessage = (errorMessage != null && errorMessage.length() > 0? bundle.getString("ERROR_start_date"):bundle.getString("ERROR_start_date"));
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+//            Logger.getLogger(TransactionHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
+//        }
+//
+//        //Form Validation of  End Date        
+//        if (this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() > 0)    {
+//            String message = edmValidation.validateDate(this.getCreateEndDate());
+//            if (!"success".equalsIgnoreCase(message)) {
+//                errorMessage = (errorMessage != null && errorMessage.length() > 0? message:message);
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "End Date:: " + errorMessage));
+//                Logger.getLogger(TransactionHandler.class.getName()).log(Level.WARNING, message, message);
+//            }            
+//        }
+//
+//        //Check CreateEndDateField
+//        if ((this.getCreateEndDate() != null) && (this.getCreateEndDate().trim().length() > 0)) {
+//            try {
+//                //If Time is supplied append it to the date
+//                String searchEndDate = this.getCreateEndDate() +  (this.getCreateEndTime() != null? " " +this.getCreateEndTime():" 23:59:59");
+//                Date date = DateUtil.string2Date(searchEndDate);
+//                if (date != null) {
+//                    transactionSearchObject.setEndDate(new Timestamp(date.getTime()));
+//                }
+//            } catch (ValidationException validationException) {
+//                Logger.getLogger(TransactionHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
+//                errorMessage = (errorMessage != null && errorMessage.length() > 0?bundle.getString("ERROR_end_date"):bundle.getString("ERROR_end_date"));
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));                
+//            }
+//        }
+//        
+//          if (((this.getCreateStartDate() != null) && (this.getCreateStartDate().trim().length() > 0))&&
+//           ((this.getCreateEndDate() != null) && (this.getCreateEndDate().trim().length() > 0))){                
+//               Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + (this.getCreateStartTime() != null? " " +this.getCreateStartTime(): " 00:00:00"));
+//               Date todate = DateUtil.string2Date(this.getCreateEndDate()+(this.getCreateEndTime() != null? " " +this.getCreateEndTime(): " 23:59:59"));
+//               long startDate = fromdate.getTime();
+//               long endDate = todate.getTime();
+//                 if(endDate < startDate){
+//                    errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
+//                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "fromdate :: " + errorMessage));
+//                    Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
+//                   }
+//        }
+//
+//        //Form Validation of Local ID
+//        if (this.getLocalid() != null && this.getLocalid().length() > 0)    {
+//            transactionSearchObject.setLID(this.getLocalid().replaceAll("-",""));
+//            String message = edmValidation.validateLocalId(this.getLocalid());
+//            if (!"success".equalsIgnoreCase(message)) {
+//                errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Local ID:: " + errorMessage, errorMessage));
+//                Logger.getLogger(TransactionHandler.class.getName()).log(Level.WARNING, message, message);
+//            }
+//         } else {
+//            transactionSearchObject.setLID(null);
+//         }
+//        
+//         
+//        if (this.getEuid() != null && this.getEuid().length() > 0) {
+//            transactionSearchObject.setEUID(this.getEuid());
+//            String message = edmValidation.validateNumber(this.getEuid());
+//            if (!"success".equalsIgnoreCase(message)) {
+//                errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "EUID:: " + errorMessage, errorMessage));
+//                Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, message, message);
+//         }
+//        } else {
+//            transactionSearchObject.setEUID(null);
+//        }
+//        
+//        if (this.getSystemuser() != null && this.getSystemuser().length() > 0) {
+//            transactionSearchObject.setSystemUser(this.getSystemuser());
+//          } else {
+//            transactionSearchObject.setSystemUser(null);
+//        }
+//         
+//        if (this.getFunction() != null && this.getFunction().length() > 0) {
+//            transactionSearchObject.setFunction(this.getFunction());
+//          } else {
+//            transactionSearchObject.setFunction(null);
+//        }
+//                 
+//        transactionSearchObject.setSystemUser((this.getSystemuser() != null && this.getSystemuser().length() > 0)?this.getSystemuser():null);
+//        transactionSearchObject.setFunction((this.getFunction() != null && this.getFunction().length() > 0)?this.getFunction():null);
+//        transactionSearchObject.setEUID((this.getEuid() != null && this.getEuid().length() > 0)?this.getEuid():null);
+//        transactionSearchObject.setSystemCode((this.getSource() != null && this.getSource().length() > 0)?this.getSource():null);
 
          
         if (errorMessage != null && errorMessage.length() != 0)  {
@@ -710,151 +811,6 @@ public class TransactionHandler {
         
         ArrayList eoArrayList = (ArrayList) event.getComponent().getAttributes().get("eoArrayList");
         session.setAttribute("eoArrayList",eoArrayList);  
-    }
-  	
-    /**
-     * @return createStartDate
-     */
-    public String getCreateStartDate() {
-        return createStartDate;
-    }
-
-    /**
-     * @param createStartDate
-     * Sets the Start Date
-     */
-    public void setCreateStartDate(String createStartDate) {
-        this.createStartDate = createStartDate;
-        Logger.getLogger(TransactionHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:createStartDate::" + createStartDate);
-    }
-
-    /**
-     * @return Create End Date
-     */
-    public String getCreateEndDate() {
-        return createEndDate;
-    }
-
-    /**
-     * Sets the End date parameter for the search
-     * @param createEndDate
-     */
-    public void setCreateEndDate(String createEndDate) {
-        this.createEndDate = createEndDate;
-        Logger.getLogger(TransactionHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:createEndDate:: " + createEndDate);
-    }
-
-    /**
-     * @return create Start Date
-     */
-    public String getCreateStartTime() {
-        return createStartTime;
-    }
-
-    /**
-     * Sets the Start timeparameter for the search
-     * @param createStartTime 
-     */
-    public void setCreateStartTime(String createStartTime) {
-        this.createStartTime = createStartTime;
-        Logger.getLogger(TransactionHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:createStartTime::" + createStartTime);
-    }
-
-    /**
-     * @return Create End time
-     */
-    public String getCreateEndTime() {
-        return createEndTime;
-    }
-
-    /**
-     * Sets the End time parameter for the search
-     * @param createEndTime 
-     */
-    public void setCreateEndTime(String createEndTime) {
-        this.createEndTime = createEndTime;        
-        Logger.getLogger(TransactionHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:createEndTime::" + createEndTime);
-    }
-
-    /**
-     * @return Local Id
-     */
-    public String getLocalid() {
-        return localid;
-    }
-
-    /**
-     * Sets the Local ID parameter for the search
-     * @param localid
-     */
-    public void setLocalid(String localid) {
-        this.localid = localid;
-        Logger.getLogger(TransactionHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:localid::" + localid);
-    }
-
-    /**
-     * @return EUID
-     */
-    public String getEuid() {
-        return euid;
-    }
-
-    /**
-     * Sets the EUID parameter for the search
-     * @param euid
-     */
-    public void setEuid(String euid) {
-        this.euid = euid;
-        Logger.getLogger(TransactionHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:euid::" + euid);
-    }
-
-    /**
-     * @return System User
-     */
-    public String getSystemuser() {
-        return systemuser;
-    }
-
-    /**
-     * Sets the System User parameter for the search
-     * @param systemuser
-     */
-    public void setSystemuser(String systemuser) {
-        this.systemuser = systemuser;
-        Logger.getLogger(TransactionHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:systemuser::" + systemuser);
-    }
-
-    /**
-     * @return function
-     */
-    public String getFunction() {
-        return function;
-    }
-
-    /**
-     * Sets the function parameter for the search
-     * @param function
-     */
-    public void setFunction(String function) {
-        this.function = function;
-        Logger.getLogger(TransactionHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:Function::" + source);
-    }
-	
-	
-    /**
-     * @return source Option
-     */
-    public String getSource() {
-        return source;
-    }
-
-    /**
-     * Sets the function parameter for the search
-     * @param sourceOption 
-     */
-    public void setSource(String sourceOption) {
-        this.source = sourceOption;
-        Logger.getLogger(TransactionHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:sourceOption::" + sourceOption);
     }
 
     /**
@@ -888,7 +844,6 @@ public class TransactionHandler {
         ArrayList newArrayList = new ArrayList();
         for (int i = 0; i < pullDownListItems.length; i++) {
             SelectItem selectItem = new SelectItem();
-            //System.out.println("Adding Select item label" + pullDownListItems[i] + "Value" + pullDownListItems[i]);
             selectItem.setLabel(pullDownListItems[i]);
             selectItem.setValue(pullDownListItems[i]);
             newArrayList.add(selectItem);
@@ -902,26 +857,28 @@ public class TransactionHandler {
 
     public void unmergeEnterpriseObject(ActionEvent event) throws ObjectException {
         
-        MasterControllerService masterControllerService=new MasterControllerService();
         String transactionNumber = (String) event.getComponent().getAttributes().get("tranNoValueExpressionviewunmerge");
         
         try {
              masterControllerService.isEUIDMerge(transactionNumber);
              MergeResult unmerge = masterControllerService.unmerge(transactionNumber);
-             //System.out.println("helllllllllllllllo"+transactionNumber);
+             ////System.out.println("helllllllllllllllo"+transactionNumber);
              HttpServletRequest facesRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
              facesRequest.setAttribute("transactionId", transactionNumber);             
-             //System.out.println("RETURNING THE CONTROL TO JSP");
+             ////System.out.println("RETURNING THE CONTROL TO JSP");
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ProcessingException : " + QwsUtil.getRootCause(ex).getMessage(),ex.toString()));
+                    mLogger.error("ProcessingException  : " + QwsUtil.getRootCause(ex).getMessage());
+                    mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "UserException : " + QwsUtil.getRootCause(ex).getMessage(),ex.toString()));
+                    mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
+                    mLogger.error("UserException ex : " + ex.toString());
         }  
     }
 
     
     public boolean isEUIDMerge(String trasnNumber) throws ProcessingException, UserException{
-        MasterControllerService masterControllerService=new MasterControllerService();
          TransactionSearchObject transactionSearchObject = new TransactionSearchObject();
          //set the transaction number to the transaction summary object
           transactionSearchObject.getTransactionObject().setTransactionNumber(trasnNumber);

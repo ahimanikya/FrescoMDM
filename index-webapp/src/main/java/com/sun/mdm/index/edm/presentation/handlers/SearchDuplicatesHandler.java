@@ -31,6 +31,7 @@
 
 package com.sun.mdm.index.edm.presentation.handlers;
 
+import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
 import com.sun.mdm.index.edm.services.configuration.SearchScreenConfig;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.FieldConfigGroup;
@@ -64,6 +65,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import com.sun.mdm.index.edm.presentation.validations.HandlerException;
 import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
+import com.sun.mdm.index.objects.EnterpriseObject;
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -71,7 +73,6 @@ public class SearchDuplicatesHandler {
     private HashMap updateableFeildsMap =  new HashMap();    
     private HashMap actionMap =  new HashMap();    
     private ArrayList nonUpdateableFieldsArray = new ArrayList();    
-    private ArrayList headerScreenObjectsArray = new ArrayList();
     private ArrayList screenConfigArray;
     private ArrayList resultsConfigArray;
     
@@ -119,7 +120,6 @@ public class SearchDuplicatesHandler {
 
     public String performSubmit() throws ProcessingException, UserException, ValidationException,HandlerException{
         EDMValidation edmValidation = new EDMValidation();
-        session.removeAttribute("finalArrayList");                
         //get the hidden fields search type from the form usin the facesContext
         // get the array list as per the search
         String errorMessage = null;
@@ -299,8 +299,40 @@ public class SearchDuplicatesHandler {
                 }
             }
 
-            session.setAttribute("finalArrayList", finalArrayList);                
-            //session.setAttribute("pdPageIter", pdPageIter);                
+            //Build and arraylist of hashmaps for the duplicates before putting in the request
+            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+            ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+            ArrayList newFinalArray  = new ArrayList();        
+            float wt = 0.0f;
+            HashMap newHashMap = new HashMap();
+            for (int i = 0; i < finalArrayList.size(); i++) {
+                ArrayList newInnerArray  = new ArrayList();        
+                ArrayList innerArrayList = (ArrayList) finalArrayList.get(i);
+                for (int j = 0; j < innerArrayList.size(); j++) {
+                    String euids = (String) innerArrayList.get(j);
+                    EnterpriseObject eo = masterControllerService.getEnterpriseObject(euids);
+                    HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+                  if(j > 0) {
+                  //Add weight to the hashmap 
+                   //eoMap.put("Weight", masterControllerService.getPotentialDuplicateWeight((String) innerArrayList.get(0), euids));
+//                   eoMap.put("PotDupId", masterControllerService.getPotentialDuplicateID((String) innerArrayList.get(0), euids));
+//                   eoMap.put("Status", masterControllerService.getPotentialDuplicateStatus((String) innerArrayList.get(0), euids));
+                      
+                  eoMap.put("Weight", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids,"WEIGHT"));
+                  eoMap.put("PotDupId", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0),euids, "duplicateid"));
+                  eoMap.put("Status", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids,"status"));
+                  } else {
+                   eoMap.put("Weight", wt);
+                   eoMap.put("PotDupId", "000");
+                   eoMap.put("Status", "U");
+                  }    
+
+                   newInnerArray.add(eoMap);
+                }
+                
+                newFinalArray.add(newInnerArray);
+        }
+            httpRequest.setAttribute("finalArrayList", newFinalArray);                
         } catch (Exception ex) {
                // UserException and ValidationException don't need a stack trace.
                 // ProcessingException stack trace logged by MC
@@ -327,24 +359,6 @@ public class SearchDuplicatesHandler {
         return this.SEARCH_DUPLICATES;
     }
     
-    public ArrayList getHeaderScreenObjectsArray() {
-        try  {
-            ConfigManager.init();
-            ScreenObject  screenObject;
-            ArrayList arrayList = new ArrayList();
-            for(int i=1 ; i<9 ; i++) {
-                headerScreenObjectsArray.add(ConfigManager.getInstance().getScreen(new Integer(i)));
-            }
-        } catch(Exception e) {
-            mLogger.error("Failed Get the Screen Object: ", e);
-        }        
-        return headerScreenObjectsArray;
-    }
-
-    public void setHeaderScreenObjectsArray(ArrayList headerScreenObjectsArray) {
-        this.headerScreenObjectsArray = headerScreenObjectsArray;
-    }
-
     public HashMap getActionMap() {
         return actionMap;
     }
@@ -747,5 +761,15 @@ public class SearchDuplicatesHandler {
     public void setResultsSize(int resultsSize) {
         this.resultsSize = resultsSize;
     }
+    
+     /**
+     * 
+     * @param event
+     */
+    public void buildCompareDuplicateEuids(ActionEvent event){
+            ArrayList euidsMapList = (ArrayList) event.getComponent().getAttributes().get("euidsMap");
+            session.setAttribute("comapreEuidsArrayList", euidsMapList);
+    }
+
      
 }

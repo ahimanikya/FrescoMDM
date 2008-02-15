@@ -49,11 +49,13 @@ import com.sun.mdm.index.edm.presentation.valueobjects.ActivityRecords;
 import com.sun.mdm.index.edm.presentation.valueobjects.UnmergedRecords;
 
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
+import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 
@@ -116,6 +118,8 @@ public class ReportHandler {
      * Search Maximum page size
      */
     private int pageSize;
+    
+    private ArrayList<SelectItem> selectOptions = new ArrayList();
 
     /**
      * Search ActivityReports ViewReports
@@ -600,5 +604,24 @@ public class ReportHandler {
        request.setAttribute("tabName", reportTabName);
    
       }
+
+     public ArrayList<SelectItem> getSelectOptions() {
+        MasterControllerService masterControllerService  = new MasterControllerService(); 
+        String[][] systemCodes = masterControllerService.getSystemCodes();
+        String[] pullDownListItems = systemCodes[0];
+        ArrayList newArrayList = new ArrayList();
+        for (int i = 0; i < pullDownListItems.length; i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.setLabel(pullDownListItems[i]);
+            selectItem.setValue(pullDownListItems[i]);
+            newArrayList.add(selectItem);
+        }
+        selectOptions = newArrayList;
+        return selectOptions;
+    }
+  
+    public void setSelectOptions(ArrayList<SelectItem> selectOptions) {
+        this.selectOptions = selectOptions;
+    }
    
 }

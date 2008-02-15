@@ -380,7 +380,6 @@ public class UnmergedRecordsHandler    {
         for (int i = 0; i < vOList.size(); i++) {
             unmergedRecordsVO[i] = new UnmergedRecords();
             unmergedRecordsVO[i] = (UnmergedRecords)vOList.get(i);
-            System.out.println("VCVVVVVVVVVVVVVVVV:: " + unmergedRecordsVO[i].getEuid());
         }
         request.setAttribute("size", new Integer(unmergedRecordsVO.length));        
         request.setAttribute("tabName", "UNMERGED_RECORDS");            

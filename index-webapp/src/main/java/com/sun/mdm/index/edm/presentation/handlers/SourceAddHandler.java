@@ -172,7 +172,7 @@ public class SourceAddHandler {
         //convert the masked value here to 10 digit number
         String lid = getLID().replaceAll("-", ""); 
         setLID(lid);
-      
+      EnterpriseObject eoFinal = null;
         try {
             validateLID(); // validate the combination of SOURCE/LID value
             
@@ -266,7 +266,7 @@ public class SourceAddHandler {
              
              // call mastercontrollerservice api to add minor objects all together
              //add minor objects to the newly created EO
-             EnterpriseObject eoFinal  = masterControllerService.save(eoNew, null, null, getNewSOMinorObjectsHashMapArrayList());
+             eoFinal  = masterControllerService.save(eoNew, null, null, getNewSOMinorObjectsHashMapArrayList());
             
             //adding summary message after creating systemobjec
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,summaryInfo,summaryInfo));
@@ -291,6 +291,33 @@ public class SourceAddHandler {
             Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
             return this.SERVICE_LAYER_ERROR;
         }
+      
+       //Insert Audit los after adding the new System Object
+       try {
+       //String userName, String euid1, String euid2, String function, int screeneID, String detail
+        masterControllerService.insertAuditLog("eGate",
+                                               eoFinal.getEUID(), 
+                                               "",
+                                               "Add",
+                                               new Integer(screenObject.getID()).intValue(),
+                                               masterControllerService.getAuditMsg());
+        } catch (UserException ex) {   
+            errorMessage = "Service Layer User Exception occurred while inserting audit log";
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+            Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+            return this.SERVICE_LAYER_ERROR;
+        } catch (ObjectException ex) {
+            errorMessage = "Service Layer Object Exception occurred while inserting audit log";
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+            Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+            return this.SERVICE_LAYER_ERROR;
+        } catch (Exception ex) {
+            errorMessage = "Service Layer Exception occurred while inserting audit log";
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+            Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+            return this.SERVICE_LAYER_ERROR;
+        }
+      
         return this.ADD_SOURCE_SUCCESS;
     }
     

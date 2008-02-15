@@ -45,14 +45,14 @@ import com.sun.mdm.index.util.Logger;
 public class NavigationHandler {
     
     /** Static field for SOURCE_RECORDS*/
-    private static final String DASH_BOARD = "to_screen_8";
-    private static final String DUPLICATE_RECORDS = "Duplicate Records";
-    private static final String PATIENT_DETAILS = "Record Details";
-    private static final String ASUMMED_MATCHES = "Assumed Matches";
-    private static final String SOURCE_RECORDS = "Source Record";
-    private static final String TRANSACTIONS = "Transactions";
-    private static final String REPORTS = "Reports";
-    private static final String AUID_LOG = "Audit Log";
+    private static final String DASH_BOARD = "dashboard";
+    private static final String DUPLICATE_RECORDS = "duplicate-records";
+    private static final String RECORD_DETAILS = "record-details";
+    private static final String ASUMMED_MATCHES = "assumed-matches";
+    private static final String SOURCE_RECORDS = "source-record";
+    private static final String TRANSACTIONS = "transactions";
+    private static final String REPORTS = "reports";
+    private static final String AUDIT_LOG = "audit-log";
     private static final String COMP_DUP = "Compare Duplicates";
     
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
@@ -67,7 +67,7 @@ public class NavigationHandler {
      * @return <CODE>String</CODE>
      */
     public String toPatientDetails() {
-        session.setAttribute("ScreenObject",getScreenObject(new Integer("1")));
+        session.setAttribute("ScreenObject",getScreenObject(RECORD_DETAILS));
         return "to_screen_1";
     }
     /**
@@ -75,7 +75,7 @@ public class NavigationHandler {
      * @return <CODE>String</CODE>
      */
     public String toCompareDuplicates() {
-        session.setAttribute("ScreenObject",getScreenObject(new Integer("1")));
+        session.setAttribute("ScreenObject",getScreenObject(RECORD_DETAILS));
         return "Compare Duplicates";
     }
 
@@ -84,7 +84,7 @@ public class NavigationHandler {
      * @return <CODE>String</CODE>
      */
     public String toEuidDetails() {
-        session.setAttribute("ScreenObject",getScreenObject(new Integer("1")));
+        session.setAttribute("ScreenObject",getScreenObject(RECORD_DETAILS));
         return "EUID Details";
     }
      /**
@@ -93,7 +93,7 @@ public class NavigationHandler {
      */
     public String toTransEuidDetails() {
         System.out.println("===> : to trans details");
-        session.setAttribute("ScreenObject",getScreenObject(new Integer("1")));
+        session.setAttribute("ScreenObject",getScreenObject(RECORD_DETAILS));
         return "Transaction Details";
     }
 
@@ -103,7 +103,7 @@ public class NavigationHandler {
      * @return <CODE>String</CODE>
      */
     public String toTransactions() {
-        session.setAttribute("ScreenObject",getScreenObject(new Integer("2")));
+        session.setAttribute("ScreenObject",getScreenObject(TRANSACTIONS));
         return "to_screen_2";
     }
 
@@ -112,7 +112,7 @@ public class NavigationHandler {
      * @return <CODE>String</CODE>
      */
     public String toDuplicateRecords() {
-        session.setAttribute("ScreenObject",getScreenObject(new Integer("3")));
+        session.setAttribute("ScreenObject",getScreenObject(DUPLICATE_RECORDS));
         return "to_screen_3";
     }
     /**
@@ -120,7 +120,7 @@ public class NavigationHandler {
      * @return <CODE>String</CODE>
      */
     public String toAssumedMatches() {
-        session.setAttribute("ScreenObject",getScreenObject(new Integer("4")));
+        session.setAttribute("ScreenObject",getScreenObject(ASUMMED_MATCHES));
         return "to_screen_4";
     }
 
@@ -129,7 +129,7 @@ public class NavigationHandler {
      * @return <CODE>String</CODE>
      */
     public String toSourceRecords() {
-        session.setAttribute("ScreenObject",getScreenObject(new Integer("5")));
+        session.setAttribute("ScreenObject",getScreenObject(SOURCE_RECORDS));
         return "to_screen_5";
     }
 
@@ -139,7 +139,7 @@ public class NavigationHandler {
      */
     
     public String toReports() {
-        session.setAttribute("ScreenObject",getScreenObject(new Integer("6")));
+        session.setAttribute("ScreenObject",getScreenObject(REPORTS));
         return "to_screen_6";
     }
 
@@ -149,7 +149,7 @@ public class NavigationHandler {
      */
     
     public String toAuditLog() {
-        session.setAttribute("ScreenObject",getScreenObject(new Integer("7")));
+        session.setAttribute("ScreenObject",getScreenObject(AUDIT_LOG));
         return "to_screen_7";
     }    
 
@@ -160,7 +160,7 @@ public class NavigationHandler {
      */
     public String toDashboard() {
         // There is no screen object defined in the EDM.xml file for the "Dashboard"
-        session.setAttribute("ScreenObject",getScreenObject(new Integer("8")));
+        session.setAttribute("ScreenObject",getScreenObject(DASH_BOARD));
         return "to_screen_8";
     }
     /**
@@ -169,15 +169,16 @@ public class NavigationHandler {
      */
     public String toEditMainEuid() {
         //System.out.println("Navigating to edit euid details page from Navi Handler");
-        session.setAttribute("ScreenObject",getScreenObject(new Integer("1")));
+        session.setAttribute("ScreenObject",getScreenObject(RECORD_DETAILS));
         return "Edit Main EUID";
     }
     
-    public ScreenObject getScreenObject(Integer screenId) {
+    public ScreenObject getScreenObject(String tagName) {
         ScreenObject screenObject = null;
         try {
             ConfigManager.init();
-            screenObject =  ConfigManager.getInstance().getScreen(screenId);
+            //screenObject =  ConfigManager.getInstance().getScreen(screenId);
+              screenObject = ConfigManager.getInstance().getScreenObjectFromScreenName(tagName);
             
         } catch (Exception e) {
             mLogger.error("Failed Get the Screen Object: ", e);
