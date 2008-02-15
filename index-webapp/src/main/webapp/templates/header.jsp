@@ -21,21 +21,19 @@ if(session.getAttribute("user") == null  ) {
 
 <%
 ConfigManager.init();
-if(session.getAttribute("ScreenObject") == null) {
-session.setAttribute("ScreenObject",ConfigManager.getInstance().getScreen(new Integer("3")));
-}
 
 ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 String uri = request.getRequestURI();
 String requestPage = uri.substring(uri.lastIndexOf("/")+1,uri.length());
-String recordDetailsLabel = ConfigManager.getInstance().getScreen(new Integer("1")).getDisplayTitle();
-String transactionsLabel = ConfigManager.getInstance().getScreen(new Integer("2")).getDisplayTitle();
-String duplicateRecordsLabel = ConfigManager.getInstance().getScreen(new Integer("3")).getDisplayTitle();
-String assumeMatchesLabel = ConfigManager.getInstance().getScreen(new Integer("4")).getDisplayTitle();
-String sourceRecordsLabel = ConfigManager.getInstance().getScreen(new Integer("5")).getDisplayTitle();
-String reportsLabel = ConfigManager.getInstance().getScreen(new Integer("6")).getDisplayTitle();
-String auditLogLabel = ConfigManager.getInstance().getScreen(new Integer("7")).getDisplayTitle();
-String dashBoardLabel = ConfigManager.getInstance().getScreen(new Integer("8")).getDisplayTitle();
+String recordDetailsLabel = ConfigManager.getInstance().getScreenObjectFromScreenName("record-details").getDisplayTitle();
+
+String transactionsLabel = ConfigManager.getInstance().getScreenObjectFromScreenName("transactions").getDisplayTitle();
+String duplicateRecordsLabel = ConfigManager.getInstance().getScreenObjectFromScreenName("duplicate-records").getDisplayTitle();
+String assumeMatchesLabel = ConfigManager.getInstance().getScreenObjectFromScreenName("assumed-matches").getDisplayTitle();
+String sourceRecordsLabel = ConfigManager.getInstance().getScreenObjectFromScreenName("source-record").getDisplayTitle();
+String reportsLabel = ConfigManager.getInstance().getScreenObjectFromScreenName("reports").getDisplayTitle();
+String auditLogLabel = ConfigManager.getInstance().getScreenObjectFromScreenName("audit-log").getDisplayTitle();
+String dashBoardLabel = ConfigManager.getInstance().getScreenObjectFromScreenName("dashboard").getDisplayTitle();
 %>
 <!-- 
   Author Sridhar Narsingh
