@@ -64,7 +64,6 @@
         <script type="text/javascript" src="./scripts/yui/element/element-beta.js"></script>
         <script type="text/javascript" src="./scripts/yui/tabview/tabview.js"></script>
         <script type="text/javascript" src="scripts/yui4jsf/event/event.js"></script>
-        
         <!--there is no custom header content for this example-->
         
     </head>
@@ -2368,7 +2367,7 @@
                                             <td><h:outputLabel for="#{msgs.transaction_source}" value="#{msgs.transaction_source}"/></td>
                                                 <td>
                                                     <h:selectOneMenu  id="sourceOption" value="#{SourceMergeHandler.source}">
-                                                        <f:selectItems  value="#{TransactionHandler.selectOptions}" />
+                                                        <f:selectItems  value="#{SourceMergeHandler.selectOptions}" />
                                                     </h:selectOneMenu>
                                                 </td>
                                                 
@@ -2405,11 +2404,11 @@
                                                 </td>
                                                 <td> &nbsp;&nbsp</td>
                                                 
-                                                <td><nobr>
-                                                    <h:commandLink  styleClass="button" action="#{SourceMergeHandler.performLidMergeSearch}">
+                                                <td>        <h:commandLink styleClass="button"
+                                                                            action="#{SourceMergeHandler.performLidMergeSearch}">
                                                         <span><h:outputText value="#{msgs.source_merge_button}"/></span>
-                                                    </h:commandLink>                                     
-                                                </nobr>  
+                                                             </h:commandLink>
+                                                
                                                 </td>
                                                 </tr>
                                           </table>
@@ -2417,39 +2416,21 @@
                                              <hr/>
                                              <%
 
-                                               if(session.getAttribute("soHashMapArrayList") != null ){
-                                                 ArrayList newSoArrayList= (ArrayList) session.getAttribute("soHashMapArrayList");
+                                               if(request.getAttribute("soHashMapArrayList") != null ){
+                                                 request.setAttribute("soHashMapArrayList",request.getAttribute("soHashMapArrayList"));  
+                                                 ArrayList newSoArrayList= (ArrayList) request.getAttribute("soHashMapArrayList");
                                                  //System.out.println("==>Hellllllllllllllllll : " + newSoArrayList);
                                             %>
-                                            <table border="0" cellpadding="0" cellspacing="0">  
-                                                <tr>
-                                                    <td valign="top">
-                                                      <div id="staticContent">
-                                                          <table border="0" cellspacing="0" cellpadding="0" class="w114">
-                                                              <tr><td>&nbsp;</td></tr>    
-                                                              <tr>
-                                                                  <td  class="fntdupgrouping">
-                                                                      <font style="color:blue;"><h:outputText value="#{msgs.personal_info_heading}"/></font>
-                                                                  </td>
-                                                              </tr>
-                                                              <%
-                                                   for (int ifc = 0; ifc < personConfigFeilds.length; ifc++) {
-                                                       FieldConfig fieldConfig = (FieldConfig) personConfigFeilds[ifc];
-                                                              %>
-                                                              <tr>
-                                                                  <td class="fntdup4"><%=fieldConfig.getDisplayName()%></td>
-                                                              </tr>
-                                                              <%}%>
-                                                              <tr><td>&nbsp;</td></tr>
-                                                              <tr><td>&nbsp;</td></tr>
-                                                          </table>
-                                                      </div>
-                                                      
-                                                    </td>
-                                                      <%
+                                            <table cellpadding="0" cellspacing="0">  
+                                            <tr>
+                                                <td>
+                                                    <div style="height:600px;overflow:auto;">
+                                                        <table>
+                                                          <tr>
+                                                              
+                                                               <%
                                                     Object[] soHashMapArrayListObjects = newSoArrayList.toArray();
                                                    // System.out.println("==>Hellllllllllllllllll : " + sourceMergeHandler.getSoArrayList());
-                                                    String dupHeading = "Main Euid";
                                                     String cssClass = "dynaw169";
                                                     String cssMain = "maineuidpreview";
                                                     String menuClass = "menutop";
@@ -2460,51 +2441,65 @@
                                                             menuClass = "menutop";
                                                             dupfirstBlue = "dupfirst";
                                                         }
-                                                        switch (countEnt) {
-                                                            case 0:
-                                                                dupHeading = "<b>LID 1</b>";
-                                                                break;
-                                                            case 1:
-                                                                dupHeading = "<b>LID 2</b>";
-                                                                break;
-                                                            case 2:
-                                                                dupHeading = "<b>LID 3</b>";
-                                                                break;
-                                                            case 3:
-                                                                dupHeading = "<b>LID 4</b>";
-                                                                break;
-                                                            default:
-                                                                dupHeading = "<b>LID</b>";
-                                                                break;
-                                                        }
-
                                                         HashMap soHashMap = (HashMap) soHashMapArrayListObjects[countEnt];
                                                         //System.out.println("Hellllllllllllllllllllllllllllll"+soHashMap);
     LIDVaueExpression = ExpressionFactory.newInstance().createValueExpression(soHashMap.get("LID"), soHashMap.get("LID").getClass());
                                                             %>
-                                                <!-- Display the field Values-->
-                                                <td  valign="top">
-                                                    <div id="outerMainContentDivid<%=countEnt%>" style="visibility:visible;display:block">
-                                                        <div style="width:170px;overflow:auto">
-                                                            <div id="mainEuidContent" class="w169" style="visibility:visible;display:block;">
-                                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
+                                                               <!-- Display the field Values-->
+                                                               <%if(countEnt ==0 ) {%>
+                                                                  <td  valign="top">
+                                                                          <div id="labelmainEuidContent" class="yellow">
+                                                                               <table border="0" cellspacing="0" cellpadding="0" id="<%=soHashMap.get("LID")%>">
+                                                                                    <tr>
+                                                                                       <td id="menu<%=soHashMap.get("LID")%>">&nbsp</td>
+                                                                                    </tr> 
+                                                                                    <tr>
+                                                                                        <td valign="top"  id="Label<%=soHashMap.get("LID")%>"><b><%=objScreenObject.getRootObj().getName()%>&nbsp;Info</b></td>
+                                                                                    </tr>
+                                                                               </table>
+                                                                           </div>
+                                                                          <div id="mainEuidContentButtonDiv<%=countEnt%>">
+                                                                             <div id="labelpersonEuidDataContent" class="yellow">
+                                                                                <table border="0" cellspacing="0" cellpadding="0" id="buttoncontent<%=soHashMap.get("LID")%>">
+                                                                        <%
+                                                        for (int ifc = 0; ifc < personConfigFeilds.length; ifc++) {
+                                                            FieldConfig fieldConfigMap = (FieldConfig) personConfigFeilds[ifc];
+                                                                        %>  
+                                                                                    <tr>
+                                                                                      <td>
+                                                                                         <%=fieldConfigMap.getDisplayName()%>                 
+                                                                                      </td>
+                                                                                    </tr>
+                                                                        <%}%>
+                                                             
+                                                                                     <tr><td>&nbsp;</td></tr>
+                                                                                     <tr><td>&nbsp;</td></tr>
+
+                                                                                </table>
+                                                                            </div>
+                                                                          </div>
+                                                                   </td>
+                                                               <%}%>
+                                                                  <td  valign="top">
+                                                                     <div id="outerMainContentDivid<%=countEnt%>">
+                                                            <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="yellow">
+                                                                <table border="0" cellspacing="0" cellpadding="0" id="<%=soHashMap.get("LID")%>">
                                                                     <tr>
-                                                                        <td class="<%=menuClass%>"><%=dupHeading%></td>
+                                                                        <td class="menutop"><b> LID&nbsp;<%=countEnt + 1%></b> </td>
                                                                     </tr> 
-                                                                        <tr>
-                                                                            <td valign="top" class="<%=dupfirstBlue%>">
-                                                                                <a  href="#" class="dupbtn">
-                                                                                  <%=soHashMap.get("LID")%>
-                                                                               </a>   
+                                                                    <tr>
+                                                                        <script> alllidsArray.push('<%=soHashMap.get("LID")%>')</script>
+                                                                            <td valign="top" name="sri" id="curve<%=soHashMap.get("LID")%>">
+                                                                            <a class="dupbtn" id="button<%=soHashMap.get("LID")%>" href="javascript:void(0)" onclick="javascript:collectLid('<%=soHashMap.get("LID")%>')">
+                                                                                <%=soHashMap.get("LID")%>
+                                                                            </a>   
                                                                             </td>
+                                                                           <script> var thisText = document.getElementById('curve<%=soHashMap.get("LID")%>').innerHTML; alllidsactionText.push(thisText);</script> 
                                                                         </tr>
                                                                 </table>
                                                             </div>
-                                                        </div>
-                                                        <div id="mainEuidContentButtonDiv<%=countEnt%>" class="<%=cssMain%>">
-                                                            <div id="assEuidDataContent<%=countEnt%>" style="visibility:visible;display:block;">
-                                                                <div id="personassEuidDataContent" style="visibility:visible;display:block;">
-                                                                    <table border="0" cellspacing="0" cellpadding="0" class="w169">
+                                                                <div id="personEuidDataContent<%=soHashMap.get("LID")%>" class="yellow">
+                                                                    <table border="0" cellspacing="0" cellpadding="0" id="buttoncontent<%=soHashMap.get("LID")%>"  >
                                                                         <%
                                                         HashMap personfieldValuesMapEO = (HashMap) soHashMap.get("SYSTEM_OBJECT");
                                                         String epathValue;
@@ -2525,52 +2520,69 @@
                                                                         <tr>
                                                                             <td>
                                                                                 <%if (personfieldValuesMapEO.get(epathValue) != null) {%>
-                                                                <%if ((countEnt > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) &&
+                                                                                       <%if ((countEnt > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) &&
             !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {
         fnameExpression = ExpressionFactory.newInstance().createValueExpression(epathValue, epathValue.getClass());
         fvalueVaueExpression = ExpressionFactory.newInstance().createValueExpression(personfieldValuesMapEO.get(epathValue), personfieldValuesMapEO.get(epathValue).getClass());
                                                                 %>
-                                                                    <font class="highlight">
-                                                                        <%=personfieldValuesMapEO.get(epathValue)%>
-                                                                    </font>
-                                                                <%} else {%>
-                                                                     <%=personfieldValuesMapEO.get(epathValue)%>
-                                                                <%}%>
-                                                             <%} else {%>
-                                                                    &nbsp;
-                                                             <%}%>
+                                                                                            <font class="highlight"><%=personfieldValuesMapEO.get(epathValue)%></font>
+                                                                                       <%} else {%>
+                                                                                           <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                       <%}%>
+                                                                                <%} else {%>
+                                                                                     &nbsp;
+                                                                                <%}%>
                                                                                 
                                                                             </td>
                                                                         </tr>
                                                                         <%}%>
                                                              
-                                                          <%
-                                 ArrayList addressFieldsValueMapList = (ArrayList) soHashMap.get("SOAddressList");
+                                                                        <tr><td>&nbsp;</td></tr>
+                                                                        <tr><td>&nbsp;</td></tr>
 
-                                 for (int ia = 0; ia < addressFieldsValueMapList.size(); ia++) {
-                                    HashMap addresfieldValuesMapEO = (HashMap) addressFieldsValueMapList.get(ia);
-
-                                    for (int iac = 0; iac < addressConfigFeilds.length; iac++) {
-                                        FieldConfig fieldConfigMapAddress = (FieldConfig) addressConfigFeilds[iac];
-
-                                        if (fieldConfigMapAddress.getFullFieldName().startsWith("Person")) {
-                                            epathValue = fieldConfigMapAddress.getFullFieldName();
-                                        } else {
-                                            epathValue = "Person." + fieldConfigMapAddress.getFullFieldName();
-                                        }
-
-                                                        %>  
-                                                        <tr>
-                                                            <td>
-                                                                <%if (addresfieldValuesMapEO.get(epathValue) != null) {%>
-                                                                 <%=addresfieldValuesMapEO.get(epathValue)%>
-                                                                <%} else {%>
-                                                                &nbsp; 
-                                                                <%}%>
-                                                            </td>
-                                                        </tr>
-                                                        <%}%>
-                                                                        <%}%>   
+                                                                    </table>
+                                                                </div>
+                                                                     </div>
+                                                                  </td>
+                                                               <% if (countEnt + 1 == soHashMapArrayListObjects.length)   {%>
+                                                                  <td  valign="top">
+                                                                       <div id="preview<%=countEnt%>">
+                                                            <div id="previewmainEuidContent" class="yellow">
+                                                                <table border="0" cellspacing="0" cellpadding="0" id="<%=soHashMap.get("LID")%>">
+                                                                    <tr>
+                                                                        <td id="previewmenu" class="menutop">Preview</td>
+                                                                    </tr> 
+                                                                        <tr>
+                                                                            <td valign="top"  id="previewcurve">&nbsp;</td>
+                                                                        </tr>
+                                                                </table>
+                                                            </div>
+                                                        <div id="previewmainEuidContentButtonDiv">
+                                                            <div id="assEuidDataContent">
+                                                                <div id="personassEuidDataContent" class="yellow">
+                                                                    <table border="0" cellspacing="0" cellpadding="0" id="previewbuttoncontent<%=soHashMap.get("LID")%>">
+                                                                        <%
+                                                        HashMap previewpersonfieldValuesMapEO = (HashMap) soHashMap.get("SYSTEM_OBJECT");
+                                                        String previewepathValue;
+                                                        for (int ifcp = 0; ifcp < personConfigFeilds.length; ifcp++) {
+                                                            FieldConfig fieldConfigMap = (FieldConfig) personConfigFeilds[ifcp];
+                                                            if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
+                                                                previewepathValue = fieldConfigMap.getFullFieldName();
+                                                            } else {
+                                                                previewepathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
+                                                            }
+                                                            if (countEnt > 0) {
+                                                                resultArrayMapCompare.put(previewepathValue, personfieldValuesMapEO.get(previewepathValue));
+                                                            } else {
+                                                                resultArrayMapMain.put(previewepathValue, personfieldValuesMapEO.get(previewepathValue));
+                                                            }
+                                                        
+                                                                        %>  
+                                                                        <tr>
+                                                                            <td>&nbsp;</td>
+                                                                        </tr>
+                                                                        <%}%>
+                                                             
                                                                         <tr><td>&nbsp;</td></tr>
                                                                         <tr><td>&nbsp;</td></tr>
 
@@ -2578,176 +2590,94 @@
                                                                 </div>
                                                                 
                                                                 <!--Displaying view sources and view history-->
-                                                                <div id="dynamicMainEuidButtonContent<%=countEnt%>"  style="visibility:visible;display:block;" >
-                                                                    <table border="0" cellspacing="0" cellpadding="0">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                                  </td>
+                                                               <%}%>
+                                                                <td>&nbsp;</td>                                                
+                                                              <%}%>
+                                                             
+                                                          </tr>
+                                                      </table>
+                                                    </div>
+                                                 </td>
+                                             </tr>   
+
+                                             <tr>
+                                                 <td>
+                                                     <table width="100%" cellpadding="0" cellspacing="0">
+                                                       <tr>
+                                                          <td colspan="<%=soHashMapArrayListObjects.length*2 + 3%>">
+                                                             <div class="blueline">&nbsp;</div>
+                                                          </td>   
+                                                       </tr>
+                                                      </table>
+                                                 </td>
+                                             </tr>
+                                           <tr>
+                                               <td>
+                                                   <div id="actionmainEuidContent" class="actionbuton">
+                                                   <table cellpadding="0" cellspacing="0">
+                                           <% for (int countEnt = 0; countEnt < soHashMapArrayListObjects.length; countEnt++) { %>
+                                               <% if (countEnt == 0)    { %>
+                                                    <td><img src="images/spacer.gif" width="169px" height="1px" border="0"></td>
+                                               <% }%>
+                                                     <!--Displaying view sources and view history-->
+                                                     <td valign="top">
+                                                         <div id="dynamicMainEuidButtonContent<%=countEnt%>">
+                                                                    <table border="0" cellspacing="0" cellpadding="0" border="1">
                                                                         <h:form>
                                                                             <tr> 
                                                                                 <td valign="top">
-                                                                                    <a class="viewbtn" href="javascript:showViewSources('mainDupHistory','<%=countEnt%>','<%=soHashMapArrayListObjects.length%>')" >  
-                                                                                        <h:outputText value="View EUID"/>
-                                                                                    </a>      
+                                                                                    <h:commandLink  styleClass="button" 
+                                                                                                    action="#{NavigationHandler.toEuidDetails}" >  
+                                                                                        <span><h:outputText value="#{msgs.source_rec_vieweuid_but}"/></span>
+                                                                                    </h:commandLink>                                                                                      
                                                                                 </td>                                              
                                                                             </tr>
                                                                             
                                                                         </h:form>
                                                                     </table>
-                                                                </div>  
-                                                                
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                </td>
-                                                <%}%>
-                                                <%
-                                                
-                                                ValueExpression mergedHashMapValueExpression = null;
-                                                ValueExpression sourceLIDValueExpression = null;
-                                                ValueExpression destinationLIDValueExpression = null;
-                                                %>
-                                                <td valign="top">
-                                                    <div id="previewPane">
-                                                        <div id="previewEuidDiv" style="visibility:visible;display:block;">
-                                                            <table border="0" width="100%" cellspacing="0" cellpadding="0">
-                                                                <tr>
-                                                                    <td class="menutop1">Preview</td>
-                                                                </tr>
-                                                                
-                                                            </table>
-                                                        </div>
-                                                        <div id="mergePopupDiv" class="alert" style="visibility:hidden;display:none;">
-                                                            <table cellpadding="0" cellspacing="0">
-                                                                <h:form>
-                                                                    <tr><th align="left">Confirmation</th><th align="right"><a href="javascript:void(0)" rel="mergepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th></tr>
-                                                                    <tr><td colspan="2"> &nbsp;</td></tr>
-                                                                    <tr><td colspan="2"> &nbsp;</td></tr><tr>
-                                                                        <%
-                                                   if (session.getAttribute("mergeLidsList") != null) {
-                                                       HashMap fieldValuesMergeValue = (HashMap) session.getAttribute("mergedSOMap");
-                                                       HashMap mergedHashMap = (HashMap) session.getAttribute("mergedSOMap");
-                                                       mergedHashMapValueExpression = ExpressionFactory.newInstance().createValueExpression(mergedHashMap, mergedHashMap.getClass());
-                                                       String mergedLID = (String) fieldValuesMergeValue.get("LID");
-                                                       String retText = "Keep LID-1 ";
-                                                                        %>
-                                                                        <td align="center"><b><%=retText%> "<%=fieldValuesMergeValue.get("LID")%>" ?</b></td>
-                                                                        <%}%>
-                                                                    </tr>
-                                                                    
-                                                                    <tr><td colspan="2"> &nbsp;</td></tr>
-                                                                    <tr><td>
-                                                                            <h:commandLink styleClass="button" 
-                                                                                           actionListener="#{SourceMergeHandler.mergePreviewSystemObject}">
-                                                                                <f:attribute name="mergedSOValueExpression" value="<%=mergedHashMapValueExpression%>"/>                  
-                                                                                <f:attribute name="mainSOValueExpression" value="<%=sourceLIDValueExpression%>"/>
-                                                                                <f:attribute name="duplicateSOValueExpression" value="<%=destinationLIDValueExpression%>"/>
-                                                                                <span><h:outputText value="#{msgs.ok_text_button}" /></span>
-                                                                            </h:commandLink>   
-                                                                            &nbsp;&nbsp;
-                                                                            <h:outputLink  onclick="Javascript:showExtraDivs('mergePopupDiv')" 
-                                                                                           styleClass="button"  
-                                                                                           value="javascript:void(0)">
-                                                                                <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
-                                                                            </h:outputLink>   
-                                                                    </td></tr>
-                                                                    <tr><td colspan="2"> &nbsp;</td></tr>
-                                                                    <tr>
-                                                                        <td colspan="2">
-                                                                            <h:messages style="font-size:10px; font-color:red;" layout="table" />
-                                                                        </td>
-                                                                    </tr>        
-                                                                </h:form>
-                                                            </table>
-                                                        </div> 
-                                                        
-                                                        <div id="previewEuidContentDiv"   class="dynaw169">
-                                                            <div id="showReadonlyButtonDiv" style="visibility:visible;display:block;">
-                                                                <table border="0" cellspacing="0" cellpadding="0" class="w169"> 
-                                                                    <% 
-                                                                    ArrayList  fieldValuesMerge = new ArrayList();
-                                                                    if (session.getAttribute("mergeLidsList") != null) {
-                                                                     fieldValuesMerge = (ArrayList) session.getAttribute("mergeLidsList");
-                                                                   }
-                                                       // //System.out.println("mergedEO" + mergedEO.getEUID());  
-                                                                  if(session.getAttribute("mergeLidsList") != null && fieldValuesMerge.size() ==2 ) {                                                                      
-%>
-                                                                    <tr><td><b></b></td></tr>
-                                                                    <%
-                                                                      String mainDOBMerge;
-                                                                      String mergeEpathValue;
-                                                                    %>  
-                                                                    <tr><td>&nbsp;</td></tr>
-                                                                    <%  } else {%>
-                                                                   <%
-                                                                     for (int ifc = 0; ifc < personConfigFeilds.length; ifc++) {
-                                                                         FieldConfig fieldConfig = (FieldConfig) personConfigFeilds[ifc];
-                                                                   %>   
-                                                                    <tr><td>&nbsp;</td></tr>
-                                                                    <%}%>
-                                                            <tr><td>&nbsp;</td></tr>
-                                                                    
-                                                                    <tr><td>&nbsp;</td></tr>
-                                                                    <%}%> 
-                                                                    <tr><td>&nbsp;</td></tr>
-                                                                    <%if (session.getAttribute("sourceLIDSessionObj") != null && session.getAttribute("destinationLIDSessionObj") != null) {
-                                                       String sourceLID = (String) session.getAttribute("sourceLIDSessionObj");
-                                                       String destnLID = (String) session.getAttribute("destinationLIDSessionObj");
-                                                       ValueExpression mainSOValueExpression = ExpressionFactory.newInstance().createValueExpression(sourceLID, sourceLID.getClass());
-                                                       ValueExpression duplicateSOValueExpression = ExpressionFactory.newInstance().createValueExpression(destnLID, destnLID.getClass());
-                                                                    %>
-                                                                    <h:form>
-                                                                        <% if (session.getAttribute("mergedSOMap") != null) {
-    //  HashMap mergredHashMap = (HashMap) session.getAttribute("mergedEOMap");
-    //mergredHashMapVaueExpression = ExpressionFactory.newInstance().createValueExpression(mergredHashMap, mergredHashMap.getClass());
-%>
-                                                                        <tr><td>&nbsp;</td></tr>
+                                                            </div> 
+                                                     </td>
+                                               <% if (countEnt + 1 == soHashMapArrayListObjects.length) { %>
+                                                     <td>                                                                <!--Displaying view sources and view history-->
+                                                         <div id="previewActionButton">
+                                                                    <table>
                                                                         <tr>
-                                                                            <td  valign="top" align="center" >
-                                                                                <h:outputLink styleClass="activeviewbtn" 
-                                                                                              onclick="Javascript:showExtraDivs('mergePopupDiv')" 
-                                                                                              value="Javascript:void(0)">
-                                                                                    <h:outputText value="#{msgs.source_submenu_merge}"/>                                                            
-                                                                                </h:outputLink>
-                                                                            </td> 
-                                                                        </tr>
-                                                                        <%} else {%>
-                                                                        <tr> 
-                                                                            <td valign="top" align="center" >
-                                                                                <h:commandLink styleClass="button"  actionListener="#{SourceMergeHandler.postMergePreviewSystemObject}" >
-                                                                                    <f:attribute name="finalSourceLid" value="<%=duplicateSOValueExpression %>"/>
-                                                                                    <f:attribute name="finalDestinationLid" value="<%=mainSOValueExpression%>"/>
-                                                                                    <h:outputText value="LID1"/>                                                            
-                                                                                </h:commandLink>
+                                                                            <td>
+                                                                                <h:form  id="previewlid1Form">
+                                                                                    <h:commandLink styleClass="button" action="#{SourceMergeHandler.performPreviewLID}">
+                                                                                        <span><h:outputText value="Keep LID1"/></span>
+                                                                                    </h:commandLink>
+                                                                                    <h:inputHidden id="previewhiddenLid1" value="#{SourceMergeHandler.formlids}" />
+                                                                                </h:form>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td  valign="top" align="center" >
-                                                                                <h:commandLink styleClass="button"   actionListener="#{SourceMergeHandler.postMergePreviewSystemObject}">
-                                                                                    <f:attribute name="finalSourceLid" value="<%=mainSOValueExpression%>"/>
-                                                                                    <f:attribute name="finalDestinationLid" value="<%=duplicateSOValueExpression%>"/>
-                                                                                    <span><h:outputText  value="LID2"/></span>                                                            
-                                                                                </h:commandLink>
-                                                                            </td> 
+                                                                            <td>
+                                                                                <h:form id="previewlid2Form">
+                                                                                    <h:commandLink styleClass="button" action="#{SourceMergeHandler.performPreviewLID}">
+                                                                                        <span><h:outputText value="Keep LID2"/></span>
+                                                                                        <h:inputHidden id="previewhiddenLid2" value="#{SourceMergeHandler.formlids}" />
+                                                                                    </h:commandLink>
+                                                                                </h:form>
+                                                                            </td>
                                                                         </tr>
-                                                                        <%}%>
-                                                                    </h:form>
-                                                                    
-                                                                    <%}%>
-                                                                    <tr>
-                                                                        <td  valign="top" align="center"><a href="#" class="cancelbtn"><h:outputText  value="#{msgs.cancel_but_text}"/></a></td> 
-                                                                    </tr>                   
-                                                                </table>
-                                                            </div>
-                                                        </div>  
-                                                    </div>
-                                                </td>
-                                                
-                                                </tr>
-                                            </table>           
+                                                                    </table>
+                                                                </div>  
+                                                     </td>
+                                               <%}%>
+                                               
                                             <%}%>
-                                             
+                                                   </table>
+                                               </div>
                                                 </td>
-                                          </tr>
-                                      </table>
+                                           </tr>
+                                            </table>
+                                            <%}%>
                                 </div>
 
                             </div> <!-- End YUI content -->

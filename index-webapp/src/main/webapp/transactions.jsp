@@ -39,185 +39,355 @@
     <body>
         <div id="mainContent">     
             <div id ="transactions " class="basicSearch">
-                <h:form   id="AuditSearchForm" >
-                    <input type="hidden" name="lidmask" value="DDD-DDD-DDDD" />                        
-                    <table border="0" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td>                            
-                                <table border="0" cellpadding="0" cellspacing="0">                                
-                                    <tr> 
-                                        <td>
-                                            <nobr><h:outputLabel  for="#{msgs.source_edit_fromDatePrompt}" value="#{msgs.source_edit_fromDatePrompt}"/>:</nobr>
-                                        </td>
-                                        <td align="left">  
-                                           <nobr>                                            
-                                            <h:inputText 
-                                                id="createStDateField"
-                                                label="#{TransactionHandler.createStartDate}"
-                                                value="#{TransactionHandler.createStartDate}"
-                                                onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                size="12"
-                                                maxlength="10"/>
-                                            <A HREF="javascript:void(0);"
-                                               onclick="g_Calendar.show(event, 'AuditSearchForm:createStDateField')">
-                                                <h:graphicImage  id="calImg" 
-                                                                 alt="calendar Image"  
-                                                                 url="./images/cal.gif" styleClass="imgClass"/>                                                    
-                                            </A>
+                    <h:form id="advancedformData">
+                        <table border="0" cellpadding="0" cellspacing="0" align="right">
+                            <tr>
+                                <td>
+                                    <h:outputText rendered="#{TransactionHandler.possilbeSearchTypesCount gt 1}"  value="#{msgs.patdet_search_text}"/>&nbsp;
+                                    <h:selectOneMenu  rendered="#{TransactionHandler.possilbeSearchTypesCount gt 1}" onchange="submit();" style="width:220px;" value="#{TransactionHandler.searchType}" valueChangeListener="#{TransactionHandler.changeSearchType}" >
+                                        <f:selectItems  value="#{TransactionHandler.possilbeSearchTypes}" />
+                                    </h:selectOneMenu>
+                                </td>
+                            </tr>
+                        </table>
+                        <table border="0" cellpadding="0" cellspacing="0" >
+                            <tr>
+                                <td>
+                                    <input id='lidmask' type='hidden' name='lidmask' value='<h:outputText value="#{TransactionHandler.lidMask}"/>' />
+                                    <h:dataTable headerClass="tablehead"  
+                                                 id="fieldConfigId" 
+                                                 var="feildConfig" 
+                                                 value="#{TransactionHandler.screenConfigArray}">
+                                        <!--Rendering Non Updateable HTML Text Area-->
+                                        <h:column>
+                                          <nobr>
+                                            <h:outputText value="*" rendered="#{feildConfig.required}" />
+                                            <h:outputText value="#{feildConfig.displayName}" />
                                             </nobr>
-                                        </td>
-                                        
-                                        <td>
-                                            <nobr><h:outputLabel  for="#{msgs.source_edit_toDatePrompt}"  value="#{msgs.source_edit_toDatePrompt}"/>:</nobr>
-                                        </td>
-                                        <td align="left">
-                                            <nobr>
-                                                <h:inputText 
-                                                    id="createEndDateField"
-                                                    label="#{TransactionHandler.createEndDate}" 
-                                                    value="#{TransactionHandler.createEndDate}" 
-                                                    onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')" 
-                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                    size="12" 
-                                                    maxlength="10"/>                                                
-                                                <A HREF="javascript:void(0);" 
-                                                   onclick="g_Calendar.show(event, 'AuditSearchForm:createEndDateField')">
-                                                    <h:graphicImage styleClass="imgClass" id="calImg1" 
-                                                                    alt="calendar Image"  
-                                                                    url="./images/cal.gif"/>               
-                                                </A>
-                                            </nobr>
-                                        </td>
-                                    </tr>
-                                    <tr>                                 
-                                        <td>
-                                            <nobr><h:outputLabel  for="#{msgs.source_edit_fromTimePrompt}"  value="#{msgs.source_edit_fromTimePrompt}"/>:</nobr>
-                                        </td>
-                                        <td align="left">    
-                                            <h:inputText  
-                                                id="createStartTimeField"
-                                                label="#{TransactionHandler.createStartTime}" 
-                                                value="#{TransactionHandler.createStartTime}" 
-                                                onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
-                                                onkeyup="javascript:qws_field_on_key_up(this)"
-                                                size="12"
-                                                maxlength="8"/>
-                                            
-                                        </td>
-                                        <td>
-                                            <nobr><h:outputLabel  for="#{msgs.source_edit_toTimePrompt}"  value="#{msgs.source_edit_toTimePrompt}"/>:</nobr>
-                                        </td>
-                                        <td align="left">    
-                                            <h:inputText 
-                                                id="createEndTimeField"
-                                                label="#{TransactionHandler.createEndTime}"
-                                                value="#{TransactionHandler.createEndTime}" 
-                                                onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
-                                                onkeyup="javascript:qws_field_on_key_up(this)"
-                                                size="12"
-                                                maxlength="8"/>
-                                            
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><h:outputLabel for="#{msgs.transaction_source}" value="#{msgs.transaction_source}"/></td>
-                                        <td>
-
-                                                              
-                                            <h:selectOneMenu  id="sourceOption" label="#{TransactionHandler.source}" value="#{TransactionHandler.source}">
-                                                 <f:selectItem itemLabel="" itemValue="" />
-                                                 <f:selectItems  value="#{TransactionHandler.selectOptions}" />
+                                        </h:column>
+                                        <!--Rendering HTML Select Menu List-->
+                                        <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
+                                          <nobr>
+                                            <h:selectOneMenu value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                             rendered="#{feildConfig.name ne 'SystemCode'}">
+                                                <f:selectItem itemLabel="" itemValue="" />
+                                                <f:selectItems  value="#{feildConfig.selectOptions}" />
                                             </h:selectOneMenu>
-                                        </td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    
-                                    <tr>
-                                        <td><h:outputLabel for="#{msgs.transaction_localid}" value="#{msgs.transaction_localid}"/></td>
-                                        <td>
-                                            <h:inputText  id="AuditSearchFormLID" 
-                                                          label="#{TransactionHandler.localid}" 
-                                                          value="#{TransactionHandler.localid}" 
-                                                          onkeydown="javascript:qws_field_on_key_down(this, document.AuditSearchForm.lidmask.value)"
-                                                          onkeyup="javascript:qws_field_on_key_up(this)"
-                                                          size="12"  maxlength="12"/>
-                                        </td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td><h:outputLabel for="#{msgs.transaction_euid}" value="#{msgs.transaction_euid}"/></td>     
-                                        <td> <h:inputText id="euid"  label="#{TransactionHandler.euid}" value="#{TransactionHandler.euid}" size="12" maxlength="10"/></td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td><h:outputLabel for="#{msgs.transaction_system_user}" value="#{msgs.transaction_system_user}"/></td>     
-                                        <td> <h:inputText id="user" size="12" label="#{TransactionHandler.systemuser}" value="#{TransactionHandler.systemuser}"/></td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                    </tr>                            
-                                    <tr>
-                                        <td><h:outputLabel for="#{msgs.transaction_function}"  value="#{msgs.transaction_function}"/></td>
-                                        <td>
-                                            <h:selectOneMenu  styleClass="selectContent" id="function" label="#{TransactionHandler.function}" value="#{TransactionHandler.function}" >
-                                                <f:selectItem  itemValue="" itemLabel=""/>
-                                                <f:selectItem  itemValue="Add" itemLabel="Add"/>
-                                                <f:selectItem  itemValue="Associated Potential Duplicates" itemLabel="Associated Potential Duplicates"/>
-                                                <f:selectItem  itemValue="Assumed Match Comparison" itemLabel="Assumed Match Comparison"/>
-                                                <f:selectItem  itemValue="Assumed Match Search Result" itemLabel="Assumed Match Search Result"/> 
-                                                <f:selectItem  itemValue="Auto Resolve" itemLabel="Auto Resolve"/> 
-                                                <f:selectItem  itemValue="EO Comparison" itemLabel="EO Comparison"/>
-                                                <f:selectItem  itemValue="EO Search Result" itemLabel="EO Search Result"/>
-                                                <f:selectItem  itemValue="EO View/Edit" itemLabel="EO View/Edit"/>
-                                                <f:selectItem  itemValue="EUID Merge Confirm" itemLabel="EUID Merge Confirm"/>
-                                                <f:selectItem  itemValue="EUID Unmerge" itemLabel="EUID Unmerge"/>
-                                                <f:selectItem  itemValue="EUID Unmerge Confirm" itemLabel="EUID Unmerge Confirm"/>
-                                                <f:selectItem  itemValue="History Comparison" itemLabel="History Comparison"/>
-                                                <f:selectItem  itemValue="Hisory Search Result" itemLabel="Hisory Search Result"/>
-                                                <f:selectItem  itemValue="LID Merge - Selection" itemLabel="LID Merge - Selection"/>
-                                                <f:selectItem  itemValue="LID Merge Confirm" itemLabel="LID Merge Confirm"/>
-                                                <f:selectItem  itemValue="LID Unmerge" itemLabel="LID Unmerge"/>
-                                                <f:selectItem  itemValue="LID Unmerge Confirm" itemLabel="LID Unmerge Confirm"/>
-                                                <f:selectItem  itemValue="Matching Review Search Result" itemLabel="Matching Review Search Result"/>
-                                                <f:selectItem  itemValue="Merge" itemLabel="Merge"/>
-                                                <f:selectItem  itemValue="Merge Tree Comparison" itemLabel="Merge Tree Comparison"/>
-                                                <f:selectItem  itemValue="Potential Duplicate Comparison" itemLabel="Potential Duplicate Comparison"/>
-                                                <f:selectItem  itemValue="Resolve" itemLabel="Resolve"/>
-                                                <f:selectItem  itemValue="Undo Assumed Match" itemLabel="Undo Assumed Match"/>
-                                                <f:selectItem  itemValue="Unmerge Comparison" itemLabel="Unmerge Comparison"/>
-                                                <f:selectItem  itemValue="Unresolve" itemLabel="Unresolve"/>
-                                                <f:selectItem  itemValue="Update" itemLabel="Update"/>
-                                                <f:selectItem  itemValue="View Merge Tree" itemLabel="View Merge Tree"/>                                        
-                                            </h:selectOneMenu>  
-                                        </td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4">                                    
-                                            <a class="button" href="javascript:ClearContents('AuditSearchForm')">
-                                                <span><h:outputText  value="#{msgs.patdetails_search_button1}"/></span>
+                                            
+                                            <h:selectOneMenu  onchange="submit();" 
+                                                              id="sourceOption" 
+                                                              value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}" 
+                                                              valueChangeListener="#{TransactionHandler.setLidMaskValue}"
+                                                              rendered="#{feildConfig.name eq 'SystemCode'}">
+                                                <f:selectItem itemLabel="" itemValue="" />
+                                                <f:selectItems  value="#{feildConfig.selectOptions}" />
+                                            </h:selectOneMenu>
+                                          </nobr>
+                                        </h:column>
+                                        <!--Rendering Updateable HTML Text boxes-->
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6}" >
+                                          <nobr>
+                                            <h:inputText   required="#{feildConfig.required}" 
+                                                           label="#{feildConfig.displayName}" 
+                                                           onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                           onkeyup="javascript:qws_field_on_key_up(this)"
+                                                           value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                           maxlength="#{feildConfig.maxLength}" 
+                                                           rendered="#{feildConfig.name ne 'LID'}"/>
+                                            
+                                            <h:inputText   required="#{feildConfig.required}" 
+                                                           label="#{feildConfig.displayName}" 
+                                                           onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
+                                                           onkeyup="javascript:qws_field_on_key_up(this)"
+                                                           value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                           maxlength="#{SourceMergeHandler.lidMaskLength}" 
+                                                           rendered="#{feildConfig.name eq 'LID'}"/>
+                                            
+                                          </nobr>
+                                        </h:column>
+                                        
+                                        <!--Rendering Updateable HTML Text Area-->
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
+                                          <nobr>
+                                            <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"   value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}" required="#{feildConfig.required}"/>
+                                          </nobr>
+                                        </h:column>
+                                        
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && feildConfig.range  && feildConfig.displayName eq 'DOB From'}" >
+                                          <nobr>
+                                            <h:inputText id="DOBFrom" label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.displayName]}"
+                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
+                                            <script> var dateFrom =  getDateFieldName('advancedformData','DOBFrom');</script>
+                                            <a HREF="javascript:void(0);" 
+                                               onclick="g_Calendar.show(event,dateFrom)" > 
+                                                <h:graphicImage  id="calImgDateFrom" 
+                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                 url="./images/cal.gif"/>               
                                             </a>
-                                            <h:commandLink  id="submitSearch" 
-                                                            styleClass="button"  
-                                                            rendered="#{Operations.transLog_SearchView}" 
-                                                            action="#{TransactionHandler.performTransactionSearch}">  
-                                                <span><h:outputText value="#{msgs.patdetails_search_button2}"/></span>
-                                            </h:commandLink>
-                                        </td>
-                                    </tr>                    
-                                </table>
-                            </td>
-                            <td valign="top">
-                                <h:messages  styleClass="errorMessages"  layout="list" />
-                            </td>
-                        </tr>
-                    </table>                                
-                    
-                </h:form>
+                                          </nobr>
+                                        </h:column>
+
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && feildConfig.range  && feildConfig.displayName eq 'DOB To'}" >
+                                          <nobr>
+                                            <h:inputText id="DOBTo" label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.displayName]}"
+                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
+                                            <script> var dateTo =  getDateFieldName('advancedformData','DOBTo');</script>
+                                            <a HREF="javascript:void(0);" 
+                                               onclick="g_Calendar.show(event,dateTo)" > 
+                                                <h:graphicImage  id="calImgDateTo" 
+                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                 url="./images/cal.gif"/>               
+                                            </a>
+                                          </nobr>
+                                        </h:column>
+
+
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'StartDate'}" >
+                                          <nobr>
+                                            <h:inputText id="StartDate" label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
+                                            <script> var startdate = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
+                                            <a HREF="javascript:void(0);" 
+                                               onclick="g_Calendar.show(event,startdate)" > 
+                                                <h:graphicImage  id="calImgStartDate" 
+                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                 url="./images/cal.gif"/>               
+                                            </a>
+                                          <nobr>
+                                        </h:column>
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'EndDate'}" >
+                                          <nobr>
+                                            <h:inputText id="EndDate" label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
+                                            <script> var EndDate = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
+                                            <a HREF="javascript:void(0);" 
+                                               onclick="g_Calendar.show(event,EndDate)" > 
+                                                <h:graphicImage  id="calImgEndDate" 
+                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                 url="./images/cal.gif"/>               
+                                            </a>
+                                          </nobr>
+                                        </h:column>
+
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && feildConfig.name eq 'create_start_date'}" >
+                                          <nobr>
+                                            <h:inputText id="create_start_date" label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
+                                            <script> var create_start_date = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
+                                            <a HREF="javascript:void(0);" 
+                                               onclick="g_Calendar.show(event,create_start_date)" > 
+                                                <h:graphicImage  id="calImgcreate_start_date" 
+                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                 url="./images/cal.gif"/>               
+                                            </a>
+                                          <nobr>
+                                        </h:column>
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && feildConfig.name eq 'create_end_date'}" >
+                                          <nobr>
+                                            <h:inputText id="create_end_date" label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
+                                            <script> var create_end_date = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
+                                            <a HREF="javascript:void(0);" 
+                                               onclick="g_Calendar.show(event,create_end_date)" > 
+                                                <h:graphicImage  id="calImgcreate_end_date" 
+                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                 url="./images/cal.gif"/>               
+                                            </a>
+                                          </nobr>
+                                        </h:column>
+
+                                        
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'DOB'}" >
+                                          <nobr>
+                                            <h:inputText id="DOB" label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
+                                            <script> var DOB = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
+                                            <a HREF="javascript:void(0);" 
+                                               onclick="g_Calendar.show(event,DOB)" > 
+                                                <h:graphicImage  id="calImgDOB" 
+                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                 url="./images/cal.gif"/>               
+                                            </a>
+                                          </nobr>
+                                        </h:column>
+                                        
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'Dod'}" >
+                                          <nobr>
+                                            <h:inputText id="Dod" label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
+                                            <script> var Dod = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
+                                            <a HREF="javascript:void(0);" 
+                                               onclick="g_Calendar.show(event,Dod)" > 
+                                                <h:graphicImage  id="calImgDod" 
+                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                 url="./images/cal.gif"/>               
+                                            </a>
+                                          </nobr>
+                                        </h:column>
+                                        
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'Date1'}" >
+                                          <nobr>
+                                            <h:inputText id="Date1" label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
+                                            <script> var Date1 = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
+                                            <a HREF="javascript:void(0);" 
+                                               onclick="g_Calendar.show(event,Date1)" > 
+                                                <h:graphicImage  id="calImgDate1" 
+                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                 url="./images/cal.gif"/>               
+                                            </a>
+                                          </nobr>
+                                        </h:column>
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'Date2'}" >
+                                          <nobr>
+                                            <h:inputText id="Date2" label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
+                                            <script> var Date2 = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
+                                            <a HREF="javascript:void(0);" 
+                                               onclick="g_Calendar.show(event,Date2)" > 
+                                                <h:graphicImage  id="calImgDate2" 
+                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                 url="./images/cal.gif"/>               
+                                            </a>
+                                          </nobr>
+                                        </h:column>
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'Date3'}" >
+                                          <nobr>
+                                            <h:inputText id="Date3" label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
+                                            <script> var Date3 = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
+                                            <a HREF="javascript:void(0);" 
+                                               onclick="g_Calendar.show(event,Date3)" > 
+                                                <h:graphicImage  id="calImgDate3" 
+                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                 url="./images/cal.gif"/>               
+                                            </a>
+                                          </nobr>
+                                        </h:column>
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'Date4'}" >
+                                          <nobr>
+                                            <h:inputText id="Date4" label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
+                                            <script> var Date4 = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
+                                            <a HREF="javascript:void(0);" 
+                                               onclick="g_Calendar.show(event,Date4)" > 
+                                                <h:graphicImage  id="calImgDate4" 
+                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                 url="./images/cal.gif"/>               
+                                            </a>
+                                          </nobr>
+                                        </h:column>
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'Date5'}" >
+                                          <nobr>
+                                            <h:inputText id="Date5" label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
+                                            <script> var Date5 = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
+                                            <a HREF="javascript:void(0);" 
+                                               onclick="g_Calendar.show(event,Date5)" > 
+                                                <h:graphicImage  id="calImgDate5" 
+                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                 url="./images/cal.gif"/>               
+                                            </a>
+                                          </nobr>
+                                        </h:column>
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'PensionExpDate'}" >
+                                          <nobr>
+                                            <h:inputText id="PensionExpDate" label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
+                                            <script> var PensionExpDate = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
+                                            <a HREF="javascript:void(0);" 
+                                               onclick="g_Calendar.show(event,PensionExpDate)" > 
+                                                <h:graphicImage  id="calImgPensionExpDate" 
+                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                 url="./images/cal.gif"/>               
+                                            </a>
+                                          </nobr>
+                                        </h:column>
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'DummyDate'}" >
+                                          <nobr>
+                                            <h:inputText id="DummyDate" label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
+                                            <script> var DummyDate = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
+                                            <a HREF="javascript:void(0);" 
+                                               onclick="g_Calendar.show(event,DummyDate)" > 
+                                                <h:graphicImage  id="calImgDummyDate" 
+                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                 url="./images/cal.gif"/>               
+                                            </a>
+                                          </nobr>
+                                        </h:column>
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'EnterDate'}" >
+                                          <nobr>
+                                            <h:inputText id="EnterDate" label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
+                                            <script> var EnterDate = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
+                                            <a HREF="javascript:void(0);" 
+                                               onclick="g_Calendar.show(event,EnterDate)" > 
+                                                <h:graphicImage  id="calImgEnterDate" 
+                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                 url="./images/cal.gif"/>               
+                                            </a>
+                                          </nobr>
+                                        </h:column>
+                                    </h:dataTable>
+                                    <table border="0" cellpadding="0" cellspacing="0" >
+                                        <tr>
+                                            <td>
+                                                    <nobr>
+                                                        <h:outputLink  styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
+                                                            <span><h:outputText value="#{msgs.clear_button_label}"/></span>
+                                                        </h:outputLink>
+                                                    </nobr>
+                                                    <nobr>
+                                                        <h:commandLink  styleClass="button" rendered="#{Operations.transLog_SearchView}"  action="#{TransactionHandler.performSubmit}" >  
+                                                            <span>
+                                                                <h:outputText value="#{msgs.search_button_label}"/>
+                                                            </span>
+                                                        </h:commandLink>                                     
+                                                    </nobr>
+                                                
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td valign="top">
+                                    <h:messages styleClass="errorMessages"  layout="list" />
+                                </td>
+                            </tr>
+                        </table>
+                    </h:form>
             </div>                           
         </div>
         
@@ -252,20 +422,6 @@
                     </f:facet>
                         <h:outputText value="#{transactions.euid}" />
                     
-                </yui:column>
-                
-                <yui:column sortable="true" resizeable="true">
-                    <f:facet name="header">
-                        <h:outputText value="#{msgs.datatable_firstname_text}" />
-                    </f:facet>
-                    <h:outputText value="#{transactions.firstName}"/>
-                </yui:column>
-                
-                <yui:column sortable="true" resizeable="true">
-                    <f:facet name="header">
-                        <h:outputText value="#{msgs.datatable_lastname_text}" />
-                    </f:facet>
-                    <h:outputText value="#{transactions.lastName}"/>
                 </yui:column>
                 
                 <yui:column sortable="true" resizeable="true">
