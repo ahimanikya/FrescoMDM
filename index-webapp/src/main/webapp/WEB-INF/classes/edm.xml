@@ -851,8 +851,8 @@
                 </search-pages>
                 <search-result-pages>
                     <search-result-list-page>
-                        <item-per-page>10</item-per-page>
-                        <max-result-size>100</max-result-size>
+                        <item-per-page>2</item-per-page>
+                        <max-result-size>10</max-result-size>
                         <search-result-id>0</search-result-id>
                         <field-group>
                             <description></description>
