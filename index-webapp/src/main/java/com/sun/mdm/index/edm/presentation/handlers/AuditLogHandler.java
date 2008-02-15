@@ -20,7 +20,6 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-     
 /*
  * AuditLogHandler.java 
  * Created on September 30, 2007, 
@@ -35,12 +34,9 @@ import javax.faces.event.*;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.ResourceBundle;
 
 import com.sun.mdm.index.master.search.audit.AuditIterator;
 import com.sun.mdm.index.master.search.audit.AuditSearchObject;
-import com.sun.mdm.index.edm.services.configuration.ConfigManager;
-import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.edm.util.DateUtil;
 import com.sun.mdm.index.master.search.audit.AuditDataObject;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
@@ -48,18 +44,18 @@ import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.edm.presentation.validations.HandlerException;
-import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
+import com.sun.mdm.index.edm.util.QwsUtil;
+import com.sun.mdm.index.objects.EnterpriseObject;
+import com.sun.mdm.index.objects.SystemObject;
+import com.sun.mdm.index.util.LogUtil;
+import com.sun.mdm.index.util.Logger;
 import java.rmi.RemoteException;
 
-import java.text.SimpleDateFormat;
-import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
+public class AuditLogHandler extends ScreenConfiguration {
 
-public class AuditLogHandler {    
     /**
      * Search Start Date
      */
@@ -67,15 +63,15 @@ public class AuditLogHandler {
     /**
      * Search End Date
      */
-    private String createEndDate = null;    
+    private String createEndDate = null;
     /**
      * Search Start Time
-     */ 
+     */
     private String createStartTime = null;
     /**
      * Search end Time
      */
-    private String createEndTime = null;    
+    private String createEndTime = null;
     /**
      * Search Local ID
      */
@@ -87,151 +83,46 @@ public class AuditLogHandler {
     /**
      * Search System User
      */
-    private String systemuser = null;    
+    private String systemuser = null;
     /**
      * Search Function
      */
-    private String resultOption = null;    
+    private String resultOption = null;
     /**
      * Data Object that holds the search results 
      */
-    private AuditDataObject[] auditLogVO = null;    
+    private AuditDataObject[] auditLogVO = null;
     /**
      * Variable to hold the results defaulted to negative
      */
     private int resultsSize = -1;
-
-    
+    /**
+     * Value Object
+     */
     ArrayList vOList = new ArrayList();
     /**
      * JSF Naviagation String
      */
     private static final String AUDIT_LOG_SEARCH_RES = "Audit Log";
-    private static final String AUDIT_LOG_VALIDATION_ERROR = "Validation Error";
-
+    private static final String VALIDATION_ERROR = "Validation Error";
     /**
      * Data Object that holds the search results 
      */
-    private int searchSize  = 0;    
-    
-    MasterControllerService  masterControllerService=null;
-    
+    private int searchSize = 0;
     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+    String errorMessage = null;
+
+    private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.AuditLogHandler");
 
     /** Creates a new instance of AuditLogHandler */
     public AuditLogHandler() {
     }
 
     /**
-     * @return createStartDate
-     */
-    public String getCreateStartDate() {
-        return createStartDate;
-    }
-
-    /**
-     * @param createStartDate
-     * Sets the Start Date
-     */
-    public void setCreateStartDate(String createStartDate) {
-        this.createStartDate = createStartDate;
-        Logger.getLogger(AuditLogHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:createStartDate::" + createStartDate);
-    }
-
-    /**
-     * @return Create End Date
-     */
-    public String getCreateEndDate() {
-        return createEndDate;
-    }
-
-    /**
-     * Sets the End date parameter for the search
-     * @param createEndDate
-     */
-    public void setCreateEndDate(String createEndDate) {
-        this.createEndDate = createEndDate;
-        Logger.getLogger(AuditLogHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:createEndDate:: " + createEndDate);
-    }
-
-    /**
-     * @return create Start Date
-     */
-    public String getCreateStartTime() {
-        return createStartTime;
-    }
-
-    /**
-     * Sets the Start timeparameter for the search
-     * @param createStartTime 
-     */
-    public void setCreateStartTime(String createStartTime) {
-        this.createStartTime = createStartTime;
-        Logger.getLogger(AuditLogHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:createStartTime::" + createStartTime);
-    }
-
-    /**
-     * @return Create End time
-     */
-    public String getCreateEndTime() {
-        return createEndTime;
-    }
-
-    /**
-     * Sets the End time parameter for the search
-     * @param createEndTime 
-     */
-    public void setCreateEndTime(String createEndTime) {
-        this.createEndTime = createEndTime;        
-        Logger.getLogger(AuditLogHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:createEndTime::" + createEndTime);
-    }
-
-    /**
-     * @return Local Id
-     */
-    public String getLocalid() {
-        return localid;
-    }
-
-    /**
-     * Sets the Local ID parameter for the search
-     * @param localid
-     */
-    public void setLocalid(String localid) {
-        this.localid = localid;
-        Logger.getLogger(AuditLogHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:localid::" + localid);
-    }
-
-    /**
-     * @return EUID
-     */
-    public String getEuid() {
-        return euid;
-    }
-
-    /**
-     * Sets the EUID parameter for the search
-     * @param euid
-     */
-    public void setEuid(String euid) {
-        this.euid = euid;
-        Logger.getLogger(AuditLogHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:euid::" + euid);
-      }
-
-    /**
      * @return System User
      */
     public String getSystemuser() {
         return systemuser;
-    }
-
-    /**
-     * Sets the System User parameter for the search
-     * @param systemuser
-     */
-    public void setSystemuser(String systemuser) {
-        this.systemuser = systemuser;
-        Logger.getLogger(AuditLogHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:systemuser::" + systemuser);
     }
 
     /**
@@ -247,212 +138,272 @@ public class AuditLogHandler {
      */
     public void setResultOption(String function) {
         this.resultOption = function;
-        Logger.getLogger(AuditLogHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " FORM:function::" + resultOption);
     }
-   
+
     /**
      * This method calls the service layer method MasterControllerService.lookupAuditLog to fetch the Audit Log Search results
      * The method builds the array of AuditDataObject to be displayed on the resulting JSF
      * @return AUDIT_LOG_SEARCH_RES the Navigation rule for the JSF framework
      * @throws com.sun.mdm.index.presentation.exception.HandlerException 
      */
-    public String auditLogSearch() throws HandlerException  {
-       try {
-            ConfigManager.init();
+    public String performSubmit() throws HandlerException {
+        try {
+            //System.out.println("----------------------------------" + super.getUpdateableFeildsMap());
+
+            //check one of many condtion here
+            if (super.checkOneOfManyCondition()) {
+                errorMessage = bundle.getString("ERROR_one_of_many");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "One of Many :: " + errorMessage));
+                mLogger.error("Validation failed. Message displayed to the user: " + "One of Many :: " + errorMessage);
+                return VALIDATION_ERROR;
+            }
+
+            //if user enters LID ONLY 
+            if ((super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("SystemCode") == null) {
+                errorMessage = "Please Enter System Code";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID Validation :: " + errorMessage, errorMessage));
+                mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
+                return VALIDATION_ERROR;
+
+            }
+            //if user enters LID and SystemCode Validate the LID 
+            if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
+                String LID = (String) super.getUpdateableFeildsMap().get("LID");
+                String SystemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
+                if (SystemCode.trim().length() > 0 && LID.trim().length() == 0) {
+                    errorMessage = "Please Enter LID Value";
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID/SystemCode Validation :: " + errorMessage, errorMessage));
+                    mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
+                    return VALIDATION_ERROR;
+
+                }
+            }
+
+
+            //if user enters LID and SystemCode Validate the LID 
+            if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
+                String LID = (String) super.getUpdateableFeildsMap().get("LID");
+                String SystemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
+                if (LID.trim().length() > 0 && SystemCode.trim().length() > 0) {
+                    try {
+                        //remove masking for LID field
+                        LID = LID.replaceAll("-", "");
+                        SystemObject so = masterControllerService.getSystemObject(SystemCode, LID);
+                        if (so == null) {
+                            errorMessage = bundle.getString("system_object_not_found_error_message");
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID/SYSTEM CODE :: " + errorMessage, errorMessage));
+                            mLogger.error("Validation failed. Message displayed to the user: " + "LID/SYSTEM CODE :: " + errorMessage);
+                            return VALIDATION_ERROR;
+                        }
+                    } catch (ProcessingException ex) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ProcessingException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+                        mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
+                        mLogger.error("ProcessingException ex : " + ex.toString());
+                        return VALIDATION_ERROR;
+                    } catch (UserException ex) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "UserException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+                        mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
+                        mLogger.error("UserException ex : " + ex.toString());
+                        return VALIDATION_ERROR;
+                    }
+
+                }
+
+            }
+
+            //Validate all date fields entered by the user
+            if (super.validateDateFields().size() > 0) {
+                Object[] messObjs = super.validateDateFields().toArray();
+                for (int i = 0; i < messObjs.length; i++) {
+                    String obj = (String) messObjs[i];
+                    String[] fieldErrors = obj.split(":");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
+                    mLogger.error("Validation failed. Message displayed to the user: " + fieldErrors[0] + " : " + fieldErrors[1]);
+                    return VALIDATION_ERROR;
+                }
+
+            }
+
+            //Validate all time fields entered by the user
+            if (super.validateTimeFields().size() > 0) {
+                Object[] messObjs = super.validateTimeFields().toArray();
+                for (int i = 0; i < messObjs.length; i++) {
+                    String obj = (String) messObjs[i];
+                    String[] fieldErrors = obj.split(":");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
+                    mLogger.error("Validation failed. Message displayed to the user: " + fieldErrors[0] + " : " + fieldErrors[1]);
+                    return VALIDATION_ERROR;
+                }
+
+            }
+            
+            
             AuditSearchObject aso = this.getAuditSearchObject();
+            
             // Lookup Audit log Controller
-            masterControllerService = new MasterControllerService();
             AuditIterator alPageIter = masterControllerService.lookupAuditLog(aso);
-            Logger.getLogger(AuditLogHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " :: In Audit Log Handler iter size===>" + alPageIter.count());
+            //System.out.println("alPageIter" + alPageIter.count());
+            //System.out.println("---------------7-------------------");
+
+            
+            mLogger.error("Validation failed. Message displayed to the user: " + " :: In Audit Log Handler iter size===>" + alPageIter.count());
+            
             int i = 0;
-           //Set the size of the VO Array
+            //Set the size of the VO Array
             setAuditLogVO(new AuditDataObject[alPageIter.count()]);
             //Populate the Value Object to be displayed on the JSF page.
             while (alPageIter.hasNext()) {
                 auditLogVO[i] = new AuditDataObject(); //to be safe with malloc
                 auditLogVO[i] = alPageIter.next();
-                Logger.getLogger(AuditLogHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + " :: EUID 1 : " + auditLogVO[i].getEUID1());
                 //Logger.getLogger(AuditLogHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + "Audit Log Handler EUID is " + this.getEuid());
-                            i++;
+                i++;
             }
             setResultsSize(auditLogVO.length);
-            request.setAttribute("resultsSize",new Integer(auditLogVO.length) );
+            request.setAttribute("resultsSize", new Integer(auditLogVO.length));
         } catch (ValidationException ex) {
-            Logger.getLogger(AuditLogHandler.class.getName()).log(Level.INFO, null, ex.getMessage());
-            return this.AUDIT_LOG_VALIDATION_ERROR;
-        } catch ( ProcessingException ex) {
-            Logger.getLogger(AuditLogHandler.class.getName()).log(Level.SEVERE, null, ex);
-            throw new HandlerException("Processing Exception Occured");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ValidationException  : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+            mLogger.error("ValidationException : " + QwsUtil.getRootCause(ex).getMessage());
+            mLogger.error("ValidationException ex : " + ex.toString());
+            return this.VALIDATION_ERROR;
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ProcessingException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+            mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
+            mLogger.error("ProcessingException ex : " + ex.toString());
+            return this.VALIDATION_ERROR;
         } catch (RemoteException ex) {
-            Logger.getLogger(AuditLogHandler.class.getName()).log(Level.SEVERE, null, ex);
-            throw new HandlerException("Remote Exception Occured");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "RemoteException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+            mLogger.error("RemoteException : " + QwsUtil.getRootCause(ex).getMessage());
+            mLogger.error("RemoteException ex : " + ex.toString());
+            return this.VALIDATION_ERROR;
         } catch (UserException ex) {
-            Logger.getLogger(AuditLogHandler.class.getName()).log(Level.SEVERE, null, ex);
-            throw new HandlerException("User Exception Occured");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "UserException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+            mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
+            mLogger.error("UserException ex : " + ex.toString());
+            return this.VALIDATION_ERROR;
         } catch (Exception ex) {
-            Logger.getLogger(AuditLogHandler.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-            throw new HandlerException("Exception Occured");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Exception : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+            mLogger.error("Exception : " + QwsUtil.getRootCause(ex).getMessage());
+            mLogger.error("Exception ex : " + ex.toString());
+            return this.VALIDATION_ERROR;
         }
         return AUDIT_LOG_SEARCH_RES;
     }
-    
+
     /**
      * @exception ValidationException when entry is not valid.
      * This function validates the user input and builds the search object
      * @return  the Audit search object
      */
-
     public AuditSearchObject getAuditSearchObject() throws ValidationException {
-          
         AuditSearchObject auditSearchObject = new AuditSearchObject();
-        EDMValidation edmValidation = new EDMValidation();
+
+        //if user enters LID and SystemCode get the EUID and set it to the AuditSearchObject
+        if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
+            String LID = (String) super.getUpdateableFeildsMap().get("LID");
+            String SystemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
+            if (LID.trim().length() > 0 && SystemCode.trim().length() > 0) {
+                try {
+                    //remove masking for LID field
+                    LID = LID.replaceAll("-", "");
+
+                    SystemObject so = masterControllerService.getSystemObject(SystemCode, LID);
+                    if (so == null) {
+                        errorMessage = bundle.getString("system_object_not_found_error_message");
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID/SYSTEM CODE:: " + errorMessage, errorMessage));
+                        mLogger.error("LID/SYSTEM CODE:: " + errorMessage);
+
+                    } else {
+                        EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(so);
+                        auditSearchObject.setEUID(eo.getEUID());
+                    }
+                } catch (ProcessingException ex) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ProcessingException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+                    mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
+                    mLogger.error("ProcessingException ex : " + ex.toString());
+                } catch (UserException ex) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "UserException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+                    mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
+                    mLogger.error("UserException ex : " + ex.toString());
+                }
+
+            }
+
+        }
+
+        //set EUID VALUE IF lid/system code not supplied
+        if ( (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() == 0)
+             && super.getUpdateableFeildsMap().get("SystemCode") == null) {
+          if (super.getUpdateableFeildsMap().get("EUID") != null && super.getUpdateableFeildsMap().get("EUID").toString().trim().length() > 0) {
+              auditSearchObject.setEUID((String) super.getUpdateableFeildsMap().get("EUID"));
+          } else {
+              auditSearchObject.setEUID(null);
+          }
+        }  
+
+
+
+        //Set StartDate to the AuditSearchObject  
+        if (super.getUpdateableFeildsMap().get("StartDate") != null && super.getUpdateableFeildsMap().get("StartDate").toString().trim().length() > 0) {
+            String startTime = (String) super.getUpdateableFeildsMap().get("StartTime");
+            String searchStartDate = (String) super.getUpdateableFeildsMap().get("StartDate");
+            //append the time aling with date
+            if (startTime != null && startTime.trim().length() > 0) {
+                searchStartDate = searchStartDate + " " + startTime;
+            } else {
+                searchStartDate = searchStartDate + " 00:00:00";
+            }
+
+            Date date = DateUtil.string2Date(searchStartDate);
+            if (date != null) {
+                auditSearchObject.setCreateStartDate(new Timestamp(date.getTime()));
+            }
+        }
+
+
+        //Set StartDate to the AuditSearchObject  
+        if (super.getUpdateableFeildsMap().get("EndDate") != null && super.getUpdateableFeildsMap().get("EndDate").toString().trim().length() > 0) {
+            String endTime = (String) super.getUpdateableFeildsMap().get("EndTime");
+            String searchEndDate = (String) super.getUpdateableFeildsMap().get("EndDate");
+            //append the time aling with date
+            if (endTime != null && endTime.trim().length() > 0) {
+                searchEndDate = searchEndDate + " " + endTime;
+            } else {
+                searchEndDate = searchEndDate + " 23:59:59";
+            }
+            Date date = DateUtil.string2Date(searchEndDate);
+            if (date != null) {
+                auditSearchObject.setCreateEndDate(new Timestamp(date.getTime()));
+            }
+        }
+        //EndTime=, StartTime=, EndDate=, StartDate=, Function=null, SystemUser=, SystemCode=null, LID=, EUID=
+        if (super.getUpdateableFeildsMap().get("SystemUser") != null && super.getUpdateableFeildsMap().get("SystemUser").toString().trim().length() > 0) {
+            auditSearchObject.setCreateUser((String) super.getUpdateableFeildsMap().get("SystemUser"));
+        } else {
+            auditSearchObject.setCreateUser(null);
+        }
+
+        if (super.getUpdateableFeildsMap().get("Function") != null && super.getUpdateableFeildsMap().get("Function").toString().trim().length() > 0) {
+            auditSearchObject.setFunction((String) super.getUpdateableFeildsMap().get("Function"));
+        } else {
+            auditSearchObject.setFunction(null);
+        }
+
 
         // Set to static values need clarification from prathiba
         //This will be revoked when login module is implemented.
         //auditSearchObject.setPageSize(ConfigManager.getInstance().getMatchingConfig().getItemPerSearchResultPage());
         //auditSearchObject.setMaxElements(ConfigManager.getInstance().getMatchingConfig().getMaxResultSize());
 
+
         auditSearchObject.setPageSize(10);
         auditSearchObject.setMaxElements(100);
         Date date = null;
-        
-        String errorMessage = null;
-        ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm", FacesContext.getCurrentInstance().getViewRoot().getLocale());
-        // One of Many validation 
-            if ((this.getEuid() != null && this.getEuid().trim().length() == 0) &&
-                (this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0) &&
-                (this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0) &&
-                (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() == 0) &&
-                (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() == 0)&&
-                (this.getResultOption() == null) && //Function
-                (this.getSystemuser() != null && this.getSystemuser().trim().length() == 0)){
-                errorMessage = bundle.getString("ERROR_one_of_many");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "One of Many :: " + errorMessage));
-                Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-        }
-        
-        //Form Validation of  Start Time
-        if (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)    {
-            String message = edmValidation.validateTime(this.getCreateStartTime());
-            if (!"success".equalsIgnoreCase(message)) {
-                errorMessage = (errorMessage != null && errorMessage.length() > 0?errorMessage:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Create Time From:: " + errorMessage, errorMessage));
-                Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, message, message);
-            }            
-        }
-        //Form Validation of End Time
-        if (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)    {            
-            String message = edmValidation.validateTime(this.getCreateEndTime());
-            if (!"success".equalsIgnoreCase(message)) {
-                errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Create Time To:: " + errorMessage, errorMessage));
-                Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, message, message);
-            }           
-        }    
-         //Form Validation of  Start Date        
-        if (this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() > 0)    {
-            String message = edmValidation.validateDate(this.getCreateStartDate());
-            if (!"success".equalsIgnoreCase(message)) {
-                 errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
-                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, message, message);
-            }
-        }        
-        
-        //Check CreateStartDateField and add timestamp it its null.
-        try {
-            if ((this.getCreateStartDate() != null) && (this.getCreateStartDate().trim().length() > 0)) {                
-                //If Time is supplied append it to the date
-                 if (getCreateStartTime().trim().length() == 0) {
-                    createStartTime = "00:00:00";
-                 }
-                
-                String searchStartDate = this.getCreateStartDate() + (this.getCreateStartTime() != null? " " + this.getCreateStartTime():" 00:00:00");                                
-                date = DateUtil.string2Date(searchStartDate);
-                if (date != null) {
-                    auditSearchObject.setCreateStartDate(new Timestamp(date.getTime()));
-                }
-            }
-             
-           } catch (ValidationException validationException) {
-            errorMessage = (errorMessage != null && errorMessage.length() > 0? bundle.getString("ERROR_start_date"):bundle.getString("ERROR_start_date"));
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
-        }
-                 
-        //Form Validation of  End Date        
-        if (this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() > 0)    {
-            String message = edmValidation.validateDate(this.getCreateEndDate());
-            if (!"success".equalsIgnoreCase(message)) {
-                errorMessage = (errorMessage != null && errorMessage.length() > 0? message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "End Date:: " + errorMessage));
-                Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, message, message);
-            }            
-        }
 
-        //Check CreateEndDateField
-        if ((this.getCreateEndDate() != null) && (this.getCreateEndDate().trim().length() > 0)) {
-            try {
-                //If Time is supplied append it to the date
-                 if (getCreateEndTime().trim().length() == 0) {
-                    createEndTime="23:59:59";
-                  }
-
-                String searchEndDate = this.getCreateEndDate() +  (this.getCreateEndTime() != null? " " +this.getCreateEndTime():" 23:59:59");
-                date = DateUtil.string2Date(searchEndDate);
-                if (date != null) {
-                    auditSearchObject.setCreateEndDate(new Timestamp(date.getTime()));
-                }
-                //createEndTime="";
-            } catch (ValidationException validationException) {
-                Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
-                errorMessage = (errorMessage != null && errorMessage.length() > 0?bundle.getString("ERROR_end_date"):bundle.getString("ERROR_end_date"));
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));                
-            }
+        if (errorMessage != null && errorMessage.length() != 0) {
+            throw new ValidationException(errorMessage);
         }
-        if (((this.getCreateStartDate() != null) && (this.getCreateStartDate().trim().length() > 0))&&
-           ((this.getCreateEndDate() != null) && (this.getCreateEndDate().trim().length() > 0))){                
-               Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + (this.getCreateStartTime() != null? " " +this.getCreateStartTime():"00:00:00"));
-               Date todate = DateUtil.string2Date(this.getCreateEndDate()+(this.getCreateEndTime() != null? " " +this.getCreateEndTime():"23:59:59"));
-               long startDate = fromdate.getTime();
-               long endDate = todate.getTime();
-                 if(endDate < startDate){
-                    errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "fromdate :: " + errorMessage));
-                    Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                   }
-        }
-          
-        if (this.getSystemuser() != null && this.getSystemuser().length() > 0) {
-            auditSearchObject.setCreateUser(this.getSystemuser());
-        } else {
-            auditSearchObject.setCreateUser(null);
-        }
-
-        if (this.getResultOption() != null && this.getResultOption().length() > 0) {
-            auditSearchObject.setFunction(this.getResultOption());
-        } else {
-            auditSearchObject.setFunction(null);
-         }
-
-        if (this.getEuid() != null && this.getEuid().length() > 0) {
-            auditSearchObject.setEUID(this.getEuid());
-            String message = edmValidation.validateNumber(this.getEuid());
-            if (!"success".equalsIgnoreCase(message)) {
-                errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "EUID:: " + errorMessage, errorMessage));
-                Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, message, message);
-         }
-        } else {
-            auditSearchObject.setEUID(null);
-        }
- 
-       if (errorMessage != null && errorMessage.length() != 0)  {
-                throw new ValidationException(errorMessage);
-            }
-            return auditSearchObject;
-        }
+        return auditSearchObject;
+    }
 
     public AuditDataObject[] getAuditLogVO() {
         return this.auditLogVO;
@@ -476,7 +427,54 @@ public class AuditLogHandler {
 
     public void setResultsSize(int resultsSize) {
         this.resultsSize = resultsSize;
-        
+
     }
-    
+
+    public String getCreateStartDate() {
+        return createStartDate;
+    }
+
+    public void setCreateStartDate(String createStartDate) {
+        this.createStartDate = createStartDate;
+    }
+
+    public String getCreateEndDate() {
+        return createEndDate;
+    }
+
+    public void setCreateEndDate(String createEndDate) {
+        this.createEndDate = createEndDate;
+    }
+
+    public String getCreateStartTime() {
+        return createStartTime;
+    }
+
+    public void setCreateStartTime(String createStartTime) {
+        this.createStartTime = createStartTime;
+    }
+
+    public String getCreateEndTime() {
+        return createEndTime;
+    }
+
+    public void setCreateEndTime(String createEndTime) {
+        this.createEndTime = createEndTime;
+    }
+
+    public String getLocalid() {
+        return localid;
+    }
+
+    public void setLocalid(String localid) {
+        this.localid = localid;
+    }
+
+    public String getEuid() {
+        return euid;
+    }
+
+    public void setEuid(String euid) {
+        this.euid = euid;
+    }
 }

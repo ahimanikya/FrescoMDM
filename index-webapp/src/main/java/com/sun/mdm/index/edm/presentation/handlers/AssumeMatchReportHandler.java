@@ -146,9 +146,7 @@ public class AssumeMatchReportHandler  {
             AssumedMatchReportRow reportRow = new AssumedMatchReportRow(amri.next(), amrConfig);
            
             if (index ==0 ) prevEuid = reportRow.getEUID();
-            System.out.println("PREV:: " + prevEuid + " Current :: " + reportRow.getEUID() + "index:: " + index);
             if (!prevEuid.equalsIgnoreCase(reportRow.getEUID()) || index +1 == amri.count())   {
-                System.out.println("Accumulated!");
                 vOList.add(summaryList);
                 summaryList = new ArrayList();
             }
@@ -165,7 +163,6 @@ public class AssumeMatchReportHandler  {
     }
    
    private void populateVO() throws Exception    {
-       System.out.println("--------------------------VOLIST Size ----------------------" + vOList.size());             
        assumematchesRecordsVO = new AssumeMatchesRecords[vOList.size()];
        
        for (int i=0; i < vOList.size();i++)   {
@@ -520,9 +517,6 @@ public class AssumeMatchReportHandler  {
      */
      public AssumeMatchesRecords[] getAssumematchesRecordsVO() {
         request.setAttribute("size", new Integer(assumematchesRecordsVO.length));        
-        for (int i =0 ; i< assumematchesRecordsVO.length;i++)   {
-            System.out.println( "EUID "  + assumematchesRecordsVO[i].getEuid() + "LAST " +  assumematchesRecordsVO[i].getLastName() );
-        }
         return assumematchesRecordsVO;
     }
      /**
