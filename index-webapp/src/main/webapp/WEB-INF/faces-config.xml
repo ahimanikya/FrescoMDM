@@ -1202,7 +1202,7 @@
     <managed-bean>
         <managed-bean-name>TransactionHandler</managed-bean-name>
         <managed-bean-class>com.sun.mdm.index.edm.presentation.handlers.TransactionHandler</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
+        <managed-bean-scope>request</managed-bean-scope>
     </managed-bean> 
     <managed-bean>
         <managed-bean-name>HashMapHandler</managed-bean-name>
@@ -1239,7 +1239,7 @@
      <managed-bean>
         <managed-bean-name>SourceMergeHandler</managed-bean-name>
         <managed-bean-class>com.sun.mdm.index.edm.presentation.handlers.SourceMergeHandler</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
+        <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     <managed-bean>
         <managed-bean-name>ViewMergeTreeHandler</managed-bean-name>
