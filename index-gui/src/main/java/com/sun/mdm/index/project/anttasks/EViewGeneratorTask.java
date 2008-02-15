@@ -150,7 +150,7 @@ public class EViewGeneratorTask extends Task {
 				generateEbjFiles(eo);
 
 				// put the web files into war project
-				generateWarFiles();
+				generateWarFiles(objName);
 
 				// add lib to ejb project by modifing ejb project's
 				// project.properties file.
@@ -685,10 +685,10 @@ public class EViewGeneratorTask extends Task {
 		return doc;
 	}
 
-	private void generateWarFiles() {
+	private void generateWarFiles(String objName) {
 		String edmVersion = getProject().getProperty("edm-version");
 		String edmWarName = "edm.war";
-		boolean jspExcluded = true;
+		boolean jspExcluded = false;
 		if (null != edmVersion
 				&& edmVersion.equalsIgnoreCase("master-index-edm")) {
 			edmWarName = "index-webapp.war";
@@ -731,6 +731,14 @@ public class EViewGeneratorTask extends Task {
 		copy.addFileset(srcFileSet);
 		copy.setLocation(getLocation());
 		copy.execute();
+                
+                //set context root
+                if (null != edmVersion
+				&& edmVersion.equalsIgnoreCase("master-index-edm")) {
+                    String token = "/SunEdm";
+                    String sunWebXml= (mWardir.getAbsolutePath()+"/web/WEB-INF/sun-web.xml");
+                    replaceToken(sunWebXml, token, "/"+objName+"edm" );			
+		}               
 	}
 
 	private void addEjbLib() throws FileNotFoundException, IOException {
@@ -909,7 +917,7 @@ public class EViewGeneratorTask extends Task {
 				file.delete();
 			}
 			tempFile.renameTo(file);
-			throw new BuildException("can not generate EJB mapped name in "
+			throw new BuildException("can not replace token in "
 					+ fileName);
 		} finally {
 			tempFile = new File(fileName + ".tmp");
