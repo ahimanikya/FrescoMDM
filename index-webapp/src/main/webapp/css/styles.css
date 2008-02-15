@@ -13,6 +13,9 @@ INPUT{
            color:#837F74;           
 }
 
+#reportYUISearch table td input {
+background-image:url(../images/none.gif); /*fake it*/
+}
 .selectContent {
 text-decoration:none;
 }
@@ -82,7 +85,7 @@ width:25px;
     color:#837F74;
     width:1015px;
     text-align:left;
-    vertical-align:middle;        
+    vertical-align:middle;     
     font-weight:bold;
     border-left: 1px solid #C6F7E7;
     border-bottom: 1px solid #393C39;
@@ -375,7 +378,7 @@ width:25px;
            font-family: Arial, Helvetica, sans-serif;
            font-size:15px;
 	   color:#837F74;
-           width: 1024px;
+           width: 1074px;
            background-color:#f9f7de;           
            text-align:left;
 	   vertical-align:middle;	      
@@ -797,6 +800,7 @@ width:25px;
     overflow:auto;
     background-color:#F7FBFF;
     width: 1024px;
+    
     border-left: 1px solid #6B757B;     border-right: 2px solid #6B757B;     border-top: 1px solid #182442;    border-bottom: 2px solid #6B757B;
 }
 
@@ -1098,7 +1102,7 @@ a.button:active span {
     width:291px;
     padding-top:5px;
     padding-bottom:0px;
-    padding-left:50px;
+    padding-left:0px;
     padding-right:0px;
     font-size:10px;    
 }
@@ -2157,7 +2161,7 @@ div.w114 table td.fntdup5nou    {height: 25px; border-top: 1px solid #F7F3D6;  b
 .menutopheading {  height:25px; font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-weight:bold;
                font-size: 12px; text-align: left; padding-top:5px; padding-left:12px; background-image: url('../images/transaction_heading.jpg'); background-repeat:no-repeat}
 
-.dupfirstBlue { display:block; height:25px; background-image: url('../images/dupfirst_blue.jpg'); background-repeat:no-repeat;padding-left:4px;padding-right:0px; padding-top:0px; padding-bottom:0px; border-bottom:px solid #EFEFEF;}
+.dupfirstBlue { display:block; height:25px; background-image: url('../images/dupfirst_blue.jpg'); background-repeat:no-repeat;padding-left:4px;padding-right:0px; padding-top:0px; padding-bottom:0px;}
 
 .dupbtnBlue  { display:block; height:22px; width:155px; background-image: url('../images/dupbtn_blue.gif'); background-repeat:no-repeat;
                text-align:center; vertical-align:middle; padding-bottom:0px; padding-left:10px; padding-right:0px; padding-top:3px; font-family: Arial, Helvetica, sans-serif; color: #424121; 
@@ -2177,3 +2181,67 @@ div.w114 table td.fntdup5nou    {height: 25px; border-top: 1px solid #F7F3D6;  b
                font-weight: bold; width: 141px; height: 23px; 
                background-image: url('../images/diffview.gif');  background-repeat:no-repeat; padding-left: 
                10px; padding-top: 4px; padding-top: 4px; text-decoration:none }                
+
+/* Yellow table */
+.yellow  {width:169px;vertical-align:top;}
+.yellow table {width:169px;background-color:#F7FBD6;background-image: url('../images/bglast.gif');}
+.yellow table td { width:169px;height:25px; background-color:#F7FBD6;border-right: 3px solid #ADB29C;border-bottom: 1px solid #EFEFEF;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:0px; padding-right:5px;padding-left:5px;}
+.yellow table td.menutop { height:25px; font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:5px; padding-left:12px; background-image: url('../images/menutop.gif'); background-repeat:no-repeat}
+.yellow table td.dupfirst{ display:block; height:25px; background-image: url('../images/dupfirst.gif'); background-repeat:no-repeat;padding-left:4px;padding-right:0px; padding-top:0px; padding-bottom:0px}
+.yellow table td a.dupbtn  {display:block;height:25px; background-color:#F7FBD6;background-image: url('../images/dupbtn.gif'); background-repeat:no-repeat;text-align:center; vertical-align:middle; padding-bottom:0px; padding-left:0px; padding-right:0px; padding-top:5px; font-family: Arial, Helvetica, sans-serif; color: #424121;font-size: 12px; font-weight:bold; text-decoration:none; text-align:center}
+
+
+/* Blue table */
+.blue  {width:169px;vertical-align:top;}
+.blue table {width:169px;background-image: url('../images/bglast.gif');}
+.blue table td { width:169px;height:25px; background-color:#cecff9;border-right: 3px solid #ADB29C;border-bottom: 1px solid #EFEFEF;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:0px; padding-right:5px;padding-left:5px;}
+.blue table td.menutop { height:25px; font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:5px; padding-left:12px; background-image: url('../images/menutop_blue.jpg'); background-repeat:no-repeat}
+.blue table td.dupfirst{ display:block; height:25px; background-image: url('../images/dupfirst_blue.jpg'); background-repeat:no-repeat;padding-left:4px;padding-right:0px; padding-top:0px; padding-bottom:0px}
+.blue table td a.dupbtn  {display:block;height:25px; background-color:#cecff9;background-image: url('../images/dupbtn_blue.gif'); background-repeat:no-repeat;text-align:center; vertical-align:middle; padding-bottom:0px; padding-left:0px; padding-right:0px; padding-top:5px; font-family: Arial, Helvetica, sans-serif; color: #424121;font-size: 12px; font-weight:bold; text-decoration:none; text-align:center}
+
+
+/* History table */
+.history  {width:169px;vertical-align:top;}
+.history table {width:169px;background-color:#c1c043;background-image: url('../images/bglast.gif');}
+.history table td { width:169px;height:25px; background-color:#c1c043;border-right: 3px solid #ADB29C;border-bottom: 1px solid #EFEFEF;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:0px; padding-right:5px;padding-left:5px;}
+.history table td.menutop { height:25px; font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:5px; padding-left:12px; background-image: url('../images/menutop_history.jpg'); background-repeat:no-repeat}
+.history table td.dupfirst{ display:block; height:25px; background-image: url('../images/dupfirst_history.jpg'); background-repeat:no-repeat;padding-left:4px;padding-right:0px; padding-top:0px; padding-bottom:0px}
+.history table td a.dupbtn  {display:block;height:25px; background-color:#c1c043; background-repeat:no-repeat;text-align:center; vertical-align:middle; padding-bottom:0px; padding-left:0px; padding-right:0px; padding-top:5px; font-family: Arial, Helvetica, sans-serif; color: #424121;font-size: 12px; font-weight:bold; text-decoration:none; text-align:center}
+
+/* Source table */
+.source  {width:169px;vertical-align:top;}
+.source table {width:169px;background-color:#cddcb1;background-image: url('../images/bglast.gif');}
+.source table td { width:169px;height:25px; background-color:#cddcb1;border-right: 3px solid #ADB29C;border-bottom: 1px solid #EFEFEF;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:0px; padding-right:5px;padding-left:5px;}
+.source table td.menutop { height:25px; font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:5px; padding-left:12px; background-image: url('../images/menutop_source.jpg'); background-repeat:no-repeat}
+.source table td.dupfirst{ display:block; height:25px; background-image: url('../images/dupfirst_source.jpg'); background-repeat:no-repeat;padding-left:4px;padding-right:0px; padding-top:0px; padding-bottom:0px}
+.source table td a.dupbtn  {display:block;height:25px; background-color:#cddcb1; background-repeat:no-repeat;text-align:center; vertical-align:middle; padding-bottom:0px; padding-left:0px; padding-right:0px; padding-top:5px; font-family: Arial, Helvetica, sans-serif; color: #424121;font-size: 12px; font-weight:bold; text-decoration:none; text-align:center}
+
+/* Deactivate and Different Person table */
+.deactivate  {width:169px;vertical-align:top;}
+.deactivate table {width:169px;background-color:#ece9d8;background-image: url('../images/bglast.gif');}
+.deactivate table td { width:169px;height:25px; background-color:#ece9d8;border-right: 3px solid #ADB29C;border-bottom: 1px solid #EFEFEF;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:0px; padding-right:5px;padding-left:5px;}
+.deactivate table td.menutop { height:25px; font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:5px; padding-left:12px; background-image: url('../images/menutop_deactivate.gif'); background-repeat:no-repeat}
+.deactivate table td.dupfirst{ display:block; height:25px; background-image: url('../images/dupfirst_deactivate.gif'); background-repeat:no-repeat;padding-left:4px;padding-right:0px; padding-top:0px; padding-bottom:0px}
+.deactivate table td a.dupbtn  {display:block;height:25px; background-color:#ece9d8; background-repeat:no-repeat;text-align:center; vertical-align:middle; padding-bottom:0px; padding-left:0px; padding-right:0px; padding-top:5px; font-family: Arial, Helvetica, sans-serif; color: #424121;font-size: 12px; font-weight:bold; text-decoration:none; text-align:center}
+
+/* Merge table */
+.merge  {width:169px;vertical-align:top;}
+.merge table {width:169px;background-color:#dfe7d0;background-image: url('../images/bglast.gif');}
+.merge table td { width:169px;height:25px; background-color:#dfe7d0;border-right: 3px solid #ADB29C;border-bottom: 1px solid #EFEFEF;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:0px; padding-right:5px;padding-left:5px;}
+.merge table td.menutop { height:25px; font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:5px; padding-left:12px; background-image: url('../images/menutop_merge.jpg'); background-repeat:no-repeat}
+.merge table td.dupfirst{ display:block; height:25px; background-repeat:no-repeat;padding-left:4px;padding-right:0px; padding-top:0px; padding-bottom:0px}
+.merge table td a.dupbtn  {display:block;height:25px; background-color:#dfe7d0; background-repeat:no-repeat;text-align:center; vertical-align:middle; padding-bottom:0px; padding-left:0px; padding-right:0px; padding-top:5px; font-family: Arial, Helvetica, sans-serif; color: #424121;font-size: 12px; font-weight:bold; text-decoration:none; text-align:center}
+
+/* Transaction table */
+.transaction  {width:169px;vertical-align:top;}
+.transaction table {width:169px;background-color:#fdeddf;background-image: url('../images/bglast.gif');}
+.transaction table td { width:169px;height:25px; background-color:#fdeddf;border-right: 3px solid #ADB29C;border-bottom: 1px solid #EFEFEF;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:0px; padding-right:5px;padding-left:5px;}
+.transaction table td.menutop { height:25px; font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:5px; padding-left:12px; background-image: url('../images/menutop_transaction.jpg'); background-repeat:no-repeat}
+.transaction table td.dupfirst{ display:block; height:25px; background-image: url('../images/transaction_heading.jpg'); background-repeat:no-repeat;padding-left:4px;padding-right:0px; padding-top:0px; padding-bottom:0px}
+.transaction table td a.dupbtn  {display:block;height:25px; background-color:#fdeddf; background-repeat:no-repeat;text-align:center; vertical-align:middle; padding-bottom:0px; padding-left:0px; padding-right:0px; padding-top:5px; font-family: Arial, Helvetica, sans-serif; color: #424121;font-size: 12px; font-weight:bold; text-decoration:none; text-align:center}
+
+
+.actionbuton  {vertical-align:top;}
+.actionbuton table {width:169px;background-color:#F7FBD6;padding-left:5px; padding-right:5px;}
+.actionbuton table td { width:169px;height:25px;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:0px; padding-right:5px;padding-left:5px;}
+.actionbuton #previewActionButton {visibility:hidden;display:none;background-color:#cecff9;}
