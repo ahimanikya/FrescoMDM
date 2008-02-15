@@ -1447,7 +1447,7 @@
                                                                 <td>
                                                                     <h:selectOneMenu   label="#{ReportHandler.reportFunction}" value="#{ReportHandler.reportFunction}">
                                                                         <f:selectItem itemLabel="" itemValue="" />
-                                                                        <f:selectItems  value="#{TransactionHandler.selectOptions}" />
+                                                                        <f:selectItems  value="#{ReportHandler.selectOptions}" />
                                                                     </h:selectOneMenu>
                                                                   
                                                                 </td>
