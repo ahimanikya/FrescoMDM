@@ -22,6 +22,7 @@
 
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
+<%@ page import="java.math.BigDecimal"  %>
 <%@ page import="java.util.HashMap"  %>
 <%@ page import="java.util.ArrayList"  %>
 <%@ page import="java.util.Collection"  %>
@@ -200,7 +201,7 @@
                     
                     
                     PotentialDuplicateIterator pdPageIter = (PotentialDuplicateIterator) session.getAttribute("pdPageIter");
-                    ArrayList finalArrayList = (ArrayList) session.getAttribute("finalArrayList");
+                    ArrayList finalArrayList = (ArrayList) request.getAttribute("finalArrayList");
                     PotentialDuplicateIterator asPdIter;
                     PotentialDuplicateSummary mainDuplicateSummary = null;
                     
@@ -226,6 +227,7 @@
                 <br>   
                   <%
                      if(finalArrayList != null && finalArrayList.size() >0 ) {
+                         request.setAttribute("finalArrayList", request.getAttribute("finalArrayList"));
                  %>                
                      <div class="printClass">
                        <table cellpadding="0" cellspacing="0" border="0">
@@ -247,7 +249,7 @@
                 <%
                     if(finalArrayList != null && finalArrayList.size() >0 ) {
                 %>
-                     <div id="dataDiv" class="compareResults" style="overflow:auto;width:1024px;height:1024px;">
+                     <div id="dataDiv" class="compareResults" style="overflow:auto;width:1074px;height:1024px;">
                     <div>
                         <table>
                             <tr>
@@ -260,64 +262,57 @@
                                 <table border="0" cellspacing="0" cellpadding="0">
                                     <tr>
                                         <td><img src="images/spacer.gif" width="15"></td>
-                                        <td  valign="top">
-                                            <div id="staticContent">
-                                                <table border="0" cellspacing="0" cellpadding="0">
-                                                    <tr>
-                                                        <td>&nbsp;</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>&nbsp;</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>&nbsp;</td>
-                                                    </tr>
-                                                </table>
-                                            </div>     
-                                            <div id="staticContent">
-                                                <table border="0" cellspacing="0" cellpadding="0" class="w114">
-                                                    <%
-                                                    String mainDOBSource;
-                                                   for (int i = 0; i < resultsConfigFeilds.length; i++) {
-                                                     FieldConfig fieldConfig = (FieldConfig) resultsConfigFeilds[i];
-                                                    %>
-                                                    <tr>
-                                                        <td class="fntdup4"><%=fieldConfig.getDisplayName()%></td>
-                                                    </tr>
-                                                    <%}%>
-                                                </table>
-                                            </div>
-                                        </td>
                                         <%
+                                        HashMap resultArrayMapMain = new HashMap();
+                                        HashMap resultArrayMapCompare = new HashMap();
+                                        String epathValue;
                                         ArrayList arlInner = (ArrayList) finalArrayList.get(fac);
                                         String subscripts[] = compareDuplicateManager.getSubscript(arlInner.size());
                                         for (int j = 0; j < arlInner.size(); j++) {
+                                               HashMap eoHashMapValues = (HashMap) arlInner.get(j);
+                                               //EnterpriseObject eoSource = compareDuplicateManager.getEnterpriseObject(strDataArray);
+
+                                               //int weight = ((Float) eoHashMapValues.get("Weight")).intValue();
+                                               String  weight =  eoHashMapValues.get("Weight").toString();
+                                               //weight = (new BigDecimal(weight)).ROUND_CEILING;
+                                               //float weight = ((Float) eoHashMapValues.get("Weight")).floatValue();
+                                               
+                                               HashMap fieldValuesMapSource = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT");
+                                               
+
                                                // Code to render headers
                                                if (j>0)
-                                                {    dupHeading = "<b> "+j+"<sup>"+subscripts[j] +"</sup> Duplicate</b>";
+                                                {    dupHeading = "<b> "+j+"<sup>"+subscripts[j] +"</sup> Duplicate </b>";
                                                 } else if (j==0)
                                                 {    dupHeading = "<b> Main EUID</b>";
                                                 }
-                                               String strDataArray = (String) arlInner.get(j);
-                                               EnterpriseObject eoSource = compareDuplicateManager.getEnterpriseObject(strDataArray);
-                                               HashMap fieldValuesMapSource = compareDuplicateManager.getEOFieldValues(eoSource, objScreenObject) ;
-
+                                               //String strDataArray = (String) arlInner.get(j);
+                                               //EnterpriseObject eoSource = compareDuplicateManager.getEnterpriseObject(strDataArray);
+                                               //HashMap fieldValuesMapSource = compareDuplicateManager.getEOFieldValues(eoSource, objScreenObject) ;
+                                               for (int ifc = 0; ifc < resultsConfigFeilds.length; ifc++) {
+                                                FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc];
+                                                if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
+                                                    epathValue = fieldConfigMap.getFullFieldName();
+                                                } else {
+                                                    epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
+                                                }
+                                                if (j > 0) {
+                                                    resultArrayMapCompare.put(epathValue, fieldValuesMapSource.get(epathValue));
+                                                } else {
+                                                    resultArrayMapMain.put(epathValue, fieldValuesMapSource.get(epathValue));
+                                                }
+                                              }
+                                        
+                                               
+                                               
                                         %>
                                        <%if(j == 0 ) {%>
                                         <td valign="top">
-                                            <div id="mainEuidContent" class="w169">
-                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
+                                            <div id="mainEuidContent">
+                                                <table border="0" cellspacing="0" cellpadding="0" width="100%">
                                                     <tr>
-                                                        <td valign="top" class="menutop">Main EUID</td>
+                                                        <td valign="top" style="width:100%;height:45px;border-bottom: 1px solid #EFEFEF; ">&nbsp;</td>
                                                     </tr> 
-                                                    <tr>
-                                                        <td valign="top" class="dupfirst">
-                                                            <a href="#" class="dupbtn">
-                                                                <%=strDataArray%>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                        
                                                 </table>
                                             </div> 
                                              <div id="mainEuidContentDiv<%=countMain%>" class="dynaw169">
@@ -327,21 +322,47 @@
                                                         FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
                                                              
                                                     %>
+                                                    <tr><td><%=fieldConfigMap.getDisplayName()%></td></tr>
+                                                    <%}%>
+                                                </table>
+                                            </div>   
+                                        </td>
+                                        <td valign="top">
+                                            <div id="mainEuidContent" class="w169">
+                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
+                                                    <tr>
+                                                        <td valign="top" class="menutop">Main EUID</td>
+                                                    </tr> 
+                                                    <tr>
+                                                        <td valign="top" class="dupfirst">
+                                                            <a href="#" class="dupbtn">
+                                                                <%=fieldValuesMapSource.get("EUID")%>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                        
+                                                </table>
+                                            </div> 
+                                            <div id="mainEuidContentDiv<%=countMain%>" class="dynaw169">
+                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
+                                                    <%
+                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
+                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
+                                                        if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
+                                                             epathValue = fieldConfigMap.getFullFieldName();
+                                                         } else {
+                                                             epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
+                                                         }
+                                                     %>
                                                     <tr>
                                                         <td>
-                                                            
-                                                            <%if (fieldValuesMapSource.get(fieldConfigMap.getFullFieldName()) != null) {%>
-                                                            <%if (fieldConfigMap.getValueType() == 6) {
-                                                             mainDOBSource = simpleDateFormatFields.format(fieldValuesMapSource.get(fieldConfigMap.getFullFieldName()));
-                                                            %>
-                                                            <%=mainDOBSource%>
-                                                            <%} else {%>
-                                                            <%=fieldValuesMapSource.get(fieldConfigMap.getFullFieldName())%>
-                                                            <%}%>
-                                                            
+
+                                                            <%if (fieldValuesMapSource.get(epathValue) != null) {%>
+                                                              <%=fieldValuesMapSource.get(epathValue)%>
                                                             <%} else {%>
                                                             &nbsp;
                                                             <%}%>
+
                                                         </td>                                                        
                                                     </tr>
                                                     <%}%>
@@ -362,40 +383,58 @@
                                             <div id="mainEuidContent" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
                                                 <table border="0" cellspacing="0" cellpadding="0" class="w169">
                                                     <tr>
-                                                        <td valign="top" class="menutop"><%=dupHeading%></td>
+                                                        <td valign="top" class="menutop"><%=dupHeading%>
+                                                        </td>
                                                     </tr> 
                                                     <tr>
-                                                        <td valign="top" class="dupfirst">
-                                                            <a href="#" class="dupbtn">
-                                                                <%=strDataArray%>
-                                                            </a>
-                                                        </td>
+                                                      <td valign="top" class="dupfirst">
+                                                          <a href="#" class="dupbtn">
+                                                             <%=fieldValuesMapSource.get("EUID")%>        
+                                                          </a>  
+                                                      </td>
                                                     </tr>
                                                 </table>
                                             </div> 
-                                             <div id="mainEuidContentDiv<%=countMain%>" class="dynaw169">
+                                            <div id = "bar" style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
+                                                <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
+                                            </div>                                             
+                                            <div id = "bar" style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
+                                                <%=weight%>
+                                            </div> 
+                                            <div id="mainEuidContentDiv<%=countMain%>" class="dynaw169" >
                                                 <table border="0" cellspacing="0" cellpadding="0" class="w169">
                                                     <%
                                                      for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
                                                         FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
+                                                        if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
+                                                             epathValue = fieldConfigMap.getFullFieldName();
+                                                         } else {
+                                                             epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
+                                                         }
                                                              
                                                     %>
-                                                    <tr>
-                                                        <td>
-                                                            
-                                                            <%if (fieldValuesMapSource.get(fieldConfigMap.getFullFieldName()) != null) {%>
-                                                            <%if (fieldConfigMap.getValueType() == 6) {
-                                                             mainDOBSource = simpleDateFormatFields.format(fieldValuesMapSource.get(fieldConfigMap.getFullFieldName()));
-                                                            %>
-                                                            <%=mainDOBSource%>
-                                                            <%} else {%>
-                                                            <%=fieldValuesMapSource.get(fieldConfigMap.getFullFieldName())%>
-                                                            <%}%>
-                                                            
-                                                            <%} else {%>
-                                                            &nbsp;
-                                                            <%}%>
-                                                        </td>                                                        
+                                                    <tr>                                                        
+                                                       <td>
+                                                                <%if (fieldValuesMapSource.get(epathValue) != null) {%>
+                                                                
+                                                                <%if ((j > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) &&
+            !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {
+
+                                                                %>
+                                                                    
+                                                                    <font class="highlight">
+                                                                        <%=fieldValuesMapSource.get(epathValue)%>
+                                                                    </font>
+                                                                <%} else {
+                                                                %>
+                                                                    <%=fieldValuesMapSource.get(epathValue)%>
+                                                                <%}%>
+                                                                <%} else {%>
+                                                                &nbsp;
+                                                                <%}%>
+                                                                
+
+                                                        </td>        
                                                     </tr>
                                                     <%}%>
                                                 </table>
@@ -439,16 +478,13 @@
                                                     <td valign="top" align="right">
                                                         <!--Show compare duplicates button-->
                                                         <%
-                                                        String searchTitle = "Simple Person Lookup";
                                                         ValueExpression euidVaueExpressionList = ExpressionFactory.newInstance().createValueExpression(arlInner, arlInner.getClass());
-                                                        ValueExpression searchTitleVaueExpression = ExpressionFactory.newInstance().createValueExpression(searchTitle, searchTitle.getClass());
                                                         %>
                                                          <h:form>
                                                             <h:commandLink styleClass="downlink"  
                                                                            action="#{NavigationHandler.toCompareDuplicates}" 
-                                                                           actionListener="#{SearchDuplicatesHandler.buildEuidsAction}">
-                                                                <f:attribute name="euids"  value="<%=euidVaueExpressionList%>"  />
-                                                                <f:attribute name="searchTitle"  value="<%=searchTitleVaueExpression%>"  />
+                                                                           actionListener="#{SearchDuplicatesHandler.buildCompareDuplicateEuids}">
+                                                                <f:attribute name="euidsMap"  value="<%=euidVaueExpressionList%>"  />
                                                             </h:commandLink>
                                                         </h:form>   
 
@@ -482,6 +518,6 @@
                <%}%>
                
             </div>
-        </body>
+        </body>        
     </html> 
 </f:view>

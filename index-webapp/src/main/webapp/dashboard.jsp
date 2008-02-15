@@ -47,13 +47,6 @@
                <h:form id="QuickSearchForm">
                 <tr><td> &nbsp;</td></tr>
                 <tr>
-                    <td> 
-                        <h:selectOneMenu  id="langOption">  
-                            <f:selectItem  itemValue="EUID" itemLabel="#{msgs.reports_col_euid}" />
-                            <f:selectItem  itemValue="LID" itemLabel="#{msgs.source_edit_LidPrompt}"/>
-                        </h:selectOneMenu>                                                       
-                       
-                    </td>
                     <td> <h:inputText id="euidField" value="#{PatientDetailsHandler.singleEUID}"  maxlength="10"/> </td>
                 </tr>
                 <tr>
