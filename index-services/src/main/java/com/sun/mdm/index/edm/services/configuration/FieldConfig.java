@@ -263,7 +263,7 @@ public class FieldConfig implements java.io.Serializable, Comparable {
      * @return the dislay name
      */
     public String getDisplayName() {
-        //System.out.println("USAGEEE" + this.usage);
+
         // RANGE_SEARCH: append From or To when necessary
         if (this.usage == null) {
             // RANGE_SEARCH: default usage is null, and display name should be left as is
