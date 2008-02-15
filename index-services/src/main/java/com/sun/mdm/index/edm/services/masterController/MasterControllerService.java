@@ -66,7 +66,7 @@ import com.sun.mdm.index.objects.TransactionObject;
 import com.sun.mdm.index.master.search.assumedmatch.AssumedMatchIterator;
 import com.sun.mdm.index.master.search.assumedmatch.AssumedMatchSearchObject;
 import com.sun.mdm.index.master.search.assumedmatch.AssumedMatchSummary;
-
+import com.sun.mdm.index.objects.epath.EPathParser;
 import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathAPI;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
@@ -88,6 +88,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Set;
 import java.sql.Timestamp;
+import java.text.NumberFormat;
 
 public class MasterControllerService {
 
@@ -251,8 +252,7 @@ public class MasterControllerService {
 
         SystemObjectPK destSytemObjectPK = new SystemObjectPK(systemCode, destLID);
 
-        SystemObject destSO = QwsController.getMasterController().getSystemObject(destSytemObjectPK);
-        System.out.println("==> getPostMergeSystemObject" + systemCode + "==>: " +  destLID);
+        SystemObject destSO = QwsController.getMasterController().getSystemObject(destSytemObjectPK);      
         MergeResult mergeResult = QwsController.getMasterController().mergeSystemObject(systemCode, sourceLID, destLID, destSO.getObject(), true);
         
         return mergeResult.getDestinationEO().getSystemObject(systemCode, destLID);
@@ -637,7 +637,7 @@ public class MasterControllerService {
     // added by samba
     public SystemObject createSystemObject(String systemCode, String LID, HashMap hm) throws ObjectException, ValidationException, Exception {
 
-        //System.out.println("===>: " + this.rootNodeName);
+      
         ObjectNode majorObject = SimpleFactory.create(rootNodeName);
 
         Date dateTime = new Date();
@@ -712,7 +712,7 @@ public class MasterControllerService {
     public ObjectNode modifyMinorObject(ObjectNode minorObject, HashMap hm) throws ObjectException, ValidationException {
         for (Object obj : hm.keySet()) {
             Object value = hm.get(obj);
-            //System.out.println("===> IN MODIFYING MINOR OBJECTS===> " + obj + "< ===>" + value );
+           
             //Check the hash map objects for not MINOR_OBJECT_TYPE,MINOR_OBJECT_UPDATE ,HASH_MAP_TYPE,LID,SYSTEM_CODE 
             if (!obj.equals(MasterControllerService.MINOR_OBJECT_TYPE) 
                 && !obj.equals(MasterControllerService.LID)
@@ -728,7 +728,7 @@ public class MasterControllerService {
     public ObjectNode modifyMinorObjectSBR(ObjectNode minorObject, HashMap hm, SBR sbr) throws ObjectException, ValidationException {
         for (Object obj : hm.keySet()) {
             Object value = hm.get(obj);
-            //System.out.println("===> IN MODIFYING MINOR OBJECTS===> " + obj + "< ===>" + value );
+            
             //Check the hash map objects for not MINOR_OBJECT_TYPE,MINOR_OBJECT_UPDATE ,HASH_MAP_TYPE,LID,SYSTEM_CODE 
             if (!obj.equals(MasterControllerService.MINOR_OBJECT_TYPE) 
                 && !obj.equals(MasterControllerService.LID)
@@ -1226,7 +1226,7 @@ public class MasterControllerService {
         potentialDuplicateSearchObject.setEUID(mainEuid);
         
         PotentialDuplicateIterator pdPageIter = QwsController.getMasterController().lookupPotentialDuplicates(potentialDuplicateSearchObject);
-        System.out.println("mainEuid" + mainEuid + "dupId" + dupId + "pdPageIter"  + pdPageIter.count() );
+      
         
         int iter_count = pdPageIter.count();
 
@@ -1270,13 +1270,11 @@ public class MasterControllerService {
                         duplicateValue = numberFormat.format(potentialDuplicateSummaryArray[i].getWeight());
                     }else
                    if (keyValue.equalsIgnoreCase("status")) {                      
-                        duplicateValue = potentialDuplicateSummaryArray[i].getStatus();
-                         System.out.println("status...."+duplicateValue);
+                        duplicateValue = potentialDuplicateSummaryArray[i].getStatus();                 
                     }
                    else 
                    if (keyValue.equalsIgnoreCase("duplicateid")) {                      
                         duplicateValue = potentialDuplicateSummaryArray[i].getId();
-                         System.out.println("duplicateid ...."+duplicateValue);
                     }
                 }
 
@@ -1540,7 +1538,85 @@ public class MasterControllerService {
         }
         return hm;
     }
-    
+     /**
+     * 
+     * @param eo EnterpriseObject that has links which should require values.
+     * @return hashmap Key as EPath String, Value as actual field value from SystemObject that linked. 
+     * @throws com.sun.mdm.index.objects.exception.ObjectException
+     * @throws com.sun.mdm.index.master.ConnectionInvalidException
+     * @throws com.sun.mdm.index.ops.exception.OPSException
+     * @throws com.sun.mdm.index.master.ProcessingException
+     * @throws com.sun.mdm.index.objects.epath.EPathException
+     * @throws com.sun.mdm.index.master.UserException
+     */
+
+    public HashMap getLockedFields(EnterpriseObject eo) throws ObjectException, ConnectionInvalidException, OPSException, ProcessingException, EPathException, UserException {
+        SBR sbr = eo.getSBR();
+        ArrayList overWrites = sbr.getOverWrites();
+        HashMap hm = new HashMap();
+
+        if (overWrites != null) {
+            for (Object obj : overWrites) {
+                SBROverWrite overWrite = (SBROverWrite) obj;
+                String strEPath = overWrite.getEPath();
+                
+                String epathField = EPathParser.parse(strEPath).toFieldName();
+                
+                if (strEPath.indexOf("LINK:") == -1)  {
+                    //str = str.substring(5);
+                    if (strEPath != null && strEPath.indexOf("Alias") == -1) {                        
+                        Object value = overWrite.getData();
+                        
+                        hm.put(normalize(epathField), true);
+                    }
+                }
+            }
+        } else {
+             mLogger.fine("There exist no links.");
+        }
+        return hm;
+    }
+
+    private static String normalize(String s) {
+        // strip [...] from token in tokenQueue as well
+        char firstToken ='[';
+        char lastToken =']';
+        String res = s.substring(0, s.indexOf(firstToken)) + s.substring(s.indexOf(lastToken)+1)   ;
+        return res;
+    }
+public EnterpriseObject removeLocks(HashMap hm, EnterpriseObject eo) throws ProcessingException, UserException {
+        SBR sbr = eo.getSBR();
+        ArrayList overWrites = sbr.getOverWrites();
+        Set keys = hm.keySet();
+        if (overWrites != null) {
+            for (Object obj : overWrites) {
+                SBROverWrite overWrite = (SBROverWrite) obj;
+                String epathField = overWrite.getEPath();
+                
+                epathField = EPathParser.parse(epathField).getLastChildName();
+                boolean isMakedAsRemove = false;
+                for(Object key : keys){
+                    String keyStr = (String) key;
+                    if( keyStr.indexOf(epathField) != -1 ){
+                        
+                        if( hm.get(key) != null && keyStr.indexOf((String)hm.get(key)) != -1 ){
+                            isMakedAsRemove = true;
+                        }                         
+                    }
+                    
+                }
+                if(isMakedAsRemove){
+                    overWrite.setRemoveFlag(true);
+                }
+                else {
+                    mLogger.fine(" LINK for " + epathField + " is Not available");
+                }
+            }
+        } else {
+            mLogger.fine("There exist no links to delete");
+        }
+        return eo;
+    }
     /**
      * 
      * @param eo EnterpriseObject that has links which should require values.
@@ -1705,8 +1781,7 @@ public class MasterControllerService {
         
         HashMap audiLogFunctiontmap;
         PullDownListItem auditFunctions[] = ValidationService.getInstance().getValueItems(ValidationService.CONFIG_MODULE_AUDIT_FUNCTION);
-        //System.out.println("---------items--" + auditFunctions.length);
-
+      
         audiLogFunctiontmap = new HashMap();
         for (int items = 0; items < auditFunctions.length; items++) {            
             audiLogFunctiontmap.put(auditFunctions[items].getName(), auditFunctions[items].getDescription());
@@ -1719,8 +1794,7 @@ public class MasterControllerService {
         
         HashMap functionMap;
         PullDownListItem auditFunctions[] = ValidationService.getInstance().getValueItems(ValidationService.CONFIG_MODULE_FUNCTION);
-        //System.out.println("---------items--" + auditFunctions.length);
-
+        
         functionMap = new HashMap();
         for (int items = 0; items < auditFunctions.length; items++) {
           functionMap.put(auditFunctions[items].getName(), auditFunctions[items].getDescription()); 
