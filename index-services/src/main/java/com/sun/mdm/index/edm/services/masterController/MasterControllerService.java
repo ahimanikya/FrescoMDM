@@ -1185,7 +1185,106 @@ public class MasterControllerService {
         }
         return duplicateStatus;
     }
+    public float getPotentialDuplicateWeight(String mainEuid, String dupId) throws ProcessingException, UserException, PageException, RemoteException {
+        PotentialDuplicateSearchObject potentialDuplicateSearchObject = new PotentialDuplicateSearchObject();
+        potentialDuplicateSearchObject.setEUID(mainEuid);
+        
+        PotentialDuplicateIterator pdPageIter = QwsController.getMasterController().lookupPotentialDuplicates(potentialDuplicateSearchObject);
+        
+        int iter_count = pdPageIter.count();
 
+        String euid1 = null;
+        String euid2 = null;
+        float duplicateWeight = 0f;
+        PotentialDuplicateSummary potentialDuplicateSummary = null;
+        PotentialDuplicateSummary[] potentialDuplicateSummaryArray =  pdPageIter.next(iter_count);
+        if (iter_count > 0) {
+
+            
+            for(int i=0;i<potentialDuplicateSummaryArray.length;i++) {
+                if( mainEuid.equalsIgnoreCase(potentialDuplicateSummaryArray[i].getEUID1()) && 
+                    dupId.equalsIgnoreCase(potentialDuplicateSummaryArray[i].getEUID2()) ) {
+                    duplicateWeight =  potentialDuplicateSummaryArray[i].getWeight();                  
+                }
+            }
+            
+            for(int i=0;i<potentialDuplicateSummaryArray.length;i++) {
+                if( dupId.equalsIgnoreCase(potentialDuplicateSummaryArray[i].getEUID1()) && 
+                    mainEuid.equalsIgnoreCase(potentialDuplicateSummaryArray[i].getEUID2()) ) {
+                    duplicateWeight =  potentialDuplicateSummaryArray[i].getWeight();
+                   
+                 }
+
+            }            
+        }
+        return duplicateWeight;
+    }
+
+   
+    public String  getPotentialDuplicateFromKey(String mainEuid, String dupId,String keyInput) throws ProcessingException, UserException, PageException, RemoteException {
+        PotentialDuplicateSearchObject potentialDuplicateSearchObject = new PotentialDuplicateSearchObject();
+        potentialDuplicateSearchObject.setEUID(mainEuid);
+        
+        PotentialDuplicateIterator pdPageIter = QwsController.getMasterController().lookupPotentialDuplicates(potentialDuplicateSearchObject);
+        System.out.println("mainEuid" + mainEuid + "dupId" + dupId + "pdPageIter"  + pdPageIter.count() );
+        
+        int iter_count = pdPageIter.count();
+
+        String euid1 = null;
+        String euid2 = null;
+       // float duplicateWeight = 0f;
+        String keyValue = keyInput;
+        String duplicateValue = null;
+            NumberFormat numberFormat = null ;
+        PotentialDuplicateSummary potentialDuplicateSummary = null;
+        PotentialDuplicateSummary[] potentialDuplicateSummaryArray =  pdPageIter.next(iter_count);
+        if (iter_count > 0) {
+
+            
+            for (int i = 0; i < potentialDuplicateSummaryArray.length; i++) {
+                if (mainEuid.equalsIgnoreCase(potentialDuplicateSummaryArray[i].getEUID1()) &&
+                        dupId.equalsIgnoreCase(potentialDuplicateSummaryArray[i].getEUID2())) {
+                    if (keyValue.equalsIgnoreCase("weight")) {
+                        numberFormat = NumberFormat.getInstance();
+                        numberFormat.setMaximumFractionDigits(2);
+                        duplicateValue = numberFormat.format(potentialDuplicateSummaryArray[i].getWeight());
+                        
+                    }else
+                   if (keyValue.equalsIgnoreCase("status")) {                      
+                        duplicateValue = potentialDuplicateSummaryArray[i].getStatus();
+                        
+                    }
+                   else 
+                   if (keyValue.equalsIgnoreCase("duplicateid")) {                      
+                        duplicateValue = potentialDuplicateSummaryArray[i].getId();
+                    }
+                }
+            }
+
+            for (int i = 0; i < potentialDuplicateSummaryArray.length; i++) {
+                if (dupId.equalsIgnoreCase(potentialDuplicateSummaryArray[i].getEUID1()) &&
+                        mainEuid.equalsIgnoreCase(potentialDuplicateSummaryArray[i].getEUID2())) {
+                  if (keyValue.equalsIgnoreCase("weight")) {
+                        numberFormat = NumberFormat.getInstance();
+                        numberFormat.setMaximumFractionDigits(2);
+                        duplicateValue = numberFormat.format(potentialDuplicateSummaryArray[i].getWeight());
+                    }else
+                   if (keyValue.equalsIgnoreCase("status")) {                      
+                        duplicateValue = potentialDuplicateSummaryArray[i].getStatus();
+                         System.out.println("status...."+duplicateValue);
+                    }
+                   else 
+                   if (keyValue.equalsIgnoreCase("duplicateid")) {                      
+                        duplicateValue = potentialDuplicateSummaryArray[i].getId();
+                         System.out.println("duplicateid ...."+duplicateValue);
+                    }
+                }
+
+            }
+        }
+        
+        return duplicateValue;
+    }
     /** 
      * This method invokes method in EJB to UNDO an existing Assumed Match
      * @return EUID of new EO
@@ -1715,4 +1814,15 @@ public class MasterControllerService {
         }       
     }
     
+    public int getDuplicateThreshold(){
+        Float threshold= new Float(QwsController.getMasterController().getDuplicateThreshold());
+        int duplicateThreshold= threshold.intValue();
+        return duplicateThreshold ;
+    }
+        
+     public int getAssumedMatchThreshold(){
+        Float threshold= new Float(QwsController.getMasterController().getAssumedMatchThreshold());
+        int assumedThreshold = threshold.intValue();
+        return assumedThreshold;
+    }
 }
