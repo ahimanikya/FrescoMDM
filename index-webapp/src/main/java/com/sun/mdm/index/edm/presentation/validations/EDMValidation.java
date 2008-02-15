@@ -33,6 +33,8 @@
 
 package com.sun.mdm.index.edm.presentation.validations;
 
+import com.sun.mdm.index.edm.services.configuration.ConfigManager;
+import java.text.SimpleDateFormat;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -52,81 +54,103 @@ public class EDMValidation {
  * @return Success or Failure String
  */
    public String validateDate(String thisDate)    {
-     this.MONTHS[0] = "Error";
-     this.MONTHS[1] = "1";
-     this.MONTHS[2] = "2";
-     this.MONTHS[3] = "3";
-     this.MONTHS[4] = "4";
-     this.MONTHS[5] = "5";
-     this.MONTHS[6] = "6";
-     this.MONTHS[7] = "7";
-     this.MONTHS[8] = "8";
-     this.MONTHS[9] = "9";
-     this.MONTHS[10] = "10";
-     this.MONTHS[11] = "11";
-     this.MONTHS[12] = "12";
-     
-     this.MONTH_DAY_HASH.put("1","31");
-     this.MONTH_DAY_HASH.put("2", "28");
-     this.MONTH_DAY_HASH.put("3", "31");
-     this.MONTH_DAY_HASH.put("4", "30");
-     this.MONTH_DAY_HASH.put("5", "31");
-     this.MONTH_DAY_HASH.put("6", "30");
-     this.MONTH_DAY_HASH.put("7", "31");
-     this.MONTH_DAY_HASH.put("8", "31");
-     this.MONTH_DAY_HASH.put("9", "30");
-     this.MONTH_DAY_HASH.put("10", "31");
-     this.MONTH_DAY_HASH.put("11", "30");
-     this.MONTH_DAY_HASH.put("12", "31");
        
-       int day = 0;
-       int month = 0;
-       int year = 0;
-       
-       // ---- Server Validation ---
-       StringTokenizer st = new StringTokenizer(thisDate, "/");
-       String dateTokens[] = new String[st.countTokens()];
+        try {
+            this.MONTHS[0] = "Error";
+            this.MONTHS[1] = "1";
+            this.MONTHS[2] = "2";
+            this.MONTHS[3] = "3";
+            this.MONTHS[4] = "4";
+            this.MONTHS[5] = "5";
+            this.MONTHS[6] = "6";
+            this.MONTHS[7] = "7";
+            this.MONTHS[8] = "8";
+            this.MONTHS[9] = "9";
+            this.MONTHS[10] = "10";
+            this.MONTHS[11] = "11";
+            this.MONTHS[12] = "12";
 
-       //There should be a minimum of three tokens
-       if (st.countTokens() != 3) return "Invalid Date Format! The format of Date is MM/DD/YYYY";
+            this.MONTH_DAY_HASH.put("1", "31");
+            this.MONTH_DAY_HASH.put("2", "28");
+            this.MONTH_DAY_HASH.put("3", "31");
+            this.MONTH_DAY_HASH.put("4", "30");
+            this.MONTH_DAY_HASH.put("5", "31");
+            this.MONTH_DAY_HASH.put("6", "30");
+            this.MONTH_DAY_HASH.put("7", "31");
+            this.MONTH_DAY_HASH.put("8", "31");
+            this.MONTH_DAY_HASH.put("9", "30");
+            this.MONTH_DAY_HASH.put("10", "31");
+            this.MONTH_DAY_HASH.put("11", "30");
+            this.MONTH_DAY_HASH.put("12", "31");
 
-       //Parse each Token to see if it has got digits
-       int i = 0;
-       int dateInt = 0;
-       while (st.hasMoreTokens()) {
-           dateTokens[i] = new String();
-           dateTokens[i] = st.nextToken();
-           try {
-               dateInt = new Integer(dateTokens[i]);
-           } catch (NumberFormatException numberFormatException) {
-               return "Date is not a Number";  //Either day or month or Year Not a number
-           }
-           if (i == 0) month = dateInt;
-           if (i == 1) day = dateInt;
-           if (i == 2) { 
-               year = dateInt;
-               if (dateTokens[i].length() != 4) return "Year Should be 4 digits";  //Year should be at least 4 chars
-           }           
-           i++;
-       }
-       
-       //Month should < 12
-       if (month > 12 || month <= 0 ) return "Invalid Month Entered"; 
-       
-       
-       //Day should be according to the MONTH_DAY table       
-       if (day > new Integer((String)this.MONTH_DAY_HASH.get(MONTHS[month])).intValue() || day < 1) return "Invalid Day Entered";   
-       
-       // If leap year and month should be not more than 29
-       if ((year % 4 == 0 && year % 100 == 0) || (year % 400 == 0))    {  
-           if (month > 29 || month < 0) return "Invalid Month for a Leap Year";
-       } else if (month > 12 || month  < 1) return "Invalid Month The format of Date is MM/DD/YYYY";    //Month should be between 1 and 12
-       
-       Logger.getLogger(EDMValidation.class.getName()).log(Level.WARNING, "DAY :: " + new Integer(day).toString(), "DAY :: " + new Integer(day).toString());
-       Logger.getLogger(EDMValidation.class.getName()).log(Level.WARNING, "Month :: " + new Integer(month).toString(), "Month :: " + new Integer(month).toString());
-       Logger.getLogger(EDMValidation.class.getName()).log(Level.WARNING, "Year :: " + new Integer(year).toString(), "Year :: " + new Integer(year).toString());
-       
-       return "success";
+            int day = 0;
+            int month = 0;
+            int year = 0;
+
+            // ---- Server Validation ---
+            StringTokenizer st = new StringTokenizer(thisDate, "/");
+            String[] dateTokens = new String[st.countTokens()];
+            //There should be a minimum of three tokens
+            if (st.countTokens() != 3) {
+                return "Invalid Date Format! The format of Date is MM/DD/YYYY";
+            }
+            
+            int i = 0;
+            int dateInt = 0;
+            while (st.hasMoreTokens()) {
+                dateTokens[i] = new String();
+                dateTokens[i] = st.nextToken();
+                try {
+                    dateInt = new Integer(dateTokens[i]);
+                } catch (NumberFormatException numberFormatException) {
+                    return "Date is not a Number"; 
+                }
+                if (i == 0) {
+                    month = dateInt;
+                }
+                if (i == 1) {
+                    day = dateInt;
+                }
+                if (i == 2) {
+                    year = dateInt;
+                    if (dateTokens[i].length() != 4) {
+                        return "Year Should be 4 digits"; 
+                    }
+                }
+                i++;
+            }
+            if ((year % 4 == 0 || year % 100 == 0 || year % 400 == 0)) {
+               this.MONTH_DAY_HASH.put("2", "29");
+            } else {
+                this.MONTH_DAY_HASH.put("2", "28");
+            }
+
+            //Month should < 12
+            if (month > 12 || month <= 0) {
+                return "Invalid Month Entered";
+            }
+            //Day should be according to the MONTH_DAY table
+            if (day > new Integer((String) this.MONTH_DAY_HASH.get(MONTHS[month])).intValue() || day < 1) {
+                return "Invalid Day Entered";
+            }
+            // If leap year and month should be not more than 29
+//            if ((year % 4 == 0 && year % 100 == 0) || (year % 400 == 0)) {
+//                if (month > 29 || month < 0) {
+//                    return "Invalid Month for a Leap Year";
+//                }
+//            } else 
+           
+            if (month > 12 || month < 1) {
+                return "Invalid Month The format of Date is MM/DD/YYYY"; //Month should be between 1 and 12
+            }
+            Logger.getLogger(EDMValidation.class.getName()).log(Level.WARNING, "DAY :: " + new Integer(day).toString(), "DAY :: " + new Integer(day).toString());
+            Logger.getLogger(EDMValidation.class.getName()).log(Level.WARNING, "Month :: " + new Integer(month).toString(), "Month :: " + new Integer(month).toString());
+            Logger.getLogger(EDMValidation.class.getName()).log(Level.WARNING, "Year :: " + new Integer(year).toString(), "Year :: " + new Integer(year).toString());
+
+        } catch (Exception ex) {
+            Logger.getLogger(EDMValidation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "success";
    }
    
    /**
@@ -162,7 +186,7 @@ public class EDMValidation {
            if (i == 2) seconds = timeInt;
            i++;
        }
-       
+       //System.out.println("Hours,minutes,seconds" + hours + ','+minutes+','+seconds);
        //Hours should be > 24       
        if (hours  > 24 || hours < 0) return "Invalid Hours Entered, The format of Time is HH:MM:SS";   
        //Minutes should be > 60
