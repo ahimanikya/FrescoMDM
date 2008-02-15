@@ -1653,8 +1653,6 @@ public class ConfigManager implements java.io.Serializable {
         ChildElementIterator screenNameIterator = null;
         ScreenObject screenObject = null;
         Element guiElement = getPageDefinitionElement();
-        
-        System.out.println("guiElement from screen obj"+guiElement);
         screenNameIterator = new ChildElementIterator(guiElement);
         String screenID = null;
         try {
