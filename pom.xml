@@ -75,12 +75,6 @@
             <snapshots> 
                 <enabled>true</enabled> 
             </snapshots>
-        </repository>         
-        <repository>
-            <id>ws-zones</id>
-            <name>ws.zones maven repository</name>
-            <url>http://ws.zones.apache.org/repository/</url>
-            <layout>legacy</layout>
         </repository>
         <repository>
             <id>netbeans</id>
