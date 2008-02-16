@@ -225,10 +225,11 @@ public class SurvivorCalculator implements java.io.Serializable {
                             String strData = new String();
                             boolean isLink = false;
                             if (data instanceof String){
+								strData = (String) data;
                                 isLink = isLink(strData); 
                             }
                             if(isLink == false){
-                            EPathAPI.addObjectValue(EPathParser.parse(path), sbrObj, data);
+								EPathAPI.addObjectValue(EPathParser.parse(path), sbrObj, data);
                             }
                         } catch (EPathException eex) {
                             throw new SurvivorCalculationException(mLocalizer.t("SUR519: Error " +
