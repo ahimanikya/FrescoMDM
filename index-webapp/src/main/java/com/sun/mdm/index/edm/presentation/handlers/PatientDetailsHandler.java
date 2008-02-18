@@ -557,11 +557,13 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         
   public String performMultiMergedEnterpriseObject() {
         try {
+         
             EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
 
 
             HashMap eoHashMap = eoHashMap = (HashMap) compareDuplicateManager.getEnterpriseObjectAsHashMap(destinationEO, screenObject).get("ENTERPRISE_OBJECT");
       
+           
             String[] selectedFieldsValue = this.selectedMergeFields.split(">>");
 
 
@@ -571,6 +573,8 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 for (int i = 0; i < selectedFieldsValue.length; i++) {
                     String[] sourceEuidFull = selectedFieldsValue[i].split("##");
                     eoHashMap.put(sourceEuidFull[0], sourceEuidFull[1]);
+//                    System.out.println(sourceEuidFull[0] + "====" + sourceEuidFull[1]);
+                    
                 }
                 //Modify CHANGED sbr values here
                 masterControllerService.modifySBR(destinationEO.getSBR(), eoHashMap);
@@ -580,12 +584,9 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 //get the modifed EO and merge it
                 destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
             }
-
             String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
-
-
-            String[] allEUIDs = mergeEuids.split("##");
             
+            String[] allEUIDs = mergeEuids.split("##");
             
             ArrayList srcsList  = new ArrayList();
             for (int i = 0; i < allEUIDs.length; i++) {
@@ -599,7 +600,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             String[] sourceEUIDs  = new String[srcsList.size()];
             
             String[] srcRevisionNumbers = new String[sourceEUIDs.length];
- 
+            
             for (int i = 0; i < sourceEUIDObjs.length; i++) {
                 String sourceEuid = (String) sourceEUIDObjs[i];
                 sourceEUIDs[i] = sourceEuid;
@@ -608,14 +609,14 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
             EnterpriseObject resulteo = masterControllerService.mergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);              
             session.removeAttribute("comapreEuidsArrayList");
-           
+            
            HashMap eoMultiMergePreview = compareDuplicateManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
 
            ArrayList finalMergeList  = new ArrayList();
            finalMergeList.add(eoMultiMergePreview);
 
-           session.setAttribute("comapreEuidsArrayList",finalMergeList);
-
+            session.setAttribute("comapreEuidsArrayList",finalMergeList);
+            
         } catch (ObjectException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ValidationException ex) {
