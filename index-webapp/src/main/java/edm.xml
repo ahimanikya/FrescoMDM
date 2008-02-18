@@ -676,7 +676,7 @@
                             <search-result-id>1</search-result-id>
                             <search-screen-order>1</search-screen-order>
                             <field-per-row>2</field-per-row>
-                            <show-euid>false</show-euid>
+                            <show-euid>true</show-euid>
                             <show-lid>false</show-lid>
                             <instruction/>
                             <field-group>
@@ -708,7 +708,7 @@
                         <search-result-id>1</search-result-id>
                         <search-screen-order>0</search-screen-order>
                         <field-per-row>2</field-per-row>
-                        <show-euid>false</show-euid>
+                        <show-euid>true</show-euid>
                         <show-lid>false</show-lid>
                         <instruction>Enter as much information as possible to narrow the search</instruction>
                         <field-group>
@@ -828,7 +828,7 @@
                         <search-result-id>0</search-result-id>
                         <search-screen-order>0</search-screen-order>
                         <field-per-row>2</field-per-row>
-                        <show-euid>false</show-euid>
+                        <show-euid>true</show-euid>
                         <show-lid>false</show-lid>
                         <show-status>false</show-status>
                         <show-create-date>true</show-create-date>
@@ -926,7 +926,7 @@
                                 <search-result-id>0</search-result-id>
                                 <search-screen-order>0</search-screen-order>
                                 <field-per-row>2</field-per-row>
-                                <show-euid>false</show-euid>
+                                <show-euid>true</show-euid>
                                 <show-lid>true</show-lid>
                                 <show-status>false</show-status>
                                 <show-create-date>false</show-create-date>
@@ -990,7 +990,7 @@
                                 <search-result-id>0</search-result-id>
                                 <search-screen-order>0</search-screen-order>
                                 <field-per-row>2</field-per-row>
-                                <show-euid>false</show-euid>
+                                <show-euid>true</show-euid>
                                 <show-lid>true</show-lid>
                                 <show-status>false</show-status>
                                 <show-create-date>false</show-create-date>
@@ -1022,7 +1022,7 @@
                                 <search-result-id>0</search-result-id>
                                 <search-screen-order>0</search-screen-order>
                                 <field-per-row>2</field-per-row>
-                                <show-euid>false</show-euid>
+                                <show-euid>true</show-euid>
                                 <show-lid>true</show-lid>
                                 <show-status>false</show-status>
                                 <show-create-date>false</show-create-date>
