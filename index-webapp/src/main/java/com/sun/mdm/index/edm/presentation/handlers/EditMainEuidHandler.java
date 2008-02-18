@@ -207,34 +207,46 @@ public class EditMainEuidHandler {
     }
 
     public String performSubmit()  {
-        if (this.getHiddenLinkFields() != null && this.getHiddenLinkFields().trim().length() > 0) {
-            String[] allLinks = this.getHiddenLinkFields().split(":");
-           //save all the links
-            saveLinksSelected();
-        }
-
-        if (this.getHiddenUnLinkFields() != null && this.getHiddenUnLinkFields().trim().length() > 0) {
-            String[] allUnLinks = this.getHiddenUnLinkFields().split("##");
-           //save all the links
-            //saveLinksSelected();
-        }
-        EnterpriseObject updateEnterpriseObject = (EnterpriseObject) session.getAttribute("editEnterpriseObject");
         try {
-            setUpdatedEOFields(masterControllerService.getEnterpriseObject(updateEnterpriseObject.getEUID())); //set the updated values here
+            if (this.getHiddenLinkFields() != null && this.getHiddenLinkFields().trim().length() > 0) {
+//                String[] allLinks = this.getHiddenLinkFields().split(":");
+                //save all the links
+                saveLinksSelected();
+            }
+
+            System.out.println("==> UN LINKED FIELDS ===> :" + this.getHiddenUnLinkFields());
+            if (this.getHiddenUnLinkFields() != null && this.getHiddenUnLinkFields().trim().length() > 0) {
+                //String[] allUnLinks = this.getHiddenUnLinkFields().split("##");
+                //save all the un links
+                saveUnLinksSelected();
+            }
+
+            EnterpriseObject updateEnterpriseObject = (EnterpriseObject) session.getAttribute("editEnterpriseObject");
+            
+            
+            //setUpdatedEOFields(masterControllerService.getEnterpriseObject(updateEnterpriseObject.getEUID())); //set the updated values here
             
             // Keep the EO in session
             //build an array of modified system object arrays  
             buildChangedSystemObjects();
       
-            //checkAndBuildModifiedSBRValues(updateEnterpriseObject);
+            checkAndBuildModifiedSBRValues(updateEnterpriseObject);
   
             masterControllerService.setRootNodeName(screenObject.getRootObj().getName());
 
+//            System.out.println("===> : this.editSingleEOHashMap" + this.editSingleEOHashMap.get("ENTERPRISE_OBJECT"));
+            ArrayList newArrayListSbr = new ArrayList();
+            newArrayListSbr.add((HashMap)this.editSingleEOHashMap.get("ENTERPRISE_OBJECT"));
+            setChangedSBRArrayList(newArrayListSbr);
+            //this.changedSBRArrayList.add((HashMap) this.editSingleEOHashMap.get("ENTERPRISE_OBJECT"));
+            //System.out.println("===> : this.changedSBRArrayList" + this.changedSBRArrayList);
+            
+            
             //EDIT the EO and its system objects here
             EnterpriseObject eoFinal = masterControllerService.save(updateEnterpriseObject,   //Enterprise Object
-                                                                    this.changedSBRArrayList,  //Changed SBR hashmap array
-                                                                    null,//this.editSOHashMapArrayList, //Changed/New System objects hashmap array
-                                                                    null//this.editSOMinorObjectsHashMapArrayList // ChangedNew Minor Objects hashmap Array
+                                                                    newArrayListSbr,  //Changed SBR hashmap array
+                                                                    null, //this.editSOHashMapArrayList, //Changed/New System objects hashmap array
+                                                                    null  //this.editSOMinorObjectsHashMapArrayList // ChangedNew Minor Objects hashmap Array
                                                                     ); 
             //Get the Summary Info after the changes
             String summaryInfo = masterControllerService.getSummaryInfo();
@@ -246,19 +258,20 @@ public class EditMainEuidHandler {
 
             String successMessage  = "EUID : \""+eoFinal.getEUID()+"\" details have been successfully updated";
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,successMessage,successMessage));
-    
-
-        } catch (ObjectException ex) {
-            errorMessage = "ObjectException occurred";
             
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.toString()));
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
-            return this.SERVICE_LAYER_ERROR;
-        } catch (ValidationException ex) {
-            errorMessage = "ValidationException occurred";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.toString()));
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
-            return this.SERVICE_LAYER_ERROR;
+            setUpdatedEOFields(masterControllerService.getEnterpriseObject(updateEnterpriseObject.getEUID())); //set the updated values here
+
+//        } catch (ObjectException ex) {
+//            errorMessage = "ObjectException occurred";
+//            
+//            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.toString()));
+//            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+//            return this.SERVICE_LAYER_ERROR;
+//        } catch (ValidationException ex) {
+//            errorMessage = "ValidationException occurred";
+//            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.toString()));
+//            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+//            return this.SERVICE_LAYER_ERROR;
         } catch (Exception ex) {
             errorMessage = "Exception occurred";
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.toString()));
@@ -898,10 +911,6 @@ public class EditMainEuidHandler {
                     }
                 }
 
-                for(int j=0;j<personFieldConfigsObj.length;j++) {
-                    FieldConfig fieldConfig = (FieldConfig) personFieldConfigsObj[j];
-                }
-                
                 editSOHashMapArrayList.add(systemObjectMap); // adding SO hashmaps for editing here.
             }    
         
@@ -922,206 +931,248 @@ public class EditMainEuidHandler {
             String rootName  = screenObject.getRootObj().getName();
             
             
-            //loop through all field configs to get the updated values in the hashmap PERSON FIELDS only
-            for(int i=0;i<this.changedSBRArrayList.size();i++) {    
-
-                HashMap updatedHashMap = (HashMap) this.changedSBRArrayList.get(i);
-
-                ////System.out.println("==> updatedHashMap : " + updatedHashMap);
-                if (MasterControllerService.SBR_UPDATE.equalsIgnoreCase((String) updatedHashMap.get(MasterControllerService.HASH_MAP_TYPE))) {
+//            System.out.println("Before Updating (size)" + this.editSingleEOHashMap.size());
+            HashMap eoHashMap = (HashMap) this.editSingleEOHashMap.get("ENTERPRISE_OBJECT");
+            HashMap newUpdatedMap = new HashMap();
+            System.out.println( "befoew eoHashMap ===> : " +  eoHashMap);
+                if (MasterControllerService.SBR_UPDATE.equalsIgnoreCase((String) eoHashMap.get(MasterControllerService.HASH_MAP_TYPE))) {
                     for (int j = 0; j < allFieldConfigs.size(); j++) {
                         FieldConfig fieldConfig = (FieldConfig) allFieldConfigs.get(j);
                         ePathName = fieldConfig.getFullFieldName();
 
                         String oldValue = (String) eoOldMap.get(ePathName);
-                        String newValue = (String) updatedHashMap.get(ePathName);
+                        String newValue = (String) eoHashMap.get(ePathName);
+                        //check if no value entered put null into the value
+                        if ((oldValue == null && (newValue != null && newValue.trim().length() == 0) )) {
+                            eoHashMap.put(ePathName,null);
+                        }
                         //check if old value is equal to new value
                         if ((oldValue == null && newValue == null)) {
-                            updatedHashMap.remove(ePathName);
-                        } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
-                            updatedHashMap.remove(ePathName);
+                            //System.out.println(ePathName + "ALL NULL ePathName===> : "   +eoHashMap.get(ePathName));
+                            eoHashMap.remove(ePathName);
+//                        } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
+//                            System.out.println("oldValue != null && newValue != null===> : " + ePathName  +eoHashMap);
+//                            eoHashMap.remove(ePathName);
                         } else if ((oldValue != null && newValue != null) && oldValue.equalsIgnoreCase(newValue)) {
-                            updatedHashMap.remove(ePathName);
+//                            System.out.println(ePathName + "oldValue != null && newValue != null ePathName===> : " + eoHashMap.get(ePathName));
+                            eoHashMap.remove(ePathName);
                         }
                     }
-
-                } //if condition for hashmap type
-                
-            }
-                //set address array list of hasmap for editing
-            ArrayList addressMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(updateEnterpriseObjectArg, sourceHandler.buildSystemObjectEpaths("Address"), "Address",MasterControllerService.MINOR_OBJECT_UPDATE);
-
-            //set the EO address in the SBR arraylist for sending to the SL for editing
-            if (addressMapArrayList.size() > 0) {
-                for (int k = 0; k < addressMapArrayList.size(); k++) {
-                    HashMap sbrAddressHashMap = (HashMap) addressMapArrayList.get(k);
-                    for (int i = 0; i < this.changedSBRArrayList.size(); i++) {
-
-                        HashMap updatedHashMap = (HashMap) this.changedSBRArrayList.get(i);
-
-                        ////System.out.println("==> ADDRESS updatedHashMap : " + updatedHashMap);
-
-                        if ("Address".equalsIgnoreCase((String) updatedHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE))) {
-                            for (int j = 0; j < allFieldConfigs.size(); j++) {
-                                FieldConfig fieldConfig = (FieldConfig) allFieldConfigs.get(j);
-                                ePathName = fieldConfig.getFullFieldName();
-
-                                String oldValue = (String) eoOldMap.get(ePathName);
-                                String newValue = (String) updatedHashMap.get(ePathName);
-                                //check if old value is equal to new value
-                                if ((oldValue == null && newValue == null)) {
-                                    updatedHashMap.remove(ePathName);
-                                } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
-                                    updatedHashMap.remove(ePathName);
-                                } else if ((oldValue != null && newValue != null) && oldValue.equalsIgnoreCase(newValue)) {
-                                    updatedHashMap.remove(ePathName);
-                                }
-                            }
-
-                        } //if condition for hashmap type
-                    }
                 }
-            }
             
-            //set phone array list of hasmap for editing
-            ArrayList phoneMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(updateEnterpriseObjectArg, sourceHandler.buildSystemObjectEpaths("Phone"), "Phone",MasterControllerService.MINOR_OBJECT_UPDATE);
-
-            //set the EO phone in the SBR arraylist for sending to the SL for editing
-            if (phoneMapArrayList.size() > 0) {
-                for (int k = 0; k < phoneMapArrayList.size(); k++) {
-                    HashMap sbrPhoneHashMap = (HashMap) phoneMapArrayList.get(k);
-                    for (int i = 0; i < this.changedSBRArrayList.size(); i++) {
-
-                        HashMap updatedHashMap = (HashMap) this.changedSBRArrayList.get(i);
-
-                        ////System.out.println("==> Phone updatedHashMap : " + updatedHashMap);
-                        if ("Phone".equalsIgnoreCase((String) updatedHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE))) {
-                            for (int j = 0; j < allFieldConfigs.size(); j++) {
-                                FieldConfig fieldConfig = (FieldConfig) allFieldConfigs.get(j);
-                                ePathName = fieldConfig.getFullFieldName();
-
-                                String oldValue = (String) eoOldMap.get(ePathName);
-                                String newValue = (String) updatedHashMap.get(ePathName);
-                                //check if old value is equal to new value
-                                if ((oldValue == null && newValue == null)) {
-                                    updatedHashMap.remove(ePathName);
-                                } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
-                                    updatedHashMap.remove(ePathName);
-                                } else if ((oldValue != null && newValue != null) && oldValue.equalsIgnoreCase(newValue)) {
-                                    updatedHashMap.remove(ePathName);
-                                }
-                            }
-
-                        } //if condition for hashmap type
-                    }
+            Object[] keys = eoHashMap.keySet().toArray();
+            for (int i = 0; i < keys.length; i++) {
+                String key = (String)keys[i];
+                if(eoHashMap.get(key) != null) {
+                    newUpdatedMap.put(key,eoHashMap.get(key));
                 }
             }
-           
-            //set alias array list of hasmap for editing
-            ArrayList aliasMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(updateEnterpriseObjectArg, sourceHandler.buildSystemObjectEpaths("Alias"), "Alias",MasterControllerService.MINOR_OBJECT_UPDATE);
-            //set the EO alias in the SBR arraylist for sending to the SL for editing
-            if (aliasMapArrayList.size() > 0) {
-                for (int k = 0; k < aliasMapArrayList.size(); k++) {
-                    HashMap sbrAliasHashMap = (HashMap) aliasMapArrayList.get(k);
-                    for (int i = 0; i < this.changedSBRArrayList.size(); i++) {
-
-                        HashMap updatedHashMap = (HashMap) this.changedSBRArrayList.get(i);
-
-                        ////System.out.println("==> ALIAS updatedHashMap : " + updatedHashMap);
-
-                        if ("Alias".equalsIgnoreCase((String) updatedHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE))) {
-                            for (int j = 0; j < allFieldConfigs.size(); j++) {
-                                FieldConfig fieldConfig = (FieldConfig) allFieldConfigs.get(j);
-                                ePathName = fieldConfig.getFullFieldName();
-
-                                String oldValue = (String) eoOldMap.get(ePathName);
-                                String newValue = (String) updatedHashMap.get(ePathName);
-                                //check if old value is equal to new value
-                                if ((oldValue == null && newValue == null)) {
-                                    updatedHashMap.remove(ePathName);
-                                } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
-                                    updatedHashMap.remove(ePathName);
-                                } else if ((oldValue != null && newValue != null) && oldValue.equalsIgnoreCase(newValue)) {
-                                    updatedHashMap.remove(ePathName);
-                                }
-                            }
-
-                        } //if condition for hashmap type
-
-                    }
-                }
-            }           
-            //set auxid array list of hasmap for editing
-            ArrayList auxIdMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(updateEnterpriseObjectArg, sourceHandler.buildSystemObjectEpaths("AuxId"), "AuxId",MasterControllerService.MINOR_OBJECT_UPDATE);
-
-            //set the EO auxId in the SBR arraylist for sending to the SL for editing
-            if (auxIdMapArrayList.size() > 0) {
-                for (int k = 0; k < auxIdMapArrayList.size(); k++) {
-                    HashMap sbrAuxIdHashMap = (HashMap) auxIdMapArrayList.get(k);
-                    for (int i = 0; i < this.changedSBRArrayList.size(); i++) {
-
-                        HashMap updatedHashMap = (HashMap) this.changedSBRArrayList.get(i);
-
-                        ////System.out.println("==> sbrAuxIdHashMap updatedHashMap : " + updatedHashMap);
-
-                        if ("AuxId".equalsIgnoreCase((String) updatedHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE))) {
-                            for (int j = 0; j < allFieldConfigs.size(); j++) {
-                                FieldConfig fieldConfig = (FieldConfig) allFieldConfigs.get(j);
-                                ePathName = fieldConfig.getFullFieldName();
-
-                                String oldValue = (String) eoOldMap.get(ePathName);
-                                String newValue = (String) updatedHashMap.get(ePathName);
-                                //check if old value is equal to new value
-                                if ((oldValue == null && newValue == null)) {
-                                    updatedHashMap.remove(ePathName);
-                                } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
-                                    updatedHashMap.remove(ePathName);
-                                } else if ((oldValue != null && newValue != null) && oldValue.equalsIgnoreCase(newValue)) {
-                                    updatedHashMap.remove(ePathName);
-                                }
-                            }
-
-                        } //if condition for hashmap type
-
-                    }
-                }
-            }           
-
-            //set comment array list of hasmap for editing
-            ArrayList commentMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(updateEnterpriseObjectArg, sourceHandler.buildSystemObjectEpaths("Comment"), "Comment",MasterControllerService.MINOR_OBJECT_UPDATE);
-
-            //set the EO auxId in the SBR arraylist for sending to the SL for editing
-            if (commentMapArrayList.size() > 0) {
-                for (int k = 0; k < commentMapArrayList.size(); k++) {
-                    HashMap sbrCommentHashMap = (HashMap) auxIdMapArrayList.get(k);
-                    for (int i = 0; i < this.changedSBRArrayList.size(); i++) {
-
-                        HashMap updatedHashMap = (HashMap) this.changedSBRArrayList.get(i);
-
-                        ////System.out.println("==> COMMENT updatedHashMap : " + updatedHashMap);
-
-                        if ("Comment".equalsIgnoreCase((String) updatedHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE))) {
-                            for (int j = 0; j < allFieldConfigs.size(); j++) {
-                                FieldConfig fieldConfig = (FieldConfig) allFieldConfigs.get(j);
-                                ePathName = fieldConfig.getFullFieldName();
-
-                                String oldValue = (String) eoOldMap.get(ePathName);
-                                String newValue = (String) updatedHashMap.get(ePathName);
-                                //check if old value is equal to new value
-                                if ((oldValue == null && newValue == null)) {
-                                    updatedHashMap.remove(ePathName);
-                                } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
-                                    updatedHashMap.remove(ePathName);
-                                } else if ((oldValue != null && newValue != null) && oldValue.equalsIgnoreCase(newValue)) {
-                                    updatedHashMap.remove(ePathName);
-                                }
-                            }
-
-                        } //if condition for hashmap type
-
-                    }
-                }
-            }           
+            this.editSingleEOHashMap.put("ENTERPRISE_OBJECT",newUpdatedMap);
+            
+            System.out.println("after===> : "  + "AFTER  TOTAL KEYS" + this.editSingleEOHashMap);
+            
+//            //loop through all field configs to get the updated values in the hashmap PERSON FIELDS only
+//            for(int i=0;i<this.editSingleEOHashMap.size();i++) {    
+//
+//                HashMap updatedHashMap = (HashMap) this.editSingleEOHashMap.get(i);
+//
+//                System.out.println("==> updatedHashMap : " + updatedHashMap);
+//                if (MasterControllerService.SBR_UPDATE.equalsIgnoreCase((String) updatedHashMap.get(MasterControllerService.HASH_MAP_TYPE))) {
+//                    for (int j = 0; j < allFieldConfigs.size(); j++) {
+//                        FieldConfig fieldConfig = (FieldConfig) allFieldConfigs.get(j);
+//                        ePathName = fieldConfig.getFullFieldName();
+//
+//                        String oldValue = (String) eoOldMap.get(ePathName);
+//                        String newValue = (String) updatedHashMap.get(ePathName);
+//                        //check if old value is equal to new value
+//                        if ((oldValue == null && newValue == null)) {
+//                            updatedHashMap.remove(ePathName);
+//                        } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
+//                            updatedHashMap.remove(ePathName);
+//                        } else if ((oldValue != null && newValue != null) && oldValue.equalsIgnoreCase(newValue)) {
+//                            updatedHashMap.remove(ePathName);
+//                        }
+//                    }
+//
+//                } //if condition for hashmap type
+//                
+//            }
+//            
+//            System.out.println("After Updating (size)" + this.editSingleEOHashMap.size());
+//                //set address array list of hasmap for editing
+//            ArrayList addressMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(updateEnterpriseObjectArg, sourceHandler.buildSystemObjectEpaths("Address"), "Address",MasterControllerService.MINOR_OBJECT_UPDATE);
+//
+//            //set the EO address in the SBR arraylist for sending to the SL for editing
+//            if (addressMapArrayList.size() > 0) {
+//                for (int k = 0; k < addressMapArrayList.size(); k++) {
+//                    HashMap sbrAddressHashMap = (HashMap) addressMapArrayList.get(k);
+//                    for (int i = 0; i < this.changedSBRArrayList.size(); i++) {
+//
+//                        HashMap updatedHashMap = (HashMap) this.changedSBRArrayList.get(i);
+//
+//                        ////System.out.println("==> ADDRESS updatedHashMap : " + updatedHashMap);
+//
+//                        if ("Address".equalsIgnoreCase((String) updatedHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE))) {
+//                            for (int j = 0; j < allFieldConfigs.size(); j++) {
+//                                FieldConfig fieldConfig = (FieldConfig) allFieldConfigs.get(j);
+//                                ePathName = fieldConfig.getFullFieldName();
+//
+//                                String oldValue = (String) eoOldMap.get(ePathName);
+//                                String newValue = (String) updatedHashMap.get(ePathName);
+//                                //check if old value is equal to new value
+//                                if ((oldValue == null && newValue == null)) {
+//                                    updatedHashMap.remove(ePathName);
+//                                } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
+//                                    updatedHashMap.remove(ePathName);
+//                                } else if ((oldValue != null && newValue != null) && oldValue.equalsIgnoreCase(newValue)) {
+//                                    updatedHashMap.remove(ePathName);
+//                                }
+//                            }
+//
+//                        } //if condition for hashmap type
+//                    }
+//                }
+//            }
+//            
+//            //set phone array list of hasmap for editing
+//            ArrayList phoneMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(updateEnterpriseObjectArg, sourceHandler.buildSystemObjectEpaths("Phone"), "Phone",MasterControllerService.MINOR_OBJECT_UPDATE);
+//
+//            //set the EO phone in the SBR arraylist for sending to the SL for editing
+//            if (phoneMapArrayList.size() > 0) {
+//                for (int k = 0; k < phoneMapArrayList.size(); k++) {
+//                    HashMap sbrPhoneHashMap = (HashMap) phoneMapArrayList.get(k);
+//                    for (int i = 0; i < this.changedSBRArrayList.size(); i++) {
+//
+//                        HashMap updatedHashMap = (HashMap) this.changedSBRArrayList.get(i);
+//
+//                        ////System.out.println("==> Phone updatedHashMap : " + updatedHashMap);
+//                        if ("Phone".equalsIgnoreCase((String) updatedHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE))) {
+//                            for (int j = 0; j < allFieldConfigs.size(); j++) {
+//                                FieldConfig fieldConfig = (FieldConfig) allFieldConfigs.get(j);
+//                                ePathName = fieldConfig.getFullFieldName();
+//
+//                                String oldValue = (String) eoOldMap.get(ePathName);
+//                                String newValue = (String) updatedHashMap.get(ePathName);
+//                                //check if old value is equal to new value
+//                                if ((oldValue == null && newValue == null)) {
+//                                    updatedHashMap.remove(ePathName);
+//                                } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
+//                                    updatedHashMap.remove(ePathName);
+//                                } else if ((oldValue != null && newValue != null) && oldValue.equalsIgnoreCase(newValue)) {
+//                                    updatedHashMap.remove(ePathName);
+//                                }
+//                            }
+//
+//                        } //if condition for hashmap type
+//                    }
+//                }
+//            }
+//           
+//            //set alias array list of hasmap for editing
+//            ArrayList aliasMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(updateEnterpriseObjectArg, sourceHandler.buildSystemObjectEpaths("Alias"), "Alias",MasterControllerService.MINOR_OBJECT_UPDATE);
+//            //set the EO alias in the SBR arraylist for sending to the SL for editing
+//            if (aliasMapArrayList.size() > 0) {
+//                for (int k = 0; k < aliasMapArrayList.size(); k++) {
+//                    HashMap sbrAliasHashMap = (HashMap) aliasMapArrayList.get(k);
+//                    for (int i = 0; i < this.changedSBRArrayList.size(); i++) {
+//
+//                        HashMap updatedHashMap = (HashMap) this.changedSBRArrayList.get(i);
+//
+//                        ////System.out.println("==> ALIAS updatedHashMap : " + updatedHashMap);
+//
+//                        if ("Alias".equalsIgnoreCase((String) updatedHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE))) {
+//                            for (int j = 0; j < allFieldConfigs.size(); j++) {
+//                                FieldConfig fieldConfig = (FieldConfig) allFieldConfigs.get(j);
+//                                ePathName = fieldConfig.getFullFieldName();
+//
+//                                String oldValue = (String) eoOldMap.get(ePathName);
+//                                String newValue = (String) updatedHashMap.get(ePathName);
+//                                //check if old value is equal to new value
+//                                if ((oldValue == null && newValue == null)) {
+//                                    updatedHashMap.remove(ePathName);
+//                                } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
+//                                    updatedHashMap.remove(ePathName);
+//                                } else if ((oldValue != null && newValue != null) && oldValue.equalsIgnoreCase(newValue)) {
+//                                    updatedHashMap.remove(ePathName);
+//                                }
+//                            }
+//
+//                        } //if condition for hashmap type
+//
+//                    }
+//                }
+//            }           
+//            //set auxid array list of hasmap for editing
+//            ArrayList auxIdMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(updateEnterpriseObjectArg, sourceHandler.buildSystemObjectEpaths("AuxId"), "AuxId",MasterControllerService.MINOR_OBJECT_UPDATE);
+//
+//            //set the EO auxId in the SBR arraylist for sending to the SL for editing
+//            if (auxIdMapArrayList.size() > 0) {
+//                for (int k = 0; k < auxIdMapArrayList.size(); k++) {
+//                    HashMap sbrAuxIdHashMap = (HashMap) auxIdMapArrayList.get(k);
+//                    for (int i = 0; i < this.changedSBRArrayList.size(); i++) {
+//
+//                        HashMap updatedHashMap = (HashMap) this.changedSBRArrayList.get(i);
+//
+//                        ////System.out.println("==> sbrAuxIdHashMap updatedHashMap : " + updatedHashMap);
+//
+//                        if ("AuxId".equalsIgnoreCase((String) updatedHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE))) {
+//                            for (int j = 0; j < allFieldConfigs.size(); j++) {
+//                                FieldConfig fieldConfig = (FieldConfig) allFieldConfigs.get(j);
+//                                ePathName = fieldConfig.getFullFieldName();
+//
+//                                String oldValue = (String) eoOldMap.get(ePathName);
+//                                String newValue = (String) updatedHashMap.get(ePathName);
+//                                //check if old value is equal to new value
+//                                if ((oldValue == null && newValue == null)) {
+//                                    updatedHashMap.remove(ePathName);
+//                                } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
+//                                    updatedHashMap.remove(ePathName);
+//                                } else if ((oldValue != null && newValue != null) && oldValue.equalsIgnoreCase(newValue)) {
+//                                    updatedHashMap.remove(ePathName);
+//                                }
+//                            }
+//
+//                        } //if condition for hashmap type
+//
+//                    }
+//                }
+//            }           
+//
+//            //set comment array list of hasmap for editing
+//            ArrayList commentMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(updateEnterpriseObjectArg, sourceHandler.buildSystemObjectEpaths("Comment"), "Comment",MasterControllerService.MINOR_OBJECT_UPDATE);
+//
+//            //set the EO auxId in the SBR arraylist for sending to the SL for editing
+//            if (commentMapArrayList.size() > 0) {
+//                for (int k = 0; k < commentMapArrayList.size(); k++) {
+//                    HashMap sbrCommentHashMap = (HashMap) auxIdMapArrayList.get(k);
+//                    for (int i = 0; i < this.changedSBRArrayList.size(); i++) {
+//
+//                        HashMap updatedHashMap = (HashMap) this.changedSBRArrayList.get(i);
+//
+//                        ////System.out.println("==> COMMENT updatedHashMap : " + updatedHashMap);
+//
+//                        if ("Comment".equalsIgnoreCase((String) updatedHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE))) {
+//                            for (int j = 0; j < allFieldConfigs.size(); j++) {
+//                                FieldConfig fieldConfig = (FieldConfig) allFieldConfigs.get(j);
+//                                ePathName = fieldConfig.getFullFieldName();
+//
+//                                String oldValue = (String) eoOldMap.get(ePathName);
+//                                String newValue = (String) updatedHashMap.get(ePathName);
+//                                //check if old value is equal to new value
+//                                if ((oldValue == null && newValue == null)) {
+//                                    updatedHashMap.remove(ePathName);
+//                                } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
+//                                    updatedHashMap.remove(ePathName);
+//                                } else if ((oldValue != null && newValue != null) && oldValue.equalsIgnoreCase(newValue)) {
+//                                    updatedHashMap.remove(ePathName);
+//                                }
+//                            }
+//
+//                        } //if condition for hashmap type
+//
+//                    }
+//                }
+//            }           
             
 
             
@@ -1363,8 +1414,39 @@ public class EditMainEuidHandler {
                 //newHashMap.put(key, value);
             }
             EnterpriseObject updateEO = masterControllerService.saveLinks(newHashMap, updateEnterpriseObject);
-            masterControllerService.updateEnterpriseObject(updateEO);
+            session.setAttribute("editEnterpriseObject",updateEO);
+            // masterControllerService.updateEnterpriseObject(updateEO);
             
+        } catch (ProcessingException ex) {
+            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserException ex) {
+            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void saveUnLinksSelected() {
+        try {
+            EnterpriseObject updateEnterpriseObject = (EnterpriseObject) session.getAttribute("editEnterpriseObject");
+            HashMap newHashMap = new HashMap();
+            //System.out.println("==>:" + this.getHiddenUnLinkFields());
+
+            String[] allLinks = this.getHiddenUnLinkFields().split("##");
+
+            for (int i = 0; i < allLinks.length; i++) {
+                String string = allLinks[i];
+                String[] values = string.split(">>");
+                for (int j = 0; j < values.length; j++) {
+                    String string1 = values[j];
+                    newHashMap.put(values[0], values[1]);
+                }
+
+                //System.out.println("FINAL newHashMap==>:" + newHashMap);
+               //newHashMap.put(key, value);
+            }
+            EnterpriseObject updateEO = masterControllerService.removeLinks(newHashMap, updateEnterpriseObject);
+            //masterControllerService.updateEnterpriseObject(updateEO);
+            session.setAttribute("editEnterpriseObject",updateEO);
+
         } catch (ProcessingException ex) {
             Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
@@ -1413,7 +1495,7 @@ public class EditMainEuidHandler {
             setLinkedFieldsHashMapFromDB(newHashMapWithLinks);
 
             HashMap eoLockedFeildsHashMap = masterControllerService.getLockedFields(editEnterpriseObject);
-            System.out.println("==> ; eoLockedFeildsHashMap"  + eoLockedFeildsHashMap);
+            //System.out.println("==> ; eoLockedFeildsHashMap"  + eoLockedFeildsHashMap);
             
             setLockedFieldsHashMapFromDB(eoLockedFeildsHashMap);
              //set the linkedfields for so here
