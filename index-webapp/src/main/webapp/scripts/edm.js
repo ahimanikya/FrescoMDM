@@ -104,16 +104,23 @@ function getPosition(e) {
 }
 
 function showConfirm(divId,thisEvent)  {
-    //////alert(thisEvent);
+    //alert(divId);
     var y;
     var x;      
     //////alert(document.getElementById(divId).style.visibility);
-if(document.getElementById(divId).style.visibility == 'hidden') {
+    if(document.getElementById(divId).style.visibility == 'hidden') {
         document.getElementById(divId).style.visibility = "visible";
         document.getElementById(divId).style.display = "block";
-        var cursor = getPosition(thisEvent);
-        //document.getElementById(divId).style.top = cursor.x;
-        //document.getElementById(divId).style.left = cursor.y;
+        if (thisEvent.pageX || thisEvent.pageY) {
+            x = thisEvent.pageX;
+            y = thisEvent.pageY;
+        } else if (thisEvent.clientX || thisEvent.clientY) {
+        x = thisEvent.clientX + document.body.scrollLeft;
+        y = thisEvent.clientY + document.body.scrollTop;
+    }
+    
+    document.getElementById(divId).style.top = (y-150);
+    document.getElementById(divId).style.left = x;
 } else {
    document.getElementById(divId).style.visibility = "hidden";
    document.getElementById(divId).style.display = "none";
@@ -122,7 +129,7 @@ if(document.getElementById(divId).style.visibility == 'hidden') {
 }
 
 function showExtraDivs(divId,thisEvent)  {
-    //////alert(thisEvent);
+    //alert(thisEvent);
     var y;
     var x;      
     //////alert(document.getElementById(divId).style.visibility);
@@ -1025,6 +1032,7 @@ function submitFormData(form, thisInnerHtmlDivName) {
 
             document.getElementById("previewlid2Form:previewhiddenLid2source").value = system;
 
+            document.getElementById("finalMergeForm:previewhiddenLid1source").value = system;
             
 
             ////alert("All LIDs" + allLIdsCheck);
@@ -1166,6 +1174,31 @@ function pickSearchType(selectOption) {
       }
    }
 }
+
+function showLIDDiv(divId,thisEvent)  {
+    //alert(thisEvent);
+    var y;
+    var x;      
+    //////alert(document.getElementById(divId).style.visibility);
+    if(document.getElementById(divId).style.visibility == 'hidden') {
+        document.getElementById(divId).style.visibility = "visible";
+        document.getElementById(divId).style.display = "block";
+        if (thisEvent.pageX || thisEvent.pageY) {
+            x = thisEvent.pageX;
+            y = thisEvent.pageY;
+        } else if (thisEvent.clientX || thisEvent.clientY) {
+        x = thisEvent.clientX + document.body.scrollLeft;
+        y = thisEvent.clientY + document.body.scrollTop;
+    }
+    
+} else {
+   document.getElementById(divId).style.visibility = "hidden";
+   document.getElementById(divId).style.display = "none";
+}
+
+
+}
+
 function showExtraLinkDivs(thisEvent,displayName,fieldName)  {
     var y;
     var x;      
@@ -1204,10 +1237,10 @@ function populateLinkFields() {
     document.getElementById('linkSourceDiv:'+linkId).style.display = 'none';
     
     //Person.PersonCatCode:HOSPITAL:1238990001
-     
+     //alert(linkId+':'+sysLidCode);
     document.getElementById(linkId+':'+sysLidCode).style.visibility = 'visible';
     document.getElementById(linkId+':'+sysLidCode).style.display = 'block';
-
+    
     
     linkValues+=fieldName+sysLidCode+'##';     
     
@@ -1253,39 +1286,18 @@ document.getElementById('unLinkedFullFieldDiv').innerHTML = fullFieldName;
 var unLinkValues="";
 function populateUnLinkFields() {
     var fieldName = document.getElementById('unLinkedValueDiv').innerHTML;
-
-//     //alert("BEFORE" + fieldName);
-     fieldName = fieldName.replace("&gt;&gt;",":");
-    //Person.PersonCatCode:HOSPITAL:1238990001
-    //alert("FLD NAME" + fieldName);
+    fieldName = fieldName.replace("&gt;&gt;",">>");
     
-     var fullFieldName = document.getElementById('unLinkedFullFieldDiv').innerHTML;
-    //alert(fullFieldName);    
+    var fullFieldName = document.getElementById('unLinkedFullFieldDiv').innerHTML;
     document.getElementById('linkSourceDivData:'+fullFieldName ).style.visibility = 'visible';
     document.getElementById('linkSourceDivData:'+fullFieldName ).style.display = 'block';
     
-    //alert(document.getElementById('linkSourceDivData:'+fullFieldName ).innerHTML);
-    //linkSourceLidDivid
-    //alert(document.getElementById('linkSourceLidDivid' + fieldName).innerHTML);
-    document.getElementById('linkSourceLidDivid' + fieldName).style.visibility = 'hidden';
-    document.getElementById('linkSourceLidDivid' + fieldName).style.display = 'none';
-    
-    
-//    document.getElementById('linkSourceDiv:'+linkId).style.visibility = 'hidden';
-//    document.getElementById('linkSourceDiv:'+linkId).style.display = 'none';
-  
-    
-       ////alert('ADDING');
-       unLinkValues+=fieldName+'##';     
-        //alert("unLinkValues ==> "  +unLinkValues);
-    
+    unLinkValues+=fieldName+'##';     
     
     var hiddenUnLinkFieldsVar = 'basicAddformData:hiddenUnLinkFields';
     
-//    ////alert(document.getElementById('basicAddformData:hiddenLinkFields'));
     document.getElementById('basicAddformData:hiddenUnLinkFields').value = unLinkValues;
-   // ////alert(document.getElementById('basicAddformData:hiddenLinkFields').value);
-       
+    
     document.getElementById('unLinkSoDiv').style.visibility = "hidden";
     document.getElementById('unLinkSoDiv').style.display = "none";
 }
