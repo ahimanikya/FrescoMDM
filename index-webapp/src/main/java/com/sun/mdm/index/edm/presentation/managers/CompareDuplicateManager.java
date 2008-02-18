@@ -40,6 +40,7 @@ import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.ops.exception.OPSException;
+import com.sun.mdm.index.page.PageException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -365,9 +366,9 @@ public class CompareDuplicateManager {
     }
     
     public HashMap getEnterpriseObjectAsHashMap(EnterpriseObject enterpriseObject, ScreenObject screenObject) {
-        HashMap enterpriseObjectHashMap = new HashMap();
-        SourceHandler sourceHandler = new SourceHandler();
-        String rootNodeName = screenObject.getRootObj().getName();
+            HashMap enterpriseObjectHashMap = new HashMap();
+            SourceHandler sourceHandler = new SourceHandler();
+            String rootNodeName = screenObject.getRootObj().getName();
 
         try {
 
@@ -375,31 +376,31 @@ public class CompareDuplicateManager {
             HashMap editEnterpriseObjectHashMap = masterControllerService.getEnterpriseObjectAsHashMap(enterpriseObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
 
             HashMap newLinkedHashMap = new HashMap();
-            
-            HashMap eoWithLinkedHashMap = masterControllerService.getLinkedFields(enterpriseObject);
 
-            Object[] keySet  = editEnterpriseObjectHashMap.keySet().toArray();
+            HashMap eoWithLinkedHashMap = masterControllerService.getLinkedFields(enterpriseObject);
+            System.out.println("==> : enterpriseObject.getEUID()" + enterpriseObject.getEUID());
+
+            Object[] keySet = editEnterpriseObjectHashMap.keySet().toArray();
             //BUILD the hash map with links
             for (int i = 0; i < keySet.length; i++) {
                 String key = (String) keySet[i];
-                if(eoWithLinkedHashMap.get(key) != null ) {
-                   newLinkedHashMap.put(key, true);
+                if (eoWithLinkedHashMap.get(key) != null) {
+                    newLinkedHashMap.put(key, true);
                 } else {
-                   newLinkedHashMap.put(key, false);
+                    newLinkedHashMap.put(key, false);
                 }
-
             }
-            
+
             //add SystemCode and LID value to the new Hash Map  
             editEnterpriseObjectHashMap.put("EUID", enterpriseObject.getEUID()); // set LID here
             editEnterpriseObjectHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE); //SBR_UPDATE HASH MAP type here
-
             enterpriseObjectHashMap.put("ENTERPRISE_OBJECT", editEnterpriseObjectHashMap); // Set the edit EnterpriseObject here
 
+            enterpriseObjectHashMap.put("ENTERPRISE_OBJECT_HISTORY", getEoHistory(enterpriseObject.getEUID(), screenObject));
+            enterpriseObjectHashMap.put("ENTERPRISE_OBJECT_SOURCES", getEoSources(enterpriseObject, screenObject));
+
             enterpriseObjectHashMap.put("EO_STATUS", enterpriseObject.getStatus()); // Set the edit EnterpriseObject here
-
             enterpriseObjectHashMap.put("ENTERPRISE_OBJECT_LINKED", newLinkedHashMap); // Set the edit EnterpriseObject here
-
             ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
 
             //Build and array of minor object values from the screen object child object nodes
@@ -411,15 +412,15 @@ public class CompareDuplicateManager {
                 //set address array list of hasmap for editing
                 ArrayList soMinorObjectsMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(enterpriseObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
                 for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
-                        HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
-                        minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
+                    HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
+                    minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
                 }
 
                 enterpriseObjectHashMap.put("EO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
             }
 
             ArrayList newMinorObjectsLinkedList = new ArrayList();
-     
+
             //Build and array of minor objects with links  values from the screen object child object nodes
             for (int i = 0; i < childNodeConfigs.length; i++) {
 
@@ -432,8 +433,7 @@ public class CompareDuplicateManager {
                     HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
 
                     minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
-
-                    HashMap minorObjectsLinkedHashMap = masterControllerService.getLinkValuesForChildren(enterpriseObject,objectNodeConfig.getName(),(String) minorObjectHashMap.get(MasterControllerService.MINOR_OBJECT_ID));
+                    HashMap minorObjectsLinkedHashMap = masterControllerService.getLinkValuesForChildren(enterpriseObject, objectNodeConfig.getName(), (String) minorObjectHashMap.get(MasterControllerService.MINOR_OBJECT_ID));
 
                     Object[] keySetMinor = minorObjectHashMap.keySet().toArray();
                     HashMap newMinorLinkedHashMap = new HashMap();
@@ -450,7 +450,9 @@ public class CompareDuplicateManager {
                 }
                 enterpriseObjectHashMap.put("EO" + objectNodeConfig.getName() + "ArrayListLink", newMinorObjectsLinkedList); // set SO addresses as arraylist here
             }
-            
+
+
+            return enterpriseObjectHashMap;
         } catch (ObjectException ex) {
             Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ConnectionInvalidException ex) {
@@ -462,7 +464,123 @@ public class CompareDuplicateManager {
         } catch (UserException ex) {
             Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return enterpriseObjectHashMap;
 
+            return enterpriseObjectHashMap;
     }
+    
+    
+    
+    public ArrayList getEoHistory(String euid, ScreenObject screenObject) {
+        EnterpriseObject eoHist = null;
+        ArrayList newArrayListHistory = new ArrayList();
+        SourceHandler sourceHandler = new SourceHandler();
+        String rootNodeName = screenObject.getRootObj().getName();
+
+        try {
+
+            ArrayList viewHistoryEOList = masterControllerService.viewHistory(euid);
+            HashMap histEOMap = new HashMap();
+            for (int i = 0; i < viewHistoryEOList.size(); i++) {
+                HashMap objectHistMap = (HashMap) viewHistoryEOList.get(i);
+                String key = (String) objectHistMap.keySet().toArray()[0];
+
+                //System.out.println(i + "  <==>keysSet " + key + "==> : objectHistMap");
+                HashMap objectHistMapUpdated = new HashMap();
+                if (objectHistMap.get(key) != null) {
+                    eoHist = (EnterpriseObject) objectHistMap.get(key);
+                    
+                    HashMap editEnterpriseObjectHashMap = masterControllerService.getEnterpriseObjectAsHashMap(eoHist, sourceHandler.buildSystemObjectEpaths(rootNodeName));
+
+                    //add SystemCode and LID value to the new Hash Map  
+                    histEOMap.put("EUID", eoHist.getEUID()); // set LID here
+                    histEOMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE); //SBR_UPDATE HASH MAP type here
+
+                    histEOMap.put("ENTERPRISE_OBJECT", editEnterpriseObjectHashMap); // Set the edit EnterpriseObject here
+
+                    ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
+
+                    //Build and array of minor object values from the screen object child object nodes
+                    for (int j = 0; j < childNodeConfigs.length; j++) {
+
+                        //get the child object node configs
+                        ObjectNodeConfig objectNodeConfig = childNodeConfigs[j];
+
+                        //set address array list of hasmap for editing
+                        ArrayList soMinorObjectsMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(eoHist, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
+                        for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
+                            HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
+                            minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
+                        }
+
+                        histEOMap.put("EO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
+                    }
+
+                    objectHistMapUpdated.put(key, histEOMap);
+
+                    newArrayListHistory.add(objectHistMapUpdated);
+
+                }
+            }
+        } catch (ProcessingException ex) {
+            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserException ex) {
+            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException ex) {
+            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return newArrayListHistory;
+    }
+
+    
+    public ArrayList getEoSources(EnterpriseObject enterpriseObject, ScreenObject screenObject) {
+        ArrayList newArrayList = new ArrayList();
+        Collection itemsSource = enterpriseObject.getSystemObjects();
+
+        Iterator iterSources = itemsSource.iterator();
+
+        HashMap systemObjectHashMap = new HashMap();
+        SourceHandler sourceHandler = new SourceHandler();
+        String rootNodeName = screenObject.getRootObj().getName();
+
+        try {
+            while (iterSources.hasNext()) {
+
+                SystemObject systemObject = (SystemObject) iterSources.next();
+
+                systemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
+                systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode());
+                systemObjectHashMap.put("Status", systemObject.getStatus()); // set Status here
+                HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
+
+                //add SystemCode and LID value to the new Hash Map
+                editSystemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID());
+                editSystemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
+                editSystemObjectHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SYSTEM_OBJECT_UPDATE); // set UPDATE TYPE HERE
+                systemObjectHashMap.put("SYSTEM_OBJECT", editSystemObjectHashMap); // Set the edit SystemObject here
+                ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
+
+                //get the child object node configs
+                for (int i = 0; i < childNodeConfigs.length; i++) {
+
+                    //get the child object node configs
+                    ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
+                    ArrayList soMinorObjectsMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
+                    for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
+                        HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
+                        minorObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
+                        minorObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
+                        minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
+                    }
+                    systemObjectHashMap.put("SO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
+                }
+                newArrayList.add(systemObjectHashMap);
+            }
+        } catch (EPathException ex) {
+            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ObjectException ex) {
+            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return newArrayList;
+    }
+
 }
