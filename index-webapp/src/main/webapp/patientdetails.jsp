@@ -412,15 +412,16 @@
                 <div class="printClass">
                           <table cellpadding="0" cellspacing="0" border="0">
                               <tr>
-                                  <td>
-                                      <nobr>
-                                          <h:outputText value="#{msgs.total_records_text}"/><%=resultArrayList.size()%>
+                                      <td>
+                                          <h:outputText value="#{msgs.total_records_text}"/><%=resultArrayList.size()%>&nbsp;&nbsp;
+                                      </td>
+                                      <td>
                                           <h:outputLink styleClass="button" 
                                                         rendered="#{Operations.EO_PrintSBR }"  
                                                         value="JavaScript:window.print();">
                                               <span><h:outputText value="#{msgs.print_text}"/>  </span>
                                           </h:outputLink>              
-                                      </nobr>
+                                      
                                        </td>
                                </tr>
                           </table>

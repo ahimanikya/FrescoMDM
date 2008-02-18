@@ -54,7 +54,7 @@
         <body>
             <%@include file="./templates/header.jsp"%>
             <div id="mainContent" style="overflow:hidden">   
-                    <div id="advancedSearch" class="basicSearch" style="visibility:visible;display:block">
+                    <div id="advancedSearch" class="basicSearchDup" style="visibility:visible;display:block">
                     <h:form id="advancedformData">
                             <input type="hidden" name="ssnmask" value="DDD-DDD-DDD" />
                             <table border="0" cellpadding="0" cellspacing="0">

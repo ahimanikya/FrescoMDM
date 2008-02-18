@@ -86,12 +86,16 @@
             ArrayList eoArrayList = new ArrayList();
             EnterpriseObject reqEnterpriseObject = new EnterpriseObject();
             String transactionId = (String) (request.getParameter("transactionId")==null?request.getAttribute("transactionId"):request.getParameter("transactionId"));
+            String function  = (request.getParameter("function") != null)? request.getParameter("function") : "Update";
+            
             if (request.getParameter("transactionId") != null) {
 
                 eoArrayList = transactionHandler.getTranscationDetails(transactionId);
 
                 request.setAttribute("comapreEuidsArrayList", eoArrayList);
             }
+            
+            
 
             eoArrayList = (ArrayList) request.getAttribute("comapreEuidsArrayList");
             int countEnt = 0;
@@ -106,7 +110,8 @@
             ValueExpression mergredHashMapVaueExpression = null;
             EnterpriseObject sourceEO = null;
             EnterpriseObject destinationEO = null;
-
+            ArrayList eoSources = null;
+            
             if (eoArrayList != null) {
                 //request.setAttribute("comapreEuidsArrayList", request.getAttribute("comapreEuidsArrayList"));
                                             %>  
@@ -133,13 +138,18 @@
 
                                                 HashMap eoHashMapValues = (HashMap) eoArrayListObjects[countEnt];
                                                 HashMap personfieldValuesMapEO = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT");
-
-                                                if (countEnt > 0) {
-                                                    dupHeading = "<b>After Update</b>";
-                                                } else if (countEnt == 0) {
-                                                    dupHeading = "<b>Before Update</b>";
-                                                    mainEUID = (String) personfieldValuesMapEO.get("EUID");
+                                                if ("Add".equalsIgnoreCase(function)) {
+                                                        dupHeading = "<b>" + function + "</b>";
+                                                } else {
+                                                    if (countEnt > 0) {
+                                                        dupHeading = "<b>After " + function + "</b>";
+                                                    } else if (countEnt == 0) {
+                                                        dupHeading = "<b>Before " + function + "</b>";
+                                                        mainEUID = (String) personfieldValuesMapEO.get("EUID");
+                                                    }
                                                 }
+                                                
+                                               
 
                                                 HashMap allNodefieldsMap = sourceHandler.getAllNodeFieldConfigs();
                                                 String rootNodeName = objScreenObject.getRootObj().getName();
@@ -270,11 +280,9 @@
         fvalueVaueExpression = ExpressionFactory.newInstance().createValueExpression(personfieldValuesMapEO.get(epathValue), personfieldValuesMapEO.get(epathValue).getClass());
 
                                                                                 %>
-                                                                                <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=personfieldValuesMapEO.get(epathValue)%>')" >
                                                                                     <font class="highlight">
                                                                                         <%=personfieldValuesMapEO.get(epathValue)%>
                                                                                     </font>
-                                                                                </a>  
                                                                                 <%} else {
                                                                                 %>
                                                                                 <%=personfieldValuesMapEO.get(epathValue)%>
@@ -310,7 +318,6 @@
                                                                     for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
                                                                      FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
                                                                      epathValue = fieldConfigMap.getFullFieldName();
-                                                                     //System.out.println( childObjectNodeConfig.getName() +"====> "+ epathValue + " <=== minorObjectMapList" + minorObjectHashMap);
                                         if(minorObjectMapList.size() >0) {
                                         if (countEnt > 0) {
                                             resultArrayMapCompare.put(epathValue, minorObjectHashMap.get(epathValue));
@@ -339,8 +346,118 @@
                                                 </div>
                                             </td>
                                             <!--Start displaying the sources-->
+                                              <!--Start displaying the sources-->
+                                               <% 
+                                               eoSources = (ArrayList) eoHashMapValues.get("ENTERPRISE_OBJECT_SOURCES");
+
+                                              if(eoSources.size() > 0 ) {
+                                                //ArrayList soArrayList = (ArrayList) request.getAttribute("eoSources"+(String)personfieldValuesMapEO.get("EUID"));
+                                                HashMap soHashMap = new HashMap();
+                                                for(int i=0;i<eoSources.size();i++) {
+                                                    soHashMap = (HashMap) eoSources.get(i);
+                                                    HashMap soHashMapValues = (HashMap) soHashMap.get("SYSTEM_OBJECT");
+                                               %>
+                                               <td  valign="top">
+                                                 <div id="mainDupHistory<%=countEnt%><%=i%>" style="visibility:hidden;display:none"></div>
+                                                </td>
+                                               <td  valign="top">
+                                                <div id="mainDupSources<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
+                                                    <div style="width:170px;overflow:auto">
+                                                    <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="source" >
+                                                        <table border="0" cellspacing="0" cellpadding="0" >
+                                                            <tr>
+                                                                <td class="<%=menuClass%>"><%=soHashMap.get("SYSTEM_CODE")%></td>
+                                                            </tr> 
+                                                            <h:form>
+                                                                <tr>
+                                                                    <td valign="top" class="dupfirst">
+                                                                            <b><%=soHashMap.get("LID")%></b>
+                                                                    </td>
+                                                                </tr>
+                                                            </h:form>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                                    <div id="mainEuidContentButtonDiv<%=countEnt%>" class="source">
+                                                        <div id="assEuidDataContent<%=countEnt%>" >
+                                                            <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleClass%>">
+                                                                <table border="0" cellspacing="0" cellpadding="0">
+                                                                    <%
+                                    for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
+                                        FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
+                                        if(!(objScreenObject.getRootObj().getName()+".EUID").equalsIgnoreCase(fieldConfigMap.getFullFieldName())) {
+                                            
+                                        if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
+                                            epathValue = fieldConfigMap.getFullFieldName();
+                                        } else {
+                                            epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
+                                        }
+                                                                    %>  
+                                                                        <tr>
+                                                                            <td>
+                                                                                <%if (soHashMapValues.get(epathValue) != null) {%>
+                                                                                
+                                                                                <%=soHashMapValues.get(epathValue)%>
+                                                                                <%} else {%>
+                                                                                &nbsp;
+                                                                                <%}%>
+                                                                                
+                                                                            </td>
+                                                                        </tr>
+                                                                    <%
+                                        }
+                                        }
+                                                                    %>
+
+                                                                   <%
+                                                                   
+                                                                   for (int io = 0; io < arrObjectNodeConfig.length; io++) {
+                                                                    ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[io];
+                                                                    ArrayList  minorObjectMapList =  (ArrayList) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList");
+                                                                    HashMap minorObjectHashMap = new HashMap();
+                                                                     if(minorObjectMapList.size() >0) {
+                                                                       minorObjectHashMap = (HashMap) minorObjectMapList.get(0);
+                                                                     }  
+                                                                     FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
+                                                                    
+
+                                                                   %>
+                                                                    <tr><td>&nbsp;</td></tr>
+                                                                    <tr>
+                                                                    <%
+                                                                    for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
+                                                                     FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
+                                                                     epathValue = fieldConfigMap.getFullFieldName();
+                                                                    %>  
+                                                                    <tr>
+                                                                        <td>
+                                                                                <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
+                                                                                <%=minorObjectHashMap.get(epathValue)%>
+                                                                                <%} else {%>
+                                                                                &nbsp;
+                                                                                <%}%>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <%
+                                                                      }
+                                                                    }
+                                                                    %>
+
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <%                                                
+                                                }
+                                              }%>
+                                                
+                                            <!--END displaying the sources-->
                                             
                                            <%}%>
+                                            <td valign="top"><div id="previewPane"></div></td>                                        
                                         </tr>
                                     </table>
                                 </div>
@@ -371,21 +488,9 @@
                                                 <table border="0" cellspacing="0" cellpadding="0" border="1">
                                                     <h:form>
                                                         <tr> 
-                                                            <td valign="top">
-                                                         <%
-                                                           if(request.getAttribute("itemsSource") !=null){
-                                                        %>
-                                                        <h:commandLink  styleClass="diffviewbtn" 
-                                                                      actionListener="#{PatientDetailsHandler.removeSource}">
-                                                           <h:outputText value="#{msgs.view_sources_left_text}"/>
-                                                        </h:commandLink>  
-                                                        <%} else  {%> 
-                                                        <h:commandLink  styleClass="viewbtn" 
-                                                                        actionListener="#{PatientDetailsHandler.viewSource}">
-                                                             <h:outputText value="#{msgs.view_sources_text}"/>
-                                                        </h:commandLink> 
-                                                        <%}%> 
-                                                            </td>                                              
+                                                         <td valign="top">
+                                                             <a href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
+                                                         </td>                                              
                                                         </tr>
                                                         <%
                                                          boolean isMerge = transactionHandler.isEUIDMerge(transactionId);

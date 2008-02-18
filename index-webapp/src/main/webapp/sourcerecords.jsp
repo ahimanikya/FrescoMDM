@@ -2362,64 +2362,67 @@
                                                 <td>
                                                    <h:form id="basicMergeformData">
                                                      <table border="0" cellpadding="0" cellspacing="0">
-                                                        <tr>
-                                                            
-                                            <td><h:outputLabel for="#{msgs.transaction_source}" value="#{msgs.transaction_source}"/></td>
-                                                <td>
-                                                    <h:selectOneMenu  id="sourceOption" value="#{SourceMergeHandler.source}">
-                                                        <f:selectItems  value="#{SourceMergeHandler.selectOptions}" />
-                                                    </h:selectOneMenu>
-                                                </td>
+                                                           <tr>
+                                                               <td>
+                                                                   <h:outputLabel for="#{msgs.transaction_source}" value="#{msgs.transaction_source}"/>
+                                                                </td>
+                                                               <td>
+                                                                   <h:selectOneMenu  onchange="submit();" id="sourceOption" value="#{SourceMergeHandler.source}" valueChangeListener="#{SourceMergeHandler.setLidMaskValue}">
+                                                                       <f:selectItems  value="#{SourceMergeHandler.selectOptions}" />
+                                                                   </h:selectOneMenu>
+                                                               </td>
+                                                               <input id='lidmask' type='hidden' name='lidmask' value='<h:outputText value="#{SourceMergeHandler.lidMask}"/>' />
+                                                               
+                                                               <td> &nbsp;&nbsp</td>
+                                                               <td>
+                                                               <h:outputText value="#{msgs.source_merge_head1}"/>
+                                                               <h:inputText value="#{SourceMergeHandler.lid1}"
+                                                                            onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
+                                                                            onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                            maxlength="#{SourceMergeHandler.lidMaskLength}" />  
+                                                               <td>&nbsp;&nbsp</td>
+                                                               <td>
+                                                                   <h:outputText value="#{msgs.source_merge_head2}"/>
+                                                                   <h:inputText value="#{SourceMergeHandler.lid2}"
+                                                                                onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
+                                                                                onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                                maxlength="#{SourceMergeHandler.lidMaskLength}"/>  
+                                                               </td>
+                                                               <td> &nbsp;&nbsp</td>
+                                                               <td>
+                                                                   <h:outputText value="#{msgs.source_merge_head3}"/>
+                                                                   <h:inputText value="#{SourceMergeHandler.lid3}"
+                                                                                onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
+                                                                                onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                                maxlength="#{SourceMergeHandler.lidMaskLength}"/>  
+                                                               </td>
+                                                               <td> &nbsp;&nbsp</td>
+                                                               <td>
+                                                                   <h:outputText value="#{msgs.source_merge_head4}"/>
+                                                                   <h:inputText value="#{SourceMergeHandler.lid4}"
+                                                                                onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
+                                                                                onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                                maxlength="#{SourceMergeHandler.lidMaskLength}"/>  
+                                                               </td>
+                                                               <td> &nbsp;&nbsp</td>
+                                                               
+                                                               <td><nobr>
+                                                                       <h:commandLink  styleClass="button" action="#{SourceMergeHandler.performLidMergeSearch}">
+                                                                           <span><h:outputText value="#{msgs.source_merge_button}"/></span>
+                                                                       </h:commandLink>                                     
+                                                                   </nobr>  
+                                                               </td>
+                                                           </tr>
                                                 
-                                                <td> &nbsp;&nbsp</td>
-                                                <td>
-                                                    <h:outputText value="#{msgs.source_merge_head1}"/>
-                                                    <h:inputText value="#{SourceMergeHandler.lid1}"
-                                                                 onkeydown="javascript:qws_field_on_key_down(this,'DDD-DDD-DDDD')"
-                                                                 onkeyup="javascript:qws_field_on_key_up(this)"
-                                                                 maxlength="12"/>  
-                                                <td> &nbsp;&nbsp</td>
-                                                <td>
-                                                    <h:outputText value="#{msgs.source_merge_head2}"/>
-                                                    <h:inputText value="#{SourceMergeHandler.lid2}"
-                                                                 onkeydown="javascript:qws_field_on_key_down(this,'DDD-DDD-DDDD')"
-                                                                 onkeyup="javascript:qws_field_on_key_up(this)"
-                                                                 maxlength="12"/>  
-                                                </td>
-                                                <td> &nbsp;&nbsp</td>
-                                                <td>
-                                                    <h:outputText value="#{msgs.source_merge_head3}"/>
-                                                    <h:inputText value="#{SourceMergeHandler.lid3}"
-                                                                 onkeydown="javascript:qws_field_on_key_down(this,'DDD-DDD-DDDD')"
-                                                                 onkeyup="javascript:qws_field_on_key_up(this)"
-                                                                 maxlength="12"/>  
-                                                </td>
-                                                <td> &nbsp;&nbsp</td>
-                                                <td>
-                                                    <h:outputText value="#{msgs.source_merge_head4}"/>
-                                                    <h:inputText value="#{SourceMergeHandler.lid4}"
-                                                                 onkeydown="javascript:qws_field_on_key_down(this,'DDD-DDD-DDDD')"
-                                                                 onkeyup="javascript:qws_field_on_key_up(this)"
-                                                                 maxlength="12"/>  
-                                                </td>
-                                                <td> &nbsp;&nbsp</td>
-                                                
-                                                <td>        <h:commandLink styleClass="button"
-                                                                            action="#{SourceMergeHandler.performLidMergeSearch}">
-                                                        <span><h:outputText value="#{msgs.source_merge_button}"/></span>
-                                                             </h:commandLink>
-                                                
-                                                </td>
-                                                </tr>
-                                          </table>
+                                                    </table>
                                                    </h:form>
                                              <hr/>
                                              <%
 
-                                               if(request.getAttribute("soHashMapArrayList") != null ){
-                                                 request.setAttribute("soHashMapArrayList",request.getAttribute("soHashMapArrayList"));  
-                                                 ArrayList newSoArrayList= (ArrayList) request.getAttribute("soHashMapArrayList");
-                                                 //System.out.println("==>Hellllllllllllllllll : " + newSoArrayList);
+                                               if(session.getAttribute("soHashMapArrayList") != null ){
+                                                  //request.setAttribute("soHashMapArrayList",request.getAttribute("soHashMapArrayList")); 
+                                                 ArrayList newSoArrayList= (ArrayList) session.getAttribute("soHashMapArrayList");
+                                                 System.out.println("==>Hellllllllllllllllll : " + newSoArrayList);
                                             %>
                                             <table cellpadding="0" cellspacing="0">  
                                             <tr>
@@ -2492,7 +2495,7 @@
                                                                             <td valign="top" name="sri" id="curve<%=soHashMap.get("LID")%>">
                                                                             <a class="dupbtn" id="button<%=soHashMap.get("LID")%>" href="javascript:void(0)" onclick="javascript:collectLid('<%=soHashMap.get("LID")%>')">
                                                                                 <%=soHashMap.get("LID")%>
-                                                                            </a>   
+                                                                            </a> 
                                                                             </td>
                                                                            <script> var thisText = document.getElementById('curve<%=soHashMap.get("LID")%>').innerHTML; alllidsactionText.push(thisText);</script> 
                                                                         </tr>
@@ -2547,7 +2550,19 @@
                                                                <% if (countEnt + 1 == soHashMapArrayListObjects.length)   {%>
                                                                   <td  valign="top">
                                                                        <div id="preview<%=countEnt%>">
-                                                            <div id="previewmainEuidContent" class="yellow">
+                                                                <%
+                                                                          HashMap mergedSOMap = new HashMap();
+                                                                          String styleclass = "yellow";
+                                                                          HashMap previewpersonfieldValuesMapEO = new HashMap();
+                                                                         if(request.getAttribute("mergedSOMap") != null) {
+                                                                          mergedSOMap = (HashMap) request.getAttribute("mergedSOMap");
+                                                                          previewpersonfieldValuesMapEO = (HashMap) mergedSOMap.get("SYSTEM_OBJECT");
+                                                                          styleclass ="blue";
+                                                                         } 
+                                                                
+                                                                %>
+                                                                       
+                                                            <div id="previewmainEuidContent" class="<%=styleclass%>">
                                                                 <table border="0" cellspacing="0" cellpadding="0" id="<%=soHashMap.get("LID")%>">
                                                                     <tr>
                                                                         <td id="previewmenu" class="menutop">Preview</td>
@@ -2559,10 +2574,10 @@
                                                             </div>
                                                         <div id="previewmainEuidContentButtonDiv">
                                                             <div id="assEuidDataContent">
-                                                                <div id="personassEuidDataContent" class="yellow">
+                                                                <div id="personassEuidDataContent" class="<%=styleclass%>">
                                                                     <table border="0" cellspacing="0" cellpadding="0" id="previewbuttoncontent<%=soHashMap.get("LID")%>">
                                                                         <%
-                                                        HashMap previewpersonfieldValuesMapEO = (HashMap) soHashMap.get("SYSTEM_OBJECT");
+
                                                         String previewepathValue;
                                                         for (int ifcp = 0; ifcp < personConfigFeilds.length; ifcp++) {
                                                             FieldConfig fieldConfigMap = (FieldConfig) personConfigFeilds[ifcp];
@@ -2571,15 +2586,21 @@
                                                             } else {
                                                                 previewepathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
                                                             }
-                                                            if (countEnt > 0) {
-                                                                resultArrayMapCompare.put(previewepathValue, personfieldValuesMapEO.get(previewepathValue));
-                                                            } else {
-                                                                resultArrayMapMain.put(previewepathValue, personfieldValuesMapEO.get(previewepathValue));
-                                                            }
                                                         
                                                                         %>  
                                                                         <tr>
-                                                                            <td>&nbsp;</td>
+                                                                            <td>
+                                                                                <%if(request.getAttribute("mergedSOMap") != null) {%>
+                                                                                    <%if (previewpersonfieldValuesMapEO.get(previewepathValue) != null) {%> 
+                                                                                          <%=previewpersonfieldValuesMapEO.get(previewepathValue)%>
+                                                                                    <%} else {%>
+                                                                                        &nbsp;
+                                                                                    <%}%>
+                                                                                
+                                                                                <%}else{  %>
+                                                                                    &nbsp;
+                                                                                <%} %>
+                                                                            </td>
                                                                         </tr>
                                                                         <%}%>
                                                              
@@ -2635,6 +2656,7 @@
                                                                                                     action="#{NavigationHandler.toEuidDetails}" >  
                                                                                         <span><h:outputText value="#{msgs.source_rec_vieweuid_but}"/></span>
                                                                                     </h:commandLink>                                                                                      
+
                                                                                 </td>                                              
                                                                             </tr>
                                                                             
@@ -2650,9 +2672,10 @@
                                                                             <td>
                                                                                 <h:form  id="previewlid1Form">
                                                                                     <h:commandLink styleClass="button" action="#{SourceMergeHandler.performPreviewLID}">
-                                                                                        <span><h:outputText value="Keep LID1"/></span>
+                                                                                        <span id="LID1"><h:outputText value="Keep LID1"/></span>
                                                                                     </h:commandLink>
                                                                                     <h:inputHidden id="previewhiddenLid1" value="#{SourceMergeHandler.formlids}" />
+                                                                                    <h:inputHidden id="previewhiddenLid1source" value="#{SourceMergeHandler.lidsource}" />
                                                                                 </h:form>
                                                                             </td>
                                                                         </tr>
@@ -2660,14 +2683,34 @@
                                                                             <td>
                                                                                 <h:form id="previewlid2Form">
                                                                                     <h:commandLink styleClass="button" action="#{SourceMergeHandler.performPreviewLID}">
-                                                                                        <span><h:outputText value="Keep LID2"/></span>
+                                                                                        <span id="LID2"><h:outputText value="Keep LID2"/></span>
                                                                                         <h:inputHidden id="previewhiddenLid2" value="#{SourceMergeHandler.formlids}" />
+                                                                                        <h:inputHidden id="previewhiddenLid2source" value="#{SourceMergeHandler.lidsource}" />
                                                                                     </h:commandLink>
                                                                                 </h:form>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
                                                                 </div>  
+                                                         <div id="confirmationButton" style="visibility:hidden">
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a class="button" href="javascript:void(0)" onclick="javascript:showLIDDiv('mergeDiv',event)" > 
+                                                                                   <span id="confirmok"><h:outputText value="OK"/></span>
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>
+                                                                                <a class="button" >
+                                                                                   <span id="confirmcancel"><h:outputText value="Cancel"/></span>
+                                                                                </a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>  
+
+
+
                                                      </td>
                                                <%}%>
                                                
@@ -2688,7 +2731,42 @@
             
         </div> <!-end source records dic -->
          <!-- START Extra divs for add  SO-->
-    
+    <div id="mergeDiv" class="alert" style="top:500px;left:560px;visibility:hidden">
+        <h:form id="finalMergeForm">
+   
+    <table cellspacing="0" cellpadding="0" border="0">
+        <tr>
+            <td>
+                <div>
+                    <a href="javascript:void(0)" rel="mergepopuphelp"><h:outputText value="#{msgs.help_link_text}"/></a><br/>
+                </div>                               
+            </td>
+        </tr>
+            <tr>
+                <th>Keep -LID '<div id="confirmContent"></div>' ?</th>
+            </tr>
+            <tr><td>&nbsp;</td></tr>
+			
+            <tr>
+                
+                <td>
+                    <h:commandLink styleClass="button" 
+                                   action="#{SourceMergeHandler.mergePreviewSystemObject}">
+                        <span><h:outputText value="#{msgs.ok_text_button}" /></span>
+                    </h:commandLink>   
+                    <h:outputLink  onclick="javascript:showExtraDivs('mergeDiv',event)" 
+                                   styleClass="button"          
+                                   value="javascript:void(0)">
+                        <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
+                    </h:outputLink>   
+                    <h:inputHidden id="previewhiddenLid1" value="#{SourceMergeHandler.formlids}" />
+                    <h:inputHidden id="previewhiddenLid1source" value="#{SourceMergeHandler.lidsource}" />
+                </td>
+            </tr>
+        
+    </table>
+        </h:form>
+</div>		
        <!-- END Extra divs for add SO-->
        <!-- Start Extra divs for editing SO-->
     <div id="extraAddressEditDiv" style="TOP: 620px; LEFT: 450px; HEIGHT: 400px;  WIDTH: 400px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT: 5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
@@ -3459,6 +3537,7 @@
 
 <!--END SOURCE CODE FOR EXAMPLE =============================== -->
 </div>
+    
  <div id="balloonaddress" class="balloonstyle"><h:outputText  value="#{msgs.add_address_help_text}"/></div>
  <div id="addballoonphone" class="balloonstyle"><h:outputText  value="#{msgs.add_phone_help_text}"/></div>
  <div id="addballoonalias" class="balloonstyle"><h:outputText  value="#{msgs.add_alias_help_text}"/></div>
@@ -3469,6 +3548,31 @@
  <div id="editballoonalias" class="balloonstyle"><h:outputText  value="#{msgs.edit_alias_help_text}"/></div>
  <div id="editballoonaux" class="balloonstyle"><h:outputText  value="#{msgs.edit_aux_help_text}"/></div>
  <div id="editballooncomment" class="balloonstyle"><h:outputText  value="#{msgs.edit_comment_help_text}"/></div>
+
+        <%if( request.getAttribute("lids") != null) {
+           
+        String[] srcs  = (String[]) request.getAttribute("lids");
+        String  lidsSource  = (String) request.getAttribute("lidsource");
+        System.out.println(">>>>>>>>>>>>>>>>>>>" + lidsSource);
+        for(int i=0;i<srcs.length;i++) {
+        %>    
+        
+        <script>
+            collectLid('<%=srcs[i]%>'); 
+            document.getElementById('confirmationButton').style.visibility = 'visible';
+            document.getElementById("previewActionButton").style.visibility = "hidden";
+            document.getElementById("previewActionButton").style.display = "none";                        
+            document.getElementById('personEuidDataContent<%=srcs[i]%>').className = "blue";
+        </script>
+        <%}%>
+        <script>
+            document.getElementById("confirmContent").innerHTML  = '<%=srcs[0]%>';
+            document.getElementById("finalMergeForm:previewhiddenLid1").value  = '<%=srcs[0]+":" + srcs[1]%>';
+            document.getElementById("finalMergeForm:previewhiddenLid1source").value  = '<%=lidsSource%>';
+        </script>
+        <%}%> 
+
+
 </body>
 </html>
 </f:view>

@@ -120,6 +120,8 @@
             ValueExpression mergredHashMapVaueExpression = null;
             EnterpriseObject sourceEO = null;
             EnterpriseObject destinationEO = null;
+            ArrayList eoSources = null;
+            ArrayList eoHistory = null;
 
             if (eoArrayList != null) {
                 request.setAttribute("comapreEuidsArrayList", request.getAttribute("comapreEuidsArrayList"));
@@ -350,14 +352,227 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <!--Start displaying the sources-->
+                                               <!--Start displaying the sources-->
+                                            <% 
+                                               eoSources = (ArrayList) eoHashMapValues.get("ENTERPRISE_OBJECT_SOURCES");
+
+                                              if(eoSources.size() > 0 ) {
+                                                //ArrayList soArrayList = (ArrayList) request.getAttribute("eoSources"+(String)personfieldValuesMapEO.get("EUID"));
+                                                HashMap soHashMap = new HashMap();
+                                                for(int i=0;i<eoSources.size();i++) {
+                                                    soHashMap = (HashMap) eoSources.get(i);
+                                                    HashMap soHashMapValues = (HashMap) soHashMap.get("SYSTEM_OBJECT");
+                                            %>
+                                            <td  valign="top">
+                                                <div id="mainDupSources<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
+                                                    <div style="width:170px;overflow:auto">
+                                                    <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="source" >
+                                                        <table border="0" cellspacing="0" cellpadding="0" >
+                                                            <tr>
+                                                                <td class="<%=menuClass%>"><%=soHashMap.get("SYSTEM_CODE")%></td>
+                                                            </tr> 
+                                                            <h:form>
+                                                                <tr>
+                                                                    <td valign="top" class="dupfirst">
+                                                                            <b><%=soHashMap.get("LID")%></b>
+                                                                    </td>
+                                                                </tr>
+                                                            </h:form>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                                    <div id="mainEuidContentButtonDiv<%=countEnt%>" class="source">
+                                                        <div id="assEuidDataContent<%=countEnt%>" >
+                                                            <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleClass%>">
+                                                                <table border="0" cellspacing="0" cellpadding="0">
+                                                                    <%
+                                    for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
+                                        FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
+                                        if(!(objScreenObject.getRootObj().getName()+".EUID").equalsIgnoreCase(fieldConfigMap.getFullFieldName())) {
+                                            
+                                        if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
+                                            epathValue = fieldConfigMap.getFullFieldName();
+                                        } else {
+                                            epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
+                                        }
+                                                                    %>  
+                                                                        <tr>
+                                                                            <td>
+                                                                                <%if (soHashMapValues.get(epathValue) != null) {%>
+                                                                                
+                                                                                <%=soHashMapValues.get(epathValue)%>
+                                                                                <%} else {%>
+                                                                                &nbsp;
+                                                                                <%}%>
+                                                                                
+                                                                            </td>
+                                                                        </tr>
+                                                                    <%
+                                        }
+                                        }
+                                                                    %>
+
+                                                                   <%
+                                                                   
+                                                                   for (int io = 0; io < arrObjectNodeConfig.length; io++) {
+                                                                    ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[io];
+                                                                    ArrayList  minorObjectMapList =  (ArrayList) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList");
+                                                                    HashMap minorObjectHashMap = new HashMap();
+                                                                     if(minorObjectMapList.size() >0) {
+                                                                       minorObjectHashMap = (HashMap) minorObjectMapList.get(0);
+                                                                     }  
+                                                                     FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
+                                                                    
+
+                                                                   %>
+                                                                    <tr><td>&nbsp;</td></tr>
+                                                                    <tr>
+                                                                    <%
+                                                                    for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
+                                                                     FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
+                                                                     epathValue = fieldConfigMap.getFullFieldName();
+                                                                    %>  
+                                                                    <tr>
+                                                                        <td>
+                                                                                <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
+                                                                                <%=minorObjectHashMap.get(epathValue)%>
+                                                                                <%} else {%>
+                                                                                &nbsp;
+                                                                                <%}%>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <%
+                                                                      }
+                                                                    }
+                                                                    %>
+
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                             <%                                                
+                                                }
+                                              }%>
+                                                
+                                            <!--END displaying the sources-->
+                                            <!--START displaying the History-->
+                                               <% 
+                                               eoHistory = (ArrayList) eoHashMapValues.get("ENTERPRISE_OBJECT_HISTORY");
+
+                                              if(eoHistory.size() > 0) {
+                                               // ArrayList soArrayList = (ArrayList) request.getAttribute("eoHistory"+(String)personfieldValuesMapEO.get("EUID"));
+                                                 
+                                                for(int i=0;i<eoHistory.size();i++) {
+                                                    HashMap objectHistMap = (HashMap) eoHistory.get(i);
+                                                    String key = (String) objectHistMap.keySet().toArray()[0];
+                                                    String keyTitle = key.substring(0, key.indexOf(":"));
+                                                    HashMap objectHistMapValues = (HashMap) objectHistMap.get(key);
+                                                    HashMap eoValuesMap = (HashMap) objectHistMapValues.get("ENTERPRISE_OBJECT");
+                                            %>
+                                               <td  valign="top">
+                                                <div id="mainDupHistory<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
+                                                  <div style="width:170px;overflow:auto">
+                                                    <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="history" >
+                                                        <table border="0" cellspacing="0" cellpadding="0" >
+                                                            <tr>
+                                                                <td class="<%=menuClass%>"><%=keyTitle%></td>
+                                                            </tr> 
+                                                            <h:form>
+                                                                <tr>
+                                                                    <td valign="top" class="dupfirst">
+                                                                            <%=objectHistMapValues.get("EUID")%>
+                                                                    </td>
+                                                                </tr>
+                                                            </h:form>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                                  <div id="mainEuidContentButtonDiv<%=countEnt%>">
+                                                        <div id="assEuidDataContent<%=countEnt%>" >
+                                                            <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="history">
+                                                                <table border="0" cellspacing="0" cellpadding="0">
+                                                                    <%
+                                    for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
+                                        FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
+                                        if(!(objScreenObject.getRootObj().getName()+".EUID").equalsIgnoreCase(fieldConfigMap.getFullFieldName())) {
+                                            
+                                        if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
+                                            epathValue = fieldConfigMap.getFullFieldName();
+                                        } else {
+                                            epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
+                                        }
+                                                                    %>  
+                                                                        <tr>
+                                                                            <td>
+                                                                                <%if (eoValuesMap.get(epathValue) != null) {%>
+                                                                                
+                                                                                <%=eoValuesMap.get(epathValue)%>
+                                                                                <%} else {%>
+                                                                                &nbsp;
+                                                                                <%}%>
+                                                                                
+                                                                            </td>
+                                                                        </tr>
+                                                                    <%
+                                        }
+                                        }
+                                                                    %>
+
+                                                                   <%
+                                                                   
+                                                                   for (int io = 0; io < arrObjectNodeConfig.length; io++) {
+                                                                    ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[io];
+                                                                    ArrayList  minorObjectMapList =  (ArrayList) objectHistMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayList");
+                                                                    HashMap minorObjectHashMap = new HashMap();
+                                                                     if(minorObjectMapList.size() >0) {
+                                                                       minorObjectHashMap = (HashMap) minorObjectMapList.get(0);
+                                                                     }  
+                                                                     FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
+                                                                    
+
+                                                                   %>
+                                                                    <tr><td>&nbsp;</td></tr>
+                                                                    <tr>
+                                                                    <%
+                                                                    for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
+                                                                     FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
+                                                                     epathValue = fieldConfigMap.getFullFieldName();
+                                                                    %>  
+                                                                    <tr>
+                                                                        <td>
+                                                                                <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
+                                                                                <%=minorObjectHashMap.get(epathValue)%>
+                                                                                <%} else {%>
+                                                                                &nbsp;
+                                                                                <%}%>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <%
+                                                                      }
+                                                                    }
+                                                                    %>
+
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                              <%                                                
+                                                }
+                                              }%>                                            
+                                            <!--END displaying the History-->
                                              <% if (countEnt + 1 == eoArrayListObjects.length) {
                                                     if( request.getAttribute("eoMultiMergePreview") != null) {
                                                         styleClass = "blue";
                                                     }
                                              %>
-                                            <td  valign="top">
-                                                <div id="outerMainContentDivid<%=countEnt%>" style="visibility:visible;display:block">
+                                             <td  valign="top">
+                                                <div id="previewPane<%=countEnt%>" style="visibility:visible;display:block">
                                                     <div style="width:170px;overflow:auto">
                                                         <div id="mainEuidContent" class="<%=styleClass%>">
                                                             <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -490,7 +705,8 @@
                             <td>
                                 <div id="actionmainEuidContent" class="actionbuton">
                                     <table cellpadding="0" cellspacing="0">
-                                        <% for (countEnt = 0; countEnt < eoArrayListObjects.length; countEnt++) {%>
+                                        <% for (countEnt = 0; countEnt < eoArrayListObjects.length; countEnt++) {
+                                        %>
                                         <% if (countEnt == 0) {%>
                                         <td><img src="images/spacer.gif" width="169px" height="1px" border="0"></td>
                                         <% }%>
@@ -502,40 +718,19 @@
                                                         <%
                                                            if(countEnt == 0){
                                                         %>
-                                                        <tr> 
-                                                    <td valign="top">
-                                                        <%
-                                                           if(request.getAttribute("eoHistory") !=null){
-                                                        %>
-                                                        
-                                                        <h:commandLink  styleClass="diffviewbtn" 
-                                                                        actionListener="#{PatientDetailsHandler.removeHistory}">
-                                                             <h:outputText value="#{msgs.view_history_left_text}"/>
-                                                        </h:commandLink>  
-                                                      <%} else  {%> 
-                                                      <h:commandLink  styleClass="viewbtn" 
-                                                                      actionListener="#{PatientDetailsHandler.viewHistory}">
-                                                          <h:outputText value="#{msgs.view_history_text}"/>
-                                                      </h:commandLink>  
-                                                      <%}%> 
-                                                </tr>
-                                                        <tr> 
-                                                            <td valign="top">
-                                                         <%
-                                                           if(request.getAttribute("itemsSource") !=null){
-                                                        %>
-                                                        <h:commandLink  styleClass="diffviewbtn" 
-                                                                      actionListener="#{PatientDetailsHandler.removeSource}">
-                                                           <h:outputText value="#{msgs.view_sources_left_text}"/>
-                                                        </h:commandLink>  
-                                                        <%} else  {%> 
-                                                        <h:commandLink  styleClass="viewbtn" 
-                                                                        actionListener="#{PatientDetailsHandler.viewSource}">
-                                                             <h:outputText value="#{msgs.view_sources_text}"/>
-                                                        </h:commandLink> 
-                                                        <%}%> 
-                                                            </td>                                              
-                                                        </tr>
+                                     
+                                                  <tr> 
+                                                      <td valign="top">
+                                                          <a class="viewbtn" href="javascript:showViewSources('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" >  
+                                                              <h:outputText value="#{msgs.view_history_text}"/>
+                                                          </a>
+                                                      </td>    
+                                                  </tr>
+                                                  <tr> 
+                                                      <td valign="top">
+                                                          <a href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
+                                                      </td>                                              
+                                                  </tr>
                                                         <%} else {%> 
                                                         <tr> 
                                                             <td valign="top">

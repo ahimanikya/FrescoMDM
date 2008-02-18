@@ -411,7 +411,7 @@
                     <f:facet name="header">
                         <h:outputText value="#{msgs.datatable_transactionid_text}" />
                     </f:facet>
-                    <a href='transeuiddetails.jsf?transactionId=<h:outputText value="#{transactions.transactionId}"/>'>
+                    <a href='transeuiddetails.jsf?transactionId=<h:outputText value="#{transactions.transactionId}"/>&function=<h:outputText value="#{transactions.function}"/>'>
                      <h:outputText value="#{transactions.transactionId}" />
                    </a>
                 </yui:column>

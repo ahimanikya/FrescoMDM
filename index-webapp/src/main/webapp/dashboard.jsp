@@ -44,9 +44,12 @@
             <table border="0" cellspacing="0" cellpadding="4">
                 <!--Caption included-->
                 <!--Caption class = "euidHeadMessage">Quick Search</Caption-->
-               <h:form id="QuickSearchForm">
+                <h:form id="QuickSearchForm">
                 <tr><td> &nbsp;</td></tr>
                 <tr>
+                    <td> 
+                        <h:outputText value="#{msgs.dashboard_quick_search_text}" />
+                    </td>
                     <td> <h:inputText id="euidField" value="#{PatientDetailsHandler.singleEUID}"  maxlength="10"/> </td>
                 </tr>
                 <tr>
@@ -54,11 +57,12 @@
                 </tr>
 
                 <tr>
-                      <td><h:commandLink  styleClass="button" action="#{PatientDetailsHandler.singleEuidSearch}">  
+                      <td><h:commandLink  styleClass="button" action="#{PatientDetailsHandler.singleEuidSearch}">
+                          
                            <span><h:outputText value="#{msgs.dashboard_search_but_text}" /></span></h:commandLink> 
                       </td>
                       <td align="right">
-                        <h:commandLink  styleClass="button" action="#{NavigationHandler.toPatientDetails}">  
+                        <h:commandLink  styleClass="button" action="#{NavigationHandler.toDuplicateRecords}">  
                             <span>
                                 <img src="./images/down-chevron-button.png" border="0" alt="Advanced search"/>
                                 <h:outputText value="#{msgs.dashboard_advsearch_but_text}" />
@@ -68,6 +72,7 @@
                       </td>
                 </tr>
                </h:form>                
+
             </table>
         </div>
    </td>

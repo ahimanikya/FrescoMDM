@@ -78,7 +78,7 @@
                                     <h:commandLink  styleClass="button" action="#{PatientDetailsHandler.singleEuidSearch}">  
                                         <span><h:outputText  value="#{msgs.search_button_label}"/> </span>
                                     </h:commandLink>                                     
-                                    <h:commandLink  styleClass="button" action="#{NavigationHandler.toPatientDetails}">  
+                                    <h:commandLink  styleClass="button" action="#{NavigationHandler.toDuplicateRecords}">  
                                         <span>
                                             <img src="./images/down-chevron-button.png" border="0" alt="Advanced search"/>
                                             <h:outputText  value="#{msgs.Advanced_search_text}"/>
@@ -95,11 +95,9 @@
                         </table>
                     </h:form>
                 </div>
-                
-                    
-                <br>        
+             <br>        
                 <div id="mainDupSource" class="compareResults">
-                    <table cellspacing="0" cellpadding="0" border="0">
+                    <table cellspacing="5" cellpadding="0" border="0">
                         <tr>
                             <td>
                                 <div style="height:500px;overflow:auto;">
@@ -138,8 +136,8 @@
             HashMap resultArrayMapCompare = new HashMap();
             SystemObject so = null;
             ValueExpression euidValueExpression = null;
-            
-
+            ArrayList eoSources = null;
+            ArrayList eoHistory = null;
 
             if (eoArrayList != null) {
                 //request.setAttribute("comapreEuidsArrayList", request.getAttribute("comapreEuidsArrayList"));
@@ -167,11 +165,10 @@
                                                 HashMap eoHashMapValues = (HashMap) eoArrayListObjects[countEnt];
                                                 HashMap personfieldValuesMapEO = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT");
 
-
                                               //EnterpriseObject eoSource = compareDuplicateManager.getEnterpriseObject(strDataArray);
 
                                                 //int weight = (eoHashMapValues.get("Weight") != null)?((Float) eoHashMapValues.get("Weight")).intValue():0;
-                                                String  weight =  eoHashMapValues.get("Weight").toString();
+                                                String  weight =  (eoHashMapValues.get("Weight") !=null)?eoHashMapValues.get("Weight").toString():"0";
 
                                                 String potDupStatus = (String) eoHashMapValues.get("Status");
                                                 String potDupId = (String) eoHashMapValues.get("PotDupId");
@@ -407,17 +404,19 @@
                                             </td>
                                             <!-- END Display the field Values-->
                                             <!--Start displaying the sources-->
-                                            <% 
-                                              if(request.getAttribute("eoSources"+(String)personfieldValuesMapEO.get("EUID")) != null ) {
-                                                ArrayList soArrayList = (ArrayList) request.getAttribute("eoSources"+(String)personfieldValuesMapEO.get("EUID"));
+                                               <% 
+                                               eoSources = (ArrayList) eoHashMapValues.get("ENTERPRISE_OBJECT_SOURCES");
+
+                                              if(eoSources.size() > 0 ) {
+                                                //ArrayList soArrayList = (ArrayList) request.getAttribute("eoSources"+(String)personfieldValuesMapEO.get("EUID"));
                                                 HashMap soHashMap = new HashMap();
-                                                for(int i=0;i<soArrayList.size();i++) {
-                                                    soHashMap = (HashMap) soArrayList.get(i);
+                                                for(int i=0;i<eoSources.size();i++) {
+                                                    soHashMap = (HashMap) eoSources.get(i);
                                                     HashMap soHashMapValues = (HashMap) soHashMap.get("SYSTEM_OBJECT");
                                             %>
                                                <td  valign="top">
-                                                <div id="outerMainContentDivid<%=countEnt%>" >
-                                                <div style="width:170px;overflow:auto">
+                                                <div id="mainDupSources<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
+                                                    <div style="width:170px;overflow:auto">
                                                     <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="source" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
@@ -508,23 +507,25 @@
                                             <%                                                
                                                 }
                                               }%>
-                                              
+                                                
                                             <!--END displaying the sources-->
                                             <!--START displaying the History-->
-                                            <% 
-                                              if(request.getAttribute("eoHistory"+(String)personfieldValuesMapEO.get("EUID")) != null ) {
-                                                ArrayList soArrayList = (ArrayList) request.getAttribute("eoHistory"+(String)personfieldValuesMapEO.get("EUID"));
+                                               <% 
+                                               eoHistory = (ArrayList) eoHashMapValues.get("ENTERPRISE_OBJECT_HISTORY");
+
+                                              if(eoHistory.size() > 0) {
+                                               // ArrayList soArrayList = (ArrayList) request.getAttribute("eoHistory"+(String)personfieldValuesMapEO.get("EUID"));
                                                  
-                                                for(int i=0;i<soArrayList.size();i++) {
-                                                    HashMap objectHistMap = (HashMap) soArrayList.get(i);
+                                                for(int i=0;i<eoHistory.size();i++) {
+                                                    HashMap objectHistMap = (HashMap) eoHistory.get(i);
                                                     String key = (String) objectHistMap.keySet().toArray()[0];
                                                     String keyTitle = key.substring(0, key.indexOf(":"));
                                                     HashMap objectHistMapValues = (HashMap) objectHistMap.get(key);
                                                     HashMap eoValuesMap = (HashMap) objectHistMapValues.get("ENTERPRISE_OBJECT");
                                             %>
                                                <td  valign="top">
-                                                <div id="outerMainContentDivid<%=countEnt%>" >
-                                                <div style="width:170px;overflow:auto">
+                                                <div id="mainDupHistory<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
+                                                  <div style="width:170px;overflow:auto">
                                                     <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="history" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
@@ -533,7 +534,7 @@
                                                             <h:form>
                                                                 <tr>
                                                                     <td valign="top" class="dupfirst">
-                                                                            <%=eoValuesMap.get("EUID")%>
+                                                                            <%=objectHistMapValues.get("EUID")%>
                                                                     </td>
                                                                 </tr>
                                                             </h:form>
@@ -541,7 +542,7 @@
                                                     </div>
                                                 </div>
 
-                                                    <div id="mainEuidContentButtonDiv<%=countEnt%>">
+                                                  <div id="mainEuidContentButtonDiv<%=countEnt%>">
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="history">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
@@ -624,7 +625,7 @@
                                                     }
                                                 %>
                                             <td  valign="top">
-                                                <div id="outerMainContentDivid<%=countEnt%>" style="visibility:visible;display:block">
+                                                <div id="previewPane<%=countEnt%>" style="visibility:visible;display:block">
                                                     <div style="width:170px;overflow:auto">
                                                         <div id="mainEuidContent" class="<%=styleClass%>">
                                                             <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -806,44 +807,18 @@
                                                <tr><td valign="top">&nbsp;</td></tr>
                                                 <%}%> 
                                       
-                                               <tr> 
-                                                    <td valign="top">
-                                                        <% 
-                                                           if(request.getAttribute("eoHistory"+euid) != null ) {                                                         
-                                                        %>
-                                                        <h:commandLink  styleClass="diffviewbtn" 
-                                                                        actionListener="#{PatientDetailsHandler.removeHistory}">
-                                                             <f:attribute name="euidValueExpression" value="<%=euidValueExpression%>"/>
-                                                             <h:outputText value="#{msgs.view_history_left_text}"/>
-                                                        </h:commandLink>  
-                                                      <%} else  {%> 
-                                                      <h:commandLink  styleClass="viewbtn" 
-                                                                      actionListener="#{PatientDetailsHandler.viewHistory}">
-                                                          <f:attribute name="euidValueExpression" value="<%=euidValueExpression%>"/>
-                                                          <h:outputText value="#{msgs.view_history_text}"/>
-                                                      </h:commandLink>  
-                                                      <%}%> 
-                                                </tr>
-                                                     <tr> 
-                                                            <td valign="top">
-                                                         <%
-                                                           if(request.getAttribute("eoSources"+euid) != null ) {                                                         
-                                                        %>
-                                                        <h:commandLink  styleClass="diffviewbtn" 
-                                                                      actionListener="#{PatientDetailsHandler.removeSource}">
-                                                             <f:attribute name="euidValueExpression" value="<%=euidValueExpression%>"/>
-                                                             <h:outputText value="#{msgs.view_sources_left_text}"/>
-                                                        </h:commandLink>  
-                                                        <%} else  {%> 
-                                                        
-                                                        <h:commandLink  styleClass="viewbtn" 
-                                                                      actionListener="#{PatientDetailsHandler.viewSource}">
-                                                             <f:attribute name="euidValueExpression" value="<%=euidValueExpression%>"/>
-                                                             <h:outputText value="#{msgs.view_sources_text}"/>
-                                                        </h:commandLink>  
-                                                        <%}%> 
-                                                            </td>                                              
-                                                        </tr>
+                                                  <tr> 
+                                                      <td valign="top">
+                                                          <a class="viewbtn" href="javascript:showViewSources('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" >  
+                                                              <h:outputText value="#{msgs.view_history_text}"/>
+                                                          </a>
+                                                      </td>    
+                                                  </tr>
+                                                  <tr> 
+                                                      <td valign="top">
+                                                          <a href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
+                                                      </td>                                              
+                                                  </tr>
                                                      <tr><td>&nbsp;</td></tr>
                                                         
                                                     </h:form>
@@ -910,11 +885,9 @@
                 </div>  
              </div> 
 
-                        <div id="mergeDiv" style="TOP: 1000px; LEFT: 700px; HEIGHT: 100px;  WIDTH: 300px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT: 5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
-                            <iframe src="Blank.html" scrolling="no" frameborder="0" style="width:300px; height:100px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
-                                
-                            </iframe>
-                                <table>
+                        <div id="mergeDiv" class="alert" style="TOP:2050px; LEFT:300px; HEIGHT:160px; WIDTH: 300px; VISIBILITY: hidden; ">
+                            
+                                <table cellspacing="0" cellpadding="0" border="0">
                                     <tr>
                                         <td align="right" colspan="2">
                                             <div>
@@ -922,14 +895,15 @@
                                             </div>                               
                                        </td>
                                     </tr>
-                                    <tr>
-                                        <td>&nbsp;</td>
-                                    </tr>
+                                    <tr><td>&nbsp;</td></tr>
                                     <tr>
                                         <td>
                                             <nobr>Keep Main EUID  <b> <h:outputText value="#{PatientDetailsHandler.destnEuid}" /> </b>?</nobr>
                                         </td>
                                     </tr>
+									<tr><td>&nbsp;</td></tr>
+									<tr><td>&nbsp;</td></tr>
+									<tr><td>&nbsp;</td></tr>
                                     <tr>
                                         <td>
                                             <h:form  id="mergeFinalForm">
@@ -954,15 +928,13 @@
                                 </table>
                         </div>  
 
-                                   <div id="resolvePopupDiv" class="resolvepopup" style="TOP:2250px; LEFT:300px; HEIGHT:160px;WIDTH: 250px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT:5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
-                                       <iframe src="Blank.html" scrolling="no" frameborder="0" style="width:250px; height:160px; z-index: -1; position:absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
-                                   
-                                       </iframe>
+                                   <div id="resolvePopupDiv" class="alert" style="TOP:2250px; LEFT:300px; HEIGHT:160px;WIDTH: 250px;visibility:hidden; ">
+                                     
                                        <h:form id="reportYUISearch">
                                            <h:inputHidden id="potentialDuplicateId" value="#{PatientDetailsHandler.potentialDuplicateId}"/>
                                            <table width="100%">
                                                <tr>
-                                                   <td><b>Select the type of Resolve:</b></td>
+                                                   <td colspan="2"><b>Select the type of Resolve:</b></td>
                                                    <td align="right">
                                                        <div>
                                                            <a href="javascript:void(0)" rel="resolvepopuphelp"><h:outputText value="#{msgs.help_link_text}"/></a><br/>
@@ -970,7 +942,7 @@
                                                    </td>
                                                </tr>
                                                <tr>
-                                                   <td colspan="2">
+                                                   <td  colspan="2">
                                                        <div class="selectContent">
                                                        <h:selectOneRadio id="diffperson" value="#{PatientDetailsHandler.resolveType}" layout="pageDirection">
                                                            <f:selectItem  itemValue="AutoResolve" itemLabel="Resolve Until Recalculation"/>
@@ -980,14 +952,12 @@
                                                    </td>
                                                </tr>
                                                <tr>
-                                                   <td>
+                                                   <td align="right"  colspan="2">
                                                        
                                                         <h:commandLink styleClass="button" 
                                                                        action="#{PatientDetailsHandler.makeDifferentPersonAction}">
                                                                 <span><h:outputText value="OK" /></span>
                                                        </h:commandLink>   
-                                                   </td>
-                                                   <td>
                                                        <h:outputLink  onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'123467')" 
                                                                       styleClass="button"  
                                                                       value="javascript:void(0)">
