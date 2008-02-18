@@ -844,6 +844,7 @@ public class TransactionHandler extends ScreenConfiguration {
         ArrayList newArrayList = new ArrayList();
         for (int i = 0; i < pullDownListItems.length; i++) {
             SelectItem selectItem = new SelectItem();
+            ////System.out.println("Adding Select item label" + pullDownListItems[i] + "Value" + pullDownListItems[i]);
             selectItem.setLabel(pullDownListItems[i]);
             selectItem.setValue(pullDownListItems[i]);
             newArrayList.add(selectItem);
@@ -864,7 +865,10 @@ public class TransactionHandler extends ScreenConfiguration {
              MergeResult unmerge = masterControllerService.unmerge(transactionNumber);
              ////System.out.println("helllllllllllllllo"+transactionNumber);
              HttpServletRequest facesRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-             facesRequest.setAttribute("transactionId", transactionNumber);             
+             facesRequest.setAttribute("transactionId", transactionNumber);     
+             ArrayList eoArrayList = getTranscationDetails(transactionNumber);
+             request.setAttribute("comapreEuidsArrayList", eoArrayList);
+
              ////System.out.println("RETURNING THE CONTROL TO JSP");
         } catch (ProcessingException ex) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ProcessingException : " + QwsUtil.getRootCause(ex).getMessage(),ex.toString()));
