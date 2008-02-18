@@ -378,7 +378,7 @@ width:25px;
            font-family: Arial, Helvetica, sans-serif;
            font-size:15px;
 	   color:#837F74;
-           width: 1074px;
+           width: 1024px;
            background-color:#f9f7de;           
            text-align:left;
 	   vertical-align:middle;	      
@@ -421,6 +421,65 @@ width:25px;
 }
 
 .basicSearch select {
+           font-family: Arial, Helvetica, sans-serif;
+           font-size:10px;
+	   color:#837F74;
+           text-align:left;
+	   vertical-align:middle;	      
+           font-weight:bold;
+           padding-left:1px; 
+	   padding-right:1px;
+	   padding-top:1px; 
+	   padding-bottom:1px;   
+}
+
+.basicSearchDup {
+           font-family: Arial, Helvetica, sans-serif;
+           font-size:15px;
+	   color:#837F74;
+           width: 1074px;
+           background-color:#f9f7de;           
+           text-align:left;
+	   vertical-align:middle;	      
+           font-weight:bold;
+           position:relative;
+	   border-left: 1px solid #6B757B; 
+           border-right: 1px solid #6B757B; 
+           border-top: 1px solid #182442;  
+           border-bottom: 1px solid #6B757B;
+}
+
+.basicSearchDup  td {
+           font-family: Arial, Helvetica, sans-serif;
+           font-size:12px;
+	   color:#837F74;
+           text-align:left;
+	   vertical-align:middle;	      
+           font-weight:bold;
+	   padding-left:18px; 
+	   padding-right:18px;
+           border-left-width:12px;
+           border-right-width:12px;
+           border-right-color:black;
+           border-left-color:black;
+	   padding-top:3px; 
+	   padding-bottom:3px;   
+}
+.basicSearchDup  th a {
+           font-family: Arial, Helvetica, sans-serif;
+           font-size:12px;
+           text-decoration:none; 
+	   color:#837F74;
+           text-align:left;
+	   vertical-align:middle;	      
+           font-weight:bold;
+	   padding-left:18px; 
+	   padding-right:18px;
+	   padding-top:3px; 
+	   padding-bottom:3px;   
+}
+
+.basicSearchDup select {
            font-family: Arial, Helvetica, sans-serif;
            font-size:10px;
 	   color:#837F74;
@@ -2218,11 +2277,11 @@ div.w114 table td.fntdup5nou    {height: 25px; border-top: 1px solid #F7F3D6;  b
 
 /* Deactivate and Different Person table */
 .deactivate  {width:169px;vertical-align:top;}
-.deactivate table {width:169px;background-color:#ece9d8;background-image: url('../images/bglast.gif');}
-.deactivate table td { width:169px;height:25px; background-color:#ece9d8;border-right: 3px solid #ADB29C;border-bottom: 1px solid #EFEFEF;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:0px; padding-right:5px;padding-left:5px;}
+.deactivate table {width:169px;background-color:#e7e7d6;background-image: url('../images/bglast.gif');}
+.deactivate table td { width:169px;height:25px; background-color:#e7e7d6;border-right: 3px solid #ADB29C;border-bottom: 1px solid #EFEFEF;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:0px; padding-right:5px;padding-left:5px;}
 .deactivate table td.menutop { height:25px; font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:5px; padding-left:12px; background-image: url('../images/menutop_deactivate.gif'); background-repeat:no-repeat}
 .deactivate table td.dupfirst{ display:block; height:25px; background-image: url('../images/dupfirst_deactivate.gif'); background-repeat:no-repeat;padding-left:4px;padding-right:0px; padding-top:0px; padding-bottom:0px}
-.deactivate table td a.dupbtn  {display:block;height:25px; background-color:#ece9d8; background-repeat:no-repeat;text-align:center; vertical-align:middle; padding-bottom:0px; padding-left:0px; padding-right:0px; padding-top:5px; font-family: Arial, Helvetica, sans-serif; color: #424121;font-size: 12px; font-weight:bold; text-decoration:none; text-align:center}
+.deactivate table td a.dupbtn  {display:block;height:25px; background-color:#e7e7d6; background-repeat:no-repeat;text-align:center; vertical-align:middle; padding-bottom:0px; padding-left:0px; padding-right:0px; padding-top:5px; font-family: Arial, Helvetica, sans-serif; color: #424121;font-size: 12px; font-weight:bold; text-decoration:none; text-align:center}
 
 /* Merge table */
 .merge  {width:169px;vertical-align:top;}
