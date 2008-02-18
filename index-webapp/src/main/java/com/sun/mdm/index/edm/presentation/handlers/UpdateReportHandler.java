@@ -215,7 +215,9 @@ public class UpdateReportHandler    {
                     if (groupIndex == 0) {
                         updateRecordsVO[voIndex].getEuid().add(val);
                     }
-                    eo = masterControllerService.getEnterpriseObject(val);
+                    eo = masterControllerService.getEnterpriseObject(val); 
+                    
+               
                     obj = EPathAPI.getFieldValue("Person.FirstName", eo.getSBR().getObject());
                     //System.out.println("First Name:: " + obj.toString());
                     //Set the First Name Values in VO
