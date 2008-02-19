@@ -1758,11 +1758,25 @@ public class EDMType {
     private boolean updateReferencedFieldInCommonBlock(PageDefinition.CommonBlock commonBlock, String oldName, String newName) {
         boolean bUpdated = false;
         boolean bRet = false;
-        ArrayList alSimpleSearchPages = commonBlock.alSimpleSearchPages;
-        if (alSimpleSearchPages != null) {
-            for (int i=0; alSimpleSearchPages != null && i < alSimpleSearchPages.size(); i++) {
-                PageDefinition.SimpleSearchPage simpleSearchPage = (PageDefinition.SimpleSearchPage) alSimpleSearchPages.get(i);
-                ArrayList alFieldGroup = simpleSearchPage.alFieldGroup;
+        if (commonBlock != null) {
+            ArrayList alSimpleSearchPages = commonBlock.alSimpleSearchPages;
+            if (alSimpleSearchPages != null) {
+                for (int i=0; alSimpleSearchPages != null && i < alSimpleSearchPages.size(); i++) {
+                    PageDefinition.SimpleSearchPage simpleSearchPage = (PageDefinition.SimpleSearchPage) alSimpleSearchPages.get(i);
+                    ArrayList alFieldGroup = simpleSearchPage.alFieldGroup;
+                    for (int j=0; alFieldGroup!= null && j<alFieldGroup.size(); j++) {
+                        PageDefinition.FieldGroup fieldGroup = (PageDefinition.FieldGroup) alFieldGroup.get(j);
+                        bUpdated = mPageDefinition.updateReferencedField(oldName, newName, fieldGroup.alFieldRef);
+                        if (bUpdated) {
+                            bRet = true;
+                        }
+                    }
+                }
+            }
+        
+            if (commonBlock.searchResultListPage != null) {
+                bUpdated = mPageDefinition.updateReferencedField(oldName, newName, commonBlock.searchResultListPage.alFieldRef);
+                ArrayList alFieldGroup = commonBlock.searchResultListPage.alFieldGroup;
                 for (int j=0; alFieldGroup!= null && j<alFieldGroup.size(); j++) {
                     PageDefinition.FieldGroup fieldGroup = (PageDefinition.FieldGroup) alFieldGroup.get(j);
                     bUpdated = mPageDefinition.updateReferencedField(oldName, newName, fieldGroup.alFieldRef);
@@ -1771,21 +1785,9 @@ public class EDMType {
                     }
                 }
             }
-        }
-        
-        if (commonBlock.searchResultListPage != null) {
-            bUpdated = mPageDefinition.updateReferencedField(oldName, newName, commonBlock.searchResultListPage.alFieldRef);
-            ArrayList alFieldGroup = commonBlock.searchResultListPage.alFieldGroup;
-            for (int j=0; alFieldGroup!= null && j<alFieldGroup.size(); j++) {
-                PageDefinition.FieldGroup fieldGroup = (PageDefinition.FieldGroup) alFieldGroup.get(j);
-                bUpdated = mPageDefinition.updateReferencedField(oldName, newName, fieldGroup.alFieldRef);
-                if (bUpdated) {
-                    bRet = true;
-                }
+            if (bUpdated) {
+                bRet = true;
             }
-        }
-        if (bUpdated) {
-            bRet = true;
         }
         return bRet;
     }
@@ -1841,26 +1843,29 @@ public class EDMType {
 
     private boolean removeReferencedFieldInCommonBlock(PageDefinition.CommonBlock commonBlock,  String fieldNamePath) {
         boolean bRet = false;
-        ArrayList alSimpleSearchPages = commonBlock.alSimpleSearchPages;
-        for (int i=0; alSimpleSearchPages != null && i < alSimpleSearchPages.size(); i++) {
-            PageDefinition.SimpleSearchPage simpleSearchPage = (PageDefinition.SimpleSearchPage) alSimpleSearchPages.get(i);
-            ArrayList alFieldGroup = simpleSearchPage.alFieldGroup;
-            for (int j=0; alFieldGroup != null && j<alFieldGroup.size(); j++) {
-                PageDefinition.FieldGroup fieldGroup = (PageDefinition.FieldGroup) alFieldGroup.get(j);
-                bRet = bRet | mPageDefinition.removeReferencedField(fieldNamePath, fieldGroup.alFieldRef);
+        if (commonBlock != null) {
+            ArrayList alSimpleSearchPages = commonBlock.alSimpleSearchPages;
+            for (int i=0; alSimpleSearchPages != null && i < alSimpleSearchPages.size(); i++) {
+                PageDefinition.SimpleSearchPage simpleSearchPage = (PageDefinition.SimpleSearchPage) alSimpleSearchPages.get(i);
+                ArrayList alFieldGroup = simpleSearchPage.alFieldGroup;
+                for (int j=0; alFieldGroup != null && j<alFieldGroup.size(); j++) {
+                    PageDefinition.FieldGroup fieldGroup = (PageDefinition.FieldGroup) alFieldGroup.get(j);
+                    bRet = bRet | mPageDefinition.removeReferencedField(fieldNamePath, fieldGroup.alFieldRef);
+                }
             }
-        }
         
-        if (commonBlock.searchResultListPage != null) {
-            bRet = bRet | mPageDefinition.removeReferencedField(fieldNamePath, commonBlock.searchResultListPage.alFieldRef);
-            ArrayList alFieldGroup = commonBlock.searchResultListPage.alFieldGroup;
-            for (int j=0; alFieldGroup!= null && j<alFieldGroup.size(); j++) {
-                PageDefinition.FieldGroup fieldGroup = (PageDefinition.FieldGroup) alFieldGroup.get(j);
-                bRet = bRet | mPageDefinition.removeReferencedField(fieldNamePath, fieldGroup.alFieldRef);
+            if (commonBlock.searchResultListPage != null) {
+                bRet = bRet | mPageDefinition.removeReferencedField(fieldNamePath, commonBlock.searchResultListPage.alFieldRef);
+                ArrayList alFieldGroup = commonBlock.searchResultListPage.alFieldGroup;
+                for (int j=0; alFieldGroup!= null && j<alFieldGroup.size(); j++) {
+                    PageDefinition.FieldGroup fieldGroup = (PageDefinition.FieldGroup) alFieldGroup.get(j);
+                    bRet = bRet | mPageDefinition.removeReferencedField(fieldNamePath, fieldGroup.alFieldRef);
+                }
             }
         }
         return bRet;
     }
+    
     /* 
      *Remove referenced field when it is deleted from OBject Definition
      *@param fieldNamePath
@@ -1908,30 +1913,32 @@ public class EDMType {
     
     private boolean removeReferencedQueryBuilderInCommonBlock(PageDefinition.CommonBlock commonBlock,  String queryBuilderName) {
         boolean bRet = false;
-        ArrayList alSimpleSearchPages = commonBlock.alSimpleSearchPages;
-        if (alSimpleSearchPages != null) {
-            for (int i=alSimpleSearchPages.size() - 1; i >= 0 ; i--) {
-                boolean bUpdated = false;
-                PageDefinition.SimpleSearchPage simpleSearchPage = (PageDefinition.SimpleSearchPage) alSimpleSearchPages.get(i);
-                if (simpleSearchPage.alSearchOption != null) {
-                    for (int k = simpleSearchPage.alSearchOption.size() - 1; k >= 0; k--) {
-                        PageDefinition.SearchOption searchOption = (PageDefinition.SearchOption) simpleSearchPage.alSearchOption.get(k);
-                        if (searchOption.queryBuilder.equals(queryBuilderName)) {
-                            simpleSearchPage.alSearchOption.remove(k);
-                            bUpdated = true;
-                            break;
+        if (commonBlock != null) {
+            ArrayList alSimpleSearchPages = commonBlock.alSimpleSearchPages;
+            if (alSimpleSearchPages != null) {
+                for (int i=alSimpleSearchPages.size() - 1; i >= 0 ; i--) {
+                    boolean bUpdated = false;
+                    PageDefinition.SimpleSearchPage simpleSearchPage = (PageDefinition.SimpleSearchPage) alSimpleSearchPages.get(i);
+                    if (simpleSearchPage.alSearchOption != null) {
+                        for (int k = simpleSearchPage.alSearchOption.size() - 1; k >= 0; k--) {
+                            PageDefinition.SearchOption searchOption = (PageDefinition.SearchOption) simpleSearchPage.alSearchOption.get(k);
+                            if (searchOption.queryBuilder.equals(queryBuilderName)) {
+                                simpleSearchPage.alSearchOption.remove(k);
+                                bUpdated = true;
+                                break;
+                            }
                         }
-                    }
-                    if (bUpdated) {
-                        bRet = true;
-                        if (simpleSearchPage.alSearchOption == null || simpleSearchPage.alSearchOption.size() == 0) {
-                            alSimpleSearchPages.remove(i);
+                        if (bUpdated) {
+                            bRet = true;
+                            if (simpleSearchPage.alSearchOption == null || simpleSearchPage.alSearchOption.size() == 0) {
+                                alSimpleSearchPages.remove(i);
+                            }
                         }
                     }
                 }
-            }
-            if (bRet) {
-                this.setModified(true);
+                if (bRet) {
+                    this.setModified(true);
+                }
             }
         }
         return bRet;
@@ -1955,10 +1962,18 @@ public class EDMType {
         if (mPageDefinition.reports != null) {
             bRet = bRet | removeReferencedQueryBuilderInCommonBlock(mPageDefinition.reports.commonBlock, queryBuilderName);
         }
-        bRet = bRet | removeReferencedQueryBuilderInCommonBlock(mPageDefinition.recordDetails, queryBuilderName);
-        bRet = bRet | removeReferencedQueryBuilderInCommonBlock(mPageDefinition.transactions, queryBuilderName);
-        bRet = bRet | removeReferencedQueryBuilderInCommonBlock(mPageDefinition.duplicateRecords, queryBuilderName);
-        bRet = bRet | removeReferencedQueryBuilderInCommonBlock(mPageDefinition.assumedMatches, queryBuilderName);
+        if (mPageDefinition.recordDetails != null) {
+            bRet = bRet | removeReferencedQueryBuilderInCommonBlock(mPageDefinition.recordDetails, queryBuilderName);
+        }
+        if (mPageDefinition.transactions != null) {
+            bRet = bRet | removeReferencedQueryBuilderInCommonBlock(mPageDefinition.transactions, queryBuilderName);
+        }
+        if (mPageDefinition.duplicateRecords != null) {
+            bRet = bRet | removeReferencedQueryBuilderInCommonBlock(mPageDefinition.duplicateRecords, queryBuilderName);
+        }
+        if (mPageDefinition.assumedMatches != null) {
+            bRet = bRet | removeReferencedQueryBuilderInCommonBlock(mPageDefinition.assumedMatches, queryBuilderName);
+        }
         if (bRet) {
             this.setModified(true);
         }
@@ -1968,44 +1983,46 @@ public class EDMType {
     private boolean updateCheckedAttributesInCommonBlock(PageDefinition.CommonBlock commonBlock, String fieldNamePath, String attributeName, boolean checked, String required) {
         boolean bUpdated;
         boolean bRet = false;
-        if (attributeName.equals(SEARCHSCREEN)) {
-            ArrayList alSimpleSearchPages = commonBlock.alSimpleSearchPages;
-            for (int i=0; alSimpleSearchPages != null && alSimpleSearchPages!= null && i < alSimpleSearchPages.size(); i++) {
-                PageDefinition.SimpleSearchPage simpleSearchPage = (PageDefinition.SimpleSearchPage) alSimpleSearchPages.get(i);
-                ArrayList alFieldGroup = simpleSearchPage.alFieldGroup;
+        if (commonBlock != null) {
+            if (attributeName.equals(SEARCHSCREEN)) {
+                ArrayList alSimpleSearchPages = commonBlock.alSimpleSearchPages;
+                for (int i=0; alSimpleSearchPages != null && alSimpleSearchPages!= null && i < alSimpleSearchPages.size(); i++) {
+                    PageDefinition.SimpleSearchPage simpleSearchPage = (PageDefinition.SimpleSearchPage) alSimpleSearchPages.get(i);
+                    ArrayList alFieldGroup = simpleSearchPage.alFieldGroup;
+                    for (int j=0; alFieldGroup!= null && j<alFieldGroup.size(); j++) {
+                        PageDefinition.FieldGroup fieldGroup = (PageDefinition.FieldGroup) alFieldGroup.get(j);
+                        bUpdated = mPageDefinition.updateCheckedAttributes(fieldNamePath, 
+                                                                           fieldGroup.alFieldRef, 
+                                                                           checked, 
+                                                                           required);
+                        if (bUpdated) {
+                            bRet = true;
+                        }
+                    }
+                }
+            }
+        
+            if (attributeName.equals(SEARCHRESULT) && commonBlock.searchResultListPage != null) {
+                bUpdated = mPageDefinition.updateCheckedAttributes(fieldNamePath, 
+                                                                   commonBlock.searchResultListPage.alFieldRef, 
+                                                                   checked,
+                                                                   required);
+                ArrayList alFieldGroup = commonBlock.searchResultListPage.alFieldGroup;
                 for (int j=0; alFieldGroup!= null && j<alFieldGroup.size(); j++) {
                     PageDefinition.FieldGroup fieldGroup = (PageDefinition.FieldGroup) alFieldGroup.get(j);
                     bUpdated = mPageDefinition.updateCheckedAttributes(fieldNamePath, 
                                                                        fieldGroup.alFieldRef, 
                                                                        checked, 
                                                                        required);
+
                     if (bUpdated) {
                         bRet = true;
                     }
                 }
-            }
-        }
-        
-        if (attributeName.equals(SEARCHRESULT) && commonBlock.searchResultListPage != null) {
-            bUpdated = mPageDefinition.updateCheckedAttributes(fieldNamePath, 
-                                                               commonBlock.searchResultListPage.alFieldRef, 
-                                                               checked,
-                                                               required);
-            ArrayList alFieldGroup = commonBlock.searchResultListPage.alFieldGroup;
-            for (int j=0; alFieldGroup!= null && j<alFieldGroup.size(); j++) {
-                PageDefinition.FieldGroup fieldGroup = (PageDefinition.FieldGroup) alFieldGroup.get(j);
-                bUpdated = mPageDefinition.updateCheckedAttributes(fieldNamePath, 
-                                                                   fieldGroup.alFieldRef, 
-                                                                   checked, 
-                                                                   required);
 
                 if (bUpdated) {
                     bRet = true;
                 }
-            }
-
-            if (bUpdated) {
-                bRet = true;
             }
         }
         return bRet;
