@@ -59,6 +59,12 @@ import com.sun.mdm.index.master.UserException;
  */
 public class PotentialDuplicateManager {
 
+    // Potential duplicate status
+    
+    public static final String RESOLVED = "R";
+    public static final String AUTO_RESOLVED = "A";
+    public static final String UNRESOLVED = "U";
+    
 	private static String mNumberConversion = null;
         
     /**  retrieval for potential duplicates without LIDs */
@@ -160,7 +166,7 @@ public class PotentialDuplicateManager {
                 ps.setString(1, potDupId);
                 ps.setString(2, "" + pd.getProbability());
                 ps.setString(3, pd.getDescription());
-                ps.setString(4, "U");
+                ps.setString(4, UNRESOLVED);
                 ps.setString(5, pd.getEUID1());
                 ps.setString(6, pd.getEUID2());
                 ps.setString(7, transactionId);
