@@ -4,11 +4,11 @@
 
  <head>
 
-<title>Developing in Open-DM-MI</title>
+<title>Developing in Open Master Index</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 <meta http-equiv="Content-Style-Type" content="text/css" >
 <meta name="version" content="4.5.2.148.4" />
- <meta name="description" content="This document describes how to set up the development environment, checkout Open-DM-MI files, and build your own projects.">
+ <meta name="description" content="This document describes how to set up the development environment, checkout Open Master Index files, and build your own projects.">
  <meta name="author" content="Carol Thom"> <!--Optional tag-->
  <meta name="keywords" content="">
 
@@ -52,7 +52,7 @@
 <!--     Use is subject to license terms.-->
 
 <a name="top"></a>
-<h1>Developing in Open-DM-MI</h1>
+<h1>Developing in Open Master Index</h1>
 <h1>DRAFT VERSION</h1>
 <div class="articledate" style="margin-left: 0px;font-style:italic;">
   <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
@@ -61,12 +61,12 @@
     This publication is a draft version, and is subject to change.</p>
 </div>
 
-<a name="BuildInstructions"></a><h2>Developing in Open-DM-MI</h2><p>The Open-DM-MI source files are available for download so you can create, customize, and build your own versions of the master index. You can also contribute changes to the Open-DM-MI project once they are approved by the administrator. Open-DM-MI uses <a href="http://subversion.tigris.org/" target="_blank">Subversion</a> for versioning and <a href="http://maven.apache.org/" target="_blank">Maven</a> for the build process. </p>
+<a name="BuildInstructions"></a><h2>Developing in Open Master Index</h2><p>The Open Master Index source files are available for download so you can create, customize, and build your own versions of the master index. You can also contribute changes to the Open Master Index project once they are approved by the administrator. Open Master Index uses <a href="http://subversion.tigris.org/" target="_blank">Subversion</a> for versioning and <a href="http://maven.apache.org/" target="_blank">Maven</a> for the build process. </p>
 <h3><b>Software Requirements</b></h3>
-<p>Before you begin working with Open-DM-MI, make sure you install all the necessary software for accessing the source repository and building the files. Additional software is required for working with the master index once you build it.</p>
+<p>Before you begin working with Open Master Index, make sure you install all the necessary software for accessing the source repository and building the files. Additional software is required for working with the master index once you build it.</p>
 <ul>
 <li>Install Maven to build your master index projects. You can download Maven from <a href="http://maven.apache.org/download.html" target="_blank">http://maven.apache.org/download.html</a>.</li>
-<li>Install Subversion to access Open-DM-MI source files. You can download Subversion from <a href="http://subversion.tigris.org/project_packages.html" target="_blank">http://subversion.tigris.org/project_packages.html</a>. For Windows, download the packages built against Apache 2.0.</li>
+<li>Install Subversion to access Open Master Index source files. You can download Subversion from <a href="http://subversion.tigris.org/project_packages.html" target="_blank">http://subversion.tigris.org/project_packages.html</a>. For Windows, download the packages built against Apache 2.0.</li>
 <li>Install the Java SE Development Kit 5 (previously JDK 1.5). You can download Java SDK from <a href="http://java.sun.com/javase/downloads/index_jdk5.jsp">http://java.sun.com/javase/downloads/index_jdk5.jsp</a></li>
 <li>Install one of the following combinations:
 <ul>
@@ -80,22 +80,22 @@
 <li>Download the Microsoft SQL Server JDBC driver (sqljdbc.jar) from <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=6D483869-816A-44CB-9787-A866235EFC7C&displaylang=en" target="_blank">http://www.microsoft.com/downloads/details.aspx?FamilyId=6D483869-816A-44CB-9787-A866235EFC7C&displaylang=en</a>.</li>
 </ul>
 </ul>
-<h3><b>Check Out Open-DM-MI and Open-DM-DQ Source Files</b></h3>
-<p>The Open-DM-MI project contains the source files for the master index and the Open-DM-DQ (data quality) project contains the source files for the Mural Match Engine and Data Analysis tools. Both sets of source files are needed in order to build a complete master index solution.</p>
+<h3><b>Check Out Open Master Index and Open Data Quality Source Files</b></h3>
+<p>The Open Master Index project contains the source files for the master index and the Open Data Quality project contains the source files for the Mural Match Engine and Data Analysis tools. Both sets of source files are needed in order to build a complete master index solution.</p>
 <ol>
 <li>Create a working directory on your computer to hold the source files.</li>
 <li><p>Navigate to the working directory and check out the master index source files using the following command:</p>
 <p><code>svn checkout https://open-dm-mi.dev.java.net/svn/open-dm-mi/trunk open-dm-mi --username <i>user_name</i></code><br />
-where <i>user_name</i> is your username in the Open-DM-MI project.</p></li>
+where <i>user_name</i> is your username in the Open Master Index project.</p></li>
 <li>From the working directory, check out the data quality source files using the following command:</p>
 <p><code>svn checkout https://open-dm-dq.dev.java.net/svn/open-dm-dq/trunk open-dm-dq --username <i>user_name</i></code><br />
-where <i>user_name</i> is your username in the Open-DM-DQ project.</p></li>
+where <i>user_name</i> is your username in the Open Data Quality project.</p></li>
 </ol>
 <p>Your directory structure should look similar to this:</p>
 <p>&#160;&#160;&#160;<i>working_directory</i>\open-dm-mi <br />
 &#160;&#160;&#160;<i>working_directory</i>\open-dm-dq </p>
 <p></p>
-<p>For more information about the Open-DM-MI repository and Subversion, see <a href="https://open-dm-mi.dev.java.net/source/browse/open-dm-mi/" target="_blank">https://open-dm-mi.dev.java.net/source/browse/open-dm-mi/</a>. For more information about the Open-DM-DQ repository and Subversion, see <a href="https://open-dm-dq.dev.java.net/source/browse/open-dm-dq/" target="_blank">https://open-dm-dq.dev.java.net/source/browse/open-dm-dq/</a>.</p>
+<p>For more information about the Open Master Index repository and Subversion, see <a href="https://open-dm-mi.dev.java.net/source/browse/open-dm-mi/" target="_blank">https://open-dm-mi.dev.java.net/source/browse/open-dm-mi/</a>. For more information about the Open data Quality repository and Subversion, see <a href="https://open-dm-dq.dev.java.net/source/browse/open-dm-dq/" target="_blank">https://open-dm-dq.dev.java.net/source/browse/open-dm-dq/</a>.</p>
 <h3><b>Set up the Build Environment</b></h3>
 <p>Before you can build the master index, you need to set certain variables in your environment. The variables are set in the environment batch file (<i>working_directory</i>\open-dm-mi\env.bat). Use the absolute path names for these variables.</p>
 <ul>
@@ -125,8 +125,8 @@ where <i>user_name</i> is your username in the Open-DM-DQ project.</p></li>
 </ul></p>
 <p>To run the JUnit test after creating the database and configuring the connection properties, run the following command:</p>
 <p><code>&#160;&#160;&#160;mvn test</code></p>
-<h3><b>Build Mural Master Index </b></h3>
-<p>You can build Open-DM-MI either with or without running JUnit tests. To run the build, navigate to <i>working_folder</i>\open-dm-mi and run the following two commands in the order given:</p>
+<h3><b>Build Open Master Index</b></h3>
+<p>You can build Open Master Index either with or without running JUnit tests. To run the build, navigate to <i>working_folder</i>\open-dm-mi and run the following two commands in the order given:</p>
 <p><code>&#160;&#160;&#160;env</code><br />
 <code>&#160;&#160;&#160;mvn install</code></p>
 <p><b>Note: </b><code>mvn install</code> runs JUnit test when it builds. To run the build without JUnit tests, run the following command instead: <br />
