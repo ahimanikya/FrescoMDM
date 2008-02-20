@@ -108,7 +108,7 @@ public class SbmeStandardizerAdapter
             // is meant to only contain one, and this will be logged. 
             String domains[] = unparsedRawRecords.getDomains();
 
-            mLogger.info(mLocalizer.x("STD001: About to standardize the given system objects"));
+            mLogger.fine(mLocalizer.x("STD001: About to standardize the given system objects"));
             SbmeStandRecord[][] allUnparsedStandRecords = 
                     standardizationEngine.standardize(
                     unparsedRawRecords.getRecStandardizationTypes(), 
