@@ -86,8 +86,6 @@ public class ImportStandardizationDataTypeAction extends CookieAction {
             RequestProcessor.getDefault().post(new Runnable() {
                 public void run() {
                     JFileChooser fc = new JFileChooser();
-                    String descDT = "Unknown Description";
-                    String nameVariant = "Unknown Name";
                     try {
                         fc.setMultiSelectionEnabled(false);
                         fc.setFileFilter(new ZipFileFilter()); // look for implementation zip
@@ -95,13 +93,11 @@ public class ImportStandardizationDataTypeAction extends CookieAction {
             
                         int returnVal = fc.showOpenDialog(null);
                         if (returnVal == JFileChooser.APPROVE_OPTION) {
-                            /*
+
                             mLoadProgress = ProgressHandleFactory.createHandle(
                                 NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_Importing_Standardization_Plugin"));
                             mLoadProgress.start();
                             mLoadProgress.switchToIndeterminate();
-                            */
-                            fc.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                             
                             EviewStandardizationFolderCookie cookie = activatedNodes[0].getCookie(EviewStandardizationFolderCookie.class);
                             EviewStandardizationFolderNode standardizationFolderNode = cookie.getEviewStandardizationFolderNode();
@@ -116,24 +112,21 @@ public class ImportStandardizationDataTypeAction extends CookieAction {
                             EviewApplication eviewApplication = standardizationFolderNode.getEviewApplication();
                             StandardizationIntrospector introspector = eviewApplication.getStandardizationIntrospector();
                             Descriptor dataTypeDescriptor = introspector.deploy(zipDataType);
-                            descDT = dataTypeDescriptor.getDescription();
-                            nameVariant = dataTypeDescriptor.getName();
+                            String descDT = dataTypeDescriptor.getDescription();
+                            String nameVariant = dataTypeDescriptor.getName();
+                            mLoadProgress.finish();
+                            
+                            String msg = NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_Imported_Standardization_Plugin", descDT, nameVariant);
+                            mLog.info(msg);
+                            NotifyDescriptor desc = new NotifyDescriptor.Message(msg);
+                            DialogDisplayer.getDefault().notify(desc);
                         }                          
                     } catch (Exception e) {
                         mLog.severe(NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_FAILED_To_Import_Standardization_Plugin")); // NOI18N
                         ErrorManager.getDefault().log(ErrorManager.ERROR, e.getMessage());
                         ErrorManager.getDefault().notify(ErrorManager.ERROR, e);
                     } finally {
-                        String msg = NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_Imported_Standardization_Plugin", descDT, nameVariant);
-                        mLog.info(msg);
-                        NotifyDescriptor desc = new NotifyDescriptor.Message(msg);
-                        DialogDisplayer.getDefault().notify(desc);
-                        fc.setCursor(Cursor.getDefaultCursor());
-                        /*
-                        if (mLoadProgress != null) {
-                            mLoadProgress.finish();
-                        }
-                         */
+
                     }
                 }
             });
