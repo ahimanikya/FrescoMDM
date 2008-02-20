@@ -83,13 +83,16 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
         txtValueMask.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "TabEDMPropertiesJPanel.txtValueMask.text")); // NOI18N
 
         chkSearchScreen.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "TabEDMPropertiesJPanel.chkSearchScreen.text")); // NOI18N
+        chkSearchScreen.setMargin(new java.awt.Insets(0, 0, 0, 0));
         chkSearchScreen.setMaximumSize(new java.awt.Dimension(13, 13));
         chkSearchScreen.setMinimumSize(new java.awt.Dimension(13, 13));
         chkSearchScreen.setPreferredSize(new java.awt.Dimension(13, 13));
 
         chkSearchResult.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "TabEDMPropertiesJPanel.chkSearchResult.text")); // NOI18N
+        chkSearchResult.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
         chkGenerateReport.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "TabEDMPropertiesJPanel.chkGenerateReport.text")); // NOI18N
+        chkGenerateReport.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
         jComboBoxSearchRequired.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "true", "false", "oneof" }));
 
@@ -111,11 +114,11 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(txtInputMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                     .add(txtDisplayName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, txtValueMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                    .add(chkSearchScreen, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                     .add(chkGenerateReport)
                     .add(jComboBoxSearchRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(chkSearchResult))
+                    .add(chkSearchResult)
+                    .add(chkSearchScreen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, txtValueMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
