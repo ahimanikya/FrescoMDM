@@ -115,7 +115,6 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
     private JPopupMenu mMenu;
     private JPopupMenu mTemplatesMenu;
     private boolean mCreated = false;
-    JLabel jLabel1;
     JLabel jLabelNoProperties;
     private JButton mButtonAddPrimary;
     private JButton mButtonAddSub;
@@ -189,6 +188,7 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
                 }
             });
         mText.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
                 public void keyTyped(java.awt.event.KeyEvent evt) {
                     char c = evt.getKeyChar();
                     int keyCode = evt.getKeyCode();
@@ -207,6 +207,7 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         });
  
         DefaultCellEditor dce = new DefaultCellEditor(mText) {
+            @Override
             public boolean isCellEditable(java.util.EventObject event) {
                 boolean bEditable = true;
                 if (event instanceof MouseEvent) {
@@ -279,16 +280,16 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
 
         //separator for object buttons
         mButtonAddPrimary = new JButton(new PrimaryEntityAddAction(
-                    this.PRIMARYNODEIMAGEICON,
+                    PRIMARYNODEIMAGEICON,
                     NbBundle.getMessage(DefineEntityVisualPanel.class,
                         "MSG_ToolTip_AddPrimaryEntity")));
         mButtonAddPrimary.setBorder(null);
-        mButtonAddPrimary.setMnemonic('O');
+        mButtonAddPrimary.setMnemonic('P');
         toolBar.add(mButtonAddPrimary);
 
         toolBar.addSeparator(new Dimension(0, 5));
         mButtonAddSub = new JButton(new SubEntityAddAction(
-                    this.SUBNODEIMAGEICON,
+                    SUBNODEIMAGEICON,
                     NbBundle.getMessage(DefineEntityVisualPanel.class,
                         "MSG_ToolTip_AddSubEntity")));
         mButtonAddSub.setBorder(null);
@@ -297,7 +298,7 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
 
         toolBar.addSeparator(new Dimension(0, 5));
         mButtonAddField = new JButton(new FieldAddAction(
-                    this.FIELDNODEIMAGEICON,
+                    FIELDNODEIMAGEICON,
                     NbBundle.getMessage(DefineEntityVisualPanel.class,
                         "MSG_ToolTip_AddField")));
         mButtonAddField.setBorder(null);
@@ -305,7 +306,7 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         toolBar.add(mButtonAddField);
 
         toolBar.addSeparator(new Dimension(0, 5));
-        mButtonDelete = new JButton(new DeleteAction(this.DELETENODEIMAGEICON,
+        mButtonDelete = new JButton(new DeleteAction(DELETENODEIMAGEICON,
                     NbBundle.getMessage(DefineEntityVisualPanel.class,
                         "MSG_ToolTip_Delete")));
         mButtonDelete.setBorder(null);
@@ -317,19 +318,17 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         toolBar.addSeparator();
         
         mButtonTemplateCompany = new JButton(new TemplateCompanyAction(
-                    this.TEMPLATECOMPANYIMAGEICON,
+                    TEMPLATECOMPANYIMAGEICON,
                     NbBundle.getMessage(DefineEntityVisualPanel.class,
                         "MSG_ToolTip_TemplateCompany")));
         mButtonTemplateCompany.setBorder(null);
-        mButtonTemplateCompany.setMnemonic('C');
         mButtonTemplateCompany.setName("Company");
-
+        
         mButtonTemplatePerson = new JButton(new TemplatePersonAction(
-                    this.TEMPLATEPERSONIMAGEICON,
+                    TEMPLATEPERSONIMAGEICON,
                     NbBundle.getMessage(DefineEntityVisualPanel.class,
                         "MSG_ToolTip_TemplatePerson")));
         mButtonTemplatePerson.setBorder(null);
-        mButtonTemplatePerson.setMnemonic('P');
         
         mTemplatesMenu = new JPopupMenu();
         mTemplatesMenu.add(createMenuItem(NbBundle.getMessage(
@@ -338,10 +337,11 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         mTemplatesMenu.add(createMenuItem(NbBundle.getMessage(
                         DefineEntityVisualPanel.class,
                         "MSG_menu_AddTemplatePerson"), TEMPLATEPERSONIMAGEICON));
-        mButtonTemplates = new JButton(this.TEMPLATESIMAGEICON);
+        mButtonTemplates = new JButton(TEMPLATESIMAGEICON);
         mButtonTemplates.setToolTipText(NbBundle.getMessage(DefineEntityVisualPanel.class,
                         "MSG_ToolTip_Templates"));
         mButtonTemplates.addMouseListener(new TemplatePopupListener());
+        mButtonTemplates.setMnemonic('T');
         toolBar.add(mButtonTemplates);
 
         return toolBar;
@@ -354,10 +354,6 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
 
         model.insertNodeInto(childNode, mRootNode, mRootNode.getChildCount());
         
-        //EntityNode grandchildNode = new EntityNode("Fields",
-        //        EntityNode.getPrimaryFieldsNodeType());
-        //model.insertNodeInto(grandchildNode, childNode, 0);
-
         TreePath selectionPath = new TreePath(childNode.getPath());
         expandAll(mEntityTree, selectionPath, false);
         mEntityTree.scrollPathToVisible(selectionPath);
@@ -567,14 +563,13 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
             }
         }
 
-        if (node.isPrimary()) { // || node.isSub()) only 1 level for now
+        if (node.isPrimary()) {
             mMenu.add(createMenuItem(NbBundle.getMessage(
                         DefineEntityVisualPanel.class, "MSG_menu_NewSubEntity"),
                     null));
             mButtonAddSub.setEnabled(true);
         }
 
-        //if (node.isPrimary() || node.isPrimaryFields() || node.isSub()) {
         if (!node.isRoot()) {
             mMenu.add(createMenuItem(NbBundle.getMessage(
                         DefineEntityVisualPanel.class, "MSG_menu_NewField"),
@@ -638,14 +633,8 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
                 }
             }
         }
-
         // Expansion or collapse must be done bottom-up
-        //if (expand) {
         tree.expandPath(parent);
-
-        //} else {
-        //    tree.collapsePath(parent);
-        //}
     }
 
     /** ActionListener
@@ -1027,8 +1016,6 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         public PrimaryEntityAddAction(ImageIcon icon, String desc) {
             super(null, icon);
             putValue(SHORT_DESCRIPTION, desc);
-
-            //putValue(MNEMONIC_KEY, mnemonic);
         }
 
         /**
@@ -1050,8 +1037,6 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         public SubEntityAddAction(ImageIcon icon, String desc) {
             super(null, icon);
             putValue(SHORT_DESCRIPTION, desc);
-
-            //putValue(MNEMONIC_KEY, mnemonic);
         }
 
         /**
@@ -1073,8 +1058,6 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         public FieldAddAction(ImageIcon icon, String desc) {
             super(null, icon);
             putValue(SHORT_DESCRIPTION, desc);
-
-            //putValue(MNEMONIC_KEY, mnemonic);
         }
 
         /**
@@ -1096,8 +1079,6 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         public DeleteAction(ImageIcon icon, String desc) {
             super(null, icon);
             putValue(SHORT_DESCRIPTION, desc);
-
-            //putValue(MNEMONIC_KEY, mnemonic);
         }
 
         /**
@@ -1119,8 +1100,6 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         public TemplateCompanyAction(ImageIcon icon, String desc) {
             super(null, icon);
             putValue(SHORT_DESCRIPTION, desc);
-
-            //putValue(MNEMONIC_KEY, mnemonic);
         }
 
         /**
@@ -1142,8 +1121,6 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         public TemplatePersonAction(ImageIcon icon, String desc) {
             super(null, icon);
             putValue(SHORT_DESCRIPTION, desc);
-
-            //putValue(MNEMONIC_KEY, mnemonic);
         }
 
         /**
@@ -1155,9 +1132,9 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
     }
 
     class TemplatePopupListener extends MouseAdapter {
+        @Override
         public void mousePressed(MouseEvent e) {
             if (mButtonTemplates.isEnabled()) {
-                //mTemplatesMenu.show(e.getComponent(), e.getX(), e.getY());
                 JButton button = (JButton) e.getComponent();
                 int height = button.getHeight();
                 int width = button.getWidth();
@@ -1173,9 +1150,11 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
     }
     
     class PopupListener extends MouseAdapter {
+        @Override
         public void mousePressed(MouseEvent e) {
         }
 
+        @Override
         public void mouseReleased(MouseEvent e) {
             if (mEntityTree.getAnchorSelectionPath() != null) {
                 maybeShowPopup(e);
@@ -1193,6 +1172,7 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         public EntityTreeRenderer() {
         }
 
+        @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value,
             boolean sel, boolean expanded, boolean leaf, int row,
             boolean hasFocus) {
@@ -1232,6 +1212,7 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
          * key typed
          * @param evt event
          */
+        @Override
         public void keyPressed(KeyEvent evt) {
 
             if (evt.getKeyCode() == KeyEvent.VK_DELETE) {

@@ -20,22 +20,21 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
         this.txtDisplayName.setText(displayName);
         this.txtInputMask.setText(inputMask);
         this.txtValueMask.setText(valueMask);
-        this.chkSearchScreen.setSelected(searchScreen);
         this.chkSearchResult.setSelected(searchResult);
         this.chkGenerateReport.setSelected(generateReport);
-        this.jComboBox1.setSelectedItem(searchRequired);
+        this.jComboBoxSearchRequired.setSelectedItem(searchRequired);
         
         chkSearchScreen.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent e) {
                 if (!chkSearchScreen.isSelected()) {
-                    jComboBox1.setSelectedItem("false");
-                    jComboBox1.setEnabled(false);
+                    jComboBoxSearchRequired.setSelectedItem("false");
+                    jComboBoxSearchRequired.setEnabled(false);
                 } else {
-                    jComboBox1.setEnabled(true);
+                    jComboBoxSearchRequired.setEnabled(true);
                 }
             }
         });
-
+        this.chkSearchScreen.setSelected(searchScreen);
     }
     
     /** This method is called from within the constructor to
@@ -59,7 +58,7 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
         chkSearchScreen = new javax.swing.JCheckBox();
         chkSearchResult = new javax.swing.JCheckBox();
         chkGenerateReport = new javax.swing.JCheckBox();
-        jComboBox1 = new javax.swing.JComboBox();
+        jComboBoxSearchRequired = new javax.swing.JComboBox();
 
         jLabelDisplayName.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "MSG_DisplayName")); // NOI18N
 
@@ -68,6 +67,8 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
         jLabelValueMask.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "MSG_ValueMask")); // NOI18N
 
         jLabelSearchScreen.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "MSG_SearchScreen")); // NOI18N
+        jLabelSearchScreen.setMaximumSize(new java.awt.Dimension(59, 14));
+        jLabelSearchScreen.setMinimumSize(new java.awt.Dimension(59, 14));
 
         jLabelSearchRequired.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "MSG_SearchRequired")); // NOI18N
 
@@ -84,12 +85,13 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
         chkSearchScreen.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "TabEDMPropertiesJPanel.chkSearchScreen.text")); // NOI18N
         chkSearchScreen.setMaximumSize(new java.awt.Dimension(13, 13));
         chkSearchScreen.setMinimumSize(new java.awt.Dimension(13, 13));
+        chkSearchScreen.setPreferredSize(new java.awt.Dimension(13, 13));
 
         chkSearchResult.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "TabEDMPropertiesJPanel.chkSearchResult.text")); // NOI18N
 
         chkGenerateReport.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "TabEDMPropertiesJPanel.chkGenerateReport.text")); // NOI18N
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "true", "false", "oneof" }));
+        jComboBoxSearchRequired.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "true", "false", "oneof" }));
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -98,24 +100,22 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabelSearchRequired, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
                     .add(jLabelSearchScreen, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                    .add(jLabelSearchRequired, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
                     .add(jLabelSearchResult, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
-                    .add(jLabelDisplayName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
                     .add(jLabelInputMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
                     .add(jLabelGenerateReport, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
-                    .add(jLabelValueMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE))
+                    .add(jLabelValueMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                    .add(jLabelDisplayName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                        .add(txtValueMask)
-                        .add(txtInputMask)
-                        .add(txtDisplayName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE))
+                    .add(txtInputMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                    .add(txtDisplayName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, txtValueMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                    .add(chkSearchScreen, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                     .add(chkGenerateReport)
-                    .add(jComboBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                        .add(chkSearchScreen, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(chkSearchResult, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .add(jComboBoxSearchRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(chkSearchResult))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -124,32 +124,33 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(txtDisplayName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabelDisplayName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 17, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jLabelDisplayName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(txtInputMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabelInputMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 17, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jLabelInputMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(txtValueMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabelValueMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 17, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jLabelValueMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(txtValueMask, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(chkSearchScreen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 17, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabelSearchScreen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 15, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jLabelSearchScreen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(chkSearchScreen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(chkSearchResult)
-                    .add(jLabelSearchRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 15, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jLabelSearchRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jComboBoxSearchRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 17, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(chkGenerateReport)
-                    .add(jLabelSearchResult, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 14, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jComboBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 17, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabelGenerateReport, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 18, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(134, Short.MAX_VALUE))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(layout.createSequentialGroup()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(jLabelSearchResult, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(chkSearchResult, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jLabelGenerateReport, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 18, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(chkGenerateReport, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     
@@ -158,7 +159,7 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox chkGenerateReport;
     private javax.swing.JCheckBox chkSearchResult;
     private javax.swing.JCheckBox chkSearchScreen;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBoxSearchRequired;
     private javax.swing.JLabel jLabelDisplayName;
     private javax.swing.JLabel jLabelGenerateReport;
     private javax.swing.JLabel jLabelInputMask;
@@ -239,7 +240,7 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
             }
         });
         
-        this.jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+        this.jComboBoxSearchRequired.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent e) {
             }
         });
@@ -311,7 +312,7 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
      *@return SearchRequired
      */
     public String getSearchRequired() {
-        return this.jComboBox1.getSelectedItem().toString();
+        return this.jComboBoxSearchRequired.getSelectedItem().toString();
     }
 
     /**

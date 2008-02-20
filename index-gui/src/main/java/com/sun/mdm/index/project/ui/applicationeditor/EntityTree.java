@@ -314,7 +314,7 @@ public class EntityTree extends JTree implements CellEditorListener {
                 nodeName = parentNode.getName() + EntityNode.getFieldNodeType() + fieldCnt;
                 childNode = new EntityNode(this, nodeName, nodeName, EntityNode.getFieldNodeType(), 
                                        "string", 1, "", "", false, false, false,
-                                       false, false, "None", 8, "", "", false, "", "", false); 
+                                       false, false, "None", 32, "", "", false, "", "", false); 
                 childNode.setJustAdded();
            }
 

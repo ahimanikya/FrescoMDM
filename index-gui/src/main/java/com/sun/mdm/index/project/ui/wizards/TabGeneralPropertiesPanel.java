@@ -29,7 +29,6 @@ import com.sun.mdm.index.parser.FieldDef;
 public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
     private String mOriginalDataSize;
     private String MATCH_TYPE_NONE = java.util.ResourceBundle.getBundle("com/sun/mdm/index/project/ui/applicationeditor/Bundle").getString("MSG_None");
-    private boolean bCheckedOut = true;
     private EntityNode mEntityNode;
     
     /** Creates new form TabGeneralPropertiesPanel */
@@ -52,22 +51,6 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
         loadProperties(entityNode.getFieldDef());
         // add other listeners after properties are loaded
         addListeners2();
-        enableComponents();
-    }
-    
-    private void enableComponents() {
-        this.txtName.setEnabled(bCheckedOut);
-        this.cbDataType.setEnabled(bCheckedOut);
-        this.cbMatchType.setEnabled(bCheckedOut);
-        //this.chkBlocking.setEnabled(bCheckedOut);
-        this.chkKeyType.setEnabled(bCheckedOut);
-        this.chkUpdateable.setEnabled(bCheckedOut);
-        this.chkRequired.setEnabled(bCheckedOut);
-        this.spFieldSize.setEnabled(bCheckedOut);
-        this.txtPattern.setEnabled(bCheckedOut);
-        this.txtCodeModule.setEnabled(bCheckedOut);
-        this.txtUserCode.setEnabled(bCheckedOut);        
-        this.txtConstrainedBy.setEnabled(bCheckedOut);
     }
     
     private void addListeners1() {
@@ -518,6 +501,8 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
         jLabelConstrainedBy = new javax.swing.JLabel();
         txtConstrainedBy = new javax.swing.JTextField();
 
+        setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/sun/mdm/index/project/ui/applicationeditor/Bundle"); // NOI18N
         jLabelName.setText(bundle.getString("MSG_Name")); // NOI18N
 
@@ -567,8 +552,8 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
                         .add(jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -579,12 +564,6 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
                     .add(layout.createSequentialGroup()
                         .add(jLabelMatchType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(cbMatchType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 130, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(layout.createSequentialGroup()
-                        .add(jLabelBlocking, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(chkBlocking))
-                    .add(layout.createSequentialGroup()
-                        .add(jLabelKeyType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(chkKeyType))
                     .add(layout.createSequentialGroup()
                         .add(jLabelUpdateable, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(chkUpdateable))
@@ -605,12 +584,19 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
                         .add(txtUserCode, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(layout.createSequentialGroup()
                         .add(jLabelConstrainedBy, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(txtConstrainedBy, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .add(txtConstrainedBy, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelBlocking, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(chkBlocking))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabelKeyType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(chkKeyType)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
+                .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(txtName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -658,7 +644,7 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jLabelConstrainedBy, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(txtConstrainedBy, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addContainerGap(14, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

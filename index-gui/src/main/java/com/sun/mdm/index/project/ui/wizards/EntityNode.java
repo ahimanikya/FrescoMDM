@@ -77,7 +77,7 @@ public class EntityNode extends DefaultMutableTreeNode {
                             false,
                             false,
                             false,
-                            8, "", "",
+                            32, "", "",
                             "", "");
 
         mPropertySheetModel = new PropertySheetModel(nodeName, defaultDataType, this);
