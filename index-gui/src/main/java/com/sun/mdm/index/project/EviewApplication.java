@@ -628,6 +628,7 @@ public class EviewApplication extends EviewProject {
             return;
         }
         mAssociatedNode.setModified(flag);
+        mObjectTopComponent.setModified(flag);
     }
     
     /* set dirty bit by various configuration panels
@@ -639,6 +640,7 @@ public class EviewApplication extends EviewProject {
             return;
         }
         mAssociatedNode.setModified(flag);
+        mObjectTopComponent.setModified(flag);
     }
     
     /* Called by EntityNode so cbMatchType contains the right list of match types

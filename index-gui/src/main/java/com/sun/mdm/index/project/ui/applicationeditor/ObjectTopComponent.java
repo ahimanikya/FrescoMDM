@@ -68,7 +68,6 @@ public class ObjectTopComponent
         putClientProperty("PersistenceType", "Never");
     }
 
-
     /**
      * get name of the top component
      *
@@ -86,28 +85,18 @@ public class ObjectTopComponent
         return mNodeName;
     }
 
-
-    /**
-     * set name for the top component
-     *
-     * @param name name for the top component
+    /** called by EviewApplication
+     * 
+     * @param flag
      */
-    @Override
-    public void setName(String name) {
-        mNodeName = name;
-        super.setName(mNodeName);
+    public void setModified(boolean flag) {
+        if (flag) {
+            mNodeName = mPath + "*";
+        } else {
+            mNodeName = mPath;
+        }
+        super.setDisplayName(mNodeName);
     }
-
-
-    /**
-     * called from EviewEditorMainPanel
-     *
-     * @param name TC name
-     */
-    public void setTCName(String name) {
-        super.setName(name);
-    }
-
 
     /**
      * called by Netbeans to determine if the workspace can close shall return
