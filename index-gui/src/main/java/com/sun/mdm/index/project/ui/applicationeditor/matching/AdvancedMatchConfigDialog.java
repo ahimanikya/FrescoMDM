@@ -95,6 +95,7 @@ public class AdvancedMatchConfigDialog extends javax.swing.JDialog {
         }
         this.jComboBoxNullField.setSelectedItem(mMapNullFields2.get(nullField));
 
+        java.util.Collections.sort(mAlFunctionsDesc);
         for (int i=0; i<mAlFunctionsDesc.size(); i++) {
             jComboBoxFunction.addItem(mAlFunctionsDesc.get(i));
         }
