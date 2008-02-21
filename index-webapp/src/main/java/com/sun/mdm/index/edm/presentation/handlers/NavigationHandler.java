@@ -92,7 +92,7 @@ public class NavigationHandler {
      * @return <CODE>String</CODE>
      */
     public String toTransEuidDetails() {
-        System.out.println("===> : to trans details");
+        //System.out.println("===> : to trans details");
         session.setAttribute("ScreenObject",getScreenObject(RECORD_DETAILS));
         return "Transaction Details";
     }
@@ -160,7 +160,7 @@ public class NavigationHandler {
      */
     public String toDashboard() {
         // There is no screen object defined in the EDM.xml file for the "Dashboard"
-        session.setAttribute("ScreenObject",getScreenObject(DASH_BOARD));
+        session.setAttribute("ScreenObject",getScreenObject(RECORD_DETAILS));
         return "to_screen_8";
     }
     /**

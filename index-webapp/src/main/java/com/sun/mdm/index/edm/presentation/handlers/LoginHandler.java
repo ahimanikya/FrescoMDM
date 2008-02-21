@@ -92,6 +92,8 @@ public class LoginHandler {
             Logon.initializeConfigurationSecurity();
             
         } catch(Exception ex) {
+            
+            ex.printStackTrace();
             errorMessage = bundle.getString("login_user_login_init_load_message");
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
             return FAIL_INITIALIZATION;
@@ -108,6 +110,7 @@ public class LoginHandler {
             // Initialize the QWS Controller, Validation, and Date services
             Logon.initializeQWSControllerValidationDate();
         } catch (Exception e) {
+            e.printStackTrace();
             errorMessage = bundle.getString("login_user_login_failure_message");
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
             return FAILURE;
