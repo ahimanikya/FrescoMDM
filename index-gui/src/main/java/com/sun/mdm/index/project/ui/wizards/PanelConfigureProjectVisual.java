@@ -72,7 +72,7 @@ public class PanelConfigureProjectVisual
 
         // Provide a name in the title bar.
         setName(NbBundle.getBundle(WIZARD_BUNDLE).getString("LBL_NWP1_ProjectTitleName")); //NOI18N
-        putClientProperty ("NewProjectWizard_Title", NbBundle.getBundle(WIZARD_BUNDLE).getString("TXT_NewWebApp")); //NOI18N
+        putClientProperty ("NewProjectWizard_Title", NbBundle.getBundle(WIZARD_BUNDLE).getString("TXT_NewMIApp")); //NOI18N
     }
 
     boolean valid(WizardDescriptor wizardDescriptor) {
