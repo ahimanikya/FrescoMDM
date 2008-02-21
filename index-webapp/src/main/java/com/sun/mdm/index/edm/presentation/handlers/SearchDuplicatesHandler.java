@@ -32,9 +32,6 @@
 package com.sun.mdm.index.edm.presentation.handlers;
 
 import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
-import com.sun.mdm.index.edm.services.configuration.SearchScreenConfig;
-import com.sun.mdm.index.edm.services.configuration.FieldConfig;
-import com.sun.mdm.index.edm.services.configuration.FieldConfigGroup;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.master.search.potdup.PotentialDuplicateIterator;
@@ -44,37 +41,34 @@ import com.sun.mdm.index.util.LogUtil;
 import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.page.PageException;
-import com.sun.mdm.index.edm.services.configuration.ConfigManager;
-import com.sun.mdm.index.edm.services.configuration.ScreenObject;
-import com.sun.mdm.index.edm.services.configuration.SearchResultsConfig;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.edm.util.DateUtil;
 import com.sun.mdm.index.edm.util.QwsUtil;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 import javax.faces.event.*;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
 import com.sun.mdm.index.edm.presentation.validations.HandlerException;
-import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
 import com.sun.mdm.index.objects.EnterpriseObject;
-import javax.servlet.http.HttpServletRequest;
+import com.sun.mdm.index.objects.SystemObject;
 
 
-public class SearchDuplicatesHandler {
+/**
+ * 
+ * @author Rajani Kanth
+ */
+public class SearchDuplicatesHandler extends ScreenConfiguration {
     private HashMap updateableFeildsMap =  new HashMap();    
     private HashMap actionMap =  new HashMap();    
     private ArrayList nonUpdateableFieldsArray = new ArrayList();    
-    private ArrayList screenConfigArray;
-    private ArrayList resultsConfigArray;
+    
+    String errorMessage = null;
     
     private  static final String SEARCH_DUPLICATES="Search Duplicates";
     
@@ -86,16 +80,6 @@ public class SearchDuplicatesHandler {
    
     private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.SearchDuplicatesHandler");
 
-    // Create fields for non updateable fields as per screen config array
-    private String EUID;
-    private String SystemCode;
-    private String LID;
-    private String create_start_date;
-    private String create_end_date;
-    private String create_start_time;
-    private String create_end_time;
-    private String Status;
-    
     private String searchType = "Advanced Search";
 
     private static final String  BASIC_SEARCH_RES     = "basicSearchResults";
@@ -105,12 +89,6 @@ public class SearchDuplicatesHandler {
 
     private PotentialDuplicateSummary comparePotentialDuplicateSummary;
     private ArrayList potentialDuplicateSummaryArray;
-    //Resource bundle
-    ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
-    //Http session variable
-    HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-    //HTTP request variable
-    HttpServletRequest httpRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 
     
     /** Creates a new instance of SearchDuplicatesHandler */
@@ -119,99 +97,134 @@ public class SearchDuplicatesHandler {
 
 
     public String performSubmit() throws ProcessingException, UserException, ValidationException,HandlerException{
-        EDMValidation edmValidation = new EDMValidation();
         //get the hidden fields search type from the form usin the facesContext
         // get the array list as per the search
-        String errorMessage = null;
-        Date date = null;
-        ArrayList fieldConfigArrayList  = getFieldConfigArrayListByTitle(this.searchType);
-        Iterator fieldConfigArrayIter =  fieldConfigArrayList.iterator();
-        int totalFields = fieldConfigArrayList.size();
-        int countMenuFields = 0;
-        int countEmptyFields = 0;
-        while(fieldConfigArrayIter.hasNext())  {
-             FieldConfig  fieldConfig = (FieldConfig) fieldConfigArrayIter.next();
-             String feildValue = (String) getUpdateableFeildsMap().get(fieldConfig.getName());                          
-             if("MenuList".equalsIgnoreCase(fieldConfig.getGuiType()) && feildValue == null)  {
-               countMenuFields++;     
-             } else if(!"MenuList".equalsIgnoreCase(fieldConfig.getGuiType()) && feildValue != null && feildValue.trim().length() == 0)  { 
-               countEmptyFields++;       
-             } else if (!"MenuList".equalsIgnoreCase(fieldConfig.getGuiType()) && feildValue == null )  { 
-                 countEmptyFields++;
-             }
-        }
-        
-        //Checking one of many condition here   
-        if( (totalFields > 0 && countEmptyFields+countMenuFields == totalFields)   && // all updateable fields are left blank
-           (getEUID() == null || (getEUID()  != null && getEUID().trim().length() == 0))  &&
-           (getLID()  == null || (getLID()  != null && getLID().trim().length() == 0))  &&
-           (getCreate_start_date()  == null || (getCreate_start_date()  != null && getCreate_start_date().trim().length() == 0))  &&
-           (getCreate_start_time()  == null || (getCreate_start_time()  != null && getCreate_start_time().trim().length() == 0))  &&
-           (getCreate_end_date()  == null  || (getCreate_end_date()  != null && getCreate_end_date().trim().length() == 0))  &&
-           (getCreate_end_time()  == null || (getCreate_end_time()  != null && getCreate_end_time().trim().length() == 0))  &&
-           (getSystemCode()  == null) &&  
-           (getStatus()  == null ) 
+        //Start Validation
+            HashMap newFieldValuesMap = new HashMap();
 
-           )  {
-                errorMessage =  bundle.getString("ERROR_one_of_many");
+            if (super.getEnteredFieldValues() != null && super.getEnteredFieldValues().length() > 0) {
+                String[] fieldNameValues = super.getEnteredFieldValues().split(">>");
+                for (int i = 0; i < fieldNameValues.length; i++) {
+                    String string = fieldNameValues[i];
+                    String[] keyValues = string.split("##");
+                    if(keyValues.length ==2) {
+                      newFieldValuesMap.put(keyValues[0], keyValues[1]);
+                    }
+                }
+            }
+           
+            super.setUpdateableFeildsMap(newFieldValuesMap);
+
+
+            //set the search type as per the user choice
+            super.setSearchType(super.getSelectedSearchType());
+            
+            
+            //check one of many condtion here
+            if (super.checkOneOfManyCondition()) {
+                errorMessage = bundle.getString("ERROR_one_of_many");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "One of Many :: " + errorMessage));
-                java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-          } 
+                mLogger.error("Validation failed. Message displayed to the user: " + "One of Many :: " + errorMessage);
+                return VALIDATION_ERROR;
+            }
+
+            //if user enters LID ONLY 
+            if ((super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("SystemCode") == null) {
+                errorMessage = "Please Enter System Code";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "System Code/LID Validation  :: " + errorMessage, errorMessage));
+                mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
+                return VALIDATION_ERROR;
+
+            }
+            //if user enters SYSTEMCODE ONLY 
+            if ((super.getUpdateableFeildsMap().get("SystemCode") != null && super.getUpdateableFeildsMap().get("SystemCode").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("LID") == null) {
+                errorMessage = "Please Enter LID Value";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "System Code/LID Validation :: " + errorMessage, errorMessage));
+                mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
+                return VALIDATION_ERROR;
+
+            }
+            //if user enters LID and SystemCode Validate the LID 
+            if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
+                String LID = (String) super.getUpdateableFeildsMap().get("LID");
+                String SystemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
+                if (SystemCode.trim().length() > 0 && LID.trim().length() == 0) {
+                    errorMessage = "Please Enter LID Value";
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID/SystemCode Validation :: " + errorMessage, errorMessage));
+                    mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
+                    return VALIDATION_ERROR;
+
+                }
+            }
+
+
+            //if user enters LID and SystemCode Validate the LID 
+            if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
+                String LID = (String) super.getUpdateableFeildsMap().get("LID");
+                String SystemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
+                if (LID.trim().length() > 0 && SystemCode.trim().length() > 0) {
+                    try {
+                        //remove masking for LID field
+                        LID = LID.replaceAll("-", "");
+                        SystemObject so = masterControllerService.getSystemObject(SystemCode, LID);
+                        if (so == null) {
+                            errorMessage = bundle.getString("system_object_not_found_error_message");
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID/SYSTEM CODE :: " + errorMessage, errorMessage));
+                            mLogger.error("Validation failed. Message displayed to the user: " + "LID/SYSTEM CODE :: " + errorMessage);
+                            return VALIDATION_ERROR;
+                        }
+                    } catch (ProcessingException ex) {
+                        mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
+                        mLogger.error("ProcessingException ex : " + ex.toString());
+                        return VALIDATION_ERROR;
+                    } catch (UserException ex) {
+                        mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
+                        mLogger.error("UserException ex : " + ex.toString());
+                        return VALIDATION_ERROR;
+                    }
+
+                }
+
+            }
+
+            //Validate all date fields entered by the user
+            if (super.validateDateFields().size() > 0) {
+                Object[] messObjs = super.validateDateFields().toArray();
+                for (int i = 0; i < messObjs.length; i++) {
+                    String obj = (String) messObjs[i];
+                    String[] fieldErrors = obj.split(":");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
+                    mLogger.error("Validation failed. Message displayed to the user: " + fieldErrors[0] + " : " + fieldErrors[1]);
+                    return VALIDATION_ERROR;
+                }
+
+            }
+
+            //Validate all time fields entered by the user
+            if (super.validateTimeFields().size() > 0) {
+                Object[] messObjs = super.validateTimeFields().toArray();
+                for (int i = 0; i < messObjs.length; i++) {
+                    String obj = (String) messObjs[i];
+                    String[] fieldErrors = obj.split(":");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
+                    mLogger.error("Validation failed. Message displayed to the user: " + fieldErrors[0] + " : " + fieldErrors[1]);
+                    return VALIDATION_ERROR;
+                }
+
+            }
         
-          //Form Validation of  Start Date        
-        if (getCreate_start_date() != null && getCreate_start_date().trim().length() > 0)    {
-            String message = edmValidation.validateDate(getCreate_start_date());
-            if (!"success".equalsIgnoreCase(message)) {
-                 errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
-                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, message, message);
-           }
-        }  
-       //Form Validation of  End Date        
-        if (getCreate_end_date() != null && getCreate_end_date().trim().length() > 0)    {
-            String message = edmValidation.validateDate(getCreate_end_date());
-            if (!"success".equalsIgnoreCase(message)) {
-                errorMessage = (errorMessage != null && errorMessage.length() > 0? message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "End Date:: " + errorMessage));
-                java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, message, message);
-             }
-        }
         
-        //Check FromDate-ToDate Range
-        if (((getCreate_start_date() != null) && (getCreate_start_date().trim().length() > 0)) &&
-                ((getCreate_end_date() != null) && (getCreate_end_date().trim().length() > 0))) {
-            Date fromdate = null;
-            Date todate = null;
-            long startDate = 0;
-            long endDate = 0;
-            try {
-                fromdate = DateUtil.string2Date(getCreate_start_date() + (getCreate_start_time() != null ? " " + getCreate_start_time() : " 00:00:00"));
-                todate = DateUtil.string2Date(getCreate_end_date() + (getCreate_end_time() != null ? " " + getCreate_end_time() : " 23:59:59"));
-                startDate = fromdate.getTime();
-                endDate = todate.getTime();
-            } catch (Exception dateExe) {
-                //We would have caught the message to display in the edmValidation above, so ignore it here
-            }
-            if (endDate < startDate) {
-                errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "fromdate :: " + errorMessage));
-                java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-            }
-        }
-         if (getEUID() != null && getEUID().length() > 0)    {
-            String message = edmValidation.validateNumber(getEUID());
-            if (!"success".equalsIgnoreCase(message)) {
-                errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "EUID:: " + errorMessage, errorMessage));
-                java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-            }
-        }    
-        if (errorMessage != null && errorMessage.length() != 0) {
-            return this.VALIDATION_ERROR;
-        } 
+        //End Validation
+        
+        
+        
+        
+        
+        
+        
         
         PotentialDuplicateSearchObject potentialDuplicateSearchObject = getPDSearchObject();
-        MasterControllerService  masterControllerService = new MasterControllerService();    
+        
         try {
             PotentialDuplicateIterator pdPageIterArray = masterControllerService.lookupPotentialDuplicates(potentialDuplicateSearchObject);
             
@@ -285,14 +298,14 @@ public class SearchDuplicatesHandler {
             }
             ArrayList finalArrayList = arlOuter;            
             ArrayList arlInner = null;          
-            if (getEUID() == null) {
+            if (super.getUpdateableFeildsMap().get("Person.EUID")== null) {
                 finalArrayList = arlOuter;
             } else {
                 ArrayList outer = new ArrayList();
                 for (int i = 0; i < arlOuter.size(); i++) {
                     arlInner = (ArrayList) arlOuter.get(i);
                     String strData = (String) arlInner.get(0);
-                    if (strData.equalsIgnoreCase(getEUID())) {                     
+                    if (strData.equalsIgnoreCase((String)super.getUpdateableFeildsMap().get("Person.EUID"))) {                     
                         outer.add(arlInner);
                         finalArrayList = outer;
                     }
@@ -301,10 +314,8 @@ public class SearchDuplicatesHandler {
 
             //Build and arraylist of hashmaps for the duplicates before putting in the request
             CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
-            ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
             ArrayList newFinalArray  = new ArrayList();        
             float wt = 0.0f;
-            HashMap newHashMap = new HashMap();
             for (int i = 0; i < finalArrayList.size(); i++) {
                 ArrayList newInnerArray  = new ArrayList();        
                 ArrayList innerArrayList = (ArrayList) finalArrayList.get(i);
@@ -367,134 +378,6 @@ public class SearchDuplicatesHandler {
         this.actionMap = actionMap;
     }
 
-    public ArrayList getScreenConfigArray() {
-        ArrayList basicSearchFieldConfigs;
-        try {
-            
-            //ConfigManager.init();
-            //screenConfigArray = ConfigManager.getInstance().getScreen(new Integer("3")).getSearchScreensConfig();
-            
-            ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
-            screenConfigArray = screenObject.getSearchScreensConfig();    
-            
-            Iterator iteratorScreenConfig = screenConfigArray.iterator();
-
-            while (iteratorScreenConfig.hasNext()) {
-                SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
-
-                if (getSearchType().equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
-                    // Get an array list of field config groups
-                    basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
-                    Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
-                    //Iterate the the FieldConfigGroup array list
-                    while (basicSearchFieldConfigsIterator.hasNext()) {
-                        //Build array of field config groups 
-                        FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
-
-                        //Build array of field configs from 
-                        screenConfigArray = basicSearchFieldGroup.getFieldConfigs();
-                    }
-                }
-            }
-            
-        } catch (Exception e) {
-            mLogger.error("Failed Get the Screen Config Array Object: ", e);
-        }
-        return screenConfigArray;
-    }
-
-    public void setScreenConfigArray(ArrayList screenConfigArray) {
-        this.screenConfigArray = screenConfigArray;
-    }
-    
-    // Getter and setter methods for non updateable fields as per screen config array
-    public String getEUID() {
-        return EUID;
-    }
-
-    public void setEUID(String EUID) {
-        this.EUID = EUID;
-    }
-
-    public String getSystemCode() {
-        return SystemCode;
-    }
-
-    public void setSystemCode(String SystemCode) {
-        this.SystemCode = SystemCode;
-    }
-
-    public String getLID() {
-        return LID;
-    }
-
-    public void setLID(String LID) {
-        this.LID = LID;
-    }
-
-    public String getCreate_start_date() {
-        return create_start_date;
-    }
-
-    public void setCreate_start_date(String create_start_date) {
-        this.create_start_date = create_start_date;
-    }
-
-    public String getCreate_end_date() {
-        return create_end_date;
-    }
-
-    public void setCreate_end_date(String create_end_date) {
-        this.create_end_date = create_end_date;
-    }
-
-    public String getCreate_start_time() {
-        return create_start_time;
-    }
-
-    public void setCreate_start_time(String create_start_time) {
-        this.create_start_time = create_start_time;
-    }
-
-    public String getCreate_end_time() {
-        return create_end_time;
-    }
-
-    public void setCreate_end_time(String create_end_time) {
-        this.create_end_time = create_end_time;
-    }
-
-    public String getStatus() {
-        return Status;
-    }
-
-    public void setStatus(String Status) {
-        this.Status = Status;
-    }
-
-    public ArrayList getNonUpdateableFieldsArray() {
-        return nonUpdateableFieldsArray;
-    }
-    public void setNonUpdateableFieldsArray(ArrayList nonUpdateableFieldsArray) {
-        this.nonUpdateableFieldsArray = nonUpdateableFieldsArray;
-    }
-
-    public HashMap getUpdateableFeildsMap() {
-        return updateableFeildsMap;
-    }
-
-    public void setUpdateableFeildsMap(HashMap updateableFeildsMap) {
-        this.updateableFeildsMap = updateableFeildsMap;
-    }
-
-    public String getSearchType() {
-        return searchType;
-    }
-
-    public void setSearchType(String searchType) {
-        this.searchType = searchType;
-    }
-
     /**
      * @exception ValidationException when entry is not valid.
      * @todo Document: Getter for PDSearchObject attribute of the SearchForm
@@ -502,114 +385,182 @@ public class SearchDuplicatesHandler {
      * @return  the PD search object
      */
     public PotentialDuplicateSearchObject getPDSearchObject() {
-        String sCreateStartTime = null;
-        String sCreateEndTime = null;
-        String sResolvedStartTime = null;
-        String sResolvedEndTime = null;
-        String sysCode = null;
+        PotentialDuplicateSearchObject potentialDuplicateSearchObject = new PotentialDuplicateSearchObject();
         
-        boolean paramEntered = false;
-        
-        PotentialDuplicateSearchObject obj = new PotentialDuplicateSearchObject();
-        
-        // Set to static values need clarification from prathiba
-        //This will be revoked when login module is implemented.
+        //if user enters LID and SystemCode get the EUID and set it to the potentialDuplicateSearchObject
+        if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
+            String LID = (String) super.getUpdateableFeildsMap().get("LID");
+            String SystemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
+            if (LID.trim().length() > 0 && SystemCode.trim().length() > 0) {
+                try {
+                    //remove masking for LID field
+                    LID = LID.replaceAll("-", "");
 
-        //obj.setPageSize(ConfigManager.getInstance().getMatchingConfig().getItemPerSearchResultPage());
-        //obj.setMaxElements(ConfigManager.getInstance().getMatchingConfig().getMaxResultSize());
+                    SystemObject so = masterControllerService.getSystemObject(SystemCode, LID);
+                    if (so == null) {
+                        errorMessage = bundle.getString("system_object_not_found_error_message");
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID/SYSTEM CODE:: " + errorMessage, errorMessage));
+                        mLogger.error("LID/SYSTEM CODE:: " + errorMessage);
 
-        obj.setPageSize(10);
-        obj.setMaxElements(100);
-        
-        Date date = null;
-                
-        try {
-            if ((getCreate_start_date() != null) && (getCreate_start_date().trim().length() > 0)) {
-                /*
-                 *
-                if (sCreateStartTime.trim().length() == 0) {
-                    sCreateStartTime = "00:00:00";
+                    } else {
+                        EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(so);
+                        //potentialDuplicateSearchObject.setEUID(eo.getEUID());
+                        String[] euidArray = getStringEUIDs(eo.getEUID());
+
+                        if (euidArray != null & euidArray.length > 0) {
+                            potentialDuplicateSearchObject.setEUIDs(euidArray);
+                        } else {
+                            potentialDuplicateSearchObject.setEUIDs(null);
+                        }
+                    }
+                } catch (ProcessingException ex) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ProcessingException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+                    mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
+                    mLogger.error("ProcessingException ex : " + ex.toString());
+                } catch (UserException ex) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "UserException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+                    mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
+                    mLogger.error("UserException ex : " + ex.toString());
                 }
-                */
-                date = DateUtil.string2Date(getCreate_start_date()+" "+"00:00:00");
-                
-                //date = this.convertString2Date(getCreate_start_date()+" "+"00:00:00");
-                if (date != null) {
-                    obj.setCreateStartDate(new Timestamp(date.getTime()));
-                }
+
             }
-           
-            if ((getCreate_end_date() != null) && (getCreate_end_date().trim().length() > 0)) {
-                /*
-                if (sCreateEndTime.trim().length() == 0) {
-                    sCreateEndTime = "23:59:59";
-                }
-                 */
-                date = DateUtil.string2Date(getCreate_end_date()+" "+"23:59:59");
-               // date = this.convertString2Date(getCreate_end_date()+" "+"00:00:00");
-                
-                if (date != null) {
-                    obj.setCreateEndDate(new Timestamp(date.getTime()));
-                }
-            }
-            
-            // Get array of strings
-            if(getEUID() != null ) {
-                String[] euidArray = getStringEUIDs(getEUID());
+
+        }
+
+        //set EUID VALUE IF lid/system code not supplied
+          if (super.getUpdateableFeildsMap().get("Person.EUID") != null && super.getUpdateableFeildsMap().get("Person.EUID").toString().trim().length() > 0) {
+//            // Get array of strings
+                String[] euidArray = getStringEUIDs((String) super.getUpdateableFeildsMap().get("Person.EUID"));
                 
                 if(euidArray!=null & euidArray.length >0) {
-                    obj.setEUIDs(euidArray);
+                    potentialDuplicateSearchObject.setEUIDs(euidArray);
                 } else {
-                    obj.setEUIDs(null);
+                    potentialDuplicateSearchObject.setEUIDs(null);
                 }
-            }
-            
-        } catch(ValidationException validationException) {
-            String errorMessage = "Validation Exception";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
-        }
-        return obj;
-    }
-    // getFieldConfigArrayListByTitle to get the field configs
-    /**
-     * 
-     * @param screenTitle
-     * @return
-     */
-    public ArrayList getFieldConfigArrayListByTitle(String screenTitle) {
-        ArrayList basicSearchFieldConfigs = null;
-        ArrayList fieldConfigArrayList = null;
-        try {
-            //ConfigManager.init();
-            //screenConfigArray = ConfigManager.getInstance().getScreen(new Integer("3")).getSearchScreensConfig();
-            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-            ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
-            screenConfigArray = screenObject.getSearchScreensConfig();
+          }
+        
 
-            Iterator iteratorScreenConfig = screenConfigArray.iterator();
 
-            while (iteratorScreenConfig.hasNext()) {
-                SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
 
-                if (screenTitle.equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
-                    // Get an array list of field config groups
-                    basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
-                    Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
-                    //Iterate the the FieldConfigGroup array list
-                    while (basicSearchFieldConfigsIterator.hasNext()) {
-                        //Build array of field config groups 
-                        FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
-
-                        //Build array of field configs from 
-                        fieldConfigArrayList = basicSearchFieldGroup.getFieldConfigs();
-                    }
+        //Set StartDate to the potentialDuplicateSearchObject  
+        if (super.getUpdateableFeildsMap().get("create_start_date") != null && super.getUpdateableFeildsMap().get("create_start_date").toString().trim().length() > 0) {
+            try {
+                String startTime = (String) super.getUpdateableFeildsMap().get("create_start_time");
+                String searchStartDate = (String) super.getUpdateableFeildsMap().get("create_start_date");
+                //append the time aling with date
+                if (startTime != null && startTime.trim().length() > 0) {
+                    searchStartDate = searchStartDate + " " + startTime;
+                } else {
+                    searchStartDate = searchStartDate + " 00:00:00";
                 }
-            }
 
-        } catch (Exception e) {
-            mLogger.error("Failed Get the Screen Object: ", e);
+                Date date = DateUtil.string2Date(searchStartDate);
+                if (date != null) {
+                    potentialDuplicateSearchObject.setCreateStartDate(new Timestamp(date.getTime()));
+                }
+            } catch (ValidationException ex) {
+                java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        return fieldConfigArrayList;
+
+
+        //Set StartDate to the potentialDuplicateSearchObject  
+        if (super.getUpdateableFeildsMap().get("create_end_date") != null && super.getUpdateableFeildsMap().get("create_end_date").toString().trim().length() > 0) {
+            try {
+                String endTime = (String) super.getUpdateableFeildsMap().get("create_end_time");
+                String searchEndDate = (String) super.getUpdateableFeildsMap().get("create_end_date");
+                //append the time aling with date
+                if (endTime != null && endTime.trim().length() > 0) {
+                    searchEndDate = searchEndDate + " " + endTime;
+                } else {
+                    searchEndDate = searchEndDate + " 23:59:59";
+                }
+                Date date = DateUtil.string2Date(searchEndDate);
+                if (date != null) {
+                    potentialDuplicateSearchObject.setCreateEndDate(new Timestamp(date.getTime()));
+                }
+            } catch (ValidationException ex) {
+                java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        //EndTime=, StartTime=, EndDate=, StartDate=, Function=null, SystemUser=, SystemCode=null, LID=, EUID=
+        if (super.getUpdateableFeildsMap().get("SystemUser") != null && super.getUpdateableFeildsMap().get("SystemUser").toString().trim().length() > 0) {
+            potentialDuplicateSearchObject.setCreateUser((String) super.getUpdateableFeildsMap().get("SystemUser"));
+        } else {
+            potentialDuplicateSearchObject.setCreateUser(null);
+        }
+
+        
+        
+        
+        
+        
+        
+        
+        
+//        
+//        
+//        
+//        
+//        
+//        
+//        // Set to static values need clarification from prathiba
+//        //This will be revoked when login module is implemented.
+//
+//        //obj.setPageSize(ConfigManager.getInstance().getMatchingConfig().getItemPerSearchResultPage());
+//        //obj.setMaxElements(ConfigManager.getInstance().getMatchingConfig().getMaxResultSize());
+//
+//        obj.setPageSize(10);
+//        obj.setMaxElements(100);
+//        
+//        Date date = null;
+//                
+//        try {
+//            if ((getCreate_start_date() != null) && (getCreate_start_date().trim().length() > 0)) {
+//                /*
+//                 *
+//                if (sCreateStartTime.trim().length() == 0) {
+//                    sCreateStartTime = "00:00:00";
+//                }
+//                */
+//                date = DateUtil.string2Date(getCreate_start_date()+" "+"00:00:00");
+//                
+//                //date = this.convertString2Date(getCreate_start_date()+" "+"00:00:00");
+//                if (date != null) {
+//                    obj.setCreateStartDate(new Timestamp(date.getTime()));
+//                }
+//            }
+//           
+//            if ((getCreate_end_date() != null) && (getCreate_end_date().trim().length() > 0)) {
+//                /*
+//                if (sCreateEndTime.trim().length() == 0) {
+//                    sCreateEndTime = "23:59:59";
+//                }
+//                 */
+//                date = DateUtil.string2Date(getCreate_end_date()+" "+"23:59:59");
+//               // date = this.convertString2Date(getCreate_end_date()+" "+"00:00:00");
+//                
+//                if (date != null) {
+//                    obj.setCreateEndDate(new Timestamp(date.getTime()));
+//                }
+//            }
+//            
+//            // Get array of strings
+//            if(getEUID() != null ) {
+//                String[] euidArray = getStringEUIDs(getEUID());
+//                
+//                if(euidArray!=null & euidArray.length >0) {
+//                    obj.setEUIDs(euidArray);
+//                } else {
+//                    obj.setEUIDs(null);
+//                }
+//            }
+//            
+//        } catch(ValidationException validationException) {
+//            String errorMessage = "Validation Exception";
+//            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+//        }
+        return potentialDuplicateSearchObject;
     }
     public String[] getStringEUIDs(String euids) {
         
@@ -621,44 +572,6 @@ public class SearchDuplicatesHandler {
             i++;
         }
         return euidsArray;
-    }
-
-    public ArrayList getResultsConfigArray() {
-        ArrayList basicSearchFieldConfigs = null;
-        ArrayList fieldConfigArrayList = null;
-        try {
-            //ConfigManager.init();
-            //screenConfigArray = ConfigManager.getInstance().getScreen(new Integer("3")).getSearchScreensConfig();
-            
-            ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
-            ArrayList resultsScreenConfigArray = screenObject.getSearchResultsConfig();
-
-            Iterator iteratorScreenConfig = resultsScreenConfigArray.iterator();
-
-            while (iteratorScreenConfig.hasNext()) {
-                SearchResultsConfig objSearchScreenConfig = (SearchResultsConfig) iteratorScreenConfig.next();
-
-                // Get an array list of field config groups
-                basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
-                Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
-                //Iterate the the FieldConfigGroup array list
-                while (basicSearchFieldConfigsIterator.hasNext()) {
-                    //Build array of field config groups 
-                    FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
-
-                    //Build array of field configs from 
-                    resultsConfigArray = basicSearchFieldGroup.getFieldConfigs();
-                }
-            }
-
-        } catch (Exception e) {
-            mLogger.error("Failed Get the Screen Object: ", e);
-        }
-        return resultsConfigArray;
-    }
-
-    public void setResultsConfigArray(ArrayList resultsConfigArray) {
-        this.resultsConfigArray = resultsConfigArray;
     }
 
     /**

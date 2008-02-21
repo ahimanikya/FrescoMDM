@@ -101,6 +101,28 @@ public class AssumeMatchHandler extends ScreenConfiguration {
         session.removeAttribute("enterpriseArrayList");
         session.removeAttribute("previewAMEO");
         try {
+            HashMap newFieldValuesMap = new HashMap();
+
+            if (super.getEnteredFieldValues() != null && super.getEnteredFieldValues().length() > 0) {
+                String[] fieldNameValues = super.getEnteredFieldValues().split(">>");
+                for (int i = 0; i < fieldNameValues.length; i++) {
+                    String string = fieldNameValues[i];
+                    String[] keyValues = string.split("##");
+                    if(keyValues.length ==2) {
+                      newFieldValuesMap.put(keyValues[0], keyValues[1]);
+                    }
+                }
+            }
+           
+            super.setUpdateableFeildsMap(newFieldValuesMap);
+
+
+            //set the search type as per the user choice
+            super.setSearchType(super.getSelectedSearchType());
+            
+            
+            
+            
             mLogger.error("Submitted HashMap by the UI: " + super.getUpdateableFeildsMap());
             //check one of many condtion here
             if (super.checkOneOfManyCondition()) {
@@ -192,7 +214,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
 
             //get the AssumedMatchSearchObject             
             AssumedMatchSearchObject amso = getAMSearchObject();
-
+            mLogger.error("amso ==>: " + amso);
 
             // Lookup Assumed Matches
             AssumedMatchIterator amIter = masterControllerService.lookupAssumedMatches(amso);
@@ -274,7 +296,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
      * @throws java.lang.Exception 
      * @todo Document: Getter for PDSearchObject attribute of the SearchForm
      *      object
-     * @return  the PD search object
+     * @return  the AssumedMatchSearchObject
      */
     public AssumedMatchSearchObject getAMSearchObject() throws ValidationException, Exception {
 
@@ -288,22 +310,32 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                 try {
                     //remove masking for LID field
                     LID = LID.replaceAll("-", "");
-            		  SystemObject so = masterControllerService.getSystemObject(SystemCode, LID);
+
+                    SystemObject so = masterControllerService.getSystemObject(SystemCode, LID);
                     if (so == null) {
                         errorMessage = bundle.getString("system_object_not_found_error_message");
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID/SYSTEM CODE:: " + errorMessage, errorMessage));
-                        mLogger.error("Validation failed. Message displayed to the user: " + "LID/SYSTEM CODE:: " + errorMessage);
+                        mLogger.error("LID/SYSTEM CODE:: " + errorMessage);
+
                     } else {
                         EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(so);
                         //amso.setEUID(eo.getEUID());
-                        String[] euids = new String[1];
-                        euids[0] = eo.getEUID();
-                        amso.setEUIDs(euids);
+                        //System.out.println("IN LID/SYSTEMCODE  case--->" + eo.getEUID());
+                        String[] euidArray = getStringEUIDs(eo.getEUID());
+
+                        if (euidArray != null & euidArray.length > 0) {
+                            //System.out.println("IN LID/SYSTEMCODE  case--->" + euidArray.length);
+                            amso.setEUIDs(euidArray);
+                        } else {
+                            amso.setEUIDs(null);
+                        }
                     }
                 } catch (ProcessingException ex) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ProcessingException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
                     mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
                     mLogger.error("ProcessingException ex : " + ex.toString());
                 } catch (UserException ex) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "UserException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
                     mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
                     mLogger.error("UserException ex : " + ex.toString());
                 }
@@ -313,15 +345,18 @@ public class AssumeMatchHandler extends ScreenConfiguration {
         }
 
         //set EUID VALUE IF lid/system code not supplied
-        if ((super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() == 0) && super.getUpdateableFeildsMap().get("SystemCode") == null) {
-            if (super.getUpdateableFeildsMap().get("EUID") != null && super.getUpdateableFeildsMap().get("EUID").toString().trim().length() > 0) {
-                //amso.setEUID((String) super.getUpdateableFeildsMap().get("EUID"));
-                String[] euids = getStringEUIDs((String) super.getUpdateableFeildsMap().get("EUID"));
-                amso.setEUIDs(euids);
-            } else {
-                amso.setEUIDs(null);
+          if (super.getUpdateableFeildsMap().get("Person.EUID") != null && super.getUpdateableFeildsMap().get("Person.EUID").toString().trim().length() > 0) {
+            // Get array of strings
+            if(super.getUpdateableFeildsMap().get("Person.EUID") != null ) {
+                String[] euidArray = getStringEUIDs((String) super.getUpdateableFeildsMap().get("Person.EUID"));
+                
+                if(euidArray!=null & euidArray.length >0) {
+                    amso.setEUIDs(euidArray);
+                } else {
+                    amso.setEUIDs(null);
+                }
             }
-        }
+          }
 
 
 

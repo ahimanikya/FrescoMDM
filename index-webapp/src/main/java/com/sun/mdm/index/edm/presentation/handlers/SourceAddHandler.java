@@ -144,6 +144,11 @@ public class SourceAddHandler {
     //sub screen tab name for each tab on the source records page
     private String subScreenTab = "Add";
 
+    /**
+     * all system codes
+     */
+    private String[][] allSystemCodes = masterControllerService.getSystemCodes();
+
    
    /** Creates a new instance of SourceHandler */
     public SourceAddHandler() {
@@ -161,20 +166,20 @@ public class SourceAddHandler {
         int countEmptyFields = 0;
         
         //set the source code 
-        while(fieldConfigArrayIter.hasNext())  {
-             FieldConfig  fieldConfig = (FieldConfig) fieldConfigArrayIter.next();
-             String feildValue = (String) getUpdateableFeildsMap().get(fieldConfig.getName());                          
-            if (fieldConfig.getName().equalsIgnoreCase("SystemCode")) {
-                setSystemCode(feildValue);
-            }
-        }
+//        while(fieldConfigArrayIter.hasNext())  {
+//             FieldConfig  fieldConfig = (FieldConfig) fieldConfigArrayIter.next();
+//             String feildValue = (String) getUpdateableFeildsMap().get(fieldConfig.getName());                          
+//            if (fieldConfig.getName().equalsIgnoreCase("SystemCode")) {
+//                setSystemCode(feildValue);
+//            }
+//        }
         
         //convert the masked value here to 10 digit number
         String lid = getLID().replaceAll("-", ""); 
         setLID(lid);
-      EnterpriseObject eoFinal = null;
+       EnterpriseObject eoFinal = null;
         try {
-            validateLID(); // validate the combination of SOURCE/LID value
+            //validateLID(); // validate the combination of SOURCE/LID value
             
             //add SystemCode and LID value to the new Hash Map
             newSOHashMap.put(MasterControllerService.SYSTEM_CODE, getSystemCode());
@@ -317,6 +322,7 @@ public class SourceAddHandler {
             Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
             return this.SERVICE_LAYER_ERROR;
         }
+        session.removeAttribute("validation");
       
         return this.ADD_SOURCE_SUCCESS;
     }
@@ -492,7 +498,7 @@ public class SourceAddHandler {
             //convert the masked value here to 10 digit number
         String lid = getLID().replaceAll("-", ""); 
         setLID(lid);
-    
+        //System.out.println("====> " + lid + "SystemCodce" + getSystemCode());
         try {
             SystemObject systemObject = masterControllerService.getSystemObject(getSystemCode(), getLID());
             if(systemObject != null) {
@@ -501,6 +507,7 @@ public class SourceAddHandler {
             } else if(systemObject == null) {
                errorMessage = "Validation Success.";
                //FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,errorMessage,errorMessage));
+               session.setAttribute("validation", "Validation Success");
             }
            
         } catch (ProcessingException ex) {
@@ -983,6 +990,15 @@ public class SourceAddHandler {
 
     public void setSubScreenTab(String subScreenTab) {
         this.subScreenTab = subScreenTab;
+    }
+
+    public String[][] getAllSystemCodes() {
+        
+        return allSystemCodes;
+    }
+
+    public void setAllSystemCodes(String[][] allSystemCodes) {
+        this.allSystemCodes = allSystemCodes;
     }
 
 }

@@ -32,6 +32,7 @@
 
 package com.sun.mdm.index.edm.presentation.handlers;
 
+import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.FieldConfigGroup;
@@ -201,6 +202,7 @@ public class SourceHandler {
             
              if (fieldConfig.getName().equalsIgnoreCase("SystemCode")) {
                 this.setSystemCode(feildValue);
+               //System.out.println("SYS/LIDCODe" + this.getSystemCode() + "/" + this.getLID());
              }
 
              if("MenuList".equalsIgnoreCase(fieldConfig.getGuiType()) && feildValue == null)  {
@@ -210,6 +212,7 @@ public class SourceHandler {
              }
         }
         String lid = this.getLID().replaceAll("-", ""); 
+        //System.out.println("SYS/LIDCODe" + this.getSystemCode() + "/" + this.getLID());
         this.setLID(lid);
         
         //Checking one of many condition here   
@@ -627,12 +630,14 @@ public class SourceHandler {
             
         // set the tab name to be view/edit
         session.setAttribute("tabName", "View/Edit");            
-        
+            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
             SystemObject systemObject = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");
             EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(systemObject);
+            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
             ArrayList newEOArrayList = new ArrayList();
-            newEOArrayList.add(eo);
-            session.setAttribute("enterpriseArrayList",newEOArrayList);          
+            newEOArrayList.add(eoMap);
+            
+            session.setAttribute("comapreEuidsArrayList",newEOArrayList);          
    }
 
     /**
@@ -962,9 +967,7 @@ public class SourceHandler {
             //Build Person Epath Arraylist
             for (int i = 0; i < allFeildConfigs.length; i++) {
                 FieldConfig fieldConfig = allFeildConfigs[i];
-                if(!(rootName+ ".EUID").equalsIgnoreCase(fieldConfig.getFullFieldName())) {
-                  fcArrayList.add(fieldConfig.getFullFieldName());
-                }
+                fcArrayList.add(fieldConfig);
             }
         } catch (Exception ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);

@@ -48,7 +48,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import com.sun.mdm.index.edm.presentation.valueobjects.PatientDetails;
-import java.util.Set;
 
 /**
  * @author Rajani
@@ -56,6 +55,7 @@ import java.util.Set;
 public class PatientDetailsHandler extends ScreenConfiguration {
 
     private static final String SEARCH_PATIENT_DETAILS = "Record Details";
+    private static final String SEARCH_EUID_DETAILS = "EUID Details";
 
     //result array list for the out put
     private ArrayList resultArrayList = new ArrayList();
@@ -104,7 +104,28 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         Date date = null;
 
         try {
-            //System.out.println("---------------1-------------------" + super.getUpdateableFeildsMap());
+            HashMap newFieldValuesMap = new HashMap();
+
+            //System.out.println("---------------1-------------------" + super.getEnteredFieldValues());
+            if (super.getEnteredFieldValues() != null && super.getEnteredFieldValues().length() > 0) {
+                String[] fieldNameValues = super.getEnteredFieldValues().split(">>");
+                for (int i = 0; i < fieldNameValues.length; i++) {
+                    String string = fieldNameValues[i];
+                    String[] keyValues = string.split("##");
+                    if(keyValues.length ==2) {
+                      //System.out.println("Key " + keyValues[0] + "Value ==> : " + keyValues[1]);
+                      newFieldValuesMap.put(keyValues[0], keyValues[1]);
+                    }
+                }
+            }
+
+            super.setUpdateableFeildsMap(newFieldValuesMap);
+
+            //set the search type as per the user choice
+            super.setSearchType(super.getSelectedSearchType());
+            
+            
+            
             //check one of many condtion here
             if (super.checkOneOfManyCondition()) {
                 errorMessage = bundle.getString("ERROR_one_of_many");
@@ -116,7 +137,15 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             //if user enters LID ONLY 
             if ((super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("SystemCode") == null) {
                 errorMessage = "Please Enter System Code";
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID Validation :: " + errorMessage, errorMessage));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "System Code/LID Validation  :: " + errorMessage, errorMessage));
+                mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
+                return VALIDATION_ERROR;
+
+            }
+            //if user enters SYSTEMCODE ONLY 
+            if ((super.getUpdateableFeildsMap().get("SystemCode") != null && super.getUpdateableFeildsMap().get("SystemCode").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("LID") == null) {
+                errorMessage = "Please Enter LID Value";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "System Code/LID Validation :: " + errorMessage, errorMessage));
                 mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
                 return VALIDATION_ERROR;
 
@@ -143,7 +172,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     try {
                         //remove masking for LID field
                         LID = LID.replaceAll("-", "");
-                        ////System.out.println("SystemCode" + SystemCode + "LID" + LID);
                         SystemObject so = masterControllerService.getSystemObject(SystemCode, LID);
                         if (so == null) {
                             errorMessage = bundle.getString("system_object_not_found_error_message");
@@ -171,7 +199,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 for (int i = 0; i < messObjs.length; i++) {
                     String obj = (String) messObjs[i];
                     String[] fieldErrors = obj.split(":");
-                    ////System.out.println("===> Field" + fieldErrors[0] + "===> Message" + fieldErrors[1]);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
                     mLogger.error("Validation failed. Message displayed to the user: " + fieldErrors[0] + " : " + fieldErrors[1]);
                     return VALIDATION_ERROR;
@@ -185,7 +212,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 for (int i = 0; i < messObjs.length; i++) {
                     String obj = (String) messObjs[i];
                     String[] fieldErrors = obj.split(":");
-                    ////System.out.println("===> Field" + fieldErrors[0] + "===> Message" + fieldErrors[1]);
+                    //////System.out.println("===> Field" + fieldErrors[0] + "===> Message" + fieldErrors[1]);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
                     mLogger.error("Validation failed. Message displayed to the user: " + fieldErrors[0] + " : " + fieldErrors[1]);
                     return VALIDATION_ERROR;
@@ -193,139 +220,163 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
             }
 
-            // SambaG
-            // Start here
+
+//            //System.out.println("eoSearchCriteria ==>: " + eoSearchCriteria);
+            EOSearchResultIterator eoSearchResultIterator = null;
+
+            ArrayList arlResultsConfig = screenObject.getSearchResultsConfig();
+
+            EPathArrayList ePathArrayList = compareDuplicateManager.retrievePatientResultsFields(arlResultsConfig);
             ArrayList sResultsConfigArrayList = screenObject.getSearchResultsConfig();
 
             EPathArrayList resultFields = new EPathArrayList();
 
             Iterator srcalIterator = sResultsConfigArrayList.iterator();
-            String objectRef = null;
-            while (srcalIterator.hasNext()) {
-                SearchResultsConfig srConfig = (SearchResultsConfig) srcalIterator.next();
-                ArrayList epaths = srConfig.getEPaths();
-                Iterator ePathsIterator = epaths.iterator();
-                while (ePathsIterator.hasNext()) {
-                    String ePathStr = (String) ePathsIterator.next();
-                    resultFields.add("Enterprise.SystemSBR." + ePathStr);
-                    if (objectRef == null) {
-                        int index = ePathStr.indexOf(".");
-                        objectRef = ePathStr.substring(0, index);
+            ArrayList newEoArrayList = new ArrayList();
+            if (super.getUpdateableFeildsMap().get("Person.EUID") != null) {
+                String euid = (String) super.getUpdateableFeildsMap().get("Person.EUID");
+                //System.out.println("ONLYYYY EUID ==> ; " + euid);
+                EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
+                HashMap eoHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+                newEoArrayList.add(eoHashMap);
+                httpRequest.setAttribute("comapreEuidsArrayList", newEoArrayList);
+                return this.SEARCH_EUID_DETAILS;
+
+            } else if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
+                String lid = (String) super.getUpdateableFeildsMap().get("LID");
+                lid = lid.replaceAll("-", "");
+                String systemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
+                //System.out.println("ONLYYYY LID AND SYSTEM CODE ==> ; " + lid + "/" + systemCode);
+                SystemObject so = masterControllerService.getSystemObject(systemCode, lid);
+
+                EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(so);
+                HashMap eoHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+                newEoArrayList.add(eoHashMap);
+                httpRequest.setAttribute("comapreEuidsArrayList", newEoArrayList);
+                return this.SEARCH_EUID_DETAILS;
+
+            } else {
+                // SambaG
+                // Start here
+                String objectRef = null;
+                while (srcalIterator.hasNext()) {
+                    SearchResultsConfig srConfig = (SearchResultsConfig) srcalIterator.next();
+                    ArrayList epaths = srConfig.getEPaths();
+                    Iterator ePathsIterator = epaths.iterator();
+                    while (ePathsIterator.hasNext()) {
+                        String ePathStr = (String) ePathsIterator.next();
+                        resultFields.add("Enterprise.SystemSBR." + ePathStr);
+                        if (objectRef == null) {
+                            int index = ePathStr.indexOf(".");
+                            objectRef = ePathStr.substring(0, index);
+                        }
                     }
                 }
-            }
 
-            ArrayList searchScreenArray = super.screenObject.getSearchScreensConfig();
-            Iterator searchScreenArrayIter = searchScreenArray.iterator();
-            String eoSearchOptionQueryBuilder = new String();
-            while (searchScreenArrayIter.hasNext()) {
-                searchScreenConfig = (SearchScreenConfig) searchScreenArrayIter.next();
-                if (searchScreenConfig.getScreenTitle().equalsIgnoreCase(super.getSearchType())) {
-                    //get the EO search option from the EDM.xml file here as per the search type
-                    eoSearchOptionQueryBuilder = searchScreenConfig.getOptions().getQueryBuilder();
+                ArrayList searchScreenArray = super.screenObject.getSearchScreensConfig();
+                Iterator searchScreenArrayIter = searchScreenArray.iterator();
+                String eoSearchOptionQueryBuilder = new String();
+                while (searchScreenArrayIter.hasNext()) {
+                    searchScreenConfig = (SearchScreenConfig) searchScreenArrayIter.next();
+                    if (searchScreenConfig.getScreenTitle().equalsIgnoreCase(super.getSelectedSearchType())) {
+                        //get the EO search option from the EDM.xml file here as per the search type
+                        eoSearchOptionQueryBuilder = searchScreenConfig.getOptions().getQueryBuilder();
+                    }
                 }
-            }
 
-            resultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
+                resultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
 
-            EOSearchOptions eoSearchOptions = new EOSearchOptions(eoSearchOptionQueryBuilder, resultFields);
-            //System.out.println("eoSearchOptions ==>: " + eoSearchOptions);
+                EOSearchOptions eoSearchOptions = new EOSearchOptions(eoSearchOptionQueryBuilder, resultFields);
+                ////System.out.println("===1=====seoSearchOptions ==>: " + eoSearchOptions);
 
-            EOSearchCriteria eoSearchCriteria = new EOSearchCriteria();
+                EOSearchCriteria eoSearchCriteria = new EOSearchCriteria();
 
-            HashMap gSearchCriteria = new HashMap();
-            HashMap gSearchCriteriaFromDOB = new HashMap();
-            HashMap gSearchCriteriaToDOB = new HashMap();
-            
-            String feildValue = new String();
-            
-            Object[] fcObjects = getScreenConfigArray().toArray();
+                HashMap gSearchCriteria = new HashMap();
+                HashMap gSearchCriteriaFromDOB = new HashMap();
+                HashMap gSearchCriteriaToDOB = new HashMap();
 
-            //build the search criteria as per the user inputs from the form   
-            for (int i = 0; i < fcObjects.length; i++) {
-                FieldConfig objectFieldConfig = (FieldConfig) fcObjects[i];
-                String rootNode = objectFieldConfig.getRootObj();
-//                System.out.println(objectFieldConfig.isRange() + "==>: " + objectFieldConfig.getDisplayName() 
-//                                 + "name==> " + objectFieldConfig.getName()
-//                                 + "Value name ==> " + super.getUpdateableFeildsMap().get(objectFieldConfig.getName())
-//                                 + "Value dp ==> " + super.getUpdateableFeildsMap().get(objectFieldConfig.getDisplayName())
-//                                 );
-                
-                //Get the Field Value as per the field config range type
-                if (objectFieldConfig.isRange()) {
-                    feildValue = (String) super.getUpdateableFeildsMap().get(objectFieldConfig.getDisplayName());
-                } else {
-                    feildValue = (String) super.getUpdateableFeildsMap().get(objectFieldConfig.getName());
-                }
-                if (feildValue != null && feildValue.trim().length() > 0) {
-                    //Remove all masking fields from the field valued if any like SSN,LID...etc
-                    feildValue.replaceAll("-", "");
-                    if (objectFieldConfig.getDisplayName().equalsIgnoreCase("DOB From")) {
-                        //System.out.println("DOB FROM Putting ==>: " + objectFieldConfig.getDisplayName() + "feildValue==> " +feildValue);
-                        gSearchCriteriaFromDOB.put(objectFieldConfig.getFullFieldName(), feildValue);
-                    } else if (objectFieldConfig.getDisplayName().equalsIgnoreCase("DOB To")) {
-                        //System.out.println("DOB TO Putting ==>: " + objectFieldConfig.getDisplayName() + "feildValue==> " +feildValue);
-                        gSearchCriteriaToDOB.put(objectFieldConfig.getFullFieldName(), feildValue);
+                String feildValue = new String();
+
+                Object[] fcObjects = getScreenConfigArray().toArray();
+
+                //build the search criteria as per the user inputs from the form   
+                for (int i = 0; i < fcObjects.length; i++) {
+                    FieldConfig objectFieldConfig = (FieldConfig) fcObjects[i];
+                    String rootNode = objectFieldConfig.getRootObj();
+                    //System.out.println(objectFieldConfig.isRange() + "==>: " + objectFieldConfig.getDisplayName() + "name==> " + objectFieldConfig.getName() + "Value name ==> " + super.getUpdateableFeildsMap().get(objectFieldConfig.getFullFieldName()) + "Value dp ==> " + super.getUpdateableFeildsMap().get(objectFieldConfig.getDisplayName()));
+
+                    //Get the Field Value as per the field config range type
+                    if (objectFieldConfig.isRange()) {
+                        feildValue = (String) super.getUpdateableFeildsMap().get(objectFieldConfig.getDisplayName());
                     } else {
-                        //System.out.println("OTHER Putting ==>: " + objectFieldConfig.getDisplayName() + "feildValue==> " +feildValue);
-                        gSearchCriteria.put(objectFieldConfig.getFullFieldName(), feildValue);
+                        feildValue = (String) super.getUpdateableFeildsMap().get(objectFieldConfig.getFullFieldName());
+                    }
+                    if (feildValue != null && feildValue.trim().length() > 0) {
+                        //Remove all masking fields from the field valued if any like SSN,LID...etc
+                        //System.out.println("DOB FROM Putting ==>: BEFORE feildValue==> " + feildValue);
+                        feildValue = feildValue.replaceAll("-", "");
+                        //System.out.println("DOB FROM Putting ==>: " + objectFieldConfig.getDisplayName() + "feildValue==> " + feildValue);
+                        if (objectFieldConfig.getDisplayName().equalsIgnoreCase("DOB From")) {
+                            gSearchCriteriaFromDOB.put(objectFieldConfig.getFullFieldName(), feildValue);
+                        } else if (objectFieldConfig.getDisplayName().equalsIgnoreCase("DOB To")) {
+                            ////System.out.println("DOB TO Putting ==>: " + objectFieldConfig.getDisplayName() + "feildValue==> " +feildValue);
+                            gSearchCriteriaToDOB.put(objectFieldConfig.getFullFieldName(), feildValue);
+                        } else {
+                            ////System.out.println("OTHER Putting ==>: " + objectFieldConfig.getDisplayName() + "feildValue==> " +feildValue);
+                            gSearchCriteria.put(objectFieldConfig.getFullFieldName(), feildValue);
+                        }
+
                     }
 
                 }
 
-            }
-            
-            //System.out.println("gSearchCriteria==>: " + gSearchCriteria);
+//            //System.out.println("gSearchCriteria==>: " + gSearchCriteria);
+//            //System.out.println("gSearchCriteriaToDOB: " + gSearchCriteriaToDOB);
+//            //System.out.println("gSearchCriteriaFromDOB==>: " + gSearchCriteriaFromDOB);
 
-            String objRef = objectRef;
-            // following code is from buildObjectNodeFromSearchCriteria()
-            //ObjectNode topNode = SimpleFactory.create(objRef);
+                String objRef = objectRef;
+                // following code is from buildObjectNodeFromSearchCriteria()
+                //ObjectNode topNode = SimpleFactory.create(objRef);
 
-            SystemObject sysobj = buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteria);
-            SystemObject sysobj2 = null;
-            SystemObject sysobj3 = null;
-            if (!gSearchCriteriaFromDOB.isEmpty()) {
-                sysobj2 = buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteriaFromDOB);
-                eoSearchCriteria.setSystemObject2(sysobj2); // for dob from
-            }
-            if (!gSearchCriteriaToDOB.isEmpty()) {
-                sysobj3 = buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteriaToDOB);
-                eoSearchCriteria.setSystemObject3(sysobj3); // for dob to
-            }
-            eoSearchCriteria.setSystemObject(sysobj);  // for all search attributes other than dob range
-
-            //System.out.println("eoSearchCriteria ==>: " + eoSearchCriteria);
-
-            EOSearchResultIterator eoSearchResultIterator = masterControllerService.searchEnterpriseObject(eoSearchCriteria, eoSearchOptions);
-            
-            
-            
-            ArrayList arlResultsConfig = screenObject.getSearchResultsConfig();
-
-            EPathArrayList ePathArrayList = compareDuplicateManager.retrievePatientResultsFields(arlResultsConfig);
-
-            while (eoSearchResultIterator.hasNext()) {
-                EOSearchResultRecord eoSearchResultRecord = eoSearchResultIterator.next();
-                ObjectNode objectNode = eoSearchResultRecord.getObject();
-                HashMap fieldvalues = new HashMap();
-
-                for (int m = 0; m < ePathArrayList.size(); m++) {
-                    EPath ePath = ePathArrayList.get(m);
-                    try {
-                        Object value = EPathAPI.getFieldValue(ePath, objectNode);
-                        fieldvalues.put(ePath.getName(), value);
-                    } catch (Exception npe) {
-                    // THIS SHOULD BE FIXED
-                    // npe.printStackTrace();
-                    }
+                SystemObject sysobj = buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteria);
+                SystemObject sysobj2 = null;
+                SystemObject sysobj3 = null;
+                if (!gSearchCriteriaFromDOB.isEmpty()) {
+                    sysobj2 = buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteriaFromDOB);
+                    eoSearchCriteria.setSystemObject2(sysobj2); // for dob from
+//                //System.out.println("<<== dob from set....");
                 }
-                fieldvalues.put("EUID", eoSearchResultRecord.getEUID());
-                //System.out.println("FOR OUT PUT => : " + fieldvalues);
-                resultArrayList.add(fieldvalues);
+                if (!gSearchCriteriaToDOB.isEmpty()) {
+                    sysobj3 = buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteriaToDOB);
+                    eoSearchCriteria.setSystemObject3(sysobj3); // for dob to
+//                //System.out.println("<<== dob t set....");
+                }
+                eoSearchCriteria.setSystemObject(sysobj);  // for all search attributes other than dob range
+                //System.out.println("OTHERRRRSSS ==> ; ");
+                eoSearchResultIterator = masterControllerService.searchEnterpriseObject(eoSearchCriteria, eoSearchOptions);
+
+                while (eoSearchResultIterator.hasNext()) {
+                    EOSearchResultRecord eoSearchResultRecord = eoSearchResultIterator.next();
+                    ObjectNode objectNode = eoSearchResultRecord.getObject();
+                    HashMap fieldvalues = new HashMap();
+
+                    for (int m = 0; m < ePathArrayList.size(); m++) {
+                        EPath ePath = ePathArrayList.get(m);
+                        try {
+                            Object value = EPathAPI.getFieldValue(ePath, objectNode);
+                            fieldvalues.put(ePath.getName(), value);
+                        } catch (Exception npe) {
+                        // THIS SHOULD BE FIXED
+                        // npe.printStackTrace();
+                        }
+                    }
+                    fieldvalues.put("EUID", eoSearchResultRecord.getEUID());
+                    resultArrayList.add(fieldvalues);
+                }
+                httpRequest.setAttribute("resultArrayListReq", resultArrayList);
+                setResultsSize(getPatientDetailsVO().length);
+
             }
-            //System.out.println("resultArrayList => : " + resultArrayList);
-            httpRequest.setAttribute("resultArrayListReq", resultArrayList);
-            setResultsSize(getPatientDetailsVO().length);
         // End here            
         // SambaG
 
@@ -419,7 +470,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             //reset the status and set it back in session
             for (int i = 0; i < eoArrayList.size(); i++) {
                 HashMap objectHashMap = (HashMap) eoArrayList.get(i);
-                //System.out.println("IN UN RESOLVEEE" + potDupId + "==="+ objectHashMap.get("PotDupId") + "==> ; " + objectHashMap.get("Status") + objectHashMap.keySet());
+                ////System.out.println("IN UN RESOLVEEE" + potDupId + "==="+ objectHashMap.get("PotDupId") + "==> ; " + objectHashMap.get("Status") + objectHashMap.keySet());
                 //set the resolve type to "U" (UnResolve)for the selected potential duplicate
                 if(potDupId.equals((String)objectHashMap.get("PotDupId"))) {
                   objectHashMap.put("Status", "U");
@@ -505,9 +556,9 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         public String previewPostMultiMergedEnterpriseObject() {
         try {
             //httpRequest.setAttribute("comapreEuidsArrayList", httpRequest.getAttribute("comapreEuidsArrayList"));
-            //System.out.println("===> " + mergeEuids);
+            ////System.out.println("===> " + mergeEuids);
             
-            //System.out.println("===> " + destnEuid);
+            ////System.out.println("===> " + destnEuid);
 
             EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
             String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
@@ -573,7 +624,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 for (int i = 0; i < selectedFieldsValue.length; i++) {
                     String[] sourceEuidFull = selectedFieldsValue[i].split("##");
                     eoHashMap.put(sourceEuidFull[0], sourceEuidFull[1]);
-//                    System.out.println(sourceEuidFull[0] + "====" + sourceEuidFull[1]);
+//                    //System.out.println(sourceEuidFull[0] + "====" + sourceEuidFull[1]);
                     
                 }
                 //Modify CHANGED sbr values here
@@ -718,7 +769,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 }
             }
            
-//            System.out.println("===> : " + newArrayList);
+//            //System.out.println("===> : " + newArrayList);
             httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -732,6 +783,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         try {
             NavigationHandler navigationHandler = new NavigationHandler();
             session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
+            
             EnterpriseObject enterpriseObject = null;
 
             ArrayList newArrayList = new ArrayList();
@@ -1118,7 +1170,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 HashMap objectHistMap  = (HashMap) viewHistoryEOList.get(i);
                 String key = (String) objectHistMap.keySet().toArray()[0];
                 
-                //System.out.println(i + "  <==>keysSet " + key + "==> : objectHistMap");
+                ////System.out.println(i + "  <==>keysSet " + key + "==> : objectHistMap");
                 HashMap objectHistMapUpdated  = new HashMap();
                 if(objectHistMap.get(key) != null) {
                     eoHist = (EnterpriseObject) objectHistMap.get(key);
@@ -1128,7 +1180,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                                
             }
          
-            //System.out.println("FINAL HISTORY LIST" + newArrayListHistory.size());
+            ////System.out.println("FINAL HISTORY LIST" + newArrayListHistory.size());
             httpRequest.setAttribute("eoHistory" + euid, newArrayListHistory);
 
         } catch (Exception ex) {
@@ -1155,7 +1207,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 newArrayList.add(compareDuplicateManager.getSystemObjectAsHashMap(systemObject, screenObject));
            }
 
-            //System.out.println("newArrayList" + newArrayList.size());
+            ////System.out.println("newArrayList" + newArrayList.size());
             httpRequest.setAttribute("eoSources"+enterpriseObject.getEUID(), newArrayList);
 
         } catch (Exception ex) {
@@ -1173,12 +1225,13 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         patientDetailsVO = new PatientDetails[this.resultArrayList.size()];
         SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
         int size = this.resultArrayList.size();
+    //    //System.out.println("this.resultArrayList ===> ; "  + this.resultArrayList);
 
         HashMap values = new HashMap();
         for (int i = 0; i < size; i++) {
             patientDetailsVO[i] = new PatientDetails();
             values = (HashMap) resultArrayList.get(i);
-            String dateField = simpleDateFormatFields.format(values.get("Person.DOB"));
+            String dateField = ((Date) values.get("Person.DOB") ).toString();
             patientDetailsVO[i].setEuid((String) values.get("EUID"));
             patientDetailsVO[i].setFirstName((String) values.get("Person.FirstName"));
             patientDetailsVO[i].setLastName((String) values.get("Person.LastName"));
@@ -1288,7 +1341,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
      */
     public String buildCompareEuids() {
         ArrayList euidsMapList = new ArrayList();
-        //System.out.println("===> EUIDS " + this.compareEuids);
+        ////System.out.println("===> EUIDS " + this.compareEuids);
 
         String[] euids = this.compareEuids.split("##");
         for (int i = 0; i < euids.length; i++) {
@@ -1298,7 +1351,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
                 euidsMapList.add(eoMap);
 
-             //System.out.println("===> " + sourceEuid + "srcRevisionNumbers" + eo.getEUID());
+             ////System.out.println("===> " + sourceEuid + "srcRevisionNumbers" + eo.getEUID());
             } catch (ProcessingException ex) {
                 java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
             } catch (UserException ex) {
