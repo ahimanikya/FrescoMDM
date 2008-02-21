@@ -1429,4 +1429,91 @@ function showResolveDivs(divId,thisEvent,potDupId)  {
 document.getElementById('reportYUISearch:potentialDuplicateId').value = potDupId;
 
 }
+var fieldNameValues="";
+var fieldNames="";
 
+function accumilateFieldsOnBlur(field,fullFieldName) {
+    //alert("fieldNames ==>" + fieldNames+":");
+    if(fieldNames != fullFieldName+':') {
+       fieldNames+=fullFieldName+':';
+    }
+    //alert(fullFieldName  + "field.value====> " + field.value);
+    fieldNameValues += fullFieldName + "##"+field.value+">>";
+    document.getElementById("advancedformData:enteredFieldValues").value = fieldNameValues;
+    //alert(document.getElementById("advancedformData:enteredFieldValues").value);
+
+  //set the search type here
+    var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
+    document.getElementById("advancedformData:selectedSearchType").value = selectedSearchValue;
+}
+
+function accumilateSelectFieldsOnBlur(field,fullFieldName) {
+    var selectedValue = field.options[field.selectedIndex].value;
+    
+    if(fieldNames != fullFieldName+':') {
+       fieldNames+=fullFieldName+':';
+    }
+    //alert(fullFieldName  + "field.value====> " + field.value);
+    fieldNameValues += fullFieldName + "##"+selectedValue+">>";
+    document.getElementById("advancedformData:enteredFieldValues").value = fieldNameValues;
+    //alert(document.getElementById("advancedformData:enteredFieldValues").value);
+    var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
+    document.getElementById("advancedformData:selectedSearchType").value = selectedSearchValue;
+
+}
+
+function getLidMask(systemCode,systemCodes,lidMasks) {
+    for(var i=0;i<systemCodes.length;i++) {
+      if(systemCode == systemCodes[i]) {
+         //alert("IN LID MASK" + systemCode + "systemCodes ==> " +systemCodes[i] + "  lidMasks ===> " + lidMasks[i]);
+         return lidMasks[i];
+      }
+    }    
+}
+var hiddenUnLockFields="";
+function unlockFields(fieldName) {
+        //alert(fieldName);
+        //alert(document.getElementById('editableSBR:'+fieldName));
+        document.getElementById('editableSBR:'+fieldName).style.visibility = 'visible';
+        document.getElementById('editableSBR:'+fieldName).style.display = 'block';
+
+        document.getElementById('readOnlySBR:'+fieldName).style.visibility = 'hidden';
+        document.getElementById('readOnlySBR:'+fieldName).style.display = 'none';
+
+        document.getElementById('lockSourceDiv:'+fieldName).style.visibility = 'visible';
+        document.getElementById('lockSourceDiv:'+fieldName).style.display = 'block';
+
+        document.getElementById('unlockSourceDiv:'+fieldName).style.visibility = 'hidden';
+        document.getElementById('unlockSourceDiv:'+fieldName).style.display = 'none';
+        
+       hiddenUnLockFields += fieldName + "##";
+       //alert(hiddenUnLockFields  + "<==== hiddenUnLockFields" );
+       document.getElementById("basicAddformData:hiddenUnLockFields").value = hiddenUnLockFields;
+        
+    
+}
+
+
+function accumilatePersonFieldsOnBlur(field,fullFieldName) {
+    //alert("fieldNames ==>" + fieldNames+":");
+    if(fieldNames != fullFieldName+':') {
+       fieldNames+=fullFieldName+':';
+    }
+    //alert(fullFieldName  + "field.value====> " + field.value);
+    fieldNameValues += fullFieldName + "##"+field.value+">>";
+    document.getElementById("basicAddformData:enteredFieldValues").value = fieldNameValues;
+    //alert(document.getElementById("advancedformData:enteredFieldValues").value);
+ 
+}
+
+function accumilatePersonSelectFieldsOnBlur(field,fullFieldName) {
+    var selectedValue = field.options[field.selectedIndex].value;
+    
+    if(fieldNames != fullFieldName+':') {
+       fieldNames+=fullFieldName+':';
+    }
+    //alert(fullFieldName  + "field.value====> " + field.value);
+    fieldNameValues += fullFieldName + "##"+selectedValue+">>";
+    document.getElementById("basicAddformData:enteredFieldValues").value = fieldNameValues;
+ 
+}
