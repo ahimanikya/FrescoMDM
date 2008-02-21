@@ -27,13 +27,15 @@
    <div class="dashboardHeadMessage"> <h:outputLabel for="#{msgs.dashboard_summary_table_text}" value="#{msgs.dashboard_summary_table_text}"/> </div>
          <div id="dashboardSummary" class="dashboardSummary"> 
           <h:form>
-            <table border="0" cellspacing="0" cellpadding="4">
+            <table border="0" cellspacing="10" cellpadding="4">
                 <!--Caption included-->                
                 <!--caption class="euidHeadMessage">Summary</caption-->
                 <tr><td><h:outputText value="#{msgs.dashboard_summary_table_link1}"/> : <h:commandLink  action="#{NavigationHandler.toDuplicateRecords}"><h:outputText value="#{DashboardHandler.countPotentialDuplicates} " /></h:commandLink></td></tr>
                 <tr><td><h:outputText value="#{msgs.dashboard_summary_table_link4}"/> : <h:commandLink  action="#{NavigationHandler.toAssumedMatches}"><h:outputText value="#{DashboardHandler.countAssumedMatches} " /></h:commandLink></td></tr>
+                <!--
                 <tr><td><h:outputText value="#{msgs.dashboard_summary_table_link2}"/></td></tr>
                 <tr><td><h:outputText value="#{msgs.dashboard_summary_table_link3}"/></td></tr>
+                -->
             </table>
           </h:form>
          </div>
@@ -48,7 +50,7 @@
                 <tr><td> &nbsp;</td></tr>
                 <tr>
                     <td> 
-                        <h:outputText value="#{msgs.dashboard_quick_search_text}" />
+                        <span><h:outputText value="#{msgs.dashboard_quick_search_text}" /></span>
                     </td>
                     <td> <h:inputText id="euidField" value="#{PatientDetailsHandler.singleEUID}"  maxlength="10"/> </td>
                 </tr>
@@ -57,18 +59,18 @@
                 </tr>
 
                 <tr>
-                      <td><h:commandLink  styleClass="button" action="#{PatientDetailsHandler.singleEuidSearch}">
-                          
-                           <span><h:outputText value="#{msgs.dashboard_search_but_text}" /></span></h:commandLink> 
+                      <td>
+                          <h:commandLink  action="#{PatientDetailsHandler.singleEuidSearch}">
+                              <h:outputText value="#{msgs.dashboard_search_but_text}" />
+                          </h:commandLink> 
                       </td>
                       <td align="right">
-                        <h:commandLink  styleClass="button" action="#{NavigationHandler.toDuplicateRecords}">  
-                            <span>
-                                <img src="./images/down-chevron-button.png" border="0" alt="Advanced search"/>
-                                <h:outputText value="#{msgs.dashboard_advsearch_but_text}" />
-                                <img src="./images/down-chevron-button.png" border="0"  alt=""/>
-                            </span>
-                        </h:commandLink>                                     
+                       <h:commandLink  id="patlink" 
+                                       rendered="#{Operations.EO_SearchViewSBR}"  
+                                       action="#{NavigationHandler.toPatientDetails}">
+                             <h:outputText value="#{msgs.dashboard_advsearch_but_text}" />
+                       </h:commandLink>                               
+
                       </td>
                 </tr>
                </h:form>                
@@ -148,27 +150,27 @@
                     <td><h:inputText  id="euid1Field" value="#{PatientDetailsHandler.euid1}" maxlength="10"/></td>
                     <td>
                         <nobr>
-                            <h:commandLink  styleClass="button" action="#{PatientDetailsHandler.lookupEuid1}">  
-                                <span><h:outputText value="Lookup EUID1"/> 
-                            </span></h:commandLink>                        
+                            <h:commandLink  action="#{PatientDetailsHandler.lookupEuid1}">  
+                                <h:outputText value="Lookup EUID1"/> 
+                            </h:commandLink>                        
                         </nobr>
                     </td>
                 </tr>
                 <tr><td><h:inputText  id="euid2Field" value="#{PatientDetailsHandler.euid2}" maxlength="10"/>
                     <td>
                         <nobr>
-                            <h:commandLink  styleClass="button" action="#{PatientDetailsHandler.lookupEuid2}">  
-                                <span><h:outputText value="Lookup EUID2"/> 
-                            </span></h:commandLink>                        
+                            <h:commandLink   action="#{PatientDetailsHandler.lookupEuid2}">  
+                                <h:outputText value="Lookup EUID2"/> 
+                            </h:commandLink>                        
                         </nobr>
                     </td>
                 </tr>
                 <tr><td><h:inputText  id="euid3Field" value="#{PatientDetailsHandler.euid3}" maxlength="10"/></td>
                     <td>
                         <nobr>
-                            <h:commandLink  styleClass="button" action="#{PatientDetailsHandler.lookupEuid3}">  
-                                <span><h:outputText value="Lookup EUID3"/> 
-                            </span></h:commandLink>                        
+                            <h:commandLink  action="#{PatientDetailsHandler.lookupEuid3}">  
+                                <h:outputText value="Lookup EUID3"/> 
+                            </h:commandLink>                        
                         </nobr>
                     </td>
                 </tr>
@@ -176,16 +178,16 @@
                     <td><h:inputText  id="euid4Field" value="#{PatientDetailsHandler.euid4}" maxlength="10"/></td>
                     <td align="right" width="70px">
                         <nobr>
-                            <h:commandLink  styleClass="button" action="#{PatientDetailsHandler.lookupEuid4}">  
-                                <span><h:outputText value="Lookup EUID4"/>
-                            </span></h:commandLink>
+                            <h:commandLink  action="#{PatientDetailsHandler.lookupEuid4}">  
+                                <h:outputText value="Lookup EUID4"/>
+                            </h:commandLink>
                         </nobr>
                     </td>
                     <td align="right" width="70px">
                         <nobr>
-                            <h:commandLink  styleClass="button" action="#{PatientDetailsHandler.compareEuidSearch}">  
-                                <span><h:outputText value="#{msgs.dashboard_compare_but_text}"/>
-                            </span></h:commandLink>
+                            <h:commandLink  action="#{PatientDetailsHandler.compareEuidSearch}">  
+                                <h:outputText value="#{msgs.dashboard_compare_but_text}"/>
+                           </h:commandLink>
                         </nobr>
                     </td>
                 </tr>

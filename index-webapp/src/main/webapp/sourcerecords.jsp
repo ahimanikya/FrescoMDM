@@ -134,7 +134,8 @@
                                         Object[] auxidConfigFeilds = sourceHandler.getAuxIdFieldConfigs().toArray();
                                         Object[] commentConfigFeilds = sourceHandler.getCommentFieldConfigs().toArray();                                        
                                         SourceEditHandler sourceEditHandler = (SourceEditHandler)session.getAttribute("SourceEditHandler");
-                                        SourceAddHandler  sourceAddHandler   = (SourceAddHandler)session.getAttribute("SourceAddHandler");
+                                        System.out.println("sourceEditHandler "  + sourceEditHandler );
+                                        SourceAddHandler  sourceAddHandler   = new SourceAddHandler();
                                         int addressSize;
                                         int phoneSize;
                                         int aliasSize;
@@ -1730,7 +1731,11 @@
                                                             </h:column>
                                                             <!--Rendering HTML Select Menu List-->
                                                             <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
-                                                                <h:selectOneMenu value="#{SourceHandler.updateableFeildsMap[feildConfig.name]}">
+                                                               <h:selectOneMenu value="#{SourceHandler.updateableFeildsMap[feildConfig.name]}" rendered="#{feildConfig.name eq 'SystemCode'}"
+                                                                                 onchange="javascript:setLidMaskValue(this,'basicViewformData')">
+                                                                    <f:selectItems  value="#{feildConfig.selectOptions}" />
+                                                                </h:selectOneMenu>
+                                                               <h:selectOneMenu value="#{SourceHandler.updateableFeildsMap[feildConfig.name]}" rendered="#{feildConfig.name ne 'SystemCode'}">
                                                                     <f:selectItems  value="#{feildConfig.selectOptions}" />
                                                                 </h:selectOneMenu>
                                                             </h:column>
@@ -1913,93 +1918,46 @@
                                                     <input type="hidden" name="lidmask" value="DDD-DDD-DDDD" />
                                                     <input type="hidden" name="ssnmask" value="DDD-DD-DDDD" />
                                                             <table border="0" width="100%">
+                            <h:dataTable headerClass="tablehead"  
+                                         id="fieldConfigId" 
+                                         var="feildConfig" 
+                                         value="#{SourceAddHandler.addScreenConfigArray}">
+                                <!--Rendering Non Updateable HTML Text Area-->
+                                <h:column>
+                                    <nobr>
+                                        <h:outputText value="*" rendered="#{feildConfig.required}" />
+                                        <h:outputText value="#{feildConfig.displayName}" />
+                                    </nobr>
+                                </h:column>
+                                <!--Rendering HTML Select Menu List-->
+                                <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
+                                    <nobr>
+                                        <h:selectOneMenu  onchange="javascript:setLidMaskValue(this,'basicAddformData')"
+                                                          id="SystemCode" 
+                                                          value="#{SourceAddHandler.systemCode}" 
+                                                          rendered="#{feildConfig.name eq 'SystemCode'}"
+                                                          required="true">
+                                            <f:selectItems  value="#{feildConfig.selectOptions}" />
+                                        </h:selectOneMenu>
+                                    </nobr>
+                                </h:column>
+                                <!--Rendering Updateable HTML Text boxes-->
+                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6}" >
+                                    <nobr>
+                                        <h:inputText   required="true" 
+                                                       label="#{feildConfig.displayName}" 
+                                                       onkeydown="javascript:qws_field_on_key_down(this, document.basicAddformData.lidmask.value)"
+                                                       onkeyup="javascript:qws_field_on_key_up(this)"
+                                                       onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                       value="#{SourceAddHandler.LID}"
+                                                       maxlength="#{SourceMergeHandler.lidMaskLength}" 
+                                                       rendered="#{feildConfig.name eq 'LID'}"/>
+                                                       
+                                    </nobr>
+                                </h:column>
+                           </h:dataTable>
+                                                    <%if(session.getAttribute("validation") != null ) {%>
                                                
-                                                    <h:dataTable id="fieldConfigAddId" 
-                                                                 var="feildConfigAdd" 
-                                                                 headerClass="tablehead"  
-                                                                 width="75%"
-                                                                 rowClasses="odd,even"                                     
-                                                                 value="#{SourceAddHandler.addScreenConfigArray}">
-                                                        <!--Rendering Non Updateable HTML Text Area-->
-                                                        <h:column>
-                                                            <h:outputText value="#{feildConfigAdd.displayName}" />
-                                                        </h:column>
-                                                        <!--Rendering HTML Select Menu List-->
-                                                        <h:column rendered="#{feildConfigAdd.guiType eq 'MenuList'}" >
-                                                            <h:selectOneMenu id="systemCode" value="#{SourceAddHandler.updateableFeildsMap[feildConfigAdd.name]}">
-                                                                <f:selectItems  value="#{feildConfigAdd.selectOptions}" />
-                                                            </h:selectOneMenu>
-                                                        </h:column>
-                                                        
-                                                        <!--Rendering Updateable HTML Text boxes-->
-                                                        <h:column rendered="#{feildConfigAdd.updateable && feildConfigAdd.guiType eq 'TextBox'}" >
-                                                            <h:inputText label="#{feildConfigAdd.displayName}"    id="fieldConfigIdText" value="#{SourceAddHandler.updateableFeildsMap[feildConfigAdd.name]}" required="#{feildConfigAdd.required}"/>
-                                                        </h:column>
-                                                        
-                                                        <!--Rendering Updateable HTML Text Area-->
-                                                        <h:column rendered="#{feildConfigAdd.updateable && feildConfigAdd.guiType eq 'TextArea'}" >
-                                                            <h:inputTextarea label="#{feildConfigAdd.displayName}"  id="fieldConfigIdTextArea"   value="#{SourceAddHandler.updateableFeildsMap[feildConfigAdd.name]}" required="#{feildConfigAdd.required}"/>
-                                                        </h:column>
-                                                        
-                                                        
-                                                        <!--Rendering Non Updateable HTML Text boxes-->
-                                                        <h:column rendered="#{!feildConfigAdd.updateable && feildConfigAdd.guiType eq 'TextBox' && feildConfigAdd.name eq 'SystemCode'}" >
-                                                            <h:inputText id="SystemCode" value="#{SourceAddHandler.SystemCode}" required="#{feildConfigAdd.required}"/>
-                                                        </h:column>
-                                                        
-                                                        <h:column rendered="#{ !feildConfigAdd.updateable && feildConfigAdd.guiType eq 'TextBox' && feildConfigAdd.name eq 'EUID' }" >
-                                                            <h:inputText label="#{feildConfigAdd.displayName}"    id="EUID" value="#{SourceAddHandler.EUID}" required="#{feildConfigAdd.required}"/>
-                                                        </h:column>
-                                                        
-                                                        <h:column rendered="#{!feildConfigAdd.updateable && feildConfigAdd.guiType eq 'TextBox' && feildConfigAdd.name eq 'LID'}" >
-                                                            <h:inputText label="#{feildConfigAdd.displayName}"    id="LID" value="#{SourceAddHandler.LID}" required="#{feildConfigAdd.required}"
-                                                                         onkeydown="javascript:qws_field_on_key_down(this, document.basicAddformData.lidmask.value)"
-                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
-                                                                         />
-                                                        </h:column>
-                                                        
-                                                        <h:column rendered="#{ !feildConfigAdd.updateable && feildConfigAdd.guiType eq 'TextBox' &&  feildConfigAdd.name eq 'create_start_date'}">
-                                                            <h:inputText label="#{feildConfigAdd.displayName}"    value="#{SourceAddHandler.create_start_date}"  id="create_start_date"
-                                                                         required="#{feildConfigAdd.required}"
-                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                            <a HREF="javascript:void(0);" 
-                                                               onclick="g_Calendar.show(event,'basicAddformData:fieldConfigId:1:create_start_date')" > 
-                                                                <h:graphicImage  id="calImgStartDate" 
-                                                                                 alt="calendar Image" styleClass="imgClass"
-                                                                                 url="./images/cal.gif"/>               
-                                                            </a>
-                                                        </h:column>
-                                                        <h:column rendered="#{ !feildConfigAdd.updateable && feildConfigAdd.guiType eq 'TextBox' &&  feildConfigAdd.name eq 'create_end_date'}">
-                                                            <h:inputText label="#{feildConfigAdd.displayName}"    value="#{SourceAddHandler.create_end_date}" id="create_end_date" 
-                                                                         required="#{feildConfigAdd.required}"
-                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                            <a HREF="javascript:void(0);" onclick="g_Calendar.show(event, 'basicAddformData:fieldConfigId:2:create_end_date')" > 
-                                                                <h:graphicImage  id="calImgEndDate" 
-                                                                                 alt="calendar Image" styleClass="imgClass"
-                                                                                 url="./images/cal.gif"/>               
-                                                            </a>
-                                                        </h:column>
-                                                        <h:column rendered="#{!feildConfigAdd.updateable && feildConfigAdd.guiType eq 'TextBox' && feildConfigAdd.name eq 'create_start_time'}">
-                                                            <h:inputText label="#{feildConfigAdd.displayName}"    rendered="#{ feildConfigAdd.name eq 'create_start_time'}" id="create_start_time" 
-                                                                         value="#{SourceAddHandler.create_start_time}" required="#{feildConfigAdd.required}"
-                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
-                                                                         onkeyup="javascript:qws_field_on_key_up(this)"/>
-                                                        </h:column>
-                                                        
-                                                        <h:column rendered="#{!feildConfigAdd.updateable && feildConfigAdd.guiType eq 'TextBox' && feildConfigAdd.name eq 'create_end_time'}" >
-                                                            <h:inputText label="#{feildConfigAdd.displayName}"    id="create_end_time" value="#{SourceAddHandler.create_end_time}" 
-                                                                         required="#{feildConfigAdd.required}"
-                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
-                                                                         onkeyup="javascript:qws_field_on_key_up(this)"/>
-                                                        </h:column>
-                                                        
-                                                        <h:column rendered="#{!feildConfigAdd.updateable && feildConfigAdd.guiType eq 'TextBox' && feildConfigAdd.name eq  'Status'}" >
-                                                            <h:inputText label="#{feildConfigAdd.displayName}"    id="Status"  value="#{SourceAddHandler.Status}" required="#{feildConfigAdd.required}"/>
-                                                        </h:column>
-                                                        
-                                                    </h:dataTable>
                                                     <!-- Start ADD  Fields-->
                                                     <table width="100%">
                                                         <tr>
@@ -2336,7 +2294,7 @@
                                                                 </tr>
                                                                 </table>   
                                                         </div>
-                                                                                                                                                           
+                                                        <%}%>                                                                                                                                                           
                                                         
                                                         <!-- End Display Comment fields --> 
                                                     
@@ -2345,12 +2303,24 @@
                                             </tr>
                                             <tr>
                                                 <td>
+                                                    <nobr>
                                                     <a class="button" href="javascript:ClearContents('basicAddformData')">
                                                         <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
                                                     </a>
+                                                    </nobr>
+                                                    <%if(session.getAttribute("validation") != null ) {%>
+                                                    <nobr>
                                                     <h:commandLink  styleClass="button" action="#{SourceAddHandler.addNewSO}">  
                                                         <span><h:outputText value="Submit"/></span>
                                                     </h:commandLink>                                     
+                                                    </nobr>
+                                                   <%}else{%>
+                                                    <nobr>
+                                                    <h:commandLink  styleClass="button" action="#{SourceAddHandler.validateLID}">  
+                                                        <span><h:outputText value="Validate"/></span>
+                                                    </h:commandLink>                                     
+                                                    </nobr>
+                                                   <%}%>
                                                 </td>
                                             </tr>
                                         </table>
@@ -2367,7 +2337,9 @@
                                                                    <h:outputLabel for="#{msgs.transaction_source}" value="#{msgs.transaction_source}"/>
                                                                 </td>
                                                                <td>
-                                                                   <h:selectOneMenu  onchange="submit();" id="sourceOption" value="#{SourceMergeHandler.source}" valueChangeListener="#{SourceMergeHandler.setLidMaskValue}">
+                                                                   <h:selectOneMenu  onchange="javascript:setLidMaskValue(this,'basicMergeformData')"
+                                                                                     id="sourceOption" 
+                                                                                     value="#{SourceMergeHandler.source}" >
                                                                        <f:selectItems  value="#{SourceMergeHandler.selectOptions}" />
                                                                    </h:selectOneMenu>
                                                                </td>
@@ -3574,5 +3546,50 @@
 
 
 </body>
+
+        <%
+          String[][] lidMaskingArray = sourceAddHandler.getAllSystemCodes();
+          
+          
+        %>
+        <script>
+            var systemCodes = new Array();
+            var lidMasks = new Array();
+        </script>
+        
+        <%
+        for(int i=0;i<lidMaskingArray.length;i++) {
+            String[] innerArray = lidMaskingArray[i];
+            for(int j=0;j<innerArray.length;j++) {
+            
+            if(i==0) {
+         %>       
+         <script>
+           systemCodes['<%=j%>']  = '<%=lidMaskingArray[i][j]%>';
+         </script>      
+         <%       
+            } else {
+         %>
+         <script>
+           lidMasks ['<%=j%>']  = '<%=lidMaskingArray[i][j]%>';
+         </script>
+         <%       
+            }
+           }
+           }
+        %>
+    <script>
+        function setLidMaskValue(field,formName) {
+            var  selectedValue = field.options[field.selectedIndex].value;
+            var formNameValue = document.forms[formName];
+            
+            formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
+         }   
+    </script>
+     
+
+
+
+
 </html>
 </f:view>

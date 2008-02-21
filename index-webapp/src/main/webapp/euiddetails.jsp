@@ -126,6 +126,11 @@
             SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
             ArrayList eoArrayList = new ArrayList();
             EnterpriseObject reqEnterpriseObject = new EnterpriseObject();
+            if (session.getAttribute("comapreEuidsArrayList") != null) {
+                eoArrayList = (ArrayList) session.getAttribute("comapreEuidsArrayList");
+                session.removeAttribute("comapreEuidsArrayList");        
+                request.setAttribute("comapreEuidsArrayList",eoArrayList);
+            } 
             if (request.getParameter("euid") != null) {
                 eoArrayList = patientDetailsHandler.buildEuids(request.getParameter("euid"));
                 request.setAttribute("comapreEuidsArrayList",eoArrayList);
