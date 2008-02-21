@@ -765,7 +765,7 @@ public class MasterControllerService {
 
         for (Object obj : hm.keySet()) {
             Object value = hm.get(obj);
-            if (!obj.equals(MasterControllerService.SYSTEM_CODE) && !obj.equals(MasterControllerService.LID) && !obj.equals(MasterControllerService.HASH_MAP_TYPE)) {
+            if (!obj.equals(MasterControllerService.SYSTEM_CODE) && !obj.equals(MasterControllerService.LID) && !obj.equals(MasterControllerService.HASH_MAP_TYPE) && !obj.equals(MasterControllerService.MINOR_OBJECT_ID)&& !obj.equals("EUID")) {
                 setObjectNodeFieldValue(majorObject, (String) obj, (String) value, sbr);
             }
         }
@@ -953,6 +953,8 @@ public class MasterControllerService {
                 }
             }
         }
+        //set the minor object ID here..
+        hashMap.put(MasterControllerService.MINOR_OBJECT_ID, objNode.getObjectId());
         return hashMap;
     }
 
@@ -1416,9 +1418,9 @@ public class MasterControllerService {
             HashMap hm = (HashMap) o;
             String minorObjectId = (String) hm.get(MINOR_OBJECT_ID);
             for (Object obj : hm.keySet()) {
-                String str = (String) obj;
-                if( !str.equals(MINOR_OBJECT_ID) );
-                    hashMapNew.put("LINK:" + str + "@" + minorObjectId, resolveSystemObject((String)hm.get(str),eo));
+                String key = (String) obj;
+                if( !key.equals(MINOR_OBJECT_ID) )
+                    hashMapNew.put("LINK:" + key + "@" + minorObjectId, resolveSystemObject((String)hm.get(key),eo));
             }       
         }
         //EnterpriseObject eo1 = null;
@@ -1465,7 +1467,7 @@ public class MasterControllerService {
     /**
      * 
      * @param childrenHashmaps Arraylist of HashMaps, Each Hashmap should contain a perticuler Child's Links. This HashMap should have values for MINOR_OBJECT_ID, MINOR_OBJECT_TYPE
-     * @param the EnterpriseObject for which the links should be removed.
+     * @param  eo for which the links should be removed.
      * @return Modified Enterprise objects with removed links 
      * @throws com.sun.mdm.index.master.ProcessingException
      * @throws com.sun.mdm.index.master.UserException
@@ -1593,24 +1595,25 @@ public EnterpriseObject removeLocks(HashMap hm, EnterpriseObject eo) throws Proc
                 SBROverWrite overWrite = (SBROverWrite) obj;
                 String epathField = overWrite.getEPath();
                 
-                epathField = EPathParser.parse(epathField).getLastChildName();
-                boolean isMakedAsRemove = false;
-                for(Object key : keys){
-                    String keyStr = (String) key;
-                    if( keyStr.indexOf(epathField) != -1 ){
-                        
-                        if( hm.get(key) != null && keyStr.indexOf((String)hm.get(key)) != -1 ){
+                // epathField = EPathParser.parse(epathField).getLastChildName();
+                if (epathField.indexOf("LINK:") == -1) {
+                    epathField = normalize(epathField);
+                    boolean isMakedAsRemove = false;
+                    for (Object key : keys) {
+                        String keyStr = (String) key;
+                        if (keyStr.indexOf(epathField) != -1) {
+                            // if( hm.get(key) != null && keyStr.indexOf((String)hm.get(key)) != -1 ){
                             isMakedAsRemove = true;
-                        }                         
+                        //}                         
+                        }
+
                     }
-                    
+                    if (isMakedAsRemove) {
+                        overWrite.setRemoveFlag(true);
+                    }
                 }
-                if(isMakedAsRemove){
-                    overWrite.setRemoveFlag(true);
-                }
-                else {
-                    mLogger.fine(" LINK for " + epathField + " is Not available");
-                }
+                
+               
             }
         } else {
             mLogger.fine("There exist no links to delete");
