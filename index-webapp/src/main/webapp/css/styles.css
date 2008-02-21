@@ -13,6 +13,23 @@ INPUT{
            color:#837F74;           
 }
 
+INPUT.READONLY{
+           font-family: Arial, Helvetica, sans-serif;
+           background-repeat:no-repeat;      
+           background-image: url(../images/field-box.png);
+           background: buttonface;
+           background-color:#efefef;
+           font-color:#efefef;
+           width:182px;
+           height:25px;
+           font-size:12px;
+           padding-left:10px;
+           padding-top:2px;
+           padding-bottom:2px;
+           border:none;
+           color:#837F74;           
+}
+
 #reportYUISearch table td input {
 background-image:url(../images/none.gif); /*fake it*/
 }
@@ -183,6 +200,7 @@ width:25px;
 #mainContent {
  width:1200px;
  overflow:auto;
+ float:left;
 }
 
 #menuDiv  
@@ -275,6 +293,15 @@ width:25px;
 	   padding-top:1px; 
 	   padding-bottom:1px;   
 }
+
+.dashboardSummaryQS a 
+{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size:18px;
+  color:#837F74;
+  font-weight:bold;  
+}
+
 
 .dashboardHeadMessage 
 {
@@ -383,6 +410,7 @@ width:25px;
            text-align:left;
 	   vertical-align:middle;	      
            font-weight:bold;
+           float:left;
            position:relative;
 	   border-left: 1px solid #6B757B; 
            border-right: 1px solid #6B757B; 
@@ -442,6 +470,7 @@ width:25px;
            text-align:left;
 	   vertical-align:middle;	      
            font-weight:bold;
+           float:left;
            position:relative;
 	   border-left: 1px solid #6B757B; 
            border-right: 1px solid #6B757B; 
@@ -606,6 +635,7 @@ width:25px;
            font-size:12px;
 	   color:#837F74;
            width:1024px;
+           float:left;
            text-align:right;
 	   vertical-align:top;	      
 }
@@ -734,6 +764,7 @@ width:25px;
    background-color:#fcfbe9;
    width:1024px;
    text-align:right; 
+   float:left;
    padding-top:3px;
    padding-bottom:3px;
 }
@@ -859,7 +890,7 @@ width:25px;
     overflow:auto;
     background-color:#F7FBFF;
     width: 1024px;
-    
+    float:left;
     border-left: 1px solid #6B757B;     border-right: 2px solid #6B757B;     border-top: 1px solid #182442;    border-bottom: 2px solid #6B757B;
 }
 
@@ -2304,3 +2335,76 @@ div.w114 table td.fntdup5nou    {height: 25px; border-top: 1px solid #F7F3D6;  b
 .actionbuton table {width:169px;background-color:#F7FBD6;padding-left:5px; padding-right:5px;}
 .actionbuton table td { width:169px;height:25px;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:0px; padding-right:5px;padding-left:5px;}
 .actionbuton #previewActionButton {visibility:hidden;display:none;background-color:#cecff9;}
+
+a.navbutton {
+	background: transparent url('../images/navigation-buttons_a.png') no-repeat scroll top right;
+        color: #40403E;
+        text-decoration:none;
+	display: block;
+	float:left;
+	height: 30px;
+	margin-right: 6px;
+	padding-right: 18px; /* sliding doors padding */
+	font-family: arial, sans-serif;
+        font-family: "Lucida Sans Unicode", "Lucida Grande",Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+}
+
+a.navbutton span {
+    background: transparent url('../images/navigation-buttons_span.png') no-repeat;
+    display: block;
+    color: #40403E;
+    line-height: 20px;
+    padding: 5px 0 5px 18px;
+}
+
+a.navbutton:active {
+    background-position: bottom right;
+    color: #0739B6;
+    
+}
+a.navbutton:active span {
+    background-position: bottom left;
+    /*padding: 6px 0 4px 18px;*/ /* push text down 1px */
+    padding: 5px 0 5px 18px; 
+}
+
+/**Selected Tabs in the header**/
+a.navbuttonselected {
+	background: transparent url('../images/navigation-buttons_a.png') no-repeat scroll bottom right;
+        color: #0739B6;
+        text-decoration:none;
+	display: block;
+	float:left;
+	height: 30px;
+	margin-right: 6px;
+	padding-right: 18px; /* sliding doors padding */
+	font-family: arial, sans-serif;
+        font-family: "Lucida Sans Unicode", "Lucida Grande",Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+}
+a.navbuttonselected span {
+    background: transparent url('../images/navigation-buttons_span.png') no-repeat  bottom right;
+    background-position: bottom left;
+    display: block;
+    color: #0739B6;
+    line-height: 20px;
+    padding: 5px 0 5px 18px;
+}
+
+a.navbuttonselected:active {
+    background-position: bottom right;
+    color: #0739B6;
+    
+}
+a.navbuttonselected:active span {
+    background-position: bottom left;
+    /*padding: 6px 0 4px 18px;*/ /* push text down 1px */
+    padding: 5px 0 5px 18px; 
+}
