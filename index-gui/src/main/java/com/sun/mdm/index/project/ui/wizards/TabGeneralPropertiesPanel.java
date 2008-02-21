@@ -58,7 +58,7 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
                 String oldName;
                 public void focusGained(java.awt.event.FocusEvent ev) {
                     oldName = txtName.getText();
-                    txtName.selectAll();
+                    //txtName.selectAll();
                 }
 
                 public void focusLost(java.awt.event.FocusEvent ev) {
