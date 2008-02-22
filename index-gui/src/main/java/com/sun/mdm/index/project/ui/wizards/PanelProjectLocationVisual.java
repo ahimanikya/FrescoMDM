@@ -24,6 +24,8 @@ package com.sun.mdm.index.project.ui.wizards;
 
 import java.io.File;
 import java.text.MessageFormat;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JFileChooser;
 import javax.swing.event.DocumentEvent;
@@ -53,6 +55,25 @@ public class PanelProjectLocationVisual
         // Register listener on the textFields to make the automatic updates
         projectNameTextField.getDocument().addDocumentListener(this);
         projectLocationTextField.getDocument().addDocumentListener(this);
+        
+        /*
+        projectNameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override   
+            public void keyReleased(KeyEvent evt) {
+            }
+            
+            @Override   
+            public void keyTyped(KeyEvent evt) {
+                char c = evt.getKeyChar();
+
+                if (!Character.isLetterOrDigit(c) && c != '-' && c != '_' 
+                    && c!= KeyEvent.VK_BACK_SPACE  && c!= KeyEvent.VK_DELETE) {
+                    Toolkit.getDefaultToolkit().beep();
+                    evt.consume();
+                }
+            }
+        });
+         */
     }
     
     /** This method is called from within the constructor to
@@ -198,6 +219,11 @@ public class PanelProjectLocationVisual
         if (projectNameTextField.getText().length() == 0) {
             wizardDescriptor.putProperty("WizardPanel_errorMessage", NbBundle.getBundle(WIZARD_BUNDLE).getString("MSG_IllegalProjectName")); //NOI18N
             return false; // Display name not specified
+        }
+
+        if (projectNameTextField.getText().contains(" ")) {
+            wizardDescriptor.putProperty("WizardPanel_errorMessage", NbBundle.getBundle(WIZARD_BUNDLE).getString("MSG_IllegalProjectName")); //NOI18N
+            return false;
         }
         
         File destFolder = new File(createdFolderTextField.getText());

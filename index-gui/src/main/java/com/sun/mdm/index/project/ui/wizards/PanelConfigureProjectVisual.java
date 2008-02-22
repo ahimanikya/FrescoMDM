@@ -47,29 +47,6 @@ public class PanelConfigureProjectVisual
         optionsPanel = new PanelOptionsVisual(panel);
         optionsContainer.add(optionsPanel, java.awt.BorderLayout.NORTH);
 
-///
-/*        DocumentListener dl = new DocumentListener() {
-            public void changedUpdate(DocumentEvent e) {
-                setContextPath(e);
-            }
-
-            public void insertUpdate(DocumentEvent e) {
-                setContextPath(e);
-            }
-
-            public void removeUpdate(DocumentEvent e) {
-                setContextPath(e);
-            }
-
-            private void setContextPath(DocumentEvent e) {
-                if (!optionsPanel.isContextModified())
-                    optionsPanel.jTextFieldContextPath.setText("/" + projectLocationPanel.projectNameTextField.getText().trim().replace(' ', '_'));
-            }
-        };
-        projectLocationPanel.projectNameTextField.getDocument().addDocumentListener(dl);
-*/
-///
-
         // Provide a name in the title bar.
         setName(NbBundle.getBundle(WIZARD_BUNDLE).getString("LBL_NWP1_ProjectTitleName")); //NOI18N
         putClientProperty ("NewProjectWizard_Title", NbBundle.getBundle(WIZARD_BUNDLE).getString("TXT_NewMIApp")); //NOI18N
