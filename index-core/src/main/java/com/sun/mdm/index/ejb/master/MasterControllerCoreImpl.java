@@ -443,8 +443,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
         } catch (Exception e) {
             mLogger.severe(mLocalizer.x("MSC009: Initialization failed: {0}.", e.getMessage()));
-            sendCriticalError("MasterController initializing failed: "
-                    + e.getClass().getName() + ": " + e.getMessage());
+//            sendCriticalError("MasterController initializing failed: "
+//                    + e.getClass().getName() + ": " + e.getMessage());
             throw e;
         }
     }
@@ -3409,6 +3409,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         }
     }
 
+
     /**
      * Returns an iterator of objects that match the given search criteria and
      * options. Criteria consists of a system object, and options consists of a
@@ -5548,12 +5549,15 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
     private void throwProcessingException(Exception e)
             throws ProcessingException {
 
-        sendAlert(e.getClass().getName() + ": " + e.getMessage());
+//        sendAlert(e.getClass().getName() + ": " + e.getMessage());
         StackTraceElement stackElements[] = e.getStackTrace();
         String stackMsgs = new String();
         for (int i = 0; i < stackElements.length; i++) {
             stackMsgs += "\n" + stackElements[i].toString();
         }
+        mLogger.severe(mLocalizer.x("MSC582: MasterControllerImpl encountered a " + 
+                                                   "ProcessingException: name={0}, message={1}, stack trace={2}", 
+                                                   e.getClass().getName(), e.getMessage(), stackMsgs));
         throw new ProcessingException(mLocalizer.t("MSC582: MasterControllerImpl encountered a " + 
                                                    "ProcessingException: name={0}, message={1}, stack trace={2}", 
                                                    e.getClass().getName(), e.getMessage(), stackMsgs));
@@ -5585,7 +5589,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         }
 
     }
-
+/*
     private void sendAlert(String message) {
         try {
             if (mMBeanServer != null) {
@@ -5594,7 +5598,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 mMBeanServer.invoke(mMBeanObjectName, "logAlert", obj, sig);
             }
         } catch (Exception ex) {
-            mLogger.warn(mLocalizer.x("MSC018: sendAlert(): error sending message. This is the original message: " +
+            mLogger.error(mLocalizer.x("MSC018: sendAlert(): error sending message. This is the original message: " +
                                         "\"{0}\".  This is the exception: \"{1}\"", message, ex.getMessage()));
         }
     }
@@ -5608,11 +5612,11 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                         sig);
             }
         } catch (Exception ex) {
-            mLogger.warn(mLocalizer.x("MSC019: sendCriticalError(): error sending message. This is the original message: " +
+            mLogger.error(mLocalizer.x("MSC019: sendCriticalError(): error sending message. This is the original message: " +
                                         "\"{0}\".  This is the exception: \"{1}\"", message, ex.getMessage()));
         }
     }
-
+*/
     private boolean isObjectChanged(ObjectNode obj) {
         if (obj.isUpdated() || obj.isAdded() || obj.isRemoved()) {
             return true;
