@@ -55,25 +55,6 @@ public class PanelProjectLocationVisual
         // Register listener on the textFields to make the automatic updates
         projectNameTextField.getDocument().addDocumentListener(this);
         projectLocationTextField.getDocument().addDocumentListener(this);
-        
-        /*
-        projectNameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override   
-            public void keyReleased(KeyEvent evt) {
-            }
-            
-            @Override   
-            public void keyTyped(KeyEvent evt) {
-                char c = evt.getKeyChar();
-
-                if (!Character.isLetterOrDigit(c) && c != '-' && c != '_' 
-                    && c!= KeyEvent.VK_BACK_SPACE  && c!= KeyEvent.VK_DELETE) {
-                    Toolkit.getDefaultToolkit().beep();
-                    evt.consume();
-                }
-            }
-        });
-         */
     }
     
     /** This method is called from within the constructor to
