@@ -142,7 +142,7 @@ public class ValidationRuleRegistry {
             registerClass = Class.forName(sRegisterObjectClass);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(mLocalizer.t("OBJ745: Could not initialize " + 
-                                        "ValidationRuleRegistry: {0}", e));
+                                        "ValidationRuleRegistry: {0}", e.getMessage()));
         } 
         
         Object registerInstance;
@@ -150,7 +150,7 @@ public class ValidationRuleRegistry {
             registerInstance = registerClass.newInstance();
         } catch (Exception e) {
             throw new RuntimeException(mLocalizer.t("OBJ746: Could not initialize " + 
-                                        "ValidationRuleRegistry: {0}", e));
+                                        "ValidationRuleRegistry: {0}", e.getMessage()));
         } 
         
         Method methedToInvoke;
@@ -159,7 +159,7 @@ public class ValidationRuleRegistry {
             methedToInvoke = registerClass.getMethod("registerObjects", parameterTypes);
         } catch (Exception e) {
             throw new RuntimeException(mLocalizer.t("OBJ747: Could not initialize " + 
-                                        "ValidationRuleRegistry: {0}", e));
+                                        "ValidationRuleRegistry: {0}", e.getMessage()));
         }
         
         ArrayList list;
@@ -168,7 +168,7 @@ public class ValidationRuleRegistry {
             list = (ArrayList) methedToInvoke.invoke(registerInstance, parms);
         } catch (Exception e) {
             throw new RuntimeException(mLocalizer.t("OBJ748: Could not initialize " + 
-                                        "ValidationRuleRegistry: {0}", e));
+                                        "ValidationRuleRegistry: {0}", e.getMessage()));
         }
         
         hDefaultValidator = new Hashtable();
@@ -186,7 +186,7 @@ public class ValidationRuleRegistry {
             cfgService = ConfigurationService.getInstance();
         } catch (InstantiationException e) {
             throw new RuntimeException(mLocalizer.t("OBJ749: Could not initialize " + 
-                                        "ValidationRuleRegistry: {0}", e));
+                                        "ValidationRuleRegistry: {0}", e.getMessage()));
         }
 
         ValidationConfiguration cfg
