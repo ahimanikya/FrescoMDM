@@ -1191,10 +1191,10 @@ public class EDMType {
     String getPageTabXML(PageDefinition.PageTab pageTab, String startTab) {
         StringBuffer buffer = new StringBuffer();
         buffer.append(startTab + Utils.startTagNoLine(mTagRootObject) + 
-                        pageTab.rootObject + 
+                        ((pageTab.rootObject != null && !pageTab.rootObject.equals("null")) ? pageTab.rootObject : "")  + 
                         Utils.endTag(mTagRootObject));
         buffer.append(startTab + Utils.startTagNoLine(mTagTabName) + 
-                        pageTab.tabName + 
+                        ((pageTab.tabName != null && !pageTab.tabName.equals("null")) ? pageTab.tabName : "")  + 
                         Utils.endTag(mTagTabName));
         if (pageTab.tabEntrance != null) {
             buffer.append(startTab + Utils.startTagNoLine(mTagTabEntrance) + 
