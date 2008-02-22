@@ -75,12 +75,6 @@ public class SourceEditHandler {
     //Hash map arraylist for single SO Phone
     private ArrayList singlePhoneHashMapArrayList = new ArrayList();
     
-    //Hash map arraylist for single SO AuxId
-    private ArrayList singleAuxIdHashMapArrayList = new ArrayList();
-    
-    //Hash map arraylist for single SO Comment
-    private ArrayList singleCommentHashMapArrayList = new ArrayList();
-
     
     //Hash map for singl SO  for EDITING
     private HashMap editSingleSOHashMap = new HashMap();
@@ -94,12 +88,6 @@ public class SourceEditHandler {
     //Hash map for SO Alias  for EDITING
     private HashMap editSoAliasHashMap = new HashMap();
     
-    //Hash map for SO AuxID for EDITING
-    private HashMap editSoAuxIdHashMap = new HashMap();
-
-    //Hash map for SO  comment for EDITING
-    private HashMap editSoCommentHashMap = new HashMap();
-
     public static final String UPDATE_SUCCESS = "UPDATE SUCCESS";
     
     /** Creates a new instance of SourceEditHandler */
@@ -183,14 +171,6 @@ public class SourceEditHandler {
             ArrayList aliasMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, sourceHandler.buildSystemObjectEpaths("Alias"), "Alias",masterControllerService.MINOR_OBJECT_UPDATE);
             this.setSingleAliasHashMapArrayList(aliasMapArrayList);
            
-            //set auxid array list of hasmap for editing
-            ArrayList auxIdMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, sourceHandler.buildSystemObjectEpaths("AuxId"), "AuxId",masterControllerService.MINOR_OBJECT_UPDATE);
-            this.setSingleAuxIdHashMapArrayList(auxIdMapArrayList);
-
-            //set comment array list of hasmap for editing
-            ArrayList commentMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, sourceHandler.buildSystemObjectEpaths("Comment"), "Comment",masterControllerService.MINOR_OBJECT_UPDATE);
-            this.setSingleCommentHashMapArrayList(commentMapArrayList);
-
             session.setAttribute("keyFunction", "editSO");
         } catch (ObjectException ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -272,51 +252,6 @@ public class SourceEditHandler {
         this.singleAliasHashMapArrayList.remove(remAliasMap);
     }
     
-    /**
-     * 
-     * @param event
-     */
-    public void addSOAuxId(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "View/Edit");
-        //set the search type as per the form
-        this.singleAuxIdHashMapArrayList.add(this.getEditSoAuxIdHashMap());
-    }
-    
-    /**
-     * 
-     * @param event
-     */
-    public void removeSOAuxId(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "View/Edit");
-        HashMap remAuxIdMap = (HashMap) event.getComponent().getAttributes().get("remAuxIdMap");
-        //set the search type as per the form
-        this.singleAuxIdHashMapArrayList.remove(remAuxIdMap);
-    }
-    
-    /**
-     * 
-     * @param event
-     */
-    public void addSOComment(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "View/Edit");
-        //set the search type as per the form
-        this.singleCommentHashMapArrayList.add(this.getEditSoCommentHashMap());
-    }
-
-    /**
-     * 
-     * @param event
-     */
-    public void removeSOComment(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "View/Edit");
-        HashMap remCommentMap = (HashMap) event.getComponent().getAttributes().get("remCommentMap");
-        //set the search type as per the form
-        this.singleCommentHashMapArrayList.remove(remCommentMap);
-    }
     
     public ArrayList getSingleSOHashMapArrayList() {
         return singleSOHashMapArrayList;
@@ -350,21 +285,6 @@ public class SourceEditHandler {
         this.singlePhoneHashMapArrayList = singlePhoneHashMapArrayList;
     }
 
-    public ArrayList getSingleAuxIdHashMapArrayList() {
-        return singleAuxIdHashMapArrayList;
-    }
-
-    public void setSingleAuxIdHashMapArrayList(ArrayList singleAuxIdHashMapArrayList) {
-        this.singleAuxIdHashMapArrayList = singleAuxIdHashMapArrayList;
-    }
-
-    public ArrayList getSingleCommentHashMapArrayList() {
-        return singleCommentHashMapArrayList;
-    }
-
-    public void setSingleCommentHashMapArrayList(ArrayList singleCommentHashMapArrayList) {
-        this.singleCommentHashMapArrayList = singleCommentHashMapArrayList;
-    }
 
     public HashMap getEditSingleSOHashMap() {
         return editSingleSOHashMap;
@@ -398,19 +318,4 @@ public class SourceEditHandler {
         this.editSoAliasHashMap = editSoAliasHashMap;
     }
 
-    public HashMap getEditSoAuxIdHashMap() {
-        return editSoAuxIdHashMap;
-    }
-
-    public void setEditSoAuxIdHashMap(HashMap editSoAuxIdHashMap) {
-        this.editSoAuxIdHashMap = editSoAuxIdHashMap;
-    }
-
-    public HashMap getEditSoCommentHashMap() {
-        return editSoCommentHashMap;
-    }
-
-    public void setEditSoCommentHashMap(HashMap editSoCommentHashMap) {
-        this.editSoCommentHashMap = editSoCommentHashMap;
-    }
 }

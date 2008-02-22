@@ -130,10 +130,6 @@ public class SourceHandler {
     private ArrayList phoneFieldConfigs;
     //Array list for all person fields
     private ArrayList aliasFieldConfigs;
-    //Array list for all person fields
-    private ArrayList auxIdFieldConfigs;
-    //Array list for all person fields
-    private ArrayList commentFieldConfigs;
 
     MasterControllerService  masterControllerService = new MasterControllerService();
     
@@ -150,11 +146,6 @@ public class SourceHandler {
     //Hash map arraylist for single SO Phone
     private ArrayList singlePhoneHashMapArrayList = new ArrayList();
     
-    //Hash map arraylist for single SO AuxId
-    private ArrayList singleAuxIdHashMapArrayList = new ArrayList();
-    
-    //Hash map arraylist for single SO Comment
-    private ArrayList singleCommentHashMapArrayList = new ArrayList();
 
     //Hash map for single SO Adress
     private ArrayList singleSOKeyArrayList = new ArrayList();
@@ -166,9 +157,7 @@ public class SourceHandler {
     private HashMap editSoAddressHashMap = new HashMap();
     private HashMap editSoPhoneHashMap = new HashMap();
     private HashMap editSoAliasHashMap = new HashMap();
-    private HashMap editSoAuxIdHashMap = new HashMap();
-    private HashMap editSoCommentHashMap = new HashMap();
-
+    
     public static final String UPDATE_SUCCESS = "UPDATE SUCCESS";
     
     //Hash map for single SO  EDITING
@@ -275,12 +264,6 @@ public class SourceHandler {
                 ArrayList aliasMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObject, buildSystemObjectEpaths("Alias"),"Alias",null);
                 this.setSingleAliasHashMapArrayList(aliasMapArrayList);                
                 
-                ArrayList auxIdMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObject, buildSystemObjectEpaths("AuxId"),"AuxId",null);
-                this.setSingleAuxIdHashMapArrayList(auxIdMapArrayList);                
-                
-                ArrayList commentMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObject, buildSystemObjectEpaths("Comment"),"Comment",null);
-                this.setSingleCommentHashMapArrayList(commentMapArrayList);                
-
                
                 //set the single hash map array list with person, array list of addresses,phones...etc
                 //this.setSingleSOHashMapArrayList(systemObjectMapArrayList);
@@ -528,13 +511,6 @@ public class SourceHandler {
             ArrayList aliasMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, buildSystemObjectEpaths("Alias"), "Alias",null);
             this.setSingleAliasHashMapArrayList(aliasMapArrayList);
            
-            //set auxid array list of hasmap for editing
-            ArrayList auxIdMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, buildSystemObjectEpaths("AuxId"), "AuxId",null);
-            this.setSingleAuxIdHashMapArrayList(auxIdMapArrayList);
-
-            //set comment array list of hasmap for editing
-            ArrayList commentMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, buildSystemObjectEpaths("Comment"), "Comment",null);
-            this.setSingleCommentHashMapArrayList(commentMapArrayList);
 
             session.setAttribute("keyFunction", "editSO");
         } catch (ObjectException ex) {
@@ -667,11 +643,6 @@ public class SourceHandler {
                 ArrayList aliasMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, buildSystemObjectEpaths("Alias"),"Alias",null);
                 this.setSingleAliasHashMapArrayList(aliasMapArrayList);                
                 
-                ArrayList auxIdMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, buildSystemObjectEpaths("AuxId"),"AuxId",null);
-                this.setSingleAuxIdHashMapArrayList(auxIdMapArrayList);                
-                
-                ArrayList commentMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, buildSystemObjectEpaths("Comment"),"Comment",null);
-                this.setSingleCommentHashMapArrayList(commentMapArrayList);                
             
             session.setAttribute("singleSystemObjectLID", systemObject);
             session.setAttribute("systemObjectMap", systemObjectMap);
@@ -945,7 +916,8 @@ public class SourceHandler {
             //Build Person Epath Arraylist
             for (int i = 0; i < allFeildConfigs.length; i++) {
                 FieldConfig fieldConfig = allFeildConfigs[i];
-                if(!(rootName+ ".EUID").equalsIgnoreCase(fieldConfig.getFullFieldName())) {
+                if(     !(rootName+ ".EUID").equalsIgnoreCase(fieldConfig.getFullFieldName())
+                    ) {
                   ePathArrayList.add(fieldConfig.getFullFieldName());
                 }
             }
@@ -1006,11 +978,7 @@ public class SourceHandler {
                 FieldConfig[] allChildFeildConfigs = objectNodeConfig.getFieldConfigs();
                 for (int j = 0; j < allChildFeildConfigs.length; j++) {
                     FieldConfig fieldConfig = allChildFeildConfigs[j];
-                    //not adding Auxid  as it unable to fetch the "Auxiliary ID Type" Menu list
-                    // will be reverted to get all child field configs once issue is fixed.
-                    if(!"AuxId".equalsIgnoreCase(objectNodeConfig.getName())) {
-                      newArrayList.add(fieldConfig);
-                    }
+                    newArrayList.add(fieldConfig);
                 }
             }
         } catch (Exception ex) {
@@ -1080,22 +1048,6 @@ public class SourceHandler {
 
     public void setSinglePhoneHashMapArrayList(ArrayList singlePhoneHashMapArrayList) {
         this.singlePhoneHashMapArrayList = singlePhoneHashMapArrayList;
-    }
-
-    public ArrayList getSingleAuxIdHashMapArrayList() {
-        return singleAuxIdHashMapArrayList;
-    }
-
-    public void setSingleAuxIdHashMapArrayList(ArrayList singleAuxIdHashMapArrayList) {
-        this.singleAuxIdHashMapArrayList = singleAuxIdHashMapArrayList;
-    }
-
-    public ArrayList getSingleCommentHashMapArrayList() {
-        return singleCommentHashMapArrayList;
-    }
-
-    public void setSingleCommentHashMapArrayList(ArrayList singleCommentHashMapArrayList) {
-        this.singleCommentHashMapArrayList = singleCommentHashMapArrayList;
     }
 
     public ArrayList getAddressFieldConfigs() {
@@ -1174,56 +1126,6 @@ public class SourceHandler {
         this.aliasFieldConfigs = aliasFieldConfigs;
     }
 
-    public ArrayList getAuxIdFieldConfigs() {
-        ArrayList newArrayList = new ArrayList();
-        try {
-            ConfigManager.init();
-            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig("AuxId");
-            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
-
-            //Build Person Epath Arraylist
-            for (int i = 0; i < allFeildConfigs.length; i++) {
-                FieldConfig fieldConfig = allFeildConfigs[i];
-                  newArrayList.add(fieldConfig);
-            }
-
-        } catch (Exception ex) {
-            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        auxIdFieldConfigs = newArrayList;//store all the fields in the arraylist
-        return auxIdFieldConfigs;
-    }
-
-    public void setAuxIdFieldConfigs(ArrayList auxIdFieldConfigs) {
-        this.auxIdFieldConfigs = auxIdFieldConfigs;
-    }
-
-    public ArrayList getCommentFieldConfigs() {
-        ArrayList newArrayList = new ArrayList();
-        try {
-            ConfigManager.init();
-            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig("Comment");
-            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
-
-            //Build Person Epath Arraylist
-            for (int i = 0; i < allFeildConfigs.length; i++) {
-                FieldConfig fieldConfig = allFeildConfigs[i];
-                  newArrayList.add(fieldConfig);
-            }
-
-        } catch (Exception ex) {
-            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        commentFieldConfigs = newArrayList;//store all the fields in the arraylist
-        return commentFieldConfigs;
-    }
-
-    public void setCommentFieldConfigs(ArrayList commentFieldConfigs) {
-        this.commentFieldConfigs = commentFieldConfigs;
-    }
-
     public ArrayList getPersonFieldConfigs() {
         ArrayList newArrayList = new ArrayList();
         try {
@@ -1295,21 +1197,7 @@ public class SourceHandler {
         this.editSoAliasHashMap = editSoAliasHashMap;
     }
 
-    public HashMap getEditSoAuxIdHashMap() {
-        return editSoAuxIdHashMap;
-    }
-
-    public void setEditSoAuxIdHashMap(HashMap editSoAuxIdHashMap) {
-        this.editSoAuxIdHashMap = editSoAuxIdHashMap;
-    }
-
-    public HashMap getEditSoCommentHashMap() {
-        return editSoCommentHashMap;
-    }
-
-    public void setEditSoCommentHashMap(HashMap editSoCommentHashMap) {
-        this.editSoCommentHashMap = editSoCommentHashMap;
-    }
+    
     public HashMap getAllNodeFieldConfigs() {
          HashMap newHashMap = new HashMap();
         try {

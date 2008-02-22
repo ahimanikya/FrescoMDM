@@ -10,31 +10,18 @@
 package com.sun.mdm.index.edm.presentation.handlers;
 
 import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
-import com.sun.mdm.index.edm.services.configuration.ConfigManager;
-import com.sun.mdm.index.edm.services.configuration.FieldConfig;
-import com.sun.mdm.index.edm.services.configuration.FieldConfigGroup;
-import com.sun.mdm.index.edm.services.configuration.ObjectNodeConfig;
 import com.sun.mdm.index.edm.services.configuration.ScreenObject;
-import com.sun.mdm.index.edm.services.configuration.SearchResultsConfig;
-import com.sun.mdm.index.edm.services.configuration.SearchScreenConfig;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
-import com.sun.mdm.index.edm.util.QwsUtil;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.master.UserException;
-import com.sun.mdm.index.objects.EnterpriseObject;
-import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.objects.exception.ObjectException;
-import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -92,8 +79,6 @@ public class SourceMergeHandler {
     Object[] addressConfigFeilds = sourceHandler.getAddressFieldConfigs().toArray();
     Object[] aliasConfigFeilds = sourceHandler.getAliasFieldConfigs().toArray();
     Object[] phoneConfigFeilds = sourceHandler.getPhoneFieldConfigs().toArray();
-    Object[] auxidConfigFeilds = sourceHandler.getAuxIdFieldConfigs().toArray();
-    Object[] commentConfigFeilds = sourceHandler.getCommentFieldConfigs().toArray();
     
     EPathArrayList personEPathArrayList = sourceHandler.buildPersonEpaths();
     private ArrayList soArrayList = new ArrayList();
@@ -304,15 +289,7 @@ public class SourceMergeHandler {
                 //set alias array list of hasmap for editing
                 ArrayList aliasMapSOArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths("Alias"), "Alias", MasterControllerService.MINOR_OBJECT_UPDATE);
                 
-                    systemObjectHashMap.put("SOAliasList", aliasMapSOArrayList);// set SO alias as arraylist here
-                //set auxid array list of hasmap for editing
-                ArrayList auxIdMapSOArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths("AuxId"), "AuxId", MasterControllerService.MINOR_OBJECT_UPDATE);
-                
-                    systemObjectHashMap.put("SOAuxIdList", auxIdMapSOArrayList);// set SO auxId as arraylist here
-                //set comment array list of hasmap for editing
-                ArrayList commentMapSOArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths("Comment"), "Comment", MasterControllerService.MINOR_OBJECT_UPDATE);
-                
-                    systemObjectHashMap.put("SOCommentList", commentMapSOArrayList);// set SO Comment as arraylist here
+                systemObjectHashMap.put("SOAliasList", aliasMapSOArrayList);// set SO alias as arraylist here
 
                 //build the system object hashmap for editing 
                 newSoArrayList.add(systemObjectHashMap);
@@ -553,18 +530,6 @@ public class SourceMergeHandler {
 
             if (aliasMapSOArrayList.size() > 0) {
                 systemObjectHashMap.put("SOAliasList", aliasMapSOArrayList); // set SO alias as arraylist here
-            }
-            //set auxid array list of hasmap for editing
-            ArrayList auxIdMapSOArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths("AuxId"), "AuxId", MasterControllerService.MINOR_OBJECT_UPDATE);
-
-            if (auxIdMapSOArrayList.size() > 0) {
-                systemObjectHashMap.put("SOAuxIdList", auxIdMapSOArrayList); // set SO auxId as arraylist here
-            }
-            //set comment array list of hasmap for editing
-            ArrayList commentMapSOArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths("Comment"), "Comment", MasterControllerService.MINOR_OBJECT_UPDATE);
-
-            if (commentMapSOArrayList.size() > 0) {
-                systemObjectHashMap.put("SOCommentList", commentMapSOArrayList); // set SO Comment as arraylist here
             }
         } catch (EPathException ex) {
             Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);

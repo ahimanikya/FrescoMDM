@@ -65,9 +65,6 @@ public class SourceAddHandler {
     //Array list for all person fields
     private ArrayList aliasFieldConfigs;
     //Array list for all person fields
-    private ArrayList auxIdFieldConfigs;
-    //Array list for all person fields
-    private ArrayList commentFieldConfigs;
     
     
     private HashMap newSOHashMap = new HashMap();
@@ -78,14 +75,10 @@ public class SourceAddHandler {
     private HashMap addressFeildsMap =  new HashMap();    
     private HashMap phoneFeildsMap =  new HashMap();    
     private HashMap aliasFeildsMap =  new HashMap();    
-    private HashMap auxIdFeildsMap =  new HashMap();    
-    private HashMap commentFeildsMap =  new HashMap();    
     
     private HashMap addressFeildsMapExtra =  new HashMap();    
     private HashMap phoneFeildsMapExtra =  new HashMap();    
     private HashMap aliasFeildsMapExtra =  new HashMap();    
-    private HashMap auxIdFeildsMapExtra =  new HashMap();    
-    private HashMap commentFeildsMapExtra =  new HashMap();    
 
     //Hash map arraylist for single SO 
     private ArrayList singleAddressHashMapArrayList = new ArrayList();
@@ -96,11 +89,6 @@ public class SourceAddHandler {
     //Hash map arraylist for single SO Phone
     private ArrayList singlePhoneHashMapArrayList = new ArrayList();
     
-    //Hash map arraylist for single SO AuxId
-    private ArrayList singleAuxIdHashMapArrayList = new ArrayList();
-    
-    //Hash map arraylist for single SO Comment
-    private ArrayList singleCommentHashMapArrayList = new ArrayList();
 
     
     //Arraylist to display EDM driven search criteria Add screen.
@@ -120,7 +108,7 @@ public class SourceAddHandler {
     
     //Hash map arraylist for single SO  
     private ArrayList newSOHashMapArrayList = new ArrayList();
-    //Hash map arraylist for new SO alias,Address,comment,auxid,phone
+    //Hash map arraylist for new SO alias,Address,phone
     private ArrayList newSOMinorObjectsHashMapArrayList = new ArrayList();
 
    private static final String ADD_SOURCE_SUCCESS = "success";
@@ -205,7 +193,6 @@ public class SourceAddHandler {
             //check the field values
             //checkMapValues(addressFeildsMap);
             //checkMapValues(aliasFeildsMap);
-            //checkMapValues(commentFeildsMap);
 
             //build array of address field hashmap and the keys for adding the new address objects
             if (!checkMapValues(addressFeildsMap)) {
@@ -240,18 +227,6 @@ public class SourceAddHandler {
             }
 
 
-            //build array of  comment field hashmap
-
-            if (!checkMapValues(commentFeildsMap)) {
-                setMinorObjectPrimaryValues(commentFeildsMap, "Comment");
-                
-                getNewSOMinorObjectsHashMapArrayList().add(commentFeildsMap);
-
-                //set the hashmap for displaying
-                this.singleCommentHashMapArrayList.add(getCommentFeildsMap());
-            }
-
-            
             masterControllerService.setRootNodeName(screenObject.getRootObj().getName());
             //create systemobject start
             SystemObject createSystemObject = masterControllerService.createSystemObject(getSystemCode(), getLID(), newSOHashMap);
@@ -278,7 +253,6 @@ public class SourceAddHandler {
             unSetMinorObjectPrimaryValues(addressFeildsMap);
             unSetMinorObjectPrimaryValues(phoneFeildsMap);
             unSetMinorObjectPrimaryValues(aliasFeildsMap);
-            unSetMinorObjectPrimaryValues(commentFeildsMap);
         
         } catch (UserException ex) {   
             errorMessage = "Service Layer User Exception occurred";
@@ -420,76 +394,6 @@ public class SourceAddHandler {
     
     /**
      * 
-     * @param event
-     */
-    public void addSOAuxId(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "Add");
-    
-            /* 
-            //add SystemCode and LID value to the new Hash Map for auxid
-            auxIdFeildsMap.put(MasterControllerService.SYSTEM_CODE, getSystemCode());
-            auxIdFeildsMap.put(MasterControllerService.LID, getLID());
-
-            //build array of  auxid field hashmap
-            auxIdFeildsMap.put(MasterControllerService.HASH_MAP_TYPE,MasterControllerService.MINOR_OBJECT_BRAND_NEW);
-            auxIdFeildsMap.put(MasterControllerService.MINOR_OBJECT_TYPE,"AuxId");
-            getNewSOMinorObjectsHashMapArrayList().add(auxIdFeildsMap);
-            */
-        //set the search type as per the form
-        this.singleAuxIdHashMapArrayList.add(getAuxIdFeildsMap());
-
-    }
-    
-    /**
-     * 
-     * @param event
-     */
-    public void removeSOAuxId(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "Add");
-        HashMap remAuxIdMap = (HashMap) event.getComponent().getAttributes().get("remAuxIdMap");
-
-        //set the search type as per the form
-        this.singleAuxIdHashMapArrayList.remove(remAuxIdMap);
-    }
-    
-    /**
-     * 
-     * @param event
-     */
-    public void addSOComment(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "Add");
-        
-        //build array of  comment field hashmap
-        commentFeildsMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_BRAND_NEW);
-        commentFeildsMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Comment");
-
-        getNewSOMinorObjectsHashMapArrayList().add(commentFeildsMap);
-
-        //set the hashmap for displaying
-        this.singleCommentHashMapArrayList.add(getCommentFeildsMap());
-
-    }
-
-   
-    /**
-     * 
-     * @param event
-     */
-    public void removeSOComment(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "Add");
-        HashMap remCommentMap = (HashMap) event.getComponent().getAttributes().get("remCommentMap");
-
-        //set the search type as per the form
-        this.singleCommentHashMapArrayList.remove(remCommentMap);
-    }
-
-    
-    /**
-     * 
      * @return 
      */
     public String validateLID(){
@@ -598,56 +502,6 @@ public class SourceAddHandler {
 
     public void setAliasFieldConfigs(ArrayList aliasFieldConfigs) {
         this.aliasFieldConfigs = aliasFieldConfigs;
-    }
-
-    public ArrayList getAuxIdFieldConfigs() {
-        ArrayList newArrayList = new ArrayList();
-        try {
-            ConfigManager.init();
-            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig("AuxId");
-            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
-
-            //Build Person Epath Arraylist
-            for (int i = 0; i < allFeildConfigs.length; i++) {
-                FieldConfig fieldConfig = allFeildConfigs[i];
-                newArrayList.add(fieldConfig);
-            }
-
-        } catch (Exception ex) {
-            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        auxIdFieldConfigs = newArrayList;//store all the fields in the arraylist
-        return auxIdFieldConfigs;
-    }
-
-    public void setAuxIdFieldConfigs(ArrayList auxIdFieldConfigs) {
-        this.auxIdFieldConfigs = auxIdFieldConfigs;
-    }
-
-    public ArrayList getCommentFieldConfigs() {
-        ArrayList newArrayList = new ArrayList();
-        try {
-            ConfigManager.init();
-            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig("Comment");
-            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
-
-            //Build Person Epath Arraylist
-            for (int i = 0; i < allFeildConfigs.length; i++) {
-                FieldConfig fieldConfig = allFeildConfigs[i];
-                newArrayList.add(fieldConfig);
-            }
-
-        } catch (Exception ex) {
-            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        commentFieldConfigs = newArrayList;//store all the fields in the arraylist
-        return commentFieldConfigs;
-    }
-
-    public void setCommentFieldConfigs(ArrayList commentFieldConfigs) {
-        this.commentFieldConfigs = commentFieldConfigs;
     }
 
     public ArrayList getPersonFieldConfigs() {
@@ -768,22 +622,6 @@ public class SourceAddHandler {
         this.aliasFeildsMap = aliasFeildsMap;
     }
 
-    public HashMap getAuxIdFeildsMap() {
-        return auxIdFeildsMap;
-    }
-
-    public void setAuxIdFeildsMap(HashMap auxIdFeildsMap) {
-        this.auxIdFeildsMap = auxIdFeildsMap;
-    }
-
-    public HashMap getCommentFeildsMap() {
-        return commentFeildsMap;
-    }
-
-    public void setCommentFeildsMap(HashMap commentFeildsMap) {
-        this.commentFeildsMap = commentFeildsMap;
-    }
-
     public ArrayList getNewSOHashMapArrayList() {
         return newSOHashMapArrayList;
     }
@@ -880,21 +718,6 @@ public class SourceAddHandler {
         this.aliasFeildsMapExtra = aliasFeildsMapExtra;
     }
 
-    public HashMap getAuxIdFeildsMapExtra() {
-        return auxIdFeildsMapExtra;
-    }
-
-    public void setAuxIdFeildsMapExtra(HashMap auxIdFeildsMapExtra) {
-        this.auxIdFeildsMapExtra = auxIdFeildsMapExtra;
-    }
-
-    public HashMap getCommentFeildsMapExtra() {
-        return commentFeildsMapExtra;
-    }
-
-    public void setCommentFeildsMapExtra(HashMap commentFeildsMapExtra) {
-        this.commentFeildsMapExtra = commentFeildsMapExtra;
-    }
 
     public ArrayList getSingleAddressHashMapArrayList() {
         return singleAddressHashMapArrayList;
@@ -920,23 +743,7 @@ public class SourceAddHandler {
         this.singlePhoneHashMapArrayList = singlePhoneHashMapArrayList;
     }
 
-    public ArrayList getSingleAuxIdHashMapArrayList() {
-        return singleAuxIdHashMapArrayList;
-    }
-
-    public void setSingleAuxIdHashMapArrayList(ArrayList singleAuxIdHashMapArrayList) {
-        this.singleAuxIdHashMapArrayList = singleAuxIdHashMapArrayList;
-    }
-
-    public ArrayList getSingleCommentHashMapArrayList() {
-        return singleCommentHashMapArrayList;
-    }
-
-    public void setSingleCommentHashMapArrayList(ArrayList singleCommentHashMapArrayList) {
-        this.singleCommentHashMapArrayList = singleCommentHashMapArrayList;
-    }
-
-
+    
     private void setLidAndSystemCodes(ArrayList minorArrayList) {
 
         for (int i = 0; i < minorArrayList.size(); i++) {

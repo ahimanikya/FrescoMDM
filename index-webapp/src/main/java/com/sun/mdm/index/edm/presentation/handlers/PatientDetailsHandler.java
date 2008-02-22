@@ -1120,16 +1120,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
         //HashMap unmergedHashMapValueExpression = (HashMap) event.getComponent().getAttributes().get("unmergedEOValueExpression");
         String transactionNumber = (String) event.getComponent().getAttributes().get("tranNoValueExpressionviewmerge");
-        EnterpriseObject enterpriseObject = (EnterpriseObject) event.getComponent().getAttributes().get("eoValueExpressionViewMerge");
-        HashMap viewMergeRecordsHashMapValueExpression = (HashMap) event.getComponent().getAttributes().get("viewMergeEOValueExpression");
-        
-        SourceHandler sourceHandler = new SourceHandler();
-        Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
-        Object[] addressConfigFeilds = sourceHandler.getAddressFieldConfigs().toArray();
-        Object[] aliasConfigFeilds = sourceHandler.getAliasFieldConfigs().toArray();
-        Object[] phoneConfigFeilds = sourceHandler.getPhoneFieldConfigs().toArray();
-        Object[] auxidConfigFeilds = sourceHandler.getAuxIdFieldConfigs().toArray();
-        Object[] commentConfigFeilds = sourceHandler.getCommentFieldConfigs().toArray();
 
         try {
             EnterpriseObjectHistory viewMergehist = masterControllerService.viewMergeRecords(transactionNumber);
