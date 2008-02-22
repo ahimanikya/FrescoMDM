@@ -86,19 +86,9 @@
             EPathArrayList ePathArrayList = compareDuplicateManager.retrievePatientResultsFields(objScreenObjectList);
 
             EPath ePath = null;
-            PatientDetailsHandler patientDetailsHandler = new PatientDetailsHandler();
             SourceHandler sourceHandler = new SourceHandler();
-            Object[] resultsConfigFeilds = sourceHandler.getAllFieldConfigs().toArray();
-            Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
-            Object[] addressConfigFeilds = sourceHandler.getAddressFieldConfigs().toArray();
-            Object[] aliasConfigFeilds = sourceHandler.getAliasFieldConfigs().toArray();
-            Object[] phoneConfigFeilds = sourceHandler.getPhoneFieldConfigs().toArray();
-            Object[] auxidConfigFeilds = sourceHandler.getAuxIdFieldConfigs().toArray();
-            Object[] commentConfigFeilds = sourceHandler.getCommentFieldConfigs().toArray();
             AssumeMatchHandler assumeMatchHandler = new AssumeMatchHandler();
-            SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
             ArrayList eoArrayList = new ArrayList();
-            EnterpriseObject reqEnterpriseObject = new EnterpriseObject();
             if (request.getParameter("AMID") != null) {
                 request.setAttribute("comapreEuidsArrayList",assumeMatchHandler.getAssumedEOList(request.getParameter("AMID")));
             }
@@ -123,6 +113,7 @@
             ArrayList eoSources = null;
             ArrayList eoHistory = null;
 
+            Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
             if (eoArrayList != null) {
                 request.setAttribute("comapreEuidsArrayList", request.getAttribute("comapreEuidsArrayList"));
                                             %>  

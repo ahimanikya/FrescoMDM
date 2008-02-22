@@ -110,32 +110,17 @@
 
             //EPathArrayList ePathArrayList = compareDuplicateManager.retrieveEPathArrayList(objScreenObject);
             ArrayList objScreenObjectList = objScreenObject.getSearchResultsConfig();
-            EPathArrayList ePathArrayList = compareDuplicateManager.retrievePatientResultsFields(objScreenObjectList);
-
-            EPath ePath = null;
-            PatientDetailsHandler patientDetailsHandler = new PatientDetailsHandler();
             SourceHandler sourceHandler = new SourceHandler();
 
-            //Object[] resultsConfigFeilds  = patientDetailsHandler.getSearchResultsScreenConfigArray().toArray();
-            Object[] resultsConfigFeilds = sourceHandler.getAllFieldConfigs().toArray();
+            
             Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
-            Object[] addressConfigFeilds = sourceHandler.getAddressFieldConfigs().toArray();
-            Object[] aliasConfigFeilds = sourceHandler.getAliasFieldConfigs().toArray();
-            Object[] phoneConfigFeilds = sourceHandler.getPhoneFieldConfigs().toArray();
-            Object[] auxidConfigFeilds = sourceHandler.getAuxIdFieldConfigs().toArray();
-            Object[] commentConfigFeilds = sourceHandler.getCommentFieldConfigs().toArray();
             
-            
-            SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
             int countEnt = 0;
 
-            int countMain = 0;
-            int totalMainDuplicates = 0;
             ArrayList eoArrayList = (ArrayList) session.getAttribute("comapreEuidsArrayList");
             HashMap resultArrayMapMain = new HashMap();
             HashMap resultArrayMapCompare = new HashMap();
             SystemObject so = null;
-            ValueExpression euidValueExpression = null;
             ArrayList eoSources = null;
             ArrayList eoHistory = null;
 
@@ -766,7 +751,7 @@
                                                 String potDupStatus = (String) eoHashMapValues.get("Status");
                                                 String potDupId = (String) eoHashMapValues.get("PotDupId");
                                                                                      
-                                                euidValueExpression = ExpressionFactory.newInstance().createValueExpression(euid, euid.getClass());        
+                                                ValueExpression euidValueExpression = ExpressionFactory.newInstance().createValueExpression(euid, euid.getClass());        
                                                 
                                                 ValueExpression potDupIdValueExpression = null;
                                                 ValueExpression eoArrayListValueExpression = null;
