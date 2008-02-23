@@ -58,7 +58,7 @@
             <script type="text/javascript" src="scripts/yui4jsf/yahoo-dom-event/yahoo-dom-event.js"></script>
             <script type="text/javascript" src="scripts/yui4jsf/animation/animation-min.js"></script>                        
         </head>
-        <title><h:outputText value="#{msgs.application_heading}"/></title> 
+        <title><h:outputText value="#{msgs.application_heading}"/></title>
         <body>
             <%@include file="./templates/header.jsp"%>
             <div id="mainContent">
@@ -74,7 +74,7 @@
                          <tr>
                             <td>
                                 <div style="height:500px;overflow:auto;">
-                                    <table>
+                                    <table cellspacing="5" cellpadding="0" border="0">
                                         <tr>
                                             
                                             <%
@@ -86,19 +86,24 @@
             EPathArrayList ePathArrayList = compareDuplicateManager.retrievePatientResultsFields(objScreenObjectList);
 
             EPath ePath = null;
+            PatientDetailsHandler patientDetailsHandler = new PatientDetailsHandler();
             SourceHandler sourceHandler = new SourceHandler();
+            Object[] resultsConfigFeilds = sourceHandler.getAllFieldConfigs().toArray();
+            Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
+            Object[] addressConfigFeilds = sourceHandler.getAddressFieldConfigs().toArray();
+            Object[] aliasConfigFeilds = sourceHandler.getAliasFieldConfigs().toArray();
+            Object[] phoneConfigFeilds = sourceHandler.getPhoneFieldConfigs().toArray();
             AssumeMatchHandler assumeMatchHandler = new AssumeMatchHandler();
+            SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
             ArrayList eoArrayList = new ArrayList();
+            EnterpriseObject reqEnterpriseObject = new EnterpriseObject();
             if (request.getParameter("AMID") != null) {
                 request.setAttribute("comapreEuidsArrayList",assumeMatchHandler.getAssumedEOList(request.getParameter("AMID")));
             }
             if (request.getAttribute("comapreEuidsArrayList") != null) {
                 eoArrayList = (ArrayList) request.getAttribute("comapreEuidsArrayList");
-
-            }else if (request.getAttribute("comapreEuidsArrayList") != null) {
-                eoArrayList = (ArrayList) request.getAttribute("comapreEuidsArrayList");
-
             }
+            String amPreviewId = (String)(request.getParameter("AMID")==null?request.getAttribute("AMID"):request.getParameter("AMID"));   
             int countEnt = 0;
             int countMain = 0;
             int totalMainDuplicates = 0;
@@ -112,8 +117,7 @@
             EnterpriseObject destinationEO = null;
             ArrayList eoSources = null;
             ArrayList eoHistory = null;
-
-            Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
+            
             if (eoArrayList != null) {
                 request.setAttribute("comapreEuidsArrayList", request.getAttribute("comapreEuidsArrayList"));
                                             %>  
@@ -315,8 +319,7 @@
                                                                     for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
                                                                      FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
                                                                      epathValue = fieldConfigMap.getFullFieldName();
-                                                                     //System.out.println( childObjectNodeConfig.getName() +"====> "+ epathValue + " <=== minorObjectMapList" + minorObjectHashMap);
-                                        if(minorObjectMapList.size() >0) {
+                                                                          if(minorObjectMapList.size() >0) {
                                         if (countEnt > 0) {
                                             resultArrayMapCompare.put(epathValue, minorObjectHashMap.get(epathValue));
                                         } else {
@@ -558,7 +561,7 @@
                                               }%>                                            
                                             <!--END displaying the History-->
                                              <% if (countEnt + 1 == eoArrayListObjects.length) {
-                                                    if( request.getAttribute("eoMultiMergePreview") != null) {
+                                                    if( request.getAttribute("previewAMEO") != null) {
                                                         styleClass = "blue";
                                                     }
                                              %>
@@ -578,19 +581,18 @@
                                                             <div id="personassEuidDataContent" class="<%=styleClass%>">
                                                                 <table border="0" cellspacing="0" cellpadding="0" >
                                                                     <%
-                                                                    HashMap eoMultiMergePreviewMap = new HashMap();
+                                                                    HashMap eoAssumeMatchPreviewMap = new HashMap();
                                                                     HashMap mergePersonfieldValuesMapEO = new HashMap();
-                                                                    if( request.getAttribute("eoMultiMergePreview") != null  ) {
-                                                                        request.setAttribute("eoMultiMergePreview",request.getAttribute("eoMultiMergePreview"));
-                                                                        eoMultiMergePreviewMap =(HashMap) request.getAttribute("eoMultiMergePreview");
-                                                                        mergePersonfieldValuesMapEO = (HashMap) eoMultiMergePreviewMap.get("ENTERPRISE_OBJECT");
-                                                                        //System.out.println("mergePersonfieldValuesMapEO" + mergePersonfieldValuesMapEO);
+                                                                    if( request.getAttribute("previewAMEO") != null  ) {
+                                                                        request.setAttribute("previewAMEO",request.getAttribute("previewAMEO"));
+                                                                        eoAssumeMatchPreviewMap =(HashMap) request.getAttribute("previewAMEO");
+                                                                        mergePersonfieldValuesMapEO = (HashMap) eoAssumeMatchPreviewMap.get("ENTERPRISE_OBJECT");
                                                                     }    
 %>
                                                                     <tr>
                                                                         <td>
                                                                           <%
-                                                                            if( request.getAttribute("eoMultiMergePreview") != null  ) {
+                                                                            if( request.getAttribute("previewAMEO") != null  ) {
                                                                             %>
                                                                                 <b><%=mergePersonfieldValuesMapEO.get("EUID")%></b>
                                                                              <%} else {%>       
@@ -611,7 +613,7 @@
                                                                     <tr>
                                                                         <td>
                                                                             <%
-                                                                            if( request.getAttribute("eoMultiMergePreview") != null  ) {
+                                                                            if( request.getAttribute("previewAMEO") != null  ) {
                                                                             %>
                                                                               
                                                                               <%if(mergePersonfieldValuesMapEO.get(epathValue) != null ) {%>
@@ -649,7 +651,7 @@
                                                                     <tr>
                                                                         <td>
                                                                             <%
-                                                                            if( request.getAttribute("eoMultiMergePreview") != null  ) {
+                                                                            if( request.getAttribute("previewAMEO") != null  ) {
                                                                             %>
                                                                               
                                                                               <%if(mergePersonfieldValuesMapEO.get(epathValue) != null ) {%>
@@ -663,16 +665,19 @@
                                                                             <%}%>
                                                                         </td>
                                                                     </tr>
+                                                    
                                                                     <%
                                                                       }
                                                                      }
                                                                     %>
-
+     
                                                                 </table>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    
                                                 </div>
+                                                  
                                             </td>
                                             <%}%>     
                                            <%}%>
@@ -705,19 +710,18 @@
                                         <td valign="top">
                                             <div id="dynamicMainEuidButtonContent<%=countEnt%>">
                                                 <table border="0" cellspacing="0" cellpadding="0" border="1">
-                                                    <h:form>
                                                         <%
                                                            if(countEnt == 0){
                                                         %>
                                      
-                                                  <tr> 
+                                                        <tr> 
                                                       <td valign="top">
                                                           <a class="viewbtn" href="javascript:showViewSources('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" >  
                                                               <h:outputText value="#{msgs.view_history_text}"/>
                                                           </a>
                                                       </td>    
                                                   </tr>
-                                                  <tr> 
+                                                        <tr> 
                                                       <td valign="top">
                                                           <a href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
                                                       </td>                                              
@@ -725,24 +729,60 @@
                                                         <%} else {%> 
                                                         <tr> 
                                                             <td valign="top">
-                                                                <%
-                                                                %>
-                                                                <h:form>
-                                                                    <h:commandLink styleClass="button" actionListener="#{AssumeMatchHandler.previewUndoAssumedMatch}">
+                                                        <%
+                                                          
+                                                          ValueExpression amPreviewIdValueExpression = ExpressionFactory.newInstance().createValueExpression(amPreviewId, amPreviewId.getClass());
+                                                          ValueExpression eoArrayListValueExpression = ExpressionFactory.newInstance().createValueExpression(eoArrayList, eoArrayList.getClass());
+                                                        %>
+                                                            <h:form  id="previewForm">
+                                                                <h:commandLink styleClass="button" actionListener="#{AssumeMatchHandler.previewUndoAssumedMatch}">
+                                                                        <f:attribute name="previewamIdValueExpression" value="<%=amPreviewIdValueExpression%>"/>
+                                                                        <f:attribute name="eoArrayList" value="<%=eoArrayListValueExpression%>"/>
                                                                         <span><h:outputText value="Undo Match"/></span>
-                                                                    </h:commandLink> 
-                                                                </h:form>
+                                                                </h:commandLink>
+                                                             </h:form>
+                                                                
                                                             </td>                                              
                                                         </tr>
-                                                        
-                                                        <%}%> 
-                                           
-                                                    </h:form>
+                                                       <%}%>  
                                                 </table>
                                             </div> 
                                         </td>
+                                        <% if (countEnt + 1 == eoArrayListObjects.length) {%>
+                                         <td valign="top">
+                                                        <%
+                                                         if( request.getAttribute("previewAMEO") != null  ) {
+                                                         ValueExpression amPreviewIdVaueExpression = ExpressionFactory.newInstance().createValueExpression(amPreviewId, amPreviewId.getClass());
+                                                        %>
+                                                        <table border="0" cellspacing="0" cellpadding="0">
+                                                        <tr> 
+                                                            <td valign="top">
+                                                                <h:form>
+                                                                    <h:commandLink styleClass="button" 
+                                                                                   actionListener="#{AssumeMatchHandler.undoMatch}">
+                                                                        <f:attribute name="previewamIdValueExpression" value="<%=amPreviewIdVaueExpression%>"/>
+                                                                        <span><h:outputText value="#{msgs.ok_text_button}" /></span>
+                                                                    </h:commandLink>
+                                                                </h:form>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td  valign="top">
+                                                                <h:form  id="previewCancelForm">
+                                                                <h:commandLink styleClass="button" 
+                                                                               action="#{NavigationHandler.toAssumedMatches}">
+                                                                    <span><h:outputText value="Cancel"/></span>
+                                                                </h:commandLink>
+                                                              </h:form>
+                                                            </td> 
+                                                        </tr>  
+                                                        </table>
+                                                        <%}%>   
+                                                        </td>
+                                        <%}%> 
                                         
                                         <%}%>
+                                       
                                     </table>
                                 </div>
                             </td>
@@ -755,5 +795,5 @@
                 
        </body>
     </html>
-    </f:view>
+</f:view>
     

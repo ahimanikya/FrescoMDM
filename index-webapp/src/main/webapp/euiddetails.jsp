@@ -132,6 +132,7 @@
             } 
             
             if(request.getAttribute("comapreEuidsArrayList") != null) {
+                session.removeAttribute("comapreEuidsArrayList");        
                 eoArrayList = (ArrayList) request.getAttribute("comapreEuidsArrayList");
             }
             if (session.getAttribute("comapreEuidsArrayList") != null) {
