@@ -87,6 +87,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
     Object objLastName = null;
     private String errorMessage;
 
+    CompareDuplicateManager  compareDuplicateManager  = new CompareDuplicateManager();
     /** Creates a new instance of AssumeMatchHandler */
     public AssumeMatchHandler() {
     }
@@ -556,12 +557,25 @@ public class AssumeMatchHandler extends ScreenConfiguration {
      * @exception ProcessingException An error has occured.
      * @exception UserException Invalid id
      */
-    public void previewUndoAssumedMatch(ActionEvent event) throws ProcessingException, UserException {
-        String assumedMatchId = (String) event.getComponent().getAttributes().get("amIdValueExpression");
-        EnterpriseObject newEO = masterControllerService.previewUndoAssumedMatch(assumedMatchId);
-        //mLogger.info(">>>>> new EO  "+newEO);
-        session.setAttribute("previewAMEO", newEO);
-        session.setAttribute("previewAMID", assumedMatchId);
+    public void previewUndoAssumedMatch(ActionEvent event) {
+        try {
+            String assumedMatchId = (String) event.getComponent().getAttributes().get("previewamIdValueExpression");
+            System.out.println("====1= ===(assumedMatchId)===" + assumedMatchId);
+            ArrayList eoArrayList = (ArrayList) event.getComponent().getAttributes().get("eoArrayList");
+            httpRequest.setAttribute("comapreEuidsArrayList", eoArrayList);
+
+            EnterpriseObject newEO = masterControllerService.previewUndoAssumedMatch(assumedMatchId);
+            System.out.println("====1= ===(newEO)===" + newEO);
+            HashMap previewAMEO = compareDuplicateManager.getEnterpriseObjectAsHashMap(newEO, screenObject);
+            //System.out.println("====1= ===(previewAMEO)===" + previewAMEO);
+
+            httpRequest.setAttribute("AMID", assumedMatchId);
+            httpRequest.setAttribute("previewAMEO", previewAMEO);
+        } catch (ProcessingException ex) {
+            java.util.logging.Logger.getLogger(AssumeMatchHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserException ex) {
+            java.util.logging.Logger.getLogger(AssumeMatchHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -572,11 +586,11 @@ public class AssumeMatchHandler extends ScreenConfiguration {
         try {
             String assumedMatchId = (String) event.getComponent().getAttributes().get("previewamIdValueExpression");
             String amEuid = masterControllerService.undoAssumedMatch(assumedMatchId);
-            CompareDuplicateManager compareDuplicateManager=new CompareDuplicateManager();
+            
             ArrayList euidsMapList = new ArrayList();
             EnterpriseObject amPreviewEnterpriseObject = masterControllerService.getEnterpriseObject(amEuid);
-            session.removeAttribute("previewAMEO");
-            session.removeAttribute("amEoList");
+            httpRequest.removeAttribute("previewAMEO");
+            httpRequest.removeAttribute("amEoList");
 
             if (amPreviewEnterpriseObject != null) {
                 HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(amPreviewEnterpriseObject, screenObject);
@@ -586,7 +600,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
             //ArrayList newArrayList = new ArrayList();
             //newArrayList.add(amPreviewEnterpriseObject);
 
-            httpRequest.setAttribute("undoEnterpriseArrayList", euidsMapList);
+            httpRequest.setAttribute("comapreEuidsArrayList", euidsMapList);
         } catch (ProcessingException ex) {
             java.util.logging.Logger.getLogger(AssumeMatchHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
