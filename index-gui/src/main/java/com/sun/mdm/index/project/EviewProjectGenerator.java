@@ -173,11 +173,17 @@ public class EviewProjectGenerator {
 
         if (autoGenerate.equals("Yes")) {
             try {
+                Thread.sleep(3000);
+            } catch (java.lang.InterruptedException e) {
+                ErrorManager.getDefault().notify(e);
+            }
+            try {
                 FileObject buildXml = p.getProjectDirectory().getFileObject(p.getBuildXmlName ());
-                ActionUtils.runTarget(buildXml, new String[] {"gen-mdm-index-files"}, null);
+                ActionUtils.runTarget(buildXml, new String[] {EviewProject.COMMAND_GENEVIEW}, null);
             } catch (IOException e) {
                 ErrorManager.getDefault().notify(e);
             }
+
         }
         return h;
     }
