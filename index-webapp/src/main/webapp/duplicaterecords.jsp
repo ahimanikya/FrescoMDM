@@ -637,14 +637,12 @@
                                                     </tr>
                                                 </table>
                                             </div> 
-											<!--
                                             <div id = "bar" style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
                                                 <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
                                             </div>                                             
                                             <div id = "bar" style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
                                                 <%=weight%>
                                             </div> 
-											-->
                                             <div id="mainEuidContentDiv<%=countMain%>" class="dynaw169" >
                                                 <table border="0" cellspacing="0" cellpadding="0" class="w169">
                                                     <%
