@@ -16,6 +16,17 @@
         <testSourceDirectory>src/test/java</testSourceDirectory>
         <testOutputDirectory>target/test-classes</testOutputDirectory>
         <finalName>index-core</finalName>
+        <testResources>
+            <testResource>
+                <directory>src/test/java</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test/eindex-templates/eindex/src/Configuration</directory>
+            </testResource>
+        </testResources>
         <resources>
             <resource>
                 <directory>src/main/java</directory>
@@ -82,20 +93,19 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>JUnit-generate-eindex</id>
+                        <id>create-generated-objects-for-JUnit-test </id>
                         <phase>generate-test-sources</phase>
                         <goals><goal>run</goal></goals>
                         <configuration>
                             <tasks>
-                                <!--Generating EIndex Project-->
-                                <echo>::Compiling EViewGeneratorTask for Generating EIndex Project</echo>
+                                <!--Creating generated objects-->
+                                <echo>::Compiling ObjectGeneratorTask for Generating Object</echo>
                                 <mkdir dir="${project.build.testOutputDirectory}"/>
                                 <property name="build.compiler" value="extJavac"/>                              
                                 <javac srcdir="${basedir}/../index-gui/src/main/java" compiler="extJavac"
                                  destdir="${project.build.testOutputDirectory}" classpathref="maven.test.classpath" >
                                     <include name="com/sun/mdm/index/project/anttasks/ObjectGeneratorTask.java"/>
-                                </javac>
-                                
+                                </javac>                                
                                 <copy todir="${project.build.testOutputDirectory}">
                                     <fileset dir="${basedir}/../index-gui/src/main/java">
                                         <include name="com/sun/mdm/index/project/generator/**/*.tmpl"/>
@@ -115,11 +125,10 @@
                                 <javac srcdir="${project.build.testOutputDirectory}/src" compiler="extJavac"
                                  destdir="${project.build.testOutputDirectory}" classpathref="maven.test.classpath" >
                                 </javac>
-                                <echo message="##### [EIndex Project is generated.] #####"/>
+                                <echo message="##### [objects are generated.] #####"/>
                             </tasks>          
                         </configuration>
-                    </execution>
-                                
+                    </execution>                                
                     <execution>
                         <id>copy-JUnit-test-resource-files</id>
                         <phase>generate-test-sources</phase>
@@ -128,51 +137,11 @@
                             <tasks>
                                 <unzip src="${settings.localRepository}/mural/matcher-resources/1.0/matcher-resources-1.0.jar" 
                                     dest="${project.build.testOutputDirectory}"/>
-                                <copy todir="${project.build.directory}/test-classes">
-                                    <fileset dir="${basedir}/src/test/java">
-                                        <exclude name="**/*.java"/>
-                                    </fileset>
-                                </copy>
-                                <copy todir="${project.build.directory}/test-classes">
-                                    <fileset dir="${basedir}/src/main/resources/matchengine/config/runtime">
-                                        <exclude name="match/**"/>
-                                    </fileset>
-                                </copy>
-                                <copy todir="${project.build.directory}/test-classes">
-                                    <fileset dir="${basedir}/src/test/eindex-templates/eindex/src/Configuration">
-                                    </fileset>
-                                </copy>
                                 <copy todir="${project.build.directory}/test-classes/com/sun/mdm/standardizer">
                                     <fileset dir="${basedir}/src/main/resources/matchengine/standardizer">
                                         <include name="repositoryImage.zip"/>
                                     </fileset>
                                 </copy>
-                                                                        
-                                <!--pathconvert property="run.test.classpath" refid="maven.test.classpath" />
-                                <pathconvert property="compile.classpath" refid="maven.compile.classpath" />
-                                <pathconvert property="localRepository.path">
-                                    <path location="${settings.localRepository}"/>
-                                </pathconvert>
-                                <pathconvert property="build.dir">
-                                    <path location="${project.build.directory}"/>
-                                </pathconvert>
-                                <pathconvert property="test.src.dir">
-                                    <path location="${project.build.testSourceDirectory}"/>
-                                </pathconvert>
-                                <pathconvert property="build.test.classes.dir">
-                                    <path location="${project.build.testOutputDirectory}"/>
-                                </pathconvert>
-                                <taskdef name="propertyfile" classname="org.apache.tools.ant.taskdefs.optional.PropertyFile">
-                                    <classpath refid="maven.test.classpath"/>
-                                </taskdef>
-                                <propertyfile file="${build.dir}/junit-test.properties">
-                                    <entry key="build.dir" value="${build.dir}"/>
-                                    <entry key="test.src.dir" value="${test.src.dir}"/>
-                                    <entry key="build.test.classes.dir" value="${build.test.classes.dir}"/>                                    
-                                    <entry key="run.test.classpath" value="${run.test.classpath}"/>
-                                    <entry key="compile.classpath" value="${compile.classpath}"/>
-                                    <entry key="localRepository.path" value="${localRepository.path}"/>
-                                </propertyfile--> 
                             </tasks>          
                         </configuration>
                     </execution>
@@ -188,9 +157,9 @@
                                 <taskdef name="propertyfile" classname="org.apache.tools.ant.taskdefs.optional.PropertyFile">
                                     <classpath refid="maven.test.classpath"/>
                                 </taskdef>
-                                <!-->You may overwrite database properties in 
+                                <!--You may overwrite database properties in 
                                 ProxyJNDI.properties.Oracle file and ProxyJNDI.properties.SQLServer 
-                                file by setting corresponding properties in setting.xml file<-->
+                                file by setting corresponding properties in setting.xml file-->
                                 <if>
                                     <equals arg1="${database.properties.overwrite}" 
                                             arg2="true" />
