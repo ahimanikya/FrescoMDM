@@ -697,8 +697,12 @@ public class EViewGeneratorTask extends Task {
 		}
 
 		File destDir = new File(mWardir, "web");
+		FileSet fileSet = new FileSet();
+		fileSet.setDir(destDir);
+                fileSet.setExcludes("**/lib/*.jar");
 		Delete delete = (Delete) getProject().createTask("delete");
-		delete.setDir(destDir);
+		//delete.setDir(destDir);
+		delete.addFileset(fileSet);
 		delete.init();
 		delete.setLocation(getLocation());
 		delete.execute();
