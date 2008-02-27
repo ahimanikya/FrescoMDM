@@ -73,6 +73,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+import org.apache.tools.ant.module.api.support.ActionUtils;
 
 /**
  * Represents one ejb module project
@@ -86,7 +87,6 @@ public class EviewProject implements Project, AntProjectListener {
     public static final String MODULE_INSTALL_CBN = "com.sun.mdm.index.project";
     public static final String MODULE_INSTALL_DIR = "module.install.dir";
 
-    public static final String COMMAND_GENWSDL = "gen-wsdl";
     public static final String COMMAND_GENEVIEW = "gen-mdm-index-files";
     public static final String COMMAND_GENLOADER = "gen-loader-zip";
     public static final String COMMAND_GENBULKLOADER = "gen-bulkloader-zip";
@@ -290,7 +290,10 @@ public class EviewProject implements Project, AntProjectListener {
 
     String getBuildXmlName() {
         String storedName = helper.getStandardPropertyEvaluator().getProperty(EviewProjectProperties.BUILD_FILE);
-        return storedName == null ? GeneratedFilesHelper.BUILD_XML_PATH : storedName;
+        if (storedName == null) {
+            storedName = GeneratedFilesHelper.BUILD_XML_PATH;
+        }
+        return storedName;
     }
 
     // Package private methods -------------------------------------------------
@@ -399,7 +402,6 @@ public class EviewProject implements Project, AntProjectListener {
                 
                 path = ep.getProperty(EviewProjectProperties.WAR_DIR);
                 subAppDirFO = eViewdir.getFileObject(path);
-                p = ProjectManager.getDefault().findProject(subAppDirFO);
                 jmp = p.getLookup().lookup(J2eeModuleProvider.class);
                 if (null != jmp) {
                     J2eeModule jm = jmp.getJ2eeModule();
@@ -421,16 +423,16 @@ public class EviewProject implements Project, AntProjectListener {
                 // Set MODULE_INSTALL_DIR.
                 ProjectManager.mutex().writeAccess(new Mutex.Action() {
                     public Object run() {
-                        EditableProperties ep = helper.getProperties(AntProjectHelper.PRIVATE_PROPERTIES_PATH);
-                        ep.setProperty("netbeans.user", System.getProperty("netbeans.user"));
+                        EditableProperties pep = helper.getProperties(AntProjectHelper.PRIVATE_PROPERTIES_PATH);
+                        pep.setProperty("netbeans.user", System.getProperty("netbeans.user"));
 
 
                         File f = InstalledFileLocator.getDefault().locate(MODULE_INSTALL_NAME, MODULE_INSTALL_CBN, false);
                         if (f != null) {
-                            ep.setProperty(MODULE_INSTALL_DIR, f.getParentFile().getPath());
+                            pep.setProperty(MODULE_INSTALL_DIR, f.getParentFile().getPath());
                         }
 
-                        helper.putProperties(AntProjectHelper.PRIVATE_PROPERTIES_PATH, ep);
+                        helper.putProperties(AntProjectHelper.PRIVATE_PROPERTIES_PATH, pep);
                         try {
                             ProjectManager.getDefault().saveProject(EviewProject.this);
                         } catch (IOException e) {
@@ -439,6 +441,22 @@ public class EviewProject implements Project, AntProjectListener {
                         return null;
                     }
                 });
+                
+                String autoGenerate = ep.getProperty(EviewProjectProperties.AUTO_GENERATE);
+                if (autoGenerate != null && autoGenerate.equals("Yes")) {
+                    ep.remove(EviewProjectProperties.AUTO_GENERATE);
+                    helper.putProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH, ep);
+                    final FileObject buildXml = eViewdir.getFileObject(getBuildXmlName());
+                    javax.swing.SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            try {
+                                ActionUtils.runTarget(buildXml, new String[] {EviewProject.COMMAND_GENEVIEW}, null);
+                            } catch (IOException e) {
+                                ErrorManager.getDefault().notify(e);
+                            }
+                        }
+                    });
+                }
             } catch (IOException e) {
                 ErrorManager.getDefault().notify(ErrorManager.INFORMATIONAL, e);
             }
@@ -446,6 +464,7 @@ public class EviewProject implements Project, AntProjectListener {
             if (IcanproLogicalViewProvider.hasBrokenLinks(helper, refHelper)) {
                 BrokenReferencesSupport.showAlert();
             }
+            
         }
 
         protected void projectClosed() {

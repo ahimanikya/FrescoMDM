@@ -35,7 +35,6 @@ import org.openide.WizardDescriptor;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.filesystems.FileLock;
-import org.openide.ErrorManager;
 
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectManager;
@@ -46,7 +45,6 @@ import org.netbeans.modules.j2ee.deployment.devmodules.api.AntDeploymentHelper;
 import org.netbeans.modules.j2ee.deployment.devmodules.api.Deployment;
 import org.openide.modules.InstalledFileLocator;
 import org.openide.loaders.DataObject;
-import org.apache.tools.ant.module.api.support.ActionUtils;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -131,6 +129,7 @@ public class EviewProjectGenerator {
 
         //set project properties
         EditableProperties ep = h.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
+        ep.setProperty(EviewProjectProperties.AUTO_GENERATE, autoGenerate);
         ep.setProperty(EviewProjectProperties.EJB_DIR,mainProjectName + "-ejb");
         ep.setProperty(EviewProjectProperties.WAR_DIR,mainProjectName + "-war");
         ep.setProperty("eView.generated.dir", 
@@ -170,21 +169,6 @@ public class EviewProjectGenerator {
         }
 
         ProjectManager.getDefault().saveProject(p);
-
-        if (autoGenerate.equals("Yes")) {
-            try {
-                Thread.sleep(3000);
-            } catch (java.lang.InterruptedException e) {
-                ErrorManager.getDefault().notify(e);
-            }
-            try {
-                FileObject buildXml = p.getProjectDirectory().getFileObject(p.getBuildXmlName ());
-                ActionUtils.runTarget(buildXml, new String[] {EviewProject.COMMAND_GENEVIEW}, null);
-            } catch (IOException e) {
-                ErrorManager.getDefault().notify(e);
-            }
-
-        }
         return h;
     }
 

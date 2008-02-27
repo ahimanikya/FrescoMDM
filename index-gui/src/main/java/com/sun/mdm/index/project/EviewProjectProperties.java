@@ -33,7 +33,9 @@ public class EviewProjectProperties {
     public static final String PERSONNAME_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/PersonName";
     public static final String ADDRESS_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/Address";
     public static final String SCHEMA_TEMPLATE_LOCATION = MODULES_EXT_MDM_LOCATION+ "/repository/schema";
-    
+    /** Auto Generate */
+    public static final String AUTO_GENERATE = "AutoGenerate";
+
     public static final String CONF_FOLDER = "conf"; //NOI18N    
     // Master Index Configuration Folder
     public static final String CONFIGURATION_FOLDER = "Configuration"; //NOI18N
