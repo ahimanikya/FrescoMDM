@@ -29,21 +29,23 @@ import org.openide.util.RequestProcessor;
 import org.openide.util.NbBundle;
 import org.openide.nodes.Node;
 import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
 import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
+import org.openide.modules.InstalledFileLocator;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import java.io.File;
 import java.util.zip.ZipFile;
-import java.awt.Cursor;
 import org.netbeans.api.progress.ProgressHandle;
 import org.netbeans.api.progress.ProgressHandleFactory;
 
 import com.sun.mdm.index.project.EviewApplication;
 import com.sun.mdm.standardizer.introspector.Descriptor;
 import com.sun.mdm.standardizer.introspector.StandardizationIntrospector;
+import com.sun.mdm.index.project.EviewProjectProperties;
 
 /**
  * To get Standardization jar with dataTypeDescription.xml
@@ -108,7 +110,7 @@ public class ImportStandardizationDataTypeAction extends CookieAction {
 
                             //Call util to get the data type, create sub folder, e.g. Address
                             ZipFile zipDataType = new ZipFile(pathSelectedFile);
-                            String strDataType = "unknown";
+
                             EviewApplication eviewApplication = standardizationFolderNode.getEviewApplication();
                             StandardizationIntrospector introspector = eviewApplication.getStandardizationIntrospector();
                             Descriptor dataTypeDescriptor = introspector.deploy(zipDataType);
@@ -117,9 +119,14 @@ public class ImportStandardizationDataTypeAction extends CookieAction {
                             mLoadProgress.finish();
                             
                             String msg = NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_Imported_Standardization_Plugin", descDT, nameVariant);
-                            mLog.info(msg);
-                            NotifyDescriptor desc = new NotifyDescriptor.Message(msg);
+                            NotifyDescriptor desc = new NotifyDescriptor.Confirmation(msg);
+                            desc.setOptionType(NotifyDescriptor.YES_NO_OPTION);
                             DialogDisplayer.getDefault().notify(desc);
+                            if (desc.getValue().equals(NotifyDescriptor.YES_OPTION)) {
+                                File folder = InstalledFileLocator.getDefault().locate(EviewProjectProperties.STANDARDIZATION_DEPLOYMENT_LOCATION, "", false);
+                                FileObject file = FileUtil.toFileObject(selectedFile);
+                                FileUtil.copyFile(file, FileUtil.toFileObject(folder), file.getName());
+                            }
                         }                          
                     } catch (Exception e) {
                         mLog.severe(NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_FAILED_To_Import_Standardization_Plugin")); // NOI18N
