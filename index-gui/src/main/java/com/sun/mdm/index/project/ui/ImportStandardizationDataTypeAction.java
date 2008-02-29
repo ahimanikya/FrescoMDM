@@ -44,6 +44,7 @@ import org.netbeans.api.progress.ProgressHandleFactory;
 
 import com.sun.mdm.index.project.EviewApplication;
 import com.sun.mdm.standardizer.introspector.Descriptor;
+import com.sun.mdm.standardizer.introspector.VariantDescriptor;
 import com.sun.mdm.standardizer.introspector.StandardizationIntrospector;
 import com.sun.mdm.index.project.EviewProjectProperties;
 
@@ -115,17 +116,34 @@ public class ImportStandardizationDataTypeAction extends CookieAction {
                             StandardizationIntrospector introspector = eviewApplication.getStandardizationIntrospector();
                             Descriptor dataTypeDescriptor = introspector.deploy(zipDataType);
                             String descDT = dataTypeDescriptor.getDescription();
-                            String nameVariant = dataTypeDescriptor.getName();
+                            String dataType = dataTypeDescriptor.getName();
+                            String variantType = null;
+                            if (dataTypeDescriptor instanceof VariantDescriptor) {
+                                dataType = ((VariantDescriptor) dataTypeDescriptor).getTypeName();
+                                variantType = ((VariantDescriptor) dataTypeDescriptor).getVariantType();
+                            }
+
                             mLoadProgress.finish();
                             
-                            String msg = NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_Imported_Standardization_Plugin", descDT, nameVariant);
+                            String msg = NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_Imported_Standardization_Plugin", descDT, dataType);
                             NotifyDescriptor desc = new NotifyDescriptor.Confirmation(msg);
                             desc.setOptionType(NotifyDescriptor.YES_NO_OPTION);
                             DialogDisplayer.getDefault().notify(desc);
                             if (desc.getValue().equals(NotifyDescriptor.YES_OPTION)) {
-                                File folder = InstalledFileLocator.getDefault().locate(EviewProjectProperties.STANDARDIZATION_DEPLOYMENT_LOCATION, "", false);
-                                FileObject file = FileUtil.toFileObject(selectedFile);
-                                FileUtil.copyFile(file, FileUtil.toFileObject(folder), file.getName());
+                                File deploymentFolder = InstalledFileLocator.getDefault().locate(EviewProjectProperties.STANDARDIZATION_DEPLOYMENT_LOCATION, "", false);
+                                FileObject targetFolder = null;
+                                if (variantType != null) {
+                                    File folder = InstalledFileLocator.getDefault().locate(EviewProjectProperties.STANDARDIZATION_DEPLOYMENT_LOCATION + File.separatorChar + dataType, "", false);
+                                    if (folder == null || !folder.isDirectory()) {
+                                        targetFolder = FileUtil.toFileObject(deploymentFolder).createFolder(dataType);
+                                    }
+                                } else {
+                                    targetFolder = FileUtil.toFileObject(deploymentFolder);
+                                }
+                                if (targetFolder != null && targetFolder.isFolder()) {
+                                    FileObject file = FileUtil.toFileObject(selectedFile);
+                                    FileUtil.copyFile(file, targetFolder, file.getName());
+                                }
                             }
                         }                          
                     } catch (Exception e) {
