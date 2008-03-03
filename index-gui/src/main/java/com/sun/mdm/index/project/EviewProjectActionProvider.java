@@ -43,7 +43,7 @@ import org.apache.tools.ant.module.api.support.ActionUtils;
 import org.netbeans.modules.compapp.projects.base.ui.customizer.IcanproProjectProperties;
 import org.netbeans.modules.compapp.projects.base.ui.NoSelectedServerWarning;
 import org.netbeans.modules.compapp.projects.base.IcanproConstants;
-
+import org.netbeans.spi.project.ui.support.DefaultProjectOperations;
 
 /** Action provider of the Web project. This is the place where to do
  * strange things to Web actions. E.g. compile-single.
@@ -54,18 +54,19 @@ class EviewProjectActionProvider implements ActionProvider {
 
     // Commands available from Web project
     private static final String[] supportedActions = {
-        COMMAND_BUILD, 
-        COMMAND_CLEAN, 
-        COMMAND_REBUILD, 
-        //COMMAND_COMPILE_SINGLE,
-        //EviewProject.COMMAND_GENWSDL,
+        ActionProvider.COMMAND_BUILD, 
+        ActionProvider.COMMAND_CLEAN, 
+        ActionProvider.COMMAND_REBUILD, 
         EviewProject.COMMAND_GENEVIEW,
         EviewProject.COMMAND_GENLOADER,
         EviewProject.COMMAND_GENBULKLOADER,
         EviewProject.COMMAND_CLEANSER,
         EviewProject.COMMAND_PROFILER,
-        //IcanproConstants.COMMAND_REDEPLOY,
         EviewProject.COMMAND_DEPLOY,
+        ActionProvider.COMMAND_RENAME,
+        ActionProvider.COMMAND_COPY,
+        ActionProvider.COMMAND_DELETE,
+        ActionProvider.COMMAND_MOVE,
     };
     
     // Project
@@ -80,18 +81,20 @@ class EviewProjectActionProvider implements ActionProvider {
     
     public EviewProjectActionProvider(EviewProject project, AntProjectHelper antProjectHelper, ReferenceHelper refHelper) {
         commands = new HashMap();
-        commands.put(COMMAND_BUILD, new String[] {"dist"}); // NOI18N
-        commands.put(COMMAND_CLEAN, new String[] {"clean"}); // NOI18N
-        commands.put(COMMAND_REBUILD, new String[] {"clean", "dist"}); // NOI18N
-        //commands.put(EviewProject.COMMAND_GENWSDL, new String[] {"gen-wsdl"}); // NOI18N
+        commands.put(ActionProvider.COMMAND_BUILD, new String[] {"dist"}); // NOI18N
+        commands.put(ActionProvider.COMMAND_CLEAN, new String[] {"clean"}); // NOI18N
+        commands.put(ActionProvider.COMMAND_REBUILD, new String[] {"clean", "dist"}); // NOI18N
         commands.put(EviewProject.COMMAND_GENEVIEW, new String[] {"gen-mdm-index-files"}); // NOI18N
         commands.put(EviewProject.COMMAND_GENLOADER, new String[] {"gen-loader-zip"}); // NOI18N
         commands.put(EviewProject.COMMAND_GENBULKLOADER, new String[] {"gen-bulkloader-zip"}); // NOI18N
         
         commands.put(EviewProject.COMMAND_CLEANSER, new String[] {"gen-cleanser-zip"}); // NOI18N
         commands.put(EviewProject.COMMAND_PROFILER, new String[] {"gen-profiler-zip"}); // NOI18N
-        //commands.put(IcanproConstants.COMMAND_REDEPLOY, new String[] {"run"}); // NOI18N
         commands.put(EviewProject.COMMAND_DEPLOY, new String[] {"run-deploy"}); // NOI18N
+        commands.put(COMMAND_RENAME, null); // NOI18N
+        commands.put(COMMAND_COPY, null); // NOI18N
+        commands.put(COMMAND_DELETE, null); // NOI18N
+        commands.put(COMMAND_MOVE, null); // NOI18N
 
         this.antProjectHelper = antProjectHelper;
         this.project = project;
@@ -107,6 +110,26 @@ class EviewProjectActionProvider implements ActionProvider {
     }
     
     public void invokeAction( String command, Lookup context ) throws IllegalArgumentException {
+        if (COMMAND_DELETE.equals(command)) {
+            DefaultProjectOperations.performDefaultDeleteOperation(project);
+            return ;
+        }
+                
+        if (COMMAND_COPY.equals(command)) {
+            DefaultProjectOperations.performDefaultCopyOperation(project);
+            return ;
+        }
+        
+        if (COMMAND_MOVE.equals(command)) {
+            DefaultProjectOperations.performDefaultMoveOperation(project);
+            return ;
+        }
+        
+        if (COMMAND_RENAME.equals(command)) {
+            DefaultProjectOperations.performDefaultRenameOperation(project, null);
+            return ;
+        }
+        
         Properties p = null;
         String[] targetNames = (String[])commands.get(command);
         //EXECUTION PART
