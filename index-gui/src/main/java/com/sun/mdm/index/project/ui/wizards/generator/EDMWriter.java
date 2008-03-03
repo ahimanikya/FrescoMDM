@@ -72,6 +72,10 @@ public class EDMWriter {
             values.add(objname);
             values.add(mConfigSettings.getEdmAllNodes());
             values.add(mConfigSettings.getSubObjects());
+            values.add(mConfigSettings.getSimpleSearchFieldGroup());
+            values.add(mConfigSettings.getSearchResultFieldRef());
+            values.add(mConfigSettings.getSearchResultFieldRef2());
+            values.add(mConfigSettings.getReportFields());
             
             res = mTW.writeConstruct((String) cons.get(0), values);
         } else {

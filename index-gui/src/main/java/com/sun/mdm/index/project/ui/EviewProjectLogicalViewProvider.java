@@ -47,7 +47,6 @@ import org.netbeans.spi.java.project.support.ui.BrokenReferencesSupport;
 import org.netbeans.modules.compapp.projects.base.ui.IcanproLogicalViewProvider;
 import com.sun.mdm.index.project.EviewProject;
 import com.sun.mdm.index.project.EviewProjectProperties;
-import org.openide.loaders.DataFolder;
 import org.openide.util.lookup.Lookups;
 import org.openide.loaders.DataFolder;
 
@@ -135,11 +134,6 @@ public class EviewProjectLogicalViewProvider implements LogicalViewProvider {
                 return getAdditionalActions();
         }
 
-        @Override
-        public boolean canRename() {
-            return false;
-        }
-
         // Private methods -------------------------------------------------
 
         private Action[] getAdditionalActions() {
@@ -148,7 +142,6 @@ public class EviewProjectLogicalViewProvider implements LogicalViewProvider {
                 ProjectSensitiveActions.projectCommandAction( ActionProvider.COMMAND_REBUILD, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_RebuildAction_Name" ), null ), // NOI18N
                 ProjectSensitiveActions.projectCommandAction( ActionProvider.COMMAND_CLEAN, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_CleanAction_Name" ), null ), // NOI18N
                 null,
-                //ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_GENWSDL, "Generate WSDL", null ), // NOI18N
                 ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_GENEVIEW, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Generate_Master_Index_Files"), null ),
                 ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_GENLOADER, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Generate_Loader_Zip"), null ),
                 ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_GENBULKLOADER, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Generate_BulkLoader"), null ),
@@ -156,12 +149,16 @@ public class EviewProjectLogicalViewProvider implements LogicalViewProvider {
                 ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_CLEANSER, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Cleanser"), null ),
                 ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_PROFILER, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_Profiler"), null ),
                 null,
-                //ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_REDEPLOY, bundle.getString( "LBL_RedeployAction_Name" ), null ), // NOI18N
                 ProjectSensitiveActions.projectCommandAction( EviewProject.COMMAND_DEPLOY, NbBundle.getMessage(EviewProjectLogicalViewProvider.class, "LBL_DeployAction_Name" ), null ), // NOI18N
                 null,
                 CommonProjectActions.setAsMainProjectAction(),
                 CommonProjectActions.openSubprojectsAction(),
                 CommonProjectActions.closeProjectAction(),
+                null,
+                CommonProjectActions.renameProjectAction(),
+                CommonProjectActions.moveProjectAction(),
+                CommonProjectActions.copyProjectAction(),
+                CommonProjectActions.deleteProjectAction(),
                 null,
                 SystemAction.get( org.openide.actions.FindAction.class ),
                 null,

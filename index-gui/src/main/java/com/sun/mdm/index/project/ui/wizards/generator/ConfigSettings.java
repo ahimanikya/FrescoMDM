@@ -39,6 +39,10 @@ public class ConfigSettings {
     private String transaction = "CONTAINER";
     private ArrayList edmAllNodes;
     private ArrayList subObjects;
+    private ArrayList simpleSearchFieldGroup;
+    private ArrayList searchResultFieldRef;
+    private ArrayList searchResultFieldRef2;
+    private ArrayList reportFields;
     private boolean bMasterIndexEDM = false;
 
     /**
@@ -181,6 +185,69 @@ public class ConfigSettings {
      */
     public void setEdmAllNodes(ArrayList val) {
         edmAllNodes = val;
+    }
+    
+    // getSimpleSearchFieldGroup
+    /**
+     * @return SimpleSearchFieldGroup
+     */
+    public ArrayList getSimpleSearchFieldGroup() {
+        return simpleSearchFieldGroup;
+    }
+
+    /**
+     * Set SimpleSearchFieldGroup
+     * @param val 
+     */
+    public void setSimpleSearchFieldGroup(ArrayList val) {
+        simpleSearchFieldGroup = val;
+    }
+    
+    // setSearchResultFieldRef
+    /**
+     * @return searchResultFieldRef
+     */
+    public ArrayList getSearchResultFieldRef() {
+        return searchResultFieldRef;
+    }
+
+    /**
+     * Set searchResultFieldRef
+     * @param val 
+     */
+    public void setSearchResultFieldRef(ArrayList val) {
+        searchResultFieldRef = val;
+    }
+    
+    // setSearchResultFieldRef
+    /**
+     * @return searchResultFieldRef
+     */
+    public ArrayList getSearchResultFieldRef2() {
+        return searchResultFieldRef2;
+    }
+
+    /**
+     * Set searchResultFieldRef
+     * @param val 
+     */
+    public void setSearchResultFieldRef2(ArrayList val) {
+        searchResultFieldRef2 = val;
+    }
+
+    /**
+     * @return ReportFields
+     */
+    public ArrayList getReportFields() {
+        return reportFields;
+    }
+
+    /**
+     * Set Relationships
+     * @param val 
+     */
+    public void setReportFields(ArrayList val) {
+        reportFields = val;
     }
     
     /**

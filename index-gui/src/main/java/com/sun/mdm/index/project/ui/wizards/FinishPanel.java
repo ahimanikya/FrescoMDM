@@ -77,7 +77,16 @@ public class FinishPanel implements WizardDescriptor.Panel {
     static final String TAG_CODE_DESCRIPTION = "$<code-description>";
     static final String TAG_SYSTEM = "$<system>";
     static final String TAG_SYSTEM_DESCRIPTION = "$<system-description>";
-
+    static final String tab4 = "    ";
+    static final String tab8 = "        ";
+    static final String tab12 = "            ";
+    static final String tab16 = "                ";
+    static final String tab20 = "                    ";
+    static final String tab24 = "                    ";
+    static final String tab28 = "                        ";
+    static final String tab32 = "                            ";
+    static final String tab36 = "                                ";
+    
     /** The visual component that displays this panel.
      * If you need to access the component from this class,
      * just use getComponent().
@@ -650,6 +659,11 @@ public class FinishPanel implements WizardDescriptor.Panel {
                     ArrayList alSubObjects = getSubObjects();
                     mConfigSettings.setEdmAllNodes(alEdmAllNodes);
                     mConfigSettings.setSubObjects(alSubObjects);
+                    //getAlSimpleSearchFieldRef
+                    mConfigSettings.setSimpleSearchFieldGroup(getAlSimpleSearchFieldGroup());
+                    mConfigSettings.setSearchResultFieldRef(getAlSearchResultFieldRef(tab28));
+                    mConfigSettings.setSearchResultFieldRef2(getAlSearchResultFieldRef(tab36));
+                    mConfigSettings.setReportFields(getAlReportFields());
                     mConfigSettings.setMasterIndexEDM(true);
                 }
                 ConfigGenerator.generate(null, mConfigSettings, wiz);
@@ -670,43 +684,32 @@ public class FinishPanel implements WizardDescriptor.Panel {
         int cnt = currentNode.getChildCount();
 
         if (cnt > 0) {
-            nodes = "    <nodes>\n";
-            nodes += ("        <tag>" + tagName + "</tag>\n");
+            nodes = tab4 + "<nodes>\n";
+            nodes += (tab8 + "<tag>" + tagName + "</tag>\n");
 
             for (int i = 0; i < cnt; i++) {
                 EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
 
                 if (subNode.isField()) {
-                    nodes += ("        " + "<fields>\n");
-                    nodes += ("            <field-name>" + subNode.getName() +
-                    "</field-name>\n");
-                    nodes += ("            <field-type>" +
-                    subNode.getDataType() + "</field-type>\n");
-                    nodes += ("            <size>" + subNode.getDataSize() +
-                    "</size>\n");
-                    nodes += ("            <updateable>" +
+                    nodes += (tab8 + "<fields>\n");
+                    nodes += (tab12 + "<field-name>" + subNode.getName() + "</field-name>\n");
+                    nodes += (tab12 + "<field-type>" + subNode.getDataType() + "</field-type>\n");
+                    nodes += (tab12 + "<size>" + subNode.getDataSize() + "</size>\n");
+                    nodes += (tab12 + "<updateable>" +
                     subNode.getUpdateable() + "</updateable>\n");
-                    nodes += ("            <required>" + subNode.getRequired() +
-                    "</required>\n");
-
-                    //nodes += "            <minimum-value>1900-01-01</minimum-value>\n";
-                    nodes += ("            <code-module>" +
-                    subNode.getCodeModule() + "</code-module>\n");
-                    nodes += ("            <pattern>" + subNode.getPattern() +
-                    "</pattern>\n");
-                    nodes += ("            <key-type>" + subNode.getKeyType() +
-                    "</key-type>\n");
+                    nodes += (tab12 + "<required>" + subNode.getRequired() + "</required>\n");
+                    nodes += (tab12 + "<code-module>" + subNode.getCodeModule() + "</code-module>\n");
+                    nodes += (tab12 + "<pattern>" + subNode.getPattern() + "</pattern>\n");
+                    nodes += (tab12 + "<key-type>" + subNode.getKeyType() +"</key-type>\n");
                     if ((subNode.getUserCode() != null) &&
                             (subNode.getUserCode().length() > 0)) {
-                        nodes += ("            <user-code>" + subNode.getUserCode() +
-                        "</user-code>\n");
+                        nodes += (tab12 + "<user-code>" + subNode.getUserCode() + "</user-code>\n");
                     }
                     if ((subNode.getConstraintBy() != null) &&
                             (subNode.getConstraintBy().length() > 0)) {
-                        nodes += ("            <constraint-by>" + subNode.getConstraintBy() +
-                        "</constraint-by>\n");
+                        nodes += (tab12 + "<constraint-by>" + subNode.getConstraintBy() + "</constraint-by>\n");
                     }
-                    nodes += ("        " + "</fields>\n");
+                    nodes += (tab8 + "</fields>\n");
 
                     //
                     FieldSettings field = new FieldSettings();
@@ -743,7 +746,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 }
             }
 
-            nodes += "    </nodes>\n";
+            nodes += tab4 + "</nodes>\n";
         }
 
         return nodes;
@@ -791,10 +794,10 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
         if (cnt > 0) {
             if (displayOrder > 0) {
-                nodes = "    <node-" + tagName + " display-order=\"" +
+                nodes = tab4 + "<node-" + tagName + " display-order=\"" +
                     displayOrder + "\">\n";
             } else {
-                nodes = "    <node-" + tagName + ">\n";
+                nodes = tab4 + "<node-" + tagName + ">\n";
             }
 
             int fieldDisplayOrder = 1;
@@ -803,52 +806,45 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
 
                 if (subNode.isField()) {
-                    nodes += ("        " + "<field-" + subNode.getName() +
+                    nodes += (tab8 + "<field-" + subNode.getName() +
                     ">\n");
-                    nodes += ("            <display-name>" +
+                    nodes += (tab12 + "<display-name>" +
                     subNode.getDisplayName() + "</display-name>\n");
-                    nodes += ("            <display-order>" +
+                    nodes += (tab12 + "<display-order>" +
                     fieldDisplayOrder++ + "</display-order>\n");
-                    nodes += ("            <max-length>" +
+                    nodes += (tab12 + "<max-length>" +
                     subNode.getDataSize() + "</max-length>\n");
 
                     if ((subNode.getCodeModule() != null) &&
                             (subNode.getCodeModule().length() > 0)) {
-                        nodes += "            <gui-type>MenuList</gui-type>\n";
-                        nodes += ("            <value-list>" +
-                        subNode.getCodeModule() + "</value-list>\n");
+                        nodes += tab12 + "<gui-type>MenuList</gui-type>\n";
+                        nodes += (tab12 + "<value-list>" + subNode.getCodeModule() + "</value-list>\n");
                     } else if ((subNode.getUserCode() != null) &&
                             (subNode.getUserCode().length() > 0)) {
-                        nodes += "            <gui-type>MenuList</gui-type>\n";
-                        nodes += ("            <value-list>" +
-                        subNode.getUserCode() + "</value-list>\n");
+                        nodes += tab12 + "<gui-type>MenuList</gui-type>\n";
+                        nodes += (tab12 + "<value-list>" + subNode.getUserCode() + "</value-list>\n");
                     } else {
-                        nodes += "            <gui-type>TextBox</gui-type>\n";
+                        nodes += tab12 + "<gui-type>TextBox</gui-type>\n";
                     }
 
-                    nodes += ("            <value-type>" +
-                    subNode.getDataType() + "</value-type>\n");
+                    nodes += (tab12 + "<value-type>" + subNode.getDataType() + "</value-type>\n");
 
                     if ((subNode.getInputMask() != null) &&
                             (subNode.getInputMask().length() > 0)) {
-                        nodes += ("            <input-mask>" +
-                        subNode.getInputMask() + "</input-mask>\n");
+                        nodes += (tab12 + "<input-mask>" + subNode.getInputMask() + "</input-mask>\n");
                     }
 
                     if ((subNode.getValueMask() != null) &&
                             (subNode.getValueMask().length() > 0)) {
-                        nodes += ("            <value-mask>" +
-                        subNode.getValueMask() + "</value-mask>\n");
+                        nodes += (tab12 + "<value-mask>" + subNode.getValueMask() + "</value-mask>\n");
                     }
 
-                    nodes += ("            <key-type>" + subNode.getKeyType() +
-                    "</key-type>\n");
-                    nodes += ("        " + "</field-" + subNode.getName() +
-                    ">\n");
+                    nodes += (tab12 + "<key-type>" + subNode.getKeyType() + "</key-type>\n");
+                    nodes += (tab8 + "</field-" + subNode.getName() + ">\n");
                 }
             }
 
-            nodes += ("    </node-" + tagName + ">\n");
+            nodes += (tab4 + "</node-" + tagName + ">\n");
         }
 
         return nodes;
@@ -919,27 +915,20 @@ public class FinishPanel implements WizardDescriptor.Panel {
      *
      */
     private String getRelationships() {
-        String relationships;
-        relationships = "    <relationships>\n";
-        relationships += ("        <name>" + mPrimaryNode.getName() +
-                        "</name>\n");
-
+        String relationships = tab4 + "<relationships>\n";
+        relationships += tab8 + "<name>" + mPrimaryNode.getName() + "</name>\n";
         int cnt = mPrimaryNode.getChildCount();
         int subNodeCnt = cnt - mPrimaryNode.getFieldCnt();
         if (subNodeCnt > 0) {
             for (int i = 0; i < cnt; i++) {
                 EntityNode subNode = (EntityNode) mPrimaryNode.getChildAt(i);
-
                 if (subNode.isSub()) {
-                    relationships += ("        " + "<children>");
-                    relationships += subNode.getName();
-                    relationships += "</children>\n";
+                    relationships += tab8 + "<children>" + subNode.getName() + "</children>\n";
                 }
             }
         }
-
         relationships += "    </relationships>\n";
-
+        
         return relationships;
     }
     
@@ -952,7 +941,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 EntityNode subNode = (EntityNode) mPrimaryNode.getChildAt(i);
 
                 if (subNode.isSub()) {
-                    relationships.add("        " + "<children>" + subNode.getName() + "</children>");
+                    relationships.add(tab8 + "<children>" + subNode.getName() + "</children>");
                 }
             }
         }
@@ -979,45 +968,69 @@ public class FinishPanel implements WizardDescriptor.Panel {
     private String getGUIDefinition() {
         String guiDefinition;
 
-        guiDefinition = "    <gui-definition>\n";
-        guiDefinition += "        <system-display-name-overrides>\n";
-        guiDefinition += "            <local-id-header>" + geLocalIdIdentifier() 
-                + "</local-id-header>\n";
-        guiDefinition += "            <local-id>" + geLocalIdIdentifier() 
-                + "</local-id>\n";
-        guiDefinition += "        </system-display-name-overrides>\n";
-        guiDefinition += "        <page-definition>\n";
-        guiDefinition += "            <initial-screen>" + getInitialScreen() 
-                + "</initial-screen>\n";
-        guiDefinition += "            <eo-search>\n";
-        guiDefinition += ("               <root-object>" + mPrimaryNode.getName() +
-        "</root-object>\n");
-        guiDefinition += ("               <tab-name>" + mPrimaryNode.getName() +
-        " Search</tab-name>\n");
-        guiDefinition += "                <tab-entrance>/EnterEOSearchSimpleAction.do</tab-entrance>\n";
+        guiDefinition = tab4 + "<gui-definition>\n";
+        guiDefinition += tab8 + "<system-display-name-overrides>\n";
+        guiDefinition += tab12 + "<local-id-header>" + geLocalIdIdentifier() + "</local-id-header>\n";
+        guiDefinition += tab12 + "<local-id>" + geLocalIdIdentifier() + "</local-id>\n";
+        guiDefinition += tab8 + "</system-display-name-overrides>\n";
+        guiDefinition += tab8 + "<page-definition>\n";
+        guiDefinition += tab12 + "<initial-screen>" + getInitialScreen() + "</initial-screen>\n";
+        guiDefinition += tab12 + "<eo-search>\n";
+        guiDefinition += tab16 + "<root-object>" + mPrimaryNode.getName() + "</root-object>\n";
+        guiDefinition += tab16 + "<tab-name>" + mPrimaryNode.getName() + " Search</tab-name>\n";
+        guiDefinition += tab16 + "<tab-entrance>/EnterEOSearchSimpleAction.do</tab-entrance>\n";
         guiDefinition += getSimpleSearch(mPrimaryNode);
         guiDefinition += getSimpleLookup();
         guiDefinition += getSearchResultList(mPrimaryNode);
         guiDefinition += getEoViewPage();
-        guiDefinition += "            </eo-search>\n";
+        guiDefinition += tab12 + "</eo-search>\n";
         guiDefinition += getCreateEO();
         guiDefinition += getHistory();
         guiDefinition += getMatchingReview();
         guiDefinition += getReportGenerator(mPrimaryNode);
         guiDefinition += getAuditLog();
-        guiDefinition += "        </page-definition>\n";
-        guiDefinition += "    </gui-definition>\n";
+        guiDefinition += tab8 + "</page-definition>\n";
+        guiDefinition += tab4 + "</gui-definition>\n";
 
         return guiDefinition;
     }
 
+    private ArrayList getAlFieldGroups(EntityNode currentNode, String tagName, String tab) {
+        ArrayList alFieldGroup = new ArrayList();
+        boolean bFound = false;
+        int cnt = currentNode.getChildCount();
+
+        if (cnt > 0) {
+            for (int i = 0; i < cnt; i++) {
+                EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
+
+                if (subNode.isField() && subNode.getUsedInSearchScreen()) {
+                    if (!bFound) {
+                        alFieldGroup.add(tab + "<field-group>");
+                        alFieldGroup.add(tab + "    <description>" + tagName + "</description>");
+                        bFound = true;
+                    }
+
+                    alFieldGroup.add(tab + "    <field-ref required=\"" + subNode.getSearchRequired() + "\">" + tagName + "." +
+                                    subNode.getName() + "</field-ref>");
+                }
+            }
+
+            if (bFound) {
+                alFieldGroup.add(tab + "</field-group>");
+            }
+        }
+
+        return alFieldGroup;
+    }
+    
     /** Get field group for a subnode
      *  For EDM.xml
      *
      *@return XML string
      *
      */
-    private String getFieldGroups(EntityNode currentNode, String tagName) {
+    private String getFieldGroups(EntityNode currentNode, String tagName, String tab) {
         String fieldGroup = "";
         boolean bFound = false;
         int cnt = currentNode.getChildCount();
@@ -1028,19 +1041,18 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
                 if (subNode.isField() && subNode.getUsedInSearchScreen()) {
                     if (!bFound) {
-                        fieldGroup = "                    <field-group>\n";
-                        fieldGroup += ("                        <description>" + tagName +
-                        "</description>\n");
+                        fieldGroup = tab + "<field-group>\n";
+                        fieldGroup += tab + "    <description>" + tagName + "</description>\n";
                         bFound = true;
                     }
 
-                    fieldGroup += ("                        <field-ref required=\"" + subNode.getSearchRequired() + "\">" + tagName + "." +
-                    subNode.getName() + "</field-ref>\n");
+                    fieldGroup += tab + "    <field-ref required=\"" + subNode.getSearchRequired() + "\">" + tagName + "." +
+                                    subNode.getName() + "</field-ref>\n";
                 }
             }
 
             if (bFound) {
-                fieldGroup += "                    </field-group>\n";
+                fieldGroup += tab + "</field-group>\n";
             }
         }
 
@@ -1071,14 +1083,12 @@ public class FinishPanel implements WizardDescriptor.Panel {
      */
     private String getSimpleSearch(EntityNode currentNode) {
         String simpleSearch;
-
         // simple search
-        simpleSearch = "                <simple-search-page>\n";
-        simpleSearch += ("                     <screen-title>" + mPrimaryNode.getName() +
-        " Search</screen-title>\n");
-        simpleSearch += "                     <field-per-row>2</field-per-row>\n";
-        simpleSearch += "                     <show-euid>false</show-euid>\n";
-        simpleSearch += "                     <show-lid>false</show-lid>\n";
+        simpleSearch = tab16 + "<simple-search-page>\n";
+        simpleSearch += tab20 + "<screen-title>" + mPrimaryNode.getName() + " Search</screen-title>\n";
+        simpleSearch += tab20 + "<field-per-row>2</field-per-row>\n";
+        simpleSearch += tab20 + "<show-euid>false</show-euid>\n";
+        simpleSearch += tab20 + "<show-lid>false</show-lid>\n";
 
         int cnt = currentNode.getChildCount();
 
@@ -1087,7 +1097,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
-                simpleSearch += getFieldGroups(targetNode, currentNode.getName());
+                simpleSearch += getFieldGroups(targetNode, currentNode.getName(), tab20);
                 i = 1;
             }
 
@@ -1095,39 +1105,39 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
 
                 if (subNode.isSub()) {
-                    simpleSearch += getFieldGroups(subNode, subNode.getName());
+                    simpleSearch += getFieldGroups(subNode, subNode.getName(), tab20);
                 }
             }
         }
 
-        simpleSearch += "                   <search-option>\n";
-        simpleSearch += "                       <display-name>Phonetic Search</display-name>\n";
-        simpleSearch += "                       <query-builder>PHONETIC-SEARCH</query-builder>\n";
-        simpleSearch += "                       <weighted>true</weighted>\n";
-        simpleSearch += "                       <parameter>\n";
-        simpleSearch += "                           <name>UseWildCard</name>\n";
-        simpleSearch += "                           <value>false</value>\n";
-        simpleSearch += "                       </parameter>\n";
-        simpleSearch += "                   </search-option>\n";
-        simpleSearch += "                   <search-option>\n";
-        simpleSearch += "                       <display-name>Alpha Search</display-name>\n";
-        simpleSearch += "                       <query-builder>ALPHA-SEARCH</query-builder>\n";
-        simpleSearch += "                       <weighted>false</weighted>\n";
-        simpleSearch += "                       <parameter>\n";
-        simpleSearch += "                           <name>UseWildCard</name>\n";
-        simpleSearch += "                           <value>true</value>\n";
-        simpleSearch += "                       </parameter>\n";
-        simpleSearch += "                   </search-option>\n";
-        simpleSearch += "                   <search-option>\n";
-        simpleSearch += "                       <display-name>Blocker Search</display-name>\n";
-        simpleSearch += "                       <query-builder>BLOCKER-SEARCH</query-builder>\n";
-        simpleSearch += "                       <weighted>true</weighted>\n";
-        simpleSearch += "                       <parameter>\n";
-        simpleSearch += "                           <name>UseWildCard</name>\n";
-        simpleSearch += "                           <value>false</value>\n";
-        simpleSearch += "                       </parameter>\n";
-        simpleSearch += "                   </search-option>\n";
-        simpleSearch += "               </simple-search-page>\n";
+        simpleSearch += tab20 + "<search-option>\n";
+        simpleSearch += tab24 + "<display-name>Phonetic Search</display-name>\n";
+        simpleSearch += tab24 + "<query-builder>PHONETIC-SEARCH</query-builder>\n";
+        simpleSearch += tab24 + "<weighted>true</weighted>\n";
+        simpleSearch += tab24 + "<parameter>\n";
+        simpleSearch += tab28 + "<name>UseWildCard</name>\n";
+        simpleSearch += tab28 + "<value>false</value>\n";
+        simpleSearch += tab24 + "</parameter>\n";
+        simpleSearch += tab20 + "</search-option>\n";
+        simpleSearch += tab20 + "<search-option>\n";
+        simpleSearch += tab24 + "<display-name>Alpha Search</display-name>\n";
+        simpleSearch += tab24 + "<query-builder>ALPHA-SEARCH</query-builder>\n";
+        simpleSearch += tab24 + "<weighted>false</weighted>\n";
+        simpleSearch += tab24 + "<parameter>\n";
+        simpleSearch += tab28 + "<name>UseWildCard</name>\n";
+        simpleSearch += tab28 + "<value>true</value>\n";
+        simpleSearch += tab24 + "</parameter>\n";
+        simpleSearch += tab20 + "</search-option>\n";
+        simpleSearch += tab20 + "<search-option>\n";
+        simpleSearch += tab24 + "<display-name>Blocker Search</display-name>\n";
+        simpleSearch += tab24 + "<query-builder>BLOCKER-SEARCH</query-builder>\n";
+        simpleSearch += tab24 + "<weighted>true</weighted>\n";
+        simpleSearch += tab24 + "<parameter>\n";
+        simpleSearch += tab28 + "<name>UseWildCard</name>\n";
+        simpleSearch += tab28 + "<value>false</value>\n";
+        simpleSearch += tab24 + "</parameter>\n";
+        simpleSearch += tab20 + "</search-option>\n";
+        simpleSearch += tab16 + "</simple-search-page>\n";
 
         return simpleSearch;
     }
@@ -1138,7 +1148,30 @@ public class FinishPanel implements WizardDescriptor.Panel {
      *@return XML string
      *
      */
-    private String getFieldRef(EntityNode currentNode, String tagName) {
+    private ArrayList getAlFieldRef(EntityNode currentNode, String tagName, String tab) {
+        ArrayList alFieldRef = new ArrayList();
+        int cnt = currentNode.getChildCount();
+
+        if (cnt > 0) {
+            for (int i = 0; i < cnt; i++) {
+                EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
+
+                if (subNode.isField() && subNode.getDisplayedInSearchResult()) {
+                    alFieldRef.add(tab + "<field-ref>" + tagName + "." + subNode.getName() + "</field-ref>");
+                }
+            }
+        }
+
+        return alFieldRef;
+    }
+
+    /** Get field ref
+     *  For EDM.xml
+     *
+     *@return XML string
+     *
+     */
+    private String getSearchResultFieldRef(EntityNode currentNode, String tagName, String tab) {
         String fieldRef = "";
         int cnt = currentNode.getChildCount();
 
@@ -1147,7 +1180,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
 
                 if (subNode.isField() && subNode.getDisplayedInSearchResult()) {
-                    fieldRef += ("                  " + "<field-ref>");
+                    fieldRef += (tab + "<field-ref>");
                     fieldRef += (tagName + "." + subNode.getName());
                     fieldRef += "</field-ref>\n";
                 }
@@ -1160,31 +1193,32 @@ public class FinishPanel implements WizardDescriptor.Panel {
     // simple lookup
     private String getSimpleLookup() {
         String simpleLookup;
-        simpleLookup = "                <simple-search-page>\n";
-        simpleLookup += ("                  <screen-title>" + mPrimaryNode.getName() +
-        " Lookup</screen-title>\n");
-        simpleLookup += "                   <field-per-row>2</field-per-row>\n";
-        simpleLookup += "                   <show-euid>true</show-euid>\n";
-        simpleLookup += "                   <show-lid>true</show-lid>\n";
-        simpleLookup += "                   <search-option>\n";
-        simpleLookup += "                       <display-name>Alpha Search</display-name>\n";
-        simpleLookup += "                       <query-builder>ALPHA-SEARCH</query-builder>\n";
-        simpleLookup += "                       <weighted>false</weighted>\n";
-        simpleLookup += "                       <parameter>\n";
-        simpleLookup += "                           <name>UseWildCard</name>\n";
-        simpleLookup += "                           <value>true</value>\n";
-        simpleLookup += "                       </parameter>\n";
-        simpleLookup += "                   </search-option>\n";
-        simpleLookup += "               </simple-search-page>\n";
+
+        simpleLookup = tab16 + "<simple-search-page>\n";
+        simpleLookup += tab20 + "<screen-title>" + mPrimaryNode.getName() + " Lookup</screen-title>\n";
+        simpleLookup += tab20 + "<field-per-row>2</field-per-row>\n";
+        simpleLookup += tab20 + "<show-euid>true</show-euid>\n";
+        simpleLookup += tab20 + "<show-lid>true</show-lid>\n";
+        simpleLookup += tab20 + "<search-option>\n";
+        simpleLookup += tab24 + "<display-name>Alpha Search</display-name>\n";
+        simpleLookup += tab24 + "<query-builder>ALPHA-SEARCH</query-builder>\n";
+        simpleLookup += tab24 + "<weighted>false</weighted>\n";
+        simpleLookup += tab24 + "<parameter>\n";
+        simpleLookup += tab28 + "<name>UseWildCard</name>\n";
+        simpleLookup += tab28 + "<value>true</value>\n";
+        simpleLookup += tab24 + "</parameter>\n";
+        simpleLookup += tab20 + "</search-option>\n";
+        simpleLookup += tab16 + "</simple-search-page>\n";
 
         return simpleLookup;
     }
 
     private String getSearchResultList(EntityNode currentNode) {
         String searchResultList = "";
-        searchResultList += "               <search-result-list-page>\n";
-        searchResultList += "                    <item-per-page>10</item-per-page>\n";
-        searchResultList += "                    <max-result-size>100</max-result-size>\n";
+
+        searchResultList += tab16 + "<search-result-list-page>\n";
+        searchResultList += tab20 + "<item-per-page>10</item-per-page>\n";
+        searchResultList += tab20 + "<max-result-size>100</max-result-size>\n";
 
         int cnt = currentNode.getChildCount();
 
@@ -1193,8 +1227,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
-                searchResultList += getFieldRef(targetNode,
-                    currentNode.getName());
+                searchResultList += getSearchResultFieldRef(targetNode, currentNode.getName(), tab20);
                 i = 1;
             }
 
@@ -1202,76 +1235,172 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
 
                 if (subNode.isSub()) {
-                    searchResultList += getFieldRef(subNode, subNode.getName());
+                    searchResultList += getSearchResultFieldRef(subNode, subNode.getName(), tab20);
                 }
             }
         }
 
-        searchResultList += "                </search-result-list-page>\n";
+        searchResultList += tab16 + "</search-result-list-page>\n";
 
         return searchResultList;
     }
 
     private String getEoViewPage() {
         String s;
-        s = "                <eo-view-page>\n";
-        s += "                    <field-per-row>2</field-per-row>\n";
-        s += "                </eo-view-page>\n";
+        String tab1 = "";
+        s = tab16 + "<eo-view-page>\n";
+        s += tab20 + "<field-per-row>2</field-per-row>\n";
+        s += tab16 + "</eo-view-page>\n";
 
         return s;
     }
 
     private String getCreateEO() {
         String s;
-        s = "            <create-eo>\n";
-        s += ("                <root-object>" + mPrimaryNode.getName() +
-        "</root-object>\n");
-        s += "                <tab-name>Create System Record</tab-name>\n";
-        s += "                <tab-entrance>/EnterEOCreateAction.do</tab-entrance>\n";
-        s += "            </create-eo>\n";
+
+        s = tab12 + "<create-eo>\n";
+        s += tab16 + "<root-object>" + mPrimaryNode.getName() + "</root-object>\n";
+        s += tab16 + "<tab-name>Create System Record</tab-name>\n";
+        s += tab16 + "<tab-entrance>/EnterEOCreateAction.do</tab-entrance>\n";
+        s += tab12 + "</create-eo>\n";
 
         return s;
     }
 
     private String getHistory() {
         String history;
-        history = "            <history>\n";
-        history += ("                <root-object>" + mPrimaryNode.getName() +
-        "</root-object>\n");
-        history += "                <tab-name>History</tab-name>\n";
-        history += "                <tab-entrance>/EnterXASearchAction.do</tab-entrance>\n";
-        history += "                <xa-search-page>\n";
-        history += "                    <field-per-row>2</field-per-row>\n";
-        history += "                </xa-search-page>\n";
+
+        history = tab12 + "<history>\n";
+        history += tab16 + "<root-object>" + mPrimaryNode.getName() + "</root-object>\n";
+        history += tab16 + "<tab-name>History</tab-name>\n";
+        history += tab16 + "<tab-entrance>/EnterXASearchAction.do</tab-entrance>\n";
+        history += tab16 + "<xa-search-page>\n";
+        history += tab20 + "<field-per-row>2</field-per-row>\n";
+        history += tab16 + "</xa-search-page>\n";
 
         // ????
-        history += "                <search-result-list-page>\n";
-        history += "                    <item-per-page>10</item-per-page>\n";
-        history += "                    <max-result-size>100</max-result-size>\n";
-        history += "                </search-result-list-page>\n";
-        history += "            </history>\n";
+        history += tab16 + "<search-result-list-page>\n";
+        history += tab20 + "<item-per-page>10</item-per-page>\n";
+        history += tab20 + "<max-result-size>100</max-result-size>\n";
+        history += tab16 + "</search-result-list-page>\n";
+        history += tab12 + "</history>\n";
 
         return history;
     }
 
     private String getMatchingReview() {
         String s;
-        s = "            <matching-review>\n";
-        s += ("                <root-object>" + mPrimaryNode.getName() + "</root-object>\n");
-        s += "                <tab-name>Matching Review</tab-name>\n";
-        s += "                <tab-entrance>/EnterPDSearchAction.do</tab-entrance>\n";
-        s += "                <pd-search-page>\n";
-        s += "                    <field-per-row>2</field-per-row>\n";
-        s += "                </pd-search-page>\n";
+        s = tab12 + "<matching-review>\n";
+        s += tab16 + "<root-object>" + mPrimaryNode.getName() + "</root-object>\n";
+        s += tab16 + "<tab-name>Matching Review</tab-name>\n";
+        s += tab16 + "<tab-entrance>/EnterPDSearchAction.do</tab-entrance>\n";
+        s += tab16 + "<pd-search-page>\n";
+        s += tab20 + "<field-per-row>2</field-per-row>\n";
+        s += tab16 + "</pd-search-page>\n";
 
         // ????
-        s += "                <search-result-list-page>\n";
-        s += "                    <item-per-page>10</item-per-page>\n";
-        s += "                    <max-result-size>100</max-result-size>\n";
-        s += "                </search-result-list-page>\n";
-        s += "            </matching-review>\n";
+        s += tab16 + "<search-result-list-page>\n";
+        s += tab20 + "<item-per-page>10</item-per-page>\n";
+        s += tab20 + "<max-result-size>100</max-result-size>\n";
+        s += tab16 + "</search-result-list-page>\n";
+        s += tab12 + "</matching-review>\n";
 
         return s;
+    }
+  
+    private ArrayList getAlSimpleSearchFieldGroup() {
+        EntityNode currentNode = mPrimaryNode;
+        String fieldGroup = "";
+        ArrayList alRet = new ArrayList();
+        int cnt = currentNode.getChildCount();
+        if (cnt > 0) {
+            int i = 0;
+            if (currentNode.isPrimary()) {
+                EntityNode targetNode = currentNode;
+                fieldGroup += getFieldGroups(targetNode, currentNode.getName(), tab28);
+                i = 1;
+            }
+            for (; i < cnt; i++) {
+                EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
+
+                if (subNode.isSub()) {
+                    fieldGroup += getFieldGroups(subNode, currentNode.getName() + "." + subNode.getName(), tab28);
+                }
+            }
+        }
+        int idx = fieldGroup.lastIndexOf('\n');
+        if (idx > 0) {
+            fieldGroup = fieldGroup.substring(0, idx);
+        }
+
+        alRet.add(fieldGroup);
+        return alRet;
+    }
+
+    private ArrayList getAlSearchResultFieldRef(String tab) {
+        EntityNode currentNode = mPrimaryNode;
+        String fieldRef = "";
+        ArrayList alRet = new ArrayList();
+        
+        int cnt = currentNode.getChildCount();
+        if (cnt > 0) {
+            int i = 0;
+            if (currentNode.isPrimary()) {
+                EntityNode targetNode = currentNode;
+                String str = getSearchResultFieldRef(targetNode, currentNode.getName(), tab + tab4);
+                if (str.length() > 0) {
+                    fieldRef += (tab + "<field-group>\n");
+                    fieldRef += (tab + tab4 + "<description/>\n");
+                    fieldRef += str;
+                    fieldRef += (tab + "</field-group>\n");
+                }
+                i = 1;
+            }
+
+            for (; i < cnt; i++) {
+                EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
+
+                if (subNode.isSub()) {
+                    String str = getSearchResultFieldRef(subNode, currentNode.getName() + "." + subNode.getName(), tab + tab4);
+                    if (str.length() > 0) {
+                        fieldRef += (tab + "<field-group>\n");
+                        fieldRef += (tab + tab4 + "<description/>\n");
+                        fieldRef += str;
+                        fieldRef += (tab + "</field-group>\n");
+                    }
+                }
+            }
+        }
+        int idx = fieldRef.lastIndexOf('\n');
+        if (idx > 0) {
+            fieldRef = fieldRef.substring(0, idx);
+        }
+        alRet.add(fieldRef);
+        return alRet;
+    }
+    
+    private ArrayList getAlReportFields() {
+        EntityNode currentNode = mPrimaryNode;
+        String fieldReport = "";
+        ArrayList alRet = new ArrayList();
+        int cnt = currentNode.getChildCount();
+        if (cnt > 0) {
+            int i = 0;
+            if (currentNode.isPrimary()) {
+                EntityNode targetNode = currentNode;
+                fieldReport += getReportFields(targetNode, currentNode.getName(), tab36);
+                i = 1;
+            }
+
+            for (; i < cnt; i++) {
+                EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
+                if (subNode.isSub()) {
+                    fieldReport += getReportFields(subNode, subNode.getName(), tab36);
+                }
+            }
+        }
+        alRet.add(fieldReport);
+        return alRet;
     }
 
     /** Get field report for a subnode
@@ -1280,17 +1409,15 @@ public class FinishPanel implements WizardDescriptor.Panel {
      *@return XML string
      *
      */
-    private String getReportFields(EntityNode currentNode, String tagName) {
+    private String getReportFields(EntityNode currentNode, String tagName, String tab) {
         String fieldReport = "";
         int cnt = currentNode.getChildCount();
-
         if (cnt > 0) {
             for (int i = 0; i < cnt; i++) {
                 EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
-
                 if (subNode.isField() && subNode.getGenerateReport()) {
-                    fieldReport += ("                        <field-ref>" + tagName + "." +
-                    subNode.getName() + "</field-ref>\n");
+                    fieldReport += tab + "<field-ref>" + tagName + "." +
+                                   subNode.getName() + "</field-ref>\n";
                 }
             }
         }
@@ -1307,21 +1434,22 @@ public class FinishPanel implements WizardDescriptor.Panel {
         String reportGenerator;
 
         // reports
-        reportGenerator = "            <reports>\n";
-        reportGenerator += ("                <root-object>" + mPrimaryNode.getName() +
+        reportGenerator = tab12 + "<reports>\n";
+        reportGenerator += (tab16 + "<root-object>" + mPrimaryNode.getName() +
         "</root-object>\n");
-        reportGenerator += "                <tab-name>Reports</tab-name>\n";
-        reportGenerator += "                <tab-entrance>/EnterReportSearchAction.do</tab-entrance>\n";
-        reportGenerator += "                <search-page-field-per-row>2</search-page-field-per-row>\n";
+        reportGenerator += tab16 + "<tab-name>Reports</tab-name>\n";
+        reportGenerator += tab16 + "<tab-entrance>/EnterReportSearchAction.do</tab-entrance>\n";
+        reportGenerator += tab16 + "<search-page-field-per-row>2</search-page-field-per-row>\n";
 
-        String reportFields = "                    <fields>\n";
+        String reportFields = tab20 + "<fields>\n";
+
         int cnt = currentNode.getChildCount();
         if (cnt > 0) {
             int i = 0;
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
-                reportFields += getReportFields(targetNode, currentNode.getName());
+                reportFields += getReportFields(targetNode, currentNode.getName(), tab24);
                 i = 1;
             }
 
@@ -1329,93 +1457,93 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
 
                 if (subNode.isSub()) {
-                    reportFields += getReportFields(subNode, subNode.getName());
+                    reportFields += getReportFields(subNode, subNode.getName(), tab24);
                 }
             }
         }
-        reportFields += "                    </fields>\n";
+        reportFields += tab20 + "</fields>\n";
         
         // dynamic reports
-        reportGenerator += "                <report name=\"Assumed Match\" title=\"Assumed Match Report\">\n";
-        reportGenerator += "                    <enable>true</enable>\n";
-        reportGenerator += "                    <max-result-size>2000</max-result-size>\n";
+        reportGenerator += tab16 + "<report name=\"Assumed Match\" title=\"Assumed Match Report\">\n";
+        reportGenerator += tab20 + "<enable>true</enable>\n";
+        reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
         reportGenerator += reportFields;
-        reportGenerator += "                </report>\n";
+        reportGenerator += tab16 + "</report>\n";
         
-        reportGenerator += "                <report name=\"Potential Duplicate\" title=\"Potential Duplicate Report\">\n";
-        reportGenerator += "                    <enable>true</enable>\n";
-        reportGenerator += "                    <max-result-size>2000</max-result-size>\n";
+        reportGenerator += tab16 + "<report name=\"Potential Duplicate\" title=\"Potential Duplicate Report\">\n";
+        reportGenerator += tab20 + "<enable>true</enable>\n";
+        reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
         reportGenerator += reportFields;
-        reportGenerator += "                </report>\n";
+        reportGenerator += tab16 + "</report>\n";
         
-        reportGenerator += "                <report name=\"Deactivated\" title=\"Deactivated Record Report\">\n";
-        reportGenerator += "                    <enable>true</enable>\n";
-        reportGenerator += "                    <max-result-size>2000</max-result-size>\n";
+        reportGenerator += tab16 + "<report name=\"Deactivated\" title=\"Deactivated Record Report\">\n";
+        reportGenerator += tab20 + "<enable>true</enable>\n";
+        reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
         reportGenerator += reportFields;
-        reportGenerator += "                </report>\n";
+        reportGenerator += tab16 + "</report>\n";
         
-        reportGenerator += "                <report name=\"Merged\" title=\"Merged Transaction Report\">\n";
-        reportGenerator += "                    <enable>true</enable>\n";
-        reportGenerator += "                    <max-result-size>2000</max-result-size>\n";
+        reportGenerator += tab16 + "<report name=\"Merged\" title=\"Merged Transaction Report\">\n";
+        reportGenerator += tab20 + "<enable>true</enable>\n";
+        reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
         reportGenerator += reportFields;
-        reportGenerator += "                </report>\n";
+        reportGenerator += tab16 + "</report>\n";
         
-        reportGenerator += "                <report name=\"Unmerged\" title=\"Unmerged Transaction Report\">\n";
-        reportGenerator += "                    <enable>true</enable>\n";
-        reportGenerator += "                    <max-result-size>2000</max-result-size>\n";
+        reportGenerator += tab16 + "<report name=\"Unmerged\" title=\"Unmerged Transaction Report\">\n";
+        reportGenerator += tab20 + "<enable>true</enable>\n";
+        reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
         reportGenerator += reportFields;
-        reportGenerator += "                </report>\n";
+        reportGenerator += tab16 + "</report>\n";
         
-        reportGenerator += "                <report name=\"Update\" title=\"Updated Record Report\">\n";
-        reportGenerator += "                    <enable>true</enable>\n";
-        reportGenerator += "                    <max-result-size>2000</max-result-size>\n";
+        reportGenerator += tab16 + "<report name=\"Update\" title=\"Updated Record Report\">\n";
+        reportGenerator += tab20 + "<enable>true</enable>\n";
+        reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
         reportGenerator += reportFields;
-        reportGenerator += "                </report>\n";
+        reportGenerator += tab16 + "</report>\n";
         // fixed reports
-        reportGenerator += "                <report name=\"Weekly Activity\" title=\"Transaction Audit Report\">\n";
-        reportGenerator += "                    <enable>true</enable>\n";
-        reportGenerator += "                    <max-result-size>2000</max-result-size>\n";
-        reportGenerator += "                    <fields></fields>\n";
-        reportGenerator += "                </report>\n";
+        reportGenerator += tab16 + "<report name=\"Weekly Activity\" title=\"Transaction Audit Report\">\n";
+        reportGenerator += tab20 + "<enable>true</enable>\n";
+        reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
+        reportGenerator += tab20 + "<fields></fields>\n";
+        reportGenerator += tab16 + "</report>\n";
         
-        reportGenerator += "                <report name=\"Monthly Activity\" title=\"Transaction Summary Report\">\n";
-        reportGenerator += "                    <enable>true</enable>\n";
-        reportGenerator += "                    <max-result-size>2000</max-result-size>\n";
-        reportGenerator += "                    <fields></fields>\n";
-        reportGenerator += "                </report>\n";
+        reportGenerator += tab16 + "<report name=\"Monthly Activity\" title=\"Transaction Summary Report\">\n";
+        reportGenerator += tab20 + "<enable>true</enable>\n";
+        reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
+        reportGenerator += tab20 + "<fields></fields>\n";
+        reportGenerator += tab16 + "</report>\n";
         
-        reportGenerator += "                <report name=\"Yearly Activity\" title=\"Transaction Summary Report\">\n";
-        reportGenerator += "                    <enable>true</enable>\n";
-        reportGenerator += "                    <max-result-size>2000</max-result-size>\n";
-        reportGenerator += "                    <fields></fields>\n";
-        reportGenerator += "                </report>\n";
+        reportGenerator += tab16 + "<report name=\"Yearly Activity\" title=\"Transaction Summary Report\">\n";
+        reportGenerator += tab20 + "<enable>true</enable>\n";
+        reportGenerator += tab20 + "<max-result-size>2000</max-result-size>\n";
+        reportGenerator += tab20 + "<fields></fields>\n";
+        reportGenerator += tab16 + "</report>\n";
         
-        reportGenerator += "            </reports>\n";
+        reportGenerator += tab12 + "</reports>\n";
 
         return reportGenerator;
     }
 
     private String getAuditLog() {
         String s;
-        s = "            <audit-log>\n";
-        s += "                <allow-insert>false</allow-insert>\n";
-        s += "           </audit-log>\n";
+        s = tab12 + "<audit-log>\n";
+        s += tab16 + "<allow-insert>false</allow-insert>\n";
+        s += tab12 + "</audit-log>\n";
 
         return s;
     }
 
     private String getImpl() {
         String implDetails = 
-            "    <impl-details>\n" +
-            "        <master-controller-jndi-name>ejb/" + mViewName + "MasterController</master-controller-jndi-name>\n" +
-            "        <validation-service-jndi-name>ejb/" + mViewName + "CodeLookup</validation-service-jndi-name>\n" +
-            "        <usercode-jndi-name>ejb/" + mViewName + "UserCodeLookup</usercode-jndi-name>\n" +
-            "        <reportgenerator-jndi-name>ejb/" + mViewName + "ReportGenerator</reportgenerator-jndi-name>\n" +
-            "        <debug-flag>true</debug-flag>\n" + 
-            "        <debug-dest>console</debug-dest>\n" +
-            "        <enable-security>false</enable-security>\n" +
-            "        <object-sensitive-plug-in-class></object-sensitive-plug-in-class>\n" +
-            "    </impl-details>\n";
+            tab4 + "<impl-details>\n" +
+            tab8 + "<master-controller-jndi-name>ejb/" + mViewName + "MasterController</master-controller-jndi-name>\n" +
+            tab8 + "<validation-service-jndi-name>ejb/" + mViewName + "CodeLookup</validation-service-jndi-name>\n" +
+            tab8 + "<usercode-jndi-name>ejb/" + mViewName + "UserCodeLookup</usercode-jndi-name>\n" +
+            tab8 + "<reportgenerator-jndi-name>ejb/" + mViewName + "ReportGenerator</reportgenerator-jndi-name>\n" +
+            tab8 + "<debug-flag>true</debug-flag>\n" + 
+            tab8 + "<debug-dest>console</debug-dest>\n" +
+            tab8 + "<enable-security>false</enable-security>\n" +
+            tab8 + "<object-sensitive-plug-in-class></object-sensitive-plug-in-class>\n" +
+            tab4 + "</impl-details>\n";
 
         return implDetails;
     }

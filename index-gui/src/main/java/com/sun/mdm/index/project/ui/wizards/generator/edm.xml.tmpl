@@ -1,4 +1,4 @@
-[SBYNTAG:DEFINE:objname,allnodes(),subobjects()]
+[SBYNTAG:DEFINE:objname,allnodes(),subobjects(),SimpleSearchFieldGroup(),SearchResultFieldRef(),SearchResultFieldRef2(),reportfields()]
 <?xml version="1.0" encoding="UTF-8"?>
 <edm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/EDM.xsd">
 [SBYNTAG:REP-BEGIN]    
@@ -31,34 +31,23 @@
                 <search-pages>
                     <simple-search-page>
                         <screen-title>Advanced [sbyntag:objname] Lookup (Phonetic)</screen-title>
-                            <search-result-id>1</search-result-id>
-                            <search-screen-order>1</search-screen-order>
-                            <show-euid>false</show-euid>
-                            <show-lid>false</show-lid>
-                            <instruction/>
-                            <field-group>
-                                <description>Demographics</description>
-                                <!--field-ref>Person.LastName</field-ref-->
-                                <!--field-ref>Person.FirstName</field-ref-->
-                                <!--field-ref choice="range">Person.DOB</field-ref-->
-                                <!--field-ref>Person.Gender</field-ref-->
-                                <!--field-ref>Person.MotherMN</field-ref-->
-                                <!--field-ref>Person.SSN</field-ref-->
-                            </field-group>
-                            <field-group>
-                                <!--description>Address</description-->
-                                <!--field-ref>Address.AddressLine1</field-ref-->
-                                <!--field-ref>Address.AddressLine2</field-ref-->
-                            </field-group>
-                            <search-option>
-                                <display-name>Phonetic Search</display-name>
-                                <query-builder>BLOCKER-SEARCH2</query-builder>
-                                <weighted>true</weighted>
-                                <parameter>
-                                    <name>UseWildcard</name>
-                                    <value>false</value>
-                                </parameter>
-                            </search-option>
+                        <search-result-id>1</search-result-id>
+                        <search-screen-order>1</search-screen-order>
+                        <show-euid>false</show-euid>
+                        <show-lid>false</show-lid>
+                        <instruction/>
+[SBYNTAG:REP-BEGIN]    
+[sbyntag:SimpleSearchFieldGroup()]
+[SBYNTAG:REP-END]
+                        <search-option>
+                            <display-name>Phonetic Search</display-name>
+                            <query-builder>BLOCKER-SEARCH2</query-builder>
+                            <weighted>true</weighted>
+                            <parameter>
+                                <name>UseWildcard</name>
+                                <value>false</value>
+                            </parameter>
+                        </search-option>
                     </simple-search-page>
                     <simple-search-page>
                         <screen-title>Advanced [sbyntag:objname] Lookup (Alpha)</screen-title>
@@ -67,26 +56,9 @@
                         <show-euid>false</show-euid>
                         <show-lid>false</show-lid>
                         <instruction>Enter as much information as possible to narrow the search</instruction>
-                        <field-group>
-                            <description>Demographics</description>
-                            <!--field-ref>Person.LastName</field-ref-->
-                            <!--field-ref>Person.FirstName</field-ref-->
-                            <!--field-ref>Person.MiddleName</field-ref-->
-                            <!--field-ref>Person.Gender</field-ref-->
-                            <!--field-ref choice="range">Person.DOB</field-ref-->
-                            <!--field-ref>Person.MotherMN</field-ref-->
-                            <!--field-ref>Person.SSN</field-ref-->
-                            <!--field-ref>Person.Maiden</field-ref-->
-                            <!--field-ref>Person.PersonCatCode</field-ref-->
-                        </field-group>
-                        <field-group>
-                            <!--description>Address</description-->
-                            <!--field-ref>Address.AddressType</field-ref-->
-                            <!--field-ref>Address.AddressLine1</field-ref-->
-                            <!--field-ref>Address.City</field-ref-->
-                            <!--field-ref>Address.StateCode</field-ref-->
-                            <!--field-ref>Address.PostalCode</field-ref-->
-                        </field-group>
+[SBYNTAG:REP-BEGIN]    
+[sbyntag:SimpleSearchFieldGroup()]
+[SBYNTAG:REP-END]
                         <search-option>
                             <display-name>Alpha Search</display-name>
                             <query-builder>ALPHA-SEARCH</query-builder>
@@ -105,8 +77,6 @@
                         <show-lid>true</show-lid>
                         <instruction/>
                         <field-group>
-                            <!--description>SSN</description-->
-                            <!--field-ref>Person.SSN</field-ref-->
                         </field-group>
                         <search-option>
                             <display-name>Alpha Search</display-name>
@@ -124,24 +94,9 @@
                         <item-per-page>10</item-per-page>
                         <max-result-size>100</max-result-size>
                         <search-result-id>1</search-result-id>
-                        <field-group>
-                            <description></description>
-                            <!--field-ref>Person.LastName</field-ref-->
-                            <!--field-ref>Person.FirstName</field-ref-->
-                            <!--field-ref>Person.MiddleName</field-ref-->
-                            <!--field-ref>Person.DOB</field-ref-->
-                            <!--field-ref>Person.Gender</field-ref-->
-                            <!--field-ref>Person.MotherMN</field-ref-->
-                            <!--field-ref>Person.SSN</field-ref-->
-                            <!--field-ref>Person.Maiden</field-ref-->
-                            <!--field-ref>Person.PersonCatCode</field-ref-->
-                            <!--field-ref>Address.AddressType</field-ref-->
-                            <!--field-ref>Address.AddressLine1</field-ref-->
-                            <!--field-ref>Address.AddressLine2</field-ref-->
-                            <!--field-ref>Phone.PhoneType</field-ref-->
-                            <!--field-ref>Phone.Phone</field-ref-->
-                            <!--field-ref>Person.VIPFlag</field-ref-->
-                        </field-group>
+[SBYNTAG:REP-BEGIN]    
+[sbyntag:SearchResultFieldRef()]
+[SBYNTAG:REP-END]
                     </search-result-list-page>
                 </search-result-pages>
             </record-details>
@@ -203,15 +158,9 @@
                         <item-per-page>10</item-per-page>
                         <max-result-size>100</max-result-size>
                         <search-result-id>0</search-result-id>
-                        <field-group>
-                            <description></description>
-                            <!--field-ref>Person.FirstName</field-ref-->
-                            <!--field-ref>Person.LastName</field-ref-->
-                            <!--field-ref>Person.SSN</field-ref-->
-                            <!--field-ref>Person.DOB</field-ref-->
-                            <!--field-ref>Address.AddressLine1</field-ref-->
-                            <!--field-ref>Address.AddressLine2</field-ref-->
-                        </field-group>
+[SBYNTAG:REP-BEGIN]    
+[sbyntag:SearchResultFieldRef()]
+[SBYNTAG:REP-END]
                     </search-result-list-page>
                 </search-result-pages>
             </duplicate-records>
@@ -229,14 +178,9 @@
                         <item-per-page>10</item-per-page>
                         <max-result-size>100</max-result-size>
                         <search-result-id>0</search-result-id>
-                        <field-group>
-                            <description></description>
-                            <!--field-ref>Person.FirstName</field-ref-->
-                            <!--field-ref>Person.LastName</field-ref-->
-                            <!--field-ref>Person.SSN</field-ref-->
-                            <!--field-ref>Person.DOB</field-ref-->
-                            <!--field-ref>Address.AddressLine1</field-ref-->
-                        </field-group>
+[SBYNTAG:REP-BEGIN]    
+[sbyntag:SearchResultFieldRef()]
+[SBYNTAG:REP-END]
                     </search-result-list-page>
                 </search-result-pages>
             </assumed-matches>
@@ -279,10 +223,6 @@
                                 <instruction>Enter search criteria</instruction>
                                 <field-group>
                                     <description></description>
-                                    <!--field-ref>Person.FirstName</field-ref-->
-                                    <!--field-ref>Person.LastName</field-ref-->
-                                    <!--field-ref>Person.DOB</field-ref-->
-                                    <!--field-ref>Address.AddressLine1</field-ref-->
                                 </field-group>
                             </simple-search-page>
                         </search-pages>
@@ -298,14 +238,9 @@
                                 <show-create-time>false</show-create-time>
                                 <show-timestamp>true</show-timestamp>
                                 <instruction/>
-                                <field-group>
-                                    <description></description>
-                                    <!--field-ref>Person.FirstName</field-ref-->
-                                    <!--field-ref>Person.LastName</field-ref-->
-                                    <!--field-ref>Person.DOB</field-ref-->
-                                    <!--field-ref>Person.SSN</field-ref-->
-                                    <!--field-ref>Address.AddressLine1</field-ref-->
-                                </field-group>
+[SBYNTAG:REP-BEGIN]    
+[sbyntag:SearchResultFieldRef2()]
+[SBYNTAG:REP-END]
                             </search-result-list-page>
                         </search-result-pages>
                     </subscreen>
@@ -395,16 +330,9 @@
                                 <item-per-page>10</item-per-page>
                                 <max-result-size>2000</max-result-size>
                                 <search-result-id>0</search-result-id>
-                                <field-group>
-                                    <description/>
-                                    <!--field-ref>Person.FirstName</field-ref-->
-                                    <!--field-ref>Person.LastName</field-ref-->
-                                    <!--field-ref>Person.SSN</field-ref-->
-                                    <!--field-ref>Person.DOB</field-ref-->
-                                    <!--field-ref>Address.AddressLine1</field-ref-->
-                                    <!--field-ref>Address.AddressLine2</field-ref-->
-                                    <!--field-ref>Phone.Phone</field-ref-->
-                                </field-group>
+[SBYNTAG:REP-BEGIN]    
+[sbyntag:SearchResultFieldRef2()]
+[SBYNTAG:REP-END]
                             </search-result-list-page>
                         </search-result-pages>
                     </subscreen>
@@ -424,16 +352,9 @@
                                 <item-per-page>10</item-per-page>
                                 <max-result-size>2000</max-result-size>
                                 <search-result-id>0</search-result-id>
-                                <field-group>
-                                    <description/>
-                                    <!--field-ref>Person.FirstName</field-ref-->
-                                    <!--field-ref>Person.LastName</field-ref-->
-                                    <!--field-ref>Person.SSN</field-ref-->
-                                    <!--field-ref>Person.DOB</field-ref-->
-                                    <!--field-ref>Address.AddressLine1</field-ref-->
-                                    <!--field-ref>Address.AddressLine2</field-ref-->
-                                    <!--field-ref>Phone.Phone</field-ref-->
-                                </field-group>
+[SBYNTAG:REP-BEGIN]    
+[sbyntag:SearchResultFieldRef2)]
+[SBYNTAG:REP-END]
                             </search-result-list-page>
                         </search-result-pages>
                     </subscreen>
@@ -453,16 +374,9 @@
                                 <item-per-page>10</item-per-page>
                                 <max-result-size>2000</max-result-size>
                                 <search-result-id>0</search-result-id>
-                                <field-group>
-                                    <description/>
-                                    <!--field-ref>Person.FirstName</field-ref-->
-                                    <!--field-ref>Person.LastName</field-ref-->
-                                    <!--field-ref>Person.SSN</field-ref-->
-                                    <!--field-ref>Person.DOB</field-ref-->
-                                    <!--field-ref>Address.AddressLine1</field-ref-->
-                                    <!--field-ref>Address.AddressLine2</field-ref-->
-                                    <!--field-ref>Phone.Phone</field-ref-->
-                                </field-group>
+[SBYNTAG:REP-BEGIN]    
+[sbyntag:SearchResultFieldRef2()]
+[SBYNTAG:REP-END]
                             </search-result-list-page>
                         </search-result-pages>
                     </subscreen>
@@ -482,16 +396,9 @@
                                 <item-per-page>10</item-per-page>
                                 <max-result-size>2000</max-result-size>
                                 <search-result-id>0</search-result-id>
-                                <field-group>
-                                    <description/>
-                                    <!--field-ref>Person.FirstName</field-ref-->
-                                    <!--field-ref>Person.LastName</field-ref-->
-                                    <!--field-ref>Person.SSN</field-ref-->
-                                    <!--field-ref>Person.DOB</field-ref-->
-                                    <!--field-ref>Address.AddressLine1</field-ref-->
-                                    <!--field-ref>Address.AddressLine2</field-ref-->
-                                    <!--field-ref>Phone.Phone</field-ref-->
-                                </field-group>
+[SBYNTAG:REP-BEGIN]    
+[sbyntag:SearchResultFieldRef2)]
+[SBYNTAG:REP-END]
                             </search-result-list-page>
                         </search-result-pages>
                     </subscreen>
@@ -511,16 +418,9 @@
                                 <item-per-page>10</item-per-page>
                                 <max-result-size>2000</max-result-size>
                                 <search-result-id>0</search-result-id>
-                                <field-group>
-                                    <description/>
-                                    <!--field-ref>Person.FirstName</field-ref-->
-                                    <!--field-ref>Person.LastName</field-ref-->
-                                    <!--field-ref>Person.SSN</field-ref-->
-                                    <!--field-ref>Person.DOB</field-ref-->
-                                    <!--field-ref>Address.AddressLine1</field-ref-->
-                                    <!--field-ref>Address.AddressLine2</field-ref-->
-                                    <!--field-ref>Phone.Phone</field-ref-->
-                                </field-group>
+[SBYNTAG:REP-BEGIN]    
+[sbyntag:SearchResultFieldRef2()]
+[SBYNTAG:REP-END]
                             </search-result-list-page>
                         </search-result-pages>
                     </subscreen>
