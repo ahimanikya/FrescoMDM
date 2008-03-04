@@ -331,4 +331,15 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
     public boolean getGenerateReport() {
         return chkGenerateReport.isSelected();
     }
+    
+    /**
+     * setDisplayName
+     * @param oldName
+     * @param newName
+     */
+    public void updateDefaultDisplayName(String oldName, String newName) {
+        if (this.txtDisplayName.getText().equals(oldName)) {
+            this.txtDisplayName.setText(newName);
+        }
+    }
 }

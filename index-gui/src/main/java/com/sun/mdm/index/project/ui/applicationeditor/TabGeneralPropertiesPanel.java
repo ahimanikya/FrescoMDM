@@ -93,6 +93,9 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
                     String newName = txtName.getText();
                     if (mEntityNode.checkNodeNameValue(newName)) {
                         mEntityNode.setNodeName(newName);
+                        if (txtDisplayName.getText().equals(oldName)) {
+                            txtDisplayName.setText(newName);
+                        }
                     } else {
                         txtName.setText(oldName);
                         txtName.requestFocus();
@@ -411,8 +414,12 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
      *@return DataType
      */
     public void setFieldName(String name) {
-        if (!name.equals(txtName.getText())) {
+        String oldName = txtName.getText();
+        if (!name.equals(oldName)) {
             txtName.setText(name);
+            if (txtDisplayName.getText().equals(oldName)) {
+                txtDisplayName.setText(name);
+            }
         }
     }
 

@@ -155,8 +155,12 @@ public class EntityNode extends DefaultMutableTreeNode {
      *@param nodeName name
      */
     public void setNodeName(String nodeName) {
+        String oldName = this.mNodeName;
         this.mNodeName = nodeName;
         this.setUserObject(nodeName);
+        if (mPropertySheetModel != null) {
+            mPropertySheetModel.updateDefaultDisplayName(oldName, nodeName);
+        }
 
         if (this.mEntityTree != null) {
             this.mEntityTree.clearSelection();

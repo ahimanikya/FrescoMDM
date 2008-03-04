@@ -142,8 +142,14 @@ public class PropertySheetModel {
         return mPropertiesTabbedPane;
     }
     
-    public void setFieldName(String name) {
-        tabGeneralPropertiesPanel.setFieldName(name);
+    public void setFieldName(String newName) {
+        String oldName = tabGeneralPropertiesPanel.getFieldName();
+        tabGeneralPropertiesPanel.setFieldName(newName);
+        updateDefaultDisplayName(oldName, newName);
+    }
+    
+    public void updateDefaultDisplayName(String oldName, String newName) {
+        tabEDMPropertiesJPanel.updateDefaultDisplayName(oldName, newName);
     }
 
     /**
