@@ -61,7 +61,7 @@ public class EviewProjectLogicalViewProvider implements LogicalViewProvider {
     private final SubprojectProvider spp;
     private final ReferenceHelper resolver;
     private Node rootnode;
-
+    private String oldName;
 
     public EviewProjectLogicalViewProvider(Project project, AntProjectHelper helper, PropertyEvaluator evaluator, SubprojectProvider spp, ReferenceHelper resolver) {
         this.project = project;
@@ -74,7 +74,7 @@ public class EviewProjectLogicalViewProvider implements LogicalViewProvider {
         assert spp != null;
         this.resolver = resolver;
     }
-
+    
     public Node createLogicalView() {
         rootnode = new eViewLogicalViewRootNode();
         return rootnode;
@@ -113,8 +113,7 @@ public class EviewProjectLogicalViewProvider implements LogicalViewProvider {
     private final class eViewLogicalViewRootNode extends AbstractNode {
 
         private Action brokenLinksAction;
-        private boolean broken;
-
+        private boolean broken;       
 
         public eViewLogicalViewRootNode() {
             super( new EviewProjectViews.LogicalViewChildren( helper, evaluator, project ), createLookup( project ) );
@@ -124,8 +123,27 @@ public class EviewProjectLogicalViewProvider implements LogicalViewProvider {
                 broken = true;
                 brokenLinksAction = new BrokenLinksAction();
             }
+            final Node node = this;
+            oldName = node.getName();
+            this.addNodeListener(new NodeAdapter() {
+                @Override
+                public void propertyChange(PropertyChangeEvent ev) {
+                    if (ev.getPropertyName().equals(Node.PROP_DISPLAY_NAME)) {
+                        String newName = node.getName();
+                        if (!oldName.equals(newName) && !com.sun.mdm.index.project.ui.applicationeditor.EntityNode.checkNodeNameValue(newName)) {
+                            node.setName(oldName);
+                        }
+                        oldName = node.getName();
+                    }
+                }
+            });
         }
-        
+
+        @Override
+        public boolean canRename() {
+            return true;
+        }
+
         @Override
         public Action[] getActions( boolean context ) {
             if ( context )

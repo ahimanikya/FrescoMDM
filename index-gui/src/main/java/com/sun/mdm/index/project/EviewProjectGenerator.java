@@ -236,6 +236,35 @@ public class EviewProjectGenerator {
                 FileObject repImage = repository.getInstalledFile(EviewProjectProperties.STAND_REPOSITORY_ZIP);
                 IOUtils.extract(new ZipFile(FileUtil.toFile(repImage).getAbsolutePath()), FileUtil.toFile(standardizationEngineFolder));
                 StandardizationIntrospector introspector = eviewApplication.getStandardizationIntrospector();
+                File pluginFolder = InstalledFileLocator.getDefault().locate(EviewProjectProperties.STANDARDIZATION_PLUGIN_LOCATION, "", false);
+                if (pluginFolder != null) {
+                    // import plugins
+                    FileObject foPluginFolder = FileUtil.toFileObject(pluginFolder);
+                    FileObject[] fDataTypes = foPluginFolder.getChildren();
+                    for (int i = 0; i < fDataTypes.length; i++) {
+                        FileObject file = fDataTypes[i];
+                        if (file.isFolder()) { // DataType folder
+                            FileObject dataTypeFolder = standardizationEngineFolder.getFileObject(file.getNameExt());
+                            if (dataTypeFolder == null) {
+                                dataTypeFolder = standardizationEngineFolder.createFolder(file.getName());
+                            }
+                            FileObject[] variants = file.getChildren();
+                            for (int j = 0; j < variants.length; j++) {
+                                FileObject fileVariant = variants[j];
+                                if (fileVariant.isData() && fileVariant.getExt().equals("zip")) {
+                                    ZipFile zipDataType = new ZipFile(FileUtil.toFile(fileVariant));
+                                    introspector.deploy(zipDataType);
+                                }
+                            }
+                        } else {    // DataType zip file
+                            if (file.isData() && file.getExt().equals("zip") && standardizationEngineFolder.getFileObject(file.getName()) == null) {
+                                ZipFile zipDataType = new ZipFile(FileUtil.toFile(file));
+                                introspector.deploy(zipDataType);
+                            }
+                        }
+                    }
+                }
+
             } catch (Exception ex) {
                 throw new IOException(ex.toString());
             }

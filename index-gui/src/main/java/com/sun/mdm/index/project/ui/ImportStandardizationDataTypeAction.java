@@ -130,15 +130,22 @@ public class ImportStandardizationDataTypeAction extends CookieAction {
                             desc.setOptionType(NotifyDescriptor.YES_NO_OPTION);
                             DialogDisplayer.getDefault().notify(desc);
                             if (desc.getValue().equals(NotifyDescriptor.YES_OPTION)) {
-                                File deploymentFolder = InstalledFileLocator.getDefault().locate(EviewProjectProperties.STANDARDIZATION_DEPLOYMENT_LOCATION, "", false);
+                                File pluginFolder = InstalledFileLocator.getDefault().locate(EviewProjectProperties.STANDARDIZATION_PLUGIN_LOCATION, "", false);
+                                FileObject foPluginFolder = null;
+                                if (pluginFolder == null) {
+                                    File deploymentFolder = InstalledFileLocator.getDefault().locate(EviewProjectProperties.STANDARDIZATION_DEPLOYMENT_LOCATION, "", false);
+                                    foPluginFolder = FileUtil.toFileObject(deploymentFolder).createFolder(EviewProjectProperties.PLUGIN);
+                                }
                                 FileObject targetFolder = null;
-                                if (variantType != null) {
-                                    File folder = InstalledFileLocator.getDefault().locate(EviewProjectProperties.STANDARDIZATION_DEPLOYMENT_LOCATION + File.separatorChar + dataType, "", false);
+                                if (variantType != null) {  // Variant Plugin
+                                    File folder = InstalledFileLocator.getDefault().locate(EviewProjectProperties.STANDARDIZATION_PLUGIN_LOCATION + File.separatorChar + dataType, "", false);
                                     if (folder == null || !folder.isDirectory()) {
-                                        targetFolder = FileUtil.toFileObject(deploymentFolder).createFolder(dataType);
+                                        targetFolder = foPluginFolder.createFolder(dataType);
+                                    } else {
+                                        targetFolder = FileUtil.toFileObject(folder);
                                     }
-                                } else {
-                                    targetFolder = FileUtil.toFileObject(deploymentFolder);
+                                } else {    // DataType Plugin
+                                    targetFolder = foPluginFolder;
                                 }
                                 if (targetFolder != null && targetFolder.isFolder()) {
                                     FileObject file = FileUtil.toFileObject(selectedFile);

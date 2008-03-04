@@ -126,7 +126,7 @@ class EviewProjectActionProvider implements ActionProvider {
         }
         
         if (COMMAND_RENAME.equals(command)) {
-            DefaultProjectOperations.performDefaultRenameOperation(project, null);
+            DefaultProjectOperations.performDefaultRenameOperation(project, project.getName());
             return ;
         }
         
