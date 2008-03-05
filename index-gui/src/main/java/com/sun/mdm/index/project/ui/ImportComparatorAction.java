@@ -30,14 +30,17 @@ import org.openide.util.NbBundle;
 import org.openide.nodes.Node;
 import org.openide.filesystems.FileUtil;
 import org.openide.filesystems.FileObject;
-import org.openide.loaders.DataFolder;
+import org.openide.NotifyDescriptor;
+import org.openide.DialogDisplayer;
+import org.openide.modules.InstalledFileLocator;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import java.io.File;
 //import java.io.FileNotFoundException;
-import java.util.jar.JarFile;
+//import java.util.jar.JarFile;
+import com.sun.mdm.index.project.EviewProjectProperties;
 
 /**
  * To import Comparator jar
@@ -99,7 +102,24 @@ public class ImportComparatorAction extends CookieAction {
                             File selectedFile = fc.getSelectedFile();
                             String pathSelectedFile = selectedFile.getAbsolutePath();
                             FileObject fo = FileUtil.toFileObject(selectedFile);
-                            FileUtil.copyFile(fo, fobjMatchEngineLib, fo.getName());                            
+                            FileUtil.copyFile(fo, fobjMatchEngineLib, fo.getName());
+
+                            String msg = NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_Imported_Matcher_Plugin", fo.getName());
+                            NotifyDescriptor desc = new NotifyDescriptor.Confirmation(msg);
+                            desc.setOptionType(NotifyDescriptor.YES_NO_OPTION);
+                            DialogDisplayer.getDefault().notify(desc);
+                            if (desc.getValue().equals(NotifyDescriptor.YES_OPTION)) {
+                                File pluginFolder = InstalledFileLocator.getDefault().locate(EviewProjectProperties.MATCHER_PLUGIN_LOCATION, "", false);
+                                FileObject targetFolder = null;
+                                if (pluginFolder == null) {
+                                    File templateFolder = InstalledFileLocator.getDefault().locate(EviewProjectProperties.MATCH_TEMPLATE_LOCATION, "", false);
+                                    targetFolder = FileUtil.toFileObject(templateFolder).createFolder("lib");
+                                }
+                                if (targetFolder != null && targetFolder.isFolder()) {
+                                    FileObject file = FileUtil.toFileObject(selectedFile);
+                                    FileUtil.copyFile(file, targetFolder, file.getName());
+                                }
+                            }
                         }                          
                     } catch (Exception e) {
                         mLog.severe(NbBundle.getMessage(ImportComparatorAction.class, "MSG_FAILED_To_Import_Comparator_Plugin")); // NOI18N

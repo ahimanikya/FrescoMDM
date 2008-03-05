@@ -28,9 +28,10 @@ public class EviewProjectProperties {
     public static final String MODULES_EXT_MDM_LOCATION = "modules/ext/mdm";
     public static final String EVIEW_TEMPLATE_LOCATION = MODULES_EXT_MDM_LOCATION+ "/repository/templates";
     public static final String MATCH_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/match";
+    public static final String MATCHER_PLUGIN_LOCATION = MATCH_TEMPLATE_LOCATION + "/lib";
     public static final String STANDARDIZATION_DEPLOYMENT_LOCATION = MODULES_EXT_MDM_LOCATION+ "/standardizer/deployment";
     public static final String PLUGIN = "plugin";
-    public static final String STANDARDIZATION_PLUGIN_LOCATION = STANDARDIZATION_DEPLOYMENT_LOCATION+ "/plugin";
+    public static final String STANDARDIZATION_PLUGIN_LOCATION = STANDARDIZATION_DEPLOYMENT_LOCATION + "/plugin";
     public static final String BUSINESSNAME_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/BusinessName";
     public static final String PERSONNAME_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/PersonName";
     public static final String ADDRESS_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/stand/Address";

@@ -229,7 +229,7 @@ public class EviewProjectGenerator {
             FileObject matchEngineFolder = getTemplates(srcRoot, EviewProjectProperties.MATCH_ENGINE_FOLDER, EviewProjectProperties.MATCH_TEMPLATE_LOCATION);
             getSchemaFile(matchEngineFolder, EviewProjectProperties.SCHEMA_FOLDER, EviewProjectProperties.MATCH_TEMPLATE_LOCATION,
                                         EviewProjectProperties.MATCH_COMPARATOR_XSD);
-            
+
             // *** Sub folder - Standardization ***
             FileObject standardizationEngineFolder = srcRoot.createFolder(EviewProjectProperties.STANDARDIZATION_ENGINE_FOLDER); // NOI18N
             try {
@@ -238,7 +238,7 @@ public class EviewProjectGenerator {
                 StandardizationIntrospector introspector = eviewApplication.getStandardizationIntrospector();
                 File pluginFolder = InstalledFileLocator.getDefault().locate(EviewProjectProperties.STANDARDIZATION_PLUGIN_LOCATION, "", false);
                 if (pluginFolder != null) {
-                    // import plugins
+                    // import standardizer plugins
                     FileObject foPluginFolder = FileUtil.toFileObject(pluginFolder);
                     FileObject[] fDataTypes = foPluginFolder.getChildren();
                     for (int i = 0; i < fDataTypes.length; i++) {
