@@ -88,6 +88,7 @@ public class ScriptGeneratorTest extends TestCase {
 		config = LoaderConfig.getInstance();
 
 		ScriptGenerator sg = new ScriptGenerator();
+		sg.generate();
 		tables = new String[sg.getTables().size()];
 
 		for (int i = 0; i < tables.length; i++) {
@@ -174,7 +175,7 @@ public class ScriptGeneratorTest extends TestCase {
 			}
 			
 
-			Runtime.getRuntime().exec(command);
+			//Runtime.getRuntime().exec(command);
 
 			Runtime runtime = Runtime.getRuntime();
 			Process process = runtime.exec(command, null, f.getAbsoluteFile());
