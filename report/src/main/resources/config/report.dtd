@@ -11,7 +11,7 @@
 >
 <!ELEMENT status (#PCDATA)>
 <!ELEMENT disable (#PCDATA)>
-<!ELEMENT eViewReport (configuration, reports)>
+<!ELEMENT MasterIndexReport (configuration, reports)>
 <!ELEMENT enable (#PCDATA)>
 <!ELEMENT field EMPTY>
 <!ATTLIST field

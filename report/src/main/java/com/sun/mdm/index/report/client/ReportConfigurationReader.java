@@ -36,9 +36,9 @@ import com.sun.mdm.index.util.Logger;
 public class ReportConfigurationReader {
 
     private static final String TAG_CONFIGURATION = "configuration";    
-    private static final String TAG_APPLICATION = "eViewReport.configuration.application";
-    private static final String TAG_APPSERVER = "eViewReport.configuration.appserver";
-    private static final String TAG_OUTPUT_FOLDER = "eViewReport.configuration.output-folder";
+    private static final String TAG_APPLICATION = "MasterIndexReport.configuration.application";
+    private static final String TAG_APPSERVER = "MasterIndexReport.configuration.appserver";
+    private static final String TAG_OUTPUT_FOLDER = "MasterIndexReport.configuration.output-folder";
 
     private String mAppServer = null;
     private String mApplication = null;
@@ -81,7 +81,7 @@ public class ReportConfigurationReader {
      */
     public void setupHandlers() {
 
-        mReader.addHandler("eViewReport.configuration.*", 
+        mReader.addHandler("MasterIndexReport.configuration.*", 
             new ElementReader() {
         	
     	    	private String mData = "";
@@ -111,7 +111,7 @@ public class ReportConfigurationReader {
         	
             });
 
-        mReader.addHandler("eViewReport.reports.report",
+        mReader.addHandler("MasterIndexReport.reports.report",
             new ElementReader() {
                 public void onData(String nodeName, String data) {
                 }
@@ -141,7 +141,7 @@ public class ReportConfigurationReader {
                 }
             });
 
-        mReader.addHandler("eViewReport.reports.report.*",
+        mReader.addHandler("MasterIndexReport.reports.report.*",
             new ElementReader() {
 
         	private String mData = "";
@@ -156,13 +156,13 @@ public class ReportConfigurationReader {
                     ReportDefinition rpt = (ReportDefinition) mObjectStack.peek();
 
                     if (  ( mData!= null ) && ( !mData.trim().equals("") ) ) {
-                    	if ("eViewReport.reports.report.enable".equals(nodeName)) {
+                    	if ("MasterIndexReport.reports.report.enable".equals(nodeName)) {
                         	rpt.setReportEnable(Boolean.valueOf(mData).booleanValue());
-                    	} else if ("eViewReport.reports.report.output-file".equals(nodeName)) {
+                    	} else if ("MasterIndexReport.reports.report.output-file".equals(nodeName)) {
                         	rpt.setReportOutput(mData);
-                    	} else if ("eViewReport.reports.report.max-result-size".equals(nodeName)) {
+                    	} else if ("MasterIndexReport.reports.report.max-result-size".equals(nodeName)) {
                 			rpt.setMaxResultSize(Integer.valueOf(mData));
-                	} else if ("eViewReport.reports.report.page-size".equals(nodeName)) {//added for 88411
+                	} else if ("MasterIndexReport.reports.report.page-size".equals(nodeName)) {//added for 88411
                             rpt.setPageSize(Integer.valueOf(mData));
                 		}
                     	mData = "";                
@@ -175,7 +175,7 @@ public class ReportConfigurationReader {
         	
             });
 
-        mReader.addHandler("eViewReport.reports.report.criteria.status",
+        mReader.addHandler("MasterIndexReport.reports.report.criteria.status",
                 new ElementReader() {
         	
         	private String mData = "";
@@ -200,7 +200,7 @@ public class ReportConfigurationReader {
             }
         });
         
-        mReader.addHandler("eViewReport.reports.report.criteria.dates",
+        mReader.addHandler("MasterIndexReport.reports.report.criteria.dates",
             new ElementReader() {
                 public void onData(String nodeName, String data) {
                 }
@@ -243,7 +243,7 @@ public class ReportConfigurationReader {
                 }
             });
 
-        mReader.addHandler("eViewReport.reports.report.fields.field",
+        mReader.addHandler("MasterIndexReport.reports.report.fields.field",
             new ElementReader() {
                 public void onData(String nodeName, String data) {
                 }

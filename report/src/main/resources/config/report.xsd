@@ -57,7 +57,7 @@
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="disable" type="xs:boolean"/>
-	<xs:element name="eViewReport">
+	<xs:element name="MasterIndexReport">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="configuration"/>
