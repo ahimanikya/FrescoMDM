@@ -22,11 +22,15 @@
  */
 package com.sun.mdm.index.loader.config;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -259,8 +263,7 @@ public class LoaderConfig {
 					.newDocumentBuilder();
 
 			String targetXmlString = "<?xml version='1.0' encoding='UTF-8'?>"
-					+ "<!DOCTYPE beans>"
-					+ "<beans/>";
+					+ "<!DOCTYPE beans>" + "<beans/>";
 			Document targetDocument = documentBuilder.parse(new InputSource(
 					new StringReader(targetXmlString)));
 
@@ -384,6 +387,29 @@ public class LoaderConfig {
 			systemProps.put(prop.getAttribute("name"), prop
 					.getAttribute("value"));
 
+		}
+
+		try {
+			File f = new File("target/test-classes/loader.properties");
+			if (f.exists() && f.isFile()) {
+
+				logger
+						.warning("running in test environment, this will override some of the systems properties which is read from the loader config.xml");
+				Properties p = new Properties();
+				p.load(new FileInputStream(f));
+
+				for (Object key : p.keySet()) {
+					systemProps.put((String) key, (String) p.get(key));
+				}
+				systemProps.toString();
+			}
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}
@@ -512,8 +538,7 @@ public class LoaderConfig {
 		if (context.containsBeanDefinition("customDataObjectReader")) {
 			dataObjectReader = (DataObjectReader) context
 					.getBean("customDataObjectReader");
-		}
-		else {
+		} else {
 			dataObjectReader = (DataObjectReader) context
 					.getBean("dataObjectReader");
 		}
