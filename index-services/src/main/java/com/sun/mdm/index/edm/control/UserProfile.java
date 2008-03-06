@@ -33,6 +33,7 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.services.security.SecurityManager;
+import java.util.ArrayList;
 
 /**
  * @author rtam
@@ -58,28 +59,21 @@ public class UserProfile {
 
         // set the roles for this Userprofile
         String allRoles[] = SecurityManager.getInstance().getAllRoles();
-        //mRoles = new String[allRoles.length];
-        mRoles = new String[1];
+        //mRoles = new String[1];
+        ArrayList mRolesList = new ArrayList();
         for (int i = 0, j = 0; i < allRoles.length; i++) {
             if(request.isUserInRole(allRoles[i])) {               
-                mRoles[j] = allRoles[i];                
-                j++;
+                //mRoles[j] = allRoles[i];   
+                mRolesList.add(allRoles[i]);
             }
         }
         
-        // Code Added for Role-User mapping.
-        //This would go away after security layer Integration.
-        if("Administrator".equalsIgnoreCase(userName)) {
-           mRoles[0] = "Administrator"; // user role is Administror now    
-        }else if("Clerk".equalsIgnoreCase(userName)){
-           mRoles[0] = "Clerk"; // user role is Clerk now   
-        }else if("DataEntry".equalsIgnoreCase(userName)){
-           mRoles[0] = "DataEntry"; // user role is DataEntry now  
-        }else if("DataEntry2".equalsIgnoreCase(userName)){
-            mRoles[0] = "DataEntry2"; // user role is DataEntry2 now 
-        }else{
-            mRoles[0] = "Administrator"; // user role is Administror now  
+        mRoles = new String[mRolesList.size()];
+        
+        for (int j = 0; j < mRolesList.size(); j++) {
+             mRoles[j] = (String) mRolesList.get(j);
         }
+        
         mOperations = SecurityManager.getInstance().getOperations(this);
     }
 

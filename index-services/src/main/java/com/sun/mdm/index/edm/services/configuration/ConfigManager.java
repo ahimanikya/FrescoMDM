@@ -1654,6 +1654,7 @@ public class ConfigManager implements java.io.Serializable {
         ScreenObject screenObject = null;
         Element guiElement = getPageDefinitionElement();
         screenNameIterator = new ChildElementIterator(guiElement);
+
         String screenID = null;
         try {
             while (screenNameIterator.hasNext()) {
@@ -1671,6 +1672,33 @@ public class ConfigManager implements java.io.Serializable {
             screenObject = getScreen(new Integer(screenID));
         }
         return screenObject;
+    }
+    /* Returns the corresponding screenobject for given Screen name 
+     * @param edmScreenName is the screen Name. Example: record-details,transactions,duplicate-records
+     * @return  ScreenObjet of corresponding Screen name
+     */ 
+
+    public String getScreenObjectTagName(String screenIdValue) throws Exception {
+        ChildElementIterator screenNameIterator = null;
+        Element guiElement = getPageDefinitionElement();
+        screenNameIterator = new ChildElementIterator(guiElement);
+        String tagName = new String();
+        try {
+            while (screenNameIterator.hasNext()) {
+                Element screenNameElement = (Element) screenNameIterator.next();
+                String screenID = NodeUtil.getChildNodeText(screenNameElement, "screen-id");                 
+                if(screenID != null && screenID.equalsIgnoreCase(screenIdValue)) {
+                   tagName = screenNameElement.getNodeName();
+                }    
+            }
+
+        } catch (Exception ex) {  // exception error already logged
+            throw new Exception(mLocalizer.t("SRC532: The ScreenObject could " +
+                    "not be retrieved from the screen name [{0}]: {1}",
+                    screenIdValue, ex.getMessage()));
+        }
+
+        return tagName;
     }
 /* Returns All the screen Objects
  * it read all the screen names from EDM.xml and retrieves all the screen ids 
