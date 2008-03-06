@@ -101,10 +101,14 @@ public class UpdateWriter {
             String[] aSourceSystems = mConfigSettings.getSourceSystems();
             ArrayList sourcesystems = new ArrayList();
 
+            String tab12 = "            ";
+            String tab16 = "                ";
             for (int i = 0; i < aSourceSystems.length; i++) {
-                String ss = "<parameter>" + "<quality>SourceSystem</quality>" +
-                    "<preference>" + aSourceSystems[i] + "</preference>" +
-                    "<utility>100.0</utility>" + "</parameter>";
+                String ss = tab12 + "<parameter>\n";
+                ss += tab16 + "<quality>SourceSystem</quality>\n";
+                ss += tab16 + "<preference>" + aSourceSystems[i] + "</preference>\n";
+                ss += tab16 + "<utility>100.0</utility>\n";
+                ss += tab12 + "</parameter>";
                 sourcesystems.add(ss);
             }
 

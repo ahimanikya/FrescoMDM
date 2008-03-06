@@ -1,43 +1,43 @@
 [SBYNTAG:DEFINE:objname,candidatefields(),sourcesystems()]
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/update.xsd">
-	<SurvivorHelperConfig module-name="SurvivorHelper" parser-class="com.sun.mdm.index.configurator.impl.SurvivorHelperConfig">
-		<helper-class>com.sun.mdm.index.survivor.impl.DefaultSurvivorHelper</helper-class>
-		<default-survivor-strategy>
-			<strategy-class>com.sun.mdm.index.survivor.impl.WeightedSurvivorStrategy</strategy-class>
-			<parameters>
-				<parameter>
-					<parameter-name>ConfigurationModuleName</parameter-name>
-					<parameter-type>java.lang.String</parameter-type>
-					<parameter-value>WeightedSurvivorCalculator</parameter-value>
-				</parameter>
-			</parameters>
-		</default-survivor-strategy>
-		<candidate-definitions>
+    <SurvivorHelperConfig module-name="SurvivorHelper" parser-class="com.sun.mdm.index.configurator.impl.SurvivorHelperConfig">
+        <helper-class>com.sun.mdm.index.survivor.impl.DefaultSurvivorHelper</helper-class>
+        <default-survivor-strategy>
+            <strategy-class>com.sun.mdm.index.survivor.impl.WeightedSurvivorStrategy</strategy-class>
+            <parameters>
+                <parameter>
+                    <parameter-name>ConfigurationModuleName</parameter-name>
+                    <parameter-type>java.lang.String</parameter-type>
+                    <parameter-value>WeightedSurvivorCalculator</parameter-value>
+                </parameter>
+            </parameters>
+        </default-survivor-strategy>
+        <candidate-definitions>
 [SBYNTAG:REP-BEGIN]    
 [sbyntag:candidatefields()]
 [SBYNTAG:REP-END]
-		</candidate-definitions>
-	</SurvivorHelperConfig>
-	<WeightedCalculator module-name="WeightedSurvivorCalculator" parser-class="com.sun.mdm.index.configurator.impl.WeightedCalculatorConfig">
-		<default-parameters>
-        [SBYNTAG:REP-BEGIN]    
-        [sbyntag:sourcesystems()]
-        [SBYNTAG:REP-END]
-			<parameter>
-				<quality>MostRecentModified</quality>
-				<utility>75.0</utility>
-			</parameter>
-		</default-parameters>
-	</WeightedCalculator>	
-	<UpdateManagerConfig module-name="UpdateManager" parser-class="com.sun.mdm.index.configurator.impl.UpdateManagerConfig">
-		<EnterpriseMergePolicy></EnterpriseMergePolicy>
-		<EnterpriseUnmergePolicy></EnterpriseUnmergePolicy>
-		<EnterpriseUpdatePolicy></EnterpriseUpdatePolicy>
-		<EnterpriseCreatePolicy></EnterpriseCreatePolicy>
-		<SystemMergePolicy></SystemMergePolicy>
-		<SystemUnmergePolicy></SystemUnmergePolicy>
-		<UndoAssumeMatchPolicy></UndoAssumeMatchPolicy>
-		<SkipUpdateIfNoChange>true</SkipUpdateIfNoChange>
-	</UpdateManagerConfig>
+        </candidate-definitions>
+    </SurvivorHelperConfig>
+    <WeightedCalculator module-name="WeightedSurvivorCalculator" parser-class="com.sun.mdm.index.configurator.impl.WeightedCalculatorConfig">
+        <default-parameters>
+[SBYNTAG:REP-BEGIN]    
+[sbyntag:sourcesystems()]
+[SBYNTAG:REP-END]
+            <parameter>
+                <quality>MostRecentModified</quality>
+                <utility>75.0</utility>
+            </parameter>
+        </default-parameters>
+    </WeightedCalculator>	
+    <UpdateManagerConfig module-name="UpdateManager" parser-class="com.sun.mdm.index.configurator.impl.UpdateManagerConfig">
+        <EnterpriseMergePolicy></EnterpriseMergePolicy>
+        <EnterpriseUnmergePolicy></EnterpriseUnmergePolicy>
+        <EnterpriseUpdatePolicy></EnterpriseUpdatePolicy>
+        <EnterpriseCreatePolicy></EnterpriseCreatePolicy>
+        <SystemMergePolicy></SystemMergePolicy>
+        <SystemUnmergePolicy></SystemUnmergePolicy>
+        <UndoAssumeMatchPolicy></UndoAssumeMatchPolicy>
+        <SkipUpdateIfNoChange>true</SkipUpdateIfNoChange>
+    </UpdateManagerConfig>
 </Configuration>
