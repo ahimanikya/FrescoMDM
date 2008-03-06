@@ -132,6 +132,11 @@ public class EDMType {
     public final String SEARCHRESULT = "searchResult";
     public final String REPORT = "report";
     
+    public final String mTagShowStatus = "show-status";
+    public final String mTagShowCreateDate = "show-create-date";
+    public final String mTagShowCreateTime = "show-create-time";
+    public final String mTagShowTimeStamp = "show-timestamp";
+
     private String strDisplayName;
     private String strDisplayOrder;
     private String strMaxLength;
@@ -459,9 +464,11 @@ public class EDMType {
                       subscreen.enable + 
                       Utils.endTag(mTagEnable));
         buffer.append(getPageTabXML(subscreen.commonBlock.pageTab, Utils.TAB6));
-        buffer.append(Utils.TAB6 + Utils.startTagNoLine(mTagReportName) +
-                      subscreen.reportName + 
-                      Utils.endTag(mTagReportName));
+        if (subscreen.reportName != null) {
+            buffer.append(Utils.TAB6 + Utils.startTagNoLine(mTagReportName) +
+                          subscreen.reportName + 
+                          Utils.endTag(mTagReportName));
+        }
         if (subscreen.commonBlock.screenID != null) {
             buffer.append(Utils.TAB6 + Utils.startTagNoLine(mTagScreenID) +
                           subscreen.commonBlock.screenID + 
@@ -883,6 +890,37 @@ public class EDMType {
                           searchResultListPage.maxResultSize + 
                           Utils.endTag(mTagMaxResultSize));
         }
+        if (searchResultListPage.showEuid != null) {
+            buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagShowEuid) + 
+                          searchResultListPage.showEuid + 
+                          Utils.endTag(mTagShowEuid));
+        }
+        if (searchResultListPage.showLid != null) {
+            buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagShowLid) + 
+                          searchResultListPage.showLid + 
+                          Utils.endTag(mTagShowLid));
+        }
+        if (searchResultListPage.showStatus != null) {
+            buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagShowStatus) + 
+                          searchResultListPage.showStatus + 
+                          Utils.endTag(mTagShowStatus));
+        }
+        if (searchResultListPage.showCreateDate != null) {
+            buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagShowCreateDate) + 
+                          searchResultListPage.showCreateDate + 
+                          Utils.endTag(mTagShowCreateDate));
+        }
+        if (searchResultListPage.showCreateTime != null) {
+            buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagShowCreateTime) + 
+                          searchResultListPage.showCreateTime + 
+                          Utils.endTag(mTagShowCreateTime));
+        }
+        if (searchResultListPage.showTimeStamp != null) {
+            buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagShowTimeStamp) + 
+                          searchResultListPage.showTimeStamp + 
+                          Utils.endTag(mTagShowTimeStamp));
+        }
+
         if (searchResultListPage.alFieldGroup != null) {
             buffer.append(getSearchFieldGroupXML(searchResultListPage.alFieldGroup, startTab + Utils.TAB));
         } else {    // For classic eView
@@ -921,6 +959,18 @@ public class EDMType {
                         }
                     } else if (tag.equals(mTagSearchResultID)) {
                         searchResultListPage.searchResultID = value;
+                    } else if (tag.equals(mTagShowEuid)) {
+                        searchResultListPage.showEuid = value;
+                    } else if (tag.equals(mTagShowLid)) {
+                        searchResultListPage.showLid = value;
+                    } else if (tag.equals(mTagShowStatus)) {
+                        searchResultListPage.showStatus = value;
+                    } else if (tag.equals(mTagShowCreateDate)) {
+                        searchResultListPage.showCreateDate = value;
+                    } else if (tag.equals(mTagShowCreateTime)) {
+                        searchResultListPage.showCreateTime = value;
+                    } else if (tag.equals(mTagShowTimeStamp)) {
+                        searchResultListPage.showTimeStamp = value;
                     }
                 }
             }
@@ -1006,7 +1056,7 @@ public class EDMType {
     
     String getFieldRefXML(PageDefinition.FieldRef fieldRef, String startTab) {
         StringBuffer buffer = new StringBuffer();
-        if (fieldRef.required != null) {
+        if (fieldRef.required != null && fieldRef.required.equals("true")) {
             buffer.append(startTab + "<field-ref required=\"" + fieldRef.required + "\">" +
                             fieldRef.fieldName + 
                             Utils.endTag(mTagFieldRef));
@@ -1116,6 +1166,11 @@ public class EDMType {
                           simpleSearchPage.screenTitle + 
                           Utils.endTag(mTagScreenTitle));
         }
+        if (simpleSearchPage.reportName != null) {
+            buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagReportName) + 
+                          simpleSearchPage.reportName + 
+                          Utils.endTag(mTagReportName));
+        }
         if (simpleSearchPage.fieldPerRow != null) {
             buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagFieldPerRow) + 
                           simpleSearchPage.fieldPerRow + 
@@ -1141,6 +1196,21 @@ public class EDMType {
                           simpleSearchPage.showLid + 
                           Utils.endTag(mTagShowLid));
         }
+        if (simpleSearchPage.showStatus != null) {
+            buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagShowStatus) + 
+                          simpleSearchPage.showStatus + 
+                          Utils.endTag(mTagShowStatus));
+        }
+        if (simpleSearchPage.showCreateDate != null) {
+            buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagShowCreateDate) + 
+                          simpleSearchPage.showCreateDate + 
+                          Utils.endTag(mTagShowCreateDate));
+        }
+        if (simpleSearchPage.showCreateTime != null) {
+            buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagShowCreateTime) + 
+                          simpleSearchPage.showCreateTime + 
+                          Utils.endTag(mTagShowCreateTime));
+        }
         if (simpleSearchPage.instruction != null) {
             buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagInstruction) + 
                           simpleSearchPage.instruction + 
@@ -1162,6 +1232,8 @@ public class EDMType {
                     String value = Utils.getStrElementValue(nl.item(i));
                     if (name.equals(mTagScreenTitle)) {
                         simpleSearchPage.screenTitle = value;
+                    } else if (name.equals(mTagReportName)) {
+                        simpleSearchPage.reportName = value;
                     } else if (name.equals(mTagFieldPerRow)) {
                         simpleSearchPage.fieldPerRow = value;
                     } else if (name.equals(mTagShowEuid)) {
@@ -1181,6 +1253,12 @@ public class EDMType {
                         simpleSearchPage.searchScreenOrder = value;
                     } else if (name.equals(mTagInstruction)) {
                         simpleSearchPage.instruction = value;
+                    } else if (name.equals(mTagShowStatus)) {
+                        simpleSearchPage.showStatus = value;
+                    } else if (name.equals(mTagShowCreateDate)) {
+                        simpleSearchPage.showCreateDate = value;
+                    } else if (name.equals(mTagShowCreateTime)) {
+                        simpleSearchPage.showCreateTime = value;
                     }
                 }
             }
@@ -1369,12 +1447,12 @@ public class EDMType {
             buffer.append(getSourceRecordXML());
         }
         
-        if (mPageDefinition.auditLog != null) {
-            buffer.append(getAuditLogXML());
-        }
-        
         if (mPageDefinition.reports != null) {
             buffer.append(getReportsXML());
+        }
+        
+        if (mPageDefinition.auditLog != null) {
+            buffer.append(getAuditLogXML());
         }
 
         buffer.append(Utils.TAB2 + Utils.endTag(mTagPageDefinition));
@@ -2219,6 +2297,7 @@ public class EDMType {
         
         class SimpleSearchPage {
             String screenTitle = null;
+            String reportName = null;
             String searchResultID = null;
             String searchScreenOrder = null;
             String instruction = null;
@@ -2227,6 +2306,9 @@ public class EDMType {
             String showLid = null;
             ArrayList alFieldGroup = null;
             ArrayList alSearchOption = null;
+            String showStatus = null;       // false
+            String showCreateDate = null;   // false
+            String showCreateTime = null;   // false
             
             FieldGroup addFieldGroup() {
                 FieldGroup fieldGroup = new FieldGroup();
@@ -2251,6 +2333,12 @@ public class EDMType {
             String itemPerPage = null;
             String maxResultSize = null;
             String searchResultID = null;
+            String showEuid = null;         // false
+            String showLid = null;          // false
+            String showStatus = null;       // false
+            String showCreateDate = null;   // false
+            String showCreateTime = null;   // false
+            String showTimeStamp = null;   // false
             ArrayList alFieldRef = new ArrayList();
             ArrayList alFieldGroup = null;
             
@@ -2348,7 +2436,7 @@ public class EDMType {
         
         class Subscreen {
             String enable;
-            String reportName;  // Reports only
+            String reportName = null;  // Reports only
             CommonBlock commonBlock = new CommonBlock();
         }
         
