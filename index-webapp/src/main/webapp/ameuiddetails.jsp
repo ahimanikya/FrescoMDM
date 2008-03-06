@@ -225,7 +225,7 @@
                                             <!-- Display the field Values-->
                                             <td  valign="top">
                                                 <div id="outerMainContentDivid<%=countEnt%>" >
-                                                <div style="width:170px;overflow:auto">
+                                                <div style="width:170px;overflow:hidden">
                                                     <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleClass%>" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
@@ -359,7 +359,7 @@
                                             %>
                                             <td  valign="top">
                                                 <div id="mainDupSources<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
-                                                    <div style="width:170px;overflow:auto">
+                                                    <div style="width:170px;overflow:hidden;">
                                                     <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="source" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
@@ -455,7 +455,6 @@
                                             <!--START displaying the History-->
                                                <% 
                                                eoHistory = (ArrayList) eoHashMapValues.get("ENTERPRISE_OBJECT_HISTORY");
-
                                               if(eoHistory.size() > 0) {
                                                // ArrayList soArrayList = (ArrayList) request.getAttribute("eoHistory"+(String)personfieldValuesMapEO.get("EUID"));
                                                  
@@ -468,7 +467,7 @@
                                             %>
                                                <td  valign="top">
                                                 <div id="mainDupHistory<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
-                                                  <div style="width:170px;overflow:auto">
+                                                  <div style="width:170px;overflow:hidden;">
                                                     <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="history" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
@@ -571,7 +570,7 @@
                                                         <div id="mainEuidContent" class="<%=styleClass%>">
                                                             <table border="0" width="100%" cellspacing="0" cellpadding="0">
                                                                 <tr>
-                                                                    <td width="100%" class="menutop">Preview</td>
+                                                                    <td width="100%" class="menutop"><h:outputText value="#{msgs.preview_column_text}" /></td>
                                                                 </tr>
                                                             </table>
                                                         </div>
@@ -735,10 +734,10 @@
                                                           ValueExpression eoArrayListValueExpression = ExpressionFactory.newInstance().createValueExpression(eoArrayList, eoArrayList.getClass());
                                                         %>
                                                             <h:form  id="previewForm">
-                                                                <h:commandLink styleClass="button" actionListener="#{AssumeMatchHandler.previewUndoAssumedMatch}">
+                                                                <h:commandLink styleClass="button" rendered="#{Operations.assumedMatch_Undo}" actionListener="#{AssumeMatchHandler.previewUndoAssumedMatch}">
                                                                         <f:attribute name="previewamIdValueExpression" value="<%=amPreviewIdValueExpression%>"/>
                                                                         <f:attribute name="eoArrayList" value="<%=eoArrayListValueExpression%>"/>
-                                                                        <span><h:outputText value="Undo Match"/></span>
+                                                                        <span><h:outputText value="#{msgs.undo_match_button_text}" /></span>
                                                                 </h:commandLink>
                                                              </h:form>
                                                                 
@@ -758,7 +757,7 @@
                                                         <tr> 
                                                             <td valign="top">
                                                                 <h:form>
-                                                                    <h:commandLink styleClass="button" 
+                                                                    <h:commandLink styleClass="button" rendered="#{Operations.assumedMatch_Undo}"
                                                                                    actionListener="#{AssumeMatchHandler.undoMatch}">
                                                                         <f:attribute name="previewamIdValueExpression" value="<%=amPreviewIdVaueExpression%>"/>
                                                                         <span><h:outputText value="#{msgs.ok_text_button}" /></span>
@@ -771,7 +770,7 @@
                                                                 <h:form  id="previewCancelForm">
                                                                 <h:commandLink styleClass="button" 
                                                                                action="#{NavigationHandler.toAssumedMatches}">
-                                                                    <span><h:outputText value="Cancel"/></span>
+                                                                    <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                                                 </h:commandLink>
                                                               </h:form>
                                                             </td> 

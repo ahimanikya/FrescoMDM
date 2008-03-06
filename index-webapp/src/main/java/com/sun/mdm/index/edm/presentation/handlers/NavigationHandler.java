@@ -42,7 +42,7 @@ import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.util.LogUtil;
 import com.sun.mdm.index.util.Logger;
 
-public class NavigationHandler {
+public  class NavigationHandler {
     
     /** Static field for SOURCE_RECORDS*/
     private static final String DASH_BOARD = "dashboard";
@@ -53,7 +53,6 @@ public class NavigationHandler {
     private static final String TRANSACTIONS = "transactions";
     private static final String REPORTS = "reports";
     private static final String AUDIT_LOG = "audit-log";
-    private static final String COMP_DUP = "Compare Duplicates";
     
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.NavigationHandler");
@@ -68,7 +67,7 @@ public class NavigationHandler {
      */
     public String toPatientDetails() {
         session.setAttribute("ScreenObject",getScreenObject(RECORD_DETAILS));
-        return "to_screen_1";
+        return RECORD_DETAILS;
     }
     /**
      * This method is used to navigate to the patient deatils page.
@@ -92,7 +91,6 @@ public class NavigationHandler {
      * @return <CODE>String</CODE>
      */
     public String toTransEuidDetails() {
-        //System.out.println("===> : to trans details");
         session.setAttribute("ScreenObject",getScreenObject(RECORD_DETAILS));
         return "Transaction Details";
     }
@@ -104,7 +102,7 @@ public class NavigationHandler {
      */
     public String toTransactions() {
         session.setAttribute("ScreenObject",getScreenObject(TRANSACTIONS));
-        return "to_screen_2";
+        return TRANSACTIONS;
     }
 
     /**
@@ -113,7 +111,7 @@ public class NavigationHandler {
      */
     public String toDuplicateRecords() {
         session.setAttribute("ScreenObject",getScreenObject(DUPLICATE_RECORDS));
-        return "to_screen_3";
+        return DUPLICATE_RECORDS;
     }
     /**
      * Navigation  to the assumed matches page.
@@ -121,7 +119,7 @@ public class NavigationHandler {
      */
     public String toAssumedMatches() {
         session.setAttribute("ScreenObject",getScreenObject(ASUMMED_MATCHES));
-        return "to_screen_4";
+        return ASUMMED_MATCHES;
     }
 
     /**
@@ -130,7 +128,7 @@ public class NavigationHandler {
      */
     public String toSourceRecords() {
         session.setAttribute("ScreenObject",getScreenObject(SOURCE_RECORDS));
-        return "to_screen_5";
+        return SOURCE_RECORDS;
     }
 
     /**
@@ -140,7 +138,7 @@ public class NavigationHandler {
     
     public String toReports() {
         session.setAttribute("ScreenObject",getScreenObject(REPORTS));
-        return "to_screen_6";
+        return REPORTS;
     }
 
     /**
@@ -150,7 +148,7 @@ public class NavigationHandler {
     
     public String toAuditLog() {
         session.setAttribute("ScreenObject",getScreenObject(AUDIT_LOG));
-        return "to_screen_7";
+        return AUDIT_LOG;
     }    
 
     
@@ -161,14 +159,13 @@ public class NavigationHandler {
     public String toDashboard() {
         // There is no screen object defined in the EDM.xml file for the "Dashboard"
         session.setAttribute("ScreenObject",getScreenObject(RECORD_DETAILS));
-        return "to_screen_8";
+        return DASH_BOARD;
     }
     /**
      * This method is used to navigate to the patient deatils page.
      * @return <CODE>String</CODE>
      */
     public String toEditMainEuid() {
-        //System.out.println("Navigating to edit euid details page from Navi Handler");
         session.setAttribute("ScreenObject",getScreenObject(RECORD_DETAILS));
         return "Edit Main EUID";
     }
@@ -177,13 +174,22 @@ public class NavigationHandler {
         ScreenObject screenObject = null;
         try {
             ConfigManager.init();
-            //screenObject =  ConfigManager.getInstance().getScreen(screenId);
-              screenObject = ConfigManager.getInstance().getScreenObjectFromScreenName(tagName);
-            
+            screenObject = ConfigManager.getInstance().getScreenObjectFromScreenName(tagName);
         } catch (Exception e) {
             mLogger.error("Failed Get the Screen Object: ", e);
         }
         return screenObject;
+    }
+
+    public String getTagNameByScreenId(Integer screenId) {
+        String tagName = null;
+        try {
+            ConfigManager.init();
+            tagName = ConfigManager.getInstance().getScreenObjectTagName(screenId.toString());
+        } catch (Exception e) {
+            mLogger.error("Failed Get the Screen Object: ", e);
+        }
+        return tagName;
     }
     
 }

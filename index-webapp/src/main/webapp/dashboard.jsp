@@ -15,7 +15,7 @@
             <link type="text/css" href="./css/styles.css"  rel="stylesheet">            
         </head>
         <title><h:outputText value="#{msgs.application_heading}"/></title>   
-        <body>
+        <body onload="javascript:setFocusOnFirstField(QuickSearchForm);">
                 <%@include file="./templates/header.jsp"%>
                 
 <div id="mainContent">  <!-- Main content -->
@@ -151,7 +151,7 @@
                     <td>
                         <nobr>
                             <h:commandLink  action="#{PatientDetailsHandler.lookupEuid1}">  
-                                <h:outputText value="Lookup EUID1"/> 
+                                                        <h:outputText value="#{msgs.dashboard_lookup_euid1}"/> 
                             </h:commandLink>                        
                         </nobr>
                     </td>
@@ -160,7 +160,7 @@
                     <td>
                         <nobr>
                             <h:commandLink   action="#{PatientDetailsHandler.lookupEuid2}">  
-                                <h:outputText value="Lookup EUID2"/> 
+                                                        <h:outputText value="#{msgs.dashboard_lookup_euid2}"/> 
                             </h:commandLink>                        
                         </nobr>
                     </td>
@@ -169,7 +169,7 @@
                     <td>
                         <nobr>
                             <h:commandLink  action="#{PatientDetailsHandler.lookupEuid3}">  
-                                <h:outputText value="Lookup EUID3"/> 
+                                                        <h:outputText value="#{msgs.dashboard_lookup_euid3}"/> 
                             </h:commandLink>                        
                         </nobr>
                     </td>
@@ -179,7 +179,7 @@
                     <td align="right" width="70px">
                         <nobr>
                             <h:commandLink  action="#{PatientDetailsHandler.lookupEuid4}">  
-                                <h:outputText value="Lookup EUID4"/>
+                                                        <h:outputText value="#{msgs.dashboard_lookup_euid4}"/> 
                             </h:commandLink>
                         </nobr>
                     </td>
@@ -207,7 +207,22 @@
   
 </table>
 </div> <!-- End Main Content -->
-                
+<script>
+    function setFocusOnFirstField(formName) {
+         if( formName.elements[0]!=null) {
+		var i;
+		var max = formName.length;
+		for( i = 0; i < max; i++ ) {
+			if( formName.elements[ i ].type != "hidden" &&
+				!formName.elements[ i ].disabled &&
+				!formName.elements[ i ].readOnly ) {
+				formName.elements[ i ].focus();
+				break;
+			}
+		}
+      }         
+    }
+</script>                
         </body>
     </html>
 </f:view>

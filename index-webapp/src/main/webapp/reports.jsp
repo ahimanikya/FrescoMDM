@@ -41,7 +41,7 @@
         
         <body class="yui-skin-sam">
              <%@include file="./templates/header.jsp"%>
-            <div id="mainContent">                 
+            <div id="mainContent" style="overflow:hidden;">                 
             <div id="reports">
                 <table border="0" cellspacing="0" cellpadding="0">
                     <% Operations operations=new Operations();%>
@@ -249,6 +249,7 @@
                                                                         value="#{ReportHandler.createStartDate}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                        onblur="javascript:validate_date(this,'MM/dd/yyyy')"
                                                                         size="12"
                                                                         maxlength="10"/>
                                                                     <A HREF="javascript:void(0);"
@@ -268,7 +269,8 @@
                                                                         id="createEndDateField"
                                                                         value="#{ReportHandler.createEndDate}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                        onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                        onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_date(this,'MM/dd/yyyy')"
                                                                         size="12"
                                                                         maxlength="10"/>
                                                                     <A HREF="javascript:void(0);"
@@ -290,6 +292,7 @@
                                                                         value="#{ReportHandler.createStartTime}" 
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_time(this,'createStartTimeField')"
                                                                         size="12"
                                                                         maxlength="8"/>
                                                                 </td>
@@ -299,8 +302,10 @@
                                                                 <td>    
                                                                     <h:inputText 
                                                                         id="createStartTimeToField"
+                                                                        value="#{ReportHandler.createEndTime}" 
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_time(this,'createEndTimeField')"
                                                                         size="12"
                                                                         maxlength="8"/>
                                                                 </td>
@@ -323,7 +328,7 @@
                                                                                 
                                                     <td valign="top">
                                                         <% if ("MERGED_RECORDS".equalsIgnoreCase((String)request.getAttribute("tabName")))      {%>
-                                                            <h:messages  styleClass="reportErrorMessages"  layout="list" />
+                                                            <h:messages  styleClass="errorMessages"  layout="list" />
                                                         <%}%>
                                                     </td>
                                                 </tr>
@@ -354,6 +359,7 @@
                                                            paginator="true" 
                                                            id="mergedRecords"
                                                            rowClasses="even,odd"
+                                                           rendered="#{ReportHandler.resultsSize gt 0}"
                                                            rows="50"                                     
                                                            width="1024px">                                                                                
                                                 <yui:column sortable="true" resizeable="true">
@@ -474,6 +480,7 @@
                                                                         value="#{ReportHandler.createStartDate}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_date(this,'MM/dd/yyyy')"
                                                                         size="12"
                                                                         maxlength="10"/>
                                                                     <A HREF="javascript:void(0);"
@@ -493,6 +500,7 @@
                                                                         value="#{ReportHandler.createEndDate}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_date(this,'MM/dd/yyyy')"
                                                                         size="12"
                                                                         maxlength="10"/>
                                                                     <A HREF="javascript:void(0);"
@@ -514,6 +522,7 @@
                                                                         value="#{ReportHandler.createStartTime}" 
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_time(this,'createStartTimeField')"
                                                                         size="12"
                                                                         maxlength="8"/>
                                                                     </nobr>
@@ -527,6 +536,7 @@
                                                                         value="#{ReportHandler.createEndTime}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_time(this,'createEndTimeField')"
                                                                         size="12"
                                                                         maxlength="8"/>
                                                                 </td>
@@ -661,6 +671,7 @@
                                                                         value="#{ReportHandler.createStartDate}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_date(this,'MM/dd/yyyy')"
                                                                         size="12"
                                                                         maxlength="10"/>
                                                                     <A HREF="javascript:void(0);"
@@ -680,6 +691,7 @@
                                                                         value="#{ReportHandler.createEndDate}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_date(this,'MM/dd/yyyy')"
                                                                         size="12"
                                                                         maxlength="10"/>
                                                                     <A HREF="javascript:void(0);"
@@ -701,6 +713,7 @@
                                                                         value="#{ReportHandler.createStartTime}" 
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_time(this,'createStartTimeField')"
                                                                         size="12"
                                                                         maxlength="8"/>
                                                                 </td>
@@ -713,6 +726,7 @@
                                                                         value="#{ReportHandler.createEndTime}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_time(this,'createEndTimeField')"
                                                                         size="12"
                                                                         maxlength="8"/>
                                                                 </td>
@@ -889,6 +903,7 @@
                                                                         value="#{ReportHandler.createStartDate}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_date(this,'MM/dd/yyyy')"
                                                                         size="12"
                                                                         maxlength="10"/>
                                                                     <A HREF="javascript:void(0);"
@@ -908,6 +923,7 @@
                                                                         value="#{ReportHandler.createEndDate}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_date(this,'MM/dd/yyyy')"
                                                                         size="12"
                                                                         maxlength="10"/>
                                                                     <A HREF="javascript:void(0);"
@@ -929,6 +945,7 @@
                                                                         value="#{ReportHandler.createStartTime}" 
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_time(this,'createStartTimeField')"
                                                                         size="12"
                                                                         maxlength="8"/>
                                                                 </td>
@@ -941,6 +958,7 @@
                                                                         value="#{ReportHandler.createEndTime}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_time(this,'createEndTimeField')"
                                                                         size="12"
                                                                         maxlength="8"/>
                                                                 </td>
@@ -1128,6 +1146,7 @@
                                                                         value="#{ReportHandler.createStartDate}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_date(this,'MM/dd/yyyy')"
                                                                         size="12"
                                                                         maxlength="10"/>
                                                                     <A HREF="javascript:void(0);"
@@ -1148,6 +1167,7 @@
                                                                         value="#{ReportHandler.createEndDate}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_date(this,'MM/dd/yyyy')"
                                                                         size="12"
                                                                         maxlength="10"/>
                                                                     <A HREF="javascript:void(0);"
@@ -1169,6 +1189,7 @@
                                                                         value="#{ReportHandler.createStartTime}" 
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_time(this,'createStartTimeField')"
                                                                         size="12"
                                                                         maxlength="8"/></nobr>
                                                                 </td>
@@ -1181,6 +1202,7 @@
                                                                         value="#{ReportHandler.createEndTime}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_time(this,'createEndTimeField')"
                                                                         size="12"
                                                                         maxlength="8"/></nobr>
                                                                 </td>
@@ -1383,6 +1405,7 @@
                                                                         value="#{ReportHandler.createStartDate}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_date(this,'MM/dd/yyyy')"
                                                                         size="12"
                                                                         maxlength="10"/>
                                                                     <A HREF="javascript:void(0);"
@@ -1403,6 +1426,7 @@
                                                                         value="#{ReportHandler.createEndDate}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_date(this,'MM/dd/yyyy')"
                                                                         size="12"
                                                                         maxlength="10"/>
                                                                     <A HREF="javascript:void(0);"
@@ -1425,6 +1449,7 @@
                                                                         value="#{ReportHandler.createStartTime}" 
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_time(this,'createStartTimeField')"
                                                                         size="12"
                                                                         maxlength="8"/>
                                                                         
@@ -1438,6 +1463,7 @@
                                                                         value="#{ReportHandler.createEndTime}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_time(this,'createEndTimeField')"
                                                                         size="12"
                                                                         maxlength="8"/>
                                                                 </td>
@@ -1576,6 +1602,7 @@
                                                                         value="#{ReportHandler.createStartDate}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_date(this,'MM/dd/yyyy')"
                                                                         size="12"
                                                                         maxlength="10"/>
                                                                     <A HREF="javascript:void(0);"
@@ -1595,6 +1622,7 @@
                                                                         value="#{ReportHandler.createEndDate}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_date(this,'MM/dd/yyyy')"
                                                                         size="12"
                                                                         maxlength="10"/>
                                                                     <A HREF="javascript:void(0);"
@@ -1616,6 +1644,7 @@
                                                                         value="#{ReportHandler.createStartTime}" 
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_time(this,'createStartTimeField')"
                                                                         size="12"
                                                                         maxlength="8"/></nobr>
                                                                 </td>
@@ -1628,6 +1657,7 @@
                                                                         value="#{ReportHandler.createEndTime}"
                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
                                                                         onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                        onblur="javascript:validate_time(this,'createEndTimeField')"
                                                                         size="12"
                                                                         maxlength="8"/></nobr>
                                                                 </td>

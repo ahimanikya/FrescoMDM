@@ -12,7 +12,7 @@
 <%@ page import="java.util.Iterator"  %>
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
-
+<%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 <%@ page import="com.sun.mdm.index.objects.EnterpriseObject"%>
 <%@ page import="com.sun.mdm.index.objects.ObjectNode"%>
 <%@ page import="com.sun.mdm.index.objects.SystemObject"%>
@@ -72,42 +72,62 @@
         <div id="mainContent" style="overflow:hidden;"> 
         <div id="sourcerecords">
             <table border="0" cellspacing="0" cellpadding="0" width="90%">
+                <% Operations operations=new Operations();%>
                 <tr>
                     <td>
                         <div id="demo" class="yui-navset">
                             <ul class="yui-nav">
                                 <% if ("View/Edit".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
+                                <% if(operations.isSO_SearchView()){%>
                                 <li class="selected">
                                     <a href="#viewEditTab"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
                                 </li>
+                                <%}%>
+                                <% if(operations.isSO_Add()){%>
                                 <li><a href="#addTab"><em>${msgs.source_submenu_add}</em></a></li>
+                                <%}%>
+                                <% if(operations.isSO_Merge()){%>
                                 <li><a href="#mergeTab"><em>${msgs.source_submenu_merge}</em></a></li>
+                                <%}%>
                                 <%} else if ("Add".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
+                                <% if(operations.isSO_SearchView()){%>
                                 <li>
                                     <a href="#viewEditTab"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
                                 </li>
+                                <%}%>
+                                <% if(operations.isSO_Add()){%>
                                 <li class="selected"><a href="#addTab"><em>${msgs.source_submenu_add}</em></a></li>
+                                <%}%>
+                                <% if(operations.isSO_Merge()){%>
                                 <li><a href="#mergeTab"><em>${msgs.source_submenu_merge}</em></a></li>
-                                
+                                <%}%>
                                 <%} else if ("Merge".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
+                                <% if(operations.isSO_SearchView()){%>
                                 <li>
                                     <a href="#viewEditTab"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
                                 </li>
+                                <%}%>
+                                <% if(operations.isSO_Add()){%>
                                 <li><a href="#addTab"><em>${msgs.source_submenu_add}</em></a></li>
+                                <%}%>
+                                <% if(operations.isSO_Merge()){%>
                                 <li class="selected"><a href="#mergeTab"><em>${msgs.source_submenu_merge}</em></a></li>
+                                <%}%>
                                 <%} else {%>
+                                <% if(operations.isSO_SearchView()){%>
                                 <li class="selected">
                                     <a href="#viewEditTab"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
                                 </li>
+                                <%}%>
+                                <% if(operations.isSO_Add()){%>
                                 <li><a href="#addTab"><em>${msgs.source_submenu_add}</em></a></li>
+                                <%}%>
+                                <% if(operations.isSO_Merge()){%>
                                 <li><a href="#mergeTab"><em>${msgs.source_submenu_merge}</em></a></li>
-                                
+                                <%}%>
                                 <%}%>  
-                            </ul>            
-                            <div class="yui-content">
-                                <div id=viewEditTab">
-                                    
-                                    <%
+                            </ul>  
+                            <%
                                         ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
                                         SystemObject singleSystemObject = (SystemObject) session.getAttribute("singleSystemObject");
                                         ArrayList searchResultsScreenConfigArray = (ArrayList) session.getAttribute("viewEditResultsConfigArray");
@@ -145,7 +165,10 @@
                                                         ValueExpression fnameExpression;
                                                         ValueExpression fvalueVaueExpression;
                                     %>
-                                    
+                            <div class="yui-content">
+                              <% if(operations.isSO_SearchView()){%> 
+                                <div id=viewEditTab">
+                            
                                     <%if (singleSystemObjectLID != null) {%>
                                     <%if ("viewSO".equalsIgnoreCase(keyFunction)) {%>
                                     <h:form>
@@ -153,7 +176,7 @@
                                             <table border="0" width="60%">
                                                     <tr>
                                                         <td>
-                                                            <h:commandLink  styleClass="button" 
+                                                            <h:commandLink  styleClass="button" rendered="#{Operations.SO_SearchView}"
                                                                             action="#{NavigationHandler.toSourceRecords}" 
                                                                             actionListener="#{SourceHandler.removeSingleLID}" >  
                                                                 <span><h:outputText value="#{msgs.source_rec_viewrecordslist_but}"/></span>
@@ -365,6 +388,7 @@
                                                     <td>
                                                         <h:commandLink  styleClass="button" 
                                                                         action="#{NavigationHandler.toSourceRecords}" 
+                                                                        rendered="#{Operations.SO_Edit}"
                                                                         actionListener="#{SourceEditHandler.editLID}" >
                                                             <f:attribute name="soValueExpression" value="<%=soValueExpression%>"/>                
                                                             <span><h:outputText value="#{msgs.source_rec_edit_but}"/></span>
@@ -372,6 +396,7 @@
                                                     </td>
                                                     <td>
                                                         <h:commandLink  styleClass="button" 
+                                                                        rendered="#{Operations.SO_SearchView}"
                                                                         action="#{NavigationHandler.toEuidDetails}" 
                                                                         actionListener="#{SourceHandler.viewEUID}" >  
                                                             <f:attribute name="soValueExpression" value="<%=soValueExpression%>"/>
@@ -463,10 +488,10 @@
                                                                      />
                                                     </h:column>
                                                     <!--Rendering Updateable HTML Text boxes date fields-->
-                                                          <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'DOB'}">
+                                                          <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6  }">
                                                                   <h:inputText label="#{fieldConfigPer.displayName}"   
                                                                      value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}"  
-                                                                     id="DOB"
+                                                                 
                                                                      required="#{fieldConfigPer.required}"
                                                                      onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                      onkeyup="javascript:qws_field_on_key_up(this)" />
@@ -477,126 +502,7 @@
                                                                                          url="./images/cal.gif"/>               
                                                                     </a>
                                                                 </h:column>
-                                                                  <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Dod'}">
-                                                                  <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                     value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}"  
-                                                                     id="DOD"
-                                                                     required="#{fieldConfigPer.required}"
-                                                                     onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                    <script> var DOD = getDateFieldName('BasicSearchFieldsForm',':DOD');</script>                                                                             
-                                                                    <a HREF="javascript:void(0);" 
-                                                                       onclick="g_Calendar.show(event,DOD)" > 
-                                                                        <h:graphicImage  id="calImgStartDate" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </a>
-                                                                </h:column>
-                                                                  <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'PensionExpDate'}">
-                                                                  <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                     value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}"  
-                                                                     id="PensionExpDate"
-                                                                     required="#{fieldConfigPer.required}"
-                                                                     onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                    <script> var EditPensionDate = getDateFieldName('BasicSearchFieldsForm',':PensionExpDate');</script>                                                                             
-                                                                    <a HREF="javascript:void(0);" 
-                                                                       onclick="g_Calendar.show(event,EditPensionDate)" > 
-                                                                        <h:graphicImage  id="calImgEditPensionExpDate" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </a>
-                                                                </h:column>
-                                                                 <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'DummyDate'}">
-                                                                  <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                     value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}"  
-                                                                     id="DummyDate"
-                                                                     required="#{fieldConfigPer.required}"
-                                                                     onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                    <script> var EditDummyDate = getDateFieldName('BasicSearchFieldsForm',':DummyDate');</script>                                                                             
-                                                                    <a HREF="javascript:void(0);" 
-                                                                       onclick="g_Calendar.show(event,EditDummyDate)" > 
-                                                                        <h:graphicImage  id="calImgEditDummyDate" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </a>
-                                                                </h:column>
-                                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Date1'}">
-                                                                  <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                     value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}"  
-                                                                     id="Date1"
-                                                                     required="#{fieldConfigPer.required}"
-                                                                     onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                    <script> var EditDate1 = getDateFieldName('BasicSearchFieldsForm',':Date1');</script>                                                                             
-                                                                    <a HREF="javascript:void(0);" 
-                                                                       onclick="g_Calendar.show(event,EditDate1)" > 
-                                                                        <h:graphicImage  id="calImgEditDate1" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </a>
-                                                                </h:column>
-                                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Date2'}">
-                                                                  <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                     value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}"  
-                                                                     id="Date2"
-                                                                     required="#{fieldConfigPer.required}"
-                                                                     onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                    <script> var EditDate2 = getDateFieldName('BasicSearchFieldsForm',':Date2');</script>                                                                             
-                                                                    <a HREF="javascript:void(0);" 
-                                                                       onclick="g_Calendar.show(event,EditDate2)" > 
-                                                                        <h:graphicImage  id="calImgEditDate2" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </a>
-                                                                </h:column>
-                                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Date3'}">
-                                                                  <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                     value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}"  
-                                                                     id="Date3"
-                                                                     required="#{fieldConfigPer.required}"
-                                                                     onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                    <script> var EditDate3 = getDateFieldName('BasicSearchFieldsForm',':Date3');</script>                                                                             
-                                                                    <a HREF="javascript:void(0);" 
-                                                                       onclick="g_Calendar.show(event,EditDate3)" > 
-                                                                        <h:graphicImage  id="calImgEditDate3" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </a>
-                                                                </h:column>
-                                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Date4'}">
-                                                                  <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                     value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}"  
-                                                                     id="Date4"
-                                                                     required="#{fieldConfigPer.required}"
-                                                                     onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                    <script> var EditDate4 = getDateFieldName('BasicSearchFieldsForm',':Date4');</script>                                                                             
-                                                                    <a HREF="javascript:void(0);" 
-                                                                       onclick="g_Calendar.show(event,EditDate4)" > 
-                                                                        <h:graphicImage  id="calImgEditDate4" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </a>
-                                                                </h:column>
-                                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Date5'}">
-                                                                  <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                     value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}"  
-                                                                     id="Date5"
-                                                                     required="#{fieldConfigPer.required}"
-                                                                     onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                    <script> var EditDate5 = getDateFieldName('BasicSearchFieldsForm',':Date5');</script>                                                                             
-                                                                    <a HREF="javascript:void(0);" 
-                                                                       onclick="g_Calendar.show(event,EditDate5)" > 
-                                                                        <h:graphicImage  id="calImgEditDate5" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </a>
-                                                                </h:column>
+                                                                
                                                                 
                                                                 <!--Rendering Updateable HTML Text Area-->
                                                                 <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
@@ -672,7 +578,6 @@
                                                     <h:column rendered="#{addressFieldConfig.guiType eq 'TextBox' &&  addressFieldConfig.valueType eq 6}">
                                                         <h:inputText label="#{addressFieldConfig.displayName}"   
                                                                      value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}"  
-                                                                     id="date"
                                                                      required="#{addressFieldConfig.required}"
                                                                      onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                      onkeyup="javascript:qws_field_on_key_up(this)" />
@@ -769,7 +674,7 @@
                                                                     <h:column rendered="#{phoneFieldConfig.guiType eq 'TextBox' &&  phoneFieldConfig.valueType eq 6}">
                                                                         <h:inputText label="#{phoneFieldConfig.displayName}"   
                                                                                      value="#{phoneMapArrayList[phoneFieldConfig.fullFieldName]}"  
-                                                                                     id="date"
+                                                                                  
                                                                                      required="#{phoneFieldConfig.required}"
                                                                                      onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                                      onkeyup="javascript:qws_field_on_key_up(this)" />
@@ -869,7 +774,7 @@
                                                                     <h:column rendered="#{aliasFieldConfig.guiType eq 'TextBox' &&  aliasFieldConfig.valueType eq 6}">
                                                                         <h:inputText label="#{aliasFieldConfig.displayName}"   
                                                                                      value="#{aliasMapArrayList[aliasFieldConfig.fullFieldName]}"  
-                                                                                     id="date"
+                                                                                  
                                                                                      required="#{aliasFieldConfig.required}"
                                                                                      onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                                      onkeyup="javascript:qws_field_on_key_up(this)" />
@@ -939,7 +844,7 @@
                                                    <h:column rendered="#{fieldConfigPerReadOnly.guiType eq 'TextBox' &&  fieldConfigPerReadOnly.valueType eq 6}">
                                                         <h:inputText readonly="true" disabled="true"   style="background-color:#efefef;font-color:#efefef"label="#{fieldConfigPerReadOnly.displayName}"   
                                                                      value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPerReadOnly.fullFieldName]}"  
-                                                                     id="DOB"
+                                                                    
                                                                      required="#{fieldConfigPerReadOnly.required}"
                                                                      onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                      onkeyup="javascript:qws_field_on_key_up(this)" />
@@ -1020,7 +925,7 @@
                                                     <h:column rendered="#{addressFieldConfigReadOnly.guiType eq 'TextBox' &&  addressFieldConfigReadOnly.valueType eq 6}">
                                                         <h:inputText readonly="true" disabled="true"   style="background-color:#efefef;font-color:#efefef"label="#{addressFieldConfigReadOnly.displayName}"   
                                                                      value="#{adressMapArrayList[addressFieldConfigReadOnly.fullFieldName]}"  
-                                                                     id="date"
+                                                                  
                                                                      required="#{addressFieldConfigReadOnly.required}"
                                                                      onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                      onkeyup="javascript:qws_field_on_key_up(this)" />
@@ -1102,7 +1007,7 @@
                                                                     <h:column rendered="#{phoneFieldConfigReadOnly.guiType eq 'TextBox' &&  phoneFieldConfigReadOnly.valueType eq 6}">
                                                                         <h:inputText readonly="true" disabled="true"   style="background-color:#efefef;font-color:#efefef"label="#{phoneFieldConfigReadOnly.displayName}"   
                                                                                      value="#{phoneMapArrayList[phoneFieldConfigReadOnly.fullFieldName]}"  
-                                                                                     id="date"
+                                                                                  
                                                                                      required="#{phoneFieldConfigReadOnly.required}"
                                                                                      onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                                      onkeyup="javascript:qws_field_on_key_up(this)" />
@@ -1187,7 +1092,7 @@
                                                                     <h:column rendered="#{aliasFieldConfigRead.guiType eq 'TextBox' &&  aliasFieldConfigRead.valueType eq 6}">
                                                                         <h:inputText readonly="true" disabled="true"   style="background-color:#efefef;font-color:#efefef"label="#{aliasFieldConfigRead.displayName}"   
                                                                                      value="#{aliasMapArrayList[aliasFieldConfigRead.fullFieldName]}"  
-                                                                                     id="date"
+                                                                                    
                                                                                      required="#{aliasFieldConfigRead.required}"
                                                                                      onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                                      onkeyup="javascript:qws_field_on_key_up(this)" />
@@ -1229,7 +1134,7 @@
                                                         <table>  
                                                             <tr>        
                                                                 <td>
-                                                                    <h:commandLink  styleClass="button" 
+                                                                    <h:commandLink  styleClass="button" rendered="#{Operations.SO_Edit}"
                                                                                     action="#{SourceEditHandler.updateSO}" >
                                                                         <span><h:outputText value="#{msgs.source_rec_save_but}" /></span>
                                                                     </h:commandLink>                                     
@@ -1242,7 +1147,7 @@
                                                                     </h:commandLink>                                     
                                                                 </td>
                                                                 <td>
-                                                                    <h:commandLink  styleClass="button" 
+                                                                    <h:commandLink  styleClass="button" rendered="#{Operations.EO_SearchViewSBR}" 
                                                                                     action="#{NavigationHandler.toEuidDetails}" 
                                                                                     actionListener="#{SourceHandler.viewEUID}" >  
                                                                         <f:attribute name="soValueExpression" value="<%=soValueExpression%>"/>
@@ -1251,7 +1156,7 @@
                                                                 </td>
                                                                 <td>
                                                                     <%if ("active".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>
-                                                                    <h:commandLink  styleClass="button" 
+                                                                    <h:commandLink  styleClass="button" rendered="#{Operations.SO_Deactivate}"
                                                                                     action="#{NavigationHandler.toSourceRecords}" 
                                                                                     actionListener="#{SourceHandler.deactivateSO}">
                                                                         <f:attribute name="soValueExpression" value="<%=soValueExpression%>"/>
@@ -1259,7 +1164,7 @@
                                                                     </h:commandLink>                         
                                                                     <%}%>            
                                                                     <%if ("inactive".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>
-                                                                    <h:commandLink  styleClass="button" 
+                                                                    <h:commandLink  styleClass="button" rendered="#{Operations.SO_Activate}"
                                                                                     action="#{NavigationHandler.toSourceRecords}" 
                                                                                     actionListener="#{SourceHandler.activateSO}">
                                                                         <f:attribute name="soValueExpression" value="<%=soValueExpression%>"/>
@@ -1464,7 +1369,9 @@
                                     </div>
                                     <%}%>
                                     
-                                </div>                            
+                                </div>  
+                              <%}%> 
+                              <% if(operations.isSO_Add()){%> 
                                 <div id="addTab">
                                     <h:form id="basicAddformData">
                                         <table width="85%">
@@ -1555,8 +1462,8 @@
                                                                                  required="#{fieldConfigPerAdd.required}"/>
                                                                 </h:column>                     
                                                                 <!--Rendering Updateable HTML Text boxes date fields-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && fieldConfigPerAdd.name eq 'DOB'}">
-                                                                    <h:inputText label="#{fieldConfigPerAdd.name}"  id="DOB"
+                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 }">
+                                                                    <h:inputText label="#{fieldConfigPerAdd.name}"  
                                                                                  value="#{SourceAddHandler.newSOHashMap[fieldConfigPerAdd.fullFieldName]}"  
                                                                                  required="#{fieldConfigPerAdd.required}"
                                                                                  onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
@@ -1566,127 +1473,6 @@
                                                                     <h:outputLink value="javascript:void(0);"  id="calLink"
                                                                                   onclick="g_Calendar.show(event,DOB1)" > 
                                                                         <h:graphicImage  id="calImgStartDate" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </h:outputLink>
-                                                                </h:column>
-                                                                 <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && fieldConfigPerAdd.name eq 'Dod'}">
-                                                                    <h:inputText label="#{fieldConfigPerAdd.name}"  id="DOD"
-                                                                                 value="#{SourceAddHandler.newSOHashMap[fieldConfigPerAdd.fullFieldName]}"  
-                                                                                 required="#{fieldConfigPerAdd.required}"
-                                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                                 onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                 />
-                                                                   <script> var DOD1 = getDateFieldName('basicAddformData',':DOD');</script>                                                                            
-                                                                    <h:outputLink value="javascript:void(0);"  id="calLink1"
-                                                                                  onclick="g_Calendar.show(event,DOD1)"> 
-                                                                        <h:graphicImage  id="calImgDODDate" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </h:outputLink>
-                                                                </h:column>
-                                                                 <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && fieldConfigPerAdd.name eq 'PensionExpDate'}">
-                                                                    <h:inputText label="#{fieldConfigPerAdd.name}"  id="PensionExpDate"
-                                                                                 value="#{SourceAddHandler.newSOHashMap[fieldConfigPerAdd.fullFieldName]}"  
-                                                                                 required="#{fieldConfigPerAdd.required}"
-                                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                                 onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                 />
-                                                                   <script> var PensionDate = getDateFieldName('basicAddformData',':PensionExpDate');</script>                                                                            
-                                                                    <h:outputLink value="javascript:void(0);"  id="calLink2"
-                                                                                  onclick="g_Calendar.show(event,PensionDate)"> 
-                                                                        <h:graphicImage  id="PensionDateImg" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </h:outputLink>
-                                                                </h:column>
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && fieldConfigPerAdd.name eq 'DummyDate'}">
-                                                                    <h:inputText label="#{fieldConfigPerAdd.name}"  id="DummyDate"
-                                                                                 value="#{SourceAddHandler.newSOHashMap[fieldConfigPerAdd.fullFieldName]}"  
-                                                                                 required="#{fieldConfigPerAdd.required}"
-                                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                                 onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                 />
-                                                                   <script> var DummyDate = getDateFieldName('basicAddformData',':DummyDate');</script>                                                                            
-                                                                    <h:outputLink value="javascript:void(0);"  id="calLink3"
-                                                                                  onclick="g_Calendar.show(event,DummyDate)"> 
-                                                                        <h:graphicImage  id="DummyDateImg" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </h:outputLink>
-                                                                </h:column>
-                                                               
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && fieldConfigPerAdd.name eq 'Date1'}">
-                                                                    <h:inputText label="#{fieldConfigPerAdd.name}"  id="Date1"
-                                                                                 value="#{SourceAddHandler.newSOHashMap[fieldConfigPerAdd.fullFieldName]}"  
-                                                                                 required="#{fieldConfigPerAdd.required}"
-                                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                                 onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                 />
-                                                                   <script> var Date1 = getDateFieldName('basicAddformData',':Date1');</script>                                                                            
-                                                                    <h:outputLink value="javascript:void(0);"  id="calLink4"
-                                                                                  onclick="g_Calendar.show(event,Date1)"> 
-                                                                        <h:graphicImage  id="calImgDate1" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </h:outputLink>
-                                                                </h:column>
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && fieldConfigPerAdd.name eq 'Date2'}">
-                                                                    <h:inputText label="#{fieldConfigPerAdd.name}"  id="Date2"
-                                                                                 value="#{SourceAddHandler.newSOHashMap[fieldConfigPerAdd.fullFieldName]}"  
-                                                                                 required="#{fieldConfigPerAdd.required}"
-                                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                                 onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                 />
-                                                                   <script> var Date2 = getDateFieldName('basicAddformData',':Date2');</script>                                                                            
-                                                                    <h:outputLink value="javascript:void(0);"  id="calLink5"
-                                                                                  onclick="g_Calendar.show(event,Date2)"> 
-                                                                        <h:graphicImage  id="calImgDate2" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </h:outputLink>
-                                                                </h:column>
-                                                                 <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && fieldConfigPerAdd.name eq 'Date3'}">
-                                                                    <h:inputText label="#{fieldConfigPerAdd.name}"  id="Date3"
-                                                                                 value="#{SourceAddHandler.newSOHashMap[fieldConfigPerAdd.fullFieldName]}"  
-                                                                                 required="#{fieldConfigPerAdd.required}"
-                                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                                 onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                 />
-                                                                   <script> var Date3 = getDateFieldName('basicAddformData',':Date3');</script>                                                                            
-                                                                    <h:outputLink value="javascript:void(0);"  id="calLink6"
-                                                                                  onclick="g_Calendar.show(event,Date3)"> 
-                                                                        <h:graphicImage  id="calImgDate3" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </h:outputLink>
-                                                                </h:column>
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && fieldConfigPerAdd.name eq 'Date4'}">
-                                                                    <h:inputText label="#{fieldConfigPerAdd.name}"  id="Date4"
-                                                                                 value="#{SourceAddHandler.newSOHashMap[fieldConfigPerAdd.fullFieldName]}"  
-                                                                                 required="#{fieldConfigPerAdd.required}"
-                                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                                 onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                 />
-                                                                   <script> var Date4 = getDateFieldName('basicAddformData',':Date4');</script>                                                                            
-                                                                    <h:outputLink value="javascript:void(0);"  id="calLink7"
-                                                                                  onclick="g_Calendar.show(event,Date4)"> 
-                                                                        <h:graphicImage  id="calImgDate4" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </h:outputLink>
-                                                                </h:column>
-                                                                 <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 && fieldConfigPerAdd.name eq 'Date5'}">
-                                                                    <h:inputText label="#{fieldConfigPerAdd.name}"  id="Date5"
-                                                                                 value="#{SourceAddHandler.newSOHashMap[fieldConfigPerAdd.fullFieldName]}"  
-                                                                                 required="#{fieldConfigPerAdd.required}"
-                                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                                 onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                 />
-                                                                   <script> var Date5 = getDateFieldName('basicAddformData',':Date5');</script>                                                                            
-                                                                    <h:outputLink value="javascript:void(0);"  id="calLink8"
-                                                                                  onclick="g_Calendar.show(event,Date5)"> 
-                                                                        <h:graphicImage  id="calImgDate5" 
                                                                                          alt="calendar Image" styleClass="imgClass"
                                                                                          url="./images/cal.gif"/>               
                                                                     </h:outputLink>
@@ -1810,14 +1596,16 @@
                                                     </nobr>
                                                     <%if(session.getAttribute("validation") != null ) {%>
                                                     <nobr>
-                                                    <h:commandLink  styleClass="button" action="#{SourceAddHandler.addNewSO}">  
-                                                        <span><h:outputText value="Submit"/></span>
+                                                    <h:commandLink  styleClass="button" rendered="#{Operations.SO_Add}"
+                                                                    action="#{SourceAddHandler.addNewSO}">  
+                                                        <span><h:outputText value="#{msgs.submit_button_text}"/></span>
                                                     </h:commandLink>                                     
                                                     </nobr>
                                                    <%}else{%>
                                                     <nobr>
-                                                    <h:commandLink  styleClass="button" action="#{SourceAddHandler.validateLID}">  
-                                                        <span><h:outputText value="Validate"/></span>
+                                                    <h:commandLink  styleClass="button" rendered="#{Operations.SO_Add}"
+                                                                    action="#{SourceAddHandler.validateLID}">  
+                                                        <span><h:outputText value="#{msgs.validate_button_text}"/></span>
                                                     </h:commandLink>                                     
                                                     </nobr>
                                                    <%}%>
@@ -1826,6 +1614,8 @@
                                         </table>
                                     </h:form>
                                 </div>
+                              <%}%> 
+                              <% if(operations.isSO_Merge()){%> 
                                 <div id="mergeTab">
                                         <table border="0" cellpadding="0" cellspacing="0">
                                             <tr>
@@ -1879,7 +1669,8 @@
                                                                <td> &nbsp;&nbsp</td>
                                                                
                                                                <td><nobr>
-                                                                       <h:commandLink  styleClass="button" action="#{SourceMergeHandler.performLidMergeSearch}">
+                                                                       <h:commandLink  styleClass="button" rendered="#{Operations.SO_SearchView}"
+                                                                                       action="#{SourceMergeHandler.performLidMergeSearch}">
                                                                            <span><h:outputText value="#{msgs.source_merge_button}"/></span>
                                                                        </h:commandLink>                                     
                                                                    </nobr>  
@@ -1890,12 +1681,10 @@
                                                    </h:form>
                                              <hr/>
                                              <%
-
                                                if(session.getAttribute("soHashMapArrayList") != null ){
                                                   //request.setAttribute("soHashMapArrayList",request.getAttribute("soHashMapArrayList")); 
                                                  ArrayList newSoArrayList= (ArrayList) session.getAttribute("soHashMapArrayList");
-                                                 System.out.println("==>Hellllllllllllllllll : " + newSoArrayList);
-                                            %>
+                                             %>
                                             <table cellpadding="0" cellspacing="0">  
                                             <tr>
                                                 <td>
@@ -2037,7 +1826,7 @@
                                                             <div id="previewmainEuidContent" class="<%=styleclass%>">
                                                                 <table border="0" cellspacing="0" cellpadding="0" id="<%=soHashMap.get("LID")%>">
                                                                     <tr>
-                                                                        <td id="previewmenu" class="menutop">Preview</td>
+                                                                        <td id="previewmenu" class="menutop"><h:outputText value="#{msgs.preview_column_text}" /></td>
                                                                     </tr> 
                                                                         <tr>
                                                                             <td valign="top"  id="previewcurve">&nbsp;</td>
@@ -2124,7 +1913,7 @@
                                                                         <h:form>
                                                                             <tr> 
                                                                                 <td valign="top">
-                                                                                    <h:commandLink  styleClass="button" 
+                                                                                    <h:commandLink  styleClass="button" rendered="#{Operations.EO_SearchViewSBR}"
                                                                                                     action="#{NavigationHandler.toEuidDetails}" >  
                                                                                         <span><h:outputText value="#{msgs.source_rec_vieweuid_but}"/></span>
                                                                                     </h:commandLink>                                                                                      
@@ -2143,7 +1932,7 @@
                                                                         <tr>
                                                                             <td>
                                                                                 <h:form  id="previewlid1Form">
-                                                                                    <h:commandLink styleClass="button" action="#{SourceMergeHandler.performPreviewLID}">
+                                                                                    <h:commandLink styleClass="button" rendered="#{Operations.SO_Merge}" action="#{SourceMergeHandler.performPreviewLID}">
                                                                                         <span id="LID1"><h:outputText value="Keep LID1"/></span>
                                                                                     </h:commandLink>
                                                                                     <h:inputHidden id="previewhiddenLid1" value="#{SourceMergeHandler.formlids}" />
@@ -2154,7 +1943,7 @@
                                                                         <tr>
                                                                             <td>
                                                                                 <h:form id="previewlid2Form">
-                                                                                    <h:commandLink styleClass="button" action="#{SourceMergeHandler.performPreviewLID}">
+                                                                                    <h:commandLink styleClass="button" rendered="#{Operations.SO_Merge}" action="#{SourceMergeHandler.performPreviewLID}">
                                                                                         <span id="LID2"><h:outputText value="Keep LID2"/></span>
                                                                                         <h:inputHidden id="previewhiddenLid2" value="#{SourceMergeHandler.formlids}" />
                                                                                         <h:inputHidden id="previewhiddenLid2source" value="#{SourceMergeHandler.lidsource}" />
@@ -2169,12 +1958,12 @@
                                                                         <tr>
                                                                             <td>
                                                                                 <a class="button" href="javascript:void(0)" onclick="javascript:showLIDDiv('mergeDiv',event)" > 
-                                                                                   <span id="confirmok"><h:outputText value="OK"/></span>
+                                                                                   <span id="confirmok"><h:outputText value="#{msgs.ok_text_button}" /></span>
                                                                                 </a>
                                                                             </td>
                                                                             <td>
                                                                                 <a class="button" >
-                                                                                   <span id="confirmcancel"><h:outputText value="Cancel"/></span>
+                                                                                   <span id="confirmcancel"><h:outputText value="#{msgs.cancel_but_text}" /></span>
                                                                                 </a>
                                                                             </td>
                                                                         </tr>
@@ -2194,7 +1983,7 @@
                                             </table>
                                             <%}%>
                                 </div>
-
+                              <%}%>
                             </div> <!-- End YUI content -->
                         </div> <!-- demo end -->
                     </td>
@@ -2203,48 +1992,42 @@
             
         </div> <!-end source records dic -->
          <!-- START Extra divs for add  SO-->
-    <div id="mergeDiv" class="alert" style="top:500px;left:560px;visibility:hidden">
-        <h:form id="finalMergeForm">
-   
-    <table cellspacing="0" cellpadding="0" border="0">
-        <tr>
-            <td>
-                <div>
-                    <a href="javascript:void(0)" rel="mergepopuphelp"><h:outputText value="#{msgs.help_link_text}"/></a><br/>
-                </div>                               
-            </td>
-        </tr>
-            <tr>
-                <th>Keep -LID '<div id="confirmContent"></div>' ?</th>
-            </tr>
-            <tr><td>&nbsp;</td></tr>
-			
-            <tr>
-                
-                <td>
-                    <h:commandLink styleClass="button" 
-                                   action="#{SourceMergeHandler.mergePreviewSystemObject}">
-                        <span><h:outputText value="#{msgs.ok_text_button}" /></span>
-                    </h:commandLink>   
-                    <h:outputLink  onclick="javascript:showExtraDivs('mergeDiv',event)" 
-                                   styleClass="button"          
-                                   value="javascript:void(0)">
-                        <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
-                    </h:outputLink>   
-                    <h:inputHidden id="previewhiddenLid1" value="#{SourceMergeHandler.formlids}" />
-                    <h:inputHidden id="previewhiddenLid1source" value="#{SourceMergeHandler.lidsource}" />
-                </td>
-            </tr>
-        
-    </table>
-        </h:form>
-</div>		
+         <div id="mergeDiv" class="alert" style="top:500px;height:130px;left:560px;visibility:hidden">
+             <h:form id="finalMergeForm">
+                 <table cellspacing="0" cellpadding="0" border="0">
+                     <tr><th align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th>
+                     <th align="right"><a href="javascript:void(0)" rel="mergepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th></tr>
+                     <tr><td colspan="2"> &nbsp;</td></tr>
+                     <tr><td colspan="2"> &nbsp;</td></tr>
+                      <tr>
+                          <th align="center"><h:outputText value="#{msgs.lid_merge_popup_text}"/></th><th style="padding-right:160px;"><div id="confirmContent"></div></th>
+                     </tr>
+                     <tr><td colspan="2"> &nbsp;</td></tr>
+                     <tr><td colspan="2"> &nbsp;</td></tr>
+                    <tr>
+                         <td colspan=2>
+                             <h:commandLink styleClass="button" 
+                                            action="#{SourceMergeHandler.mergePreviewSystemObject}">
+                                 <span><h:outputText value="#{msgs.ok_text_button}" /></span>
+                             </h:commandLink>   
+                             <h:outputLink  onclick="javascript:showExtraDivs('mergeDiv',event)" 
+                                            styleClass="button"          
+                                            value="javascript:void(0)">
+                                 <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
+                             </h:outputLink>   
+                             <h:inputHidden id="previewhiddenLid1" value="#{SourceMergeHandler.formlids}" />
+                             <h:inputHidden id="previewhiddenLid1source" value="#{SourceMergeHandler.lidsource}" />
+                         </td>
+                     </tr>
+                     
+                 </table>
+             </h:form>
+         </div>		
+	
        <!-- END Extra divs for add SO-->
        <!-- Start Extra divs for editing SO-->
-    <div id="extraAddressEditDiv" style="TOP: 620px; LEFT: 450px; HEIGHT: 400px;  WIDTH: 400px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT: 5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
-      <iframe src="Blank.html" scrolling="no" frameborder="0" style="width:400px; height:400px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
-      </iframe>
-         <h:form>
+    <div id="extraAddressEditDiv" class="alert"  style="TOP:580px;LEFT:450px;HEIGHT:400px;WIDTH:400px;visibility:hidden;">
+        <h:form>
              <table>
                  <tr>
                      <td align="right" colspan="2">
@@ -2311,17 +2094,14 @@
              
          </h:form>
      </div>
-    <div id="extraPhoneEditDiv" style="TOP: 1300px; LEFT: 500px; HEIGHT: 150px;  WIDTH: 400px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT: 5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
-      <iframe src="Blank.html" scrolling="no" frameborder="0" style="width:400px; height:150px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
-          
-      </iframe>
+    <div id="extraPhoneEditDiv" class="alert" style="TOP:1300px;LEFT:500px;HEIGHT:180px;WIDTH:300px;visibility:hidden;">
          <h:form>
              <table>
                  <tr>
                      <td align="right" colspan="2">
                          <div>
                              <a href="javascript:void(0)" rel="editballoonphone"><h:outputText value="#{msgs.help_link_text}"/> </a><br/>
-                         </div>
+                        </div>
                          &nbsp;
                       </td>
                  </tr>
@@ -2383,10 +2163,7 @@
              
          </h:form>
      </div>
-    <div id="extraAliasEditDiv" style="TOP: 1450px; LEFT: 500px; HEIGHT: 150px;  WIDTH: 400px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT: 5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
-      <iframe src="Blank.html" scrolling="no" frameborder="0" style="width:400px; height:150px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
-          
-      </iframe>
+    <div id="extraAliasEditDiv" class="alert" style="TOP:1450px;LEFT:500px;HEIGHT:170px;WIDTH:300px;visibility:hidden; ">
          <h:form>
              <table>
                  <tr>
@@ -2457,10 +2234,7 @@
 
     <!-- End Extra divs for editing SO-->
      <!-- Start Extra divs for add SO-->
-<div id="extraAddressAddDiv" style="TOP: 1800px; LEFT: 700px; HEIGHT: 300px;  WIDTH: 300px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT: 5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
-    <iframe src="Blank.html" scrolling="no" frameborder="0" style="width:300px; height:300px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
-        
-    </iframe>
+<div id="extraAddressAddDiv" class="alert"  style="TOP:1800px;LEFT:700px;HEIGHT:385px;WIDTH:400px;visibility:hidden;">
     <table>
         <tr>
             <td align="right" colspan="2">
@@ -2471,12 +2245,11 @@
           
            </tr>
         <tr>
-            <td colspan="2">
+            <td colspan="2" align="left">
                 <div id="addressInnerDiv">
                     <h:dataTable  headerClass="tablehead" 
                                   id="hashAddressIdExtra" 
                                   var="fieldConfigAddAddress" 
-                                  rowClasses="odd,even"                                     
                                   value="#{SourceAddHandler.addressFieldConfigs}">
                         <h:column>
                             <h:outputText value="#{fieldConfigAddAddress.displayName}"  />
@@ -2500,7 +2273,7 @@
                         <h:column rendered="#{fieldConfigAddAddress.guiType eq 'TextBox' &&  fieldConfigAddAddress.valueType eq 6}">
                             <h:inputText label="#{fieldConfigAddAddress.displayName}"   
                                          value="#{SourceAddHandler.addressFeildsMap[fieldConfigAddAddress.fullFieldName]}"  
-                                         id="date"
+                                      
                                          required="#{fieldConfigAddAddress.required}"
                                          onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                          onkeyup="javascript:qws_field_on_key_up(this)" 
@@ -2540,11 +2313,8 @@
                             
     </table>
 </div>
-<div id="extraPhoneAddDiv" style="TOP: 1900px; LEFT: 700px; HEIGHT: 150px;  WIDTH: 200px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT: 5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
-    <iframe src="Blank.html" scrolling="no" frameborder="0" style="width:200px; height:150px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
-        
-    </iframe>
-    <table>
+<div id="extraPhoneAddDiv" class="alert"  style="TOP:1900px;LEFT:700px;HEIGHT:170px;WIDTH:300px;visibility:hidden; ">
+    <table >
         <tr>
             <td align="right" colspan="2">
                  <div>
@@ -2555,10 +2325,9 @@
         <tr>
             <td colspan="2">
                 <div id="phoneInnerDiv">
-                    <h:dataTable  headerClass="tablehead" 
+                    <h:dataTable  headerClass="tablehead"   
                                   id="hashPhoneIdExtra" 
                                   var="fieldConfigAddPhone" 
-                                  rowClasses="odd,even"                                     
                                   value="#{SourceAddHandler.phoneFieldConfigs}">
                         <h:column>
                             <h:outputText value="#{fieldConfigAddPhone.displayName}"  />
@@ -2582,7 +2351,7 @@
                         <h:column rendered="#{fieldConfigAddPhone.guiType eq 'TextBox' &&  fieldConfigAddPhone.valueType eq 6}">
                             <h:inputText label="#{fieldConfigAddPhone.displayName}"   
                                          value="#{SourceAddHandler.phoneFeildsMap[fieldConfigAddPhone.fullFieldName]}"  
-                                         id="date"
+                                       
                                          required="#{fieldConfigAddPhone.required}"
                                          onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                          onkeyup="javascript:qws_field_on_key_up(this)" 
@@ -2622,10 +2391,7 @@
                            
     </table>
 </div>
-<div id="extraAliasAddDiv" style="TOP: 2000px; LEFT: 700px; HEIGHT: 150px;  WIDTH: 150px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT: 5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
-    <iframe src="Blank.html" scrolling="no" frameborder="0" style="width:150px; height:150px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
-        
-    </iframe>
+<div id="extraAliasAddDiv" class="alert" style="TOP:2000px;LEFT:700px;HEIGHT:170px;WIDTH:300px;visibility:hidden;">
     <table>
         <tr>
             <td align="right" colspan="2">
@@ -2640,7 +2406,6 @@
                     <h:dataTable  headerClass="tablehead" 
                                   id="hashAliasIdExtra" 
                                   var="fieldConfigAddAlias" 
-                                  rowClasses="odd,even"                                     
                                   value="#{SourceAddHandler.aliasFieldConfigs}">
                         <h:column>
                             <h:outputText value="#{fieldConfigAddAlias.displayName}"  />
@@ -2664,7 +2429,7 @@
                         <h:column rendered="#{fieldConfigAddAlias.guiType eq 'TextBox' &&  fieldConfigAddAlias.valueType eq 6}">
                             <h:inputText label="#{fieldConfigAddAlias.displayName}"   
                                          value="#{SourceAddHandler.aliasFeildsMap[fieldConfigAddAlias.fullFieldName]}"  
-                                         id="date"
+                                         
                                          required="#{fieldConfigAddAlias.required}"
                                          onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                          onkeyup="javascript:qws_field_on_key_up(this)" 
@@ -2793,8 +2558,45 @@
             formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
          }   
     </script>
-     
-
+    <script>
+          var formName ="";
+    </script>
+    <% if ("View/Edit".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
+    <script>
+          formName = "BasicSearchFieldsForm";
+    </script>
+    <%} else if ("Add".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
+    <script>
+          formName = "basicAddformData";
+    </script>
+    
+    <%} else if ("Merge".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
+    <script>
+          formName = "basicMergeformData";
+     </script>
+      
+    <%} else {%>
+    <script>
+          formName = "BasicSearchFieldsForm";
+    </script>
+    <%}%>  
+    
+   <script>
+         if( formName.elements[0]!=null) {
+		var i;
+		var max = formName.length;
+		for( i = 0; i < max; i++ ) {
+			if( formName.elements[ i ].type != "hidden" &&
+				!formName.elements[ i ].disabled &&
+				!formName.elements[ i ].readOnly ) {
+				formName.elements[ i ].focus();
+				break;
+			}
+		}
+      }         
+       
+       
+   </script>
 
 
 

@@ -15,8 +15,9 @@
 
 <%
 if(session.getAttribute("user") == null  ) {
-   FacesContext.getCurrentInstance().getExternalContext().redirect("login.jsf");
-}
+%>
+   <c:redirect url="login.jsf"/>
+<%}
 %>
 
 <%
@@ -161,7 +162,7 @@ String dashBoardLabel = "Dashboard";
                          <h:commandLink styleClass="navbutton" id="tralink"  rendered="#{Operations.transLog_SearchView}" action="#{NavigationHandler.toTransactions}"><span><%=transactionsLabel%></span></h:commandLink>
                          <h:commandLink styleClass="navbutton" id="replink" rendered="#{Operations.reports_View}" action="#{NavigationHandler.toReports}"><span><%=reportsLabel%></span></h:commandLink>
                          <h:commandLink styleClass="navbutton" id="sourcelink" rendered="#{Operations.SO_SearchView}" action="#{NavigationHandler.toSourceRecords}"><span><%=sourceRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbuttonselected" id="allink" rendered="#{Operations.auditLog_SearchView}" action="#{NavigationHandler.toAuditLog}"><span><%=screenObject.getDisplayTitle()%></span></h:commandLink>
+                         <h:commandLink styleClass="navbuttonselected" id="allink" rendered="#{Operations.auditLog_SearchView}" action="#{NavigationHandler.toAuditLog}"><span><%=auditLogLabel%></span></h:commandLink>
                          
                          
                          <%} else if (("error404.jsp".equalsIgnoreCase(requestPage)) || ("error500.jsp".equalsIgnoreCase(requestPage))) {%>                         

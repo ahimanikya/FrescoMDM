@@ -27,42 +27,42 @@
         <!--pick the initial screen as per the configuration file EDM.xml-->
 
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>       
 
         <navigation-case>
-            <from-outcome>to_screen_3</from-outcome>
+            <from-outcome>duplicate-records</from-outcome>
             <to-view-id>/duplicaterecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_1</from-outcome>
+            <from-outcome>record-details</from-outcome>
             <to-view-id>/patientdetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_6</from-outcome>
+            <from-outcome>reports</from-outcome>
             <to-view-id>/reports.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_5</from-outcome>
+            <from-outcome>source-record</from-outcome>
             <to-view-id>/sourcerecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_4</from-outcome>
+            <from-outcome>assumed-matches</from-outcome>
             <to-view-id>/assumedmatches.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_2</from-outcome>
+            <from-outcome>transactions</from-outcome>
             <to-view-id>/transactions.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_7</from-outcome>
+            <from-outcome>audit-log</from-outcome>
             <to-view-id>/auditlog.jsp</to-view-id>
         </navigation-case>
 
@@ -87,7 +87,7 @@
         
 <!-- End Navigation from the header bar -->           
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>
         <navigation-case>
@@ -100,37 +100,37 @@
         </navigation-case>       
     
         <navigation-case>
-            <from-outcome>to_screen_3</from-outcome>
+            <from-outcome>duplicate-records</from-outcome>
             <to-view-id>/duplicaterecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_1</from-outcome>
+            <from-outcome>record-details</from-outcome>
             <to-view-id>/patientdetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_6</from-outcome>
+            <from-outcome>reports</from-outcome>
             <to-view-id>/reports.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_5</from-outcome>
+            <from-outcome>source-record</from-outcome>
             <to-view-id>/sourcerecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_4</from-outcome>
+            <from-outcome>assumed-matches</from-outcome>
             <to-view-id>/assumedmatches.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_2</from-outcome>
+            <from-outcome>transactions</from-outcome>
             <to-view-id>/transactions.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_7</from-outcome>
+            <from-outcome>audit-log</from-outcome>
             <to-view-id>/auditlog.jsp</to-view-id>
         </navigation-case>
         
@@ -164,7 +164,7 @@
          
 
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>       
 
@@ -180,42 +180,42 @@
                 
 <!-- End Navigation from the header bar -->           
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_3</from-outcome>
+            <from-outcome>duplicate-records</from-outcome>
             <to-view-id>/duplicaterecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_1</from-outcome>
+            <from-outcome>record-details</from-outcome>
             <to-view-id>/patientdetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_6</from-outcome>
+            <from-outcome>reports</from-outcome>
             <to-view-id>/reports.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_5</from-outcome>
+            <from-outcome>source-record</from-outcome>
             <to-view-id>/sourcerecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_4</from-outcome>
+            <from-outcome>assumed-matches</from-outcome>
             <to-view-id>/assumedmatches.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_2</from-outcome>
+            <from-outcome>transactions</from-outcome>
             <to-view-id>/transactions.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_7</from-outcome>
+            <from-outcome>audit-log</from-outcome>
             <to-view-id>/auditlog.jsp</to-view-id>
         </navigation-case>
         
@@ -255,42 +255,42 @@
    
 <!-- End Navigation from the header bar -->           
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_3</from-outcome>
+            <from-outcome>duplicate-records</from-outcome>
             <to-view-id>/duplicaterecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_1</from-outcome>
+            <from-outcome>record-details</from-outcome>
             <to-view-id>/patientdetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_6</from-outcome>
+            <from-outcome>reports</from-outcome>
             <to-view-id>/reports.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_5</from-outcome>
+            <from-outcome>source-record</from-outcome>
             <to-view-id>/sourcerecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_4</from-outcome>
+            <from-outcome>assumed-matches</from-outcome>
             <to-view-id>/assumedmatches.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_2</from-outcome>
+            <from-outcome>transactions</from-outcome>
             <to-view-id>/transactions.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_7</from-outcome>
+            <from-outcome>audit-log</from-outcome>
             <to-view-id>/auditlog.jsp</to-view-id>
         </navigation-case>
 <!-- End Navigation from the header bar -->        
@@ -323,7 +323,7 @@
 
 
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>       
 
@@ -334,42 +334,42 @@
                 
 <!-- End Navigation from the header bar -->           
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_3</from-outcome>
+            <from-outcome>duplicate-records</from-outcome>
             <to-view-id>/duplicaterecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_1</from-outcome>
+            <from-outcome>record-details</from-outcome>
             <to-view-id>/patientdetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_6</from-outcome>
+            <from-outcome>reports</from-outcome>
             <to-view-id>/reports.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_5</from-outcome>
+            <from-outcome>source-record</from-outcome>
             <to-view-id>/sourcerecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_4</from-outcome>
+            <from-outcome>assumed-matches</from-outcome>
             <to-view-id>/assumedmatches.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_2</from-outcome>
+            <from-outcome>transactions</from-outcome>
             <to-view-id>/transactions.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_7</from-outcome>
+            <from-outcome>audit-log</from-outcome>
             <to-view-id>/auditlog.jsp</to-view-id>
         </navigation-case>
         
@@ -394,7 +394,7 @@
         
 <!-- End Navigation from the header bar -->           
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>
                 <navigation-case>
@@ -403,37 +403,37 @@
         </navigation-case>       
        
         <navigation-case>
-            <from-outcome>to_screen_3</from-outcome>
+            <from-outcome>duplicate-records</from-outcome>
             <to-view-id>/duplicaterecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_1</from-outcome>
+            <from-outcome>record-details</from-outcome>
             <to-view-id>/patientdetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_6</from-outcome>
+            <from-outcome>reports</from-outcome>
             <to-view-id>/reports.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_5</from-outcome>
+            <from-outcome>source-record</from-outcome>
             <to-view-id>/sourcerecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_4</from-outcome>
+            <from-outcome>assumed-matches</from-outcome>
             <to-view-id>/assumedmatches.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_2</from-outcome>
+            <from-outcome>transactions</from-outcome>
             <to-view-id>/transactions.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_7</from-outcome>
+            <from-outcome>audit-log</from-outcome>
             <to-view-id>/auditlog.jsp</to-view-id>
         </navigation-case>
         
@@ -523,42 +523,42 @@
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_3</from-outcome>
+            <from-outcome>duplicate-records</from-outcome>
             <to-view-id>/duplicaterecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_1</from-outcome>
+            <from-outcome>record-details</from-outcome>
             <to-view-id>/patientdetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_6</from-outcome>
+            <from-outcome>reports</from-outcome>
             <to-view-id>/reports.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_5</from-outcome>
+            <from-outcome>source-record</from-outcome>
             <to-view-id>/sourcerecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_4</from-outcome>
+            <from-outcome>assumed-matches</from-outcome>
             <to-view-id>/assumedmatches.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_2</from-outcome>
+            <from-outcome>transactions</from-outcome>
             <to-view-id>/transactions.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_7</from-outcome>
+            <from-outcome>audit-log</from-outcome>
             <to-view-id>/auditlog.jsp</to-view-id>
         </navigation-case>        
 <!-- End Navigation from the header bar -->        
@@ -590,42 +590,42 @@
 
 <!-- End Navigation from the header bar -->           
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_3</from-outcome>
+            <from-outcome>duplicate-records</from-outcome>
             <to-view-id>/duplicaterecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_1</from-outcome>
+            <from-outcome>record-details</from-outcome>
             <to-view-id>/patientdetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_6</from-outcome>
+            <from-outcome>reports</from-outcome>
             <to-view-id>/reports.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_5</from-outcome>
+            <from-outcome>source-record</from-outcome>
             <to-view-id>/sourcerecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_4</from-outcome>
+            <from-outcome>assumed-matches</from-outcome>
             <to-view-id>/assumedmatches.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_2</from-outcome>
+            <from-outcome>transactions</from-outcome>
             <to-view-id>/transactions.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_7</from-outcome>
+            <from-outcome>audit-log</from-outcome>
             <to-view-id>/auditlog.jsp</to-view-id>
         </navigation-case>
         
@@ -678,42 +678,42 @@
 
 <!-- End Navigation from the header bar -->           
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_3</from-outcome>
+            <from-outcome>duplicate-records</from-outcome>
             <to-view-id>/duplicaterecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_1</from-outcome>
+            <from-outcome>record-details</from-outcome>
             <to-view-id>/patientdetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_6</from-outcome>
+            <from-outcome>reports</from-outcome>
             <to-view-id>/reports.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_5</from-outcome>
+            <from-outcome>source-record</from-outcome>
             <to-view-id>/sourcerecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_4</from-outcome>
+            <from-outcome>assumed-matches</from-outcome>
             <to-view-id>/assumedmatches.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_2</from-outcome>
+            <from-outcome>transactions</from-outcome>
             <to-view-id>/transactions.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_7</from-outcome>
+            <from-outcome>audit-log</from-outcome>
             <to-view-id>/auditlog.jsp</to-view-id>
         </navigation-case>
         
@@ -753,42 +753,42 @@
 
 <!-- End Navigation from the header bar -->           
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_3</from-outcome>
+            <from-outcome>duplicate-records</from-outcome>
             <to-view-id>/duplicaterecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_1</from-outcome>
+            <from-outcome>record-details</from-outcome>
             <to-view-id>/patientdetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_6</from-outcome>
+            <from-outcome>reports</from-outcome>
             <to-view-id>/reports.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_5</from-outcome>
+            <from-outcome>source-record</from-outcome>
             <to-view-id>/sourcerecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_4</from-outcome>
+            <from-outcome>assumed-matches</from-outcome>
             <to-view-id>/assumedmatches.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_2</from-outcome>
+            <from-outcome>transactions</from-outcome>
             <to-view-id>/transactions.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_7</from-outcome>
+            <from-outcome>audit-log</from-outcome>
             <to-view-id>/auditlog.jsp</to-view-id>
         </navigation-case>
         
@@ -822,42 +822,42 @@
                 
 <!-- End Navigation from the header bar -->           
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_3</from-outcome>
+            <from-outcome>duplicate-records</from-outcome>
             <to-view-id>/duplicaterecords_new.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_1</from-outcome>
+            <from-outcome>record-details</from-outcome>
             <to-view-id>/patientdetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_6</from-outcome>
+            <from-outcome>reports</from-outcome>
             <to-view-id>/reports.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_5</from-outcome>
+            <from-outcome>source-record</from-outcome>
             <to-view-id>/sourcerecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_4</from-outcome>
+            <from-outcome>assumed-matches</from-outcome>
             <to-view-id>/assumedmatches.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_2</from-outcome>
+            <from-outcome>transactions</from-outcome>
             <to-view-id>/transactions.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_7</from-outcome>
+            <from-outcome>audit-log</from-outcome>
             <to-view-id>/auditlog.jsp</to-view-id>
         </navigation-case>
         
@@ -886,7 +886,7 @@
         <!-- END Navigation rule to edit main euid page  -->                
 
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>       
            
@@ -897,42 +897,42 @@
                 
 <!-- End Navigation from the header bar -->           
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_3</from-outcome>
+            <from-outcome>duplicate-records</from-outcome>
             <to-view-id>/duplicaterecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_1</from-outcome>
+            <from-outcome>record-details</from-outcome>
             <to-view-id>/patientdetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_6</from-outcome>
+            <from-outcome>reports</from-outcome>
             <to-view-id>/reports.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_5</from-outcome>
+            <from-outcome>source-record</from-outcome>
             <to-view-id>/sourcerecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_4</from-outcome>
+            <from-outcome>assumed-matches</from-outcome>
             <to-view-id>/assumedmatches.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_2</from-outcome>
+            <from-outcome>transactions</from-outcome>
             <to-view-id>/transactions.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_7</from-outcome>
+            <from-outcome>audit-log</from-outcome>
             <to-view-id>/auditlog.jsp</to-view-id>
         </navigation-case>
         
@@ -956,48 +956,48 @@
         <from-view-id>/ameuiddetails.jsp</from-view-id>  
 
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>       
 
 <!-- End Navigation from the header bar -->           
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_3</from-outcome>
+            <from-outcome>duplicate-records</from-outcome>
             <to-view-id>/duplicaterecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_1</from-outcome>
+            <from-outcome>record-details</from-outcome>
             <to-view-id>/patientdetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_6</from-outcome>
+            <from-outcome>reports</from-outcome>
             <to-view-id>/reports.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_5</from-outcome>
+            <from-outcome>source-record</from-outcome>
             <to-view-id>/sourcerecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_4</from-outcome>
+            <from-outcome>assumed-matches</from-outcome>
             <to-view-id>/assumedmatches.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_2</from-outcome>
+            <from-outcome>transactions</from-outcome>
             <to-view-id>/transactions.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_7</from-outcome>
+            <from-outcome>audit-log</from-outcome>
             <to-view-id>/auditlog.jsp</to-view-id>
         </navigation-case>
         
@@ -1019,7 +1019,7 @@
     <navigation-rule>
         <from-view-id>/editmaineuid.jsp</from-view-id>  
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>       
 
@@ -1035,42 +1035,42 @@
         
 <!-- End Navigation from the header bar -->           
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_3</from-outcome>
+            <from-outcome>duplicate-records</from-outcome>
             <to-view-id>/duplicaterecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_1</from-outcome>
+            <from-outcome>record-details</from-outcome>
             <to-view-id>/patientdetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_6</from-outcome>
+            <from-outcome>reports</from-outcome>
             <to-view-id>/reports.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_5</from-outcome>
+            <from-outcome>source-record</from-outcome>
             <to-view-id>/sourcerecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_4</from-outcome>
+            <from-outcome>assumed-matches</from-outcome>
             <to-view-id>/assumedmatches.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_2</from-outcome>
+            <from-outcome>transactions</from-outcome>
             <to-view-id>/transactions.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_7</from-outcome>
+            <from-outcome>audit-log</from-outcome>
             <to-view-id>/auditlog.jsp</to-view-id>
         </navigation-case>
         
@@ -1099,48 +1099,48 @@
         </navigation-case>       
 
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>       
 
 <!-- End Navigation from the header bar -->           
         <navigation-case>
-            <from-outcome>to_screen_8</from-outcome>
+            <from-outcome>dashboard</from-outcome>
             <to-view-id>/dashboard.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_3</from-outcome>
+            <from-outcome>duplicate-records</from-outcome>
             <to-view-id>/duplicaterecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_1</from-outcome>
+            <from-outcome>record-details</from-outcome>
             <to-view-id>/patientdetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_6</from-outcome>
+            <from-outcome>reports</from-outcome>
             <to-view-id>/reports.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_5</from-outcome>
+            <from-outcome>source-record</from-outcome>
             <to-view-id>/sourcerecords.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_4</from-outcome>
+            <from-outcome>assumed-matches</from-outcome>
             <to-view-id>/assumedmatches.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_2</from-outcome>
+            <from-outcome>transactions</from-outcome>
             <to-view-id>/transactions.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
-            <from-outcome>to_screen_7</from-outcome>
+            <from-outcome>audit-log</from-outcome>
             <to-view-id>/auditlog.jsp</to-view-id>
         </navigation-case>
         

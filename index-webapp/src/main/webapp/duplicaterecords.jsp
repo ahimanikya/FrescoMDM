@@ -114,7 +114,7 @@
                                                        label="#{feildConfig.displayName}" 
                                                        onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                        onkeyup="javascript:qws_field_on_key_up(this)"
-                                                       onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
+                                                       onblur="javascript:validate_number(this,'#{feildConfig.displayName}');javascript:accumilateFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
                                                        value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
                                                        maxlength="#{feildConfig.maxLength}" 
                                                        rendered="#{feildConfig.name ne 'LID'}"/>
@@ -138,265 +138,17 @@
                                     </nobr>
                                 </h:column>
                                 
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && feildConfig.range  && feildConfig.displayName eq 'DOB From'}" >
+                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6}" >
                                     <nobr>
-                                        <h:inputText id="DOBFrom" label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.displayName]}"
+                                        <h:inputText  label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.displayName]}"
                                                      required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
                                                      onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.displayName}')"
+                                                     onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFieldsOnBlur(this,'#{feildConfig.displayName}')"
                                                      onkeyup="javascript:qws_field_on_key_up(this)" />
                                         <script> var dateFrom =  getDateFieldName('advancedformData','DOBFrom');</script>
                                         <a HREF="javascript:void(0);" 
                                            onclick="g_Calendar.show(event,dateFrom)" > 
                                             <h:graphicImage  id="calImgDateFrom" 
-                                                             alt="calendar Image" styleClass="imgClass"
-                                                             url="./images/cal.gif"/>               
-                                        </a>
-                                    </nobr>
-                                </h:column>
-                                
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && feildConfig.range  && feildConfig.displayName eq 'DOB To'}" >
-                                    <nobr>
-                                        <h:inputText id="DOBTo" label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.displayName]}"
-                                                     required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                     onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.displayName}')"
-                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                        <script> var dateTo =  getDateFieldName('advancedformData','DOBTo');</script>
-                                        <a HREF="javascript:void(0);" 
-                                           onclick="g_Calendar.show(event,dateTo)" > 
-                                            <h:graphicImage  id="calImgDateTo" 
-                                                             alt="calendar Image" styleClass="imgClass"
-                                                             url="./images/cal.gif"/>               
-                                        </a>
-                                    </nobr>
-                                </h:column>
-                                
-                                
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'StartDate'}" >
-                                    <nobr>
-                                    <h:inputText id="StartDate" label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                 required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                 onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                 onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.displayName}')"
-                                                 onkeyup="javascript:qws_field_on_key_up(this)" />
-                                    <script> var startdate = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
-                                    <a HREF="javascript:void(0);" 
-                                       onclick="g_Calendar.show(event,startdate)" > 
-                                        <h:graphicImage  id="calImgStartDate" 
-                                                         alt="calendar Image" styleClass="imgClass"
-                                                         url="./images/cal.gif"/>               
-                                    </a>
-                                    <nobr>
-                                </h:column>
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'EndDate'}" >
-                                    <nobr>
-                                        <h:inputText id="EndDate" label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                     required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                     onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.displayName}')"
-                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                        <script> var EndDate = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
-                                        <a HREF="javascript:void(0);" 
-                                           onclick="g_Calendar.show(event,EndDate)" > 
-                                            <h:graphicImage  id="calImgEndDate" 
-                                                             alt="calendar Image" styleClass="imgClass"
-                                                             url="./images/cal.gif"/>               
-                                        </a>
-                                    </nobr>
-                                </h:column>
-                                
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && feildConfig.name eq 'create_start_date'}" >
-                                    <nobr>
-                                    <h:inputText id="create_start_date" label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                 required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                 onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                 onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                 onkeyup="javascript:qws_field_on_key_up(this)" />
-                                    <script> var create_start_date = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
-                                   <a HREF="javascript:void(0);" 
-                                       onclick="g_Calendar.show(event,create_start_date)" > 
-                                        <h:graphicImage  id="calImgcreate_start_date" 
-                                                         alt="calendar Image" styleClass="imgClass"
-                                                         url="./images/cal.gif"/>               
-                                    </a>
-                                    <nobr>
-                                </h:column>
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && feildConfig.name eq 'create_end_date'}" >
-                                    <nobr>
-                                        <h:inputText id="create_end_date" label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                     required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                     onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                        <script> var create_end_date = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
-                                        <a HREF="javascript:void(0);" 
-                                           onclick="g_Calendar.show(event,create_end_date)" > 
-                                            <h:graphicImage  id="calImgcreate_end_date" 
-                                                             alt="calendar Image" styleClass="imgClass"
-                                                             url="./images/cal.gif"/>               
-                                        </a>
-                                    </nobr>
-                                </h:column>
-                                
-                                
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'DOB'}" >
-                                    <nobr>
-                                        <h:inputText id="DOB" label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                     required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                     onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
-                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                        <script> var DOB = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
-                                        <a HREF="javascript:void(0);" 
-                                           onclick="g_Calendar.show(event,DOB)" > 
-                                            <h:graphicImage  id="calImgDOB" 
-                                                             alt="calendar Image" styleClass="imgClass"
-                                                             url="./images/cal.gif"/>               
-                                        </a>
-                                    </nobr>
-                                </h:column>
-                                
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'Dod'}" >
-                                    <nobr>
-                                        <h:inputText id="Dod" label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                     onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
-                                                     required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                        <script> var Dod = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
-                                        <a HREF="javascript:void(0);" 
-                                           onclick="g_Calendar.show(event,Dod)" > 
-                                            <h:graphicImage  id="calImgDod" 
-                                                             alt="calendar Image" styleClass="imgClass"
-                                                             url="./images/cal.gif"/>               
-                                        </a>
-                                    </nobr>
-                                </h:column>
-                                
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'Date1'}" >
-                                    <nobr>
-                                        <h:inputText id="Date1" label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                     required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                     onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
-                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                        <script> var Date1 = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
-                                        <a HREF="javascript:void(0);" 
-                                           onclick="g_Calendar.show(event,Date1)" > 
-                                            <h:graphicImage  id="calImgDate1" 
-                                                             alt="calendar Image" styleClass="imgClass"
-                                                             url="./images/cal.gif"/>               
-                                        </a>
-                                    </nobr>
-                                </h:column>
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'Date2'}" >
-                                    <nobr>
-                                        <h:inputText id="Date2" label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                     required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                     onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
-                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                        <script> var Date2 = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
-                                        <a HREF="javascript:void(0);" 
-                                           onclick="g_Calendar.show(event,Date2)" > 
-                                            <h:graphicImage  id="calImgDate2" 
-                                                             alt="calendar Image" styleClass="imgClass"
-                                                             url="./images/cal.gif"/>               
-                                        </a>
-                                    </nobr>
-                                </h:column>
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'Date3'}" >
-                                    <nobr>
-                                        <h:inputText id="Date3" label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                     required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                     onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
-                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                        <script> var Date3 = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
-                                        <a HREF="javascript:void(0);" 
-                                           onclick="g_Calendar.show(event,Date3)" > 
-                                            <h:graphicImage  id="calImgDate3" 
-                                                             alt="calendar Image" styleClass="imgClass"
-                                                             url="./images/cal.gif"/>               
-                                        </a>
-                                    </nobr>
-                                </h:column>
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'Date4'}" >
-                                    <nobr>
-                                        <h:inputText id="Date4" label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                     required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                     onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
-                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                        <script> var Date4 = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
-                                        <a HREF="javascript:void(0);" 
-                                           onclick="g_Calendar.show(event,Date4)" > 
-                                            <h:graphicImage  id="calImgDate4" 
-                                                             alt="calendar Image" styleClass="imgClass"
-                                                             url="./images/cal.gif"/>               
-                                        </a>
-                                    </nobr>
-                                </h:column>
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'Date5'}" >
-                                    <nobr>
-                                        <h:inputText id="Date5" label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                     required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                     onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
-                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                        <script> var Date5 = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
-                                        <a HREF="javascript:void(0);" 
-                                           onclick="g_Calendar.show(event,Date5)" > 
-                                            <h:graphicImage  id="calImgDate5" 
-                                                             alt="calendar Image" styleClass="imgClass"
-                                                             url="./images/cal.gif"/>               
-                                        </a>
-                                    </nobr>
-                                </h:column>
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'PensionExpDate'}" >
-                                    <nobr>
-                                        <h:inputText id="PensionExpDate" label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                     required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                     onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
-                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                        <script> var PensionExpDate = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
-                                        <a HREF="javascript:void(0);" 
-                                           onclick="g_Calendar.show(event,PensionExpDate)" > 
-                                            <h:graphicImage  id="calImgPensionExpDate" 
-                                                             alt="calendar Image" styleClass="imgClass"
-                                                             url="./images/cal.gif"/>               
-                                        </a>
-                                    </nobr>
-                                </h:column>
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'DummyDate'}" >
-                                    <nobr>
-                                        <h:inputText id="DummyDate" label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                     required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                     onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
-                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                        <script> var DummyDate = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
-                                        <a HREF="javascript:void(0);" 
-                                           onclick="g_Calendar.show(event,DummyDate)" > 
-                                            <h:graphicImage  id="calImgDummyDate" 
-                                                             alt="calendar Image" styleClass="imgClass"
-                                                             url="./images/cal.gif"/>               
-                                        </a>
-                                    </nobr>
-                                </h:column>
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 && !feildConfig.range  && feildConfig.name eq 'EnterDate'}" >
-                                    <nobr>
-                                        <h:inputText id="EnterDate" label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                     required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
-                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                        <script> var EnterDate = getDateFieldName('advancedformData','<h:outputText value="#{feildConfig.name }" />');</script>
-                                        <a HREF="javascript:void(0);" 
-                                           onclick="g_Calendar.show(event,EnterDate)" > 
-                                            <h:graphicImage  id="calImgEnterDate" 
                                                              alt="calendar Image" styleClass="imgClass"
                                                              url="./images/cal.gif"/>               
                                         </a>
@@ -472,7 +224,7 @@
                          request.setAttribute("finalArrayList", request.getAttribute("finalArrayList"));
                  %>                
                      <div class="printClass">
-                       <table cellpadding="0" cellspacing="0" border="0">
+                       <table cellpadding="0" cellspacing="0" border="0" align="right">
                          <tr>
                              <td>
                                  <h:outputText value="#{msgs.total_records_text}"/><%=finalArrayList.size()%>&nbsp;&nbsp;
@@ -637,12 +389,29 @@
                                                     </tr>
                                                 </table>
                                             </div> 
+                                            <%
+                                            String userAgent = request.getHeader("User-Agent");
+                                            boolean isFirefox = (userAgent != null && userAgent.indexOf("Firefox/") != -1);
+                                            response.setHeader("Vary", "User-Agent");
+                                         %>
+                                         <% if (isFirefox) {%>
+                                         <div id = "bar" style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
+                                              border-right: 1px solid #000000;border-top:1px solid #000000;position:relative;right:20px;" >
+                                         <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
+                                            <div id = "bar" style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
+                                                 <%=weight%>
+                                             </div>                                             
+                                         </div>
+                                         
+                                           <% }else{%>
                                             <div id = "bar" style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
-                                                <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                            </div>                                             
-                                            <div id = "bar" style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
-                                                <%=weight%>
-                                            </div> 
+                                             <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
+                                         </div>                                             
+                                         <div id = "bar" style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
+                                             <%=weight%>
+                                         </div> 
+                                      
+                                         <%}%>
                                             <div id="mainEuidContentDiv<%=countMain%>" class="dynaw169" >
                                                 <table border="0" cellspacing="0" cellpadding="0" class="w169">
                                                     <%
@@ -723,7 +492,7 @@
                                                         ValueExpression euidVaueExpressionList = ExpressionFactory.newInstance().createValueExpression(arlInner, arlInner.getClass());
                                                         %>
                                                          <h:form>
-                                                            <h:commandLink styleClass="downlink"  
+                                                            <h:commandLink styleClass="downlink"  rendered="#{Operations.potDup_SearchView}" 
                                                                            action="#{NavigationHandler.toCompareDuplicates}" 
                                                                            actionListener="#{SearchDuplicatesHandler.buildCompareDuplicateEuids}">
                                                                 <f:attribute name="euidsMap"  value="<%=euidVaueExpressionList%>"  />
@@ -800,6 +569,18 @@
          
      var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
      document.getElementById("advancedformData:selectedSearchType").value = selectedSearchValue;
+         if( document.advancedformData.elements[0]!=null) {
+		var i;
+		var max = document.advancedformData.length;
+		for( i = 0; i < max; i++ ) {
+			if( document.advancedformData.elements[ i ].type != "hidden" &&
+				!document.advancedformData.elements[ i ].disabled &&
+				!document.advancedformData.elements[ i ].readOnly ) {
+				document.advancedformData.elements[ i ].focus();
+				break;
+			}
+		}
+      }         
 
     </script>
      

@@ -108,7 +108,7 @@
                         <tr>
                             <td>
                                 <div style="height:500px;overflow:auto;">
-                                    <table>
+                                    <table cellspacing="5" cellpadding="0" border="0">
                                         <tr>
                                             
                                             <%
@@ -140,7 +140,7 @@
                 session.removeAttribute("comapreEuidsArrayList");        
                 request.setAttribute("comapreEuidsArrayList",eoArrayList);
             } 
-
+            String tranNo = null;
             int countEnt = 0;
 
             int countMain = 0;
@@ -148,14 +148,10 @@
             HashMap resultArrayMapMain = new HashMap();
             HashMap resultArrayMapCompare = new HashMap();
             SystemObject so = null;
-            ValueExpression sourceEUIDVaueExpression = null;
-            ValueExpression destinationEUIDVaueExpression = null;
             ValueExpression mergredHashMapVaueExpression = null;
-            EnterpriseObject sourceEO = null;
-            EnterpriseObject destinationEO = null;
             ArrayList eoSources = null;
             ArrayList eoHistory = null;
-
+            ValueExpression unMergeEuidVE = null;
             if (eoArrayList != null) {
                 request.setAttribute("comapreEuidsArrayList", request.getAttribute("comapreEuidsArrayList"));
                                             %>  
@@ -166,9 +162,6 @@
                                             String dupHeading = "Main Euid";
                                             String cssMain = "maineuidpreview";
                                             String cssClass = "dynaw169";
-                                            String cssHistory = "differentHistoryColour";
-                                            String cssSources = "differentSourceColour";
-                                            String cssDiffPerson = "differentPersonColour";
                                             String menuClass = "menutop";
                                             String dupfirstBlue = "dupfirst";
                                             String styleClass="yellow";
@@ -267,7 +260,7 @@
                                             <!-- Display the field Values-->
                                             <td  valign="top">
                                                 <div id="outerMainContentDivid<%=countEnt%>" >
-                                                <div style="width:170px;overflow:auto">
+                                                <div style="width:170px;overflow:hidden">
                                                     <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleClass%>" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
@@ -405,7 +398,7 @@
                                             %>
                                             <td  valign="top">
                                                 <div id="mainDupSources<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
-                                                    <div style="width:170px;overflow:auto">
+                                                    <div style="width:170px;overflow:hidden">
                                                     <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="source" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
@@ -424,7 +417,7 @@
 
                                                     <div id="mainEuidContentButtonDiv<%=countEnt%>" class="source">
                                                         <div id="assEuidDataContent<%=countEnt%>" >
-                                                            <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleClass%>">
+                                                            <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="source">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
                                                                     <%
                                     for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
@@ -509,12 +502,14 @@
                                                     HashMap objectHistMap = (HashMap) eoHistory.get(i);
                                                     String key = (String) objectHistMap.keySet().toArray()[0];
                                                     String keyTitle = key.substring(0, key.indexOf(":"));
+                                                    int ind = key.indexOf(":");
+                                                    tranNo = key.substring(ind+1, key.length()); 
                                                     HashMap objectHistMapValues = (HashMap) objectHistMap.get(key);
                                                     HashMap eoValuesMap = (HashMap) objectHistMapValues.get("ENTERPRISE_OBJECT");
                                             %>
                                                <td  valign="top">
                                                 <div id="mainDupHistory<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
-                                                  <div style="width:170px;overflow:auto">
+                                                  <div style="width:170px;overflow:hidden">
                                                     <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="history" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
@@ -605,8 +600,104 @@
                                               <%                                                
                                                 }
                                               }%>                                            
-                                            <!--END displaying the History-->
+                                                <%
+                                                  if (request.getAttribute("mergeEOList") != null) {
+                                                    ArrayList mergeEOList = (ArrayList) request.getAttribute("mergeEOList");
+                                                    for (int eomerge = 0; eomerge < mergeEOList.size(); eomerge++) {
+                                                        HashMap objectMergeMap =(HashMap) mergeEOList.get(eomerge);
+                                                        HashMap mergeeoValuesMap = (HashMap) objectMergeMap.get("ENTERPRISE_OBJECT");
+                                                %>
+                                                <td  valign="top">
+                                  <div id="viewMergeHistory<%=countEnt%>">
+                                  <div style="width:170px;overflow:hidden">
+                                    <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="merge">
+                                        <table border="0" cellspacing="0" cellpadding="0">
+                                           <tr>
+                                                <td class="menutopMerge">Merged Record</td>
+                                            </tr> 
                                             
+                                            <tr>
+                                            <td valign="top">
+                                                    <font style="text-decoration:none;color:#000000;"><b><%=mergeeoValuesMap.get("EUID")%></b></font>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div> 
+                                    <div id="mainEuidContentButtonDiv<%=countEnt%>">
+                                                        <div id="assEuidDataContent<%=countEnt%>" >
+                                                            <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="merge">
+                                                                <table border="0" cellspacing="0" cellpadding="0">
+                                                                    <%
+                                    for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
+                                        FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
+                                        if(!(objScreenObject.getRootObj().getName()+".EUID").equalsIgnoreCase(fieldConfigMap.getFullFieldName())) {
+                                            
+                                        if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
+                                            epathValue = fieldConfigMap.getFullFieldName();
+                                        } else {
+                                            epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
+                                        }
+                                                                    %>  
+                                                                        <tr>
+                                                                            <td>
+                                                                                <%if (mergeeoValuesMap.get(epathValue) != null) {%>
+                                                                                
+                                                                                <%=mergeeoValuesMap.get(epathValue)%>
+                                                                                <%} else {%>
+                                                                                &nbsp;
+                                                                                <%}%>
+                                                                                
+                                                                            </td>
+                                                                        </tr>
+                                                                    <%
+                                        }
+                                        }
+                                                                    %>
+
+                                                                   <%
+                                                                   
+                                                                   for (int io = 0; io < arrObjectNodeConfig.length; io++) {
+                                                                    ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[io];
+                                                                    ArrayList  minorObjectMapList =  (ArrayList) objectMergeMap.get("EO" + childObjectNodeConfig.getName() + "ArrayList");
+                                                                    HashMap minorObjectHashMap = new HashMap();
+                                                                     if(minorObjectMapList.size() >0) {
+                                                                       minorObjectHashMap = (HashMap) minorObjectMapList.get(0);
+                                                                     }  
+                                                                     FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
+                                                                    
+
+                                                                   %>
+                                                                    <tr><td>&nbsp;</td></tr>
+                                                                    <tr>
+                                                                    <%
+                                                                    for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
+                                                                     FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
+                                                                     epathValue = fieldConfigMap.getFullFieldName();
+                                                                    %>  
+                                                                    <tr>
+                                                                        <td>
+                                                                                <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
+                                                                                <%=minorObjectHashMap.get(epathValue)%>
+                                                                                <%} else {%>
+                                                                                &nbsp;
+                                                                                <%}%>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <%
+                                                                      }
+                                                                    }
+                                                                    %>
+
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                </div> <!--Main div for source-->  
+                                </div>
+                            </td> 
+                                            <%}%>
+                                            <%}%> 
+                                      <!--END displaying the History-->
                                            <%}%>
                                            <td valign="top"><div id="previewPane"></div></td>
                                         </tr>
@@ -651,13 +742,13 @@
                                                         <%if ("active".equalsIgnoreCase(eoStatus)) {%>
                                                 <tr> 
                                                     <td valign="top" width="125px">
-                                                        <h:commandLink  styleClass="button" 
+                                                        <h:commandLink  styleClass="button" rendered="#{Operations.EO_Edit}"
                                                                         action="#{NavigationHandler.toEditMainEuid}"
                                                                         actionListener="#{EditMainEuidHandler.setEditEOFields}">
                                                              <f:attribute name="euidValueExpression" value="<%=euidValueExpression%>"/>
-                                                            <span><h:outputText value="Edit EUID" /> </span>
+                                                            <span><h:outputText value="#{msgs.edit_euid_button_text}" /> </span>
                                                         </h:commandLink>  
-                                                        <h:commandLink  styleClass="button" 
+                                                        <h:commandLink  styleClass="button" rendered="#{Operations.EO_Deactivate}"
                                                                         actionListener="#{PatientDetailsHandler.deactivateEO}">
                                                              <f:attribute name="euidValueExpression" value="<%=euidValueExpression%>"/>
                                                             <span><h:outputText value="#{msgs.source_rec_deactivate_but}" /></span>
@@ -669,7 +760,7 @@
                                                         
                                                     <tr>
                                                          <td valign="top" width="125px">
-                                                        <h:commandLink  styleClass="button" 
+                                                        <h:commandLink  styleClass="button" rendered="#{Operations.EO_Activate}"
                                                                         actionListener="#{PatientDetailsHandler.activateEO}">
                                                              <f:attribute name="euidValueExpression" value="<%=euidValueExpression%>"/>
                                                             <span><h:outputText value="#{msgs.source_rec_activate_but}" /></span>
@@ -694,55 +785,125 @@
                                                           <a href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
                                                       </td>                                              
                                                   </tr>
-                                           
+                                                    <tr>
+                                                      <td valign="top">
+                                                         <%
+                                                          String URI = request.getRequestURI();
+                                                          URI = URI.substring(1, URI.lastIndexOf("/"));
+                                                          %>
+                                                         <a href="javascript:void(0);" class="viewbtn" onclick="javascript:ajaxURL('/<%=URI%>/viewmergetree.jsf?euid=<%=personfieldValuesMapEO.get("EUID")%>&rand=<%=rand%>','tree',event)">
+                                                          <h:outputText value="#{msgs.View_MergeTree_but_text}"/>
+                                                         </a>
+                                                      </td>
+                                                  </tr>
                                                     </h:form>
                                                 </table>
                                             </div> 
                                         </td>
-                                        
-                                        <%}%>
+                                        <%if(eoHistory.size() > 0) {%>
+                                        <td valign="top">
+                                                     <%
+                                                       for(int i=0;i<eoHistory.size();i++) {
+                                                       HashMap objectHist = (HashMap) eoHistory.get(i);
+                                                       String mergekey = (String) objectHist.keySet().toArray()[0];
+                                                        if (mergekey.startsWith("euidMerge")) {                                                  
+                                                        ValueExpression tranNoValueExpressionviewmerge = ExpressionFactory.newInstance().createValueExpression(tranNo, tranNo.getClass());
+                                                        ValueExpression eoArrayListVE = ExpressionFactory.newInstance().createValueExpression(eoArrayList, eoArrayList.getClass());
+                                                      %>  
+                                                      <div id="unmerge">    
+                                                      <table cellpadding="0" cellspacing="0" border="0">
+                                                          <tr><td>&nbsp;</td></tr>  
+                                                          <tr><td>&nbsp;</td></tr>
+                                                          <tr>
+                                                            <td valign="top" colspan="2">
+                                                                <h:outputLink styleClass="viewbtn" rendered="#{Operations.EO_Unmerge}"
+                                                                              onclick="Javascript:showConfirm('unmergePopupDiv',event)" 
+                                                                              value="Javascript:void(0)">
+                                                                    <h:outputText  value="#{msgs.Unmerge_but_text}"/>                                                          
+                                                                </h:outputLink>
+                                                            </td> 
+                                                        </tr>
+                                                        <tr>
+                                                            <td valign="top" colspan="2">
+                                                                <h:form>
+                                                                    <h:commandLink styleClass="activeviewbtn" rendered="#{Operations.EO_Merge}"
+                                                                                   actionListener="#{PatientDetailsHandler.viewMergedRecords}">
+                                                                        <f:attribute name="eoArrayList" value="<%=eoArrayListVE%>"/>                   
+                                                                        <f:attribute name="tranNoValueExpressionviewmerge" value="<%=tranNoValueExpressionviewmerge%>"/>                   
+                                                                        <h:outputText  value="#{msgs.View_Merge_Records_but_text}"/>                                                            
+                                                                    </h:commandLink>
+                                                                </h:form>
+                                                            </td> 
+                                                        </tr>
+                                                        
+                                                        </table>
+                                                      </div>
+                                                   <%}%>
+                                                   <%}%>
+                                          </td>  
+                                          <%}%> 
                                     </table>
                                 </div>
                             </td>
                         </tr>
-                   <%}%>
-                        
+                   <%
+                              unMergeEuidVE = ExpressionFactory.newInstance().createValueExpression(euid, euid.getClass());
+                    %> 
+                 <%}%>  
+                 <%}%>
                     </table>
-                </div>                                       
+                </div>
+                
             </div>    
                 <div id="unmergePopupDiv" class="alert" style="TOP: 2250px; LEFT: 500px; HEIGHT: 150px;  WIDTH: 300px;VISIBILITY: hidden;">
-                                  <table cellpadding="0" cellspacing="0">
-                                      <h:form>
-                                          <tr><th align="left">Confirmation</th><th align="right"><a href="javascript:void(0)" rel="unmergepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th></tr>
-                                          <tr><td colspan="2"> &nbsp;</td></tr>
-                                          <tr><td colspan="2"><h:outputText value="#{msgs.unmerge_popup_content_text}" /></td></tr>
-                                          <tr><td colspan="2"> &nbsp;</td></tr>
-                                          <tr><td colspan="2"> &nbsp;</td></tr>
-                                          <tr><td>
-                                                  <h:commandLink styleClass="button" 
-                                                                 actionListener="#{PatientDetailsHandler.unmergeEnterpriseObject}">
-                                                                         
-                                                      <span><h:outputText value="#{msgs.ok_text_button}" /></span>
-                                                  </h:commandLink>   
-                                                  <h:outputLink  onclick="javascript:showConfirm('unmergePopupDiv',event)" 
-                                                                 styleClass="button"          
-                                                                 value="javascript:void(0)">
-                                                      <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
-                                                  </h:outputLink>   
-                                          </td></tr>
-                                          <tr><td colspan="2"> &nbsp;</td></tr>
-                                          <tr>
-                                              <td colspan="2">
-                                                  <h:messages style="font-size:10px; font-color:red;" layout="table" />
-                                              </td>
-                                          </tr>        
-                                      </h:form>
-                                  </table>
-                              </div> 
+                                                        <table cellpadding="0" cellspacing="0">
+                                                            <h:form>
+                                          <tr><th align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th><th align="right"><a href="javascript:void(0)" rel="unmergepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th></tr>
+                                                                <tr><td colspan="2"> &nbsp;</td></tr>
+                                                                <tr><td colspan="2"><h:outputText value="#{msgs.unmerge_popup_content_text}" /></td></tr>
+                                                                <tr><td colspan="2"> &nbsp;</td></tr>
+                                                                <tr><td colspan="2"> &nbsp;</td></tr>
+                                                                <tr><td>
+                                                                        <h:commandLink styleClass="button" 
+                                                                                       actionListener="#{PatientDetailsHandler.unmergeEnterpriseObject}">
+                                                                            <f:attribute name="unMergeEuidVE" value="<%=unMergeEuidVE%>"/>                   
+                                                                            <span><h:outputText value="#{msgs.ok_text_button}" /></span>
+                                                                        </h:commandLink>   
+                                                                        <h:outputLink  onclick="javascript:showConfirm('unmergePopupDiv',event)" 
+                                                                                       styleClass="button"          
+                                                                                       value="javascript:void(0)">
+                                                                            <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
+                                                                        </h:outputLink>   
+                                                                </td></tr>
+                                                                <tr><td colspan="2"> &nbsp;</td></tr>
+                                                                <tr>
+                                                                    <td colspan="2">
+                                                                        <h:messages style="font-size:10px; font-color:red;" layout="table" />
+                                                                    </td>
+                                                                </tr>        
+                                                            </h:form>
+                                                        </table>
+                                                    </div>                                 
                        
          <div id="unmergepopuphelp" class="balloonstyle"><h:outputText  value="#{msgs.unmergepopup_help}"/></div>     
          <div id="tree" style="PADDING-LEFT: 5px; LEFT: 25px; VISIBILITY: hidden; WIDTH: 200px; PADDING-TOP: 5px;  POSITION: absolute;  OVERFLOW: auto; TOP: 260px; HEIGHT: 150px; BACKGROUND-COLOR: #c4c8e1; BORDER-RIGHT:  #000099 thin solid; BORDER-TOP: #000099 thin solid; BORDER-LEFT: #000099 thin solid; BORDER-BOTTOM:  #000099 thin solid"></div> 
         </body>
+<script>
+         if( document.potentialDupBasicForm.elements[0]!=null) {
+		var i;
+		var max = document.potentialDupBasicForm.length;
+		for( i = 0; i < max; i++ ) {
+			if( document.potentialDupBasicForm.elements[ i ].type != "hidden" &&
+				!document.potentialDupBasicForm.elements[ i ].disabled &&
+				!document.potentialDupBasicForm.elements[ i ].readOnly ) {
+				document.potentialDupBasicForm.elements[ i ].focus();
+				break;
+			}
+		}
+      }         
+
+    </script>
+
     </html>
     </f:view>
     

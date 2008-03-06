@@ -42,8 +42,7 @@
     <html>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-            
-            <title>Master Indexed Web Application </title> 
+            <title><h:outputText value="#{msgs.application_heading}"/></title>
             
             <!-- YAHOO Global Object source file --> 
             <script type="text/javascript" src="http://yui.yahooapis.com/2.3.1/build/yahoo/yahoo-min.js" ></script>
@@ -111,7 +110,7 @@
                                 </tr>
                                 <tr>
                                     <td class="tablehead" align="left" colspan="2">
-                                        <h:outputText value="Edit Main EUID" /> <%=editEnterpriseObject.getEUID()%> &nbsp;&nbsp;
+                                        <h:outputText value="#{msgs.edit_main_euid_label_text}" /> <%=editEnterpriseObject.getEUID()%> &nbsp;&nbsp;
                                     </td>
                                 </tr>
                                 <tr>
@@ -119,7 +118,7 @@
                                         <h:commandLink  styleClass="button" 
                                                         actionListener="#{EditMainEuidHandler.toUpdatedEuidDetails}"
                                                         action="#{NavigationHandler.toEuidDetails}">
-                                            <span><h:outputText value="Back" /></span>
+                                            <span><h:outputText value="#{msgs.back_button_text}" /></span>
                                         </h:commandLink>               
                                     </td>
                                 </tr>
@@ -131,7 +130,7 @@
                                             <table border="0" width="100%">
                                                 <tr>
                                                     <td class="tablehead" align="right"  colspan="2">
-                                                        <h:outputText value="Main EUID"/>                                                
+                                                        <h:outputText value="#{msgs.main_euid_label_text}"/>                                                
                                                     </td>
                                                 </tr>
                                             </table>
@@ -203,7 +202,7 @@
                                                                      />
                                                     </h:column>
                                                     <!--Rendering Updateable HTML Text boxes date fields-->
-                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'DOB'}">
+                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6}">
                                                     <nobr>     
                                                         <h:inputText label="#{fieldConfigPer.displayName}"   
                                                                      value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"  
@@ -221,142 +220,7 @@
                                                         </a>
                                                     </nobr>
                                                 </h:column>
-                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Dod'}">
-                                                    <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                 value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                 id="DODEO"
-                                                                 disabled="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"
-                                                                 readonly="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"                                                                     
-                                                                 required="#{fieldConfigPer.required}"
-                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                 onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                    <script> var DOD = getDateFieldName('basicAddformData',':DODEO');</script>                                                                             
-                                                    <a HREF="javascript:void(0);" 
-                                                       onclick="g_Calendar.show(event,DOD)" > 
-                                                        <h:graphicImage  id="calImgStartDate" 
-                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                         url="./images/cal.gif"/>               
-                                                    </a>
-                                                </h:column>
-                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'PensionExpDate'}">
-                                                    <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                 value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                 id="PensionExpDateEO"
-                                                                 required="#{fieldConfigPer.required}"
-                                                                 disabled="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"
-                                                                 readonly="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"                                                                     
-                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                 onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                    <script> var EditPensionDate = getDateFieldName('basicAddformData',':PensionExpDateEO');</script>                                                                             
-                                                    <a HREF="javascript:void(0);" 
-                                                       onclick="g_Calendar.show(event,EditPensionDate)" > 
-                                                        <h:graphicImage  id="calImgEditPensionExpDate" 
-                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                         url="./images/cal.gif"/>               
-                                                    </a>
-                                                </h:column>
-                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'DummyDate'}">
-                                                    <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                 value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                 id="DummyDateEO"
-                                                                 disabled="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"
-                                                                 readonly="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"                                                                     
-                                                                 required="#{fieldConfigPer.required}"
-                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                 onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                    <script> var EditDummyDate = getDateFieldName('basicAddformData',':DummyDateEO');</script>                                                                             
-                                                    <a HREF="javascript:void(0);" 
-                                                       onclick="g_Calendar.show(event,EditDummyDate)" > 
-                                                        <h:graphicImage  id="calImgEditDummyDate" 
-                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                         url="./images/cal.gif"/>               
-                                                    </a>
-                                                </h:column>
-                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Date1'}">
-                                                    <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                 value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                 id="Date1EO"
-                                                                 disabled="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"
-                                                                 readonly="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"                                                                     
-                                                                 required="#{fieldConfigPer.required}"
-                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                 onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                    <script> var EditDate1 = getDateFieldName('basicAddformData',':Date1EO');</script>                                                                             
-                                                    <a HREF="javascript:void(0);" 
-                                                       onclick="g_Calendar.show(event,EditDate1)" > 
-                                                        <h:graphicImage  id="calImgEditDate1" 
-                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                         url="./images/cal.gif"/>               
-                                                    </a>
-                                                </h:column>
-                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Date2'}">
-                                                    <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                 value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                 id="Date2EO"
-                                                                 required="#{fieldConfigPer.required}"
-                                                                 disabled="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"
-                                                                 readonly="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"                                                                     
-                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                 onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                    <script> var EditDate2 = getDateFieldName('basicAddformData',':Date2EO');</script>                                                                             
-                                                    <a HREF="javascript:void(0);" 
-                                                       onclick="g_Calendar.show(event,EditDate2)" > 
-                                                        <h:graphicImage  id="calImgEditDate2" 
-                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                         url="./images/cal.gif"/>               
-                                                    </a>
-                                                </h:column>
-                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Date3'}">
-                                                    <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                 value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                 disabled="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"
-                                                                 readonly="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"                                                                     
-                                                                 id="Date3EO"
-                                                                 required="#{fieldConfigPer.required}"
-                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                 onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                    <script> var EditDate3 = getDateFieldName('basicAddformData',':Date3EO');</script>                                                                             
-                                                    <a HREF="javascript:void(0);" 
-                                                       onclick="g_Calendar.show(event,EditDate3)" > 
-                                                        <h:graphicImage  id="calImgEditDate3" 
-                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                         url="./images/cal.gif"/>               
-                                                    </a>
-                                                </h:column>
-                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Date4'}">
-                                                    <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                 value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                 id="Date4EO"
-                                                                 required="#{fieldConfigPer.required}"
-                                                                 disabled="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"
-                                                                 readonly="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"                                                                     
-                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                 onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                    <script> var EditDate4 = getDateFieldName('basicAddformData',':Date4EO');</script>                                                                             
-                                                    <a HREF="javascript:void(0);" 
-                                                       onclick="g_Calendar.show(event,EditDate4)" > 
-                                                        <h:graphicImage  id="calImgEditDate4" 
-                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                         url="./images/cal.gif"/>               
-                                                    </a>
-                                                </h:column>
-                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Date5'}">
-                                                    <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                 value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                 id="Date5EO"
-                                                                 required="#{fieldConfigPer.required}"
-                                                                 disabled="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"
-                                                                 readonly="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"                                                                     
-                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                 onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                    <script> var EditDate5 = getDateFieldName('basicAddformData',':Date5EO');</script>                                                                             
-                                                    <a HREF="javascript:void(0);" 
-                                                       onclick="g_Calendar.show(event,EditDate5)" > 
-                                                        <h:graphicImage  id="calImgEditDate5" 
-                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                         url="./images/cal.gif"/>               
-                                                    </a>
-                                                </h:column>
+                                                
                                                 
                                                 <!--Rendering Updateable HTML Text Area-->
                                                 <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
@@ -761,10 +625,10 @@
                                                                              />
                                                             </h:column>
                                                             <!--Rendering Updateable HTML Text boxes date fields-->
-                                                            <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'DOB'}">
+                                                            <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 }">
                                                                 <h:inputText label="#{fieldConfigPer.displayName}"   
                                                                              value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                             id="DOBSO"
+                                                                        
                                                                              required="#{fieldConfigPer.required}"
                                                                              onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                              onkeyup="javascript:qws_field_on_key_up(this)" />
@@ -775,126 +639,7 @@
                                                                                      url="./images/cal.gif"/>               
                                                                 </a>
                                                             </h:column>
-                                                            <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Dod'}">
-                                                                <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                             value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                             id="DODSO"
-                                                                             required="#{fieldConfigPer.required}"
-                                                                             onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                             onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                <script> var DODSO = getDateFieldName('basicAddformData',':DODSO');</script>                                                                             
-                                                                <a HREF="javascript:void(0);" 
-                                                                   onclick="g_Calendar.show(event,DODSO)" > 
-                                                                    <h:graphicImage  id="calImgStartDate" 
-                                                                                     alt="calendar Image" styleClass="imgClass"
-                                                                                     url="./images/cal.gif"/>               
-                                                                </a>
-                                                            </h:column>
-                                                            <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'PensionExpDate'}">
-                                                                <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                             value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                             id="PensionExpDateSO"
-                                                                             required="#{fieldConfigPer.required}"
-                                                                             onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                             onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                <script> var EditPensionDateSO = getDateFieldName('basicAddformData',':PensionExpDateSO');</script>                                                                             
-                                                                <a HREF="javascript:void(0);" 
-                                                                   onclick="g_Calendar.show(event,EditPensionDateSO)" > 
-                                                                    <h:graphicImage  id="calImgEditPensionExpDate" 
-                                                                                     alt="calendar Image" styleClass="imgClass"
-                                                                                     url="./images/cal.gif"/>               
-                                                                </a>
-                                                            </h:column>
-                                                            <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'DummyDate'}">
-                                                                <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                             value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                             id="DummyDateSO"
-                                                                             required="#{fieldConfigPer.required}"
-                                                                             onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                             onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                <script> var EditDummyDateSO = getDateFieldName('basicAddformData',':DummyDateSO');</script>                                                                             
-                                                                <a HREF="javascript:void(0);" 
-                                                                   onclick="g_Calendar.show(event,EditDummyDateSO)" > 
-                                                                    <h:graphicImage  id="calImgEditDummyDate" 
-                                                                                     alt="calendar Image" styleClass="imgClass"
-                                                                                     url="./images/cal.gif"/>               
-                                                                </a>
-                                                            </h:column>
-                                                            <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Date1'}">
-                                                                <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                             value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                             id="Date1SO"
-                                                                             required="#{fieldConfigPer.required}"
-                                                                             onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                             onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                <script> var SOEditDate1 = getDateFieldName('basicAddformData',':Date1SO');</script>                                                                             
-                                                                <a HREF="javascript:void(0);" 
-                                                                   onclick="g_Calendar.show(event,SOEditDate1)" > 
-                                                                    <h:graphicImage  id="calImgEditDate1" 
-                                                                                     alt="calendar Image" styleClass="imgClass"
-                                                                                     url="./images/cal.gif"/>               
-                                                                </a>
-                                                            </h:column>
-                                                            <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Date2'}">
-                                                                <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                             value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                             id="Date2SO"
-                                                                             required="#{fieldConfigPer.required}"
-                                                                             onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                             onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                <script> var SOEditDate2 = getDateFieldName('basicAddformData',':Date2SO');</script>                                                                             
-                                                                <a HREF="javascript:void(0);" 
-                                                                   onclick="g_Calendar.show(event,SOEditDate2)" > 
-                                                                    <h:graphicImage  id="calImgEditDate2" 
-                                                                                     alt="calendar Image" styleClass="imgClass"
-                                                                                     url="./images/cal.gif"/>               
-                                                                </a>
-                                                            </h:column>
-                                                            <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Date3'}">
-                                                                <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                             value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                             id="Date3SO"
-                                                                             required="#{fieldConfigPer.required}"
-                                                                             onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                             onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                <script> var SOEditDate3 = getDateFieldName('basicAddformData',':Date3SO');</script>                                                                             
-                                                                <a HREF="javascript:void(0);" 
-                                                                   onclick="g_Calendar.show(event,SOEditDate3)" > 
-                                                                    <h:graphicImage  id="calImgEditDate3" 
-                                                                                     alt="calendar Image" styleClass="imgClass"
-                                                                                     url="./images/cal.gif"/>               
-                                                                </a>
-                                                            </h:column>
-                                                            <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Date4'}">
-                                                                <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                             value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                             id="Date4SO"
-                                                                             required="#{fieldConfigPer.required}"
-                                                                             onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                             onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                <script> var SOEditDate4 = getDateFieldName('basicAddformData',':Date4SO');</script>                                                                             
-                                                                <a HREF="javascript:void(0);" 
-                                                                   onclick="g_Calendar.show(event,SOEditDate4)" > 
-                                                                    <h:graphicImage  id="calImgEditDate4" 
-                                                                                     alt="calendar Image" styleClass="imgClass"
-                                                                                     url="./images/cal.gif"/>               
-                                                                </a>
-                                                            </h:column>
-                                                            <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 &&  fieldConfigPer.name eq  'Date5'}">
-                                                                <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                             value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                             id="Date5SO"
-                                                                             required="#{fieldConfigPer.required}"
-                                                                             onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                             onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                <script> var SOEditDate5 = getDateFieldName('basicAddformData',':Date5SO');</script>                                                                             
-                                                                <a HREF="javascript:void(0);" 
-                                                                   onclick="g_Calendar.show(event,SOEditDate5)" > 
-                                                                    <h:graphicImage  id="calImgEditDate5" 
-                                                                                     alt="calendar Image" styleClass="imgClass"
-                                                                                     url="./images/cal.gif"/>               
-                                                                </a>
-                                                            </h:column>
+                                                      
                                                             <!--Rendering Updateable HTML Text Area-->
                                                             <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
                                                                 <h:inputTextarea label="#{fieldConfigPer.displayName}"  
@@ -1158,10 +903,10 @@
                                                 
                                                 
                                                 <!--Rendering Updateable HTML Text boxes date fields-->
-                                                <h:column rendered="#{aliasFieldConfig.guiType eq 'TextBox' &&  aliasFieldConfig.valueType eq 6}">
+                                                <h:column rendered="#{aliasFieldConfig.guiType eq 'TextBox'}">
                                                     <h:inputText label="#{aliasFieldConfig.displayName}"   
                                                                  value="#{soAliasMapArrayList[aliasFieldConfig.fullFieldName]}"  
-                                                                 id="date"
+                                                                
                                                                  required="#{aliasFieldConfig.required}"
                                                                  onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                  onkeyup="javascript:qws_field_on_key_up(this)" />
@@ -1255,9 +1000,8 @@
                                                              required="#{newSOfieldConfigPerAdd.required}"/>
                                             </h:column>                     
                                             <!--Rendering Updateable HTML Text boxes date fields-->
-                                            <h:column rendered="#{newSOfieldConfigPerAdd.guiType eq 'TextBox' &&  newSOfieldConfigPerAdd.valueType eq 6 && newSOfieldConfigPerAdd.name eq 'DOB'}">
-                                                <h:inputText label="#{newSOfieldConfigPerAdd.name}"  id="DOB"
-                                                             value="#{EditMainEuidHandler.newSOHashMap[newSOfieldConfigPerAdd.fullFieldName]}"  
+                                            <h:column rendered="#{newSOfieldConfigPerAdd.guiType eq 'TextBox' &&  newSOfieldConfigPerAdd.valueType eq 6 }">
+                                                <h:inputText label="#{newSOfieldConfigPerAdd.name}" value="#{EditMainEuidHandler.newSOHashMap[newSOfieldConfigPerAdd.fullFieldName]}"  
                                                              required="#{newSOfieldConfigPerAdd.required}"
                                                              onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                              onkeyup="javascript:qws_field_on_key_up(this)" 
@@ -1270,127 +1014,7 @@
                                                                      url="./images/cal.gif"/>               
                                                 </h:outputLink>
                                             </h:column>
-                                            <h:column rendered="#{newSOfieldConfigPerAdd.guiType eq 'TextBox' &&  newSOfieldConfigPerAdd.valueType eq 6 && newSOfieldConfigPerAdd.name eq 'Dod'}">
-                                                <h:inputText label="#{newSOfieldConfigPerAdd.name}"  id="DOD"
-                                                             value="#{EditMainEuidHandler.newSOHashMap[newSOfieldConfigPerAdd.fullFieldName]}"  
-                                                             required="#{newSOfieldConfigPerAdd.required}"
-                                                             onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                             onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                             />
-                                                <script> var DOD1 = getDateFieldName('basicNewSOAddformData',':DOD');</script>                                                                            
-                                                <h:outputLink value="javascript:void(0);"  id="calLink1"
-                                                              onclick="g_Calendar.show(event,DOD1)"> 
-                                                    <h:graphicImage  id="calImgDODDate" 
-                                                                     alt="calendar Image" styleClass="imgClass"
-                                                                     url="./images/cal.gif"/>               
-                                                </h:outputLink>
-                                            </h:column>
-                                            <h:column rendered="#{newSOfieldConfigPerAdd.guiType eq 'TextBox' &&  newSOfieldConfigPerAdd.valueType eq 6 && newSOfieldConfigPerAdd.name eq 'PensionExpDate'}">
-                                                <h:inputText label="#{newSOfieldConfigPerAdd.name}"  id="PensionExpDate"
-                                                             value="#{EditMainEuidHandler.newSOHashMap[newSOfieldConfigPerAdd.fullFieldName]}"  
-                                                             required="#{newSOfieldConfigPerAdd.required}"
-                                                             onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                             onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                             />
-                                                <script> var PensionDate = getDateFieldName('basicNewSOAddformData',':PensionExpDate');</script>                                                                            
-                                                <h:outputLink value="javascript:void(0);"  id="calLink2"
-                                                              onclick="g_Calendar.show(event,PensionDate)"> 
-                                                    <h:graphicImage  id="PensionDateImg" 
-                                                                     alt="calendar Image" styleClass="imgClass"
-                                                                     url="./images/cal.gif"/>               
-                                                </h:outputLink>
-                                            </h:column>
-                                            <h:column rendered="#{newSOfieldConfigPerAdd.guiType eq 'TextBox' &&  newSOfieldConfigPerAdd.valueType eq 6 && newSOfieldConfigPerAdd.name eq 'DummyDate'}">
-                                                <h:inputText label="#{newSOfieldConfigPerAdd.name}"  id="DummyDate"
-                                                             value="#{EditMainEuidHandler.newSOHashMap[newSOfieldConfigPerAdd.fullFieldName]}"  
-                                                             required="#{newSOfieldConfigPerAdd.required}"
-                                                             onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                             onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                             />
-                                                <script> var DummyDate = getDateFieldName('basicNewSOAddformData',':DummyDate');</script>                                                                            
-                                                <h:outputLink value="javascript:void(0);"  id="calLink3"
-                                                              onclick="g_Calendar.show(event,DummyDate)"> 
-                                                    <h:graphicImage  id="DummyDateImg" 
-                                                                     alt="calendar Image" styleClass="imgClass"
-                                                                     url="./images/cal.gif"/>               
-                                                </h:outputLink>
-                                            </h:column>
-                                            
-                                            <h:column rendered="#{newSOfieldConfigPerAdd.guiType eq 'TextBox' &&  newSOfieldConfigPerAdd.valueType eq 6 && newSOfieldConfigPerAdd.name eq 'Date1'}">
-                                                <h:inputText label="#{newSOfieldConfigPerAdd.name}"  id="Date1"
-                                                             value="#{EditMainEuidHandler.newSOHashMap[newSOfieldConfigPerAdd.fullFieldName]}"  
-                                                             required="#{newSOfieldConfigPerAdd.required}"
-                                                             onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                             onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                             />
-                                                <script> var Date1 = getDateFieldName('basicNewSOAddformData',':Date1');</script>                                                                            
-                                                <h:outputLink value="javascript:void(0);"  id="calLink4"
-                                                              onclick="g_Calendar.show(event,Date1)"> 
-                                                    <h:graphicImage  id="calImgDate1" 
-                                                                     alt="calendar Image" styleClass="imgClass"
-                                                                     url="./images/cal.gif"/>               
-                                                </h:outputLink>
-                                            </h:column>
-                                            <h:column rendered="#{newSOfieldConfigPerAdd.guiType eq 'TextBox' &&  newSOfieldConfigPerAdd.valueType eq 6 && newSOfieldConfigPerAdd.name eq 'Date2'}">
-                                                <h:inputText label="#{newSOfieldConfigPerAdd.name}"  id="Date2"
-                                                             value="#{EditMainEuidHandler.newSOHashMap[newSOfieldConfigPerAdd.fullFieldName]}"  
-                                                             required="#{newSOfieldConfigPerAdd.required}"
-                                                             onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                             onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                             />
-                                                <script> var Date2 = getDateFieldName('basicNewSOAddformData',':Date2');</script>                                                                            
-                                                <h:outputLink value="javascript:void(0);"  id="calLink5"
-                                                              onclick="g_Calendar.show(event,Date2)"> 
-                                                    <h:graphicImage  id="calImgDate2" 
-                                                                     alt="calendar Image" styleClass="imgClass"
-                                                                     url="./images/cal.gif"/>               
-                                                </h:outputLink>
-                                            </h:column>
-                                            <h:column rendered="#{newSOfieldConfigPerAdd.guiType eq 'TextBox' &&  newSOfieldConfigPerAdd.valueType eq 6 && newSOfieldConfigPerAdd.name eq 'Date3'}">
-                                                <h:inputText label="#{newSOfieldConfigPerAdd.name}"  id="Date3"
-                                                             value="#{EditMainEuidHandler.newSOHashMap[newSOfieldConfigPerAdd.fullFieldName]}"  
-                                                             required="#{newSOfieldConfigPerAdd.required}"
-                                                             onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                             onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                             />
-                                                <script> var Date3 = getDateFieldName('basicNewSOAddformData',':Date3');</script>                                                                            
-                                                <h:outputLink value="javascript:void(0);"  id="calLink6"
-                                                              onclick="g_Calendar.show(event,Date3)"> 
-                                                    <h:graphicImage  id="calImgDate3" 
-                                                                     alt="calendar Image" styleClass="imgClass"
-                                                                     url="./images/cal.gif"/>               
-                                                </h:outputLink>
-                                            </h:column>
-                                            <h:column rendered="#{newSOfieldConfigPerAdd.guiType eq 'TextBox' &&  newSOfieldConfigPerAdd.valueType eq 6 && newSOfieldConfigPerAdd.name eq 'Date4'}">
-                                                <h:inputText label="#{newSOfieldConfigPerAdd.name}"  id="Date4"
-                                                             value="#{EditMainEuidHandler.newSOHashMap[newSOfieldConfigPerAdd.fullFieldName]}"  
-                                                             required="#{newSOfieldConfigPerAdd.required}"
-                                                             onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                             onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                             />
-                                                <script> var Date4 = getDateFieldName('basicNewSOAddformData',':Date4');</script>                                                                            
-                                                <h:outputLink value="javascript:void(0);"  id="calLink7"
-                                                              onclick="g_Calendar.show(event,Date4)"> 
-                                                    <h:graphicImage  id="calImgDate4" 
-                                                                     alt="calendar Image" styleClass="imgClass"
-                                                                     url="./images/cal.gif"/>               
-                                                </h:outputLink>
-                                            </h:column>
-                                            <h:column rendered="#{newSOfieldConfigPerAdd.guiType eq 'TextBox' &&  newSOfieldConfigPerAdd.valueType eq 6 && newSOfieldConfigPerAdd.name eq 'Date5'}">
-                                                <h:inputText label="#{newSOfieldConfigPerAdd.name}"  id="Date5"
-                                                             value="#{EditMainEuidHandler.newSOHashMap[newSOfieldConfigPerAdd.fullFieldName]}"  
-                                                             required="#{newSOfieldConfigPerAdd.required}"
-                                                             onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                             onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                             />
-                                                <script> var Date5 = getDateFieldName('basicNewSOAddformData',':Date5');</script>                                                                            
-                                                <h:outputLink value="javascript:void(0);"  id="calLink8"
-                                                              onclick="g_Calendar.show(event,Date5)"> 
-                                                    <h:graphicImage  id="calImgDate5" 
-                                                                     alt="calendar Image" styleClass="imgClass"
-                                                                     url="./images/cal.gif"/>               
-                                                </h:outputLink>
-                                            </h:column>
+                                          
                                             <!--Rendering Updateable HTML Text Area-->
                                             <h:column rendered="#{newSOfieldConfigPerAdd.guiType eq 'TextArea' &&  newSOfieldConfigPerAdd.valueType ne 6}" >
                                                 <h:inputTextarea label="#{newSOfieldConfigPerAdd.displayName}"  
@@ -1452,7 +1076,7 @@
                                                 <td>
                                                     <h:commandLink  styleClass="button" 
                                                                     action="#{EditMainEuidHandler.addNewSO}">
-                                                        <span><h:outputText value="Add New SO" /></span>
+                                                        <span><h:outputText value="#{msgs.add_new_so_button_text}" /></span>
                                                     </h:commandLink>
                                                 </td>
                                             </tr>
@@ -1464,9 +1088,8 @@
                         </table>
                     </div>         
                 </div>         
-            </div>         
             <!-- START Extra divs for edit EO-->
-            <div id="extraAddressEODiv" style="TOP: 620px; LEFT: 450px; HEIGHT: 400px;  WIDTH: 400px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT: 5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
+            <div id="extraAddressEODiv" class="alert"  style="TOP:620px;LEFT:450px;HEIGHT:400px;WIDTH:400px;visibility:hidden;">
                 <iframe src="Blank.html" scrolling="no" frameborder="0" style="width:400px; height:400px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
                     
                 </iframe>
@@ -1526,16 +1149,12 @@
                                 </h:outputLink>
                             </td>
                         </tr>
-                        <tr>
-                            <td valign="top" colspan="2">
-                                <h:messages  styleClass="errorMessages"  layout="list" />
-                            </td>
-                        </tr>                              
+                                               
                     </table>
                     
                 </h:form>
             </div>            
-            <div id="extraPhoneEODiv" style="TOP: 620px; LEFT: 450px; HEIGHT: 200px;  WIDTH: 200px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT: 5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
+            <div id="extraPhoneEODiv" class="alert" style="TOP:620px;LEFT:500px;HEIGHT:180px;WIDTH:300px;visibility:hidden;">
                 <iframe src="Blank.html" scrolling="no" frameborder="0" style="width:200px; height:200px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
                     
                 </iframe>
@@ -1595,16 +1214,12 @@
                                 </h:outputLink>
                             </td>
                         </tr>
-                        <tr>
-                            <td valign="top" colspan="2">
-                                <h:messages  styleClass="errorMessages"  layout="list" />
-                            </td>
-                        </tr>                              
+                                                  
                     </table>
                     
                 </h:form>
             </div>            
-            <div id="extraAliasEODiv" style="TOP: 620px; LEFT: 450px; HEIGHT: 200px;  WIDTH: 200px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT: 5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
+            <div id="extraAliasEODiv" class="alert" style="TOP:620px;LEFT:500px;HEIGHT:180px;WIDTH:300px;visibility:hidden;">
                 <iframe src="Blank.html" scrolling="no" frameborder="0" style="width:200px; height:200px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
                     
                 </iframe>
@@ -1664,18 +1279,14 @@
                                 </h:outputLink>
                             </td>
                         </tr>
-                        <tr>
-                            <td valign="top" colspan="2">
-                                <h:messages  styleClass="errorMessages"  layout="list" />
-                            </td>
-                        </tr>                              
+                                                   
                     </table>
                     
                 </h:form>
             </div>            
             <!-- END Extra divs for EDIT EO-->
 <!-- START Extra divs for NEW SO -->
-            <div id="extraAddressNewSODiv" style="TOP: 620px; LEFT: 450px; HEIGHT: 400px;  WIDTH: 400px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT: 5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
+            <div id="extraAddressNewSODiv" class="alert" style="TOP:620px;LEFT:500px;HEIGHT:400px;WIDTH:400px;visibility:hidden;">
                 <iframe src="Blank.html" scrolling="no" frameborder="0" style="width:400px; height:400px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
                     
                 </iframe>
@@ -1735,16 +1346,12 @@
                                 </h:outputLink>
                             </td>
                         </tr>
-                        <tr>
-                            <td valign="top" colspan="2">
-                                <h:messages  styleClass="errorMessages"  layout="list" />
-                            </td>
-                        </tr>                              
+                                                     
                     </table>
                     
                 </h:form>
             </div>            
-            <div id="extraPhoneNewSODiv" style="TOP: 620px; LEFT: 450px; HEIGHT: 200px;  WIDTH: 200px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT: 5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
+            <div id="extraPhoneNewSODiv" class="alert" style="TOP:620px;LEFT:500px;HEIGHT:180px;WIDTH:300px;visibility:hidden;">
                 <iframe src="Blank.html" scrolling="no" frameborder="0" style="width:200px; height:200px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
                     
                 </iframe>
@@ -1804,16 +1411,12 @@
                                 </h:outputLink>
                             </td>
                         </tr>
-                        <tr>
-                            <td valign="top" colspan="2">
-                                <h:messages  styleClass="errorMessages"  layout="list" />
-                            </td>
-                        </tr>                              
+                                                   
                     </table>
                     
                 </h:form>
             </div>            
-            <div id="extraAliasNewSODiv" style="TOP: 620px; LEFT: 450px; HEIGHT: 200px;  WIDTH: 200px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT: 5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
+            <div id="extraAliasNewSODiv" class="alert" style="TOP:620px;LEFT:500px;HEIGHT:180px;WIDTH:300px;visibility:hidden;">
                 <iframe src="Blank.html" scrolling="no" frameborder="0" style="width:200px; height:200px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
                     
                 </iframe>
@@ -1873,17 +1476,13 @@
                                 </h:outputLink>
                             </td>
                         </tr>
-                        <tr>
-                            <td valign="top" colspan="2">
-                                <h:messages  styleClass="errorMessages"  layout="list" />
-                            </td>
-                        </tr>                              
+                                                   
                     </table>
                     
                 </h:form>
             </div>            
             <!-- END Extra divs for NEW  SO-->
-            <div id="linkSoDiv" style="TOP: 620px; LEFT: 450px; HEIGHT: 100px;  WIDTH: 300px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT: 5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
+            <div id="linkSoDiv"  class="alert" style="TOP:620px;LEFT:450px;HEIGHT:100px;WIDTH:350px;overflow:auto;VISIBILITY:hidden;">
                 <iframe src="Blank.html" scrolling="no" frameborder="0" style="width:300px; height:100px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
                     
                 </iframe>
@@ -1902,7 +1501,7 @@
                     </tr>    
                     <tr>
                         <td align="right">
-                            <h:outputLink  styleClass="button" value="javascript:void(0)" onclick="javascript:populateLinkFields()">
+                            <h:outputLink  styleClass="button" rendered="#{Operations.EO_LinkSBRFields}" value="javascript:void(0)" onclick="javascript:populateLinkFields()">
                                 <span><h:outputText value="#{msgs.ok_text_button}"/></span>
                             </h:outputLink>
                         </td>
@@ -1915,12 +1514,8 @@
                 </table> 
                 </form>
             </div> 
-
-            <div id="unLinkSoDiv" style="TOP: 620px; LEFT: 450px; HEIGHT: 100px;  WIDTH: 300px; BORDER-RIGHT: #000099 thin solid; font-color:red;BORDER-TOP: #000099 thin solid; PADDING-LEFT: 5px; VISIBILITY: hidden; BORDER-LEFT: #000099 thin solid; PADDING-TOP: 5px; BORDER-BOTTOM: #000099 thin solid; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; BACKGROUND-COLOR:#f9f7de ;">
-                <iframe src="Blank.html" scrolling="no" frameborder="0" style="width:300px; height:100px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
-                    
-                </iframe>
-                <form name="unlinkForm">
+           <div id="unLinkSoDiv" class="alert" style="TOP:620px;LEFT:450px;HEIGHT:120px;WIDTH:350px;VISIBILITY:hidden;">
+               <form name="unlinkForm">
                 <table valign="center" style="padding-top:20px">
                     <tr>
                         <td>
@@ -1931,11 +1526,9 @@
                     </tr>    
                     <tr>
                         <td align="right">
-                            <h:outputLink  styleClass="button" value="javascript:void(0)" onclick="javascript:populateUnLinkFields()">
+                            <h:outputLink  styleClass="button" value="javascript:void(0)" rendered="#{Operations.EO_UnlinkSBRFields}" onclick="javascript:populateUnLinkFields()">
                                 <span><h:outputText value="#{msgs.ok_text_button}"/></span>
                             </h:outputLink>
-                        </td>
-                        <td align="left">
                             <h:outputLink  styleClass="button" value="javascript:void(0)" onclick="javascript:showExtraDivs('unLinkSoDiv',event)">
                                 <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                             </h:outputLink>
@@ -1954,6 +1547,7 @@
                 })();
             </script>
             <!--END SOURCE CODE FOR EXAMPLE =============================== -->
+         </div>         
         </body>
     </html>
     </f:view>

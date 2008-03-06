@@ -770,7 +770,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             }
            
 //            //System.out.println("===> : " + newArrayList);
-            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
+            session.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
@@ -1100,11 +1100,19 @@ public class PatientDetailsHandler extends ScreenConfiguration {
      * @throws com.sun.mdm.index.objects.exception.ObjectException 
      */
     public void unmergeEnterpriseObject(ActionEvent event) throws ObjectException {
-
-        EnterpriseObject enterpriseObject = (EnterpriseObject) event.getComponent().getAttributes().get("eoValueExpressionunmerge");
+           
+        //ArrayList newArrayList = new ArrayList();
+        String euidUnmerge = (String) event.getComponent().getAttributes().get("unMergeEuidVE");
+        
+        //HashMap unmergeEO = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+        //newArrayList.add(unmergeEO);
         try {
-            MergeResult unMerge = masterControllerService.unMerge(enterpriseObject.getEUID());
-        //httpRequest.setAttribute("unMerged", "unmerge");
+            MergeResult unMerge = masterControllerService.unMerge(euidUnmerge);
+            ArrayList newArrayList = new ArrayList();
+            EnterpriseObject eo = masterControllerService.getEnterpriseObject(euidUnmerge);
+            HashMap eoHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+            newArrayList.add(eoHashMap);
+            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
             java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
@@ -1120,22 +1128,29 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
         //HashMap unmergedHashMapValueExpression = (HashMap) event.getComponent().getAttributes().get("unmergedEOValueExpression");
         String transactionNumber = (String) event.getComponent().getAttributes().get("tranNoValueExpressionviewmerge");
-
+        ArrayList eoArrayList = (ArrayList) event.getComponent().getAttributes().get("eoArrayList");
+        httpRequest.setAttribute("comapreEuidsArrayList", eoArrayList);
         try {
             EnterpriseObjectHistory viewMergehist = masterControllerService.viewMergeRecords(transactionNumber);
             ArrayList mergeEOList = new ArrayList();
 
             if (viewMergehist.getBeforeEO1() != null) {
-                mergeEOList.add(viewMergehist.getBeforeEO1());
+                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(viewMergehist.getBeforeEO1(), screenObject);
+                mergeEOList.add(eoMap);
+                //mergeEOList.add(viewMergehist.getBeforeEO1());
             }
             if (viewMergehist.getBeforeEO2() != null) {
-                mergeEOList.add(viewMergehist.getBeforeEO2());
+                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(viewMergehist.getBeforeEO2(), screenObject);
+                mergeEOList.add(eoMap);
+                //mergeEOList.add(viewMergehist.getBeforeEO2());
             }
 //          if(viewMergehist.getAfterEO() !=null){
 //              mergeEOList.add(viewMergehist.getAfterEO());
 //          }
             if (viewMergehist.getAfterEO2() != null) {
-                mergeEOList.add(viewMergehist.getAfterEO2());
+                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(viewMergehist.getAfterEO2(), screenObject);
+                mergeEOList.add(eoMap);
+                //mergeEOList.add(viewMergehist.getAfterEO2());
             }
 
 

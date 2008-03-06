@@ -24,9 +24,18 @@
             <param-value>false</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
-    </servlet>
-    <!-- #~#~#~#~#~#~#~#~#~#~#~#~#~ YUI 4 JSF #~#~#~#~#~#~#~#~#~#~#~#~#~  -->    
+        <run-as>
+            <role-name>MasterIndex.Admin</role-name>
+        </run-as>
 
+       <security-role-ref>
+            <role-name>MasterIndex.Admin</role-name>
+            <role-link>MasterIndex.Admin</role-link>
+        </security-role-ref>
+
+    </servlet>
+    <!-- #~#~#~#~#~#~#~#~#~#~#~#~#~ YUI 4 JSF #~#~#~#~#~#~#~#~#~#~#~#~#~  -->         
+<!-- Security roles referenced by this web application -->
     <filter>
             <filter-name>yui4jsf filter</filter-name>
             <filter-class>net.sf.yui4jsf.filter.YUI4JSFFilter</filter-class>
@@ -38,7 +47,7 @@
     </filter-mapping>
 
     <!-- #~#~#~#~#~#~#~#~#~#~#~#~#~ YUI 4 JSF END #~#~#~#~#~#~#~#~#~#~#~#~#~  -->    
-
+	
     <filter>
         <filter-name>redirect-jsf-filter</filter-name>
         <filter-class>com.sun.mdm.index.edm.presentation.handlers.FilterMappingHandler</filter-class>
@@ -58,8 +67,8 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>login.jsp</welcome-file>
-   </welcome-file-list>
+        <welcome-file>results.jsp</welcome-file>
+    </welcome-file-list>
     <error-page>
         <error-code>404</error-code>
         <location>/error404.jsp</location>
@@ -68,4 +77,57 @@
         <error-code>500</error-code>
         <location>/error500.jsp</location>
     </error-page>
-    </web-app>
+
+
+<security-constraint>
+    <display-name>SecurityConstraint</display-name>
+
+    <web-resource-collection>
+                  <web-resource-name>WRCollection</web-resource-name>
+                 <url-pattern>*.jsp</url-pattern>
+    </web-resource-collection>
+
+    <!-- Anyone with one of the listed roles may access this area -->
+    <auth-constraint>
+                  <role-name>Administrator</role-name>
+                  <role-name>DataEntry</role-name>
+                  <role-name>DataEntry2</role-name>
+                  <role-name>Clerk</role-name>
+    </auth-constraint>
+
+    <user-data-constraint>
+            <transport-guarantee>NONE</transport-guarantee>
+    </user-data-constraint>
+</security-constraint>    
+
+<security-role>
+    <role-name>MasterIndex.Admin</role-name>
+</security-role>     
+
+<security-role>
+    <role-name>Administrator</role-name>
+</security-role>     
+
+<security-role>
+    <role-name>DataEntry</role-name>
+</security-role>     
+
+<security-role>
+    <role-name>DataEntry2</role-name>
+</security-role>     
+
+<security-role>
+    <role-name>Clerk</role-name>
+</security-role>     
+
+
+<!-- Default login configuration uses form-based authentication -->  
+<login-config>
+      <auth-method>FORM</auth-method>
+       <realm-name>file</realm-name>
+      <form-login-config>
+	      <form-login-page>/login.jsp</form-login-page>
+	      <form-error-page>/loginerror.jsp</form-error-page>
+      </form-login-config>
+  </login-config>
+</web-app>

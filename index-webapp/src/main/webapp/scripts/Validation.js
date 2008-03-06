@@ -83,7 +83,7 @@ function validate_number(field, lower, upper, label) {
 
     var val = parseInt(field.value, radix);
     if (isNaN(val)) { // not numeric character
-  alert("Please enter a numberic value for the " + label + " field.");
+  alert("Please enter a numeric value for the " + label + " field.");
   field.focus();  // go to current field
   return;
     }
@@ -109,7 +109,7 @@ function validate_time(field, label) {
       !isNaN(sec) && sec >= 0 && sec <= 59);
     }
     if (!result) {
-  alert("Please enter the time in the format HH:MM:SS for the " + label + " field.");
+  alert("Please enter the time in the format HH:MM:SS for the " + label + " field");
   field.focus();  // go to current field
     }
 }

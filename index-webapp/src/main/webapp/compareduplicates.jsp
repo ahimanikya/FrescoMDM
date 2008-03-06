@@ -101,7 +101,7 @@
                         <tr>
                             <td>
                                 <div style="height:500px;overflow:auto;">
-                                    <table>
+                                    <table cellspacing="5" cellpadding="0" border="0">
                                         <tr>
                                             
                                             <%
@@ -236,7 +236,7 @@
                                             <!-- START Display the field Values-->
                                             <td  valign="top">
                                                 <div id="outerMainContentDivid<%=countEnt%>" >
-                                                <div style="width:170px;overflow:auto">
+                                                <div style="width:170px;overflow:hidden">
                                                 <%
                                                 if (countEnt > 0 && ("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
                                                  %>
@@ -270,12 +270,29 @@
                                                     </div>
                                                 </div>
                                                 <% if (countEnt > 0) {%>
-                                                <div id = "bar" style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
-                                                    <div style= "height:<%=100 - new Float(weight).floatValue()%>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                                </div>                                             
-                                                <div  style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
-                                                    <%=weight%>
-                                                </div> 
+                                         <%
+                                            String userAgent = request.getHeader("User-Agent");
+                                            boolean isFirefox = (userAgent != null && userAgent.indexOf("Firefox/") != -1);
+                                            response.setHeader("Vary", "User-Agent");
+                                         %>
+                                         <% if (isFirefox) {%>
+                                         <div id = "bar" style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
+                                              border-right: 1px solid #000000;border-top:1px solid #000000;position:relative;right:20px;" >
+                                         <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
+                                            <div id = "bar" style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
+                                                 <%=weight%>
+                                             </div>                                             
+                                         </div>
+                                         
+                                           <% }else{%>
+                                            <div id = "bar" style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
+                                             <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
+                                         </div>                                             
+                                         <div id = "bar" style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
+                                             <%=weight%>
+                                         </div> 
+                                      
+                                         <%}%>
                                                 <%}%>    
 
                                                  <div id="mainEuidContentButtonDiv<%=countEnt%>" class="<%=cssMain%>">
@@ -401,7 +418,7 @@
                                             %>
                                                <td  valign="top">
                                                 <div id="mainDupSources<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
-                                                    <div style="width:170px;overflow:auto">
+                                                    <div style="width:170px;overflow:hidden;">
                                                     <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="source" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
@@ -510,7 +527,7 @@
                                             %>
                                                <td  valign="top">
                                                 <div id="mainDupHistory<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
-                                                  <div style="width:170px;overflow:auto">
+                                                  <div style="width:170px;overflow:hidden;">
                                                     <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="history" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
@@ -615,7 +632,7 @@
                                                         <div id="mainEuidContent" class="<%=styleClass%>">
                                                             <table border="0" width="100%" cellspacing="0" cellpadding="0">
                                                                 <tr>
-                                                                    <td width="100%" class="menutop">Preview</td>
+                                                                    <td width="100%" class="menutop"><h:outputText value="#{msgs.preview_column_text}" /></td>
                                                                 </tr>
                                                             </table>
                                                         </div>
@@ -774,14 +791,14 @@
                                                <tr> 
                                                     <td valign="top">
                                                       <% if (countEnt > 0 && "A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) { %>
-                                                        <h:commandLink  styleClass="diffviewbtn" 
+                                                        <h:commandLink  styleClass="diffviewbtn" rendered="#{Operations.potDup_ResolveUntilRecalc}"
                                                                         actionListener="#{PatientDetailsHandler.unresolvePotentialDuplicateAction}">
                                                              <f:attribute name="potDupId" value="<%=potDupIdValueExpression%>"/>
                                                              <f:attribute name="eoArrayList" value="<%=eoArrayListValueExpression%>"/>
                                                              <h:outputText value="#{msgs.potential_dup_button}"/>
                                                         </h:commandLink>  
                                                       <%} else  {%> 
-                                                       <a onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" 
+                                                      <a onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" 
                                                           class="diffviewbtn"  
                                                           href="javascript:void(0)">
                                                           <h:outputText value="#{msgs.diff_person_heading_text}"/>
@@ -801,7 +818,7 @@
                                                   </tr>
                                                   <tr> 
                                                       <td valign="top">
-                                                          <a href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
+                                                          <a  class="viewbtn" href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')"><h:outputText value="#{msgs.view_sources_text}"/></a> 
                                                       </td>                                              
                                                   </tr>
                                                      <tr><td>&nbsp;</td></tr>
@@ -817,7 +834,8 @@
                                                     <tr>
                                                         <td>
                                                             <h:form  id="previewForm">
-                                                                <h:commandLink styleClass="button" action="#{PatientDetailsHandler.previewPostMultiMergedEnterpriseObject}">
+                                                                <h:commandLink styleClass="button" rendered="#{Operations.EO_Merge}"
+                                                                               action="#{PatientDetailsHandler.previewPostMultiMergedEnterpriseObject}">
                                                                     <span><h:outputText value="Preview "/></span>
                                                                 </h:commandLink>
                                                                 <h:inputHidden id="previewhiddenMergeEuids" value="#{PatientDetailsHandler.mergeEuids}" />
@@ -834,10 +852,10 @@
                                                 <table>
                                                     <tr>
                                                         <td>
-                                                            <h:outputLink styleClass="button"  
+                                                            <h:outputLink styleClass="button"  rendered="#{Operations.EO_Merge}"
                                                                           value="javascript:void(0)" 
                                                                           onclick="javascript:finalMultiMergeEuids('mergeDiv',event)" >
-                                                                    <span><h:outputText value="Merge"/></span>
+                                                                    <span><h:outputText value="#{msgs.source_submenu_merge}" /></span>
                                                             </h:outputLink>
                                                         </td>
                                                     </tr>
@@ -846,7 +864,7 @@
                                                             <h:form  id="previewCancelForm">
                                                                 <h:commandLink styleClass="button" 
                                                                                actionListener="#{PatientDetailsHandler.undoMultiMerge}">
-                                                                    <span><h:outputText value="Cancel"/></span>
+                                                                    <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                                                 </h:commandLink>
                                                             </h:form>
                                                         </td>
@@ -870,62 +888,45 @@
                 </div>  
              </div> 
 
-                        <div id="mergeDiv" class="alert" style="TOP:2050px; LEFT:300px; HEIGHT:160px; WIDTH: 300px; VISIBILITY: hidden; ">
+                        <div id="mergeDiv" class="alert" style="TOP:2050px; LEFT:300px; HEIGHT:160px; WIDTH: 280px; VISIBILITY: hidden; ">
                             
                                 <table cellspacing="0" cellpadding="0" border="0">
                                     <tr>
-                                        <td align="right" colspan="2">
-                                            <div>
-                                                <a href="javascript:void(0)" rel="mergepopuphelp"><h:outputText value="#{msgs.help_link_text}"/></a><br/>
-                                            </div>                               
-                                       </td>
-                                    </tr>
-                                    <tr><td>&nbsp;</td></tr>
-                                    <tr>
-                                        <td>
-                                            <nobr>Keep Main EUID  <b> <h:outputText value="#{PatientDetailsHandler.destnEuid}" /> </b>?</nobr>
-                                        </td>
-                                    </tr>
-									<tr><td>&nbsp;</td></tr>
-									<tr><td>&nbsp;</td></tr>
-									<tr><td>&nbsp;</td></tr>
+                                    <tr><th align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th><th align="right"><a href="javascript:void(0)" rel="mergepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th></tr>
+                                    <tr><td colspan="2"> &nbsp;</td></tr>
+                                    <tr><td align="center"><nobr><h:outputText value="#{msgs.mergediv_popup_text}"/><b> <h:outputText value="#{PatientDetailsHandler.destnEuid}" /> </b>?</nobr></td></tr>
+                                    <tr><td colspan="2"> &nbsp;</td></tr>
+                                    <tr><td colspan="2"> &nbsp;</td></tr>
                                     <tr>
                                         <td>
                                             <h:form  id="mergeFinalForm">
                                                 <h:commandLink styleClass="button" 
                                                                action="#{PatientDetailsHandler.performMultiMergedEnterpriseObject}">
-                                                    <span><h:outputText value="OK"/></span>
+                                                    <span><h:outputText value="#{msgs.ok_text_button}" /></span>
                                                 </h:commandLink>
                                                 <h:inputHidden id="previewhiddenMergeEuids" value="#{PatientDetailsHandler.mergeEuids}" />
                                                 <h:inputHidden id="destinationEO" value="#{PatientDetailsHandler.destnEuid}" />
                                                 <h:inputHidden id="selectedMergeFields" value="#{PatientDetailsHandler.selectedMergeFields}" />
-                                            </h:form>
-                                        </td>
-                                        <td>
                                             <h:outputLink styleClass="button"  
                                                           value="javascript:void(0)" 
                                                           onclick="javascript:showExtraDivs('mergeDiv',event)" >
-                                                <span><h:outputText value="Cancel"/></span>
+                                                <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                             </h:outputLink>
+                                            </h:form>
                                         </td>
                                     </tr>
                                     
                                 </table>
                         </div>  
 
-                                   <div id="resolvePopupDiv" class="alert" style="TOP:2250px; LEFT:300px; HEIGHT:160px;WIDTH: 250px;visibility:hidden; ">
+                                   <div id="resolvePopupDiv" class="alert" style="TOP:2250px; LEFT:300px; HEIGHT:195px;WIDTH: 300px;visibility:hidden; ">
                                      
                                        <h:form id="reportYUISearch">
                                            <h:inputHidden id="potentialDuplicateId" value="#{PatientDetailsHandler.potentialDuplicateId}"/>
                                            <table width="100%">
-                                               <tr>
-                                                   <td colspan="2"><b>Select the type of Resolve:</b></td>
-                                                   <td align="right">
-                                                       <div>
-                                                           <a href="javascript:void(0)" rel="resolvepopuphelp"><h:outputText value="#{msgs.help_link_text}"/></a><br/>
-                                                       </div>                               
-                                                   </td>
-                                               </tr>
+                                               <tr><th align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th><th align="right"><a href="javascript:void(0)" rel="resolvepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th></tr>
+                                               <tr><td colspan="2"> &nbsp;</td></tr>
+                                               <tr><td align="center"><b><h:outputText value="#{msgs.different_person_dailog_text}"/></b></td></tr>
                                                <tr>
                                                    <td  colspan="2">
                                                        <div class="selectContent">
@@ -936,17 +937,18 @@
                                                        </div> 
                                                    </td>
                                                </tr>
+                                                <tr><td colspan="2"> &nbsp;</td></tr>
                                                <tr>
                                                    <td align="right"  colspan="2">
                                                        
                                                         <h:commandLink styleClass="button" 
                                                                        action="#{PatientDetailsHandler.makeDifferentPersonAction}">
-                                                                <span><h:outputText value="OK" /></span>
+                                                                <span><h:outputText value="#{msgs.ok_text_button}" /></span>
                                                        </h:commandLink>   
                                                        <h:outputLink  onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'123467')" 
                                                                       styleClass="button"  
                                                                       value="javascript:void(0)">
-                                                           <span><h:outputText value="Cancel " /></span>
+                                                         <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
                                                        </h:outputLink>   
                                                    </td>
                                                </tr>
@@ -983,6 +985,23 @@
         </script>
         <%}%>
         <%}%>
+
+<script>
+         if( document.potentialDupBasicForm.elements[0]!=null) {
+		var i;
+		var max = document.potentialDupBasicForm.length;
+		for( i = 0; i < max; i++ ) {
+			if( document.potentialDupBasicForm.elements[ i ].type != "hidden" &&
+				!document.potentialDupBasicForm.elements[ i ].disabled &&
+				!document.potentialDupBasicForm.elements[ i ].readOnly ) {
+				document.potentialDupBasicForm.elements[ i ].focus();
+				break;
+			}
+		}
+      }         
+
+    </script>
+
     </html>
     </f:view>
     

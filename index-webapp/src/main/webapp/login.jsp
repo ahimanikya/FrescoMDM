@@ -6,15 +6,35 @@
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
+<%@ page import="java.util.ArrayList"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LoginHandler"  %>
+
+<%@ page import="javax.faces.context.FacesContext"  %>
 
 <f:view>    
     <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
     <html>
+<% 
+LoginHandler loginHandler = new LoginHandler();
+System.out.println("User Profile" + session.getAttribute("userProfile") + "USER IN SESSION" + session.getAttribute("user") );
+if (request.getAttribute("Logout") == null && request.getRemoteUser() != null && request.isUserInRole("MasterIndex.Admin")) {
+    FacesContext.getCurrentInstance().getExternalContext().redirect("results.jsf");
+}
+%>        
         <head>
             <title><h:outputText value="#{msgs.application_heading}"/></title> 
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <LINK REL="STYLESHEET" HREF="./css/styles.css"  TYPE="text/css">
         </head>
+<script language="JavaScript">
+    function submitAction() {
+        document.loginform.submit();
+    }
+
+</script>        
         <body>         
             <center> 
                 <div id="mainContent">
@@ -43,39 +63,53 @@
             
             <div>                         
                     <div id="log" class="loginForm">
-                    <h:form>
-                        <table border="0" cellpadding="0" cellspacing="0">
-                            <tbody>
-                                <tr>
-                                    <!--alt=Enterprise Data Manager-->                                    
-                                    <td colspan='2'><img src='images/spacer.gif' alt="Enterprise Data Manager" height='120px'></td>
-                                </tr>
-                                <tr>
-                                    <td colspan='2'><h:inputText label="User Name" id="userName" value="#{LoginHandler.userName}" required="true"/></td>
-                                </tr>
-                                <tr>
-                                    <td colspan='2'> <h:inputSecret label="Password" id="password" value="#{LoginHandler.password}" required="true"/></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">                                          
-                                            <h:commandLink  id="submit" styleClass="button" action="#{LoginHandler.authorizeAndLoginUser}">
-                                                <span> <h:outputText value="#{msgs.login_submit_button_prompt}"/> </span>
-                                            </h:commandLink>    
-                                    </td>
-                                </tr>
-                                <tr>
+                            <f:verbatim>
+                            <form name="loginform" method="POST" action="j_security_check" focus="j_username">
+                            </f:verbatim>
+                            <table border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <!--alt=Enterprise Data Manager-->                                    
+                                        <td colspan='2'><img src='images/spacer.gif' alt="Enterprise Data Manager" height='120px'></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='2'>
+                                            <f:verbatim>
+                                                <input type="text" name="j_username" size="25"/>
+                                            </f:verbatim>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='2'> 
+                                            <f:verbatim>
+                                                <input type="password" name="j_password" size="25" redisplay="false"/>
+                                            </f:verbatim>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">                                          
+                                            <f:verbatim>
+                                                <a href="javascript:loginform.submit();" class="button"><span> Login </span></a>
+                                            </f:verbatim>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                     <!--alt=Sun Microsystems Logo-->
                                     <td colspan='2'><img src='images/spacer.gif' alt="Sun Microsystems Logo" height='75px'></td>
                                 </tr>
                             </tbody>
                         </table>
-                    </h:form>
+                        <f:verbatim>
+                              </form>
+                        </f:verbatim>
                     </div>
                     <div>
                         <table border="0">
                             <tr>
                                 <td>
-                                           <h:messages  styleClass="errorMessages"  layout="list" />                                           
+                               <%if (request.getAttribute("Logout") == null && request.getRemoteUser() != null && !request.isUserInRole("MasterIndex.Admin")) { %>
+                                 Please check the user credentials.
+							   <%}%>
                                 </td>
                                 <td><img src='images/spacer.gif' alt="" width='35px'></td>
                             </tr>
@@ -84,6 +118,22 @@
             </div>
             </div>
             </center>
+    <script>
+         if( document.loginform.elements[0]!=null) {
+		var i;
+		var max = document.loginform.length;
+		for( i = 0; i < max; i++ ) {
+			if( document.loginform.elements[ i ].type != "hidden" &&
+				!document.loginform.elements[ i ].disabled &&
+				!document.loginform.elements[ i ].readOnly ) {
+				document.loginform.elements[ i ].focus();
+				break;
+			}
+		}
+      }         
+         
+    </script>
+            
         </body>
     </html> 
 </f:view>

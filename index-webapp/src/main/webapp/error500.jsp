@@ -23,11 +23,6 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <!-- App name and logos -->
-                    <td><img src="images/appname.gif"> </td>
-                    <td align="right"><img src="images/sunlogo.gif"> </td>
-                </tr>
             </table>
             <div> <!-- End Main Content -->
             

@@ -1,8 +1,16 @@
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
-<%@ page import="com.sun.mdm.index.master.search.potdup.PotentialDuplicateIterator"  %>
-<%@ page import="com.sun.mdm.index.master.search.potdup.PotentialDuplicateSummary"  %>
 
+<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
+<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
+<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
+<%@ page import="java.text.SimpleDateFormat"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.LoginHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+<%@ page import="javax.faces.context.FacesContext"  %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
@@ -10,6 +18,43 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <%
+          ConfigManager.init();
+          LoginHandler loginHandler = new LoginHandler();
+          NavigationHandler navigationHandler = new NavigationHandler();
+          
+          System.out.println( "11" );
+          loginHandler.initializeApplication();
+          System.out.println( "12" );
+          ScreenObject screenObject = ConfigManager.getInstance().getInitialScreen();
+          System.out.println( "14" + screenObject.getDisplayTitle() );
+          session.setAttribute("ScreenObject", screenObject);
+          System.out.println( "15" + request.isUserInRole("MasterIndex.Admin") );
+
+          // Navigate the user as per user configuration in  edm.xml   
+          String tagName  = navigationHandler.getTagNameByScreenId(screenObject.getID());
+
+          
+          if(tagName.equalsIgnoreCase("dashboard")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("dashboard.jsf");
+          } else  if(tagName.equalsIgnoreCase("duplicate-records")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("duplicaterecords.jsf");
+          } else  if(tagName.equalsIgnoreCase("record-details")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("patientdetails.jsf");
+          } else  if(tagName.equalsIgnoreCase("assumed-matches")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("assumedmatches.jsf");
+          } else  if(tagName.equalsIgnoreCase("source-record")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("sourcerecords.jsf");
+          } else  if(tagName.equalsIgnoreCase("reports")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("reports.jsf");
+          } else  if(tagName.equalsIgnoreCase("transactions")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("transactions.jsf");
+          } else  if(tagName.equalsIgnoreCase("audit-log")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("auditlog.jsf");
+          }   
+        %>
+       
+        
     </head>
     <body>
     <h1>JSP Page</h1>
@@ -17,13 +62,7 @@
     <table>
         <tr>
             <td>
-            This is the results page from the patient details when submit button was clicked.                
-            <% 
-                   PotentialDuplicateSummary potentialDuplicateSummary = null;
-                   PotentialDuplicateIterator pdPageIter = (PotentialDuplicateIterator) session.getAttribute("pdPageIter");                
-                   PotentialDuplicateIterator asPdIter ;
-             %>      
-            PD iterator in jsp page<%=pdPageIter%>
+            This is the results page from the patient details when submit button was clicked.                            
             
             </td>
         </tr>

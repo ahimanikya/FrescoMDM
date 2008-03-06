@@ -45,6 +45,7 @@ import com.sun.mdm.index.edm.util.DateUtil;
 import com.sun.mdm.index.edm.util.QwsUtil;
 import com.sun.mdm.index.edm.services.security.Logon;
 import com.sun.mdm.index.edm.control.UserProfile;
+import com.sun.mdm.index.edm.services.security.SecurityManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -52,8 +53,9 @@ import javax.servlet.http.HttpSession;
 
 public class LoginHandler {
     
-    private String userName ="User name";
-    private String password = "Password";
+    private String userNameValue ="eview";
+    private String userName ="eview";
+    private String password = "eview";
     private static final String SUCCESS ="success";
     private static final String FAILURE ="failure";
     private static final String FAIL_INITIALIZATION = "initializationfailed";
@@ -102,8 +104,8 @@ public class LoginHandler {
         String  initialScreenName = "to_screen_8";
 
         try {
-            HttpServletRequest facesRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-            userProfile = QwsController.signOn(this.getUserName(), facesRequest);
+            // HttpServletRequest facesRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            userProfile = QwsController.signOn(request.getRemoteUser(), request);
             if(userProfile != null) {
               session.setAttribute("userProfile",userProfile);
             }
@@ -118,7 +120,7 @@ public class LoginHandler {
         }
         
         if( userProfile != null ) {
-            session.setAttribute("user",this.getUserName());
+            session.setAttribute("user",request.getRemoteUser());
             try {
                initialScreenName = "to_screen_"+ConfigManager.getInstance().getInitialScreen().getID().toString();
               
@@ -137,13 +139,13 @@ public class LoginHandler {
     }
     
     public String signOutUser() {
-        HttpSession facesSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        facesSession.invalidate();
+        request.setAttribute("Logout", "LoggedOut");
+        session.invalidate();
         return LOGOUT;
     }
 
     
-    private String  initializeApplication() {
+    public String  initializeApplication() {
         int euidLength=10;
         // This function is the entry point to EDM
         // check if ConfigManager is available
@@ -217,12 +219,18 @@ public class LoginHandler {
             }
             
         }
+        authorizeAndLoginUser();
         return SUCCESS_INITIALIZATION;
     }
     
     
-  
+    
+    public String[] getAllRoles() {
+        // get the roles for this Userprofile
+        return SecurityManager.getInstance().getAllRoles();
+        
 
+    }  
     
     
 
