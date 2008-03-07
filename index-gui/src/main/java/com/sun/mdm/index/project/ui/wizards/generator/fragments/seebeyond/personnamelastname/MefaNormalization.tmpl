@@ -1,24 +1,24 @@
 [SBYNTAG:DEFINE:objname,qualifiednodename,sourcefieldnames(),genfieldprefix,fieldname]
-				<group standardization-type="PersonName" domain-selector="com.sun.mdm.index.matching.impl.MultiDomainSelector">
-                                        <locale-field-name></locale-field-name>
-                                        <locale-maps>
-                                            <locale-codes>
-                                                <value>Default</value>
-                                                <locale>US</locale>
-                                            </locale-codes>
-                                        </locale-maps>
-					<unnormalized-source-fields>
+                <group standardization-type="PersonName" domain-selector="com.sun.mdm.index.matching.impl.MultiDomainSelector">
+                    <locale-field-name></locale-field-name>
+                    <locale-maps>
+                        <locale-codes>
+                            <value>Default</value>
+                            <locale>US</locale>
+                        </locale-codes>
+                    </locale-maps>
+                    <unnormalized-source-fields>
 [SBYNTAG:REP-BEGIN]
-						<source-mapping>
-							<unnormalized-source-field-name>[sbyntag:sourcefieldnames()]</unnormalized-source-field-name>
-							<standardized-object-field-id>LastName</standardized-object-field-id>
-						</source-mapping>
+                        <source-mapping>
+                            <unnormalized-source-field-name>[sbyntag:sourcefieldnames()]</unnormalized-source-field-name>
+                            <standardized-object-field-id>LastName</standardized-object-field-id>
+                        </source-mapping>
 [SBYNTAG:REP-END]
-					</unnormalized-source-fields>
-					<normalization-targets>
-						<target-mapping>
-							<standardized-object-field-id>LastName</standardized-object-field-id>
-							<standardized-target-field-name>[sbyntag:qualifiednodename].[sbyntag:genfieldprefix]Std</standardized-target-field-name>
-						</target-mapping>
-					</normalization-targets>
-				</group>
+                    </unnormalized-source-fields>
+                    <normalization-targets>
+                        <target-mapping>
+                            <standardized-object-field-id>LastName</standardized-object-field-id>
+                            <standardized-target-field-name>[sbyntag:qualifiednodename].[sbyntag:genfieldprefix]Std</standardized-target-field-name>
+                        </target-mapping>
+                    </normalization-targets>
+                </group>
