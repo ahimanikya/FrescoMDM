@@ -1,4 +1,3 @@
-[SBYNTAG:DEFINE:objname]
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
@@ -21,45 +20,55 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-
 package com.sun.mdm.index.webservice;
 
-import com.sun.mdm.index.objects.EnterpriseObject;
-import com.sun.mdm.index.objects.exception.ObjectException;
+import com.sun.mdm.index.master.MatchResult;
 
-public class DestinationEO{
-    public static final int version = 1;
+/**
+ * Return value for webservice executeMatch
+ */
 
-    private EnterpriseObject mEnterprise;
-
-    /**
-     * Creates a new DestinationEO instance.
-     */
-    public DestinationEO() {
+public class MatchColResult {
+    
+    String mEUID;
+    int mResultCode;
+    public MatchColResult(){
     }
     
-    /**
-     * Creates a new DestinationEO instance from a EnterpriseObject object.
-     */
-    protected DestinationEO(EnterpriseObject eo) {
-            mEnterprise = eo;
+    public MatchColResult(MatchResult matchResult){
+        mEUID = matchResult.getEUID();
+        mResultCode = matchResult.getResultCode();
     }
     
-    /**
-     * Getter for enterprise[sbyntag:objname] attribute.
+    /** Getter for EUID attribute of the MatchResult object
+     * @return EUID
      */
-    public Enterprise[sbyntag:objname] getEnterprise[sbyntag:objname]() 
-        throws ObjectException {
-        return new Enterprise[sbyntag:objname](mEnterprise);
+    public String getEUID(){
+        return mEUID;
     }
- 
-    /**
-     * Setter for enterprise[sbyntag:objname] attribute.
-     * @param eo Enterprise[sbyntag:objname]
+    
+    /** 
+     * Setter EUID
+     * @param euid
      */
-    public void setEnterprise[sbyntag:objname](Enterprise[sbyntag:objname] eo) 
-        throws ObjectException {
-        mEnterprise = eo.pGetEnterpriseObject();
+    public void setEUID(String euid){
+        mEUID = euid;
     } 
-
+    
+    /** Getter for ResultCode
+     * @return resultCode
+     */
+    public int getResultCode(){
+        return mResultCode;
+    }
+    
+    /** 
+     * Setter for ResultCode
+     * @param resultCode
+     */
+    public void setResultCode(int resultCode){
+        mResultCode =resultCode;
+    }
+    
+    
 }

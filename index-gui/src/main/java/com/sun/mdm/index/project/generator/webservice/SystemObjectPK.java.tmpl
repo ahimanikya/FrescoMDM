@@ -27,31 +27,34 @@ import com.sun.mdm.index.objects.*;
 import com.sun.mdm.index.objects.exception.*;
 import com.sun.mdm.index.webservice.SystemObjectPKBean;
 
-/**
- * @author
- */
 public class System[sbyntag:objname]PK implements SystemObjectPKBean{
-    public static final int version = 1;
 
+    public static final int version = 1;
     private SystemObjectPK mSystemObjectPK;
     
+    /**
+     * No argument constructor.
+     */
     public System[sbyntag:objname]PK() {
     }
     
+    /**
+     * Creates a new System[sbyntag:objname]PK instance from a SystemObjectPK.
+     */
     public System[sbyntag:objname]PK(SystemObjectPK sysObjPK) {
        mSystemObjectPK = sysObjPK;
     }
-    
-        
+           
     /**
+     * Getter for localID
      * @return String lid
      */
     public String getLocalId() {
        return mSystemObjectPK.lID; 
     }
 
-
     /**
+     * Getter for systemCode
      * @return String system code
      */
     public String getSystemCode() {
@@ -59,6 +62,7 @@ public class System[sbyntag:objname]PK implements SystemObjectPKBean{
     }
        
     /**
+     * Setter for localID
      * @param lid Local ID
      */
     public void setLocalId(String lid) {
@@ -66,6 +70,7 @@ public class System[sbyntag:objname]PK implements SystemObjectPKBean{
     }
 
     /**
+     * Setter for systemCode
      * @param code system code
      */
     public void setSystemCode(String code) {

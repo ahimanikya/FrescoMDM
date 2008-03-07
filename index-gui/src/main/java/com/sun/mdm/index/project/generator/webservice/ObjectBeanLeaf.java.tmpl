@@ -30,8 +30,6 @@ import com.sun.mdm.index.objects.*;
 import com.sun.mdm.index.objects.metadata.MetaDataService;
 import java.text.SimpleDateFormat;
 import java.text.ParsePosition;
-import com.sun.mdm.index.webservice.ObjectBean;
-import com.sun.mdm.index.webservice.ClearFieldObject;
 
 public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
 {
@@ -40,23 +38,37 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
     private [sbyntag:objname.makeClassName]Object m[sbyntag:objname]Object;
     private ClearFieldObject mClearFieldObj;
     private static java.text.SimpleDateFormat mDateFormat = new SimpleDateFormat(MetaDataService.getDateFormat());
- 
+
+    /**
+     * Creates a new [sbyntag:objname.makeClassName]Bean instance.
+     * @throws  ObjectException If creation fails. 
+     */ 
     public [sbyntag:objname.makeClassName]Bean() throws ObjectException
     { 
        m[sbyntag:objname]Object = new [sbyntag:objname.makeClassName]Object();
     }
     
+    /**
+     * Creates a new [sbyntag:objname.makeClassName]Bean instance from a ClearFieldObject.
+     */ 
     public [sbyntag:objname.makeClassName]Bean(ClearFieldObject clearFieldObj) throws ObjectException
     { 
        m[sbyntag:objname]Object = new [sbyntag:objname.makeClassName]Object();
        mClearFieldObj = clearFieldObj;
     }
-    
+
+    /**
+     * Creates a new [sbyntag:objname.makeClassName]Bean instance from a [sbyntag:objname.makeClassName]Object.
+     */
     protected [sbyntag:objname.makeClassName]Bean([sbyntag:objname.makeClassName]Object a[sbyntag:objname]Object) throws ObjectException
     { 
        m[sbyntag:objname]Object = a[sbyntag:objname]Object;
     }
-
+    
+    /**
+     * Creates a new [sbyntag:objname.makeClassName]Bean instance from 
+     * a [sbyntag:objname.makeClassName]Object and a ClearFieldObject.
+     */
     protected [sbyntag:objname.makeClassName]Bean([sbyntag:objname.makeClassName]Object a[sbyntag:objname]Object,
       ClearFieldObject clearFieldObj) throws ObjectException
     { 
@@ -64,7 +76,11 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
        mClearFieldObj = clearFieldObj;
     }
     
-[SBYNTAG:REP-BEGIN]    
+[SBYNTAG:REP-BEGIN]
+    /**
+     * Getter for [sbyntag:fieldname().makeClassName]
+     * @return a string value of [sbyntag:fieldname().makeClassName]
+     */    
     public String get[sbyntag:fieldname().makeClassName]() throws ObjectException
     {
         try
@@ -80,7 +96,11 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
     }
 
 [SBYNTAG:REP-END]
-[SBYNTAG:REP-BEGIN]    
+[SBYNTAG:REP-BEGIN]
+    /**
+     * Setter for [sbyntag:fieldname().makeClassName]
+     * @param string value of [sbyntag:fieldname().makeClassName]
+     */ 
     public void set[sbyntag:fieldname().makeClassName](String value) throws ObjectException
     {
         try
@@ -106,11 +126,14 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
     
 [SBYNTAG:REP-END]
     
-
     protected ObjectNode getObjectNode() {
         return m[sbyntag:objname]Object;
     }
 
+    /** 
+     * Return [sbyntag:objname]Object
+     * @return [sbyntag:objname]Object
+     */ 
     public ObjectNode pGetObject() {
         return m[sbyntag:objname]Object;
     }
@@ -197,10 +220,10 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
     }
     
     static Object strToObj(String str, int type, String fieldName) throws ObjectException {
-        if ( type == ObjectField.OBJECTMETA_STRING_TYPE) {
-            return  str;
-        } else if (str == null || str.trim().length() == 0) {
+        if (str == null || str.trim().length() == 0) {
             return null;
+        } else if ( type == ObjectField.OBJECTMETA_STRING_TYPE) {
+            return  str;
         } else if (type == ObjectField.OBJECTMETA_DATE_TYPE) {
             ParsePosition pos = new ParsePosition(0);
              Object ret = mDateFormat.parse(str, pos);   

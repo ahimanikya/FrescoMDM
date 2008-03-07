@@ -26,26 +26,41 @@ package com.sun.mdm.index.webservice;
 
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.exception.ObjectException;
-// import com.sun.mdm.index.webservice.EnterpriseObjectMessage;
 import com.sun.mdm.index.webservice.EnterpriseObjectBean;
 
 public class SourceEO {
-        public static final int version = 1;
-        
-	private EnterpriseObject mEnterprise;
-	
-	public SourceEO() {
-	}
-	
-	protected SourceEO(EnterpriseObject eo) {
-		mEnterprise = eo;
+    public static final int version = 1;
+
+    private EnterpriseObject mEnterprise;
+    
+    /**
+     * No argument constructor.
+     */
+    public SourceEO() {
     }
     
+    /**
+     * Creates a new SourceEO instance from a EnterpriseObject.
+     */ 
+    protected SourceEO(EnterpriseObject eo) {
+        mEnterprise = eo;
+    }
+
+    /**
+     * Getter for Enterprise[sbyntag:objname]
+     * @exception ObjectException A object error occured
+     * @return Enterprise[sbyntag:objname]
+     */
     public Enterprise[sbyntag:objname] getEnterprise[sbyntag:objname]() 
         throws ObjectException {
         return new Enterprise[sbyntag:objname](mEnterprise);
     }
-
+    
+    /**
+     * Setter for Enterprise[sbyntag:objname]
+     * @exception ObjectException A object error occured
+     * @param eo Enterprise[sbyntag:objname]
+     */
     public void setEnterprise[sbyntag:objname](Enterprise[sbyntag:objname] eo) 
         throws ObjectException {
         mEnterprise = eo.pGetEnterpriseObject();

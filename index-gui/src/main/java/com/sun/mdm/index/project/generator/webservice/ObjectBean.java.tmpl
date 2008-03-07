@@ -29,8 +29,6 @@ import com.sun.mdm.index.objects.*;
 import com.sun.mdm.index.objects.metadata.MetaDataService;
 import java.text.SimpleDateFormat;
 import java.text.ParsePosition;
-import com.sun.mdm.index.webservice.ObjectBean;
-import com.sun.mdm.index.webservice.ClearFieldObject;
 import com.sun.mdm.index.util.LogUtil;
 import com.sun.mdm.index.util.Logger;
 
@@ -46,12 +44,18 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
 [SBYNTAG:REP-BEGIN]    
     private ArrayList m[sbyntag:seclist()] = new ArrayList();
 [SBYNTAG:REP-END]
-    
+
+    /**
+     * No argument constructor.
+     */ 
     public [sbyntag:objname.makeClassName]Bean() throws ObjectException
     { 
        m[sbyntag:objname]Object = new [sbyntag:objname.makeClassName]Object();
     }
     
+    /**
+     * Creates a new [sbyntag:objname.makeClassName]Bean instance from a [sbyntag:objname.makeClassName]Object.
+     */ 
     protected [sbyntag:objname.makeClassName]Bean([sbyntag:objname.makeClassName]Object a[sbyntag:objname]Object) throws ObjectException
     { 
        m[sbyntag:objname]Object = a[sbyntag:objname]Object;
@@ -73,8 +77,11 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
          }
    
 [SBYNTAG:REP-END]
-     }    
-
+     }
+    /**
+     * Creates a new [sbyntag:objname.makeClassName]Bean instance from a [sbyntag:objname.makeClassName]Object.
+     * and a ClearFieldObject
+     */
     protected [sbyntag:objname.makeClassName]Bean([sbyntag:objname.makeClassName]Object a[sbyntag:objname]Object,
        ClearFieldObject clearFieldObj) throws ObjectException
     { 
@@ -100,7 +107,11 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
 [SBYNTAG:REP-END]
      }
 
-[SBYNTAG:REP-BEGIN]    
+[SBYNTAG:REP-BEGIN]
+    /**
+     * Getter for [sbyntag:fieldname().makeClassName]
+     * @return a string value of [sbyntag:fieldname().makeClassName]
+     */     
     public String get[sbyntag:fieldname().makeClassName]() throws ObjectException
     {
         try
@@ -116,7 +127,11 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
     }
 
 [SBYNTAG:REP-END]
-[SBYNTAG:REP-BEGIN]    
+[SBYNTAG:REP-BEGIN]
+    /**
+     * Setter for [sbyntag:fieldname().makeClassName]
+     * @param a string value of [sbyntag:fieldname().makeClassName]
+     */ 
     public void set[sbyntag:fieldname().makeClassName](String value) throws ObjectException
     {
         try
@@ -143,17 +158,23 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
 [SBYNTAG:REP-END]
    
             
-[SBYNTAG:REP-BEGIN]    
+[SBYNTAG:REP-BEGIN]
+    /**
+     * Getter for [sbyntag:seclist().makeClassName]
+     * @return a collection of [sbyntag:seclist().makeClassName]Bean
+     */ 
     public  [sbyntag:seclist().makeClassName]Bean[] get[sbyntag:seclist().makeClassName]()
     {       
-        // Collection children = m[sbyntag:objname]Object.pGetChildren("[sbyntag:seclist()]");
-        // [sbyntag:seclist().makeClassName]Object[] arrChildren = new [sbyntag:seclist().makeClassName]Object[children.size()];
-        // return ([sbyntag:seclist().makeClassName]Bean[])children.toArray(arrChildren);
-           int length = m[sbyntag:seclist()].size();
-           [sbyntag:seclist().makeClassName]Bean[] arrChildren = new [sbyntag:seclist().makeClassName]Bean[length];
-           return ([sbyntag:seclist().makeClassName]Bean[] )m[sbyntag:seclist()].toArray(arrChildren);           
+        int length = m[sbyntag:seclist()].size();
+        [sbyntag:seclist().makeClassName]Bean[] arrChildren = new [sbyntag:seclist().makeClassName]Bean[length];
+        return ([sbyntag:seclist().makeClassName]Bean[] )m[sbyntag:seclist()].toArray(arrChildren);           
     }
 
+    /**
+     * Return the ith [sbyntag:seclist().makeClassName]Bean
+     * @param index of [sbyntag:seclist().makeClassName]Bean
+     * @return [sbyntag:seclist().makeClassName]Bean
+     */
     public  [sbyntag:seclist().makeClassName]Bean get[sbyntag:seclist().makeClassName](int i) throws ObjectException
     {    
       try {
@@ -178,12 +199,17 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
        }
     }
 
-
+    /**
+     * Return the size of [sbyntag:seclist().makeClassName]
+     * @return size of [sbyntag:seclist().makeClassName]
+     */
     public int count[sbyntag:seclist().makeClassName]() {
       return m[sbyntag:seclist()].size();
     }
     
-    
+    /**
+     * Delete [sbyntag:seclist().makeClassName]
+     */
     public void delete[sbyntag:seclist().makeClassName](String [sbyntag:seclist().toLowerCase]Id) 
        throws ObjectException{
        m[sbyntag:objname]Object.deleteChild("[sbyntag:seclist()]", [sbyntag:seclist().toLowerCase]Id);
@@ -192,7 +218,12 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
      
 [SBYNTAG:REP-END]
 
-[SBYNTAG:REP-BEGIN]    
+[SBYNTAG:REP-BEGIN]
+    /**
+     * Setter for [sbyntag:seclist().makeClassName]
+     * @param index of [sbyntag:seclist().makeClassName]
+     * @param [sbyntag:seclist().makeClassName]Bean
+     */ 
     public void set[sbyntag:seclist().makeClassName](int index, [sbyntag:seclist().makeClassName]Bean [sbyntag:seclist().toLowerCase])
     {
         try
@@ -206,6 +237,10 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
         }
     }
 
+    /**
+     * Setter for [sbyntag:seclist().makeClassName]
+     * @param a collection of [sbyntag:seclist().makeClassName]Bean
+     */ 
     public void set[sbyntag:seclist().makeClassName]([sbyntag:seclist().makeClassName]Bean[] [sbyntag:seclist().toLowerCase]s)
     {
         try
@@ -222,14 +257,16 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
     }
 [SBYNTAG:REP-END]
 
-  
-
+    /** 
+     * Return [sbyntag:objname]Object
+     * @return [sbyntag:objname]Object ObjectNode
+     */  
     public ObjectNode pGetObject() {
         return m[sbyntag:objname]Object;
     }
 
     /** 
-     * Getter for all children nodes
+     * Return for all children nodes
      * @return collection of children nodes
      */            
     public Collection pGetChildren() {
@@ -277,7 +314,9 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
         return ((ArrayList) pGetChildren(type)).size();
     }
 
-    // Find parent which is SystemObject    
+    /**
+     * Return parent which is SystemObject  
+     */  
     private SystemObject getParentSO() {
         ObjectNode obj = m[sbyntag:objname]Object.getParent();
         
@@ -308,10 +347,10 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
     }
     
     static Object strToObj(String str, int type, String fieldName) throws ObjectException {
-        if ( type == ObjectField.OBJECTMETA_STRING_TYPE) {
-            return  str;
-        } else if (str == null || str.trim().length() == 0) {
+        if (str == null || str.trim().length() == 0) {
             return null;
+        } else if ( type == ObjectField.OBJECTMETA_STRING_TYPE) {
+            return  str;         
         } else if (type == ObjectField.OBJECTMETA_DATE_TYPE) {
             ParsePosition pos = new ParsePosition(0);
             SimpleDateFormat dateFormat = new SimpleDateFormat(MetaDataService.getDateFormat());
@@ -333,6 +372,5 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
         } else {
             throw new ObjectException("Invalid type of" + fieldName + ",value:" + str);
         }
-    }
-    
+    }    
 }

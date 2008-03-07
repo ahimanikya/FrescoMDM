@@ -44,7 +44,7 @@ class SourceEOWriter {
 
     /**
      * @param path template path
-     * @param name eview object name
+     * @param name object name
      */
     public SourceEOWriter(String path, String name) {
         try {  

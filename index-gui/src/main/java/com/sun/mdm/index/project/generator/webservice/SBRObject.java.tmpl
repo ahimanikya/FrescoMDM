@@ -25,24 +25,23 @@
 package com.sun.mdm.index.webservice;
 import com.sun.mdm.index.objects.*;
 import com.sun.mdm.index.objects.exception.*;
-import com.sun.mdm.index.webservice.SBRObjectBean;
-import com.sun.mdm.index.webservice.ObjectBean;
 
-
-/**
- * @author 
- * @version
- */
 public class SBR[sbyntag:objname] implements SBRObjectBean{
     public static final int version = 1;
      
     private SBR msbr;
     private [sbyntag:objname.makeClassName]Bean m[sbyntag:objname];
 
+    /**
+     * No argument constructor.
+     */ 
     public SBR[sbyntag:objname]() {
     }
     
-    protected SBR[sbyntag:objname](SBR sbr) throws ObjectException {
+    /**
+     * Creates a new SBR[sbyntag:objname] instance from a SBR.
+     */
+    public SBR[sbyntag:objname](SBR sbr) throws ObjectException {
       msbr = sbr; 
       m[sbyntag:objname] = new [sbyntag:objname.makeClassName]Bean(([sbyntag:objname.makeClassName]Object)sbr.getObject());
     }
@@ -54,9 +53,9 @@ public class SBR[sbyntag:objname] implements SBRObjectBean{
     public SBR pGetSBRObject() {
        return msbr;
     }
-    
-    
+        
     /**
+     * Getter for [sbyntag:objname.makeClassName]Bean
      * @return [sbyntag:objname.makeClassName] object
      * @exception ObjectException Object Exception
      */
@@ -64,8 +63,8 @@ public class SBR[sbyntag:objname] implements SBRObjectBean{
        return m[sbyntag:objname];  
     }
 
-
     /**
+     * Return ObjectBean
      * @return object bean
      * @exception ObjectException Object Exception
      */
@@ -73,8 +72,8 @@ public class SBR[sbyntag:objname] implements SBRObjectBean{
        return get[sbyntag:objname.makeClassName]();  
     }
     
-
     /**
+     * Getter for status
      * @exception ObjectException object exception
      * @return status status
      */
@@ -82,25 +81,21 @@ public class SBR[sbyntag:objname] implements SBRObjectBean{
       return msbr.getStatus();
     }
 
- 
-
     /**
+     * Setter for [sbyntag:objname.makeClassName]
      * @param obj object
      * @exception ObjectException object exception
-     * @todo Document: Setter for Object attribute of the SBR object
      */
-    protected void set[sbyntag:objname.makeClassName]([sbyntag:objname.makeClassName]Bean a[sbyntag:objname])
+    public void set[sbyntag:objname.makeClassName]([sbyntag:objname.makeClassName]Bean a[sbyntag:objname])
         throws ObjectException {
          msbr.setObject(a[sbyntag:objname].pGetObject()); 
          m[sbyntag:objname] = a[sbyntag:objname];        
     }
 
- 
-
     /**
+     * Setter for status
      * @param status status
      * @exception ObjectException object exception
-     * @todo Document: Setter for UpdateUser attribute of the SBR object
      */
     public void setStatus(String status) throws ObjectException {
       msbr.setStatus(status);

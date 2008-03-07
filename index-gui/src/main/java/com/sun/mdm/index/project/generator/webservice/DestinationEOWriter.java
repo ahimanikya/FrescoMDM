@@ -44,7 +44,7 @@ class DestinationEOWriter {
 
     /**
      * @param path template path
-     * @param name eview object name
+     * @param name object name
      */
     public DestinationEOWriter(String path, String name) {
         try {  

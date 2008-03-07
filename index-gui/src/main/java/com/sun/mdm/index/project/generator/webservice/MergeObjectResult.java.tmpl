@@ -28,10 +28,9 @@ import com.sun.mdm.index.objects.*;
 import com.sun.mdm.index.objects.exception.*;
 import com.sun.mdm.index.master.MergeResult;
 import com.sun.mdm.index.webservice.EnterpriseObjectMessage;
-// import com.sun.mdm.index.webservice.MergeObjectResult;
 
 /**
- * Return value from eview[sbyntag:objname] merge related functions.
+ * Return value from [sbyntag:objname] merge related functions.
  */
 
 public class Merge[sbyntag:objname]Result {
@@ -39,15 +38,20 @@ public class Merge[sbyntag:objname]Result {
     
     private DestinationEO mDestEO;
     private SourceEO mSourceEO;
-     
+    
+    /**
+     * No argument constructor.
+     */ 
     public Merge[sbyntag:objname]Result() {
     }
     
+    /**
+     * Creates a new Merge[sbyntag:objname]Result instance from a MergeResult
+     */ 
     protected Merge[sbyntag:objname]Result(MergeResult mergeResult) {
        mDestEO = new DestinationEO(mergeResult.getDestinationEO());
        mSourceEO = new SourceEO(mergeResult.getSourceEO());
     }
-
             
     /** 
      * Get destination EO
@@ -57,7 +61,6 @@ public class Merge[sbyntag:objname]Result {
         return mDestEO;
     }
 
-
     /** 
      * Get Source EO
      * @return Source EO
@@ -66,13 +69,19 @@ public class Merge[sbyntag:objname]Result {
         return mSourceEO;
     }
 
+    /** 
+     * Set destination EO
+     * @param eom DestinationEO 
+     */
     public void setDestinationEO(DestinationEO eom) {
         mDestEO = eom;
     }
-
+    
+    /** 
+     * Set Source EO
+     * @param eom SourceEO 
+     */
     public void setSourceEO(SourceEO eom) {
         mSourceEO = eom;
     }
-
-
 }

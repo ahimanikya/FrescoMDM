@@ -28,7 +28,7 @@ import com.sun.mdm.index.webservice.SearchObjectResult;
 import com.sun.mdm.index.webservice.ObjectBean;
 
 /** 
-   Contains the Search Result invoked from Eview[sbyntag:objname.makeClassName].search method.
+ * Contains the Search Result invoked from [sbyntag:objname.makeClassName].search method.
  */
 public final class Search[sbyntag:objname]Result implements SearchObjectResult{
     public static final int version = 1;
@@ -37,46 +37,74 @@ public final class Search[sbyntag:objname]Result implements SearchObjectResult{
     private float mcomparison;
     private [sbyntag:objname.makeClassName]Bean m[sbyntag:objname];
     
+    /**
+     * No argument constructor.
+     */
     public Search[sbyntag:objname]Result() {
     }
     
     /**
-     * constructor
-     */
+     * Creates a new Search[sbyntag:objname]Result instance from a [sbyntag:objname.makeClassName]Bean
+     * and euid and comparisonScore.
+     */ 
     public Search[sbyntag:objname]Result([sbyntag:objname.makeClassName]Bean bean, String euid, float comparisonScore ) {
        meuid = euid;
        mcomparison = comparisonScore;
        m[sbyntag:objname] = bean;
     }
-
+    
+    /**
+     * Getter for EUID
+     * @return euid
+     */
     public String getEUID() {
        return meuid;
     }
-
+    
+    /**
+     * Getter for Comparison Score
+     * @return Comparison Score
+     */
     public float getComparisonScore() {
        return mcomparison;
     }
 
+    /**
+     * Getter for [sbyntag:objname.makeClassName]
+     * @return [sbyntag:objname.makeClassName]Bean
+     */
     public [sbyntag:objname.makeClassName]Bean get[sbyntag:objname.makeClassName]() {
       return m[sbyntag:objname];
     }
 
     /**
-     * Getter for object bean
+     * Return for object bean
      * @return object bean 
      */
     public ObjectBean pGetObjectBean() {
        return get[sbyntag:objname.makeClassName]();
     }
 
+    /**
+     * Setter for EUID
+     * @param euid String
+     */
     public void setEUID(String euid) {
        meuid = euid;
     }
-
+    
+    /**
+     * Setter for ComparisonScore
+     * @param score float
+     */
     public void setComparisonScore(float score) {
        mcomparison = score;
     }
-
+    
+    /**
+     * Setter for [sbyntag:objname.makeClassName]
+     * @param bean [sbyntag:objname.makeClassName]Bean
+     */
     public void set[sbyntag:objname.makeClassName]([sbyntag:objname.makeClassName]Bean bean) {
        m[sbyntag:objname] = bean;
     }

@@ -31,9 +31,6 @@ import com.sun.mdm.index.webservice.ObjectBean;
 import com.sun.mdm.index.webservice.ClearFieldObject;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * @author
- */
 public class System[sbyntag:objname] implements SystemObjectBean{
     private static final String DEFAULT_CLEAR_FIELD_INDICATOR = "\"\"";
     public static final int version = 1;
@@ -54,6 +51,9 @@ public class System[sbyntag:objname] implements SystemObjectBean{
     private [sbyntag:objname.makeClassName]Bean m[sbyntag:objname];
     private ClearFieldObject mClearFieldObj;
 
+    /**
+     * No argument constructor.
+     */ 
     public System[sbyntag:objname]() throws ObjectException {
        [sbyntag:objname.makeClassName]Object a[sbyntag:objname] = new [sbyntag:objname.makeClassName]Object();
        mClearFieldObj = new ClearFieldObject(DEFAULT_CLEAR_FIELD_INDICATOR);
@@ -63,8 +63,10 @@ public class System[sbyntag:objname] implements SystemObjectBean{
        mSystemObject.setObject(a[sbyntag:objname]);
        m[sbyntag:objname] = new [sbyntag:objname.makeClassName]Bean(a[sbyntag:objname], mClearFieldObj);
     }
-
-
+    
+    /**
+     * Creates a new System[sbyntag:objname] instance from a SystemObject.
+     */
     protected System[sbyntag:objname](SystemObject so) throws ObjectException {
       mSystemObject = so; 
       mClearFieldObj = new ClearFieldObject(DEFAULT_CLEAR_FIELD_INDICATOR);
@@ -72,6 +74,7 @@ public class System[sbyntag:objname] implements SystemObjectBean{
     }
 
     /**
+     * Return clear field indicator
      * @return Object clear field indicator
      */    
     public Object getClearFieldIndicator() {
@@ -79,6 +82,7 @@ public class System[sbyntag:objname] implements SystemObjectBean{
     }
  
     /**
+     * Getter for local ID
      * @exception ObjectException object exception
      * @return String lid
      */
@@ -87,6 +91,7 @@ public class System[sbyntag:objname] implements SystemObjectBean{
     }
 
     /**
+     * Setter for SystemCode
      * @exception ObjectException object exception
      * @return String system code
      */
@@ -95,6 +100,7 @@ public class System[sbyntag:objname] implements SystemObjectBean{
     }
 
     /**
+     * Getter for [sbyntag:objname.makeClassName]
      * @return [sbyntag:objname.makeClassName]Bean 
      */
     public [sbyntag:objname.makeClassName]Bean get[sbyntag:objname.makeClassName]() {
@@ -109,13 +115,16 @@ public class System[sbyntag:objname] implements SystemObjectBean{
        return get[sbyntag:objname.makeClassName]();
     } 
     
-
+    /**
+     * Getter for status
+     * @return status 
+     */
     public String getStatus() throws ObjectException {
        return mSystemObject.getStatus(); 
     }
 
-
-  /**
+    /**
+     * Return CreateDateTime
      * @exception ObjectException object exception
      * @return DAte create date time
      */
@@ -124,6 +133,7 @@ public class System[sbyntag:objname] implements SystemObjectBean{
     }
 
     /**
+     * Return Create Function
      * @exception ObjectException object exception
      * @return String create function
      */
@@ -132,6 +142,7 @@ public class System[sbyntag:objname] implements SystemObjectBean{
     }
 
     /**
+     * Return Create User
      * @exception ObjectException object exception
      * @return String create user
      */
@@ -140,6 +151,7 @@ public class System[sbyntag:objname] implements SystemObjectBean{
     }
 
     /**
+     * Return Update User
      * @exception ObjectException object exception
      * @return String update user
      */
@@ -148,46 +160,45 @@ public class System[sbyntag:objname] implements SystemObjectBean{
     }
 
     /**
+     * Setter for clearFieldIndicator
      * @param value clear field indicator
      */    
     public void setClearFieldIndicator(Object value) {
        mClearFieldObj.setClearFieldIndicator(value);
     }
-    
- 
+     
     /**
+     * Setter for LID attribute of the SystemObject object
      * @param lid LID
      * @exception ObjectException object exception
-     * @todo Document: Setter for LID attribute of the SystemObject object
      */
     public void setLocalId(String lid) throws ObjectException {
        mSystemObject.setLID(lid);
     }
 
     /**
+     * Setter for SystemCode attribute of the SystemObject object    
      * @param system system code
      * @exception ObjectException object exception
-     * @todo Document: Setter for SystemCode attribute of the SystemObject
-     *      object
+     * @todo Document: 
      */
     public void setSystemCode(String system) throws ObjectException {
        mSystemObject.setSystemCode(system);
     }
 
-   /**
+    /**
+     * Setter for Status attribute of the SystemObject object
      * @param status status
      * @exception ObjectException object exception
-     * @todo Document: Setter for Status attribute of the SystemObject object
      */
     public void setStatus(String status) throws ObjectException {
        mSystemObject.setStatus(status);
     }
 
     /**
+     * Setter for CreateDateTime attribute of the SystemObject object
      * @param createdatetime create date time
      * @exception ObjectException object exception
-     * @todo Document: Setter for CreateDateTime attribute of the SystemObject
-     *      object
      */
     public void setCreateDateTime(Date createdatetime)
         throws ObjectException {
@@ -196,10 +207,9 @@ public class System[sbyntag:objname] implements SystemObjectBean{
     }
 
     /**
+     * Setter for CreateFunction attribute of the SystemObject object
      * @param createfunction create function
      * @exception ObjectException object exception
-     * @todo Document: Setter for CreateFunction attribute of the SystemObject
-     *      object
      */
     public void setCreateFunction(String createfunction)
         throws ObjectException {
@@ -207,36 +217,37 @@ public class System[sbyntag:objname] implements SystemObjectBean{
     }
 
     /**
+     * Setter for CreateUser attribute of the SystemObject object
      * @param createuser create user
      * @exception ObjectException object exception
-     * @todo Document: Setter for CreateUser attribute of the SystemObject
-     *      object
      */
     public void setCreateUser(String createuser) throws ObjectException {
         mSystemObject.setCreateUser(createuser);
     }
 
-
-
     /**
-     * @param obj object
+     * Setter for [sbyntag:objname.makeClassName] of the SystemObject object
+     * @param a[sbyntag:objname] [sbyntag:objname.makeClassName]Bean
      * @exception ObjectException object exception
-     * @todo Document: Setter for Object attribute of the SystemObject object
      */
     public void set[sbyntag:objname.makeClassName]([sbyntag:objname.makeClassName]Bean a[sbyntag:objname]) throws ObjectException {
       m[sbyntag:objname] = a[sbyntag:objname];
       mSystemObject.setObject(a[sbyntag:objname].pGetObject());
     }
 
-
     /**
+     * Setter for UpdateUser attribute of the SystemObject object    
      * @param updateuser update user
      * @exception ObjectException object exception
      */
     public void setUpdateUser(String updateuser) throws ObjectException {
       mSystemObject.setUpdateUser(updateuser);
     }
-
+    
+    /**
+     * Return SystemObject     
+     * @return SystemObject
+     */
     public SystemObject pGetSystemObject() {
       return mSystemObject;
     }

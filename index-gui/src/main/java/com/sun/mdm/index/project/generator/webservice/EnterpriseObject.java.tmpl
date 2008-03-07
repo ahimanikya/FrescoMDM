@@ -27,30 +27,36 @@ package com.sun.mdm.index.webservice;
 import java.util.*;
 import com.sun.mdm.index.objects.*;
 import com.sun.mdm.index.objects.exception.*;
-import com.sun.mdm.index.webservice.EnterpriseObjectBean;
-import com.sun.mdm.index.webservice.SystemObjectBean;
-import com.sun.mdm.index.webservice.SBRObjectBean;
+import com.sun.mdm.index.update.UpdateHelper;
 
 /**
  * Enterprise[sbyntag:objname] value object
- * @author 
- * @version
  */
 public class Enterprise[sbyntag:objname] implements EnterpriseObjectBean{
-     public static final int version = 1;
- 
-     private EnterpriseObject meo;
-     private SBR[sbyntag:objname] msbr;
-     private System[sbyntag:objname][] mSystem[sbyntag:objname]s;
-     
-     public Enterprise[sbyntag:objname]() {
-     }
-     
-     protected Enterprise[sbyntag:objname](EnterpriseObject eo) throws ObjectException {
+    public static final int version = 1; 
+    private EnterpriseObject meo;
+    private SBR[sbyntag:objname] mSBR[sbyntag:objname];
+    private System[sbyntag:objname][] mSystem[sbyntag:objname]s;
+    private String mEUID;
+    private String mStatus;
+
+    /**
+     * No argument constructor.
+     */ 
+    public Enterprise[sbyntag:objname]() {
+    }
+    
+    /**
+     * Creates a new Enterprise[sbyntag:objname] instance from a EnterpriseObject.
+     */ 
+    protected Enterprise[sbyntag:objname](EnterpriseObject eo) throws ObjectException {
         meo = eo;
-        msbr = new SBR[sbyntag:objname](eo.getSBR());
-        pSetSystem[sbyntag:objname]s();        
-     }
+        mSBR[sbyntag:objname] = new SBR[sbyntag:objname](eo.getSBR());
+        pSetSystem[sbyntag:objname]s();
+        mEUID=meo.getEUID();
+        mStatus = meo.getStatus();        
+    }
+
     /**
      * Getter for EUID attribute of the EnterpriseObject object
      *
@@ -58,19 +64,23 @@ public class Enterprise[sbyntag:objname] implements EnterpriseObjectBean{
      * @return String
      */
     public String getEUID() throws ObjectException {
-       return meo.getEUID();
+        return mEUID;
        
     }
 
     /**
-     * Getter for SBR attribute of the EnterprisePerson object
+     * Getter for SBR[sbyntag:objname] attribute of the 
+     * Enterprise[sbyntag:objname] object
      *
-     * @return SBR
+     * @return SBR[sbyntag:objname]
      */
     public SBR[sbyntag:objname] getSBR[sbyntag:objname]() {
-        return msbr; 
+        return mSBR[sbyntag:objname]; 
     }
-
+    
+    /**
+     * return SBRObjectBean of Enterprise[sbyntag:objname] object
+     */
     public SBRObjectBean pGetSBRObjectBean() {
         return getSBR[sbyntag:objname]();
     }
@@ -82,11 +92,11 @@ public class Enterprise[sbyntag:objname] implements EnterpriseObjectBean{
      * @return String
      */
     public String getStatus() throws ObjectException {
-      return meo.getStatus();
+        return mStatus;
     }
 
     /**
-     * Getter for SystemObject attribute of the EnterpriseObject object
+     * Return SystemObject of the EnterpriseObject object
      *
      * @param system SystemCode
      * @param lid LocalID
@@ -101,38 +111,43 @@ public class Enterprise[sbyntag:objname] implements EnterpriseObjectBean{
     
     
     /**
-     * Getter for SystemObject attribute of the EnterpriseObject object
+     * Return SystemObjectBean of the EnterpriseObject object 
+     * from system code and local id
      *
-     * @param system SystemCode
-     * @param lid LocalID
+     * @param systemCode System Code
+     * @param lid Local ID
      * @exception ObjectException ObjectException
      * @return SystemObjectBean
      */
-    public SystemObjectBean pGetSystemObjectBean(String system, String lid)
+    public SystemObjectBean pGetSystemObjectBean(String systemCode, String lid)
         throws ObjectException {
-        return pGetSystem[sbyntag:objname](system, lid);
+        return pGetSystem[sbyntag:objname](systemCode, lid);
     }
             
     /**
      * Getter for SystemObjects attribute of the EnterpriseObject object
      *
-     * @return Collection of SystemObject(s)
+     * @return Collection of System[sbyntag:objname]
      */
     public System[sbyntag:objname][] getSystem[sbyntag:objname]() {
-       return mSystem[sbyntag:objname]s;
+        return mSystem[sbyntag:objname]s;
     }
     
+    /**
+     * Return the ith System[sbyntag:objname] of the EnterpriseObject object
+     * @param index index of System[sbyntag:objname]
+     * @return System[sbyntag:objname]
+     */
     public System[sbyntag:objname] getSystem[sbyntag:objname](int index) {
-       return mSystem[sbyntag:objname]s[index];
+        return mSystem[sbyntag:objname]s[index];
     }
-    
 
     /**
      * Get SystemObject count, used for JCE for loop
      * @return number of SystemObject records
      */    
     public int countSystem[sbyntag:objname]() {
-       return mSystem[sbyntag:objname]s.length;
+        return mSystem[sbyntag:objname]s.length;
     }
     
     /**
@@ -140,26 +155,26 @@ public class Enterprise[sbyntag:objname] implements EnterpriseObjectBean{
      * @return number of SystemObject records
      */
     public int getSystem[sbyntag:objname]Count() {
-       return countSystem[sbyntag:objname]();
+        return countSystem[sbyntag:objname]();
     }
 
-
     /**
-     * Getter for SystemObjects attribute of the EnterpriseObject object
+     * return Collection of SystemObjectBean of the EnterpriseObject object
      *
-     * @return Collection of SystemObject(s)
+     * @return Collection of SystemObjectBean
      */
     public SystemObjectBean[] pGetSystemObjectBean() {
-       return getSystem[sbyntag:objname]();
+        return getSystem[sbyntag:objname]();
     }
     
     /**
-     * Getter for ith SystemObjectBean
+     * Return the ith SystemObjectBean of the EnterpriseObject object
+     *
      * @param index index of SystemObjectBean
      * @return SystemObjectBean
      */
     public SystemObjectBean pGetSystemObjectBean(int index) {
-       return getSystem[sbyntag:objname](index);
+        return getSystem[sbyntag:objname](index);
     }
     
     /**
@@ -169,66 +184,44 @@ public class Enterprise[sbyntag:objname] implements EnterpriseObjectBean{
      * @exception ObjectException ObjectException
      */
     public void setEUID(String euid) throws ObjectException {
-      meo.setEUID(euid);
+        mEUID = euid;
     }
 
     /**
-     * Setter for Status attribute of the EnterpriseObject object
+     * Setter for status attribute of the EnterpriseObject object
      *
      * @param status String
      * @exception ObjectException ObjectException
      */
     public void setStatus(String status) throws ObjectException {
-       // Do nothing. Just make it Bean compliant.
+        mStatus = status;
     }
 
     /**
-     * Setter for SBR attribute of the EnterpriseObject object
+     * Setter for System[sbyntag:objname] of the EnterpriseObject object
      *
-     * @param sbr SBR
+     * @param system[sbyntag:objname]s System[sbyntag:objname][]
      * @exception ObjectException ObjectException
      */
-   public void setSBR[sbyntag:objname](SBR[sbyntag:objname] sbr) throws ObjectException {  
-       // Do nothing. Just make it Bean compliant.
-   }
-
-    /**
-     * Adds a feature to the SystemObject attribute of the EnterpriseObject
-     * object
-     *
-     * @param obj The feature to be added to the SystemObject attribute
-     * @exception ObjectException ObjectException
-     */
-    /*
-    public void setSystem[sbyntag:objname](System[sbyntag:objname] system[sbyntag:objname]) throws ObjectException {
-        SystemObject so = system[sbyntag:objname].pGetSystemObject();
-        meo.addSystemObject(so);        
-        pSetSystem[sbyntag:objname]s();
-    }
-    */
     public void setSystem[sbyntag:objname](System[sbyntag:objname][] system[sbyntag:objname]s) throws ObjectException {
-        pSetSystem[sbyntag:objname]s(system[sbyntag:objname]s);
+        mSystem[sbyntag:objname]s = system[sbyntag:objname]s;
     }
 
     /**
-     * Adds a feature to the SystemObjects attribute of the EnterpriseObject
+     * Adds collection of System[sbyntag:objname] to the EnterpriseObject
      * object
      *
-     * @param systemobjs The feature to be added to the SystemObjects attribute
+     * @param system[sbyntag:objname]s The collection System[sbyntag:objname][] to be added
      * @exception ObjectException ObjectException
      */
-    public void pSetSystem[sbyntag:objname]s(System[sbyntag:objname][] system[sbyntag:objname]s) throws ObjectException {
-      Collection systems = new ArrayList();
-      for (int i = 0; i < system[sbyntag:objname]s.length; i++) {
-        systems.add(system[sbyntag:objname]s[i].pGetSystemObject());
-      }
-      meo.addSystemObjects(systems);    
-      pSetSystem[sbyntag:objname]s(); 
+    private void pSetSystem[sbyntag:objname]s(System[sbyntag:objname][] system[sbyntag:objname]s) throws ObjectException {
+        Collection systems = new ArrayList();
+        for (int i = 0; i < system[sbyntag:objname]s.length; i++) {
+            systems.add(system[sbyntag:objname]s[i].pGetSystemObject());
+        }
+        meo.addSystemObjects(systems);    
+        pSetSystem[sbyntag:objname]s(); 
     }
-
-    public void setSystem[sbyntag:objname]Count(int count) {
-        // Do nothing. Just to make it Bean compliant.
-    }  
 
     /**
      * Removes a SystemObject from EnterpriseObject
@@ -238,18 +231,18 @@ public class Enterprise[sbyntag:objname] implements EnterpriseObjectBean{
      * @exception ObjectException ObjectException
      */
     public void removeSystemObject(String system, String lid) throws ObjectException {
-       meo.removeSystemObject(system, lid);       
+        meo.removeSystemObject(system, lid);       
     }
 
     /**
-     * mark a SystemObject from EnterpriseObject for deletion
+     * Mark a SystemObject from EnterpriseObject for deletion
      *
      * @param system SystemCode
      * @param lid LocalID
      * @exception ObjectException ObjectException
      */
     public void deleteSystemObject(String system, String lid) throws ObjectException {
-       meo.deleteSystemObject(system, lid);  
+        meo.deleteSystemObject(system, lid);  
     }
 
     /**
@@ -260,33 +253,53 @@ public class Enterprise[sbyntag:objname] implements EnterpriseObjectBean{
      * @exception ObjectException ObjectException
      */
     public void removeSystemObjectBean(String system, String lid) throws ObjectException {
-       removeSystemObject(system, lid);
+        removeSystemObject(system, lid);
     }
 
     /**
-     * mark a SystemObject from EnterpriseObject for deletion
+     * Mark a SystemObject from EnterpriseObject for deletion
      *
      * @param system SystemCode
      * @param lid LocalID
      * @exception ObjectException ObjectException
      */
     public void deleteSystemObjectBean(String system, String lid) throws ObjectException {
-       deleteSystemObject(system, lid);
+        deleteSystemObject(system, lid);
     }
     
     public EnterpriseObject pGetEnterpriseObject() {
-      return meo;
+        return meo;
+    }
+    
+    /**
+     * update SystemObject in an EnterpriseObject
+     *
+     * @param eo EnterpriseObject
+     * @exception ObjectException ObjectException
+     * @exception SystemObjectException SystemObjectException
+     */
+    public EnterpriseObject pUpdateEnterpriseObject(EnterpriseObject eo) throws ObjectException, SystemObjectException {
+        UpdateHelper helper = new UpdateHelper();
+        for (int i = 0; i < mSystem[sbyntag:objname]s.length; i++) {
+            SystemObject so = mSystem[sbyntag:objname]s[i].pGetSystemObject();
+            if(null!=eo.getSystemObject(so.getSystemCode(), so.getLID())){
+                helper.updateSO(so, eo, true, true);
+            }else{
+                eo.addSystemObject(so);
+            }
+        }
+        return eo;
     }
 
     private void pSetSystem[sbyntag:objname]s() throws ObjectException {
-      Collection systems = meo.getSystemObjects();
-      int size = systems.size();
-      mSystem[sbyntag:objname]s = new System[sbyntag:objname][size];
-      Iterator iterator = systems.iterator();
-      for (int i = 0; iterator.hasNext(); i++  ) {
-        SystemObject so = (SystemObject) iterator.next();
-        mSystem[sbyntag:objname]s[i] = new System[sbyntag:objname](so);
-      }
+        Collection systems = meo.getSystemObjects();
+        int size = systems.size();
+        mSystem[sbyntag:objname]s = new System[sbyntag:objname][size];
+        Iterator iterator = systems.iterator();
+        for (int i = 0; iterator.hasNext(); i++  ) {
+            SystemObject so = (SystemObject) iterator.next();
+            mSystem[sbyntag:objname]s[i] = new System[sbyntag:objname](so);
+        }
     }
      
 }

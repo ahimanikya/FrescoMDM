@@ -40,13 +40,13 @@ public interface MergeObjectResult {
     public EnterpriseObjectMessage getSourceEOM();
     
     /** 
-     * Getter Destination EO
+     * Setter Destination EO
      * @param eom Destination EO
      */
     public void setDestinationEOM(EnterpriseObjectMessage eom);
 
     /** 
-     * Getter Source EO
+     * Setter Source EO
      * @param eom Source EO
      */
     public void setSourceEOM(EnterpriseObjectMessage eom);    

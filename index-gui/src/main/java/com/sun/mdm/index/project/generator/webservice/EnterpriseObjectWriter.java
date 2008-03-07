@@ -45,7 +45,7 @@ class EnterpriseObjectWriter {
 
     /**
      * @param path template path
-     * @param name eview object name
+     * @param name object name
      */
     public EnterpriseObjectWriter(String path, String name) {
         try {  
