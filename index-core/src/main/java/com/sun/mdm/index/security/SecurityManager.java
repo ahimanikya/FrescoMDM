@@ -37,7 +37,6 @@ import com.sun.mdm.index.util.Localizer;
  */
 public class SecurityManager {
 
-	private static final String EVIEW_ADMIN = "eView.Admin";
 	private static final String MASTER_INDEX_ADMIN = "MasterIndex.Admin";
 
 	private SessionContext context;
@@ -147,7 +146,7 @@ public class SecurityManager {
 		mLogger.fine(mLocalizer.x("MSC901: caller principal: {0}", context
 				.getCallerPrincipal()));
 		mLogger.fine(mLocalizer.x("MSC902: caller role is Admin? :  {0}",
-				context.isCallerInRole(EVIEW_ADMIN)));
+				context.isCallerInRole(MASTER_INDEX_ADMIN)));
 		mLogger.fine(mLocalizer.x("MSC903: current method :  {0}",
 				getCurrentMethod()));
 
@@ -191,14 +190,7 @@ public class SecurityManager {
 	}
 
 	private boolean isAdmin() {
-		boolean b = context.isCallerInRole(EVIEW_ADMIN);
-
-		if (!b) {
-			b = EVIEW_ADMIN.equals(context.getCallerPrincipal().getName());
-		}
-		if (!b) {
-			b = context.isCallerInRole(MASTER_INDEX_ADMIN);
-		}
+		boolean b = context.isCallerInRole(MASTER_INDEX_ADMIN);
 		if (!b) {
 			b = MASTER_INDEX_ADMIN.equals(context.getCallerPrincipal()
 					.getName());
