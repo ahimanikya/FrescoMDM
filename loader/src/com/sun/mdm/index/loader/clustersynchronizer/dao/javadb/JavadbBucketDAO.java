@@ -59,7 +59,7 @@ public class JavadbBucketDAO extends BaseBucketDAO {
 
 		PreparedStatement ps = null;
 		try {
-			Connection c = DAOFactory.getConnection();
+			//Connection c = DAOFactory.getConnection();
 			PreparedStatement ps1 = c.prepareStatement(bucket_insert);
 			ps = ps1;
 
@@ -75,7 +75,7 @@ public class JavadbBucketDAO extends BaseBucketDAO {
 			int status = ps.executeUpdate();
 
 			ps.close();
-			c.close();
+			//c.close();
 
 			return status;
 
@@ -92,7 +92,7 @@ public class JavadbBucketDAO extends BaseBucketDAO {
 
 		PreparedStatement ps = null;
 		try {
-			Connection c = DAOFactory.getConnection();
+			//Connection c = DAOFactory.getConnection();
 			PreparedStatement ps1 = c.prepareStatement(bucket_select);
 			ps = ps1;
 
@@ -113,7 +113,7 @@ public class JavadbBucketDAO extends BaseBucketDAO {
 			}
 			rs.close();
 			ps.close();
-			c.close();
+			//c.close();
 		} catch (SQLException e) {
 			logger.info(e.getMessage());
 			// e.printStackTrace();
