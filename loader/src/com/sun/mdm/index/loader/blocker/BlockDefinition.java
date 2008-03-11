@@ -222,46 +222,54 @@ public class BlockDefinition {
 			else if (isLeaf) {								
 				 try {
 					List<String> values = DOEpath.getFieldValueList(epath, dataObject, lk);
-					values = filter(qname, values);
-					if (values != null) {
+					values = filter(qname, values);			
+					if (values != null ) {
 					  allvalues.addAll(values);
 					}
 				 }  catch (EPathException ex)  {
 					 logger.info(ex.getMessage());
 					 throw ex;					 
 				 }
-				 
-				//} else {
-					//String value = DOEpath.getFieldValue(epath, dataObject, lk);
-				    //allvalues.add(value);
-			    //}
 
 			} else {
 				for (int i = 0; i < children.size(); i++) {
 					Rule rule = children.get(i);
 					List<String> values = rule.getValue(dataObject, lk);
+					if (values == null || values.size()==0  ) {
+					  if (operator_.equals(Operator.AND)) {
+						  return null;
+					  }
+					}
+					
 					allvalues = add(allvalues, values, operator_);
 				}				
 			}
-			return allvalues;
+			return (allvalues.size()==0 ? null: allvalues);
 		}
 		
 		private List<String> filter(String epath, List<String> values) {
 			if (values == null) {
 				return null;
 			}
-			//List<String> newValues = new ArrayList<String>();
+			List<String> newvalues = new ArrayList<String>();
 			for (int i = 0; i < values.size(); i++) {
 				String  value = values.get(i);
-				if (isFieldValueFiltered(epath, value)) {
-					values.set(i, null);
-					//newValues.add(value);
+				if (!isFieldValueFiltered(epath, value)) {
+				     newvalues.add(value);
+					//values.set(i, null);
+				
 				}
-			}						
-			return values;
+			}
+			if (newvalues.size() == 0) { // if empty, return null
+				return null;
+			}
+			return newvalues;
 		}
 		
 		private boolean isFieldValueFiltered(String field, String value) {
+			if (value == null || value.equals("")) {
+				return true;
+			}
 			ExclusionListLookup exlookup = new ExclusionListLookup();
 			return exlookup.isFieldValueInExclusion(value, field, FilterConstants.BLOCK_EXCLUSION_TYPE);			
 			/*
@@ -328,6 +336,7 @@ public class BlockDefinition {
 		} else if (source.size() == 0) {
 			   retvalues = values;
 		} else if (operator.equals(Operator.AND)) {
+			
 		   /*
 		    *  AND leads to matrix values muliplication.
 		    *  So say values= {"1", "2", "3"}
@@ -339,8 +348,11 @@ public class BlockDefinition {
 		    *  {"1", "2", "3", "a", "b"}
 		    *  
 		    */
-		   		   		    
-		     for (int i = 0; i < values.size(); i++ ) {
+		   	if (values == null || values.size() == 0 || source == null || source.size() == 0) {
+		   		return null;
+		   	}
+		   	
+		    for (int i = 0; i < values.size(); i++ ) {
 			   for (int j = 0; j < source.size(); j++) {
 				   String value = values.get(i) + source.get(j);
 				   retvalues.add(value);
