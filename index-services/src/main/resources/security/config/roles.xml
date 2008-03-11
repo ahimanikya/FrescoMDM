@@ -75,10 +75,10 @@
             <role-name>DataEntry</role-name>
             <inheritance>
                 <inherits-from>Clerk</inherits-from>
-                <excluded-permissions>
+                <excluded-operations>
                     <name>EO_ViewMergeTree</name>
                     <name>TransLog_All</name>
-                </excluded-permissions>
+                </excluded-operations>
             </inheritance>
             <operations>
                 <name>Reports_MergedRecords</name>
@@ -89,17 +89,17 @@
             <role-name>DataEntry2</role-name>
             <inheritance>
                 <inherits-from>Clerk</inherits-from>
-                <excluded-permissions>
+                <excluded-operations>
                     <name>EO_ViewMergeTree</name>
                     <name>TransLog_All</name>
-                </excluded-permissions>
+                </excluded-operations>
             </inheritance>
             <inheritance>
                 <inherits-from>DataEntry</inherits-from>
-                <excluded-permissions>
+                <excluded-operations>
                     <name>Reports_MergedRecords</name>
                     <name>Reports_DeactivatedEUIDs</name>
-                </excluded-permissions>
+                </excluded-operations>
             </inheritance>
             <operations>
                 <name>EO_Add</name>

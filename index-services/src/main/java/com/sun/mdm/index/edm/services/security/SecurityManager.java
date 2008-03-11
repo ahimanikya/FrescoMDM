@@ -82,7 +82,7 @@ public class SecurityManager {
     private static final String OPERATIONS = "operations";
     private static final String INHERITANCE = "inheritance";
     private static final String INHERITS_FROM = "inherits-from";
-    private static final String EXCLUDED_PERMISSSIONS = "excluded-permissions";
+    private static final String EXCLUDED_OPERATIONS = "excluded-operations";
     
     
 
@@ -257,7 +257,7 @@ public class SecurityManager {
                         operations.add(opIter.next().toString());
                     }
                 }
-            } else if (element.getTagName().equalsIgnoreCase(EXCLUDED_PERMISSSIONS)) {
+            } else if (element.getTagName().equalsIgnoreCase(EXCLUDED_OPERATIONS)) {
                 ChildElementIterator exclPermItr = new ChildElementIterator(element);
                 while (exclPermItr.hasNext()) {
                     while (exclPermItr.hasNext()) {
