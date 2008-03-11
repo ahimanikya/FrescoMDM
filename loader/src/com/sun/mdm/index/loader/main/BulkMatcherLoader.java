@@ -381,16 +381,32 @@ public class BulkMatcherLoader {
 	}
 	
 	private void deleteDirFiles(String dir) {
-		/*
+		
 		File fdir = new File(dir);
 		File[] files = fdir.listFiles();		
 		for (File f: files) {
 			boolean status = f.delete();
-			logger.info(f.getName()+ "deleted:" + status);
+			//logger.info(f.getName()+ "deleted:" + status);
 		}
-		fdir.delete();
-		*/
+		
+		boolean b = fdir.delete();
+		logger.info(fdir.getName()+ " deleted:" + b);
 	}
 
+	
+	private void delete(File f){
+		
+		if(f.isDirectory()){
+			
+			for( File f1: f.listFiles()){
+				delete(f1);
+			}
+			f.delete();
+			
+		}else{
+			f.delete();
+		}
+		
+	}
 
 }
