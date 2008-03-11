@@ -38,6 +38,7 @@ public class ConfigSettings {
     private String matchThreshold = "29.0";
     private String transaction = "CONTAINER";
     private ArrayList edmAllNodes;
+    private ArrayList midmAllNodes;
     private ArrayList subObjects;
     private ArrayList simpleSearchFieldGroup;
     private ArrayList searchResultFieldRef;
@@ -185,6 +186,21 @@ public class ConfigSettings {
      */
     public void setEdmAllNodes(ArrayList val) {
         edmAllNodes = val;
+    }
+    
+    /**
+     * @return allNodes
+     */
+    public ArrayList getMidmAllNodes() {
+        return midmAllNodes;
+    }
+    
+    /**
+     * Set allNodes
+     * @param val 
+     */
+    public void setMidmAllNodes(ArrayList val) {
+        midmAllNodes = val;
     }
     
     // getSimpleSearchFieldGroup

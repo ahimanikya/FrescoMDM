@@ -50,6 +50,8 @@ public abstract class Properties {
     public static final String PROP_XML_OBJECT_DEF_FILE = "Object";
     /** Enterprise Data Manager  */
     public static final String PROP_XML_GUI_CONFIG_FILE = "EDM";
+    /** Enterprise Data Manager  */
+    public static final String PROP_XML_MIDM_CONFIG_FILE = "MIDM";
     /** MEFA file */
     public static final String PROP_XML_MEFA_CONFIG_FILE = "Mefa";
     /** Master config file  */

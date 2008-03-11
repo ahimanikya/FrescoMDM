@@ -35,6 +35,10 @@ public class ConfigGenerator {
      */
     public static final String CONFIG_EDM = "EDM";
     /**
+     * The configuration identifier for MIDM 
+     */
+    public static final String CONFIG_MIDM = "MIDM";
+    /**
      * The configuration identifier for mefa 
      */
     public static final String CONFIG_MEFA = "MEFA";
@@ -69,6 +73,7 @@ public class ConfigGenerator {
     protected static String defaultFragmentDir = "fragments" + java.io.File.separator + "default";   
     
     private static String edm;
+    private static String midm;
     private static String mefa;
     private static String query;
     private static String update;
@@ -98,6 +103,11 @@ public class ConfigGenerator {
                 configs.put(CONFIG_EDM, edm);
                 if (wiz != null) {
                     wiz.putProperty(Properties.PROP_XML_GUI_CONFIG_FILE, edm);
+                }
+                midm = edmW.generateMidm();
+                configs.put(CONFIG_MIDM, midm);
+                if (wiz != null) {
+                    wiz.putProperty(Properties.PROP_XML_MIDM_CONFIG_FILE, midm);
                 }
             }
 

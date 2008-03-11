@@ -656,8 +656,10 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 // New MI EDM
                 if (mMasterIndexEDM.equals("Yes")) {
                     ArrayList alEdmAllNodes = getAlAllNodesForGUI(mPrimaryNode);
-                    ArrayList alSubObjects = getSubObjects();
                     mConfigSettings.setEdmAllNodes(alEdmAllNodes);
+                    ArrayList alMidmAllNodes = getAlAllNodesForMidm(mPrimaryNode);
+                    mConfigSettings.setMidmAllNodes(alMidmAllNodes);
+                    ArrayList alSubObjects = getSubObjects();
                     mConfigSettings.setSubObjects(alSubObjects);
                     //getAlSimpleSearchFieldRef
                     mConfigSettings.setSimpleSearchFieldGroup(getAlSimpleSearchFieldGroup());
@@ -827,7 +829,66 @@ public class FinishPanel implements WizardDescriptor.Panel {
                         nodes += tab12 + "<gui-type>TextBox</gui-type>\n";
                     }
 
+                    if ((subNode.getInputMask() != null) &&
+                            (subNode.getInputMask().length() > 0)) {
+                        nodes += (tab12 + "<input-mask>" + subNode.getInputMask() + "</input-mask>\n");
+                    }
+
+                    if ((subNode.getValueMask() != null) &&
+                            (subNode.getValueMask().length() > 0)) {
+                        nodes += (tab12 + "<value-mask>" + subNode.getValueMask() + "</value-mask>\n");
+                    }
                     nodes += (tab12 + "<value-type>" + subNode.getDataType() + "</value-type>\n");
+                    nodes += (tab12 + "<key-type>" + subNode.getKeyType() + "</key-type>\n");
+                    nodes += (tab8 + "</field-" + subNode.getName() + ">\n");
+                }
+            }
+
+            nodes += (tab4 + "</node-" + tagName + ">\n");
+        }
+
+        return nodes;
+    }
+    
+    private String getFieldNodesForGUI2(EntityNode currentNode, String tagName,
+        int displayOrder) {
+        String nodes = "";
+        int cnt = currentNode.getChildCount();
+
+        if (cnt > 0) {
+            nodes = tab4 + "<node>\n";
+            nodes += tab8 + "<name>" + tagName + "</name>\n";
+            if (displayOrder > 0) {
+                nodes += tab8 + "<display-order>" + displayOrder + "</display-order>\n";
+            }
+
+            int fieldDisplayOrder = 1;
+
+            for (int i = 0; i < cnt; i++) {
+                EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
+
+                if (subNode.isField()) {
+                    nodes += (tab8 + "<field>\n");
+                    nodes += (tab12 + "<name>" +
+                        subNode.getName() + "</name>\n");
+                    nodes += (tab12 + "<display-name>" +
+                        subNode.getDisplayName() + "</display-name>\n");
+                    nodes += (tab12 + "<display-order>" +
+                        fieldDisplayOrder++ + "</display-order>\n");
+                    nodes += (tab12 + "<max-length>" +
+                        subNode.getDataSize() + "</max-length>\n");
+
+                    if ((subNode.getCodeModule() != null) &&
+                            (subNode.getCodeModule().length() > 0)) {
+                        nodes += tab12 + "<gui-type>MenuList</gui-type>\n";
+                        nodes += (tab12 + "<value-list>" + subNode.getCodeModule() + "</value-list>\n");
+                    } else if ((subNode.getUserCode() != null) &&
+                            (subNode.getUserCode().length() > 0)) {
+                        nodes += tab12 + "<gui-type>MenuList</gui-type>\n";
+                        nodes += (tab12 + "<value-list>" + subNode.getUserCode() + "</value-list>\n");
+                    } else {
+                        nodes += tab12 + "<gui-type>TextBox</gui-type>\n";
+                    }
 
                     if ((subNode.getInputMask() != null) &&
                             (subNode.getInputMask().length() > 0)) {
@@ -838,13 +899,13 @@ public class FinishPanel implements WizardDescriptor.Panel {
                             (subNode.getValueMask().length() > 0)) {
                         nodes += (tab12 + "<value-mask>" + subNode.getValueMask() + "</value-mask>\n");
                     }
-
+                    nodes += (tab12 + "<value-type>" + subNode.getDataType() + "</value-type>\n");
                     nodes += (tab12 + "<key-type>" + subNode.getKeyType() + "</key-type>\n");
-                    nodes += (tab8 + "</field-" + subNode.getName() + ">\n");
+                    nodes += (tab8 + "</field>\n");
                 }
             }
 
-            nodes += (tab4 + "</node-" + tagName + ">\n");
+            nodes += (tab4 + "</node>\n");
         }
 
         return nodes;
@@ -869,6 +930,32 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
                 if (subNode.isSub()) {
                     nodes.add(getFieldNodesForGUI(subNode, subNode.getName(), j++));
+                }
+            }
+        }
+
+        return nodes;
+    }
+
+    private ArrayList getAlAllNodesForMidm(EntityNode currentNode) {
+        ArrayList nodes = new ArrayList();
+        int cnt = currentNode.getChildCount();
+
+        if (cnt > 0) {
+            int i = 0;
+
+            if (currentNode.isPrimary()) {
+                EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
+                nodes.add(getFieldNodesForGUI2(targetNode, currentNode.getName(), i));
+                i = 1;
+            }
+
+            int j = 1;
+            for (; i < cnt; i++) {
+                EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
+
+                if (subNode.isSub()) {
+                    nodes.add(getFieldNodesForGUI2(subNode, subNode.getName(), j++));
                 }
             }
         }

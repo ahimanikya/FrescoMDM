@@ -63,6 +63,7 @@ public class EviewProjectProperties {
     
     public static final String OBJECT_XML = "object.xml";
     public static final String EDM_XML = "edm.xml";
+    public static final String MIDM_XML = "midm.xml";
     public static final String MASTER_XML = "master.xml";
     public static final String MEFA_XML = "mefa.xml";
     public static final String SECURITY_XML = "security.xml";
@@ -71,6 +72,7 @@ public class EviewProjectProperties {
     public static final String UPDATE_XML = "update.xml";
     public static final String OBJECT_XSD = "eIndex.xsd";
     public static final String EDM_XSD = "EDM.xsd";
+    public static final String MIDM_XSD = "midm.xsd";
     public static final String MASTER_XSD = "master.xsd";
     public static final String MEFA_XSD = "mefa.xsd";
     public static final String SECURITY_XSD = "security.xsd";

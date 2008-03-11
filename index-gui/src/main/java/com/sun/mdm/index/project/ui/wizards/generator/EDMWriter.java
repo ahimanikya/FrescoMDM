@@ -36,6 +36,7 @@ public class EDMWriter {
      * The unqualified template file name for this generator.
      */
     public static final String EDM_TEMPLATE = "edm.xml.tmpl";
+    public static final String MIDM_TEMPLATE = "midm.xml.tmpl";
     private ConfigSettings mConfigSettings;
     private String mPath;
 
@@ -86,4 +87,37 @@ public class EDMWriter {
 
         return res;
     }
+    
+    public String generateMidm()
+        throws TemplateWriterException, ConfigGeneratorException {
+        String res = "";
+        String objname = mConfigSettings.getPrimaryNode();
+        
+        // write the mefa with the accumulated fragments. 
+        TemplateWriter mTW = null;
+        java.io.InputStream isMidm = this.getClass().getResourceAsStream(MIDM_TEMPLATE);
+
+        if (isMidm != null) {
+            mTW = new TemplateWriter(isMidm, MIDM_TEMPLATE);
+
+            ArrayList cons = mTW.construct();
+            ArrayList values = new ArrayList();
+            values.add(objname);
+            values.add(mConfigSettings.getMidmAllNodes());
+            values.add(mConfigSettings.getSubObjects());
+            values.add(mConfigSettings.getSimpleSearchFieldGroup());
+            values.add(mConfigSettings.getSearchResultFieldRef());
+            values.add(mConfigSettings.getSearchResultFieldRef2());
+            values.add(mConfigSettings.getReportFields());
+            
+            res = mTW.writeConstruct((String) cons.get(0), values);
+        } else {
+            throw new ConfigGeneratorException(
+                "Could not generate configuration files. Could not find the resource: " +
+                MIDM_TEMPLATE);
+        }
+
+        return res;
+    }
+
 }
