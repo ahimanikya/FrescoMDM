@@ -389,6 +389,7 @@ public class EviewProject implements Project, AntProjectListener {
                 Map<String, J2eeModuleProvider> mods = new HashMap<String, J2eeModuleProvider>();
                 FileObject eViewdir= helper.getProjectDirectory();
                 EditableProperties ep = helper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
+                //add EJB project to Master Index project for deployment
                 String path = ep.getProperty(EviewProjectProperties.EJB_DIR);
                 FileObject subAppDirFO = eViewdir.getFileObject(path);
                 Project p = ProjectManager.getDefault().findProject(subAppDirFO);
@@ -399,9 +400,10 @@ public class EviewProject implements Project, AntProjectListener {
                         mods.put(path+".jar", jmp);
                     }
                 }
-                
+                //add Web Project to Master Index project for deployment
                 path = ep.getProperty(EviewProjectProperties.WAR_DIR);
                 subAppDirFO = eViewdir.getFileObject(path);
+                p = ProjectManager.getDefault().findProject(subAppDirFO);
                 jmp = p.getLookup().lookup(J2eeModuleProvider.class);
                 if (null != jmp) {
                     J2eeModule jm = jmp.getJ2eeModule();

@@ -688,10 +688,11 @@ public class EViewGeneratorTask extends Task {
 	private void generateWarFiles(String objName) {
 		String edmVersion = getProject().getProperty("edm-version");
 		String edmWarName = "edm.war";
-		boolean jspExcluded = false;
+		boolean jspExcluded = true;
 		if (null != edmVersion
 				&& edmVersion.equalsIgnoreCase("master-index-edm")) {
 			edmWarName = "index-webapp.war";
+                        jspExcluded = false;
 		} else {
 			edmWarName = "edm.war";
 		}
@@ -699,7 +700,7 @@ public class EViewGeneratorTask extends Task {
 		File destDir = new File(mWardir, "web");
 		FileSet fileSet = new FileSet();
 		fileSet.setDir(destDir);
-                fileSet.setExcludes("**/lib/*.jar");
+                //fileSet.setExcludes("**/lib/*.jar");
 		Delete delete = (Delete) getProject().createTask("delete");
 		//delete.setDir(destDir);
 		delete.addFileset(fileSet);
