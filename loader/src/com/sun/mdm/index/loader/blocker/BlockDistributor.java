@@ -78,6 +78,7 @@ public class BlockDistributor {
 	private static Logger logger = Logger.getLogger(BlockDistributor.class
 			.getName());
 	private boolean isStandardize = false;
+	private DataObjectReader reader_ = null;
 	
 	public BlockDistributor(String[] matchpaths, Lookup inLk, Lookup blLk, boolean isSBR) throws Exception {
 							
@@ -318,7 +319,10 @@ public class BlockDistributor {
 	
 	DataObjectReader getReader() throws Exception  {
 		DataObjectReader reader = null;
-		//File file = FileManager.getInputGoodFile();				
+		if (reader_ != null) {
+			return reader_;
+		}
+ 		//File file = FileManager.getInputGoodFile();				
 		//DataObjectReader reader = new DataObjectFileReader(file);		
 		//DataObjectReader reader = new DataObjectCreateReader(inputLk_);
 		if (!isSBR_) {
@@ -329,6 +333,10 @@ public class BlockDistributor {
 			reader = new DataObjectDirReader(dir);
 		}
 		return reader;			
+	}
+	
+	void setReader(DataObjectReader reader) throws Exception {
+		reader_ = reader;
 	}
 	
 	private DataObject standardize(DataObject d)throws Exception {
