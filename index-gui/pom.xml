@@ -162,8 +162,12 @@
                                             <fileset dir="${project.build.directory}/nbm/netbeans">
                                                 <exclude name="module_tracking.xml"></exclude>                
                                             </fileset>
-                                        </copy>                    
+                                        </copy>
+                                        <echo>INFO: Install to netbeans: ${install.dir} successfully.</echo>                    
                                     </then>
+                                    <else>
+                                        <echo>WARNING: NO NB_HOME is set. Fail to install to netbeans.</echo>
+                                    </else>
                                 </if>
                             </tasks>
                         </configuration>
