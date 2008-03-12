@@ -159,7 +159,7 @@ public class EViewGeneratorTask extends Task {
 
 				// generate report client
 				generateReportClient();
-
+                                mLog.info("Master Index Files are generated Successfully.");
 			} catch (Exception ex) {
                             mLog.severe("Could not generate Master Index Files.");
                             throw new BuildException(ex.getMessage());
