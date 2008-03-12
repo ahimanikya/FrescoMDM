@@ -44,10 +44,28 @@ public class EDMFieldDef {
     boolean report;
         
     /** Creates a new instance of EDMFieldDef */
+    EDMFieldDef() {
+    }
+        
+    /** Creates a new instance of EDMFieldDef */
     EDMFieldDef(String fieldName) {
         this.fieldName = fieldName;
     }
     
+    /**
+    *@param String fieldName
+    */
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
+    
+    /**
+    *@return String fieldName
+    */
+    public String getFieldName() {
+        return fieldName;
+    }
+
     /**
     *@param String displayName
     */

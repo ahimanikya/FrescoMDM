@@ -30,6 +30,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.DOMException;
 
+import java.util.Enumeration;
+import java.util.Iterator;
 
 /**
  * @author kkao
@@ -38,9 +40,12 @@ import org.w3c.dom.DOMException;
 public class EDMType {
     private final String mFmt = "                [EDMType]";
     private final String mTagEDM = "edm";
-    private final String mTagNode = "node-";
+    private final String mTagMIDM = "midm";
+    private final String mTagNodeDash = "node-";
+    private final String mTagNode = "node";
     private final String mAttrDisplayOrder = "display-order";
-    private final String mTagField = "field-";              // -> EDMFieldDef
+    private final String mTagFieldDash = "field-";          // -> EDMFieldDef
+    private final String mTagField = "field";               // -> EDMFieldDef
     private final String mTagDisplayName = "display-name";  // -> EDMFieldDef.displayName
     private final String mTagDisplayOrder = "display-order";// -> EDMFieldDef.displayOrder
     private final String mTagMaxLength = "max-length";      // -> EDMFieldDef.maxLength
@@ -1693,6 +1698,41 @@ public class EDMType {
         return edmFieldDef;
     }
     
+    private EDMFieldDef parseMIDMFieldNode(Node node) {
+        EDMFieldDef edmFieldDef = new EDMFieldDef();
+        if (node.hasChildNodes()) {
+            NodeList nl = node.getChildNodes();
+            for (int i = 0; i < nl.getLength(); i++) {
+                if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                    String tag = ((Element) nl.item(i)).getTagName();
+                    String value = Utils.getStrElementValue(nl.item(i));
+                    if (mTagName.equals(tag)) {
+                        edmFieldDef.setFieldName(value);
+                    } else if (mTagDisplayName.equals(tag)) {
+                        edmFieldDef.setDisplayName(value);
+                    } else if (mTagDisplayOrder.equals(tag)) {
+                        edmFieldDef.setDisplayOrder(value);
+                    } else if (mTagMaxLength.equals(tag)) {
+                        edmFieldDef.setMaxLength(value);
+                    } else if (mTagGuiType.equals(tag)) {
+                        edmFieldDef.setGuiType(value);
+                    } else if (mTagValueType.equals(tag)) {
+                        edmFieldDef.setValueType(value);
+                    } else if (mTagKeyType.equals(tag)) {
+                        edmFieldDef.setKeyType(value);
+                    } else if (mTagValueList.equals(tag)) {
+                        edmFieldDef.setValueList(value);
+                    } else if (mTagInputMask.equals(tag)) {
+                        edmFieldDef.setInputMask(value);
+                    } else if (mTagValueMask.equals(tag)) {
+                        edmFieldDef.setValueMask(value);
+                    }
+                }
+            }
+        }
+        return edmFieldDef;
+    }
+    
     private void parseEDMNode(Node node) {
         if (mAlEDMNodes == null) {
             mAlEDMNodes = new ArrayList();
@@ -1719,10 +1759,36 @@ public class EDMType {
             for (int i = 0; i < nl.getLength(); i++) {
                 if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     String fieldName = ((Element) nl.item(i)).getTagName();
-                    if (fieldName.startsWith(mTagField)) {
+                    if (fieldName.startsWith(mTagFieldDash)) {
                         int idx = fieldName.indexOf('-');
                         fieldName = fieldName.substring(idx + 1);
                         EDMFieldDef edmFieldDef = parseEDMFieldNode(fieldName, nl.item(i));
+                        edmNode.addField(edmFieldDef);
+                    }
+                }
+            }
+        }
+        mAlEDMNodes.add(edmNode);
+    }
+    
+    private void parseMIDMNode(Node node) {
+        if (mAlEDMNodes == null) {
+            mAlEDMNodes = new ArrayList();
+        }
+        EDMNode edmNode = new EDMNode();
+
+        if (node.hasChildNodes()) {
+            NodeList nl = node.getChildNodes();
+            for (int i = 0; i < nl.getLength(); i++) {
+                if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                    String tag = ((Element) nl.item(i)).getTagName();
+                    String value = Utils.getStrElementValue(nl.item(i));
+                    if (tag.equals(mTagName)) {
+                        edmNode.setNodeName(value);
+                    } else if (tag.equals(mAttrDisplayOrder)) {
+                        edmNode.setDisplayOrder(value);
+                    } else if (tag.equals(mTagField)) {
+                        EDMFieldDef edmFieldDef = parseMIDMFieldNode(nl.item(i));
                         edmNode.addField(edmFieldDef);
                     }
                 }
@@ -1747,14 +1813,16 @@ public class EDMType {
             }
 
             if (null != element
-                     && ((Element) element).getTagName().equals(mTagEDM)
+                     && (((Element) element).getTagName().equals(mTagEDM) || ((Element) element).getTagName().equals(mTagMIDM) )
                      && element.hasChildNodes()) {
                 nl1 = element.getChildNodes();
                 for (int i1 = 0; i1 < nl1.getLength(); i1++) {
                     if (nl1.item(i1).getNodeType() == Node.ELEMENT_NODE) {
                         String name = ((Element) nl1.item(i1)).getTagName();
-                        if (name.startsWith(mTagNode)) {
+                        if (name.startsWith(mTagNodeDash)) {
                             parseEDMNode(nl1.item(i1));
+                        } else if (name.equals(mTagNode)) {
+                            parseMIDMNode(nl1.item(i1));
                         } else if (name.equals(mTagImplDetails)) {
                             parseImplDetails(nl1.item(i1));
                         } else if (name.equals(mTagGuiDefinition)) {
@@ -1771,6 +1839,10 @@ public class EDMType {
         String nodeName;
         String displayOrder;
         ArrayList fields; //EDMFieldDef
+        
+        ArrayList getFields() {
+            return fields;
+        }
         
         void addField(EDMFieldDef edmFieldDef) {
             if (fields == null) {
@@ -1878,6 +1950,25 @@ public class EDMType {
     public boolean updateReferencedField(String oldName, String newName) {
         boolean bUpdated;
         boolean bRet = false;
+        
+        if (mAlEDMNodes != null && mAlEDMNodes.size() > 0) {
+            for (int i = 0; i < mAlEDMNodes.size(); i++) {
+                EDMNode node = (EDMNode) mAlEDMNodes.get(i);
+                ArrayList alFields = node.getFields();
+                for (int j = 0; j < alFields.size(); j++) {
+                    EDMFieldDef edmFieldDef = (EDMFieldDef) alFields.get(j);
+                    if (edmFieldDef.getFieldName().equals(oldName)) {
+                        edmFieldDef.setFieldName(newName);
+                        bRet = true;
+                        break;
+                    }
+                }
+                if (bRet == true) {
+                    break;
+                }
+            }
+        }
+
         if (mPageDefinition.eoSearch != null) {
             bRet = bRet | updateReferencedFieldInCommonBlock(mPageDefinition.eoSearch.commonBlock, oldName, newName);
         }
