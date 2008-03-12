@@ -188,9 +188,11 @@ public class EviewProjectGenerator {
             // edm.xml/GuiConfigurationFile
             strXml = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_GUI_CONFIG_FILE).toString();
             repository.createConfigurationFile(configurationFolder, EviewProjectProperties.EDM_XML, strXml);
-            strXml = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_MIDM_CONFIG_FILE).toString();
-            repository.createConfigurationFile(configurationFolder, EviewProjectProperties.MIDM_XML, strXml);
-        
+            if ((wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_MIDM_CONFIG_FILE)) != null) {
+                strXml = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_MIDM_CONFIG_FILE).toString();
+                repository.createConfigurationFile(configurationFolder, EviewProjectProperties.MIDM_XML, strXml);
+            }
+            
             // master.xml/MasterConfigurationFile;
             strXml = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_MASTER_CONFIG_FILE).toString();
             repository.createConfigurationFile(configurationFolder, EviewProjectProperties.MASTER_XML, strXml);
