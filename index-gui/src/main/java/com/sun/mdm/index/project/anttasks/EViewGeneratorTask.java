@@ -36,7 +36,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -89,7 +89,8 @@ public class EViewGeneratorTask extends Task {
 	private static final String REPOSITORY_RESOURCE_NAME = "repositoryImage.zip";
 	private static final String PROPERTIES_RESOURCE_NAME = "standardizationEngine.properties";
 	private static final String REPOSITORY_NAME_PROPERTY = "repositoryName";
-
+        private static final Logger mLog = Logger.getLogger(EViewGeneratorTask.class.getName());
+        
 	public void setSrcdir(File srcdir) {
 		this.mSrcdir = srcdir;
 	}
@@ -160,7 +161,8 @@ public class EViewGeneratorTask extends Task {
 				generateReportClient();
 
 			} catch (Exception ex) {
-				throw new BuildException(ex.getMessage());
+                            mLog.severe("Could not generate Master Index Files.");
+                            throw new BuildException(ex.getMessage());
 			}
 
 		}
@@ -454,7 +456,6 @@ public class EViewGeneratorTask extends Task {
 	}
 
 	private void setSunEjbJarXML() {
-
 		try {
 			File outFile = new File(mEjbdir, "src/conf/sun-ejb-jar.xml");
 
@@ -494,14 +495,11 @@ public class EViewGeneratorTask extends Task {
 			FileWriter fw = new FileWriter(outFile);
 			fw.write(content);
 			fw.close();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (UnsupportedEncodingException ex) {
+			throw new BuildException(ex.getMessage());
+		} catch (Exception ex) {
+			throw new BuildException(ex.getMessage());
 		}
-
 	}
 
 	private boolean isSecurityEnable() throws ParserConfigurationException,
@@ -615,12 +613,10 @@ public class EViewGeneratorTask extends Task {
 							0).getTextContent();
 					list.add(roleName);
 				}
-			} catch (XPathExpressionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (DOMException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (XPathExpressionException ex) {
+				throw new BuildException(ex.getMessage());
+			} catch (DOMException ex) {
+				throw new BuildException(ex.getMessage());
 			}
 
 		}
@@ -922,7 +918,7 @@ public class EViewGeneratorTask extends Task {
 				file.delete();
 			}
 			tempFile.renameTo(file);
-			throw new BuildException("can not replace token in "
+                        throw new BuildException("can not replace token in "
 					+ fileName);
 		} finally {
 			tempFile = new File(fileName + ".tmp");
@@ -962,7 +958,7 @@ public class EViewGeneratorTask extends Task {
 				file.delete();
 			}
 			tempFile.renameTo(file);
-			throw new BuildException("can not access " + fileName);
+                        throw new BuildException("can not access " + fileName);
 		} finally {
 			tempFile = new File(fileName + ".tmp");
 			if (tempFile.exists()) {
