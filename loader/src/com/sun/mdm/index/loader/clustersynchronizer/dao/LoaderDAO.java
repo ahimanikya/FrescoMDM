@@ -76,5 +76,7 @@ public interface LoaderDAO {
 	public void setAnalysisDone();
 	
 	public void setConfig(LoaderConfig config);
+	
+	public void close();
 
 }

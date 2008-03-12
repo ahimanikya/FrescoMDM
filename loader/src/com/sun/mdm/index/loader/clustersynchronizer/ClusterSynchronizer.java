@@ -288,5 +288,8 @@ public class ClusterSynchronizer extends ClusterSynchronizerAbs {
 		loaderDAO.waitBulkLoadingDoneBySlaves();
 	}
 	
-
+	public void close(){
+		loaderDAO.close();
+		bucketDAO.close();
+	}
 }

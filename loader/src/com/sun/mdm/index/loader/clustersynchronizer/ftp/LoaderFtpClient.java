@@ -119,7 +119,7 @@ public class LoaderFtpClient {
 
 			for (int i = 0; i < files.length; i++) {
 
-				if (files[i].isFile()) {
+				if (files[i]!= null && files[i].isFile()) {
 
 					b = files[i].getName().equals(filename);
 					if (b == true)

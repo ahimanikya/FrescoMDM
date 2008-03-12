@@ -71,5 +71,8 @@ public interface BucketDAO {
 	public void setMasterIndexDone(String loaderName);
 	
 	public void waitMasterIndexDone();
+	
+	public void close();
+	
 
 }

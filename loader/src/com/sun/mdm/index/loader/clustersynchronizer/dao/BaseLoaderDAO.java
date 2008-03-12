@@ -290,7 +290,7 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 
 		int state = getState();
 
-		if (state == s) {
+		if (state >= s) {
 			return true;
 		}
 
@@ -602,4 +602,12 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 
 	}
 
+	public void close() {
+		try {
+			c.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
