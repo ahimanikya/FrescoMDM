@@ -1,6 +1,6 @@
 [SBYNTAG:DEFINE:objname,allnodes(),subobjects(),SimpleSearchFieldGroup(),SearchResultFieldRef(),SearchResultFieldRef2(),reportfields()]
 <?xml version="1.0" encoding="UTF-8"?>
-<edm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/midm.xsd">
+<midm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/midm.xsd">
 [SBYNTAG:REP-BEGIN]    
 [sbyntag:allnodes()]
 [SBYNTAG:REP-END]
@@ -294,9 +294,7 @@
                                 <search-result-id>0</search-result-id>
                                 <item-per-page>10</item-per-page>
                                 <max-result-size>100</max-result-size>
-[SBYNTAG:REP-BEGIN]    
-[sbyntag:SearchResultFieldRef2()]
-[SBYNTAG:REP-END]
+                                <field-group/>
                             </search-result-list-page>
                         </search-result-pages>
                     </subscreen>
@@ -486,4 +484,4 @@
             </audit-log>
         </page-definition>
     </gui-definition>
-</edm>
+</midm>

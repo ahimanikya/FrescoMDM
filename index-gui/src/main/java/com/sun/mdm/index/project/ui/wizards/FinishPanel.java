@@ -552,7 +552,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         String tagTailEDM = "</edm>";
 
         String strXml = xmlHEADER + tagHeaderEDM +
-            getAllNodesForGUI(mPrimaryNode) + getRelationships() + getImpl() +
+            getAllNodesForEDM(mPrimaryNode) + getRelationships() + getImpl() +
             getGUIDefinition() + tagTailEDM;
 
         // Write xml to repository
@@ -655,7 +655,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
                 // New MI EDM
                 if (mMasterIndexEDM.equals("Yes")) {
-                    ArrayList alEdmAllNodes = getAlAllNodesForGUI(mPrimaryNode);
+                    ArrayList alEdmAllNodes = getAlAllNodesForEDM(mPrimaryNode);
                     mConfigSettings.setEdmAllNodes(alEdmAllNodes);
                     ArrayList alMidmAllNodes = getAlAllNodesForMidm(mPrimaryNode);
                     mConfigSettings.setMidmAllNodes(alMidmAllNodes);
@@ -789,7 +789,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
      *@return XML string
      *
      */
-    private String getFieldNodesForGUI(EntityNode currentNode, String tagName,
+    private String getFieldNodesForEDM(EntityNode currentNode, String tagName,
         int displayOrder) {
         String nodes = "";
         int cnt = currentNode.getChildCount();
@@ -850,7 +850,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         return nodes;
     }
     
-    private String getFieldNodesForGUI2(EntityNode currentNode, String tagName,
+    private String getFieldNodesForMidm(EntityNode currentNode, String tagName,
         int displayOrder) {
         String nodes = "";
         int cnt = currentNode.getChildCount();
@@ -911,7 +911,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         return nodes;
     }
 
-    private ArrayList getAlAllNodesForGUI(EntityNode currentNode) {
+    private ArrayList getAlAllNodesForEDM(EntityNode currentNode) {
         ArrayList nodes = new ArrayList();
         int cnt = currentNode.getChildCount();
 
@@ -920,7 +920,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
-                nodes.add(getFieldNodesForGUI(targetNode, currentNode.getName(), i));
+                nodes.add(getFieldNodesForEDM(targetNode, currentNode.getName(), i));
                 i = 1;
             }
 
@@ -929,7 +929,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
 
                 if (subNode.isSub()) {
-                    nodes.add(getFieldNodesForGUI(subNode, subNode.getName(), j++));
+                    nodes.add(getFieldNodesForEDM(subNode, subNode.getName(), j++));
                 }
             }
         }
@@ -946,7 +946,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
-                nodes.add(getFieldNodesForGUI2(targetNode, currentNode.getName(), i));
+                nodes.add(getFieldNodesForMidm(targetNode, currentNode.getName(), i));
                 i = 1;
             }
 
@@ -955,7 +955,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
 
                 if (subNode.isSub()) {
-                    nodes.add(getFieldNodesForGUI2(subNode, subNode.getName(), j++));
+                    nodes.add(getFieldNodesForMidm(subNode, subNode.getName(), j++));
                 }
             }
         }
@@ -969,7 +969,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
      *@return XML string
      *
      */
-    private String getAllNodesForGUI(EntityNode currentNode) {
+    private String getAllNodesForEDM(EntityNode currentNode) {
         String nodes = "";
         int cnt = currentNode.getChildCount();
 
@@ -978,7 +978,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
-                nodes += getFieldNodesForGUI(targetNode, currentNode.getName(),
+                nodes += getFieldNodesForEDM(targetNode, currentNode.getName(),
                     i);
                 i = 1;
             }
@@ -988,7 +988,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
 
                 if (subNode.isSub()) {
-                    nodes += getFieldNodesForGUI(subNode, subNode.getName(), j++);
+                    nodes += getFieldNodesForEDM(subNode, subNode.getName(), j++);
                 }
             }
         }

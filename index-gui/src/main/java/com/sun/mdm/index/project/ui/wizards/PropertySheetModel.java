@@ -28,7 +28,7 @@ import javax.swing.JTabbedPane;
 public class PropertySheetModel {
     static final String PROPERTIES = NbBundle.getMessage(PropertySheetModel.class,
             "MSG_Properties");
-    static final String EDM = NbBundle.getMessage(PropertySheetModel.class,
+    static final String MIDM = NbBundle.getMessage(PropertySheetModel.class,
             "MSG_EDM");
     
     JTabbedPane mPropertiesTabbedPane = null;
@@ -136,7 +136,7 @@ public class PropertySheetModel {
             tabEDMPropertiesJPanel = new TabEDMPropertiesJPanel(this.mDisplayName, this.mDefaultInputMask, this.mDefaultValueMask,
                                     this.mDefaultSearchable.equals("true") ? true : false, this.mDefaultDisplayedInResult.equals("true") ? true : false, 
                                     this.mDefaultGenerateReport.equals("true") ? true : false, this.mDefaultSearchRequired);
-            mPropertiesTabbedPane.addTab(EDM, tabEDMPropertiesJPanel);
+            mPropertiesTabbedPane.addTab(MIDM, tabEDMPropertiesJPanel);
         }
 
         return mPropertiesTabbedPane;

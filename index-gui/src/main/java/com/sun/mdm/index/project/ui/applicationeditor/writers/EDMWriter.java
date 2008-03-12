@@ -29,7 +29,16 @@ public class EDMWriter {
     final String xmlHEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     EntityNode mPrimaryNode;
     String mViewName;
-    
+    static final String tab4 = "    ";
+    static final String tab8 = "        ";
+    static final String tab12 = "            ";
+    static final String tab16 = "                ";
+    static final String tab20 = "                    ";
+    static final String tab24 = "                    ";
+    static final String tab28 = "                        ";
+    static final String tab32 = "                            ";
+    static final String tab36 = "                                ";
+
     /** Creates a new instance of ObjectWriter */
     public EDMWriter() {
     }
@@ -40,18 +49,35 @@ public class EDMWriter {
      * @throws ConfigGeneratorException A problem occurred during the configuration generation
      * @return the generated configuration
      */
-    public String generate(EntityNode primaryNode, String viewName, EDMType edmType) {
+    public String generateEDM(EntityNode primaryNode, String viewName, EDMType edmType) {
         mPrimaryNode = primaryNode;
         mViewName = viewName;
         
         // create EDM.xml
         String tagHeaderEDM = "<edm xmlns:xsi=" +
             "\"http://www.w3.org/2001/XMLSchema-instance" +
-            "\" xsi:noNamespaceSchemaLocation=\"schema/EDM.xsd\">\n";
+            "\" xsi:noNamespaceSchemaLocation=\"schema/midm.xsd\">\n";
         String tagTailEDM = "</edm>";
 
         String strXml = xmlHEADER + tagHeaderEDM +
-            getAllNodesForGUI(mPrimaryNode) + getRelationships() + edmType.getImplDetailsXML() +
+            getAllNodesForEDM(mPrimaryNode) + getRelationships() + edmType.getImplDetailsXML() +
+            edmType.getGuiDefinitionXML() + tagTailEDM;
+        
+        return strXml;
+    }
+    
+    public String generateMIDM(EntityNode primaryNode, String viewName, EDMType edmType) {
+        mPrimaryNode = primaryNode;
+        mViewName = viewName;
+        
+        // create EDM.xml
+        String tagHeaderEDM = "<midm xmlns:xsi=" +
+            "\"http://www.w3.org/2001/XMLSchema-instance" +
+            "\" xsi:noNamespaceSchemaLocation=\"schema/midm.xsd\">\n";
+        String tagTailEDM = "</midm>";
+
+        String strXml = xmlHEADER + tagHeaderEDM +
+            getAllNodesForMIDM(mPrimaryNode) + getRelationships() + edmType.getImplDetailsXML() +
             edmType.getGuiDefinitionXML() + tagTailEDM;
         
         return strXml;
@@ -91,18 +117,17 @@ public class EDMWriter {
      *
      *@return XML string
      *
-     */
-    private String getFieldNodesForGUI(EntityNode currentNode, String tagName,
+     */   
+    private String getFieldNodesForMidm(EntityNode currentNode, String tagName,
         int displayOrder) {
         String nodes = "";
         int cnt = currentNode.getChildCount();
 
         if (cnt > 0) {
+            nodes = tab4 + "<node>\n";
+            nodes += tab8 + "<name>" + tagName + "</name>\n";
             if (displayOrder > 0) {
-                nodes = "    <node-" + tagName + " display-order=\"" +
-                    displayOrder + "\">\n";
-            } else {
-                nodes = "    <node-" + tagName + ">\n";
+                nodes += tab8 + "<display-order>" + displayOrder + "</display-order>\n";
             }
 
             int fieldDisplayOrder = 1;
@@ -110,53 +135,45 @@ public class EDMWriter {
             for (int i = 0; i < cnt; i++) {
                 EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
 
-                if (subNode.isField() && (subNode.isJustAdded() || !subNode.isGeneratedField())) {
-                    nodes += ("        " + "<field-" + subNode.getName() +
-                    ">\n");
-                    nodes += ("            <display-name>" +
-                    subNode.getDisplayName() + "</display-name>\n");
-                    nodes += ("            <display-order>" +
-                    fieldDisplayOrder++ + "</display-order>\n");
-                    nodes += ("            <max-length>" +
-                    subNode.getDataSize() + "</max-length>\n");
+                if (subNode.isField()) {
+                    nodes += (tab8 + "<field>\n");
+                    nodes += (tab12 + "<name>" +
+                        subNode.getName() + "</name>\n");
+                    nodes += (tab12 + "<display-name>" +
+                        subNode.getDisplayName() + "</display-name>\n");
+                    nodes += (tab12 + "<display-order>" +
+                        fieldDisplayOrder++ + "</display-order>\n");
+                    nodes += (tab12 + "<max-length>" +
+                        subNode.getDataSize() + "</max-length>\n");
 
                     if ((subNode.getCodeModule() != null) &&
                             (subNode.getCodeModule().length() > 0)) {
-                        nodes += "            <gui-type>MenuList</gui-type>\n";
-                        nodes += ("            <value-list>" +
-                        subNode.getCodeModule() + "</value-list>\n");
+                        nodes += tab12 + "<gui-type>MenuList</gui-type>\n";
+                        nodes += (tab12 + "<value-list>" + subNode.getCodeModule() + "</value-list>\n");
                     } else if ((subNode.getUserCode() != null) &&
                             (subNode.getUserCode().length() > 0)) {
-                        nodes += "            <gui-type>MenuList</gui-type>\n";
-                        nodes += ("            <value-list>" +
-                        subNode.getUserCode() + "</value-list>\n");
+                        nodes += tab12 + "<gui-type>MenuList</gui-type>\n";
+                        nodes += (tab12 + "<value-list>" + subNode.getUserCode() + "</value-list>\n");
                     } else {
-                        nodes += "            <gui-type>TextBox</gui-type>\n";
+                        nodes += tab12 + "<gui-type>TextBox</gui-type>\n";
                     }
-
-                    nodes += ("            <value-type>" +
-                    subNode.getDataType() + "</value-type>\n");
 
                     if ((subNode.getInputMask() != null) &&
                             (subNode.getInputMask().length() > 0)) {
-                        nodes += ("            <input-mask>" +
-                        subNode.getInputMask() + "</input-mask>\n");
+                        nodes += (tab12 + "<input-mask>" + subNode.getInputMask() + "</input-mask>\n");
                     }
 
                     if ((subNode.getValueMask() != null) &&
                             (subNode.getValueMask().length() > 0)) {
-                        nodes += ("            <value-mask>" +
-                        subNode.getValueMask() + "</value-mask>\n");
+                        nodes += (tab12 + "<value-mask>" + subNode.getValueMask() + "</value-mask>\n");
                     }
-
-                    nodes += ("            <key-type>" + subNode.getKeyType() +
-                    "</key-type>\n");
-                    nodes += ("        " + "</field-" + subNode.getName() +
-                    ">\n");
+                    nodes += (tab12 + "<value-type>" + subNode.getDataType() + "</value-type>\n");
+                    nodes += (tab12 + "<key-type>" + subNode.getKeyType() + "</key-type>\n");
+                    nodes += (tab8 + "</field>\n");
                 }
             }
 
-            nodes += ("    </node-" + tagName + ">\n");
+            nodes += (tab4 + "</node>\n");
         }
 
         return nodes;
@@ -168,7 +185,8 @@ public class EDMWriter {
      *@return XML string
      *
      */
-    private String getAllNodesForGUI(EntityNode currentNode) {
+
+    private String getAllNodesForMIDM(EntityNode currentNode) {
         String nodes = "";
         int cnt = currentNode.getChildCount();
 
@@ -177,7 +195,7 @@ public class EDMWriter {
 
             if (currentNode.isPrimary()) {
                 EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
-                nodes += getFieldNodesForGUI(targetNode, currentNode.getName(),
+                nodes += getFieldNodesForMidm(targetNode, currentNode.getName(),
                     i);
                 i = 1;
             }
@@ -187,7 +205,95 @@ public class EDMWriter {
                 EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
 
                 if (subNode.isSub()) {
-                    nodes += getFieldNodesForGUI(subNode, subNode.getName(), j++);
+                    nodes += getFieldNodesForMidm(subNode, subNode.getName(), j++);
+                }
+            }
+        }
+
+        return nodes;
+    }
+    
+    private String getFieldNodesForEDM(EntityNode currentNode, String tagName,
+        int displayOrder) {
+        String nodes = "";
+        int cnt = currentNode.getChildCount();
+
+        if (cnt > 0) {
+            if (displayOrder > 0) {
+                nodes = tab4 + "<node-" + tagName + " display-order=\"" +
+                    displayOrder + "\">\n";
+            } else {
+                nodes = tab4 + "<node-" + tagName + ">\n";
+            }
+
+            int fieldDisplayOrder = 1;
+
+            for (int i = 0; i < cnt; i++) {
+                EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
+
+                if (subNode.isField()) {
+                    nodes += (tab8 + "<field-" + subNode.getName() +
+                    ">\n");
+                    nodes += (tab12 + "<display-name>" +
+                    subNode.getDisplayName() + "</display-name>\n");
+                    nodes += (tab12 + "<display-order>" +
+                    fieldDisplayOrder++ + "</display-order>\n");
+                    nodes += (tab12 + "<max-length>" +
+                    subNode.getDataSize() + "</max-length>\n");
+
+                    if ((subNode.getCodeModule() != null) &&
+                            (subNode.getCodeModule().length() > 0)) {
+                        nodes += tab12 + "<gui-type>MenuList</gui-type>\n";
+                        nodes += (tab12 + "<value-list>" + subNode.getCodeModule() + "</value-list>\n");
+                    } else if ((subNode.getUserCode() != null) &&
+                            (subNode.getUserCode().length() > 0)) {
+                        nodes += tab12 + "<gui-type>MenuList</gui-type>\n";
+                        nodes += (tab12 + "<value-list>" + subNode.getUserCode() + "</value-list>\n");
+                    } else {
+                        nodes += tab12 + "<gui-type>TextBox</gui-type>\n";
+                    }
+
+                    if ((subNode.getInputMask() != null) &&
+                            (subNode.getInputMask().length() > 0)) {
+                        nodes += (tab12 + "<input-mask>" + subNode.getInputMask() + "</input-mask>\n");
+                    }
+
+                    if ((subNode.getValueMask() != null) &&
+                            (subNode.getValueMask().length() > 0)) {
+                        nodes += (tab12 + "<value-mask>" + subNode.getValueMask() + "</value-mask>\n");
+                    }
+                    nodes += (tab12 + "<value-type>" + subNode.getDataType() + "</value-type>\n");
+                    nodes += (tab12 + "<key-type>" + subNode.getKeyType() + "</key-type>\n");
+                    nodes += (tab8 + "</field-" + subNode.getName() + ">\n");
+                }
+            }
+
+            nodes += (tab4 + "</node-" + tagName + ">\n");
+        }
+
+        return nodes;
+    }
+
+    private String getAllNodesForEDM(EntityNode currentNode) {
+        String nodes = "";
+        int cnt = currentNode.getChildCount();
+
+        if (cnt > 0) {
+            int i = 0;
+
+            if (currentNode.isPrimary()) {
+                EntityNode targetNode = currentNode; //(EntityNode) currentNode.getChildAt(0);
+                nodes += getFieldNodesForEDM(targetNode, currentNode.getName(),
+                    i);
+                i = 1;
+            }
+
+            int j = 1;
+            for (; i < cnt; i++) {
+                EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
+
+                if (subNode.isSub()) {
+                    nodes += getFieldNodesForEDM(subNode, subNode.getName(), j++);
                 }
             }
         }

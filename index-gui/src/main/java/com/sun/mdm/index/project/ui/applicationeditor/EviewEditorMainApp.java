@@ -31,10 +31,10 @@ import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.util.NbBundle;
 import org.openide.ErrorManager;
+import org.openide.filesystems.FileObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import org.xml.sax.InputSource;
 
 import org.xml.sax.SAXParseException;
 import org.xml.sax.SAXException;
@@ -44,6 +44,7 @@ import org.xml.sax.InputSource;
 import com.sun.mdm.index.parser.EIndexObject;
 import com.sun.mdm.index.parser.UpdateType;
 import com.sun.mdm.index.project.EviewApplication;
+import com.sun.mdm.index.project.EviewProjectProperties;
 
 import com.sun.mdm.index.project.ui.applicationeditor.writers.ObjectWriter;
 import com.sun.mdm.index.project.ui.applicationeditor.writers.EDMWriter;
@@ -308,7 +309,14 @@ public class EviewEditorMainApp {
             EntityNode primaryNode = (EntityNode) mRootNode.getChildAt(0);
             String viewName = this.mEviewApplication.getApplicationName();
             EDMWriter edmWriter = new EDMWriter();
-            data = edmWriter.generate(primaryNode, viewName, mEviewApplication.getEDMType(false));
+            FileObject cf = mEviewApplication.getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.MIDM_XML, false);
+            if (cf == null) {
+                cf = mEviewApplication.getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.EDM_XML, false);
+                data = edmWriter.generateEDM(primaryNode, viewName, mEviewApplication.getEDMType(false));
+            } else {
+                data = edmWriter.generateMIDM(primaryNode, viewName, mEviewApplication.getEDMType(false));
+            }
+
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
         }

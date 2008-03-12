@@ -164,7 +164,10 @@ public class EviewApplication extends EviewProject {
     public EDMType getEDMType(boolean bRefresh) {
         try {
             if (mEDMType == null || bRefresh) {
-                FileObject cf = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.EDM_XML, false);                    
+                FileObject cf = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.MIDM_XML, false);
+                if (cf == null) {
+                    cf = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.EDM_XML, false);
+                }
                 if (cf != null) {
                     InputStream objectdef = cf.getInputStream();
                     InputSource source = new InputSource(objectdef);
@@ -771,7 +774,10 @@ public class EviewApplication extends EviewProject {
         boolean checkedOut = true;
         try {
             // check out EDM
-            fileEdmCheckedOut = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.EDM_XML, false);
+            fileEdmCheckedOut = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.MIDM_XML, false);
+            if (fileEdmCheckedOut == null) {
+                fileEdmCheckedOut = getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.EDM_XML, false);
+            }
         } catch (Exception ex) {
             msgCheckedOut += ex.getMessage() + "\n";
             checkedOut = false;

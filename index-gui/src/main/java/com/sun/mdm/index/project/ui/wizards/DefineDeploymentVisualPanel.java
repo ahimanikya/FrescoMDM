@@ -45,7 +45,7 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox cbDateFormat;
     private javax.swing.JComboBox jComboBoxTransactions;
     private javax.swing.JCheckBox jCheckBoxMasterEDM = new javax.swing.JCheckBox(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
-                "LBL_static_MasterEDM"));
+                "LBL_static_MasterIndexDM"));
 
     /**
      * Create the wizard panel and set up some basic properties.
