@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.Callable;
+import java.util.logging.Logger;
 
 import com.sun.mdm.index.loader.config.LoaderConfig;
 
@@ -41,6 +42,8 @@ public class XTestLoader implements Callable<String> {
 	private ClusterSynchronizer clusterSynchronizer;
 
 	private String workingDir;
+	
+	private static Logger logger = Logger.getLogger(XTestLoader.class.getName());
 
 	/**
 	 * @param config
@@ -109,6 +112,12 @@ public class XTestLoader implements Callable<String> {
 
 				if (b == null) {
 					break;
+				}
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 
 			}
@@ -191,6 +200,12 @@ public class XTestLoader implements Callable<String> {
 				if (b == null) {
 					break;
 				}
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 			}
 
@@ -261,6 +276,12 @@ public class XTestLoader implements Callable<String> {
 				if (b == null) {
 					break;
 				}
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 			}
 
@@ -302,16 +323,24 @@ public class XTestLoader implements Callable<String> {
 	public String call() throws Exception {
 
 		init();
-
+		logger.info("before distributeBlock");
 		distributeBlock();
-
+		logger.info("before match");
+		
 		match();
 
+		logger.info("before distributeEUID");
 		distributeEUID();
+		
+		logger.info("before generateMasterIndex");
 
 		generateMasterIndex();
+		
+		logger.info("before generatePotentialDuplicate");
 
 		generatePotentialDuplicate();
+		
+		logger.info("before done");
 
 		return "done";
 	}
