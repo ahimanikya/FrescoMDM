@@ -55,7 +55,7 @@ import com.sun.mdm.index.matching.StandardizerFactory;
 
 /**
  * 1. 
- * @author sdua
+ * @author Swaranjit Dua
  *
  */
 public class MasterIndex {
@@ -99,48 +99,22 @@ public class MasterIndex {
 		
 	}
 	
-	
-	
-	private Lookup getEUIDLookup() throws Exception {		
-		//objectDef_ = config_.getObjectDefinition();
-	/*	
-		Field f = new Field();
-		f.setName("EUID");
-		objectDef_.addField(0,f);
-		
-		f = new Field();
-		f.setName("GID");
-		objectDef_.addField(1,f);
-		
-		f = new Field();
-		f.setName("systemcode");
-		objectDef_.addField(2,f);
-		
-		f = new Field();
-		f.setName("lid");
-		objectDef_.addField(3,f);
-	*/
-		Lookup lookup = Lookup.createLookup(objectDef_);
-		return lookup;
-		
-	}
+
 		
    public void generateMasterIndex() throws Exception {
 		
 	 File bucketFile;
 	 
-	 Standardizer[]  standardizers = new Standardizer[poolSize_];
-	 for(int i = 0; i < poolSize_; i++) {
-		standardizers[i] = StandardizerFactory.getInstance();		
-	 }
+	 Standardizer standardizer = StandardizerFactory.getInstance();
 	 	 
      while (true) {
 		bucketFile = getBucketFile();
 		if (bucketFile == null) {
 			break;
 		}			    												
-		DataObjectReader reader = new DataObjectFileReader(bucketFile);		
-		EUIDBucket bucket = new EUIDBucket(reader);
+		DataObjectReader reader = new DataObjectFileReader(bucketFile.getAbsoluteFile(), true);		
+		EUIDBucket bucket = new EUIDBucket(reader, bucketFile.getName());
+		//logger.info("EUID bucket:"+ bucketFile.getName() + " processing");
 		bucket.load();
 				
 		/**
@@ -160,7 +134,7 @@ public class MasterIndex {
 			Map<String,TableData> tableMap = new HashMap<String, TableData>();
 			allTableData.add(tableMap);
 			MIndexTask task = 
-				 new MIndexTask(tableMap, cursor, objectDef_, standardizers[i], endGate, con_);
+				 new MIndexTask(tableMap, cursor, objectDef_, standardizer, endGate, con_);
 		    executor_.execute(task);		    
 		}
 		
@@ -169,7 +143,7 @@ public class MasterIndex {
 		 */
 		endGate.await();
 		writer.write(allTableData);
-		//break;
+		bucket.close();
 	
 	 } // end while true
      		 
@@ -182,7 +156,6 @@ public class MasterIndex {
 	
 	private File getBucketFile() throws IOException {
 	    String fileName = clusterSynchronizer_.getEUIDBucket();
-	//	String fileName = "EUIDB_2"; 
 		if (fileName == null) {
 			return null;
 		}
