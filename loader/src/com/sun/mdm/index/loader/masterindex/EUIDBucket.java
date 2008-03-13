@@ -47,6 +47,8 @@ public class EUIDBucket {
 //	private DataObjectWriter writer;
 	private DataObjectReader reader;
 	private Map<String,List<DataObject>> EUIDMap;
+	private String bucketName_;
+	private int numEOs;
 //	private File file;
 	
 	/*
@@ -55,8 +57,9 @@ public class EUIDBucket {
 	}
 	*/
 	
-	public EUIDBucket(DataObjectReader reader) {
+	public EUIDBucket(DataObjectReader reader, String bucket) {
 		this.reader = reader;
+		bucketName_ = bucket;
 	//	file = f;
 	}
 	
@@ -86,6 +89,7 @@ public class EUIDBucket {
 				SOlist = new ArrayList<DataObject>();
 				SOlist.add(dataObject);
 				EUIDMap.put(euid, SOlist);
+				numEOs++;
 			} else {
 				SOlist.add(dataObject);
 			}
@@ -93,6 +97,14 @@ public class EUIDBucket {
 		}
 		return EUIDMap;				
 	}
+	
+	public void close() throws Exception {
+		
+		if (reader != null) {
+		   reader.close();
+		}
+	}
+	
 	/*
 	public void write(DataObject dataObject) throws Exception {
 		writer.writeDataObject(dataObject);
