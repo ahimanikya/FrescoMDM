@@ -54,6 +54,7 @@ import com.sun.mdm.index.dataobject.objectdef.ObjectDefinition;
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.loader.common.ObjectNodeUtil;
+import com.sun.mdm.index.loader.common.Util;
 import com.sun.mdm.index.loader.config.LoaderConfig;
 import com.sun.mdm.index.matching.Standardizer;
 import com.sun.mdm.index.matching.StandardizerFactory;
@@ -88,7 +89,6 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 			.getName());
 	private static ObjectDefinition objDef_;
 	private Connection con_;
-    private Standardizer mStandardizer = null;
     private String sdate_;
     private Date date_;
     private static SimpleDateFormat dateFormat_;  // This format is used in
@@ -103,14 +103,12 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 			      throws Exception {
 		
 		tableMap_ = tableMap;
-		mStandardizer = StandardizerFactory.getInstance();
-		mCalculator = new SurvivorCalculator(mStandardizer);	
+		mCalculator = new SurvivorCalculator(standardizer);	
 		eoCursor_ = cursor;
 		endGate_ = endGate;
 				
 	//	objDef_ = objDef;
 		con_ = con;
-		mStandardizer = standardizer;
 		date_ = new Date();	    
 	    sdate_ = sysdateFormat_.format(date_);
 	}
@@ -141,7 +139,8 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		 addEnterprise(eo, weightMap);		 		 
 		}
 	  } catch (Exception ex){
-		  logger.info(ex + ex.getMessage()); 
+		  logger.severe(ex + ex.getMessage());
+		  logger.severe(Util.getStackTrace(ex));
 		  ex.printStackTrace();
 	  } finally {		
 	     endGate_.countDown();
