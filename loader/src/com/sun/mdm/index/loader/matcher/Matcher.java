@@ -120,7 +120,9 @@ public class Matcher {
 		Comparator<MatchRecord> comp = getComparator();									
 		DataObjectReader reader = new DataObjectFileReader(bucketFile);		
 		Bucket bucket = new Bucket(reader, bucketFile, isSBR_);
+	//	logger.info("Block bucket:"+ bucket.getFile().getName() + " processing");
 		bucket.load();
+	
 		
 		/**
 		 * Each TreeMap is for different MatcherTask that is executed on a pooled 
@@ -160,6 +162,8 @@ public class Matcher {
 		 */
 		endGate.await();
 		
+		bucket.close();
+		
 		if (ismatchAnalyzer) {
 			continue; // skip match files
 		}
@@ -180,6 +184,7 @@ public class Matcher {
 		if (flag == true) {
 		  matchFiles_.add(matchFile);
 		}
+		
 	 } // end while true
      
      if (!ismatchAnalyzer) {
@@ -196,8 +201,7 @@ public class Matcher {
 	   } else {
 		   clusterSynchronizer_.setSBRDone(output.getName());
 	   }
-	   
-	   	   
+	   	   	   
 	   if (isMasterLoader_) {
 		 if (isSBR_) {
 		    clusterSynchronizer_.waitSBRDone();	
