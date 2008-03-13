@@ -156,7 +156,7 @@ public class CUIDManager {
             }
         } catch (SQLException exp) {
             throw new SEQException(mLocalizer.t("IDG503: Could not retrieve the next " + 
-                                                "ID from the EUID generator: (0}", exp));
+                                                "ID from the EUID generator: (0}", exp.getMessage()));
         }
 
         
