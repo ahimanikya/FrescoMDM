@@ -112,7 +112,7 @@ public class MasterIndex {
 		if (bucketFile == null) {
 			break;
 		}			    												
-		DataObjectReader reader = new DataObjectFileReader(bucketFile.getAbsoluteFile(), true);		
+		DataObjectReader reader = new DataObjectFileReader(bucketFile.getAbsolutePath(), true);		
 		EUIDBucket bucket = new EUIDBucket(reader, bucketFile.getName());
 		//logger.info("EUID bucket:"+ bucketFile.getName() + " processing");
 		bucket.load();
