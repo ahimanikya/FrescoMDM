@@ -36,12 +36,14 @@ import com.sun.mdm.index.loader.blocker.BlockDistributor;
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterSynchronizer;
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterState;
 import com.sun.mdm.index.loader.common.FileManager;
+import com.sun.mdm.index.loader.common.Util;
 import com.sun.mdm.index.loader.matcher.Matcher;
 import com.sun.mdm.index.loader.config.LoaderConfig;
 import com.sun.mdm.index.loader.euid.EuidIndexAssigner;
 import com.sun.mdm.index.loader.log.LoaderLogManager;
 import com.sun.mdm.index.loader.masterindex.MasterIndex;
 import com.sun.mdm.index.loader.masterindex.PotDupGenerator;
+import com.sun.mdm.index.loader.sqlloader.BulkLoader;
 
 import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.configurator.ConfigurationInfo;
@@ -78,6 +80,7 @@ public class BulkMatcherLoader {
 	private Lookup sbrLookup_;
 	private boolean ismatchAnalyzer;
 	private boolean delInterMediateDir = true;
+	private boolean bulkLoad = false;
 	public BulkMatcherLoader() throws Exception {
 		new LoaderLogManager().init();
 		logger.info("bulk_boader_started");
@@ -100,6 +103,12 @@ public class BulkMatcherLoader {
 			delInterMediateDir = Boolean.parseBoolean(sdelInterMediateDir);
 		}
 		
+		String sbulkLoad = config_.getSystemProperty("BulkLoad");
+		if (sbulkLoad != null) {
+			bulkLoad = Boolean.parseBoolean(sbulkLoad);
+		}
+		
+		
 		ConfigurationService.getInstance();
 		
 		logger.info("configuation_loaded");
@@ -109,6 +118,7 @@ public class BulkMatcherLoader {
 		} else {
 		   logger.info("slave_loader:" + loaderName);
 		}
+		
 	}
 	
 	public void bulkMatchLoad() throws Exception {	
@@ -128,9 +138,7 @@ public class BulkMatcherLoader {
 	 Matcher matcher = new Matcher(matchPaths_, matchTypes_, blockLk_, false);
 	 matcher.match();
 	 logger.info("matching_done"); 
-	  
-
-	 deleteBlockDir();
+	 
 	 
 	 if (ismatchAnalyzer) {
 		 return;
@@ -144,7 +152,6 @@ public class BulkMatcherLoader {
 		  clusterSynchronizer_.waitMasterIndexGenerationReady(); 
 	  }
 	  
-     
      deleteMatchDir();
 	  
 	  logger.info("EUID_Assigner_Done");
@@ -192,8 +199,23 @@ public class BulkMatcherLoader {
 		   	  
 	 deleteSBRMatchDir();
 	 
-	 logger.info("potential_duplicates_completed");
+	 if (bulkLoad) {
+	 
+	   BulkLoader bl = new BulkLoader();
+	   bl.load(); 
+	 }
+	 
+	 logger.info("Loader Completed");
 	 System.exit(0);
+	}
+	
+	private void cleanDirs() {
+		deleteBlockDir();
+		deleteMatchDir();
+		deleteEUIDDir();
+		deleteMasterIndexDir();
+		deleteSBRBlockDir();
+		deleteSBRMatchDir();
 	}
 	
 	private void loadConfig() throws Exception {
@@ -201,6 +223,8 @@ public class BulkMatcherLoader {
 		String workingDir = config_.getSystemProperty("workingDir");
 		loaderName_ = config_.getSystemProperty("loaderName");
 		FileManager.setWorkingDir(workingDir, loaderName_);
+		cleanDirs();
+		FileManager.initDirs();
 		String isSMasterLoader = config_.getSystemProperty("isMasterLoader");
 		isMasterLoader_ = Boolean.getBoolean(isSMasterLoader);
 		
@@ -222,9 +246,9 @@ public class BulkMatcherLoader {
 		 bulkMatcher.bulkMatchLoad();
 		 
 		} catch (Exception ex) {
-			logger.info(ex.getMessage());
+			logger.severe(ex + ex.getMessage());
+			logger.severe(Util.getStackTrace(ex));
 			ex.printStackTrace();
-			System.out.println(ex);
 		}			
 	}
 	
@@ -327,73 +351,60 @@ public class BulkMatcherLoader {
 	
 	
 	private void deleteBlockDir() {
-		if ( delInterMediateDir == false) {
-			return;
-		}
 		
 		String dir = FileManager.getBlockBucketDir();
-		deleteDirFiles(dir);
+		delete(dir);
 			
 	}
 
 	private void deleteMatchDir() {
-		if ( delInterMediateDir == false) {
-			return;
-		}
 						
 		String dir = FileManager.getMatchFileStageDir();
-		deleteDirFiles(dir);		
+		delete(dir);		
 		
 		dir = FileManager.getMatchFileDir();
-		deleteDirFiles(dir);				
+		delete(dir);				
 	}
 
 
 	private void deleteEUIDDir() {
-		if ( delInterMediateDir == false) {
-			return;
-		}
-		
+			
 		String dir = FileManager.getEUIDBucketDir();
-		deleteDirFiles(dir);				
+		delete(dir);				
+	}
+	
+	private void deleteMasterIndexDir() {
+		
+		String dir = FileManager.getMasterImageDir();
+		delete(dir);				
 	}
 	
 	private void deleteSBRBlockDir() {
-		if ( delInterMediateDir == false) {
-			return;
-		}
 		String dir = FileManager.getsbrBlockBucketDir();
-		deleteDirFiles(dir);
+		delete(dir);
 	}
 	
 
 	private void deleteSBRMatchDir() {
-		if ( delInterMediateDir == false) {
-			return;
-		}
 				
 		String dir = FileManager.getsbrMatchDir();
-		deleteDirFiles(dir);
+		delete(dir);
 		
 		dir = FileManager.getsbrMatchStageDir();
-		deleteDirFiles(dir);
-	
+		delete(dir);	
 	}
 	
-	private void deleteDirFiles(String dir) {
-		
-		File fdir = new File(dir);
-		File[] files = fdir.listFiles();		
-		for (File f: files) {
-			boolean status = f.delete();
-			//logger.info(f.getName()+ "deleted:" + status);
+	
+    private void delete (String dir) {
+    	if ( delInterMediateDir == false) {
+			return;
 		}
-		
-		boolean b = fdir.delete();
-		logger.info(fdir.getName()+ " deleted:" + b);
-	}
 
-	
+    	if (dir !=null) {
+    		delete (new File(dir));
+    	}
+    }
+    	
 	private void delete(File f){
 		
 		if(f.isDirectory()){
