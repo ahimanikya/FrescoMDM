@@ -30,15 +30,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.DOMException;
 
-import java.util.Enumeration;
-import java.util.Iterator;
-
 /**
  * @author kkao
  * @version
  */
 public class EDMType {
-    private final String mFmt = "                [EDMType]";
     private final String mTagEDM = "edm";
     private final String mTagMIDM = "midm";
     private final String mTagNodeDash = "node-";
@@ -81,9 +77,11 @@ public class EDMType {
     private final String mTagSourceRecord = "source-record";
     private final String mTagScreenID = "screen-id";
     private final String mTagSearchPages = "search-pages";
+    private final String mTagSearchPagesBlank = "<search-pages/>\n";
     private final String mTagSubscreenConfigurations = "subscreen-configurations";
     private final String mTagSubscreen = "subscreen";
     private final String mTagSearchResultPages = "search-result-pages";
+    private final String mTagSearchResultPagesBlank = "<search-result-pages/>\n";
     private final String mTagSearchResultID = "search-result-id";
     private final String mTagSearchScreenOrder = "search-screen-order";
     private final String mTagInstruction = "instruction";
@@ -99,7 +97,6 @@ public class EDMType {
     private final String mTagShowEuid = "show-euid";
     private final String mTagShowLid = "show-lid";
     private final String mTagSearchOption = "search-option";
-    //private final String mTagDisplayName = "display-name";
     private final String mTagQueryBuilder = "query-builder";
     private final String mTagWeighted = "weighted";
     private final String mTagCandidateThreshold = "candidate-threshold";
@@ -107,7 +104,8 @@ public class EDMType {
     private final String mTagParameterName = "name";
     private final String mTagParameterValue = "value";
 
-    private final String mTagFieldGroup = "field-group";    
+    private final String mTagFieldGroup = "field-group";
+    private final String mTagFieldGroupBlank = "<field-group/>\n";    
     private final String mTagFieldRef = "field-ref";        // -> EDMFieldDef.usedInSearchScreen
     private final String mAttrRequired = "required";        // -> EDMFieldDef.requiredInSearchScreen
     private final String mTagDescription = "description";
@@ -345,14 +343,16 @@ public class EDMType {
         }
     }
     
-    String getAuditLogXML() {
+    String getAuditLogXML(boolean bMidm) {
         StringBuffer buffer = new StringBuffer();
         
 	buffer.append(Utils.TAB3 + Utils.startTag(mTagAuditLog));
         buffer.append(Utils.TAB4 + Utils.startTagNoLine(mTagAllowInsert) +
                             mPageDefinition.auditLog.allowInsert + 
                             Utils.endTag(mTagAllowInsert));
-        buffer.append(getPageTabXML(mPageDefinition.auditLog.pageTab, Utils.TAB4));
+        if (bMidm) {
+            buffer.append(getPageTabXML(mPageDefinition.auditLog.pageTab, Utils.TAB4, mPageDefinition.reports.commonBlock.pageTab.rootObject, "Audit Log"));
+        }
         if (mPageDefinition.auditLog.screenID != null) {
             buffer.append(Utils.TAB4 + Utils.startTagNoLine(mTagScreenID) +
                             mPageDefinition.auditLog.screenID + 
@@ -363,12 +363,10 @@ public class EDMType {
                             mPageDefinition.auditLog.displayOrder + 
                             Utils.endTag(mTagDisplayOrder));
         }
-	buffer.append(Utils.TAB4 + Utils.startTag(mTagSearchPages));
-        buffer.append(getAlSimpleSearchPageXML(mPageDefinition.auditLog.alSimpleSearchPages, Utils.TAB5));
-        buffer.append(Utils.TAB4 + Utils.endTag(mTagSearchPages));
-	buffer.append(Utils.TAB4 + Utils.startTag(mTagSearchResultPages));
-        buffer.append(getSearchResultListPageXML(mPageDefinition.auditLog.searchResultListPage, Utils.TAB5));
-        buffer.append(Utils.TAB4 + Utils.endTag(mTagSearchResultPages));
+        buffer.append(getSearchPagesXML(mPageDefinition.auditLog.alSimpleSearchPages, Utils.TAB4));
+
+        buffer.append(getSearchResultPagesXML(mPageDefinition.auditLog.searchResultListPage, Utils.TAB4));
+
         buffer.append(Utils.TAB3 + Utils.endTag(mTagAuditLog));
 
         return buffer.toString();
@@ -485,12 +483,10 @@ public class EDMType {
                           Utils.endTag(mTagDisplayOrder));
         }
         
-	buffer.append(Utils.TAB6 + Utils.startTag(mTagSearchPages));
-        buffer.append(getAlSimpleSearchPageXML(subscreen.commonBlock.alSimpleSearchPages, Utils.TAB7));
-        buffer.append(Utils.TAB6 + Utils.endTag(mTagSearchPages));
-	buffer.append(Utils.TAB6 + Utils.startTag(mTagSearchResultPages));
-        buffer.append(getSearchResultListPageXML(subscreen.commonBlock.searchResultListPage, Utils.TAB7));
-        buffer.append(Utils.TAB6 + Utils.endTag(mTagSearchResultPages));
+        buffer.append(getSearchPagesXML(subscreen.commonBlock.alSimpleSearchPages, Utils.TAB6));
+
+        buffer.append(getSearchResultPagesXML(subscreen.commonBlock.searchResultListPage, Utils.TAB6));
+
         buffer.append(Utils.TAB5 + Utils.endTag(mTagSubscreen));
         return buffer.toString();
     }
@@ -581,7 +577,7 @@ public class EDMType {
     }
     
     //mTagReports
-    String getReportsXML() {
+    String getReportsXML(boolean bMidm) {
         StringBuffer buffer = new StringBuffer();
         
 	buffer.append(Utils.TAB3 + Utils.startTag(mTagReports));
@@ -602,16 +598,21 @@ public class EDMType {
                             Utils.endTag(mTagDisplayOrder));
         }
         
-        for (int i=0; i<mPageDefinition.reports.alReport.size(); i++) {
-            PageDefinition.Report report = (PageDefinition.Report) mPageDefinition.reports.alReport.get(i);
-            buffer.append(getReportXML(report));
+        if (bMidm) {
+            mPageDefinition.midmConverter.reports();
         }
-	buffer.append(Utils.TAB4 + Utils.startTag(mTagSearchPages));
-        buffer.append(getAlSimpleSearchPageXML(mPageDefinition.reports.commonBlock.alSimpleSearchPages, Utils.TAB5));
-        buffer.append(Utils.TAB4 + Utils.endTag(mTagSearchPages));
-	buffer.append(Utils.TAB4 + Utils.startTag(mTagSearchResultPages));
-        buffer.append(getSearchResultListPageXML(mPageDefinition.reports.commonBlock.searchResultListPage, Utils.TAB5));
-        buffer.append(Utils.TAB4 + Utils.endTag(mTagSearchResultPages));
+        
+        if (mPageDefinition.reports.alReport != null) {
+            for (int i=0; i<mPageDefinition.reports.alReport.size(); i++) {
+                PageDefinition.Report report = (PageDefinition.Report) mPageDefinition.reports.alReport.get(i);
+                buffer.append(getReportXML(report));
+            }
+        }
+
+        buffer.append(getSearchPagesXML(mPageDefinition.reports.commonBlock.alSimpleSearchPages, Utils.TAB4));
+
+        buffer.append(getSearchResultPagesXML(mPageDefinition.reports.commonBlock.searchResultListPage, Utils.TAB4));
+
         buffer.append(getSubscreenConfigurationsXML((mPageDefinition.reports.subscreenConfigurations)));
 
         buffer.append(Utils.TAB3 + Utils.endTag(mTagReports));
@@ -660,12 +661,11 @@ public class EDMType {
                             mPageDefinition.recordDetails.displayOrder + 
                             Utils.endTag(mTagDisplayOrder));
         }
-	buffer.append(Utils.TAB4 + Utils.startTag(mTagSearchPages));
-        buffer.append(getAlSimpleSearchPageXML(mPageDefinition.recordDetails.alSimpleSearchPages, Utils.TAB5));
-        buffer.append(Utils.TAB4 + Utils.endTag(mTagSearchPages));
-	buffer.append(Utils.TAB4 + Utils.startTag(mTagSearchResultPages));
-        buffer.append(getSearchResultListPageXML(mPageDefinition.recordDetails.searchResultListPage, Utils.TAB5));
-        buffer.append(Utils.TAB4 + Utils.endTag(mTagSearchResultPages));
+
+        buffer.append(getSearchPagesXML(mPageDefinition.recordDetails.alSimpleSearchPages, Utils.TAB4));
+
+        buffer.append(getSearchResultPagesXML(mPageDefinition.recordDetails.searchResultListPage, Utils.TAB4));
+
         buffer.append(Utils.TAB3 + Utils.endTag(mTagRecordDetails));
 
         return buffer.toString();
@@ -690,12 +690,11 @@ public class EDMType {
                             mPageDefinition.transactions.displayOrder + 
                             Utils.endTag(mTagDisplayOrder));
         }
-	buffer.append(Utils.TAB4 + Utils.startTag(mTagSearchPages));
-        buffer.append(getAlSimpleSearchPageXML(mPageDefinition.transactions.alSimpleSearchPages, Utils.TAB5));
-        buffer.append(Utils.TAB4 + Utils.endTag(mTagSearchPages));
-	buffer.append(Utils.TAB4 + Utils.startTag(mTagSearchResultPages));
-        buffer.append(getSearchResultListPageXML(mPageDefinition.transactions.searchResultListPage, Utils.TAB5));
-        buffer.append(Utils.TAB4 + Utils.endTag(mTagSearchResultPages));
+
+        buffer.append(getSearchPagesXML(mPageDefinition.transactions.alSimpleSearchPages, Utils.TAB4));
+
+        buffer.append(getSearchResultPagesXML(mPageDefinition.transactions.searchResultListPage, Utils.TAB4));
+
         buffer.append(Utils.TAB3 + Utils.endTag(mTagTransactions));
 
         return buffer.toString();
@@ -720,12 +719,11 @@ public class EDMType {
                             mPageDefinition.duplicateRecords.displayOrder + 
                             Utils.endTag(mTagDisplayOrder));
         }
-	buffer.append(Utils.TAB4 + Utils.startTag(mTagSearchPages));
-        buffer.append(getAlSimpleSearchPageXML(mPageDefinition.duplicateRecords.alSimpleSearchPages, Utils.TAB5));
-        buffer.append(Utils.TAB4 + Utils.endTag(mTagSearchPages));
-	buffer.append(Utils.TAB4 + Utils.startTag(mTagSearchResultPages));
-        buffer.append(getSearchResultListPageXML(mPageDefinition.duplicateRecords.searchResultListPage, Utils.TAB5));
-        buffer.append(Utils.TAB4 + Utils.endTag(mTagSearchResultPages));
+
+        buffer.append(getSearchPagesXML(mPageDefinition.duplicateRecords.alSimpleSearchPages, Utils.TAB4));
+
+        buffer.append(getSearchResultPagesXML(mPageDefinition.duplicateRecords.searchResultListPage, Utils.TAB4));
+
         buffer.append(Utils.TAB3 + Utils.endTag(mTagDuplicateRecords));
 
         return buffer.toString();
@@ -750,12 +748,10 @@ public class EDMType {
                             mPageDefinition.assumedMatches.displayOrder + 
                             Utils.endTag(mTagDisplayOrder));
         }
-	buffer.append(Utils.TAB4 + Utils.startTag(mTagSearchPages));
-        buffer.append(getAlSimpleSearchPageXML(mPageDefinition.assumedMatches.alSimpleSearchPages, Utils.TAB5));
-        buffer.append(Utils.TAB4 + Utils.endTag(mTagSearchPages));
-	buffer.append(Utils.TAB4 + Utils.startTag(mTagSearchResultPages));
-        buffer.append(getSearchResultListPageXML(mPageDefinition.assumedMatches.searchResultListPage, Utils.TAB5));
-        buffer.append(Utils.TAB4 + Utils.endTag(mTagSearchResultPages));
+
+        buffer.append(getSearchPagesXML(mPageDefinition.assumedMatches.alSimpleSearchPages, Utils.TAB4));
+
+        buffer.append(getSearchResultPagesXML(mPageDefinition.assumedMatches.searchResultListPage, Utils.TAB4));
         
         buffer.append(Utils.TAB3 + Utils.endTag(mTagAssumedMatches));
 
@@ -793,12 +789,11 @@ public class EDMType {
                             mPageDefinition.sourceRecord.commonBlock.displayOrder + 
                             Utils.endTag(mTagDisplayOrder));
         }
-	buffer.append(Utils.TAB4 + Utils.startTag(mTagSearchPages));
-        buffer.append(getAlSimpleSearchPageXML(mPageDefinition.sourceRecord.commonBlock.alSimpleSearchPages, Utils.TAB5));
-        buffer.append(Utils.TAB4 + Utils.endTag(mTagSearchPages));
-	buffer.append(Utils.TAB4 + Utils.startTag(mTagSearchResultPages));
-        buffer.append(getSearchResultListPageXML(mPageDefinition.sourceRecord.commonBlock.searchResultListPage, Utils.TAB5));
-        buffer.append(Utils.TAB4 + Utils.endTag(mTagSearchResultPages));
+
+        buffer.append(getSearchPagesXML(mPageDefinition.sourceRecord.commonBlock.alSimpleSearchPages, Utils.TAB4));
+
+        buffer.append(getSearchResultPagesXML(mPageDefinition.sourceRecord.commonBlock.searchResultListPage, Utils.TAB4));
+
         buffer.append(getSubscreenConfigurationsXML((mPageDefinition.sourceRecord.subscreenConfigurations)));
         buffer.append(Utils.TAB3 + Utils.endTag(mTagSourceRecord));
 
@@ -874,6 +869,17 @@ public class EDMType {
         mPageDefinition.eoSearch.eoViewPage.fieldPerRow = parseFieldPerRow(node);
     }
 
+    String getSearchResultPagesXML(PageDefinition.SearchResultListPage searchResultListPage, String startTab) {
+        if (searchResultListPage == null) {
+            return startTab + mTagSearchResultPagesBlank;
+        }
+        StringBuffer buffer = new StringBuffer();
+	buffer.append(startTab + Utils.startTag(mTagSearchResultPages));
+        buffer.append(getSearchResultListPageXML(searchResultListPage, startTab + Utils.TAB));
+        buffer.append(startTab + Utils.endTag(mTagSearchResultPages));
+        return buffer.toString();
+    }
+    
     String getSearchResultListPageXML(PageDefinition.SearchResultListPage searchResultListPage, String startTab) {
         if (searchResultListPage == null) {
             return "";
@@ -1083,17 +1089,21 @@ public class EDMType {
         
         for (int i=0; i < alFieldGroup.size(); i++) {
             PageDefinition.FieldGroup fieldGroup = (PageDefinition.FieldGroup) alFieldGroup.get(i);
-            buffer.append(startTab + Utils.startTag(mTagFieldGroup));
-            if (fieldGroup.description != null) {
-                buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagDescription) + 
-                              fieldGroup.description + 
-                              Utils.endTag(mTagDescription));
+            if ((fieldGroup.alFieldRef == null || fieldGroup.alFieldRef.size() <= 0) && fieldGroup.description == null) {
+                buffer.append(startTab + mTagFieldGroupBlank);
+            } else {
+                buffer.append(startTab + Utils.startTag(mTagFieldGroup));
+                if (fieldGroup.description != null) {
+                    buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagDescription) + 
+                                  fieldGroup.description + 
+                                  Utils.endTag(mTagDescription));
+                }
+                for (int j=0; j < fieldGroup.alFieldRef.size(); j++) {
+                    PageDefinition.FieldRef fieldRef = (PageDefinition.FieldRef) fieldGroup.alFieldRef.get(j);
+                    buffer.append(getFieldRefXML(fieldRef, startTab + Utils.TAB));
+                }
+                buffer.append(startTab + Utils.endTag(mTagFieldGroup));
             }
-            for (int j=0; j < fieldGroup.alFieldRef.size(); j++) {
-                PageDefinition.FieldRef fieldRef = (PageDefinition.FieldRef) fieldGroup.alFieldRef.get(j);
-                buffer.append(getFieldRefXML(fieldRef, startTab + Utils.TAB));
-            }
-            buffer.append(startTab + Utils.endTag(mTagFieldGroup));
         }
 
         return buffer.toString();
@@ -1145,6 +1155,18 @@ public class EDMType {
                 }
             }
         }
+    }
+    
+    String getSearchPagesXML(ArrayList alSimpleSearchPages, String startTab) {
+        if (alSimpleSearchPages == null || alSimpleSearchPages.size() <= 0) {
+            return startTab + mTagSearchPagesBlank;
+        }
+        StringBuffer buffer = new StringBuffer();
+	buffer.append(startTab + Utils.startTag(mTagSearchPages));
+        buffer.append(getAlSimpleSearchPageXML(alSimpleSearchPages, startTab + Utils.TAB));
+        buffer.append(startTab + Utils.endTag(mTagSearchPages));
+
+        return buffer.toString();
     }
     
     String getAlSimpleSearchPageXML(ArrayList alSimpleSearchPages, String startTab) {
@@ -1287,6 +1309,23 @@ public class EDMType {
         return buffer.toString();
     }
     
+    // PageTab
+    String getPageTabXML(PageDefinition.PageTab pageTab, String startTab, String rootObject, String tabName) {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(startTab + Utils.startTagNoLine(mTagRootObject) + 
+                        ((pageTab.rootObject != null && !pageTab.rootObject.equals("null") && !pageTab.rootObject.isEmpty()) ? pageTab.rootObject : rootObject)  + 
+                        Utils.endTag(mTagRootObject));
+        buffer.append(startTab + Utils.startTagNoLine(mTagTabName) + 
+                        ((pageTab.tabName != null && !pageTab.tabName.equals("null") && !pageTab.tabName.isEmpty()) ? pageTab.tabName : tabName)  + 
+                        Utils.endTag(mTagTabName));
+        if (pageTab.tabEntrance != null) {
+            buffer.append(startTab + Utils.startTagNoLine(mTagTabEntrance) + 
+                            pageTab.tabEntrance + 
+                            Utils.endTag(mTagTabEntrance));
+        }
+        return buffer.toString();
+    }
+    
     //mTagCreateEo
     String getEoSearchXML() {    //mTagEoSearch
         StringBuffer buffer = new StringBuffer();
@@ -1402,36 +1441,76 @@ public class EDMType {
         }
     }
     
-    String getPageDefinitionXML() {
+    /* getPageDefinitionXML
+     * 
+     * @param boolean bMidm - Convert edm to midm
+     * @return String - page-definition portion of edm.xml or midm.xml
+     * 
+     */
+    String getPageDefinitionXML(boolean bMidm) {
         StringBuffer buffer = new StringBuffer();
         
 	buffer.append(Utils.TAB2 + Utils.startTag(mTagPageDefinition));
+        if (bMidm && mPageDefinition.initialScreenID == null) {
+            mPageDefinition.initialScreenID = "1";
+        }
+        
         if (mPageDefinition.initialScreenID != null) {
-            // mPageDefinition.initialScreenID
+            // midm:mPageDefinition.initialScreenID
             buffer.append(Utils.TAB3 + Utils.startTagNoLine(mTagInitialScreenID) + 
                             mPageDefinition.initialScreenID + 
                             Utils.endTag(mTagInitialScreenID));
 
-        } else {
-            // mPageDefinition.initialScreen
+        }
+        // edm:mPageDefinition.initialScreen
+        if (!bMidm && mPageDefinition.initialScreen != null) {
             buffer.append(Utils.TAB3 + Utils.startTagNoLine(mTagInitialScreen) + 
                             mPageDefinition.initialScreen + 
                             Utils.endTag(mTagInitialScreen));
-            // mTagEoSearch
-            if (mPageDefinition.eoSearch != null) {
+        }
+
+        if (mPageDefinition.eoSearch != null ||
+            mPageDefinition.createEO != null ||
+            mPageDefinition.history != null ||
+            mPageDefinition.matchReview != null ||
+            (mPageDefinition.reports != null && mPageDefinition.reports.alReport != null)) {
+            // Inform user the conversion is in process
+        }
+        
+        // Classic EDM
+        if (mPageDefinition.eoSearch != null) {
+            if (bMidm) {
+                mPageDefinition.midmConverter.eoSearch();
+            } else {
                 buffer.append(getEoSearchXML());
             }
-            if (mPageDefinition.createEO != null) {
+        }
+        
+        if (mPageDefinition.createEO != null) {
+            if (bMidm) {
+                mPageDefinition.midmConverter.createEO();
+            } else {
                 buffer.append(getCreateEoXML());
             }
-            if (mPageDefinition.history != null) {
+        }
+        
+        if (mPageDefinition.history != null) {
+            if (bMidm) {
+                mPageDefinition.midmConverter.history();
+            } else {
                 buffer.append(getHistoryXML());
             }
-            if (mPageDefinition.matchReview != null) {
+        }
+        
+        if (mPageDefinition.matchReview != null) {
+            if (bMidm) {
+                mPageDefinition.midmConverter.matchReview();
+            } else {
                 buffer.append(getMatchingReviewXML());
             }
         }
         
+        // Master Index DM
         if (mPageDefinition.recordDetails != null) {
             buffer.append(getRecordDetailsXML());
         }
@@ -1452,12 +1531,13 @@ public class EDMType {
             buffer.append(getSourceRecordXML());
         }
         
+        // Classic EDM and Master Index DM
         if (mPageDefinition.reports != null) {
-            buffer.append(getReportsXML());
+            buffer.append(getReportsXML(bMidm));
         }
         
         if (mPageDefinition.auditLog != null) {
-            buffer.append(getAuditLogXML());
+            buffer.append(getAuditLogXML(bMidm));
         }
 
         buffer.append(Utils.TAB2 + Utils.endTag(mTagPageDefinition));
@@ -1482,19 +1562,30 @@ public class EDMType {
 
     }
     
-    public String getGuiDefinitionXML() {
+    /* getGuiDefinitionXML - called by com.sun.mdm.index.project.ui.applicationeditor.writers.EDMWriter
+     * 
+     * @param boolean bMidm - Convert edm to midm
+     * @return String - gui-definition portion of edm.xml or midm.xml
+     * 
+     */
+    public String getGuiDefinitionXML(boolean bMidm) {
         StringBuffer buffer = new StringBuffer();
         
 	buffer.append(Utils.TAB + Utils.startTag(mTagGuiDefinition));
-        if (mSystemDisplayNameOverrides != null) {
+        if (!bMidm && mSystemDisplayNameOverrides != null) {
             buffer.append(getSystemDisplayNameOverridesXML());
         }
-        buffer.append(getPageDefinitionXML());
+        buffer.append(getPageDefinitionXML(bMidm));
         buffer.append(Utils.TAB + Utils.endTag(mTagGuiDefinition));
 
         return buffer.toString();
     }
     
+    /* getImplDetailsXML - called by com.sun.mdm.index.project.ui.applicationeditor.writers.EDMWriter
+     * 
+     * @return String - impl-details portion of edm.xml or midm.xml
+     * 
+     */
     public String getImplDetailsXML() {
         StringBuffer buffer = new StringBuffer();
         
@@ -2269,6 +2360,7 @@ public class EDMType {
         CommonBlock duplicateRecords = null;
         CommonBlock assumedMatches = null;
         SourceRecord sourceRecord = null;
+        MidmConverter midmConverter = new MidmConverter();
         
         String getInitialScreenID() {
             return initialScreenID;
@@ -2343,6 +2435,64 @@ public class EDMType {
             }
             return bRet;
         }
+        
+        class MidmConverter {
+            // Convert edm's eoSearch to midm's record-details
+            void eoSearch() {
+                //mPageDefinition.eoSearch = null;
+            }
+            
+            void createEO() {
+                //mPageDefinition.createEO = null;
+            }
+            
+            void history() {
+                //mPageDefinition.history = null;
+            }
+            
+            void matchReview() {
+                //mPageDefinition.matchReview = null;
+            }
+            
+            // Convert edm's alReports to midm's subscreen-configurations sub-screens
+            void reports() {
+                if (reports.alReport != null) {
+                    String rootObject = reports.commonBlock.pageTab.rootObject;
+                    for (int i=0; i < reports.alReport.size(); i++) {
+                        Report report = (Report) reports.alReport.get(i);
+                        Subscreen subScreen = reports.subscreenConfigurations.addSubscreen();
+                        subScreen.enable = report.enable;
+                        subScreen.reportName = report.name;
+                        subScreen.commonBlock.screenID = String.valueOf(i);
+                        subScreen.commonBlock.displayOrder = String.valueOf(i + 1);
+                        subScreen.commonBlock.pageTab.tabName = report.title;
+
+                        SearchResultListPage searchResultListPage = subScreen.commonBlock.addSearchResultListPage();
+                        for (int j=0; report.alFieldRef != null && j<report.alFieldRef.size(); j++) {
+                            PageDefinition.FieldRef fieldRef = (PageDefinition.FieldRef) report.alFieldRef.get(j);
+                            String parentName;
+                            int idx = fieldRef.fieldName.indexOf(rootObject + ".");
+                            if (idx >= 0) {
+                                parentName = rootObject;
+                                // find the field group for root object
+                            } else {
+                                idx = fieldRef.fieldName.lastIndexOf('.');
+                                parentName = rootObject + "." + fieldRef.fieldName.substring(0, idx);
+                                fieldRef.fieldName = rootObject + "." + fieldRef.fieldName;
+                            }
+                            FieldGroup fieldGroup = searchResultListPage.getFieldGroup(parentName);
+                            fieldGroup.addFieldRef(fieldRef);
+                        }
+                    }
+                    reports.alReport = null;
+                }
+            }
+            
+            void auditLog() {
+                
+            }
+        }
+    
 
         class PageTab {
             String rootObject;
@@ -2383,7 +2533,23 @@ public class EDMType {
         
         class FieldGroup {
             String description;
-            ArrayList alFieldRef = new ArrayList();            
+            ArrayList alFieldRef = new ArrayList();
+            
+            void addFieldRef(PageDefinition.FieldRef fieldRef) {
+                alFieldRef.add(fieldRef);
+            }
+            
+            String getParentName() {
+                String name = "";
+                if (alFieldRef != null && alFieldRef.size() > 0) {
+                    PageDefinition.FieldRef fieldDef = (PageDefinition.FieldRef) alFieldRef.get(0);
+                    int i = fieldDef.fieldName.indexOf('.');
+                    if (i >=0) {
+                        name = fieldDef.fieldName.substring(0, i);
+                    }
+                }
+                return name;
+            }
         }
         
         class SimpleSearchPage {
@@ -2442,6 +2608,16 @@ public class EDMType {
                 return fieldGroup;
             }
 
+            FieldGroup getFieldGroup(String fieldGroupName) {
+                FieldGroup fieldGroup = null; // = new FieldGroup();
+                for (int i=0; alFieldGroup != null && i < alFieldGroup.size(); i++) {
+                    fieldGroup = (FieldGroup) alFieldGroup.get(i);
+                    if (fieldGroup.getParentName().equals(fieldGroupName)) {
+                        return fieldGroup;
+                    }
+                }
+                return addFieldGroup();
+            }
         }
         
         class CommonBlock {
