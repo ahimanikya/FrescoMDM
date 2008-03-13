@@ -84,6 +84,9 @@ public class FileManager {
 		sbrmatchFileDir = workingDir + File.separator + "sbr-match";
 		sbrmatchFileStageDir = workingDir + File.separator + "sbr-match" + File.separator + "stage";
 		loader = loaderName;
+	}
+	
+	public static void initDirs() {
 		File dir = new File(workingDir);
 		if (!dir.exists()) {
 			dir.mkdir();
@@ -133,8 +136,7 @@ public class FileManager {
 		dir = new File(masterImageDir);
 		if (!dir.exists()) {
 			dir.mkdir();
-		}
-		
+		}		
 	}
 	
 	
