@@ -41,7 +41,7 @@ import com.sun.mdm.index.loader.analysis.WeightAnalyzer;
 import com.sun.mdm.index.filter.ExclusionListLookup;
 import com.sun.mdm.index.filter.FilterConstants;
 import com.sun.mdm.index.loader.blocker.BlockDistributor;
-
+import com.sun.mdm.index.loader.common.Util;
 
 /**
  *  each concurrent MatcherTask is executed in a different thread 
@@ -94,16 +94,17 @@ import com.sun.mdm.index.loader.blocker.BlockDistributor;
 			  break;
 		  }	
 		  int size = blockPosition.getBlock().getSize();
-		  /*
+		  
 		  if (blockPosition.recordPosition == 0 && size > 20){
 			 Block block = blockPosition.getBlock();
-		    logger.info("block size:" + size + ", blockID:" + block.getBlockId());
+	//	    logger.info("block size:" + size + ", blockID:" + block.getBlockId());
 		  }
-		  */
+		  
 		  match(blockPosition);		  
 		}
 	  } catch (Exception ex){
-		  logger.info(ex + ex.getMessage());
+		  logger.severe(ex + ex.getMessage());
+		  logger.severe(Util.getStackTrace(ex));
 		  ex.printStackTrace();
 	  } finally {
 		
