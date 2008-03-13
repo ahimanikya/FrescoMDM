@@ -49,6 +49,8 @@ public class Bucket {
 	private Map<String,Block> blockMap; 
 	private File file;
 	private boolean isSBR_;
+	private int numBlocks;
+	
 	
 	public Bucket(DataObjectWriter writer, File f) {
 		this.writer = writer;
@@ -63,6 +65,10 @@ public class Bucket {
 	
 	public File getFile() {
 		return file;
+	}
+	
+	public int getNumBlocks() {
+		return numBlocks;
 	}
 	
 	
@@ -85,6 +91,7 @@ public class Bucket {
 				block = new Block(blockid);
 				block.add(dataObject);
 				blockMap.put(blockid, block);
+				numBlocks++;
 			} else {
 				block.add(dataObject);
 			}
@@ -100,8 +107,13 @@ public class Bucket {
 		writer.writeDataObject(dataObject);
 	}
 	
-	public void close() throws IOException {
-		writer.close();
+	public void close() throws Exception {
+		if (writer != null) {
+		  writer.close();
+		}
+		if (reader != null) {
+		   reader.close();
+		}
 	}
 	
 	private void removeDups(Map<String,Block> blockMap) {
