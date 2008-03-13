@@ -557,7 +557,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
         // Write xml to repository
         try {
-            wiz.putProperty(Properties.PROP_XML_GUI_CONFIG_FILE, strXml);
+            wiz.putProperty(Properties.PROP_XML_EDM_CONFIG_FILE, strXml);
         } catch (Exception e) {
             e.printStackTrace();
 //            mLogger.debug("Write to PROP_XML_GUI_CONFIG_FILE failed!");
@@ -655,8 +655,8 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
                 // New MI EDM
                 if (mMasterIndexEDM.equals("Yes")) {
-                    ArrayList alEdmAllNodes = getAlAllNodesForEDM(mPrimaryNode);
-                    mConfigSettings.setEdmAllNodes(alEdmAllNodes);
+                    //ArrayList alEdmAllNodes = getAlAllNodesForEDM(mPrimaryNode);
+                    //mConfigSettings.setEdmAllNodes(alEdmAllNodes);
                     ArrayList alMidmAllNodes = getAlAllNodesForMidm(mPrimaryNode);
                     mConfigSettings.setMidmAllNodes(alMidmAllNodes);
                     ArrayList alSubObjects = getSubObjects();

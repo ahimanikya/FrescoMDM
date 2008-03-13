@@ -49,7 +49,7 @@ public abstract class Properties {
     /** Object definition file  */
     public static final String PROP_XML_OBJECT_DEF_FILE = "Object";
     /** Enterprise Data Manager  */
-    public static final String PROP_XML_GUI_CONFIG_FILE = "EDM";
+    public static final String PROP_XML_EDM_CONFIG_FILE = "EDM";
     /** Enterprise Data Manager  */
     public static final String PROP_XML_MIDM_CONFIG_FILE = "MIDM";
     /** MEFA file */

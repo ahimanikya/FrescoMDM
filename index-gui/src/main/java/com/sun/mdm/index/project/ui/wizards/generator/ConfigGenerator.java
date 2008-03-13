@@ -99,11 +99,11 @@ public class ConfigGenerator {
         try {
             if (settings.getMasterIndexEDM() == true) {
                 EDMWriter edmW = new EDMWriter(genpath, settings);
-                edm = edmW.generate();
-                configs.put(CONFIG_EDM, edm);
-                if (wiz != null) {
-                    wiz.putProperty(Properties.PROP_XML_GUI_CONFIG_FILE, edm);
-                }
+                //edm = edmW.generate();
+                //configs.put(CONFIG_EDM, edm);
+                //if (wiz != null) {
+                //    wiz.putProperty(Properties.PROP_XML_GUI_CONFIG_FILE, edm);
+                //}
                 midm = edmW.generateMidm();
                 configs.put(CONFIG_MIDM, midm);
                 if (wiz != null) {

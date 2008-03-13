@@ -56,12 +56,12 @@ public class EDMWriter {
         // create EDM.xml
         String tagHeaderEDM = "<edm xmlns:xsi=" +
             "\"http://www.w3.org/2001/XMLSchema-instance" +
-            "\" xsi:noNamespaceSchemaLocation=\"schema/midm.xsd\">\n";
+            "\" xsi:noNamespaceSchemaLocation=\"schema/EDM.xsd\">\n";
         String tagTailEDM = "</edm>";
 
         String strXml = xmlHEADER + tagHeaderEDM +
             getAllNodesForEDM(mPrimaryNode) + getRelationships() + edmType.getImplDetailsXML() +
-            edmType.getGuiDefinitionXML() + tagTailEDM;
+            edmType.getGuiDefinitionXML(false) + tagTailEDM;
         
         return strXml;
     }
@@ -78,7 +78,7 @@ public class EDMWriter {
 
         String strXml = xmlHEADER + tagHeaderEDM +
             getAllNodesForMIDM(mPrimaryNode) + getRelationships() + edmType.getImplDetailsXML() +
-            edmType.getGuiDefinitionXML() + tagTailEDM;
+            edmType.getGuiDefinitionXML(true) + tagTailEDM;
         
         return strXml;
     }
