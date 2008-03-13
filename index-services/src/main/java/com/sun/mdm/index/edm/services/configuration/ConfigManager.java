@@ -69,7 +69,7 @@ import net.java.hulp.i18n.Logger;
 public class ConfigManager implements java.io.Serializable {
     private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.service.configuration.ConfigManager");
     private static transient final Localizer mLocalizer = Localizer.get();
-    public static final String CONFIG_FILENAME = "edm.xml";
+    public static final String CONFIG_FILE = "midm.xml";
     public static final String FIELD_DELIM = ".";
     
     public static final String DEFAULT_LID_NAME = "Local ID";
@@ -78,6 +78,24 @@ public class ConfigManager implements java.io.Serializable {
     public static final String LID_HEADER = "local-id-header";
 
     private static final String PATH_HEAD = "Enterprise.SystemObject.";
+
+    // basic node configuration constants 
+        
+    private static final String NODE_NAME = "name";
+    private static final String FIELD_NODE = "field";
+    private static final String DISPLAY_NAME = "display-name";
+    private static final String INPUT_MASK = "input-mask";
+    private static final String VALUE_MASK = "value-mask";
+    private static final String KEY_TYPE = "key-type";
+    private static final String IS_SENSITIVE = "is-sensitive";
+    private static final String NODE_DISPLAY_ORDER = "display-order";
+    private static final String MAX_LENGTH = "max-length";
+    private static final String GUI_TYPE = "gui-type";
+    private static final String VALUE_LIST = "value-list";
+    private static final String VALUE_TYPE = "value-type";
+    private static final String MERGE_MUST_DELETE = "merge-must-delete";
+
+    // display constants
     
     private static final String DUPLICATE_RECORDS = "duplicate-records";
     private static final String RECORD_DETAILS = "record-details";
@@ -87,7 +105,6 @@ public class ConfigManager implements java.io.Serializable {
     public static final String REPORT_NAME = "report-name";
     private static final String SOURCE_RECORD = "source-record";
     private static final String AUDIT_LOG = "audit-log";
-    
     private static final String DASHBOARD = "dashboard";
     
     private static final String TAB_NAME = "tab-name";
@@ -161,7 +178,7 @@ public class ConfigManager implements java.io.Serializable {
     private ObjectSensitivePlugIn security = null;
     
     
-    // introduced new element which will be used while reading EDM.xml file.
+    // introduced new element which will be used while reading the CONFIG_FILE.
     private Element pageDefElement = null;
     
     
@@ -668,17 +685,17 @@ public class ConfigManager implements java.io.Serializable {
     
     private ObjectNodeConfig buildObjectNodeConfig(Element element) throws IOException, Exception {
 
-        String objName = element.getTagName().substring(5);
-
-        String attr = element.getAttribute("display-order");
-        String attr1 = element.getAttribute("merge-must-delete");
+        String objName = NodeUtil.getChildNodeText(element, NODE_NAME);
+        
+        String attr = element.getAttribute(NODE_DISPLAY_ORDER);
+        String attr1 = element.getAttribute(MERGE_MUST_DELETE);
         int order = 0;
         boolean mustDelete=false;
         if (attr != null && !attr.equals("")) {
-          order = Integer.parseInt(attr);
+            order = Integer.parseInt(attr);
         }
         if (attr1 != null && attr1.equalsIgnoreCase("true") ) {
-                mustDelete = true ;
+            mustDelete = true ;
         }
 
         // skip "node-" and get to the node name
@@ -691,95 +708,92 @@ public class ConfigManager implements java.io.Serializable {
         while ( itr.hasNext() ) {
             Element e;
             Element field = (Element)itr.next();
+            String fieldName = null;
+            String nodeTag = field.getTagName();
+            // process the fields
+            if (nodeTag.equalsIgnoreCase(FIELD_NODE)) {
+                try {
 
-            String fieldName = field.getTagName().substring(6);
+                    fieldName = NodeUtil.getChildNodeText(field, NODE_NAME); 
+                    String displayName = NodeUtil.getChildNodeText(field, DISPLAY_NAME);
+                    String inputMask = NodeUtil.getChildNodeText(field, INPUT_MASK);
+                    String valueMask = NodeUtil.getChildNodeText(field, VALUE_MASK);
+                    boolean keyType = false;
+                    String keyTypeString = NodeUtil.getChildNodeText(field, KEY_TYPE);
+                    if ((keyTypeString != null) && keyTypeString.equals("true")) {
+                        keyType = true;
+                    }
 
-          try {
+                    boolean isSensitive = false;
+                    String isSensitiveString = NodeUtil.getChildNodeText(field, IS_SENSITIVE);
+                    if ((isSensitiveString != null) && isSensitiveString.equals("true")) {
+                        isSensitive = true;
+                    }
 
-              // skip "field-" and get to the field name
-              //String displayName = field.getChild("display-name").getText();
-              String displayName = NodeUtil.getChildNodeText(field,"display-name");
+                    // optional field
+                    String displayOrder = "0";
+                    String displayOrderString = NodeUtil.getChildNodeText(field, NODE_DISPLAY_ORDER);
+                    if (displayOrderString != null) {
+                        displayOrder = displayOrderString;
+                    }
+                    int idisplayOrder = Integer.parseInt(displayOrder);
 
-              String inputMask = NodeUtil.getChildNodeText(field,"input-mask");
-              
-              String valueMask = NodeUtil.getChildNodeText(field,"value-mask");
+                    String maxLength = "32";
+                    String maxLengthString = NodeUtil.getChildNodeText(field, MAX_LENGTH);
+                    // optional field
+                    if (maxLengthString != null) {
+                        maxLength = maxLengthString;
+                    }
 
-                            
-            boolean keyType = false;
-            String keyTypeString = NodeUtil.getChildNodeText(field,"key-type");
-            if ((keyTypeString != null) && keyTypeString.equals("true")) {
-                keyType = true;
-            }
+                    int imaxLength = Integer.parseInt(maxLength);
 
-            boolean isSensitive = false;
-            String isSensitiveString = NodeUtil.getChildNodeText(field,"is-sensitive");
-            if ((isSensitiveString != null) && isSensitiveString.equals("true")) {
-                isSensitive = true;
-            }
+                    if (inputMask != null) {
+                        imaxLength = inputMask.length();
+                    }
 
-            // optional field
-            String displayOrder = "0";
-            String displayOrderString = NodeUtil.getChildNodeText(field,"display-order");
-            if (displayOrderString != null) {
-                displayOrder = displayOrderString;
-            }
-            int idisplayOrder = Integer.parseInt(displayOrder);
-            
-            String maxLength = "32";
-            String maxLengthString = NodeUtil.getChildNodeText(field,"max-length");
-            // optional field
-            if (maxLengthString != null) {
-                maxLength = maxLengthString;
-            }
+                    String guiType = NodeUtil.getChildNodeText(field, GUI_TYPE);
 
-            int imaxLength = Integer.parseInt(maxLength);
-            
-            if (inputMask != null) {
-                imaxLength = inputMask.length();
-            }
+                    String valueList = null;            
+                    String valueListString = NodeUtil.getChildNodeText(field, VALUE_LIST);
 
-            String guiType = NodeUtil.getChildNodeText(field,"gui-type");
-            
-            String valueList = null;            
-            String valueListString = NodeUtil.getChildNodeText(field,"value-list");
+                    if (valueListString != null) {
+                        valueList = valueListString;
+                    }
 
-            if (valueListString != null) {
-                valueList = valueListString;
-            }
+                    // optional field
+                    String valueTypeStr = "String";
+                    String valueTypeString = NodeUtil.getChildNodeText(field, VALUE_TYPE);
+                    if (valueTypeString != null) {
+                        valueTypeStr = valueTypeString;
 
-            // optional field
-            String valueTypeStr = "String";
-            String valueTypeString = NodeUtil.getChildNodeText(field,"value-type");
-            if (valueTypeString != null) {
-                valueTypeStr = valueTypeString;
-                
-                // if value type is date set the date input mask automatically, based on date format
-                if (valueTypeStr.equals("date")) {
-                    inputMask = getDateInputMask();
+                        // if value type is date set the date input mask automatically, based on date format
+                        if (valueTypeStr.equals("date")) {
+                            inputMask = getDateInputMask();
+                        }
+                    }
+
+                    int valueType = getMetaType(valueTypeStr);
+                    FieldConfig fieldConfig = new FieldConfig(null, objName, fieldName,
+                            displayName, guiType, imaxLength, valueType);
+                    fieldConfig.setDisplayOrder(idisplayOrder);
+                    fieldConfig.setKeyType(keyType);
+                    fieldConfig.setSensitive(isSensitive);
+                    fieldConfig.setValueList(valueList);
+                    fieldConfig.setInputMask(inputMask);
+
+                    if (valueMask != null) {
+                      if (inputMask == null || valueMask.length() != inputMask.length()) {
+                        throw new IOException(mLocalizer.t("SRC506: Invalid value mask [{0}] for input mask [{1}]", valueMask, inputMask));
+                      }
+                      fieldConfig.setValueMask(valueMask);
+                    }
+
+                    objNodeConfig.addFieldConfig(fieldConfig);
+
+                } catch (Exception ex) {
+                    throw new Exception(mLocalizer.t("SRC513: Error occurred while building object node config for field name = {0}", fieldName));
                 }
             }
-
-            int valueType = getMetaType(valueTypeStr);
-            FieldConfig fieldConfig = new FieldConfig(null, objName, fieldName,
-                    displayName, guiType, imaxLength, valueType);
-            fieldConfig.setDisplayOrder(idisplayOrder);
-            fieldConfig.setKeyType(keyType);
-            fieldConfig.setSensitive(isSensitive);
-            fieldConfig.setValueList(valueList);
-            fieldConfig.setInputMask(inputMask);
-
-            if (valueMask != null) {
-              if (inputMask == null || valueMask.length() != inputMask.length()) {
-                throw new IOException(mLocalizer.t("SRC506: Invalid value mask [{0}] for input mask [{1}]", valueMask, inputMask));
-              }
-              fieldConfig.setValueMask(valueMask);
-            }
-
-            objNodeConfig.addFieldConfig(fieldConfig);
-            
-          } catch (Exception ex) {
-            throw new Exception(mLocalizer.t("SRC513: Error occurred while building object node config for field name = {0}", fieldName));
-          }
         }
 
         return objNodeConfig;
@@ -1159,7 +1173,7 @@ public class ConfigManager implements java.io.Serializable {
         while ( itr2.hasNext() ) {
             Element o = (Element)itr2.next();
         
-            displayName = NodeUtil.getChildNodeText(o, "display-name");
+            displayName = NodeUtil.getChildNodeText(o, DISPLAY_NAME);
             queryBuilderName = NodeUtil.getChildNodeText(o, "query-builder");
             String weighted = NodeUtil.getChildNodeText(o, "weighted");
             candidateThreshStr = NodeUtil.getChildNodeText(o, "candidate-threshold");
@@ -1445,7 +1459,7 @@ public class ConfigManager implements java.io.Serializable {
     }
     
     /**
-     * Reads the CONFIG_FILENAME file.
+     * Reads the CONFIG_FILE.
      *
      * @throws Exception if an error is encountered.
      */
@@ -1453,10 +1467,10 @@ public class ConfigManager implements java.io.Serializable {
         InputStream in;
         BufferedReader rdr;
         try {
-            in = getClass().getClassLoader().getResourceAsStream(ConfigManager.CONFIG_FILENAME);
+            in = getClass().getClassLoader().getResourceAsStream(ConfigManager.CONFIG_FILE);
         } catch (Exception e) {
             throw new Exception(mLocalizer.t("SRC507: Could not open file {0}: {1}", 
-                                ConfigManager.CONFIG_FILENAME, e.getMessage()));
+                                ConfigManager.CONFIG_FILE, e.getMessage()));
         }
         read(in);
         in.close();
@@ -1464,9 +1478,9 @@ public class ConfigManager implements java.io.Serializable {
     }
 
     /**
-     * Read and parse the CONFIG_FILENAME file.
+     * Read and parse the CONFIG_FILE.
      *
-     * @param input InputStream for CONFIG_FILENAME file.
+     * @param input InputStream for the CONFIG_FILE.
      * @throws Exception if an error is encountered.
      */
     private void read(InputStream input) throws Exception {        
@@ -1479,14 +1493,14 @@ public class ConfigManager implements java.io.Serializable {
         while ( itr.hasNext() ) {
             Element element = (Element)itr.next();
 
-            if (element.getTagName().startsWith("node-")) {
+            if (element.getTagName().startsWith("node")) {
               try {
                 ObjectNodeConfig objNodeConfig = buildObjectNodeConfig(element);
 
                 // build a node
                 objNodeConfigMap.put(objNodeConfig.getName(), objNodeConfig);
               } catch (Exception ex) {
-                  throw new Exception(mLocalizer.t("SRC508: Error occurred in relationship definition: {0}", 
+                  throw new Exception(mLocalizer.t("SRC508: Error occurred in node definition: {0}", 
                                                     ex.getMessage()));
               }
             } else if (element.getTagName().equalsIgnoreCase("relationships")) {
@@ -1636,7 +1650,7 @@ public class ConfigManager implements java.io.Serializable {
         }
     }
     /**
-     * after reading EDM.xml file in read(InputStream input) <page-definition>
+     * after reading the CONFIG_FILE in read(InputStream input) <page-definition>
      * element assigned to pageDefElement. This method simply returns 
      * pageDefElement.
      * 
@@ -1701,7 +1715,7 @@ public class ConfigManager implements java.io.Serializable {
         return tagName;
     }
 /* Returns All the screen Objects
- * it read all the screen names from EDM.xml and retrieves all the screen ids 
+ * it read all the screen names from the CONFIG_FILE and retrieves all the screen ids 
  * then it returns the Screenobject.finally List of screen objects will get returned
  * @return  ArrayList of ScreenObjects
  */ 
