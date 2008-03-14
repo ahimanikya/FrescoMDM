@@ -1,3 +1,9 @@
+var fieldNameValues="";
+var fieldNames="";
+var minorObjType = "";
+var minorObjTypeCount = 0;
+var minorArray = new Array();
+var hiddenUnLockFields="";
 
 function showdatadiv() {
     document.getElementById("advSearch").style.visibility = "hidden";
@@ -1429,8 +1435,6 @@ function showResolveDivs(divId,thisEvent,potDupId)  {
 document.getElementById('reportYUISearch:potentialDuplicateId').value = potDupId;
 
 }
-var fieldNameValues="";
-var fieldNames="";
 
 function accumilateFieldsOnBlur(field,fullFieldName) {
     //alert("fieldNames ==>" + fieldNames+":");
@@ -1470,7 +1474,6 @@ function getLidMask(systemCode,systemCodes,lidMasks) {
       }
     }    
 }
-var hiddenUnLockFields="";
 function unlockFields(fieldName) {
         //alert(fieldName);
         //alert(document.getElementById('editableSBR:'+fieldName));
@@ -1517,3 +1520,180 @@ function accumilatePersonSelectFieldsOnBlur(field,fullFieldName) {
     document.getElementById("basicAddformData:enteredFieldValues").value = fieldNameValues;
  
 }
+
+
+
+function accumilateMinorObjectFieldsOnBlur(objectType,field,fullFieldName) {
+   minorObjType =   objectType;
+    //alert("fieldNames ==>" + field.value+":" + fullFieldName);
+    if(fieldNames != fullFieldName+':') {
+       fieldNames+=fullFieldName+':';
+    }
+    //alert(fullFieldName  + "field.value====> " + field.value);
+    fieldNameValues += fullFieldName + "##"+field.value+">>";
+    //document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = fieldNameValues;
+    
+        fieldNameValues = fieldNameValues  + minorObjType;
+        //alert(" <====== > fieldNameValues "+fieldNameValues);
+
+        minorArray.push(fieldNameValues);
+        //RESET THE FIELD VALUES HERE
+        fieldNameValues = "";
+        
+        //alert(" <====== > minorArray "+minorArray);
+        document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = minorArray;
+
+}
+
+function accumilateMinorObjectSelectFieldsOnBlur(objectType,field,fullFieldName) {
+    var selectedValue = field.options[field.selectedIndex].value;
+    minorObjType =   objectType;
+    //alert("fieldNames ==>" + selectedValue+":" + fullFieldName);
+    if(fieldNames != fullFieldName+':') {
+       fieldNames+=fullFieldName+':';
+    }
+    //alert(fullFieldName  + "field.value====> " + field.value);
+    fieldNameValues += fullFieldName + "##"+selectedValue+">>";
+    //document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = fieldNameValues;
+
+        fieldNameValues = fieldNameValues  + minorObjType;
+        //alert(" <====== > fieldNameValues "+fieldNameValues);
+
+        minorArray.push(fieldNameValues);
+        //RESET THE FIELD VALUES HERE
+        fieldNameValues = "";
+        
+        //alert(" <====== > minorArray "+minorArray);
+        document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = minorArray;
+
+}
+
+
+
+function populateMinorObjectsExtraDivs(sourceDivId,destnDivId,rootDiv,closeDivId,minorArrayLocal)  {
+        //////alert(destnDivId+" destn  <====== > source "+sourceDivId);
+        //////alert(" source "+document.getElementById(sourceDivId).innerHTML);
+
+        document.getElementById(destnDivId).innerHTML +=  document.getElementById(sourceDivId).innerHTML;
+        //////alert(document.getElementById(destnDivId).innerHTML);
+        document.getElementById(destnDivId).style.visibility = "visible";
+        document.getElementById(destnDivId).style.display = "block";
+        //close the div after populating
+        document.getElementById(rootDiv).style.visibility = "hidden";
+        document.getElementById(rootDiv).style.display = "none";
+
+        document.getElementById(closeDivId).style.visibility = "visible";
+        document.getElementById(closeDivId).style.display = "block";
+
+        //fieldNameValues +=  minorObjType + minorArrayLocal +"$$$";
+        
+        //populate the minor object values here.
+        minorArray.push(minorArrayLocal);
+        
+        
+//        alert(" ------ minorArray  ------"+minorArray);
+//        alert(" ------ minorArray  ------"+minorArray.length);
+        var localArray = minorArray[minorArray.length-1];
+//        for(var i=0;i<minorArray.length;i++) {
+//            
+//            for(var j=0;j<localArray.length;j++) {
+//               if(j > 0 ) {
+//                   alert( j + "INDEX" + localArray[j] +" ------ minorArray final in loop ------"+localArray[j-1]);      
+//               }
+//               if(j < localArray.length && localArray[j] == localArray[j+1]) {
+//                   alert(localArray[j] +" ------ ===== ------"+localArray[j+1]);      
+//               }
+//            }    
+//        }
+        document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = localArray;
+        document.getElementById("basicAddformData:minorObjectTotal").value = minorArray.length;
+        
+        
+}
+
+          
+function accumilateNewPersonFieldsOnBlur(field,fullFieldName,mask,valueType) {
+    var maskChars = new Array();
+    var str = mask;
+    //alert(fullFieldName +"=====>" +mask + "======" + valueType);
+    str  = str.replace(/D/g,"");
+    
+    maskChars = str.split('');
+    
+    var valueEntered =  "";
+    var valueTypeLocal =  "";
+    valueEntered =  field.value;
+    valueTypeLocal =  valueType;
+    //alert(valueEntered);
+    
+    //valueEntered  = valueEntered.replace(/\)/g,"");
+    //valueEntered  = valueEntered.replace(/\(/g,"");
+    
+    //alert(valueType);
+    if(valueTypeLocal == '6' || valueTypeLocal == '8' ) {
+      valueEntered =  field.value;
+      //alert(valueTypeLocal + "====");
+    } else {
+      for(var i=0;i<maskChars.length;i++) {
+        valueEntered  = valueEntered.replace(maskChars[i],'');
+      }    
+    }
+
+    
+    //alert(fullFieldName + "valueEntered ==>" + valueEntered+":");
+    if(fieldNames != fullFieldName+':') {
+       fieldNames+=fullFieldName+':';
+    }
+    //alert(fullFieldName  + "field.value====> " + field.value);
+    fieldNameValues += fullFieldName + "##"+valueEntered+">>";
+    document.getElementById("basicAddformData:newSOEnteredFieldValues").value = fieldNameValues;
+    //alert(document.getElementById("advancedformData:enteredFieldValues").value);
+ 
+}
+
+function accumilateNewPersonSelectFieldsOnBlur(field,fullFieldName) {
+    var selectedValue = field.options[field.selectedIndex].value;
+    
+    if(fieldNames != fullFieldName+':') {
+       fieldNames+=fullFieldName+':';
+    }
+    //alert(fullFieldName  + "field.value====> " + field.value);
+    fieldNameValues += fullFieldName + "##"+selectedValue+">>";
+    document.getElementById("basicAddformData:newSOEnteredFieldValues").value = fieldNameValues;
+ 
+}
+
+function accumilateEOMinorFieldsOnBlur(field,fullFieldName,minorId,minorobjectType) {
+    //alert("fieldNames ==>" + fieldNames+":");
+    if(fieldNames != fullFieldName+':') {
+       fieldNames+=fullFieldName+':';
+    }
+    //alert(fullFieldName  + "field.value====> " + field.value);
+    fieldNameValues += fullFieldName + "##"+field.value+">>";
+    document.getElementById("basicAddformData:minorFieldsEO").value = fieldNameValues + "++" + minorobjectType+"," +minorId + "";
+    //alert(document.getElementById("advancedformData:enteredFieldValues").value);
+}
+
+function accumilateEOMinorFieldsSelectOnBlur(field,fullFieldName,minorId,minorobjectType) {
+    var selectedValue = field.options[field.selectedIndex].value;
+    
+    if(fieldNames != fullFieldName+':') {
+       fieldNames+=fullFieldName+':';
+    }
+    //alert(fullFieldName  + "field.value====> " + field.value);
+    fieldNameValues += fullFieldName + "##"+selectedValue+">>";
+    document.getElementById("basicAddformData:minorFieldsEO").value = fieldNameValues + "++" + minorobjectType +"," +minorId+ "";
+
+}
+
+
+function accumilateEOMinorObjectsRemove(minorId,minorobjectType) {
+    //alert(fullFieldName  + "field.value====> " + field.value);
+    fieldNameValues += "MINOR_OBJECT_ID :: " + minorId + "##"+ "MINOR_OBJECT_TYPE ::" + minorobjectType+">>";
+    var remArray = new Array();
+    remArray.push(fieldNameValues);
+    //alert("remArray ===" + remArray);
+    document.getElementById("basicAddformData:removeEOMinorObjectsValues").value = remArray;
+
+}
+
