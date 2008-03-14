@@ -23,6 +23,7 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
         this.chkSearchResult.setSelected(searchResult);
         this.chkGenerateReport.setSelected(generateReport);
         this.jComboBoxSearchRequired.setSelectedItem(searchRequired);
+        this.jComboBoxSearchRequired.setEnabled(searchScreen);
         
         chkSearchScreen.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent e) {
