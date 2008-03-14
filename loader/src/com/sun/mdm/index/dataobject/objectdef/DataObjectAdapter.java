@@ -65,6 +65,7 @@ public class DataObjectAdapter {
             ObjectDefinition childObjDef = iter.next();
             objDefMap.put(childObjDef.getName(),childObjDef);
         }
+        dateFormat_ = new SimpleDateFormat(objDef.getDateFormat());
                
     }
     
