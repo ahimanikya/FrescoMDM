@@ -1331,6 +1331,48 @@ a.button:active span {
     vertical-align:top;         
 }
 
+.alertSource {
+    padding-top:0px;
+    padding-left:0px;
+    padding-right:0px;
+    padding-bottom:0px;
+    VISIBILITY: visible; 
+    WIDTH: 310px; 
+    POSITION: absolute;  
+    OVERFLOW: auto; 
+    HEIGHT: 180px; 
+    text-align:center;
+    BACKGROUND-COLOR: #FAFBE4; 
+    BORDER-RIGHT:  #000099 thin solid; 
+    BORDER-TOP: #000099 thin solid; 
+    BORDER-LEFT: #000099 thin solid; 
+    BORDER-BOTTOM:#000099 thin solid;
+}
+.alertSource table th
+{
+    font-size:12px;
+    padding-top:0px;
+    padding-left:0px;
+    padding-right:0px;
+    padding-bottom:0px;
+    color:#ffffff;
+    width:100%;
+    background: url(../images/alert_head.JPG) repeat-x;
+}
+
+.alertSource table
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    width:100%;
+    padding-top:0px;
+    padding-left:0px;
+    padding-right:0px;
+    padding-bottom:0px;
+    text-align:center;
+    vertical-align:top;         
+}
+
 
 .tblr { width: 7px; padding:0px; background-image:url(../images/tblr.gif); background-repeat: no-repeat; background-color:#DEE7F7 }
 .tblbl { height: 6px;  background-image:url(../images/tblbl.gif); background-repeat: no-repeat; background-color:#DEE7F7 }
