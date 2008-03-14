@@ -115,6 +115,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
            
             super.setUpdateableFeildsMap(newFieldValuesMap);
 
+            //System.out.println("-------------1-------------------" + super.getUpdateableFeildsMap());
 
             //set the search type as per the user choice
             super.setSearchType(super.getSelectedSearchType());
@@ -428,9 +429,9 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
         }
 
         //set EUID VALUE IF lid/system code not supplied
-          if (super.getUpdateableFeildsMap().get("Person.EUID") != null && super.getUpdateableFeildsMap().get("Person.EUID").toString().trim().length() > 0) {
+          if (super.getUpdateableFeildsMap().get("EUID") != null && super.getUpdateableFeildsMap().get("EUID").toString().trim().length() > 0) {
 //            // Get array of strings
-                String[] euidArray = getStringEUIDs((String) super.getUpdateableFeildsMap().get("Person.EUID"));
+                String[] euidArray = getStringEUIDs((String) super.getUpdateableFeildsMap().get("EUID"));
                 
                 if(euidArray!=null & euidArray.length >0) {
                     potentialDuplicateSearchObject.setEUIDs(euidArray);

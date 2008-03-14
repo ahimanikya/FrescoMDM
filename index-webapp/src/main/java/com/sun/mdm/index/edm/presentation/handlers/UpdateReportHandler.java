@@ -52,6 +52,8 @@ import com.sun.mdm.index.report.MultirowReportObject1;
 import com.sun.mdm.index.report.UpdateReportConfig;
 import com.sun.mdm.index.report.UpdateReportRow;
 import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
+import com.sun.mdm.index.edm.services.configuration.FieldConfig;
+import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.objects.EnterpriseObject;
@@ -61,6 +63,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Hashtable;
 import java.util.List;
@@ -68,6 +71,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /** Creates a new instance of DeactivatedReportsHandler*/ 
 public class UpdateReportHandler    { 
@@ -113,6 +117,19 @@ public class UpdateReportHandler    {
     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     
     /**
+     *Http session variable
+     */
+    HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    
+    
+    /**
+     *get Screen Object from the session
+     */
+    ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+    
+    private ArrayList resultsConfigArrayList  = new ArrayList();
+    
+    /**
      * @return the value object for display
      * @throws com.sun.mdm.index.objects.validation.exception.ValidationException
      * @throws com.sun.mdm.index.objects.epath.EPathException
@@ -143,6 +160,8 @@ public class UpdateReportHandler    {
        
         
         ArrayList dataRowList = new ArrayList();
+        ArrayList resultArrayList = new ArrayList();
+        
         String prevTimestamp = null;
         int index = 0;
         ArrayList summaryList = new ArrayList();
@@ -173,8 +192,11 @@ public class UpdateReportHandler    {
             }*/
             prevTimestamp = currentTime;
             index++;
+            resultArrayList.add(getOutPutValuesMap(urConfig, reportRow));
+        
         }
         populateVO();
+        request.setAttribute("updateReportList", resultArrayList);
         return dataRowList2Array(dataRowList);
      }
    
@@ -217,31 +239,6 @@ public class UpdateReportHandler    {
                     }
                     eo = masterControllerService.getEnterpriseObject(val); 
                     
-               
-                    obj = EPathAPI.getFieldValue("Person.FirstName", eo.getSBR().getObject());
-                    //System.out.println("First Name:: " + obj.toString());
-                    //Set the First Name Values in VO
-                    updateRecordsVO[voIndex].getFirstName().add(obj);
-
-                    obj = EPathAPI.getFieldValue("Person.LastName", eo.getSBR().getObject());
-                    //System.out.println("Last Name:: " + obj.toString());
-                    //Set the Last Name Values in VO
-                    updateRecordsVO[voIndex].getLastName().add(obj);
-
-                    obj = EPathAPI.getFieldValue("Person.SSN", eo.getSBR().getObject());
-                    
-                    
-                    ////System.out.println("SSN :: " + obj.toString());
-                    //Set the Last Name Values in VO       
-                    updateRecordsVO[voIndex].getSsn().add(obj);
-
-                    obj = EPathAPI.getFieldValue("Person.DOB", eo.getSBR().getObject());
-                    //System.out.println("DOB :: " + obj.toString());
-                    SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
-                    String dob = simpleDateFormatFields.format(obj);
-                    updateRecordsVO[voIndex].getDob().add(dob);
-                    
-                    obj = EPathAPI.getFieldValue("Person.Address.AddressLine1", eo.getSBR().getObject());
                     updateRecordsVO[voIndex].getAddressLine1().add(obj);
                     
                 }                     
@@ -273,39 +270,32 @@ public class UpdateReportHandler    {
        ReportDataRow[] dataRows = new ReportDataRow[1];
        ArrayList rptFields = new ArrayList();
        List transactionFields = reportConfig.getTransactionFields();
+       ArrayList fcArrayList  = getResultsConfigArrayList();
+       SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+       ArrayList resultArrayList  = new ArrayList();
+        
        if (transactionFields != null) {
            Iterator iter = transactionFields.iterator();
            UpdateRecords updateRecords = new UpdateRecords();
            EnterpriseObject eo = null;
            Object obj = null;
            MasterControllerService masterControllerService = new MasterControllerService();
-
+            String epathValue =  new String();
+            HashMap newValuesMap = new HashMap();
+           
            while (iter.hasNext()) {
                String field = (String) iter.next();
                //System.out.println("Field :: " + field);
                String val = reportRow.getValue(field) == null ? " " : reportRow.getValue(field).toString();//null safe
-               if (field.equalsIgnoreCase("EUID")) {
+               if (field.equalsIgnoreCase("EUID1")) {
+                   newValuesMap.put("EUID",val);
                    updateRecords.getEuid().add(val);
                    eo = masterControllerService.getEnterpriseObject(val.toString());
-                   obj = EPathAPI.getFieldValue("Person.FirstName", eo.getSBR().getObject());
-                   //Set the First Name Values in VO
-                   updateRecords.getFirstName().add((String) obj);
 
-                   obj = EPathAPI.getFieldValue("Person.LastName", eo.getSBR().getObject());
-                   //Set the Last Name Values in VO
-                   updateRecords.getLastName().add((String) obj);
-
-                   obj = EPathAPI.getFieldValue("Person.SSN", eo.getSBR().getObject());
-                   //Set the Last Name Values in VO       
-                   updateRecords.getSsn().add((String) obj);
-
-                   obj = EPathAPI.getFieldValue("Person.DOB", eo.getSBR().getObject());
-                   SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
-                   String dob = simpleDateFormatFields.format(obj);
-                   updateRecords.getDob().add(dob);
-
-               } else if (field.equalsIgnoreCase(UpdateReport.TIMESTAMP)) {
-                   updateRecords.setUpdateTime(val);
+               }
+               else if (field.equalsIgnoreCase("EUID2")) {
+                   newValuesMap.put("EUID",val);
+                   updateRecords.getEuid().add(val);
                }
                //Populate Hash Table as backup
                 //updateRecordsResultsHash.put(field, val);
@@ -336,6 +326,68 @@ public class UpdateReportHandler    {
        return dataRows;
     }
 
+   private HashMap getOutPutValuesMap(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow) throws Exception {
+        HashMap newValuesMap = new HashMap();
+        List transactionFields = reportConfig.getTransactionFields();
+
+        ArrayList fcArrayList = getResultsConfigArrayList();
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+
+        //getSearchResultsArrayByReportType();
+        if (transactionFields != null) {
+            Iterator iter = transactionFields.iterator();
+            EnterpriseObject eo = null;
+            Object obj = null;
+            MasterControllerService masterControllerService = new MasterControllerService();
+            String epathValue = new String();
+            while (iter.hasNext()) {
+                String field = (String) iter.next();
+                String val = reportRow.getValue(field).toString();
+                if (field.equalsIgnoreCase("EUID")) {
+                    newValuesMap.put("EUID", val);
+                    eo = masterControllerService.getEnterpriseObject(val.toString());
+
+                    for (int i = 0; i < fcArrayList.size(); i++) {
+                        FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
+                        if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
+                            epathValue = fieldConfig.getFullFieldName();
+                        } else {
+                            epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
+                        }
+
+                        if (fieldConfig.isUpdateable()) {
+                            if (fieldConfig.getValueType() == 6) {
+                                newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                            } else {
+                                newValuesMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                            }
+                        }
+                    }
+                } else if (field.equalsIgnoreCase("EUID2")) {
+                    newValuesMap.put("EUID", val);
+                    eo = masterControllerService.getEnterpriseObject(val.toString());
+                    for (int i = 0; i < fcArrayList.size(); i++) {
+                        FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
+                        if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
+                            epathValue = fieldConfig.getFullFieldName();
+                        } else {
+                            epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
+                        }
+
+                        if (fieldConfig.isUpdateable()) {
+                            if (fieldConfig.getValueType() == 6) {
+                                newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                            } else {
+                                newValuesMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return newValuesMap;
+    }
+   
     public UpdateReportConfig getUpdateSearchObject() throws ValidationException, EPathException {
         String errorMessage = null;
         EDMValidation edmValidation = new EDMValidation();
@@ -371,11 +423,12 @@ public class UpdateReportHandler    {
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
-                    String searchStartDate = this.getCreateStartDate() + (this.getCreateStartTime() != null ? " " + this.getCreateStartTime() : "00:00:00");
+                    String searchStartDate = this.getCreateStartDate() + (this.getCreateStartTime() != null ? " " + this.getCreateStartTime() : " 00:00:00");
                     Date date = DateUtil.string2Date(searchStartDate);
                     if (date != null) {
                         urConfig.setStartDate(new Timestamp(date.getTime()));
                     }
+                    createStartTime = "";
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
@@ -409,6 +462,7 @@ public class UpdateReportHandler    {
                     if (date != null) {
                         urConfig.setEndDate(new Timestamp(date.getTime()));
                     }
+                    createEndTime = "";
                 } catch (ValidationException validationException) {
                     Logger.getLogger(UpdateReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
@@ -419,8 +473,8 @@ public class UpdateReportHandler    {
 
           if (((this.getCreateStartDate() != null) && (this.getCreateStartDate().trim().length() > 0))&&
            ((this.getCreateEndDate() != null) && (this.getCreateEndDate().trim().length() > 0))){                
-               Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + (this.getCreateStartTime() != null? " " +this.getCreateStartTime():"00:00:00"));
-               Date todate = DateUtil.string2Date(this.getCreateEndDate()+(this.getCreateEndTime() != null? " " +this.getCreateEndTime():"23:59:59"));
+               Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + (this.getCreateStartTime() != null? " " +this.getCreateStartTime():" 00:00:00"));
+               Date todate = DateUtil.string2Date(this.getCreateEndDate()+(this.getCreateEndTime() != null? " " +this.getCreateEndTime():" 23:59:59"));
                long startDate = fromdate.getTime();
                long endDate = todate.getTime();
                  if(endDate < startDate){
@@ -527,6 +581,17 @@ public class UpdateReportHandler    {
      */
     public void setUpdateRecordsVO(UpdateRecords[] updateRecordsVO) {
         this.updateRecordsVO = updateRecordsVO;
+    }
+
+    public ArrayList getResultsConfigArrayList() {
+        ReportHandler reportHandler = new ReportHandler();
+        reportHandler.setReportType("Updated Record Report");        
+        ArrayList fcArrayList  = reportHandler.getSearchResultsScreenConfigArray();
+        return fcArrayList;
+    }
+
+    public void setResultsConfigArrayList(ArrayList resultsConfigArrayList) {
+        this.resultsConfigArrayList = resultsConfigArrayList;
     }
 
 }

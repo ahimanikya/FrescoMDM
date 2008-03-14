@@ -54,6 +54,8 @@ import com.sun.mdm.index.report.AssumedMatchReportRow;
 import com.sun.mdm.index.report.MultirowReportConfig1;
 import com.sun.mdm.index.report.MultirowReportObject1;
 import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
+import com.sun.mdm.index.edm.services.configuration.FieldConfig;
+import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.report.AssumedMatchReport;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
@@ -63,6 +65,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Hashtable;
 import java.util.List;
@@ -70,6 +73,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 
 public class AssumeMatchReportHandler  {
@@ -117,7 +121,20 @@ public class AssumeMatchReportHandler  {
      */  
     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     
+     /**
+     *Http session variable
+     */
+    HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     
+    
+    /**
+     *get Screen Object from the session
+     */
+    ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+    
+    private ArrayList resultsConfigArrayList  = new ArrayList();
+    private ArrayList resultsArrayList  = new ArrayList();
+   
     /* This method populates the Assume Match Reports using the Service Layer call and handles exceptions*/
    public AssumeMatchesRecords[] assumeMatchReport() throws ValidationException, EPathException, ReportException, PageException, RemoteException, Exception    {
        request.setAttribute("tabName", "ASSUME_MATCH");        
@@ -138,6 +155,7 @@ public class AssumeMatchReportHandler  {
    //getter method to retrieve the data rows of report records.
    private ReportDataRow[] getAMRRows() throws Exception {
         ArrayList dataRowList = new ArrayList();
+        ArrayList resultArrayList = new ArrayList();
         String prevEuid = "";
         int index = 0;
         ArrayList summaryList = new ArrayList();
@@ -157,8 +175,10 @@ public class AssumeMatchReportHandler  {
             }*/
             prevEuid = reportRow.getEUID();
             index++;
+            //resultArrayList.add(getOutPutValuesMap(amrConfig, reportRow));
         }
         populateVO();
+        request.setAttribute("assumeMatchReportList", resultsArrayList);
         return dataRowList2Array(dataRowList);
     }
    
@@ -168,7 +188,7 @@ public class AssumeMatchReportHandler  {
        for (int i=0; i < vOList.size();i++)   {
          ArrayList groupedList = (ArrayList)vOList.get(i);
          assumematchesRecordsVO[i] = new AssumeMatchesRecords();
-         System.out.println("--------------------------Group Size ----------------------" + groupedList.size());             
+         //System.out.println("--------------------------Group Size ----------------------" + groupedList.size());             
          for (int j=0;j< groupedList.size();j++)   {
              MultirowReportObject1 reportRow = (MultirowReportObject1)groupedList.get(j);
              populateRow(amrConfig,reportRow,j,i);
@@ -189,63 +209,59 @@ public class AssumeMatchReportHandler  {
     }
    
     private void populateRow(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow, int groupIndex, int voIndex) throws Exception {
+        ArrayList fcArrayList = getResultsConfigArrayList();
+        HashMap newValuesMap = new HashMap();
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        String epathValue =  new String();
         List transactionFields = reportConfig.getTransactionFields();
         if (transactionFields != null) {
-            Iterator i = transactionFields.iterator();
+            Iterator iter = transactionFields.iterator();
             EnterpriseObject eo = null;
-            Object obj = null;
             MasterControllerService masterControllerService = new MasterControllerService();
-            while (i.hasNext()) {
-                String field = (String) i.next();
+
+            while (iter.hasNext()) {
+                String field = (String) iter.next();
                 String val = reportRow.getValue(field).toString();
                 if (field.equalsIgnoreCase("EUID")) {
-                    //System.out.println("Field " + field + " Value " + val + " Group Index " + groupIndex + " VoIndex " + voIndex);                    
-                    if (groupIndex == 0) {
-                        assumematchesRecordsVO[voIndex].setEuid(val);
-                    }
+                    newValuesMap.put("EUID", val);
                     eo = masterControllerService.getEnterpriseObject(val.toString());
-                    obj = EPathAPI.getFieldValue("Person.FirstName", eo.getSBR().getObject());
-                    //System.out.println("First Name:: " + obj.toString());
-                    //Set the First Name Values in VO
-                    assumematchesRecordsVO[voIndex].getFirstName().add(obj);
+                    // System.out.println("Field " + field + "VALLL" + val + " EOOOOO ");                    
 
-                    obj = EPathAPI.getFieldValue("Person.LastName", eo.getSBR().getObject());
-                    //System.out.println("Last Name:: " + obj.toString());
-                    //Set the Last Name Values in VO
-                    assumematchesRecordsVO[voIndex].getLastName().add(obj);
+                    for (int i = 0; i < fcArrayList.size(); i++) {
+                        FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
+                        if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
+                            epathValue = fieldConfig.getFullFieldName();
+                        } else {
+                            epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
+                        }
 
-                    obj = EPathAPI.getFieldValue("Person.SSN", eo.getSBR().getObject());
-                    //System.out.println("SSN :: " + obj.toString());
-                    //Set the Last Name Values in VO       
-                    assumematchesRecordsVO[voIndex].getSsn().add(obj);
-
-                    obj = EPathAPI.getFieldValue("Person.DOB", eo.getSBR().getObject());
-                    //System.out.println("DOB :: " + obj.toString());
-                    SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
-                    String dob = simpleDateFormatFields.format(obj);
-                    assumematchesRecordsVO[voIndex].getDob().add(dob);
-                    
-                    obj = EPathAPI.getFieldValue("Person.Address.AddressLine1", eo.getSBR().getObject());
-                    assumematchesRecordsVO[voIndex].getAddressLine1().add(obj);
-                    
+                        if (eo!=null && fieldConfig.isUpdateable()) {
+                            if (fieldConfig.getValueType() == 6) {
+                                newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                            } else {
+                                newValuesMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                            }
+                        }
+                    }                    
                 } else if (field.equalsIgnoreCase("SystemCode")) {
                     if (groupIndex == 0) {
-                        assumematchesRecordsVO[voIndex].setSystemCode(val);
+                        newValuesMap.put(field, val);
+                    } else {
+                        newValuesMap.put(field, "");
                     }
                     //System.out.println("Field " + field + " Value " + val + " Group Index " + groupIndex + " VoIndex " + voIndex);                    
-                } else if (field.equalsIgnoreCase("LID")) {
+                } else  {
                     if (groupIndex == 0) {
-                        assumematchesRecordsVO[voIndex].setLocalId(val);
-                    }
-                    //System.out.println("Field " + field + " Value " + val + " Group Index " + groupIndex + " VoIndex " + voIndex);                    
-                } else if (field.equalsIgnoreCase("Weight")) {
-                    if (groupIndex == 0) {
-                        assumematchesRecordsVO[voIndex].setWeight(val);
+                        newValuesMap.put(field, val);
+                    } else {
+                        newValuesMap.put(field, "");
                     }
                     //System.out.println("Field " + field + " Value " + val + " Group Index " + groupIndex + " VoIndex " + voIndex);                    
                 }
             }
         }
+        //add the output here 
+        resultsArrayList.add(newValuesMap);   
     }
 
    /** write data row for writeRow */
@@ -261,6 +277,7 @@ public class AssumeMatchReportHandler  {
             MasterControllerService masterControllerService = new MasterControllerService();
             while (i.hasNext()) {
                 String field = (String) i.next();
+                
                 String val = reportRow.getValue(field).toString();
                 if (field.equalsIgnoreCase("EUID"))  {
                     assumematchRecords.setEuid(val);
@@ -317,6 +334,58 @@ public class AssumeMatchReportHandler  {
         dataRows[0] = new ReportDataRow(rptFields);
         return dataRows;
     }
+   private HashMap getOutPutValuesMap(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow) throws Exception {
+        HashMap newValuesMap = new HashMap();
+        List transactionFields = reportConfig.getTransactionFields();
+
+        ArrayList fcArrayList = getResultsConfigArrayList();
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+
+        //getSearchResultsArrayByReportType();
+        if (transactionFields != null) {
+            Iterator iter = transactionFields.iterator();
+            EnterpriseObject eo = null;
+            Object obj = null;
+            MasterControllerService masterControllerService = new MasterControllerService();
+            String epathValue = new String();
+            while (iter.hasNext()) {
+                String field = (String) iter.next();
+                String val = reportRow.getValue(field).toString();
+                if (field.equalsIgnoreCase("EUID")) {
+                    newValuesMap.put("EUID", val);
+                    eo = masterControllerService.getEnterpriseObject(val.toString());
+
+                    for (int i = 0; i < fcArrayList.size(); i++) {
+                        FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
+                        if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
+                            epathValue = fieldConfig.getFullFieldName();
+                        } else {
+                            epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
+                        }
+
+                        if (fieldConfig.isUpdateable()) {
+                            if (fieldConfig.getValueType() == 6) {
+                                newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                            } else {
+                                newValuesMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                            }
+                        }
+                    }
+                
+               }  else if (field.equalsIgnoreCase("SystemCode")){
+                    newValuesMap.put("SystemCode", val);
+                }  else if (field.equalsIgnoreCase("LID")){
+                    newValuesMap.put("LID", val);
+                }  else if (field.equalsIgnoreCase("Weight")){
+                    newValuesMap.put("Weight", val);
+                }   
+               
+                
+            }
+        }
+        return newValuesMap;
+    }
+   
    public AssumedMatchReportConfig getAssumedMatchReportSearchObject()  throws ValidationException, EPathException {
          String errorMessage = null;
          EDMValidation edmValidation = new EDMValidation();         
@@ -353,11 +422,15 @@ public class AssumeMatchReportHandler  {
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
+                    if (getCreateStartTime().trim().length() == 0) {
+                        createStartTime = "00:00:00";
+                    }
                     String searchStartDate = this.getCreateStartDate() + (this.getCreateStartTime() != null ? " " + this.getCreateStartTime() : "00:00:00");
                     Date date = DateUtil.string2Date(searchStartDate);
                     if (date != null) {
                         amrc.setStartDate(new Timestamp(date.getTime()));
-                    }                                    
+                    }   
+                    createStartTime = "";
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
@@ -385,12 +458,16 @@ public class AssumeMatchReportHandler  {
                 Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, message, message);
             } else {
                 try {
+                    if (getCreateEndTime().trim().length() == 0) {
+                        createEndTime = "23:59:59";
+                    }
                     //If Time is supplied append it to the date to check if it parses into a valid Date
                     String searchEndDate = this.getCreateEndDate() + (this.getCreateEndTime() != null ? " " + this.getCreateEndTime() : "23:59:59");
                     Date date = DateUtil.string2Date(searchEndDate);
                     if (date != null) {
                         amrc.setEndDate(new Timestamp(date.getTime()));
                     }
+                    createEndTime = "";
                 } catch (ValidationException validationException) {
                     Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
@@ -525,6 +602,26 @@ public class AssumeMatchReportHandler  {
      */
     public void setAssumematchesRecordsVO(AssumeMatchesRecords[] assumematchesRecordsVO) {
         this.assumematchesRecordsVO = assumematchesRecordsVO;
+    }
+
+    public ArrayList getResultsConfigArrayList() {
+        ReportHandler reportHandler = new ReportHandler();
+        reportHandler.setReportType("Assume Match Report");        
+        ArrayList fcArrayList  = reportHandler.getSearchResultsScreenConfigArray();
+        return fcArrayList;
+    }
+
+
+    public void setResultsConfigArrayList(ArrayList resultsConfigArrayList) {
+        this.resultsConfigArrayList = resultsConfigArrayList;
+    }
+
+    public ArrayList getResultsArrayList() {
+        return resultsArrayList;
+    }
+
+    public void setResultsArrayList(ArrayList resultsArrayList) {
+        this.resultsArrayList = resultsArrayList;
     }
     
 }

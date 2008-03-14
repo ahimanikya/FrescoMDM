@@ -137,7 +137,11 @@ public class SourceAddHandler {
      */
     private String[][] allSystemCodes = masterControllerService.getSystemCodes();
 
-   
+   private String minorObjectsEnteredFieldValues  = new String();
+   private String newSOEnteredFieldValues  = new String();
+   private String minorObjectTotal = new String();
+   private HashMap minorObjectsHashMap  = new HashMap();
+    
    /** Creates a new instance of SourceHandler */
     public SourceAddHandler() {
     }
@@ -150,8 +154,21 @@ public class SourceAddHandler {
         ArrayList fieldConfigArrayList  = getAddScreenConfigArray();
         Iterator fieldConfigArrayIter =  fieldConfigArrayList.iterator();
         int totalFields = fieldConfigArrayList.size();
-        int countMenuFields = 0;
-        int countEmptyFields = 0;
+        
+        HashMap newFieldValuesMap = new HashMap();
+
+        if (newSOEnteredFieldValues != null && newSOEnteredFieldValues.length() > 0) {
+                String[] fieldNameValues = newSOEnteredFieldValues.split(">>");
+                for (int i = 0; i < fieldNameValues.length; i++) {
+                    String string = fieldNameValues[i];
+                    String[] keyValues = string.split("##");
+                    if(keyValues.length ==2) {
+                      newFieldValuesMap.put(keyValues[0], keyValues[1]);
+                    }
+                }
+            }
+           
+            setNewSOHashMap(newFieldValuesMap); //set the root node values here
         
         //set the source code 
 //        while(fieldConfigArrayIter.hasNext())  {
@@ -161,7 +178,72 @@ public class SourceAddHandler {
 //                setSystemCode(feildValue);
 //            }
 //        }
-        
+        ArrayList newMinorObjectsList = new ArrayList();
+        SourceHandler sourceHandler = new SourceHandler();
+        ArrayList allChildNodesList  = sourceHandler.getAllChildNodesNames();
+        if (minorObjectTotal != null && minorObjectTotal.length() > 0) {
+            //System.out.println("==========minorObjectTotal=====" + minorObjectTotal);
+            int totalMinorObjects = new Integer(minorObjectTotal).intValue();
+            if (minorObjectsEnteredFieldValues != null && minorObjectsEnteredFieldValues.length() > 0) {
+                minorObjectsEnteredFieldValues = minorObjectsEnteredFieldValues + ",";
+                //System.out.println("minorObjectsEnteredFieldValues ==> : " + minorObjectsEnteredFieldValues + allChildNodesList.size());
+                for (int c = 0; c < allChildNodesList.size(); c++) {
+                    for (int mc = 0; mc < totalMinorObjects; mc++) {
+                        String childObjectType = (String) allChildNodesList.get(c);
+                        //System.out.println("childObjectType ==> : " + childObjectType );
+                        String[] fieldNameValues = minorObjectsEnteredFieldValues.split(">>" + new Integer(mc).toString() + ">>" + childObjectType + ",");
+                        ArrayList newMinorsList = new ArrayList();
+                        HashMap newMap = new HashMap();
+                        for (int i = 0; i < fieldNameValues.length; i++) {
+                            String string = fieldNameValues[i];
+                            String[] keyValues = string.split("##");
+                            if (keyValues.length == 2) {
+                                //System.out.println("Key " + keyValues[0] + "Value ==> : " + keyValues[1]);
+                                minorObjectsHashMap.put(keyValues[0], keyValues[1]);
+                                newMap.put(keyValues[0], keyValues[1]);
+                                newMinorsList.add(keyValues[0] + "::" + keyValues[1]);
+                            }
+                        }
+
+                        HashMap newMinorValues = new HashMap();
+                        newMinorValues.put(childObjectType + new Integer(mc).toString(), newMinorsList);
+                        newMinorObjectsList.add(newMinorValues);
+                    }
+                }
+            }
+            //System.out.println("minorObjectsHashMap ==>" + minorObjectsHashMap);
+            //System.out.println("newMinorObjectsList ==>" + newMinorObjectsList);
+
+            ArrayList finalminorObjectMaplist = new ArrayList();
+            for (int mc = 0; mc < totalMinorObjects; mc++) {
+
+                for (int i = 0; i < allChildNodesList.size(); i++) {
+                    String childObjectType = (String) allChildNodesList.get(i);
+                    for (int j = 0; j < newMinorObjectsList.size(); j++) {
+                        HashMap minorMap = (HashMap) newMinorObjectsList.get(j);
+                        ArrayList innerList = (ArrayList) minorMap.get(childObjectType + new Integer(mc).toString());
+                        ///System.out.println("=======>" + innerList);
+                        HashMap minorObjectMap = new HashMap();
+                        if (innerList != null && innerList.size() > 0) {
+                            for (int k = 0; k < innerList.size(); k++) {
+                                String keyAndValue = (String) innerList.get(k);
+                                String[] keyAndValueArray = keyAndValue.split("::");
+                                for (int l = 0; l < keyAndValueArray.length; l++) {
+                                    //System.out.println("key =====> " + keyAndValueArray[0] + "Value ==> " + keyAndValueArray[1]);
+                                    minorObjectMap.put(keyAndValueArray[0], keyAndValueArray[1]);
+                                }
+                            }
+                            //System.out.println("minorObjectMap =======>" + minorObjectMap);
+                            setMinorObjectPrimaryValues(minorObjectMap, childObjectType);
+                            finalminorObjectMaplist.add(minorObjectMap);
+                        }
+                    }
+                }
+            }
+            //System.out.println("finalminorObjectMaplist =======>" + finalminorObjectMaplist);
+
+            setNewSOMinorObjectsHashMapArrayList(finalminorObjectMaplist);
+        }
         //convert the masked value here to 10 digit number
         String lid = getLID().replaceAll("-", ""); 
         setLID(lid);
@@ -173,20 +255,10 @@ public class SourceAddHandler {
             newSOHashMap.put(MasterControllerService.SYSTEM_CODE, getSystemCode());
             newSOHashMap.put(MasterControllerService.LID, getLID());
 
-            //take care of SSN masking here
-            String ssn  = (String) newSOHashMap.get("Person.SSN");
-            if(newSOHashMap.get("Person.SSN") != null) {
-               if(ssn.length() > 1 ) {
-                 ssn = ssn.replaceAll("-", "");
-                 newSOHashMap.put("Person.SSN",ssn);
-               }  else {
-                 newSOHashMap.put("Person.SSN",null);
-               }
-            }
-            
             //add the key as brand new in the hashmap
             newSOHashMap.put(MasterControllerService.HASH_MAP_TYPE,MasterControllerService.SYSTEM_OBJECT_BRAND_NEW);
-            
+
+            //System.out.println("NEW SO HASH MAP" + newSOHashMap);
             //add new SO to the arraylist
             getNewSOHashMapArrayList().add(newSOHashMap);
 
@@ -194,40 +266,10 @@ public class SourceAddHandler {
             //checkMapValues(addressFeildsMap);
             //checkMapValues(aliasFeildsMap);
 
-            //build array of address field hashmap and the keys for adding the new address objects
-            if (!checkMapValues(addressFeildsMap)) {
-                setMinorObjectPrimaryValues(addressFeildsMap, "Address");
-
-                //set the hashmap for SL
-                getNewSOMinorObjectsHashMapArrayList().add(addressFeildsMap);
-
-                //set the address arraylist for displaying in the jsp page
-                this.singleAddressHashMapArrayList.add(addressFeildsMap);
-            }
-
-            //build array of phone field hashmap
-            if (!checkMapValues(phoneFeildsMap)) {
-                setMinorObjectPrimaryValues(phoneFeildsMap, "Phone");
-                //set the hashmap for SL
-                getNewSOMinorObjectsHashMapArrayList().add(phoneFeildsMap);
-
-                //set the hashmap for displaying
-                this.singlePhoneHashMapArrayList.add(getPhoneFieldConfigs());
-            }
-
-            //build array of alias field hashmap and the keys for adding the new alias objects
-            if (!checkMapValues(aliasFeildsMap)) {
-                setMinorObjectPrimaryValues(aliasFeildsMap, "Alias");
-
-                //set the alias hash map for SL
-                getNewSOMinorObjectsHashMapArrayList().add(aliasFeildsMap);
-
-                //set the alias hash map for displaying
-                this.singleAliasHashMapArrayList.add(getAliasFeildsMap());
-            }
-
 
             masterControllerService.setRootNodeName(screenObject.getRootObj().getName());
+            //set Update user name her
+            masterControllerService.setUpdateUserName((String) session.getAttribute("user"));
             //create systemobject start
             SystemObject createSystemObject = masterControllerService.createSystemObject(getSystemCode(), getLID(), newSOHashMap);
             //createSystemObject.setUpdateUser("eview");
@@ -250,23 +292,20 @@ public class SourceAddHandler {
             
             //adding summary message after creating systemobjec
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,summaryInfo,summaryInfo));
-            unSetMinorObjectPrimaryValues(addressFeildsMap);
-            unSetMinorObjectPrimaryValues(phoneFeildsMap);
-            unSetMinorObjectPrimaryValues(aliasFeildsMap);
         
         } catch (UserException ex) {   
             errorMessage = "Service Layer User Exception occurred";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
             Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
             return this.SERVICE_LAYER_ERROR;
         } catch (ObjectException ex) {
             errorMessage = "Service Layer Object Exception occurred";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
             Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
             return this.SERVICE_LAYER_ERROR;
         } catch (Exception ex) {
             errorMessage = "Service Layer Exception occurred";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
             Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
             return this.SERVICE_LAYER_ERROR;
         }
@@ -282,17 +321,17 @@ public class SourceAddHandler {
                                                masterControllerService.getAuditMsg());
         } catch (UserException ex) {   
             errorMessage = "Service Layer User Exception occurred while inserting audit log";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
             Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
             return this.SERVICE_LAYER_ERROR;
         } catch (ObjectException ex) {
             errorMessage = "Service Layer Object Exception occurred while inserting audit log";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
             Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
             return this.SERVICE_LAYER_ERROR;
         } catch (Exception ex) {
             errorMessage = "Service Layer Exception occurred while inserting audit log";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
             Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
             return this.SERVICE_LAYER_ERROR;
         }
@@ -416,12 +455,12 @@ public class SourceAddHandler {
            
         } catch (ProcessingException ex) {
             errorMessage = "Processing Exception occurred";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
             Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
             return this.SERVICE_LAYER_ERROR;
         } catch (UserException ex) {
             errorMessage = "UserException Exception occurred";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
             Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
             return this.SERVICE_LAYER_ERROR;
         }
@@ -757,6 +796,7 @@ public class SourceAddHandler {
     }
 
     private void setMinorObjectPrimaryValues(HashMap minorObjectHashMap,String minorObjectType) {
+           
             minorObjectHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_BRAND_NEW);
             minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, minorObjectType);
             minorObjectHashMap.put(MasterControllerService.SYSTEM_CODE, getSystemCode());
@@ -806,6 +846,38 @@ public class SourceAddHandler {
 
     public void setAllSystemCodes(String[][] allSystemCodes) {
         this.allSystemCodes = allSystemCodes;
+    }
+
+    public String getMinorObjectsEnteredFieldValues() {
+        return minorObjectsEnteredFieldValues;
+    }
+
+    public void setMinorObjectsEnteredFieldValues(String minorObjectsEnteredFieldValues) {
+        this.minorObjectsEnteredFieldValues = minorObjectsEnteredFieldValues;
+    }
+
+    public HashMap getMinorObjectsHashMap() {
+        return minorObjectsHashMap;
+    }
+
+    public void setMinorObjectsHashMap(HashMap minorObjectsHashMap) {
+        this.minorObjectsHashMap = minorObjectsHashMap;
+    }
+
+    public String getMinorObjectTotal() {
+        return minorObjectTotal;
+    }
+
+    public void setMinorObjectTotal(String minorObjectTotal) {
+        this.minorObjectTotal = minorObjectTotal;
+    }
+
+    public String getNewSOEnteredFieldValues() {
+        return newSOEnteredFieldValues;
+    }
+
+    public void setNewSOEnteredFieldValues(String newSOEnteredFieldValues) {
+        this.newSOEnteredFieldValues = newSOEnteredFieldValues;
     }
 
 }

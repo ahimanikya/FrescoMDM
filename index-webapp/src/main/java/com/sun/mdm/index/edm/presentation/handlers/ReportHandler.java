@@ -49,6 +49,7 @@ import com.sun.mdm.index.edm.presentation.valueobjects.ActivityRecords;
 import com.sun.mdm.index.edm.presentation.valueobjects.UnmergedRecords;
 
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
+import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -521,12 +522,8 @@ public class ReportHandler {
     }
 
     public ArrayList getSearchResultsScreenConfigArray() {
-        ArrayList basicSearchFieldConfigs = null;
+       ArrayList newArrayList = new ArrayList();
         try {
-            ConfigManager.init();
-            ArrayList screenConfigArray = ConfigManager.getInstance().getScreen(new Integer("3")).getSearchScreensConfig();
-            ArrayList resultsScreenConfigArray = screenObject.getSearchResultsConfig();
-
             //Array of Sub screen objects as Screen Objects
             ArrayList resultsSubScreenConfigArray = screenObject.getSubscreensConfig();
             Object[] subScreenObjects = resultsSubScreenConfigArray.toArray();
@@ -538,29 +535,53 @@ public class ReportHandler {
                     resultsScreenObject = subScreenObject;
                 }
             }
-            Iterator iteratorScreenConfig = resultsScreenObject.getSearchResultsConfig().iterator();
-
+            //System.out.println("SUB SCREEN " + resultsScreenObject + "subScreenObject" + subScreenObject);
+             ArrayList resultsScreenConfigArraySub = resultsScreenObject.getSearchResultsConfig();
+            Iterator iteratorScreenConfig = resultsScreenConfigArraySub.iterator();
             while (iteratorScreenConfig.hasNext()) {
                 SearchResultsConfig objSearchScreenConfig = (SearchResultsConfig) iteratorScreenConfig.next();
-                //Set Max Results
-                setMaxResultsSize(objSearchScreenConfig.getMaxRecords());
-                //Set the page size
-                setPageSize(objSearchScreenConfig.getPageSize());
-                // Get an array list of field config groups
-                basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
-                Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
-                //Iterate the the FieldConfigGroup array list
-                while (basicSearchFieldConfigsIterator.hasNext()) {
-                    //Build array of field config groups 
-                    FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
-                    //Build array of field configs from 
-                    Object[] fieldConfigArrayList = basicSearchFieldGroup.getFieldConfigs().toArray();
-                    searchResultsScreenConfigArray = basicSearchFieldGroup.getFieldConfigs();
+                ArrayList fcgList = objSearchScreenConfig.getFieldConfigs();
+                for (int i = 0; i < fcgList.size(); i++) {
+                    FieldConfigGroup objectFieldConfigGroup = (FieldConfigGroup) fcgList.get(i);
+                    ArrayList fcList = objectFieldConfigGroup.getFieldConfigs();
+                    for (int j = 0; j < fcList.size(); j++) {
+                        FieldConfig objectFieldConfig = (FieldConfig)fcList.get(j);
+                        newArrayList.add(objectFieldConfig);
+                  }
                 }
+                
             }
+            
+            
+            
+            
+            
+//            Iterator iteratorScreenConfig = resultsScreenObject.getSearchResultsConfig().iterator();
+//
+//            while (iteratorScreenConfig.hasNext()) {
+//                SearchResultsConfig objSearchScreenConfig = (SearchResultsConfig) iteratorScreenConfig.next();
+//                //Set Max Results
+//                setMaxResultsSize(objSearchScreenConfig.getMaxRecords());
+//                //Set the page size
+//                setPageSize(objSearchScreenConfig.getPageSize());
+//                // Get an array list of field config groups
+//                basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
+//                Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
+//                //Iterate the the FieldConfigGroup array list
+//                while (basicSearchFieldConfigsIterator.hasNext()) {
+//                    //Build array of field config groups 
+//                    FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
+//                    //Build array of field configs from 
+//                    Object[] fieldConfigArrayList = basicSearchFieldGroup.getFieldConfigs().toArray();
+//                    searchResultsScreenConfigArray = basicSearchFieldGroup.getFieldConfigs();
+//                }
+//            }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+       }
+       
+        this.searchResultsScreenConfigArray = newArrayList;
+
         return searchResultsScreenConfigArray;
     }
 
@@ -622,6 +643,41 @@ public class ReportHandler {
   
     public void setSelectOptions(ArrayList<SelectItem> selectOptions) {
         this.selectOptions = selectOptions;
+    }
+    public ArrayList getSearchResultsArrayByReportType(String reportTypeVar) {
+       ArrayList newArrayList = new ArrayList();
+        try {
+            //Array of Sub screen objects as Screen Objects
+            ArrayList resultsSubScreenConfigArray = screenObject.getSubscreensConfig();
+            Object[] subScreenObjects = resultsSubScreenConfigArray.toArray();
+            ScreenObject resultsScreenObject = null;
+
+            for (int i = 0; i < subScreenObjects.length; i++) {
+                subScreenObject = (ScreenObject) subScreenObjects[i];
+                if (subScreenObject.getDisplayTitle().equalsIgnoreCase(reportTypeVar)) {
+                    resultsScreenObject = subScreenObject;
+                }
+            }
+            
+             ArrayList resultsScreenConfigArraySub = resultsScreenObject.getSearchResultsConfig();
+            Iterator iteratorScreenConfig = resultsScreenConfigArraySub.iterator();
+            while (iteratorScreenConfig.hasNext()) {
+                SearchResultsConfig objSearchScreenConfig = (SearchResultsConfig) iteratorScreenConfig.next();
+                ArrayList fcgList = objSearchScreenConfig.getFieldConfigs();
+                for (int i = 0; i < fcgList.size(); i++) {
+                    FieldConfigGroup objectFieldConfigGroup = (FieldConfigGroup) fcgList.get(i);
+                    ArrayList fcList = objectFieldConfigGroup.getFieldConfigs();
+                    for (int j = 0; j < fcList.size(); j++) {
+                        FieldConfig objectFieldConfig = (FieldConfig)fcList.get(j);
+                        newArrayList.add(objectFieldConfig);
+                  }
+                }
+                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+       }
+       return newArrayList;
     }
    
 }

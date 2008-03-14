@@ -76,9 +76,6 @@ public class SourceMergeHandler {
     SourceHandler sourceHandler = new SourceHandler();
     Object[] resultsConfigFeilds = sourceHandler.getAllFieldConfigs().toArray();
     Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
-    Object[] addressConfigFeilds = sourceHandler.getAddressFieldConfigs().toArray();
-    Object[] aliasConfigFeilds = sourceHandler.getAliasFieldConfigs().toArray();
-    Object[] phoneConfigFeilds = sourceHandler.getPhoneFieldConfigs().toArray();
     
     EPathArrayList personEPathArrayList = sourceHandler.buildPersonEpaths();
     private ArrayList soArrayList = new ArrayList();
@@ -441,6 +438,7 @@ public class SourceMergeHandler {
            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
         
             HashMap destnMap  = (HashMap) compareDuplicateManager.getSystemObjectAsHashMap(so, screenObject).get("SYSTEM_OBJECT");
+           // System.out.println("destnMap" + destnMap);
             session.removeAttribute("soHashMapArrayList");
             
             SystemObject finalMergredDestnSO  = masterControllerService.mergeSystemObject(this.lidsource, sourceLid, destnLid, destnMap);

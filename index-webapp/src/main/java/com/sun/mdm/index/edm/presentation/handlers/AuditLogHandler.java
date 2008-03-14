@@ -44,6 +44,8 @@ import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.edm.presentation.validations.HandlerException;
+import com.sun.mdm.index.edm.services.configuration.ConfigManager;
+import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.util.QwsUtil;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.SystemObject;
@@ -51,8 +53,10 @@ import com.sun.mdm.index.util.LogUtil;
 import com.sun.mdm.index.util.Logger;
 import java.rmi.RemoteException;
 
+import java.text.SimpleDateFormat;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AuditLogHandler extends ScreenConfiguration {
 
@@ -114,6 +118,10 @@ public class AuditLogHandler extends ScreenConfiguration {
 
     private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.AuditLogHandler");
 
+    private ArrayList keysList  = new ArrayList();
+    
+    private ArrayList labelsList  = new ArrayList();
+            
     /** Creates a new instance of AuditLogHandler */
     public AuditLogHandler() {
     }
@@ -148,6 +156,20 @@ public class AuditLogHandler extends ScreenConfiguration {
      */
     public String performSubmit() throws HandlerException {
         try {
+            HashMap newFieldValuesMap = new HashMap();
+            if (super.getEnteredFieldValues() != null && super.getEnteredFieldValues().length() > 0) {
+                String[] fieldNameValues = super.getEnteredFieldValues().split(">>");
+                for (int i = 0; i < fieldNameValues.length; i++) {
+                    String string = fieldNameValues[i];
+                    String[] keyValues = string.split("##");
+                    if(keyValues.length ==2) {
+                      //System.out.println("Key " + keyValues[0] + "Value ==> : " + keyValues[1]);
+                      newFieldValuesMap.put(keyValues[0], keyValues[1]);
+                    }
+                }
+            }
+
+            super.setUpdateableFeildsMap(newFieldValuesMap);
             //System.out.println("----------------------------------" + super.getUpdateableFeildsMap());
 
             //check one of many condtion here
@@ -242,24 +264,43 @@ public class AuditLogHandler extends ScreenConfiguration {
             
             // Lookup Audit log Controller
             AuditIterator alPageIter = masterControllerService.lookupAuditLog(aso);
+            AuditIterator alPageIterOutput = masterControllerService.lookupAuditLog(aso);
             //System.out.println("alPageIter" + alPageIter.count());
             //System.out.println("---------------7-------------------");
 
             
-            mLogger.error("Validation failed. Message displayed to the user: " + " :: In Audit Log Handler iter size===>" + alPageIter.count());
+            mLogger.error(" :: In Audit Log Handler iter size===>" + alPageIter.count());
             
             int i = 0;
             //Set the size of the VO Array
             setAuditLogVO(new AuditDataObject[alPageIter.count()]);
+            
+           ArrayList resultsArrayList = new ArrayList();
+           SimpleDateFormat sdf = new SimpleDateFormat(ConfigManager.getDateFormat());
+
             //Populate the Value Object to be displayed on the JSF page.
             while (alPageIter.hasNext()) {
                 auditLogVO[i] = new AuditDataObject(); //to be safe with malloc
                 auditLogVO[i] = alPageIter.next();
+                AuditDataObject auditDataObject = auditLogVO[i]; //to be safe with malloc
+
+                String outputValues = "{AuditId:" + "\"" + auditDataObject.getId() +  "\"" + 
+                                      ", EUID1: " + "\"" + ((auditDataObject.getEUID1() != null) ? auditDataObject.getEUID1() : "")  +"\"" +
+                                      ", EUID2: " + "\"" + ((auditDataObject.getEUID2() != null) ? auditDataObject.getEUID2() : "") +"\""  +
+                                      ", Function: " + "\"" + ((auditDataObject.getFunction()  != null) ? auditDataObject.getFunction()  : "") +"\"" +
+                                      ", Detail: " + "\"" + ((auditDataObject.getDetail()  != null) ? auditDataObject.getDetail()  : "") +"\""  +
+                                      ", CreateDate: " + "\"" + ((auditDataObject.getCreateDate()  != null) ? sdf.format(auditDataObject.getCreateDate())  : "") +"\""  +
+                                      ", CreateUser: " + "\"" + ((auditDataObject.getCreateUser()  != null) ? auditDataObject.getCreateUser()  : "") +"\""  
+                                     +  "}";
+                
+                resultsArrayList.add(outputValues);
+
                 //Logger.getLogger(AuditLogHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + "Audit Log Handler EUID is " + this.getEuid());
                 i++;
             }
             setResultsSize(auditLogVO.length);
             request.setAttribute("resultsSize", new Integer(auditLogVO.length));
+            request.setAttribute("resultsArrayList", resultsArrayList);
         } catch (ValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ValidationException  : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
             mLogger.error("ValidationException : " + QwsUtil.getRootCause(ex).getMessage());
@@ -331,15 +372,12 @@ public class AuditLogHandler extends ScreenConfiguration {
         }
 
         //set EUID VALUE IF lid/system code not supplied
-        if ( (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() == 0)
-             && super.getUpdateableFeildsMap().get("SystemCode") == null) {
           if (super.getUpdateableFeildsMap().get("EUID") != null && super.getUpdateableFeildsMap().get("EUID").toString().trim().length() > 0) {
               auditSearchObject.setEUID((String) super.getUpdateableFeildsMap().get("EUID"));
           } else {
               auditSearchObject.setEUID(null);
           }
-        }  
-
+        
 
 
         //Set StartDate to the AuditSearchObject  
@@ -477,4 +515,39 @@ public class AuditLogHandler extends ScreenConfiguration {
     public void setEuid(String euid) {
         this.euid = euid;
     }
+
+    public ArrayList getKeysList() {
+        ArrayList newArrayList = new ArrayList();
+        newArrayList.add("AuditId");
+        newArrayList.add("EUID1");
+        newArrayList.add("EUID2");
+        newArrayList.add("Function");
+        newArrayList.add("Detail");
+        newArrayList.add("CreateDate");
+        newArrayList.add("CreateUser");
+        return newArrayList;
+    }
+
+    public void setKeysList(ArrayList keysList) {
+        this.keysList = keysList;
+    }
+
+
+    public ArrayList getLabelsList() {
+        ArrayList newArrayList = new ArrayList();
+        newArrayList.add("Audit Id");
+        newArrayList.add("EUID1");
+        newArrayList.add("EUID2");
+        newArrayList.add("Function");
+        newArrayList.add("Detail");
+        newArrayList.add("CreateDate");
+        newArrayList.add("CreateUser");
+        return newArrayList;
+    }
+
+    public void setLabelsList(ArrayList labelsList) {
+        this.labelsList = labelsList;
+    }
+
+
 }

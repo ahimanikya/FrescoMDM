@@ -51,6 +51,8 @@ import com.sun.mdm.index.report.DeactivateReportRow;
 import com.sun.mdm.index.report.MultirowReportConfig1;
 import com.sun.mdm.index.report.MultirowReportObject1;
 import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
+import com.sun.mdm.index.edm.services.configuration.FieldConfig;
+import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.objects.EnterpriseObject;
@@ -58,6 +60,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -65,6 +68,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author Sridhar Narsingh
@@ -106,7 +110,18 @@ public class DeactivatedReportHandler    {
     /*
      *  Request Object Handle
      */  
-    HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();    
+    HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();  
+     /**
+     *Http session variable
+     */
+    HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    /**
+     *get Screen Object from the session
+     */
+    ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+    
+    private ArrayList resultsConfigArrayList  = new ArrayList();
+  
     
     /**
      * @return the value object for display
@@ -127,14 +142,17 @@ public class DeactivatedReportHandler    {
     //method to retrieve the data rows of report records.
     private ReportDataRow[] getDRRows() throws Exception {
         ArrayList dataRowList = new ArrayList();
-        
+        ArrayList resultArrayList = new ArrayList();
         while (dr.hasNext()) {
             DeactivateReportRow reportRow = dr.getNextReportRow();
             ReportDataRow[] dataRows = writeRow(drConfig, reportRow);
             for (int i = 0; i < dataRows.length; i++) {
                 dataRowList.add(dataRows[i]);
             }
+            resultArrayList.add(getOutPutValuesMap(drConfig, reportRow));
         }
+        //System.out.println("resultArrayList" + resultArrayList);
+        request.setAttribute("deactivatedReportList", resultArrayList);
         return dataRowList2Array(dataRowList);
     }
     /** write data row for dataRowList2Array */
@@ -153,50 +171,71 @@ public class DeactivatedReportHandler    {
         ReportDataRow[] dataRows = new ReportDataRow[1];
         ArrayList rptFields = new ArrayList();
         List transactionFields = reportConfig.getTransactionFields();
+        ArrayList fcArrayList  = getResultsConfigArrayList();
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        ArrayList resultArrayList  = new ArrayList();
+       
         if (transactionFields != null) {
             Iterator iter = transactionFields.iterator();       
-            DeactivatedRecords deactivatedRecords = new DeactivatedRecords();
             EnterpriseObject eo = null;
             Object obj = null;
             MasterControllerService masterControllerService = new MasterControllerService();
+            String epathValue =  new String();
+            HashMap newValuesMap = new HashMap();
+           
             while (iter.hasNext()) {
                 String field = (String) iter.next();
-                Object val = reportRow.getValue(field);
-                if (field.equalsIgnoreCase("EUID"))  {
-                    deactivatedRecords.setEuid(val.toString());
+                String val = reportRow.getValue(field).toString();
+                     if (field.equalsIgnoreCase("EUID1"))  {
+                     newValuesMap.put("EUID",val);
+                     DeactivatedRecords deactivatedRecords = new DeactivatedRecords();
+                     deactivatedRecords.setEuid(val);
                      eo = masterControllerService.getEnterpriseObject(val.toString());
-                     obj = EPathAPI.getFieldValue("Person.FirstName", eo.getSBR().getObject());
-                     //Set the First Name Values in VO
-                     deactivatedRecords.setFirstName((String) obj);
-                     obj = EPathAPI.getFieldValue("Person.LastName", eo.getSBR().getObject());
-                     //Set the Last Name Values in VO
-                     deactivatedRecords.setLastName((String) obj);
-                     
-                     obj = EPathAPI.getFieldValue("Person.SSN", eo.getSBR().getObject());
-                     //Set the Last Name Values in VO       
-                     deactivatedRecords.setSsn((String) obj);
-                     obj = EPathAPI.getFieldValue("Person.DOB", eo.getSBR().getObject());
-                     SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
-                     String dob = simpleDateFormatFields.format(obj);
-                     deactivatedRecords.setDob(dob);
-                     //Commented to remove set system user
-                //}  else if (field.equalsIgnoreCase("SystemUser")){
-                  //  deactivatedRecords.setLastName(val.toString());
-                    
-                }  else if (field.equalsIgnoreCase("TransactionNumber")){
-                   //deactivatedRecords.setDob(val.toString());
-                }  else if (field.equalsIgnoreCase("Timestamp")){                   
-                  // SimpleDateFormat sdf = new SimpleDateFormat(ConfigManager.getDateFormat());
-                   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss a" );
-                   String strDate = sdf.format((java.util.Date) val);                    
-                   deactivatedRecords.setDeactivatedDate(strDate);                    
-                }
-                //Populate Hash Table as backup
-                duplicateRecordsResultsHash.put(field, val);
-                rptFields.add(new ReportField(val.toString()));
+                
+                     for (int i = 0; i < fcArrayList.size(); i++) {
+                         FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
+                         if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
+                             epathValue = fieldConfig.getFullFieldName();
+                         } else {
+                             epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
+                         }
+
+                         if (fieldConfig.isUpdateable()) {
+                             if (fieldConfig.getValueType() == 6 ) {
+                                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                             } else {
+                                 newValuesMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                             }
+                         }
+                     }
+                }  else if (field.equalsIgnoreCase("EUID2"))  {
+                    newValuesMap.put("EUID",val);
+                    DeactivatedRecords deactivatedRecords = new DeactivatedRecords();
+                    deactivatedRecords.setEuid(val);
+                    eo = masterControllerService.getEnterpriseObject(val.toString());
+
+                    for (int i = 0; i < fcArrayList.size(); i++) {
+                         FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
+                         if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
+                             epathValue = fieldConfig.getFullFieldName();
+                         } else {
+                             epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
+                         }
+
+                         if (fieldConfig.isUpdateable()) {
+                             if (fieldConfig.getValueType() == 6 ) {
+                                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                             } else {
+                                 newValuesMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                             }
+                         }
+                     }
+                }  
+                resultArrayList.add(newValuesMap);
             }
-            vOList.add(deactivatedRecords);
         }
+        
+        request.setAttribute("deactivatedReportList", resultArrayList);
         
         EPathArrayList objectFields = reportConfig.getObjectFields();
         if (objectFields != null) {
@@ -222,6 +261,48 @@ public class DeactivatedReportHandler    {
     }
 
 
+    private HashMap getOutPutValuesMap(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow) throws Exception {
+        HashMap newValuesMap = new HashMap();
+        List transactionFields = reportConfig.getTransactionFields();
+
+        ArrayList fcArrayList = getResultsConfigArrayList();
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+
+        //getSearchResultsArrayByReportType();
+        if (transactionFields != null) {
+            Iterator iter = transactionFields.iterator();
+            EnterpriseObject eo = null;
+            Object obj = null;
+            MasterControllerService masterControllerService = new MasterControllerService();
+            String epathValue = new String();
+            while (iter.hasNext()) {
+                String field = (String) iter.next();
+                String val = reportRow.getValue(field).toString();
+                if (field.equalsIgnoreCase("EUID")) {
+                    newValuesMap.put("EUID", val);
+                    eo = masterControllerService.getEnterpriseObject(val.toString());
+
+                    for (int i = 0; i < fcArrayList.size(); i++) {
+                        FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
+                        if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
+                            epathValue = fieldConfig.getFullFieldName();
+                        } else {
+                            epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
+                        }
+
+                        if (fieldConfig.isUpdateable()) {
+                            if (fieldConfig.getValueType() == 6) {
+                                newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                            } else {
+                                newValuesMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                            }
+                        }
+                    }
+                } 
+            }
+        }
+        return newValuesMap;
+    }
     public DeactivateReportConfig getDeactivateReportSearchObject() throws ValidationException, EPathException {
          String errorMessage = null;
          EDMValidation edmValidation = new EDMValidation();         
@@ -259,11 +340,15 @@ public class DeactivatedReportHandler    {
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
+                    if (getCreateStartTime().trim().length() == 0) {
+                        createStartTime = "00:00:00";
+                    }
                     String searchStartDate = this.getCreateStartDate() + (this.getCreateStartTime() != null ? " " + this.getCreateStartTime() : " 00:00:00");
                     Date date = DateUtil.string2Date(searchStartDate);
                     if (date != null) {
                         drc.setStartDate(new Timestamp(date.getTime()));
-                    }                                    
+                    }   
+                    createStartTime = "";
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
@@ -291,12 +376,16 @@ public class DeactivatedReportHandler    {
                 Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
             } else {
                 try {
+                    if (getCreateEndTime().trim().length() == 0) {
+                        createEndTime = "23:59:59";
+                    }
                     //If Time is supplied append it to the date to check if it parses into a valid Date
                     String searchEndDate = this.getCreateEndDate() + (this.getCreateEndTime() != null ? " " + this.getCreateEndTime() : " 11:59:59");
                     Date date = DateUtil.string2Date(searchEndDate);
                     if (date != null) {
                         drc.setEndDate(new Timestamp(date.getTime()));
                     }
+                    createEndTime = "";
                 } catch (ValidationException validationException) {
                     Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
@@ -413,5 +502,14 @@ public class DeactivatedReportHandler    {
     public void setDeactivatedRecordsVO(DeactivatedRecords[] deactivatedRecordsVO) {
         this.deactivatedRecordsVO = deactivatedRecordsVO;
     }
-    
+     public ArrayList getResultsConfigArrayList() {
+        ReportHandler reportHandler = new ReportHandler();
+        reportHandler.setReportType("Deactivated Record Report");        
+        ArrayList fcArrayList  = reportHandler.getSearchResultsScreenConfigArray();
+        return fcArrayList;
+    }
+
+    public void setResultsConfigArrayList(ArrayList resultsConfigArrayList) {
+        this.resultsConfigArrayList = resultsConfigArrayList;
+    }
 }

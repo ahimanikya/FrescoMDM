@@ -50,6 +50,8 @@ import com.sun.mdm.index.report.MergeReportRow;
 import com.sun.mdm.index.report.MultirowReportConfig1;
 import com.sun.mdm.index.report.MultirowReportObject1;
 import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
+import com.sun.mdm.index.edm.services.configuration.FieldConfig;
+import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
@@ -60,10 +62,12 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 
 /** Creates a new instance of DeactivatedReportsHandler*/ 
@@ -82,6 +86,17 @@ public class MergeRecordHandler    {
      */  
     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     
+      /**
+     *Http session variable
+     */
+    HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    /**
+     *get Screen Object from the session
+     */
+    ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+    
+    private ArrayList resultsConfigArrayList  = new ArrayList();
+  
     /**
      * This method populates the DeactivatedReports using the Service Layer call
           * @TODO
@@ -101,6 +116,7 @@ public class MergeRecordHandler    {
     //getter method to retrieve the data rows of report records.
     private ReportDataRow[] getMRRows(MergeReportConfig  mrConfig,MergeReport  mRpt) throws Exception {
         ArrayList dataRowList = new ArrayList();
+        ArrayList resultArrayList = new ArrayList();
         while (mRpt.hasNext()) {
             MergeReportRow reportRow = mRpt.getNextReportRow();
             ReportDataRow[] dataRows = writeRow(mrConfig, reportRow);
@@ -108,7 +124,9 @@ public class MergeRecordHandler    {
             //for (int i = 0; i < dataRows.length; i++) {
             //    dataRowList.add(dataRows[i]);
             //}
+            resultArrayList.add(getOutPutValuesMap(mrConfig, reportRow));
         }
+        request.setAttribute("mergeReportList", resultArrayList);
         return dataRowList2Array(dataRowList);
      }
     /** write data row for dataRowList2Array */
@@ -127,6 +145,10 @@ public class MergeRecordHandler    {
         ReportDataRow[] dataRows = new ReportDataRow[1];
         ArrayList rptFields = new ArrayList();
         List transactionFields = reportConfig.getTransactionFields();
+        ArrayList fcArrayList  = getResultsConfigArrayList();
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        ArrayList resultArrayList  = new ArrayList();
+        
         boolean first = true;
         if (transactionFields != null) {
             Iterator i = transactionFields.iterator();
@@ -136,7 +158,6 @@ public class MergeRecordHandler    {
             Object obj = null;
             MasterControllerService masterControllerService = new MasterControllerService();
             
-            System.out.println("node   START -----");
             while (i.hasNext()) {               
                 String field = (String) i.next();
                 String val = reportRow.getValue(field).toString();
@@ -147,35 +168,6 @@ public class MergeRecordHandler    {
                 if (field.equalsIgnoreCase("EUID1") ) {
                      mergedRecords.getEuid().add(val);
                      eo = masterControllerService.getEnterpriseObject(val);
-                     
-//                    System.out.println("EO----"+eo.getEUID());
-//                     System.out.println("function:"+ eo.getSBR().getCreateFunction());
-//                     System.out.println("id:"+ eo.getSBR().getObject().getObjectId());
-                   //  obj = EPathAPI.getFieldValue("Person.FirstName", eo.getSBR().getObject());
-//                     
-                     
-                     mergedRecords.getFirstName().add(obj);
-//                     System.out.println("Obj---"+obj);
-//                     //Set the First Name Values in VO
-//                     mergedRecords.setFirstName((String) obj);
-//
-//                     obj = EPathAPI.getFieldValue("Person.LastName", reportRow.getObject1());
-//                     //Set the Last Name Values in VO
-//                     mergedRecords.setLastName((String) obj);
-//                          System.out.println("lname---"+obj);
-//
-//                     obj = EPathAPI.getFieldValue("Person.SSN", reportRow.getObject1());
-//                     //Set the Last Name Values in VO       
-//                     mergedRecords.setSsn((String) obj);
-//                          System.out.println("ssn---"+obj);
-
-//                     obj = EPathAPI.getFieldValue("Person.DOB", reportRow.getObject1());
-//                     SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
-//                     String dob = simpleDateFormatFields.format(obj);
-//                     mergedRecords.setDob(dob);
-                     
-                      //mergedRecords.setFirstName("Anil");
-                    
                 } else if (field.equalsIgnoreCase("EUID2")){
                     mergedRecords.getEuid().add(val);
                 } else if (field.equalsIgnoreCase("Timestamp")){
@@ -184,7 +176,6 @@ public class MergeRecordHandler    {
                 rptFields.add(new ReportField(val));
                 j++;
             }
-            System.out.println("node   END -----");
             vOList.add(mergedRecords);
 
         }
@@ -213,6 +204,47 @@ public class MergeRecordHandler    {
         return dataRows;
     }
     
+    private HashMap getOutPutValuesMap(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow) throws Exception {
+        List transactionFields = reportConfig.getTransactionFields();
+        ArrayList fcArrayList = getResultsConfigArrayList();
+        HashMap newValuesMap = new HashMap();
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+
+        //getSearchResultsArrayByReportType();
+        if (transactionFields != null) {
+            Iterator iter = transactionFields.iterator();
+            EnterpriseObject eo = null;
+            Object obj = null;
+            MasterControllerService masterControllerService = new MasterControllerService();
+            String epathValue = new String();
+            while (iter.hasNext()) {
+                String field = (String) iter.next();
+                String val = reportRow.getValue(field).toString();
+                if (field.equalsIgnoreCase("EUID1")) {
+                    newValuesMap.put("EUID", val);
+                    eo = masterControllerService.getEnterpriseObject(val.toString());
+
+                    for (int i = 0; i < fcArrayList.size(); i++) {
+                        FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
+                        if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
+                            epathValue = fieldConfig.getFullFieldName();
+                        } else {
+                            epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
+                        }
+
+                        if (fieldConfig.isUpdateable()) {
+                            if (fieldConfig.getValueType() == 6) {
+                                newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                            } else {
+                                newValuesMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                            }
+                        }
+                    }
+                } 
+            }
+        }
+        return newValuesMap;
+    }
     public MergeReportConfig getMergeReportSearchObject() throws ValidationException, EPathException {
          String errorMessage = null;
          EDMValidation edmValidation = new EDMValidation();         
@@ -252,7 +284,7 @@ public class MergeRecordHandler    {
                     Date date = DateUtil.string2Date(searchStartDate);
                     if (date != null) {
                         mrConfig.setStartDate(new Timestamp(date.getTime()));
-                    }                                    
+                    }  
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
@@ -280,12 +312,16 @@ public class MergeRecordHandler    {
                 mLogger.error(errorMessage);
             } else {
                 try {
+                    if (getCreateEndTime().trim().length() == 0) {
+                        createEndTime = "23:59:59";
+                    }
                     //If Time is supplied append it to the date to check if it parses into a valid Date
                     String searchEndDate = this.getCreateEndDate() + (this.getCreateEndTime() != null ? " " + this.getCreateEndTime() : " 23:59:59");
                     Date date = DateUtil.string2Date(searchEndDate);
                     if (date != null) {
                         mrConfig.setEndDate(new Timestamp(date.getTime()));
                     }
+                     createEndTime = "";
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
@@ -403,6 +439,17 @@ public class MergeRecordHandler    {
      */
     public void setMergedRecordsVO(MergedRecords[] mergedRecordsVO) {
         this.mergedRecordsVO = mergedRecordsVO;
+    }
+
+    public ArrayList getResultsConfigArrayList() {
+        ReportHandler reportHandler = new ReportHandler();
+        reportHandler.setReportType("Merged Transaction Report");        
+        ArrayList fcArrayList  = reportHandler.getSearchResultsScreenConfigArray();
+        return fcArrayList;
+    }
+
+    public void setResultsConfigArrayList(ArrayList resultsConfigArrayList) {
+        this.resultsConfigArrayList = resultsConfigArrayList;
     }
     
 }

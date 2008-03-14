@@ -162,8 +162,16 @@ public class SourceHandler {
     
     //Hash map for single SO  EDITING
     private HashMap readOnlySingleSOHashMap = new HashMap();
+
     
+    private ArrayList allChildNodesNames  = new ArrayList();
     
+    private HashMap allNodeFieldConfigs = new HashMap();
+    private HashMap allNodeFieldConfigsSizes = new HashMap();
+    private ArrayList rootNodeFieldConfigs = new ArrayList();
+    private ArrayList allEOChildNodesLists =  new ArrayList();
+    private ArrayList allSOChildNodesLists =  new ArrayList();
+    CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
     /** Creates a new instance of SourceHandler */
     public SourceHandler() {
     }
@@ -247,31 +255,15 @@ public class SourceHandler {
                   FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("system_object_not_found_error_message"), bundle.getString("system_object_not_found_error_message")));
                   return this.SEARCH_SOURCE_SUCCESS;
                 }
-                EPathArrayList personEPathArrayList = buildSystemObjectEpaths("Person");
-
-                HashMap systemObjectMap = masterControllerService.getSystemObjectAsHashMap(singleSystemObject, personEPathArrayList);
+                EPathArrayList personEPathArrayList = buildSystemObjectEpaths(screenObject.getRootObj().getName());
+               
+                HashMap systemObjectMap = compareDuplicateManager.getSystemObjectAsHashMap(singleSystemObject, screenObject);
+                        
                 session.setAttribute("singleSystemObjectLID", singleSystemObject);
                 session.setAttribute("systemObjectMap", systemObjectMap);
                 //set the single SO hash map for single so
                 this.setSingleSOHashMap(systemObjectMap);
                 
-                ArrayList addressMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObject, buildSystemObjectEpaths("Address"),"Address",null);
-                this.setSingleAddressHashMapArrayList(addressMapArrayList);
-
-                ArrayList phoneMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObject, buildSystemObjectEpaths("Phone"),"Phone",null);
-                this.setSinglePhoneHashMapArrayList(phoneMapArrayList);                
-                
-                ArrayList aliasMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObject, buildSystemObjectEpaths("Alias"),"Alias",null);
-                this.setSingleAliasHashMapArrayList(aliasMapArrayList);                
-                
-               
-                //set the single hash map array list with person, array list of addresses,phones...etc
-                //this.setSingleSOHashMapArrayList(systemObjectMapArrayList);
-                
-                //ArrayList keySetList = buildSOKeyList(systemObjectMapArrayList);
-   
-                //set the key list in the handler
-                 //this.setSingleSOKeyArrayList(keySetList);     
                  
                 //session.setAttribute("singleSystemObject", singleSystemObject);
                 session.setAttribute("keyFunction","viewSO");
@@ -1198,6 +1190,13 @@ public class SourceHandler {
     }
 
     
+    /**
+     * Will return the HashMap with Array of field configs
+     * HashMap key - Node Name ex: Person, Address , Company...etc
+     * HashMap value - FieldConfig[]
+     * 
+     * @return java.util.HashMap
+     */
     public HashMap getAllNodeFieldConfigs() {
          HashMap newHashMap = new HashMap();
         try {
@@ -1223,4 +1222,176 @@ public class SourceHandler {
         return newHashMap;
     }
 
+    /**
+     * 
+     * @param allNodeFieldConfigs
+     */
+    public void setAllNodeFieldConfigs(HashMap allNodeFieldConfigs) {
+        this.allNodeFieldConfigs = allNodeFieldConfigs;
+    }
+
+
+    /**
+     * 
+     * @return
+     */
+    public ArrayList getAllChildNodesNames() {
+        ArrayList newArrayList = new ArrayList();
+        try {
+            ConfigManager.init();
+
+            ObjectNodeConfig[] arrObjectNodeConfig = screenObject.getRootObj().getChildConfigs();
+
+            for (int i = 0; i < arrObjectNodeConfig.length; i++) {
+                ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
+                newArrayList.add(childObjectNodeConfig.getName());
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return newArrayList;
+    }
+
+    /**
+     * 
+     * @param allChildNodesNames
+     */
+    public void setAllChildNodesNames(ArrayList allChildNodesNames) {
+        this.allChildNodesNames = allChildNodesNames;
+    }
+
+    public HashMap getAllNodeFieldConfigsSizes() {
+         HashMap newHashMap = new HashMap();
+        try {
+
+            String rootNodeName = screenObject.getRootObj().getName();
+
+            ConfigManager.init();
+            ObjectNodeConfig rootNodeObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(rootNodeName);
+
+            //Build and array of field configs for the root node for ex: PERSON
+            newHashMap.put(rootNodeName, rootNodeObjectNodeConfig.getFieldConfigs());
+
+            ObjectNodeConfig[] arrObjectNodeConfig = screenObject.getRootObj().getChildConfigs();
+
+            for (int i = 0; i < arrObjectNodeConfig.length; i++) {
+                ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
+                newHashMap.put(childObjectNodeConfig.getName(), childObjectNodeConfig.getFieldConfigs().length*60);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return newHashMap;
+    }
+
+    /**
+     * 
+     * @param allNodeFieldConfigs sizes
+     */
+    
+    public void setAllNodeFieldConfigsSizes(HashMap allNodeFieldConfigs) {
+        this.allNodeFieldConfigsSizes = allNodeFieldConfigs;
+    }
+
+    public ArrayList getRootNodeFieldConfigs() {
+        ArrayList newArrayList = new ArrayList();
+        try {
+            ConfigManager.init();
+            
+            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(screenObject.getRootObj().getName());
+            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
+
+            //Build Person Epath Arraylist
+            for (int i = 0; i < allFeildConfigs.length; i++) {
+                FieldConfig fieldConfig = allFeildConfigs[i];
+               
+                String strCheckEuid = screenObject.getRootObj().getName()+".EUID";
+               
+                if(!strCheckEuid.equalsIgnoreCase(fieldConfig.getFullFieldName())) {
+                  newArrayList.add(fieldConfig);
+                }
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        rootNodeFieldConfigs = newArrayList;//store all the fields in the arraylist
+        return rootNodeFieldConfigs;
+    }
+
+    public void setRootNodeFieldConfigs(ArrayList rootNodeFieldConfigs) {
+        this.rootNodeFieldConfigs = rootNodeFieldConfigs;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+
+    public ArrayList getAllEOChildNodesLists() {
+        ArrayList newArrayList = new ArrayList();
+        try {
+            ConfigManager.init();
+
+            ObjectNodeConfig[] arrObjectNodeConfig = screenObject.getRootObj().getChildConfigs();
+
+            for (int i = 0; i < arrObjectNodeConfig.length; i++) {
+                ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
+                HashMap newHashMap = new HashMap();
+                newHashMap.put("KEYLIST","EO" + childObjectNodeConfig.getName() + "ArrayList");
+                newHashMap.put("NAME", childObjectNodeConfig.getName());
+                newHashMap.put("FIELDCONFIGS", childObjectNodeConfig.getFieldConfigs());
+                newArrayList.add(newHashMap);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return newArrayList;
+    }
+
+    /**
+     * 
+     * @param allChildNodesNameList
+     */
+    public void setAllEOChildNodesLists(ArrayList allChildNodesNameList) {
+        this.allEOChildNodesLists = allChildNodesNameList;
+    }
+
+    public ArrayList getAllSOChildNodesLists() {
+        ArrayList newArrayList = new ArrayList();
+        try {
+            ConfigManager.init();
+
+            ObjectNodeConfig[] arrObjectNodeConfig = screenObject.getRootObj().getChildConfigs();
+
+            for (int i = 0; i < arrObjectNodeConfig.length; i++) {
+                ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
+                HashMap newHashMap = new HashMap();
+                newHashMap.put("KEYLIST","SO" + childObjectNodeConfig.getName() + "ArrayList");
+                newHashMap.put("NAME", childObjectNodeConfig.getName());
+                newHashMap.put("FIELDCONFIGS", childObjectNodeConfig.getFieldConfigs());
+                newArrayList.add(newHashMap);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return newArrayList;
+    }
+
+    /**
+     * 
+     * @param allChildNodesNameList
+     */
+    public void setAllSOChildNodesLists(ArrayList allChildNodesNameList) {
+        this.allSOChildNodesLists = allChildNodesNameList;
+    }
+
+
+    
+   
 }

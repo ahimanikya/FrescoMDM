@@ -71,10 +71,10 @@ public class PatientDetailsHandler extends ScreenConfiguration {
     private int resultsSize = -1;
     private String singleEUID;
     private String compareEUID;
-    private String euid1 = "EUID 1";
-    private String euid2 = "EUID 2";
-    private String euid3 = "EUID 3";
-    private String euid4 = "EUID 4";
+    private String euid1 ;
+    private String euid2 ;
+    private String euid3 ;
+    private String euid4 ;
     
     private String compareEuids = new String();
 
@@ -120,6 +120,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             }
 
             super.setUpdateableFeildsMap(newFieldValuesMap);
+            //System.out.println("---------------1-------------------" + super.getUpdateableFeildsMap());
 
             //set the search type as per the user choice
             super.setSearchType(super.getSelectedSearchType());
@@ -1405,4 +1406,5 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
 
    
+
 

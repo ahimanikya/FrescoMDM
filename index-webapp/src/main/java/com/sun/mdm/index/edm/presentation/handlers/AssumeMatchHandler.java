@@ -29,9 +29,11 @@
 package com.sun.mdm.index.edm.presentation.handlers;
 import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
 import com.sun.mdm.index.edm.presentation.valueobjects.AssumeMatchesRecords;
+import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.FieldConfigGroup;
 import com.sun.mdm.index.edm.services.configuration.SearchResultsConfig;
+import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.edm.util.DateUtil;
 import com.sun.mdm.index.edm.util.QwsUtil;
 import com.sun.mdm.index.master.ProcessingException;
@@ -65,6 +67,7 @@ import java.util.logging.Level;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
+import javax.servlet.http.HttpServletRequest;
 
 public class AssumeMatchHandler extends ScreenConfiguration {
 
@@ -72,7 +75,10 @@ public class AssumeMatchHandler extends ScreenConfiguration {
     private static final String VALIDATION_ERROR = "validationError";
     private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.AssumeMatchHandler");
     private AssumeMatchesRecords[] assumeMatchesRecordsVO = null;
-    
+     /*
+     *  Request Object Handle
+     */  
+    HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     
     int totalFields = 0;
     int countMenuFields = 0;
@@ -86,6 +92,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
     Object objFirstName = null;
     Object objLastName = null;
     private String errorMessage;
+    ArrayList resultsArray  = new ArrayList();
 
     CompareDuplicateManager  compareDuplicateManager  = new CompareDuplicateManager();
     /** Creates a new instance of AssumeMatchHandler */
@@ -124,6 +131,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
             
             
             
+            //System.out.println("Submitted HashMap by the UI: " + super.getUpdateableFeildsMap());
             mLogger.error("Submitted HashMap by the UI: " + super.getUpdateableFeildsMap());
             //check one of many condtion here
             if (super.checkOneOfManyCondition()) {
@@ -219,10 +227,9 @@ public class AssumeMatchHandler extends ScreenConfiguration {
 
             // Lookup Assumed Matches
             AssumedMatchIterator amIter = masterControllerService.lookupAssumedMatches(amso);
-
             mLogger.error(">>> amIter.count " + amIter.count());
 
-
+            ArrayList amArrayList = new ArrayList();
             if (amIter != null & amIter.count() > 0) {
                 amIter.sortBy("EUID", false);
                 assumeMatchesRecordsVO = new AssumeMatchesRecords[amIter.count()];
@@ -237,10 +244,13 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     AssumedMatchSummary amSummary = (AssumedMatchSummary) amIter.next();
                     startPosition++;
                     EnterpriseObject beforeEO = amSummary.getBeforeEO();
+                    //System.out.println("--------------------------------------------");
+                    //System.out.println(">beforeEO>>>>"+beforeEO);
                     eoArrayList.add(beforeEO);
                     amHashMap.put(beforeEO.getEUID(), amSummary.getId()); // set the assumed match id in the hashmap                        
                     amHashMap.put("SystemCode", amSummary.getSystemCode()); // set the System code in the hashmap
                     EnterpriseObject afterEO = amSummary.getAfterEO();
+                    //System.out.println("afterEO>>>>>"+afterEO);
                     eoArrayList.add(afterEO);
                     summaryHash.put("summary", amSummary);
                     summaryHash.put("before", beforeEO);
@@ -248,7 +258,8 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     summaryList.add(summaryHash);
                     if ((index != 0 && !prevEuid.equalsIgnoreCase(amSummary.getEUID())) || index + 1 == amIter.count()) {  //Boundary value condition 
                         //populate VO                            
-                        populateVO(summaryList, index);
+                        amArrayList  = populateVO(summaryList, index);
+                        resultsArray.add(amArrayList);   
                         summaryHash.clear();
                         summaryList.clear();
                         counter++;
@@ -259,8 +270,13 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     //session.setAttribute("enterpriseArrayList", eoArrayList); //set the array of EO's (Before and After ) in the session
                     session.setAttribute("amId", amHashMap);//set am id in the session.
                 }// end of while
+                
+                //Accumilate the arrayList here  
+                
+
                 setSearchSize(counter);
             }
+            request.setAttribute("assumeMatchList", resultsArray);
         } catch (Exception ex) {
             // UserException and ValidationException don't need a stack trace.
             // ProcessingException stack trace logged by MC
@@ -346,11 +362,10 @@ public class AssumeMatchHandler extends ScreenConfiguration {
         }
 
         //set EUID VALUE IF lid/system code not supplied
-          if (super.getUpdateableFeildsMap().get("Person.EUID") != null && super.getUpdateableFeildsMap().get("Person.EUID").toString().trim().length() > 0) {
+          if (super.getUpdateableFeildsMap().get("EUID") != null && super.getUpdateableFeildsMap().get("EUID").toString().trim().length() > 0) {
             // Get array of strings
-            if(super.getUpdateableFeildsMap().get("Person.EUID") != null ) {
-                String[] euidArray = getStringEUIDs((String) super.getUpdateableFeildsMap().get("Person.EUID"));
-                
+            if(super.getUpdateableFeildsMap().get("EUID") != null ) {
+                String[] euidArray = getStringEUIDs((String) super.getUpdateableFeildsMap().get("EUID"));
                 if(euidArray!=null & euidArray.length >0) {
                     amso.setEUIDs(euidArray);
                 } else {
@@ -411,89 +426,127 @@ public class AssumeMatchHandler extends ScreenConfiguration {
         }
     }
 
-    private void populateVO(ArrayList amList, int offset) throws ObjectException, EPathException {
+    private ArrayList  populateVO(ArrayList amList, int offset) throws ObjectException, EPathException {
         //for (int i=0; i < assumeMatchesRecordsVO.length;i++) {
-        HashMap hashMap = (HashMap) amList.get(0); //Values always are in 0th index
-        AssumedMatchSummary ams = (AssumedMatchSummary) hashMap.get("summary");
-        EnterpriseObject before = (EnterpriseObject) hashMap.get("before");
-        EnterpriseObject after = (EnterpriseObject) hashMap.get("after");
+        AssumedMatchSummary ams = new AssumedMatchSummary();
+        HashMap newValuesMap  = new HashMap();
+        EnterpriseObject before = null;
         EnterpriseObject eo = before;
+        SimpleDateFormat sdf = new SimpleDateFormat(ConfigManager.getDateFormat());
 
-        assumeMatchesRecordsVO[offset] = new AssumeMatchesRecords(); //malloc
-        assumeMatchesRecordsVO[offset].setAssumedMatchId(ams.getId());
-
-        assumeMatchesRecordsVO[offset].setEuid(eo.getEUID());
-        assumeMatchesRecordsVO[offset].setLocalId(ams.getLID());
-        assumeMatchesRecordsVO[offset].setSystemCode(ams.getSystemCode());
-        assumeMatchesRecordsVO[offset].setWeight(new Float(ams.getWeight()).toString());
-
+        //Array list of field configs
+        ArrayList fcArrayList = super.getResultsConfigArray();
+        String epathValue = new String();
+        
+        ArrayList amArrayList = new ArrayList();
+        HashMap beforeMap = new HashMap();
+        HashMap afterMap = new HashMap();
+        HashMap summaryMap = new HashMap();
+        
         for (int j = 0; j < amList.size(); j++) { //Each Summary has Before and After
+            HashMap hashMap = (HashMap) amList.get(j); //Values always are in 0th index
             if (j == 0) {
                 ams = (AssumedMatchSummary) hashMap.get("summary");
                 eo = (EnterpriseObject) hashMap.get("before");
-                objFirstName = EPathAPI.getFieldValue("Person.FirstName", eo.getSBR().getObject());
-                //Set the First Name Values in VO
-                assumeMatchesRecordsVO[offset].getFirstName().add(objFirstName);
-                objLastName = EPathAPI.getFieldValue("Person.LastName", eo.getSBR().getObject());
-                //Set the Last Name Values in VO
-                assumeMatchesRecordsVO[offset].getLastName().add(objLastName);
-                objLastName = EPathAPI.getFieldValue("Person.SSN", eo.getSBR().getObject());
-                //Set the Last Name Values in VO       
-                assumeMatchesRecordsVO[offset].getSsn().add(objLastName);
-                objLastName = EPathAPI.getFieldValue("Person.DOB", eo.getSBR().getObject());
-                SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
-                String dob = simpleDateFormatFields.format(objLastName);
-                //Set the DOB Values in VO
-                assumeMatchesRecordsVO[offset].getDob().add(dob);
-                objLastName = EPathAPI.getFieldValue("Person.Address.AddressLine1", eo.getSBR().getObject());
-                //Set the Address Line1 Values in VO
-                assumeMatchesRecordsVO[offset].getAddressLine1().add(objLastName);
-                assumeMatchesRecordsVO[offset].setWeight(Float.toString(ams.getWeight()));
+                beforeMap.put("ID", ams.getId());
+                beforeMap.put("EUID", ams.getEUID());
+                beforeMap.put("LID", ams.getLID());
+                beforeMap.put("SystemCode", ams.getSystemCode());
+                beforeMap.put("Weight", ams.getWeight());
+                beforeMap.put("CreateUser", ams.getCreateUser());
+                beforeMap.put("CreateDate", sdf.format(ams.getCreateDate()));
+
+                for (int i = 0; i < fcArrayList.size(); i++) {
+                    FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
+                    if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
+                        epathValue = fieldConfig.getFullFieldName();
+                    } else {
+                        epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
+                    }
+                    if (fieldConfig.isUpdateable()) {
+                        if (fieldConfig.getValueType() == 6) {
+                            beforeMap.put(fieldConfig.getFullFieldName(), sdf.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                        } else {
+                            beforeMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                        }
+                    }
+                }
+
+                afterMap.put("ID", "");
+                afterMap.put("EUID", "");
+                afterMap.put("LID", "");
+                afterMap.put("SystemCode", "");
+                afterMap.put("Weight", "");
+                afterMap.put("CreateUser", "");
+                afterMap.put("CreateDate", "");
 
                 eo = (EnterpriseObject) hashMap.get("after");
-                objFirstName = EPathAPI.getFieldValue("Person.FirstName", eo.getSBR().getObject());
-                //Set the First Name Values in VO
-                assumeMatchesRecordsVO[offset].getFirstName().add(objFirstName);
-                objLastName = EPathAPI.getFieldValue("Person.LastName", eo.getSBR().getObject());
-                //Set the Last Name Values in VO
-                assumeMatchesRecordsVO[offset].getLastName().add(objLastName);
-                objLastName = EPathAPI.getFieldValue("Person.SSN", eo.getSBR().getObject());
-                //Set the Last Name Values in VO       
-                assumeMatchesRecordsVO[offset].getSsn().add(objLastName);
-                objLastName = EPathAPI.getFieldValue("Person.DOB", eo.getSBR().getObject());
-                simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
-                dob = simpleDateFormatFields.format(objLastName);
-                //Set the DOB Values in VO
-                assumeMatchesRecordsVO[offset].getDob().add(dob);
-                objLastName = EPathAPI.getFieldValue("Person.Address.AddressLine1", eo.getSBR().getObject());
-                //Set the Address Line1 Values in VO
-                assumeMatchesRecordsVO[offset].getAddressLine1().add(objLastName);
-                assumeMatchesRecordsVO[offset].setWeight(Float.toString(ams.getWeight()));
+                for (int i = 0; i < fcArrayList.size(); i++) {
+                    FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
+                    if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
+                        epathValue = fieldConfig.getFullFieldName();
+                    } else {
+                        epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
+                    }
+
+                    if (fieldConfig.isUpdateable()) {
+                        if (fieldConfig.getValueType() == 6) {
+                            afterMap.put(fieldConfig.getFullFieldName(), sdf.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+//                                 String dupList = (String) beforeMap.get(fieldConfig.getFullFieldName());
+//                                 dupList += "," + sdf.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+//                                 beforeMap.put(fieldConfig.getFullFieldName(),dupList + "}]");
+                        } else {
+                            afterMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+//                                 String dupList = (String) beforeMap.get(fieldConfig.getFullFieldName());
+//                                 dupList += "," + (String) (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+//                                 beforeMap.put(fieldConfig.getFullFieldName(),dupList + "}]");
+                        }
+                    }
+                }
+            //System.out.println("AMMMM AFTERRR" + afterMap + "resultsArray" + amArrayList + "resultsArray  ++++> " + amArrayList.size());
 
             } else {
                 ams = (AssumedMatchSummary) hashMap.get("summary");
                 eo = (EnterpriseObject) hashMap.get("after");
-                objFirstName = EPathAPI.getFieldValue("Person.FirstName", eo.getSBR().getObject());
-                //Set the First Name Values in VO
-                assumeMatchesRecordsVO[offset].getFirstName().add(objFirstName);
-                objLastName = EPathAPI.getFieldValue("Person.LastName", eo.getSBR().getObject());
-                //Set the Last Name Values in VO
-                assumeMatchesRecordsVO[offset].getLastName().add(objLastName);
-                objLastName = EPathAPI.getFieldValue("Person.SSN", eo.getSBR().getObject());
-                //Set the Last Name Values in VO       
-                assumeMatchesRecordsVO[offset].getSsn().add(objLastName);
-                objLastName = EPathAPI.getFieldValue("Person.DOB", eo.getSBR().getObject());
-                SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
-                String dob = simpleDateFormatFields.format(objLastName);
-                //Set the DOB Values in VO
-                assumeMatchesRecordsVO[offset].getDob().add(dob);
-                objLastName = EPathAPI.getFieldValue("Person.Address.AddressLine1", eo.getSBR().getObject());
-                //Set the Address Line1 Values in VO
-                assumeMatchesRecordsVO[offset].getAddressLine1().add(objLastName);
-                assumeMatchesRecordsVO[offset].setWeight(Float.toString(ams.getWeight()));
+                summaryMap.put("ID", "");
+                summaryMap.put("EUID", "");
+                summaryMap.put("LID", "");
+                summaryMap.put("SystemCode", "");
+                summaryMap.put("Weight", "");
+                summaryMap.put("CreateUser", "");
+                summaryMap.put("CreateDate", "");
+
+
+                for (int i = 0; i < fcArrayList.size(); i++) {
+                    FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
+                    if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
+                        epathValue = fieldConfig.getFullFieldName();
+                    } else {
+                        epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
+                    }
+
+                    if (fieldConfig.isUpdateable()) {
+                        if (fieldConfig.getValueType() == 6) {
+                            summaryMap.put(fieldConfig.getFullFieldName(), sdf.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+//                                 String dupList = (String) beforeMap.get(fieldConfig.getFullFieldName());
+//                                 dupList += "," + sdf.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+//                                 beforeMap.put(fieldConfig.getFullFieldName(),dupList + "}]");
+                        } else {
+                            summaryMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+//                                 String dupList = (String) beforeMap.get(fieldConfig.getFullFieldName());
+//                                 dupList += "," + (String) (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+//                                 beforeMap.put(fieldConfig.getFullFieldName(),dupList +"}]");
+                        }
+                    }
+                }
             }
+        //System.out.println("AMMMM SUMMARY " + summaryMap + "resultsArray" + amArrayList + "resultsArray  ++++> " + amArrayList.size());
+
         }
-    //}       
+        amArrayList.add(beforeMap);
+        amArrayList.add(afterMap);
+        //amArrayList.add(summaryMap);
+        return amArrayList;
     }
 
     public AssumeMatchesRecords[] getAssumeMatchesRecordsVO() {
@@ -560,14 +613,11 @@ public class AssumeMatchHandler extends ScreenConfiguration {
     public void previewUndoAssumedMatch(ActionEvent event) {
         try {
             String assumedMatchId = (String) event.getComponent().getAttributes().get("previewamIdValueExpression");
-            System.out.println("====1= ===(assumedMatchId)===" + assumedMatchId);
             ArrayList eoArrayList = (ArrayList) event.getComponent().getAttributes().get("eoArrayList");
             httpRequest.setAttribute("comapreEuidsArrayList", eoArrayList);
 
             EnterpriseObject newEO = masterControllerService.previewUndoAssumedMatch(assumedMatchId);
-            System.out.println("====1= ===(newEO)===" + newEO);
             HashMap previewAMEO = compareDuplicateManager.getEnterpriseObjectAsHashMap(newEO, screenObject);
-            //System.out.println("====1= ===(previewAMEO)===" + previewAMEO);
 
             httpRequest.setAttribute("AMID", assumedMatchId);
             httpRequest.setAttribute("previewAMEO", previewAMEO);
