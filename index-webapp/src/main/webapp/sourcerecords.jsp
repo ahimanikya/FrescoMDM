@@ -64,6 +64,83 @@
         <script type="text/javascript" src="./scripts/yui/element/element-beta.js"></script>
         <script type="text/javascript" src="./scripts/yui/tabview/tabview.js"></script>
         <script type="text/javascript" src="scripts/yui4jsf/event/event.js"></script>
+        <script type="text/javascript" >
+            var fieldNameValuesLocal="";
+            var fieldNamesLocal="";
+            var minorObjTypeLocal = "";
+            var minorObjTypeLocalCount = 0;
+            var minorArrayLocal = new Array();
+            
+            function accumilateMinorObjectFieldsOnBlurLocal(objectType,field,fullFieldName,mask,valueType) {
+                var maskChars = new Array();
+                var str = mask;
+                
+                str  = str.replace(/D/g,"");
+                
+                maskChars = str.split('');
+                
+                var valueEntered =  "";
+                valueEntered =  field.value;
+                //alert(valueEntered);
+
+                //valueEntered  = valueEntered.replace(/\)/g,"");
+                //valueEntered  = valueEntered.replace(/\(/g,"");
+                
+                //alert(valueType);
+                if(valueType != '6' || valueType != '8' ) {
+                    for(var i=0;i<maskChars.length;i++) {
+                        valueEntered  = valueEntered.replace(maskChars[i],'');
+                    }    
+                }    
+                //alert(valueEntered);
+
+                minorObjTypeLocal =   objectType;
+                //alert("fieldNamesLocal ==>" + valueEntered+":" + fullFieldName);
+                if(fieldNamesLocal != fullFieldName+':') {
+                    fieldNamesLocal+=fullFieldName+':';
+                }
+                //alert(fullFieldName  + "field.value====> " + field.value);
+                fieldNameValuesLocal += fullFieldName + "##"+valueEntered+ ">>" + minorObjTypeLocalCount + ">>";
+                //document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = fieldNameValuesLocal;
+                
+                fieldNameValuesLocal = fieldNameValuesLocal  + minorObjTypeLocal ;
+                //alert(" <====== > fieldNameValuesLocal "+fieldNameValuesLocal);
+                
+                minorArrayLocal.push(fieldNameValuesLocal);
+                //RESET THE FIELD VALUES HERE
+                fieldNameValuesLocal = "";
+                
+                //alert(" <====== >minorObjTypeLocalCount "+minorObjTypeLocalCount);
+                //document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = minorArrayLocal;
+                
+            }
+            
+            function accumilateMinorObjectSelectFieldsOnBlurLocal(objectType,field,fullFieldName) {
+                var selectedValue = field.options[field.selectedIndex].value;
+                minorObjTypeLocal =   objectType;
+                //alert("SELECT FIELDS fieldNamesLocal ==>" + selectedValue+":" + fullFieldName);
+                if(fieldNamesLocal != fullFieldName+':') {
+                    fieldNamesLocal+=fullFieldName+':';
+                }
+                //alert(fullFieldName  + "field.value====> " + field.value);
+                fieldNameValuesLocal += fullFieldName + "##"+selectedValue + ">>" + minorObjTypeLocalCount +">>";
+                //document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = fieldNameValuesLocal;
+                
+                fieldNameValuesLocal = fieldNameValuesLocal  + minorObjTypeLocal;
+                //alert(" <====== > fieldNameValuesLocal "+fieldNameValuesLocal);
+                
+                minorArrayLocal.push(fieldNameValuesLocal);
+                //RESET THE FIELD VALUES HERE
+                fieldNameValuesLocal = "";
+                
+                //alert(" <====== > minorArrayLocal "+minorArrayLocal);
+                //document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = minorArrayLocal;
+                //alert(" <====== >minorObjTypeLocalCount "+minorObjTypeLocalCount);
+                
+            }
+            
+            
+   </script>
         <!--there is no custom header content for this example-->
         
     </head>
@@ -129,6 +206,7 @@
                             </ul>  
                             <%
                                         ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
+                                        //System.out.println("screenObject.getSubscreensConfig();" + screenObject.getSubscreensConfig());
                                         SystemObject singleSystemObject = (SystemObject) session.getAttribute("singleSystemObject");
                                         ArrayList searchResultsScreenConfigArray = (ArrayList) session.getAttribute("viewEditResultsConfigArray");
                                         ArrayList systemObjectsMapList = (ArrayList) session.getAttribute("systemObjectsMapList");
@@ -136,8 +214,6 @@
                                         ValueExpression LIDVaueExpression = null;
                                         ValueExpression sourceSystemVaueExpression = null;
                                         ConfigManager.init();
-                                        ObjectNodeConfig objectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig("Person");
-                                        FieldConfig[] allFeildConfigs = objectNodeConfig.getFieldConfigs();
                                         EPathArrayList ePathArrayList = new EPathArrayList();
 
                                         //System.out.println("allFeildConfigs" + allFeildConfigs.length);
@@ -147,12 +223,9 @@
                                         HashMap systemObjectMap = (HashMap) session.getAttribute("systemObjectMap");
                                         String keyFunction = (String) session.getAttribute("keyFunction");
                                         SourceHandler sourceHandler = new SourceHandler();
-                                        Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
-                                        Object[] addressConfigFeilds = sourceHandler.getAddressFieldConfigs().toArray();
-                                        Object[] aliasConfigFeilds = sourceHandler.getAliasFieldConfigs().toArray();
-                                        Object[] phoneConfigFeilds = sourceHandler.getPhoneFieldConfigs().toArray();
+                                        Object[] personConfigFeilds = sourceHandler.getRootNodeFieldConfigs().toArray();
                                         SourceEditHandler sourceEditHandler = (SourceEditHandler)session.getAttribute("SourceEditHandler");
-                                        System.out.println("sourceEditHandler "  + sourceEditHandler );
+                                        //System.out.println("sourceEditHandler "  + sourceEditHandler );
                                         SourceAddHandler  sourceAddHandler   = new SourceAddHandler();
                                         int addressSize;
                                         int phoneSize;
@@ -202,7 +275,7 @@
                                                     </tr>
                                             </table>
                                             
-                                            <!--Start Displaying the person fields -->                                        
+                                            <!--Start Displaying the root node fields -->                                        
                                             <div style="height:300px;width:60%;overflow:auto">                                                    
                                                     <h:dataTable  
                                                         headerClass="tablehead" 
@@ -210,171 +283,53 @@
                                                         width="100%"
                                                         var="fieldConfig" 
                                                         rowClasses="odd,even"
-                                                        value="#{SourceHandler.personFieldConfigs}">
+                                                        value="#{SourceHandler.rootNodeFieldConfigs}">
                                                             <h:column>
                                                                 <h:outputText value="#{fieldConfig.displayName}"  />
                                                             </h:column>
                                                             <h:column>
-                                                                <h:outputText value="#{SourceHandler.singleSOHashMap[fieldConfig.fullFieldName]}"  />
+                                                                <h:outputText value="#{SourceHandler.singleSOHashMap['SYSTEM_OBJECT'][fieldConfig.fullFieldName]}"  />
                                                             </h:column>
                                                     </h:dataTable>               
                                             </div>
-                                     <!--End Displaying the person fields -->    
-                                     <!--Start Displaying the address fields -->    
-                                     <h:dataTable 
-                                        headerClass="tablehead"                                        
-                                        width="60%"
-                                        rowClasses="odd,even"                                     
-                                        id="adfieldConfigId" 
-                                        var="adressMapArrayList" 
-                                        value="#{SourceHandler.singleAddressHashMapArrayList}">
-                                        <f:facet name="header">
-                                             <h:column>
-                                                <h:outputText value="#{msgs.source_rec_address_details_text}"/>
-                                             </h:column>
-                                        </f:facet>
-                                        <f:facet name="footer">
-                                             <h:column>
-                                                 <% 
-                                                     addressSize = sourceHandler.getSingleAddressHashMapArrayList().size();
-                                                  %>
-                                                  <% if (addressSize  == 0 ) { %>
-                                                       <h:outputText value="#{msgs.source_rec_nodetails_text}"/>
-                                                  <%}%>
-                                            </h:column>
-                                        </f:facet>
-                                                     
-                                        <h:column>
-                                            <h:dataTable  
-                                               headerClass="tablehead" 
-                                               width="100%"
-                                               rowClasses="odd,even"                                     
-                                                id="addressHashId" 
-                                                var="addressFieldConfig" 
-                                                value="#{SourceHandler.addressFieldConfigs}">
-                                                <h:column>
-                                                    <h:outputText value="#{addressFieldConfig.displayName}"  />
-                                                </h:column>
-                                                <h:column rendered="#{addressFieldConfig.displayName eq 'Address Type'}">
-                                                            <b>
-                                                                <h:outputText rendered="#{adressMapArrayList[addressFieldConfig.fullFieldName] eq 'H'}" value="#{msgs.source_rec_viewedit_homeadd}"/>
-                                                                <h:outputText rendered="#{adressMapArrayList[addressFieldConfig.fullFieldName] eq 'H2'}" value="#{msgs.source_rec_viewedit_homeadd2}"/>
-                                                                <h:outputText rendered="#{adressMapArrayList[addressFieldConfig.fullFieldName] eq 'M'}" value="#{msgs.source_rec_viewedit_mailadd}"/>
-                                                                <h:outputText rendered="#{adressMapArrayList[addressFieldConfig.fullFieldName] eq 'O'}" value="#{msgs.source_rec_viewedit_offadd}"/>
-                                                                <h:outputText rendered="#{adressMapArrayList[addressFieldConfig.fullFieldName] eq 'T'}" value="#{msgs.source_rec_viewedit_temadd}"/>
-                                                                <h:outputText rendered="#{adressMapArrayList[addressFieldConfig.fullFieldName] eq 'V'}" value="#{msgs.source_rec_viewedit_vocationadd}"/>
-                                                                <h:outputText rendered="#{adressMapArrayList[addressFieldConfig.fullFieldName] eq 'W'}" value="#{msgs.source_rec_viewedit_workadd}"/>
-                                                                <h:outputText rendered="#{adressMapArrayList[addressFieldConfig.fullFieldName] eq 'W2'}" value="#{msgs.source_rec_viewedit_workadd2}"/>
-                                                            </b>
-                                                </h:column>
 
-                                                <h:column rendered="#{addressFieldConfig.displayName ne 'Address Type'}">
-                                                    <h:outputText value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" />
-                                                </h:column>
-                                                     
-                                            </h:dataTable>               
-                                        </h:column>
-                                     </h:dataTable> 
-                                    <!--End Displaying the Address fields -->    
+                                     <!--End Displaying the root node fields -->    
+                                     
+                                    <!--End Displaying the minor object fields -->    
+                                     <h:dataTable  headerClass="tablehead" 
+                                                          id="allChildNodesNamesSoEdit" 
+                                                          width="60%"
+                                                          rowClasses="odd,even"                                     
+                                                          var="childNodesName" 
+                                                          value="#{SourceHandler.allSOChildNodesLists}">
+                                       <h:column>
+                                              <p><h:outputText styleClass="tablehead" style="width:100%;" value="#{childNodesName['NAME']}"  /></p>
+                                              <h:dataTable  headerClass="tablehead" 
+                                                                  width="100%"
+                                                                  rowClasses="odd,even"                                     
+                                                                  id="sofieldConfigDPId" 
+                                                                  var="childMapArrayList" 
+                                                                  value="#{SourceHandler.singleSOHashMap[childNodesName['KEYLIST']]}">
+                                                        <h:column>
+                                                            <h:dataTable 
+                                                                rowClasses="odd,even"                                     
+                                                                id="minorHashId" 
+                                                                width="100%"
+                                                                var="childFieldConfig" 
+                                                                value="#{childNodesName['FIELDCONFIGS']}">
+                                                                <h:column>
+                                                                    <h:outputText value="#{childFieldConfig.displayName}"  />
+                                                                </h:column>
+                                                                <h:column>
+                                                                    <h:outputText value="#{childMapArrayList[childFieldConfig.fullFieldName]}"  />
+                                                                </h:column>
+                                                            </h:dataTable>               
+                                                        </h:column>
+                                                    </h:dataTable>                                                             
+                                       </h:column>
+                                   </h:dataTable>
 
-                                    <!--Start Displaying the phone fields -->    
-                                     <h:dataTable  
-                                        headerClass="tablehead"                                        
-                                        width="60%"
-                                        rowClasses="odd,even"                                     
-                                          id="phfieldConfigId" 
-                                          var="phoneMapArrayList" 
-                                                 value="#{SourceHandler.singlePhoneHashMapArrayList}">
-                                        <f:facet name="header">
-                                             <h:column>
-                                                <h:outputText value="#{msgs.source_rec_phone_text}"/>
-                                             </h:column>
-                                        </f:facet>
-                                        <f:facet name="footer">
-                                             <h:column>
-                                                 <% 
-                                                     phoneSize = sourceHandler.getSinglePhoneHashMapArrayList().size();
-                                                  %>
-                                                  <% if (phoneSize  == 0 ) { %>
-                                                       <h:outputText value="#{msgs.source_rec_nodetails_text}"/>
-                                                  <%}%>
-                                            </h:column>
-                                        </f:facet>
-                                                     
-                                        <h:column>
-                                            <h:dataTable  
-                                        headerClass="tablehead"      
-                                        width="100%"
-                                        rowClasses="odd,even"                                     
-                                             id="phoneHashId" 
-                                             var="phoneFieldConfig" 
-                                                         value="#{SourceHandler.phoneFieldConfigs}">
-                                                <h:column>
-                                                    <h:outputText value="#{phoneFieldConfig.displayName}"  />
-                                                </h:column>
-                                                <h:column rendered="#{phoneFieldConfig.displayName ne 'Phone Type'}">
-                                                    <h:outputText value="#{phoneMapArrayList[phoneFieldConfig.fullFieldName]}" />
-                                                </h:column>
-                                                <h:column rendered="#{phoneFieldConfig.displayName eq 'Phone Type'}">
-                                                    <b>
-                                                     <h:outputText rendered="#{phoneMapArrayList[phoneFieldConfig.fullFieldName] eq 'CB'}" value="#{msgs.source_rec_viewedit_businessphone}"/>
-                                                     <h:outputText rendered="#{phoneMapArrayList[phoneFieldConfig.fullFieldName] eq 'CBA'}" value="#{msgs.source_rec_viewedit_alternate_business_phone}"/>
-                                                     <h:outputText rendered="#{phoneMapArrayList[phoneFieldConfig.fullFieldName] eq 'CBD'}" value="#{msgs.source_rec_viewedit_business_direct}"/>
-                                                     <h:outputText rendered="#{phoneMapArrayList[phoneFieldConfig.fullFieldName] eq 'CC'}" value="#{msgs.source_rec_viewedit_cellular_phone}"/>
-                                                     <h:outputText rendered="#{phoneMapArrayList[phoneFieldConfig.fullFieldName] eq 'CF'}" value="#{msgs.source_rec_viewedit_fax}"/>
-                                                     <h:outputText rendered="#{phoneMapArrayList[phoneFieldConfig.fullFieldName] eq 'CH'}" value="#{msgs.source_rec_viewedit_home_phone}"/>
-                                                     <h:outputText rendered="#{phoneMapArrayList[phoneFieldConfig.fullFieldName] eq 'CO'}" value="#{msgs.source_rec_viewedit_office_phone}"/>
-                                                     <h:outputText rendered="#{phoneMapArrayList[phoneFieldConfig.fullFieldName] eq 'CP'}" value="#{msgs.source_rec_viewedit_pager}"/>
-                                                     </b>
-                                               </h:column>
-                                          </h:dataTable>               
-                                        </h:column>
-                                     </h:dataTable> 
-                                    <!--End Displaying the phone fields -->    
-
-                                    <!--Start Displaying the alias fields -->    
-                                     <h:dataTable  
-                                        headerClass="tablehead"                                        
-                                        width="60%"
-                                        rowClasses="odd,even"                                     
-                                     id="aliasfieldConfigId" 
-                                     var="aliasMapArrayList" 
-                                                 value="#{SourceHandler.singleAliasHashMapArrayList}">
-                                        <f:facet name="header">
-                                             <h:column>
-                                                <h:outputText value="#{msgs.source_rec_alias_details_text}"/>
-                                            </h:column>
-                                        </f:facet>
-                                                     
-                                        <h:column>
-                                            <h:dataTable  
-                                              headerClass="tablehead"                                        
-                                              width="100%"
-                                              rowClasses="odd,even"                                     
-                                              id="aliasHashId" 
-                                              var="aliasFieldConfig" 
-                                                         value="#{SourceHandler.aliasFieldConfigs}">
-                                                <h:column>
-                                                    <h:outputText value="#{aliasFieldConfig.displayName}"  />
-                                                </h:column>
-                                                <h:column>
-                                                    <h:outputText value="#{aliasMapArrayList[aliasFieldConfig.fullFieldName]}" />
-                                                </h:column>
-                                            </h:dataTable>               
-                                        </h:column>
-                                        <f:facet name="footer">
-                                             <h:column>
-                                                 <% 
-                                                     aliasSize = sourceHandler.getSingleAliasHashMapArrayList().size();
-                                                  %>
-                                                  <% if (aliasSize  == 0 ) { %>
-                                                       <h:outputText value="#{msgs.source_rec_nodetails_text}"/>
-                                                  <%}%>
-                                            </h:column>
-                                        </f:facet>
-                                     </h:dataTable> 
-                                    <!--End Displaying the alias fields -->    
-
+                                    <!--End Displaying the minor object fields -->    
 
                                     
                                             <table>
@@ -417,7 +372,7 @@
                                     <div id="sourceViewBasicSearch">
                                         
                                         <h:form>
-                                                    <table border="0" width="75%">
+                                            <table border="0" width="75%">
                                                         <tr>
                                                             <td>
                                                                 <h:commandLink  styleClass="button" 
@@ -466,7 +421,7 @@
                                             rowClasses="odd,even"                                     
                                             id="hashIdEdit" 
                                             var="fieldConfigPer" 
-                                            value="#{SourceHandler.personFieldConfigs}">                                                    
+                                            value="#{SourceHandler.rootNodeFieldConfigs}">                                                    
                                                     <h:column>
                                                         <h:outputText value="#{fieldConfigPer.displayName}"  />
                                                         <h:outputText value="*" rendered="#{fieldConfigPer.required}" />
@@ -483,18 +438,19 @@
                                                     <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6}" >
                                                         <h:inputText label="#{fieldConfigPer.displayName}"  
                                                                      id="fieldConfigIdTextbox"  
+                                                                     maxlength="#{fieldConfigPer.maxLength}"
                                                                      value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}" 
                                                                      required="#{fieldConfigPer.required}"
                                                                      />
                                                     </h:column>
                                                     <!--Rendering Updateable HTML Text boxes date fields-->
-                                                          <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6  }">
+                                                          <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6}">
                                                                   <h:inputText label="#{fieldConfigPer.displayName}"   
                                                                      value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}"  
-                                                                 
                                                                      required="#{fieldConfigPer.required}"
-                                                                     onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
+                                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')"
+                                                                     onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                     onblur="javascript:validate_date(this,'MM/dd/yyyy');"/>
                                                                     <script> var DOB = getDateFieldName('BasicSearchFieldsForm',':DOB');</script>                                                                             
                                                                     <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,DOB)" > 
                                                                         <h:graphicImage  id="calImgDobDate" 
@@ -502,8 +458,6 @@
                                                                                          url="./images/cal.gif"/>               
                                                                     </a>
                                                                 </h:column>
-                                                                
-                                                                
                                                                 <!--Rendering Updateable HTML Text Area-->
                                                                 <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
                                                                     <h:inputTextarea label="#{fieldConfigPer.displayName}"  
@@ -513,626 +467,254 @@
                                                                 </h:column>
                                                             </h:dataTable>               
                                                             <!--End Displaying the person fields -->    
-                                                  
-                                                        <table border="0" width="75%">
-                                                            <tr><td colspan="2">&nbsp;</td></tr>
-                                                            <tr>
-                                                                <td class="tablehead" colspan="2">
-                                                                    <h:outputText value="#{msgs.datatable_address_text}"/>                                                
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2" align="right">
-                                                                    <a HREF="javascript:void(0);" onclick="javascript:showExtraDivs('extraAddressEditDiv',event)" class="button">
-                                                                        <span><h:outputText value="#{msgs.source_rec_addaddress_but}"/></span>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                        
-                                                        <!-- Start Display address fields --> 
-                                                          <h:dataTable  headerClass="tablehead" 
-                                                  width="75%"
-                                                  rowClasses="odd,even"                                     
-                                                  id="adfieldConfigId" 
-                                                  var="adressMapArrayList" 
-                                                  value="#{SourceEditHandler.singleAddressHashMapArrayList}">
-                                                    <f:facet name="footer">
-                                                        <h:column>
-                                                            <%
-                                                             addressSize = sourceEditHandler.getSingleAddressHashMapArrayList().size();
-                                                            %>
-                                                            <% if (addressSize == 0) {%>
-                                                              <h:outputText value="#{msgs.source_rec_nodetails_text}"/>
-                                                            <%}%>              
-                                                        </h:column>
-                                                    </f:facet>
-                                                <h:column>
-                                                     <h:dataTable  width="100%"
-                                                      rowClasses="odd,even"                                     
-                                                      id="addressHashId" 
-                                                      var="addressFieldConfig" 
-                                                      value="#{SourceHandler.addressFieldConfigs}">
-                                                    <h:column>
-                                                        <h:outputText value="#{addressFieldConfig.displayName}"  />
-                                                        <h:outputText value="*" rendered="#{addressFieldConfig.required}" />
-                                                    </h:column>
-                                                    <!--Rendering HTML Select Menu List-->
-                                                    <h:column rendered="#{addressFieldConfig.guiType eq 'MenuList' &&  addressFieldConfig.valueType ne 6}" >
-                                                        <h:selectOneMenu value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" >
-                                                            <f:selectItem itemLabel="" itemValue="" />
-                                                            <f:selectItems  value="#{addressFieldConfig.selectOptions}"  />
-                                                        </h:selectOneMenu>
-                                                    </h:column>
-                                                    
-                                                    <!--Rendering Updateable HTML Text boxes-->
-                                                    <h:column rendered="#{addressFieldConfig.guiType eq 'TextBox' &&  addressFieldConfig.valueType ne 6}" >
-                                                        <h:inputText label="#{addressFieldConfig.displayName}"  
-                                                                     id="fieldConfigIdTextbox"   
-                                                                     value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" 
-                                                                     required="#{addressFieldConfig.required}"/>
-                                                    </h:column>
-                                                    
-                                                    
-                                                    <!--Rendering Updateable HTML Text boxes date fields-->
-                                                    <h:column rendered="#{addressFieldConfig.guiType eq 'TextBox' &&  addressFieldConfig.valueType eq 6}">
-                                                        <h:inputText label="#{addressFieldConfig.displayName}"   
-                                                                     value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}"  
-                                                                     required="#{addressFieldConfig.required}"
-                                                                     onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                        <a HREF="javascript:void(0);" 
-                                                                           onclick="g_Calendar.show(event,'topButtonsForm:fieldConfigId:6:date')" > 
-                                                                            <h:graphicImage  id="calImgStartDate" 
-                                                                                             alt="calendar Image" styleClass="imgClass"
-                                                                                             url="./images/cal.gif"/>               
-                                                                        </a>
-                                                                    </h:column>
-                                                                    
-                                                                    <!--Rendering Updateable HTML Text Area-->
-                                                                    <h:column rendered="#{addressFieldConfig.guiType eq 'TextArea' &&  addressFieldConfig.valueType ne 6}" >
-                                                                        <h:inputTextarea label="#{addressFieldConfig.displayName}"  
-                                                                                         id="fieldConfigIdTextArea"   
-                                                                                         value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" 
-                                                                                         required="#{addressFieldConfig.required}"/>
-                                                                     </h:column>
-                                                                    <f:facet name="footer">
+                                                            <!--Minor Object fields here -->       
+                                                               <h:dataTable  headerClass="tablehead" 
+                                                                                  id="allChildNodesNamesSoEdit" 
+                                                                                  width="100%"
+                                                                                  rowClasses="odd,even"                                     
+                                                                                  var="childNodesName" 
+                                                                                  value="#{SourceHandler.allSOChildNodesLists}">
                                                                         <h:column>
-                                                                            <h:commandLink  styleClass="button" 
-                                                                                            actionListener="#{SourceEditHandler.removeSOAddress}" >  
-                                                                                <f:attribute name="remAddressMap" value="#{adressMapArrayList}"/>
-                                                                                <span><h:outputText value="#{msgs.source_rec_delete_address_text}"/></span>
-                                                                            </h:commandLink>                                     
+                                                                            <table width="100%">
+                                                                                <tr>
+                                                                                    <td class="tablehead" colspan="2">
+                                                                                        <h:outputText value="#{childNodesName['NAME']}"/>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td align="right" colspan="2">
+                                                                                        <a href="javascript:void(0);" 
+                                                                                           onclick="javascript:showExtraDivs('extra<h:outputText value="#{childNodesName['NAME']}"/>EODiv',event)" 
+                                                                                           class="button">
+                                                                                            <span>Add <h:outputText value="#{childNodesName['NAME']}"/></span>
+                                                                                        </a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td align="left" colspan="2">
+                                                                                        <div id="add<h:outputText value="#{childNodesName['NAME']}"/>EODiv" style="width:100%;visibility:hidden;"></div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td align="right" colspan="2">
+                                                                                        <div id="add<h:outputText value="#{childNodesName['NAME']}"/>EODivClose" style="visibility:hidden;">
+                                                                                            <table>
+                                                                                                <tr>
+                                                                                                    <td align="right" colspan="2">
+                                                                                                        <a href="javascript:closeExtraDivs('add<h:outputText value="#{childNodesName['NAME']}"/>EODiv','add<h:outputText value="#{childNodesName['NAME']}"/>EODivClose')" class="button">
+                                                                                                        <span>Delete <h:outputText value="#{childNodesName['NAME']}"/></span></a>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>   
+                                                                            <h:dataTable  headerClass="tablehead" 
+                                                                                          width="100%"
+                                                                                          rowClasses="odd,even"                                     
+                                                                                          id="sofieldConfigId" 
+                                                                                          var="adressMapArrayList" 
+                                                                                          value="#{SourceHandler.singleSOHashMap[childNodesName['KEYLIST']]}">
+                                                                                <h:column>
+                                                                                    <h:dataTable 
+                                                                                        rowClasses="odd,even"                                     
+                                                                                        id="minorHashId" 
+                                                                                        var="addressFieldConfig" 
+                                                                                        value="#{childNodesName['FIELDCONFIGS']}">
+                                                                                        <h:column>
+                                                                                            <h:outputText value="#{addressFieldConfig.displayName}"  />
+                                                                                            <h:outputText value="*" rendered="#{addressFieldConfig.required}" />
+                                                                                        </h:column>
+                                                                                        <!--Rendering HTML Select Menu List-->
+                                                                                        <h:column rendered="#{addressFieldConfig.guiType eq 'MenuList' &&  addressFieldConfig.valueType ne 6}" >
+                                                                                            <h:selectOneMenu value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" >
+                                                                                                <f:selectItem itemLabel="" itemValue="" />
+                                                                                                <f:selectItems  value="#{addressFieldConfig.selectOptions}"  />
+                                                                                            </h:selectOneMenu>
+                                                                                        </h:column>
+                                                                                        
+                                                                                        <!--Rendering Updateable HTML Text boxes-->
+                                                                                        <h:column rendered="#{addressFieldConfig.guiType eq 'TextBox' &&  addressFieldConfig.valueType ne 6}" >
+                                                                                            <h:inputText label="#{addressFieldConfig.displayName}"  
+                                                                                                         id="fieldConfigIdTextbox"   
+                                                                                                         value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" 
+                                                                                                         required="#{addressFieldConfig.required}"/>
+                                                                                        </h:column>
+                                                                                        
+                                                                                        <!--Rendering Updateable HTML Text boxes date fields-->
+                                                                                        <h:column rendered="#{addressFieldConfig.guiType eq 'TextBox' &&  addressFieldConfig.valueType eq 6}">
+                                                                                            <h:inputText label="#{addressFieldConfig.displayName}"   
+                                                                                                         value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}"  
+                                                                                                         id="date"
+                                                                                                         required="#{addressFieldConfig.required}"
+                                                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
+                                                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                                                         onblur="javascript:validate_date(this,'MM/dd/yyyy');"/>
+                                                                                            <a HREF="javascript:void(0);" 
+                                                                                               onclick="g_Calendar.show(event,'topButtonsForm:fieldConfigId:6:date')" > 
+                                                                                                <h:graphicImage  id="calImgStartDate" 
+                                                                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                                                                 url="./images/cal.gif"/>               
+                                                                                            </a>
+                                                                                        </h:column>
+                                                                                        
+                                                                                        <!--Rendering Updateable HTML Text Area-->
+                                                                                        <h:column rendered="#{addressFieldConfig.guiType eq 'TextArea' &&  addressFieldConfig.valueType ne 6}" >
+                                                                                            <h:inputTextarea label="#{addressFieldConfig.displayName}"  
+                                                                                                             id="fieldConfigIdTextArea"   
+                                                                                                             value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" 
+                                                                                                             required="#{addressFieldConfig.required}"/>
+                                                                                        </h:column>
+                                                                                        <f:facet name="footer">
+                                                                                            <h:column>
+                                                                                                <a href="javascript:closeExtraDivs('add<h:outputText value="#{childNodesName['NAME']}"/>EODiv','add<h:outputText value="#{childNodesName['NAME']}"/>EODivClose')" class="button">
+                                                                                                <span>Delete <h:outputText value="#{childNodesName['NAME']}"/></span></a>
+                                                                                            </h:column>
+                                                                                        </f:facet>
+                                                                                    </h:dataTable>               
+                                                                                </h:column>
+                                                                            </h:dataTable>                                                             
                                                                         </h:column>
-                                                                    </f:facet>
-                                                                </h:dataTable>               
-                                                 </h:column>
-                                                        </h:dataTable>                                                             
-                                                        <!-- End Display address fields --> 
-                                                        <table><tr><td>&nbsp;</td></tr></table>
-                                                        
-                                                        <!-- Start Display Phone fields --> 
-                                                        <table border="0" width="75%">
-                                                            <tr><td colspan="2">&nbsp;</td></tr>
-                                                            <tr>
-                                                                <td class="tablehead" colspan="2">
-                                                                    <h:outputText value="#{msgs.source_rec_phone_text}"/>                                                  
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2" align="right">
-                                                                    <a HREF="javascript:void(0);" onclick="javascript:showExtraDivs('extraPhoneEditDiv',event)" class="button">
-                                                                        <span><h:outputText value="#{msgs.source_rec_add_phone_but}"/></span>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                        <h:dataTable width="75%"
-                                                                     rowClasses="odd,even"                                     
-                                                                     id="phfieldConfigId" 
-                                                                     var="phoneMapArrayList" 
-                                                                     value="#{SourceEditHandler.singlePhoneHashMapArrayList}">
-                                                            <f:facet name="footer">
-                                                                <h:column>
-                                                                    <%
-                                                                      phoneSize = sourceEditHandler.getSinglePhoneHashMapArrayList().size();
-                                                                    %>
-                                                                    <% if (phoneSize == 0) {%>
-                                                                    <h:outputText value="#{msgs.source_rec_nodetails_text}"/>
-                                                                    <%}%>
-                                                                </h:column>
-                                                            </f:facet>
-                                                            <h:column>
-                                                                <h:dataTable  headerClass="tablehead" 
-                                                                              width="100%"
-                                                                              rowClasses="odd,even"                                     
-                                                                              id="phoneHashId" 
-                                                                              var="phoneFieldConfig" 
-                                                                              value="#{SourceHandler.phoneFieldConfigs}">
-                                                                    <h:column>
-                                                                        <h:outputText value="#{phoneFieldConfig.displayName}"  />
-                                                                        <h:outputText value="*" rendered="#{phoneFieldConfig.required}" />
-                                                                    </h:column>
-                                                                    <!--Rendering HTML Select Menu List-->
-                                                                    <h:column rendered="#{phoneFieldConfig.guiType eq 'MenuList' &&  phoneFieldConfig.valueType ne 6}" >
-                                                                        <h:selectOneMenu value="#{phoneMapArrayList[phoneFieldConfig.fullFieldName]}" >
-                                                                            <f:selectItem itemLabel="" itemValue="" />
-                                                                            <f:selectItems  value="#{phoneFieldConfig.selectOptions}"  />
-                                                                        </h:selectOneMenu>
-                                                                    </h:column>
-                                                                    
-                                                                    <!--Rendering Updateable HTML Text boxes-->
-                                                                    <h:column rendered="#{phoneFieldConfig.guiType eq 'TextBox' &&  phoneFieldConfig.valueType ne 6}" >
-                                                                        <h:inputText label="#{phoneFieldConfig.displayName}"  
-                                                                                     id="fieldConfigIdTextbox"   
-                                                                                     value="#{phoneMapArrayList[phoneFieldConfig.fullFieldName]}" 
-                                                                                     required="#{phoneFieldConfig.required}"/>
-                                                                    </h:column>
-                                                                    
-                                                                    
-                                                                    <!--Rendering Updateable HTML Text boxes date fields-->
-                                                                    <h:column rendered="#{phoneFieldConfig.guiType eq 'TextBox' &&  phoneFieldConfig.valueType eq 6}">
-                                                                        <h:inputText label="#{phoneFieldConfig.displayName}"   
-                                                                                     value="#{phoneMapArrayList[phoneFieldConfig.fullFieldName]}"  
-                                                                                  
-                                                                                     required="#{phoneFieldConfig.required}"
-                                                                                     onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                        <a HREF="javascript:void(0);" 
-                                                                           onclick="g_Calendar.show(event,'topButtonsForm:fieldConfigId:6:date')" > 
-                                                                            <h:graphicImage  id="calImgStartDate" 
-                                                                                             alt="calendar Image" styleClass="imgClass"
-                                                                                             url="./images/cal.gif"/>               
-                                                                        </a>
-                                                                    </h:column>
-                                                                    
-                                                                    <!--Rendering Updateable HTML Text Area-->
-                                                                    <h:column rendered="#{phoneFieldConfig.guiType eq 'TextArea' &&  phoneFieldConfig.valueType ne 6}" >
-                                                                        <h:inputTextarea label="#{phoneFieldConfig.displayName}"  
-                                                                                         id="fieldConfigIdTextArea"   
-                                                                                         value="#{phoneMapArrayList[phoneFieldConfig.fullFieldName]}" 
-                                                                                         required="#{phoneFieldConfig.required}"/>
-                                                                    </h:column>
-                                                                    <f:facet name="footer">
-                                                                        <h:column>
-                                                                            <h:commandLink  styleClass="button" 
-                                                                                            actionListener="#{SourceEditHandler.removeSOPhone}" >  
-                                                                                <f:attribute name="remPhoneMap" value="#{phoneMapArrayList}"/>
-                                                                                <span><h:outputText value="#{msgs.source_rec_delete_phone_text}"/></span>
-                                                                            </h:commandLink>                                     
-                                                                        </h:column>
-                                                                    </f:facet>
-                                                                    
-                                                                </h:dataTable>               
-                                                            </h:column>
-                                                        </h:dataTable>                                                             
-                                                        <!-- End Display Phone fields --> 
-                                                        <table><tr><td>&nbsp;</td></tr></table>
-                                                        
-                                                        <!-- Start Display Alias fields --> 
-                                                        <table border="0" width="75%">
-                                                            <tr><td colspan="2">&nbsp;</td></tr>
-                                                            <tr>
-                                                                <td class="tablehead" colspan="2">
-                                                                    <h:outputText value="#{msgs.source_rec_alias_text}"/>                                               
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2" align="right">
-                                                                    <a HREF="javascript:void(0);" onclick="javascript:showExtraDivs('extraAliasEditDiv',event)" class="button">
-                                                                        <span><h:outputText value="#{msgs.source_rec_add_alias_text}"/></span></a>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                        
-                                                        <h:dataTable  headerClass="tablehead" 
-                                                                      width="75%"
-                                                                      rowClasses="odd,even"                                     
-                                                                      id="aliasfieldConfigId" 
-                                                                      var="aliasMapArrayList" 
-                                                                      value="#{SourceEditHandler.singleAliasHashMapArrayList}">
-                                                            <f:facet name="footer">
-                                                                <h:column>
-                                                                    <%
-                                                                     aliasSize = sourceEditHandler.getSingleAliasHashMapArrayList().size();
-                                                                    %>
-                                                                    <% if (aliasSize == 0) {%>
-                                                                    <h:outputText value="#{msgs.source_rec_nodetails_text}"/>
-                                                                    <%}%>
-                                                                </h:column>
-                                                            </f:facet>
-                                                            <h:column>
-                                                                <h:dataTable  headerClass="tablehead" 
-                                                                              id="aliasHashId" 
-                                                                              width="100%"
-                                                                              rowClasses="odd,even"                                     
-                                                                              var="aliasFieldConfig" 
-                                                                              value="#{SourceHandler.aliasFieldConfigs}">
-                                                                    
-                                                                    <h:column>
-                                                                        <h:outputText value="#{aliasFieldConfig.displayName}"  />
-                                                                        <h:outputText value="*" rendered="#{aliasFieldConfig.required}" />
-                                                                    </h:column>
-                                                                    <!--Rendering HTML Select Menu List-->
-                                                                    <h:column rendered="#{aliasFieldConfig.guiType eq 'MenuList' &&  aliasFieldConfig.valueType ne 6}" >
-                                                                        <h:selectOneMenu value="#{aliasMapArrayList[aliasFieldConfig.fullFieldName]}" >
-                                                                            <f:selectItem itemLabel="" itemValue="" />
-                                                                            <f:selectItems  value="#{aliasFieldConfig.selectOptions}"  />
-                                                                        </h:selectOneMenu>
-                                                                    </h:column>
-                                                                    
-                                                                    <!--Rendering Updateable HTML Text boxes-->
-                                                                    <h:column rendered="#{aliasFieldConfig.guiType eq 'TextBox' &&  aliasFieldConfig.valueType ne 6}" >
-                                                                        <h:inputText label="#{aliasFieldConfig.displayName}"  
-                                                                                     id="fieldConfigIdTextbox"   
-                                                                                     value="#{aliasMapArrayList[aliasFieldConfig.fullFieldName]}" 
-                                                                                     required="#{aliasFieldConfig.required}"/>
-                                                                    </h:column>
-                                                                    
-                                                                    
-                                                                    <!--Rendering Updateable HTML Text boxes date fields-->
-                                                                    <h:column rendered="#{aliasFieldConfig.guiType eq 'TextBox' &&  aliasFieldConfig.valueType eq 6}">
-                                                                        <h:inputText label="#{aliasFieldConfig.displayName}"   
-                                                                                     value="#{aliasMapArrayList[aliasFieldConfig.fullFieldName]}"  
-                                                                                  
-                                                                                     required="#{aliasFieldConfig.required}"
-                                                                                     onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                        <a HREF="javascript:void(0);" 
-                                                                           onclick="g_Calendar.show(event,'topButtonsForm:fieldConfigId:6:date')" > 
-                                                                            <h:graphicImage  id="calImgStartDate" 
-                                                                                             alt="calendar Image" styleClass="imgClass"
-                                                                                             url="./images/cal.gif"/>               
-                                                                        </a>
-                                                                    </h:column>
-                                                                    
-                                                                    <!--Rendering Updateable HTML Text Area-->
-                                                                    <h:column rendered="#{aliasFieldConfig.guiType eq 'TextArea' &&  aliasFieldConfig.valueType ne 6}" >
-                                                                        <h:inputTextarea label="#{aliasFieldConfig.displayName}"  
-                                                                                         id="fieldConfigIdTextArea"   
-                                                                                         value="#{aliasMapArrayList[aliasFieldConfig.fullFieldName]}" 
-                                                                                         required="#{aliasFieldConfig.required}"/>
-                                                                    </h:column>
-                                                                    <f:facet name="footer">
-                                                                        <h:column>
-                                                                            <h:commandLink  styleClass="button" 
-                                                                                            actionListener="#{SourceEditHandler.removeSOAlias}" >  
-                                                                                <f:attribute name="remAliasMap" value="#{aliasMapArrayList}"/>
-                                                                                <span><h:outputText value="#{msgs.source_rec_delete_alias_text}"/></span>
-                                                                            </h:commandLink>                                     
-                                                                        </h:column>
-                                                                    </f:facet>
-                                                                    
-                                                                </h:dataTable>               
-                                                            </h:column>
-                                                        </h:dataTable>                                                             
-                                                        <table><tr><td>&nbsp;</td></tr></table>
-                                                        <!-- End Display Alias fields --> 
-                                  <!-- End EDIT Fields-->
-                                 <%} else if ("inactive".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>          
-                                  <!-- Start READ ONLY Fields-->
-                                        <!-- Start EDIT Fields-->
-                                                            <!--Start Displaying the person fields -->                                        
+                                                                    </h:dataTable>
+                                                            <!-- End Display minor objects fields --> 
+                                                           <!-- End EDIT Fields-->
+                                                     <%} else if ("inactive".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>          
+                                                          <!-- Start READ ONY Fields-->
+                                                            <!--Start Displaying the root node fields -->                                        
                                            <h:dataTable  
                                             headerClass="tablehead"                                        
                                             width="100%"
                                             rowClasses="odd,even"                                     
                                             id="hashIdEdit" 
-                                            var="fieldConfigPerReadOnly" 
-                                            value="#{SourceHandler.personFieldConfigs}">                                                    
+                                            var="fieldConfigPer" 
+                                            value="#{SourceHandler.rootNodeFieldConfigs}">                                                    
                                                     <h:column>
-                                                        <h:outputText value="#{fieldConfigPerReadOnly.displayName}"  />
-                                                        <h:outputText value="*" rendered="#{fieldConfigPerReadOnly.required}" />
+                                                        <h:outputText value="#{fieldConfigPer.displayName}"  />
+                                                        <h:outputText value="*" rendered="#{fieldConfigPer.required}" />
                                                     </h:column>                                                        
                                                     <!--Rendering HTML Select Menu List-->
-                                                    <h:column rendered="#{fieldConfigPerReadOnly.guiType eq 'MenuList' &&  fieldConfigPerReadOnly.valueType ne 6}" >
-                                                        <h:selectOneMenu disabled="true"   style="background-color:#efefef;font-color:#efefef"readonly="true" value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPerReadOnly.fullFieldName]}" >
+                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'MenuList' &&  fieldConfigPer.valueType ne 6}" >
+                                                        <h:selectOneMenu value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}" 
+                                                                         readonly="true" 
+                                                                         disabled="true">
                                                             <f:selectItem itemLabel="" itemValue="" />
-                                                            <f:selectItems  value="#{fieldConfigPerReadOnly.selectOptions}"  />
+                                                            <f:selectItems  value="#{fieldConfigPer.selectOptions}"  />
                                                         </h:selectOneMenu>
                                                     </h:column>
                                                     
                                                     <!--Rendering Updateable HTML Text boxes-->
-                                                    <h:column rendered="#{fieldConfigPerReadOnly.updateable && fieldConfigPerReadOnly.guiType eq 'TextBox' &&  fieldConfigPerReadOnly.valueType ne 6}" >
-                                                        <h:inputText disabled="true"   style="background-color:#efefef;font-color:#efefef"readonly="true" label="#{fieldConfigPerReadOnly.displayName}"  
-                                                                     id="fieldConfigIdTextbox"   
-                                                                     value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPerReadOnly.fullFieldName]}" 
-                                                                     required="#{fieldConfigPerReadOnly.required}"
+                                                    <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6}" >
+                                                        <h:inputText label="#{fieldConfigPer.displayName}"  
+                                                                     id="fieldConfigIdTextbox"  readonly="true" disabled="true"
+                                                                     value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}" 
+                                                                     required="#{fieldConfigPer.required}"
                                                                      />
                                                     </h:column>
                                                     <!--Rendering Updateable HTML Text boxes date fields-->
-                                                   <h:column rendered="#{fieldConfigPerReadOnly.guiType eq 'TextBox' &&  fieldConfigPerReadOnly.valueType eq 6}">
-                                                        <h:inputText readonly="true" disabled="true"   style="background-color:#efefef;font-color:#efefef"label="#{fieldConfigPerReadOnly.displayName}"   
-                                                                     value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPerReadOnly.fullFieldName]}"  
-                                                                    
-                                                                     required="#{fieldConfigPerReadOnly.required}"
-                                                                     onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                            <script> var DOB = getDateFieldName('BasicSearchFieldsForm',':DOB');</script>                                                                                   
-                                                                            <a HREF="javascript:void(0);" 
-                                                                               onclick="g_Calendar.show(event,DOB)" > 
-                                                                                <h:graphicImage  id="calImgdodDate" 
-                                                                                                 alt="calendar Image" styleClass="imgClass"
-                                                                                                 url="./images/cal.gif"/>               
-                                                                            </a>
-                                                     </h:column>
-                                                                <!--Rendering Updateable HTML Text Area-->
-                                                                <h:column rendered="#{fieldConfigPerReadOnly.updateable && fieldConfigPerReadOnly.guiType eq 'TextArea' &&  fieldConfigPerReadOnly.valueType ne 6}" >
-                                                                    <h:inputTextarea readonly="true" 
-                                                                                     disabled="true"
-                                                                                     label="#{fieldConfigPerReadOnly.displayName}"  
-                                                                                     id="fieldConfigIdTextArea"   
-                                                                                     value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPerReadOnly.fullFieldName]}" 
-                                                                                     required="#{fieldConfigPerReadOnly.required}"/>
-                                                                </h:column>
-                                                            </h:dataTable>               
-                                                            <!--End Displaying the person fields -->    
-                                                
-                                                        <table border="0" width="75%">
-                                                            <tr><td colspan="2">&nbsp;</td></tr>
-                                                            <tr>
-                                                                <td class="tablehead" colspan="2">
-                                                                    <h:outputText value="#{msgs.datatable_address_text}"/>                                                
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                        
-                                                        <!-- Start Display address fields --> 
-                                                         <h:dataTable  headerClass="tablehead" 
-                                                  width="75%"
-                                                  rowClasses="odd,even"                                     
-                                                  id="adfieldConfigId" 
-                                                  var="adressMapArrayList" 
-                                                  value="#{SourceEditHandler.singleAddressHashMapArrayList}">
-                                                    <f:facet name="footer">
-                                                        <h:column>
-                                                            <%
-                                                               addressSize = sourceEditHandler.getSingleAddressHashMapArrayList().size();
-                                                            %>
-                                                            <% if (addressSize == 0) {%>
-                                                              <h:outputText value="#{msgs.source_rec_nodetails_text}"/>
-                                                            <%}%>              
-                                                        </h:column>
-                                                    </f:facet>
-                                     <h:column>
-                                        <h:dataTable  width="100%"
-                                                      rowClasses="odd,even"                                     
-                                                      id="addressHashId" 
-                                                      var="addressFieldConfigReadOnly" 
-                                                      value="#{SourceHandler.addressFieldConfigs}">
-                                                    <h:column>
-                                                        <h:outputText value="#{addressFieldConfigReadOnly.displayName}"  />
-                                                        <h:outputText value="*" rendered="#{addressFieldConfigReadOnly.required}" />
-                                                    </h:column>
-                                                    <!--Rendering HTML Select Menu List-->
-                                                    <h:column rendered="#{addressFieldConfigReadOnly.guiType eq 'MenuList' &&  addressFieldConfigReadOnly.valueType ne 6}" >
-                                                        <h:selectOneMenu readonly="true" disabled="true"   style="background-color:#efefef;font-color:#efefef"value="#{adressMapArrayList[addressFieldConfigReadOnly.fullFieldName]}" >
-                                                            <f:selectItem itemLabel="" itemValue="" />
-                                                            <f:selectItems  value="#{addressFieldConfigReadOnly.selectOptions}"  />
-                                                        </h:selectOneMenu>
-                                                    </h:column>
-                                                    
-                                                    <!--Rendering Updateable HTML Text boxes-->
-                                                    <h:column rendered="#{addressFieldConfigReadOnly.guiType eq 'TextBox' &&  addressFieldConfigReadOnly.valueType ne 6}" >
-                                                        <h:inputText readonly="true" disabled="true"   style="background-color:#efefef;font-color:#efefef"label="#{addressFieldConfigReadOnly.displayName}"  
-                                                                     id="fieldConfigIdTextbox"   
-                                                                     value="#{adressMapArrayList[addressFieldConfigReadOnly.fullFieldName]}" 
-                                                                     required="#{addressFieldConfigReadOnly.required}"/>
-                                                    </h:column>
-                                                    
-                                                    
-                                                    <!--Rendering Updateable HTML Text boxes date fields-->
-                                                    <h:column rendered="#{addressFieldConfigReadOnly.guiType eq 'TextBox' &&  addressFieldConfigReadOnly.valueType eq 6}">
-                                                        <h:inputText readonly="true" disabled="true"   style="background-color:#efefef;font-color:#efefef"label="#{addressFieldConfigReadOnly.displayName}"   
-                                                                     value="#{adressMapArrayList[addressFieldConfigReadOnly.fullFieldName]}"  
-                                                                  
-                                                                     required="#{addressFieldConfigReadOnly.required}"
-                                                                     onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                        <a HREF="javascript:void(0);" 
-                                                                           onclick="g_Calendar.show(event,'topButtonsForm:fieldConfigId:6:date')" > 
+                                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6}">
+                                                                        <h:inputText label="#{fieldConfigPer.displayName}"   
+                                                                                     value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}"  
+                                                                                     readonly="true" disabled="true"
+                                                                                     required="#{fieldConfigPer.required}"
+                                                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')"
+                                                                                     onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                                     onblur="javascript:validate_date(this,'MM/dd/yyyy');"/>
                                                                             <h:graphicImage  id="calImgStartDate" 
                                                                                              alt="calendar Image" styleClass="imgClass"
                                                                                              url="./images/cal.gif"/>               
-                                                                        </a>
                                                                     </h:column>
                                                                     
                                                                     <!--Rendering Updateable HTML Text Area-->
-                                                                    <h:column rendered="#{addressFieldConfigReadOnly.guiType eq 'TextArea' &&  addressFieldConfigReadOnly.valueType ne 6}" >
-                                                                        <h:inputTextarea readonly="true" disabled="true"   style="background-color:#efefef;font-color:#efefef"
-                                                                                         label="#{addressFieldConfigReadOnly.displayName}"  
-                                                                                         id="fieldConfigIdTextArea"   
-                                                                                         value="#{adressMapArrayList[addressFieldConfigReadOnly.fullFieldName]}" 
-                                                                                         required="#{addressFieldConfigReadOnly.required}"/>
+                                                                    <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
+                                                                        <h:inputTextarea label="#{fieldConfigPer.displayName}"  
+                                                                                         id="fieldConfigIdTextArea"   readonly="true" disabled="true"
+                                                                                         value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}" 
+                                                                                         required="#{fieldConfigPer.required}"/>
                                                                     </h:column>
                                                                 </h:dataTable>               
-                                                            </h:column>
-                                                        </h:dataTable>                                                             
-                                                        <!-- End Display address fields --> 
-                                                        <table><tr><td>&nbsp;</td></tr></table>
-                                                        
-                                                        <!-- Start Display Phone fields --> 
-                                                        <table border="0" width="75%">
-                                                            <tr><td colspan="2">&nbsp;</td></tr>
-                                                            <tr>
-                                                                <td class="tablehead" colspan="2">
-                                                                    <h:outputText value="#{msgs.source_rec_phone_text}"/>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                        <h:dataTable width="75%"
-                                                                     rowClasses="odd,even"                                     
-                                                                     id="phfieldConfigId" 
-                                                                     var="phoneMapArrayList" 
-                                                                     value="#{SourceEditHandler.singlePhoneHashMapArrayList}">
-                                                            <f:facet name="footer">
-                                                                <h:column>
-                                                                    <%
-                                                                       phoneSize = sourceEditHandler.getSinglePhoneHashMapArrayList().size();
-                                                                    %>
-                                                                    <% if (phoneSize == 0) {%>
-                                                                    <h:outputText value="#{msgs.source_rec_nodetails_text}"/>
-                                                                    <%}%>
-                                                                </h:column>
-                                                            </f:facet>
-                                                            <h:column>
-                                                                <h:dataTable  headerClass="tablehead" 
+                                                                <!--End Displaying the root node fields -->    
+                                                              <!--Minor Object fields here -->       
+                                                              <h:dataTable  headerClass="tablehead" 
+                                                                              id="allChildNodesNamesSoEdit" 
                                                                               width="100%"
                                                                               rowClasses="odd,even"                                     
-                                                                              id="phoneHashId" 
-                                                                              var="phoneFieldConfigReadOnly" 
-                                                                              value="#{SourceHandler.phoneFieldConfigs}">
+                                                                              var="childNodesName" 
+                                                                              value="#{SourceHandler.allSOChildNodesLists}">
                                                                     <h:column>
-                                                                        <h:outputText value="#{phoneFieldConfigReadOnly.displayName}"  />
-                                                                        <h:outputText value="*" rendered="#{phoneFieldConfigReadOnly.required}" />
-                                                                    </h:column>
-                                                                    <!--Rendering HTML Select Menu List-->
-                                                                    <h:column rendered="#{phoneFieldConfigReadOnly.guiType eq 'MenuList' &&  phoneFieldConfigReadOnly.valueType ne 6}" >
-                                                                        <h:selectOneMenu readonly="true" disabled="true"   style="background-color:#efefef;font-color:#efefef"value="#{phoneMapArrayList[phoneFieldConfigReadOnly.fullFieldName]}" >
-                                                                            <f:selectItem itemLabel="" itemValue="" />
-                                                                            <f:selectItems  value="#{phoneFieldConfigReadOnly.selectOptions}"  />
-                                                                        </h:selectOneMenu>
-                                                                    </h:column>
-                                                                    
-                                                                    <!--Rendering Updateable HTML Text boxes-->
-                                                                    <h:column rendered="#{phoneFieldConfigReadOnly.guiType eq 'TextBox' &&  phoneFieldConfigReadOnly.valueType ne 6}" >
-                                                                        <h:inputText readonly="true" disabled="true"   style="background-color:#efefef;font-color:#efefef"label="#{phoneFieldConfigReadOnly.displayName}"  
-                                                                                     id="fieldConfigIdTextbox"   
-                                                                                     value="#{phoneMapArrayList[phoneFieldConfigReadOnly.fullFieldName]}" 
-                                                                                     required="#{phoneFieldConfigReadOnly.required}"/>
-                                                                    </h:column>
-                                                                    
-                                                                    
-                                                                    <!--Rendering Updateable HTML Text boxes date fields-->
-                                                                    <h:column rendered="#{phoneFieldConfigReadOnly.guiType eq 'TextBox' &&  phoneFieldConfigReadOnly.valueType eq 6}">
-                                                                        <h:inputText readonly="true" disabled="true"   style="background-color:#efefef;font-color:#efefef"label="#{phoneFieldConfigReadOnly.displayName}"   
-                                                                                     value="#{phoneMapArrayList[phoneFieldConfigReadOnly.fullFieldName]}"  
-                                                                                  
-                                                                                     required="#{phoneFieldConfigReadOnly.required}"
-                                                                                     onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                        <a HREF="javascript:void(0);" 
-                                                                           onclick="g_Calendar.show(event,'topButtonsForm:fieldConfigId:6:date')" > 
-                                                                            <h:graphicImage  id="calImgStartDate" 
-                                                                                             alt="calendar Image" styleClass="imgClass"
-                                                                                             url="./images/cal.gif"/>               
-                                                                        </a>
-                                                                    </h:column>
-                                                                    
-                                                                    <!--Rendering Updateable HTML Text Area-->
-                                                                    <h:column rendered="#{phoneFieldConfigReadOnly.guiType eq 'TextArea' &&  phoneFieldConfigReadOnly.valueType ne 6}" >
-                                                                        <h:inputTextarea readonly="true" disabled="true"
-                                                                                         label="#{phoneFieldConfigReadOnly.displayName}"  
-                                                                                         id="fieldConfigIdTextArea"   
-                                                                                         value="#{phoneMapArrayList[phoneFieldConfigReadOnly.fullFieldName]}" 
-                                                                                         required="#{phoneFieldConfigReadOnly.required}"/>
-                                                                    </h:column>
-                                                                </h:dataTable>               
-                                                            </h:column>
-                                                        </h:dataTable>                                                             
-                                                        <!-- End Display Phone fields --> 
-                                                        <table><tr><td>&nbsp;</td></tr></table>
-                                                        
-                                                        <!-- Start Display Alias fields --> 
-                                                        <table border="0" width="75%">
-                                                            <tr><td colspan="2">&nbsp;</td></tr>
-                                                            <tr>
-                                                                <td class="tablehead" colspan="2">
-                                                                    <h:outputText value="#{msgs.source_rec_alias_text}"/>                                               
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                        
-                                                        <h:dataTable  headerClass="tablehead" 
-                                                                      width="75%"
-                                                                      rowClasses="odd,even"                                     
-                                                                      id="aliasFieldConfigReadId" 
-                                                                      var="aliasMapArrayList" 
-                                                                      value="#{SourceEditHandler.singleAliasHashMapArrayList}">
-                                                            <f:facet name="footer">
-                                                                <h:column>
-                                                                    <%
-                                                                      aliasSize = sourceEditHandler.getSingleAliasHashMapArrayList().size();
-                                                                    %>
-                                                                    <% if (aliasSize == 0) {%>
-                                                                    <h:outputText value="#{msgs.source_rec_nodetails_text}"/>
-                                                                    <%}%>
-                                                                </h:column>
-                                                            </f:facet>
-                                                            <h:column>
-                                                                <h:dataTable  headerClass="tablehead" 
-                                                                              id="aliasHashId" 
-                                                                              width="100%"
-                                                                              rowClasses="odd,even"                                     
-                                                                              var="aliasFieldConfigRead" 
-                                                                              value="#{SourceHandler.aliasFieldConfigs}">
-                                                                    
-                                                                    <h:column>
-                                                                        <h:outputText value="#{aliasFieldConfigRead.displayName}"  />
-                                                                        <h:outputText value="*" rendered="#{aliasFieldConfigRead.required}" />
-                                                                    </h:column>
-                                                                    <!--Rendering HTML Select Menu List-->
-                                                                    <h:column rendered="#{aliasFieldConfigRead.guiType eq 'MenuList' &&  aliasFieldConfigRead.valueType ne 6}" >
-                                                                        <h:selectOneMenu readonly="true" disabled="true"   style="background-color:#efefef;font-color:#efefef"value="#{aliasMapArrayList[aliasFieldConfigRead.fullFieldName]}" >
-                                                                            <f:selectItem itemLabel="" itemValue="" />
-                                                                            <f:selectItems  value="#{aliasFieldConfigRead.selectOptions}"  />
-                                                                        </h:selectOneMenu>
-                                                                    </h:column>
-                                                                    
-                                                                    <!--Rendering Updateable HTML Text boxes-->
-                                                                    <h:column rendered="#{aliasFieldConfigRead.guiType eq 'TextBox' &&  aliasFieldConfigRead.valueType ne 6}" >
-                                                                        <h:inputText readonly="true" disabled="true"   style="background-color:#efefef;font-color:#efefef"label="#{aliasFieldConfigRead.displayName}"  
-                                                                                     id="fieldConfigIdTextbox"   
-                                                                                     value="#{aliasMapArrayList[aliasFieldConfigRead.fullFieldName]}" 
-                                                                                     required="#{aliasFieldConfigRead.required}"/>
-                                                                    </h:column>
-                                                                    
-                                                                    
-                                                                    <!--Rendering Updateable HTML Text boxes date fields-->
-                                                                    <h:column rendered="#{aliasFieldConfigRead.guiType eq 'TextBox' &&  aliasFieldConfigRead.valueType eq 6}">
-                                                                        <h:inputText readonly="true" disabled="true"   style="background-color:#efefef;font-color:#efefef"label="#{aliasFieldConfigRead.displayName}"   
-                                                                                     value="#{aliasMapArrayList[aliasFieldConfigRead.fullFieldName]}"  
-                                                                                    
-                                                                                     required="#{aliasFieldConfigRead.required}"
-                                                                                     onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                        <a HREF="javascript:void(0);" 
-                                                                           onclick="g_Calendar.show(event,'topButtonsForm:fieldConfigId:6:date')" > 
-                                                                            <h:graphicImage  id="calImgStartDate" 
-                                                                                             alt="calendar Image" styleClass="imgClass"
-                                                                                             url="./images/cal.gif"/>               
-                                                                        </a>
-                                                                    </h:column>
-                                                                    
-                                                                    <!--Rendering Updateable HTML Text Area-->
-                                                                    <h:column rendered="#{aliasFieldConfigRead.guiType eq 'TextArea' &&  aliasFieldConfigRead.valueType ne 6}" >
-                                                                        <h:inputTextarea readonly="true" 
-                                                                                         disabled="true"
-                                                                                         label="#{aliasFieldConfigRead.displayName}"  
-                                                                                         id="fieldConfigIdTextArea"   
-                                                                                         value="#{aliasMapArrayList[aliasFieldConfigRead.fullFieldName]}" 
-                                                                                         required="#{aliasFieldConfigReadOnly.required}"/>
-                                                                    </h:column>
-                                                                    <f:facet name="footer">
+                                                                    <table width="100%">
+                                                                        <tr>
+                                                                            <td class="tablehead" colspan="2">
+                                                                                <h:outputText value="#{childNodesName['NAME']}"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>   
+                                                                    <h:dataTable  headerClass="tablehead" 
+                                                                                  width="100%"
+                                                                                  rowClasses="odd,even"                                     
+                                                                                  id="sofieldConfigId" 
+                                                                                  var="adressMapArrayList" 
+                                                                                  value="#{SourceHandler.singleSOHashMap[childNodesName['KEYLIST']]}">
                                                                         <h:column>
-                                                                            <h:commandLink  styleClass="button" 
-                                                                                            actionListener="#{SourceEditHandler.removeSOAlias}" >  
-                                                                                <f:attribute name="remAliasMap" value="#{aliasMapArrayList}"/>
-                                                                                <span><h:outputText value="#{msgs.source_rec_delete_alias_text}"/></span>
-                                                                            </h:commandLink>                                     
+                                                                            <h:dataTable 
+                                                                                rowClasses="odd,even"                                     
+                                                                                id="minorHashrReadOnlyId" 
+                                                                                var="addressFieldConfig" 
+                                                                                value="#{childNodesName['FIELDCONFIGS']}">
+                                                                                <h:column>
+                                                                                    <h:outputText value="#{addressFieldConfig.displayName}"  />
+                                                                                    <h:outputText value="*" rendered="#{addressFieldConfig.required}" />
+                                                                                </h:column>
+                                                                                <!--Rendering HTML Select Menu List-->
+                                                                                <h:column rendered="#{addressFieldConfig.guiType eq 'MenuList' &&  addressFieldConfig.valueType ne 6}" >
+                                                                                    <h:selectOneMenu value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" readonly="true" disabled="true">
+                                                                                        <f:selectItem itemLabel="" itemValue="" />
+                                                                                        <f:selectItems  value="#{addressFieldConfig.selectOptions}"  />
+                                                                                    </h:selectOneMenu>
+                                                                                </h:column>
+                                                                                
+                                                                                <!--Rendering Updateable HTML Text boxes-->
+                                                                                <h:column rendered="#{addressFieldConfig.guiType eq 'TextBox' &&  addressFieldConfig.valueType ne 6}" >
+                                                                                    <h:inputText label="#{addressFieldConfig.displayName}"  
+                                                                                                 id="fieldConfigIdTextbox"   readonly="true" disabled="true"
+                                                                                                 value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" 
+                                                                                                 required="#{addressFieldConfig.required}"/>
+                                                                                </h:column>
+                                                                                
+                                                                                <!--Rendering Updateable HTML Text boxes date fields-->
+                                                                                <h:column rendered="#{addressFieldConfig.guiType eq 'TextBox' &&  addressFieldConfig.valueType eq 6}">
+                                                                                    <h:inputText label="#{addressFieldConfig.displayName}"   
+                                                                                                 value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}"  
+                                                                                                 id="dateField" readonly="true" disabled="true"
+                                                                                                 required="#{addressFieldConfig.required}"
+                                                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
+                                                                                                 onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                                                 onblur="javascript:validate_date(this,'MM/dd/yyyy');"/>
+                                                                                        <h:graphicImage  id="calImgStartDate" 
+                                                                                                         alt="calendar Image" styleClass="imgClass"
+                                                                                                         url="./images/cal.gif"/>               
+                                                                                </h:column>
+                                                                                
+                                                                                <!--Rendering Updateable HTML Text Area-->
+                                                                                <h:column rendered="#{addressFieldConfig.guiType eq 'TextArea' &&  addressFieldConfig.valueType ne 6}" >
+                                                                                    <h:inputTextarea label="#{addressFieldConfig.displayName}"  
+                                                                                                     id="fieldConfigIdTextArea"   readonly="true" disabled="true"
+                                                                                                     value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" 
+                                                                                                     required="#{addressFieldConfig.required}"/>
+                                                                                </h:column>
+                                                                            </h:dataTable>               
                                                                         </h:column>
-                                                                    </f:facet>
-                                                                    
-                                                                </h:dataTable>               
-                                                            </h:column>
-                                                        </h:dataTable>                                                             
-                                                        <table><tr><td>&nbsp;</td></tr></table>
-                                                        <!-- End Display Alias fields --> 
-                                  <!-- End READ ONLY  Fields-->
+                                                                    </h:dataTable>                                                             
+                                                                </h:column>
+                                                            </h:dataTable>
+                                                              <!-- End Display minor objects fields --> 
+                                                         <!-- End READ ONLY Fields-->
 
-                                 <%}%>
+                                                     <%}%>
                                                         <table>  
-                                                            <tr>        
+                                                            <tr>       
+                                                     <% if ("active".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>          
+                                                            
                                                                 <td>
                                                                     <h:commandLink  styleClass="button" rendered="#{Operations.SO_Edit}"
                                                                                     action="#{SourceEditHandler.updateSO}" >
@@ -1146,6 +728,7 @@
                                                                         <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                                                     </h:commandLink>                                     
                                                                 </td>
+                                                                <%}%>         
                                                                 <td>
                                                                     <h:commandLink  styleClass="button" rendered="#{Operations.EO_SearchViewSBR}" 
                                                                                     action="#{NavigationHandler.toEuidDetails}" 
@@ -1385,234 +968,189 @@
                                                     <!--Start Add source record form-->
                                                     <input type="hidden" name="lidmask" value="DDD-DDD-DDDD" />
                                                     <input type="hidden" name="ssnmask" value="DDD-DD-DDDD" />
-                                                            <table border="0" width="100%">
-                            <h:dataTable headerClass="tablehead"  
-                                         id="fieldConfigId" 
-                                         var="feildConfig" 
-                                         value="#{SourceAddHandler.addScreenConfigArray}">
-                                <!--Rendering Non Updateable HTML Text Area-->
-                                <h:column>
-                                    <nobr>
-                                        <h:outputText value="*" rendered="#{feildConfig.required}" />
-                                        <h:outputText value="#{feildConfig.displayName}" />
-                                    </nobr>
-                                </h:column>
-                                <!--Rendering HTML Select Menu List-->
-                                <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
-                                    <nobr>
-                                        <h:selectOneMenu  onchange="javascript:setLidMaskValue(this,'basicAddformData')"
-                                                          id="SystemCode" 
-                                                          value="#{SourceAddHandler.systemCode}" 
-                                                          rendered="#{feildConfig.name eq 'SystemCode'}"
-                                                          required="true">
-                                            <f:selectItems  value="#{feildConfig.selectOptions}" />
-                                        </h:selectOneMenu>
-                                    </nobr>
-                                </h:column>
-                                <!--Rendering Updateable HTML Text boxes-->
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6}" >
-                                    <nobr>
-                                        <h:inputText   required="true" 
-                                                       label="#{feildConfig.displayName}" 
-                                                       onkeydown="javascript:qws_field_on_key_down(this, document.basicAddformData.lidmask.value)"
-                                                       onkeyup="javascript:qws_field_on_key_up(this)"
-                                                       onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                       value="#{SourceAddHandler.LID}"
-                                                       maxlength="#{SourceMergeHandler.lidMaskLength}" 
-                                                       rendered="#{feildConfig.name eq 'LID'}"/>
-                                                       
-                                    </nobr>
-                                </h:column>
-                           </h:dataTable>
-                                                    <%if(session.getAttribute("validation") != null ) {%>
+                                                    <h:dataTable headerClass="tablehead"  
+                                                                             id="fieldConfigId" 
+                                                                             var="feildConfig" 
+                                                                             value="#{SourceAddHandler.addScreenConfigArray}">
+                                                                    <!--Rendering Non Updateable HTML Text Area-->
+                                                                    <h:column>
+                                                                        <nobr>
+                                                                            <h:outputText value="*" rendered="#{feildConfig.required}" />
+                                                                            <h:outputText value="#{feildConfig.displayName}" />
+                                                                        </nobr>
+                                                                    </h:column>
+                                                                    <!--Rendering HTML Select Menu List-->
+                                                                    <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
+                                                                        <nobr>
+                                                                            <h:selectOneMenu  onchange="javascript:setLidMaskValue(this,'basicAddformData')"
+                                                                                              id="SystemCode" 
+                                                                                              value="#{SourceAddHandler.systemCode}" 
+                                                                                              rendered="#{feildConfig.name eq 'SystemCode'}"
+                                                                                              required="true">
+                                                                                <f:selectItems  value="#{feildConfig.selectOptions}" />
+                                                                            </h:selectOneMenu>
+                                                                        </nobr>
+                                                                    </h:column>
+                                                                    <!--Rendering Updateable HTML Text boxes-->
+                                                                    <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6}" >
+                                                                        <nobr>
+                                                                            <h:inputText   required="true" 
+                                                                                           label="#{feildConfig.displayName}" 
+                                                                                           onkeydown="javascript:qws_field_on_key_down(this, document.basicAddformData.lidmask.value)"
+                                                                                           onblur="javascript:qws_field_on_key_down(this, document.basicAddformData.lidmask.value);"
+                                                                                           onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                                           value="#{SourceAddHandler.LID}"
+                                                                                           maxlength="#{SourceMergeHandler.lidMaskLength}" 
+                                                                                           rendered="#{feildConfig.name eq 'LID'}"/>
+                                                                                           
+                                                                        </nobr>
+                                                                    </h:column>
+                                                                </h:dataTable>
+                                                   <%if(session.getAttribute("validation") != null ) {%>
                                                
                                                     <!-- Start ADD  Fields-->
                                                     <table width="100%">
                                                         <tr>
                                                             <td class="tablehead" colspan="2">
-                                                                <h:outputText value="#{msgs.personal_information_text}"/>                                            
+                                                                <b><%=objScreenObject.getRootObj().getName()%>&nbsp;Info</b>
                                                             </td>
                                                         </tr>
-                                                     </table>
-                                                    <!--Start Displaying the person fields -->  
-                                                                                                     
-                                                               <h:dataTable  headerClass="tablehead"  
-                                                                      id="hashIdEdit" 
-                                                                      width="100%"
-                                                                      rowClasses="odd,even"                                     
-                                                                      var="fieldConfigPerAdd" 
-                                                                      value="#{SourceAddHandler.personFieldConfigs}">
-                                                                <h:column>
-                                                                   <h:outputText value="#{fieldConfigPerAdd.displayName}"  />
-                                                                   
-                                                                    <h:outputText value="*" rendered="#{fieldConfigPerAdd.required}" />
-                                                                </h:column>
-                                                                <!--Rendering HTML Select Menu List-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'MenuList' &&  fieldConfigPerAdd.valueType ne 6}" >
-                                                                    <h:selectOneMenu value="#{SourceAddHandler.newSOHashMap[fieldConfigPerAdd.fullFieldName]}">
-                                                                        <f:selectItem itemLabel="" itemValue="" />
-                                                                        <f:selectItems  value="#{fieldConfigPerAdd.selectOptions}"  />
-                                                                    </h:selectOneMenu>
-                                                                </h:column>
-                                                                <!--Rendering Updateable HTML Text boxes-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType ne 6}" >
-                                                                    <h:inputText label="#{fieldConfigPerAdd.displayName}"  
-                                                                                 id="fieldConfigIdTextbox"  
-                                                                                 value="#{SourceAddHandler.newSOHashMap[fieldConfigPerAdd.fullFieldName]}" 
-                                                                                 required="#{fieldConfigPerAdd.required}"/>
-                                                                </h:column>                     
-                                                                <!--Rendering Updateable HTML Text boxes date fields-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6 }">
-                                                                    <h:inputText label="#{fieldConfigPerAdd.name}"  
-                                                                                 value="#{SourceAddHandler.newSOHashMap[fieldConfigPerAdd.fullFieldName]}"  
-                                                                                 required="#{fieldConfigPerAdd.required}"
-                                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                                 onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                 />
-                                                                   <script> var DOB1 = getDateFieldName('basicAddformData',':DOB');</script>                                                                            
-                                                                    <h:outputLink value="javascript:void(0);"  id="calLink"
-                                                                                  onclick="g_Calendar.show(event,DOB1)" > 
-                                                                        <h:graphicImage  id="calImgStartDate" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </h:outputLink>
-                                                                </h:column>
-                                                                <!--Rendering Updateable HTML Text Area-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextArea' &&  fieldConfigPerAdd.valueType ne 6}" >
-                                                                    <h:inputTextarea label="#{fieldConfigPerAdd.displayName}"  
-                                                                                     id="fieldConfigIdTextArea"   
-                                                                                     value="#{SourceAddHandler.newSOHashMap[fieldConfigPerAdd.fullFieldName]}" 
-                                                                                     required="#{fieldConfigPerAdd.required}"
-                                                                                     />
-                                                                </h:column>
-                                                                
-                                                            </h:dataTable>
-
+                                                    </table>
+                                                    
+                                                    <h:dataTable  headerClass="tablehead"  
+                                                                  id="hashIdEdit" 
+                                                                  width="100%"
+                                                                  rowClasses="odd,even"                                     
+                                                                  var="fieldConfigPerAdd" 
+                                                                  value="#{SourceHandler.rootNodeFieldConfigs}">
+                                                        <h:column>
+                                                            <h:outputText value="#{fieldConfigPerAdd.displayName}"  />
                                                             
-                                                        <table border="0" width="100%">
-                                                            <tr><td colspan="2">&nbsp;</td></tr>
-                                                            <tr>
-                                                                <td class="tablehead" colspan="2">
-                                                                    <h:outputText value="#{msgs.PatDetail_AddressPrompt}"/>                                                
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2" align="right">
-                                                                    <a HREF="javascript:void(0);" onclick="javascript:showExtraDivs('extraAddressAddDiv',event)" class="button">
-                                                                        <span><h:outputText value="#{msgs.source_rec_addaddress_but}"/></span>
+                                                            <h:outputText value="*" rendered="#{fieldConfigPerAdd.required}" />
+                                                        </h:column>
+                                                        <!--Rendering HTML Select Menu List-->
+                                                        <h:column rendered="#{fieldConfigPerAdd.guiType eq 'MenuList' &&  fieldConfigPerAdd.valueType ne 6}" >
+                                                            <h:selectOneMenu onblur="javascript:accumilateNewPersonSelectFieldsOnBlur(this,'#{fieldConfigPerAdd.fullFieldName}')">
+                                                                <f:selectItem itemLabel="" itemValue="" />
+                                                                <f:selectItems  value="#{fieldConfigPerAdd.selectOptions}"  />
+                                                            </h:selectOneMenu>
+                                                        </h:column>
+                                                        <!--Rendering Updateable HTML Text boxes-->
+                                                        <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType ne 6}" >
+                                                            <h:inputText label="#{fieldConfigPerAdd.displayName}"  
+                                                                         id="fieldConfigIdTextbox"  
+                                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
+                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                         onblur="javascript:accumilateNewPersonFieldsOnBlur(this,'#{fieldConfigPerAdd.fullFieldName}','#{fieldConfigPerAdd.inputMask}','#{fieldConfigPerAdd.valueType}')"                                                                         
+                                                                         required="#{fieldConfigPerAdd.required}"/>
+                                                        </h:column>                     
+                                                        <!--Rendering Updateable HTML Text boxes date fields-->
+                                                        <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6}">
+                                                            <h:inputText label="#{fieldConfigPerAdd.name}"
+                                                                         required="#{fieldConfigPerAdd.required}"
+                                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
+                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                         onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateNewPersonFieldsOnBlur(this,'#{fieldConfigPerAdd.fullFieldName}','#{fieldConfigPerAdd.inputMask}','#{fieldConfigPerAdd.valueType}')"                                                                         
+                                                                         />
+                                                            <script> var DOB1 = getDateFieldName('basicAddformData',':DOB');</script>                                                                            
+                                                            <h:outputLink value="javascript:void(0);"  id="calLink"
+                                                                          onclick="g_Calendar.show(event,DOB1)" > 
+                                                                <h:graphicImage  id="calImgStartDate" 
+                                                                                 alt="calendar Image" styleClass="imgClass"
+                                                                                 url="./images/cal.gif"/>               
+                                                            </h:outputLink>
+                                                        </h:column>
+                                                        <!--Rendering Updateable HTML Text Area-->
+                                                        <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextArea' &&  fieldConfigPerAdd.valueType ne 6}" >
+                                                            <h:inputTextarea label="#{fieldConfigPerAdd.displayName}"  
+                                                                             id="fieldConfigIdTextArea"   
+                                                                             required="#{fieldConfigPerAdd.required}"
+                                                                             onblur="javascript:accumilateNewPersonFieldsOnBlur(this,'#{fieldConfigPerAdd.fullFieldName}','#{childFieldConfigAdd.inputMask}','#{childFieldConfigAdd.valueType}')"                                                                         
+                                                                             />
+                                                        </h:column>
+                                                        
+                                                    </h:dataTable>
+                                                    
+                                                    <h:dataTable  headerClass="tablehead" 
+                                                                  id="allChildNodesNamesAdd" 
+                                                                  width="100%"
+                                                                  rowClasses="odd,even"                                     
+                                                                  var="childNodesName" 
+                                                                  value="#{SourceHandler.allChildNodesNames}">
+                                                        <h:column>
+                                                            <table width="100%">
+                                                                <tr>
+                                                                    <td class="tablehead" colspan="2">
+                                                                        <h:outputText value="#{childNodesName}"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="right" colspan="2">
+                                                                        <a href="javascript:void(0);" 
+                                                                           onclick="javascript:showExtraDivs('extra<h:outputText value="#{childNodesName}"/>AddDiv',event)" 
+                                                                           class="button">
+                                                                            <span>Add <h:outputText value="#{childNodesName}"/></span>
                                                                         </a>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                        <div id="addAddressDiv" style="width:100%;visibility:hidden;"></div>
-                                                        <div id="addAddressDivClose" style="visibility:hidden;">
-                                                            <table>
+                                                                    </td>
+                                                                </tr>
                                                                 <tr>
                                                                     <td align="right" colspan="2">
-                                                                        <a href="javascript:closeExtraDivs('addAddressDiv','addAddressDivClose')" class="button">
-                                                                            <span><h:outputText value="#{msgs.source_rec_deleteaddress_but}"/></span></a>
+                                                                        <div id="add<h:outputText value="#{childNodesName}"/>Div" style="width:100%;visibility:hidden;"></div>
                                                                     </td>
-                                                                    
                                                                 </tr>
-                                                                </table>   
-                                                        </div>
-                                                        
-                                                        <table><tr><td>&nbsp;</td></tr></table>
-                                                        
-                                                        <!-- Start Display Phone fields --> 
-                                                        <table border="0" width="100%">
-                                                            <tr><td colspan="2">&nbsp;</td></tr>
-                                                            <tr>
-                                                                <td class="tablehead" colspan="2">
-                                                                    <h:outputText value="#{msgs.source_rec_phone_text}"/>                                               
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2" align="right">
-                                                                    <a HREF="javascript:void(0);" onclick="javascript:showExtraDivs('extraPhoneAddDiv',event)" class="button">
-                                                                        <span><h:outputText value="#{msgs.source_rec_add_phone_but}"/> </span></a>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                        <div id="addPhoneDiv" style="width:100%;visibility:hidden;"></div>
-                                                        <div id="addPhoneDivClose" style="visibility:hidden;">
-                                                            <table>
                                                                 <tr>
                                                                     <td align="right" colspan="2">
-                                                                        <a href="javascript:closeExtraDivs('addPhoneDiv','addPhoneDivClose')" class="button">
-                                                                            <span><h:outputText value="#{msgs.source_rec_delete_phone_text}"/> </a></span>
+                                                                        <div id="add<h:outputText value="#{childNodesName}"/>DivClose" style="visibility:hidden;">
+                                                                            <table>
+                                                                                <tr>
+                                                                                    <td align="right" colspan="2">
+                                                                                        <a href="javascript:closeExtraDivs('add<h:outputText value="#{childNodesName}"/>Div','add<h:outputText value="#{childNodesName}"/>DivClose')" class="button">
+                                                                                        <span>Delete <h:outputText value="#{childNodesName}"/></span></a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
                                                                     </td>
-                                                                    
                                                                 </tr>
-                                                                </table>   
-                                                        </div>
-                                                          
-                                                        <!-- End Display Phone fields --> 
-                                                        <table><tr><td>&nbsp;</td></tr></table>
-                                                        <!-- Start Display Alias fields --> 
-                                                        <table border="0" width="100%">
-                                                            <tr><td colspan="2">&nbsp;</td></tr>
-                                                            <tr>
-                                                                <td class="tablehead" colspan="2">
-                                                                    <h:outputText value="#{msgs.source_rec_alias_text}"/>                                               
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2" align="right">
-                                                                    <a HREF="javascript:void(0);" onclick="javascript:showExtraDivs('extraAliasAddDiv',event)" class="button">
-                                                                        <span><h:outputText value="#{msgs.source_rec_add_alias_text}"/></span></a>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                        <div id="addAliasDiv" style="width:100%;visibility:hidden;"></div>
-                                                        <div id="addAliasDivClose" style="visibility:hidden;">
-                                                            <table>
-                                                                <tr>
-                                                                    <td align="right" colspan="2">
-                                                                        <a href="javascript:closeExtraDivs('addAliasDiv','addAliasDivClose')" class="button">
-                                                                            <span><h:outputText value="#{msgs.source_rec_delete_alias_text}"/> </span></a>
-                                                                    </td>
-                                                                    
-                                                                </tr>
-                                                                </table>   
-                                                        </div>
-                                                          
-                                                        <table><tr><td>&nbsp;</td></tr></table>
-                                                        <!-- End Display Alias fields --> 
-                                                        <!-- Start Display Comment fields --> 
-                                                        <%}%>                                                                                                                                                           
-                                                        
-                                                        <!-- End Display Comment fields --> 
+                                                            </table>   
+                                                        </h:column>
+                                                    </h:dataTable>
+                                                    <%}%>                                                                                                                                                           
                                                     
                                                     <!--End Add source record form-->
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <nobr>
-                                                    <a class="button" href="javascript:ClearContents('basicAddformData')">
-                                                        <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
-                                                    </a>
-                                                    </nobr>
-                                                    <%if(session.getAttribute("validation") != null ) {%>
-                                                    <nobr>
-                                                    <h:commandLink  styleClass="button" rendered="#{Operations.SO_Add}"
-                                                                    action="#{SourceAddHandler.addNewSO}">  
-                                                        <span><h:outputText value="#{msgs.submit_button_text}"/></span>
-                                                    </h:commandLink>                                     
-                                                    </nobr>
-                                                   <%}else{%>
-                                                    <nobr>
-                                                    <h:commandLink  styleClass="button" rendered="#{Operations.SO_Add}"
-                                                                    action="#{SourceAddHandler.validateLID}">  
-                                                        <span><h:outputText value="#{msgs.validate_button_text}"/></span>
-                                                    </h:commandLink>                                     
-                                                    </nobr>
-                                                   <%}%>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </h:form>
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <a class="button" href="javascript:ClearContents('basicAddformData')">
+                                                                    <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
+                                                                </a>
+                                                            </td>
+                                                            <td>
+                                                                <%if (session.getAttribute("validation") != null) {%>
+                                                                <nobr>
+                                                                    <h:commandLink  styleClass="button" rendered="#{Operations.SO_Add}"
+                                                                                    action="#{SourceAddHandler.addNewSO}">  
+                                                                        <span><h:outputText value="#{msgs.submit_button_text}"/></span>
+                                                                    </h:commandLink>                                     
+                                                                </nobr>
+                                                                <%} else {%>
+                                                                <nobr>
+                                                                    <h:commandLink  styleClass="button" rendered="#{Operations.SO_Add}"
+                                                                                    action="#{SourceAddHandler.validateLID}">  
+                                                                        <span><h:outputText value="#{msgs.validate_button_text}"/></span>
+                                                                    </h:commandLink>                                     
+                                                                </nobr>
+                                                                <%}%>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                             </td>   
+                                          </tr>   
+                                       </table>   
+                                        <h:inputHidden id="minorObjectsEnteredFieldValues" value="#{SourceAddHandler.minorObjectsEnteredFieldValues}"/>
+                                        <h:inputHidden id="newSOEnteredFieldValues" value="#{SourceAddHandler.newSOEnteredFieldValues}"/>
+                                        <h:inputHidden id="minorObjectTotal" value="#{SourceAddHandler.minorObjectTotal}"/>
+                                  </h:form>
                                 </div>
                               <%}%> 
                               <% if(operations.isSO_Merge()){%> 
@@ -1682,8 +1220,10 @@
                                              <hr/>
                                              <%
                                                if(session.getAttribute("soHashMapArrayList") != null ){
+                                                   
                                                   //request.setAttribute("soHashMapArrayList",request.getAttribute("soHashMapArrayList")); 
                                                  ArrayList newSoArrayList= (ArrayList) session.getAttribute("soHashMapArrayList");
+                                                 //System.out.println("==>Hellllllllllllllllll : " + newSoArrayList);
                                              %>
                                             <table cellpadding="0" cellspacing="0">  
                                             <tr>
@@ -1990,7 +1530,7 @@
                 </tr>
             </table>
             
-        </div> <!-end source records dic -->
+        </div> <!--end source records div -->
          <!-- START Extra divs for add  SO-->
          <div id="mergeDiv" class="alert" style="top:500px;height:130px;left:560px;visibility:hidden">
              <h:form id="finalMergeForm">
@@ -2026,448 +1566,166 @@
 	
        <!-- END Extra divs for add SO-->
        <!-- Start Extra divs for editing SO-->
-    <div id="extraAddressEditDiv" class="alert"  style="TOP:580px;LEFT:450px;HEIGHT:400px;WIDTH:400px;visibility:hidden;">
-        <h:form>
-             <table>
-                 <tr>
-                     <td align="right" colspan="2">
-                         <div>
-                             <a href="javascript:void(0)" rel="editballoonaddress"><h:outputText value="#{msgs.help_link_text}"/> </a><br/>
-                         </div> 
-                     </td>
-                  </tr>
+   <h:dataTable  headerClass="tablehead" 
+                 id="allChildNodesNames" 
+                 var="childNodesName" 
+                 value="#{SourceHandler.allChildNodesNames}">
+        <h:column>
+            <div id="extra<h:outputText value="#{childNodesName}"/>EditDiv" 
+                 class="alertSource"  
+                 style="TOP:580px;LEFT:450px;HEIGHT:<h:outputText value="#{SourceHandler.allNodeFieldConfigsSizes[childNodesName]}" />px;WIDTH:400px;visibility:hidden;">
+             <h:form>
+                <table>
+                    <tr>
+                        <td align="right" colspan="2">
+                            <div>
+                                <a href="javascript:void(0)" rel="editballoon<h:outputText value="#{childNodesName}"/>"><h:outputText value="#{msgs.help_link_text}"/> </a><br/>
+                            </div> 
+                        </td>
+                    </tr>
                  <tr>
                      <td colspan="2">
                          <h:dataTable  headerClass="tablehead" 
-                                       id="hashAddressEditIdExtra" 
-                                       var="fieldConfigEditAddress" 
-                                       value="#{SourceHandler.addressFieldConfigs}">
+                                       id="allNodeFieldConfigsMap" 
+                                       var="allNodeFieldConfigsMap" 
+                                       value="#{SourceHandler.allNodeFieldConfigs}">
                              <h:column>
-                                 <h:outputText value="#{fieldConfigEditAddress.displayName}"  />
-                                 <h:outputText value="*" rendered="#{fieldConfigEditAddress.required}" />
+                                 <h:dataTable  headerClass="tablehead" 
+                                               id="childFieldConfigs" 
+                                               var="childFieldConfig" 
+                                               width="100%"
+                                               rowClasses="odd,even"                                     
+                                               value="#{allNodeFieldConfigsMap[childNodesName]}">
+                                     
+                                     <h:column>
+                                         <h:outputText value="#{childFieldConfig.displayName}"  />
+                                         <h:outputText value="*" rendered="#{childFieldConfig.required}" />
+                                     </h:column>
+                                     <!--Rendering HTML Select Menu List-->
+                                     <h:column rendered="#{childFieldConfig.guiType eq 'MenuList'}" >
+                                         <h:selectOneMenu value="#{SourceEditHandler.editSoAddressHashMap[childFieldConfig.fullFieldName]}">
+                                             <f:selectItem itemLabel="" itemValue="" />
+                                             <f:selectItems  value="#{childFieldConfig.selectOptions}"  />
+                                         </h:selectOneMenu>
+                                     </h:column>
+                                     <!--Rendering Updateable HTML Text boxes-->
+                                     <h:column rendered="#{childFieldConfig.guiType eq 'TextBox'}" >
+                                         <h:inputText label="#{childFieldConfig.displayName}"  
+                                                      value="#{SourceEditHandler.editSoAddressHashMap[childFieldConfig.fullFieldName]}" 
+                                                      required="#{childFieldConfig.required}"/>
+                                     </h:column>                     
+                                     <!--Rendering Updateable HTML Text Area-->
+                                     <h:column rendered="#{childFieldConfig.guiType eq 'TextArea'}" >
+                                         <h:inputTextarea label="#{fieldConfigAddAddress.displayName}"  
+                                                          value="#{SourceEditHandler.editSoAddressHashMap[childFieldConfig.fullFieldName]}" 
+                                                          required="#{fieldConfigAddAddress.required}"
+                                                          />
+                                     </h:column>
+                                 </h:dataTable>                                                                                
                              </h:column>
-                             <!--Rendering HTML Select Menu List-->
-                             <h:column rendered="#{fieldConfigEditAddress.guiType eq 'MenuList'}" >
-                                 <h:selectOneMenu value="#{SourceEditHandler.editSoAddressHashMap[fieldConfigEditAddress.fullFieldName]}">
-                                     <f:selectItem itemLabel="" itemValue="" />
-                                     <f:selectItems  value="#{fieldConfigEditAddress.selectOptions}"  />
-                                 </h:selectOneMenu>
-                             </h:column>
-                             <!--Rendering Updateable HTML Text boxes-->
-                             <h:column rendered="#{fieldConfigEditAddress.guiType eq 'TextBox'}" >
-                                 <h:inputText label="#{fieldConfigEditAddress.displayName}"  
-                                              value="#{SourceEditHandler.editSoAddressHashMap[fieldConfigEditAddress.fullFieldName]}" 
-                                              required="#{fieldConfigEditAddress.required}"/>
-                             </h:column>                     
-                             <!--Rendering Updateable HTML Text Area-->
-                             <h:column rendered="#{fieldConfigEditAddress.guiType eq 'TextArea'}" >
-                                 <h:inputTextarea label="#{fieldConfigAddAddress.displayName}"  
-                                                  value="#{SourceEditHandler.editSoAddressHashMap[fieldConfigEditAddress.fullFieldName]}" 
-                                                  required="#{fieldConfigAddAddress.required}"
-                                                  />
-                             </h:column>
-                             
                          </h:dataTable>                                                                                
                      </td>
                  </tr>
                  <tr>
                      <td>
-                         <h:commandLink styleClass="button" actionListener="#{SourceEditHandler.addSOAddress}">
-                             <span><h:outputText value="#{msgs.ok_text_button}"/></span>
-                         </h:commandLink>   
-                         
+                          <a href="javascript:populateExtraDivs('<h:outputText value="#{childNodesName}"/>InnerDiv','add<h:outputText value="#{childNodesName}"/>Div','extra<h:outputText value="#{childNodesName}"/>AddDiv','add<h:outputText value="#{childNodesName}"/>DivClose')" class="button">
+                            <span><h:outputText value="#{msgs.ok_text_button}"/></span>
+                          </a>    
                      </td>
                      <td>
-                         <a HREF="javascript:void(0);" onclick="javascript:showExtraDivs('extraAddressEditDiv',event)" class="button"> 
+                         <a HREF="javascript:void(0);" onclick="javascript:showExtraDivs('extra<h:outputText value="#{childNodesName}"/>EditDiv',event)" class="button"> 
                          <span><h:outputText value="#{msgs.cancel_but_text}"/> </span>
                           </a>    
                      </td>
                  </tr>
-                 <tr>
-                     <td valign="top" colspan="2">
-                         <% if ("View/Edit".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
-                         <h:messages  styleClass="errorMessages"  layout="list" />
-                         <%}%>
-                     </td>
-                 </tr>                              
-             </table>
-             
-         </h:form>
-     </div>
-    <div id="extraPhoneEditDiv" class="alert" style="TOP:1300px;LEFT:500px;HEIGHT:180px;WIDTH:300px;visibility:hidden;">
-         <h:form>
-             <table>
-                 <tr>
-                     <td align="right" colspan="2">
-                         <div>
-                             <a href="javascript:void(0)" rel="editballoonphone"><h:outputText value="#{msgs.help_link_text}"/> </a><br/>
-                        </div>
-                         &nbsp;
-                      </td>
-                 </tr>
-                 <tr>
-                     <td colspan="2">
-                         <h:dataTable  headerClass="tablehead" 
-                                       id="hashPhoneEditIdExtra" 
-                                       var="fieldConfigEditPhone" 
-                                       value="#{SourceHandler.phoneFieldConfigs}">
-                             <h:column>
-                                 <h:outputText value="#{fieldConfigEditPhone.displayName}"  />
-                                 <h:outputText value="*" rendered="#{fieldConfigEditPhone.required}" />
-                             </h:column>
-                             <!--Rendering HTML Select Menu List-->
-                             <h:column rendered="#{fieldConfigEditPhone.guiType eq 'MenuList'}" >
-                                 <h:selectOneMenu value="#{SourceEditHandler.editSoPhoneHashMap[fieldConfigEditPhone.fullFieldName]}">
-                                     <f:selectItem itemLabel="" itemValue="" />
-                                     <f:selectItems  value="#{fieldConfigEditPhone.selectOptions}"  />
-                                 </h:selectOneMenu>
-                             </h:column>
-                             <!--Rendering Updateable HTML Text boxes-->
-                             <h:column rendered="#{fieldConfigEditPhone.guiType eq 'TextBox'}" >
-                                 <h:inputText label="#{fieldConfigEditPhone.displayName}"  
-                                              value="#{SourceEditHandler.editSoPhoneHashMap[fieldConfigEditPhone.fullFieldName]}" 
-                                              required="#{fieldConfigEditPhone.required}"/>
-                             </h:column>                     
-                             <!--Rendering Updateable HTML Text Area-->
-                             <h:column rendered="#{fieldConfigEditPhone.guiType eq 'TextArea'}" >
-                                 <h:inputTextarea label="#{fieldConfigAddPhone.displayName}"  
-                                                  value="#{SourceEditHandler.editSoPhoneHashMap[fieldConfigEditPhone.fullFieldName]}" 
-                                                  required="#{fieldConfigAddPhone.required}"
-                                                  />
-                             </h:column>
-                             
-                         </h:dataTable>                                                                                
-                     </td>
-                 </tr>
-                 <tr>
-                     <td>
-                         <h:commandLink  styleClass="button" 
-                                         actionListener="#{SourceEditHandler.addSOPhone}">
-                             <span><h:outputText value="#{msgs.ok_text_button}"/></span>
-                         </h:commandLink>   
+                 
+                </table>
+             </h:form>
+            </div>
+            
+            <div id="extra<h:outputText value='#{childNodesName}'/>AddDiv" 
+                 class="alertSource"  
+                 style="TOP:1800px;LEFT:700px;HEIGHT:<h:outputText value="#{SourceHandler.allNodeFieldConfigsSizes[childNodesName]}" />px;WIDTH:400px;visibility:hidden;">
+                <h:form>
+                <table>
+                    <tr>
+                        <td align="right" colspan="2">
+                            <div>
+                                <a href="javascript:void(0)" rel="balloon<h:outputText value="#{childNodesName}"/>">
+                                <h:outputText value="#{msgs.help_link_text}"/> </a><br/>
+                            </div>                               
+                        </td>
                         
-                     </td>
-                     <td>
-                         <a HREF="javascript:void(0);" onclick="javascript:showExtraDivs('extraPhoneEditDiv',event)" class="button">
-                             <span><h:outputText value="#{msgs.cancel_but_text}"/></span></a>    
-                     </td>
-                 </tr>
-                 <tr>
-                     <td valign="top" colspan="2">
-                         <% if ("View/Edit".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
-                         <h:messages  styleClass="errorMessages"  layout="list" />
-                         <%}%>
-                     </td>
-                 </tr>                              
-             </table>
-             
-         </h:form>
-     </div>
-    <div id="extraAliasEditDiv" class="alert" style="TOP:1450px;LEFT:500px;HEIGHT:170px;WIDTH:300px;visibility:hidden; ">
-         <h:form>
-             <table>
-                 <tr>
-                     <td align="right" colspan="2">
-                         <div>
-                             <a href="javascript:void(0)" rel="editballoonalias"><h:outputText value="#{msgs.help_link_text}"/> </a><br/>
-                         </div>
-                     </td>
-                 </tr>
-                 <tr>
-                     <td colspan="2">
-                         <h:dataTable  headerClass="tablehead" 
-                                       id="hashAliasEditIdExtra" 
-                                       var="fieldConfigEditAlias" 
-                                       value="#{SourceHandler.aliasFieldConfigs}">
-                             <h:column>
-                                 <h:outputText value="#{fieldConfigEditAlias.displayName}"  />
-                                 <h:outputText value="*" rendered="#{fieldConfigEditAlias.required}" />
-                             </h:column>
-                             <!--Rendering HTML Select Menu List-->
-                             <h:column rendered="#{fieldConfigEditAlias.guiType eq 'MenuList'}" >
-                                 <h:selectOneMenu value="#{SourceEditHandler.editSoAliasHashMap[fieldConfigEditAlias.fullFieldName]}">
-                                     <f:selectItem itemLabel="" itemValue="" />
-                                     <f:selectItems  value="#{fieldConfigEditAlias.selectOptions}"  />
-                                 </h:selectOneMenu>
-                             </h:column>
-                             <!--Rendering Updateable HTML Text boxes-->
-                             <h:column rendered="#{fieldConfigEditAlias.guiType eq 'TextBox'}" >
-                                 <h:inputText label="#{fieldConfigEditAlias.displayName}"  
-                                              value="#{SourceEditHandler.editSoAliasHashMap[fieldConfigEditAlias.fullFieldName]}" 
-                                              required="#{fieldConfigEditAlias.required}"/>
-                             </h:column>                     
-                             <!--Rendering Updateable HTML Text Area-->
-                             <h:column rendered="#{fieldConfigEditAlias.guiType eq 'TextArea'}" >
-                                 <h:inputTextarea label="#{fieldConfigAddAlias.displayName}"  
-                                                  value="#{SourceEditHandler.editSoAliasHashMap[fieldConfigEditAlias.fullFieldName]}" 
-                                                  required="#{fieldConfigAddAlias.required}"
-                                                  />
-                             </h:column>
-                             
-                         </h:dataTable>                                                                                
-                     </td>
-                 </tr>
-                 <tr>
-                     <td>
-                         <h:commandLink  styleClass="button" 
-                                         actionListener="#{SourceEditHandler.addSOAlias}">
-                             <span><h:outputText value="#{msgs.ok_text_button}"/></span>
-                         </h:commandLink>   
-                         
-                     </td>
-                     <td>
-                         <a HREF="javascript:void(0);" onclick="javascript:showExtraDivs('extraAliasEditDiv',event)" class="button"> 
-                         <span><h:outputText value="#{msgs.cancel_but_text}"/> </span></a>    
-                     </td>
-                 </tr>
-                 <tr>
-                     <td valign="top" colspan="2">
-                         <% if ("View/Edit".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
-                         <h:messages  styleClass="errorMessages"  layout="list" />
-                         <%}%>
-                     </td>
-                 </tr>                              
-             </table>
-             
-         </h:form>
-     </div>
-
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="left">
+                            <div id="<h:outputText value="#{childNodesName}"/>InnerDiv">
+                                <h:dataTable  headerClass="tablehead" 
+                                              id="allNodeFieldConfigsMapAdd" 
+                                              var="allNodeFieldConfigsMapAdd" 
+                                              width="100%"
+                                              rowClasses="odd,even"                                     
+                                              value="#{SourceHandler.allNodeFieldConfigs}">
+                                    <h:column>
+                                        <h:dataTable  headerClass="tablehead" 
+                                                      id="childFieldConfigsAdd" 
+                                                      var="childFieldConfigAdd" 
+                                                      width="100%"
+                                                      rowClasses="odd,even"                                     
+                                                      value="#{allNodeFieldConfigsMapAdd[childNodesName]}">
+                                            
+                                            <h:column>
+                                                <h:outputText value="#{childFieldConfigAdd.displayName}"  />
+                                                <h:outputText value="*" rendered="#{childFieldConfigAdd.required}" />
+                                            </h:column>
+                                            <!--Rendering HTML Select Menu List-->
+                                            <h:column rendered="#{childFieldConfigAdd.guiType eq 'MenuList'}" >
+                                                <h:selectOneMenu onblur="javascript:accumilateMinorObjectSelectFieldsOnBlurLocal('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}')"
+                                                                 value="">
+                                                    <f:selectItem itemLabel="" itemValue="" />
+                                                    <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
+                                                </h:selectOneMenu>
+                                            </h:column>
+                                            <!--Rendering Updateable HTML Text boxes-->
+                                            <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox'}" >
+                                                <h:inputText label="#{childFieldConfigAdd.displayName}"  
+                                                             onblur="javascript:accumilateMinorObjectFieldsOnBlurLocal('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}','#{childFieldConfigAdd.inputMask}','#{childFieldConfigAdd.valueType}')"
+                                                             onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')"
+                                                             onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                             value=""
+                                                             required="#{childFieldConfigAdd.required}"/>
+                                            </h:column>                     
+                                            <!--Rendering Updateable HTML Text Area-->
+                                            <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextArea'}" >
+                                                <h:inputTextarea label="#{fieldConfigAddAddress.displayName}"  
+                                                                 onblur="javascript:accumilateMinorObjectFieldsOnBlurLocal('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}','#{childFieldConfigAdd.inputMask}','#{childFieldConfigAdd.valueType}')"
+                                                                 required="#{fieldConfigAddAddress.required}"
+                                                                 value=""/>
+                                            </h:column>
+                                        </h:dataTable>                                                                                
+                                    </h:column>
+                                </h:dataTable>                                                                                
+                                
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">
+                            <a href="javascript:minorObjTypeLocalCount++;javascript:populateMinorObjectsExtraDivs('<h:outputText value="#{childNodesName}"/>InnerDiv','add<h:outputText value="#{childNodesName}"/>Div','extra<h:outputText value="#{childNodesName}"/>AddDiv','add<h:outputText value="#{childNodesName}"/>DivClose',minorArrayLocal);" class="button">
+                            <span><h:outputText value="#{msgs.ok_text_button}"/></span></a>    
+                        </td>
+                        <td>
+                            <a HREF="javascript:void(0);" onclick="javascript:showExtraDivs('extra<h:outputText value="#{childNodesName}"/>AddDiv',event)" class="button">
+                            <span><h:outputText value="#{msgs.cancel_but_text}"/></span> </a>
+                        </td>
+                    </tr>
+                </table>   
+                </h:form>                 
+            </div>   
+        </h:column>                 
+    </h:dataTable>
     <!-- End Extra divs for editing SO-->
      <!-- Start Extra divs for add SO-->
-<div id="extraAddressAddDiv" class="alert"  style="TOP:1800px;LEFT:700px;HEIGHT:385px;WIDTH:400px;visibility:hidden;">
-    <table>
-        <tr>
-            <td align="right" colspan="2">
-                <div>
-                    <a href="javascript:void(0)" rel="balloonaddress"><h:outputText value="#{msgs.help_link_text}"/> </a><br/>
-                </div>                               
-             </td>
-          
-           </tr>
-        <tr>
-            <td colspan="2" align="left">
-                <div id="addressInnerDiv">
-                    <h:dataTable  headerClass="tablehead" 
-                                  id="hashAddressIdExtra" 
-                                  var="fieldConfigAddAddress" 
-                                  value="#{SourceAddHandler.addressFieldConfigs}">
-                        <h:column>
-                            <h:outputText value="#{fieldConfigAddAddress.displayName}"  />
-                            <h:outputText value="*" rendered="#{fieldConfigAddAddress.required}" />
-                        </h:column>
-                        <!--Rendering HTML Select Menu List-->
-                        <h:column rendered="#{fieldConfigAddAddress.guiType eq 'MenuList' &&  fieldConfigAddAddress.valueType ne 6}" >
-                            <h:selectOneMenu value="#{SourceAddHandler.addressFeildsMap[fieldConfigAddAddress.fullFieldName]}">
-                                <f:selectItem itemLabel="" itemValue="" />
-                                <f:selectItems  value="#{fieldConfigAddAddress.selectOptions}"  />
-                            </h:selectOneMenu>
-                        </h:column>
-                        <!--Rendering Updateable HTML Text boxes-->
-                        <h:column rendered="#{fieldConfigAddAddress.updateable && fieldConfigAddAddress.guiType eq 'TextBox' &&  fieldConfigAddAddress.valueType ne 6}" >
-                            <h:inputText label="#{fieldConfigAddAddress.displayName}"  
-                                         id="fieldConfigIdTextbox"   
-                                         value="#{SourceAddHandler.addressFeildsMap[fieldConfigAddAddress.fullFieldName]}" 
-                                         required="#{fieldConfigAddAddress.required}"/>
-                        </h:column>                     
-                        <!--Rendering Updateable HTML Text boxes date fields-->
-                        <h:column rendered="#{fieldConfigAddAddress.guiType eq 'TextBox' &&  fieldConfigAddAddress.valueType eq 6}">
-                            <h:inputText label="#{fieldConfigAddAddress.displayName}"   
-                                         value="#{SourceAddHandler.addressFeildsMap[fieldConfigAddAddress.fullFieldName]}"  
-                                      
-                                         required="#{fieldConfigAddAddress.required}"
-                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                         onkeyup="javascript:qws_field_on_key_up(this)" 
-                                         />
-                            <a HREF="javascript:void(0);" 
-                               onclick="g_Calendar.show(event,'topButtonsForm:fieldConfigId:6:date')" > 
-                                <h:graphicImage  id="calImgStartDate" 
-                                                 alt="calendar Image" styleClass="imgClass"
-                                                 url="./images/cal.gif"/>               
-                            </a>
-                        </h:column>
-                        
-           
-                        <!--Rendering Updateable HTML Text Area-->
-                        <h:column rendered="#{fieldConfigAddAddress.guiType eq 'TextArea' &&  fieldConfigAddAddress.valueType ne 6}" >
-                            <h:inputTextarea label="#{fieldConfigAddAddress.displayName}"  
-                                             id="fieldConfigIdTextArea"   
-                                             value="#{SourceAddHandler.addressFeildsMap[fieldConfigAddAddress.fullFieldName]}" 
-                                             required="#{fieldConfigAddAddress.required}"
-                                             />
-                        </h:column>
-                        
-                    </h:dataTable>  
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td align="right">
-                <a href="javascript:populateExtraDivs('addressInnerDiv','addAddressDiv','extraAddressAddDiv','addAddressDivClose')" class="button">
-                    <span><h:outputText value="#{msgs.ok_text_button}"/></span></a>    
-            </td>
-            <td>
-                <a HREF="javascript:void(0);" onclick="javascript:showExtraDivs('extraAddressAddDiv',event)" class="button">
-                    <span><h:outputText value="#{msgs.cancel_but_text}"/></span> </a>
-            </td>
-        </tr>
-                            
-    </table>
-</div>
-<div id="extraPhoneAddDiv" class="alert"  style="TOP:1900px;LEFT:700px;HEIGHT:170px;WIDTH:300px;visibility:hidden; ">
-    <table >
-        <tr>
-            <td align="right" colspan="2">
-                 <div>
-                    <a href="javascript:void(0)" rel="addballoonphone"><h:outputText value="#{msgs.help_link_text}"/> </a><br/>
-                </div>                               
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <div id="phoneInnerDiv">
-                    <h:dataTable  headerClass="tablehead"   
-                                  id="hashPhoneIdExtra" 
-                                  var="fieldConfigAddPhone" 
-                                  value="#{SourceAddHandler.phoneFieldConfigs}">
-                        <h:column>
-                            <h:outputText value="#{fieldConfigAddPhone.displayName}"  />
-                            <h:outputText value="*" rendered="#{fieldConfigAddPhone.required}" />
-                        </h:column>
-                        <!--Rendering HTML Select Menu List-->
-                        <h:column rendered="#{fieldConfigAddPhone.guiType eq 'MenuList' &&  fieldConfigAddPhone.valueType ne 6}" >
-                            <h:selectOneMenu value="#{SourceAddHandler.phoneFeildsMap[fieldConfigAddPhone.fullFieldName]}">
-                                <f:selectItem itemLabel="" itemValue="" />
-                                <f:selectItems  value="#{fieldConfigAddPhone.selectOptions}"  />
-                            </h:selectOneMenu>
-                        </h:column>
-                        <!--Rendering Updateable HTML Text boxes-->
-                        <h:column rendered="#{fieldConfigAddPhone.updateable && fieldConfigAddPhone.guiType eq 'TextBox' &&  fieldConfigAddPhone.valueType ne 6}" >
-                            <h:inputText label="#{fieldConfigAddPhone.displayName}"  
-                                         id="fieldConfigIdTextbox"   
-                                         value="#{SourceAddHandler.phoneFeildsMap[fieldConfigAddPhone.fullFieldName]}" 
-                                         required="#{fieldConfigAddPhone.required}"/>
-                        </h:column>                     
-                        <!--Rendering Updateable HTML Text boxes date fields-->
-                        <h:column rendered="#{fieldConfigAddPhone.guiType eq 'TextBox' &&  fieldConfigAddPhone.valueType eq 6}">
-                            <h:inputText label="#{fieldConfigAddPhone.displayName}"   
-                                         value="#{SourceAddHandler.phoneFeildsMap[fieldConfigAddPhone.fullFieldName]}"  
-                                       
-                                         required="#{fieldConfigAddPhone.required}"
-                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                         onkeyup="javascript:qws_field_on_key_up(this)" 
-                                         />
-                            <a HREF="javascript:void(0);" 
-                               onclick="g_Calendar.show(event,'topButtonsForm:fieldConfigId:6:date')" > 
-                                <h:graphicImage  id="calImgStartDate" 
-                                                 alt="calendar Image" styleClass="imgClass"
-                                                 url="./images/cal.gif"/>               
-                            </a>
-                        </h:column>
-                        
-           
-                        <!--Rendering Updateable HTML Text Area-->
-                        <h:column rendered="#{fieldConfigAddPhone.guiType eq 'TextArea' &&  fieldConfigAddPhone.valueType ne 6}" >
-                            <h:inputTextarea label="#{fieldConfigAddPhone.displayName}"  
-                                             id="fieldConfigIdTextArea"   
-                                             value="#{SourceAddHandler.phoneFeildsMap[fieldConfigAddPhone.fullFieldName]}" 
-                                             required="#{fieldConfigAddPhone.required}"
-                                             />
-                        </h:column>
-                        
-                    </h:dataTable>  
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td align="right">
-                <a href="javascript:populateExtraDivs('phoneInnerDiv','addPhoneDiv','extraPhoneAddDiv','addPhoneDivClose')" class="button">
-                    <span><h:outputText value="#{msgs.ok_text_button}"/></span></a>    
-            </td>
-            <td>
-                <a HREF="javascript:void(0);" onclick="javascript:showExtraDivs('extraPhoneAddDiv',event)" class="button"> 
-                <span><h:outputText value="#{msgs.cancel_but_text}"/></span> </a>
-            </td>
-        </tr>
-                           
-    </table>
-</div>
-<div id="extraAliasAddDiv" class="alert" style="TOP:2000px;LEFT:700px;HEIGHT:170px;WIDTH:300px;visibility:hidden;">
-    <table>
-        <tr>
-            <td align="right" colspan="2">
-                <div>
-                    <a href="javascript:void(0)" rel="addballoonalias"><h:outputText value="#{msgs.help_link_text}"/> </a><br/>
-                </div>                               
-             </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <div id="aliasInnerDiv">
-                    <h:dataTable  headerClass="tablehead" 
-                                  id="hashAliasIdExtra" 
-                                  var="fieldConfigAddAlias" 
-                                  value="#{SourceAddHandler.aliasFieldConfigs}">
-                        <h:column>
-                            <h:outputText value="#{fieldConfigAddAlias.displayName}"  />
-                            <h:outputText value="*" rendered="#{fieldConfigAddAlias.required}" />
-                        </h:column>
-                        <!--Rendering HTML Select Menu List-->
-                        <h:column rendered="#{fieldConfigAddAlias.guiType eq 'MenuList' &&  fieldConfigAddAlias.valueType ne 6}" >
-                            <h:selectOneMenu value="#{SourceAddHandler.aliasFeildsMap[fieldConfigAddAlias.fullFieldName]}">
-                                <f:selectItem itemLabel="" itemValue="" />
-                                <f:selectItems  value="#{fieldConfigAddAlias.selectOptions}"  />
-                            </h:selectOneMenu>
-                        </h:column>
-                        <!--Rendering Updateable HTML Text boxes-->
-                        <h:column rendered="#{ fieldConfigAddAlias.guiType eq 'TextBox' &&  fieldConfigAddAlias.valueType ne 6}" >
-                            <h:inputText label="#{fieldConfigAddAlias.displayName}"  
-                                         id="fieldConfigIdTextbox"   
-                                         value="#{SourceAddHandler.aliasFeildsMap[fieldConfigAddAlias.fullFieldName]}" 
-                                         required="#{fieldConfigAddAlias.required}"/>
-                        </h:column>                     
-                        <!--Rendering Updateable HTML Text boxes date fields-->
-                        <h:column rendered="#{fieldConfigAddAlias.guiType eq 'TextBox' &&  fieldConfigAddAlias.valueType eq 6}">
-                            <h:inputText label="#{fieldConfigAddAlias.displayName}"   
-                                         value="#{SourceAddHandler.aliasFeildsMap[fieldConfigAddAlias.fullFieldName]}"  
-                                         
-                                         required="#{fieldConfigAddAlias.required}"
-                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                         onkeyup="javascript:qws_field_on_key_up(this)" 
-                                         />
-                            <a HREF="javascript:void(0);" 
-                               onclick="g_Calendar.show(event,'topButtonsForm:fieldConfigId:6:date')" > 
-                                <h:graphicImage  id="calImgStartDate" 
-                                                 alt="calendar Image" styleClass="imgClass"
-                                                 url="./images/cal.gif"/>               
-                            </a>
-                        </h:column>
-                        
-           
-                        <!--Rendering Updateable HTML Text Area-->
-                        <h:column rendered="#{fieldConfigAddAlias.guiType eq 'TextArea' &&  fieldConfigAddAlias.valueType ne 6}" >
-                            <h:inputTextarea label="#{fieldConfigAddAlias.displayName}"  
-                                             id="fieldConfigIdTextArea"   
-                                             value="#{SourceAddHandler.aliasFeildsMap[fieldConfigAddAlias.fullFieldName]}" 
-                                             required="#{fieldConfigAddAlias.required}"
-                                             />
-                        </h:column>
-                        
-                    </h:dataTable>  
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td align="right">
-                <a href="javascript:populateExtraDivs('aliasInnerDiv','addAliasDiv','extraAliasAddDiv','addAliasDivClose')" class="button">
-                    <span><h:outputText value="#{msgs.ok_text_button}"/></span></a>    
-            </td>
-            <td>
-                <a HREF="javascript:void(0);" onclick="javascript:showExtraDivs('extraAliasAddDiv',event)" class="button"> <span><h:outputText value="#{msgs.cancel_but_text}"/> </span></a>
-            </td>
-        </tr>
-                            
-    </table>
-</div>
  <!-- End Extra divs for add SO-->                                                                                                                                       
      <!--BEGIN SOURCE CODE FOR EXAMPLE =============================== -->
                                              
@@ -2481,23 +1739,21 @@
 
 <!--END SOURCE CODE FOR EXAMPLE =============================== -->
 </div>
+   <h:dataTable  headerClass="tablehead" 
+                 id="allChildNodeschildBallon" 
+                 var="childNodesName" 
+                 value="#{SourceHandler.allChildNodesNames}">
+           <h:column>
+              <div id="balloon<h:outputText value="#{childNodesName}"/>" class="balloonstyle">"<h:outputText  value="#{childNodesName}"/>" Help text goes here.</div>
+              <div id="addballoon<h:outputText value="#{childNodesName}"/>" class="balloonstyle">"<h:outputText  value="#{childNodesName}"/>" Help text goes here.</div>
+              <div id="editballoon<h:outputText value="#{childNodesName}"/>" class="balloonstyle">"<h:outputText  value="#{childNodesName}"/>" Help text goes here.</div>
+          </h:column>                 
+    </h:dataTable>
     
- <div id="balloonaddress" class="balloonstyle"><h:outputText  value="#{msgs.add_address_help_text}"/></div>
- <div id="addballoonphone" class="balloonstyle"><h:outputText  value="#{msgs.add_phone_help_text}"/></div>
- <div id="addballoonalias" class="balloonstyle"><h:outputText  value="#{msgs.add_alias_help_text}"/></div>
- <div id="addballoonaux" class="balloonstyle"><h:outputText  value="#{msgs.add_aux_help_text}"/></div>
- <div id="addballooncomment" class="balloonstyle"><h:outputText  value="#{msgs.add_comment_help_text}"/></div>
- <div id="editballoonaddress" class="balloonstyle"><h:outputText  value="#{msgs.edit_address_help_text}"/></div>
- <div id="editballoonphone" class="balloonstyle"><h:outputText  value="#{msgs.edit_phone_help_text}"/></div>
- <div id="editballoonalias" class="balloonstyle"><h:outputText  value="#{msgs.edit_alias_help_text}"/></div>
- <div id="editballoonaux" class="balloonstyle"><h:outputText  value="#{msgs.edit_aux_help_text}"/></div>
- <div id="editballooncomment" class="balloonstyle"><h:outputText  value="#{msgs.edit_comment_help_text}"/></div>
-
         <%if( request.getAttribute("lids") != null) {
            
         String[] srcs  = (String[]) request.getAttribute("lids");
         String  lidsSource  = (String) request.getAttribute("lidsource");
-        System.out.println(">>>>>>>>>>>>>>>>>>>" + lidsSource);
         for(int i=0;i<srcs.length;i++) {
         %>    
         
@@ -2597,8 +1853,7 @@
        
        
    </script>
-
-
+   
 
 </html>
 </f:view>

@@ -31,6 +31,7 @@
 <%@ page import="com.sun.mdm.index.objects.epath.EPathArrayList"%>
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
+<%@ page import="java.util.Set"  %>
 <%@ page import="java.util.HashMap"  %>
 <%@ page import="java.util.ArrayList"  %>
 <%@ page import="java.util.Collection"  %>
@@ -54,9 +55,22 @@
             <script type="text/javascript" src="scripts/Control.js"></script>
             <script type="text/javascript" src="scripts/dateparse.js"></script>
             <script type="text/javascript" src="scripts/Validation.js"></script>
+            
+<!--CSS file (default YUI Sam Skin) -->
+            <link  type="text/css" rel="stylesheet" href="./css/yui/datatable/assets/skins/sam/datatable.css">
+            <!-- Dependencies -->
+            <script type="text/javascript" src="./scripts/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+            <script type="text/javascript" src="./scripts/yui/element/element-beta-min.js"></script>
+            <script type="text/javascript" src="./scripts/yui/datasource/datasource-beta-min.js"></script>
+            <script type="text/javascript" src="./scripts/yui/dragdrop/dragdrop-min.js"></script>
+            <script type="text/javascript" src="./scripts/yui/json/json-min.js"></script>
+            <script type="text/javascript" src="./scripts/yui/calendar/calendar-min.js"></script>
+            <script type="text/javascript" src="./scripts/yui/connection/connection-min.js"></script>
+            <!-- Source files -->
+            <script type="text/javascript" src="./scripts/yui/datatable/datatable-beta-min.js"></script>
 </head>
 <title><h:outputText value="#{msgs.application_heading}"/></title>  
-<body>
+<body class="yui-skin-sam">
     <%@include file="./templates/header.jsp"%>
         
     <div id="mainContent" style="overflow:hidden;">
@@ -143,7 +157,8 @@
                                 
                                 <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6}" >
                                     <nobr>
-                                        <h:inputText  label="#{feildConfig.displayName}"    value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.displayName]}"
+                                        <h:inputText label="#{feildConfig.displayName}"    
+                                                     value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.displayName]}"
                                                      required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
                                                      onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                      onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFieldsOnBlur(this,'#{feildConfig.displayName}')"
@@ -193,7 +208,7 @@
         <%
             ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
             CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
-            ArrayList arlResultsConfig = screenObject.getSearchResultsConfig();
+            ArrayList arlResultsConfig = objScreenObject.getSearchResultsConfig();
             SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
 
 
@@ -253,64 +268,13 @@
       <%}%>
 <%}%>
     
-<div id="reportYUISearch" class="reportYUISearch">
-    <yui:datatable var="patientDetails" value="#{PatientDetailsHandler.patientDetailsVO}"
-                   paginator="true"  
-                   rows="50"     
-                   rowClasses="even,odd"
-                   rendered="#{PatientDetailsHandler.resultsSize gt 0}"
-                   width="1024px">  
-                
+  <%    if (resultArrayList != null && resultArrayList.size() > 0) {
+  %>           
+             <div class="reportYUISearch" >
+                <div id="outputdiv"></div>
+             </div>  
+  <%}%>
 
-                   
-        <yui:column sortable="true" resizeable="true">
-            <f:facet name="header">
-                <h:outputText value="#{msgs.datatable_euid_text}" />
-            </f:facet>
-            <input type="checkbox" onclick="javascript:getEUIDS('<h:outputText value="#{patientDetails.euid}" />')"/>
-            <a id="euid" href='euiddetails.jsf?euid=<h:outputText value="#{patientDetails.euid}" />'>
-                <h:outputText value="#{patientDetails.euid}" />
-            </a>
-        </yui:column>
-        
-        
-        <yui:column sortable="true" resizeable="true">
-            <f:facet name="header">
-                <h:outputText value="#{msgs.datatable_firstname_text}"  />
-            </f:facet>
-            <h:outputText value="#{patientDetails.firstName}" />
-        </yui:column>
-        
-        <yui:column sortable="true" resizeable="true">
-            <f:facet name="header">
-                <h:outputText value="#{msgs.datatable_lastname_text}"  />
-            </f:facet>
-            <h:outputText value="#{patientDetails.lastName}" />
-        </yui:column>
-        
-        <yui:column sortable="true" resizeable="true">
-            <f:facet name="header">
-                <h:outputText value="#{msgs.datatable_ssn_text}"  />
-            </f:facet>
-            <h:outputText value="#{patientDetails.ssn}" />
-        </yui:column>
-        
-        <yui:column sortable="true" resizeable="true">
-            <f:facet name="header">
-                <h:outputText value="#{msgs.datatable_DOB_text}"  />
-            </f:facet>
-            <h:outputText value="#{patientDetails.dob}" />
-        </yui:column>
-        
-        <yui:column sortable="true" resizeable="true">
-            <f:facet name="header">
-                <h:outputText value="#{msgs.datatable_addressline1_text}"  />
-            </f:facet>
-            <h:outputText value="#{patientDetails.addressLine1}" />
-        </yui:column>
-        
-   </yui:datatable>
-</div>                   
 </div>
 </body>
         <%
@@ -369,5 +333,159 @@
      
 
 
+
+    <%
+    ArrayList fcArrayList  = patientDetailsHandler.getResultsConfigArray();
+     
+    %>
+
+ 
+        <script>
+            var fieldsArray = new Array();
+        </script>
+         <%
+            
+        SearchResultsConfig searchResultsConfig = (SearchResultsConfig) screenObject.getSearchResultsConfig().toArray()[0];
+
+        int maxRecords = searchResultsConfig.getMaxRecords();
+        int pageSize = searchResultsConfig.getPageSize();
+        
+        
+        ArrayList keysList  = new ArrayList();
+        ArrayList labelsList  = new ArrayList();
+        ArrayList fullFieldNamesList  = new ArrayList();
+        
+        keysList.add("EUID");
+        labelsList.add("EUID");
+        fullFieldNamesList.add("EUID");
+        
+        for(int i=0;i<fcArrayList.size();i++) {
+            FieldConfig fieldConfig = (FieldConfig)fcArrayList.get(i);
+            keysList.add(fieldConfig.getName());
+            labelsList.add(fieldConfig.getDisplayName());
+            fullFieldNamesList.add(fieldConfig.getFullFieldName());
+        }
+        
+        //set EUID values here
+        String[] keys = new String[keysList.size()];
+        String[] labels = new String[labelsList.size()];
+        String[] fullFieldNames = new String[fullFieldNamesList.size()];
+        
+        for(int i=0;i<keysList.size();i++) {
+            keys[i] = (String) keysList.get(i);
+            labels[i] = (String) labelsList.get(i);
+            fullFieldNames[i] = (String) fullFieldNamesList.get(i);
+        }
+        
+        
+        
+        StringBuffer myColumnDefs = new StringBuffer();
+
+        myColumnDefs.append("[");
+        String value = new String();
+        for(int i=0;i<keysList.size();i++) {
+            if(keys[i].equalsIgnoreCase("EUID")) {
+              value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ","+
+                       "formatter:function (elCell,oRecord,oColumn,oData) {elCell.innerHTML = '<input type=\"checkbox\" onclick=\"javascript:getEUIDS(' + oData + ')\"/> &nbsp; <a href=\"euiddetails.jsf?euid=' + oData + '\">' + oData + '</a>';}" +
+                       ",sortable:true,resizeable:true}";
+            } else {
+              value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ",sortable:true,resizeable:true}";
+            }  
+            
+          myColumnDefs.append(value);
+          if(i != keys.length -1) myColumnDefs.append(",");
+         }   
+         myColumnDefs.append("]");
+
+         
+        StringBuffer sbr  = new StringBuffer();
+        sbr.append("[");
+        if (resultArrayList != null && resultArrayList.size() > 0) {
+                for (int i = 0; i < resultArrayList.size(); i++) {
+                    HashMap valueMap = (HashMap) resultArrayList.get(i);
+                    StringBuffer valueBuffer = new StringBuffer();
+                    valueBuffer.append("{");  
+                    for (int kc = 0; kc < fullFieldNames.length; kc++) {
+                        valueBuffer.append(keys[kc] + ":" + "\"" + ((valueMap.get(fullFieldNames[kc]) != null)?valueMap.get(fullFieldNames[kc]):"") + "\"");
+                        if (kc != fullFieldNames.length - 1) {
+                            valueBuffer.append(",");
+                        }
+                    }
+                    valueBuffer.append("}");                   
+
+                    sbr.append(valueBuffer.toString());
+
+                    if (i != resultArrayList.size() - 1) {
+                        sbr.append(",");
+                    }
+
+                }
+            }
+        sbr.append("]");           
+
+        for(int i=0;i<keysList.size();i++) {
+        %> 
+        <script>
+            fieldsArray[<%=i%>] = '<%=keys[i]%>';
+        </script>
+        <%}%>
+        
+
+<script>
+     var dataArray = new Array();
+     dataArray  = <%=sbr.toString()%>;
+
+</script>
+
+<script>
+
+    YAHOO.example.Data = {
+    outputValues: dataArray
+ }
+</script>
+
+<script type="text/javascript">
+YAHOO.util.Event.addListener(window, "load", function() {
+    YAHOO.example.CustomSort = new function() {
+        var myColumnDefs = <%=myColumnDefs.toString()%>;
+        this.myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.outputValues);
+        this.myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+        this.myDataSource.responseSchema = {
+            fields: fieldsArray
+        };
+
+
+var myConfigs = {
+    paginator : new YAHOO.widget.Paginator({
+        rowsPerPage    : <%=pageSize%>, // REQUIRED
+        totalRecords   : dataArray.length // OPTIONAL
+
+        // use an existing container element
+        //containers : 'sort',
+
+        // use a custom layout for pagination controls
+        //template       : "{PageLinks} Show {RowsPerPageDropdown} per page",
+
+        // show all links
+        //pageLinks : YAHOO.widget.Paginator.VALUE_UNLIMITED,
+
+        // use these in the rows-per-page dropdown
+        //rowsPerPageOptions : [25,50,100],
+
+        // use custom page link labels
+        //pageLabelBuilder : function (page,paginator) {
+          //  var recs = paginator.getPageRecords(page);
+           //return (recs[0] + 1) + ' - ' + (recs[1] + 1);
+        //}
+    })
+     
+
+};
+        this.myDataTable = new YAHOO.widget.DataTable("outputdiv", myColumnDefs,
+                this.myDataSource, myConfigs);
+            
+    };
+});
+</script>
 </html>
 </f:view>

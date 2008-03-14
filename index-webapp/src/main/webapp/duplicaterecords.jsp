@@ -91,7 +91,7 @@
                                 <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
                                     <nobr>
                                         <h:selectOneMenu value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                         onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
+                                                         onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
                                                          rendered="#{feildConfig.name ne 'SystemCode'}">
                                             <f:selectItem itemLabel="" itemValue="" />
                                             <f:selectItems  value="#{feildConfig.selectOptions}" />
@@ -114,7 +114,7 @@
                                                        label="#{feildConfig.displayName}" 
                                                        onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                        onkeyup="javascript:qws_field_on_key_up(this)"
-                                                       onblur="javascript:validate_number(this,'#{feildConfig.displayName}');javascript:accumilateFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
+                                                       onblur="javascript:validate_number(this,'#{feildConfig.displayName}');javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
                                                        value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
                                                        maxlength="#{feildConfig.maxLength}" 
                                                        rendered="#{feildConfig.name ne 'LID'}"/>
@@ -143,7 +143,7 @@
                                         <h:inputText  label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.displayName]}"
                                                      required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
                                                      onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFieldsOnBlur(this,'#{feildConfig.displayName}')"
+                                                     onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
                                                      onkeyup="javascript:qws_field_on_key_up(this)" />
                                         <script> var dateFrom =  getDateFieldName('advancedformData','DOBFrom');</script>
                                         <a HREF="javascript:void(0);" 

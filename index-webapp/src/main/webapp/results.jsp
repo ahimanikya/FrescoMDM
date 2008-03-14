@@ -23,13 +23,9 @@
           LoginHandler loginHandler = new LoginHandler();
           NavigationHandler navigationHandler = new NavigationHandler();
           
-          System.out.println( "11" );
           loginHandler.initializeApplication();
-          System.out.println( "12" );
           ScreenObject screenObject = ConfigManager.getInstance().getInitialScreen();
-          System.out.println( "14" + screenObject.getDisplayTitle() );
           session.setAttribute("ScreenObject", screenObject);
-          System.out.println( "15" + request.isUserInRole("MasterIndex.Admin") );
 
           // Navigate the user as per user configuration in  edm.xml   
           String tagName  = navigationHandler.getTagNameByScreenId(screenObject.getID());

@@ -19,7 +19,6 @@
     <html>
 <% 
 LoginHandler loginHandler = new LoginHandler();
-System.out.println("User Profile" + session.getAttribute("userProfile") + "USER IN SESSION" + session.getAttribute("user") );
 if (request.getAttribute("Logout") == null && request.getRemoteUser() != null && request.isUserInRole("MasterIndex.Admin")) {
     FacesContext.getCurrentInstance().getExternalContext().redirect("results.jsf");
 }
@@ -31,6 +30,7 @@ if (request.getAttribute("Logout") == null && request.getRemoteUser() != null &&
         </head>
 <script language="JavaScript">
     function submitAction() {
+        //alert('submitActionsubmitAction');
         document.loginform.submit();
     }
 
@@ -89,7 +89,7 @@ if (request.getAttribute("Logout") == null && request.getRemoteUser() != null &&
                                     <tr>
                                         <td colspan="2">                                          
                                             <f:verbatim>
-                                                <a href="javascript:loginform.submit();" class="button"><span> Login </span></a>
+                                                <a href="javascript:submitAction();" class="button"><span> Login </span></a>
                                             </f:verbatim>
                                         </td>
                                     </tr>

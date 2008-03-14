@@ -90,9 +90,6 @@
             SourceHandler sourceHandler = new SourceHandler();
             Object[] resultsConfigFeilds = sourceHandler.getAllFieldConfigs().toArray();
             Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
-            Object[] addressConfigFeilds = sourceHandler.getAddressFieldConfigs().toArray();
-            Object[] aliasConfigFeilds = sourceHandler.getAliasFieldConfigs().toArray();
-            Object[] phoneConfigFeilds = sourceHandler.getPhoneFieldConfigs().toArray();
             AssumeMatchHandler assumeMatchHandler = new AssumeMatchHandler();
             SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
             ArrayList eoArrayList = new ArrayList();

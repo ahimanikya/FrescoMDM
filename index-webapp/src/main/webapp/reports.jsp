@@ -5,6 +5,19 @@
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <%@ taglib uri="http://yui4jsf.sourceforge.net" prefix="yui"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.SearchResultsConfig"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfigGroup"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.DuplicateReportHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.DeactivatedReportHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.MergeRecordHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.UnmergedRecordsHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.UpdateReportHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.AssumeMatchReportHandler"  %>
+<%@ page import="java.util.ArrayList"  %>
+<%@ page import="java.util.HashMap"  %>
 
 <%
 //Author Sridhar Narsingh
@@ -18,26 +31,38 @@
     
     <html>
        <head>
-            <title><h:outputText value="#{msgs.application_heading}"/></title> 
+<title><h:outputText value="#{msgs.application_heading}"/></title> 
             <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
             <!-- YAHOO Global Object source file --> 
-            <script type="text/javascript" src="http://yui.yahooapis.com/2.3.1/build/yahoo/yahoo-min.js" ></script>
+            <script type="text/javascript" src="./css/yui/yahoo/yahoo-min.js"></script>
             <!-- Additional source files go here -->
             <link type="text/css" href="./css/styles.css"  rel="stylesheet" media="screen">
             <link type="text/css" href="./css/calpopup.css" rel="stylesheet" media="screen">
             <link type="text/css" href="./css/DatePicker.css" rel="stylesheet" media="screen">
-            <script language="JavaScript" src="scripts/edm.js"></script>
+            <script type="text/javascript" src="scripts/edm.js"></script>
             <script type="text/javascript" src="scripts/calpopup.js"></script>
             <script type="text/javascript" src="scripts/Control.js"></script>
             <script type="text/javascript" src="scripts/dateparse.js"></script>
             <script type="text/javascript" src="scripts/Validation.js"></script>
-            <link rel="stylesheet" type="text/css" href="./css/yui/fonts/fonts-min.css" />
-            <link rel="stylesheet" type="text/css" href="./css/yui/tabview/assets/skins/sam/tabview.css" />
+            <link rel="stylesheet" type="text/css" href="./css/yui/fonts/fonts-min.css" >
+            <link rel="stylesheet" type="text/css" href="./css/yui/tabview/assets/skins/sam/tabview.css">
             <script type="text/javascript" src="./scripts/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
             <script type="text/javascript" src="./scripts/yui/element/element-beta.js"></script>
             <script type="text/javascript" src="./scripts/yui/tabview/tabview.js"></script>
             <!--there is no custom header content for this example-->
-       </head>
+             <!--CSS file (default YUI Sam Skin) -->
+            <link  type="text/css" rel="stylesheet" href="./css/yui/datatable/assets/skins/sam/datatable.css">
+            <!-- Dependencies -->
+            <script type="text/javascript" src="./scripts/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+            <script type="text/javascript" src="./scripts/yui/element/element-beta-min.js"></script>
+            <script type="text/javascript" src="./scripts/yui/datasource/datasource-beta-min.js"></script>
+            <script type="text/javascript" src="./scripts/yui/dragdrop/dragdrop-min.js"></script>
+            <script type="text/javascript" src="./scripts/yui/json/json-min.js"></script>
+            <script type="text/javascript" src="./scripts/yui/calendar/calendar-min.js"></script>
+            <script type="text/javascript" src="./scripts/yui/connection/connection-min.js"></script>
+            <!-- Source files -->
+            <script type="text/javascript" src="./scripts/yui/datatable/datatable-beta-min.js"></script>
+         </head>
         
         <body class="yui-skin-sam">
              <%@include file="./templates/header.jsp"%>
@@ -336,16 +361,29 @@
                                         </h:form>  
                                         </div>                                        
                                        <% if ("MERGED_RECORDS".equalsIgnoreCase((String)request.getAttribute("tabName")))   {%>
-                                       <br/>                                       
+                                      <%
+                                        MergeRecordHandler mergeRecordHandler=new MergeRecordHandler(); 
+                                        ArrayList fcArrayList  = mergeRecordHandler.getResultsConfigArrayList();
+                                          ArrayList mergeResultArrayList = new ArrayList();
+                                          if(request.getAttribute("mergeReportList") != null) {
+                                             request.setAttribute("mergeReportList", request.getAttribute("mergeReportList") );  
+                                             mergeResultArrayList = (ArrayList) request.getAttribute("mergeReportList"); 
+                                              }
+                                     %>
+                                    <br/>
+                                   <%
+                                         if (mergeResultArrayList != null && mergeResultArrayList.size() > 0) {
+                                    %>
                                        <div class="printClass">
                                            <table cellpadding="0" cellspacing="0" border="0">
                                                    <tr>
-                                                       <td>                                                           
-                                                           <h:outputText rendered="#{ReportHandler.resultsSize gt -1}" value="#{msgs.total_records_text}"/>&nbsp;
+                                                       <td>
+                                                           <h:outputText value="#{msgs.total_records_text}"/>&nbsp;
                                                        </td>
+                                                       <td>    
+                                                           <%=mergeResultArrayList.size()%>&nbsp;&nbsp;
+                                                        </td>
                                                         <td>
-                                                           <h:outputText rendered="#{ReportHandler.resultsSize gt -1}" value="#{ReportHandler.resultsSize}"/>&nbsp;&nbsp;
-                                                         <td>
                                                            <h:outputLink styleClass="button" rendered="#{Operations.reports_MergedRecords && ReportHandler.resultsSize gt 0}" value="javaScript:window.print();">
                                                                <span><h:outputText rendered="#{ReportHandler.resultsSize gt 0}" value="#{msgs.print_text}"/>  </span>
                                                            </h:outputLink>                                                           
@@ -353,115 +391,161 @@
                                                        </td>
                                                    </tr>
                                            </table>
-                                       </div>                                       
-                                       <div class="reportYUISearch">
-                                            <yui:datatable var="mergedRecords" value="#{ReportHandler.mergedRecordsVO}"
-                                                           paginator="true" 
-                                                           id="mergedRecords"
-                                                           rowClasses="even,odd"
-                                                           rendered="#{ReportHandler.resultsSize gt 0}"
-                                                           rows="50"                                     
-                                                           width="1024px">                                                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_euidno_text}" />
-                                                    </f:facet>
-                                                    <div id="multicolumn">
-                                                        <h:dataTable var="euidArray" value="#{mergedRecords.euid}">
-                                                            <h:column>
-                                                                <h:outputText value="#{euidArray}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>
-                                                </yui:column>
-                                                
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_firstname_text}" />
-                                                    </f:facet>
-                                                    <div id="multicolumn">
-                                                        <h:dataTable var="firstNameArray" value="#{mergedRecords.firstName}">
-                                                            <h:column>
-                                                                <h:outputText value="#{firstNameArray}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_lastname_text}" />
-                                                    </f:facet>
-                                                    <div id="multicolumn">
-                                                        <h:dataTable var="lastNameArray" value="#{mergedRecords.lastName}">
-                                                            <h:column>
-                                                                <h:outputText value="#{lastNameArray}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_ssn_text}" />
-                                                    </f:facet>
-                                                    <div id="multicolumn">
-                                                        <h:dataTable var="ssnArray" value="#{mergedRecords.ssn}">
-                                                            <h:column>
-                                                                <h:outputText value="#{ssnArray}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_DOB_text}" />
-                                                    </f:facet>
-                                                    <div id="multicolumn">
-                                                        <h:dataTable var="dobArray" value="#{mergedRecords.dob}">
-                                                            <h:column>
-                                                                <h:outputText value="#{dobArray}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_addressline1_text}" />
-                                                    </f:facet>
-                                                    <div id="multicolumn">
-                                                        <h:dataTable var="addressLine1Array" value="#{mergedRecords.addressLine1}">
-                                                            <h:column>
-                                                                <h:outputText value="#{addressLine1Array}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>
-                                                    
-                                                </yui:column>
-                                                
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_date_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{mergedRecords.mergedtime}" />
-                                                </yui:column>
-                                                
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_description_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{mergedRecords.description}" />
-                                                </yui:column>
-                                            </yui:datatable>
-                                        </div>         
-                                       <%}%>
+                                       </div> 
+                                          <%}%>                                        
+                                        
+   
+   <%
+         if (mergeResultArrayList != null && mergeResultArrayList.size() > 0) {
+    %>
+         <div class="reportYUISearch" >
+                <div id="outputdiv"></div>
+             </div>  
+      <%}%>
+      
+        <script>
+            var fieldsArray = new Array();
+        </script>
+         <%
+            
+        //SearchResultsConfig searchResultsConfig = (SearchResultsConfig) screenObject.getSearchResultsConfig().toArray()[0];
+
+        int pageSize = 10;
+        
+        
+        ArrayList keysList  = new ArrayList();
+        ArrayList labelsList  = new ArrayList();
+        ArrayList fullFieldNamesList  = new ArrayList();
+        
+        keysList.add("EUID");
+        labelsList.add("EUID");
+        fullFieldNamesList.add("EUID");
+        
+        for(int i=0;i<fcArrayList.size();i++) {
+            FieldConfig fieldConfig = (FieldConfig)fcArrayList.get(i);
+            keysList.add(fieldConfig.getName());
+            labelsList.add(fieldConfig.getDisplayName());
+            fullFieldNamesList.add(fieldConfig.getFullFieldName());
+        }
+        
+        //set EUID values here
+        String[] keys = new String[keysList.size()];
+        String[] labels = new String[labelsList.size()];
+        String[] fullFieldNames = new String[fullFieldNamesList.size()];
+        
+        for(int i=0;i<keysList.size();i++) {
+            keys[i] = (String) keysList.get(i);
+            labels[i] = (String) labelsList.get(i);
+            fullFieldNames[i] = (String) fullFieldNamesList.get(i);
+        }
+        
+        
+        
+        StringBuffer myColumnDefs = new StringBuffer();
+
+        myColumnDefs.append("[");
+        String value = new String();
+        for(int i=0;i<keysList.size();i++) {
+           value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ",sortable:true,resizeable:true}";
+           myColumnDefs.append(value);
+           if(i != keys.length -1) myColumnDefs.append(",");
+         }   
+         myColumnDefs.append("]");
+
+         
+        StringBuffer sbr  = new StringBuffer();
+        sbr.append("[");
+        if (mergeResultArrayList != null && mergeResultArrayList.size() > 0) {
+                for (int i = 0; i < mergeResultArrayList.size(); i++) {
+                    HashMap valueMap = (HashMap) mergeResultArrayList.get(i);
+                    StringBuffer valueBuffer = new StringBuffer();
+                    valueBuffer.append("{");  
+                    for (int kc = 0; kc < fullFieldNames.length; kc++) {
+                        valueBuffer.append(keys[kc] + ":" + "\"" + ((valueMap.get(fullFieldNames[kc]) != null)?valueMap.get(fullFieldNames[kc]):"") + "\"");
+                        if (kc != fullFieldNames.length - 1) {
+                            valueBuffer.append(",");
+                        }
+                    }
+                    valueBuffer.append("}");                   
+
+                    sbr.append(valueBuffer.toString());
+
+                    if (i != mergeResultArrayList.size() - 1) {
+                        sbr.append(",");
+                    }
+
+                }
+            }
+        sbr.append("]");           
+
+        for(int i=0;i<keysList.size();i++) {
+        %> 
+        <script>
+            fieldsArray[<%=i%>] = '<%=keys[i]%>';
+        </script>
+        <%}%>
+        
+
+<script>
+     var dataArray = new Array();
+     dataArray  = <%=sbr.toString()%>;
+
+</script>
+
+<script>
+
+    YAHOO.example.Data = {
+    outputValues: dataArray
+ }
+</script>
+
+<script type="text/javascript">
+YAHOO.util.Event.addListener(window, "load", function() {
+    YAHOO.example.CustomSort = new function() {
+        var myColumnDefs = <%=myColumnDefs.toString()%>;
+        this.myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.outputValues);
+        this.myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+        this.myDataSource.responseSchema = {
+            fields: fieldsArray
+        };
+
+
+var myConfigs = {
+    paginator : new YAHOO.widget.Paginator({
+        rowsPerPage    : <%=pageSize%>, // REQUIRED
+        totalRecords   : dataArray.length // OPTIONAL
+
+        // use an existing container element
+        //containers : 'sort',
+
+        // use a custom layout for pagination controls
+        //template       : "{PageLinks} Show {RowsPerPageDropdown} per page",
+
+        // show all links
+        //pageLinks : YAHOO.widget.Paginator.VALUE_UNLIMITED,
+
+        // use these in the rows-per-page dropdown
+        //rowsPerPageOptions : [25,50,100],
+
+        // use custom page link labels
+        //pageLabelBuilder : function (page,paginator) {
+          //  var recs = paginator.getPageRecords(page);
+           //return (recs[0] + 1) + ' - ' + (recs[1] + 1);
+        //}
+    })
+     
+
+};
+        this.myDataTable = new YAHOO.widget.DataTable("outputdiv", myColumnDefs,
+                this.myDataSource, myConfigs);
+            
+    };
+});
+</script>
+                                        
+                                       <%}%>                                                                                                                        
                                     </div>
-                                <%}%>
+                                <%}%>     
                                 <% if(operations.isReports_DeactivatedEUIDs()){%>
                                     <div id="tab2">
                                         <div id ="deactivatedreport" class="basicSearch">
@@ -564,16 +648,29 @@
                                         </h:form>   
                                        </div>                                        
                                        <% if ("DEACTIVATED_REPORT".equalsIgnoreCase((String)request.getAttribute("tabName")))      {%>
-                                       <br/>                                       
-                                        <div class="printClass">
+                                         <%
+                                        DeactivatedReportHandler deactivateReportHandler=new DeactivatedReportHandler(); 
+                                        ArrayList fcArrayList  = deactivateReportHandler.getResultsConfigArrayList();
+                                         ArrayList deactivateResultArrayList = new ArrayList();
+                                          if(request.getAttribute("deactivatedReportList") != null) {
+                                             request.setAttribute("deactivatedReportList", request.getAttribute("deactivatedReportList") );  
+                                             deactivateResultArrayList = (ArrayList) request.getAttribute("deactivatedReportList"); 
+                                             
+                                             }
+                                     %>
+                                        <br/>
+                                   <%
+                                         if (deactivateResultArrayList != null && deactivateResultArrayList.size() > 0) {
+                                    %>
+                                           <div class="printClass">
                                            <table cellpadding="0" cellspacing="0" border="0">
                                                    <tr>
                                                        <td>
-                                                           <h:outputText rendered="#{ReportHandler.resultsSize gt -1}" value="#{msgs.total_records_text}"/>&nbsp;
+                                                           <h:outputText value="#{msgs.total_records_text}"/>&nbsp;
+                                                       </td>
+                                                       <td>    
+                                                           <%=deactivateResultArrayList.size()%>&nbsp;&nbsp;
                                                         </td>
-                                                        <td>
-                                                           <h:outputText rendered="#{ReportHandler.resultsSize gt -1}" value="#{ReportHandler.resultsSize}"/>&nbsp;&nbsp;
-                                                         </td>
                                                          <td>   
                                                            <h:outputLink styleClass="button" rendered="#{Operations.reports_DeactivatedEUIDs && ReportHandler.resultsSize gt 0}" value="javaScript:window.print();">
                                                                <span><h:outputText rendered="#{ReportHandler.resultsSize gt 0}" value="#{msgs.print_text}"/>  </span>
@@ -582,77 +679,164 @@
                                                    </tr>
                                            </table>
                                        </div>
-                                        <div class="reportYUISearch">
-                                            <yui:datatable var="deactivateRecords" value="#{ReportHandler.deactivatedRecordsVO}"
-                                                           paginator="true" 
-                                                           id="deactivateRecords"
-                                                           rows="50" 
-                                                           rendered="#{ReportHandler.resultsSize gt 0}"
-                                                           rowClasses="even,odd"
-                                                           width="1024px">                                                                            
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                       <h:outputText  value="#{msgs.datatable_euidno_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{deactivateRecords.euid}" />
-                                                </yui:column>
-                                                
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_firstname_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{deactivateRecords.firstName}" />
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_lastname_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{deactivateRecords.lastName}"/>
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_ssn_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{deactivateRecords.ssn}" />
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_DOB_text}"  />
-                                                    </f:facet>
-                                                    <h:outputText value="#{deactivateRecords.dob}" />
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_addressline1_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{deactivateRecords.addressLine1}" />
-                                                </yui:column>
-                                                
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_date_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{deactivateRecords.deactivatedDate}" />
-                                                </yui:column>
-                                                
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_description_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{deactivateRecords.description}" />
-                                                </yui:column>
-                                            </yui:datatable>
-                                        </div>
-                                       <%}%>                                        
-                                  </div>
-                                <%}%>  
+                                          <%}%>                                        
+                                        
+   
+   <%
+         if (deactivateResultArrayList != null && deactivateResultArrayList.size() > 0) {
+    %>
+
+              <div class="reportYUISearch" >
+                <div id="outputdiv"></div>
+             </div>  
+      <%}%>
+      
+        <script>
+            var deactivatefieldsArray = new Array();
+        </script>
+         <%
+            
+        //SearchResultsConfig searchResultsConfig = (SearchResultsConfig) screenObject.getSearchResultsConfig().toArray()[0];
+
+        int pageSize = 10;
+        
+        
+        ArrayList deacivatekeysList  = new ArrayList();
+        ArrayList deactivatelabelsList  = new ArrayList();
+        ArrayList deactivatefullFieldNamesList  = new ArrayList();
+        
+        deacivatekeysList.add("EUID");
+        deactivatelabelsList.add("EUID");
+        deactivatefullFieldNamesList.add("EUID");
+        
+        for(int i=0;i<fcArrayList.size();i++) {
+            FieldConfig fieldConfig = (FieldConfig)fcArrayList.get(i);
+            deacivatekeysList.add(fieldConfig.getName());
+            deactivatelabelsList.add(fieldConfig.getDisplayName());
+            deactivatefullFieldNamesList.add(fieldConfig.getFullFieldName());
+        }
+        
+        //set EUID values here
+        String[] keys = new String[deacivatekeysList.size()];
+        String[] labels = new String[deactivatelabelsList.size()];
+        String[] fullFieldNames = new String[deactivatefullFieldNamesList.size()];
+        
+        for(int i=0;i<deacivatekeysList.size();i++) {
+            keys[i] = (String) deacivatekeysList.get(i);
+            labels[i] = (String) deactivatelabelsList.get(i);
+            fullFieldNames[i] = (String) deactivatefullFieldNamesList.get(i);
+        }
+        
+        
+        
+        StringBuffer myColumnDefs = new StringBuffer();
+
+        myColumnDefs.append("[");
+        String value = new String();
+        for(int i=0;i<deacivatekeysList.size();i++) {
+          value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ",sortable:true,resizeable:true}";
+          myColumnDefs.append(value);
+          if(i != keys.length -1) myColumnDefs.append(",");
+         }   
+         myColumnDefs.append("]");
+
+         
+        StringBuffer sbr  = new StringBuffer();
+        sbr.append("[");
+        if (deactivateResultArrayList != null && deactivateResultArrayList.size() > 0) {
+                for (int i = 0; i < deactivateResultArrayList.size(); i++) {
+                    HashMap valueMap = (HashMap) deactivateResultArrayList.get(i);
+                    StringBuffer valueBuffer = new StringBuffer();
+                    valueBuffer.append("{");  
+                    for (int kc = 0; kc < fullFieldNames.length; kc++) {
+                        valueBuffer.append(keys[kc] + ":" + "\"" + ((valueMap.get(fullFieldNames[kc]) != null)?valueMap.get(fullFieldNames[kc]):"") + "\"");
+                        if (kc != fullFieldNames.length - 1) {
+                            valueBuffer.append(",");
+                        }
+                    }
+                    valueBuffer.append("}");                   
+
+                    sbr.append(valueBuffer.toString());
+
+                    if (i != deactivateResultArrayList.size() - 1) {
+                        sbr.append(",");
+                    }
+
+                }
+            }
+        sbr.append("]");           
+
+        for(int i=0;i<deacivatekeysList.size();i++) {
+        %> 
+        <script>
+            deactivatefieldsArray[<%=i%>] = '<%=keys[i]%>';
+        </script>
+        <%}%>
+        
+
+<script>
+     var deactivatedataArray = new Array();
+     deactivatedataArray  = <%=sbr.toString()%>;
+
+</script>
+
+<script>
+
+    YAHOO.example.Data = {
+    outputValues: deactivatedataArray
+ }
+</script>
+
+<script type="text/javascript">
+YAHOO.util.Event.addListener(window, "load", function() {
+    YAHOO.example.CustomSort = new function() {
+        var myColumnDefs = <%=myColumnDefs.toString()%>;
+        this.myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.outputValues);
+        this.myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+        this.myDataSource.responseSchema = {
+            fields: deactivatefieldsArray
+        };
+
+
+var myConfigs = {
+    paginator : new YAHOO.widget.Paginator({
+        rowsPerPage    : <%=pageSize%>, // REQUIRED
+        totalRecords   : deactivatedataArray.length // OPTIONAL
+
+        // use an existing container element
+        //containers : 'sort',
+
+        // use a custom layout for pagination controls
+        //template       : "{PageLinks} Show {RowsPerPageDropdown} per page",
+
+        // show all links
+        //pageLinks : YAHOO.widget.Paginator.VALUE_UNLIMITED,
+
+        // use these in the rows-per-page dropdown
+        //rowsPerPageOptions : [25,50,100],
+
+        // use custom page link labels
+        //pageLabelBuilder : function (page,paginator) {
+          //  var recs = paginator.getPageRecords(page);
+           //return (recs[0] + 1) + ' - ' + (recs[1] + 1);
+        //}
+    })
+     
+
+};
+        this.myDataTable = new YAHOO.widget.DataTable("outputdiv", myColumnDefs,
+                this.myDataSource, myConfigs);
+            
+    };
+});
+</script>
+                                        
+                                        
+                                        
+                                        
+                                       <%}%>                                                                                                                        
+                                    </div>
+                                <%}%>     
                                 <% if(operations.isReports_UnmergedRecords()){%> 
                                     <div id="tab3">
                                         <div id ="unmergeReport" class="basicSearch">
@@ -757,15 +941,28 @@
                                         </h:form>   
                                         </div>
                                        <% if ("UNMERGED_RECORDS".equalsIgnoreCase((String)request.getAttribute("tabName")))      {%>
-                                       <br/>                                       
+                                        <%
+        UnmergedRecordsHandler unmergeReportHandler = new UnmergedRecordsHandler();
+        ArrayList fcArrayList  = unmergeReportHandler.getResultsConfigArrayList();
+         ArrayList unmergeResultArrayList = new ArrayList();
+          if(request.getAttribute("unmergeReportList") != null) {
+             request.setAttribute("unmergeReportList", request.getAttribute("unmergeReportList") );  
+             unmergeResultArrayList = (ArrayList) request.getAttribute("unmergeReportList"); 
+         }
+   %>
+                                        <br/>
+   <%
+         if (unmergeResultArrayList != null && unmergeResultArrayList.size() > 0) {
+    %>
+                                  
                                        <div class="printClass">
                                            <table cellpadding="0" cellspacing="0" border="0">
                                                    <tr>
                                                        <td>
-                                                           <h:outputText rendered="#{ReportHandler.resultsSize gt -1}" value="#{msgs.total_records_text}"/>&nbsp;
+                                                           <h:outputText value="#{msgs.total_records_text}"/>&nbsp;
                                                        </td>
-                                                       <td> 
-                                                           <h:outputText rendered="#{ReportHandler.resultsSize gt -1}" value="#{ReportHandler.resultsSize}"/>&nbsp;&nbsp;
+                                                       <td>    
+                                                           <%=unmergeResultArrayList.size()%>&nbsp;&nbsp;
                                                         </td>
                                                         <td>   
                                                            <h:outputLink styleClass="button" rendered="#{Operations.reports_UnmergedRecords && ReportHandler.resultsSize gt 0}" value="javaScript:window.print();">
@@ -775,116 +972,164 @@
                                                    </tr>
                                            </table>
                                        </div>
-                                        <div class="reportYUISearch">
-                                           <yui:datatable var="unmergedRecords" value="#{ReportHandler.unmergedRecordsVO}"
-                                                           paginator="true" 
-                                                           id="unmergedRecords"
-                                                           rows="50"
-                                                           rowClasses="even,odd"                                                           
-                                                           rendered="#{ReportHandler.resultsSize gt 0}"                                                           
-                                                           width="1024px">                                                                            
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_euidno_text}" />
-                                                    </f:facet>                                                    
-                                                     <div id="multicolumn">
-                                                        <h:dataTable var="euidArray" value="#{unmergedRecords.euid}">
-                                                            <h:column>
-                                                                <h:outputText value="#{euidArray}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>
-                                                    
-                                                </yui:column>
-                                                
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_firstname_text}" />
-                                                    </f:facet>
-                                                    <div id="multicolumn">
-                                                        <h:dataTable var="firstNameArray" value="#{unmergedRecords.firstName}">
-                                                            <h:column>
-                                                                <h:outputText value="#{firstnameArray}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>
-                                                    
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_lastname_text}" />
-                                                    </f:facet>
-                                                    <div id="multicolumn">
-                                                        <h:dataTable var="lastNameArray" value="#{unmergedRecords.lastName}">
-                                                            <h:column>
-                                                                <h:outputText value="#{lastNameArray}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>
-                                                   
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_ssn_text}" />
-                                                    </f:facet>
-                                                      <div id="multicolumn">
-                                                        <h:dataTable var="ssnArray" value="#{unmergedRecords.ssn}">
-                                                            <h:column>
-                                                                <h:outputText value="#{ssnArray}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>
-                                                    
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_DOB_text}" />
-                                                    </f:facet>
-                                                    <div id="multicolumn">
-                                                        <h:dataTable var="dobArray" value="#{unmergedRecords.dob}">
-                                                            <h:column>
-                                                                <h:outputText value="#{dobArray}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>                                                  
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_addressline1_text}" />
-                                                    </f:facet>
-                                                     <div id="multicolumn">
-                                                        <h:dataTable var="addline1Array" value="#{unmergedRecords.addressLine1}">
-                                                            <h:column>
-                                                                <h:outputText value="#{addline1Array}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>                                                                                                   
-                                                </yui:column>
-                                                
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_date_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{unmergedRecords.unmergedDate}" />
-                                                </yui:column>
+                           <%}%>                                        
+                                        
+   
+   <%
+         if (unmergeResultArrayList != null && unmergeResultArrayList.size() > 0) {
+    %>
 
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_description_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{unmergedRecords.description}" />
-                                                </yui:column>
-                                            </yui:datatable>
-                                        </div>
-                                       <%}%>                                        
+              <div class="reportYUISearch" >
+                <div id="outputdiv"></div>
+             </div>  
+      <%}%>
+      
+        <script>
+            var fieldsArray = new Array();
+        </script>
+         <%
+            
+        //SearchResultsConfig searchResultsConfig = (SearchResultsConfig) screenObject.getSearchResultsConfig().toArray()[0];
+
+        int pageSize = 10;
+        
+        
+        ArrayList keysList  = new ArrayList();
+        ArrayList labelsList  = new ArrayList();
+        ArrayList fullFieldNamesList  = new ArrayList();
+        
+        keysList.add("EUID");
+        labelsList.add("EUID");
+        fullFieldNamesList.add("EUID");
+        
+        for(int i=0;i<fcArrayList.size();i++) {
+            FieldConfig fieldConfig = (FieldConfig)fcArrayList.get(i);
+            keysList.add(fieldConfig.getName());
+            labelsList.add(fieldConfig.getDisplayName());
+            fullFieldNamesList.add(fieldConfig.getFullFieldName());
+        }
+        
+        //set EUID values here
+        String[] keys = new String[keysList.size()];
+        String[] labels = new String[labelsList.size()];
+        String[] fullFieldNames = new String[fullFieldNamesList.size()];
+        
+        for(int i=0;i<keysList.size();i++) {
+            keys[i] = (String) keysList.get(i);
+            labels[i] = (String) labelsList.get(i);
+            fullFieldNames[i] = (String) fullFieldNamesList.get(i);
+        }
+        
+        
+        
+        StringBuffer myColumnDefs = new StringBuffer();
+
+        myColumnDefs.append("[");
+        String value = new String();
+        for(int i=0;i<keysList.size();i++) {
+          value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ",sortable:true,resizeable:true}";
+          myColumnDefs.append(value);
+          if(i != keys.length -1) myColumnDefs.append(",");
+         }   
+         myColumnDefs.append("]");
+
+         
+        StringBuffer sbr  = new StringBuffer();
+        sbr.append("[");
+        if (unmergeResultArrayList != null && unmergeResultArrayList.size() > 0) {
+                for (int i = 0; i < unmergeResultArrayList.size(); i++) {
+                    HashMap valueMap = (HashMap) unmergeResultArrayList.get(i);
+                    StringBuffer valueBuffer = new StringBuffer();
+                    valueBuffer.append("{");  
+                    for (int kc = 0; kc < fullFieldNames.length; kc++) {
+                        valueBuffer.append(keys[kc] + ":" + "\"" + ((valueMap.get(fullFieldNames[kc]) != null)?valueMap.get(fullFieldNames[kc]):"") + "\"");
+                        if (kc != fullFieldNames.length - 1) {
+                            valueBuffer.append(",");
+                        }
+                    }
+                    valueBuffer.append("}");                   
+
+                    sbr.append(valueBuffer.toString());
+
+                    if (i != unmergeResultArrayList.size() - 1) {
+                        sbr.append(",");
+                    }
+
+                }
+            }
+        sbr.append("]");           
+
+        for(int i=0;i<keysList.size();i++) {
+        %> 
+        <script>
+            fieldsArray[<%=i%>] = '<%=keys[i]%>';
+        </script>
+        <%}%>
+        
+
+<script>
+     var dataArray = new Array();
+     dataArray  = <%=sbr.toString()%>;
+
+</script>
+
+<script>
+
+    YAHOO.example.Data = {
+    outputValues: dataArray
+ }
+</script>
+
+<script type="text/javascript">
+YAHOO.util.Event.addListener(window, "load", function() {
+    YAHOO.example.CustomSort = new function() {
+        var myColumnDefs = <%=myColumnDefs.toString()%>;
+        this.myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.outputValues);
+        this.myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+        this.myDataSource.responseSchema = {
+            fields: fieldsArray
+        };
+
+
+var myConfigs = {
+    paginator : new YAHOO.widget.Paginator({
+        rowsPerPage    : <%=pageSize%>, // REQUIRED
+        totalRecords   : dataArray.length // OPTIONAL
+
+        // use an existing container element
+        //containers : 'sort',
+
+        // use a custom layout for pagination controls
+        //template       : "{PageLinks} Show {RowsPerPageDropdown} per page",
+
+        // show all links
+        //pageLinks : YAHOO.widget.Paginator.VALUE_UNLIMITED,
+
+        // use these in the rows-per-page dropdown
+        //rowsPerPageOptions : [25,50,100],
+
+        // use custom page link labels
+        //pageLabelBuilder : function (page,paginator) {
+          //  var recs = paginator.getPageRecords(page);
+           //return (recs[0] + 1) + ' - ' + (recs[1] + 1);
+        //}
+    })
+     
+
+};
+        this.myDataTable = new YAHOO.widget.DataTable("outputdiv", myColumnDefs,
+                this.myDataSource, myConfigs);
+            
+    };
+});
+</script>
+                                        
+                                        
+                                        
+                                        
+                                       <%}%>                                                                                                                        
                                     </div>
-                                <%}%>   
+                                <%}%>     
                                 <% if(operations.isReports_Updates()){%>   
                                     <div id="tab4">
                                         <div id ="UpdateReportsSearch" class="basicSearch">
@@ -989,16 +1234,28 @@
                                         </div>
                                       
                                        <% if ("UPDATE_REPORT".equalsIgnoreCase((String)request.getAttribute("tabName")))      {%>                                       <br/>                                       
-                                        <br>                                      
-                                        <div class="printClass">
+                                     <%
+                                        UpdateReportHandler updateReportHandler=new UpdateReportHandler(); 
+                                        ArrayList fcArrayList  = updateReportHandler.getResultsConfigArrayList();
+                                          ArrayList updateResultArrayList = new ArrayList();
+                                          if(request.getAttribute("updateReportList") != null) {
+                                             request.setAttribute("updateReportList", request.getAttribute("updateReportList") );  
+                                             updateResultArrayList = (ArrayList) request.getAttribute("updateReportList"); 
+                                         }
+                                     %>
+                                    <br/>
+                                   <%
+                                         if (updateResultArrayList != null && updateResultArrayList.size() > 0) {
+                                    %>
+                                       <div class="printClass">
                                            <table cellpadding="0" cellspacing="0" border="0">
                                                    <tr>
                                                        <td>
-                                                           <h:outputText rendered="#{ReportHandler.resultsSize gt -1}" value="#{msgs.total_records_text}"/>&nbsp;
+                                                           <h:outputText value="#{msgs.total_records_text}"/>&nbsp;
                                                        </td>
-                                                       <td>     
-                                                           <h:outputText rendered="#{ReportHandler.resultsSize gt -1}" value="#{ReportHandler.resultsSize}"/>&nbsp;&nbsp;
-                                                       </td>
+                                                       <td>    
+                                                           <%=updateResultArrayList.size()%>&nbsp;&nbsp;
+                                                        </td>
                                                        <td>
                                                            <h:outputLink styleClass="button" rendered="#{Operations.reports_Updates && ReportHandler.resultsSize gt 0}" value="javaScript:window.print();">
                                                               <span><h:outputText rendered="#{ReportHandler.resultsSize gt 0}" value="#{msgs.print_text}"/>  </span>
@@ -1007,117 +1264,162 @@
                                                    </tr>
                                            </table>
                                         </div>
-                                        <div class="reportYUISearch">
-                                            <yui:datatable var="updateRecords" value="#{ReportHandler.updateRecordsVO}"
-                                                           id="updateRecords"
-                                                           paginator="true" 
-                                                           rows="50"
-                                                           rendered="#{ReportHandler.resultsSize gt 0}"
-                                                           rowClasses="even,odd"                                                           
-                                                           width="1024px">                                                                            
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                     <h:outputText  value="#{msgs.datatable_euidno_text}" />
-                                                    </f:facet>                                                    
-                                                    <div id="multicolumn">
-                                                        <h:dataTable var="euidArray" value="#{updateRecords.euid}">
-                                                            <h:column>
-                                                                <h:outputText value="#{euidArray}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>                                                    
-                                                </yui:column>
-                                                
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                      <h:outputText value="#{msgs.datatable_firstname_text}" />
-                                                    </f:facet>
-                                                      <div id="multicolumn">
-                                                        <h:dataTable var="firstNameArray" value="#{updateRecords.firstName}">
-                                                            <h:column>
-                                                                <h:outputText value="#{firstNameArray}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>                                                                      
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                       <h:outputText value="#{msgs.datatable_lastname_text}" />
-                                                    </f:facet>
-                                                     <div id="multicolumn">
-                                                        <h:dataTable var="lastNameArray" value="#{updateRecords.lastName}">
-                                                            <h:column>
-                                                                <h:outputText value="#{lastNameArray}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>                                                         
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                      <h:outputText value="#{msgs.datatable_ssn_text}" />
-                                                    </f:facet>
-                                                     <div id="multicolumn">
-                                                        <h:dataTable var="ssnArray" value="#{updateRecords.ssn}">
-                                                            <h:column>
-                                                                <h:outputText value="#{ssnArray}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>    
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                     <h:outputText value="#{msgs.datatable_DOB_text}" />
-                                                    </f:facet>
-                                                    <div id="multicolumn">
-                                                        <h:dataTable var="dobArray" value="#{updateRecords.dob}">
-                                                            <h:column>
-                                                                <h:outputText value="#{dobArray}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>                                                     
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                       <h:outputText value="#{msgs.datatable_addressline1_text}" />
-                                                    </f:facet>
-                                                     <div id="multicolumn">
-                                                        <h:dataTable var="addLine1Array" value="#{updateRecords.addressLine1}">
-                                                            <h:column>
-                                                                <h:outputText value="#{addLine1Array}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>                                                     
-                                                </yui:column>
-                                                
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                      <h:outputText value="#{msgs.datatable_date_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{updateRecords.updateDate}" />
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                       <h:outputText value="#{msgs.datatable_time_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{updateRecords.updateTime}" />
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                      <h:outputText value="#{msgs.datatable_description_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{updateRecords.description}" />
-                                                </yui:column>
-                                            </yui:datatable>
-                                        </div>
-                                       <%}%>                                                                                
+                                   <%}%>                                        
+                                        
+   
+   <%
+         if (updateResultArrayList != null && updateResultArrayList.size() > 0) {
+    %>
+
+              <div class="reportYUISearch" >
+                <div id="outputdiv"></div>
+             </div>  
+      <%}%>
+      
+        <script>
+            var fieldsArray = new Array();
+        </script>
+         <%
+            
+        //SearchResultsConfig searchResultsConfig = (SearchResultsConfig) screenObject.getSearchResultsConfig().toArray()[0];
+
+        int pageSize = 10;
+        
+        
+        ArrayList keysList  = new ArrayList();
+        ArrayList labelsList  = new ArrayList();
+        ArrayList fullFieldNamesList  = new ArrayList();
+        
+        keysList.add("EUID");
+        labelsList.add("EUID");
+        fullFieldNamesList.add("EUID");
+        
+        for(int i=0;i<fcArrayList.size();i++) {
+            FieldConfig fieldConfig = (FieldConfig)fcArrayList.get(i);
+            keysList.add(fieldConfig.getName());
+            labelsList.add(fieldConfig.getDisplayName());
+            fullFieldNamesList.add(fieldConfig.getFullFieldName());
+        }
+        
+        //set EUID values here
+        String[] keys = new String[keysList.size()];
+        String[] labels = new String[labelsList.size()];
+        String[] fullFieldNames = new String[fullFieldNamesList.size()];
+        
+        for(int i=0;i<keysList.size();i++) {
+            keys[i] = (String) keysList.get(i);
+            labels[i] = (String) labelsList.get(i);
+            fullFieldNames[i] = (String) fullFieldNamesList.get(i);
+        }
+        
+        
+        
+        StringBuffer myColumnDefs = new StringBuffer();
+
+        myColumnDefs.append("[");
+        String value = new String();
+        for(int i=0;i<keysList.size();i++) {
+          value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ",sortable:true,resizeable:true}";
+          myColumnDefs.append(value);
+          if(i != keys.length -1) myColumnDefs.append(",");
+         }   
+         myColumnDefs.append("]");
+
+         
+        StringBuffer sbr  = new StringBuffer();
+        sbr.append("[");
+        if (updateResultArrayList != null && updateResultArrayList.size() > 0) {
+                for (int i = 0; i < updateResultArrayList.size(); i++) {
+                    HashMap valueMap = (HashMap) updateResultArrayList.get(i);
+                    StringBuffer valueBuffer = new StringBuffer();
+                    valueBuffer.append("{");  
+                    for (int kc = 0; kc < fullFieldNames.length; kc++) {
+                        valueBuffer.append(keys[kc] + ":" + "\"" + ((valueMap.get(fullFieldNames[kc]) != null)?valueMap.get(fullFieldNames[kc]):"") + "\"");
+                        if (kc != fullFieldNames.length - 1) {
+                            valueBuffer.append(",");
+                        }
+                    }
+                    valueBuffer.append("}");                   
+
+                    sbr.append(valueBuffer.toString());
+
+                    if (i != updateResultArrayList.size() - 1) {
+                        sbr.append(",");
+                    }
+
+                }
+            }
+        sbr.append("]");           
+
+        for(int i=0;i<keysList.size();i++) {
+        %> 
+        <script>
+            fieldsArray[<%=i%>] = '<%=keys[i]%>';
+        </script>
+        <%}%>
+        
+
+<script>
+     var dataArray = new Array();
+     dataArray  = <%=sbr.toString()%>;
+
+</script>
+
+<script>
+
+    YAHOO.example.Data = {
+    outputValues: dataArray
+ }
+</script>
+
+<script type="text/javascript">
+YAHOO.util.Event.addListener(window, "load", function() {
+    YAHOO.example.CustomSort = new function() {
+        var myColumnDefs = <%=myColumnDefs.toString()%>;
+        this.myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.outputValues);
+        this.myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+        this.myDataSource.responseSchema = {
+            fields: fieldsArray
+        };
+
+
+var myConfigs = {
+    paginator : new YAHOO.widget.Paginator({
+        rowsPerPage    : <%=pageSize%>, // REQUIRED
+        totalRecords   : dataArray.length // OPTIONAL
+
+        // use an existing container element
+        //containers : 'sort',
+
+        // use a custom layout for pagination controls
+        //template       : "{PageLinks} Show {RowsPerPageDropdown} per page",
+
+        // show all links
+        //pageLinks : YAHOO.widget.Paginator.VALUE_UNLIMITED,
+
+        // use these in the rows-per-page dropdown
+        //rowsPerPageOptions : [25,50,100],
+
+        // use custom page link labels
+        //pageLabelBuilder : function (page,paginator) {
+          //  var recs = paginator.getPageRecords(page);
+           //return (recs[0] + 1) + ' - ' + (recs[1] + 1);
+        //}
+    })
+     
+
+};
+        this.myDataTable = new YAHOO.widget.DataTable("outputdiv", myColumnDefs,
+                this.myDataSource, myConfigs);
+            
+    };
+});
+</script>
+                                        
+                                        
+                                        
+                                        
+                                       <%}%>                                                                                                                        
                                     </div>
                                 <%}%>     
                                 <% if(operations.isReports_Activity()){%> 
@@ -1509,78 +1811,193 @@
                                         </h:form>
                                         </div>
                                        <% if ("DUPLICATE_REPORT".equalsIgnoreCase((String)request.getAttribute("tabName")))    { %>
+    <%
+        DuplicateReportHandler duplicateReportHandler = new DuplicateReportHandler();
+        ArrayList fcArrayList  = duplicateReportHandler.getResultsConfigArrayList();
+         ArrayList duplicateResultArrayList = new ArrayList();
+          if(request.getAttribute("duplicateReportList") != null) {
+             request.setAttribute("duplicateReportList", request.getAttribute("duplicateReportList") );  
+             duplicateResultArrayList = (ArrayList) request.getAttribute("duplicateReportList"); 
+         }
+   %>
                                         <br/>
+   <%
+         if (duplicateResultArrayList != null && duplicateResultArrayList.size() > 0) {
+    %>
                                         <div class="printClass">
                                            <table cellpadding="0" cellspacing="0" border="0">
                                                <h:form>
                                                    <tr>
                                                        <td>
-                                                           <h:outputText rendered="#{ReportHandler.resultsSize gt -1}" value="#{msgs.total_records_text}"/>&nbsp;
+                                                           <h:outputText value="#{msgs.total_records_text}"/>&nbsp;
                                                        </td>
                                                        <td>    
-                                                           <h:outputText rendered="#{ReportHandler.resultsSize gt -1}" value="#{ReportHandler.resultsSize}"/>&nbsp;&nbsp;
+                                                           <%=duplicateResultArrayList.size()%>&nbsp;&nbsp;
                                                         </td>
                                                         <td>   
-                                                            <h:outputLink styleClass="button" rendered="#{Operations.reports_Duplicates && ReportHandler.resultsSize gt 0}" value="javaScript:window.print();">
-                                                              <span><h:outputText rendered="#{ReportHandler.resultsSize gt 0}" value="#{msgs.print_text}"/>  </span>
+                                                            <h:outputLink styleClass="button" rendered="#{Operations.reports_Duplicates }" value="javaScript:window.print();">
+                                                              <span><h:outputText  value="#{msgs.print_text}"/>  </span>
                                                            </h:outputLink>
                                                        </td>
                                                    </tr>
                                                </h:form>
                                            </table>
                                         </div>
-                                        <div class="reportYUISearch">
-                                            <yui:datatable var="duplicateRecords" value="#{ReportHandler.duplicateRecordsVO}"
-                                                           id="dupRecords"
-                                                           paginator="true" 
-                                                           rendered="#{ReportHandler.resultsSize gt 0}"
-                                                           rowClasses="even,odd"
-                                                           rows="50"                                     
-                                                           width="1024px">                                                                            
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                       <h:outputText value="#{msgs.datatable_euidno_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{duplicateRecords.euid}" />
-                                                </yui:column>
-                                                
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_firstname_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{duplicateRecords.firstName}" />
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_lastname_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{duplicateRecords.lastName}" />
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_ssn_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{duplicateRecords.ssn}" />
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_DOB_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{duplicateRecords.dob}" />
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_addressline1_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{duplicateRecords.addressLine1}" />
-                                                </yui:column>
-                                            </yui:datatable>
-                                        </div>  
+     <%}%>                                        
+                                        
+   
+   <%
+         if (duplicateResultArrayList != null && duplicateResultArrayList.size() > 0) {
+    %>
+
+              <div class="reportYUISearch" >
+                <div id="outputdiv"></div>
+             </div>  
+      <%}%>
+      
+        <script>
+            var fieldsArray = new Array();
+        </script>
+         <%
+            
+        //SearchResultsConfig searchResultsConfig = (SearchResultsConfig) screenObject.getSearchResultsConfig().toArray()[0];
+
+        int pageSize = 10;
+        
+        
+        ArrayList keysList  = new ArrayList();
+        ArrayList labelsList  = new ArrayList();
+        ArrayList fullFieldNamesList  = new ArrayList();
+        
+        keysList.add("EUID");
+        labelsList.add("EUID");
+        fullFieldNamesList.add("EUID");
+        
+        for(int i=0;i<fcArrayList.size();i++) {
+            FieldConfig fieldConfig = (FieldConfig)fcArrayList.get(i);
+            keysList.add(fieldConfig.getName());
+            labelsList.add(fieldConfig.getDisplayName());
+            fullFieldNamesList.add(fieldConfig.getFullFieldName());
+        }
+        
+        //set EUID values here
+        String[] keys = new String[keysList.size()];
+        String[] labels = new String[labelsList.size()];
+        String[] fullFieldNames = new String[fullFieldNamesList.size()];
+        
+        for(int i=0;i<keysList.size();i++) {
+            keys[i] = (String) keysList.get(i);
+            labels[i] = (String) labelsList.get(i);
+            fullFieldNames[i] = (String) fullFieldNamesList.get(i);
+        }
+        
+        
+        
+        StringBuffer myColumnDefs = new StringBuffer();
+
+        myColumnDefs.append("[");
+        String value = new String();
+        for(int i=0;i<keysList.size();i++) {
+          value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ",sortable:true,resizeable:true}";
+          myColumnDefs.append(value);
+          if(i != keys.length -1) myColumnDefs.append(",");
+         }   
+         myColumnDefs.append("]");
+
+         
+        StringBuffer sbr  = new StringBuffer();
+        sbr.append("[");
+        if (duplicateResultArrayList != null && duplicateResultArrayList.size() > 0) {
+                for (int i = 0; i < duplicateResultArrayList.size(); i++) {
+                    HashMap valueMap = (HashMap) duplicateResultArrayList.get(i);
+                    StringBuffer valueBuffer = new StringBuffer();
+                    valueBuffer.append("{");  
+                    for (int kc = 0; kc < fullFieldNames.length; kc++) {
+                        valueBuffer.append(keys[kc] + ":" + "\"" + ((valueMap.get(fullFieldNames[kc]) != null)?valueMap.get(fullFieldNames[kc]):"") + "\"");
+                        if (kc != fullFieldNames.length - 1) {
+                            valueBuffer.append(",");
+                        }
+                    }
+                    valueBuffer.append("}");                   
+
+                    sbr.append(valueBuffer.toString());
+
+                    if (i != duplicateResultArrayList.size() - 1) {
+                        sbr.append(",");
+                    }
+
+                }
+            }
+        sbr.append("]");           
+
+        for(int i=0;i<keysList.size();i++) {
+        %> 
+        <script>
+            fieldsArray[<%=i%>] = '<%=keys[i]%>';
+        </script>
+        <%}%>
+        
+
+<script>
+     var dataArray = new Array();
+     dataArray  = <%=sbr.toString()%>;
+
+</script>
+
+<script>
+
+    YAHOO.example.Data = {
+    outputValues: dataArray
+ }
+</script>
+
+<script type="text/javascript">
+YAHOO.util.Event.addListener(window, "load", function() {
+    YAHOO.example.CustomSort = new function() {
+        var myColumnDefs = <%=myColumnDefs.toString()%>;
+        this.myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.outputValues);
+        this.myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+        this.myDataSource.responseSchema = {
+            fields: fieldsArray
+        };
+
+
+var myConfigs = {
+    paginator : new YAHOO.widget.Paginator({
+        rowsPerPage    : <%=pageSize%>, // REQUIRED
+        totalRecords   : dataArray.length // OPTIONAL
+
+        // use an existing container element
+        //containers : 'sort',
+
+        // use a custom layout for pagination controls
+        //template       : "{PageLinks} Show {RowsPerPageDropdown} per page",
+
+        // show all links
+        //pageLinks : YAHOO.widget.Paginator.VALUE_UNLIMITED,
+
+        // use these in the rows-per-page dropdown
+        //rowsPerPageOptions : [25,50,100],
+
+        // use custom page link labels
+        //pageLabelBuilder : function (page,paginator) {
+          //  var recs = paginator.getPageRecords(page);
+           //return (recs[0] + 1) + ' - ' + (recs[1] + 1);
+        //}
+    })
+     
+
+};
+        this.myDataTable = new YAHOO.widget.DataTable("outputdiv", myColumnDefs,
+                this.myDataSource, myConfigs);
+            
+    };
+});
+</script>
+                                        
+                                        
+                                        
+                                        
                                        <%}%>                                                                                                                        
                                     </div>
                                 <%}%>     
@@ -1693,16 +2110,28 @@
                                         </h:form>
                                         </div>
                                        <% if ("ASSUME_MATCH".equalsIgnoreCase((String)request.getAttribute("tabName")))      { %>
-                                       <br/>                                       
-                                       <div class="printClass">
+                                        <%
+        AssumeMatchReportHandler assumeMatchReportHandler = new AssumeMatchReportHandler();
+        ArrayList fcArrayList  = assumeMatchReportHandler.getResultsConfigArrayList();
+         ArrayList assumeMatchResultArrayList = new ArrayList();
+          if(request.getAttribute("assumeMatchReportList") != null) {
+             request.setAttribute("assumeMatchReportList", request.getAttribute("assumeMatchReportList") );  
+             assumeMatchResultArrayList = (ArrayList) request.getAttribute("assumeMatchReportList"); 
+         }
+   %>
+                                        <br/>
+   <%
+         if (assumeMatchResultArrayList != null && assumeMatchResultArrayList.size() > 0) {
+    %>
+                                        <div class="printClass">
                                            <table cellpadding="0" cellspacing="0" border="0">
                                                    <tr>
                                                        <td>
-                                                           <h:outputText rendered="#{ReportHandler.resultsSize gt -1}" value="#{msgs.total_records_text}"/>&nbsp;
+                                                           <h:outputText value="#{msgs.total_records_text}"/>&nbsp;
                                                        </td>
                                                        <td>    
-                                                           <h:outputText rendered="#{ReportHandler.resultsSize gt -1}" value="#{ReportHandler.resultsSize}"/>&nbsp;&nbsp;
-                                                       </td>
+                                                           <%=assumeMatchResultArrayList.size()%>&nbsp;&nbsp;
+                                                        </td>
                                                        <td>
                                                            <h:outputLink styleClass="button" rendered="#{Operations.reports_AssumedMatches && ReportHandler.resultsSize gt 0}" value="javaScript:window.print();">
                                                               <span><h:outputText rendered="#{ReportHandler.resultsSize gt 0}" value="#{msgs.print_text}"/>  </span>
@@ -1711,110 +2140,174 @@
                                                    </tr>
                                            </table>
                                        </div>
-                                        <div class="reportYUISearch">
-                                             <yui:datatable var="assumeMatchesRecords" value="#{ReportHandler.assumematchesRecordsVO}"
-                                                           paginator="true" 
-                                                           rendered="#{ReportHandler.resultsSize gt 0}"
-                                                           id="assumeMatch"
-                                                           rowClasses="even,odd"
-                                                           rows="50"                                     
-                                                           width="1024px">                                                                            
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_euidno_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{assumeMatchesRecords.euid}" />
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_localid_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{assumeMatchesRecords.localId}" />
-                                                </yui:column>
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText  value="#{msgs.potential_dup_table_system_column}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{assumeMatchesRecords.systemCode}" />
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_firstname_text}" />
-                                                    </f:facet>
-                                                    <div id="multicolumn">
-                                                        <h:dataTable var="fname" value="#{assumeMatchesRecords.firstName}">
-                                                            <h:column>
-                                                                <h:outputText value="#{fname}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_lastname_text}" />
-                                                    </f:facet>
-                                                    <div id="multicolumn">
-                                                        <h:dataTable var="lname" value="#{assumeMatchesRecords.lastName}">
-                                                            <h:column>
-                                                                <h:outputText value="#{lname}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_ssn_text}" />
-                                                    </f:facet>
-                                                    <div id="multicolumn">
-                                                        <h:dataTable var="social" value="#{assumeMatchesRecords.ssn}">
-                                                            <h:column>
-                                                                <h:outputText value="#{social}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_DOB_text}" />
-                                                    </f:facet>
-                                                    <div id="multicolumn">
-                                                        <h:dataTable var="birth" value="#{assumeMatchesRecords.dob}">
-                                                            <h:column>
-                                                                <h:outputText value="#{birth}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_addressline1_text}" />
-                                                    </f:facet>
-                                                    <div id="multicolumn">
-                                                        <h:dataTable var="line1" value="#{assumeMatchesRecords.addressLine1}">
-                                                            <h:column>
-                                                                <h:outputText value="#{line1}" />
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </div>
-                                                </yui:column>
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.datatable_weight_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{assumeMatchesRecords.weight}" />
-                                                </yui:column>
-                                               
-                                        </yui:datatable>                             
-                                        </div>  
-                                       <%}%>                                        
+                           <%}%>                                        
+                                        
+   
+   <%
+         if (assumeMatchResultArrayList != null && assumeMatchResultArrayList.size() > 0) {
+    %>
+
+              <div class="reportYUISearch" >
+                <div id="outputdiv"></div>
+             </div>  
+      <%}%>
+      
+        <script>
+            var fieldsArray = new Array();
+        </script>
+         <%
+            
+        //SearchResultsConfig searchResultsConfig = (SearchResultsConfig) screenObject.getSearchResultsConfig().toArray()[0];
+
+        int pageSize = 10;
+        
+        
+        ArrayList keysList  = new ArrayList();
+        ArrayList labelsList  = new ArrayList();
+        ArrayList fullFieldNamesList  = new ArrayList();
+        /*
+        keysList.add("EUID");
+        labelsList.add("EUID");
+        fullFieldNamesList.add("EUID");
+        keysList.add("SystemCode");
+        labelsList.add("SystemCode");
+        fullFieldNamesList.add("SystemCode");
+        keysList.add("LID");
+        labelsList.add("LID");
+        fullFieldNamesList.add("LID");
+        keysList.add("Weight");
+        labelsList.add("Weight");
+        fullFieldNamesList.add("Weight");
+        */        
+        
+        for(int i=0;i<fcArrayList.size();i++) {
+            FieldConfig fieldConfig = (FieldConfig)fcArrayList.get(i);
+            keysList.add(fieldConfig.getName());
+            labelsList.add(fieldConfig.getDisplayName());
+            fullFieldNamesList.add(fieldConfig.getFullFieldName());
+        }
+        
+        //set EUID values here
+        String[] keys = new String[keysList.size()];
+        String[] labels = new String[labelsList.size()];
+        String[] fullFieldNames = new String[fullFieldNamesList.size()];
+        
+        for(int i=0;i<keysList.size();i++) {
+            keys[i] = (String) keysList.get(i);
+            labels[i] = (String) labelsList.get(i);
+            fullFieldNames[i] = (String) fullFieldNamesList.get(i);
+        }
+        
+        
+        
+        StringBuffer myColumnDefs = new StringBuffer();
+
+        myColumnDefs.append("[");
+        String value = new String();
+        for(int i=0;i<keysList.size();i++) {
+          value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ",sortable:true,resizeable:true}";
+          myColumnDefs.append(value);
+          if(i != keys.length -1) myColumnDefs.append(",");
+         }   
+         myColumnDefs.append("]");
+
+         
+        StringBuffer sbr  = new StringBuffer();
+        sbr.append("[");
+        if (assumeMatchResultArrayList != null && assumeMatchResultArrayList.size() > 0) {
+                for (int i = 0; i < assumeMatchResultArrayList.size(); i++) {
+                    HashMap valueMap = (HashMap) assumeMatchResultArrayList.get(i);
+                    StringBuffer valueBuffer = new StringBuffer();
+                    valueBuffer.append("{");  
+                    for (int kc = 0; kc < fullFieldNames.length; kc++) {
+                        valueBuffer.append(keys[kc] + ":" + "\"" + ((valueMap.get(fullFieldNames[kc]) != null)?valueMap.get(fullFieldNames[kc]):"") + "\"");
+                        if (kc != fullFieldNames.length - 1) {
+                            valueBuffer.append(",");
+                        }
+                    }
+                    valueBuffer.append("}");                   
+
+                    sbr.append(valueBuffer.toString());
+
+                    if (i != assumeMatchResultArrayList.size() - 1) {
+                        sbr.append(",");
+                    }
+
+                }
+            }
+        sbr.append("]");           
+
+        for(int i=0;i<keysList.size();i++) {
+        %> 
+        <script>
+            fieldsArray[<%=i%>] = '<%=keys[i]%>';
+        </script>
+        <%}%>
+        
+
+<script>
+     var dataArray = new Array();
+     dataArray  = <%=sbr.toString()%>;
+
+</script>
+
+<script>
+
+    YAHOO.example.Data = {
+    outputValues: dataArray
+ }
+</script>
+
+<script type="text/javascript">
+YAHOO.util.Event.addListener(window, "load", function() {
+    YAHOO.example.CustomSort = new function() {
+        var myColumnDefs = <%=myColumnDefs.toString()%>;
+        this.myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.outputValues);
+        this.myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+        this.myDataSource.responseSchema = {
+            fields: fieldsArray
+        };
+
+
+var myConfigs = {
+    paginator : new YAHOO.widget.Paginator({
+        rowsPerPage    : <%=pageSize%>, // REQUIRED
+        totalRecords   : dataArray.length // OPTIONAL
+
+        // use an existing container element
+        //containers : 'sort',
+
+        // use a custom layout for pagination controls
+        //template       : "{PageLinks} Show {RowsPerPageDropdown} per page",
+
+        // show all links
+        //pageLinks : YAHOO.widget.Paginator.VALUE_UNLIMITED,
+
+        // use these in the rows-per-page dropdown
+        //rowsPerPageOptions : [25,50,100],
+
+        // use custom page link labels
+        //pageLabelBuilder : function (page,paginator) {
+          //  var recs = paginator.getPageRecords(page);
+           //return (recs[0] + 1) + ' - ' + (recs[1] + 1);
+        //}
+    })
+     
+
+};
+        this.myDataTable = new YAHOO.widget.DataTable("outputdiv", myColumnDefs,
+                this.myDataSource, myConfigs);
+            
+    };
+});
+</script>
+                                        
+                                        
+                                        
+                                        
+                                       <%}%>                                                                                                                        
                                     </div>
-                                <%}%>    
+                                <%}%>     
                             </div> <!-- End YUI content -->
                             </div> <!-- demo end -->
                         </td>

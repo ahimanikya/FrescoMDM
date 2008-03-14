@@ -66,6 +66,16 @@
                     <table cellspacing="0" cellpadding="0" border="0">
                         <tr>
                             <td>
+                                <h:form>
+                                <h:commandLink styleClass="button" rendered="#{Operations.transLog_SearchView}"
+                                               action="#{NavigationHandler.toTransactions}">
+                                    <span><h:outputText value="#{msgs.view_list_but_text}"/></span>
+                                </h:commandLink>   
+                                </h:form>
+                           </td>
+                        </tr>
+                        <tr>
+                            <td>
                                 <div style="height:500px;overflow:auto;">
                                     <table>
                                         <tr>
@@ -226,7 +236,7 @@
                                             <!-- Display the field Values-->
                                             <td  valign="top">
                                                 <div id="outerMainContentDivid<%=countEnt%>" >
-                                                <div style="width:170px;overflow:auto">
+                                                <div style="width:170px;overflow:hidden">
                                                     <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleTransaction%>" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
@@ -357,12 +367,10 @@
                                                     soHashMap = (HashMap) eoSources.get(i);
                                                     HashMap soHashMapValues = (HashMap) soHashMap.get("SYSTEM_OBJECT");
                                                %>
-                                               <td  valign="top">
-                                                 <div id="mainDupHistory<%=countEnt%><%=i%>" style="visibility:hidden;display:none"></div>
-                                                </td>
+                                              
                                                <td  valign="top">
                                                 <div id="mainDupSources<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
-                                                    <div style="width:170px;overflow:auto">
+                                                    <div style="width:170px;overflow:hidden;">
                                                     <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="source" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
@@ -457,6 +465,9 @@
                                             <!--END displaying the sources-->
                                             
                                            <%}%>
+                                            <td  valign="top">
+                                                 <div id="mainDupHistory" style="visibility:hidden;display:none"></div>
+                                            </td>
                                             <td valign="top"><div id="previewPane"></div></td>                                        
                                         </tr>
                                     </table>
