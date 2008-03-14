@@ -97,6 +97,7 @@ public class EviewProjectGenerator {
     private static String EVIEW_ENTERPRISE_PROJECT_EJB = "EviewEnterpriseApplication-ejb";
     private static String EVIEW_ENTERPRISE_PROJECT_WAR = "EviewEnterpriseApplication-war";
     private static String PRIVATE_PROPERTIES = File.separator + "nbproject" + File.separator + "private" + File.separator + "private.properties";
+    private static String masterIndexDM;
     private EviewProjectGenerator() {}
 
     /**
@@ -115,9 +116,9 @@ public class EviewProjectGenerator {
         String mainProjectName = (String) wDesc.getProperty(WizardProperties.NAME);
         String j2eeLevel = (String)wDesc.getProperty(WizardProperties.J2EE_LEVEL);
         String autoGenerate = (String) wDesc.getProperty(Properties.PROP_AUTO_GENERATE);
-        String masterIndexEDM = (String) wDesc.getProperty(Properties.PROP_MASTER_INDEX_EDM);
+        masterIndexDM = (String) wDesc.getProperty(Properties.PROP_MASTER_INDEX_EDM);
         String edmVersion = "edm";
-        if (masterIndexEDM.equalsIgnoreCase("yes")){
+        if (masterIndexDM.equalsIgnoreCase("yes")){
             edmVersion = "master-index-edm";
         }
         try{
@@ -471,8 +472,8 @@ public class EviewProjectGenerator {
                 FileObject file = files[i];
                 if (file.isData() &&
                     (file.getNameExt().equals(EviewProjectProperties.OBJECT_XSD) ||
-                     file.getNameExt().equals(EviewProjectProperties.EDM_XSD) ||
-                     file.getNameExt().equals(EviewProjectProperties.MIDM_XSD) ||
+                     (file.getNameExt().equals(EviewProjectProperties.EDM_XSD) && !masterIndexDM.equalsIgnoreCase("yes")) ||
+                     (file.getNameExt().equals(EviewProjectProperties.MIDM_XSD) && masterIndexDM.equalsIgnoreCase("yes")) ||
                      file.getNameExt().equals(EviewProjectProperties.MASTER_XSD) ||
                      file.getNameExt().equals(EviewProjectProperties.MEFA_XSD) ||
                      file.getNameExt().equals(EviewProjectProperties.QUERY_XSD) ||
