@@ -26,31 +26,31 @@
     <xs:element name="midm">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="node" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element name="relationships" minOccurs="0" maxOccurs="1"/>
-                <xs:element name="impl-details" type="implDetailType" minOccurs="0" maxOccurs="1"/>
-                <xs:element name="gui-definition" type="guiDefinitionType" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="node" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element name="relationships" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="impl-details" type="implDetailType" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="gui-definition" type="guiDefinitionType" minOccurs="1" maxOccurs="1"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="name" type="xs:string"/>
     <xs:element name="display-name" type="xs:string"/>
-    <xs:element name="display-order">
-        <xs:simpleType>
-            <xs:restriction base="xs:short"/>
-        </xs:simpleType>
-    </xs:element>
-    <xs:element name="max-length">
-        <xs:simpleType>
-            <xs:restriction base="xs:short"/>
-        </xs:simpleType>
-    </xs:element>
+    <xs:element name="initial-screen-id" type="idOrderType"/>
+    <xs:element name="screen-id" type="idOrderType"/>
+    <xs:element name="display-order" type="idOrderType"/>
+    <xs:element name="max-length" type="xs:positiveInteger"/>
     <xs:element name="gui-type" type="xs:string"/>
     <xs:element name="value-list" type="xs:string"/>
     <xs:element name="input-mask" type="xs:string"/>
     <xs:element name="value-mask" type="xs:string"/>
     <xs:element name="value-type" type="xs:string"/>
     <xs:element name="key-type" type="xs:boolean"/>
+    <xs:element name="root-object" type="xs:string"/>
+    <xs:element name="tab-name" type="xs:string"/>
+    <xs:element name="tab-entrance" type="xs:string"/>
+    <xs:element name="report-name" type="xs:string"/>
+    <xs:element name="enable" type="xs:boolean"/>
+    <xs:element name="allow-insert" type="xs:boolean"/>
     <xs:element name="field">
         <xs:complexType>
             <xs:sequence>
@@ -75,17 +75,8 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:element name="initial-screen-id">
-        <xs:simpleType>
-            <xs:restriction base="xs:short"/>
-        </xs:simpleType>
-    </xs:element>
-    <xs:simpleType name="gui-fieldType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="TextBox"/>
-            <xs:enumeration value="MenuList"/>
-        </xs:restriction>
-    </xs:simpleType>
+    <xs:element name="search-pages" type="searchPagesType"/>
+    <xs:element name="search-result-pages" type="searchResultPagesType"/>
     <xs:complexType name="guiDefinitionType">
         <xs:sequence>
             <xs:element name="page-definition" type="qwsDefinitionType"/>
@@ -93,36 +84,28 @@
     </xs:complexType>
     <xs:complexType name="qwsDefinitionType">
         <xs:sequence>
-            <xs:element name="initial-screen-id"/>
+            <xs:element ref="initial-screen-id"/>
             <xs:element name="record-details" type="commonBlockType"/>
             <xs:element name="transactions" type="commonBlockType"/>
             <xs:element name="duplicate-records" type="commonBlockType"/>
             <xs:element name="assumed-matches" type="commonBlockType"/>
-            <xs:element name="source-record" type="sourceRecordType"/>
-            <xs:element name="reports" type="sourceRecordType"/>
-            <xs:element name="eo-search" type="eoSearchType" minOccurs="0"/>
-            <xs:element name="create-eo" type="eoCreateType" minOccurs="0"/>
-            <xs:element name="history" type="historyType" minOccurs="0"/>
-            <xs:element name="matching-review" type="matchingReviewType" minOccurs="0"/>
+            <xs:element name="source-record" type="sourceRecordReportsType"/>
+            <xs:element name="reports" type="sourceRecordReportsType"/>
             <xs:element name="audit-log" type="commonBlockType"/>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="eoSearchType">
-        <xs:sequence>
-            <xs:element name="root-object" type="xs:string"/>
-            <xs:element name="tab-name" type="xs:string"/>
-            <xs:element name="tab-entrance" type="xs:string"/>
-            <xs:element name="simple-search-page" type="simpleSearchPageType" maxOccurs="unbounded"/>
-            <xs:element name="search-result-list-page" type="searchResultListPageType"/>
-            <xs:element name="eo-view-page" type="eoViewPageType"/>
-        </xs:sequence>
-    </xs:complexType>
+    <xs:simpleType name="idOrderType">
+        <xs:restriction base="xs:int">
+            <xs:minInclusive id="short.minInclusive" value="0"/>
+            <xs:maxInclusive id="short.maxInclusive" value="32767"/>
+        </xs:restriction>
+    </xs:simpleType>
     <xs:complexType name="simpleSearchPageType">
         <xs:sequence>
             <xs:element name="screen-title" type="xs:string" minOccurs="0"/>
-            <xs:element name="search-result-id" type="xs:short" minOccurs="0"/>
-            <xs:element name="search-screen-order" type="xs:short" minOccurs="0"/>
-            <xs:element name="field-per-row" type="xs:positiveInteger" minOccurs="0"/>
+            <xs:element ref="report-name" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="search-result-id" type="idOrderType" minOccurs="0"/>
+            <xs:element name="search-screen-order" type="idOrderType" minOccurs="0"/>
             <xs:element name="show-euid" type="xs:boolean" minOccurs="0"/>
             <xs:element name="show-lid" type="xs:boolean" minOccurs="0"/>
             <xs:element name="show-status" type="xs:boolean" minOccurs="0"/>
@@ -139,25 +122,31 @@
             <xs:element name="simple-search-page" type="simpleSearchPageType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="subscreenType">
-        <xs:sequence>
-            <xs:any processContents="skip" maxOccurs="unbounded"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="sourceRecordType">
-        <xs:sequence>
-            <xs:element name="root-object" type="xs:string"/>
-            <xs:element name="tab-name" type="xs:string"/>
-            <xs:element name="screen-id" type="xs:short"/>
-            <xs:element name="display-order" type="xs:short"/>
-            <xs:element name="search-pages" type="searchPagesType" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="search-result-pages" minOccurs="0" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:sequence>
+    <xs:complexType name="searchResultPagesType">
+                     <xs:sequence>
                         <xs:element name="search-result-list-page" type="searchResultListPageType" minOccurs="0"/>
                     </xs:sequence>
-                </xs:complexType>
-            </xs:element>
+    </xs:complexType>
+    <xs:complexType name="subscreenType">
+        <xs:sequence>
+            <xs:element ref="enable" minOccurs="0"/>
+            <xs:element ref="root-object"/>
+            <xs:element ref="tab-name"/>
+            <xs:element ref="report-name" minOccurs="0" maxOccurs="1"/>
+            <xs:element ref="screen-id"/>
+            <xs:element ref="display-order"/>
+            <xs:element ref="search-pages" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="search-result-pages" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="sourceRecordReportsType">
+        <xs:sequence>
+            <xs:element ref="root-object"/>
+            <xs:element ref="tab-name"/>
+            <xs:element ref="screen-id"/>
+            <xs:element ref="display-order"/>
+            <xs:element ref="search-pages" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="search-result-pages" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="subscreen-configurations">
                 <xs:complexType>
                     <xs:sequence>
@@ -165,7 +154,6 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-
         </xs:sequence>
     </xs:complexType>   
     <xs:complexType name="fieldGroupType">
@@ -202,106 +190,37 @@
             <xs:element name="value" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
-    <xs:simpleType name="fieldRefType">
-        <xs:restriction base="xs:string"/>
-    </xs:simpleType>
-    <xs:simpleType name="objectRefType">
-        <xs:restriction base="xs:string"/>
-    </xs:simpleType>
     <xs:complexType name="searchResultListPageType">
         <xs:sequence>
-            <xs:element name="search-result-id" type="xs:short"/>
+            <xs:element name="search-result-id" type="idOrderType"/>
             <xs:element name="item-per-page" type="xs:positiveInteger"/>
             <xs:element name="max-result-size" type="xs:positiveInteger"/>
-            <xs:element name="field-ref" type="fieldRefType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="show-euid" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="show-lid" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="show-status" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="show-create-date" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="show-create-time" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="show-timestamp" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="field-ref" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="field-group" type="fieldGroupType" minOccurs="0" maxOccurs="unbounded"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="eoViewPageType">
-        <xs:sequence>
-            <xs:element name="field-per-row" type="xs:positiveInteger"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="eoCreateType">
-        <xs:sequence>
-            <xs:element name="root-object" type="objectRefType"/>
-            <xs:element name="tab-name" type="xs:string"/>
-            <xs:element name="tab-entrance" type="xs:string"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="historyType">
-        <xs:sequence>
-            <xs:element name="root-object" type="objectRefType"/>
-            <xs:element name="tab-name" type="xs:string"/>
-            <xs:element name="tab-entrance" type="xs:string"/>
-            <xs:element name="xa-search-page">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="field-per-row" type="xs:positiveInteger"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="search-result-list-page">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="item-per-page" type="xs:positiveInteger"/>
-                        <xs:element name="max-result-size" type="xs:positiveInteger"/>
-                        <xs:element name="field-ref" type="fieldRefType" minOccurs="0" maxOccurs="unbounded"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="matchingReviewType">
-        <xs:sequence>
-            <xs:element name="root-object" type="objectRefType"/>
-            <xs:element name="tab-name" type="xs:string"/>
-            <xs:element name="tab-entrance" type="xs:string"/>
-            <xs:element name="pd-search-page">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="field-per-row" type="xs:positiveInteger"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="search-result-list-page">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="item-per-page" type="xs:positiveInteger"/>
-                        <xs:element name="max-result-size" type="xs:positiveInteger"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="commonBlockType">
         <xs:sequence>
-            <xs:element name="allow-insert" type="xs:boolean" minOccurs="0"/>
-            <xs:element name="root-object" type="objectRefType"/>
-            <xs:element name="tab-name" type="xs:string"/>
-            <xs:element name="tab-entrance" type="xs:string" minOccurs="0"/>
-            <xs:element name="screen-id" type="xs:short"/>
-            <xs:element name="display-order" type="xs:short"/>
-            <xs:element name="search-pages" type="searchPagesType" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="search-result-pages" minOccurs="0" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="search-result-list-page" type="searchResultListPageType"  minOccurs="0"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
+            <xs:element ref="allow-insert" minOccurs="0"/>
+            <xs:element ref="root-object"/>
+            <xs:element ref="tab-name"/>
+            <xs:element ref="tab-entrance" minOccurs="0"/>
+            <xs:element ref="screen-id"/>
+            <xs:element ref="display-order"/>
+            <xs:element ref="search-pages" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="search-result-pages" minOccurs="0" maxOccurs="unbounded"/>        </xs:sequence>
     </xs:complexType>
-    <xs:element name="children">
-        <xs:simpleType>
-            <xs:restriction base="xs:string"/>
-        </xs:simpleType>
-    </xs:element>
     <xs:element name="relationships">
         <xs:complexType>
             <xs:sequence>
                 <xs:element ref="name" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element ref="children" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="children" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
