@@ -110,6 +110,8 @@ public class MasterControllerService {
     private MasterController mMc;
 
     private String rootNodeName;
+
+    private String updateUserName;
     /** Creates a new instance of MasterControllerService */
     public MasterControllerService() {
         mMc = QwsController.getMasterController();
@@ -642,8 +644,8 @@ public class MasterControllerService {
 
         Date dateTime = new Date();
         SystemObject sysObj = new SystemObject(systemCode, LID, this.rootNodeName,
-                "active", "eGate", "Add",
-                dateTime, "eGate", "Add", dateTime, majorObject);
+                "active", getUpdateUserName(), "Add",
+                dateTime, getUpdateUserName(), "Add", dateTime, majorObject);
         for (Object obj : hm.keySet()) {
             Object value = hm.get(obj);
             if (!obj.equals(MasterControllerService.SYSTEM_CODE) && !obj.equals(MasterControllerService.LID) && !obj.equals(MasterControllerService.HASH_MAP_TYPE)) {
@@ -668,7 +670,7 @@ public class MasterControllerService {
         String type = majorObject.pGetType();
         for (Object obj : hm.keySet()) {
             Object value = hm.get(obj);
-            if (!obj.equals(MasterControllerService.SYSTEM_CODE) && !obj.equals(MasterControllerService.LID) && !obj.equals(MasterControllerService.HASH_MAP_TYPE)) {
+            if (!obj.equals(MasterControllerService.MINOR_OBJECT_ID) && !obj.equals(MasterControllerService.SYSTEM_CODE) && !obj.equals(MasterControllerService.LID) && !obj.equals(MasterControllerService.HASH_MAP_TYPE)) {
                 String key = (String) obj;
                 // for removing type prefix
                 int startOfPrefix = key.indexOf(type);
@@ -1812,6 +1814,17 @@ public EnterpriseObject removeLocks(HashMap hm, EnterpriseObject eo) throws Proc
     public void setRootNodeName(String rootNodeName) {
         this.rootNodeName = rootNodeName;
     }
+
+
+    public String getUpdateUserName() {
+        return updateUserName;
+    }
+
+    public void setUpdateUserName(String updateUserName) {
+        this.updateUserName = updateUserName;
+    }
+
+
 //	Added By Anil
 	     /**
      * Merge multiple enterprise records based on the given source EUIDs and the
