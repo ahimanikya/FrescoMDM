@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 import java.util.logging.Logger;
 
 import com.sun.mdm.index.dataobject.DataObject;
@@ -42,6 +43,7 @@ import com.sun.mdm.index.loader.clustersynchronizer.ClusterState;
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterSynchronizer;
 import com.sun.mdm.index.loader.clustersynchronizer.dao.DAOFactory;
 import com.sun.mdm.index.loader.config.LoaderConfig;
+import com.sun.mdm.matcher.api.MatchRecord;
 
 /**
  * 
@@ -202,11 +204,9 @@ public class EuidIndexAssigner {
 		ps.setLong(1, seqNo);
 
 		int i = ps.executeUpdate();
-		
-		
 
 		ps.close();
-		
+
 		c.close();
 
 	}
@@ -258,8 +258,10 @@ public class EuidIndexAssigner {
 				collectSysids(sysids, r);
 			}
 
-			if (!sysids.isEmpty())
+			if (!sysids.isEmpty()) {
 				assignEuid(sysids);
+				//logger.info(sysids.toString());
+			}
 
 		}
 
@@ -303,6 +305,30 @@ public class EuidIndexAssigner {
 		if (!sysids.contains(r.getSysid1()))
 			sysids.add(r.getSysid1());
 
+		Stack<Long> stack = new Stack<Long>();
+		stack.add(r.getSysid2());
+
+		while (!stack.isEmpty()) {
+			long l = stack.pop();
+			if (!sysids.contains(l)) {
+				sysids.add(l);
+				List<MatchFileRecord> list = getMatchRecordsForSysid2(l);
+				for(MatchFileRecord r1: list){
+					stack.push(r1.getSysid2());
+				}
+			}
+
+		}
+
+		
+
+	}
+
+	private void _collectSysids(HashSet<Long> sysids, MatchFileRecord r) {
+
+		if (!sysids.contains(r.getSysid1()))
+			sysids.add(r.getSysid1());
+
 		if (!sysids.contains(r.getSysid2())) {
 
 			List<MatchFileRecord> list = getMatchRecordsForSysid2(r.getSysid2());
@@ -315,7 +341,7 @@ public class EuidIndexAssigner {
 			while (iterator.hasNext()) {
 				MatchFileRecord rec = (MatchFileRecord) iterator.next();
 
-				collectSysids(sysids, rec);
+				_collectSysids(sysids, rec);
 			}
 
 		} else
@@ -438,16 +464,16 @@ public class EuidIndexAssigner {
 	}
 
 	public static void main(String[] args) {
-		LoaderConfig cf = LoaderConfig.getInstance();
-		for (int i = 0; i < 10; i++) {
-			try {
-				DataObjectReader r = cf.getDataObjectReader();
-				r.readDataObject();
-				r.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		// LoaderConfig cf = LoaderConfig.getInstance();
+		// for (int i = 0; i < 10; i++) {
+		// try {
+		// DataObjectReader r = cf.getDataObjectReader();
+		// r.readDataObject();
+		// r.close();
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// }
 
 		EuidIndexAssigner ea = new EuidIndexAssigner();
 		ea.start();

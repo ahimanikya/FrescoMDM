@@ -165,17 +165,27 @@ public class MatchFileReader {
 		}
 		return readRecordsWithSameSysid();
 	}
-	
-	public static void main(String[] args){
-		MatchFileReader r = new MatchFileReader("C:\\eView\\loader\\match\\stage\\finalMatch");
-		
-		MatchFileRecord record = r.readRecord();
-		
-		while(record != null){
-			//logger.info(record + "\n");
-			record = r.readRecord();
+
+	public static void main(String[] args) {
+		MatchFileReader r = new MatchFileReader(
+				"C:\\eView\\loader\\match\\stage\\finalMatch");
+		RandomAccessFile raf = null;
+		try {
+			raf = new RandomAccessFile(
+					"C:\\eView\\loader\\match\\stage\\finalMatch.txt", "rw");
+
+			MatchFileRecord record = r.readRecord();
+
+			while (record != null) {
+				logger.info(record + "\n");
+				raf.writeUTF(record.toString() + "\n");
+				record = r.readRecord();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
+
 	}
 
 }
