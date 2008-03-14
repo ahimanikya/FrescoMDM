@@ -43,7 +43,7 @@ public class XTestLoader implements Callable<String> {
 
 	private String workingDir;
 	
-	private static Logger logger = Logger.getLogger(XTestLoader.class.getName());
+	private Logger logger = Logger.getLogger(XTestLoader.class.getName());
 
 	/**
 	 * @param config
@@ -53,6 +53,7 @@ public class XTestLoader implements Callable<String> {
 			ClusterSynchronizer clusterSynchronizer) {
 		this.config = config;
 		this.clusterSynchronizer = clusterSynchronizer;
+		
 	}
 
 	private void init() {
@@ -329,18 +330,18 @@ public class XTestLoader implements Callable<String> {
 		
 		match();
 
-		logger.info("before distributeEUID");
+		logger.info("before distributeEUID" + clusterSynchronizer.isMasterLoader());
 		distributeEUID();
 		
-		logger.info("before generateMasterIndex");
+		logger.info("before generateMasterIndex"+ clusterSynchronizer.isMasterLoader());
 
 		generateMasterIndex();
 		
-		logger.info("before generatePotentialDuplicate");
+		logger.info("before generatePotentialDuplicate"+ clusterSynchronizer.isMasterLoader());
 
 		generatePotentialDuplicate();
 		
-		logger.info("before done");
+		logger.info("before done"+ clusterSynchronizer.isMasterLoader());
 
 		return "done";
 	}

@@ -27,11 +27,13 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import com.sun.mdm.index.loader.euid.EuidIndexAssigner;
 import com.sun.mdm.index.loader.euid.EuidIndexFile;
 import com.sun.mdm.index.loader.euid.EuidIndexFileRecord;
+import com.sun.mdm.index.loader.log.LoaderLogManager;
 
 import junit.framework.TestCase;
 
@@ -49,6 +51,7 @@ public class EuidIndexAssignerTest extends TestCase {
 	 */
 	public EuidIndexAssignerTest(String name) {
 		super(name);
+		new LoaderLogManager().init();
 	}
 
 	/*
