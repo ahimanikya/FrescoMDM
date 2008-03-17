@@ -152,7 +152,7 @@
             ArrayList eoSources = null;
             ArrayList eoHistory = null;
             ValueExpression unMergeEuidVE = null;
-            if (eoArrayList != null) {
+            if (eoArrayList != null && eoArrayList.size() > 0) {
                 request.setAttribute("comapreEuidsArrayList", request.getAttribute("comapreEuidsArrayList"));
                                             %>  
                                             <!-- Display the field Names first column-->
@@ -179,12 +179,12 @@
     
                                               //EnterpriseObject eoSource = compareDuplicateManager.getEnterpriseObject(strDataArray);
 
-                                                if (countEnt > 0) {
-                                                    dupHeading = "<b> " + countEnt + "<sup>" + subscripts[countEnt] + "</sup> Duplicate</b>";
-                                                } else if (countEnt == 0) {
-                                                    dupHeading = "<b> Main EUID</b>";
-                                                    mainEUID = (String) personfieldValuesMapEO.get("EUID");
+                                                if (eoArrayListObjects.length > 1) {
+                                                    dupHeading = "<b>EUID " + new Integer(countEnt + 1).toString() +  "</b>";
+                                                } else if (eoArrayListObjects.length == 1) {
+                                                    dupHeading = "<b>EUID</b>";
                                                 }
+                                                mainEUID = (String) personfieldValuesMapEO.get("EUID");
 
                                                 HashMap allNodefieldsMap = sourceHandler.getAllNodeFieldConfigs();
                                                 String rootNodeName = objScreenObject.getRootObj().getName();
@@ -272,9 +272,9 @@
                                                                         <% if ("inactive".equalsIgnoreCase(eoStatus)) {%>
                                                                            <%=personfieldValuesMapEO.get("EUID")%>
                                                                         <%} else {%>
-                                                                           <a class="dupbtn" href="javascript:void(0)">
+                                                                           <span class="dupbtn" >
                                                                              <%=personfieldValuesMapEO.get("EUID")%>
-                                                                           </a>
+                                                                           </span>
                                                                         <%} %>
                                                                     </td>
                                                                 </tr>
@@ -716,27 +716,38 @@
                                 </table>
                             </td>
                         </tr>
+
                         <tr>
                             <td>
                                 <div id="actionmainEuidContent" class="actionbuton">
-                                    <table cellpadding="0" cellspacing="0">
-                                        <% for (countEnt = 0; countEnt < eoArrayListObjects.length; countEnt++) {%>
-                                        <%
-                                            HashMap eoHashMapValues = (HashMap) eoArrayListObjects[countEnt];
+                                <table width="100%" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <% 
+
+                                        HashMap eoHashMapValues = new HashMap();
                                             
-                                            HashMap personfieldValuesMapEO = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT");
-                                            String euid = (String) personfieldValuesMapEO.get("EUID");
-                                            String eoStatus = (String) eoHashMapValues.get("EO_STATUS");
-                                            ValueExpression  euidValueExpression = ExpressionFactory.newInstance().createValueExpression(euid, euid.getClass());        
-                                            
-                                        %>
+                                            HashMap personfieldValuesMapEO = new HashMap();
+                                            String euid = new String();
+                                            String eoStatus = new String();
+                                        	ValueExpression  euidValueExpression = null;        
+    						             for (countEnt = 0; countEnt < eoArrayListObjects.length; countEnt++) {
+                                            eoHashMapValues = (HashMap) eoArrayListObjects[countEnt];
+                                            personfieldValuesMapEO = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT");
+                                            euid = (String) personfieldValuesMapEO.get("EUID");
+                                            eoStatus = (String) eoHashMapValues.get("EO_STATUS");
+                                            euidValueExpression = ExpressionFactory.newInstance().createValueExpression(euid, euid.getClass());        
+    
+    							
+							          %>
                                         <% if (countEnt == 0) {%>
                                         <td><img src="images/spacer.gif" width="169px" height="1px" border="0"></td>
                                         <% }%>
-                                        <!--Displaying view sources and view history-->
+									   
+                                        <td>
                                         <td valign="top">
                                             <div id="dynamicMainEuidButtonContent<%=countEnt%>">
                                                 <table border="0" cellspacing="0" cellpadding="0" border="1">
+
                                                     <h:form>
                                                         
                                                         <%if ("active".equalsIgnoreCase(eoStatus)) {%>
@@ -773,6 +784,7 @@
                                                          </td>
                                                       </tr>
                                                         <%}%>            
+                                                    </h:form>
                                                 <tr> 
                                                       <td valign="top">
                                                           <a class="viewbtn" href="javascript:showViewSources('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" >  
@@ -785,35 +797,23 @@
                                                           <a href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
                                                       </td>                                              
                                                   </tr>
-                                                    <tr>
-                                                      <td valign="top">
-                                                         <%
-                                                          String URI = request.getRequestURI();
-                                                          URI = URI.substring(1, URI.lastIndexOf("/"));
-                                                          %>
-                                                         <a href="javascript:void(0);" class="viewbtn" onclick="javascript:ajaxURL('/<%=URI%>/viewmergetree.jsf?euid=<%=personfieldValuesMapEO.get("EUID")%>&rand=<%=rand%>','tree',event)">
-                                                          <h:outputText value="#{msgs.View_MergeTree_but_text}"/>
-                                                         </a>
-                                                      </td>
-                                                  </tr>
-                                                    </h:form>
-                                                </table>
-                                            </div> 
-                                        </td>
-                                        <%if(eoHistory.size() > 0) {%>
+									<tr>
+                                        <%if(eoHistory.size() > 0) {
+												   %>
+										
                                         <td valign="top">
                                                      <%
-                                                       for(int i=0;i<eoHistory.size();i++) {
-                                                       HashMap objectHist = (HashMap) eoHistory.get(i);
-                                                       String mergekey = (String) objectHist.keySet().toArray()[0];
+											            String mergekey = new String();
+                                                        for(int i=0;i<eoHistory.size();i++) {
+                                                          HashMap objectHist = (HashMap) eoHistory.get(i);
+                                                          mergekey = (String) objectHist.keySet().toArray()[0];
+										               }
                                                         if (mergekey.startsWith("euidMerge")) {                                                  
                                                         ValueExpression tranNoValueExpressionviewmerge = ExpressionFactory.newInstance().createValueExpression(tranNo, tranNo.getClass());
                                                         ValueExpression eoArrayListVE = ExpressionFactory.newInstance().createValueExpression(eoArrayList, eoArrayList.getClass());
                                                       %>  
                                                       <div id="unmerge">    
-                                                      <table cellpadding="0" cellspacing="0" border="0">
-                                                          <tr><td>&nbsp;</td></tr>  
-                                                          <tr><td>&nbsp;</td></tr>
+                                                      <table cellpadding="0" cellspacing="0" border="1">
                                                           <tr>
                                                             <td valign="top" colspan="2">
                                                                 <h:outputLink styleClass="viewbtn" rendered="#{Operations.EO_Unmerge}"
@@ -835,21 +835,39 @@
                                                                 </h:form>
                                                             </td> 
                                                         </tr>
+                                                    <tr>
+                                                      <td valign="top">
+                                                         <%
+                                                          String URI = request.getRequestURI();
+                                                          URI = URI.substring(1, URI.lastIndexOf("/"));
+                                                          %>
+                                                         <a href="javascript:void(0);" class="viewbtn" onclick="javascript:ajaxURL('/<%=URI%>/viewmergetree.jsf?euid=<%=personfieldValuesMapEO.get("EUID")%>&rand=<%=rand%>','tree',event)">
+                                                          <h:outputText value="#{msgs.View_MergeTree_but_text}"/>
+                                                         </a>
+                                                      </td>
+                                                  </tr>
                                                         
                                                         </table>
                                                       </div>
                                                    <%}%>
-                                                   <%}%>
                                           </td>  
+										<%
+                                        unMergeEuidVE = ExpressionFactory.newInstance().createValueExpression(euid, euid.getClass());
+                                         %> 
+
                                           <%}%> 
-                                    </table>
+
+									</tr>
+
+  											   </div>
+                                               </table>                                               
+                                        </td>   
+										<%}%>
+                                    </tr>
+                                </table>
                                 </div>
                             </td>
                         </tr>
-                   <%
-                              unMergeEuidVE = ExpressionFactory.newInstance().createValueExpression(euid, euid.getClass());
-                    %> 
-                 <%}%>  
                  <%}%>
                     </table>
                 </div>

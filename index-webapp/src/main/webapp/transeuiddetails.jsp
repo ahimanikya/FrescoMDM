@@ -545,6 +545,7 @@
                                     <tr><td colspan="2"> &nbsp;</td></tr>
                                     <tr><td align="center">
                                             <h:commandLink styleClass="button" 
+                                                           action="#{NavigationHandler.toTransactions}"
                                                            actionListener="#{TransactionHandler.unmergeEnterpriseObject}">
                                                 <f:attribute name="tranNoValueExpressionviewunmerge" value="<%=tranNoValueExpressionviewunmerge%>"/>                   
                                                 <span><h:outputText value="#{msgs.ok_text_button}" /></span>

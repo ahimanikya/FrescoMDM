@@ -52,7 +52,7 @@
                     <td> 
                         <span><h:outputText value="#{msgs.dashboard_quick_search_text}" /></span>
                     </td>
-                    <td> <h:inputText id="euidField" value="#{PatientDetailsHandler.singleEUID}"  maxlength="10"/> </td>
+                    <td> <h:inputText id="euidField" value="#{PatientDetailsHandler.singleEUID}"  maxlength="#{SourceHandler.euidLength}" /> </td>
                 </tr>
                 <tr>
                     <td colspan="2">&nbsp;</td>
@@ -147,7 +147,7 @@
             <!--Caption included-->
                 <!--Caption class = "euidHeadMessage"> Compare EUID's </caption-->                
                 <tr>
-                    <td><h:inputText  id="euid1Field" value="#{PatientDetailsHandler.euid1}" maxlength="10"/></td>
+                    <td><h:inputText  id="euid1Field" value="#{PatientDetailsHandler.euid1}" maxlength="#{SourceHandler.euidLength}" /></td>
                     <td>
                         <nobr>
                             <h:commandLink  action="#{PatientDetailsHandler.lookupEuid1}">  
@@ -156,7 +156,7 @@
                         </nobr>
                     </td>
                 </tr>
-                <tr><td><h:inputText  id="euid2Field" value="#{PatientDetailsHandler.euid2}" maxlength="10"/>
+                <tr><td><h:inputText  id="euid2Field" value="#{PatientDetailsHandler.euid2}" maxlength="#{SourceHandler.euidLength}" />
                     <td>
                         <nobr>
                             <h:commandLink   action="#{PatientDetailsHandler.lookupEuid2}">  
@@ -165,7 +165,7 @@
                         </nobr>
                     </td>
                 </tr>
-                <tr><td><h:inputText  id="euid3Field" value="#{PatientDetailsHandler.euid3}" maxlength="10"/></td>
+                <tr><td><h:inputText  id="euid3Field" value="#{PatientDetailsHandler.euid3}" maxlength="#{SourceHandler.euidLength}" /></td>
                     <td>
                         <nobr>
                             <h:commandLink  action="#{PatientDetailsHandler.lookupEuid3}">  
@@ -175,7 +175,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><h:inputText  id="euid4Field" value="#{PatientDetailsHandler.euid4}" maxlength="10"/></td>
+                    <td><h:inputText  id="euid4Field" value="#{PatientDetailsHandler.euid4}" maxlength="#{SourceHandler.euidLength}" /></td>
                     <td align="right" width="70px">
                         <nobr>
                             <h:commandLink  action="#{PatientDetailsHandler.lookupEuid4}">  

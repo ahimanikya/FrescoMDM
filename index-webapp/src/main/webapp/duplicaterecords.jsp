@@ -90,8 +90,7 @@
                                 <!--Rendering HTML Select Menu List-->
                                 <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
                                     <nobr>
-                                        <h:selectOneMenu value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                         onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
+                                        <h:selectOneMenu onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
                                                          rendered="#{feildConfig.name ne 'SystemCode'}">
                                             <f:selectItem itemLabel="" itemValue="" />
                                             <f:selectItems  value="#{feildConfig.selectOptions}" />
@@ -100,7 +99,6 @@
                                         <h:selectOneMenu  onchange="javascript:setLidMaskValue(this)"
                                                           onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
                                                           id="SystemCode" 
-                                                          value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}" 
                                                           rendered="#{feildConfig.name eq 'SystemCode'}">
                                             <f:selectItem itemLabel="" itemValue="" />
                                             <f:selectItems  value="#{feildConfig.selectOptions}" />
@@ -115,18 +113,23 @@
                                                        onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                        onkeyup="javascript:qws_field_on_key_up(this)"
                                                        onblur="javascript:validate_number(this,'#{feildConfig.displayName}');javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                       value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
                                                        maxlength="#{feildConfig.maxLength}" 
-                                                       rendered="#{feildConfig.name ne 'LID'}"/>
+                                                       rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
                                         
                                         <h:inputText   required="#{feildConfig.required}" 
                                                        label="#{feildConfig.displayName}" 
                                                        onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
                                                        onkeyup="javascript:qws_field_on_key_up(this)"
-                                                       onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                       value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
+                                                       onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value);javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
                                                        maxlength="#{SourceMergeHandler.lidMaskLength}" 
                                                        rendered="#{feildConfig.name eq 'LID'}"/>
+                                                       
+                                        <h:inputText   required="#{feildConfig.required}" 
+                                                       label="#{feildConfig.displayName}" 
+                                                       onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                       maxlength="#{SourceHandler.euidLength}" 
+                                                       rendered="#{feildConfig.name eq 'EUID'}"/>
+                                                       
                                                        
                                     </nobr>
                                 </h:column>
@@ -134,13 +137,13 @@
                                 <!--Rendering Updateable HTML Text Area-->
                                 <h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
                                     <nobr>
-                                        <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"   value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}" required="#{feildConfig.required}"/>
+                                        <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"   required="#{feildConfig.required}"/>
                                     </nobr>
                                 </h:column>
                                 
                                 <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6}" >
                                     <nobr>
-                                        <h:inputText  label="#{feildConfig.displayName}"    value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.displayName]}"
+                                        <h:inputText  label="#{feildConfig.displayName}"   
                                                      required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
                                                      onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                      onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
@@ -322,23 +325,23 @@
                                             </div>   
                                         </td>
                                         <td valign="top">
-                                            <div id="mainEuidContent" class="w169">
-                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
+                                            <div id="mainEuidContent" class="yellow">
+                                                <table border="0" cellspacing="0" cellpadding="0" >
                                                     <tr>
                                                         <td valign="top" class="menutop">Main EUID</td>
                                                     </tr> 
                                                     <tr>
                                                         <td valign="top" class="dupfirst">
-                                                            <a href="#" class="dupbtn">
+                                                            <span class="dupbtn">
                                                                 <%=fieldValuesMapSource.get("EUID")%>
-                                                            </a>
+                                                            </span>
                                                         </td>
                                                     </tr>
                                                         
                                                 </table>
                                             </div> 
-                                            <div id="mainEuidContentDiv<%=countMain%>" class="dynaw169">
-                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
+                                            <div id="mainEuidContentDiv<%=countMain%>" class="yellow">
+                                                <table border="0" cellspacing="0" cellpadding="0" >
                                                     <%
                                                      for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
                                                         FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
@@ -374,17 +377,17 @@
                                             <%}%>
                                         
                                            <td valign="top">
-                                            <div id="mainEuidContent" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
+                                            <div id="mainEuidContent" class="yellow" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
+                                                <table border="0" cellspacing="0" cellpadding="0" >
                                                     <tr>
                                                         <td valign="top" class="menutop"><%=dupHeading%>
                                                         </td>
                                                     </tr> 
                                                     <tr>
                                                       <td valign="top" class="dupfirst">
-                                                          <a href="#" class="dupbtn">
+                                                          <span class="dupbtn">
                                                              <%=fieldValuesMapSource.get("EUID")%>        
-                                                          </a>  
+                                                          </span>  
                                                       </td>
                                                     </tr>
                                                 </table>
@@ -463,16 +466,16 @@
                                         <td class="w7yelbg">&nbsp;</td><!--Separator b/n columns-->
                                         <%}%>
                                       <td class="w169" valign="top">
-                                      <div id="previewEuidDiv<%=countMain%>" style="visibility:visible;display:block;">
-                                          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="w169">
+                                      <div id="previewEuidDiv<%=countMain%>" class="yellow" style="visibility:visible;display:block;">
+                                          <table border="0" width="100%" cellspacing="0" cellpadding="0" >
                                               <tr>
                                                   <td width="100%" class="menutop1">Preview</td>
                                               </tr>
                                           </table>
                                       </div>
-                                     <div id="previewEuidContentDiv<%=countMain%>"   class="dynaw169">
+                                     <div id="previewEuidContentDiv<%=countMain%>"   class="yellow">
                                         <div id="showCompareButtonDiv<%=countMain%>" style="visibility:visible;">
-                                            <table border="0" cellspacing="0" cellpadding="0" class="w169"> 
+                                            <table border="0" cellspacing="0" cellpadding="0"> 
                                                 <tr>
                                                         <td>&nbsp;</td>
                                                 </tr>

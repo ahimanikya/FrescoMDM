@@ -64,7 +64,7 @@ if (request.getAttribute("Logout") == null && request.getRemoteUser() != null &&
             <div>                         
                     <div id="log" class="loginForm">
                             <f:verbatim>
-                            <form name="loginform" method="POST" action="j_security_check" focus="j_username">
+                            <form name="loginform" id ="formid" method="POST" action="j_security_check" focus="j_username">
                             </f:verbatim>
                             <table border="0" cellpadding="0" cellspacing="0">
                                 <tbody>
@@ -75,21 +75,23 @@ if (request.getAttribute("Logout") == null && request.getRemoteUser() != null &&
                                     <tr>
                                         <td colspan='2'>
                                             <f:verbatim>
-                                                <input type="text" name="j_username" size="25"/>
+                                                <input type="text" name="j_username"  onkeyup=""  size="25"/>
                                             </f:verbatim>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan='2'> 
                                             <f:verbatim>
-                                                <input type="password" name="j_password" size="25" redisplay="false"/>
+                                                <input type="password" name="j_password" onkeyup="" size="25" redisplay="false"/>
                                             </f:verbatim>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="2">                                          
                                             <f:verbatim>
-                                                <a href="javascript:submitAction();" class="button"><span> Login </span></a>
+                                            <nobr>
+                                                <a href="javascript:submitAction();" class="button"><span><h:outputText value="#{msgs.header_login_prompt}"/></span></a>
+                                            </nobr>
                                             </f:verbatim>
                                         </td>
                                     </tr>
@@ -133,7 +135,40 @@ if (request.getAttribute("Logout") == null && request.getRemoteUser() != null &&
       }         
          
     </script>
-            
+<script language="JavaScript">
+document.onkeyup = alertkey; 
+function alertkey(e) { 
+if( !e ) { 
+if( window.event ) { 
+//DOM 
+e = window.event; 
+} else { 
+//TOTAL FAILURE, WE HAVE NO WAY OF REFERENCING THE EVENT 
+return; 
+} 
+} 
+if( typeof( e.which ) == 'number' ) { 
+//NS 4, NS 6+, Mozilla 0.9+, Opera 
+e = e.which; 
+} else if( typeof( e.keyCode ) == 'number' ) { 
+//IE, NS 6+, Mozilla 0.9+ 
+e = e.keyCode;
+} else if( typeof( e.charCode ) == 'number' ) { 
+//also NS 6+, Mozilla 0.9+ 
+e = e.charCode; 
+} else { 
+//TOTAL FAILURE, WE HAVE NO WAY OF OBTAINING THE KEY CODE 
+return; 
+} 
+if(e=='13')
+	{
+	document.getElementById("formid").submit();
+	}
+
+} 
+</script>        
+
+		   
         </body>
     </html> 
 </f:view>

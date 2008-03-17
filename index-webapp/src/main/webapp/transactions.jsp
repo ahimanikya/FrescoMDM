@@ -87,18 +87,15 @@
                                         <!--Rendering HTML Select Menu List-->
                                         <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
                                           <nobr>
-                                            <h:selectOneMenu value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
-                                                             onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
+                                            <h:selectOneMenu onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
                                                              rendered="#{feildConfig.name ne 'SystemCode'}">
                                                 <f:selectItem itemLabel="" itemValue="" />
                                                 <f:selectItems  value="#{feildConfig.selectOptions}" />
                                             </h:selectOneMenu>
                                             
-                                            <h:selectOneMenu  onchange="submit();" 
-                                                              id="sourceOption" 
-                                                              value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}" 
+                                            <h:selectOneMenu  id="sourceOption" 
                                                               onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                              valueChangeListener="#{TransactionHandler.setLidMaskValue}"
+                                                              onchange="javascript:setLidMaskValue(this)"
                                                               rendered="#{feildConfig.name eq 'SystemCode'}">
                                                 <f:selectItem itemLabel="" itemValue="" />
                                                 <f:selectItems  value="#{feildConfig.selectOptions}" />
@@ -112,19 +109,24 @@
                                                            label="#{feildConfig.displayName}" 
                                                            onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                            onkeyup="javascript:qws_field_on_key_up(this)"
-                                                           value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
                                                            onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
                                                            maxlength="#{feildConfig.maxLength}" 
-                                                           rendered="#{feildConfig.name ne 'LID'}"/>
+                                                           rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
                                             
                                             <h:inputText   required="#{feildConfig.required}" 
                                                            label="#{feildConfig.displayName}" 
                                                            onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
                                                            onkeyup="javascript:qws_field_on_key_up(this)"
-                                                           onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                           value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
+                                                           onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value);javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
                                                            maxlength="#{SourceMergeHandler.lidMaskLength}" 
                                                            rendered="#{feildConfig.name eq 'LID'}"/>
+
+                                        <h:inputText   required="#{feildConfig.required}" 
+                                                       label="#{feildConfig.displayName}" 
+                                                       onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                       maxlength="#{SourceHandler.euidLength}" 
+                                                       rendered="#{feildConfig.name eq 'EUID'}"/>
+                                                           
                                             
                                           </nobr>
                                         </h:column>
@@ -132,14 +134,13 @@
                                         <!--Rendering Updateable HTML Text Area-->
                                         <h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
                                           <nobr>
-                                            <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"   value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}" required="#{feildConfig.required}"/>
+                                            <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"   required="#{feildConfig.required}"/>
                                           </nobr>
                                         </h:column>
                                         
                                         <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6 }" >
                                           <nobr>
-                                            <h:inputText label="#{feildConfig.displayName}"    value="#{TransactionHandler.updateableFeildsMap[feildConfig.name]}"
-                                                         required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
+                                            <h:inputText label="#{feildConfig.displayName}"  required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
                                                          onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                          onkeyup="javascript:qws_field_on_key_up(this)" 
                                                          onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"/>
@@ -205,7 +206,44 @@
         
         <div id="InvalidTransaction" class="balloonstyle"><h:outputText  value="#{msgs.invalid_transaction}"/></div>
    </body>   
-   <script>
+        <%
+           TransactionHandler transactionHandler = new TransactionHandler();
+           String[][] lidMaskingArray = transactionHandler.getAllSystemCodes();
+          
+        %>
+        <script>
+            var systemCodes = new Array();
+            var lidMasks = new Array();
+        </script>
+        
+        <%
+        for(int i=0;i<lidMaskingArray.length;i++) {
+            String[] innerArray = lidMaskingArray[i];
+            for(int j=0;j<innerArray.length;j++) {
+            
+            if(i==0) {
+         %>       
+         <script>
+           systemCodes['<%=j%>']  = '<%=lidMaskingArray[i][j]%>';
+         </script>      
+         <%       
+            } else {
+         %>
+         <script>
+           lidMasks ['<%=j%>']  = '<%=lidMaskingArray[i][j]%>';
+         </script>
+         <%       
+            }
+           }
+           }
+        %>
+    <script>
+        function setLidMaskValue(field) {
+            var  selectedValue = field.options[field.selectedIndex].value;
+            document.advancedformData.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
+         }   
+         //var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
+         //document.getElementById("advancedformData:selectedSearchType").value = selectedSearchValue;
          if( document.advancedformData.elements[0]!=null) {
 		var i;
 		var max = document.advancedformData.length;
@@ -218,12 +256,9 @@
 			}
 		}
       }         
-       
-       
-   </script>
-   
+    </script>
+     
        <%
-     TransactionHandler transactionHandler = new TransactionHandler();
      ArrayList resultsArrayList = (ArrayList) request.getAttribute("resultsArrayList");
      //System.out.println("resultsArrayList" + resultsArrayList);
      ArrayList keyList  = transactionHandler.getKeysList();

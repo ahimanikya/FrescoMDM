@@ -366,7 +366,7 @@
                                                                 </h:column>
                                                                 <f:facet name="header">
                                                                     <h:column>
-                                                                    <div id='<h:outputText value="#{adressMapArrayList['MINOR_OBJECT_ID']}"/><h:outputText value="#{childNodesName['NAME']}"/>'>Rajani
+                                                                    <div id='<h:outputText value="#{adressMapArrayList['MINOR_OBJECT_ID']}"/><h:outputText value="#{childNodesName['NAME']}"/>'>
                                                                     </h:column>
                                                                 </f:facet>
                                                                 <f:facet name="footer">

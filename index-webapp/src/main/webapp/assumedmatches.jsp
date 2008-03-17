@@ -83,8 +83,7 @@
                                 <!--Rendering HTML Select Menu List-->
                                 <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
                                     <nobr>
-                                        <h:selectOneMenu value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"
-                                                         onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
+                                        <h:selectOneMenu onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
                                                          rendered="#{feildConfig.name ne 'SystemCode'}">
                                             <f:selectItem itemLabel="" itemValue="" />
                                             <f:selectItems  value="#{feildConfig.selectOptions}" />
@@ -93,7 +92,6 @@
                                         <h:selectOneMenu  onchange="javascript:setLidMaskValue(this)"
                                                           onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
                                                           id="SystemCode" 
-                                                          value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}" 
                                                           rendered="#{feildConfig.name eq 'SystemCode'}">
                                             <f:selectItem itemLabel="" itemValue="" />
                                             <f:selectItems  value="#{feildConfig.selectOptions}" />
@@ -108,18 +106,22 @@
                                                        onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                        onkeyup="javascript:qws_field_on_key_up(this)"
                                                        onblur="javascript:validate_number(this,'#{feildConfig.displayName}');javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                       value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"
                                                        maxlength="#{feildConfig.maxLength}" 
-                                                       rendered="#{feildConfig.name ne 'LID'}"/>
+                                                       rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
                                         
                                         <h:inputText   required="#{feildConfig.required}" 
                                                        label="#{feildConfig.displayName}" 
                                                        onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
                                                        onkeyup="javascript:qws_field_on_key_up(this)"
                                                        onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                       value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"
                                                        maxlength="#{SourceMergeHandler.lidMaskLength}" 
                                                        rendered="#{feildConfig.name eq 'LID'}"/>
+
+                                        <h:inputText   required="#{feildConfig.required}" 
+                                                       label="#{feildConfig.displayName}" 
+                                                       onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                       maxlength="#{SourceHandler.euidLength}" 
+                                                       rendered="#{feildConfig.name eq 'EUID'}"/>
                                                        
                                     </nobr>
                                 </h:column>
@@ -127,7 +129,7 @@
                                 <!--Rendering Updateable HTML Text Area-->
                                 <h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
                                     <nobr>
-                                        <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"   value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}" required="#{feildConfig.required}"/>
+                                        <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"  required="#{feildConfig.required}"/>
                                     </nobr>
                                 </h:column>
                                 
