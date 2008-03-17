@@ -258,11 +258,13 @@ public class DataObjectAdapter {
                     str = value.toString();
                     break;
             case ObjectField.OBJECTMETA_DATE_TYPE:
+            	synchronized(staticlock) {
             	   if (dateFormat_ != null) {
             	     str = dateFormat_.format((java.util.Date)value);
             	   } else {
                       str = DateFormat.getDateInstance().format((java.util.Date)value);
             	   }
+            	 }
                     break;
             case ObjectField.OBJECTMETA_TIMESTAMP_TYPE:
                     str = DateFormat.getDateTimeInstance().format((java.util.Date)value);
@@ -272,6 +274,8 @@ public class DataObjectAdapter {
         }
         return str;
     }
+    
+    private static Object staticlock = new Object();
     
     public static Object parseFieldValue(String value, int type) throws InvalidFieldValueException, ParseException {
         Object valueObj = null;
@@ -295,10 +299,12 @@ public class DataObjectAdapter {
                 }
                 valueObj = new Character(value.charAt(0));
             } else if (type == ObjectField.OBJECTMETA_DATE_TYPE) {
+               synchronized(staticlock) {
             	if (dateFormat_ == null) {
                  valueObj = DateFormat.getDateInstance().parse(value);
             	} else {
             	 valueObj = dateFormat_.parse(value);
+            	}
             	}
             } else if (type == ObjectField.OBJECTMETA_TIMESTAMP_TYPE) {
                 valueObj = DateFormat.getDateTimeInstance().parse(value);
