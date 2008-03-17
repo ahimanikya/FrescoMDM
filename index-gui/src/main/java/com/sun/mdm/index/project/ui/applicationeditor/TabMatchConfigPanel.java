@@ -71,7 +71,7 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
     private JTable mTableFieldsMatchTypeSelected;    
     private JTable mTableMatchingRules;
     private boolean bCheckedOut;
-    private String mCoparatorListPath;
+    private String mComparatorListPath;
     
     /** Creates new form TabMatchConfigPanel */
     public TabMatchConfigPanel(EviewEditorMainApp eviewEditorMainApp, EviewApplication eviewApplication) {
@@ -80,7 +80,7 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
         bCheckedOut = eviewEditorMainApp.isCheckedOut();
         mEviewApplication = eviewApplication;
         FileObject fo = mEviewApplication.getComparatorListFile();
-        mCoparatorListPath = FileUtil.toFile(fo).getAbsolutePath();
+        mComparatorListPath = FileUtil.toFile(fo).getAbsolutePath();
         mMasterType = mEviewApplication.getMasterType(false);
         mMatchFieldDef = mEviewApplication.getMatchFieldDef(false);
         parameterDuplicateThreshold = mMasterType.getDecisionMakerConfigParameterByName(MasterType.DUPLICATETHRESHOLD);
@@ -611,7 +611,7 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
         mMapNullFields = AdvancedMatchConfigDialog.getMapNullFields();
         //Get comparator and description from comparatorsList.xml
         try {
-            ComparatorsManager mComparatorsManager = new ComparatorsManager(mCoparatorListPath);
+            ComparatorsManager mComparatorsManager = new ComparatorsManager(mComparatorListPath);
             ComparatorsConfigBean instance = mComparatorsManager.getComparatorsConfigBean();
             Map mapCodeNameDesc = instance.getCodeNamesDesc();
             mMapShortKeyFunctions = mapCodeNameDesc;
