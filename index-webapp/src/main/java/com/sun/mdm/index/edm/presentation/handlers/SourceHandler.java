@@ -172,6 +172,7 @@ public class SourceHandler {
     private ArrayList allEOChildNodesLists =  new ArrayList();
     private ArrayList allSOChildNodesLists =  new ArrayList();
     CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+    private int euidLength;
     /** Creates a new instance of SourceHandler */
     public SourceHandler() {
     }
@@ -1389,6 +1390,22 @@ public class SourceHandler {
      */
     public void setAllSOChildNodesLists(ArrayList allChildNodesNameList) {
         this.allSOChildNodesLists = allChildNodesNameList;
+    }
+
+    public int getEuidLength() {
+        int euidLen = 0;
+        try {
+            euidLen = masterControllerService.getEuidLength();
+        } catch (ProcessingException ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserException ex) {
+            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return euidLen;
+    }
+
+    public void setEuidLength(int euidLength) {
+        this.euidLength = euidLength;
     }
 
 

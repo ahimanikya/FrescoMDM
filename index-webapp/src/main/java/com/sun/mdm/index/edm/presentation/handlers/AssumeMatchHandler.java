@@ -248,6 +248,14 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     //System.out.println(">beforeEO>>>>"+beforeEO);
                     eoArrayList.add(beforeEO);
                     amHashMap.put(beforeEO.getEUID(), amSummary.getId()); // set the assumed match id in the hashmap                        
+                    //Insert audit log for AM search results 
+                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                            beforeEO.getEUID(),
+                            "",
+                            "Assumed Match Search Result",
+                            new Integer(screenObject.getID()).intValue(),
+                            "View Assumed Match Search Result");
+                    
                     amHashMap.put("SystemCode", amSummary.getSystemCode()); // set the System code in the hashmap
                     EnterpriseObject afterEO = amSummary.getAfterEO();
                     //System.out.println("afterEO>>>>>"+afterEO);
@@ -282,26 +290,32 @@ public class AssumeMatchHandler extends ScreenConfiguration {
             // ProcessingException stack trace logged by MC
             if (ex instanceof ValidationException) {
                 mLogger.error("Validation failed. Message displayed to the user: " + QwsUtil.getRootCause(ex).getMessage());
+                FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
                 return VALIDATION_ERROR;
             } else if (ex instanceof UserException) {
                 mLogger.error("UserException. Message displayed to the user: " + QwsUtil.getRootCause(ex).getMessage());
+                FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
                 return ("ProcessingException");
             } else if (!(ex instanceof ProcessingException)) {
                 mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
                 mLogger.error("ProcessingException ex : " + ex.toString());
+                FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
                 ex.printStackTrace();
                 return ("ProcessingException");
             //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
             } else if (!(ex instanceof PageException)) {
                 mLogger.error("PageException : " + QwsUtil.getRootCause(ex).getMessage());
+                FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
                 return ("ProcessingException");
             //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
             } else if (!(ex instanceof RemoteException)) {
                 mLogger.error("RemoteException : " + QwsUtil.getRootCause(ex).getMessage());
+                FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
                 return ("ProcessingException");
             //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
             } else {
                 mLogger.error("Exception : " + QwsUtil.getRootCause(ex).getMessage());
+                FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
                 return ("ProcessingException");
             }
         }
@@ -617,14 +631,26 @@ public class AssumeMatchHandler extends ScreenConfiguration {
             httpRequest.setAttribute("comapreEuidsArrayList", eoArrayList);
 
             EnterpriseObject newEO = masterControllerService.previewUndoAssumedMatch(assumedMatchId);
+
+            //Insert audit log for preview assumed match
+            masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                               newEO.getEUID(), 
+                                               "",
+                                               "Assumed Match Comparison",
+                                               new Integer(screenObject.getID()).intValue(),
+                                               "Compare the selected EUID of the Assumed Match Search Result (Preview)");
+            
             HashMap previewAMEO = compareDuplicateManager.getEnterpriseObjectAsHashMap(newEO, screenObject);
 
             httpRequest.setAttribute("AMID", assumedMatchId);
             httpRequest.setAttribute("previewAMEO", previewAMEO);
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(AssumeMatchHandler.class.getName()).log(Level.SEVERE, null, ex);
+                FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+                mLogger.error("ProcessingException ex : " + ex.getMessage());
+
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(AssumeMatchHandler.class.getName()).log(Level.SEVERE, null, ex);
+                FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+                mLogger.error("ProcessingException ex : " + ex.getMessage());
         }
     }
 
@@ -641,6 +667,13 @@ public class AssumeMatchHandler extends ScreenConfiguration {
             EnterpriseObject amPreviewEnterpriseObject = masterControllerService.getEnterpriseObject(amEuid);
             httpRequest.removeAttribute("previewAMEO");
             httpRequest.removeAttribute("amEoList");
+            //Insert audit log for preview assumed match
+            masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                               amEuid, 
+                                               "",
+                                               "Undo Assumed Match",
+                                               new Integer(screenObject.getID()).intValue(),
+                                               "Undo Assumed Match");
 
             if (amPreviewEnterpriseObject != null) {
                 HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(amPreviewEnterpriseObject, screenObject);

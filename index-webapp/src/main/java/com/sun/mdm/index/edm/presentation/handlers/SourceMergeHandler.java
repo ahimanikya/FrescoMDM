@@ -18,12 +18,14 @@ import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.objects.exception.ObjectException;
+import com.sun.mdm.index.util.LogUtil;
+import com.sun.mdm.index.util.Logger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
@@ -69,6 +71,8 @@ public class SourceMergeHandler {
 
     private int lidMaskLength  = allSystemCodes[1][0].length();
 
+
+    private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.SourceMergeHandler");
      
     
     ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
@@ -154,29 +158,49 @@ public class SourceMergeHandler {
         this.source = source;
     }
     
-  public String performPreviewLID () {
-         
-         
-         String[] lids = this.formlids.split(":");
-         //System.out.println(" Request " +   request);
-         String sourceLid = lids[0];
-         String destnLid = lids[1];
-         request.setAttribute("lids", lids);
-         request.setAttribute("lidsource", this.lidsource);
+    public String performPreviewLID() {
+
+        String[] lids = this.formlids.split(":");
+        //System.out.println(" Request " +   request);
+        String sourceLid = lids[0];
+        String destnLid = lids[1];
+        request.setAttribute("lids", lids);
+        request.setAttribute("lidsource", this.lidsource);
+
         CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
-        try{
-           
-            SystemObject finalMergredDestnSOPreview  = masterControllerService.getPostMergeSystemObject(this.lidsource, sourceLid, destnLid);
-            request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview,screenObject));
+        String sourceEuid = new String();
+        String destnEuid = new String();
+
+        try {
+
+            sourceEuid = masterControllerService.getEnterpriseObjectForSO(masterControllerService.getSystemObject(this.lidsource, sourceLid)).getEUID();
+            destnEuid = masterControllerService.getEnterpriseObjectForSO(masterControllerService.getSystemObject(this.lidsource, destnLid)).getEUID();
+
+            SystemObject finalMergredDestnSOPreview = masterControllerService.getPostMergeSystemObject(this.lidsource, sourceLid, destnLid);
+            request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview, screenObject));
         } catch (ProcessingException ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         } catch (Exception ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
+            mLogger.error("Exception ex : " + ex.toString());
         }
-         return ""; //reload the same page
-     }
+        
+        try {
+            //Insert audit Log for LID Merge
+            masterControllerService.insertAuditLog((String) session.getAttribute("user"), sourceEuid, destnEuid, "LID Merge - Selection", new Integer(screenObject.getID()).intValue(), "View two selected EUIDs of the LID merge confirm page");
+        } catch (ProcessingException ex) {
+            java.util.logging.Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserException ex) {
+            java.util.logging.Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return ""; //reload the same page
+
+    }
   
   public String performMergeLIDs () {
     
@@ -191,11 +215,14 @@ public class SourceMergeHandler {
             SystemObject finalMergredDestnSOPreview  = masterControllerService.getPostMergeSystemObject(this.lidsource, sourceLid, destnLid);
             request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview,screenObject));
         } catch (ProcessingException ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         } catch (Exception ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("Exception ex : " + ex.toString());
         }
          return ""; //reload the same page
      }
@@ -302,9 +329,11 @@ public class SourceMergeHandler {
             session.setAttribute("soHashMapArrayList", newSoArrayList);
             
        } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         }
         return "LID Details";
     }
@@ -379,11 +408,14 @@ public class SourceMergeHandler {
             request.setAttribute("mergedSOMap", getSystemObjectAsHashMap(finalMergredDestnSOPreview));
             
         } catch (ProcessingException ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         } catch (Exception ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("Exception ex : " + ex.toString());
         }
         //System.out.println("=====1====" + mergredHashMapVaueExpression.get("Person.FirstName"));
       }
@@ -393,37 +425,52 @@ public class SourceMergeHandler {
      */
 
     public void mergePreviewSystemObject(ActionEvent event) {
+        try {
 
-       
-        String[] lids = this.formlids.split(":");
-        String sourceLid = lids[0];
-        String destnLid = lids[1];
-       
-        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
-        HashMap mergredHashMapVaueExpression = (HashMap) event.getComponent().getAttributes().get("mergedEOValueExpression");
 
-        //System.out.println("=====IN mergePreviewEnterpriseObject ====" + mergredHashMapVaueExpression);
-        
-        String sbrLID =  (String) mergredHashMapVaueExpression.get("LID");
-        String destnId = (sbrLID.equalsIgnoreCase(sourceLid))?destnLid:sourceLid;
-        
-        try{
-            
-            SystemObject finalMergredDestnSO  = masterControllerService.mergeSystemObject(this.source, sbrLID, destnId, mergredHashMapVaueExpression);
-            ArrayList finalMergredDestnEOArrayList = new ArrayList();
-            finalMergredDestnEOArrayList.add(finalMergredDestnSO);
-            session.removeAttribute("soHashMapArrayList");
-            
-            request.setAttribute("mergedSOMap", finalMergredDestnEOArrayList);
-            
+            String[] lids = this.formlids.split(":");
+            String sourceLid = lids[0];
+            String destnLid = lids[1];
+
+            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+            HashMap mergredHashMapVaueExpression = (HashMap) event.getComponent().getAttributes().get("mergedEOValueExpression");
+
+            //System.out.println("=====IN mergePreviewEnterpriseObject ====" + mergredHashMapVaueExpression);
+            String sbrLID = (String) mergredHashMapVaueExpression.get("LID");
+            String destnId = (sbrLID.equalsIgnoreCase(sourceLid)) ? destnLid : sourceLid;
+
+            String sourceEuid = new String();
+            String destnEuid = new String();
+
+            try {
+                sourceEuid = masterControllerService.getEnterpriseObjectForSO(masterControllerService.getSystemObject(this.lidsource, sbrLID)).getEUID();
+                destnEuid = masterControllerService.getEnterpriseObjectForSO(masterControllerService.getSystemObject(this.lidsource, destnLid)).getEUID();
+
+                SystemObject finalMergredDestnSO = masterControllerService.mergeSystemObject(this.source, sbrLID, destnId, mergredHashMapVaueExpression);
+                ArrayList finalMergredDestnEOArrayList = new ArrayList();
+                finalMergredDestnEOArrayList.add(finalMergredDestnSO);
+                session.removeAttribute("soHashMapArrayList");
+
+                request.setAttribute("mergedSOMap", finalMergredDestnEOArrayList);
+            } catch (ProcessingException ex) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
+                mLogger.error("ProcessingException ex : " + ex.toString());
+            } catch (UserException ex) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
+                mLogger.error("UserException ex : " + ex.toString());
+            } catch (Exception ex) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
+                mLogger.error("Exception ex : " + ex.toString());
+            }
+            //Insert audit Log for LID Mer
+            masterControllerService.insertAuditLog((String) session.getAttribute("user"), sourceEuid, destnEuid, "LID Merge Confirm", new Integer(screenObject.getID()).intValue(), "View two selected EUIDs of the merge confirm page");
         } catch (ProcessingException ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         }
-        //System.out.println("=====1====" + mergredHashMapVaueExpression.get("Person.FirstName"));
       }
 
     public String mergePreviewSystemObject() {
@@ -451,11 +498,14 @@ public class SourceMergeHandler {
             request.setAttribute("lidsource", this.lidsource);
             
         } catch (ProcessingException ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         } catch (Exception ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("Exception ex : " + ex.toString());
         }
 
         
@@ -530,9 +580,11 @@ public class SourceMergeHandler {
                 systemObjectHashMap.put("SOAliasList", aliasMapSOArrayList); // set SO alias as arraylist here
             }
         } catch (EPathException ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("EpathException ex : " + ex.toString());
         } catch (ObjectException ex) {
-            Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ObjectException ex : " + ex.toString());
         }
          return systemObjectHashMap;   
      

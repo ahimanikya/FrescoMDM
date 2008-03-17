@@ -32,6 +32,7 @@ package com.sun.mdm.index.edm.presentation.handlers;
 
 
 import com.sun.mdm.index.edm.presentation.valueobjects.EuidTreeVO;
+import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.master.ProcessingException;
@@ -41,6 +42,7 @@ import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import net.sf.yui4jsf.component.treeview.node.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public class ViewMergeTreeHandler  {
     
@@ -51,6 +53,16 @@ public class ViewMergeTreeHandler  {
      *  Request Object Handle
      */  
     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+    /**
+     *Http session variable
+     */
+    HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+
+    /**
+     *get Screen Object from the session
+     */
+    ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+    
     private String euid = request.getParameter("euid");
     
     public ViewMergeTreeHandler() {
@@ -119,6 +131,16 @@ public class ViewMergeTreeHandler  {
             htmlNodeTreeDataModel = new EuidTreeVO();
             MasterControllerService masterControllerService = new MasterControllerService();
             MergeHistoryNode mergeHistoryNode = masterControllerService.getMergeHistoryNode(euid); // arg: EUID
+            
+       //String userName, String euid1, String euid2, String function, int screeneID, String detail
+        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                               euid, 
+                                               "",
+                                               "View Merge Tree",
+                                               new Integer(screenObject.getID()).intValue(),
+                                               "View Merge Tree");
+            
+            
             MergeHistoryNode mergeHistoryNodeCount = mergeHistoryNode;
             while (mergeHistoryNodeCount != null) {
                 mergeHistoryNodeCount = mergeHistoryNodeCount.getParentNode();

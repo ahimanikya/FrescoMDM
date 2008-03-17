@@ -241,6 +241,15 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                     {   
                         String euid1 = pds[i].getEUID1();
                         String euid2 = pds[i].getEUID2();
+
+                        //Insert audit log for the "Matching Review Search Result"
+                        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                               euid1, 
+                                               euid2,
+                                               "Matching Review Search Result",
+                                               new Integer(screenObject.getID()).intValue(),
+                                               "View Potential Duplicate Search Result");
+                        
                         temp[i][0] = euid1;
                         temp[i][1] = euid2;                       
                     }
@@ -299,14 +308,14 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             }
             ArrayList finalArrayList = arlOuter;            
             ArrayList arlInner = null;          
-            if (super.getUpdateableFeildsMap().get("Person.EUID")== null) {
+            if (super.getUpdateableFeildsMap().get("EUID")== null) {
                 finalArrayList = arlOuter;
             } else {
                 ArrayList outer = new ArrayList();
                 for (int i = 0; i < arlOuter.size(); i++) {
                     arlInner = (ArrayList) arlOuter.get(i);
                     String strData = (String) arlInner.get(0);
-                    if (strData.equalsIgnoreCase((String)super.getUpdateableFeildsMap().get("Person.EUID"))) {                     
+                    if (strData.equalsIgnoreCase((String)super.getUpdateableFeildsMap().get("EUID"))) {                     
                         outer.add(arlInner);
                         finalArrayList = outer;
                     }
@@ -489,6 +498,13 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             potentialDuplicateSearchObject.setCreateUser((String) super.getUpdateableFeildsMap().get("SystemUser"));
         } else {
             potentialDuplicateSearchObject.setCreateUser(null);
+        }
+
+        //EndTime=, StartTime=, EndDate=, StartDate=, Function=null, SystemUser=, SystemCode=null, LID=, EUID=
+        if (super.getUpdateableFeildsMap().get("Status") != null && super.getUpdateableFeildsMap().get("Status").toString().trim().length() > 0) {
+            potentialDuplicateSearchObject.setStatus((String) super.getUpdateableFeildsMap().get("Status"));
+        } else {
+            potentialDuplicateSearchObject.setStatus(null);
         }
 
         

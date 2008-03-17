@@ -32,8 +32,6 @@ import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.factory.SimpleFactory;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
 
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
@@ -48,6 +46,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import com.sun.mdm.index.edm.presentation.valueobjects.PatientDetails;
+import com.sun.mdm.index.util.LogUtil;
+import com.sun.mdm.index.util.Logger;
 
 /**
  * @author Rajani
@@ -62,6 +62,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
     private String[] euidCheckValues;
     private boolean euidCheckboolean;
     private static final String VALIDATION_ERROR = "validationfailed";
+    private static final String SERVICE_LAYER_ERROR = "servicelayererror";
     private PatientDetails[] patientDetailsVO = null;
     private String resolveType  = "AutoResolve";
     private String potentialDuplicateId;
@@ -120,7 +121,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             }
 
             super.setUpdateableFeildsMap(newFieldValuesMap);
-            //System.out.println("---------------1-------------------" + super.getUpdateableFeildsMap());
+            System.out.println("---------------1-------------------" + super.getUpdateableFeildsMap());
 
             //set the search type as per the user choice
             super.setSearchType(super.getSelectedSearchType());
@@ -317,9 +318,9 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                         //System.out.println("DOB FROM Putting ==>: BEFORE feildValue==> " + feildValue);
                         feildValue = feildValue.replaceAll("-", "");
                         //System.out.println("DOB FROM Putting ==>: " + objectFieldConfig.getDisplayName() + "feildValue==> " + feildValue);
-                        if (objectFieldConfig.getDisplayName().equalsIgnoreCase("DOB From")) {
+                        if (objectFieldConfig.isRange() && objectFieldConfig.getDisplayName().endsWith("From")) {
                             gSearchCriteriaFromDOB.put(objectFieldConfig.getFullFieldName(), feildValue);
-                        } else if (objectFieldConfig.getDisplayName().equalsIgnoreCase("DOB To")) {
+                        } else if (objectFieldConfig.isRange() && objectFieldConfig.getDisplayName().endsWith("To")) {
                             ////System.out.println("DOB TO Putting ==>: " + objectFieldConfig.getDisplayName() + "feildValue==> " +feildValue);
                             gSearchCriteriaToDOB.put(objectFieldConfig.getFullFieldName(), feildValue);
                         } else {
@@ -442,9 +443,9 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             session.setAttribute("comapreEuidsArrayList",modifiedArrayList);
 
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
         }
    
         return "Compare Duplicates";
@@ -481,9 +482,12 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             session.setAttribute("comapreEuidsArrayList",modifiedArrayList);
 
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
+
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         }
 
     }
@@ -503,9 +507,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             session.setAttribute("enterpriseArrayList", newEOArrayList);
 
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         }
 
     }
@@ -549,7 +555,8 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             session.setAttribute("mergedEO", mergeResultEO);
             session.setAttribute("mergedEOMap", fieldValuesMergeMap);
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("Exception ex : " + ex.toString());
         }
 
     }
@@ -598,10 +605,36 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
 
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         }
+        
+      //Insert Audit logs 
+       try {
+       //String userName, String euid1, String euid2, String function, int screeneID, String detail
+        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                               destnEuid, 
+                                               "",
+                                               "EUID Merge Confirm",
+                                               new Integer(screenObject.getID()).intValue(),
+                                               "View two selected EUIDs of the merge confirm page");
+        } catch (UserException ex) {   
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
+            return this.SERVICE_LAYER_ERROR;
+        } catch (ObjectException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ObjectException ex : " + ex.toString());
+            return this.SERVICE_LAYER_ERROR;
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("Exception ex : " + ex.toString());
+            return this.SERVICE_LAYER_ERROR;
+        }
+        
         return this.SEARCH_PATIENT_DETAILS;
 }
         
@@ -670,12 +703,38 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             session.setAttribute("comapreEuidsArrayList",finalMergeList);
             
         } catch (ObjectException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ObjectException ex : " + ex.toString());
         } catch (ValidationException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ValidationException ex : " + ex.toString());
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("Exception ex : " + ex.toString());
         }
+      //Insert Audit logs 
+       try {
+       //String userName, String euid1, String euid2, String function, int screeneID, String detail
+        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                               destnEuid, 
+                                               "",
+                                               "EUID Multi Merge Confirm",
+                                               new Integer(screenObject.getID()).intValue(),
+                                               "View two selected EUIDs of the merge confirm page");
+        } catch (UserException ex) {   
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
+            return this.SERVICE_LAYER_ERROR;
+        } catch (ObjectException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ObjectException ex : " + ex.toString());
+            return this.SERVICE_LAYER_ERROR;
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("Exception ex : " + ex.toString());
+            return this.SERVICE_LAYER_ERROR;
+        }
+
         return this.SEARCH_PATIENT_DETAILS;
 }        
 
@@ -707,11 +766,38 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 newArrayList.add(eoMap);
             }
             httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
-    } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            return this.SERVICE_LAYER_ERROR;
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            return this.SERVICE_LAYER_ERROR;
         }
+        
+        
+      //Insert Audit logs after adding the new System Object
+       try {
+       //String userName, String euid1, String euid2, String function, int screeneID, String detail
+        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                               this.getSingleEUID(), 
+                                               "",
+                                               "EO View/Edit",
+                                               new Integer(screenObject.getID()).intValue(),
+                                               "View/Edit detail of enterprise object");
+        } catch (UserException ex) {   
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
+            return this.SERVICE_LAYER_ERROR;
+        } catch (ObjectException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ObjectException ex : " + ex.toString());
+            return this.SERVICE_LAYER_ERROR;
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("Exception ex : " + ex.toString());
+            return this.SERVICE_LAYER_ERROR;
+        }
+
         return "EUID Details";
     }
 
@@ -733,6 +819,14 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
+
+                    //Insert audit log here for EUID search
+                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                            this.getEuid1(),
+                            "",
+                            "EO View/Edit",
+                            new Integer(screenObject.getID()).intValue(),
+                            "View/Edit detail of enterprise object");
                 }
             }
             if (this.getEuid2() != null && !"EUID 2".equalsIgnoreCase(this.getEuid2())) {
@@ -745,6 +839,13 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
+                    //Insert audit log here for EUID search
+                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                            this.getEuid2(),
+                            "",
+                            "EO View/Edit",
+                            new Integer(screenObject.getID()).intValue(),
+                            "View/Edit detail of enterprise object");
                 }
             }
             if (this.getEuid3() != null && !"EUID 3".equalsIgnoreCase(this.getEuid3())) {
@@ -756,6 +857,14 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
+                    //Insert audit log here for EUID search
+                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                            this.getEuid3(),
+                            "",
+                            "EO View/Edit",
+                            new Integer(screenObject.getID()).intValue(),
+                            "View/Edit detail of enterprise object");
+                    
                 }
             }
             if (this.getEuid4() != null && !"EUID 4".equalsIgnoreCase(this.getEuid4())) {
@@ -767,17 +876,28 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
+                    //Insert audit log here for EUID search
+                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                            this.getEuid4(),
+                            "",
+                            "EO View/Edit",
+                            new Integer(screenObject.getID()).intValue(),
+                            "View/Edit detail of enterprise object");
+                    
                 }
             }
            
 //            //System.out.println("===> : " + newArrayList);
             session.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("Processing  ex : " + ex.toString());
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         }
-        return "Compare Duplicates";
+
+        return "EUID Details";
     }
 
     public String lookupEuid1() {
@@ -800,13 +920,22 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
+                    //Insert audit log here for EUID search
+                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                            this.getEuid1(),
+                            "",
+                            "EO View/Edit",
+                            new Integer(screenObject.getID()).intValue(),
+                            "View/Edit detail of enterprise object");
                 }
             }
             httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         }
         return "EUID Details";
     }
@@ -830,13 +959,22 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
+                    //Insert audit log here for EUID search
+                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                            this.getEuid2(),
+                            "",
+                            "EO View/Edit",
+                            new Integer(screenObject.getID()).intValue(),
+                            "View/Edit detail of enterprise object");
                 }
             }
             httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         }
         return "EUID Details";
     }
@@ -860,13 +998,23 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
+                    //Insert audit log here for EUID search
+                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                            this.getEuid3(),
+                            "",
+                            "EO View/Edit",
+                            new Integer(screenObject.getID()).intValue(),
+                            "View/Edit detail of enterprise object");
+                    
                 }
             }
             httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         }
         return "EUID Details";
     }
@@ -890,13 +1038,23 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
+                    //Insert audit log here for EUID search
+                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                            this.getEuid4(),
+                            "",
+                            "EO View/Edit",
+                            new Integer(screenObject.getID()).intValue(),
+                            "View/Edit detail of enterprise object");
+                    
                 }
             }
             httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         }
         return "EUID Details";
     }
@@ -938,9 +1096,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             httpRequest.setAttribute("comapreEuidsArrayList", updatedEOList);
 
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         }
 
 
@@ -972,9 +1132,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             httpRequest.setAttribute("comapreEuidsArrayList", updatedEOList);
 
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         }
 
     //Keep the updated SO in the session again
@@ -1089,9 +1251,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             session.setAttribute("enterpriseArrayList", finalMergredDestnEOArrayList);
 
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         }
     }
 
@@ -1101,26 +1265,39 @@ public class PatientDetailsHandler extends ScreenConfiguration {
      * @throws com.sun.mdm.index.objects.exception.ObjectException 
      */
     public void unmergeEnterpriseObject(ActionEvent event) throws ObjectException {
-           
-        //ArrayList newArrayList = new ArrayList();
-        String euidUnmerge = (String) event.getComponent().getAttributes().get("unMergeEuidVE");
-        
-        //HashMap unmergeEO = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-        //newArrayList.add(unmergeEO);
+
+            //ArrayList newArrayList = new ArrayList();
+            String euidUnmerge = (String) event.getComponent().getAttributes().get("unMergeEuidVE");
+
+            //HashMap unmergeEO = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
+            //newArrayList.add(unmergeEO);
         try {
-            MergeResult unMerge = masterControllerService.unMerge(euidUnmerge);
+            MergeResult unmerge = masterControllerService.unMerge(euidUnmerge);
             ArrayList newArrayList = new ArrayList();
             EnterpriseObject eo = masterControllerService.getEnterpriseObject(euidUnmerge);
             HashMap eoHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
             newArrayList.add(eoHashMap);
             httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
-        } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            if (unmerge.getDestinationEO() != null && unmerge.getSourceEO() != null) {
+                //Insert audit log here for EUID UNMERGE
+                masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                                        unmerge.getDestinationEO().getEUID(),
+                                                        unmerge.getSourceEO().getEUID(),
+                                                        "EUID Unmerge",
+                                                        new Integer(screenObject.getID()).intValue(),
+                                                        "Unmerge two enterprise objects");
+            }
 
+
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
+        } catch (RemoteException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
+            mLogger.error("RemoteException ex : " + ex.toString());
         }
 
     }
@@ -1158,8 +1335,8 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             httpRequest.setAttribute("mergeEOList", mergeEOList);
 
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
-
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("Exception ex : " + ex.toString());
         }
     }
 
@@ -1190,8 +1367,8 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             httpRequest.setAttribute("eoHistory" + euid, newArrayListHistory);
 
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
-
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("Exception ex : " + ex.toString());
         }
     }
 
@@ -1217,8 +1394,8 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             httpRequest.setAttribute("eoSources"+enterpriseObject.getEUID(), newArrayList);
 
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
-
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("Exception ex : " + ex.toString());
         }
     }
 
@@ -1356,12 +1533,21 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 EnterpriseObject eo = masterControllerService.getEnterpriseObject(sourceEuid);
                 HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
                 euidsMapList.add(eoMap);
+                //Insert audit log here for EUID search
+                masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                        sourceEuid,
+                        "",
+                        "EO View/Edit",
+                        new Integer(screenObject.getID()).intValue(),
+                        "View/Edit detail of enterprise object");
 
-             ////System.out.println("===> " + sourceEuid + "srcRevisionNumbers" + eo.getEUID());
+            ////System.out.println("===> " + sourceEuid + "srcRevisionNumbers" + eo.getEUID());
             } catch (ProcessingException ex) {
-                java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
+                mLogger.error("ProcessingException ex : " + ex.toString());
             } catch (UserException ex) {
-                java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
+                mLogger.error("UserException ex : " + ex.toString());
             }
 
         }
@@ -1386,10 +1572,19 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
             HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
             euidsMapList.add(eoMap);
-        } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+           //String userName, String euid1, String euid2, String function, int screeneID, String detail
+           masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                               eo.getEUID(), 
+                                               "",
+                                               "EO View/Edit",
+                                               new Integer(screenObject.getID()).intValue(),
+                                               "View/Edit detail of enterprise object");
+    } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(PatientDetailsHandler.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
         }
         return euidsMapList;        
   }

@@ -163,7 +163,11 @@ public class SourceAddHandler {
                     String string = fieldNameValues[i];
                     String[] keyValues = string.split("##");
                     if(keyValues.length ==2) {
-                      newFieldValuesMap.put(keyValues[0], keyValues[1]);
+                      if(keyValues[1] != null && keyValues[1].trim().length() == 0 ) {
+                        newFieldValuesMap.put(keyValues[0], null);
+                      } else {
+                        newFieldValuesMap.put(keyValues[0], keyValues[1]);
+                      }
                     }
                 }
             }
@@ -230,7 +234,11 @@ public class SourceAddHandler {
                                 String[] keyAndValueArray = keyAndValue.split("::");
                                 for (int l = 0; l < keyAndValueArray.length; l++) {
                                     //System.out.println("key =====> " + keyAndValueArray[0] + "Value ==> " + keyAndValueArray[1]);
-                                    minorObjectMap.put(keyAndValueArray[0], keyAndValueArray[1]);
+                                    if (keyAndValueArray[1] != null && keyAndValueArray[1].trim().length() == 0) {
+                                        minorObjectMap.put(keyAndValueArray[0], null);
+                                    } else {
+                                        minorObjectMap.put(keyAndValueArray[0], keyAndValueArray[1]);
+                                    }
                                 }
                             }
                             //System.out.println("minorObjectMap =======>" + minorObjectMap);
@@ -273,6 +281,13 @@ public class SourceAddHandler {
             //create systemobject start
             SystemObject createSystemObject = masterControllerService.createSystemObject(getSystemCode(), getLID(), newSOHashMap);
             //createSystemObject.setUpdateUser("eview");
+   
+            for(int i=0;i<getNewSOMinorObjectsHashMapArrayList().size();i++) {
+                HashMap minorObjectMap = (HashMap) getNewSOMinorObjectsHashMapArrayList().get(i);
+                masterControllerService.addMinorObject(createSystemObject, (String) minorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE), minorObjectMap);
+            }
+            
+           
             
             masterControllerService.addSystemObject(createSystemObject);
             String summaryInfo = masterControllerService.getSummaryInfo();
@@ -282,13 +297,13 @@ public class SourceAddHandler {
             //finished creating SO and EO
             
             SystemObject newSystemObject = masterControllerService.getSystemObject(getSystemCode(), getLID());
-            EnterpriseObject eoNew  = masterControllerService.getEnterpriseObjectForSO(newSystemObject);
+            eoFinal  = masterControllerService.getEnterpriseObjectForSO(newSystemObject);
 
             
              
              // call mastercontrollerservice api to add minor objects all together
              //add minor objects to the newly created EO
-             eoFinal  = masterControllerService.save(eoNew, null, null, getNewSOMinorObjectsHashMapArrayList());
+             //eoFinal  = masterControllerService.save(eoNew, null, null, getNewSOMinorObjectsHashMapArrayList());
             
             //adding summary message after creating systemobjec
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,summaryInfo,summaryInfo));
@@ -297,26 +312,29 @@ public class SourceAddHandler {
             errorMessage = "Service Layer User Exception occurred";
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
             Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+            session.removeAttribute("validation");
             return this.SERVICE_LAYER_ERROR;
         } catch (ObjectException ex) {
             errorMessage = "Service Layer Object Exception occurred";
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
             Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+            session.removeAttribute("validation");
             return this.SERVICE_LAYER_ERROR;
         } catch (Exception ex) {
             errorMessage = "Service Layer Exception occurred";
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
             Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+            session.removeAttribute("validation");
             return this.SERVICE_LAYER_ERROR;
         }
       
-       //Insert Audit los after adding the new System Object
+       //Insert Audit logs after adding the new System Object
        try {
        //String userName, String euid1, String euid2, String function, int screeneID, String detail
-        masterControllerService.insertAuditLog("eGate",
+        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
                                                eoFinal.getEUID(), 
                                                "",
-                                               "Add",
+                                               "EO View/Edit",
                                                new Integer(screenObject.getID()).intValue(),
                                                masterControllerService.getAuditMsg());
         } catch (UserException ex) {   

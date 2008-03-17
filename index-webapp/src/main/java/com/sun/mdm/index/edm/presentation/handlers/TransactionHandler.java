@@ -115,23 +115,23 @@ public class TransactionHandler extends ScreenConfiguration {
     }
     
     public String performSubmit() throws HandlerException  {
-            try {
-                
+        try {
+
             HashMap newFieldValuesMap = new HashMap();
             if (super.getEnteredFieldValues() != null && super.getEnteredFieldValues().length() > 0) {
                 String[] fieldNameValues = super.getEnteredFieldValues().split(">>");
                 for (int i = 0; i < fieldNameValues.length; i++) {
                     String string = fieldNameValues[i];
                     String[] keyValues = string.split("##");
-                    if(keyValues.length ==2) {
-                      //System.out.println("Key " + keyValues[0] + "Value ==> : " + keyValues[1]);
-                      newFieldValuesMap.put(keyValues[0], keyValues[1]);
+                    if (keyValues.length == 2) {
+                        //System.out.println("Key " + keyValues[0] + "Value ==> : " + keyValues[1]);
+                        newFieldValuesMap.put(keyValues[0], keyValues[1]);
                     }
                 }
             }
 
             super.setUpdateableFeildsMap(newFieldValuesMap);
-                
+
             //System.out.println("---------------1-------------------" + super.getUpdateableFeildsMap() + super.checkOneOfManyCondition());
             //check one of many condtion here
             if (super.checkOneOfManyCondition()) {
@@ -223,109 +223,87 @@ public class TransactionHandler extends ScreenConfiguration {
                 }
 
             }
+
+
+
+
+            TransactionSearchObject tso = getTransactionSearchObject();
+
+            //System.out.println("---------------5-------------------" + tso);
+
+            MasterControllerService objMasterControllerService = new MasterControllerService();
+
+            TransactionIterator iteratorTransaction = objMasterControllerService.lookupTransactionHistory(tso);
+            ArrayList resultsArrayList = new ArrayList();
+            setSearchSize(0);
+            if (iteratorTransaction != null) {
+                TransactionSummary[] tsArray = iteratorTransaction.first(iteratorTransaction.count());
+                setTransactionsVO(new Transaction[tsArray.length]);
+                for (int i = 0; i < tsArray.length; i++) {
+                    TransactionSummary ts = tsArray[i];
+
+                    getTransactionsVO()[i] = new Transaction(); //to be safe with malloc
+
+                    String outputValues = "{TransactionNumber:" + "\"" + ts.getTransactionObject().getTransactionNumber() + "\"" +
+                            ", EUID1: " + "\"" + ((ts.getTransactionObject().getEUID() != null) ? ts.getTransactionObject().getEUID() : "") + "\"" +
+                            ", EUID2: " + "\"" + ((ts.getTransactionObject().getEUID2() != null) ? ts.getTransactionObject().getEUID2() : "") + "\"" +
+                            ", LID: " + "\"" + ((ts.getTransactionObject().getLID() != null) ? ts.getTransactionObject().getLID() : "") + "\"" +
+                            ", Function: " + "\"" + ((ts.getTransactionObject().getFunction() != null) ? ts.getTransactionObject().getFunction() : "") + "\"" +
+                            ", SystemCode: " + "\"" + ((ts.getTransactionObject().getSystemCode() != null) ? ts.getTransactionObject().getSystemCode() : "") + "\"" +
+                            ", SystemUser: " + "\"" + ((ts.getTransactionObject().getSystemUser() != null) ? ts.getTransactionObject().getSystemUser() : "") + "\"" +
+                            ", TimeStamp: " + "\"" + ((ts.getTransactionObject().getTimeStamp() != null) ? ts.getTransactionObject().getTimeStamp() : "") + "\"" + "}";
+
+                    //Insert audit log here for Transaction search
             
-            
+                    masterControllerService.insertAuditLog((String) session.getAttribute("user"), 
+                                                    ts.getTransactionObject().getEUID(), 
+                                                    ts.getTransactionObject().getEUID1(), 
+                                                    "History Search Result", 
+                                                    new Integer(screenObject.getID()).intValue(), 
+                                                    "View History Search Result");
 
-                
-                TransactionSearchObject tso = getTransactionSearchObject();
-                
-                //System.out.println("---------------5-------------------" + tso);
-                
-                MasterControllerService objMasterControllerService = new MasterControllerService();
+                    resultsArrayList.add(outputValues);
 
-                TransactionIterator iteratorTransaction = objMasterControllerService.lookupTransactionHistory(tso);
-                ArrayList resultsArrayList = new ArrayList();
-                setSearchSize(0);
-                if (iteratorTransaction != null) {
-                    TransactionSummary[] tsArray = iteratorTransaction.first(iteratorTransaction.count());
-                    setTransactionsVO(new Transaction[tsArray.length]);
-                    for (int i = 0; i < tsArray.length; i++) {
-                        TransactionSummary ts = tsArray[i];
-                         
-                        getTransactionsVO()[i] = new Transaction(); //to be safe with malloc
-                String outputValues = "{TransactionNumber:" + "\"" + ts.getTransactionObject().getTransactionNumber()+  "\"" + 
-                                      ", EUID1: " + "\"" + ((ts.getTransactionObject().getEUID1() != null) ? ts.getTransactionObject().getEUID1() : "")  +"\"" +
-                                      ", EUID2: " + "\"" + ((ts.getTransactionObject().getEUID2() != null) ? ts.getTransactionObject().getEUID2() : "") +"\""  +
-                                      ", LID: " + "\"" + ((ts.getTransactionObject().getLID() != null) ? ts.getTransactionObject().getLID() : "") +"\""  +
-                                      ", Function: " + "\"" + ((ts.getTransactionObject().getFunction()  != null) ? ts.getTransactionObject().getFunction()  : "") +"\"" +
-                                      ", SystemCode: " + "\"" + ((ts.getTransactionObject().getSystemCode()  != null) ? ts.getTransactionObject().getSystemCode() : "") +"\""  +
-                                      ", SystemUser: " + "\"" + ((ts.getTransactionObject().getSystemUser()  != null) ? ts.getTransactionObject().getSystemUser() : "") +"\""  +
-                                      ", TimeStamp: " + "\"" + ((ts.getTransactionObject().getTimeStamp()  != null) ? ts.getTransactionObject().getTimeStamp() : "") +"\""  
-                                     +  "}";
-                
-                resultsArrayList.add(outputValues);
-                        
-                        
-//                        getTransactionsVO()[i].setTransactionId(ts.getTransactionObject().getTransactionNumber());
-//                        //String transactionNumber = ts.getTransactionObject().getTransactionNumber();
-//                        getTransactionsVO()[i].setEuid(ts.getTransactionObject().getEUID());
-//                        //String euid = ts.getTransactionObject().getEUID();
-//                        getTransactionsVO()[i].setFunction(ts.getTransactionObject().getFunction());
-//                        //String function = ts.getTransactionObject().getFunction();
-//                         getTransactionsVO()[i].setLocalid(ts.getTransactionObject().getLID());
-//                        
-//                        //String lid = ts.getTransactionObject().getLID();
-//                        getTransactionsVO()[i].setSource(ts.getTransactionObject().getSystemCode());
-//                        //String systemCode = ts.getTransactionObject().getSystemCode();
-//                        getTransactionsVO()[i].setSystemUser(ts.getTransactionObject().getSystemUser());
-//                        //String systemUser = ts.getTransactionObject().getSystemUser();
-//                        getTransactionsVO()[i].setTransactionDate(ts.getTransactionObject().getTimeStamp());
-//                        //String createDate = ts.getTransactionObject().getTimeStamp().toString();
-//                        getTransactionsVO()[i].setFirstName("");
-//                        getTransactionsVO()[i].setLastName("");
-//                        
-//                        ArrayList eoArrayList = new ArrayList();
-//                        
-//                        if(ts.getEnterpriseObjectHistory().getAfterEO() != null ) eoArrayList.add(ts.getEnterpriseObjectHistory().getAfterEO());
-//                        if(ts.getEnterpriseObjectHistory().getAfterEO2() != null ) eoArrayList.add(ts.getEnterpriseObjectHistory().getAfterEO2());
-//                        if(ts.getEnterpriseObjectHistory().getBeforeEO1() != null ) eoArrayList.add(ts.getEnterpriseObjectHistory().getBeforeEO1());
-//                        if(ts.getEnterpriseObjectHistory().getBeforeEO2() != null ) eoArrayList.add(ts.getEnterpriseObjectHistory().getBeforeEO2());
-//                        ////System.out.println("HElllllllllllllllll" +eoArrayList.size());
-//                        if(eoArrayList.size() > 0) {
-//                           getTransactionsVO()[i].setEoArrayList(eoArrayList);
-//                           getTransactionsVO()[i].setEoArrayListSize(eoArrayList.size());
-//                        }
-                        
 
-                    }
-                    setTransactionsVO(transactionsVO);
-                    setSearchSize(transactionsVO.length);
-                    request.setAttribute("searchSize",new Integer(transactionsVO.length) );
-                    request.setAttribute("resultsArrayList",resultsArrayList );
-                  //  request.setAttribute("searchSize",new Integer(transactionsVO.length) );
-                }                
-            } catch (ValidationException ex) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ValidationException : " + QwsUtil.getRootCause(ex).getMessage(),ex.toString()));
-                    mLogger.error("ValidationException : " + QwsUtil.getRootCause(ex).getMessage());
-                    mLogger.error("ValidationException ex : " + ex.toString());
-                    return VALIDATION_ERROR;
-            } catch (UserException ex) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "UserException : " + QwsUtil.getRootCause(ex).getMessage(),ex.toString()));
-                    mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
-                    mLogger.error("UserException ex : " + ex.toString());
-                    return VALIDATION_ERROR;
-            } catch (PageException ex) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "PageException : " + QwsUtil.getRootCause(ex).getMessage(),ex.toString()));
-                    mLogger.error("PageException : " + QwsUtil.getRootCause(ex).getMessage());
-                    mLogger.error("PageException ex : " + ex.toString());
-                    return VALIDATION_ERROR;
-            } catch (RemoteException ex) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "RemoteException : " + QwsUtil.getRootCause(ex).getMessage(),ex.toString()));
-                    mLogger.error("RemoteException : " + QwsUtil.getRootCause(ex).getMessage());
-                    mLogger.error("RemoteException ex : " + ex.toString());
-                    return VALIDATION_ERROR;
-            } catch (ProcessingException ex) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ProcessingException : " + QwsUtil.getRootCause(ex).getMessage(),ex.toString()));
-                    mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
-                    mLogger.error("ProcessingException ex : " + ex.toString());
-                    return VALIDATION_ERROR;
-            } catch (Exception ex) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Exception : " + QwsUtil.getRootCause(ex).getMessage(),ex.toString()));
-                    mLogger.error("Exception : " + QwsUtil.getRootCause(ex).getMessage());
-                    mLogger.error("Exception ex : " + ex.toString());
-                    return VALIDATION_ERROR;
-            }            
-            return TRANSACTIONS_PAGE;
+                }
+                setTransactionsVO(transactionsVO);
+                setSearchSize(transactionsVO.length);
+                request.setAttribute("searchSize", new Integer(transactionsVO.length));
+                request.setAttribute("resultsArrayList", resultsArrayList);
+            //  request.setAttribute("searchSize",new Integer(transactionsVO.length) );
+            }
+        } catch (ValidationException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ValidationException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+            mLogger.error("ValidationException : " + QwsUtil.getRootCause(ex).getMessage());
+            mLogger.error("ValidationException ex : " + ex.toString());
+            return VALIDATION_ERROR;
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "UserException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+            mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
+            mLogger.error("UserException ex : " + ex.toString());
+            return VALIDATION_ERROR;
+        } catch (PageException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "PageException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+            mLogger.error("PageException : " + QwsUtil.getRootCause(ex).getMessage());
+            mLogger.error("PageException ex : " + ex.toString());
+            return VALIDATION_ERROR;
+        } catch (RemoteException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "RemoteException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+            mLogger.error("RemoteException : " + QwsUtil.getRootCause(ex).getMessage());
+            mLogger.error("RemoteException ex : " + ex.toString());
+            return VALIDATION_ERROR;
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ProcessingException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+            mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
+            mLogger.error("ProcessingException ex : " + ex.toString());
+            return VALIDATION_ERROR;
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Exception : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+            mLogger.error("Exception : " + QwsUtil.getRootCause(ex).getMessage());
+            mLogger.error("Exception ex : " + ex.toString());
+            return VALIDATION_ERROR;
+        }
+        return TRANSACTIONS_PAGE;
                 
     }
 
@@ -751,6 +729,7 @@ public class TransactionHandler extends ScreenConfiguration {
     public void unmergeEnterpriseObject(ActionEvent event) throws ObjectException {
         
         String transactionNumber = (String) event.getComponent().getAttributes().get("tranNoValueExpressionviewunmerge");
+        ArrayList eoArrayList = new ArrayList();
         
         try {
              masterControllerService.isEUIDMerge(transactionNumber);
@@ -758,9 +737,19 @@ public class TransactionHandler extends ScreenConfiguration {
              ////System.out.println("helllllllllllllllo"+transactionNumber);
              HttpServletRequest facesRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
              facesRequest.setAttribute("transactionId", transactionNumber);     
-             ArrayList eoArrayList = getTranscationDetails(transactionNumber);
+             eoArrayList = getTranscationDetails(transactionNumber);
              request.setAttribute("comapreEuidsArrayList", eoArrayList);
 
+            if (unmerge.getDestinationEO() != null && unmerge.getSourceEO() != null) {
+                //Insert audit log here for EUID search
+                masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                                       unmerge.getDestinationEO().getEUID(),
+                                                       unmerge.getSourceEO().getEUID(),
+                                                       "EUID Unmerge",
+                                                       new Integer(screenObject.getID()).intValue(),
+                                                        "Unmerge two enterprise objects");
+            }
+                
              ////System.out.println("RETURNING THE CONTROL TO JSP");
         } catch (ProcessingException ex) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ProcessingException : " + QwsUtil.getRootCause(ex).getMessage(),ex.toString()));
@@ -771,6 +760,12 @@ public class TransactionHandler extends ScreenConfiguration {
                     mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
                     mLogger.error("UserException ex : " + ex.toString());
         }  
+        
+        if( eoArrayList != null && eoArrayList.size() > 0) {
+            for(int i=0;i<eoArrayList.size();i++) {
+            }
+        }                     
+
     }
 
     
