@@ -91,11 +91,12 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	private Connection con_;
     private String sdate_;
     private Date date_;
-    private static SimpleDateFormat dateFormat_;  // This format is used in
+    private static String dateFormatString_;
+   // private static SimpleDateFormat dateFormat_;  // This format is used in
         // user defined objects per object de
     	// new SimpleDateFormat("dd-MMM-yy hh:mm:ss");
-    private static SimpleDateFormat outdateFormat_; 
-    private static SimpleDateFormat sysdateFormat_ = new SimpleDateFormat("dd-MMM-yy hh:mm:ss");
+    private  SimpleDateFormat outdateFormat_; 
+    private  SimpleDateFormat sysdateFormat_ = new SimpleDateFormat("dd-MMM-yy hh:mm:ss");
 	// This format is used for storing dates in systemobjects, sbr, transaction table,
       // per database loader .ctl.
 	MIndexTask(Map<String, TableData> tableMap, EUIDBucket.EOCursor cursor,  
@@ -109,6 +110,8 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 				
 	//	objDef_ = objDef;
 		con_ = con;
+		outdateFormat_ = new SimpleDateFormat(dateFormatString_ + " hh:mm:ss"); // output date format is
+		  // written to master index files is - "object def date Format" + "hh:mm:ss"
 		date_ = new Date();	    
 	    sdate_ = sysdateFormat_.format(date_);
 	}
@@ -155,18 +158,14 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	private static ObjectDefinition initDataObjectAdapter() {
 		ObjectDefinition objDef = config.getObjectDefinition();
 		addIDs(objDef);
-		DataObjectAdapter.init(objDef);
-		String dateString = objDef.getDateFormat();
-		outdateFormat_ = new SimpleDateFormat(dateString + " hh:mm:ss"); // output date format is
-		  // written to master index files is - "object def date Format" + "hh:mm:ss"
-		String timeFormat = config.getSystemProperty("TimeFormat");
-		if (timeFormat != null) {
-			dateString = dateString + " " + timeFormat;
-		}
+	//	DataObjectAdapter.init(objDef);
+		dateFormatString_ = objDef.getDateFormat();
+		//String timeFormat = config.getSystemProperty("TimeFormat");
+		//if (timeFormat != null) {
+			//dateFormatString_ = dateFormatString_ + " " + timeFormat;
+		//}
 		
-		dateFormat_ = new SimpleDateFormat(dateString); // + " hh:mm:ss");
-		DataObjectAdapter.setDateFormat(dateFormat_);
-		ObjectNodeUtil.initDateFormat();
+		
 		return objDef;
 	}
 	
