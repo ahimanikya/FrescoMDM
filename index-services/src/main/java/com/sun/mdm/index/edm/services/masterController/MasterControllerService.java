@@ -463,11 +463,15 @@ public class MasterControllerService {
     public void insertAuditLog(String userName, String euid1, String euid2, String function, int screeneID, String detail)
             throws ProcessingException, UserException, ObjectException {
         if (userName != null && euid1 != null && function != null && detail != null) {
-            String[] primaryObjType = ConfigManager.getInstance().getRootNodeNames();
+            ConfigManager configManager = ConfigManager.getInstance();
+            String[] primaryObjType = configManager.getRootNodeNames();
             AuditDataObject ado = new AuditDataObject("", primaryObjType[0], euid1, euid2, function, detail, new Date(), userName);
-            QwsController.getMasterController().insertAuditLog(ado);
+            if (configManager.getAuditLogConfig()) {
+                QwsController.getMasterController().insertAuditLog(ado);
+            }
         } else {
             throw new UserException(mLocalizer.t("SRM511: userName, euid1, function or detail cannot be null")); //user exception
+
         }
 
     }
@@ -862,7 +866,7 @@ public class MasterControllerService {
                 } else {
                     systemObject = getSystemObject((String) hm.get(MasterControllerService.SYSTEM_CODE), (String) hm.get(MasterControllerService.LID));
                 }
-                systemObject.setUpdateUser("eview");
+                //systemObject.setUpdateUser("eview");
                 addMinorObject(systemObject, (String) hm.get(MasterControllerService.MINOR_OBJECT_TYPE), hm);
             } else if (hm.get(MasterControllerService.HASH_MAP_TYPE).equals(MasterControllerService.MINOR_OBJECT_REMOVE)) {
                 SystemObject systemObject = eo.getSystemObject((String) hm.get(MasterControllerService.SYSTEM_CODE), (String) hm.get(MasterControllerService.LID));
@@ -1915,4 +1919,12 @@ public EnterpriseObject removeLocks(HashMap hm, EnterpriseObject eo) throws Proc
         int assumedThreshold = threshold.intValue();
         return assumedThreshold;
     }
+
+
+    public int getEuidLength()  throws ProcessingException, UserException {
+        int euidLength = ((Integer) QwsController.getMasterController().getConfigurationValue("EUID_LENGTH")).intValue();        
+        return euidLength;
+    }
+
+
 }
