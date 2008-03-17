@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Logger;
+import java.util.Properties;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -44,13 +45,16 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.taskdefs.Delete;
 import org.apache.tools.ant.taskdefs.Expand;
 import org.apache.tools.ant.taskdefs.Jar;
+import org.apache.tools.ant.taskdefs.Javac;
+import org.apache.tools.ant.taskdefs.Move;
+import org.apache.tools.ant.types.Path;
+import org.apache.tools.ant.types.Reference;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.PatternSet;
 import org.w3c.dom.DOMException;
@@ -73,11 +77,6 @@ import com.sun.mdm.index.project.generator.outbound.OutboundXSDBuilder;
 import com.sun.mdm.index.project.generator.persistence.DDLWriter;
 import com.sun.mdm.standardizer.introspector.StandardizationIntrospector;
 import com.sun.inti.components.util.ClassUtils;
-import java.util.Properties;
-import org.apache.tools.ant.taskdefs.Javac;
-import org.apache.tools.ant.taskdefs.Move;
-import org.apache.tools.ant.types.Path;
-import org.apache.tools.ant.types.Reference;
 
 public class EViewGeneratorTask extends Task {
     private File mSrcdir;
@@ -159,12 +158,11 @@ public class EViewGeneratorTask extends Task {
 
                 // generate report client
                 generateReportClient();
-                                mLog.info("Master Index Files are generated Successfully.");
+                mLog.info("Master Index Files are generated Successfully.");
             } catch (Exception ex) {
-                            mLog.severe("Could not generate Master Index Files.");
-                            throw new BuildException(ex.getMessage());
+                mLog.severe("Could not generate Master Index Files.");
+                throw new BuildException(ex.getMessage());
             }
-
         }
     }
 
@@ -346,7 +344,7 @@ public class EViewGeneratorTask extends Task {
         String projPath = getProject().getProperty("basedir");
         String generatePath = projPath + File.separator
                 + EviewProjectProperties.EVIEW_GENERATED_FOLDER;
-
+        String javacDebug = getProject().getProperty("javac.debug");
         Javac javac = (Javac) getProject().createTask("javac");
         Path srcDir = new Path(getProject(), generatePath + "/client/java");
         javac.setSrcdir(srcDir);
@@ -364,6 +362,11 @@ public class EViewGeneratorTask extends Task {
         javac.setClasspathRef(ref);
         javac.init();
         javac.setLocation(getLocation());
+        if (null!=javacDebug &&javacDebug.equalsIgnoreCase("true")){
+            javac.setDebug(true);
+        }else{
+            javac.setDebug(false);
+        }
         javac.execute();
         Jar jar = (Jar) getProject().createTask("jar");
 
