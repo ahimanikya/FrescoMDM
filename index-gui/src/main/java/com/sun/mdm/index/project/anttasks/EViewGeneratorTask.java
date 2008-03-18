@@ -160,6 +160,17 @@ public class EViewGeneratorTask extends Task {
                 generateReportClient();
                 mLog.info("Master Index Files are generated Successfully.");
             } catch (Exception ex) {
+                //delete configuration files in resouce folder when generation fails
+                String projPath = getProject().getProperty("basedir");
+                File destDir = new File(projPath + File.separator
+                        + EviewProjectProperties.EVIEW_GENERATED_FOLDER
+                        + File.separator + "resource");
+
+                Delete delete = (Delete) getProject().createTask("delete");
+                delete.setDir(destDir);
+                delete.init();
+                delete.setLocation(getLocation());
+                delete.execute();
                 mLog.severe("Could not generate Master Index Files.");
                 throw new BuildException(ex.getMessage());
             }
