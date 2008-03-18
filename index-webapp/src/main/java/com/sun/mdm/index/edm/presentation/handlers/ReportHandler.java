@@ -37,6 +37,7 @@ import javax.faces.event.*;
 import com.sun.mdm.index.edm.services.configuration.FieldConfigGroup;
 import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.edm.services.configuration.SearchResultsConfig;
+import com.sun.mdm.index.edm.services.configuration.SearchScreenConfig;
 import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
@@ -184,6 +185,8 @@ public class ReportHandler {
      * Value Object to hold the Activity Reports
      */
     private ActivityRecords[] activityRecordsVO = null;
+
+    private ArrayList<SelectItem> activityReportTypes = new ArrayList();
     
 
     public String deactivatedReport() {      
@@ -678,6 +681,54 @@ public class ReportHandler {
             e.printStackTrace();
        }
        return newArrayList;
+
     }
    
+    private ArrayList searchScreenConfigArray;
+
+    public ArrayList getSearchScreenConfigArray() {
+        //Array of Sub screen objects as Screen Objects
+        ArrayList resultsSubScreenConfigArray = screenObject.getSubscreensConfig();
+        Object[] subScreenObjects = resultsSubScreenConfigArray.toArray();
+        ScreenObject resultsScreenObject = null;
+
+        for (int i = 0; i < subScreenObjects.length; i++) {
+            subScreenObject = (ScreenObject) subScreenObjects[i];
+            if (subScreenObject.getDisplayTitle().equalsIgnoreCase(getReportType())) {
+                resultsScreenObject = subScreenObject;
+            }
+        }
+        //System.out.println("SUB SCREEN " + resultsScreenObject + "subScreenObject" + subScreenObject);
+        ArrayList screenConfigArraySub = resultsScreenObject.getSearchScreensConfig();
+        return screenConfigArraySub;
+    }
+
+    public void setSearchScreenConfigArray(ArrayList searchScreenConfigArray) {
+        this.searchScreenConfigArray = searchScreenConfigArray;
+    }
+
+    
+  public ArrayList<SelectItem> getActivityReportTypes() {
+        setReportType("Activity Report");        
+        ArrayList searchScreenConfigArrayList  = getSearchScreenConfigArray();
+        ArrayList newArrayList = new ArrayList();
+
+        for (int i = 0; i < searchScreenConfigArrayList.size(); i++) {
+            SearchScreenConfig searchScreenConfig =  (SearchScreenConfig) searchScreenConfigArrayList.get(i);
+            SelectItem selectItem = new SelectItem();
+            selectItem.setLabel(searchScreenConfig.getScreenTitle());
+            selectItem.setValue(searchScreenConfig.getScreenTitle());
+            newArrayList.add(selectItem);
+        }
+        activityReportTypes = newArrayList;
+        return activityReportTypes;
+    }
+  
+    public void setActivityReportTypes(ArrayList<SelectItem> activityReportTypes) {
+        this.activityReportTypes = activityReportTypes;
+    }
+
+
+    
+    
 }

@@ -42,6 +42,7 @@ import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.report.KeyStatisticsReport;
 import com.sun.mdm.index.report.KeyStatisticsReportConfig;
 import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
+import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.page.PageException;
 import com.sun.mdm.index.report.ReportException;
@@ -55,7 +56,9 @@ import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.ResourceBundle;
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
+import com.sun.mdm.index.edm.services.configuration.SearchScreenConfig;
 
 
 /** Creates a new instance of ActivityReportHandler*/ 
@@ -95,22 +98,27 @@ public class ActivityReportHandler {
     /**
      * Search ActivityReportHandlers ViewReports
      */
-    private String frequency = null;
+    private String frequency ;
            
     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     /**
      * Search ActivityReportHandlers-Weekly
      */
-    private static final String REPORT_TYPE_WEEKLY_ACTIVITY = "Weekly";
+    private static final String REPORT_TYPE_DAILY_ACTIVITY = "Daily Activity";
+    /**
+     * Search ActivityReportHandlers-Weekly
+     */
+    private static final String REPORT_TYPE_WEEKLY_ACTIVITY = "Weekly Activity";
     /**
      * Search ActivityReportHandlers-Monthly
      */
-    private static final String REPORT_TYPE_MONTHLY_ACTIVITY = "Monthly";
+    private static final String REPORT_TYPE_MONTHLY_ACTIVITY = "Monthly Activity";
     /**
      * Search ActivityReportHandlers-Yearly
      */
-    private static final String REPORT_TYPE_YEARLY_ACTIVITY = "Yearly";
+    private static final String REPORT_TYPE_YEARLY_ACTIVITY = "Yearly Activity";
 
+    
     public ActivityRecords[] activityReport() throws ValidationException, EPathException, ReportException, PageException, RemoteException, Exception{
              reportType = getFrequency();
              request.setAttribute("tabName", "ACTIVITY_REPORT");
@@ -545,4 +553,5 @@ public class ActivityReportHandler {
     public void setActivityRecordsVO(ActivityRecords[] activityRecordsVO) {
         this.activityRecordsVO = activityRecordsVO;
     }
+    
 }

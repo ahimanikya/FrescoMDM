@@ -387,7 +387,7 @@
         for(int i=0;i<keysList.size();i++) {
             if(keys[i].equalsIgnoreCase("EUID")) {
               value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ","+
-                       "formatter:function (elCell,oRecord,oColumn,oData) {elCell.innerHTML = '<input type=\"checkbox\" onclick=\"javascript:getEUIDS(' + oData + ')\"/> &nbsp; <a href=\"euiddetails.jsf?euid=' + oData + '\">' + oData + '</a>';}" +
+                       "formatter:function (elCell,oRecord,oColumn,oData) {elCell.innerHTML = '<div class=\"selectContent\"><input type=\"checkbox\" onclick=\"javascript:getEUIDS(' + oData + ')\"/> </div> &nbsp; <a href=\"euiddetails.jsf?euid=' + oData + '\">' + oData + '</a>';}" +
                        ",sortable:true,resizeable:true}";
             } else {
               value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ",sortable:true,resizeable:true}";

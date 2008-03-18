@@ -14,6 +14,7 @@ import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.master.UserException;
+import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.epath.EPathException;
@@ -616,7 +617,7 @@ public class SourceMergeHandler {
        // get the event with the changed values
         String systemCodeSelected = (String) event.getNewValue();
         String lidMaskValue  = getMaskedValue(systemCodeSelected);
-        System.out.println("==>: returned value " + lidMaskValue);
+     
         //set mask and its length
         setLidMask(lidMaskValue);
         setLidMaskLength(lidMaskValue.length());
@@ -668,6 +669,33 @@ public class SourceMergeHandler {
     public void setLidsource(String lidsource) {
         this.lidsource = lidsource;
     }
+    /**
+     * 
+     * @param event
+     */
+    public void viewEUID(ActionEvent event){
+        try {
+
+          
+            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+            HashMap systemObjectMap = (HashMap) event.getComponent().getAttributes().get("soValueExpressionMerge");
+          
+            SystemObject systemObject = masterControllerService.getSystemObject((String) systemObjectMap.get(MasterControllerService.SYSTEM_CODE), (String) systemObjectMap.get(MasterControllerService.LID));
+         
+
+            EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(systemObject);
+            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+            ArrayList newEOArrayList = new ArrayList();
+            newEOArrayList.add(eoMap);
+
+            session.setAttribute("comapreEuidsArrayList", newEOArrayList);
+        } catch (ProcessingException ex) {
+            java.util.logging.Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserException ex) {
+            java.util.logging.Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   }
+
 
      
 }

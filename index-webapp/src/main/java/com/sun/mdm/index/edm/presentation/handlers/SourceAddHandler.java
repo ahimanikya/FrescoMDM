@@ -465,6 +465,7 @@ public class SourceAddHandler {
             if(systemObject != null) {
                 errorMessage = "Validation Failed. SystemCode/LID already found.";
                 FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+                session.setAttribute("validation", "Validation Failed");
             } else if(systemObject == null) {
                errorMessage = "Validation Success.";
                //FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,errorMessage,errorMessage));

@@ -166,6 +166,7 @@ public class UpdateReportHandler    {
         int index = 0;
         ArrayList summaryList = new ArrayList();
     //    updateIterator.sortBy("Timestamp",false);
+        if(updateIterator != null ) {
         while (updateIterator.hasNext()) {
             UpdateReportRow  reportRow = new UpdateReportRow (updateIterator.next(), urConfig);
            
@@ -195,7 +196,9 @@ public class UpdateReportHandler    {
             resultArrayList.add(getOutPutValuesMap(urConfig, reportRow));
         
         }
-        populateVO();
+        }
+        
+        //populateVO();
         request.setAttribute("updateReportList", resultArrayList);
         return dataRowList2Array(dataRowList);
      }

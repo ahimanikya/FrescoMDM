@@ -145,7 +145,15 @@
         
     </head>
     <%@include file="./templates/header.jsp"%>
-    <body class="yui-skin-sam">
+   
+    <% String validLid = "Not Validated";
+       if(session.getAttribute("validation") != null ) {
+         validLid = "Validated";
+        } 
+    %>
+     <body class="yui-skin-sam" onload="javascript:resetLidFields('basicAddformData','<%=validLid%>')">
+    
+
         <div id="mainContent" style="overflow:hidden;"> 
         <div id="sourcerecords">
             <table border="0" cellspacing="0" cellpadding="0" width="90%">
@@ -992,21 +1000,30 @@
                                                                         </nobr>
                                                                     </h:column>
                                                                     <!--Rendering Updateable HTML Text boxes-->
-                                                                    <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6}" >
+                                                                    <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6 && feildConfig.name ne 'LID' }" >
                                                                         <nobr>
                                                                             <h:inputText   required="true" 
+                                                                                           label="#{feildConfig.displayName}" 
+                                                                                           value=""/>
+                                                                                           
+                                                                        </nobr>
+                                                                    </h:column>
+                                                                    <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6 && feildConfig.name eq 'LID'}" >
+                                                                        <nobr>
+                                                                            <h:inputText   id="LID"
+                                                                                           required="true" 
                                                                                            label="#{feildConfig.displayName}" 
                                                                                            onkeydown="javascript:qws_field_on_key_down(this, document.basicAddformData.lidmask.value)"
                                                                                            onblur="javascript:qws_field_on_key_down(this, document.basicAddformData.lidmask.value);"
                                                                                            onkeyup="javascript:qws_field_on_key_up(this)"
                                                                                            value="#{SourceAddHandler.LID}"
-                                                                                           maxlength="#{SourceMergeHandler.lidMaskLength}" 
-                                                                                           rendered="#{feildConfig.name eq 'LID'}"/>
+                                                                                           />
                                                                                            
                                                                         </nobr>
                                                                     </h:column>
                                                                 </h:dataTable>
-                                                   <%if(session.getAttribute("validation") != null ) {%>
+                                                   <%if(session.getAttribute("validation") != null  && 
+                                                        "Validation Success".equalsIgnoreCase((String) session.getAttribute("validation")) ) {%>
                                                
                                                     <!-- Start ADD  Fields-->
                                                     <table width="100%">
@@ -1126,7 +1143,8 @@
                                                                 </a>
                                                             </td>
                                                             <td>
-                                                                <%if (session.getAttribute("validation") != null) {%>
+                                                                <%if (session.getAttribute("validation") != null && 
+                                                        "Validation Success".equalsIgnoreCase((String) session.getAttribute("validation"))) {%>
                                                                 <nobr>
                                                                     <h:commandLink  styleClass="button" rendered="#{Operations.SO_Add}"
                                                                                     action="#{SourceAddHandler.addNewSO}">  
@@ -1165,47 +1183,42 @@
                                                                    <h:outputLabel for="#{msgs.transaction_source}" value="#{msgs.transaction_source}"/>
                                                                 </td>
                                                                <td>
-                                                                   <h:selectOneMenu  onchange="javascript:setLidMaskValue(this,'basicMergeformData')"
+                                                                   <h:selectOneMenu  onchange="javascript:setLidMaskMergeValue(this,'basicMergeformData')"
                                                                                      id="sourceOption" 
                                                                                      value="#{SourceMergeHandler.source}" >
                                                                        <f:selectItems  value="#{SourceMergeHandler.selectOptions}" />
                                                                    </h:selectOneMenu>
                                                                </td>
-                                                               <input id='lidmask' type='hidden' name='lidmask' value='<h:outputText value="#{SourceMergeHandler.lidMask}"/>' />
+                                                               <input id='lidmask' type='hidden' name='lidmask' value='DDD-DDD-DDDD' />
                                                                
                                                                <td> &nbsp;&nbsp</td>
                                                                <td>
                                                                <h:outputText value="#{msgs.source_merge_head1}"/>
-                                                               <h:inputText value="#{SourceMergeHandler.lid1}"
+                                                               <h:inputText value="#{SourceMergeHandler.lid1}" id="LID1"
                                                                             onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
-                                                                            onkeyup="javascript:qws_field_on_key_up(this)"
-                                                                            maxlength="#{SourceMergeHandler.lidMaskLength}" />  
+                                                                            onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                <td>&nbsp;&nbsp</td>
                                                                <td>
                                                                    <h:outputText value="#{msgs.source_merge_head2}"/>
-                                                                   <h:inputText value="#{SourceMergeHandler.lid2}"
+                                                                   <h:inputText value="#{SourceMergeHandler.lid2}" id="LID2"
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
-                                                                                onkeyup="javascript:qws_field_on_key_up(this)"
-                                                                                maxlength="#{SourceMergeHandler.lidMaskLength}"/>  
+                                                                                onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
                                                                <td> &nbsp;&nbsp</td>
                                                                <td>
                                                                    <h:outputText value="#{msgs.source_merge_head3}"/>
-                                                                   <h:inputText value="#{SourceMergeHandler.lid3}"
+                                                                   <h:inputText value="#{SourceMergeHandler.lid3}" id="LID3"
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
-                                                                                onkeyup="javascript:qws_field_on_key_up(this)"
-                                                                                maxlength="#{SourceMergeHandler.lidMaskLength}"/>  
+                                                                                onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
                                                                <td> &nbsp;&nbsp</td>
                                                                <td>
                                                                    <h:outputText value="#{msgs.source_merge_head4}"/>
-                                                                   <h:inputText value="#{SourceMergeHandler.lid4}"
+                                                                   <h:inputText value="#{SourceMergeHandler.lid4}" id="LID4"
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
-                                                                                onkeyup="javascript:qws_field_on_key_up(this)"
-                                                                                maxlength="#{SourceMergeHandler.lidMaskLength}"/>  
+                                                                                onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
                                                                <td> &nbsp;&nbsp</td>
-                                                               
                                                                <td><nobr>
                                                                        <h:commandLink  styleClass="button" rendered="#{Operations.SO_SearchView}"
                                                                                        action="#{SourceMergeHandler.performLidMergeSearch}">
@@ -1442,7 +1455,12 @@
                                                <td>
                                                    <div id="actionmainEuidContent" class="actionbuton">
                                                    <table cellpadding="0" cellspacing="0">
-                                           <% for (int countEnt = 0; countEnt < soHashMapArrayListObjects.length; countEnt++) { %>
+                                           <% ValueExpression soValueExpressionMerge = null;
+                                           for (int countEnt = 0; countEnt < soHashMapArrayListObjects.length; countEnt++) { 
+                                               HashMap soHashMapMerge = (HashMap) soHashMapArrayListObjects[countEnt];
+                                               soValueExpressionMerge = ExpressionFactory.newInstance().createValueExpression(soHashMapMerge , soHashMapMerge.getClass());
+
+                                               %>
                                                <% if (countEnt == 0)    { %>
                                                     <td><img src="images/spacer.gif" width="169px" height="1px" border="0"></td>
                                                <% }%>
@@ -1454,7 +1472,9 @@
                                                                             <tr> 
                                                                                 <td valign="top">
                                                                                     <h:commandLink  styleClass="button" rendered="#{Operations.EO_SearchViewSBR}"
+                                                                                                    actionListener="#{SourceMergeHandler.viewEUID}"  
                                                                                                     action="#{NavigationHandler.toEuidDetails}" >  
+                                                                                        <f:attribute name="soValueExpressionMerge" value="<%=soValueExpressionMerge%>"/>
                                                                                         <span><h:outputText value="#{msgs.source_rec_vieweuid_but}"/></span>
                                                                                     </h:commandLink>                                                                                      
 
@@ -1807,15 +1827,40 @@
            }
         %>
     <script>
-        function setLidMaskValue(field,formName) {
+        function setLidMaskMergeValue(field,formName) {
             var  selectedValue = field.options[field.selectedIndex].value;
             var formNameValue = document.forms[formName];
             
+			var lidField1 =  getDateFieldName(formNameValue.name,'LID1');
+			var lidField2 =  getDateFieldName(formNameValue.name,'LID2');
+			var lidField3 =  getDateFieldName(formNameValue.name,'LID3');
+			var lidField4 =  getDateFieldName(formNameValue.name,'LID4');
+
+            document.getElementById(lidField1).value = "";
+            document.getElementById(lidField2).value = "";
+            document.getElementById(lidField3).value = "";
+            document.getElementById(lidField4).value = "";
+
             formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
          }   
+        function setLidMaskValue(field,formName) {
+            var  selectedValue = field.options[field.selectedIndex].value;
+            var formNameValue = document.forms[formName];
+            var lidField =  getDateFieldName(formNameValue.name,'LID');
+            document.getElementById(lidField).value = "";
+            
+            formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
+         }   
+         function resetLidFields(formName,validString) {
+            var formNameValue = document.forms[formName];
+            var lidField =  getDateFieldName(formNameValue.name,'LID');
+            if(validString == 'Not Validated') {
+              document.getElementById(lidField).value = "";
+            }
+         }
     </script>
     <script>
-          var formName ="";
+          var formName ="basicAddformData";
     </script>
     <% if ("View/Edit".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
     <script>

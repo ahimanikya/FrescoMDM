@@ -1432,13 +1432,11 @@ var myConfigs = {
                                                         <nobr> <h:outputLabel for="viewreports" value="#{msgs.activity_rep_freq}"/></nobr>
                                                         <div class="selectContent">
                                                         <h:selectOneRadio style="selectContent" id="viewreports" value="#{ReportHandler.frequency}" >
-                                                            <f:selectItem itemValue="Weekly" itemLabel="Weekly"/>
-                                                            <f:selectItem itemValue="Monthly" itemLabel="Monthly"/>
-                                                            <f:selectItem itemValue="Yearly" itemLabel="Yearly"/>
+                                                            <f:selectItems value="#{ReportHandler.activityReportTypes}"/>
                                                         </h:selectOneRadio>
                                                         </div>
                                                         <table border="0">
-                                                            <tr>  
+                                                            <tr>    
                                                                 <td>
                                                                    <nobr> <h:outputLabel for="createStDateField"   value="#{msgs.source_edit_fromDatePrompt}"/>:</nobr>
                                                                 </td>
