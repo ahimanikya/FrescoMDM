@@ -88,8 +88,10 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
 		so.setStatus(SystemObject.STATUS_ACTIVE);
 		String s = updateDateTime;
 		if (s != null && !s.equals("")) {
+		  synchronized(dateFormat_) {
 			Date dt = dateFormat_.parse(s);
 			so.setUpdateDateTime(dt);
+		  }
 		}
 		so.setUpdateUser(updateUser);
 				  		  		  
