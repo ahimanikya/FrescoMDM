@@ -9,6 +9,8 @@
     <name>Open Data Management Master Index</name>
     <url>http://maven.apache.org</url>
     <modules>
+        <module>../open-dm-dq/inti</module>
+        <module>../open-dm-dq/standardizer</module>
         <module>../open-dm-dq/matcher</module>
         <module>index-core</module>
         <module>loader</module>

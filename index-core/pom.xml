@@ -137,11 +137,11 @@
                             <tasks>
                                 <unzip src="${settings.localRepository}/mural/matcher-resources/1.0/matcher-resources-1.0.jar" 
                                     dest="${project.build.testOutputDirectory}"/>
-                                <copy todir="${project.build.directory}/test-classes/com/sun/mdm/standardizer">
+                            <!--copy todir="${project.build.directory}/test-classes/com/sun/mdm/standardizer">
                                     <fileset dir="${basedir}/src/main/resources/matchengine/standardizer">
                                         <include name="repositoryImage.zip"/>
                                     </fileset>
-                                </copy>
+                            </copy-->
                             </tasks>          
                         </configuration>
                     </execution>
@@ -246,84 +246,6 @@
                             <artifactId>matchengine</artifactId>
                             <version>${mural.currentVersion}</version>
                             <file>${basedir}/src/main/resources/matchengine/stc_sbme.jar</file>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>install-standardizer-api-jar</id>
-                        <phase>process-resources</phase>
-                        <goals><goal>install-file</goal></goals>
-                        <configuration>
-                            <generatePom>true</generatePom>
-                            <packaging>jar</packaging>
-                            <groupId>mural</groupId>
-                            <artifactId>standardizer-api</artifactId>
-                            <version>${mural.currentVersion}</version>
-                            <file>${basedir}/src/main/resources/matchengine/standardizer/lib/standardizer-api.jar</file>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>install-standardizer-impl-jar</id>
-                        <phase>process-resources</phase>
-                        <goals><goal>install-file</goal></goals>
-                        <configuration>
-                            <generatePom>true</generatePom>
-                            <packaging>jar</packaging>
-                            <groupId>mural</groupId>
-                            <artifactId>standardizer-impl</artifactId>
-                            <version>${mural.currentVersion}</version>
-                            <file>${basedir}/src/main/resources/matchengine/standardizer/lib/standardizer-impl.jar</file>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>install-inti-components-jar</id>
-                        <phase>process-resources</phase>
-                        <goals><goal>install-file</goal></goals>
-                        <configuration>
-                            <generatePom>true</generatePom>
-                            <packaging>jar</packaging>
-                            <groupId>mural</groupId>
-                            <artifactId>inti-components</artifactId>
-                            <version>${mural.currentVersion}</version>
-                            <file>${basedir}/src/main/resources/matchengine/standardizer/lib/inti-components-1.0.jar</file>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>install-inti-container-api-jar</id>
-                        <phase>process-resources</phase>
-                        <goals><goal>install-file</goal></goals>
-                        <configuration>
-                            <generatePom>true</generatePom>
-                            <packaging>jar</packaging>
-                            <groupId>mural</groupId>
-                            <artifactId>inti-container-api</artifactId>
-                            <version>${mural.currentVersion}</version>
-                            <file>${basedir}/src/main/resources/matchengine/standardizer/lib/inti-container-api-1.0.jar</file>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>install-inti-container-impl-jar</id>
-                        <phase>process-resources</phase>
-                        <goals><goal>install-file</goal></goals>
-                        <configuration>
-                            <generatePom>true</generatePom>
-                            <packaging>jar</packaging>
-                            <groupId>mural</groupId>
-                            <artifactId>inti-container-impl</artifactId>
-                            <version>${mural.currentVersion}</version>
-                            <file>${basedir}/src/main/resources/matchengine/standardizer/lib/inti-container-impl-1.0.jar</file>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>install-spring-javaconfig</id>
-                        <phase>process-resources</phase>
-                        <goals><goal>install-file</goal></goals>
-                        <configuration>
-                            <generatePom>true</generatePom>
-                            <packaging>jar</packaging>
-                            <groupId>org.springframework.javaconfig</groupId>
-                            <artifactId>spring-javaconfig</artifactId>
-                            <version>1.0-m2</version>
-                            <file>${basedir}/src/main/resources/matchengine/standardizer/lib/spring-javaconfig-1.0-m2.jar</file>
                         </configuration>
                     </execution>
                 </executions>
@@ -489,13 +411,7 @@
         </dependency>
         <dependency>
             <groupId>mural</groupId>
-            <artifactId>inti-container-api</artifactId>
-            <version>${mural.currentVersion}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>mural</groupId>
-            <artifactId>inti-container-impl</artifactId>
+            <artifactId>inti-container</artifactId>
             <version>${mural.currentVersion}</version>
             <scope>test</scope>
         </dependency>

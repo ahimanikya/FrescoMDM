@@ -112,11 +112,51 @@
                                 <copy file="${settings.localRepository}/mural/matcher/1.0/matcher-1.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/matcher.jar"></copy>
                                 <copy file="${settings.localRepository}/org/apache/lucene/lucene-core/2.2.0/lucene-core-2.2.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/lucene-core.jar"></copy>
                                 <unzip src="${settings.localRepository}/mural/matcher-resources/1.0/matcher-resources-1.0.jar" dest="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/repository/templates"></unzip>
-                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/standardizer">
+                                <!--copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/standardizer">
                                     <fileset dir="${basedir}/../index-core/src/main/resources/matchengine/standardizer">
                                         <exclude name="standardizer-resources.jar"></exclude>
                                         <exclude name="deployment-files.zip"></exclude>
                                     </fileset>   
+                                </copy-->                                    
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/standardizer/lib">
+                                    <fileset dir="${basedir}/../../open-dm-dq/inti/components/target">
+                                        <include name="inti-components-1.0.jar"/>
+                                    </fileset>
+                                    <fileset dir="${basedir}/../../open-dm-dq/inti/container/target">
+                                        <include name="inti-container-1.0.jar"/>
+                                    </fileset>
+                                    <fileset dir="${basedir}/../../open-dm-dq/inti/lib">
+                                        <include name="aopalliance-1.0.jar"/>
+                                        <include name="asm-2.2.3.jar"/>
+                                        <include name="asm-commons-2.2.3.jar"/>
+                                        <include name="asm-tree-2.2.3.jar"/>
+                                        <include name="aspectjrt.jar"/>
+                                        <include name="cglib-nodep-2.1_3.jar"/>
+                                        <include name="commons-beanutils.jar"/>
+                                        <include name="commons-collections-2.1.1.jar"/>
+                                        <include name="commons-logging-1.0.4.jar"/>
+                                        <include name="script-api.jar"/>
+                                        <include name="spring-aop-2.0.5.jar"/>
+                                        <include name="spring-beans-2.0.5.jar"/>
+                                        <include name="spring-context-2.0.5.jar"/>
+                                        <include name="spring-core-2.0.5.jar"/>
+                                        <include name="spring-javaconfig-1.0-m2.jar"/>
+                                        <include name="spring-support-2.0.5.jar"/>
+                                    </fileset>
+                                    <fileset dir="${basedir}/../../open-dm-dq/standardizer/dist">
+                                        <include name="standardizer-api.jar"/>
+                                        <include name="standardizer-impl.jar"/>
+                                    </fileset>
+                                </copy>                                    
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/standardizer">
+                                    <fileset dir="${basedir}/../../open-dm-dq/standardizer/dist">
+                                        <include name="repositoryImage.zip"/>
+                                    </fileset>
+                                </copy>                                    
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/standardizer/deployment">
+                                    <fileset dir="${basedir}/../../open-dm-dq/standardizer/dist/deployment">
+                                        <include name="*"/>
+                                    </fileset>
                                 </copy>                                    
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/repository/report/lib">
                                     <fileset dir="${basedir}/../report/target">
@@ -200,31 +240,6 @@
             <version>${mural.currentVersion}</version>
         </dependency>
         <dependency>
-            <groupId>mural</groupId>
-            <artifactId>standardizer-api</artifactId>
-            <version>${mural.currentVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>mural</groupId>
-            <artifactId>standardizer-impl</artifactId>
-            <version>${mural.currentVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>mural</groupId>
-            <artifactId>inti-components</artifactId>
-            <version>${mural.currentVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>mural</groupId>
-            <artifactId>inti-container-api</artifactId>
-            <version>${mural.currentVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>mural</groupId>
-            <artifactId>inti-container-impl</artifactId>
-            <version>${mural.currentVersion}</version>
-        </dependency>
-        <dependency>
             <groupId>net.java.dev.swing-layout</groupId>
             <artifactId>swing-layout</artifactId>
             <version>1.0.2</version>
@@ -264,6 +279,26 @@
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-api-progress</artifactId>
             <version>${netbeans.version}</version>			
+        </dependency>
+        <dependency>
+            <groupId>mural</groupId>
+            <artifactId>standardizer-api</artifactId>
+            <version>${mural.currentVersion}</version>			
+        </dependency>
+        <dependency>
+            <groupId>mural</groupId>
+            <artifactId>standardizer-impl</artifactId>
+            <version>${mural.currentVersion}</version>			
+        </dependency>
+        <dependency>
+            <groupId>mural</groupId>
+            <artifactId>inti-components</artifactId>
+            <version>${mural.currentVersion}</version>			
+        </dependency>
+        <dependency>
+            <groupId>mural</groupId>
+            <artifactId>inti-container</artifactId>
+            <version>${mural.currentVersion}</version>			
         </dependency>
     </dependencies>
 </project>

@@ -12,8 +12,7 @@ Class-Path: ext/mdm/index-core.jar
     ext/mdm/net.java.hulp.i18ntask.jar 
     ext/mdm/matcher.jar 
     ext/mdm/standardizer/lib/inti-components-1.0.jar 
-    ext/mdm/standardizer/lib/inti-container-api-1.0.jar 
-    ext/mdm/standardizer/lib/inti-container-impl-1.0.jar 
+    ext/mdm/standardizer/lib/inti-container-1.0.jar 
     ext/mdm/standardizer/lib/standardizer-api.jar 
     ext/mdm/standardizer/lib/standardizer-impl.jar 
     ext/mdm/standardizer/lib/aopalliance-1.0.jar 
