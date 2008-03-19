@@ -102,7 +102,7 @@ import com.sun.mdm.index.loader.common.Util;
 		  
 		  match(blockPosition);		  
 		}
-	  } catch (Exception ex){
+	  } catch (Throwable ex){
 		  logger.severe(ex + ex.getMessage());
 		  logger.severe(Util.getStackTrace(ex));
 		  ex.printStackTrace();
