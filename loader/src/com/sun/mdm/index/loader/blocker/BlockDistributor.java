@@ -96,9 +96,7 @@ public class BlockDistributor {
 		mStandardizer = StandardizerFactory.getInstance();
 	}
 	
-	static {
-		ObjectNodeUtil.initDataObjectAdapter();
-	}
+	
 	
 	/**
 	 * distributes match Data to different block buckets.
@@ -344,7 +342,7 @@ public class BlockDistributor {
 	    String syscode = d.remove(0); // syscode
 	    String lid = d.remove(0); //lid
 	    String updateDateTime =  d.remove(0);  // update date
-	    String updateUser = d.remove(0);  // craete user
+	    String updateUser = d.remove(0);  // create user
 	    // Pass only object attributes in DataObject
 	    SystemObject so = ObjectNodeUtil.getSystemObject(d, lid, syscode,
 				updateDateTime, updateUser);
@@ -491,5 +489,8 @@ public class BlockDistributor {
 		*/
 		return blockdefs;
 	}
+	
+	
+
 			
 }
