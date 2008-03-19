@@ -58,6 +58,7 @@ public class FileManager {
 	private static String sbrmatchFileStageDir;
 	private static String masterImageDir;
 	private static String loader;
+	private static boolean delIntermediateDir = true;
 	//private static int bufferSize = 16000;
 	
 	private static final String BLOCK_BUCKET_PREFIX = "BlockB_";
@@ -71,7 +72,7 @@ public class FileManager {
 	private static LoaderConfig config_ = LoaderConfig.getInstance();
 	
 		
-	public static void setWorkingDir (String workdir, String loaderName) {
+	public static void setWorkingDir (String workdir, String loaderName, boolean deIntermedDir) {
 		workingDir = workdir;
 		blockBucketDir = workingDir + File.separator + "block";
 		euidBucketDir = workingDir + File.separator + "euid";
@@ -84,6 +85,7 @@ public class FileManager {
 		sbrmatchFileDir = workingDir + File.separator + "sbr-match";
 		sbrmatchFileStageDir = workingDir + File.separator + "sbr-match" + File.separator + "stage";
 		loader = loaderName;
+		delIntermediateDir = deIntermedDir;
 	}
 	
 	public static void initDirs() {
@@ -324,6 +326,11 @@ public class FileManager {
 		return dsbrInputStageDir;
 	}
 	
+	
+	public static String getInputSBRFileDir() {
+		return sbrInputDir;
+	}
+	
 	public static String getEUIDBucketDir() {
 		return euidBucketDir;
 	}
@@ -331,5 +338,83 @@ public class FileManager {
 	public static String getMasterImageDir() {
 		return masterImageDir;
 	}
+	
+	public static void deleteBlockDir(boolean force) {
+		
+		String dir = FileManager.getBlockBucketDir();
+		delete(dir, force);
+			
+	}
+
+	public static void deleteMatchDir(boolean force) {
+						
+		String dir = FileManager.getMatchFileStageDir();
+		delete(dir, force);		
+		
+		dir = FileManager.getMatchFileDir();
+		delete(dir, force);				
+	}
+
+
+	public static void deleteEUIDDir(boolean force) {
+			
+		String dir = FileManager.getEUIDBucketDir();
+		delete(dir, force);				
+	}
+	
+	public static void deleteMasterIndexDir(boolean force) {
+		
+		String dir = FileManager.getMasterImageDir();
+		delete(dir, force);				
+	}
+	
+	public static void deleteSBRBlockDir(boolean force) {
+		String dir = FileManager.getsbrBlockBucketDir();
+		delete(dir, force);
+	}
+	
+
+	public static void deleteSBRMatchDir(boolean force) {
+				
+		String dir = FileManager.getsbrMatchDir();
+		delete(dir, force);
+		
+		dir = FileManager.getsbrMatchStageDir();
+		delete(dir, force);	
+	}
+	
+	public static void deleteSBRInputDir(boolean force) {
+		
+		String dir = getInputSBRFileDir();
+		delete(dir, force);
+		
+	}
+	
+	private static void delete (String dir, boolean force) {
+		
+		if (dir == null) {
+			return;
+		}
+		
+    	if ( delIntermediateDir == true || force == true) {
+    		delete (new File(dir));
+		}
+    }
+    	
+	private static void delete(File f){
+		
+		if(f.isDirectory()){
+			
+			for( File f1: f.listFiles()){
+				delete(f1);
+			}
+			f.delete();
+			
+		}else{
+			f.delete();
+		}		
+	}
+
+	
 						
 }
