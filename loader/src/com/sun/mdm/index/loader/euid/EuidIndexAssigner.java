@@ -243,18 +243,18 @@ public class EuidIndexAssigner {
 					.readRecordsWithSameSysid(index);
 
 			if (list.isEmpty())
-				break;
+				break;			
 
+			if(isAssigned(list.get(0))){
+				index=list.get(list.size()-1).getIndex();
+				continue;
+			}
+			
 			Iterator<MatchFileRecord> iterator = list.iterator();
-
 			while (iterator.hasNext()) {
 				MatchFileRecord r = (MatchFileRecord) iterator.next();
 
 				index = r.getIndex();
-
-				if (isAssigned(r.getSysid1()))
-					continue;
-
 				collectSysids(sysids, r);
 			}
 
@@ -364,6 +364,20 @@ public class EuidIndexAssigner {
 		return list;
 	}
 
+	/**
+	 * check if the euid for a given sysid is already assigned
+	 * 
+	 * @param sysid
+	 * @return
+	 */
+	private boolean isAssigned(MatchFileRecord r) {
+		
+		if(r.getSysid1() > r.getSysid1())
+			return true;
+		return euidIndexFile.isAssigned(r.getSysid1());
+	}
+	
+	
 	/**
 	 * check if the euid for a given sysid is already assigned
 	 * 
