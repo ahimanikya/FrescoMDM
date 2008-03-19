@@ -36,6 +36,7 @@ import com.sun.mdm.index.loader.blocker.BlockDistributor;
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterSynchronizer;
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterState;
 import com.sun.mdm.index.loader.common.FileManager;
+import com.sun.mdm.index.loader.common.ObjectNodeUtil;
 import com.sun.mdm.index.loader.common.Util;
 import com.sun.mdm.index.loader.matcher.Matcher;
 import com.sun.mdm.index.loader.config.LoaderConfig;
@@ -81,24 +82,166 @@ public class BulkMatcherLoader {
 	private boolean ismatchAnalyzer;
 	private boolean delInterMediateDir = true;
 	private boolean bulkLoad = false;
+	private static int UPTO_EUIDASSIGN = 1; // generate upto EUIDAssign
+	private static int MIGENERATE_ONLY = 2; // generate master Index only
+	private int loadMode_ = 0; // default mode
 	public BulkMatcherLoader() throws Exception {
-		new LoaderLogManager().init();
+            new LoaderLogManager().init();
 		logger.info("bulk_boader_started");
-		loadConfig();
-		clusterSynchronizer_ = ClusterSynchronizer.getInstance();
 		
-		String loaderName = config_.getSystemProperty("loaderName");
+				
+		loadConfig();
+		
+		ConfigurationService.getInstance();
+		
+		logger.info("configuation_loaded");
+		
+		if (isMasterLoader_) {
+		   logger.info("master_loader:" + loaderName_);
+		} else {
+		   logger.info("slave_loader:" + loaderName_);
+		}
+		
+	    ObjectNodeUtil.initDataObjectAdapter();
+		
+		
+	}
+	
+	public void bulkMatchLoad() throws Exception {	
+	 if (loadMode_ != MIGENERATE_ONLY)	 {
+	    if (isMasterLoader_) { 
+		  logger.info("block_distribution_started");
+		  clusterSynchronizer_.setClusterState(ClusterState.BLOCK_DISTRIBUTION);		
+	      BlockDistributor blockDistributor = new BlockDistributor(matchPaths_, inputLookup_, blockLk_, false);	
+	      blockDistributor.distributeBlocks();
+	      logger.info("block_distribution_completed");
+	      clusterSynchronizer_.setClusterState(ClusterState.MATCHING);	    
+	    } else {
+		  logger.info("waiting_for_block_distribution");
+		  clusterSynchronizer_.waitMatchingReady();		 
+	    }
+	    logger.info("matcher_started");	
+	    Matcher matcher = new Matcher(matchPaths_, matchTypes_, blockLk_, false);
+	    matcher.match();
+	    logger.info("matching_done"); 
+	 
+	    FileManager.deleteBlockDir(false);
+	    if (ismatchAnalyzer) {
+		  return;
+	    }
+	    logger.info("EUID_Assigner_started");	
+	  
+	    if (isMasterLoader_) { 
+	      EuidIndexAssigner euidAssigner = new EuidIndexAssigner();
+	      euidAssigner.start();
+	    }  else {
+		    clusterSynchronizer_.waitMasterIndexGenerationReady(); 
+	    }
+	  
+	    FileManager.deleteMatchDir(false);
+	  
+	    logger.info("EUID_Assigner_Done");
+	  	  	  
+	  }
+	 
+      if (loadMode_ != UPTO_EUIDASSIGN) {  // Do following operations only if mode is not EUIDASSIGN	 
+	    logger.info("master_index_generation_started");	
+	    MasterIndex masterIndex = new MasterIndex();
+	    masterIndex.generateMasterIndex();	  
+	  
+	    File file = FileManager.getInputSBRFile();
+	    String f = file.getName();
+	  //cluster
+	    clusterSynchronizer_.setMasterIndexDone(f);
+	  
+	    if (isMasterLoader_) {
+		  clusterSynchronizer_.waitMasterIndexDone();
+	    }
+	  
+	    FileManager.deleteEUIDDir(false);
+	  
+	    logger.info("master_index_generation_completed");
+	  
+	    logger.info("potential_duplicates_started");
+	  
+	    if (isMasterLoader_) { 	 
+			clusterSynchronizer_.setClusterState(ClusterState.POT_DUPLICATE_BLOCK);							
+		    BlockDistributor blockDistributor = new BlockDistributor(sbrmatchPaths_, sbrLookup_, sbrblockLk_, true);	
+		    blockDistributor.distributeBlocks();
+		    logger.info("Potental Dups SBR block distribution completed");
+		    clusterSynchronizer_.setClusterState(ClusterState.POT_DUPLICATE_MATCH);	    
+		 } else {
+			 //logger.info("waiting for Pot Dup SBR block distribution to be completed");
+			 clusterSynchronizer_.waitSBRMatchingReady();		 
+		 }
+		 
+		 	
+	   Matcher matcher = new Matcher(sbrmatchPaths_, matchTypes_, sbrblockLk_, true);
+	   matcher.match();
+	   logger.info("Potental Dups maching completed");
+	   FileManager.deleteSBRBlockDir(false);
+	   FileManager.deleteSBRInputDir(true);
+	   if (isMasterLoader_) { 	 
+	     PotDupGenerator potGen = new PotDupGenerator();
+	     potGen.generatePotDups();
+	   }
+	 
+	   logger.info("Potential duplicates completed");
+		   	  
+	   FileManager.deleteSBRMatchDir(false);
+	 
+	 
+	   if (bulkLoad) {	 
+	      BulkLoader bl = new BulkLoader();
+	      bl.load(); 
+	   }
+      }
+	 
+	  logger.info("Bulk Loader Completed");
+	  System.exit(0);
+	}
+	
+	private void cleanDirs() {
+		FileManager.deleteBlockDir(true);
+		FileManager.deleteMatchDir(true);
+		FileManager.deleteEUIDDir(true);
+		FileManager.deleteMasterIndexDir(true);
+		FileManager.deleteSBRBlockDir(true);
+		FileManager.deleteSBRMatchDir(true);
+		FileManager.deleteSBRInputDir(true);
+	}
+	
+	private void loadConfig() throws Exception {
+						
+		String workingDir = config_.getSystemProperty("workingDir");
+		loaderName_ = config_.getSystemProperty("loaderName");
+		FileManager.setWorkingDir(workingDir, loaderName_, delInterMediateDir);
+		String sloadMode= config_.getSystemProperty("loadMode");
+		if (sloadMode != null) {
+			 if (sloadMode.equals("MIGENERATE_ONLY")) { 
+			  loadMode_ = MIGENERATE_ONLY;
+			} else if (sloadMode.equals("UPTO_EUIDASSIGN")) { 
+			  loadMode_ = UPTO_EUIDASSIGN;
+			} 
+        }
+		if (loadMode_ != MIGENERATE_ONLY) {
+		  cleanDirs();
+		  FileManager.initDirs();
+		}
+				
+        clusterSynchronizer_ = ClusterSynchronizer.getInstance();
+		
 		String isMasterLoader = config_.getSystemProperty("isMasterLoader");
 		isMasterLoader_ = Boolean.parseBoolean(isMasterLoader);
 		
-		clusterSynchronizer_.initLoaderName(loaderName, isMasterLoader_);
+		clusterSynchronizer_.initLoaderName(loaderName_, isMasterLoader_);
 		
 		String isSmatchAnalyzer = config_.getSystemProperty("matchAnalyzerMode");
 		if (isSmatchAnalyzer != null) {
 		  ismatchAnalyzer = Boolean.parseBoolean(isSmatchAnalyzer);
 		}
 		
-		String sdelInterMediateDir = config_.getSystemProperty("delInterMediateDir");
+		String sdelInterMediateDir = config_.getSystemProperty("deleteIntermediateDirs");
 		if (sdelInterMediateDir != null) {
 			delInterMediateDir = Boolean.parseBoolean(sdelInterMediateDir);
 		}
@@ -107,126 +250,6 @@ public class BulkMatcherLoader {
 		if (sbulkLoad != null) {
 			bulkLoad = Boolean.parseBoolean(sbulkLoad);
 		}
-		
-		
-		ConfigurationService.getInstance();
-		
-		logger.info("configuation_loaded");
-		
-		if (isMasterLoader_) {
-		   logger.info("master_loader:" + loaderName);
-		} else {
-		   logger.info("slave_loader:" + loaderName);
-		}
-		
-	}
-	
-	public void bulkMatchLoad() throws Exception {	
-		
-	 if (isMasterLoader_) { 
-		 logger.info("block_distribution_started");
-		clusterSynchronizer_.setClusterState(ClusterState.BLOCK_DISTRIBUTION);		
-	    BlockDistributor blockDistributor = new BlockDistributor(matchPaths_, inputLookup_, blockLk_, false);	
-	    blockDistributor.distributeBlocks();
-	    logger.info("block_distribution_completed");
-	    clusterSynchronizer_.setClusterState(ClusterState.MATCHING);	    
-	 } else {
-		 logger.info("waiting_for_block_distribution");
-		 clusterSynchronizer_.waitMatchingReady();		 
-	 }
-	 logger.info("matcher_started");	
-	 Matcher matcher = new Matcher(matchPaths_, matchTypes_, blockLk_, false);
-	 matcher.match();
-	 logger.info("matching_done"); 
-	 
-	 
-	 if (ismatchAnalyzer) {
-		 return;
-	 }
-	  logger.info("EUID_Assigner_started");	
-	  
-	  if (isMasterLoader_) { 
-	    EuidIndexAssigner euidAssigner = new EuidIndexAssigner();
-	    euidAssigner.start();
-	  } else {
-		  clusterSynchronizer_.waitMasterIndexGenerationReady(); 
-	  }
-	  
-     deleteMatchDir();
-	  
-	  logger.info("EUID_Assigner_Done");
-	  	  	  
-	  logger.info("master_index_generation_started");	
-	  MasterIndex masterIndex = new MasterIndex();
-	  masterIndex.generateMasterIndex();	  
-	  
-	  File file = FileManager.getInputSBRFile();
-	  String f = file.getName();
-	  //cluster
-	  clusterSynchronizer_.setMasterIndexDone(f);
-	  
-	  if (isMasterLoader_) {
-		clusterSynchronizer_.waitMasterIndexDone();
-	  }
-	  
-	  deleteEUIDDir();
-	  
-	  logger.info("master_index_generation_completed");
-	  
-	  logger.info("potential_duplicates_started");
-	  
-	  if (isMasterLoader_) { 	 
-			clusterSynchronizer_.setClusterState(ClusterState.POT_DUPLICATE_BLOCK);							
-		    BlockDistributor blockDistributor = new BlockDistributor(sbrmatchPaths_, sbrLookup_, sbrblockLk_, true);	
-		    blockDistributor.distributeBlocks();
-		    //logger.info("Pot Dups SBR block distribution completed");
-		    clusterSynchronizer_.setClusterState(ClusterState.POT_DUPLICATE_MATCH);	    
-		 } else {
-			 //logger.info("waiting for Pot Dup SBR block distribution to be completed");
-			 clusterSynchronizer_.waitSBRMatchingReady();		 
-		 }
-		 
-		 	
-	 matcher = new Matcher(sbrmatchPaths_, matchTypes_, sbrblockLk_, true);
-	 matcher.match();
-	 
-	 deleteSBRBlockDir();
-	 
-	 if (isMasterLoader_) { 	 
-	   PotDupGenerator potGen = new PotDupGenerator();
-	   potGen.generatePotDups();
-	 }
-		   	  
-	 deleteSBRMatchDir();
-	 
-	 if (bulkLoad) {
-	 
-	   BulkLoader bl = new BulkLoader();
-	   bl.load(); 
-	 }
-	 
-	 logger.info("Loader Completed");
-	 System.exit(0);
-	}
-	
-	private void cleanDirs() {
-		deleteBlockDir();
-		deleteMatchDir();
-		deleteEUIDDir();
-		deleteMasterIndexDir();
-		deleteSBRBlockDir();
-		deleteSBRMatchDir();
-	}
-	
-	private void loadConfig() throws Exception {
-		
-		String workingDir = config_.getSystemProperty("workingDir");
-		loaderName_ = config_.getSystemProperty("loaderName");
-		FileManager.setWorkingDir(workingDir, loaderName_);
-		cleanDirs();
-		FileManager.initDirs();
-		String isSMasterLoader = config_.getSystemProperty("isMasterLoader");
-		isMasterLoader_ = Boolean.getBoolean(isSMasterLoader);
 		
 		List<String> matchlPaths = config_.getMatchFields();//readMatchConfiguration();	
 		String[] matchPaths = new String[matchlPaths.size()];
@@ -245,7 +268,7 @@ public class BulkMatcherLoader {
 		 BulkMatcherLoader bulkMatcher = new BulkMatcherLoader();
 		 bulkMatcher.bulkMatchLoad();
 		 
-		} catch (Exception ex) {
+		} catch (Throwable ex) {
 			logger.severe(ex + ex.getMessage());
 			logger.severe(Util.getStackTrace(ex));
 			ex.printStackTrace();
@@ -350,74 +373,6 @@ public class BulkMatcherLoader {
 	}
 	
 	
-	private void deleteBlockDir() {
-		
-		String dir = FileManager.getBlockBucketDir();
-		delete(dir);
-			
-	}
-
-	private void deleteMatchDir() {
-						
-		String dir = FileManager.getMatchFileStageDir();
-		delete(dir);		
-		
-		dir = FileManager.getMatchFileDir();
-		delete(dir);				
-	}
-
-
-	private void deleteEUIDDir() {
-			
-		String dir = FileManager.getEUIDBucketDir();
-		delete(dir);				
-	}
 	
-	private void deleteMasterIndexDir() {
-		
-		String dir = FileManager.getMasterImageDir();
-		delete(dir);				
-	}
-	
-	private void deleteSBRBlockDir() {
-		String dir = FileManager.getsbrBlockBucketDir();
-		delete(dir);
-	}
-	
-
-	private void deleteSBRMatchDir() {
-				
-		String dir = FileManager.getsbrMatchDir();
-		delete(dir);
-		
-		dir = FileManager.getsbrMatchStageDir();
-		delete(dir);	
-	}
-	
-	
-    private void delete (String dir) {
-    	if ( delInterMediateDir == false) {
-			return;
-		}
-
-    	if (dir !=null) {
-    		delete (new File(dir));
-    	}
-    }
-    	
-	private void delete(File f){
-		
-		if(f.isDirectory()){
-			
-			for( File f1: f.listFiles()){
-				delete(f1);
-			}
-			f.delete();
-			
-		}else{
-			f.delete();
-		}
-		
-	}
 
 }
