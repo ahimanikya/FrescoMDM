@@ -92,6 +92,12 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
     private String sdate_;
     private Date date_;
     private static String dateFormatString_;
+    
+    private static String empty_s = "";
+    private static String ADD = "Add";
+    private static String ASSUMEDMATCHSEQ = "ASSUMEDMATCH";
+    
+    
    // private static SimpleDateFormat dateFormat_;  // This format is used in
         // user defined objects per object de
     	// new SimpleDateFormat("dd-MMM-yy hh:mm:ss");
@@ -108,7 +114,6 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		eoCursor_ = cursor;
 		endGate_ = endGate;
 				
-	//	objDef_ = objDef;
 		con_ = con;
 		outdateFormat_ = new SimpleDateFormat(dateFormatString_ + " hh:mm:ss"); // output date format is
 		  // written to master index files is - "object def date Format" + "hh:mm:ss"
@@ -141,7 +146,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		 EnterpriseObject eo =  calculateSBR(solist);
 		 addEnterprise(eo, weightMap);		 		 
 		}
-	  } catch (Exception ex){
+	  } catch (Throwable ex){
 		  logger.severe(ex + ex.getMessage());
 		  logger.severe(Util.getStackTrace(ex));
 		  ex.printStackTrace();
@@ -347,14 +352,14 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		"EUID1", "EUID2", "FUNCTION", "SYSTEMUSER", "TIMESTAMP", "DELTA",
 		"SYSTEMCODE", "LID", "EUID" */
        list.add(transnum);
-       list.add(""); //LID1
-       list.add(""); // LID2
-       list.add(""); // EUID1
-       list.add("");  // EUID2
-       list.add("Add");
+       list.add(empty_s); //LID1
+       list.add(empty_s); // LID2
+       list.add(empty_s); // EUID1
+       list.add(empty_s);  // EUID2
+       list.add(ADD);
        list.add(user); // SYSTEMUSER
        list.add(sdate_);  // TIMESTAMP new java.util.Date()
-       list.add(""); // DELTA
+       //list.add(empty_s); // DELTA
        list.add(syscode);
        list.add(localid);
        list.add(euid);
@@ -370,7 +375,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 			String lid, String weight, String transnum) throws Exception {
 		
 		String assumedMatchId = com.sun.mdm.index.idgen.CUIDManager.getNextUID(con_,
-        "ASSUMEDMATCH");
+        ASSUMEDMATCHSEQ);
 				
 		//{ "ASSUMEDMATCHID", "EUID",
 			//"SYSTEMCODE", "LID", "WEIGHT", "TRANSACTIONNUMBER" };
@@ -533,7 +538,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		for (int i = 1; i < objectDef.getFields().size(); i++) {
 			String name = objectDef.getField(i).getName();
 			Object value = o.getValue(name);
-			String val = "";
+			String val = empty_s;
 			
 					
 			if (value != null) {
