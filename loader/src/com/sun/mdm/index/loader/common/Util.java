@@ -35,7 +35,7 @@ public class Util {
 	 * @param ex exception
 	 * @return StackTrace as a  String
 	 */
-	public static String getStackTrace(Exception ex) {
+	public static String getStackTrace(Throwable ex) {
         java.io.StringWriter out = new java.io.StringWriter();
         ex.printStackTrace(new java.io.PrintWriter(out));
         String stackTrace = out.toString();
