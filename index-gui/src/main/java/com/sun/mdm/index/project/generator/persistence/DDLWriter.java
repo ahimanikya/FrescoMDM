@@ -33,6 +33,7 @@ import com.sun.mdm.index.parser.NodeDef;
 import com.sun.mdm.index.parser.ParserException;
 import com.sun.mdm.index.parser.RelationDef;
 import com.sun.mdm.index.parser.Utils;
+import java.io.File;
 
 
 /**
@@ -132,7 +133,11 @@ public class DDLWriter {
             res += mTW.writeConstruct((String) cons.get(3), values);
             }
         }
-
+        //if there is a existing outPut file, then delete it. 
+        File outFile = new File(mPath);
+        if (outFile.exists()){
+            outFile.delete();
+        }
         Utils.writeFile(mPath, res);
     }
 

@@ -138,10 +138,10 @@ public class EViewGeneratorTask extends Task {
                 EIndexObject eo = Utils.parseEIndexObject(source);
                 String objName = eo.getName();
 
-                // generate business object files, web service files, database
-                // scripts,
-                // application.xml and sun-application.xml
-                generateFiles(objectFile);
+                // generate database scripts, application.xml,
+                // sun-application.xml, jbi.xml, object files,
+                // web service files, outbound.xsd
+                generateFiles(eo, objectFile);
 
                 // generate jar file
                 generateJars();
@@ -160,12 +160,10 @@ public class EViewGeneratorTask extends Task {
                 generateReportClient();
                 mLog.info("Master Index Files are generated Successfully.");
             } catch (Exception ex) {
-                //delete configuration files in resouce folder when generation fails
+                //delete "files-generated" folder when generation fails
                 String projPath = getProject().getProperty("basedir");
-                File destDir = new File(projPath + File.separator
-                        + EviewProjectProperties.EVIEW_GENERATED_FOLDER
-                        + File.separator + "resource");
-
+                File destDir = new File(projPath,
+                        EviewProjectProperties.EVIEW_GENERATED_FOLDER);
                 Delete delete = (Delete) getProject().createTask("delete");
                 delete.setDir(destDir);
                 delete.init();
@@ -177,12 +175,10 @@ public class EViewGeneratorTask extends Task {
         }
     }
 
-    public void generateFiles(File objectFile) throws FileNotFoundException,
-            TemplateWriterException, ParserException, IOException {
-
-        InputSource source = new InputSource(new FileInputStream(objectFile));
-        EIndexObject eo = Utils.parseEIndexObject(source);
-
+    private void generateFiles(EIndexObject eo, File objectFile) 
+            throws TemplateWriterException, ParserException, IOException {
+        
+        //generate create.sql and drop.sql
         String tmpl = getCreateDDLWriterTemplate(eo.getDataBase());
         File outPath = new File(mSrcdir,
                 EviewProjectProperties.DATABASE_SCRIPT_FOLDER + "/create.sql");
@@ -194,7 +190,8 @@ public class EViewGeneratorTask extends Task {
                 EviewProjectProperties.DATABASE_SCRIPT_FOLDER + "/drop.sql");
         tdw = new DDLWriter(outPath.getAbsolutePath(), eo, tmpl);
         tdw.write(false);
-
+        
+        //generate application.xml and sun-application.xml
         String genpath = mSrcdir.getAbsolutePath() + File.separator + "conf";
         String ejbName = getProject().getProperty("ejb.dir") + ".jar";
         String warName = getProject().getProperty("war.dir") + ".war";
@@ -202,44 +199,51 @@ public class EViewGeneratorTask extends Task {
         appWriter.write();
 
         String projPath = getProject().getProperty("basedir");
-        String generatePath = projPath + File.separator
+        String generatedPath = projPath + File.separator
                 + EviewProjectProperties.EVIEW_GENERATED_FOLDER;
-        File generateFolder = new File(generatePath);
-        generateFolder.mkdirs();
-
-        File clientdir = new File(generatePath, "client/java");
-        // delete any old files
+        
+        //delete generated folder if there is a existing one
+        File generateFolder = new File(generatedPath);
         Delete delete = (Delete) getProject().createTask("delete");
-        delete.setDir(clientdir);
+        delete.setDir(generateFolder);
         delete.init();
         delete.setLocation(getLocation());
         delete.execute();
-
+       
+        //generate object files and webservice java files 
+        //at "files-generated/client/java" directory
+        File clientdir = new File(generatedPath, "client/java");
         clientdir.mkdirs();
-
         ObjectGeneratorTask objectGenerator = new ObjectGeneratorTask();
         objectGenerator.setDestdir(clientdir);
         objectGenerator.setObjectFile(objectFile);
         objectGenerator.execute();
 
-        File destDir = new File(mEjbdir, "src/java");
-        FileSet srcfileSet = new FileSet();
-        srcfileSet.setDir(clientdir);
-        srcfileSet.setIncludes("com/sun/mdm/index/webservice/**");
+        // delete any old webservice files under ejb project
+        File ejbWSDir = new File(mEjbdir,"src/java/com/sun/mdm/index/webservice");
+        delete = (Delete) getProject().createTask("delete");
+        delete.setDir(ejbWSDir);
+        delete.init();
+        delete.setLocation(getLocation());
+        delete.execute();
+        
+        //move webservice files to ejb project
+        File generatedWSDir = 
+                new File(generatedPath,"client/java/com/sun/mdm/index/webservice");       
         Move move = (Move) getProject().createTask("move");
-        move.setTodir(destDir);
-        move.addFileset(srcfileSet);
+        move.setTofile(ejbWSDir);
+        move.setFile(generatedWSDir);
         move.init();
         move.setLocation(getLocation());
         move.execute();
-
-        File xsdFile = new File(generatePath + File.separator + "outbound.xsd");
+        
+        //generate outbound.xsd "files-generated/outbound.xsd"
+        File xsdFile = new File(generatedPath, "outbound.xsd");
         OutboundXSDBuilder builder = new OutboundXSDBuilder();
         builder.buildXSD(eo, xsdFile);
-
-        String jbiXmlpath = projPath + File.separator
-                + EviewProjectProperties.EVIEW_GENERATED_FOLDER
-                + File.separator + "jbi" + File.separator + "META-INF";
+        
+        //generate jbi.xml at "files-generated/jbi/META-INF/jbi.xml"
+        String jbiXmlpath = generatedPath + "/jbi/META-INF";
         File jbiXmlFolder = new File(jbiXmlpath);
         jbiXmlFolder.mkdirs();
         JbiXmlWriter jbrWriter = new JbiXmlWriter(jbiXmlpath, eo.getName());
@@ -249,7 +253,7 @@ public class EViewGeneratorTask extends Task {
                 .registerObjectDefinition(new FileInputStream(objectFile));
     }
 
-    private void generate_eview_resources_jar() throws Exception {
+    private void makeResourcesJar() throws Exception {
 
         String projPath = getProject().getProperty("basedir");
         File destDir = new File(projPath + File.separator
@@ -351,26 +355,27 @@ public class EViewGeneratorTask extends Task {
         jar.execute();
     }
 
-    private void generate_client_jar() {
+    private void makeClientJar() {
         String projPath = getProject().getProperty("basedir");
-        String generatePath = projPath + File.separator
+        String generatedPath = projPath + File.separator
                 + EviewProjectProperties.EVIEW_GENERATED_FOLDER;
         String javacDebug = getProject().getProperty("javac.debug");
-        Javac javac = (Javac) getProject().createTask("javac");
-        Path srcDir = new Path(getProject(), generatePath + "/client/java");
-        javac.setSrcdir(srcDir);
-        File destDir = new File(generatePath, "client/classes");
+        
+        File destDir = new File(generatedPath, "client/classes");
         // delete old class file
         Delete delete = (Delete) getProject().createTask("delete");
         delete.setDir(destDir);
         delete.init();
         delete.setLocation(getLocation());
         delete.execute();
-
         destDir.mkdirs();
+        
+        Javac javac = (Javac) getProject().createTask("javac");
+        Path srcDir = new Path(getProject(), generatedPath + "/client/java");
+        javac.setSrcdir(srcDir);
         javac.setDestdir(destDir);
         Reference ref = new Reference(getProject(), "generate.class.path");
-        javac.setClasspathRef(ref);
+        javac.setClasspathRef(ref); 
         javac.init();
         javac.setLocation(getLocation());
         if (null!=javacDebug &&javacDebug.equalsIgnoreCase("true")){
@@ -410,8 +415,7 @@ public class EViewGeneratorTask extends Task {
         srcFileSet.setDir(srcDir);
         srcFileSet.setIncludes("repository/stc_sbme.jar," + "matcher.jar,"
                 + "lucene-core.jar," + "index-core.jar,"
-                + "net.java.hulp.i18n.jar, " + "net.java.hulp.i18ntask.jar,"
-                + "standardizer/lib/*.jar");
+                + "net.java.hulp.i18n.jar, " + "standardizer/lib/*.jar");
         Copy copy = (Copy) getProject().createTask("copy");
         copy.init();
         copy.setTodir(destDir);
@@ -435,9 +439,10 @@ public class EViewGeneratorTask extends Task {
         copy.setLocation(getLocation());
         copy.execute();
 
-        // make resources.jar
-        generate_eview_resources_jar();
-        generate_client_jar();
+        //make resources.jar
+        makeResourcesJar();
+        //make master-index-client.jar
+        makeClientJar();
     }
 
     private void generateEbjFiles(EIndexObject eo) {
@@ -575,7 +580,7 @@ public class EViewGeneratorTask extends Task {
 
             ArrayList<String> list = getSecurityRoles();
 
-            sb.append("\"MasterIndex.Admin\",\"eView.Admin\"");
+            sb.append("\"MasterIndex.Admin\"");
 
             for (String s : list) {
                 String a = ",\"" + s + "\"";
@@ -755,13 +760,12 @@ public class EViewGeneratorTask extends Task {
         copy.addFileset(srcFileSet);
         copy.setLocation(getLocation());
         copy.execute();
-                
-                //set context root
-                if (null != edmVersion
-                && edmVersion.equalsIgnoreCase("master-index-edm")) {
-                    String token = "/SunEdm";
-                    String sunWebXml= (mWardir.getAbsolutePath()+"/web/WEB-INF/sun-web.xml");
-                    replaceToken(sunWebXml, token, "/"+objName+"edm" );         
+
+        //set context root
+        if (null != edmVersion && edmVersion.equalsIgnoreCase("master-index-edm")) {
+            String token = "/SunEdm";
+            String sunWebXml= (mWardir.getAbsolutePath()+"/web/WEB-INF/sun-web.xml");
+            replaceToken(sunWebXml, token, "/"+objName+"edm" );         
         }               
     }
 
@@ -774,14 +778,11 @@ public class EViewGeneratorTask extends Task {
                 "../lib/index-core.jar");
         properties.setProperty("file.reference.master-index-client.jar",
                 "../lib/master-index-client.jar");
-        properties.setProperty("file.reference.net.java.hulp.i18ntask.jar",
-                "../lib/net.java.hulp.i18ntask.jar");
         properties.setProperty("file.reference.net.java.hulp.i18n.jar",
                 "../lib/net.java.hulp.i18n.jar");
         properties.setProperty("javac.classpath",
                 "${file.reference.index-core.jar}:"
                         + "${file.reference.master-index-client.jar}:"
-                        + "${file.reference.net.java.hulp.i18n.jar}:"
                         + "${file.reference.net.java.hulp.i18n.jar}");
 
         properties.store(new FileOutputStream(ejbPropertyFile), null);
@@ -1030,8 +1031,7 @@ public class EViewGeneratorTask extends Task {
     /**
      * Trim all the white spaces.
      * 
-     * @param str
-     *            string whose white spaces to be removed
+     * @param str string whose white spaces to be removed
      * @return a string without any white space
      */
     private static String trimSpaces(String str) {

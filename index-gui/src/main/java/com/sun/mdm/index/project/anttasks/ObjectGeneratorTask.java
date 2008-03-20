@@ -24,7 +24,6 @@
 package com.sun.mdm.index.project.anttasks;
 
 import java.io.File;
-import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import com.sun.mdm.index.parser.EIndexObject;
 import com.sun.mdm.index.parser.ParserException;
@@ -38,7 +37,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.taskdefs.Delete;
 import org.xml.sax.InputSource;
 
 /**

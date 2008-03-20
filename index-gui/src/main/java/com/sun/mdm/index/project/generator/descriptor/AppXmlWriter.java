@@ -63,11 +63,20 @@ public class AppXmlWriter {
      */    
     public void write()
         throws ParserException {
-        try {
-            String templateFileName = "com/sun/mdm/index/project/generator/descriptor/application.xml.tmpl";
-            Utils.writeFile(mPath +File.separator + mFileName, writeProject(templateFileName));
-            
-            templateFileName = "com/sun/mdm/index/project/generator/descriptor/sun-application.xml.tmpl";
+        try {      
+            //if there is a application.xml, then delete it. 
+            File outFile = new File(mPath +File.separator + mFileName);
+            if (outFile.exists()){
+                outFile.delete();
+            }
+            //if there is a sun-application.xml, then delete it.
+            outFile = new File(mPath +File.separator + mSunFileName);
+            if (outFile.exists()){
+                outFile.delete();
+            }
+            String templateFileName = "com/sun/mdm/index/project/generator/descriptor/application.xml.tmpl";            
+            Utils.writeFile(mPath +File.separator + mFileName, writeProject(templateFileName));           
+            templateFileName = "com/sun/mdm/index/project/generator/descriptor/sun-application.xml.tmpl";           
             Utils.writeFile(mPath +File.separator + mSunFileName, writeProject(templateFileName));
         } catch (TemplateWriterException e) {
             throw new ParserException(e.getMessage());

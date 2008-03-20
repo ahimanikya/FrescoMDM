@@ -108,7 +108,6 @@
                                     </fileset>
                                 </copy>
                                 <copy file="${settings.localRepository}/net/java/hulp/i18n/net.java.hulp.i18n/2.1-SNAPSHOT/net.java.hulp.i18n-2.1-SNAPSHOT.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/net.java.hulp.i18n.jar"></copy>
-                                <copy file="${settings.localRepository}/net/java/hulp/i18ntask/net.java.hulp.i18ntask/2.1-SNAPSHOT/net.java.hulp.i18ntask-2.1-SNAPSHOT.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/net.java.hulp.i18ntask.jar"></copy>
                                 <copy file="${settings.localRepository}/mural/matcher/1.0/matcher-1.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/matcher.jar"></copy>
                                 <copy file="${settings.localRepository}/org/apache/lucene/lucene-core/2.2.0/lucene-core-2.2.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/lucene-core.jar"></copy>
                                 <unzip src="${settings.localRepository}/mural/matcher-resources/1.0/matcher-resources-1.0.jar" dest="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/repository/templates"></unzip>
@@ -203,10 +202,10 @@
                                                 <exclude name="module_tracking.xml"></exclude>                
                                             </fileset>
                                         </copy>
-                                        <echo>INFO: Install to netbeans: ${install.dir} successfully.</echo>                    
+                                        <echo>*** INFO: Install to netbeans: ${install.dir} successfully! ***</echo>                    
                                     </then>
                                     <else>
-                                        <echo>WARNING: NO NB_HOME is set. Fail to install to netbeans.</echo>
+                                        <echo>*** WARNING: NO NB_HOME is set. Fail to install to netbeans. ***</echo>
                                     </else>
                                 </if>
                             </tasks>
