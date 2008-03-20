@@ -261,6 +261,7 @@ public class AuditLogHandler extends ScreenConfiguration {
             
             
             AuditSearchObject aso = this.getAuditSearchObject();
+            //System.out.println("aso" + aso);
             
             // Lookup Audit log Controller
             AuditIterator alPageIter = masterControllerService.lookupAuditLog(aso);

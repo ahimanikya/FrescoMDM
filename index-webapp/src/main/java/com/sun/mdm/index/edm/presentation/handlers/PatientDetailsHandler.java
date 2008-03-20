@@ -121,7 +121,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             }
 
             super.setUpdateableFeildsMap(newFieldValuesMap);
-            System.out.println("---------------1-------------------" + super.getUpdateableFeildsMap());
+            //System.out.println("---------------1-------------------" + super.getUpdateableFeildsMap());
 
             //set the search type as per the user choice
             super.setSearchType(super.getSelectedSearchType());
@@ -235,8 +235,8 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
             Iterator srcalIterator = sResultsConfigArrayList.iterator();
             ArrayList newEoArrayList = new ArrayList();
-            if (super.getUpdateableFeildsMap().get("Person.EUID") != null) {
-                String euid = (String) super.getUpdateableFeildsMap().get("Person.EUID");
+            if (super.getUpdateableFeildsMap().get("EUID") != null) {
+                String euid = (String) super.getUpdateableFeildsMap().get("EUID");
                 //System.out.println("ONLYYYY EUID ==> ; " + euid);
                 EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
                 HashMap eoHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
@@ -423,6 +423,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             
             //resolve the potential duplicate as per resolve type
             boolean resolveBoolean = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? true : false;
+            String resolveString = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? "A": "R";
 
             //flag=false incase of autoresolve
             //flag = true incase of permanant resolve
@@ -436,7 +437,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 HashMap objectHashMap = (HashMap) eoArrayList.get(i);
                 //set the resolve type for the selected potential duplicate
                 if(this.getPotentialDuplicateId().equals((String)objectHashMap.get("PotDupId"))) {
-                  objectHashMap.put("Status", "R");
+                  objectHashMap.put("Status", resolveString);
                 }
                 modifiedArrayList.add(objectHashMap);
             }

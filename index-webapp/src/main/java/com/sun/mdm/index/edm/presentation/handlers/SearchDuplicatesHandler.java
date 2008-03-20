@@ -90,6 +90,13 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
     private PotentialDuplicateSummary comparePotentialDuplicateSummary;
     private ArrayList potentialDuplicateSummaryArray;
 
+    private String resolveType = "AutoResolve";
+    private String potentialDuplicateId;
+
+    private String mergeEuids = new String();
+    private String destnEuid  = new String();
+    private String rowCount  = new String();
+    private String selectedMergeFields = new String();
     
     /** Creates a new instance of SearchDuplicatesHandler */
     public SearchDuplicatesHandler() {
@@ -231,6 +238,9 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             
             // Code Added by Pratibha 
             int count = pdPageIterArray.count();
+            if(count > 0) {
+                httpRequest.setAttribute("duplicateSearchObject", potentialDuplicateSearchObject);                
+            }    
             String[][] temp = new String[count][2];
 
             if (pdPageIterArray != null & pdPageIterArray.count() > 0) {
@@ -506,77 +516,6 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
         } else {
             potentialDuplicateSearchObject.setStatus(null);
         }
-
-        
-        
-        
-        
-        
-        
-        
-        
-//        
-//        
-//        
-//        
-//        
-//        
-//        // Set to static values need clarification from prathiba
-//        //This will be revoked when login module is implemented.
-//
-//        //obj.setPageSize(ConfigManager.getInstance().getMatchingConfig().getItemPerSearchResultPage());
-//        //obj.setMaxElements(ConfigManager.getInstance().getMatchingConfig().getMaxResultSize());
-//
-//        obj.setPageSize(10);
-//        obj.setMaxElements(100);
-//        
-//        Date date = null;
-//                
-//        try {
-//            if ((getCreate_start_date() != null) && (getCreate_start_date().trim().length() > 0)) {
-//                /*
-//                 *
-//                if (sCreateStartTime.trim().length() == 0) {
-//                    sCreateStartTime = "00:00:00";
-//                }
-//                */
-//                date = DateUtil.string2Date(getCreate_start_date()+" "+"00:00:00");
-//                
-//                //date = this.convertString2Date(getCreate_start_date()+" "+"00:00:00");
-//                if (date != null) {
-//                    obj.setCreateStartDate(new Timestamp(date.getTime()));
-//                }
-//            }
-//           
-//            if ((getCreate_end_date() != null) && (getCreate_end_date().trim().length() > 0)) {
-//                /*
-//                if (sCreateEndTime.trim().length() == 0) {
-//                    sCreateEndTime = "23:59:59";
-//                }
-//                 */
-//                date = DateUtil.string2Date(getCreate_end_date()+" "+"23:59:59");
-//               // date = this.convertString2Date(getCreate_end_date()+" "+"00:00:00");
-//                
-//                if (date != null) {
-//                    obj.setCreateEndDate(new Timestamp(date.getTime()));
-//                }
-//            }
-//            
-//            // Get array of strings
-//            if(getEUID() != null ) {
-//                String[] euidArray = getStringEUIDs(getEUID());
-//                
-//                if(euidArray!=null & euidArray.length >0) {
-//                    obj.setEUIDs(euidArray);
-//                } else {
-//                    obj.setEUIDs(null);
-//                }
-//            }
-//            
-//        } catch(ValidationException validationException) {
-//            String errorMessage = "Validation Exception";
-//            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
-//        }
         return potentialDuplicateSearchObject;
     }
     public String[] getStringEUIDs(String euids) {
@@ -700,6 +639,439 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             ArrayList euidsMapList = (ArrayList) event.getComponent().getAttributes().get("euidsMap");
             session.setAttribute("comapreEuidsArrayList", euidsMapList);
     }
+     /**
+     * 
+     * @param event
+     */
+    public void resolvePotentialDuplicate(ActionEvent event) {
+        try {
+            ArrayList duplicatesArray = (ArrayList) event.getComponent().getAttributes().get("finalArrayListVE");
+        
+            //System.out.println("------this.getPotentialDuplicateId()-----" + this.getPotentialDuplicateId());
+            //System.out.println("------this.getResolveType()-----" + this.getResolveType());
+            //resolve the potential duplicate as per resolve type
+            boolean resolveBoolean = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? true : false;
+            String resolveString = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? "A": "R";
 
+            //flag=false incase of autoresolve
+            //flag = true incase of permanant resolve
+
+            masterControllerService.setAsDifferentPerson(this.getPotentialDuplicateId(), resolveBoolean);
+            httpRequest.removeAttribute("finalArrayList");
+          
+            ArrayList finalDuplicatesList = new ArrayList();
+            //reset the status and set it back in session
+            for (int i = 0; i < duplicatesArray.size(); i++) {
+                ArrayList arlInner = (ArrayList) duplicatesArray.get(i);
+
+                ArrayList arlInnerTemp = new ArrayList();
+                for (int j = 0; j < arlInner.size(); j++) {
+                    HashMap objectHashMap = (HashMap) arlInner.get(j);
+                    //set the resolve type for the selected potential duplicate
+                    if (this.getPotentialDuplicateId().equals((String) objectHashMap.get("PotDupId"))) {
+                        objectHashMap.put("Status", resolveString);
+                    }
+                    arlInnerTemp.add(objectHashMap);
+                }
+                finalDuplicatesList.add(arlInnerTemp);
+            }
+            //System.out.println("--finalDuplicatesList-------" + finalDuplicatesList);
+            httpRequest.setAttribute("finalArrayList", finalDuplicatesList);                
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+        }
+   
+    }
+
+        /**
+     * 
+     * @param event
+     */
+    public void unresolvePotentialDuplicateAction(ActionEvent event) {
+        try {
+            //get potential duplicate ID
+            String potDupId = (String) event.getComponent().getAttributes().get("potDupId");
+            ArrayList duplicatesArray = (ArrayList) event.getComponent().getAttributes().get("finalArrayListVE");
+
+            //un resolve the potential duplicate 
+            masterControllerService.unresolvePotentialDuplicate(potDupId);
+
+            httpRequest.removeAttribute("finalArrayList");
+          
+            ArrayList finalDuplicatesList = new ArrayList();
+            //reset the status and set it back in session
+            for (int i = 0; i < duplicatesArray.size(); i++) {
+                ArrayList arlInner = (ArrayList) duplicatesArray.get(i);
+
+                ArrayList arlInnerTemp = new ArrayList();
+                for (int j = 0; j < arlInner.size(); j++) {
+                    HashMap objectHashMap = (HashMap) arlInner.get(j);
+                    //set the resolve type for the selected potential duplicate
+                    if (potDupId.equals((String) objectHashMap.get("PotDupId"))) {
+                        objectHashMap.put("Status", "U");
+                    }
+                    arlInnerTemp.add(objectHashMap);
+                }
+                finalDuplicatesList.add(arlInnerTemp);
+            }
+            httpRequest.setAttribute("finalArrayList", finalDuplicatesList);                
+
+  
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
+
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
+        }
+
+    }
+
+    
+        public void previewPostMultiMergedEnterpriseObject(ActionEvent event) {
+            ArrayList duplicatesArray = (ArrayList) event.getComponent().getAttributes().get("finalArrayListVE");
+            PotentialDuplicateSearchObject duplicateSearchObject = (PotentialDuplicateSearchObject) event.getComponent().getAttributes().get("duplicateSearchObjectVE");
+            httpRequest.setAttribute("duplicateSearchObject", duplicateSearchObject);                
+        try {
+            //httpRequest.setAttribute("comapreEuidsArrayList", httpRequest.getAttribute("comapreEuidsArrayList"));
+            //System.out.println("mergeEuids ===> " + mergeEuids);
+            
+            //System.out.println(" destnEuid ===> " + destnEuid);
+            //System.out.println("rowCount ===> " + rowCount);
+
+
+            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
+            String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
+
+
+            String[] allEUIDs = mergeEuids.split("##");
+            
+            
+            ArrayList srcsList  = new ArrayList();
+            for (int i = 0; i < allEUIDs.length; i++) {
+                if(i !=0 ) {
+                    srcsList.add(allEUIDs[i]);
+                }
+            }    
+            
+            Object[] sourceEUIDObjs =  srcsList.toArray();
+            
+            String[] sourceEUIDs  = new String[srcsList.size()];
+            
+            String[] srcRevisionNumbers = new String[sourceEUIDs.length];
+
+            for (int i = 0; i < sourceEUIDObjs.length; i++) {
+                String sourceEuid = (String) sourceEUIDObjs[i];
+                sourceEUIDs[i] = sourceEuid;
+                srcRevisionNumbers[i] = new Integer(masterControllerService.getEnterpriseObject(sourceEuid).getSBR().getRevisionNumber()).toString();
+            }
+
+            httpRequest.setAttribute("sourceEUIDs" + getRowCount(), sourceEUIDs);
+
+            httpRequest.setAttribute("destnEuid"+ getRowCount(), destnEuid);
+            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+            EnterpriseObject resulteo = masterControllerService.getPostMergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);
+            HashMap eoMultiMergePreview = compareDuplicateManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
+            httpRequest.setAttribute("eoMultiMergePreview" + getRowCount(), eoMultiMergePreview);
+            
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ProcessingException ex : " + ex.toString());
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
+        }
+         httpRequest.setAttribute("finalArrayList", duplicatesArray);                
+        
+}
+    
+    
+    
+    
+    
+public void cancelMultiMergeOperation(ActionEvent event) {
+        PotentialDuplicateSearchObject duplicateSearchObject = (PotentialDuplicateSearchObject) event.getComponent().getAttributes().get("duplicateSearchObjectVE");
+        httpRequest.setAttribute("duplicateSearchObject", duplicateSearchObject);                
+
+        //Reset the search criteria here
+        ArrayList finalArrayList  = resetOutputList(duplicateSearchObject);
+        httpRequest.setAttribute("finalArrayList", finalArrayList);                
+        
+}        
+public void performMultiMergeEnterpriseObject(ActionEvent event) {
+        PotentialDuplicateSearchObject duplicateSearchObject = (PotentialDuplicateSearchObject) event.getComponent().getAttributes().get("duplicateSearchObjectVE");
+        httpRequest.setAttribute("duplicateSearchObject", duplicateSearchObject);                
+//        System.out.println("duplicateSearchObject----" + duplicateSearchObject);
+//        System.out.println("destnEuid----" + destnEuid);
+//        System.out.println("mergeEuids----" + mergeEuids);
+        try {
+         
+            
+            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
+
+            String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
+            
+            String[] allEUIDs = mergeEuids.split("##");
+            
+            ArrayList srcsList  = new ArrayList();
+            for (int i = 0; i < allEUIDs.length; i++) {
+                if(i !=0 ) {
+                    srcsList.add(allEUIDs[i]);
+                }
+            }    
+            
+            Object[] sourceEUIDObjs =  srcsList.toArray();
+            
+            String[] sourceEUIDs  = new String[srcsList.size()];
+            
+            String[] srcRevisionNumbers = new String[sourceEUIDs.length];
+            
+            for (int i = 0; i < sourceEUIDObjs.length; i++) {
+                String sourceEuid = (String) sourceEUIDObjs[i];
+                sourceEUIDs[i] = sourceEuid;
+                srcRevisionNumbers[i] = new Integer(masterControllerService.getEnterpriseObject(sourceEuid).getSBR().getRevisionNumber()).toString();
+            }
+
+            masterControllerService.mergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);              
+            
+            
+        } catch (ValidationException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("ValidationException ex : " + ex.toString());
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("Exception ex : " + ex.toString());
+        }
+      //Insert Audit logs 
+       try {
+       //String userName, String euid1, String euid2, String function, int screeneID, String detail
+        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                               destnEuid, 
+                                               "",
+                                               "EUID Multi Merge Confirm",
+                                               new Integer(screenObject.getID()).intValue(),
+                                               "View two selected EUIDs of the merge confirm page");
+        } catch (UserException ex) {   
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("UserException ex : " + ex.toString());
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error("Exception ex : " + ex.toString());
+        }
+        
+        httpRequest.removeAttribute("finalArrayList");
+        
+        //Reset the search criteria here
+        ArrayList finalArrayList  = resetOutputList(duplicateSearchObject);
+        httpRequest.setAttribute("finalArrayList", finalArrayList);                
+        
+
+}        
+
+public ArrayList resetOutputList(PotentialDuplicateSearchObject potentialDuplicateSearchObject ) {
+        //System.out.println("---------IN RESET METHOD----potentialDuplicateSearchObject----" + potentialDuplicateSearchObject);
+       ArrayList newFinalArray  = new ArrayList();        
+        try {
+            PotentialDuplicateIterator pdPageIterArray = masterControllerService.lookupPotentialDuplicates(potentialDuplicateSearchObject);
+
+            
+            // Code Added by Pratibha 
+            int count = pdPageIterArray.count();
+            if(count > 0) {
+                httpRequest.setAttribute("duplicateSearchObject", potentialDuplicateSearchObject);                
+            }    
+            String[][] temp = new String[count][2];
+
+            if (pdPageIterArray != null & pdPageIterArray.count() > 0) {
+                // add all the potential duplicates to the summary array  
+                while (pdPageIterArray.hasNext()) {
+                    PotentialDuplicateSummary pds[] = pdPageIterArray.first(pdPageIterArray.count());
+                    for(int i=0;i<pds.length;i++)
+                    {   
+                        String euid1 = pds[i].getEUID1();
+                        String euid2 = pds[i].getEUID2();
+
+                        temp[i][0] = euid1;
+                        temp[i][1] = euid2;                       
+                    }
+               }
+            }
+
+            ArrayList arl = new ArrayList();
+                        
+            for(int i=0;i<count;i++)
+            { for(int j=0;j<2;j++)
+                { boolean addData = true;
+                  String data ;                 
+
+                  for (int ii=0;ii<arl.size();ii++)
+                  {     data = (String) arl.get(ii);
+                        if(data.equalsIgnoreCase(temp[i][j]))
+                        { addData = false;
+                          break;
+                        }
+                  } 
+                  if (addData == true)
+                  { arl.add(temp[i][j]);
+                  }
+                }
+            }
+            //Code to create ArrayList
+            ArrayList arlOuter = new ArrayList();
+            for (int x = 0; x < arl.size(); x++) {
+                String id = (String) arl.get(x);
+                ArrayList arlInner = new ArrayList();
+                boolean avlInArlOuter = false;
+                arlInner.add(id);
+                for (int i = 0; i < count; i++) {
+                    for (int j = 0; j < 2; j++) {
+                        String strData = temp[i][j];
+                        if (id.equalsIgnoreCase(strData)) {
+                            if (j == 0) {
+                                //if(!arlInner.contains(strData))
+                                //{arlInner.add(strData);
+                                //}
+                                if(!arlInner.contains(temp[i][1]))
+                                {arlInner.add(temp[i][1]);
+                                }
+                            } else if (j == 1) {
+                                //if(!arlInner.contains(strData))
+                                //{arlInner.add(strData);
+                                //}
+                            if(!arlInner.contains(temp[i][0]))
+                                {arlInner.add(temp[i][0]);
+                                }
+                            }                          
+                          }
+                        }
+                    }
+                arlOuter.add(arlInner);
+            }
+            ArrayList finalArrayList = arlOuter;            
+            ArrayList arlInner = null;          
+            if (super.getUpdateableFeildsMap().get("EUID")== null) {
+                finalArrayList = arlOuter;
+            } else {
+                ArrayList outer = new ArrayList();
+                for (int i = 0; i < arlOuter.size(); i++) {
+                    arlInner = (ArrayList) arlOuter.get(i);
+                    String strData = (String) arlInner.get(0);
+                    if (strData.equalsIgnoreCase((String)super.getUpdateableFeildsMap().get("EUID"))) {                     
+                        outer.add(arlInner);
+                        finalArrayList = outer;
+                    }
+                }
+            }
+
+            //Build and arraylist of hashmaps for the duplicates before putting in the request
+            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+            float wt = 0.0f;
+            for (int i = 0; i < finalArrayList.size(); i++) {
+                ArrayList newInnerArray  = new ArrayList();        
+                ArrayList innerArrayList = (ArrayList) finalArrayList.get(i);
+                for (int j = 0; j < innerArrayList.size(); j++) {
+                    String euids = (String) innerArrayList.get(j);
+                    EnterpriseObject eo = masterControllerService.getEnterpriseObject(euids);
+                    HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+                  if(j > 0) {
+                  //Add weight to the hashmap 
+                   //eoMap.put("Weight", masterControllerService.getPotentialDuplicateWeight((String) innerArrayList.get(0), euids));
+//                   eoMap.put("PotDupId", masterControllerService.getPotentialDuplicateID((String) innerArrayList.get(0), euids));
+//                   eoMap.put("Status", masterControllerService.getPotentialDuplicateStatus((String) innerArrayList.get(0), euids));
+                      
+                  eoMap.put("Weight", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids,"WEIGHT"));
+                  eoMap.put("PotDupId", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0),euids, "duplicateid"));
+                  eoMap.put("Status", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids,"status"));
+                  } else {
+                   eoMap.put("Weight", wt);
+                   eoMap.put("PotDupId", "000");
+                   eoMap.put("Status", "U");
+                  }    
+
+                   newInnerArray.add(eoMap);
+                }
+                
+                newFinalArray.add(newInnerArray);
+        }
+//            System.out.println("-------------IN RESET METHOD---newFinalArray.size()--" + newFinalArray.size());
+        } catch (Exception ex) {
+               // UserException and ValidationException don't need a stack trace.
+                // ProcessingException stack trace logged by MC
+                if (ex instanceof ValidationException) {
+                    mLogger.info("Validation failed. Message displayed to the user: " 
+                                  + QwsUtil.getRootCause(ex).getMessage());
+                } else if (ex instanceof UserException) {
+                    mLogger.info("UserException. Message displayed to the user: "
+                                  + QwsUtil.getRootCause(ex).getMessage());
+                } else if (!(ex instanceof ProcessingException)) {
+                    mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
+                    mLogger.error("ProcessingException ex : " + ex.toString());
+                    //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
+                } else if (!(ex instanceof PageException)) {
+                    mLogger.error("PageException : " + QwsUtil.getRootCause(ex).getMessage());
+                    //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
+                } else if (!(ex instanceof RemoteException)) {
+                    mLogger.error("RemoteException : " + QwsUtil.getRootCause(ex).getMessage());
+                    //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
+                }else
+                { mLogger.error("Exception : " + QwsUtil.getRootCause(ex).getMessage());
+                }
+        }
+    
+       return newFinalArray;
+}
+    
+    
+    
+    public String getResolveType() {
+        return resolveType;
+    }
+
+    public void setResolveType(String resolveType) {
+        this.resolveType = resolveType;
+    }
+
+    public String getPotentialDuplicateId() {
+        return potentialDuplicateId;
+    }
+
+    public void setPotentialDuplicateId(String potentialDuplicateId) {
+        this.potentialDuplicateId = potentialDuplicateId;
+    }
+
+    public String getMergeEuids() {
+        return mergeEuids;
+    }
+
+    public void setMergeEuids(String mergeEuids) {
+        this.mergeEuids = mergeEuids;
+    }
+
+    public String getDestnEuid() {
+        return destnEuid;
+    }
+
+    public void setDestnEuid(String destnEuid) {
+        this.destnEuid = destnEuid;
+    }
+
+    public String getSelectedMergeFields() {
+        return selectedMergeFields;
+    }
+
+    public void setSelectedMergeFields(String selectedMergeFields) {
+        this.selectedMergeFields = selectedMergeFields;
+    }
+
+    public String getRowCount() {
+        return rowCount;
+    }
+
+    public void setRowCount(String rowCount) {
+        this.rowCount = rowCount;
+    }
      
 }
