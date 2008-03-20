@@ -278,7 +278,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="tablehead" colspan="2">
-                                                          <h:outputText value="#{msgs.personal_information_text}"/>                                              
+                                                          <b><%=objScreenObject.getRootObj().getName()%>&nbsp;Info</b>
                                                         </td>
                                                     </tr>
                                             </table>
@@ -1063,19 +1063,20 @@
                                                         </h:column>                     
                                                         <!--Rendering Updateable HTML Text boxes date fields-->
                                                         <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6}">
-                                                            <h:inputText label="#{fieldConfigPerAdd.name}"
-                                                                         required="#{fieldConfigPerAdd.required}"
-                                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
-                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                         onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateNewPersonFieldsOnBlur(this,'#{fieldConfigPerAdd.fullFieldName}','#{fieldConfigPerAdd.inputMask}','#{fieldConfigPerAdd.valueType}')"                                                                         
-                                                                         />
-                                                            <script> var DOB1 = getDateFieldName('basicAddformData',':DOB');</script>                                                                            
-                                                            <h:outputLink value="javascript:void(0);"  id="calLink"
-                                                                          onclick="g_Calendar.show(event,DOB1)" > 
-                                                                <h:graphicImage  id="calImgStartDate" 
-                                                                                 alt="calendar Image" styleClass="imgClass"
-                                                                                 url="./images/cal.gif"/>               
-                                                            </h:outputLink>
+
+                                          <nobr>
+                                            <input type="text" 
+                                                   id = "<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
+                                                   required="<h:outputText value="#{fieldConfigPerAdd.required}"/>" 
+                                                   maxlength="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
+                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPerAdd.inputMask}"/>')"
+                                                  onkeyup="javascript:qws_field_on_key_up(this)" onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFieldsOnBlur(this,'<h:outputText value="#{fieldConfigPerAdd.fullFieldName}"/>')">
+                                                  <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{fieldConfigPerAdd.name}"/>')" > 
+                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                 </a>
+                                          </nobr>
+
+
                                                         </h:column>
                                                         <!--Rendering Updateable HTML Text Area-->
                                                         <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextArea' &&  fieldConfigPerAdd.valueType ne 6}" >

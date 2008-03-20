@@ -67,88 +67,92 @@
                 <table border="0" cellpadding="0" cellspacing="0" >
                     <tr>
                         <td>
-                            <input id='lidmask' type='hidden' name='lidmask' value='' />
+                            <input id='lidmask' type='hidden' name='lidmask' value='DDD-DDD-DDDD' />
                             <h:dataTable headerClass="tablehead"  
                                          id="fieldConfigId" 
                                          var="feildConfig" 
                                          value="#{AssumeMatchHandler.screenConfigArray}">
                                 <!--Rendering Non Updateable HTML Text Area-->
-                                 <!--Rendering Non Updateable HTML Text Area-->
-                                <h:column>
-                                    <nobr>
-                                        <h:outputText value="*" rendered="#{feildConfig.required}" />
-                                        <h:outputText value="#{feildConfig.displayName}" />
-                                    </nobr>
-                                </h:column>
-                                <!--Rendering HTML Select Menu List-->
-                                <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
-                                    <nobr>
-                                        <h:selectOneMenu onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.fullFieldName}')"
-                                                         rendered="#{feildConfig.name ne 'SystemCode'}">
-                                            <f:selectItem itemLabel="" itemValue="" />
-                                            <f:selectItems  value="#{feildConfig.selectOptions}" />
-                                        </h:selectOneMenu>
+                                   <h:column>
+                                            <nobr>
+                                                <h:outputText value="*" rendered="#{feildConfig.required}" />
+                                                <h:outputText value="#{feildConfig.displayName}" />
+                                            </nobr>
+                                        </h:column>
+                                        <!--Rendering HTML Select Menu List-->
+                                        <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
+                                            <nobr>
+                                                <h:selectOneMenu onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                                 rendered="#{feildConfig.name ne 'SystemCode'}"
+	                                                             value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}">
+                                                    <f:selectItem itemLabel="" itemValue="" />
+                                                    <f:selectItems  value="#{feildConfig.selectOptions}" />
+                                                </h:selectOneMenu>
+                                                
+                                                <h:selectOneMenu  onchange="javascript:setLidMaskValue(this,'advancedformData')"
+                                                                  onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                                  id="SystemCode" 
+    															  value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"
+                                                                  rendered="#{feildConfig.name eq 'SystemCode'}">
+                                                    <f:selectItem itemLabel="" itemValue="" />
+                                                    <f:selectItems  value="#{feildConfig.selectOptions}" />
+                                                </h:selectOneMenu>
+                                            </nobr>
+                                        </h:column>
+                                        <!--Rendering Updateable HTML Text boxes-->
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6 }" >
+                                            <nobr>
+                                                <h:inputText   required="#{feildConfig.required}" 
+                                                               label="#{feildConfig.displayName}" 
+                                                               onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                               onkeyup="javascript:qws_field_on_key_up(this)"
+                                                               onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                               maxlength="#{feildConfig.maxLength}" 
+															   value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"
+                                                               rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
+                                                
+                                                <h:inputText   required="#{feildConfig.required}" 
+												               id="LID"
+                                                               label="#{feildConfig.displayName}" 
+                                                               onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
+                                                               onkeyup="javascript:qws_field_on_key_up(this)"
+                                                               onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value);javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+															   value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"
+                                                               rendered="#{feildConfig.name eq 'LID'}"/>
+                                                               
+                                                <h:inputText   required="#{feildConfig.required}" 
+                                                               label="#{feildConfig.displayName}" 
+                                                               onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                               maxlength="#{SourceHandler.euidLength}" 
+															   value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"
+                                                               rendered="#{feildConfig.name eq 'EUID'}"/>
+                                                                   
+                                                               
+                                            </nobr>
+                                        </h:column>
                                         
-                                        <h:selectOneMenu  onchange="javascript:setLidMaskValue(this)"
-                                                          onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                          id="SystemCode" 
-                                                          rendered="#{feildConfig.name eq 'SystemCode'}">
-                                            <f:selectItem itemLabel="" itemValue="" />
-                                            <f:selectItems  value="#{feildConfig.selectOptions}" />
-                                        </h:selectOneMenu>
-                                    </nobr>
-                                </h:column>
-                                <!--Rendering Updateable HTML Text boxes-->
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6}" >
-                                    <nobr>
-                                        <h:inputText   required="#{feildConfig.required}" 
-                                                       label="#{feildConfig.displayName}" 
-                                                       onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                       onkeyup="javascript:qws_field_on_key_up(this)"
-                                                       onblur="javascript:validate_number(this,'#{feildConfig.displayName}');javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                       maxlength="#{feildConfig.maxLength}" 
-                                                       rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
+                                        <!--Rendering Updateable HTML Text Area-->
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
+                                            <nobr>
+                                                <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"   required="#{feildConfig.required}"/>
+                                            </nobr>
+                                        </h:column>
                                         
-                                        <h:inputText   required="#{feildConfig.required}" 
-                                                       label="#{feildConfig.displayName}" 
-                                                       onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
-                                                       onkeyup="javascript:qws_field_on_key_up(this)"
-                                                       onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                       maxlength="#{SourceMergeHandler.lidMaskLength}" 
-                                                       rendered="#{feildConfig.name eq 'LID'}"/>
-
-                                        <h:inputText   required="#{feildConfig.required}" 
-                                                       label="#{feildConfig.displayName}" 
-                                                       onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                       maxlength="#{SourceHandler.euidLength}" 
-                                                       rendered="#{feildConfig.name eq 'EUID'}"/>
-                                                       
-                                    </nobr>
-                                </h:column>
-                                
-                                <!--Rendering Updateable HTML Text Area-->
-                                <h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
-                                    <nobr>
-                                        <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"  required="#{feildConfig.required}"/>
-                                    </nobr>
-                                </h:column>
-                                
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6}" >
-                                    <nobr>
-                                        <h:inputText  label="#{feildConfig.displayName}"    value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.displayName]}"
-                                                     required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                        <script> var dateFrom =  getDateFieldName('advancedformData','DOBFrom');</script>
-                                        <a HREF="javascript:void(0);" 
-                                           onclick="g_Calendar.show(event,dateFrom)" > 
-                                            <h:graphicImage  id="calImgDateFrom" 
-                                                             alt="calendar Image" styleClass="imgClass"
-                                                             url="./images/cal.gif"/>               
-                                        </a>
-                                    </nobr>
-                                </h:column>
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6}" >
+                                          <nobr>
+                                            <input type="text" 
+                                                   id = "<h:outputText value="#{feildConfig.name}"/>"  
+                                                   value="<h:outputText value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"/>"
+                                                   required="<h:outputText value="#{feildConfig.required}"/>" 
+                                                   maxlength="<h:outputText value="#{feildConfig.maxLength}"/>"
+                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
+                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFieldsOnBlur(this,'<h:outputText value="#{feildConfig.name}"/>')">
+                                                  <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.name}"/>')" > 
+                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                 </a>
+                                          </nobr>
+                                        </h:column>
                             </h:dataTable>
                             <table border="0" cellpadding="0" cellspacing="0" >
                                 <tr>
@@ -386,10 +390,17 @@ var myConfigs = {
            }
         %>
     <script>
-        function setLidMaskValue(field) {
+         
+		 function setLidMaskValue(field,formName) {
             var  selectedValue = field.options[field.selectedIndex].value;
-            document.advancedformData.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
-         }   
+            var formNameValue = document.forms[formName];
+            var lidField =  getDateFieldName(formNameValue.name,'LID');
+			if(lidField != null) {
+             document.getElementById(lidField).value = "";
+			}
+            
+            formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
+         }  
          //var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
          //document.getElementById("advancedformData:selectedSearchType").value = selectedSearchValue;
          if( document.advancedformData.elements[0]!=null) {

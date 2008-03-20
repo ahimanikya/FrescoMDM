@@ -1447,8 +1447,11 @@ function accumilateFieldsOnBlur(field,fullFieldName) {
     //alert(document.getElementById("advancedformData:enteredFieldValues").value);
 
   //set the search type here
-    var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
-    document.getElementById("advancedformData:selectedSearchType").value = selectedSearchValue;
+    //alert(document.getElementById("searchTypeForm:searchType"));
+    if(document.getElementById("searchTypeForm:searchType") != null) {
+       var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
+       document.getElementById("advancedformData:selectedSearchType").value = selectedSearchValue;
+    }
 }
 
 function accumilateSelectFieldsOnBlur(field,fullFieldName) {
@@ -1461,8 +1464,10 @@ function accumilateSelectFieldsOnBlur(field,fullFieldName) {
     fieldNameValues += fullFieldName + "##"+selectedValue+">>";
     document.getElementById("advancedformData:enteredFieldValues").value = fieldNameValues;
     //alert(document.getElementById("advancedformData:enteredFieldValues").value);
-    var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
-    document.getElementById("advancedformData:selectedSearchType").value = selectedSearchValue;
+    if(document.getElementById("searchTypeForm:searchType") != null) {
+     var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
+     document.getElementById("advancedformData:selectedSearchType").value = selectedSearchValue;
+    }
 
 }
 
@@ -1697,3 +1702,79 @@ function accumilateEOMinorObjectsRemove(minorId,minorobjectType) {
 
 }
 
+
+function toggleDupDivClass(fac,count,euid) {
+	   //alert( fac+  "======" + count+ "====="+ euid);
+
+	    var tab = document.getElementById('mainEuidContentDiv'+fac+count+euid);
+        if (tab.className == 'yellow')   {
+           tab.className = 'blue';
+        } else {
+            tab.className = 'yellow';
+        }
+
+		var preview  = document.getElementById('previewEuidDiv'+fac);
+        preview.className = 'blue';
+
+        var buttonsDiv = document.getElementById('buttonsDiv'+fac);
+		buttonsDiv.style.visibility = 'visible';
+		buttonsDiv.style.display = 'block';
+
+}
+
+
+
+var mergeEuidsPreview="";
+function accumilateMultiMergeEuidsPreview(fac,count,mergeEuidVar) {
+	    //alert("-------fac--" + fac + "------count  " +count + "mergeEuidVar  "+ mergeEuidVar); 
+	    var tab = document.getElementById('mainEuidContentDiv'+fac+count+mergeEuidVar);
+        if (tab.className == 'yellow')   {
+           tab.className = 'blue';
+        } else {
+            tab.className = 'yellow';
+        }
+    var mainEuidDataDiv = document.getElementById('mainEuidDataDiv'+fac+count+mergeEuidVar);
+		var preview  = document.getElementById('previewEuidDiv'+fac);
+		//var previewData  = document.getElementById('previewEuidDataDiv'+fac);
+		//var previewDataEmpty  = document.getElementById('previewEuidDataDivEmpty'+fac);
+
+        preview.className = 'blue';
+        //previewData.innerHTML = mainEuidDataDiv.innerHTML;
+        //previewData.style.visibility = 'visibile';
+
+		//previewDataEmpty.innerHTML = "";
+        //previewDataEmpty.style.visibility = 'hidden';
+
+
+	    //alert(previewDataEmpty.innerHTML);
+
+        mergeEuidsPreview+=mergeEuidVar+'##';     
+
+        ////alert("mergeEuids =>" + mergeEuids);
+
+       var mainEuidArray = mergeEuidsPreview.split("##");
+       var mainEuid = mainEuidArray[0];
+
+       document.getElementById('mergeFinalForm:destinationEO').value = mainEuid;
+	   document.getElementById('mergeFinalForm:rowCount').value = fac;
+    
+
+      ////alert("mainEuidArray.length =>" + mainEuidArray.length);
+
+     //document.getElementById('clickButton' + mainEuid).style.cursor= 'not-allowed';
+
+     if(mainEuidArray.length > 2) {
+
+        var buttonsDiv = document.getElementById('buttonsDiv'+fac);
+		buttonsDiv.style.visibility = 'visible';
+		buttonsDiv.style.display = 'block';
+
+   	    document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value = mergeEuidsPreview;
+   	    
+       ////alert("sources" + document.getElementById('previewForm:previewhiddenMergeEuids').value);
+       ////alert("sources" + document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value);
+      ////alert("mainEuid" + document.getElementById('previewForm:destinationEO').value);
+      //document.getElementById('mergeEuidsDiv').style.visibility = "visible";
+      //document.getElementById('mergeEuidsDiv').style.display = "block";
+   }
+}

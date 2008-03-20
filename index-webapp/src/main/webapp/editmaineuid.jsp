@@ -211,44 +211,59 @@
                                                                      id="fieldConfigIdTextboxEditable"   
                                                                      value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                      required="#{fieldConfigPer.required}"
-                                                                     onblur="javascript:accumilatePersonFieldsOnBlur(this,'#{fieldConfigPer.fullFieldName}')"
+                                                           onblur="javascript:accumilatePersonFieldsOnBlur(this,'#{fieldConfigPer.fullFieldName}')"
                                                                      />
                                                          </div>            
                                                     </h:column>
                                                     
-                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6}">
+                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 && !(EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName])}">
                                                         <div id='readOnlySBR:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'>
-                                                    <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                 value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                 disabled="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
-                                                                 onblur="javascript:accumilatePersonFieldsOnBlur(this,'#{fieldConfigPer.fullFieldName}')"
-                                                                 readonly="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"                                                                     
-                                                                 required="#{fieldConfigPer.required}"
-                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                 onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                    <script> var EditDate3 = getDateFieldName('basicAddformData',':Date3EO');</script>                                                                             
-                                                    <a HREF="javascript:void(0);" 
-                                                       onclick="g_Calendar.show(event,EditDate3)" > 
-                                                        <h:graphicImage  alt="calendar Image" styleClass="imgClass"
-                                                                         url="./images/cal.gif"/>               
-                                                    </a>
-                                                         </div>            
-                                                        <div id='editableSBR:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>' style='visibility:hidden;display:none'>
-                                                    <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                 value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                 onblur="javascript:accumilatePersonFieldsOnBlur(this,'#{fieldConfigPer.fullFieldName}')"
-                                                                 required="#{fieldConfigPer.required}"
-                                                                 onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                 onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                    <script> var EditDate = getDateFieldName('basicAddformData',':Date3EO');</script>                                                                             
-                                                    <a HREF="javascript:void(0);" 
-                                                       onclick="g_Calendar.show(event,EditDate)" > 
-                                                        <h:graphicImage  alt="calendar Image" styleClass="imgClass"
-                                                                         url="./images/cal.gif"/>               
-                                                    </a>
-                                                         </div>            
-                                                </h:column>
-                                                    
+                                                        <nobr>
+                                                            <input type="text" 
+                                                                   id = "<h:outputText value="#{fieldConfigPer.name}"/>"  
+                                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilatePersonFieldsOnBlur(this,'<h:outputText value="#{fieldConfigPer.fullFieldName}" />')"
+                                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
+                                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                   value = "<h:outputText value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
+                                                                   />
+                                                            <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{fieldConfigPer.name}"/>')" > 
+                                                            <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                            </a>
+                                                        </nobr>
+                                                        </div>            
+                                                    </h:column>
+
+                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6 && (EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName])}">
+                                                        <div id='readOnlySBR:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'>
+                                                        <nobr>
+                                                            <input type="text" 
+                                                                   id = "<h:outputText value="#{fieldConfigPer.name}"/>"  
+                                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
+                                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                   disabled="true"																   readonly="true"
+                                                                   value = "<h:outputText value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
+                                                                   />
+                                                                       
+                                                            <h:graphicImage  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                                
+                                                        </nobr>
+                                                        </div>            
+                                                        <div id='editableSBR:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>' style="visibility:hidden;display:none;">
+                                                        <nobr>
+                                                            <input type="text" 
+                                                                   id = "<h:outputText value="#{fieldConfigPer.name}"/>"  
+                                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilatePersonFieldsOnBlur(this,'<h:outputText value="#{fieldConfigPer.fullFieldName}" />')"
+                                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
+                                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                   value = "<h:outputText value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
+                                                                   />
+                                                            <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{fieldConfigPer.name}"/>')" > 
+                                                                <h:graphicImage  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                            </a>
+                                                        </nobr>
+                                                        </div>            
+                                                    </h:column>
+
                                                     <!--Rendering Updateable HTML Text boxes date fields-->
                                                 <!--Rendering Updateable HTML Text Area-->
                                                 <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
@@ -349,7 +364,7 @@
                                                                                  id="date"
                                                                                  required="#{addressFieldConfig.required}"
                                                                                  onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                                 onblur="javascript:accumilateEOMinorFieldsOnBlur(this,'#{fieldConfigPer.fullFieldName}','#{adressMapArrayList['MINOR_OBJECT_ID']}','#{adressMapArrayList['MINOR_OBJECT_TYP']}')"
+                                                                                 onblur="javascript:accumilateEOMinorFieldsOnBlur(this,'#{fieldConfigPer.fullFieldName}','#{adressMapArrayList['MINOR_OBJECT_ID']}','#{adressMapArrayList['MINOR_OBJECT_TYPE']}')"
                                                                                  onkeyup="javascript:qws_field_on_key_up(this)" />
                                                                         <h:graphicImage  id="calImgStartDate" 
                                                                                          alt="calendar Image" styleClass="imgClass"
@@ -480,18 +495,18 @@
                                                                         </h:column>
                                                                         <!--Rendering Updateable HTML Text boxes date fields-->
                                                                         <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' && fieldConfigPer.valueType eq 6 }">
-                                                                            <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                                         value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"  
-                                                                                         id="DOBSO"
-                                                                                         required="#{fieldConfigPer.required}"
-                                                                                         onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
-                                                                                         onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                            <script> var DOBSO = getDateFieldName('basicAddformData',':DOBSO');</script>                                                                             
-                                                                            <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,DOBSO)" > 
-                                                                                <h:graphicImage  id="calImgDobDate" 
-                                                                                                 alt="calendar Image" styleClass="imgClass"
-                                                                                                 url="./images/cal.gif"/>               
+                                                                            <input type="text" 
+                                                                                   id = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>"  
+                                                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilatePersonFieldsOnBlur(this,'<h:outputText value="#{fieldConfigPer.fullFieldName}" />')"
+                                                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
+                                                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                                   value = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
+                                                                                   />
+                                                                                       
+                                                                            <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>')" > 
+                                                                                <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                                             </a>
+                                                                                
                                                                         </h:column>
                                                                         <!--Rendering Updateable HTML Text Area-->
                                                                         <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >

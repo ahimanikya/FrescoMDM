@@ -298,11 +298,11 @@ Calendar.prototype.buildString = function(){
 	if (document.all&&document.getElementById && !window.Opera){
 		// Add a shim to hide select items for drop down menus.
 		 if (navigator.appVersion.substr(22,3)!="5.0"){
-		 	tmpStr = '<iframe src="../Blank.html" scrolling="no" frameborder="0" style="width: ' + this.containerLayer.offsetWidth + 'px; height: ' + this.containerLayer.offsetHeight + 'px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);"></iframe>';
+		 	tmpStr = '<iframe src="blank.html" scrolling="no" frameborder="0" style="width: ' + this.containerLayer.offsetWidth + 'px; height: ' + this.containerLayer.offsetHeight + 'px; z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);"></iframe>';
 		 }
 	}
         
-        tmpStr = '<iframe src="../SunEdm/blank.html" scrolling="no" frameborder="-1" style="width: ' + this.containerLayer.offsetWidth + 'px; height: ' + this.containerLayer.offsetHeight + 'px;z-index: -1; position: absolute;"></iframe>';
+    tmpStr = '<iframe src="blank.html" scrolling="no" frameborder="-1" style="width: ' + this.containerLayer.offsetWidth + 'px; height: ' + this.containerLayer.offsetHeight + 'px;z-index: -1; position: absolute;"></iframe>';
 	tmpStr += '<table cellspacing="0">';
 	tmpStr += '<thead><tr><td colspan="7"><ul>\n'+
 			'<li id="cp_prevMonth"><a href="javascript:g_Calendar.changeMonth(-1)" title="Go to previous month"><span>&lt;</span></a></li>\n'+

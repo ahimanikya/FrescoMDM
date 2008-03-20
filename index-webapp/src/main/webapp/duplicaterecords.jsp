@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
+<%@ page import="com.sun.mdm.index.master.search.potdup.PotentialDuplicateSearchObject"  %>
 <%@ page import="com.sun.mdm.index.master.search.potdup.PotentialDuplicateIterator"  %>
 <%@ page import="com.sun.mdm.index.master.search.potdup.PotentialDuplicateSummary"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
@@ -81,82 +82,86 @@
                                          var="feildConfig" 
                                          value="#{SearchDuplicatesHandler.screenConfigArray}">
                                 <!--Rendering Non Updateable HTML Text Area-->
-                                <h:column>
-                                    <nobr>
-                                        <h:outputText value="*" rendered="#{feildConfig.required}" />
-                                        <h:outputText value="#{feildConfig.displayName}" />
-                                    </nobr>
-                                </h:column>
-                                <!--Rendering HTML Select Menu List-->
-                                <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
-                                    <nobr>
-                                        <h:selectOneMenu onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                         rendered="#{feildConfig.name ne 'SystemCode'}">
-                                            <f:selectItem itemLabel="" itemValue="" />
-                                            <f:selectItems  value="#{feildConfig.selectOptions}" />
-                                        </h:selectOneMenu>
+                                 <h:column>
+                                            <nobr>
+                                                <h:outputText value="*" rendered="#{feildConfig.required}" />
+                                                <h:outputText value="#{feildConfig.displayName}" />
+                                            </nobr>
+                                        </h:column>
+                                        <!--Rendering HTML Select Menu List-->
+                                        <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
+                                            <nobr>
+                                                <h:selectOneMenu onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                                 rendered="#{feildConfig.name ne 'SystemCode'}"
+	                                                             value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}">
+                                                    <f:selectItem itemLabel="" itemValue="" />
+                                                    <f:selectItems  value="#{feildConfig.selectOptions}" />
+                                                </h:selectOneMenu>
+                                                
+                                                <h:selectOneMenu  onchange="javascript:setLidMaskValue(this,'advancedformData')"
+                                                                  onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                                  id="SystemCode" 
+    															  value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
+                                                                  rendered="#{feildConfig.name eq 'SystemCode'}">
+                                                    <f:selectItem itemLabel="" itemValue="" />
+                                                    <f:selectItems  value="#{feildConfig.selectOptions}" />
+                                                </h:selectOneMenu>
+                                            </nobr>
+                                        </h:column>
+                                        <!--Rendering Updateable HTML Text boxes-->
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6 }" >
+                                            <nobr>
+                                                <h:inputText   required="#{feildConfig.required}" 
+                                                               label="#{feildConfig.displayName}" 
+                                                               onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                               onkeyup="javascript:qws_field_on_key_up(this)"
+                                                               onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                               maxlength="#{feildConfig.maxLength}" 
+															   value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
+                                                               rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
+                                                
+                                                <h:inputText   required="#{feildConfig.required}" 
+												               id="LID"
+                                                               label="#{feildConfig.displayName}" 
+                                                               onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
+                                                               onkeyup="javascript:qws_field_on_key_up(this)"
+                                                               onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value);javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+															   value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
+                                                               rendered="#{feildConfig.name eq 'LID'}"/>
+                                                               
+                                                <h:inputText   required="#{feildConfig.required}" 
+                                                               label="#{feildConfig.displayName}" 
+                                                               onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                               maxlength="#{SourceHandler.euidLength}" 
+															   value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
+                                                               rendered="#{feildConfig.name eq 'EUID'}"/>
+                                                                   
+                                                               
+                                            </nobr>
+                                        </h:column>
                                         
-                                        <h:selectOneMenu  onchange="javascript:setLidMaskValue(this)"
-                                                          onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                          id="SystemCode" 
-                                                          rendered="#{feildConfig.name eq 'SystemCode'}">
-                                            <f:selectItem itemLabel="" itemValue="" />
-                                            <f:selectItems  value="#{feildConfig.selectOptions}" />
-                                        </h:selectOneMenu>
-                                    </nobr>
-                                </h:column>
-                                <!--Rendering Updateable HTML Text boxes-->
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6}" >
-                                    <nobr>
-                                        <h:inputText   required="#{feildConfig.required}" 
-                                                       label="#{feildConfig.displayName}" 
-                                                       onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                       onkeyup="javascript:qws_field_on_key_up(this)"
-                                                       onblur="javascript:validate_number(this,'#{feildConfig.displayName}');javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                       maxlength="#{feildConfig.maxLength}" 
-                                                       rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
+                                        <!--Rendering Updateable HTML Text Area-->
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
+                                            <nobr>
+                                                <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"   required="#{feildConfig.required}"/>
+                                            </nobr>
+                                        </h:column>
                                         
-                                        <h:inputText   required="#{feildConfig.required}" 
-                                                       label="#{feildConfig.displayName}" 
-                                                       onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
-                                                       onkeyup="javascript:qws_field_on_key_up(this)"
-                                                       onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value);javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                       maxlength="#{SourceMergeHandler.lidMaskLength}" 
-                                                       rendered="#{feildConfig.name eq 'LID'}"/>
-                                                       
-                                        <h:inputText   required="#{feildConfig.required}" 
-                                                       label="#{feildConfig.displayName}" 
-                                                       onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                       maxlength="#{SourceHandler.euidLength}" 
-                                                       rendered="#{feildConfig.name eq 'EUID'}"/>
-                                                       
-                                                       
-                                    </nobr>
-                                </h:column>
-                                
-                                <!--Rendering Updateable HTML Text Area-->
-                                <h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
-                                    <nobr>
-                                        <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"   required="#{feildConfig.required}"/>
-                                    </nobr>
-                                </h:column>
-                                
-                                <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6}" >
-                                    <nobr>
-                                        <h:inputText  label="#{feildConfig.displayName}"   
-                                                     required="#{feildConfig.required}"  maxlength="#{feildConfig.maxLength}"
-                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                     onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                     onkeyup="javascript:qws_field_on_key_up(this)" />
-                                        <script> var dateFrom =  getDateFieldName('advancedformData','DOBFrom');</script>
-                                        <a HREF="javascript:void(0);" 
-                                           onclick="g_Calendar.show(event,dateFrom)" > 
-                                            <h:graphicImage  id="calImgDateFrom" 
-                                                             alt="calendar Image" styleClass="imgClass"
-                                                             url="./images/cal.gif"/>               
-                                        </a>
-                                    </nobr>
-                                </h:column>
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6}" >
+                                          <nobr>
+                                            <input type="text" 
+                                                   id = "<h:outputText value="#{feildConfig.name}"/>"  
+                                                   value="<h:outputText value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"/>"
+                                                   required="<h:outputText value="#{feildConfig.required}"/>" 
+                                                   maxlength="<h:outputText value="#{feildConfig.maxLength}"/>"
+                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
+                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFieldsOnBlur(this,'<h:outputText value="#{feildConfig.name}"/>')">
+                                                  <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.name}"/>')" > 
+                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                 </a>
+                                          </nobr>
+                                        </h:column>
                             </h:dataTable>
                             <table border="0" cellpadding="0" cellspacing="0" >
                                 <tr>
@@ -219,11 +224,21 @@
                     StringBuffer stringBuffer = new StringBuffer();
                     StringBuffer mainEUID = new StringBuffer();
                     StringBuffer dupEUID = new StringBuffer();
-                    
+                    ValueExpression finalArrayListVE = null;
+					ValueExpression potDupIdValueExpression = null;
+					ValueExpression duplicateSearchObjectVE = null;
+                    PotentialDuplicateSearchObject potentialDuplicateSearchObject = (PotentialDuplicateSearchObject) request.getAttribute("duplicateSearchObject");                                    
+				     if(potentialDuplicateSearchObject != null) {
+						   duplicateSearchObjectVE  = ExpressionFactory.newInstance().createValueExpression(potentialDuplicateSearchObject, potentialDuplicateSearchObject.getClass());
+					}
                     %>                
                 <br>   
                   <%
                      if(finalArrayList != null && finalArrayList.size() >0 ) {
+						 //System.out.println("-------------IN JSPPPP---finalArrayList.size()--" + finalArrayList.size());
+						finalArrayListVE = ExpressionFactory.newInstance().createValueExpression(finalArrayList, finalArrayList.getClass());
+						System.out.println("------1------" + potentialDuplicateSearchObject);
+
                          request.setAttribute("finalArrayList", request.getAttribute("finalArrayList"));
                  %>                
                      <div class="printClass">
@@ -245,6 +260,7 @@
                  <%}%>
                 <%
                     if(finalArrayList != null && finalArrayList.size() >0 ) {
+
                 %>
                      <div id="dataDiv" class="compareResults" style="overflow:auto;width:1074px;height:1024px;">
                     <div>
@@ -252,6 +268,7 @@
                             <tr>
                             <%
                             if(finalArrayList != null && finalArrayList.size() >0 ) {
+                                
                                 for(int fac=0;fac<finalArrayList.size();fac++) {
                                    
                                 %>
@@ -263,14 +280,18 @@
                                         HashMap resultArrayMapMain = new HashMap();
                                         HashMap resultArrayMapCompare = new HashMap();
                                         String epathValue;
+
                                         ArrayList arlInner = (ArrayList) finalArrayList.get(fac);
                                         String subscripts[] = compareDuplicateManager.getSubscript(arlInner.size());
                                         for (int j = 0; j < arlInner.size(); j++) {
                                                HashMap eoHashMapValues = (HashMap) arlInner.get(j);
-                                               //EnterpriseObject eoSource = compareDuplicateManager.getEnterpriseObject(strDataArray);
 
                                                //int weight = ((Float) eoHashMapValues.get("Weight")).intValue();
                                                String  weight =  eoHashMapValues.get("Weight").toString();
+                                               String potDupStatus = (String) eoHashMapValues.get("Status");
+                                                String potDupId = (String) eoHashMapValues.get("PotDupId");
+
+   						potDupIdValueExpression = ExpressionFactory.newInstance().createValueExpression(potDupId, potDupId.getClass());
                                                //weight = (new BigDecimal(weight)).ROUND_CEILING;
                                                //float weight = ((Float) eoHashMapValues.get("Weight")).floatValue();
                                                
@@ -300,7 +321,7 @@
                                                 }
                                               }
                                         
-                                               
+					                
                                                
                                         %>
                                        <%if(j == 0 ) {%>
@@ -321,26 +342,27 @@
                                                     %>
                                                     <tr><td><%=fieldConfigMap.getDisplayName()%></td></tr>
                                                     <%}%>
+													<tr><td>&nbsp</td></tr>
+													<tr><td>&nbsp</td></tr>
                                                 </table>
                                             </div>   
                                         </td>
                                         <td valign="top">
-                                            <div id="mainEuidContent" class="yellow">
+                                            <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="yellow">
                                                 <table border="0" cellspacing="0" cellpadding="0" >
                                                     <tr>
                                                         <td valign="top" class="menutop">Main EUID</td>
                                                     </tr> 
                                                     <tr>
                                                         <td valign="top" class="dupfirst">
-                                                            <span class="dupbtn">
+                                                            <a class="dupbtn" href="javascript:accumilateMultiMergeEuidsPreview('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>')">
                                                                 <%=fieldValuesMapSource.get("EUID")%>
-                                                            </span>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                         
                                                 </table>
-                                            </div> 
-                                            <div id="mainEuidContentDiv<%=countMain%>" class="yellow">
+												<div id="mainEuidDataDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>">
                                                 <table border="0" cellspacing="0" cellpadding="0" >
                                                     <%
                                                      for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
@@ -350,6 +372,7 @@
                                                          } else {
                                                              epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
                                                          }
+
                                                      %>
                                                     <tr>
                                                         <td>
@@ -363,7 +386,10 @@
                                                         </td>                                                        
                                                     </tr>
                                                     <%}%>
-                                                </table>
+													<tr><td>&nbsp</td></tr>
+    												<tr><td>&nbsp;</td></tr>
+                                              </table>
+											  </div>
                                             </div>   
                                         </td>
                                         <%} else {%> <!--For duplicates here-->  
@@ -377,21 +403,35 @@
                                             <%}%>
                                         
                                            <td valign="top">
-                                            <div id="mainEuidContent" class="yellow" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
+
+                                                <%
+                                                if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
+                                                 %>
+                                                 <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="deactivate" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
+                                            <%} else {%>        
+                                                  <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="yellow" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
+                                            <%}%>        
+
                                                 <table border="0" cellspacing="0" cellpadding="0" >
                                                     <tr>
-                                                        <td valign="top" class="menutop"><%=dupHeading%>
-                                                        </td>
+                                                        <td valign="top" class="menutop"><%=dupHeading%> </td>
                                                     </tr> 
                                                     <tr>
                                                       <td valign="top" class="dupfirst">
-                                                          <span class="dupbtn">
-                                                             <%=fieldValuesMapSource.get("EUID")%>        
-                                                          </span>  
+   												      <%
+                                                       if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
+		        			                            %>
+                                                                <%=fieldValuesMapSource.get("EUID")%>
+    
+                                                      <%} else {%>        
+                                                            <a class="dupbtn" href="javascript:accumilateMultiMergeEuidsPreview('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>')">
+                                                                <%=fieldValuesMapSource.get("EUID")%>
+                                                            </a>
+                                                      <%} %>        
+
                                                       </td>
                                                     </tr>
                                                 </table>
-                                            </div> 
                                             <%
                                             String userAgent = request.getHeader("User-Agent");
                                             boolean isFirefox = (userAgent != null && userAgent.indexOf("Firefox/") != -1);
@@ -415,8 +455,8 @@
                                          </div> 
                                       
                                          <%}%>
-                                            <div id="mainEuidContentDiv<%=countMain%>" class="dynaw169" >
-                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
+										 <div id="mainEuidDataDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>">
+                                                <table border="0" cellspacing="0" cellpadding="0" >
                                                     <%
                                                      for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
                                                         FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
@@ -451,6 +491,30 @@
                                                         </td>        
                                                     </tr>
                                                     <%}%>
+                                                    <tr>
+                                                        <td class="align:right;padding-left:150px;" >
+												<%
+                                                if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
+					                            %>
+												   <h:form>
+                                                        <h:commandLink  styleClass="diffviewbtn" rendered="#{Operations.potDup_ResolveUntilRecalc}"
+                                                                        actionListener="#{SearchDuplicatesHandler.unresolvePotentialDuplicateAction}">
+                                                             <f:attribute name="potDupId" value="<%=potDupIdValueExpression%>"/>
+                                                             <f:attribute name="finalArrayListVE" value="<%=finalArrayListVE%>"/>
+                                                             <h:outputText value="#{msgs.potential_dup_button}"/>
+                                                        </h:commandLink>  
+												   </h:form>
+												<%}else{%>
+                                                           <a onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" 
+                                                              href="javascript:void(0)">
+															  <img src="./images/diff.gif" alt="Different Person" border="0">
+                                                            </a>   
+
+												<%}%>
+
+                                                         </td>
+                                                   </tr>
+                                                    <tr><td>&nbsp</td></tr>
                                                 </table>
                                             </div>   
                                         </td>
@@ -465,47 +529,119 @@
                                         <%}%>
                                         <td class="w7yelbg">&nbsp;</td><!--Separator b/n columns-->
                                         <%}%>
-                                      <td class="w169" valign="top">
-                                      <div id="previewEuidDiv<%=countMain%>" class="yellow" style="visibility:visible;display:block;">
+                                      <td  valign="top">
+									  <%if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) != null ) {%>
+									    <div id="previewEuidDiv<%=fac%>" class="blue" style="visibility:visible;display:block;">
+									  <%} else {%>
+   									    <div id="previewEuidDiv<%=fac%>" class="yellow" style="visibility:visible;display:block;">
+									  <%}%>
                                           <table border="0" width="100%" cellspacing="0" cellpadding="0" >
                                               <tr>
                                                   <td width="100%" class="menutop1">Preview</td>
                                               </tr>
-                                          </table>
-                                      </div>
-                                     <div id="previewEuidContentDiv<%=countMain%>"   class="yellow">
-                                        <div id="showCompareButtonDiv<%=countMain%>" style="visibility:visible;">
-                                            <table border="0" cellspacing="0" cellpadding="0"> 
-                                                <tr>
+                                                 <tr>
                                                         <td>&nbsp;</td>
                                                 </tr>
                                                 <%
-                                                   for (int i = 0; i < resultsConfigFeilds.length - 1; i++) {
+											      HashMap previewHashMap = new HashMap();
+                                                   for (int i = 0; i < resultsConfigFeilds.length; i++) {
                                                      FieldConfig fieldConfig = (FieldConfig) resultsConfigFeilds[i];
+                                                        if (fieldConfig.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
+                                                             epathValue = fieldConfig.getFullFieldName();
+                                                         } else {
+                                                             epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
+                                                         }
+
                                                     %>
+                                                      <%if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) != null ) {
+														previewHashMap  = (HashMap) request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString());
+														HashMap eoMapPreview = (HashMap) previewHashMap.get("ENTERPRISE_OBJECT");
+                                                         %>
+
                                                     <tr>
+                                                        <td>
+														 <%if(eoMapPreview.get(epathValue) != null)  {%>
+   														     <%=eoMapPreview.get(epathValue)%>
+														   <%} else {%>
+														     &nbsp;
+														   <%}%>
+														</td>
+
+                                                    </tr>
+													<%} else {%>
+													 <tr>
                                                         <td>&nbsp;</td>
                                                     </tr>
+
+													<%}%>
                                                 <%}%>
 
                                                 <tr>
                                                     <td valign="top" align="right">
-                                                        <!--Show compare duplicates button-->
-                                                        <%
-                                                        ValueExpression euidVaueExpressionList = ExpressionFactory.newInstance().createValueExpression(arlInner, arlInner.getClass());
-                                                        %>
-                                                         <h:form>
-                                                            <h:commandLink styleClass="downlink"  rendered="#{Operations.potDup_SearchView}" 
-                                                                           action="#{NavigationHandler.toCompareDuplicates}" 
-                                                                           actionListener="#{SearchDuplicatesHandler.buildCompareDuplicateEuids}">
-                                                                <f:attribute name="euidsMap"  value="<%=euidVaueExpressionList%>"  />
-                                                            </h:commandLink>
-                                                        </h:form>   
+                                                        <div id="buttonsDiv<%=fac%>" style="visibility:hidden;">
+														 <p>
+                                                            <h:form id="mergeFinalForm">
+                                                              <h:commandLink rendered="#{Operations.potDup_SearchView}"  styleClass="button"
+                                                                          actionListener="#{SearchDuplicatesHandler.previewPostMultiMergedEnterpriseObject}">
+                                                                   <f:attribute name="finalArrayListVE" value="<%=finalArrayListVE%>"/>
+                                                                   <f:attribute name="duplicateSearchObjectVE"  value="<%=duplicateSearchObjectVE%>"  />
+                                                                    <span>Preview</span>
+                                                              </h:commandLink>
+                                                                <h:commandLink rendered="#{Operations.potDup_SearchView}"  styleClass="button"
+                                                                               actionListener="#{SearchDuplicatesHandler.cancelMultiMergeOperation}">
+                                                                         <f:attribute name="duplicateSearchObjectVE"  value="<%=duplicateSearchObjectVE%>"  />
+                                                                    <span>Cancel</span>
+                                                                </h:commandLink>
+   		                                                     <h:inputHidden id="rowCount" value="#{SearchDuplicatesHandler.rowCount}"/>
+   		                                                     <h:inputHidden id="destinationEO" value="#{SearchDuplicatesHandler.destnEuid}"/>
+                                                 			 <h:inputHidden id="previewhiddenMergeEuids" value="#{SearchDuplicatesHandler.mergeEuids}"/>
+                                                            </h:form>   
+															</p>
+                                                        </div>
+														
+														<%if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) != null ) {
+                                                         %>
+														   <nobr>
+                                                            <h:form id="mergeFinal">
+                                                               <h:commandLink rendered="#{Operations.potDup_SearchView}"  styleClass="button"
+                                                                          actionListener="#{SearchDuplicatesHandler.performMultiMergeEnterpriseObject}">
+                                                                    <f:attribute name="duplicateSearchObjectVE"  value="<%=duplicateSearchObjectVE%>"  />
+                                                                    <span>Merge</span>
+                                                               </h:commandLink>
+														   </nobr>
+														   <nobr>
+                                                                <h:commandLink rendered="#{Operations.potDup_SearchView}"  styleClass="button"
+                                                                               actionListener="#{SearchDuplicatesHandler.cancelMultiMergeOperation}">
+                                                                    <span>Cancel</span>
+                                                                </h:commandLink>
+   		                                                     <h:inputHidden id="rowCount" value="#{SearchDuplicatesHandler.rowCount}"/>
+   		                                                     <h:inputHidden id="destinationEO" value="#{SearchDuplicatesHandler.destnEuid}"/>
+                                                 			 <h:inputHidden id="previewhiddenMergeEuids" value="#{SearchDuplicatesHandler.mergeEuids}"/>
+                                                            </h:form>   
+														   </nobr>
+														 <%}%>
 
-                                                    </td> 
+                                                    </td>
                                                 </tr>
+                                                    
+                                                    <tr>
+                                                        <td valign="top" align="right">
+                                                            <!--Show compare duplicates button-->
+                                                         <%
+                                                            ValueExpression euidVaueExpressionList = ExpressionFactory.newInstance().createValueExpression(arlInner, arlInner.getClass());
+                                                         %>
+                                                                             <h:form>
+                                                                                <h:commandLink styleClass="downlink"  rendered="#{Operations.potDup_SearchView}" 
+                                                                                               action="#{NavigationHandler.toCompareDuplicates}" 
+                                                                                               actionListener="#{SearchDuplicatesHandler.buildCompareDuplicateEuids}">
+                                                                                    <f:attribute name="euidsMap"  value="<%=euidVaueExpressionList%>"  />
+                                                                                </h:commandLink>
+                                                                            </h:form>   
+                                                        </td>
+                                                    </tr>
+                                                        
+
                                             </table>
-                                        </div>
                                       </div>  
                                     </div>
                                     
@@ -532,6 +668,55 @@
                <%}%>
                
             </div>
+            
+            <%
+                       if(finalArrayList != null && finalArrayList.size() >0 ) {
+                       finalArrayListVE = ExpressionFactory.newInstance().createValueExpression(finalArrayList, finalArrayList.getClass());
+                       
+
+            %>
+                                   <div id="resolvePopupDiv" class="alert" style="TOP:2250px; LEFT:300px; HEIGHT:195px;WIDTH: 300px;visibility:hidden; ">
+                                     
+                                       <h:form id="reportYUISearch">
+                                           <h:inputHidden id="potentialDuplicateId" value="#{SearchDuplicatesHandler.potentialDuplicateId}"/>
+                                           <table width="100%">
+                                               <tr><th align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th><th align="right"><a href="javascript:void(0)" rel="resolvepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th></tr>
+                                               <tr><td colspan="2"> &nbsp;</td></tr>
+                                               <tr><td align="center"><b><h:outputText value="#{msgs.different_person_dailog_text}"/></b></td></tr>
+                                               <tr>
+                                                   <td  colspan="2">
+                                                       <div class="selectContent">
+                                                       <h:selectOneRadio id="diffperson" value="#{SearchDuplicatesHandler.resolveType}" 
+                                                                         layout="pageDirection">
+                                                           <f:selectItem  itemValue="AutoResolve" itemLabel="Resolve Until Recalculation"/>
+                                                           <f:selectItem  itemValue="Resolve" itemLabel="Resolve Permanently"/>
+                                                       </h:selectOneRadio> 
+                                                       </div> 
+                                                 </td>
+                                               </tr>
+                                                <tr><td colspan="2"> &nbsp;</td></tr>
+                                               <tr>
+                                                   <td align="right"  colspan="2">
+                                                       
+                                                        <h:commandLink styleClass="button" 
+                                                                       actionListener="#{SearchDuplicatesHandler.resolvePotentialDuplicate}">
+                                                            <f:attribute name="finalArrayListVE" value="<%=finalArrayListVE%>" />           
+                                                                <span><h:outputText value="#{msgs.ok_text_button}" /></span>
+                                                       </h:commandLink>   
+                                                       <h:outputLink  onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'123467')" 
+                                                                      styleClass="button"  
+                                                                      value="javascript:void(0)">
+                                                         <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
+                                                       </h:outputLink>   
+                                                   </td>
+                                               </tr>
+                                           </table>
+                                           
+                                       </h:form>
+                                   </div>                                                
+              <%}%>
+
+            
         </body>        
         <%
           String[][] lidMaskingArray = searchDuplicatesHandler.getAllSystemCodes();
@@ -564,11 +749,16 @@
            }
         %>
     <script>
-        function setLidMaskValue(field) {
+         function setLidMaskValue(field,formName) {
             var  selectedValue = field.options[field.selectedIndex].value;
-            document.advancedformData.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
-            //alert(selectedValue);
-         }   
+            var formNameValue = document.forms[formName];
+            var lidField =  getDateFieldName(formNameValue.name,'LID');
+			if(lidField != null) {
+             document.getElementById(lidField).value = "";
+			}
+            
+            formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
+         }  
          
      var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
      document.getElementById("advancedformData:selectedSearchType").value = selectedSearchValue;
@@ -586,7 +776,6 @@
       }         
 
     </script>
-     
-        
+
     </html> 
 </f:view>
