@@ -74,7 +74,7 @@ public class SecurityManager {
     private static SecurityManager instance = null;
     private DocumentBuilder builder;
     
-    private static final String ROLES_FILENAME = "roles.xml";
+    private static final String MIDM_SECURITY_FILENAME = "midm-security.xml";
     private static final String ROLES = "roles";
     private static final String ROLE = "role";
     private static final String ROLE_NAME = "role-name";
@@ -130,7 +130,7 @@ public class SecurityManager {
     }
     
     /**
-     * Reads the ROLES_FILENAME file.
+     * Reads the MIDM_SECURITY_FILENAME file.
      *
      * @throws Exception if an error is encountered.
      */
@@ -138,11 +138,11 @@ public class SecurityManager {
         InputStream in;
         BufferedReader rdr;
         try {
-            in = getClass().getClassLoader().getResourceAsStream(SecurityManager.ROLES_FILENAME);
+            in = getClass().getClassLoader().getResourceAsStream(SecurityManager.MIDM_SECURITY_FILENAME);
         } catch (Exception e) {
             throw new Exception(mLocalizer.t("SRS512: Unable to open roles configuration " +
                                              "file.  File name={0}, error={1}", 
-                                             SecurityManager.ROLES_FILENAME, 
+                                             SecurityManager.MIDM_SECURITY_FILENAME, 
                                              e.getMessage()));
         }
         read(in);
@@ -152,7 +152,7 @@ public class SecurityManager {
     /**
      * Read and parse the permssions file.
      *
-     * @param input InputStream for ROLES_FILENAME file.
+     * @param input InputStream for the MIDM_SECURITY_FILENAME file.
      * @throws Exception if an error is encountered.
      */
     private void read(InputStream input) throws Exception {        

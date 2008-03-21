@@ -53,10 +53,11 @@ public class UserProfile {
     
     public UserProfile(String userName, HttpServletRequest request) throws Exception {
         mUserName = userName;
-        if (!ConfigManager.getInstance().isSecurityEnabled()) {
-            return;
+        
+        // initialize the security manager if necessary.
+        if (SecurityManager.getInstance() == null) {
+            SecurityManager.init();
         }
-
         // set the roles for this Userprofile
         String allRoles[] = SecurityManager.getInstance().getAllRoles();
         //mRoles = new String[1];
@@ -73,7 +74,6 @@ public class UserProfile {
         for (int j = 0; j < mRolesList.size(); j++) {
              mRoles[j] = (String) mRolesList.get(j);
         }
-        
         mOperations = SecurityManager.getInstance().getOperations(this);
     }
 
@@ -112,9 +112,6 @@ public class UserProfile {
      */
     
     public boolean isAllowed(String operation) {
-        if (!ConfigManager.getInstance().isSecurityEnabled()) {
-          return true;
-        }
         for (int i = 0; i < mOperations.length; i++) {
             if (operation.equalsIgnoreCase(mOperations[i])) {
                 return true;

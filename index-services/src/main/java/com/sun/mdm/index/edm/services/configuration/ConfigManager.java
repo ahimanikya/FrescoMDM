@@ -61,7 +61,7 @@ import net.java.hulp.i18n.Logger;
 
 
 /**
- * Read EDM config xml
+ * Read MIDM config xml
  *
  * @author rtam
  * @created August 8, 2007
@@ -160,7 +160,7 @@ public class ConfigManager implements java.io.Serializable {
     private HashMap objNodeConfigMap = new HashMap();
     // key = screen ID, value = associated ScreenObject
     private HashMap mScreenMap = new HashMap();
-    // key = ID, value = associated EDM value
+    // key = ID, value = associated MIDM value
     private HashMap mConfigurableQwsValues = new HashMap();
     private static ConfigManager instance = null;
     private boolean auditLog = false;
@@ -174,7 +174,6 @@ public class ConfigManager implements java.io.Serializable {
     private boolean hasReportGeneratorJndi = false;
     private String debugFlag;
     private String debugDest;
-    private String securityEnabled = null;
     private ObjectSensitivePlugIn security = null;
     
     
@@ -240,9 +239,9 @@ public class ConfigManager implements java.io.Serializable {
             try {
                 instance.read();
             } catch (Exception e) {
-                throw new Exception(mLocalizer.t("SRC501: Failed to read EDM configuration: {0}", e.getMessage()));
+                throw new Exception(mLocalizer.t("SRC501: Failed to read MIDM configuration: {0}", e.getMessage()));
             }
-            mLogger.info(mLocalizer.x("SRC003: Parsed EDM configuration file successfully."));
+            mLogger.info(mLocalizer.x("SRC003: Parsed MIDM configuration file successfully."));
             return instance;
         }
     }
@@ -566,7 +565,7 @@ public class ConfigManager implements java.io.Serializable {
             // disabled (for REPORTS), they are ignored.
             if (ssElement.getTagName().equalsIgnoreCase(SUBSCREEN)) {
                 boolean enable = true;
-                if (configType.compareTo(REPORTS) == 0) {
+                if (configType.compareTo(REPORTS) == 0 || configType.compareTo(DASHBOARD) == 0) {
                     enable = getAttributeBooleanValue(ssElement, "enable");
                 }
                 if (enable == true) {
@@ -626,13 +625,19 @@ public class ConfigManager implements java.io.Serializable {
         String blockType = configType;
         while (itr.hasNext() ) {
             Element sscElement = (Element)itr.next();
-        
+
             if (sscElement.getTagName().equalsIgnoreCase(SIMPLE_SEARCH_PAGE)) {
                 // Change the configType to the actual name of the 
                 // report for Reports.  Otherwise, leave it as is.
                 if  (configType.compareTo(REPORTS) == 0) {
                     blockType = NodeUtil.getChildNodeText(element, REPORT_NAME);
                 } 
+                SearchScreenConfig ssconfig 
+                        = buildSearchScreenConfig(sscElement, 
+                                                  objNodeConfig,
+                                                  blockType);
+                searchScreensConfig.add(ssconfig);
+            } else if (configType.compareToIgnoreCase(DASHBOARD) == 0) {    // dashboard
                 SearchScreenConfig ssconfig 
                         = buildSearchScreenConfig(sscElement, 
                                                   objNodeConfig,
@@ -940,33 +945,29 @@ public class ConfigManager implements java.io.Serializable {
                 }
                 mConfigurableQwsValues.put(INITIAL_SCREEN_ID, initialScreenID);
             }
-
+            
             if (qwsElement.getTagName().equalsIgnoreCase(RECORD_DETAILS)) {
                 try {
                     buildConfigBlock(qwsElement, RECORD_DETAILS);
                 } catch (Exception ex) {
-                    // logged at a higher level
                     throw new Exception(mLocalizer.t("SRC515: Error in record details configuration: {0}", ex.getMessage()));
                 }
             } else if (qwsElement.getTagName().equalsIgnoreCase(SOURCE_RECORD)) {
                 try {
                     buildSubscreensBlock(qwsElement, SOURCE_RECORD);
                 } catch (Exception ex) {
-                    // logged at a higher level
                     throw new Exception(mLocalizer.t("SRC516: Error in source record configuration: {0}", ex.getMessage()));
                 }
             } else if (qwsElement.getTagName().equalsIgnoreCase(TRANSACTIONS)) {
                 try {
                     buildConfigBlock(qwsElement, TRANSACTIONS);
                 } catch (Exception ex) {
-                    // logged at a higher level
                     throw new Exception(mLocalizer.t("SRC517: Error in transaction configuration: {0}", ex.getMessage()));
                 }
             } else if (qwsElement.getTagName().equalsIgnoreCase(DUPLICATE_RECORDS)) {
                 try {
                     buildConfigBlock(qwsElement, DUPLICATE_RECORDS);
                 } catch (Exception ex) {
-                    // logged at a higher level
                     throw new Exception(mLocalizer.t("SRC518: Error in duplicate records configuration: {0}", ex.getMessage()));
                 }
             } else if (qwsElement.getTagName().equalsIgnoreCase(REPORTS)) {
@@ -977,14 +978,11 @@ public class ConfigManager implements java.io.Serializable {
                 try {
                     buildSubscreensBlock(qwsElement, REPORTS);
                 } catch (Exception ex) {
-                      // logged at a higher level
                       throw new Exception(mLocalizer.t("SRC520: Error in matching configuration: {0}", ex.getMessage()));
                 }
             } else if (qwsElement.getTagName().equalsIgnoreCase(AUDIT_LOG)) {
                 try {
                     String value = NodeUtil.getChildNodeText(element, "allow-insert");
-                    // TODO 
-                    // may need to move this to security manager in the future?
                     if (value != null && value.equals("true")) {
                             auditLog = true;
                     } else {
@@ -992,22 +990,19 @@ public class ConfigManager implements java.io.Serializable {
                     }
                     buildConfigBlock(qwsElement, AUDIT_LOG);
                 } catch (Exception ex) {
-                    // logged at a higher level
                     throw new Exception(mLocalizer.t("SRC521: Error in audit log configuration: {0}", ex.getMessage()));
                 }
             } else if (qwsElement.getTagName().equalsIgnoreCase(ASSUMED_MATCHES)) {
                 try {
                     buildConfigBlock(qwsElement, ASSUMED_MATCHES);
                 } catch (Exception ex) {
-                    // logged at a higher level
                     throw new Exception(mLocalizer.t("SRC522: Error in assumed matches configuration: {0}", ex.getMessage()));
                 }
             }else if (qwsElement.getTagName().equalsIgnoreCase(DASHBOARD)) {
                 try {
-                    buildConfigBlock(qwsElement, DASHBOARD);
+                    buildSubscreensBlock(qwsElement, DASHBOARD);
                 } catch (Exception ex) {
-                    // logged at a higher level
-                    throw new Exception(mLocalizer.t("SRC523: Error in audit log configuration: {0}", ex.getMessage()));
+                    throw new Exception(mLocalizer.t("SRC523: Error in dashboard configuration: {0}", ex.getMessage()));
                 }
             }
         }
@@ -1524,7 +1519,7 @@ public class ConfigManager implements java.io.Serializable {
                         buildQwsConfig(guiElement);
                     }
                 }
-              } catch (Exception ex) {  // exception error already logged
+              } catch (Exception ex) {  
                   throw new Exception(mLocalizer.t("SRC510: Error in GUI definition: {0}", ex.getMessage()));
               }
             } else if (element.getTagName().equalsIgnoreCase("impl-details")) {
@@ -1564,8 +1559,6 @@ public class ConfigManager implements java.io.Serializable {
                   throw new Exception(mLocalizer.t("SRC512: Error in implementation detail definition: {0}", 
                                                     ex.getMessage()));
               }
-
-                securityEnabled = NodeUtil.getChildNodeText(element,"enable-security");
             }
         }
     }
@@ -1619,13 +1612,6 @@ public class ConfigManager implements java.io.Serializable {
 
 
     /**
-     * @return the secEnabled flag
-     */
-    public boolean isSecurityEnabled() {
-        return (securityEnabled == null  || securityEnabled.equalsIgnoreCase("true"));
-    }
-
-    /**
      * @return the handle to the security plug-in object
      */
     public ObjectSensitivePlugIn getSecurityPlugIn() {
@@ -1660,10 +1646,10 @@ public class ConfigManager implements java.io.Serializable {
     }
     
     /* Returns the corresponding screenobject for given Screen name 
-     * @param edmScreenName is the screen Name. Example: record-details,transactions,duplicate-records
+     * @param midmScreenName is the screen Name. Example: record-details,transactions,duplicate-records
      * @return  ScreenObjet of corresponding Screen name
      */ 
-     public ScreenObject getScreenObjectFromScreenName(String edmScreenName) throws Exception {
+     public ScreenObject getScreenObjectFromScreenName(String midmScreenName) throws Exception {
         ChildElementIterator screenNameIterator = null;
         ScreenObject screenObject = null;
         Element guiElement = getPageDefinitionElement();
@@ -1674,22 +1660,22 @@ public class ConfigManager implements java.io.Serializable {
             while (screenNameIterator.hasNext()) {
 
                 Element screenName = (Element) screenNameIterator.next();
-                if (screenName.getTagName().equalsIgnoreCase(edmScreenName)) {
-                    screenID = NodeUtil.getChildNodeText(screenName, "screen-id");                 
+                if (screenName.getTagName().equalsIgnoreCase(midmScreenName)) {
+                    screenID = NodeUtil.getChildNodeText(screenName, SCREEN_ID);                 
                 }
             }
-        } catch (Exception ex) {  // exception error already logged
+        } catch (Exception ex) {  
             throw new Exception(mLocalizer.t("SRC532: The ScreenObject could " + 
                                     "not be retrieved from the screen name [{0}]: {1}", 
-                                    edmScreenName, ex.getMessage()));
+                                    midmScreenName, ex.getMessage()));
         }if (screenID != null) {
             screenObject = getScreen(new Integer(screenID));
         }
         return screenObject;
     }
     /* Returns the corresponding screenobject for given Screen name 
-     * @param edmScreenName is the screen Name. Example: record-details,transactions,duplicate-records
-     * @return  ScreenObjet of corresponding Screen name
+     * @param screenIdValue is the screen ID.
+     * @return  ScreenObject of corresponding Screen name
      */ 
 
     public String getScreenObjectTagName(String screenIdValue) throws Exception {
@@ -1700,13 +1686,13 @@ public class ConfigManager implements java.io.Serializable {
         try {
             while (screenNameIterator.hasNext()) {
                 Element screenNameElement = (Element) screenNameIterator.next();
-                String screenID = NodeUtil.getChildNodeText(screenNameElement, "screen-id");                 
+                String screenID = NodeUtil.getChildNodeText(screenNameElement, SCREEN_ID);                 
                 if(screenID != null && screenID.equalsIgnoreCase(screenIdValue)) {
                    tagName = screenNameElement.getNodeName();
                 }    
             }
 
-        } catch (Exception ex) {  // exception error already logged
+        } catch (Exception ex) {  
             throw new Exception(mLocalizer.t("SRC532: The ScreenObject could " +
                     "not be retrieved from the screen name [{0}]: {1}",
                     screenIdValue, ex.getMessage()));
@@ -1731,8 +1717,8 @@ public class ConfigManager implements java.io.Serializable {
             while (screenNameIterator.hasNext()) {
                 
                 Element screenName = (Element) screenNameIterator.next();
-                if (!screenName.getTagName().equalsIgnoreCase("initial-screen-id")){                    
-                    screenID = NodeUtil.getChildNodeText(screenName, "screen-id");                    
+                if (!screenName.getTagName().equalsIgnoreCase(INITIAL_SCREEN_ID)){                    
+                    screenID = NodeUtil.getChildNodeText(screenName, SCREEN_ID);                    
                 }
                 
                 if (screenID != null) {
@@ -1741,7 +1727,7 @@ public class ConfigManager implements java.io.Serializable {
                 }
 
             }
-        } catch (Exception ex) {  // exception error already logged
+        } catch (Exception ex) {  
             throw new Exception(mLocalizer.t("SRC533: All ScreenObject instances " + 
                                     "could not not be retrieved: {0}", 
                                     ex.getMessage()));

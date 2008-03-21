@@ -48,7 +48,7 @@ public class SearchResultsConfig implements java.io.Serializable {
                                 // at one time
     private boolean mShowEUID;  // indicates if the EUID should be displayed
     private boolean mShowLID;   // indicates if the LID should be displayed
-    private boolean mEnabled;   // indicates if the results have been enabled
+//    private boolean mEnabled;   // indicates if the results have been enabled
                                 // (used only for reports)
     private ArrayList mFieldConfigs;    // ArrayList of FieldConfigGroup objects
 
@@ -152,9 +152,9 @@ public class SearchResultsConfig implements java.io.Serializable {
      * @return Boolean value indicating the results have been enabled.
      * This is used only for reports.
      */
-    public boolean getEnabled() {
-        return mEnabled;
-    }
+//    public boolean getEnabled() {
+//        return mEnabled;
+//    }
 
     /**
      * Getter for the mDescription attribute
