@@ -137,11 +137,11 @@
                             <tasks>
                                 <unzip src="${settings.localRepository}/mural/matcher-resources/1.0/matcher-resources-1.0.jar" 
                                     dest="${project.build.testOutputDirectory}"/>
-                            <!--copy todir="${project.build.directory}/test-classes/com/sun/mdm/standardizer">
-                                    <fileset dir="${basedir}/src/main/resources/matchengine/standardizer">
-                                        <include name="repositoryImage.zip"/>
-                                    </fileset>
-                            </copy-->
+                                <copy todir="${project.build.directory}/test-classes/com/sun/mdm/standardizer">
+                                        <fileset dir="../../open-dm-dq/standardizer/dist">
+                                            <include name="repositoryImage.zip"/>
+                                        </fileset>
+                                </copy>
                             </tasks>          
                         </configuration>
                     </execution>
