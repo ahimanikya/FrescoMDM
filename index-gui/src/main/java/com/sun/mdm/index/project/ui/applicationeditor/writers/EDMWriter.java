@@ -135,7 +135,7 @@ public class EDMWriter {
             for (int i = 0; i < cnt; i++) {
                 EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
 
-                if (subNode.isField()) {
+                if (subNode.isField() && !subNode.isGeneratedField()) {
                     nodes += (tab8 + "<field>\n");
                     nodes += (tab12 + "<name>" +
                         subNode.getName() + "</name>\n");
@@ -231,7 +231,7 @@ public class EDMWriter {
             for (int i = 0; i < cnt; i++) {
                 EntityNode subNode = (EntityNode) currentNode.getChildAt(i);
 
-                if (subNode.isField()) {
+                if (subNode.isField() && !subNode.isGeneratedField()) {
                     nodes += (tab8 + "<field-" + subNode.getName() +
                     ">\n");
                     nodes += (tab12 + "<display-name>" +
