@@ -85,6 +85,7 @@
     <xs:complexType name="qwsDefinitionType">
         <xs:sequence>
             <xs:element ref="initial-screen-id"/>
+            <xs:element name="dashboard" type="sourceRecordReportsType"/>
             <xs:element name="record-details" type="commonBlockType"/>
             <xs:element name="transactions" type="commonBlockType"/>
             <xs:element name="duplicate-records" type="commonBlockType"/>
