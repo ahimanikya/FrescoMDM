@@ -74,6 +74,7 @@ public class EDMType {
     private final String mTagTransactions = "transactions";
     private final String mTagDuplicateRecords = "duplicate-records";
     private final String mTagAssumedMatches = "assumed-matches";
+    private final String mTagDashboard = "dashboard";
     private final String mTagSourceRecord = "source-record";
     private final String mTagScreenID = "screen-id";
     private final String mTagSearchPages = "search-pages";
@@ -209,21 +210,6 @@ public class EDMType {
 
     }
     
-    /*
-     <history>
-        <root-object>Person</root-object>
-        <tab-name>History</tab-name>
-        <tab-entrance>/EnterXASearchAction.do</tab-entrance>
-        <xa-search-page>
-            <field-per-row>2</field-per-row>
-        </xa-search-page>
-        <search-result-list-page>
-            <item-per-page>10</item-per-page>
-            <max-result-size>100</max-result-size>
-        </search-result-list-page>
-    </history>
-
-     */
     void parseHistory(Node node) {
         mPageDefinition.createHistory();
         if (node.hasChildNodes()) {
@@ -281,21 +267,6 @@ public class EDMType {
         return buffer.toString();
     }
 
-    /*
-        <matching-review>
-            <root-object>Person</root-object>
-            <tab-name>Matching Review</tab-name>
-            <tab-entrance>/EnterPDSearchAction.do</tab-entrance>
-            <pd-search-page>
-                <field-per-row>2</field-per-row>
-            </pd-search-page>
-            <search-result-list-page>
-                <item-per-page>10</item-per-page>
-                <max-result-size>100</max-result-size>
-            </search-result-list-page>
-        </matching-review>
-
-     */
     void parseCommonBlock(Node node, PageDefinition.CommonBlock commonBlock) {
         if (node.hasChildNodes()) {
             NodeList nl = node.getChildNodes();
@@ -758,6 +729,23 @@ public class EDMType {
         return buffer.toString();
     }
     
+    void parseDashboard(Node node) {
+        mPageDefinition.createDashboard();
+        parseCommonBlock(node, mPageDefinition.dashboard.commonBlock);
+        if (node.hasChildNodes()) {
+            NodeList nl = node.getChildNodes();
+            for (int i = 0; i < nl.getLength(); i++) {
+                if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                    String name = ((Element) nl.item(i)).getTagName();
+                    if (name.equals(mTagSubscreenConfigurations)) {
+                        parseSubscreenConfigurations(nl.item(i), mPageDefinition.dashboard.subscreenConfigurations);
+                    }
+                }
+            }
+        }
+
+    }
+    
     void parseSourceRecord(Node node) {
         mPageDefinition.createSourceRecord();
         parseCommonBlock(node, mPageDefinition.sourceRecord.commonBlock);
@@ -773,6 +761,31 @@ public class EDMType {
             }
         }
 
+    }
+    
+    String getDashboardXML() {
+        StringBuffer buffer = new StringBuffer();
+	buffer.append(Utils.TAB3 + Utils.startTag(mTagDashboard));
+        buffer.append(getPageTabXML(mPageDefinition.dashboard.commonBlock.pageTab, Utils.TAB4));
+        if (mPageDefinition.dashboard.commonBlock.screenID != null) {
+            buffer.append(Utils.TAB4 + Utils.startTagNoLine(mTagScreenID) +
+                            mPageDefinition.dashboard.commonBlock.screenID + 
+                            Utils.endTag(mTagScreenID));
+        }
+        if (mPageDefinition.dashboard.commonBlock.displayOrder != null) {
+            buffer.append(Utils.TAB4 + Utils.startTagNoLine(mTagDisplayOrder) +
+                            mPageDefinition.dashboard.commonBlock.displayOrder + 
+                            Utils.endTag(mTagDisplayOrder));
+        }
+
+        buffer.append(getSearchPagesXML(mPageDefinition.dashboard.commonBlock.alSimpleSearchPages, Utils.TAB4));
+
+        buffer.append(getSearchResultPagesXML(mPageDefinition.dashboard.commonBlock.searchResultListPage, Utils.TAB4));
+
+        buffer.append(getSubscreenConfigurationsXML((mPageDefinition.dashboard.subscreenConfigurations)));
+        buffer.append(Utils.TAB3 + Utils.endTag(mTagDashboard));
+
+        return buffer.toString();
     }
     
     String getSourceRecordXML() {
@@ -1414,6 +1427,8 @@ public class EDMType {
                         parseDuplicateRecords(nl.item(i));
                     } else if (name.equals(mTagAssumedMatches)) {
                         parseAssumedMatches(nl.item(i));
+                    } else if (name.equals(mTagDashboard)) {
+                        parseDashboard(nl.item(i));
                     } else if (name.equals(mTagSourceRecord)) {
                         parseSourceRecord(nl.item(i));
                     } else if (name.equals(mTagAuditLog)) {
@@ -1480,6 +1495,7 @@ public class EDMType {
         // Classic EDM
         if (mPageDefinition.eoSearch != null) {
             if (bMidm) {
+                // Convert edm's eoSearch to midm's record-details
                 mPageDefinition.midmConverter.eoSearch();
             } else {
                 buffer.append(getEoSearchXML());
@@ -1488,6 +1504,7 @@ public class EDMType {
         
         if (mPageDefinition.createEO != null) {
             if (bMidm) {
+                // Convert edm's createEO to midm's source-record
                 mPageDefinition.midmConverter.createEO();
             } else {
                 buffer.append(getCreateEoXML());
@@ -1496,6 +1513,7 @@ public class EDMType {
         
         if (mPageDefinition.history != null) {
             if (bMidm) {
+                // No conversion?
                 mPageDefinition.midmConverter.history();
             } else {
                 buffer.append(getHistoryXML());
@@ -1504,6 +1522,7 @@ public class EDMType {
         
         if (mPageDefinition.matchReview != null) {
             if (bMidm) {
+                // Convert edm's matchReview to midm's assumed-matches
                 mPageDefinition.midmConverter.matchReview();
             } else {
                 buffer.append(getMatchingReviewXML());
@@ -1511,6 +1530,11 @@ public class EDMType {
         }
         
         // Master Index DM
+        
+        if (mPageDefinition.dashboard != null) {
+            buffer.append(getDashboardXML());
+        }
+
         if (mPageDefinition.recordDetails != null) {
             buffer.append(getRecordDetailsXML());
         }
@@ -1611,9 +1635,11 @@ public class EDMType {
                         mImplDetails.debugDest + 
                         Utils.endTag(mTagDebugDest));
         
-        buffer.append(Utils.TAB2 + Utils.startTagNoLine(mTagEnableSecurity) + 
-                        mImplDetails.enableSecurity + 
-                        Utils.endTag(mTagEnableSecurity));
+        if (mImplDetails.enableSecurity != null) {
+            buffer.append(Utils.TAB2 + Utils.startTagNoLine(mTagEnableSecurity) + 
+                          mImplDetails.enableSecurity + 
+                          Utils.endTag(mTagEnableSecurity));
+        }
         
         if (mImplDetails.objectSensitivePlugInClass != null) {
             buffer.append(Utils.TAB2 + Utils.startTagNoLine(this.mTagObjectSensitivePlugInClass) + 
@@ -1642,7 +1668,7 @@ public class EDMType {
         String reportgeneratorJndiName = "ejb/PrisonerReportGenerator";
         String debugFlag = "true";
         String debugDest = "console";
-        String enableSecurity = "false";
+        String enableSecurity = null;
         String objectSensitivePlugInClass = null;
         
         String getMasterControllerJndiName() {
@@ -2359,6 +2385,7 @@ public class EDMType {
         CommonBlock transactions = null;
         CommonBlock duplicateRecords = null;
         CommonBlock assumedMatches = null;
+        Dashboard dashboard = null;
         SourceRecord sourceRecord = null;
         MidmConverter midmConverter = new MidmConverter();
         
@@ -2439,18 +2466,44 @@ public class EDMType {
         class MidmConverter {
             // Convert edm's eoSearch to midm's record-details
             void eoSearch() {
-                //mPageDefinition.eoSearch = null;
+                if (eoSearch != null && eoSearch.commonBlock != null && eoSearch.commonBlock.alSimpleSearchPages != null) {
+                    createRecordDetails();
+                    recordDetails.pageTab.rootObject = eoSearch.commonBlock.pageTab.rootObject;
+                    recordDetails.pageTab.tabName = "Record Details";
+                    recordDetails.screenID = "1";
+                    recordDetails.displayOrder = "2";
+                    ArrayList alSimpleSearchPages = eoSearch.commonBlock.alSimpleSearchPages;
+                    
+                    for (int i=0; i < alSimpleSearchPages.size(); i++) {
+                        SimpleSearchPage simpleSearchPage = (SimpleSearchPage) alSimpleSearchPages.get(i);
+                        SimpleSearchPage newSimpleSearchPage;
+                        if (simpleSearchPage.alSearchOption != null) {
+                            if (simpleSearchPage.alSearchOption.size() == 1) {
+                                newSimpleSearchPage = recordDetails.addSimpleSearchPage();
+                                newSimpleSearchPage = simpleSearchPage;
+                            } else {
+                                for (int j=0; j < simpleSearchPage.alSearchOption.size(); j++) {
+                                    newSimpleSearchPage = recordDetails.addSimpleSearchPage();
+                                }
+                            }
+                        }
+                    }
+                    eoSearch = null;
+                }
             }
             
             void createEO() {
+                // Convert edm's createEO to midm's source-record
                 //mPageDefinition.createEO = null;
             }
             
             void history() {
-                //mPageDefinition.history = null;
+                // No Conversion?
+                history = null;
             }
             
             void matchReview() {
+                // Convert edm's matchReview to midm's assumed-matches
                 //mPageDefinition.matchReview = null;
             }
             
@@ -2720,6 +2773,15 @@ public class EDMType {
             }
         }
         
+        class Dashboard {
+            CommonBlock commonBlock = new CommonBlock();
+            SubscreenConfigurations subscreenConfigurations = new SubscreenConfigurations();
+        }
+        
+        void createDashboard() {
+            dashboard = new Dashboard();
+        }
+
         class Report {
             String name;
             String title;
