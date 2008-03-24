@@ -102,6 +102,11 @@
                                         <include name="**/*"></include>
                                     </fileset>
                                 </copy>
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/repository/templates/security">
+                                    <fileset dir="${basedir}/../index-services/src/main/resources/security/config">
+                                        <include name="midm-security.xml"></include>
+                                    </fileset>
+                                </copy>
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm">
                                     <fileset dir="${basedir}/../index-core/target">
                                         <include name="index-core.jar"></include>                 
@@ -110,13 +115,7 @@
                                 <copy file="${settings.localRepository}/net/java/hulp/i18n/net.java.hulp.i18n/2.1-SNAPSHOT/net.java.hulp.i18n-2.1-SNAPSHOT.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/net.java.hulp.i18n.jar"></copy>
                                 <copy file="${settings.localRepository}/mural/matcher/1.0/matcher-1.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/matcher.jar"></copy>
                                 <copy file="${settings.localRepository}/org/apache/lucene/lucene-core/2.2.0/lucene-core-2.2.0.jar" tofile="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/lucene-core.jar"></copy>
-                                <unzip src="${settings.localRepository}/mural/matcher-resources/1.0/matcher-resources-1.0.jar" dest="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/repository/templates"></unzip>
-                                <!--copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/standardizer">
-                                    <fileset dir="${basedir}/../index-core/src/main/resources/matchengine/standardizer">
-                                        <exclude name="standardizer-resources.jar"></exclude>
-                                        <exclude name="deployment-files.zip"></exclude>
-                                    </fileset>   
-                                </copy-->                                    
+                                <unzip src="${settings.localRepository}/mural/matcher-resources/1.0/matcher-resources-1.0.jar" dest="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/repository/templates"></unzip>                               
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/standardizer/lib">
                                     <fileset dir="${basedir}/../../open-dm-dq/inti/components/target">
                                         <include name="inti-components-1.0.jar"/>
