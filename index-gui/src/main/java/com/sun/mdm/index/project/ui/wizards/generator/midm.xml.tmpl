@@ -17,12 +17,57 @@
         <reportgenerator-jndi-name>ejb/[sbyntag:objname]ReportGenerator</reportgenerator-jndi-name>
         <debug-flag>true</debug-flag>
         <debug-dest>console</debug-dest>
-        <enable-security>false</enable-security>
         <object-sensitive-plug-in-class></object-sensitive-plug-in-class>
     </impl-details>
     <gui-definition>
         <page-definition>
             <initial-screen-id>1</initial-screen-id>
+            <dashboard>
+                <root-object>[sbyntag:objname]</root-object>
+                <tab-name>Dashboard</tab-name>
+                <screen-id>8</screen-id>
+                <display-order>0</display-order> 
+                <search-pages/>
+                <search-result-pages/>
+                <subscreen-configurations>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>[sbyntag:objname]</root-object>
+                        <tab-name>Summary</tab-name>
+                        <screen-id>0</screen-id>
+                        <display-order>0</display-order>
+                        <search-pages/>
+                        <search-result-pages/>
+                    </subscreen>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>[sbyntag:objname]</root-object>
+                        <tab-name>Reports</tab-name>
+                        <screen-id>1</screen-id>
+                        <display-order>1</display-order>
+                        <search-pages/>
+                        <search-result-pages/>
+                    </subscreen>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>[sbyntag:objname]</root-object>
+                        <tab-name>Compare EUIDs</tab-name>
+                        <screen-id>2</screen-id>
+                        <display-order>2</display-order>
+                        <search-pages/>
+                        <search-result-pages/>
+                    </subscreen>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>[sbyntag:objname]</root-object>
+                        <tab-name>Lookup EUID</tab-name>
+                        <screen-id>3</screen-id>
+                        <display-order>3</display-order>
+                        <search-pages/>
+                        <search-result-pages/>
+                    </subscreen>
+                </subscreen-configurations>
+            </dashboard>
             <record-details>
                 <root-object>[sbyntag:objname]</root-object>
                 <tab-name>Record Details</tab-name>
