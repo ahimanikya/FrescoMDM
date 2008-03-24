@@ -29,6 +29,7 @@ public class EviewProjectProperties {
     public static final String EVIEW_TEMPLATE_LOCATION = MODULES_EXT_MDM_LOCATION+ "/repository/templates";
     public static final String MATCH_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/match";
     public static final String MATCHER_PLUGIN_LOCATION = MATCH_TEMPLATE_LOCATION + "/lib";
+    public static final String SECURITY_TEMPLATE_LOCATION = EVIEW_TEMPLATE_LOCATION + "/security";
     public static final String STANDARDIZATION_DEPLOYMENT_LOCATION = MODULES_EXT_MDM_LOCATION+ "/standardizer/deployment";
     public static final String PLUGIN = "plugin";
     public static final String STANDARDIZATION_PLUGIN_LOCATION = STANDARDIZATION_DEPLOYMENT_LOCATION + "/plugin";
@@ -79,6 +80,8 @@ public class EviewProjectProperties {
     public static final String VALIDATION_XSD = "validation.xsd";
     public static final String UPDATE_XML = "update.xml";
     public static final String UPDATE_XSD = "update.xsd";
+    public static final String MIDM_SECURITY_XML = SECURITY_TEMPLATE_LOCATION + "/midm-security.xml";
+    public static final String MIDM_SECURITY_XSD = "midm-security.xsd";
     
     public static final String MATCH_CONFIG_FILE = "matchConfigFile.cfg";
     public static final String MATCH_COMPARATOR_XML = "comparatorsList.xml";

@@ -195,6 +195,11 @@ public class EviewProjectGenerator {
             if ((wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_MIDM_CONFIG_FILE)) != null) {
                 strXml = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_MIDM_CONFIG_FILE).toString();
                 repository.createConfigurationFile(configurationFolder, EviewProjectProperties.MIDM_XML, strXml);
+                //midm-security.xml
+                FileObject midmsecurityxml = repository.getInstalledFile(EviewProjectProperties.MIDM_SECURITY_XML);
+                if (midmsecurityxml != null) {
+                    FileUtil.copyFile(midmsecurityxml, configurationFolder, midmsecurityxml.getName());
+                }
             }
             
             // master.xml/MasterConfigurationFile;
@@ -220,7 +225,7 @@ public class EviewProjectGenerator {
             // update.xml/UpdateConfigurationFile;
             strXml = wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_XML_UPDATE_CONFIG_FILE).toString();
             repository.createConfigurationFile(configurationFolder, EviewProjectProperties.UPDATE_XML, strXml);
-            
+                        
             FileObject schemaFolder = getConfigSchemaFiles(configurationFolder, EviewProjectProperties.SCHEMA_FOLDER, EviewProjectProperties.SCHEMA_TEMPLATE_LOCATION);
             
             // *** Sub folder - Database Script ***
