@@ -24,6 +24,7 @@
 package com.sun.mdm.index.loader.clustersynchronizer.ftp;
 
 import com.sun.mdm.index.loader.clustersynchronizer.ftp.LoaderFtpClient;
+import com.sun.mdm.index.loader.config.LoaderConfig;
 
 import junit.framework.TestCase;
 
@@ -34,6 +35,13 @@ import junit.framework.TestCase;
 public class LoaderFtpClientTest extends TestCase {
 
 	LoaderFtpClient lftp;
+	
+	private LoaderConfig loaderConfig = LoaderConfig.getInstance();
+	
+	private String ftpHostName;
+	private String ftpUser;
+	private String ftpPassword;
+	
 
 	/**
 	 * @param name
@@ -49,6 +57,10 @@ public class LoaderFtpClientTest extends TestCase {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
+		
+		ftpHostName = loaderConfig.getSystemProperty("ftp.server");
+		 ftpUser = loaderConfig.getSystemProperty("ftp.username");
+		ftpPassword = loaderConfig.getSystemProperty("ftp.password");
 
 		lftp = new LoaderFtpClient("sbiswas-acer.stc.com", "sujit", "sujit");
 	}
@@ -67,7 +79,7 @@ public class LoaderFtpClientTest extends TestCase {
 	 * {@link com.sun.mdm.index.loader.clustersynchronizer.ftp.LoaderFtpClient#storeFile(java.lang.String, java.lang.String, java.lang.String)}.
 	 */
 	public void testStoreFile() {
-		lftp = new LoaderFtpClient("sbiswas-acer.stc.com", "sujit", "sujit");
+		lftp = new LoaderFtpClient(ftpHostName, ftpUser, ftpPassword);
 		boolean b = lftp.storeFile("/eview/loader", "test/data/",
 				"blockBucket2");
 
@@ -79,7 +91,7 @@ public class LoaderFtpClientTest extends TestCase {
 	 * {@link com.sun.mdm.index.loader.clustersynchronizer.ftp.LoaderFtpClient#retrieveFile(java.lang.String, java.lang.String, java.lang.String)}.
 	 */
 	public void testRetrieveFile() {
-		lftp = new LoaderFtpClient("sbiswas-acer.stc.com", "sujit", "sujit");
+		lftp = new LoaderFtpClient(ftpHostName, ftpUser, ftpPassword);
 		boolean b = lftp.retrieveFile("/eview/loader", "test/data/loader/",
 				"blockBucket2");
 

@@ -30,6 +30,7 @@ import java.util.Scanner;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import com.sun.mdm.index.loader.config.LoaderConfig;
 import com.sun.mdm.index.loader.euid.EuidIndexAssigner;
 import com.sun.mdm.index.loader.euid.EuidIndexFile;
 import com.sun.mdm.index.loader.euid.EuidIndexFileRecord;
@@ -45,6 +46,10 @@ public class EuidIndexAssignerTest extends TestCase {
 
 	private static Logger logger = Logger.getLogger(EuidIndexAssignerTest.class
 			.getName());
+	
+	private String workingDir;
+	
+	LoaderConfig config=LoaderConfig.getInstance();
 
 	/**
 	 * @param name
@@ -52,6 +57,7 @@ public class EuidIndexAssignerTest extends TestCase {
 	public EuidIndexAssignerTest(String name) {
 		super(name);
 		new LoaderLogManager().init();
+		workingDir = config.getSystemProperty("workingDir");
 	}
 
 	/*
@@ -86,7 +92,7 @@ public class EuidIndexAssignerTest extends TestCase {
 	 * {@link com.sun.mdm.index.loader.euid.EuidIndexAssigner#assignEuids()}.
 	 */
 	public void testAssignEuids() throws Exception {
-		String euid = "test/data/loader/loader-1/euid/euidIndex.txt";
+		String euid = workingDir + "/euid/euidIndex.txt";
 
 		EuidIndexAssigner ea = new EuidIndexAssigner();
 
@@ -116,7 +122,7 @@ public class EuidIndexAssignerTest extends TestCase {
 
 	public void testStart() throws Exception {
 
-		String euid = "test/data/loader/loader-1/euid/euidIndex.txt";
+		String euid = workingDir + "/euid/euidIndex.txt";
 
 		HashMap<String, ArrayList<Long>> map = new HashMap<String, ArrayList<Long>>();
 
@@ -178,7 +184,7 @@ public class EuidIndexAssignerTest extends TestCase {
 	}
 
 	private void createMatchFile() {
-		String s = "test/data/loader/loader-1/match/stage/finalMatch";
+		String s = workingDir + "/match/stage/finalMatch";
 
 		try {
 			RandomAccessFile match = new RandomAccessFile(s, "rw");
