@@ -121,6 +121,7 @@ public class LoaderGeneratorTask extends Task {
 			writeSQLLoaderScripts();
 			writeLoggingProperties();
 			writeClusterSynchronizerSQL();
+			writeClusterTrunkateSQL();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -150,6 +151,24 @@ public class LoaderGeneratorTask extends Task {
 			BufferedWriter wr = new BufferedWriter(new FileWriter(f));
 
 			String fileResource = "com/sun/mdm/index/project/anttasks/cluster-synchronizer.sql.xml";
+
+			StringBuilder sb = getResourceContents(fileResource);
+
+			wr.write(sb.toString());
+
+			wr.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	private void writeClusterTrunkateSQL() {
+		try {
+			File f = new File(configDir + "/../cluster-truncate.sql");
+			BufferedWriter wr = new BufferedWriter(new FileWriter(f));
+
+			String fileResource = "com/sun/mdm/index/project/anttasks/cluster-truncate.sql.xml";
 
 			StringBuilder sb = getResourceContents(fileResource);
 
