@@ -52,8 +52,6 @@ import java.io.OutputStreamWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import org.netbeans.modules.j2ee.deployment.devmodules.api.J2eeModule;
@@ -67,6 +65,10 @@ import com.sun.mdm.standardizer.introspector.StandardizationIntrospector;
  *
  */
 public class EviewProjectGenerator {
+    private static final com.sun.mdm.index.util.Logger mLogger = com.sun.mdm.index.util.Logger.getLogger(
+            EviewProjectGenerator.class.getName()
+        );
+
     public static final String DEFAULT_DOC_BASE_FOLDER = "conf"; //NOI18N
     public static final String DEFAULT_SRC_FOLDER = "src"; //NOI18N
     public static final String DEFAULT_RESOURCE_FOLDER = "setup"; //NOI18N
@@ -325,8 +327,7 @@ public class EviewProjectGenerator {
         props.setProperty(EviewProjectProperties.J2EE_SERVER_INSTANCE, serverInstanceID);
         // set j2ee.platform.classpath
         if (!j2eePlatform.getSupportedSpecVersions(J2eeModule.EJB).contains(j2eeLevel)) {
-            Logger.getLogger("global").log(Level.WARNING,
-                    "J2EE level:" + j2eeLevel + " not supported by server " + Deployment.getDefault().getServerInstanceDisplayName(serverInstanceID) + " for module type EJB"); // NOI18N
+            mLogger.warn("J2EE level:" + j2eeLevel + " not supported by server " + Deployment.getDefault().getServerInstanceDisplayName(serverInstanceID) + " for module type EJB"); // NOI18N
         }
         String classpath = toClasspathString(j2eePlatform.getClasspathEntries());
         props.setProperty(EviewProjectProperties.J2EE_PLATFORM_CLASSPATH,classpath);
@@ -345,7 +346,7 @@ public class EviewProjectGenerator {
             
             new SunEjbJarWriter(projectFolder).write();
         } catch (IOException ioe) {
-            Logger.getLogger("global").log(Level.INFO, null, ioe);
+            mLogger.severe(ioe);
         }
         if (deployAntPropsFile != null) {
             props.setProperty(EviewProjectProperties.DEPLOY_ANT_PROPS_FILE, deployAntPropsFile.getAbsolutePath());
@@ -361,8 +362,7 @@ public class EviewProjectGenerator {
         
         // set j2ee.platform.classpath
         if (!j2eePlatform.getSupportedSpecVersions(J2eeModule.WAR).contains(j2eeLevel)) {
-            Logger.getLogger("global").log(Level.WARNING,
-                    "J2EE level:" + j2eeLevel + " not supported by server " + Deployment.getDefault().getServerInstanceDisplayName(serverInstanceID) + " for module type WAR"); // NOI18N
+            mLogger.warn("J2EE level:" + j2eeLevel + " not supported by server " + Deployment.getDefault().getServerInstanceDisplayName(serverInstanceID) + " for module type WAR"); // NOI18N
         }
         classpath = toClasspathString(j2eePlatform.getClasspathEntries());
         props.setProperty(EviewProjectProperties.J2EE_PLATFORM_CLASSPATH, classpath);
@@ -400,7 +400,7 @@ public class EviewProjectGenerator {
             AntDeploymentHelper.writeDeploymentScript(new File(projectFolder, EviewProjectProperties.ANT_DEPLOY_BUILD_SCRIPT),
                     J2eeModule.WAR, serverInstanceID);
         } catch (IOException ioe) {
-            Logger.getLogger("global").log(Level.INFO, null, ioe);
+            mLogger.severe(ioe);
         }
         if (deployAntPropsFile != null) {
             props.setProperty(EviewProjectProperties.DEPLOY_ANT_PROPS_FILE, deployAntPropsFile.getAbsolutePath());

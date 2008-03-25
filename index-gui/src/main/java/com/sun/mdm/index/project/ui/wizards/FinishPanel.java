@@ -97,7 +97,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     private EntityNode mPrimaryNode;
     private ConfigSettings mConfigSettings;
     final String xmlHEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-    private static final java.util.logging.Logger mLog = java.util.logging.Logger.getLogger(
+    private static final com.sun.mdm.index.util.Logger mLogger = com.sun.mdm.index.util.Logger.getLogger(
             FinishPanel.class.getName()
         );
 
@@ -265,8 +265,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
             invokeEVisionGenerators(eViewInstanceName, businessObjectName,
                 projectName);
         } catch (Exception ex) {
-//            mLogger.debug("Failed to generate eVision site. ");
-            ex.printStackTrace();
+            mLogger.debug(ex.toString());
         }
     }
 
@@ -365,13 +364,13 @@ public class FinishPanel implements WizardDescriptor.Panel {
         } else if (mDbName.equalsIgnoreCase(DB_DB2)) {
             template = CODE_LIST_DB2_TEMPLATE;
         } else {
-//            mLogger.debug("Unsupported database vendor type: " + mDbName);
+            mLogger.debug("Unsupported database vendor type: " + mDbName);
         }
 
         java.io.InputStream is = this.getClass().getResourceAsStream(template);
 
         if (is == null) {
-//            mLogger.debug("Could not find the resource: " + template);
+            mLogger.debug("Could not find the resource: " + template);
         }
 
         StringBuffer sb = new StringBuffer();
@@ -386,9 +385,8 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             is.close();
         } catch (java.io.IOException e) {
-//            mLogger.debug("Error in accessing database script template: " +
-//                e.getMessage());
-            e.printStackTrace();
+            mLogger.debug("Error in accessing database script template: " +
+                e.getMessage());
         }
 
         int from = sb.indexOf(TAG_HEADER) + TAG_HEADER.length();
@@ -454,13 +452,13 @@ public class FinishPanel implements WizardDescriptor.Panel {
         } else if (mDbName.equalsIgnoreCase(DB_DB2)) {
             template = SYSTEMS_DB2_TEMPLATE;
         } else {
-//            mLogger.debug("Unsupported database vendor type: " + mDbName);
+            mLogger.debug("Unsupported database vendor type: " + mDbName);
         }
 
         java.io.InputStream is = this.getClass().getResourceAsStream(template);
 
         if (is == null) {
-//            mLogger.debug("Could not find the resource: " + template);
+            mLogger.debug("Could not find the resource: " + template);
         }
 
         StringBuffer sb = new StringBuffer();
@@ -475,10 +473,9 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
             is.close();
         } catch (java.io.IOException e) {
-//            mLogger.debug(
-//                "Error in accessing database script template for systems: " +
-//                e.getMessage());
-            e.printStackTrace();
+            mLogger.debug(
+                "Error in accessing database script template for systems: " +
+                e.getMessage());
         }
 
         int from = sb.indexOf(TAG_HEADER) + TAG_HEADER.length();
@@ -539,8 +536,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         try {
             wiz.putProperty(Properties.PROP_XML_OBJECT_DEF_FILE, strXml);
         } catch (Exception e) {
-            e.printStackTrace();
-//            mLogger.debug("Write to PROP_XML_OBJECT_DEF_FILE failed!");
+            mLogger.debug(e.getMessage());
         }
     }
 
@@ -559,8 +555,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         try {
             wiz.putProperty(Properties.PROP_XML_EDM_CONFIG_FILE, strXml);
         } catch (Exception e) {
-            e.printStackTrace();
-//            mLogger.debug("Write to PROP_XML_GUI_CONFIG_FILE failed!");
+            mLogger.debug(e.getMessage());
         }
     }
 
@@ -1657,7 +1652,6 @@ public class FinishPanel implements WizardDescriptor.Panel {
             String[] siRet = si.getAvailableSearchFields(mViewName);
 
             for (int i = 0; i < siRet.length; i++) {
-//                mLogger.debug("available search field: " + siRet[i]);
             }
         }
 
@@ -1667,7 +1661,6 @@ public class FinishPanel implements WizardDescriptor.Panel {
             String[] siRet = si.getDefaultSearchFields(mViewName);
 
             for (int i = 0; i < siRet.length; i++) {
-//                mLogger.debug("default search field: " + siRet[i]);
             }
         }
 
@@ -1677,7 +1670,6 @@ public class FinishPanel implements WizardDescriptor.Panel {
             String[] siRet = si.getAvailableResultFields(mViewName);
 
             for (int i = 0; i < siRet.length; i++) {
-//                mLogger.debug("available result field: " + siRet[i]);
             }
         }
 
@@ -1687,7 +1679,6 @@ public class FinishPanel implements WizardDescriptor.Panel {
             String[] siRet = si.getDefaultResultFields(mViewName);
 
             for (int i = 0; i < siRet.length; i++) {
-//                mLogger.debug("default result field: " + siRet[i]);
             }
         }
     }

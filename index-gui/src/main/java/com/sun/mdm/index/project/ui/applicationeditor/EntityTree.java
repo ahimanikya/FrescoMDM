@@ -52,7 +52,7 @@ import org.openide.DialogDisplayer;
 import com.sun.mdm.index.parser.NodeDef;
 import com.sun.mdm.index.parser.FieldDef;
 import com.sun.mdm.index.project.EviewApplication;
-import java.util.logging.Logger;
+import com.sun.mdm.index.util.Logger;
 
 /*
  * EntityTree.java

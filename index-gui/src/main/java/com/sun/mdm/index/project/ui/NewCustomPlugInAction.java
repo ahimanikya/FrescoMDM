@@ -40,7 +40,7 @@ public class NewCustomPlugInAction extends CookieAction {
     /**
      * The log4j logger
      */
-    private static final java.util.logging.Logger mLog = java.util.logging.Logger.getLogger(
+    private static final com.sun.mdm.index.util.Logger mLog = com.sun.mdm.index.util.Logger.getLogger(
             NewCustomPlugInAction.class.getName()
         );
 
@@ -89,7 +89,7 @@ public class NewCustomPlugInAction extends CookieAction {
                                 //fo.createData(newCustomPlugInName + ".java");
                             }
                         } catch (Exception e) {
-                            mLog.log(java.util.logging.Level.SEVERE, "Failed to add Custom Plug-in Node");
+                            mLog.severe("Failed to add Custom Plug-in Node");
                             ErrorManager.getDefault().log(ErrorManager.ERROR, e.getMessage());
                             ErrorManager.getDefault().notify(ErrorManager.ERROR, e);
                         } finally {
@@ -98,7 +98,7 @@ public class NewCustomPlugInAction extends CookieAction {
                 });
 
         } catch (Exception ex) {
-            mLog.log(java.util.logging.Level.SEVERE, "Failed to act.." + ex.getMessage());
+            mLog.severe("Failed to act.." + ex.getMessage());
         }           
     }
 
@@ -147,7 +147,7 @@ public class NewCustomPlugInAction extends CookieAction {
                     return newname;
                 }
             } catch (IllegalArgumentException e) {
-                mLog.log(java.util.logging.Level.SEVERE, e.toString());
+                mLog.severe(e.toString());
             }
         }
         return newname;

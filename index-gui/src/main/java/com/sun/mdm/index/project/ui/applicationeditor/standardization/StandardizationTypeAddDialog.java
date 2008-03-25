@@ -42,7 +42,7 @@ import com.sun.mdm.standardizer.introspector.DataTypeDescriptor;
 import com.sun.mdm.standardizer.introspector.VariantDescriptor;
 
 public class StandardizationTypeAddDialog extends javax.swing.JDialog {
-    private static final java.util.logging.Logger mLog = java.util.logging.Logger.getLogger(
+    private static final com.sun.mdm.index.util.Logger mLog = com.sun.mdm.index.util.Logger.getLogger(
             StandardizationTypeAddDialog.class.getName()
         );
     private boolean mModified = false;

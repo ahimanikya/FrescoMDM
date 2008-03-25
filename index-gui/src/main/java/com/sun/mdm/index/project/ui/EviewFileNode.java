@@ -27,7 +27,7 @@ import org.openide.nodes.FilterNode;
 import org.openide.nodes.Node;
 
 public class EviewFileNode extends FilterNode {
-    private static final java.util.logging.Logger mLog = java.util.logging.Logger.getLogger(
+    private static final com.sun.mdm.index.util.Logger mLog = com.sun.mdm.index.util.Logger.getLogger(
             EviewFileNode.class.getName()
         );
     private DataNode node;

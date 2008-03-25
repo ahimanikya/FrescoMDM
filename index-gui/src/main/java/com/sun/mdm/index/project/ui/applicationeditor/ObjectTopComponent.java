@@ -24,7 +24,7 @@ package com.sun.mdm.index.project.ui.applicationeditor;
 
 import java.awt.BorderLayout;
 import java.awt.Image;
-import java.util.logging.Logger;
+import com.sun.mdm.index.util.Logger;
 import java.beans.PropertyChangeEvent;
 import javax.swing.JOptionPane;
 import org.openide.util.Utilities;

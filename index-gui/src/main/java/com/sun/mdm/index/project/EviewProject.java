@@ -26,8 +26,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import org.netbeans.api.java.project.JavaProjectConstants;
@@ -79,6 +77,9 @@ import org.apache.tools.ant.module.api.support.ActionUtils;
  * Represents one ejb module project
  */
 public class EviewProject implements Project, AntProjectListener {
+    private static final com.sun.mdm.index.util.Logger mLogger = com.sun.mdm.index.util.Logger.getLogger(
+            EviewProject.class.getName()
+        );
 
     private static final Icon PROJECT_ICON = new ImageIcon(Utilities.loadImage("com/sun/mdm/index/project/ui/resources/eviewproProjectIcon.png")); // NOI18N
     public static final String SOURCES_TYPE_ICANPRO = "BIZPRO";
@@ -168,8 +169,7 @@ public class EviewProject implements Project, AntProjectListener {
         if (metaInfProp == null) {
             File projectProperties = helper.resolveFile(AntProjectHelper.PROJECT_PROPERTIES_PATH);
             if (projectProperties.exists()) {
-                Logger.getLogger("global").log(Level.WARNING,
-                        "Cannot resolve " + EviewProjectProperties.META_INF + // NOI18N
+                mLogger.warn("Cannot resolve " + EviewProjectProperties.META_INF + // NOI18N
                         " property for " + this); // NOI18N
             }
             return null;

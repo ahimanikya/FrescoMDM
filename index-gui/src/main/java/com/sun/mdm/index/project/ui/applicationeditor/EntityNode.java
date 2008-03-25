@@ -40,7 +40,7 @@ import com.sun.mdm.index.project.EviewApplication;
 
 public class EntityNode extends DefaultMutableTreeNode {
     /** The logger. */
-    private static final java.util.logging.Logger mLog = java.util.logging.Logger.getLogger(
+    private static final com.sun.mdm.index.util.Logger mLog = com.sun.mdm.index.util.Logger.getLogger(
             EntityNode.class.getName()
         );
 

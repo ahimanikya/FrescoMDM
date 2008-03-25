@@ -36,7 +36,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.logging.Logger;
+import com.sun.mdm.index.util.Logger;
 import java.util.Properties;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -88,7 +88,7 @@ public class EViewGeneratorTask extends Task {
     private static final String REPOSITORY_RESOURCE_NAME = "repositoryImage.zip";
     private static final String PROPERTIES_RESOURCE_NAME = "standardizationEngine.properties";
     private static final String REPOSITORY_NAME_PROPERTY = "repositoryName";
-        private static final Logger mLog = Logger.getLogger(EViewGeneratorTask.class.getName());
+    private static final Logger mLog = Logger.getLogger(EViewGeneratorTask.class.getName());
         
     public void setSrcdir(File srcdir) {
         this.mSrcdir = srcdir;

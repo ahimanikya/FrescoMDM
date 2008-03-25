@@ -39,7 +39,7 @@ public class NewDBScriptAction extends CookieAction {
     /**
      * The log4j logger
      */
-    private static final java.util.logging.Logger mLog = java.util.logging.Logger.getLogger(
+    private static final com.sun.mdm.index.util.Logger mLog = com.sun.mdm.index.util.Logger.getLogger(
             NewDBScriptAction.class.getName()
         );
 
@@ -77,7 +77,7 @@ public class NewDBScriptAction extends CookieAction {
                             if (newDBScriptName != null) {
                             }
                         } catch (Exception e) {
-                            mLog.log(java.util.logging.Level.SEVERE, "Failed to add DB Script Node");
+                            mLog.severe("Failed to add DB Script Node");
                             ErrorManager.getDefault().log(ErrorManager.ERROR, e.getMessage());
                             ErrorManager.getDefault().notify(ErrorManager.ERROR, e);
                         } finally {
@@ -86,7 +86,7 @@ public class NewDBScriptAction extends CookieAction {
                 });
 
         } catch (Exception ex) {
-            mLog.log(java.util.logging.Level.SEVERE, "Failed to act.." + ex.getMessage());
+            mLog.severe("Failed to act.." + ex.getMessage());
         }           
     }
 
@@ -135,7 +135,7 @@ public class NewDBScriptAction extends CookieAction {
                     return newname;
                 }
             } catch (IllegalArgumentException e) {
-                mLog.log(java.util.logging.Level.SEVERE, e.toString());
+                mLog.severe(e.toString());
             }
         }
         return newname;

@@ -28,7 +28,7 @@ import org.openide.filesystems.FileObject;
 import javax.swing.Action;
 
 public class EviewCustomPlugInsFolderNode extends EviewFolderNode {
-    private static final java.util.logging.Logger mLog = java.util.logging.Logger.getLogger(
+    private static final com.sun.mdm.index.util.Logger mLog = com.sun.mdm.index.util.Logger.getLogger(
             EviewCustomPlugInsFolderNode.class.getName()
         );
     private DataFolder folder;

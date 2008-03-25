@@ -56,7 +56,7 @@ import com.sun.mdm.index.project.ui.applicationeditor.writers.EDMWriter;
 public class EviewEditorMainApp {
 
     /** The logger. */
-    private static final java.util.logging.Logger mLog = java.util.logging.Logger.getLogger(
+    private static final com.sun.mdm.index.util.Logger mLog = com.sun.mdm.index.util.Logger.getLogger(
             EviewEditorMainApp.class.getName()
         );
    
@@ -554,7 +554,7 @@ public class EviewEditorMainApp {
             mEviewApplication.resetModified(false);
             enableSaveAction(false);
         } catch (Exception ex) {
-            // this is an intermittent bug of Netbeans. Do nothing
+            this.displayError(ex);
             mLog.severe(ex.getMessage());
         }
 
@@ -605,7 +605,7 @@ public class EviewEditorMainApp {
         }
         
         public void warning(SAXParseException ex) {
-            mLog.warning(ex.getMessage());
+            mLog.warn(ex.getMessage());
         }
         
         /**

@@ -56,7 +56,7 @@ import com.sun.mdm.index.project.ui.applicationeditor.ObjectTopComponent;
 import com.sun.mdm.index.project.ui.EviewConfigurationFolderNode;
 
 public class EviewApplication extends EviewProject {
-    private static final java.util.logging.Logger mLog = java.util.logging.Logger.getLogger(
+    private static final com.sun.mdm.index.util.Logger mLog = com.sun.mdm.index.util.Logger.getLogger(
             EviewApplication.class.getName()
         );
 
