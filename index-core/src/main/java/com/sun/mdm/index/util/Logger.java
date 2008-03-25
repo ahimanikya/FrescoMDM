@@ -24,6 +24,7 @@ package com.sun.mdm.index.util;
 
 import com.sun.mdm.index.objects.ObjectNode;
 import java.util.ResourceBundle;
+import java.util.Date;
 import java.io.Serializable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -72,9 +73,9 @@ public final class Logger implements Serializable {
      * @param message msg to be logged
      */
     public final void debug(Object message) {
-        String s = null;
+        String s = getTimestamp() + " - ";
         if (message != null) {
-            s = message.toString();
+            s += message.toString();
         }
         mDelegate.log(java.util.logging.Level.FINE, s);
     }
@@ -97,9 +98,9 @@ public final class Logger implements Serializable {
      * @param t exception
      */
     public final void debug(Object message, Throwable t) {
-        String s = null;
+        String s = getTimestamp() + " - ";
         if (message != null) {
-            s = message.toString();
+            s += message.toString();
         }
         mDelegate.log(java.util.logging.Level.FINE, s, t);
     }
@@ -109,10 +110,23 @@ public final class Logger implements Serializable {
      *
      * @param message msg to be logged
      */
-    public final void error(Object message) {
-        String s = null;
+    public final void severe(Object message) {
+        String s = getTimestamp() + " - ";
         if (message != null) {
-            s = message.toString();
+            s += message.toString();
+        }
+        mDelegate.log(java.util.logging.Level.SEVERE, s);
+    }
+
+    /**
+     * See {@link org.apache.log4j.Category#error}
+     *
+     * @param message msg to be logged
+     */
+    public final void error(Object message) {
+        String s = getTimestamp() + " - ";
+        if (message != null) {
+            s += message.toString();
         }
         mDelegate.log(java.util.logging.Level.SEVERE, s);
     }
@@ -124,9 +138,9 @@ public final class Logger implements Serializable {
      * @param t exception to be logged
      */
     public final void error(Object message, Throwable t) {
-        String s = null;
+        String s = getTimestamp() + " - ";
         if (message != null) {
-            s = message.toString();
+            s += message.toString();
         }
         mDelegate.log(java.util.logging.Level.SEVERE, s, t);
     }
@@ -137,9 +151,9 @@ public final class Logger implements Serializable {
      * @param message msg to be logged
      */
     public final void fatal(Object message) {
-        String s = null;
+        String s = getTimestamp() + " - ";
         if (message != null) {
-            s = message.toString();
+            s += message.toString();
         }
         mDelegate.log(java.util.logging.Level.SEVERE, s);
     }
@@ -151,9 +165,9 @@ public final class Logger implements Serializable {
      * @param t exception to be logged
      */
     public final void fatal(Object message, Throwable t) {
-        String s = null;
+        String s = getTimestamp() + " - ";
         if (message != null) {
-            s = message.toString();
+            s += message.toString();
         }
         mDelegate.log(java.util.logging.Level.SEVERE, s, t);
     }
@@ -164,9 +178,9 @@ public final class Logger implements Serializable {
      * @param message msg to be logged
      */
     public final void info(Object message) {
-        String s = null;
+        String s = getTimestamp() + " - ";
         if (message != null) {
-            s = message.toString();
+            s += message.toString();
         }
         mDelegate.log(java.util.logging.Level.INFO, s);
     }
@@ -178,9 +192,9 @@ public final class Logger implements Serializable {
      * @param t exception to be logged
      */
     public final void info(Object message, Throwable t) {
-        String s = null;
+        String s = getTimestamp() + " - ";
         if (message != null) {
-            s = message.toString();
+            s += message.toString();
         }
         mDelegate.log(java.util.logging.Level.INFO, s, t);
     }
@@ -199,10 +213,23 @@ public final class Logger implements Serializable {
      *
      * @param message msg to be logged
      */
-    public final void warn(Object message) {
-        String s = null;
+    public final void warn(String message) {
+        String s = getTimestamp() + " - ";
         if (message != null) {
-            s = message.toString();
+            s += message;
+        }
+        mDelegate.log(java.util.logging.Level.WARNING, s);
+    }
+
+    /**
+     * See {@link org.apache.log4j.Category#warn}
+     *
+     * @param message msg to be logged
+     */
+    public final void warn(Object message) {
+        String s = getTimestamp() + " - ";
+        if (message != null) {
+            s += message.toString();
         }
         mDelegate.log(java.util.logging.Level.WARNING, s);
     }
@@ -214,9 +241,9 @@ public final class Logger implements Serializable {
      * @param t exception to be logged
      */
     public final void warn(Object message, Throwable t) {
-        String s = null;
+        String s = getTimestamp() + " - ";
         if (message != null) {
-            s = message.toString();
+            s += message.toString();
         }
         mDelegate.log(java.util.logging.Level.WARNING, s, t);
     }
@@ -286,4 +313,9 @@ public final class Logger implements Serializable {
     	ostream.defaultWriteObject();
     }
     
+    private String getTimestamp() {
+        Date dt = new Date();
+        String s = dt.toString();
+        return s;
+    }
 }
