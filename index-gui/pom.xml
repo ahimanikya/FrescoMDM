@@ -123,7 +123,7 @@
                                     <fileset dir="${basedir}/../../open-dm-dq/inti/container/target">
                                         <include name="inti-container-1.0.jar"/>
                                     </fileset>
-                                    <fileset dir="${basedir}/../../open-dm-dq/inti/lib">
+                                    <fileset dir="${basedir}/../../open-dm-dq/lib">
                                         <include name="aopalliance-1.0.jar"/>
                                         <include name="asm-2.2.3.jar"/>
                                         <include name="asm-commons-2.2.3.jar"/>
