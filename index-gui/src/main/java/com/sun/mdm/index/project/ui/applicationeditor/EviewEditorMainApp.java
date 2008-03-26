@@ -555,7 +555,6 @@ public class EviewEditorMainApp {
             enableSaveAction(false);
         } catch (Exception ex) {
             this.displayError(ex);
-            mLog.severe(ex.getMessage());
         }
 
     }
@@ -567,7 +566,6 @@ public class EviewEditorMainApp {
      */
     public static void displayError(Exception exception, String userFriendlyMsg) {
         if (null != userFriendlyMsg && userFriendlyMsg.length() > 0)    {
-            //mLog.error(userFriendlyMsg, exception);
             Throwable throwable =
                     ErrorManager.getDefault().annotate(exception, userFriendlyMsg);
             ErrorManager.getDefault().notify(ErrorManager.EXCEPTION, throwable);

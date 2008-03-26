@@ -47,6 +47,7 @@ import com.sun.mdm.index.parser.MasterType;
 
 import com.sun.mdm.matcher.comparators.configurator.ComparatorsConfigBean;
 import com.sun.mdm.matcher.comparators.ComparatorsManager;
+//import com.sun.mdm.matcher.comparators.ComparatorsListsMerger;
 import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.index.util.LogUtil;
 
@@ -64,6 +65,7 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
     private ArrayList mAlFunctionsDesc;
     private Map mMapDescKeyFunctions = new HashMap();;
     private Map mMapShortKeyFunctions = null;
+    private Map mSecondaryCodeNameDesc;
     private Map<String, Map<String, ArrayList>> mMapParams;
     private ArrayList mAlNullFields;
     private ArrayList mAlNullFieldsDesc;
@@ -614,6 +616,7 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
             ComparatorsManager mComparatorsManager = new ComparatorsManager(mComparatorListPath);
             ComparatorsConfigBean instance = mComparatorsManager.getComparatorsConfigBean();
             Map mapCodeNameDesc = instance.getCodeNamesDesc();
+            mSecondaryCodeNameDesc = instance.getSecondaryCodeNamesDesc();
             mMapShortKeyFunctions = mapCodeNameDesc;
             mAlFunctionsDesc = new ArrayList<String>();
             mAlFunctions = new ArrayList<String>();
@@ -844,6 +847,11 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
             this.nullField = matchRuleRow.getNullField();
             //String f = matchRuleRow.getFunction(); // short function name
             this.function = (String) mMapShortKeyFunctions.get(matchRuleRow.getFunction());    // b1 -> full descriptive name
+            if (this.function == null) {
+                String strFunction = matchRuleRow.getFunction();
+                String mappedFunction = (String) mSecondaryCodeNameDesc.get(strFunction);
+                this.function = (String) mMapShortKeyFunctions.get(mappedFunction);
+            }
             this.parameters = matchRuleRow.getParameters();
             
             this.mprob = matchRuleRow.getMProb();
