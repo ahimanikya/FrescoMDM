@@ -66,6 +66,7 @@ public class EDMType {
     private final String mTagSystemDisplayNameOverrides = "system-display-name-overrides";
     private final String mTagLocalIdHeader = "local-id-header";
     private final String mTagLocalId = "local-id";
+    private final String mTagLocalIdBlank = "<local-id/>\n";
     private final String mTagPageDefinition = "page-definition";
     private final String mTagInitialScreen = "initial-screen";      //Classic
     //MI only
@@ -1405,7 +1406,9 @@ public class EDMType {
             for (int i = 0; i < nl.getLength(); i++) {
                 if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     String name = ((Element) nl.item(i)).getTagName();
-                    if (name.equals(mTagInitialScreenID)) {
+                    if (name.equals(mTagLocalId)) {
+                        mPageDefinition.localID = Utils.getStrElementValue(nl.item(i));
+                    } else if (name.equals(mTagInitialScreenID)) {
                         mPageDefinition.initialScreenID = Utils.getStrElementValue(nl.item(i));
                     } else if (name.equals(mTagInitialScreen)) {
                         mPageDefinition.initialScreen = Utils.getStrElementValue(nl.item(i));
@@ -1466,6 +1469,16 @@ public class EDMType {
         StringBuffer buffer = new StringBuffer();
         
 	buffer.append(Utils.TAB2 + Utils.startTag(mTagPageDefinition));
+        if (bMidm) {
+            if (mPageDefinition.localID != null) {
+                buffer.append(Utils.TAB3 + Utils.startTagNoLine(mTagLocalId) + 
+                            mPageDefinition.localID + 
+                            Utils.endTag(mTagLocalId));
+            } else {
+                buffer.append(Utils.TAB3 + mTagLocalIdBlank);
+            }
+        }
+
         if (bMidm && mPageDefinition.initialScreenID == null) {
             mPageDefinition.initialScreenID = "1";
         }
@@ -1475,7 +1488,6 @@ public class EDMType {
             buffer.append(Utils.TAB3 + Utils.startTagNoLine(mTagInitialScreenID) + 
                             mPageDefinition.initialScreenID + 
                             Utils.endTag(mTagInitialScreenID));
-
         }
         // edm:mPageDefinition.initialScreen
         if (!bMidm && mPageDefinition.initialScreen != null) {
@@ -1770,7 +1782,8 @@ public class EDMType {
     /**
      * @param node node
      *
-     *    <field-Phone>
+     *    <field>
+     *       <name>Phone</name>
      *       <display-name>Phone</display-name>
      *       <display-order>2</display-order>
      *       <max-length>20</max-length>
@@ -2373,6 +2386,7 @@ public class EDMType {
     }
     
     class PageDefinition {
+        String localID = null;
         String initialScreenID = null;
         String initialScreen = "EO Search";
         EOSearch eoSearch = null;
@@ -2388,6 +2402,10 @@ public class EDMType {
         Dashboard dashboard = null;
         SourceRecord sourceRecord = null;
         MidmConverter midmConverter = new MidmConverter();
+        
+        String getLocalID() {
+            return localID;
+        }
         
         String getInitialScreenID() {
             return initialScreenID;
