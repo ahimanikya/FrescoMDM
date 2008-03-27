@@ -105,8 +105,11 @@ public class MasterIndex {
 		
 	 File bucketFile;
 	 
-	 Standardizer standardizer = StandardizerFactory.getInstance();
-	 	 
+	 Standardizer[] standardizer = new Standardizer[poolSize_];
+	 for (int i = 0; i < poolSize_; i++)  {	 
+	   standardizer[i] = StandardizerFactory.getInstance();	 	 
+	 }
+	 
      while (true) {
 		bucketFile = getBucketFile();
 		if (bucketFile == null) {
@@ -114,7 +117,7 @@ public class MasterIndex {
 		}			    												
 		DataObjectReader reader = new DataObjectFileReader(bucketFile.getAbsolutePath(), true);		
 		EUIDBucket bucket = new EUIDBucket(reader, bucketFile.getName());
-		//logger.info("EUID bucket:"+ bucketFile.getName() + " processing");
+		logger.fine("EUID bucket:"+ bucketFile.getName() + " processing");
 		bucket.load();
 				
 		/**
@@ -134,7 +137,7 @@ public class MasterIndex {
 			Map<String,TableData> tableMap = new HashMap<String, TableData>();
 			allTableData.add(tableMap);
 			MIndexTask task = 
-				 new MIndexTask(tableMap, cursor, objectDef_, standardizer, endGate, con_);
+				 new MIndexTask(tableMap, cursor, objectDef_, standardizer[i], endGate, con_);
 		    executor_.execute(task);		    
 		}
 		
