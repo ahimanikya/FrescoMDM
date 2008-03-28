@@ -87,9 +87,7 @@ public class BulkMatcherLoader {
 	private int loadMode_ = 0; // default mode
 	public BulkMatcherLoader() throws Exception {
             new LoaderLogManager().init();
-		logger.info("bulk_boader_started");
-		
-				
+		logger.info("bulk_boader_started");				
 		loadConfig();
 		
 		ConfigurationService.getInstance();
@@ -102,13 +100,12 @@ public class BulkMatcherLoader {
 		   logger.info("slave_loader:" + loaderName_);
 		}
 		
-	    ObjectNodeUtil.initDataObjectAdapter();
-		
-		
+	    ObjectNodeUtil.initDataObjectAdapter();	
 	}
 	
 	public void bulkMatchLoad() throws Exception {	
 	 if (loadMode_ != MIGENERATE_ONLY)	 {
+		clusterSynchronizer_.initLoaderName(loaderName_, isMasterLoader_);
 	    if (isMasterLoader_) { 
 		  logger.info("block_distribution_started");
 		  clusterSynchronizer_.setClusterState(ClusterState.BLOCK_DISTRIBUTION);		
@@ -147,11 +144,17 @@ public class BulkMatcherLoader {
       if (loadMode_ != UPTO_EUIDASSIGN) {  // Do following operations only if mode is not EUIDASSIGN	 
 	    logger.info("master_index_generation_started");	
 	    MasterIndex masterIndex = new MasterIndex();
-	    masterIndex.generateMasterIndex();	  
+	    masterIndex.generateMasterIndex();
+	    
+	    if (loadMode_ == MIGENERATE_ONLY ) {
+	      logger.info("Master Index Generated");
+	      
+	  	  System.exit(0);
+	    }
 	  
 	    File file = FileManager.getInputSBRFile();
 	    String f = file.getName();
-	  //cluster
+	  
 	    clusterSynchronizer_.setMasterIndexDone(f);
 	  
 	    if (isMasterLoader_) {
@@ -190,7 +193,6 @@ public class BulkMatcherLoader {
 		   	  
 	   FileManager.deleteSBRMatchDir(false);
 	 
-	 
 	   if (bulkLoad) {	 
 	      BulkLoader bl = new BulkLoader();
 	      bl.load(); 
@@ -198,7 +200,7 @@ public class BulkMatcherLoader {
       }
 	 
 	  logger.info("Bulk Loader Completed");
-	  System.exit(0);
+	
 	}
 	
 	private void cleanDirs() {
@@ -234,7 +236,7 @@ public class BulkMatcherLoader {
 		String isMasterLoader = config_.getSystemProperty("isMasterLoader");
 		isMasterLoader_ = Boolean.parseBoolean(isMasterLoader);
 		
-		clusterSynchronizer_.initLoaderName(loaderName_, isMasterLoader_);
+		//clusterSynchronizer_.initLoaderName(loaderName_, isMasterLoader_);
 		
 		String isSmatchAnalyzer = config_.getSystemProperty("matchAnalyzerMode");
 		if (isSmatchAnalyzer != null) {
