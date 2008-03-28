@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
@@ -59,7 +59,7 @@ public class Matcher {
 	private double matchThreshold_ = 0;
 	//private Map<MatchRecord, MatchRecord> matchTree_ = new TreeMap<MatchRecord, MatchRecord>();
 	private int poolSize_ = 2;
-	private Executor executor_;
+	private ExecutorService executor_;
 	private String[] paths_;
 	private String[] matchTypes_;
 	private Lookup lookup_;
@@ -120,7 +120,7 @@ public class Matcher {
 		Comparator<MatchRecord> comp = getComparator();									
 		DataObjectReader reader = new DataObjectFileReader(bucketFile);		
 		Bucket bucket = new Bucket(reader, bucketFile, isSBR_);
-	//	logger.info("Block bucket:"+ bucket.getFile().getName() + " processing");
+		logger.fine("Block bucket:"+ bucket.getFile().getName() + " processing");
 		bucket.load();
 	
 		
@@ -186,6 +186,8 @@ public class Matcher {
 		}
 		
 	 } // end while true
+     
+     executor_.shutdown();
      
      if (!ismatchAnalyzer) {
     	 File output = null;
