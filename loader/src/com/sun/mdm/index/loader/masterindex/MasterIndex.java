@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 import java.sql.Connection;
@@ -61,7 +61,7 @@ import com.sun.mdm.index.matching.StandardizerFactory;
 public class MasterIndex {
 	
 	private int poolSize_ = 1;
-	private Executor executor_;
+	private ExecutorService executor_;
 	//private Lookup lookup_;
 	private MasterImageWriter writer;
 
@@ -153,7 +153,9 @@ public class MasterIndex {
 	// clusterSynchronizer_.setMatchDone(output.getName());
      
      con_.close();
-     writer.close();     	 
+     writer.close(); 
+     executor_.shutdown();
+              
    }
 	
 	
