@@ -109,6 +109,7 @@ public class BlockDistributor {
 		while (true) {
 		
 		   DataObject inputdataObject = reader.readDataObject();
+		   try {
 		   if (inputdataObject == null) {
 			   break;
 		   }
@@ -134,8 +135,12 @@ public class BlockDistributor {
 		   if (!isSBR_) {
 		       writeSystemBlock(inputdataObject);
 		   }
-		   
-						   
+		  }  catch (Throwable th) {
+			  logger.severe("DataObject:" + inputdataObject.toString());
+			  if (th instanceof Exception) {
+				  throw (Exception) th;
+			  }
+		  }		   						   
 		}
 		
 	//	logger.info("countNullBlids:" + countNullBlids);
