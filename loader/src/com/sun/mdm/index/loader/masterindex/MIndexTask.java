@@ -105,10 +105,12 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
     private  SimpleDateFormat sysdateFormat_ = new SimpleDateFormat("dd-MMM-yy hh:mm:ss");
 	// This format is used for storing dates in systemobjects, sbr, transaction table,
       // per database loader .ctl.
+    
+    private Standardizer mstandardizer;
 	MIndexTask(Map<String, TableData> tableMap, EUIDBucket.EOCursor cursor,  
 			 ObjectDefinition objDef, Standardizer standardizer, CountDownLatch endGate, Connection con) 
 			      throws Exception {
-		
+		mstandardizer = standardizer;
 		tableMap_ = tableMap;
 		mCalculator = new SurvivorCalculator(standardizer);	
 		eoCursor_ = cursor;
@@ -122,9 +124,13 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	}
 		
 	public void run() {
-	  try {				
+	  try {	
+		
+		List<DataObject> nextsolist = null;
+		List<DataObject> solist = null;
 		while (true ) {		
-		  List<DataObject> solist = eoCursor_.next();
+			solist = eoCursor_.next();
+			
 		  if (solist == null) {
 			  break;
 		  }		
@@ -150,6 +156,9 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		  logger.severe(ex + ex.getMessage());
 		  logger.severe(Util.getStackTrace(ex));
 		  ex.printStackTrace();
+		 // if (ex instanceof Error) {
+			//  throw (Error) ex;
+		  //}
 	  } finally {		
 	     endGate_.countDown();
 	  }
@@ -157,10 +166,10 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	}
 	
 	static {
-		objDef_ = initDataObjectAdapter();
+		objDef_ = initDef();
 	}
 	
-	private static ObjectDefinition initDataObjectAdapter() {
+	private static ObjectDefinition initDef() {
 		ObjectDefinition objDef = config.getObjectDefinition();
 		addIDs(objDef);
 	//	DataObjectAdapter.init(objDef);
@@ -169,8 +178,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		//if (timeFormat != null) {
 			//dateFormatString_ = dateFormatString_ + " " + timeFormat;
 		//}
-		
-		
+				
 		return objDef;
 	}
 	
@@ -181,7 +189,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 
 		int i = 0;
 		String transnum = null;
-		for (Object o: systems) {			
+		for (Object o: systems) { 
 			SystemObject sys = (SystemObject) o;
 			String localid = sys.getLID();
 			String syscode = sys.getSystemCode();
@@ -244,7 +252,9 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	private EnterpriseObject calculateSBR(List<DataObject> solist) throws Exception {
 	   EnterpriseObject eo = null;
 	   for (int i = 0; i < solist.size() ; i++) {
-	      DataObject dob = solist.get(i);
+		
+	     DataObject dob = solist.get(i);
+	     try {
 	      String euid = dob.getFieldValue(0);
 	      
 		  SystemObject so = getSystemObject(dob);	  		  
@@ -263,20 +273,29 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		                 
 		      // Update the existing SO, or add it
 		      so.setUpdateFunction(SystemObject.ACTION_ADD);
-	          so.setCreateFunction(SystemObject.ACTION_ADD);        
+	          so.setCreateFunction(SystemObject.ACTION_ADD);      
+	          
 		      if (mHelper.updateSO(so, eo, copyflag, replaceSO) == null) {
 		          
 		          eo.addSystemObject(so);
-		       //              recordChanged = true;
-		      } else {
-		          // Set the timestamp (UpdateHelper only modifies child object,
-		          // so this has to be done separately)		         
-		          so = eo.getSystemObject(syscode, lid);		         		         
+		                 
 		      }               		       		           		          		    	 
-		    }	
-		  //addTransactionNumber(euid, syscode, lid);
+		     }	
+		    } catch (Exception ex) {
+			 logger.severe("DataObject:" + dob.toString());
+			  throw ex;
+		    }
+		  
 		 }
-	     mCalculator.determineSurvivor(eo);	    
+	     try { 
+	       mCalculator.determineSurvivor(eo);
+	   //    logger.info("EO:" + eo.toString());
+	    	// logger.info("SBR:" + eo.getSBR().toString());
+	     } catch (Exception ex) {
+	    	 logger.severe("EO:" + eo.toString());
+	    		    		    	 
+	    	 throw ex;
+	     }
 	     return eo;
 	}
 	
@@ -284,14 +303,14 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	
 	
 	SystemObject getSystemObject(DataObject d) throws Exception {
-		
+	  
 		String euid = d.remove(0); // EUID
 		String gid = d.remove(0); // GID
 	    String syscode = d.remove(0); // syscode
 	    String lid = d.remove(0); //lid
 	    String weight = d.remove(0);
 	    String updateDateTime =  d.remove(0);  // update date
-	    String updateUser = d.remove(0);  // craete user
+	    String updateUser = d.remove(0);  // create user
 	    SystemObject so = ObjectNodeUtil.getSystemObject(d, lid, syscode,
 				updateDateTime, updateUser);
 	    
@@ -327,8 +346,6 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	}
 	
 	
-	
-	
 	private EnterpriseObject createEnterpriseObject(SystemObject so) throws Exception {
 		so.setCreateFunction(SystemObject.ACTION_ADD);
         so.setUpdateFunction(SystemObject.ACTION_ADD);
@@ -342,9 +359,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 			, String transnum) 
 	throws Exception {
 	           
-       //String transnum = com.sun.mdm.index.idgen.CUIDManager.getNextUID(con_,
-         //                                  "TRANSACTIONNUMBER");
-       //String transnum = null;
+       
     
        List<String> list = new ArrayList<String>();
        /*
@@ -359,7 +374,6 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
        list.add(ADD);
        list.add(user); // SYSTEMUSER
        list.add(sdate_);  // TIMESTAMP new java.util.Date()
-       //list.add(empty_s); // DELTA
        list.add(syscode);
        list.add(localid);
        list.add(euid);
