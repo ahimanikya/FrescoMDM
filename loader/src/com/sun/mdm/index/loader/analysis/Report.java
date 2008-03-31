@@ -51,6 +51,8 @@ public class Report {
 	private static String query = "select * from weight_analysis order by Total_wt DESC";
 	
 	private ArrayList<String> matchFields;
+	
+	private String reportSize;
 
 	
 
@@ -58,14 +60,29 @@ public class Report {
 		this.connection = connection;
 		
 		this.matchFields=matchFields;
+		
+		reportSize=LoaderConfig.getInstance().getSystemProperty("report.size");
+	}
+	
+	private int getReportSize(){
+		if(reportSize==null){
+			return 3000;
+		}
+		else{
+			return Integer.valueOf(reportSize);
+		}
 	}
 
 	public void generate() {
 
 		try {
 			Statement statement = connection.createStatement();
+			
+			double d = getMinWeight(connection);
 
-			ResultSet resultSet = statement.executeQuery(query);
+			String s = "select * from weight_analysis where Total_wt > "+ d + " order by Total_wt DESC";
+			
+			ResultSet resultSet = statement.executeQuery(s);
 
 			File reportFile = new File("conf/weight-analysis.jasper");
 
@@ -112,6 +129,24 @@ public class Report {
 	private void createJrxmlFile() {
 		JrxmlFile jrxml = new JrxmlFile(matchFields);
 		jrxml.write();
+		
+	}
+	
+	private double getMinWeight( Connection conn) throws SQLException{
+		String s= "select min(Total_wt) from ( select Total_wt,rank() over (order by Total_wt DESC)rnk  from weight_analysis) where rnk < " + getReportSize();
+		
+		Statement stmt= conn.createStatement();
+		
+		ResultSet rs= stmt.executeQuery(s);
+		
+		rs.next();
+		
+		double d = rs.getDouble(1);
+		
+		
+		stmt.close();
+		
+		return d;
 		
 	}
 
