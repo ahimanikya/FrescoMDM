@@ -479,6 +479,7 @@ public class EviewProjectGenerator {
                     (file.getNameExt().equals(EviewProjectProperties.OBJECT_XSD) ||
                      (file.getNameExt().equals(EviewProjectProperties.EDM_XSD) && !masterIndexDM.equalsIgnoreCase("yes")) ||
                      (file.getNameExt().equals(EviewProjectProperties.MIDM_XSD) && masterIndexDM.equalsIgnoreCase("yes")) ||
+                     (file.getNameExt().equals(EviewProjectProperties.MIDM_SECURITY_XSD) && masterIndexDM.equalsIgnoreCase("yes")) ||
                      file.getNameExt().equals(EviewProjectProperties.MASTER_XSD) ||
                      file.getNameExt().equals(EviewProjectProperties.MEFA_XSD) ||
                      file.getNameExt().equals(EviewProjectProperties.QUERY_XSD) ||
