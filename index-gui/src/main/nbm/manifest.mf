@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Ant-Version: Apache Ant 1.7.0
 OpenIDE-Module-Java-Dependencies: Java > 1.5
 AutoUpdate-Show-In-Client: true
+OpenIDE-Module-Public-Packages: -
 OpenIDE-Module: com.sun.mdm.index.project
 OpenIDE-Module-Layer: com/sun/mdm/index/project/layer.xml
 OpenIDE-Module-Localizing-Bundle: com/sun/mdm/index/project/Bundle.properties

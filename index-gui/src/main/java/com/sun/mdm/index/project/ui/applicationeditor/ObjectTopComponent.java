@@ -194,6 +194,11 @@ public class ObjectTopComponent
         return MODE_NAME + Math.random();
     } 
 
+    @Override
+    public int getPersistenceType() {
+        return PERSISTENCE_ALWAYS;
+    }
+    
     /**
      * starting point of Top Component
      *
