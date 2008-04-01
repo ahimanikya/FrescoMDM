@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- NOTE:  This is a sample file.  It contains the basic format for the security -->
 <!-- configuration file (midm-security.xml)                                               -->
-<midm-security xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<midm-security xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/midm-security.xsd">
     <roles>
         <role>
             <role-name>Administrator</role-name>
