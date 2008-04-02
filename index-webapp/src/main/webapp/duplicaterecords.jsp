@@ -196,15 +196,11 @@
                   <%
                     ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
                     CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
-                    
-                    EPathArrayList ePathArrayList = compareDuplicateManager.retrieveEPathArrayList(objScreenObject);
-                    EPath ePath = null;
                     SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+
+					ArrayList finalArrayList = (ArrayList) request.getAttribute("finalArrayList");
                     
-                    
-                    PotentialDuplicateIterator pdPageIter = (PotentialDuplicateIterator) session.getAttribute("pdPageIter");
-                    ArrayList finalArrayList = (ArrayList) request.getAttribute("finalArrayList");
-                    PotentialDuplicateIterator asPdIter;
+					PotentialDuplicateIterator asPdIter;
                     PotentialDuplicateSummary mainDuplicateSummary = null;
                     
                     PotentialDuplicateSummary associateDuplicateSummary = null;
@@ -237,7 +233,7 @@
                      if(finalArrayList != null && finalArrayList.size() >0 ) {
 						 //System.out.println("-------------IN JSPPPP---finalArrayList.size()--" + finalArrayList.size());
 						finalArrayListVE = ExpressionFactory.newInstance().createValueExpression(finalArrayList, finalArrayList.getClass());
-						System.out.println("------1------" + potentialDuplicateSearchObject);
+						
 
                          request.setAttribute("finalArrayList", request.getAttribute("finalArrayList"));
                  %>                

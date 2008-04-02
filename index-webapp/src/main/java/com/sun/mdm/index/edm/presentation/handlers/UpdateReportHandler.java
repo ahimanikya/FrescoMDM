@@ -97,19 +97,19 @@ public class UpdateReportHandler    {
     /**
      * Search Start Date
      */
-    private String createStartDate = null;
+    private String createStartDate = new String();
     /**
      * Search End Date
      */
-    private String createEndDate = null;    
+    private String createEndDate = new String();    
     /**
      * Search Start Time
      */ 
-    private String createStartTime = null;
+    private String createStartTime = new String();
     /**
      * Search end Time
      */
-    private String createEndTime = null;    
+    private String createEndTime = new String();    
    
     /*
      *  Request Object Handle
@@ -358,13 +358,19 @@ public class UpdateReportHandler    {
                             epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
                         }
 
-                        if (fieldConfig.isUpdateable()) {
-                            if (fieldConfig.getValueType() == 6) {
-                                newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                            } else {
-                                newValuesMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
-                            }
-                        }
+                       if (fieldConfig.getValueType() == 6) {
+                           if(eo != null ) { 
+                               newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                           } else {
+                               newValuesMap.put(fieldConfig.getFullFieldName(), null);
+                           }
+                       } else {
+                           if(eo != null ) { 
+                            newValuesMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                           } else {
+                            newValuesMap.put(fieldConfig.getFullFieldName(), null);
+                           } 
+                       }
                     }
                 } else if (field.equalsIgnoreCase("EUID2")) {
                     newValuesMap.put("EUID", val);
@@ -426,12 +432,14 @@ public class UpdateReportHandler    {
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
-                    String searchStartDate = this.getCreateStartDate() + (this.getCreateStartTime() != null ? " " + this.getCreateStartTime() : " 00:00:00");
+                    String searchStartDate = this.getCreateStartDate() + ((this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)? " " + this.getCreateStartTime() : " 00:00:00");
+                   
                     Date date = DateUtil.string2Date(searchStartDate);
                     if (date != null) {
                         urConfig.setStartDate(new Timestamp(date.getTime()));
                     }
-                    createStartTime = "";
+                   
+                    //createStartTime = "";
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
@@ -460,12 +468,14 @@ public class UpdateReportHandler    {
             } else {
                 try {
                     //If Time is supplied append it to the date to check if it parses into a valid Date
-                    String searchEndDate = this.getCreateEndDate() + (this.getCreateEndTime() != null ? " " + this.getCreateEndTime() : " 23:59:59");
+                    String searchEndDate = this.getCreateEndDate() + ((this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)? " " + this.getCreateEndTime() : " 23:59:59");
                     Date date = DateUtil.string2Date(searchEndDate);
+                    
+                    
                     if (date != null) {
                         urConfig.setEndDate(new Timestamp(date.getTime()));
                     }
-                    createEndTime = "";
+                    //createEndTime = "";
                 } catch (ValidationException validationException) {
                     Logger.getLogger(UpdateReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
@@ -477,7 +487,7 @@ public class UpdateReportHandler    {
           if (((this.getCreateStartDate() != null) && (this.getCreateStartDate().trim().length() > 0))&&
            ((this.getCreateEndDate() != null) && (this.getCreateEndDate().trim().length() > 0))){                
                Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + (this.getCreateStartTime() != null? " " +this.getCreateStartTime():" 00:00:00"));
-               Date todate = DateUtil.string2Date(this.getCreateEndDate()+(this.getCreateEndTime() != null? " " +this.getCreateEndTime():" 23:59:59"));
+               Date todate = DateUtil.string2Date(this.getCreateEndDate()+((this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)? " " +this.getCreateEndTime():" 23:59:59"));
                long startDate = fromdate.getTime();
                long endDate = todate.getTime();
                  if(endDate < startDate){
@@ -568,14 +578,14 @@ public class UpdateReportHandler    {
 //            updateRecordsVO[i] = (UpdateRecords)vOList.get(i);
 //        }
 //        request.setAttribute("size", new Integer(updateRecordsVO.length)); 
-        
-         request.setAttribute("size", new Integer(updateRecordsVO.length));   
+        if(updateRecordsVO != null) {
+           request.setAttribute("size", new Integer(updateRecordsVO.length));   
+        } else {
+            request.setAttribute("size", new Integer("0"));   
+        }
          
          
          //System.out.println("*******VO Lenght*****"+updateRecordsVO.length);
-          for (int i =0 ; i< updateRecordsVO.length;i++)   {
-            //System.out.println( "EUID "  + updateRecordsVO[i].getEuid() + "First "+   updateRecordsVO[i].getFirstName() + "LAST " +  updateRecordsVO[i].getLastName() );
-        }
         return updateRecordsVO;
     }
     /**

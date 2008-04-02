@@ -372,7 +372,7 @@
                                      %>
                                     <br/>
                                    <%
-                                         if (mergeResultArrayList != null && mergeResultArrayList.size() > 0) {
+                                         if (request.getAttribute("mergeReportList") != null) {
                                     %>
                                        <div class="printClass">
                                            <table cellpadding="0" cellspacing="0" border="0">
@@ -381,7 +381,7 @@
                                                            <h:outputText value="#{msgs.total_records_text}"/>&nbsp;
                                                        </td>
                                                        <td>    
-                                                           <%=mergeResultArrayList.size()%>&nbsp;&nbsp;
+                                                           <%=mergeResultArrayList.size()/2%>&nbsp;&nbsp;
                                                         </td>
                                                         <td>
                                                            <h:outputLink styleClass="button" rendered="#{Operations.reports_MergedRecords && ReportHandler.resultsSize gt 0}" value="javaScript:window.print();">
@@ -660,7 +660,7 @@ var myConfigs = {
                                      %>
                                         <br/>
                                    <%
-                                         if (deactivateResultArrayList != null && deactivateResultArrayList.size() > 0) {
+                                         if (request.getAttribute("deactivatedReportList") != null) {
                                     %>
                                            <div class="printClass">
                                            <table cellpadding="0" cellspacing="0" border="0">
@@ -952,7 +952,7 @@ var myConfigs = {
    %>
                                         <br/>
    <%
-         if (unmergeResultArrayList != null && unmergeResultArrayList.size() > 0) {
+         if (request.getAttribute("unmergeReportList") != null) {
     %>
                                   
                                        <div class="printClass">
@@ -962,7 +962,7 @@ var myConfigs = {
                                                            <h:outputText value="#{msgs.total_records_text}"/>&nbsp;
                                                        </td>
                                                        <td>    
-                                                           <%=unmergeResultArrayList.size()%>&nbsp;&nbsp;
+                                                           <%=unmergeResultArrayList.size()/2%>&nbsp;&nbsp;
                                                         </td>
                                                         <td>   
                                                            <h:outputLink styleClass="button" rendered="#{Operations.reports_UnmergedRecords && ReportHandler.resultsSize gt 0}" value="javaScript:window.print();">
@@ -1245,7 +1245,7 @@ var myConfigs = {
                                      %>
                                     <br/>
                                    <%
-                                         if (updateResultArrayList != null && updateResultArrayList.size() > 0) {
+                                         if (request.getAttribute("updateReportList") != null) {
                                     %>
                                        <div class="printClass">
                                            <table cellpadding="0" cellspacing="0" border="0">
@@ -1431,7 +1431,7 @@ var myConfigs = {
                                                     <td>
                                                         <nobr> <h:outputLabel for="viewreports" value="#{msgs.activity_rep_freq}"/></nobr>
                                                         <div class="selectContent">
-                                                        <h:selectOneRadio style="selectContent" id="viewreports" value="#{ReportHandler.frequency}" >
+                                                        <h:selectOneRadio styleClass="selectContent" id="viewreports" value="#{ReportHandler.frequency}" >
                                                             <f:selectItems value="#{ReportHandler.activityReportTypes}"/>
                                                         </h:selectOneRadio>
                                                         </div>
@@ -1530,161 +1530,177 @@ var myConfigs = {
                                             </table> 
                                        </h:form> 
                                        </div>
-                                       <% if ("ACTIVITY_REPORT".equalsIgnoreCase((String)request.getAttribute("tabName")))      {%>
-                                        <% if (request.getAttribute("frequency") != null && "Weekly".equalsIgnoreCase((String)request.getAttribute("frequency")) ){ %> 
-                                          <div class="reportYUISearch">
-                                              <yui:datatable var="activityRecords" value="#{ReportHandler.activityRecordsVO}"
-                                                           id="weeklyactivity"
-                                                           paginator="true" 
-                                                           rendered="#{ReportHandler.resultsSize gt 0}"
-                                                           rowClasses="even,odd"
-                                                           rows="50"
-                                                           width="1024px">                                                                            
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.activity_rep_day_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{activityRecords.day}" />
-                                                </yui:column>
-                                                
-                                                 <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.reports_data_table_date_column}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{activityRecords.activityDate}" />
-                                                </yui:column>
-                                               
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.activity_rep_add_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{activityRecords.addTransactions}" />
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.activity_rep_euiddeactivate_text}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{activityRecords.euidDeactivateTrans}" />
-                                                </yui:column>
-                                                  <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.activity_rep_euidmerge_text }" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{activityRecords.euidMergedTrans}" />
-                                                </yui:column>
-                                                
-                                                 <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.activity_rep_euidunmerge_text }" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{activityRecords.euidUnmergedTrans}" />
-                                                </yui:column>
-                                                
-                                                 <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.activity_rep_lidmerge_text }" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{activityRecords.lidMergedTrans}" />
-                                                </yui:column>
-                                               
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.activity_rep_lidunmerge_text }" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{activityRecords.lidUnMergedTrans}" />
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.activity_rep_lidtransfer_text }" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{activityRecords.lidTransfer}" />
-                                                </yui:column>
-                                                
-                                                <yui:column sortable="true" resizeable="true">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msgs.activity_rep_update_text }" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{activityRecords.updateCount}" />
-                                                </yui:column>
-                                                
-                                              </yui:datatable>
-                                          </div>  
-                                        <%} else {%>
-                                           <div class="reportYUISearch">                                        
-                                               <yui:datatable var="activityRecords" value="#{ReportHandler.activityRecordsVO}"
-                                                       id="monthlyactivity"
-                                                       paginator="true"
-                                                       rendered="#{ReportHandler.resultsSize gt 0}"
-                                                       rows="50"                                     
-                                                       rowClasses="even,odd"
-                                                       width="1024px">                                                                            
-                                            
-                                                   <yui:column sortable="true" resizeable="true">
-                                                     <f:facet name="header">
-                                                       <h:outputText value="#{msgs.activity_rep_add_text}" />
-                                                     </f:facet>
-                                                     <h:outputText value="#{activityRecords.addTransactions}" />
-                                                   </yui:column>
-                                            
-                                                   <yui:column sortable="true" resizeable="true">
-                                                     <f:facet name="header">
-                                                       <h:outputText value="#{msgs.activity_rep_euiddeactivate_text}" />
-                                                     </f:facet>
-                                                       <h:outputText value="#{activityRecords.euidDeactivateTrans}"/>
-                                                   </yui:column>
-                                                   <yui:column sortable="true" resizeable="true">
-                                                     <f:facet name="header">
-                                                      <h:outputText value="#{msgs.activity_rep_euidmerge_text }" />
-                                                     </f:facet>
-                                                      <h:outputText value="#{activityRecords.euidMergedTrans}" />
-                                                   </yui:column>
-                                            
-                                                   <yui:column sortable="true" resizeable="true">
-                                                     <f:facet name="header">
-                                                      <h:outputText value="#{msgs.activity_rep_euidunmerge_text }" />
-                                                     </f:facet>
-                                                      <h:outputText value="#{activityRecords.euidUnmergedTrans}"/>
-                                                   </yui:column>
-                                            
-                                            
-                                                   <yui:column sortable="true" resizeable="true">
-                                                     <f:facet name="header">
-                                                      <h:outputText value="#{msgs.activity_rep_lidmerge_text }" />
-                                                     </f:facet>
-                                                      <h:outputText value="#{activityRecords.lidMergedTrans}" />
-                                                   </yui:column>
-                                            
-                                            
-                                                   <yui:column sortable="true" resizeable="true">
-                                                     <f:facet name="header">
-                                                      <h:outputText value="#{msgs.activity_rep_lidunmerge_text }" />
-                                                     </f:facet>
-                                                      <h:outputText value="#{activityRecords.lidUnMergedTrans}" />
-                                                   </yui:column>
-                                            
-                                                   <yui:column sortable="true" resizeable="true">
-                                                     <f:facet name="header">
-                                                      <h:outputText value="#{msgs.activity_rep_unresolvedpd_text }" />
-                                                     </f:facet>
-                                                      <h:outputText value="#{activityRecords.unresolvedPotentialDup}" />
-                                                   </yui:column>
-                                            
-                                                   <yui:column sortable="true" resizeable="true">
-                                                     <f:facet name="header">
-                                                      <h:outputText value="#{msgs.activity_rep_resolvedpd_text }" />
-                                                     </f:facet>
-                                                      <h:outputText value="#{activityRecords.unresolvedPotentialDup}" />
-                                                   </yui:column>
-                                            
-                                            </yui:datatable>                                        
-                                           </div>  
-                                        <% } %>
+                                       <% if ("ACTIVITY_REPORT".equalsIgnoreCase((String)request.getAttribute("tabName")))      {
+
+       
+        ArrayList keyList = new ArrayList();
+            if (request.getAttribute("frequency") != null && "Weekly Activity".equalsIgnoreCase((String)request.getAttribute("frequency")) ){ 
+              keyList.add("ActivityDate");
+            }
+            keyList.add("Add");
+            keyList.add("EUIDDeactivate");
+            keyList.add("EUIDMerge");
+            keyList.add("EUIDUnmerge");
+            keyList.add("LIDMerge");
+            keyList.add("LIDUnMerge");
+            keyList.add("UnresolvedDuplicate");
+            keyList.add("ResolvedDuplicate");
+            
+            ArrayList labelList = new ArrayList();
+            if (request.getAttribute("frequency") != null && "Weekly Activity".equalsIgnoreCase((String)request.getAttribute("frequency")) ){ 
+              labelList.add("Activity Date");
+            }
+            labelList.add("Add");
+            labelList.add("EUID Deactivate");
+            labelList.add("EUID Merge");
+            labelList.add("EUID Unmerge");
+            labelList.add("LID Merge");
+            labelList.add("LID UnMerge");
+            labelList.add("Unresolved Duplicate");
+            labelList.add("Resolved Duplicate");
+        
+        //set EUID values here
+        String[] keys = new String[keyList.size()];
+        String[] labels = new String[labelList.size()];
+        
+        for(int i=0;i<keyList.size();i++) {
+            keys[i] = (String) keyList.get(i);
+            labels[i] = (String) labelList.get(i);
+        }
+        
+        
+        
+        StringBuffer myColumnDefs = new StringBuffer();
+
+        myColumnDefs.append("[");
+        String value = new String();
+        for(int i=0;i<keyList.size();i++) {
+          value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ",sortable:true,resizeable:true}";
+          myColumnDefs.append(value);
+          if(i != keys.length -1) myColumnDefs.append(",");
+         }   
+         myColumnDefs.append("]");
+
+        StringBuffer sbr  = new StringBuffer();
+        sbr.append("[");
+        ArrayList activityResultArrayList  = (ArrayList) request.getAttribute("activityOutputList");
+        if (activityResultArrayList != null && activityResultArrayList.size() > 0) {
+                for (int i = 0; i < activityResultArrayList.size(); i++) {
+                    HashMap valueMap = (HashMap) activityResultArrayList.get(i);
+                    StringBuffer valueBuffer = new StringBuffer();
+                    valueBuffer.append("{");  
+                    for (int kc = 0; kc < keys.length; kc++) {
+                        valueBuffer.append(keys[kc] + ":" + "\"" + ((valueMap.get(keys[kc]) != null)?valueMap.get(keys[kc]):"0") + "\"");
+                        if (kc != keys.length - 1) {
+                            valueBuffer.append(",");
+                        }
+                    }
+                    valueBuffer.append("}");                   
+
+                    sbr.append(valueBuffer.toString());
+
+                    if (i != activityResultArrayList.size() - 1) {
+                        sbr.append(",");
+                    }
+
+                }
+            }
+        sbr.append("]"); 
+%>
+
+
+
+
+        <script>
+            var fieldsArray = new Array();
+        </script>
+
+
+
+
+
+   <%
+         if (activityResultArrayList  != null && activityResultArrayList.size() > 0) {
+    %>
+
+              <div class="reportYUISearch" >
+                <div id="outputdiv"></div>
+             </div>  
+      <%}%>
+      
+
+     <%
+        for(int i=0;i<keys.length;i++) {
+        %> 
+        <script>
+            fieldsArray[<%=i%>] = '<%=keys[i]%>';
+        </script>
+        <%}%>
+
+<script>
+     var dataArray = new Array();
+     dataArray  = <%=sbr.toString()%>;
+</script>
+
+<script>
+
+    YAHOO.example.Data = {
+    outputActivityValues: dataArray
+    }
+</script>
+
+<script type="text/javascript">
+YAHOO.util.Event.addListener(window, "load", function() {
+    YAHOO.example.CustomSort = new function() {
+        var myColumnDefs = <%=myColumnDefs.toString()%>;
+        this.myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.outputActivityValues);
+
+        this.myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+
+        this.myDataSource.responseSchema = {
+            fields: fieldsArray
+        };
+
+
+var myConfigs = {
+    paginator : new YAHOO.widget.Paginator({
+        rowsPerPage    : 10, // REQUIRED
+        totalRecords   : dataArray.length // OPTIONAL
+
+        // use an existing container element
+        //containers : 'sort',
+
+        // use a custom layout for pagination controls
+        //template       : "{PageLinks} Show {RowsPerPageDropdown} per page",
+
+        // show all links
+        //pageLinks : YAHOO.widget.Paginator.VALUE_UNLIMITED,
+
+        // use these in the rows-per-page dropdown
+        //rowsPerPageOptions : [25,50,100],
+
+        // use custom page link labels
+        //pageLabelBuilder : function (page,paginator) {
+          //  var recs = paginator.getPageRecords(page);
+           //return (recs[0] + 1) + ' - ' + (recs[1] + 1);
+        //}
+    })
+     
+
+};
+        this.myDataTable = new YAHOO.widget.DataTable("outputdiv", myColumnDefs,
+                this.myDataSource);
+            
+    };
+});
+</script>
                                     <%}%>                                         
                                     </div>
+
+
+
+
+
                                 <%}%>  
                                 <% if(operations.isReports_Duplicates())  {%>   
                                     <div id="tab6">
@@ -1820,7 +1836,7 @@ var myConfigs = {
    %>
                                         <br/>
    <%
-         if (duplicateResultArrayList != null && duplicateResultArrayList.size() > 0) {
+         if (request.getAttribute("duplicateReportList") != null) {
     %>
                                         <div class="printClass">
                                            <table cellpadding="0" cellspacing="0" border="0">
@@ -1902,31 +1918,37 @@ var myConfigs = {
          }   
          myColumnDefs.append("]");
 
-         
+
+
+
         StringBuffer sbr  = new StringBuffer();
-        sbr.append("[");
         if (duplicateResultArrayList != null && duplicateResultArrayList.size() > 0) {
-                for (int i = 0; i < duplicateResultArrayList.size(); i++) {
-                    HashMap valueMap = (HashMap) duplicateResultArrayList.get(i);
-                    StringBuffer valueBuffer = new StringBuffer();
-                    valueBuffer.append("{");  
-                    for (int kc = 0; kc < fullFieldNames.length; kc++) {
-                        valueBuffer.append(keys[kc] + ":" + "\"" + ((valueMap.get(fullFieldNames[kc]) != null)?valueMap.get(fullFieldNames[kc]):"") + "\"");
-                        if (kc != fullFieldNames.length - 1) {
-                            valueBuffer.append(",");
+                sbr.append("[");
+                for (int j = 0; j < duplicateResultArrayList.size(); j++) {
+                 ArrayList valueMapArrayList = (ArrayList) duplicateResultArrayList.get(j);
+                //sbr.append("[");
+                for (int i = 0; i < valueMapArrayList.size(); i++) {
+                        StringBuffer valueBuffer = new StringBuffer();
+                        HashMap valueMap = (HashMap) valueMapArrayList.get(i);
+                        valueBuffer.append("{");
+                        for (int kc = 0; kc < fullFieldNames.length; kc++) {
+                            valueBuffer.append(keys[kc] + ":" + "\"" + ((valueMap.get(fullFieldNames[kc]) != null) ? valueMap.get(fullFieldNames[kc]) : "") + "\"");
+                            if (kc != fullFieldNames.length - 1) {
+                                valueBuffer.append(",");
+                            }
                         }
-                    }
-                    valueBuffer.append("}");                   
-
-                    sbr.append(valueBuffer.toString());
-
-                    if (i != duplicateResultArrayList.size() - 1) {
-                        sbr.append(",");
-                    }
+                        valueBuffer.append("}");
+                        sbr.append(valueBuffer.toString() +",");
+                }
+				//sbr.append("],");
 
                 }
+                sbr.append("]");
+
             }
-        sbr.append("]");           
+ 
+        String finalStringOutput  = sbr.toString();
+        finalStringOutput  = finalStringOutput.replaceAll(",]", "]");
 
         for(int i=0;i<keysList.size();i++) {
         %> 
@@ -1938,7 +1960,7 @@ var myConfigs = {
 
 <script>
      var dataArray = new Array();
-     dataArray  = <%=sbr.toString()%>;
+     dataArray  = <%=finalStringOutput%>;
 
 </script>
 
@@ -2119,7 +2141,7 @@ var myConfigs = {
    %>
                                         <br/>
    <%
-         if (assumeMatchResultArrayList != null && assumeMatchResultArrayList.size() > 0) {
+         if (assumeMatchResultArrayList != null) {
     %>
                                         <div class="printClass">
                                            <table cellpadding="0" cellspacing="0" border="0">
@@ -2247,7 +2269,7 @@ var myConfigs = {
      var dataArray = new Array();
      dataArray  = <%=sbr.toString()%>;
 
-</script>
+	</script>
 
 <script>
 

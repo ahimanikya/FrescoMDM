@@ -66,12 +66,9 @@
                     <table cellspacing="0" cellpadding="0" border="0">
                         <tr>
                             <td>
-                                <h:form>
-                                <h:commandLink styleClass="button" rendered="#{Operations.transLog_SearchView}"
-                                               action="#{NavigationHandler.toTransactions}">
-                                    <span><h:outputText value="#{msgs.view_list_but_text}"/></span>
-                                </h:commandLink>   
-                                </h:form>
+							<FORM>
+							 <a class="button" href="javascript:void()" onclick="history.go(-1)"><span><h:outputText value="#{msgs.view_list_but_text}"/></span></a>
+							</FORM>
                            </td>
                         </tr>
                         <tr>
@@ -86,7 +83,6 @@
             TransactionHandler transactionHandler = new TransactionHandler();
             //EPathArrayList ePathArrayList = compareDuplicateManager.retrieveEPathArrayList(objScreenObject);
             ArrayList objScreenObjectList = objScreenObject.getSearchResultsConfig();
-            EPathArrayList ePathArrayList = compareDuplicateManager.retrievePatientResultsFields(objScreenObjectList);
 
             EPath ePath = null;
             PatientDetailsHandler patientDetailsHandler = new PatientDetailsHandler();
@@ -150,6 +146,13 @@
                                                 HashMap personfieldValuesMapEO = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT");
                                                 if ("Add".equalsIgnoreCase(function)) {
                                                         dupHeading = "<b>" + function + "</b>";
+                                                } else if ("euidMerge".equalsIgnoreCase(function)){
+                                                    if (countEnt > 0) {
+                                                        dupHeading = "<b>Merged EUID</b>";
+                                                    } else if (countEnt == 0) {
+                                                        dupHeading = "<b>Main EUID</b>";
+                                                        mainEUID = (String) personfieldValuesMapEO.get("EUID");
+                                                    }
                                                 } else {
                                                     if (countEnt > 0) {
                                                         dupHeading = "<b>After " + function + "</b>";
@@ -500,12 +503,12 @@
                                                     <h:form>
                                                         <tr> 
                                                          <td valign="top">
-                                                             <a href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
+                                                             <a href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','0')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
                                                          </td>                                              
                                                         </tr>
                                                         <%
                                                          boolean isMerge = transactionHandler.isEUIDMerge(transactionId);
-                                                         if (isMerge) {
+                                                         if (isMerge && countEnt > 0) {
                                                         %>                 
                                                         <tr>
                                                             <td valign="top" colspan="2">

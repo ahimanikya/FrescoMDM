@@ -270,7 +270,7 @@
                                                     </tr>                                                    
                                                     <tr class="even">
                                                         <td><h:outputText value="#{msgs.source_rec_sourcename_text}"/></td>
-                                                        <td><%=singleSystemObjectLID.getSystemCode()%> </td>
+                                                        <td><%=sourceHandler.getSystemCodeDescription(singleSystemObjectLID.getSystemCode())%> </td>
                                                     </tr>
                                                     <tr class="odd">
                                                         <td><h:outputText value="#{msgs.datatable_localid_text}"/></td>
@@ -396,7 +396,7 @@
                                                         </tr>                                                    
                                                         <tr class="even">
                                                             <td><h:outputText value="#{msgs.source_rec_status_but}"/></td>
-                                                            <td><%=singleSystemObjectLID.getSystemCode()%> </td>
+                                                            <td><%=sourceHandler.getSystemCodeDescription(singleSystemObjectLID.getSystemCode())%> </td>
                                                         </tr>
                                                         <tr class="odd">
                                                             <td><h:outputText value="#{msgs.datatable_localid_text}"/> </td>
@@ -1667,6 +1667,8 @@
             <div id="extra<h:outputText value='#{childNodesName}'/>AddDiv" 
                  class="alertSource"  
                  style="TOP:1800px;LEFT:700px;HEIGHT:<h:outputText value="#{SourceHandler.allNodeFieldConfigsSizes[childNodesName]}" />px;WIDTH:400px;visibility:hidden;">
+                 <iframe src="blank.html" scrolling="no" frameborder="0" style="HEIGHT:<h:outputText value="#{SourceHandler.allNodeFieldConfigsSizes[childNodesName]}" />px;WIDTH:400px;z-index: -1; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0);">
+                </iframe>
                 <h:form>
                 <table>
                     <tr>

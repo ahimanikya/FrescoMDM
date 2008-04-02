@@ -93,19 +93,19 @@ public class DuplicateReportHandler    {
     /**
      * Search Start Date
      */
-    private String createStartDate = null;
+    private String createStartDate = new String();
     /**
      * Search End Date
      */
-    private String createEndDate = null;    
+    private String createEndDate = new String();    
     /**
      * Search Start Time
      */ 
-    private String createStartTime = null;
+    private String createStartTime = new String();
     /**
      * Search end Time
      */
-    private String createEndTime = null;    
+    private String createEndTime = new String();    
      /**
      * Search DuplicateReports Function
      */ 
@@ -268,13 +268,17 @@ public class DuplicateReportHandler    {
         return dataRows;
     }
 
-    private HashMap getOutPutValuesMap(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow) throws Exception {
+    private ArrayList getOutPutValuesMap(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow) throws Exception {
         HashMap newValuesMap = new HashMap();
         List transactionFields = reportConfig.getTransactionFields();
 
         ArrayList fcArrayList = getResultsConfigArrayList();
         SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
 
+        HashMap euid1Map = new HashMap();
+        HashMap euid2Map = new HashMap();
+        ArrayList dupArrayList = new ArrayList();
+        
         //getSearchResultsArrayByReportType();
         if (transactionFields != null) {
             Iterator iter = transactionFields.iterator();
@@ -287,6 +291,7 @@ public class DuplicateReportHandler    {
                 String val = reportRow.getValue(field).toString();
                 if (field.equalsIgnoreCase("EUID1")) {
                     newValuesMap.put("EUID", val);
+                    euid1Map.put("EUID", val);
                     eo = masterControllerService.getEnterpriseObject(val.toString());
 
                     for (int i = 0; i < fcArrayList.size(); i++) {
@@ -300,13 +305,16 @@ public class DuplicateReportHandler    {
                         if (fieldConfig.isUpdateable()) {
                             if (fieldConfig.getValueType() == 6) {
                                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                                euid1Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                             } else {
                                 newValuesMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                                euid1Map.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
                             }
                         }
                     }
                 } else if (field.equalsIgnoreCase("EUID2")) {
                     newValuesMap.put("EUID", val);
+                    euid2Map.put("EUID", val);
                     eo = masterControllerService.getEnterpriseObject(val.toString());
                     for (int i = 0; i < fcArrayList.size(); i++) {
                         FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
@@ -319,15 +327,19 @@ public class DuplicateReportHandler    {
                         if (fieldConfig.isUpdateable()) {
                             if (fieldConfig.getValueType() == 6) {
                                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                                euid2Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                             } else {
                                 newValuesMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                                euid2Map.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
                             }
                         }
                     }
                 }
             }
         }
-        return newValuesMap;
+        dupArrayList.add(euid1Map);
+        dupArrayList.add(euid2Map);
+        return dupArrayList;
     }
 
     public PotentialDuplicateReportConfig getPotentialDuplicateSearchObject()throws ValidationException, EPathException {
@@ -369,7 +381,7 @@ public class DuplicateReportHandler    {
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
-                    String searchStartDate = this.getCreateStartDate() + (this.getCreateStartTime() != null ? " " + this.getCreateStartTime() : " 00:00:00");
+                    String searchStartDate = this.getCreateStartDate() + ((this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0) ? " " + this.getCreateStartTime() : " 00:00:00");
                     Date date = DateUtil.string2Date(searchStartDate);
                     if (date != null) {
                         pdrConfig.setStartDate(new Timestamp(date.getTime()));
@@ -402,7 +414,7 @@ public class DuplicateReportHandler    {
             } else {
                 try {
                     //If Time is supplied append it to the date to check if it parses into a valid Date
-                    String searchEndDate = this.getCreateEndDate() + (this.getCreateEndTime() != null ? " " + this.getCreateEndTime() : " 23:59:59");
+                    String searchEndDate = this.getCreateEndDate() + ((this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)? " " + this.getCreateEndTime() : " 23:59:59");
                     Date date = DateUtil.string2Date(searchEndDate);
                     if (date != null) {
                         pdrConfig.setEndDate(new Timestamp(date.getTime()));
@@ -416,8 +428,8 @@ public class DuplicateReportHandler    {
         }
            if (((this.getCreateStartDate() != null) && (this.getCreateStartDate().trim().length() > 0))&&
            ((this.getCreateEndDate() != null) && (this.getCreateEndDate().trim().length() > 0))){                
-               Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + (this.getCreateStartTime() != null? " " +this.getCreateStartTime():"00:00:00"));
-               Date todate = DateUtil.string2Date(this.getCreateEndDate()+(this.getCreateEndTime() != null? " " +this.getCreateEndTime():"23:59:59"));
+               Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + ((this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)? " " +this.getCreateStartTime():" 00:00:00"));
+               Date todate = DateUtil.string2Date(this.getCreateEndDate()+((this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)? " " +this.getCreateEndTime():" 23:59:59"));
                long startDate = fromdate.getTime();
                long endDate = todate.getTime();
                  if(endDate < startDate){
@@ -565,7 +577,11 @@ public class DuplicateReportHandler    {
             duplicateRecordsVO[i] = new DuplicateRecords();
             duplicateRecordsVO[i] = (DuplicateRecords)vOList.get(i);
         }
-        request.setAttribute("size", new Integer(duplicateRecordsVO.length));        
+        if(duplicateRecordsVO != null) {
+          request.setAttribute("size", new Integer(duplicateRecordsVO.length));        
+        } else {
+          request.setAttribute("size", new Integer("0"));        
+        }
         return duplicateRecordsVO;
     }
     /**

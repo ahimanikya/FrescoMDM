@@ -117,7 +117,6 @@
 
             //EPathArrayList ePathArrayList = compareDuplicateManager.retrieveEPathArrayList(objScreenObject);
             ArrayList objScreenObjectList = objScreenObject.getSearchResultsConfig();
-            EPathArrayList ePathArrayList = compareDuplicateManager.retrievePatientResultsFields(objScreenObjectList);
 
             EPath ePath = null;
             PatientDetailsHandler patientDetailsHandler = new PatientDetailsHandler();
@@ -787,14 +786,14 @@
                                                     </h:form>
                                                 <tr> 
                                                       <td valign="top">
-                                                          <a class="viewbtn" href="javascript:showViewSources('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" >  
+                                                          <a class="viewbtn" href="javascript:showViewSources('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','0')" >  
                                                               <h:outputText value="#{msgs.view_history_text}"/>
                                                           </a>
                                                       </td>    
                                                   </tr>
                                                   <tr> 
                                                       <td valign="top">
-                                                          <a href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
+                                                          <a href="javascript:showViewHistory('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','0')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
                                                       </td>                                              
                                                   </tr>
 									<tr>
@@ -813,7 +812,7 @@
                                                         ValueExpression eoArrayListVE = ExpressionFactory.newInstance().createValueExpression(eoArrayList, eoArrayList.getClass());
                                                       %>  
                                                       <div id="unmerge">    
-                                                      <table cellpadding="0" cellspacing="0" border="1">
+                                                      <table cellpadding="0" cellspacing="0" border="0">
                                                           <tr>
                                                             <td valign="top" colspan="2">
                                                                 <h:outputLink styleClass="viewbtn" rendered="#{Operations.EO_Unmerge}"

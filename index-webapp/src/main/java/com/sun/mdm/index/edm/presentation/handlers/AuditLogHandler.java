@@ -375,8 +375,8 @@ public class AuditLogHandler extends ScreenConfiguration {
         //set EUID VALUE IF lid/system code not supplied
           if (super.getUpdateableFeildsMap().get("EUID") != null && super.getUpdateableFeildsMap().get("EUID").toString().trim().length() > 0) {
               auditSearchObject.setEUID((String) super.getUpdateableFeildsMap().get("EUID"));
-          } else {
-              auditSearchObject.setEUID(null);
+//          } else {
+//              auditSearchObject.setEUID(null);
           }
         
 
@@ -434,8 +434,9 @@ public class AuditLogHandler extends ScreenConfiguration {
         //auditSearchObject.setMaxElements(ConfigManager.getInstance().getMatchingConfig().getMaxResultSize());
 
 
-        auditSearchObject.setPageSize(10);
-        auditSearchObject.setMaxElements(100);
+        //set max results and page size here
+        auditSearchObject.setPageSize(super.getPageSize());
+        auditSearchObject.setMaxElements(super.getMaxRecords());
         Date date = null;
 
         if (errorMessage != null && errorMessage.length() != 0) {

@@ -14,6 +14,13 @@
 <%@ page isErrorPage="false" errorPage="../error500.jsp" %>
 
 <%
+if(session.getAttribute("ScreenObject") == null  ) {
+%>
+   <c:redirect url="login.jsf"/>
+<%}
+%>
+
+<%
 if(session.getAttribute("user") == null  ) {
 %>
    <c:redirect url="login.jsf"/>

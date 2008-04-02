@@ -169,10 +169,6 @@ public class AssumeMatchReportHandler  {
                 summaryList = new ArrayList();
             }
             summaryList.add(reportRow);
-            /*ReportDataRow[] dataRows = writeRow(amrConfig, reportRow);
-            for (int i = 0; i < dataRows.length; i++) {
-                dataRowList.add(dataRows[i]);
-            }*/
             prevEuid = reportRow.getEUID();
             index++;
             //resultArrayList.add(getOutPutValuesMap(amrConfig, reportRow));
@@ -264,76 +260,6 @@ public class AssumeMatchReportHandler  {
         resultsArrayList.add(newValuesMap);   
     }
 
-   /** write data row for writeRow */
-   private ReportDataRow[] writeRow(MultirowReportConfig1 reportConfig,MultirowReportObject1 reportRow) throws Exception {       
-        ReportDataRow[] dataRows = new ReportDataRow[1];
-        ArrayList rptFields = new ArrayList();
-        List transactionFields = reportConfig.getTransactionFields();
-            if (transactionFields != null) {
-            Iterator i = transactionFields.iterator();
-            AssumeMatchesRecords assumematchRecords = new AssumeMatchesRecords();
-            EnterpriseObject eo = null;
-            Object obj = null;
-            MasterControllerService masterControllerService = new MasterControllerService();
-            while (i.hasNext()) {
-                String field = (String) i.next();
-                
-                String val = reportRow.getValue(field).toString();
-                if (field.equalsIgnoreCase("EUID"))  {
-                    assumematchRecords.setEuid(val);
-                    eo = masterControllerService.getEnterpriseObject(val.toString());
-                    obj = EPathAPI.getFieldValue("Person.FirstName", eo.getSBR().getObject());
-                    //Set the First Name Values in VO
-                    assumematchRecords.getFirstName().add(obj);
-
-                    obj = EPathAPI.getFieldValue("Person.LastName", eo.getSBR().getObject());
-                    //Set the Last Name Values in VO
-                    assumematchRecords.getLastName().add(obj);
-
-                    obj = EPathAPI.getFieldValue("Person.SSN", eo.getSBR().getObject());
-                    //Set the Last Name Values in VO       
-                    assumematchRecords.getSsn().add(obj);
-
-                    obj = EPathAPI.getFieldValue("Person.DOB", eo.getSBR().getObject());
-                    SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
-                    String dob = simpleDateFormatFields.format(obj);
-                    assumematchRecords.getDob().add(dob);
-                }  else if (field.equalsIgnoreCase("SystemCode")){
-                   assumematchRecords.setSystemCode(val);
-                }  else if (field.equalsIgnoreCase("LID")){
-                   assumematchRecords.setLocalId(val);
-                }  else if (field.equalsIgnoreCase("Weight")){
-                   assumematchRecords.setWeight(val);                    
-               }
-                //Populate Hash Table as backup
-                assumematchRecordsResultsHash.put(field, val);
-                rptFields.add(new ReportField(val));
-            }
-            //vOList.add(assumematchRecords);
-        }
-        
-        EPathArrayList objectFields = reportConfig.getObjectFields();
-        if (objectFields != null) {
-            EPath[] fields = objectFields.toArray();
-            ObjectNode childObj = reportRow.getObject1();
-            for (int i = 0; i < fields.length; i++) {
-                String field = fields[i].toString();
-                String val = new String();
-                Object obj = EPathAPI.getFieldValue(field, childObj);
-                if (obj != null) {
-                    if (obj instanceof java.util.Date) {
-                        SimpleDateFormat sdf = new SimpleDateFormat(ConfigManager.getDateFormat());
-                        val = sdf.format((java.util.Date) obj);
-                    } else {
-                        val = obj.toString();
-                    }
-                }
-                rptFields.add(new ReportField(val));
-            }
-        }
-        dataRows[0] = new ReportDataRow(rptFields);
-        return dataRows;
-    }
    private HashMap getOutPutValuesMap(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow) throws Exception {
         HashMap newValuesMap = new HashMap();
         List transactionFields = reportConfig.getTransactionFields();
@@ -425,7 +351,7 @@ public class AssumeMatchReportHandler  {
                     if (getCreateStartTime().trim().length() == 0) {
                         createStartTime = "00:00:00";
                     }
-                    String searchStartDate = this.getCreateStartDate() + (this.getCreateStartTime() != null ? " " + this.getCreateStartTime() : "00:00:00");
+                    String searchStartDate = this.getCreateStartDate() + ((this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)? " " + this.getCreateStartTime() : " 00:00:00");
                     Date date = DateUtil.string2Date(searchStartDate);
                     if (date != null) {
                         amrc.setStartDate(new Timestamp(date.getTime()));
@@ -462,7 +388,7 @@ public class AssumeMatchReportHandler  {
                         createEndTime = "23:59:59";
                     }
                     //If Time is supplied append it to the date to check if it parses into a valid Date
-                    String searchEndDate = this.getCreateEndDate() + (this.getCreateEndTime() != null ? " " + this.getCreateEndTime() : "23:59:59");
+                    String searchEndDate = this.getCreateEndDate() + ((this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)? " " + this.getCreateEndTime() : " 23:59:59");
                     Date date = DateUtil.string2Date(searchEndDate);
                     if (date != null) {
                         amrc.setEndDate(new Timestamp(date.getTime()));
@@ -477,8 +403,8 @@ public class AssumeMatchReportHandler  {
         }
            if (((this.getCreateStartDate() != null) && (this.getCreateStartDate().trim().length() > 0))&&
            ((this.getCreateEndDate() != null) && (this.getCreateEndDate().trim().length() > 0))){                
-               Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + (this.getCreateStartTime() != null? " " +this.getCreateStartTime():"00:00:00"));
-               Date todate = DateUtil.string2Date(this.getCreateEndDate()+(this.getCreateEndTime() != null? " " +this.getCreateEndTime():"23:59:59"));
+               Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + ((this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)? " " +this.getCreateStartTime():" 00:00:00"));
+               Date todate = DateUtil.string2Date(this.getCreateEndDate()+((this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)? " " +this.getCreateEndTime():" 23:59:59"));
                long startDate = fromdate.getTime();
                long endDate = todate.getTime();
                  if(endDate < startDate){

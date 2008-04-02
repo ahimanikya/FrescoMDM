@@ -132,7 +132,7 @@ public class TransactionHandler extends ScreenConfiguration {
 
             super.setUpdateableFeildsMap(newFieldValuesMap);
 
-            //System.out.println("---------------1-------------------" + super.getUpdateableFeildsMap() + super.checkOneOfManyCondition());
+
             //check one of many condtion here
             if (super.checkOneOfManyCondition()) {
                 //System.out.println("---------------1-------------------" + super.getUpdateableFeildsMap());
@@ -229,7 +229,7 @@ public class TransactionHandler extends ScreenConfiguration {
 
             TransactionSearchObject tso = getTransactionSearchObject();
 
-            //System.out.println("---------------5-------------------" + tso);
+        
 
             MasterControllerService objMasterControllerService = new MasterControllerService();
 
@@ -249,7 +249,7 @@ public class TransactionHandler extends ScreenConfiguration {
                             ", EUID2: " + "\"" + ((ts.getTransactionObject().getEUID2() != null) ? ts.getTransactionObject().getEUID2() : "") + "\"" +
                             ", LID: " + "\"" + ((ts.getTransactionObject().getLID() != null) ? ts.getTransactionObject().getLID() : "") + "\"" +
                             ", Function: " + "\"" + ((ts.getTransactionObject().getFunction() != null) ? ts.getTransactionObject().getFunction() : "") + "\"" +
-                            ", SystemCode: " + "\"" + ((ts.getTransactionObject().getSystemCode() != null) ? ts.getTransactionObject().getSystemCode() : "") + "\"" +
+                            ", SystemCode: " + "\"" + ((ts.getTransactionObject().getSystemCode() != null) ? masterControllerService.getSystemDescription(ts.getTransactionObject().getSystemCode()): "") + "\"" +
                             ", SystemUser: " + "\"" + ((ts.getTransactionObject().getSystemUser() != null) ? ts.getTransactionObject().getSystemUser() : "") + "\"" +
                             ", TimeStamp: " + "\"" + ((ts.getTransactionObject().getTimeStamp() != null) ? ts.getTransactionObject().getTimeStamp() : "") + "\"" + "}";
 
@@ -594,8 +594,8 @@ public class TransactionHandler extends ScreenConfiguration {
         ////System.out.println("======1======EUID==");
             if (super.getUpdateableFeildsMap().get("EUID") != null && super.getUpdateableFeildsMap().get("EUID").toString().trim().length() > 0) {
                 transactionSearchObject.setEUID((String) super.getUpdateableFeildsMap().get("EUID"));
-            } else {
-                transactionSearchObject.setEUID(null);
+//            } else {
+//                transactionSearchObject.setEUID(null);
             }
 
 
@@ -656,8 +656,9 @@ public class TransactionHandler extends ScreenConfiguration {
             transactionSearchObject.setFunction(null);
         }
      
-         transactionSearchObject.setPageSize(10);
-         transactionSearchObject.setMaxElements(100);
+         //set Max records and page size here
+         transactionSearchObject.setPageSize(super.getPageSize());
+         transactionSearchObject.setMaxElements(super.getMaxRecords());
 
          
         if (errorMessage != null && errorMessage.length() != 0)  {
@@ -715,7 +716,7 @@ public class TransactionHandler extends ScreenConfiguration {
         for (int i = 0; i < pullDownListItems.length; i++) {
             SelectItem selectItem = new SelectItem();
             ////System.out.println("Adding Select item label" + pullDownListItems[i] + "Value" + pullDownListItems[i]);
-            selectItem.setLabel(pullDownListItems[i]);
+            selectItem.setLabel(masterControllerService.getSystemDescription(pullDownListItems[i]));
             selectItem.setValue(pullDownListItems[i]);
             newArrayList.add(selectItem);
         }
@@ -760,11 +761,6 @@ public class TransactionHandler extends ScreenConfiguration {
                     mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
                     mLogger.error("UserException ex : " + ex.toString());
         }  
-        
-        if( eoArrayList != null && eoArrayList.size() > 0) {
-            for(int i=0;i<eoArrayList.size();i++) {
-            }
-        }                     
 
     }
 

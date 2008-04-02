@@ -270,7 +270,7 @@
            %>
                 <div class="printClass">
                 <table>
-                  <tr><td>No Records Found in the System. Please Refine your Search Criteria..............</td></tr>
+                  <tr><td>No Records Found in the System. Please Refine your Search Criteria.</td></tr>
                 </table>                     
          </div>
       <%}%>

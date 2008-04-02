@@ -77,10 +77,10 @@ public class UnmergedRecordsHandler    {
     private TransactionIterator updateIterator = null;
     private ArrayList vOList = new ArrayList();  
     private UnmergedRecords[] unmergedRecordsVO = null;    
-    private String createStartDate = null;
-    private String createEndDate = null;    
-    private String createStartTime = null;
-    private String createEndTime = null;    
+    private String createStartDate = new String();
+    private String createEndDate = new String();    
+    private String createStartTime = new String();
+    private String createEndTime = new String();    
     private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.UnmergedRecordsHandler");    
     /*
      *  Request Object Handle
@@ -131,7 +131,8 @@ public class UnmergedRecordsHandler    {
             for (int i = 0; i < dataRows.length; i++) {
                 dataRowList.add(dataRows[i]);
             }
-            resultArrayList.add(getOutPutValuesMap(umrConfig, reportRow));
+            resultArrayList.add(getOutPutValuesMap(umrConfig, reportRow,"EUID1"));
+            resultArrayList.add(getOutPutValuesMap(umrConfig, reportRow,"EUID2"));
         }
         request.setAttribute("unmergeReportList", resultArrayList);
         return dataRowList2Array(dataRowList);
@@ -176,24 +177,6 @@ public class UnmergedRecordsHandler    {
                  if (field.equalsIgnoreCase("EUID1"))  {
                     newValuesMap.put("EUID",val);
                     unMergedRecords.getEuid().add(val);
-                    /* eo = masterControllerService.getEnterpriseObject(val.toString());
-                     obj = EPathAPI.getFieldValue("Person.FirstName", eo.getSBR().getObject());
-                     //Set the First Name Values in VO
-                     unMergedRecords.setFirstName((String) obj);
-
-                     obj = EPathAPI.getFieldValue("Person.LastName", eo.getSBR().getObject());
-                     //Set the Last Name Values in VO
-                     unMergedRecords.setLastName((String) obj);
-
-                     obj = EPathAPI.getFieldValue("Person.SSN", eo.getSBR().getObject());
-                     //Set the Last Name Values in VO       
-                     unMergedRecords.setSsn((String) obj);
-
-                     obj = EPathAPI.getFieldValue("Person.DOB", eo.getSBR().getObject());
-                     SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
-                     String dob = simpleDateFormatFields.format(obj);
-                     unMergedRecords.setDob(dob);
-                    */
                 }else if (field.equalsIgnoreCase("EUID2")){
                     newValuesMap.put("EUID",val);
                     unMergedRecords.getEuid().add(val);
@@ -233,7 +216,7 @@ public class UnmergedRecordsHandler    {
         return dataRows;
     }
   
-  private HashMap getOutPutValuesMap(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow) throws Exception {
+  private HashMap getOutPutValuesMap(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow,String euidVal) throws Exception {
         HashMap newValuesMap = new HashMap();
         List transactionFields = reportConfig.getTransactionFields();
 
@@ -250,10 +233,10 @@ public class UnmergedRecordsHandler    {
             while (iter.hasNext()) {
                 String field = (String) iter.next();
                 String val = reportRow.getValue(field).toString();
-                if (field.equalsIgnoreCase("EUID1")) {
+                if (field.equalsIgnoreCase(euidVal)) {
                     newValuesMap.put("EUID", val);
                     eo = masterControllerService.getEnterpriseObject(val.toString());
-
+                    if(eo != null ) {
                     for (int i = 0; i < fcArrayList.size(); i++) {
                         FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
                         if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
@@ -270,6 +253,7 @@ public class UnmergedRecordsHandler    {
                             }
                         }
                     }
+                  }
                 } 
             }
         }
@@ -311,15 +295,15 @@ public class UnmergedRecordsHandler    {
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
-                    if (getCreateStartTime().trim().length() == 0) {
-                        createStartTime = "00:00:00";
-                    }
-                    String searchStartDate = this.getCreateStartDate() + (this.getCreateStartTime() != null ? " " + this.getCreateStartTime() : " 00:00:00");
+//                    if (getCreateStartTime().trim().length() == 0) {
+//                        createStartTime = "00:00:00";
+//                    }
+                    String searchStartDate = this.getCreateStartDate() + ((this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)? " " + this.getCreateStartTime() : " 00:00:00");
                     Date date = DateUtil.string2Date(searchStartDate);
                     if (date != null) {
                         umrConfig.setStartDate(new Timestamp(date.getTime()));
                     }        
-                   createStartTime="";
+//                   createStartTime="";
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
@@ -351,7 +335,7 @@ public class UnmergedRecordsHandler    {
                         createEndTime = "23:59:59";
                     }
                     //If Time is supplied append it to the date to check if it parses into a valid Date
-                    String searchEndDate = this.getCreateEndDate() + (this.getCreateEndTime() != null ? " " + this.getCreateEndTime() : " 23:59:59");
+                    String searchEndDate = this.getCreateEndDate() + ((this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)? " " + this.getCreateEndTime() : " 23:59:59");
                     Date date = DateUtil.string2Date(searchEndDate);
                     if (date != null) {
                         umrConfig.setEndDate(new Timestamp(date.getTime()));
@@ -367,8 +351,8 @@ public class UnmergedRecordsHandler    {
          
          if (((this.getCreateStartDate() != null) && (this.getCreateStartDate().trim().length() > 0))&&
            ((this.getCreateEndDate() != null) && (this.getCreateEndDate().trim().length() > 0))){                
-               Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + (this.getCreateStartTime() != null? " " +this.getCreateStartTime():" 00:00:00"));
-               Date todate = DateUtil.string2Date(this.getCreateEndDate()+(this.getCreateEndTime() != null? " " +this.getCreateEndTime():" 23:59:59"));
+               Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + ((this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)? " " +this.getCreateStartTime():" 00:00:00"));
+               Date todate = DateUtil.string2Date(this.getCreateEndDate()+((this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)? " " +this.getCreateEndTime():" 23:59:59"));
                long startDate = fromdate.getTime();
                long endDate = todate.getTime();
                  if(endDate < startDate){
@@ -459,7 +443,11 @@ public class UnmergedRecordsHandler    {
             unmergedRecordsVO[i] = new UnmergedRecords();
             unmergedRecordsVO[i] = (UnmergedRecords)vOList.get(i);
         }
-        request.setAttribute("size", new Integer(unmergedRecordsVO.length));        
+        if(unmergedRecordsVO != null) {
+          request.setAttribute("size", new Integer(unmergedRecordsVO.length));        
+        } else {
+            request.setAttribute("size", new Integer("0"));        
+        }
         request.setAttribute("tabName", "UNMERGED_RECORDS");            
         return unmergedRecordsVO;          
       }

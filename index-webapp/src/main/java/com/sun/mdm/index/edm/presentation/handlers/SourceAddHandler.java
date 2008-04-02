@@ -280,6 +280,7 @@ public class SourceAddHandler {
             masterControllerService.setUpdateUserName((String) session.getAttribute("user"));
             //create systemobject start
             SystemObject createSystemObject = masterControllerService.createSystemObject(getSystemCode(), getLID(), newSOHashMap);
+            
             //createSystemObject.setUpdateUser("eview");
    
             for(int i=0;i<getNewSOMinorObjectsHashMapArrayList().size();i++) {

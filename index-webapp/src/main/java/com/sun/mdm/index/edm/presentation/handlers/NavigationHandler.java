@@ -175,6 +175,7 @@ public  class NavigationHandler {
         try {
             ConfigManager.init();
             screenObject = ConfigManager.getInstance().getScreenObjectFromScreenName(tagName);
+            session.removeAttribute("ScreenObject");
         } catch (Exception e) {
             mLogger.error("Failed Get the Screen Object: ", e);
         }

@@ -329,7 +329,12 @@ public class ScreenConfiguration {
     }
 
     public int getMaxRecords() {
-        return maxRecords;
+        int mRecords = 0;
+        ArrayList resultsScreenConfigArray = screenObject.getSearchResultsConfig();
+        SearchResultsConfig objSearchScreenConfig = (SearchResultsConfig) resultsScreenConfigArray.get(0);
+        mRecords = objSearchScreenConfig.getMaxRecords();
+      
+        return mRecords;
     }
 
     public void setMaxRecords(int maxRecords) {
@@ -337,7 +342,12 @@ public class ScreenConfiguration {
     }
 
     public int getPageSize() {
-        return pageSize;
+        int psize = 0;
+        ArrayList resultsScreenConfigArray = screenObject.getSearchResultsConfig();
+        SearchResultsConfig objSearchScreenConfig = (SearchResultsConfig) resultsScreenConfigArray.get(0);
+        psize = objSearchScreenConfig.getPageSize();
+       
+        return psize;
     }
 
     public void setPageSize(int pageSize) {

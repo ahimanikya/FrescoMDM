@@ -63,7 +63,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
     private boolean euidCheckboolean;
     private static final String VALIDATION_ERROR = "validationfailed";
     private static final String SERVICE_LAYER_ERROR = "servicelayererror";
-    private PatientDetails[] patientDetailsVO = null;
+    //private PatientDetails[] patientDetailsVO = null;
     private String resolveType  = "AutoResolve";
     private String potentialDuplicateId;
     /**
@@ -107,7 +107,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         try {
             HashMap newFieldValuesMap = new HashMap();
 
-            //System.out.println("---------------1-------------------" + super.getEnteredFieldValues());
+          
             if (super.getEnteredFieldValues() != null && super.getEnteredFieldValues().length() > 0) {
                 String[] fieldNameValues = super.getEnteredFieldValues().split(">>");
                 for (int i = 0; i < fieldNameValues.length; i++) {
@@ -121,7 +121,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             }
 
             super.setUpdateableFeildsMap(newFieldValuesMap);
-            //System.out.println("---------------1-------------------" + super.getUpdateableFeildsMap());
+         
 
             //set the search type as per the user choice
             super.setSearchType(super.getSelectedSearchType());
@@ -228,7 +228,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
             ArrayList arlResultsConfig = screenObject.getSearchResultsConfig();
 
-            EPathArrayList ePathArrayList = compareDuplicateManager.retrievePatientResultsFields(arlResultsConfig);
+            EPathArrayList ePathArrayList = compareDuplicateManager.retrieveEpathResultsFields(arlResultsConfig);
             ArrayList sResultsConfigArrayList = screenObject.getSearchResultsConfig();
 
             EPathArrayList resultFields = new EPathArrayList();
@@ -278,10 +278,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 ArrayList searchScreenArray = super.screenObject.getSearchScreensConfig();
                 Iterator searchScreenArrayIter = searchScreenArray.iterator();
                 String eoSearchOptionQueryBuilder = new String();
+               
                 while (searchScreenArrayIter.hasNext()) {
-                    searchScreenConfig = (SearchScreenConfig) searchScreenArrayIter.next();
+                    searchScreenConfig = (SearchScreenConfig) searchScreenArrayIter.next();                   
                     if (searchScreenConfig.getScreenTitle().equalsIgnoreCase(super.getSelectedSearchType())) {
-                        //get the EO search option from the EDM.xml file here as per the search type
+                        //get the EO search option from the EDM.xml file here as per the search type                      
                         eoSearchOptionQueryBuilder = searchScreenConfig.getOptions().getQueryBuilder();
                     }
                 }
@@ -289,7 +290,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 resultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
 
                 EOSearchOptions eoSearchOptions = new EOSearchOptions(eoSearchOptionQueryBuilder, resultFields);
-                ////System.out.println("===1=====seoSearchOptions ==>: " + eoSearchOptions);
+              
 
                 EOSearchCriteria eoSearchCriteria = new EOSearchCriteria();
 
@@ -308,11 +309,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     //System.out.println(objectFieldConfig.isRange() + "==>: " + objectFieldConfig.getDisplayName() + "name==> " + objectFieldConfig.getName() + "Value name ==> " + super.getUpdateableFeildsMap().get(objectFieldConfig.getFullFieldName()) + "Value dp ==> " + super.getUpdateableFeildsMap().get(objectFieldConfig.getDisplayName()));
 
                     //Get the Field Value as per the field config range type
-                    if (objectFieldConfig.isRange()) {
-                        feildValue = (String) super.getUpdateableFeildsMap().get(objectFieldConfig.getDisplayName());
-                    } else {
-                        feildValue = (String) super.getUpdateableFeildsMap().get(objectFieldConfig.getFullFieldName());
-                    }
+                    //if (objectFieldConfig.isRange()) {
+                   //     feildValue = (String) super.getUpdateableFeildsMap().get(objectFieldConfig.getDisplayName());
+                    //} else {
+                        feildValue = (String) super.getUpdateableFeildsMap().get(objectFieldConfig.getName());
+                    //}
                     if (feildValue != null && feildValue.trim().length() > 0) {
                         //Remove all masking fields from the field valued if any like SSN,LID...etc
                         //System.out.println("DOB FROM Putting ==>: BEFORE feildValue==> " + feildValue);
@@ -332,7 +333,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
                 }
 
-//            //System.out.println("gSearchCriteria==>: " + gSearchCriteria);
 //            //System.out.println("gSearchCriteriaToDOB: " + gSearchCriteriaToDOB);
 //            //System.out.println("gSearchCriteriaFromDOB==>: " + gSearchCriteriaFromDOB);
 
@@ -356,6 +356,8 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 eoSearchCriteria.setSystemObject(sysobj);  // for all search attributes other than dob range
                 //System.out.println("OTHERRRRSSS ==> ; ");
                 eoSearchResultIterator = masterControllerService.searchEnterpriseObject(eoSearchCriteria, eoSearchOptions);
+                SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+                String dateField = new String();
 
                 while (eoSearchResultIterator.hasNext()) {
                     EOSearchResultRecord eoSearchResultRecord = eoSearchResultIterator.next();
@@ -366,7 +368,13 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                         EPath ePath = ePathArrayList.get(m);
                         try {
                             Object value = EPathAPI.getFieldValue(ePath, objectNode);
-                            fieldvalues.put(ePath.getName(), value);
+                           if(value instanceof java.util.Date) {
+                                dateField = simpleDateFormatFields.format(value);
+                                fieldvalues.put(ePath.getName(), dateField);
+                            } else {
+                              //value
+                              fieldvalues.put(ePath.getName(), value);
+                            }
                         } catch (Exception npe) {
                         // THIS SHOULD BE FIXED
                         // npe.printStackTrace();
@@ -376,7 +384,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     resultArrayList.add(fieldvalues);
                 }
                 httpRequest.setAttribute("resultArrayListReq", resultArrayList);
-                setResultsSize(getPatientDetailsVO().length);
+                //setResultsSize(getPatientDetailsVO().length);
 
             }
         // End here            
@@ -422,7 +430,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         try {
             
             //resolve the potential duplicate as per resolve type
-            boolean resolveBoolean = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? true : false;
+            boolean resolveBoolean = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? false : true;
             String resolveString = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? "A": "R";
 
             //flag=false incase of autoresolve
@@ -1298,7 +1306,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             mLogger.error("UserException ex : " + ex.toString());
         } catch (RemoteException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-            mLogger.error("RemoteException ex : " + ex.toString());
+            mLogger.error("RemoteExcept ion ex : " + ex.toString());
         }
 
     }
@@ -1306,6 +1314,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
     public void viewMergedRecords(ActionEvent event) throws ObjectException {
 
         //HashMap unmergedHashMapValueExpression = (HashMap) event.getComponent().getAttributes().get("unmergedEOValueExpression");
+        String euid = (String) event.getComponent().getAttributes().get("euidValueExpression");
         String transactionNumber = (String) event.getComponent().getAttributes().get("tranNoValueExpressionviewmerge");
         ArrayList eoArrayList = (ArrayList) event.getComponent().getAttributes().get("eoArrayList");
         httpRequest.setAttribute("comapreEuidsArrayList", eoArrayList);
@@ -1333,7 +1342,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             }
 
 
-            httpRequest.setAttribute("mergeEOList", mergeEOList);
+            httpRequest.setAttribute("mergeEOList"+euid, mergeEOList);
 
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
@@ -1405,31 +1414,31 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         httpRequest.removeAttribute("eoSources");
     }
 
-    public PatientDetails[] getPatientDetailsVO() {
-        patientDetailsVO = new PatientDetails[this.resultArrayList.size()];
-        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
-        int size = this.resultArrayList.size();
-    //    //System.out.println("this.resultArrayList ===> ; "  + this.resultArrayList);
-
-        HashMap values = new HashMap();
-        for (int i = 0; i < size; i++) {
-            patientDetailsVO[i] = new PatientDetails();
-            values = (HashMap) resultArrayList.get(i);
-            String dateField = ((Date) values.get("Person.DOB") ).toString();
-            patientDetailsVO[i].setEuid((String) values.get("EUID"));
-            patientDetailsVO[i].setFirstName((String) values.get("Person.FirstName"));
-            patientDetailsVO[i].setLastName((String) values.get("Person.LastName"));
-            patientDetailsVO[i].setDob(dateField);
-            patientDetailsVO[i].setSsn((String) values.get("Person.SSN"));
-            patientDetailsVO[i].setAddressLine1((String) values.get("Person.Address.AddressLine1"));
-        }
-
-        return patientDetailsVO;
-    }
-
-    public void setPatientDetailsVO(PatientDetails[] patientDetailsVO) {
-        this.patientDetailsVO = patientDetailsVO;
-    }
+//    public PatientDetails[] getPatientDetailsVO() {
+//        patientDetailsVO = new PatientDetails[this.resultArrayList.size()];
+//        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+//        int size = this.resultArrayList.size();
+//    //    //System.out.println("this.resultArrayList ===> ; "  + this.resultArrayList);
+//
+//        HashMap values = new HashMap();
+//        for (int i = 0; i < size; i++) {
+//            patientDetailsVO[i] = new PatientDetails();
+//            values = (HashMap) resultArrayList.get(i);
+//            String dateField = ((Date) values.get("Person.DOB") ).toString();
+//            patientDetailsVO[i].setEuid((String) values.get("EUID"));
+//            patientDetailsVO[i].setFirstName((String) values.get("Person.FirstName"));
+//            patientDetailsVO[i].setLastName((String) values.get("Person.LastName"));
+//            patientDetailsVO[i].setDob(dateField);
+//            patientDetailsVO[i].setSsn((String) values.get("Person.SSN"));
+//            patientDetailsVO[i].setAddressLine1((String) values.get("Person.Address.AddressLine1"));
+//        }
+//
+//        return patientDetailsVO;
+//    }
+//
+//    public void setPatientDetailsVO(PatientDetails[] patientDetailsVO) {
+//        this.patientDetailsVO = patientDetailsVO;
+//    }
 
     public String getSingleEUID() {
         return singleEUID;
@@ -1602,5 +1611,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
 
    
+
 
 

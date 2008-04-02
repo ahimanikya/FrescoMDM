@@ -430,8 +430,10 @@ public class AssumeMatchHandler extends ScreenConfiguration {
         } else {
             amso.setCreateUser(null);
         }
-        amso.setPageSize(10);
-        amso.setMaxElements(1000);
+        
+        //set max records and page size
+        amso.setPageSize(super.getPageSize());
+        amso.setMaxElements(super.getMaxRecords());
 
         if (errorMessage != null && errorMessage.length() != 0) {
             throw new ValidationException(errorMessage);
@@ -465,7 +467,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                 beforeMap.put("ID", ams.getId());
                 beforeMap.put("EUID", ams.getEUID());
                 beforeMap.put("LID", ams.getLID());
-                beforeMap.put("SystemCode", ams.getSystemCode());
+                beforeMap.put("SystemCode", masterControllerService.getSystemDescription(ams.getSystemCode()));
                 beforeMap.put("Weight", ams.getWeight());
                 beforeMap.put("CreateUser", ams.getCreateUser());
                 beforeMap.put("CreateDate", sdf.format(ams.getCreateDate()));
@@ -697,8 +699,8 @@ public class AssumeMatchHandler extends ScreenConfiguration {
         CompareDuplicateManager compareDuplicateManager=new CompareDuplicateManager();
         try {
             AssumedMatchSearchObject aso = new AssumedMatchSearchObject();
-            aso.setPageSize(10);
-            aso.setMaxElements(100);
+            aso.setPageSize(super.getPageSize());
+            aso.setMaxElements(super.getMaxRecords());
             aso.setAssumedMatchId(assumedMatchId);
 
             // Lookup Assumed Matches

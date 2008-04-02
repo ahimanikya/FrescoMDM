@@ -171,8 +171,8 @@
                    %>
 
                                           <%if (countEnt == 0) {%>
-                                            <td  valign="top">
-                                                <div id="outerMainContentDivid<%=countEnt%>" style="visibility:visible;display:block">
+                                            <td  valign="top" align="left">
+                                                <div id="outerMainContentDivid" style="visibility:visible;display:block;">
                                                     <div style="width:170px;overflow:auto">
                                                         <div id="mainEuidContent" class="<%=cssMain%>">
                                                             <table border="0" cellspacing="0" cellpadding="0" width="100%">
@@ -181,8 +181,8 @@
                                                         </div>
                                                     </div>
                                                     <div id="mainEuidContentButtonDiv<%=countEnt%>" class="<%=cssMain%>">
-                                                        <div id="assEuidDataContent<%=countEnt%>" style="visibility:visible;display:block;">
-                                                            <div id="personassEuidDataContent" style="visibility:visible;display:block;">
+                                                        <div id="assEuidDataContent<%=countEnt%>">
+                                                            <div id="personassEuidDataContent" >
                                                                 
                                                                 <table border="0" cellspacing="0" cellpadding="0" class="w169">
                                                                     <tr>
@@ -235,7 +235,7 @@
                                             <%}%>     
                                             <!-- START Display the field Values-->
                                             <td  valign="top">
-                                                <div id="outerMainContentDivid<%=countEnt%>" >
+                                                <div id="outerMainContentDivid<%=countEnt%>">
                                                 <div style="width:170px;overflow:hidden">
                                                 <%
                                                 if (countEnt > 0 && ("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
@@ -437,7 +437,7 @@
 
                                                     <div id="mainEuidContentButtonDiv<%=countEnt%>" class="source">
                                                         <div id="assEuidDataContent<%=countEnt%>" >
-                                                            <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleClass%>">
+                                                            <div id="personEuidDataContent" class="source">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
                                                                     <%
                                     for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
@@ -544,9 +544,9 @@
                                                     </div>
                                                 </div>
 
-                                                  <div id="mainEuidContentButtonDiv<%=countEnt%>">
+                                                  <div id="mainEuidContentButtonDiv<%=countEnt%>" class="history">
                                                         <div id="assEuidDataContent<%=countEnt%>" >
-                                                            <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="history">
+                                                            <div id="personEuidDataContent" class="history">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
                                                                     <%
                                     for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
@@ -627,7 +627,7 @@
                                                     }
                                                 %>
                                             <td  valign="top">
-                                                <div id="previewPane<%=countEnt%>" style="visibility:visible;display:block">
+                                                <div id="previewPane" style="visibility:visible;display:block">
                                                     <div style="width:170px;overflow:auto">
                                                         <div id="mainEuidContent" class="<%=styleClass%>">
                                                             <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -784,7 +784,7 @@
                                         <% }%>
                                         <!--Displaying view sources and view history-->
                                         <td valign="top">
-                                            <div id="dynamicMainEuidButtonContent<%=countEnt%>">
+                                            <div id="dynamicMainEuidButtonContent<%=countEnt%>" style="visibility:visible;display:block;">
                                                 <table border="0" cellspacing="0" cellpadding="0" border="1">
                                                     <h:form>
                                                <% if (countEnt > 0 ) { %>
@@ -811,14 +811,14 @@
                                       
                                                   <tr> 
                                                       <td valign="top">
-                                                          <a class="viewbtn" href="javascript:showViewSources('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" >  
+                                                          <a class="viewbtn"   href="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoSources.size()%>')" >  
                                                               <h:outputText value="#{msgs.view_history_text}"/>
                                                           </a>
                                                       </td>    
-                                                  </tr>
+                                                  </tr> 
                                                   <tr> 
                                                       <td valign="top">
-                                                          <a  class="viewbtn" href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')"><h:outputText value="#{msgs.view_sources_text}"/></a> 
+                                                          <a href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoHistory.size()%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
                                                       </td>                                              
                                                   </tr>
                                                      <tr><td>&nbsp;</td></tr>
@@ -888,7 +888,7 @@
                 </div>  
              </div> 
 
-                        <div id="mergeDiv" class="alert" style="TOP:2050px; LEFT:300px; HEIGHT:160px; WIDTH: 280px; VISIBILITY: hidden; ">
+                                   <div id="mergeDiv" class="alert" style="TOP:2050px; LEFT:300px; HEIGHT:160px; WIDTH: 280px; VISIBILITY: hidden; ">
                             
                                 <table cellspacing="0" cellpadding="0" border="0">
                                     <tr>
@@ -918,7 +918,6 @@
                                     
                                 </table>
                         </div>  
-
                                    <div id="resolvePopupDiv" class="alert" style="TOP:2250px; LEFT:300px; HEIGHT:195px;WIDTH: 300px;visibility:hidden; ">
                                      
                                        <h:form id="reportYUISearch">
@@ -956,7 +955,6 @@
                                            
                                        </h:form>
                                    </div>                                                
-
 
              <div id="resolvepopuphelp" class="balloonstyle"><h:outputText  value="#{msgs.resolvepopup_help}"/></div>    
              <div id="mergepopuphelp" class="balloonstyle"><h:outputText  value="#{msgs.mergepopup_help}"/></div>    

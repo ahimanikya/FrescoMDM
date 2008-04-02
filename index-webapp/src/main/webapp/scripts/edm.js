@@ -575,7 +575,7 @@ function activePreviewButtons(totalAssociates,assoDivIndex,previewDivIndex)   {
 
 
 
-
+/*
 function showViewSources(mainDupSources,count,countEnt,totalColumns) {
 //    ////alert(mainDupSources+"++++++"+count+"====="+countEnt);
   // ////alert(document.getElementById("previewPane").style.visibility);
@@ -629,7 +629,9 @@ function showViewSources(mainDupSources,count,countEnt,totalColumns) {
        
   }
 }
-} 
+}
+*/
+
 function hideOther(mainDupSources,count,countEnt) {
     //////alert(mainDupSources+"+++HIDING+++"+count+"====="+countEnt);
     var divLayerMain;
@@ -671,11 +673,12 @@ function getDateFieldName(formName,idName)  {
 
 
 function ClearContents(thisForm)  { 
+	
     thisFrm = document.forms[thisForm];
     for(i=0; i< thisFrm.elements.length; i++)   {      
-        if (!thisFrm.elements[i].name.indexOf(thisForm+':'))   {
-            thisFrm.elements[i].value = "";
-        }
+        if(!thisFrm.elements[i].name != 'lidmask') {
+           thisFrm.elements[i].value = "";
+	}
     }
     return;
 } 
@@ -1392,7 +1395,6 @@ function finalMultiMergeEuids(mergeDivId,thisEvent)  {
   var euids=""
    /*Accumulate EUID for the Patient details screen*/
    function getEUIDS(euid) {
-       //alert(euid);
        //alert(document.getElementById('yuiform:compareEuids'));
        euids += euid + "##";
        document.getElementById('yuiform:compareEuids').value = euids;
@@ -1778,3 +1780,162 @@ function accumilateMultiMergeEuidsPreview(fac,count,mergeEuidVar) {
       //document.getElementById('mergeEuidsDiv').style.display = "block";
    }
 }
+
+//Functions for view sources/history in euid details pages
+function showViewSources(mainDupSources,count,countEnt,totalColumns,historySize) {
+  
+  ////alert(mainDupSources+"++++++"+count+"====="+countEnt);
+  // ////alert(document.getElementById("previewPane").style.visibility);
+    var divLayerMain;
+    var divLayerHistory;
+    //hideOther(mainDupSources,count,countEnt);
+    
+    for(var i=0;i<count;i++) {
+    divLayerMain = document.getElementById(mainDupSources+countEnt+i);
+    
+     //alert(mainDupSources+countEnt+i);
+    if (divLayerMain.style.display=="none" || divLayerMain.style.display=="") {
+         divLayerMain.style.visibility="visible";
+         divLayerMain.style.display="block";
+         
+       if( mainDupSources == 'mainDupSources') {
+            divLayerMain = document.getElementById("mainDupSources"+countEnt+i);
+            divLayerMain.style.visibility="visible";
+            divLayerMain.style.display="block";
+        }
+         
+       //display or hide preview pane
+       document.getElementById("previewPane").style.visibility="hidden";
+       document.getElementById("previewPane").style.display="none";
+       //display/hide other divs
+       for(var c=0;c<totalColumns;c++) {
+	      //HIDE history divs by default
+           for(var j=0;j<historySize;j++) {
+            divLayerHistory = document.getElementById("mainDupHistory"+c+j);
+            if(divLayerHistory != null) {  
+              divLayerHistory.style.visibility="hidden";
+              divLayerHistory.style.display="none";
+			}
+          }
+          //////alert("=H/D=="+c +"totalColumns"+totalColumns+ "==" +countEnt+"====="+document.getElementById("outerMainContentDivid"+c).style.visibility);
+          if(c  == countEnt) {
+            //////alert("=EQUAL=="+c + "==" +countEnt+"====="+document.getElementById("outerMainContentDivid"+c).style.visibility);
+            document.getElementById("outerMainContentDivid"+c).style.visibility = "visible";
+            document.getElementById("outerMainContentDivid"+c).style.display = "block";
+            document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "visible";
+            document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "block";
+         } else {
+            //////alert("=NE=="+c + "==" +countEnt+"====="+document.getElementById("outerMainContentDivid"+c).style.visibility);
+           document.getElementById("outerMainContentDivid"+c).style.visibility = "hidden";
+           document.getElementById("outerMainContentDivid"+c).style.display = "none";
+           document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "hidden";
+           document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "none";
+         }
+       }
+    } else if (divLayerMain.style.display=="block" || divLayerMain.style.display!="") {
+       divLayerMain.style.visibility="hidden";
+       divLayerMain.style.display="none";
+ 
+       //display or hide preview pane
+       document.getElementById("previewPane").style.visibility="visible";
+       document.getElementById("previewPane").style.display="block";
+       //display main and other duplicate divs
+       for(var c=0;c<totalColumns;c++) {
+            //alert("=H/D=HIHIHIH="+c +"totalColumns"+totalColumns+ "==" +countEnt+"====="+document.getElementById("outerMainContentDivid"+c).style.visibility);
+            document.getElementById("outerMainContentDivid"+c).style.visibility = "visible";
+            document.getElementById("outerMainContentDivid"+c).style.display = "block";
+            document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "visible";
+            document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "block";
+          }
+ }
+}
+} 
+
+function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,mergeflag) {
+   //alert("++++++mainDupSources"+countEnt);
+   //alert(document.getElementById("previewPane").style.visibility);
+    var divLayerHist;
+    var divLayerSources;
+    //hideOther(mainDupSources,count,countEnt);
+   //alert(document.getElementById("viewMergeRecords").innerHTML);
+
+    for(var i=0;i<count;i++) {
+    divLayerHist = document.getElementById(mainDupHistory+countEnt+i);
+    
+    //alert(mainDupHistory+countEnt+i);
+    if (divLayerHist.style.display=="none" || divLayerHist.style.display=="") {
+         divLayerHist.style.visibility="visible";
+         divLayerHist.style.display="block";
+          
+       if( mainDupHistory == 'mainDupHistory') {
+            divLayerHist = document.getElementById("mainDupHistory"+countEnt+i);
+            divLayerHist.style.visibility="visible";
+            divLayerHist.style.display="block";
+        }
+       //display or hide preview pane
+       document.getElementById("previewPane").style.visibility="hidden";
+       document.getElementById("previewPane").style.display="none";
+
+
+       //display/hide other divs
+       for(var c=0;c<totalColumns;c++) {
+	   //hide sources by default
+	   for(var j=0;j<sourceSize;j++) {  
+	       divLayerSources = document.getElementById("mainDupSources"+c+j);
+		   if(divLayerSources != null) {
+		      divLayerSources.style.visibility="hidden";
+	          divLayerSources.style.display="none";
+		   }
+		}
+
+		  //alert("=H/D=="+c +"totalColumns"+totalColumns+ "==" +countEnt+"====="+document.getElementById("outerMainContentDivid"+c).style.visibility);
+          if(c  == countEnt) {
+            //alert("=EQUAL=="+c + "==" +countEnt+"====="+document.getElementById("outerMainContentDivid"+c).style.visibility);
+            document.getElementById("outerMainContentDivid"+c).style.visibility = "visible";
+            document.getElementById("outerMainContentDivid"+c).style.display = "block";
+            document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "visible";
+            document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "block";
+           } else {
+            //alert("=NE=="+c + "==" +countEnt+"====="+document.getElementById("outerMainContentDivid"+c).style.visibility);
+           document.getElementById("outerMainContentDivid"+c).style.visibility = "hidden";
+           document.getElementById("outerMainContentDivid"+c).style.display = "none";
+           document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "hidden";
+           document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "none";
+          }
+       }
+	   if(mergeflag == 'true') {
+	    //viewMergeRecords
+         //alert(document.getElementById("viewMergeRecords").innerHTML);
+         document.getElementById("viewMergeRecords").style.visibility="visible";
+         document.getElementById("viewMergeRecords").style.display="block";
+       }
+    } else if (divLayerHist.style.display=="block") {
+       divLayerHist.style.visibility="hidden";
+       divLayerHist.style.display="none";
+ 
+       //display or hide preview pane
+       document.getElementById("previewPane").style.visibility="visible";
+       document.getElementById("previewPane").style.display="block";
+
+	   if(mergeflag == 'true') {
+	    //viewMergeRecords
+         
+         document.getElementById("viewMergeRecords").style.visibility="hidden";
+         document.getElementById("viewMergeRecords").style.display="none";
+       }
+
+
+       //display main and other duplicate divs
+       for(var c=0;c<totalColumns;c++) {
+            //alert("=H/D=HIHIHIH="+c +"totalColumns"+totalColumns+ "==" +countEnt+"====="+document.getElementById("outerMainContentDivid"+c).style.visibility);
+            document.getElementById("outerMainContentDivid"+c).style.visibility = "visible";
+            document.getElementById("outerMainContentDivid"+c).style.display = "block";
+            document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "visible";
+            document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "block";
+          }
+
+ }
+}
+
+} 
+

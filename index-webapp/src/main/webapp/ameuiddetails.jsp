@@ -83,7 +83,6 @@
 
             //EPathArrayList ePathArrayList = compareDuplicateManager.retrieveEPathArrayList(objScreenObject);
             ArrayList objScreenObjectList = objScreenObject.getSearchResultsConfig();
-            EPathArrayList ePathArrayList = compareDuplicateManager.retrievePatientResultsFields(objScreenObjectList);
 
             EPath ePath = null;
             PatientDetailsHandler patientDetailsHandler = new PatientDetailsHandler();
@@ -562,7 +561,7 @@
                                                     }
                                              %>
                                              <td  valign="top">
-                                                <div id="previewPane<%=countEnt%>" style="visibility:visible;display:block">
+                                                <div id="previewPane" style="visibility:visible;display:block">
                                                     <div style="width:170px;overflow:auto">
                                                         <div id="mainEuidContent" class="<%=styleClass%>">
                                                             <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -712,14 +711,14 @@
                                      
                                                         <tr> 
                                                       <td valign="top">
-                                                          <a class="viewbtn" href="javascript:showViewSources('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" >  
+                                                          <a class="viewbtn"   href="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoSources.size()%>')" >  
                                                               <h:outputText value="#{msgs.view_history_text}"/>
                                                           </a>
                                                       </td>    
                                                   </tr>
                                                         <tr> 
                                                       <td valign="top">
-                                                          <a href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
+                                                          <a href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoHistory.size()%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
                                                       </td>                                              
                                                   </tr>
                                                         <%} else {%> 

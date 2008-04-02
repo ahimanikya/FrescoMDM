@@ -76,10 +76,10 @@ public class MergeRecordHandler    {
     ArrayList dataRowList1 = null;
     private ArrayList vOList = new ArrayList();
     private MergedRecords[] mergedRecordsVO = null;
-    private String createStartDate = null;
-    private String createEndDate = null;    
-    private String createStartTime = null;
-    private String createEndTime = null;  
+    private String createStartDate = new String();
+    private String createEndDate = new String();    
+    private String createStartTime = new String();
+    private String createEndTime = new String();  
     private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.MergeRecordHandler");    
     /*
      *  Request Object Handle
@@ -124,10 +124,13 @@ public class MergeRecordHandler    {
             //for (int i = 0; i < dataRows.length; i++) {
             //    dataRowList.add(dataRows[i]);
             //}
-            resultArrayList.add(getOutPutValuesMap(mrConfig, reportRow));
+            resultArrayList.add(getOutPutValuesMap(mrConfig, reportRow,"EUID1"));
+            resultArrayList.add(getOutPutValuesMap(mrConfig, reportRow,"EUID2"));
         }
         request.setAttribute("mergeReportList", resultArrayList);
+   
         return dataRowList2Array(dataRowList);
+       
      }
     /** write data row for dataRowList2Array */
     private ReportDataRow[] dataRowList2Array(ArrayList dataRowList) {
@@ -204,7 +207,7 @@ public class MergeRecordHandler    {
         return dataRows;
     }
     
-    private HashMap getOutPutValuesMap(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow) throws Exception {
+    private HashMap getOutPutValuesMap(MultirowReportConfig1 reportConfig, MultirowReportObject1 reportRow,String euidVal) throws Exception {
         List transactionFields = reportConfig.getTransactionFields();
         ArrayList fcArrayList = getResultsConfigArrayList();
         HashMap newValuesMap = new HashMap();
@@ -220,10 +223,10 @@ public class MergeRecordHandler    {
             while (iter.hasNext()) {
                 String field = (String) iter.next();
                 String val = reportRow.getValue(field).toString();
-                if (field.equalsIgnoreCase("EUID1")) {
+                if (field.equalsIgnoreCase(euidVal)) {
                     newValuesMap.put("EUID", val);
                     eo = masterControllerService.getEnterpriseObject(val.toString());
-
+                    if(eo != null ) {
                     for (int i = 0; i < fcArrayList.size(); i++) {
                         FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
                         if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
@@ -240,6 +243,7 @@ public class MergeRecordHandler    {
                             }
                         }
                     }
+                  }
                 } 
             }
         }
@@ -280,7 +284,7 @@ public class MergeRecordHandler    {
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
-                    String searchStartDate = this.getCreateStartDate() + (this.getCreateStartTime() != null ? " " + this.getCreateStartTime() : " 00:00:00" );
+                    String searchStartDate = this.getCreateStartDate() + ((this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0) ? " " + this.getCreateStartTime() : " 00:00:00" );
                     Date date = DateUtil.string2Date(searchStartDate);
                     if (date != null) {
                         mrConfig.setStartDate(new Timestamp(date.getTime()));
@@ -312,16 +316,16 @@ public class MergeRecordHandler    {
                 mLogger.error(errorMessage);
             } else {
                 try {
-                    if (getCreateEndTime().trim().length() == 0) {
-                        createEndTime = "23:59:59";
-                    }
+//                    if (getCreateEndTime().trim().length() == 0) {
+//                        createEndTime = "23:59:59";
+//                    }
                     //If Time is supplied append it to the date to check if it parses into a valid Date
-                    String searchEndDate = this.getCreateEndDate() + (this.getCreateEndTime() != null ? " " + this.getCreateEndTime() : " 23:59:59");
+                    String searchEndDate = this.getCreateEndDate() + ((this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)? " " + this.getCreateEndTime() : " 23:59:59");
                     Date date = DateUtil.string2Date(searchEndDate);
                     if (date != null) {
                         mrConfig.setEndDate(new Timestamp(date.getTime()));
                     }
-                     createEndTime = "";
+                     //createEndTime = "";
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
@@ -332,8 +336,8 @@ public class MergeRecordHandler    {
               
         if (((this.getCreateStartDate() != null) && (this.getCreateStartDate().trim().length() > 0))&&
            ((this.getCreateEndDate() != null) && (this.getCreateEndDate().trim().length() > 0))){                
-               Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + (this.getCreateStartTime() != null? " " +this.getCreateStartTime():" 00:00:00"));
-               Date todate = DateUtil.string2Date(this.getCreateEndDate()+(this.getCreateEndTime() != null? " " +this.getCreateEndTime():" 23:59:59"));
+               Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + ((this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)? " " +this.getCreateStartTime():" 00:00:00"));
+               Date todate = DateUtil.string2Date(this.getCreateEndDate()+((this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)? " " +this.getCreateEndTime():" 23:59:59"));
                long startDate = fromdate.getTime();
                long endDate = todate.getTime();
                  if(endDate < startDate){

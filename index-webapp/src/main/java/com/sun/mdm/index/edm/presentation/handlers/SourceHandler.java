@@ -640,7 +640,7 @@ public class SourceHandler {
             session.setAttribute("singleSystemObjectLID", systemObject);
             session.setAttribute("systemObjectMap", systemObjectMap);
             session.setAttribute("keyFunction","viewSO");
-            
+           
         } catch (Exception ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -649,10 +649,14 @@ public class SourceHandler {
 
     public ArrayList getViewEditScreenConfigArray() {
         ArrayList basicSearchFieldConfigs;
-        
-        ArrayList subScreenObjectList = screenObject.getSubscreensConfig();
+        HttpSession sessionLocal = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    
+        ScreenObject screenObjectLocal = (ScreenObject) sessionLocal.getAttribute("ScreenObject");
+    
+        ArrayList subScreenObjectList = screenObjectLocal.getSubscreensConfig();
         ScreenObject subScreenObject = null;
 
+        //System.out.println("---------------" + screenObjectLocal.getDisplayTitle() + "---------subsclist---" + subScreenObjectList);
         // build the screen  as per the subscreen title (this.getSubScreenTab())
         for (int i = 0; i < subScreenObjectList.size(); i++) {
             ScreenObject object = (ScreenObject) subScreenObjectList.get(i);
@@ -1408,6 +1412,9 @@ public class SourceHandler {
         this.euidLength = euidLength;
     }
 
+    public String getSystemCodeDescription(String systemCode) {
+        return masterControllerService.getSystemDescription(systemCode);
+    }
 
     
    

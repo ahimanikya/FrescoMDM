@@ -89,7 +89,7 @@ public class CompareDuplicateManager {
         return arlResultFields;
     }
 
-        public EPathArrayList retrievePatientResultsFields(ArrayList arlResultsConfig) throws Exception {
+        public EPathArrayList retrieveEpathResultsFields(ArrayList arlResultsConfig) throws Exception {
         EPathArrayList arlResultFields = new EPathArrayList();
         SearchResultsConfig searchResultConfig = null;
         ArrayList arlEPaths = null;
@@ -109,6 +109,7 @@ public class CompareDuplicateManager {
     }
 
         public static Collection getFieldValue(ObjectNode objNode, EPath epath) {
+
         int ePathIndicesCount = epath.getIndices().length;
         // the last parent object in the hierarchy will be located here
         String ePathObjectTag = epath.getTag(ePathIndicesCount - 2);
@@ -314,14 +315,14 @@ public class CompareDuplicateManager {
 	}
 
     public HashMap getSystemObjectAsHashMap(SystemObject systemObject, ScreenObject screenObject) {
-        HashMap systemObjectHashMap = new HashMap();
         SourceHandler sourceHandler = new SourceHandler();
         String rootNodeName = screenObject.getRootObj().getName();
+        HashMap systemObjectHashMap = new HashMap();
 
         try {
             //add SystemCode and LID value to the new Hash Map
             systemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
-            systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode());
+            systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, masterControllerService.getSystemDescription(systemObject.getSystemCode()));
             systemObjectHashMap.put("Status", systemObject.getStatus()); // set Status here
 
             HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
@@ -538,17 +539,19 @@ public class CompareDuplicateManager {
 
         Iterator iterSources = itemsSource.iterator();
 
-        HashMap systemObjectHashMap = new HashMap();
         SourceHandler sourceHandler = new SourceHandler();
         String rootNodeName = screenObject.getRootObj().getName();
 
         try {
             while (iterSources.hasNext()) {
+                HashMap systemObjectHashMap = new HashMap();
 
                 SystemObject systemObject = (SystemObject) iterSources.next();
+                System.out.println("---LID------------> " + systemObject.getLID());
+                System.out.println("----SYSTEM CODE-----------> " + systemObject.getSystemCode());
 
                 systemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
-                systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode());
+                systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, masterControllerService.getSystemDescription(systemObject.getSystemCode()));
                 systemObjectHashMap.put("Status", systemObject.getStatus()); // set Status here
                 HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
 
@@ -557,6 +560,7 @@ public class CompareDuplicateManager {
                 editSystemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
                 editSystemObjectHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SYSTEM_OBJECT_UPDATE); // set UPDATE TYPE HERE
                 systemObjectHashMap.put("SYSTEM_OBJECT", editSystemObjectHashMap); // Set the edit SystemObject here
+                
                 ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
 
                 //get the child object node configs

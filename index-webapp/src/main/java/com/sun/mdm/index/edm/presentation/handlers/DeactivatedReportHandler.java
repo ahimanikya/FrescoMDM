@@ -94,19 +94,19 @@ public class DeactivatedReportHandler    {
     /**
      * Search Start Date
      */
-    private String createStartDate = null;
+    private String createStartDate = new String();
     /**
      * Search End Date
      */
-    private String createEndDate = null;    
+    private String createEndDate = new String();    
     /**
      * Search Start Time
      */ 
-    private String createStartTime = null;
+    private String createStartTime = new String();
     /**
      * Search end Time
      */
-    private String createEndTime = null;        
+    private String createEndTime = new String();        
     /*
      *  Request Object Handle
      */  
@@ -340,15 +340,15 @@ public class DeactivatedReportHandler    {
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
-                    if (getCreateStartTime().trim().length() == 0) {
-                        createStartTime = "00:00:00";
-                    }
-                    String searchStartDate = this.getCreateStartDate() + (this.getCreateStartTime() != null ? " " + this.getCreateStartTime() : " 00:00:00");
+//                    if (getCreateStartTime().trim().length() == 0) {
+//                        createStartTime = "00:00:00";
+//                    }
+                    String searchStartDate = this.getCreateStartDate() + ((this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0) ? " " + this.getCreateStartTime() : " 00:00:00");
                     Date date = DateUtil.string2Date(searchStartDate);
                     if (date != null) {
                         drc.setStartDate(new Timestamp(date.getTime()));
                     }   
-                    createStartTime = "";
+//                    createStartTime = "";
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
@@ -380,7 +380,7 @@ public class DeactivatedReportHandler    {
                         createEndTime = "23:59:59";
                     }
                     //If Time is supplied append it to the date to check if it parses into a valid Date
-                    String searchEndDate = this.getCreateEndDate() + (this.getCreateEndTime() != null ? " " + this.getCreateEndTime() : " 11:59:59");
+                    String searchEndDate = this.getCreateEndDate() + ((this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)? " " + this.getCreateEndTime() : " 11:59:59");
                     Date date = DateUtil.string2Date(searchEndDate);
                     if (date != null) {
                         drc.setEndDate(new Timestamp(date.getTime()));
@@ -396,8 +396,8 @@ public class DeactivatedReportHandler    {
         
           if (((this.getCreateStartDate() != null) && (this.getCreateStartDate().trim().length() > 0))&&
            ((this.getCreateEndDate() != null) && (this.getCreateEndDate().trim().length() > 0))){                
-               Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + (this.getCreateStartTime() != null? " " +this.getCreateStartTime():"00:00:00"));
-               Date todate = DateUtil.string2Date(this.getCreateEndDate()+(this.getCreateEndTime() != null? " " +this.getCreateEndTime():"23:59:59"));
+               Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + ((this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)? " " +this.getCreateStartTime():" 00:00:00"));
+               Date todate = DateUtil.string2Date(this.getCreateEndDate()+((this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)? " " +this.getCreateEndTime():" 23:59:59"));
                long startDate = fromdate.getTime();
                long endDate = todate.getTime();
                  if(endDate < startDate){
@@ -491,7 +491,11 @@ public class DeactivatedReportHandler    {
             deactivatedRecordsVO[i] = new DeactivatedRecords();
             deactivatedRecordsVO[i] = (DeactivatedRecords)vOList.get(i);
         }
-        request.setAttribute("size", new Integer(deactivatedRecordsVO.length));        
+        if(deactivatedRecordsVO != null) {
+          request.setAttribute("size", new Integer(deactivatedRecordsVO.length));        
+        } else {
+          request.setAttribute("size", new Integer("0"));          
+        }
         return deactivatedRecordsVO;
     }
     

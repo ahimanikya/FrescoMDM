@@ -59,6 +59,7 @@ import java.util.ResourceBundle;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 import com.sun.mdm.index.edm.services.configuration.SearchScreenConfig;
+import java.util.HashMap;
 
 
 /** Creates a new instance of ActivityReportHandler*/ 
@@ -131,11 +132,10 @@ public class ActivityReportHandler {
                 } else if (reportType.equalsIgnoreCase(REPORT_TYPE_YEARLY_ACTIVITY)) {
                     ksRpt = QwsController.getReportGenerator().execYearlyKeyStatisticsReport(arConfig);
                 }
-
                 // Methods to fetch data
                 if (reportType.equals(getREPORT_TYPE_WEEKLY_ACTIVITY())) {
                     ReportDataRow[] rdr = getWKRRows();
-                    return getActivityRecordsVO();
+                    return getActivityRecordsVO();                    
                 } else if (reportType.equals(getREPORT_TYPE_MONTHLY_ACTIVITY()) || reportType.equals(getREPORT_TYPE_YEARLY_ACTIVITY())) {
                     ReportDataRow[] rdr = getMONYRRRows();
                     return getActivityRecordsVO();
@@ -147,6 +147,7 @@ public class ActivityReportHandler {
      *  getter method to retrieve the data rows of report records.
      */
     private ReportDataRow[] getWKRRows() throws Exception {        
+        ArrayList outPutValues =  new ArrayList();
         ArrayList count = null;
         ReportDataRow[] dataRows = new ReportDataRow[10];
         ArrayList fields = new ArrayList();
@@ -537,12 +538,54 @@ public class ActivityReportHandler {
      * @return
      */
     public ActivityRecords[] getActivityRecordsVO() {
-        /* activityRecordsVO = (ActivityRecords[])vOList.get(1);         
+        ArrayList outputList = new ArrayList();
+        ArrayList keyList = new ArrayList();
+            keyList.add("ActivityDate");
+            keyList.add("Add");
+            keyList.add("EUIDDeactivate");
+            keyList.add("EUIDMerge");
+            keyList.add("EUIDUnmerge");
+            keyList.add("LIDMerge");
+            keyList.add("LIDUnMerge");
+            keyList.add("UnresolvedDuplicate");
+            keyList.add("ResolvedDuplicate");
+            
+        ArrayList labelList = new ArrayList();
+            labelList.add("Activity Date");
+            labelList.add("Add");
+            labelList.add("EUID Deactivate");
+            labelList.add("EUID Merge");
+            labelList.add("EUID Unmerge");
+            labelList.add("LID Merge");
+            labelList.add("LID UnMerge");
+            labelList.add("Unresolved Duplicate");
+            labelList.add("Resolved Duplicate");
+                
         for (int i = 0; i < vOList.size(); i++) {
-            activityRecordsVO[i] = new ActivityRecords();
-            activityRecordsVO[i] = (ActivityRecords)vOList.get(i);
-        }*/
-        request.setAttribute("size", new Integer(activityRecordsVO.length));        
+              ActivityRecords activityRecords[]  = (ActivityRecords[])vOList.get(i);
+              for (int j = 0; j < activityRecords.length; j++) {
+                  HashMap values = new HashMap();
+                  values.put("ActivityDate", activityRecords[j].getActivityDate());
+                  values.put("Add", activityRecords[j].getAddTransactions());
+                  values.put("EUIDDeactivate", activityRecords[j].getEuidDeactivateTrans());
+                  values.put("EUIDMerge", activityRecords[j].getEuidMergedTrans());
+                  values.put("EUIDUnmerge", activityRecords[j].getEuidUnmergedTrans());
+                  values.put("LIDMerge", activityRecords[j].getLidMergedTrans());
+                  values.put("LIDUnMerge", activityRecords[j].getLidUnMergedTrans());
+                  values.put("UnresolvedDuplicate", activityRecords[j].getUnresolvedPotentialDup());
+                  values.put("ResolvedDuplicate", activityRecords[j].getResolvedPotentialDup());
+                  outputList.add(values);
+                  
+              }
+        }
+        request.setAttribute("keys", keyList);        
+        request.setAttribute("labels",labelList);        
+        request.setAttribute("activityOutputList",outputList);        
+        if(activityRecordsVO  != null) {
+           request.setAttribute("size", new Integer(activityRecordsVO.length));        
+        } else {
+           request.setAttribute("size", new Integer(activityRecordsVO.length));                    
+        }
         request.setAttribute("frequency", getFrequency());
         return activityRecordsVO;
     }

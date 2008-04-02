@@ -196,7 +196,7 @@ public class ReportHandler {
             deactivatedReport.setCreateEndTime(getCreateEndTime());
             deactivatedReport.setCreateStartDate(getCreateStartDate());
             deactivatedReport.setCreateEndDate(getCreateEndDate());
-            getSearchResultsScreenConfigArray();
+            //getSearchResultsScreenConfigArray();
             setDeactivatedRecordsVO(deactivatedReport.deactivateReport());
             setResultsSize(getDeactivatedRecordsVO().length);
         } catch (ValidationException ex) {
@@ -293,7 +293,13 @@ public class ReportHandler {
             updateReport.setCreateStartDate(getCreateStartDate());
             updateReport.setCreateEndDate(getCreateEndDate());            
             setUpdateRecordsVO(updateReport.updateReport());
-            setResultsSize(updateRecordsVO.length);            
+            
+            if(updateRecordsVO != null) { 
+              setResultsSize(updateRecordsVO.length);            
+            } else {
+                setResultsSize(0);            
+            }
+            
         } catch (ValidationException ex) {
             Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return "ReportFormError";
@@ -527,8 +533,11 @@ public class ReportHandler {
     public ArrayList getSearchResultsScreenConfigArray() {
        ArrayList newArrayList = new ArrayList();
         try {
+          HttpSession sessionLocal = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+          ScreenObject screenObjectLocal = (ScreenObject) sessionLocal.getAttribute("ScreenObject");
+            
             //Array of Sub screen objects as Screen Objects
-            ArrayList resultsSubScreenConfigArray = screenObject.getSubscreensConfig();
+            ArrayList resultsSubScreenConfigArray = screenObjectLocal.getSubscreensConfig();
             Object[] subScreenObjects = resultsSubScreenConfigArray.toArray();
             ScreenObject resultsScreenObject = null;
 
@@ -538,7 +547,7 @@ public class ReportHandler {
                     resultsScreenObject = subScreenObject;
                 }
             }
-            //System.out.println("SUB SCREEN " + resultsScreenObject + "subScreenObject" + subScreenObject);
+         
              ArrayList resultsScreenConfigArraySub = resultsScreenObject.getSearchResultsConfig();
             Iterator iteratorScreenConfig = resultsScreenConfigArraySub.iterator();
             while (iteratorScreenConfig.hasNext()) {
@@ -636,7 +645,7 @@ public class ReportHandler {
         ArrayList newArrayList = new ArrayList();
         for (int i = 0; i < pullDownListItems.length; i++) {
             SelectItem selectItem = new SelectItem();
-            selectItem.setLabel(pullDownListItems[i]);
+            selectItem.setLabel(masterControllerService.getSystemDescription(pullDownListItems[i]));
             selectItem.setValue(pullDownListItems[i]);
             newArrayList.add(selectItem);
         }
@@ -687,9 +696,13 @@ public class ReportHandler {
     private ArrayList searchScreenConfigArray;
 
     public ArrayList getSearchScreenConfigArray() {
+        ScreenObject screenObjectLocal = (ScreenObject) session.getAttribute("ScreenObject");
+    
         //Array of Sub screen objects as Screen Objects
-        ArrayList resultsSubScreenConfigArray = screenObject.getSubscreensConfig();
+        ArrayList resultsSubScreenConfigArray = screenObjectLocal.getSubscreensConfig();
+        
         Object[] subScreenObjects = resultsSubScreenConfigArray.toArray();
+        
         ScreenObject resultsScreenObject = null;
 
         for (int i = 0; i < subScreenObjects.length; i++) {

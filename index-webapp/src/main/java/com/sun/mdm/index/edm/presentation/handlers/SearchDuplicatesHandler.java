@@ -55,8 +55,15 @@ import javax.faces.event.*;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import com.sun.mdm.index.edm.presentation.validations.HandlerException;
+import com.sun.mdm.index.edm.services.configuration.SearchResultsConfig;
 import com.sun.mdm.index.objects.EnterpriseObject;
+import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.SystemObject;
+import com.sun.mdm.index.objects.epath.EPath;
+import com.sun.mdm.index.objects.epath.EPathAPI;
+import com.sun.mdm.index.objects.epath.EPathArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 
 /**
@@ -225,15 +232,17 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
         //End Validation
         
         
-        
-        
-        
-        
-        
-        
         PotentialDuplicateSearchObject potentialDuplicateSearchObject = getPDSearchObject();
+        PotentialDuplicateSummary mainPotentialDuplicateSummary = null;
+        CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
         
         try {
+                //EPathArrayList epathList  = compareDuplicateManager.retrieveEpathResultsFields(screenObject.getSearchResultsConfig());
+                EPathArrayList epathList = retrieveResultsFields(screenObject.getSearchResultsConfig());
+                //System.out.println("epathList" + epathList);
+
+
+            
             PotentialDuplicateIterator pdPageIterArray = masterControllerService.lookupPotentialDuplicates(potentialDuplicateSearchObject);
             
             // Code Added by Pratibha 
@@ -261,7 +270,8 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                                                "View Potential Duplicate Search Result");
                         
                         temp[i][0] = euid1;
-                        temp[i][1] = euid2;                       
+                        temp[i][1] = euid2;
+                        
                     }
                }
             }
@@ -333,7 +343,6 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             }
 
             //Build and arraylist of hashmaps for the duplicates before putting in the request
-            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
             ArrayList newFinalArray  = new ArrayList();        
             float wt = 0.0f;
             for (int i = 0; i < finalArrayList.size(); i++) {
@@ -405,116 +414,127 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
      * @return  the PD search object
      */
     public PotentialDuplicateSearchObject getPDSearchObject() {
-        PotentialDuplicateSearchObject potentialDuplicateSearchObject = new PotentialDuplicateSearchObject();
-        
-        //if user enters LID and SystemCode get the EUID and set it to the potentialDuplicateSearchObject
-        if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
-            String LID = (String) super.getUpdateableFeildsMap().get("LID");
-            String SystemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
-            if (LID.trim().length() > 0 && SystemCode.trim().length() > 0) {
-                try {
-                    //remove masking for LID field
-                    LID = LID.replaceAll("-", "");
+       PotentialDuplicateSearchObject potentialDuplicateSearchObject = new PotentialDuplicateSearchObject();
+        try {
 
-                    SystemObject so = masterControllerService.getSystemObject(SystemCode, LID);
-                    if (so == null) {
-                        errorMessage = bundle.getString("system_object_not_found_error_message");
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID/SYSTEM CODE:: " + errorMessage, errorMessage));
-                        mLogger.error("LID/SYSTEM CODE:: " + errorMessage);
+            //if user enters LID and SystemCode get the EUID and set it to the potentialDuplicateSearchObject
+            if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
+                String LID = (String) super.getUpdateableFeildsMap().get("LID");
+                String SystemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
+                if (LID.trim().length() > 0 && SystemCode.trim().length() > 0) {
+                    try {
+                        //remove masking for LID field
+                        LID = LID.replaceAll("-", "");
 
-                    } else {
-                        EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(so);
-                        //potentialDuplicateSearchObject.setEUID(eo.getEUID());
-                        String[] euidArray = getStringEUIDs(eo.getEUID());
-
-                        if (euidArray != null & euidArray.length > 0) {
-                            potentialDuplicateSearchObject.setEUIDs(euidArray);
+                        SystemObject so = masterControllerService.getSystemObject(SystemCode, LID);
+                        if (so == null) {
+                            errorMessage = bundle.getString("system_object_not_found_error_message");
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "LID/SYSTEM CODE:: " + errorMessage, errorMessage));
+                            mLogger.error("LID/SYSTEM CODE:: " + errorMessage);
                         } else {
-                            potentialDuplicateSearchObject.setEUIDs(null);
-                        }
-                    }
-                } catch (ProcessingException ex) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ProcessingException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
-                    mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
-                    mLogger.error("ProcessingException ex : " + ex.toString());
-                } catch (UserException ex) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "UserException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
-                    mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
-                    mLogger.error("UserException ex : " + ex.toString());
-                }
+                            EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(so);
+                            //potentialDuplicateSearchObject.setEUID(eo.getEUID());
+                            String[] euidArray = getStringEUIDs(eo.getEUID());
 
+                            if (euidArray != null & euidArray.length > 0) {
+                                potentialDuplicateSearchObject.setEUIDs(euidArray);
+                            } else {
+                                potentialDuplicateSearchObject.setEUIDs(null);
+                            }
+                        }
+                    } catch (ProcessingException ex) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ProcessingException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+                        mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
+                        mLogger.error("ProcessingException ex : " + ex.toString());
+                    } catch (UserException ex) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "UserException : " + QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
+                        mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
+                        mLogger.error("UserException ex : " + ex.toString());
+                    }
+                }
             }
 
-        }
-
-        //set EUID VALUE IF lid/system code not supplied
-          if (super.getUpdateableFeildsMap().get("EUID") != null && super.getUpdateableFeildsMap().get("EUID").toString().trim().length() > 0) {
+            //set EUID VALUE IF lid/system code not supplied
+            if (super.getUpdateableFeildsMap().get("EUID") != null && super.getUpdateableFeildsMap().get("EUID").toString().trim().length() > 0) {
 //            // Get array of strings
                 String[] euidArray = getStringEUIDs((String) super.getUpdateableFeildsMap().get("EUID"));
-                
-                if(euidArray!=null & euidArray.length >0) {
+
+                if (euidArray != null & euidArray.length > 0) {
                     potentialDuplicateSearchObject.setEUIDs(euidArray);
                 } else {
                     potentialDuplicateSearchObject.setEUIDs(null);
                 }
-          }
-        
-
-
-
-        //Set StartDate to the potentialDuplicateSearchObject  
-        if (super.getUpdateableFeildsMap().get("create_start_date") != null && super.getUpdateableFeildsMap().get("create_start_date").toString().trim().length() > 0) {
-            try {
-                String startTime = (String) super.getUpdateableFeildsMap().get("create_start_time");
-                String searchStartDate = (String) super.getUpdateableFeildsMap().get("create_start_date");
-                //append the time aling with date
-                if (startTime != null && startTime.trim().length() > 0) {
-                    searchStartDate = searchStartDate + " " + startTime;
-                } else {
-                    searchStartDate = searchStartDate + " 00:00:00";
-                }
-
-                Date date = DateUtil.string2Date(searchStartDate);
-                if (date != null) {
-                    potentialDuplicateSearchObject.setCreateStartDate(new Timestamp(date.getTime()));
-                }
-            } catch (ValidationException ex) {
-                java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
 
 
-        //Set StartDate to the potentialDuplicateSearchObject  
-        if (super.getUpdateableFeildsMap().get("create_end_date") != null && super.getUpdateableFeildsMap().get("create_end_date").toString().trim().length() > 0) {
-            try {
-                String endTime = (String) super.getUpdateableFeildsMap().get("create_end_time");
-                String searchEndDate = (String) super.getUpdateableFeildsMap().get("create_end_date");
-                //append the time aling with date
-                if (endTime != null && endTime.trim().length() > 0) {
-                    searchEndDate = searchEndDate + " " + endTime;
-                } else {
-                    searchEndDate = searchEndDate + " 23:59:59";
+
+
+            //Set StartDate to the potentialDuplicateSearchObject
+            if (super.getUpdateableFeildsMap().get("create_start_date") != null && super.getUpdateableFeildsMap().get("create_start_date").toString().trim().length() > 0) {
+                try {
+                    String startTime = (String) super.getUpdateableFeildsMap().get("create_start_time");
+                    String searchStartDate = (String) super.getUpdateableFeildsMap().get("create_start_date");
+                    //append the time aling with date
+                    if (startTime != null && startTime.trim().length() > 0) {
+                        searchStartDate = searchStartDate + " " + startTime;
+                    } else {
+                        searchStartDate = searchStartDate + " 00:00:00";
+                    }
+
+                    Date date = DateUtil.string2Date(searchStartDate);
+                    if (date != null) {
+                        potentialDuplicateSearchObject.setCreateStartDate(new Timestamp(date.getTime()));
+                    }
+                } catch (ValidationException ex) {
+                    java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                Date date = DateUtil.string2Date(searchEndDate);
-                if (date != null) {
-                    potentialDuplicateSearchObject.setCreateEndDate(new Timestamp(date.getTime()));
-                }
-            } catch (ValidationException ex) {
-                java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        //EndTime=, StartTime=, EndDate=, StartDate=, Function=null, SystemUser=, SystemCode=null, LID=, EUID=
-        if (super.getUpdateableFeildsMap().get("SystemUser") != null && super.getUpdateableFeildsMap().get("SystemUser").toString().trim().length() > 0) {
-            potentialDuplicateSearchObject.setCreateUser((String) super.getUpdateableFeildsMap().get("SystemUser"));
-        } else {
-            potentialDuplicateSearchObject.setCreateUser(null);
-        }
 
-        //EndTime=, StartTime=, EndDate=, StartDate=, Function=null, SystemUser=, SystemCode=null, LID=, EUID=
-        if (super.getUpdateableFeildsMap().get("Status") != null && super.getUpdateableFeildsMap().get("Status").toString().trim().length() > 0) {
-            potentialDuplicateSearchObject.setStatus((String) super.getUpdateableFeildsMap().get("Status"));
-        } else {
-            potentialDuplicateSearchObject.setStatus(null);
+
+            //Set StartDate to the potentialDuplicateSearchObject
+            if (super.getUpdateableFeildsMap().get("create_end_date") != null && super.getUpdateableFeildsMap().get("create_end_date").toString().trim().length() > 0) {
+                try {
+                    String endTime = (String) super.getUpdateableFeildsMap().get("create_end_time");
+                    String searchEndDate = (String) super.getUpdateableFeildsMap().get("create_end_date");
+                    //append the time aling with date
+                    if (endTime != null && endTime.trim().length() > 0) {
+                        searchEndDate = searchEndDate + " " + endTime;
+                    } else {
+                        searchEndDate = searchEndDate + " 23:59:59";
+                    }
+                    Date date = DateUtil.string2Date(searchEndDate);
+                    if (date != null) {
+                        potentialDuplicateSearchObject.setCreateEndDate(new Timestamp(date.getTime()));
+                    }
+                } catch (ValidationException ex) {
+                    java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            //EndTime=, StartTime=, EndDate=, StartDate=, Function=null, SystemUser=, SystemCode=null, LID=, EUID=
+            if (super.getUpdateableFeildsMap().get("SystemUser") != null && super.getUpdateableFeildsMap().get("SystemUser").toString().trim().length() > 0) {
+                potentialDuplicateSearchObject.setCreateUser((String) super.getUpdateableFeildsMap().get("SystemUser"));
+            } else {
+                potentialDuplicateSearchObject.setCreateUser(null);
+            }
+
+            //EndTime=, StartTime=, EndDate=, StartDate=, Function=null, SystemUser=, SystemCode=null, LID=, EUID=
+            if (super.getUpdateableFeildsMap().get("Status") != null && super.getUpdateableFeildsMap().get("Status").toString().trim().length() > 0) {
+                potentialDuplicateSearchObject.setStatus((String) super.getUpdateableFeildsMap().get("Status"));
+            } else {
+                potentialDuplicateSearchObject.setStatus(null);
+            }
+            //EPathArrayList epathList  = compareDuplicateManager.retrieveEpathResultsFields(screenObject.getSearchResultsConfig());
+            EPathArrayList epathList = retrieveResultsFields(screenObject.getSearchResultsConfig());
+
+            //set fields to retrieve
+            potentialDuplicateSearchObject.setFieldsToRetrieve(epathList);
+            //Set max page results and page size here
+            potentialDuplicateSearchObject.setMaxElements(super.getMaxRecords());
+            potentialDuplicateSearchObject.setPageSize(super.getPageSize());
+           
+
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return potentialDuplicateSearchObject;
     }
@@ -650,12 +670,13 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             //System.out.println("------this.getPotentialDuplicateId()-----" + this.getPotentialDuplicateId());
             //System.out.println("------this.getResolveType()-----" + this.getResolveType());
             //resolve the potential duplicate as per resolve type
-            boolean resolveBoolean = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? true : false;
+            boolean resolveBoolean = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? false : true;
             String resolveString = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? "A": "R";
 
             //flag=false incase of autoresolve
             //flag = true incase of permanant resolve
-
+          
+ 
             masterControllerService.setAsDifferentPerson(this.getPotentialDuplicateId(), resolveBoolean);
             httpRequest.removeAttribute("finalArrayList");
           
@@ -1073,5 +1094,57 @@ public ArrayList resetOutputList(PotentialDuplicateSearchObject potentialDuplica
     public void setRowCount(String rowCount) {
         this.rowCount = rowCount;
     }
-     
+
+    
+        public static Collection getFieldValue(ObjectNode objNode, EPath epath) throws Exception {
+        Collection c = null;
+        try{
+            c = QwsUtil.getValueForField(objNode, epath.getName(), null);
+            if( c== null) {
+                return null;
+            } else {
+                return c;
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return c;
+    }
+// Method added to handle Service Layer dynamic result fields
+
+    public EPathArrayList retrieveResultsFields(ArrayList arlResultsConfig) throws Exception {
+        EPathArrayList arlResultFields = new EPathArrayList();
+        SearchResultsConfig searchResultConfig = null;
+        ArrayList arlEPaths = null;
+        Iterator ePathsIterator = null;
+        Iterator resultConfigIterator = arlResultsConfig.iterator();
+        String objectRef = null;
+
+        while (resultConfigIterator.hasNext()) {
+            searchResultConfig = (SearchResultsConfig) resultConfigIterator.next();
+            arlEPaths = searchResultConfig.getEPaths();
+            ePathsIterator = arlEPaths.iterator();
+            while (ePathsIterator.hasNext()) {
+                String strEPath = (String) ePathsIterator.next();
+                //System.out.println("+++++++++++  "+strEPath);
+                // copy EPath strings to the EPathArrayList
+                arlResultFields.add("Enterprise.SystemSBR." + strEPath);
+                // POTENTIAL DUPLICATE-RELATED FIX from Raymond
+                // retrieve the object reference eg, if the epath is is "Person.Address.City" this retrieves "Person".
+                if (objectRef == null) {
+                    int index = strEPath.indexOf(".");
+                    objectRef = strEPath.substring(0, index);
+                 
+                }
+            //
+            }
+            // POTENTIAL DUPLICATE-RELATED FIX from Raymond
+            // Add an EUID field for the PotentialDuplicateAManager.  This is required.
+            arlResultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
+        }
+
+       
+        return arlResultFields;
+    }
+    
 }

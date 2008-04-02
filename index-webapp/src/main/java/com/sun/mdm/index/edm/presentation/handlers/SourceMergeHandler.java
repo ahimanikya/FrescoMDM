@@ -132,14 +132,14 @@ public class SourceMergeHandler {
     }
 
     public ArrayList<SelectItem> getSelectOptions() {
-        MasterControllerService masterControllerService  = new MasterControllerService(); 
+        MasterControllerService masterControllerService  = new MasterControllerService();
         String[][] systemCodes = masterControllerService.getSystemCodes();
         String[] pullDownListItems = systemCodes[0];
         ArrayList newArrayList = new ArrayList();
         for (int i = 0; i < pullDownListItems.length; i++) {
             SelectItem selectItem = new SelectItem();
             //System.out.println("Adding Select item label" + pullDownListItems[i] + "Value" + pullDownListItems[i]);
-            selectItem.setLabel(pullDownListItems[i]);
+            selectItem.setLabel(masterControllerService.getSystemDescription(pullDownListItems[i]));
             selectItem.setValue(pullDownListItems[i]);
             newArrayList.add(selectItem);
         }
