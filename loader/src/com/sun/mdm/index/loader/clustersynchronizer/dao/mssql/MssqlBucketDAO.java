@@ -23,7 +23,6 @@
 
 package com.sun.mdm.index.loader.clustersynchronizer.dao.mssql;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,7 +31,6 @@ import java.util.logging.Logger;
 
 import com.sun.mdm.index.loader.clustersynchronizer.Bucket;
 import com.sun.mdm.index.loader.clustersynchronizer.dao.BaseBucketDAO;
-import com.sun.mdm.index.loader.clustersynchronizer.dao.DAOFactory;
 
 /**
  * @author Sujit Biswas

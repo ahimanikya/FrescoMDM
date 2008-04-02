@@ -43,7 +43,6 @@ import com.sun.mdm.index.loader.clustersynchronizer.ClusterState;
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterSynchronizer;
 import com.sun.mdm.index.loader.clustersynchronizer.dao.DAOFactory;
 import com.sun.mdm.index.loader.config.LoaderConfig;
-import com.sun.mdm.matcher.api.MatchRecord;
 
 /**
  * 
@@ -204,6 +203,10 @@ public class EuidIndexAssigner {
 		ps.setLong(1, seqNo);
 
 		int i = ps.executeUpdate();
+		
+		if(i==0){
+			logger.fine("make sure that the sbyn_seq_table exist");
+		}
 
 		ps.close();
 
@@ -324,30 +327,7 @@ public class EuidIndexAssigner {
 
 	}
 
-	private void _collectSysids(HashSet<Long> sysids, MatchFileRecord r) {
-
-		if (!sysids.contains(r.getSysid1()))
-			sysids.add(r.getSysid1());
-
-		if (!sysids.contains(r.getSysid2())) {
-
-			List<MatchFileRecord> list = getMatchRecordsForSysid2(r.getSysid2());
-
-			if (list.isEmpty())
-				return;
-
-			Iterator<MatchFileRecord> iterator = list.iterator();
-
-			while (iterator.hasNext()) {
-				MatchFileRecord rec = (MatchFileRecord) iterator.next();
-
-				_collectSysids(sysids, rec);
-			}
-
-		} else
-			return;
-
-	}
+	
 
 	/**
 	 * get the list of consecutive records for a given sysid from the assumed
