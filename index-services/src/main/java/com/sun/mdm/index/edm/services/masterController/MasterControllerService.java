@@ -1926,5 +1926,8 @@ public EnterpriseObject removeLocks(HashMap hm, EnterpriseObject eo) throws Proc
         return euidLength;
     }
 
-
+	 public String getSystemDescription(String systemcode) {       
+        String systemDescription = ValidationService.getInstance().getSystemDescription(systemcode);
+        return systemDescription;
+    }
 }

@@ -156,10 +156,10 @@ public class ValidationService {
         vmmap.put(CONFIG_MODULE_AUDIT_FUNCTION, vm);
 
         vm = new HashMap();
-        cd = new CodeDescription(CONFIG_MODULE_RESOLVETYPE, "R", "Resolved");
-        vm.put("R", cd);
-        cd = new CodeDescription(CONFIG_MODULE_RESOLVETYPE, "A", "Permanently Resolved");
+        cd = new CodeDescription(CONFIG_MODULE_RESOLVETYPE, "A", "Resolved Until Recalculation");
         vm.put("A", cd);
+        cd = new CodeDescription(CONFIG_MODULE_RESOLVETYPE, "R", "Permanently Resolved");
+        vm.put("R", cd);
         cd = new CodeDescription(CONFIG_MODULE_RESOLVETYPE, "U", "Unresolved");
         vm.put("U", cd);
         vmmap.put(CONFIG_MODULE_RESOLVETYPE, vm);
