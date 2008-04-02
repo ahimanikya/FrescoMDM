@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
-import java.io.File;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 
@@ -44,12 +43,11 @@ import com.sun.mdm.index.project.EviewApplication.MatchRuleRow;
 import com.sun.mdm.index.project.ui.applicationeditor.matching.AdvancedMatchConfigDialog;
 import com.sun.mdm.index.parser.MatchFieldDef;
 import com.sun.mdm.index.parser.MasterType;
+import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.util.LogUtil;
 
 import com.sun.mdm.matcher.comparators.configurator.ComparatorsConfigBean;
 import com.sun.mdm.matcher.comparators.ComparatorsManager;
-//import com.sun.mdm.matcher.comparators.ComparatorsListsMerger;
-import com.sun.mdm.index.util.Logger;
-import com.sun.mdm.index.util.LogUtil;
 
 public class TabMatchConfigPanel extends javax.swing.JPanel {
     private static Logger mLogger = LogUtil.getLogger(TabMatchConfigPanel.class);

@@ -36,11 +36,10 @@ import org.openide.modules.InstalledFileLocator;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
-
 import java.io.File;
-//import java.io.FileNotFoundException;
-//import java.util.jar.JarFile;
+
 import com.sun.mdm.index.project.EviewProjectProperties;
+import com.sun.mdm.matcher.comparators.ComparatorsListsMerger;
 
 /**
  * To import Comparator jar
@@ -86,7 +85,7 @@ public class ImportComparatorAction extends CookieAction {
                     try {
                         final JFileChooser fc = new JFileChooser();
                         fc.setMultiSelectionEnabled(false);
-                        fc.setFileFilter(new JarFileFilter()); // comparator jar
+                        fc.setFileFilter(new PluginFileFilter()); // comparator jar
                         fc.setAcceptAllFileFilterUsed(false);
             
                         int returnVal = fc.showOpenDialog(null);
@@ -99,9 +98,9 @@ public class ImportComparatorAction extends CookieAction {
                                 fobjMatchEngineLib = fobjMatchEngine.createFolder("lib");
                             }
                             
-                            File selectedFile = fc.getSelectedFile();
-                            String pathSelectedFile = selectedFile.getAbsolutePath();
-                            FileObject fo = FileUtil.toFileObject(selectedFile);
+                            File comparatorPluginFile = fc.getSelectedFile();
+                            String comparatorPluginFilePath = comparatorPluginFile.getAbsolutePath();
+                            FileObject fo = FileUtil.toFileObject(comparatorPluginFile);
                             FileUtil.copyFile(fo, fobjMatchEngineLib, fo.getName());
 
                             String msg = NbBundle.getMessage(ImportStandardizationDataTypeAction.class, "MSG_Imported_Matcher_Plugin", fo.getName());
@@ -116,8 +115,24 @@ public class ImportComparatorAction extends CookieAction {
                                     targetFolder = FileUtil.toFileObject(templateFolder).createFolder("lib");
                                 }
                                 if (targetFolder != null && targetFolder.isFolder()) {
-                                    FileObject file = FileUtil.toFileObject(selectedFile);
+                                    FileObject file = FileUtil.toFileObject(comparatorPluginFile);
                                     FileUtil.copyFile(file, targetFolder, file.getName());
+                                }
+                                FileObject foComparatorListXml = fobjMatchEngine.getFileObject(EviewProjectProperties.MATCH_COMPARATOR_XML);
+                                String masterComparatorFilePath = FileUtil.toFile(foComparatorListXml).getAbsolutePath();
+                                ComparatorsListsMerger mrg = new ComparatorsListsMerger(masterComparatorFilePath, comparatorPluginFilePath);           // The first boolean perfoms validation of groups unicity
+                                // The Second boolean performs code names unicity checks
+                                mrg.mergeComparatorsList(true, true);
+                                FileObject foMergedComparatorListXml = FileUtil.toFileObject(mrg.getMergedComparatorsListFile());
+                                // Overwrite it
+                                if (foMergedComparatorListXml != null) {
+                                    String name = foComparatorListXml.getName();
+                                    foComparatorListXml.delete();
+                                    FileUtil.copyFile(foMergedComparatorListXml, fobjMatchEngine, name);
+                                    FileObject matchTemplateFolder = FileUtil.toFileObject(InstalledFileLocator.getDefault().locate(EviewProjectProperties.MATCH_TEMPLATE_LOCATION, "", false));
+                                    FileObject templateComparatorXml = matchTemplateFolder.getFileObject(EviewProjectProperties.MATCH_COMPARATOR_XML);
+                                    templateComparatorXml.delete();
+                                    FileUtil.copyFile(foMergedComparatorListXml, matchTemplateFolder, name);
                                 }
                             }
                         }                          
@@ -170,14 +185,14 @@ public class ImportComparatorAction extends CookieAction {
         return CookieAction.MODE_EXACTLY_ONE;
     }
     
-    private class JarFileFilter extends FileFilter {
+    private class PluginFileFilter extends FileFilter {
         
         public boolean accept(java.io.File file) {
-            return ( file.isDirectory() || file.getName().endsWith(".jar") );
+            return ( file.isDirectory() || file.getName().endsWith(".zip") );
         }
         
         public String getDescription() {
-            return "Jar Files";
+            return "Comparator Plugin Zip Files";
         }
         
     }    
