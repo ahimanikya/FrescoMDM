@@ -125,6 +125,7 @@ public class ClusterSynchronizerTest extends TestCase {
 		try {
 			for (int i = 0; i < 10000; i++) {
 				clusterSynchronizer.insertBlockBucket("block-bucket-" + i);
+				@SuppressWarnings("unused")
 				String s = clusterSynchronizer.getBlockBucket();
 
 				//assertTrue(s != null);
@@ -490,8 +491,10 @@ public class ClusterSynchronizerTest extends TestCase {
 		Future<String> f2 = executor.submit(t2);
 		
 
-		String b1 = f1.get();
-		String b2 = f2.get();
+		@SuppressWarnings("unused")
+		String b1 = f1.get(); 
+		@SuppressWarnings("unused")
+		String b2 = f2.get(); 
 		
 		
 		
