@@ -171,7 +171,7 @@
                                                      <div id="lockSourceDiv">
                                                      <h:outputLink  rendered="#{!EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"   
                                                                     value="javascript:void(0)" onclick="javascript:showExtraLinkDivs(event,'#{fieldConfigPer.name}','#{fieldConfigPer.fullFieldName}')">
-                                                            <h:graphicImage  alt="lock" styleClass="imgClass"
+                                                            <h:graphicImage  alt="lock" styleClass="imgClass" 
                                                                              url="./images/lock.PNG"/>               
                                                       </h:outputLink>
                                                      </div> 
@@ -186,22 +186,23 @@
                                                  <!--Rendering HTML Select Menu List-->
                                                     <h:column rendered="#{fieldConfigPer.guiType eq 'MenuList' &&  fieldConfigPer.valueType ne 6}" >
                                                         <h:selectOneMenu value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}" 
-                                                                         disabled="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
+                                                                         disabled="#{!fieldConfigPer.updateable || (EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName])}"
                                                                          onblur="javascript:accumilatePersonSelectFieldsOnBlur(this,'#{fieldConfigPer.fullFieldName}')"
-                                                                         readonly="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}">
+                                                                         readonly="#{!fieldConfigPer.updateable || (EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName])}">
                                                             <f:selectItem itemLabel="" itemValue="" />
                                                             <f:selectItems  value="#{fieldConfigPer.selectOptions}"  />
                                                         </h:selectOneMenu>
                                                     </h:column>
                                                     
                                                     <!--Rendering Updateable HTML Text boxes-->
-                                                    <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6}" >
+                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6}" >
                                                         <div id='readOnlySBR:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'>
                                                         <h:inputText label="#{fieldConfigPer.displayName}"  
                                                                      id="fieldConfigIdTextbox"   
                                                                      value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                      required="#{fieldConfigPer.required}"
-                                                                     disabled="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
+                                                                      maxlength="#{fieldConfigPer.maxLength}"
+																	  disabled="#{!fieldConfigPer.updateable || EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
                                                                      readonly="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"                                                                     
                                                                      onblur="javascript:accumilatePersonFieldsOnBlur(this,'#{fieldConfigPer.fullFieldName}')"
                                                                  />
@@ -209,7 +210,9 @@
                                                         <div id='editableSBR:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>' style='visibility:hidden;display:none'>
                                                         <h:inputText label="#{fieldConfigPer.displayName}"  
                                                                      id="fieldConfigIdTextboxEditable"   
-                                                                     value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}" 
+                                                                      maxlength="#{fieldConfigPer.maxLength}"
+																	   readonly="#{!fieldConfigPer.updateable}"
+																	   value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                      required="#{fieldConfigPer.required}"
                                                            onblur="javascript:accumilatePersonFieldsOnBlur(this,'#{fieldConfigPer.fullFieldName}')"
                                                                      />
@@ -266,10 +269,10 @@
 
                                                     <!--Rendering Updateable HTML Text boxes date fields-->
                                                 <!--Rendering Updateable HTML Text Area-->
-                                                <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
+                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
                                                     <h:inputTextarea label="#{fieldConfigPer.displayName}"  
                                                                      id="fieldConfigIdTextArea"   
-                                                                     disabled="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
+																	 disabled="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
                                                                      readonly="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"                                                                     
                                                                      onblur="javascript:accumilatePersonFieldsOnBlur(this,'#{fieldConfigPer.fullFieldName}')"
                                                                      value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}" 
@@ -342,7 +345,7 @@
                                                                 <!--Rendering HTML Select Menu List-->
                                                                 <h:column rendered="#{addressFieldConfig.guiType eq 'MenuList' &&  addressFieldConfig.valueType ne 6}" >
                                                                     <h:selectOneMenu value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" 
-                                                                                     onblur="javascript:accumilateEOMinorFieldsSelectOnBlur(this,'#{fieldConfigPer.fullFieldName}','#{adressMapArrayList['MINOR_OBJECT_ID']}','#{adressMapArrayList['MINOR_OBJECT_TYP']}')">
+                                                                         onblur="javascript:accumilateEOMinorFieldsSelectOnBlur(this,'#{fieldConfigPer.fullFieldName}','#{adressMapArrayList['MINOR_OBJECT_ID']}','#{adressMapArrayList['MINOR_OBJECT_TYP']}')">
                                                                         <f:selectItem itemLabel="" itemValue="" />
                                                                         <f:selectItems  value="#{addressFieldConfig.selectOptions}"  />
                                                                     </h:selectOneMenu>
@@ -352,7 +355,8 @@
                                                                 <h:column rendered="#{addressFieldConfig.guiType eq 'TextBox' &&  addressFieldConfig.valueType ne 6}" >
                                                                     <h:inputText label="#{addressFieldConfig.displayName}"  
                                                                                  id="fieldConfigIdTextbox"   
-                                                                                 value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" 
+                                                                                 maxlength="#{addressFieldConfig.maxLength}"
+																				 readonly="#{!addressFieldConfig.updateable}"		  value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" 
                                                                                  onblur="javascript:accumilateEOMinorFieldsOnBlur(this,'#{fieldConfigPer.fullFieldName}','#{adressMapArrayList['MINOR_OBJECT_ID']}','#{adressMapArrayList['MINOR_OBJECT_TYP']}')"
                                                                                  required="#{addressFieldConfig.required}"/>
                                                                 </h:column>
@@ -360,7 +364,8 @@
                                                                 <!--Rendering Updateable HTML Text boxes date fields-->
                                                                 <h:column rendered="#{addressFieldConfig.guiType eq 'TextBox' &&  addressFieldConfig.valueType eq 6}">
                                                                     <h:inputText label="#{addressFieldConfig.displayName}"   
-                                                                                 value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}"  
+                                                                                  maxlength="#{addressFieldConfig.maxLength}"
+																				  readonly="#{!addressFieldConfig.updateable}"	   value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}"  
                                                                                  id="date"
                                                                                  required="#{addressFieldConfig.required}"
                                                                                  onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
@@ -480,16 +485,20 @@
                                                                         
                                                                         <!--Rendering HTML Select Menu List-->
                                                                         <h:column rendered="#{fieldConfigPer.guiType eq 'MenuList' &&  fieldConfigPer.valueType ne 6}" >
-                                                                            <h:selectOneMenu value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" >
+                                                                            <h:selectOneMenu 
+																			
+																			disabled="#{!fieldConfigPer.updateable}"
+																			value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" >
                                                                                 <f:selectItem itemLabel="" itemValue="" />
                                                                                 <f:selectItems  value="#{fieldConfigPer.selectOptions}"  />
                                                                             </h:selectOneMenu>
                                                                         </h:column>
                                                                         <!--Rendering Updateable HTML Text boxes-->
-                                                                        <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6}" >
+                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6}" >
                                                                             <h:inputText label="#{fieldConfigPer.displayName}"  
                                                                                          id="fieldConfigIdTextbox"   
-                                                                                         value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
+                                                                                         maxlength="#{fieldConfigPer.maxLength}"
+																						 readonly="#{!fieldConfigPer.updateable}"	value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                                          required="#{fieldConfigPer.required}"
                                                                                          />
                                                                         </h:column>
@@ -509,7 +518,7 @@
                                                                                 
                                                                         </h:column>
                                                                         <!--Rendering Updateable HTML Text Area-->
-                                                                        <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
+                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
                                                                             <h:inputTextarea label="#{fieldConfigPer.displayName}"  
                                                                                              id="fieldConfigIdTextArea"   
                                                                                              value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
@@ -579,7 +588,8 @@
                                                                                         </h:column>
                                                                                         <!--Rendering HTML Select Menu List-->
                                                                                         <h:column rendered="#{addressFieldConfig.guiType eq 'MenuList' &&  addressFieldConfig.valueType ne 6}" >
-                                                                                            <h:selectOneMenu value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" >
+                                                                                            <h:selectOneMenu 
+																							disabled="#{!addressFieldConfig.updateable}" value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" >
                                                                                                 <f:selectItem itemLabel="" itemValue="" />
                                                                                                 <f:selectItems  value="#{addressFieldConfig.selectOptions}"  />
                                                                                             </h:selectOneMenu>
@@ -589,14 +599,15 @@
                                                                                         <h:column rendered="#{addressFieldConfig.guiType eq 'TextBox' &&  addressFieldConfig.valueType ne 6}" >
                                                                                             <h:inputText label="#{addressFieldConfig.displayName}"  
                                                                                                          id="fieldConfigIdTextbox"   
-                                                                                                         value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" 
+                                                                                                         maxlength="#{addressFieldConfig.maxLength}"
+																										 readonly="#{!addressFieldConfig.updateable}"	value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" 
                                                                                                          required="#{addressFieldConfig.required}"/>
                                                                                         </h:column>
                                                                                         
                                                                                         <!--Rendering Updateable HTML Text boxes date fields-->
                                                                                         <h:column rendered="#{addressFieldConfig.guiType eq 'TextBox' &&  addressFieldConfig.valueType eq 6}">
-                                                                                            <h:inputText label="#{addressFieldConfig.displayName}"   
-                                                                                                         value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}"  
+                                                                                            <h:inputText label="#{addressFieldConfig.displayName}"  maxlength="#{addressFieldConfig.maxLength}" 
+                                                                                             readonly="#{!addressFieldConfig.updateable}"            value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}"  
                                                                                                          id="date"
                                                                                                          required="#{addressFieldConfig.required}"
                                                                                                          onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
@@ -668,7 +679,7 @@
                                                 <td>
                                                     <h:inputText id="LID" value="#{EditMainEuidHandler.newSoLID}" 
                                                                  onkeydown="javascript:qws_field_on_key_down(this, document.basicNewSOAddformData.lidmask.value)"
-                                                                 onkeyup="javascript:qws_field_on_key_up(this)" maxlength="10"
+                                                                 onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                  />
                                                 </td>
                                             </tr>                                            
@@ -680,7 +691,8 @@
                                                       value="#{SourceHandler.rootNodeFieldConfigs}">
                                             <!--Rendering HTML Select Menu List-->
                                             <h:column rendered="#{newSOfieldConfigPerAdd.guiType eq 'MenuList' &&  newSOfieldConfigPerAdd.valueType ne 6}" >
-                                                <h:selectOneMenu value="#{EditMainEuidHandler.newSOHashMap[newSOfieldConfigPerAdd.fullFieldName]}">
+                                                <h:selectOneMenu 
+												value="#{EditMainEuidHandler.newSOHashMap[newSOfieldConfigPerAdd.fullFieldName]}">
                                                     <f:selectItem itemLabel="" itemValue="" />
                                                     <f:selectItems  value="#{newSOfieldConfigPerAdd.selectOptions}"  />
                                                 </h:selectOneMenu>
@@ -689,13 +701,14 @@
                                             <h:column rendered="#{newSOfieldConfigPerAdd.guiType eq 'TextBox' &&  newSOfieldConfigPerAdd.valueType ne 6}" >
                                                 <h:inputText label="#{newSOfieldConfigPerAdd.displayName}"  
                                                              id="fieldConfigIdTextbox"  
-                                                             value="#{EditMainEuidHandler.newSOHashMap[newSOfieldConfigPerAdd.fullFieldName]}" 
+                                                             maxlength="#{newSOfieldConfigPerAdd.maxLength}"										 value="#{EditMainEuidHandler.newSOHashMap[newSOfieldConfigPerAdd.fullFieldName]}" 
                                                              required="#{newSOfieldConfigPerAdd.required}"/>
                                             </h:column>                     
                                             <!--Rendering Updateable HTML Text boxes date fields-->
                                             <h:column rendered="#{newSOfieldConfigPerAdd.guiType eq 'TextBox' &&  newSOfieldConfigPerAdd.valueType eq 6 }">
                                                 <h:inputText label="#{newSOfieldConfigPerAdd.name}"  id="DOB"
-                                                             value="#{EditMainEuidHandler.newSOHashMap[newSOfieldConfigPerAdd.fullFieldName]}"  
+                                                             maxlength="#{newSOfieldConfigPerAdd.maxLength}"
+															 value="#{EditMainEuidHandler.newSOHashMap[newSOfieldConfigPerAdd.fullFieldName]}"  
                                                              required="#{newSOfieldConfigPerAdd.required}"
                                                              onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                              onkeyup="javascript:qws_field_on_key_up(this)" 
@@ -822,7 +835,9 @@
                                      </h:column>
                                      <!--Rendering HTML Select Menu List-->
                                      <h:column rendered="#{childFieldConfig.guiType eq 'MenuList'}" >
-                                         <h:selectOneMenu value="#{SourceEditHandler.editSoAddressHashMap[childFieldConfig.fullFieldName]}">
+                                         <h:selectOneMenu 
+										 disabled="#{!childFieldConfig.updateable}"
+										 value="#{SourceEditHandler.editSoAddressHashMap[childFieldConfig.fullFieldName]}">
                                              <f:selectItem itemLabel="" itemValue="" />
                                              <f:selectItems  value="#{childFieldConfig.selectOptions}"  />
                                          </h:selectOneMenu>
@@ -830,6 +845,7 @@
                                      <!--Rendering Updateable HTML Text boxes-->
                                      <h:column rendered="#{childFieldConfig.guiType eq 'TextBox'}" >
                                          <h:inputText label="#{childFieldConfig.displayName}"  
+												      maxlength="#{childFieldConfig.maxLength}"
                                                       value="#{SourceEditHandler.editSoAddressHashMap[childFieldConfig.fullFieldName]}" 
                                                       required="#{childFieldConfig.required}"/>
                                      </h:column>                     
@@ -893,14 +909,17 @@
                                      </h:column>
                                      <!--Rendering HTML Select Menu List-->
                                      <h:column rendered="#{childFieldConfig.guiType eq 'MenuList'}" >
-                                         <h:selectOneMenu value="#{SourceEditHandler.editSoAddressHashMap[childFieldConfig.fullFieldName]}">
+                                         <h:selectOneMenu 
+										 disabled="#{!childFieldConfig.updateable}" 
+										 value="#{SourceEditHandler.editSoAddressHashMap[childFieldConfig.fullFieldName]}">
                                              <f:selectItem itemLabel="" itemValue="" />
                                              <f:selectItems  value="#{childFieldConfig.selectOptions}"  />
                                          </h:selectOneMenu>
                                      </h:column>
                                      <!--Rendering Updateable HTML Text boxes-->
                                      <h:column rendered="#{childFieldConfig.guiType eq 'TextBox'}" >
-                                         <h:inputText label="#{childFieldConfig.displayName}"  
+                                         <h:inputText label="#{childFieldConfig.displayName}" 
+													  maxlength="#{childFieldConfig.maxLength}"
                                                       value="#{SourceEditHandler.editSoAddressHashMap[childFieldConfig.fullFieldName]}" 
                                                       required="#{childFieldConfig.required}"/>
                                      </h:column>                     
@@ -969,7 +988,8 @@
                                             </h:column>
                                             <!--Rendering HTML Select Menu List-->
                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'MenuList'}" >
-                                                <h:selectOneMenu onblur="javascript:accumilateMinorObjectSelectFieldsOnBlur('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}')"
+                                                <h:selectOneMenu 
+												disabled="#{!childFieldConfigAdd.updateable}"												onblur="javascript:accumilateMinorObjectSelectFieldsOnBlur('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}')"
                                                                  value="">
                                                     <f:selectItem itemLabel="" itemValue="" />
                                                     <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
@@ -978,7 +998,8 @@
                                             <!--Rendering Updateable HTML Text boxes-->
                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox'}" >
                                                 <h:inputText label="#{childFieldConfigAdd.displayName}"  
-                                                             onblur="javascript:accumilateMinorObjectFieldsOnBlur('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}')"
+                                                             maxlength="#{childFieldConfigAdd.maxLength}"
+															 onblur="javascript:accumilateMinorObjectFieldsOnBlur('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}')"
                                                              onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')"
                                                              onkeyup="javascript:qws_field_on_key_up(this)" 
                                                              value=""

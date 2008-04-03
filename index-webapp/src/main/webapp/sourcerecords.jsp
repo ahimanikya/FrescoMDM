@@ -87,11 +87,14 @@
                 //valueEntered  = valueEntered.replace(/\(/g,"");
                 
                 //alert(valueType);
-                if(valueType != '6' || valueType != '8' ) {
+                if(valueType != '6') {
+                    //alert("-----");
                     for(var i=0;i<maskChars.length;i++) {
                         valueEntered  = valueEntered.replace(maskChars[i],'');
                     }    
                 }    
+
+
                 //alert(valueEntered);
 
                 minorObjTypeLocal =   objectType;
@@ -433,28 +436,34 @@
                                                     <h:column>
                                                         <h:outputText value="#{fieldConfigPer.displayName}"  />
                                                         <h:outputText value="*" rendered="#{fieldConfigPer.required}" />
+                                                     
                                                     </h:column>                                                        
                                                     <!--Rendering HTML Select Menu List-->
                                                     <h:column rendered="#{fieldConfigPer.guiType eq 'MenuList' &&  fieldConfigPer.valueType ne 6}" >
-                                                        <h:selectOneMenu value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}" >
+                                                        <h:selectOneMenu value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}"
+														readonly="#{!fieldConfigPer.updateable}"
+														disabled="#{!fieldConfigPer.updateable}">
                                                             <f:selectItem itemLabel="" itemValue="" />
                                                             <f:selectItems  value="#{fieldConfigPer.selectOptions}"  />
                                                         </h:selectOneMenu>
                                                     </h:column>
                                                     
                                                     <!--Rendering Updateable HTML Text boxes-->
-                                                    <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6}" >
+                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6}" >
                                                         <h:inputText label="#{fieldConfigPer.displayName}"  
                                                                      id="fieldConfigIdTextbox"  
                                                                      maxlength="#{fieldConfigPer.maxLength}"
-                                                                     value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}" 
+                                                                     readonly="#{!fieldConfigPer.updateable}"
+ 																	 value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}" 
                                                                      required="#{fieldConfigPer.required}"
                                                                      />
                                                     </h:column>
                                                     <!--Rendering Updateable HTML Text boxes date fields-->
                                                           <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType eq 6}">
                                                                   <h:inputText label="#{fieldConfigPer.displayName}"   
-                                                                     value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}"  
+                                                                     maxlength="#{fieldConfigPer.maxLength}"
+                                                                     readonly="#{!fieldConfigPer.updateable}"
+ 																	 value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}"  
                                                                      required="#{fieldConfigPer.required}"
                                                                      onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')"
                                                                      onkeyup="javascript:qws_field_on_key_up(this)" 
@@ -467,10 +476,11 @@
                                                                     </a>
                                                                 </h:column>
                                                                 <!--Rendering Updateable HTML Text Area-->
-                                                                <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
+                                                                <h:column rendered="#{fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
                                                                     <h:inputTextarea label="#{fieldConfigPer.displayName}"  
                                                                                      id="fieldConfigIdTextArea"   
-                                                                                     value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}" 
+				                                                                     readonly="#{!fieldConfigPer.updateable}"
+ 																	              value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}" 
                                                                                      required="#{fieldConfigPer.required}"/>
                                                                 </h:column>
                                                             </h:dataTable>               
@@ -536,7 +546,8 @@
                                                                                         </h:column>
                                                                                         <!--Rendering HTML Select Menu List-->
                                                                                         <h:column rendered="#{addressFieldConfig.guiType eq 'MenuList' &&  addressFieldConfig.valueType ne 6}" >
-                                                                                            <h:selectOneMenu value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" >
+                                                                                            <h:selectOneMenu value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" 
+																							>
                                                                                                 <f:selectItem itemLabel="" itemValue="" />
                                                                                                 <f:selectItems  value="#{addressFieldConfig.selectOptions}"  />
                                                                                             </h:selectOneMenu>
@@ -547,6 +558,8 @@
                                                                                             <h:inputText label="#{addressFieldConfig.displayName}"  
                                                                                                          id="fieldConfigIdTextbox"   
                                                                                                          value="#{adressMapArrayList[addressFieldConfig.fullFieldName]}" 
+							                                                                 maxlength="#{addressFieldConfig.maxLength}"
+													                                         readonly="#{!addressFieldConfig.updateable}"
                                                                                                          required="#{addressFieldConfig.required}"/>
                                                                                         </h:column>
                                                                                         
@@ -558,7 +571,8 @@
                                                                                                          required="#{addressFieldConfig.required}"
                                                                                                          onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
                                                                                                          onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                                         onblur="javascript:validate_date(this,'MM/dd/yyyy');"/>
+                                                                                                        maxlength="#{addressFieldConfig.maxLength}"
+													                                         readonly="#{!addressFieldConfig.updateable}" onblur="javascript:validate_date(this,'MM/dd/yyyy');"/>
                                                                                             <a HREF="javascript:void(0);" 
                                                                                                onclick="g_Calendar.show(event,'topButtonsForm:fieldConfigId:6:date')" > 
                                                                                                 <h:graphicImage  id="calImgStartDate" 
@@ -612,7 +626,7 @@
                                                     </h:column>
                                                     
                                                     <!--Rendering Updateable HTML Text boxes-->
-                                                    <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6}" >
+                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6}" >
                                                         <h:inputText label="#{fieldConfigPer.displayName}"  
                                                                      id="fieldConfigIdTextbox"  readonly="true" disabled="true"
                                                                      value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}" 
@@ -634,7 +648,7 @@
                                                                     </h:column>
                                                                     
                                                                     <!--Rendering Updateable HTML Text Area-->
-                                                                    <h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
+                                                                    <h:column rendered="#{fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
                                                                         <h:inputTextarea label="#{fieldConfigPer.displayName}"  
                                                                                          id="fieldConfigIdTextArea"   readonly="true" disabled="true"
                                                                                          value="#{SourceEditHandler.editSingleSOHashMap[fieldConfigPer.fullFieldName]}" 
@@ -785,7 +799,7 @@
                                                             <!--Rendering Non Updateable HTML Text Area-->
                                                             <h:column>
                                                                 <h:outputText value="#{feildConfig.displayName}" />
-                                                            </h:column>
+								                           </h:column>
                                                             <!--Rendering HTML Select Menu List-->
                                                             <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
                                                                <h:selectOneMenu value="#{SourceHandler.updateableFeildsMap[feildConfig.name]}" rendered="#{feildConfig.name eq 'SystemCode'}"
@@ -798,12 +812,13 @@
                                                             </h:column>
                                                             
                                                             <!--Rendering Updateable HTML Text boxes-->
-                                                            <h:column rendered="#{feildConfig.updateable && feildConfig.guiType eq 'TextBox'}" >
+                                                            <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.name ne 'LID'}" >
+								 
                                                                 <h:inputText label="#{feildConfig.displayName}"    id="fieldConfigIdText" value="#{SourceHandler.updateableFeildsMap[feildConfig.name]}" required="#{feildConfig.required}"/>
                                                             </h:column>
                                                             
                                                             <!--Rendering Updateable HTML Text Area-->
-                                                            <h:column rendered="#{feildConfig.updateable && feildConfig.guiType eq 'TextArea'}" >
+                                                            <h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
                                                                 <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"   value="#{SourceHandler.updateableFeildsMap[feildConfig.name]}" required="#{feildConfig.required}"/>
                                                             </h:column>
                                                             
@@ -813,17 +828,17 @@
                                                                 <h:inputText id="SystemCode" value="#{SourceHandler.SystemCode}" required="#{feildConfig.required}"/>
                                                             </h:column>
                                                             
-                                                            <h:column rendered="#{ !feildConfig.updateable && feildConfig.guiType eq 'TextBox' && feildConfig.name eq 'EUID' }" >
+                                                            <h:column rendered="#{  feildConfig.guiType eq 'TextBox' && feildConfig.name eq 'EUID' }" >
                                                                 <h:inputText label="#{feildConfig.displayName}"    id="EUID" value="#{SourceHandler.EUID}" required="#{feildConfig.required}"/>
                                                             </h:column>
                                                             
-                                                            <h:column rendered="#{!feildConfig.updateable && feildConfig.guiType eq 'TextBox' && feildConfig.name eq 'LID'}" >
+                                                            <h:column rendered="#{ feildConfig.guiType eq 'TextBox' && feildConfig.name eq 'LID'}" >
                                                                 <h:inputText label="#{feildConfig.displayName}"    id="LID" value="#{SourceHandler.LID}" required="#{feildConfig.required}"
                                                                              onkeydown="javascript:qws_field_on_key_down(this, document.basicViewformData.lidmask.value)"
                                                                              onkeyup="javascript:qws_field_on_key_up(this)"
                                                                              />
                                                             </h:column>
-                                                            <h:column rendered="#{ !feildConfig.updateable && feildConfig.guiType eq 'TextBox' &&  feildConfig.name eq 'create_start_date'}">
+                                                            <h:column rendered="#{feildConfig.guiType eq 'TextBox' &&  feildConfig.name eq 'create_start_date'}">
                                                                 <h:inputText label="#{feildConfig.displayName}"    value="#{SourceHandler.create_start_date}"  id="create_start_date"
                                                                              required="#{feildConfig.required}"
                                                                              onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
@@ -835,7 +850,7 @@
                                                                                      url="./images/cal.gif"/>               
                                                                 </a>
                                                             </h:column>
-                                                            <h:column rendered="#{ !feildConfig.updateable && feildConfig.guiType eq 'TextBox' &&  feildConfig.name eq 'create_end_date'}">
+                                                            <h:column rendered="#{ feildConfig.guiType eq 'TextBox' &&  feildConfig.name eq 'create_end_date'}">
                                                                 <h:inputText label="#{feildConfig.displayName}"    value="#{SourceHandler.create_end_date}" id="create_end_date" 
                                                                              required="#{feildConfig.required}"
                                                                              onkeydown="javascript:qws_field_on_key_down(this, 'DD/DD/DDDD')"
@@ -846,21 +861,21 @@
                                                                                      url="./images/cal.gif"/>               
                                                                 </a>
                                                             </h:column>
-                                                            <h:column rendered="#{!feildConfig.updateable && feildConfig.guiType eq 'TextBox' && feildConfig.name eq 'create_start_time'}">
+                                                            <h:column rendered="#{ feildConfig.guiType eq 'TextBox' && feildConfig.name eq 'create_start_time'}">
                                                                 <h:inputText label="#{feildConfig.displayName}"    rendered="#{ feildConfig.name eq 'create_start_time'}" id="create_start_time" 
                                                                              value="#{SourceHandler.create_start_time}" required="#{feildConfig.required}"
                                                                              onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
                                                                              onkeyup="javascript:qws_field_on_key_up(this)"/>
                                                             </h:column>
                                                             
-                                                            <h:column rendered="#{!feildConfig.updateable && feildConfig.guiType eq 'TextBox' && feildConfig.name eq 'create_end_time'}" >
+                                                            <h:column rendered="#{ feildConfig.guiType eq 'TextBox' && feildConfig.name eq 'create_end_time'}" >
                                                                 <h:inputText label="#{feildConfig.displayName}"    id="create_end_time" value="#{SourceHandler.create_end_time}" 
                                                                              required="#{feildConfig.required}"
                                                                              onkeydown="javascript:qws_field_on_key_down(this, 'DD:DD:DD')" 
                                                                              onkeyup="javascript:qws_field_on_key_up(this)"/>
                                                             </h:column>
                                                             
-                                                            <h:column rendered="#{!feildConfig.updateable && feildConfig.guiType eq 'TextBox' && feildConfig.name eq  'Status'}" >
+                                                            <h:column rendered="#{ feildConfig.guiType eq 'TextBox' && feildConfig.name eq  'Status'}" >
                                                                 <h:inputText label="#{feildConfig.displayName}"    id="Status"  value="#{SourceHandler.Status}" required="#{feildConfig.required}"/>
                                                             </h:column>
                                                             <f:facet name="footer">
@@ -995,6 +1010,7 @@
                                                                                               value="#{SourceAddHandler.systemCode}" 
                                                                                               rendered="#{feildConfig.name eq 'SystemCode'}"
                                                                                               required="true">
+
                                                                                 <f:selectItems  value="#{feildConfig.selectOptions}" />
                                                                             </h:selectOneMenu>
                                                                         </nobr>
@@ -1013,7 +1029,7 @@
                                                                             <h:inputText   id="LID"
                                                                                            required="true" 
                                                                                            label="#{feildConfig.displayName}" 
-                                                                                           onkeydown="javascript:qws_field_on_key_down(this, document.basicAddformData.lidmask.value)"
+																						    maxlength="#{feildConfig.maxLength}"     onkeydown="javascript:qws_field_on_key_down(this, document.basicAddformData.lidmask.value)"
                                                                                            onblur="javascript:qws_field_on_key_down(this, document.basicAddformData.lidmask.value);"
                                                                                            onkeyup="javascript:qws_field_on_key_up(this)"
                                                                                            value="#{SourceAddHandler.LID}"
@@ -1057,6 +1073,7 @@
                                                             <h:inputText label="#{fieldConfigPerAdd.displayName}"  
                                                                          id="fieldConfigIdTextbox"  
                                                                          onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
+																		  maxlength="#{fieldConfigPerAdd.maxLength}"
                                                                          onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                          onblur="javascript:accumilateNewPersonFieldsOnBlur(this,'#{fieldConfigPerAdd.fullFieldName}','#{fieldConfigPerAdd.inputMask}','#{fieldConfigPerAdd.valueType}')"                                                                         
                                                                          required="#{fieldConfigPerAdd.required}"/>
@@ -1630,10 +1647,26 @@
                                          </h:selectOneMenu>
                                      </h:column>
                                      <!--Rendering Updateable HTML Text boxes-->
-                                     <h:column rendered="#{childFieldConfig.guiType eq 'TextBox'}" >
-                                         <h:inputText label="#{childFieldConfig.displayName}"  
+                                     <h:column rendered="#{childFieldConfig.guiType eq 'TextBox' &&  childFieldConfig.valueType ne 6}" >
+                                         <h:inputText label="#{childFieldConfig.displayName}"
+													  maxlength="#{childFieldConfig.maxLength}"
                                                       value="#{SourceEditHandler.editSoAddressHashMap[childFieldConfig.fullFieldName]}" 
                                                       required="#{childFieldConfig.required}"/>
+                                     </h:column>                                     
+									 <h:column rendered="#{childFieldConfig.guiType eq 'TextBox' &&  childFieldConfig.valueType eq 6}" >
+                                         <h:inputText id="cal"
+										              label="#{childFieldConfig.displayName}"  
+										              maxlength="#{childFieldConfig.maxLength}"
+                                                      value="#{SourceEditHandler.editSoAddressHashMap[childFieldConfig.fullFieldName]}" 
+                                                      required="#{childFieldConfig.required}"
+													  onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfig.inputMask}')"
+                                                       onkeyup="javascript:qws_field_on_key_up(this)" 
+													  
+													  
+													  />
+									         <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'cal')" > 
+                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                 </a>
                                      </h:column>                     
                                      <!--Rendering Updateable HTML Text Area-->
                                      <h:column rendered="#{childFieldConfig.guiType eq 'TextArea'}" >
@@ -1710,15 +1743,34 @@
                                                 </h:selectOneMenu>
                                             </h:column>
                                             <!--Rendering Updateable HTML Text boxes-->
-                                            <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox'}" >
+                                            <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox' &&  childFieldConfigAdd.valueType ne 6}" >
                                                 <h:inputText label="#{childFieldConfigAdd.displayName}"  
                                                              onblur="javascript:accumilateMinorObjectFieldsOnBlurLocal('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}','#{childFieldConfigAdd.inputMask}','#{childFieldConfigAdd.valueType}')"
                                                              onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')"
                                                              onkeyup="javascript:qws_field_on_key_up(this)" 
                                                              value=""
+															 maxlength="#{childFieldConfigAdd.maxLength}"
                                                              required="#{childFieldConfigAdd.required}"/>
                                             </h:column>                     
-                                            <!--Rendering Updateable HTML Text Area-->
+ 
+                                     <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox'  &&  childFieldConfigAdd.valueType eq 6}" >
+                                          <nobr>
+                                            <input type="text" 
+                                                   id = "<h:outputText value="#{childFieldConfigAdd.name}"/>"  
+                                                   required="<h:outputText value="#{childFieldConfigAdd.required}"/>" 
+                                                   maxlength="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
+                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')"
+                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                  onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateMinorObjectFieldsOnBlurLocal('<h:outputText value="#{childFieldConfigAdd.objRef}"/>',this,'<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>','<h:outputText value="#{childFieldConfigAdd.inputMask}"/>','<h:outputText value="#{childFieldConfigAdd.valueType}"/>')">
+                                                  <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childFieldConfigAdd.name}"/>')" > 
+                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                 </a>
+                                          </nobr>
+                                     </h:column>                     
+
+
+                                           <!--Rendering Updateable HTML Text Area-->
+                                            
                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextArea'}" >
                                                 <h:inputTextarea label="#{fieldConfigAddAddress.displayName}"  
                                                                  onblur="javascript:accumilateMinorObjectFieldsOnBlurLocal('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}','#{childFieldConfigAdd.inputMask}','#{childFieldConfigAdd.valueType}')"
