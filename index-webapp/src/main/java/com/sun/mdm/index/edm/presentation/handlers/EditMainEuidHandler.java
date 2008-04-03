@@ -291,7 +291,7 @@ public class EditMainEuidHandler {
             //build an array of modified system object arrays  
             buildChangedSystemObjects();
       
-            checkAndBuildModifiedSBRValues(updateEnterpriseObject);
+            // checkAndBuildModifiedSBRValues(updateEnterpriseObject);
   
             masterControllerService.setRootNodeName(screenObject.getRootObj().getName());
 
