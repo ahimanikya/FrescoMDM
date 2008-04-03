@@ -55,6 +55,7 @@ import javax.faces.event.*;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import com.sun.mdm.index.edm.presentation.validations.HandlerException;
+import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.SearchResultsConfig;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.ObjectNode;
@@ -242,6 +243,48 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                 //System.out.println("epathList" + epathList);
 
 
+                // Rajani Kanth START
+                PotentialDuplicateIterator pdPageIter = masterControllerService.lookupPotentialDuplicates(potentialDuplicateSearchObject);
+                while (pdPageIter.hasNext()) {
+                    mainPotentialDuplicateSummary = pdPageIter.next();
+                    ObjectNode objMain = mainPotentialDuplicateSummary.getObject1(); //<-------- Object node being fetched
+
+                    //System.out.println("mainPotentialDuplicateSummary.getParent()    ===> " + mainPotentialDuplicateSummary.getParent());
+                    //System.out.println("mainPotentialDuplicateSummary.getObject1()    ===> " + mainPotentialDuplicateSummary.getObject1());
+                    //System.out.println("mainPotentialDuplicateSummary.getObject2()    ===> " + mainPotentialDuplicateSummary.getObject2());
+                    
+                    Collection fieldvaluesMain;
+                    for (int m = 0; m < epathList.size(); m++) {
+                        EPath ePath = epathList.get(m);
+                        fieldvaluesMain = getFieldValue(objMain, ePath);
+                        System.out.println("Main Duplicate ePath ===> : " + ePath + " value ====> " + fieldvaluesMain);
+                    }
+                    PotentialDuplicateIterator pdi = mainPotentialDuplicateSummary.getAssociatedPotentialDuplicates();
+                    int count = mainPotentialDuplicateSummary.getAssociatedPotentialDuplicates().count();
+                    
+                    PotentialDuplicateSummary[] associatePDSummary = pdi.next(count);
+                    for (int i = 0; i < associatePDSummary.length; i++) {
+                        PotentialDuplicateIterator pditerator = associatePDSummary[i].getAssociatedPotentialDuplicates();
+                        int count1 = associatePDSummary[i].getAssociatedPotentialDuplicates().count();
+                        pditerator.first(count1);
+                        ObjectNode obj = associatePDSummary[i].getObject2(); //<-------- Object node being fetched
+
+                        //System.out.println("*************associatePDSummary[" + i + "].getParent()******************************" + associatePDSummary[i].getParent());
+                        //System.out.println("*************associatePDSummary[" + i + "].getObject1()******************************" + associatePDSummary[i].getObject1());
+                        //System.out.println("*************associatePDSummary[" + i + "].getObject2()******************************" + associatePDSummary[i].getObject2());
+                        Collection fieldvalues;
+                        for (int m = 0; m < epathList.size(); m++) {
+                            EPath ePath = epathList.get(m);
+                            fieldvalues = getFieldValue(obj, ePath);
+                            System.out.println("Associate Duplicate ePath ===> : " + ePath + " value ====> " + fieldvalues);
+                        }
+                    }
+                }
+            
+            // Lookup potential duplicates using QWS controller END
+            
+            
+            
             
             PotentialDuplicateIterator pdPageIterArray = masterControllerService.lookupPotentialDuplicates(potentialDuplicateSearchObject);
             
@@ -675,7 +718,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
 
             //flag=false incase of autoresolve
             //flag = true incase of permanant resolve
-          
+            System.out.println("------this.getResolveType()-----" + this.getResolveType() + "Resole boolean" + resolveBoolean);
  
             masterControllerService.setAsDifferentPerson(this.getPotentialDuplicateId(), resolveBoolean);
             httpRequest.removeAttribute("finalArrayList");
@@ -1096,16 +1139,16 @@ public ArrayList resetOutputList(PotentialDuplicateSearchObject potentialDuplica
     }
 
     
-        public static Collection getFieldValue(ObjectNode objNode, EPath epath) throws Exception {
+    public static Collection getFieldValue(ObjectNode objNode, EPath epath) throws Exception {
         Collection c = null;
-        try{
+        try {
             c = QwsUtil.getValueForField(objNode, epath.getName(), null);
-            if( c== null) {
+            if (c == null) {
                 return null;
             } else {
                 return c;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return c;
@@ -1119,31 +1162,39 @@ public ArrayList resetOutputList(PotentialDuplicateSearchObject potentialDuplica
         Iterator ePathsIterator = null;
         Iterator resultConfigIterator = arlResultsConfig.iterator();
         String objectRef = null;
-
-        while (resultConfigIterator.hasNext()) {
-            searchResultConfig = (SearchResultsConfig) resultConfigIterator.next();
-            arlEPaths = searchResultConfig.getEPaths();
-            ePathsIterator = arlEPaths.iterator();
-            while (ePathsIterator.hasNext()) {
-                String strEPath = (String) ePathsIterator.next();
-                //System.out.println("+++++++++++  "+strEPath);
-                // copy EPath strings to the EPathArrayList
-                arlResultFields.add("Enterprise.SystemSBR." + strEPath);
-                // POTENTIAL DUPLICATE-RELATED FIX from Raymond
-                // retrieve the object reference eg, if the epath is is "Person.Address.City" this retrieves "Person".
-                if (objectRef == null) {
-                    int index = strEPath.indexOf(".");
-                    objectRef = strEPath.substring(0, index);
-                 
-                }
-            //
-            }
-            // POTENTIAL DUPLICATE-RELATED FIX from Raymond
-            // Add an EUID field for the PotentialDuplicateAManager.  This is required.
-            arlResultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
+        
+        ArrayList resultsList  = super.getResultsConfigArray();
+        for (int i = 0; i < resultsList.size(); i++) {
+            FieldConfig object = (FieldConfig) resultsList.get(i);
+            arlResultFields.add("Enterprise.SystemSBR."+object.getFullFieldName());
         }
+        arlResultFields.add("Enterprise.SystemSBR." + screenObject.getRootObj().getName() + ".EUID");
 
-       
+//        while (resultConfigIterator.hasNext()) {
+//            searchResultConfig = (SearchResultsConfig) resultConfigIterator.next();
+//            searchResultConfig.getFieldConfigs();
+//            arlEPaths = searchResultConfig.getEPaths();
+//            ePathsIterator = arlEPaths.iterator();
+//            while (ePathsIterator.hasNext()) {
+//                String strEPath = (String) ePathsIterator.next();
+//                //System.out.println("+++++++++++  "+strEPath);
+//                // copy EPath strings to the EPathArrayList
+//                arlResultFields.add("Enterprise.SystemSBR." + strEPath);
+//                // POTENTIAL DUPLICATE-RELATED FIX from Raymond
+//                // retrieve the object reference eg, if the epath is is "Person.Address.City" this retrieves "Person".
+//                if (objectRef == null) {
+//                    int index = strEPath.indexOf(".");
+//                    objectRef = strEPath.substring(0, index);
+//                    System.out.println("+++++++++++  " + objectRef);
+//                }
+//            //
+//            }
+//            // POTENTIAL DUPLICATE-RELATED FIX from Raymond
+//            // Add an EUID field for the PotentialDuplicateAManager.  This is required.
+//            arlResultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
+//        }
+
+        System.out.println(">>> arlResultFields " + arlResultFields);
         return arlResultFields;
     }
     

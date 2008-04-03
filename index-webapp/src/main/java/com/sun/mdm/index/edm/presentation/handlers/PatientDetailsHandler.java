@@ -46,6 +46,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import com.sun.mdm.index.edm.presentation.valueobjects.PatientDetails;
+import com.sun.mdm.index.edm.services.configuration.ValidationService;
 import com.sun.mdm.index.util.LogUtil;
 import com.sun.mdm.index.util.Logger;
 
@@ -358,22 +359,32 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 eoSearchResultIterator = masterControllerService.searchEnterpriseObject(eoSearchCriteria, eoSearchOptions);
                 SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
                 String dateField = new String();
-
+                ArrayList resultsConfigArray = super.getResultsConfigArray();
+                String strVal = new String();
                 while (eoSearchResultIterator.hasNext()) {
                     EOSearchResultRecord eoSearchResultRecord = eoSearchResultIterator.next();
                     ObjectNode objectNode = eoSearchResultRecord.getObject();
                     HashMap fieldvalues = new HashMap();
 
                     for (int m = 0; m < ePathArrayList.size(); m++) {
+                        FieldConfig fieldConfig  = (FieldConfig) resultsConfigArray.get(m);
+                        //System.out.println("DISPLAY NAMRE====> " + fieldConfig.getDisplayName()+ " VALUE LIST====> " + fieldConfig.getValueList());
                         EPath ePath = ePathArrayList.get(m);
                         try {
                             Object value = EPathAPI.getFieldValue(ePath, objectNode);
+                            
                            if(value instanceof java.util.Date) {
                                 dateField = simpleDateFormatFields.format(value);
+                                
                                 fieldvalues.put(ePath.getName(), dateField);
-                            } else {
-                              //value
-                              fieldvalues.put(ePath.getName(), value);
+                           } else {
+                                if((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0 ) && value != null) {
+                                   strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
+                                   //value
+                                   fieldvalues.put(ePath.getName(), strVal);
+                                } else {
+                                   fieldvalues.put(ePath.getName(), value);
+                                }
                             }
                         } catch (Exception npe) {
                         // THIS SHOULD BE FIXED

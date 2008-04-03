@@ -504,16 +504,6 @@ public class TransactionHandler extends ScreenConfiguration {
                         }
 
                     } else {
-                        if (ts.getEnterpriseObjectHistory().getAfterEO() != null) {
-                            //eoArrayList.add(ts.getEnterpriseObjectHistory().getAfterEO());
-                            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getAfterEO(), screenObject);
-                            eoArrayList.add(eoMap);
-                        }
-                        if (ts.getEnterpriseObjectHistory().getAfterEO2() != null) {
-                            //eoArrayList.add(ts.getEnterpriseObjectHistory().getAfterEO2());
-                            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getAfterEO2(), screenObject);
-                            eoArrayList.add(eoMap);
-                        }
                         if (ts.getEnterpriseObjectHistory().getBeforeEO1() != null) {
                             //eoArrayList.add(ts.getEnterpriseObjectHistory().getBeforeEO1());
                             HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getBeforeEO1(), screenObject);
@@ -522,6 +512,17 @@ public class TransactionHandler extends ScreenConfiguration {
                         if (ts.getEnterpriseObjectHistory().getBeforeEO2() != null) {
                             //eoArrayList.add(ts.getEnterpriseObjectHistory().getBeforeEO2());
                             HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getBeforeEO2(), screenObject);
+                            eoArrayList.add(eoMap);
+                        }
+
+                        if (ts.getEnterpriseObjectHistory().getAfterEO() != null) {
+                            //eoArrayList.add(ts.getEnterpriseObjectHistory().getAfterEO());
+                            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getAfterEO(), screenObject);
+                            eoArrayList.add(eoMap);
+                        }
+                        if (ts.getEnterpriseObjectHistory().getAfterEO2() != null) {
+                            //eoArrayList.add(ts.getEnterpriseObjectHistory().getAfterEO2());
+                            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getAfterEO2(), screenObject);
                             eoArrayList.add(eoMap);
                         }
 

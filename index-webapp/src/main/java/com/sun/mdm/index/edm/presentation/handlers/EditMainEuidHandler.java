@@ -233,6 +233,13 @@ public class EditMainEuidHandler {
                 saveUnLinksSelected();
             }
 
+            System.out.println("==> UN LOCK FIELDS ===> :" + this.getHiddenUnLockFields());
+            if (this.getHiddenUnLockFields() != null && this.getHiddenUnLockFields().trim().length() > 0) {
+                //String[] allUnLinks = this.getHiddenUnLinkFields().split("##");
+                //save all the un links
+                saveUnLocksSelected();
+            }
+
             //get the updated minor object values here
             
          HashMap newFieldValuesMapMinor = new HashMap();
@@ -1143,6 +1150,35 @@ public class EditMainEuidHandler {
                //newHashMap.put(key, value);
             }
             EnterpriseObject updateEO = masterControllerService.removeLinks(newHashMap, updateEnterpriseObject);
+            //masterControllerService.updateEnterpriseObject(updateEO);
+            session.setAttribute("editEnterpriseObject",updateEO);
+
+        } catch (ProcessingException ex) {
+            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserException ex) {
+            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private void saveUnLocksSelected() {
+        try {
+            EnterpriseObject updateEnterpriseObject = (EnterpriseObject) session.getAttribute("editEnterpriseObject");
+            HashMap newHashMap = new HashMap();
+            ////System.out.println("==>:" + this.getHiddenUnLinkFields());
+
+            String[] allUnLocks = this.getHiddenUnLockFields().split("##");
+
+            for (int i = 0; i < allUnLocks.length; i++) {
+                String string = allUnLocks[i];
+                String[] values = string.split(">>");
+                for (int j = 0; j < values.length; j++) {
+                    String string1 = values[j];
+                    newHashMap.put(values[0], values[1]);
+                }
+
+                System.out.println("FINAL newHashMap==>:" + newHashMap);
+               //newHashMap.put(key, value);
+            }
+            EnterpriseObject updateEO = masterControllerService.removeLocks(newHashMap, updateEnterpriseObject);
             //masterControllerService.updateEnterpriseObject(updateEO);
             session.setAttribute("editEnterpriseObject",updateEO);
 

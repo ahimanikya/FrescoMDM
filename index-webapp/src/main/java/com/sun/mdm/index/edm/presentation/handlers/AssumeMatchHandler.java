@@ -33,6 +33,7 @@ import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.FieldConfigGroup;
 import com.sun.mdm.index.edm.services.configuration.SearchResultsConfig;
+import com.sun.mdm.index.edm.services.configuration.ValidationService;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.edm.util.DateUtil;
 import com.sun.mdm.index.edm.util.QwsUtil;
@@ -458,7 +459,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
         HashMap beforeMap = new HashMap();
         HashMap afterMap = new HashMap();
         HashMap summaryMap = new HashMap();
-        
+        String strVal = new String();
         for (int j = 0; j < amList.size(); j++) { //Each Summary has Before and After
             HashMap hashMap = (HashMap) amList.get(j); //Values always are in 0th index
             if (j == 0) {
@@ -483,7 +484,15 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                         if (fieldConfig.getValueType() == 6) {
                             beforeMap.put(fieldConfig.getFullFieldName(), sdf.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                         } else {
-                            beforeMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                            Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
+                            if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                                if (value != null) {
+                                    strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                    beforeMap.put(fieldConfig.getFullFieldName(), strVal);
+                                }
+                            } else {
+                                beforeMap.put(fieldConfig.getFullFieldName(), value);
+                            }
                         }
                     }
                 }
@@ -512,7 +521,16 @@ public class AssumeMatchHandler extends ScreenConfiguration {
 //                                 dupList += "," + sdf.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
 //                                 beforeMap.put(fieldConfig.getFullFieldName(),dupList + "}]");
                         } else {
-                            afterMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                            //afterMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                            Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
+                            if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                                if (value != null) {
+                                    strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                    afterMap.put(fieldConfig.getFullFieldName(), strVal);
+                                }
+                            } else {
+                                afterMap.put(fieldConfig.getFullFieldName(), value);
+                            }
 //                                 String dupList = (String) beforeMap.get(fieldConfig.getFullFieldName());
 //                                 dupList += "," + (String) (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
 //                                 beforeMap.put(fieldConfig.getFullFieldName(),dupList + "}]");
@@ -548,7 +566,16 @@ public class AssumeMatchHandler extends ScreenConfiguration {
 //                                 dupList += "," + sdf.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
 //                                 beforeMap.put(fieldConfig.getFullFieldName(),dupList + "}]");
                         } else {
-                            summaryMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                            //summaryMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                            Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
+                            if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                                if (value != null) {
+                                    strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                    summaryMap.put(fieldConfig.getFullFieldName(), strVal);
+                                }
+                            } else {
+                                summaryMap.put(fieldConfig.getFullFieldName(), value);
+                            }
 //                                 String dupList = (String) beforeMap.get(fieldConfig.getFullFieldName());
 //                                 dupList += "," + (String) (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
 //                                 beforeMap.put(fieldConfig.getFullFieldName(),dupList +"}]");

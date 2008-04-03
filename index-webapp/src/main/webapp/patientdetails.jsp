@@ -219,10 +219,10 @@
             ArrayList arlResultsConfig = objScreenObject.getSearchResultsConfig();
             SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
 
-
         %>    
           
     <%
+
           ArrayList resultArrayList  = new ArrayList();
           if(request.getAttribute("resultArrayListReq") != null) {
              request.setAttribute("resultArrayListReq", request.getAttribute("resultArrayListReq") );  
@@ -401,8 +401,8 @@
         for(int i=0;i<keysList.size();i++) {
             if(keys[i].equalsIgnoreCase("EUID")) {
               value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ","+
-                       "formatter:function (elCell,oRecord,oColumn,oData) {elCell.innerHTML = '<div class=\"selectContent\"><input type=\"checkbox\" onclick=\"javascript:getEUIDS(' + oData + ')\"/> </div> &nbsp; <a href=\"euiddetails.jsf?euid=' + oData + '\">' + oData + '</a>';}" +
-                       ",sortable:true,resizeable:true}";
+                       "formatter:function (elCell,oRecord,oColumn,oData) {elCell.innerHTML = '<input style=\"background-image:url(../images/none.gif);width:20px;valign:top;\" type=\"checkbox\" onclick=\"javascript: getEUIDS(' + oData + ')\"/>&nbsp;<a href=\"euiddetails.jsf?euid=' + oData + '\" style=\"text-align:middle;valign:middle;\">' + oData + '</a>';}" +
+                       ",sortable:true,resizeable:true,width:150}";
             } else {
               value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ",sortable:true,resizeable:true}";
             }  

@@ -547,7 +547,7 @@ public class ReportHandler {
                     resultsScreenObject = subScreenObject;
                 }
             }
-         
+            System.out.println("SUB SCREEN " + resultsScreenObject + "subScreenObject" + subScreenObject + "getReportType()" + getReportType());
              ArrayList resultsScreenConfigArraySub = resultsScreenObject.getSearchResultsConfig();
             Iterator iteratorScreenConfig = resultsScreenConfigArraySub.iterator();
             while (iteratorScreenConfig.hasNext()) {
@@ -741,6 +741,28 @@ public class ReportHandler {
         this.activityReportTypes = activityReportTypes;
     }
 
+    public int getDisplayOrder(String tabName) {
+        int displayOrder = 0;
+        ScreenObject screenObjectLocal = (ScreenObject) session.getAttribute("ScreenObject");
+    
+        //Array of Sub screen objects as Screen Objects
+        ArrayList resultsSubScreenConfigArray = screenObjectLocal.getSubscreensConfig();
+        
+        Object[] subScreenObjects = resultsSubScreenConfigArray.toArray();
+        
+        ScreenObject resultsScreenObject = null;
+
+        for (int i = 0; i < subScreenObjects.length; i++) {
+            subScreenObject = (ScreenObject) subScreenObjects[i];
+            if (subScreenObject.getDisplayTitle().equalsIgnoreCase(tabName)) {
+                displayOrder = subScreenObject.getDisplayOrder();
+            }
+            //System.out.println("tabName  +==> " + tabName + "   ========> " + subScreenObject.getDisplayTitle() + "  displayOrder===> " + displayOrder);
+        }
+        
+        return displayOrder;
+        
+    }
 
     
     

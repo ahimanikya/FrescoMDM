@@ -54,6 +54,7 @@ import com.sun.mdm.index.edm.presentation.valueobjects.UnmergedRecords;
 import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.ScreenObject;
+import com.sun.mdm.index.edm.services.configuration.ValidationService;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.util.LogUtil;
@@ -222,6 +223,7 @@ public class UnmergedRecordsHandler    {
 
         ArrayList fcArrayList = getResultsConfigArrayList();
         SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        String strVal = new String();
 
         //getSearchResultsArrayByReportType();
         if (transactionFields != null) {
@@ -249,8 +251,16 @@ public class UnmergedRecordsHandler    {
                             if (fieldConfig.getValueType() == 6) {
                                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                             } else {
-                                newValuesMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
-                            }
+                                Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
+                                if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                                    if (value != null) {
+                                        strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                        newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
+                                    }
+                                } else {
+                                    newValuesMap.put(fieldConfig.getFullFieldName(), value);
+                                }
+                          }
                         }
                     }
                   }

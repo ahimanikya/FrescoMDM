@@ -56,6 +56,7 @@ import com.sun.mdm.index.report.MultirowReportObject1;
 import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.ScreenObject;
+import com.sun.mdm.index.edm.services.configuration.ValidationService;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.report.AssumedMatchReport;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
@@ -210,6 +211,7 @@ public class AssumeMatchReportHandler  {
         SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
         String epathValue =  new String();
         List transactionFields = reportConfig.getTransactionFields();
+        String strVal;
         if (transactionFields != null) {
             Iterator iter = transactionFields.iterator();
             EnterpriseObject eo = null;
@@ -231,11 +233,19 @@ public class AssumeMatchReportHandler  {
                             epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
                         }
 
-                        if (eo!=null && fieldConfig.isUpdateable()) {
+                        if (eo!=null) {
                             if (fieldConfig.getValueType() == 6) {
                                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                             } else {
-                                newValuesMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                             Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
+                             if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                                 if (value != null) {
+                                     strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                     newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
+                                 }
+                             } else {
+                                 newValuesMap.put(fieldConfig.getFullFieldName(), value);
+                             }
                             }
                         }
                     }                    
@@ -266,6 +276,7 @@ public class AssumeMatchReportHandler  {
 
         ArrayList fcArrayList = getResultsConfigArrayList();
         SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        String strVal;
 
         //getSearchResultsArrayByReportType();
         if (transactionFields != null) {
@@ -289,11 +300,17 @@ public class AssumeMatchReportHandler  {
                             epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
                         }
 
-                        if (fieldConfig.isUpdateable()) {
-                            if (fieldConfig.getValueType() == 6) {
-                                newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                        if (fieldConfig.getValueType() == 6) {
+                            newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
+                        } else {
+                            Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
+                            if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                                if (value != null) {
+                                    strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                    newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
+                                }
                             } else {
-                                newValuesMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
+                                newValuesMap.put(fieldConfig.getFullFieldName(), value);
                             }
                         }
                     }

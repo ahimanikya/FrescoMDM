@@ -47,6 +47,7 @@ import java.util.logging.Logger;
 import javax.faces.event.*;
 
 import com.sun.mdm.index.edm.services.configuration.SearchResultsConfig;
+import com.sun.mdm.index.edm.services.configuration.ValidationService;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.edm.util.QwsUtil;
 
@@ -327,6 +328,27 @@ public class CompareDuplicateManager {
 
             HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
 
+            FieldConfig[] rootFieldConfigs = screenObject.getRootObj().getFieldConfigs();
+
+            String strVal = new String();
+
+            for (int i = 0; i < rootFieldConfigs.length; i++) {
+                FieldConfig fieldConfig = rootFieldConfigs[i];
+                //set the menu list values here
+                if(fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                    Object value  = editSystemObjectHashMap.get(fieldConfig.getFullFieldName());
+                    if(value != null) {
+                       strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
+                       editSystemObjectHashMap.put(fieldConfig.getFullFieldName(),strVal);
+                    }
+                    
+                }
+            
+            }
+
+            
+            
+            
             //add SystemCode and LID value to the new Hash Map
             editSystemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
             editSystemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
@@ -341,11 +363,27 @@ public class CompareDuplicateManager {
 
                 //get the child object node configs
                 ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
+                FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs(); 
 
                 //set address array list of hasmap for editing
                 ArrayList soMinorObjectsMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
                 for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
                     HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
+                    
+                    for (int m = 0; m < minorFiledConfigs.length; m++) {
+                        FieldConfig fieldConfig = minorFiledConfigs[m];
+                        //set the menu list values here
+                        if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                            Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
+                            if (value != null) {
+                                strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
+                            }
+                            
+                        }
+
+                    }
+                    
                     minorObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
                     minorObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
                     minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
@@ -375,6 +413,25 @@ public class CompareDuplicateManager {
 
             //add SystemCode and LID value to the new Hash Map
             HashMap editEnterpriseObjectHashMap = masterControllerService.getEnterpriseObjectAsHashMap(enterpriseObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
+            HashMap codesEnterpriseObjectHashMap = masterControllerService.getEnterpriseObjectAsHashMap(enterpriseObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
+            
+            FieldConfig[] rootFieldConfigs = screenObject.getRootObj().getFieldConfigs();
+
+            String strVal = new String();
+
+            for (int i = 0; i < rootFieldConfigs.length; i++) {
+                FieldConfig fieldConfig = rootFieldConfigs[i];
+                //set the menu list values here
+                if(fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                    Object value  = editEnterpriseObjectHashMap.get(fieldConfig.getFullFieldName());
+                    if(value != null) {
+                       strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
+                       editEnterpriseObjectHashMap.put(fieldConfig.getFullFieldName(),strVal);
+                    }
+                    
+                }
+            
+            }
 
             HashMap newLinkedHashMap = new HashMap();
 
@@ -396,12 +453,14 @@ public class CompareDuplicateManager {
             editEnterpriseObjectHashMap.put("EUID", enterpriseObject.getEUID()); // set LID here
             editEnterpriseObjectHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE); //SBR_UPDATE HASH MAP type here
             enterpriseObjectHashMap.put("ENTERPRISE_OBJECT", editEnterpriseObjectHashMap); // Set the edit EnterpriseObject here
+            enterpriseObjectHashMap.put("ENTERPRISE_OBJECT_CODES", codesEnterpriseObjectHashMap); // Set the edit EnterpriseObject here
 
             enterpriseObjectHashMap.put("ENTERPRISE_OBJECT_HISTORY", getEoHistory(enterpriseObject.getEUID(), screenObject));
             enterpriseObjectHashMap.put("ENTERPRISE_OBJECT_SOURCES", getEoSources(enterpriseObject, screenObject));
 
             enterpriseObjectHashMap.put("EO_STATUS", enterpriseObject.getStatus()); // Set the edit EnterpriseObject here
             enterpriseObjectHashMap.put("ENTERPRISE_OBJECT_LINKED", newLinkedHashMap); // Set the edit EnterpriseObject here
+
             ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
 
             //Build and array of minor object values from the screen object child object nodes
@@ -409,12 +468,27 @@ public class CompareDuplicateManager {
 
                 //get the child object node configs
                 ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
+                FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs(); 
 
                 //set address array list of hasmap for editing
                 ArrayList soMinorObjectsMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(enterpriseObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
                 for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
                     HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
                     minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
+
+                    for (int m = 0; m < minorFiledConfigs.length; m++) {
+                        FieldConfig fieldConfig = minorFiledConfigs[m];
+                        //set the menu list values here
+                        if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                            Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
+                            if (value != null) {
+                                strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
+                            }
+                            
+                        }
+
+                    }
                 }
 
                 enterpriseObjectHashMap.put("EO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
@@ -478,6 +552,9 @@ public class CompareDuplicateManager {
         String rootNodeName = screenObject.getRootObj().getName();
 
         try {
+            FieldConfig[] rootFieldConfigs = screenObject.getRootObj().getFieldConfigs();
+
+            String strVal = new String();
 
             ArrayList viewHistoryEOList = masterControllerService.viewHistory(euid);
             HashMap histEOMap = new HashMap();
@@ -491,6 +568,20 @@ public class CompareDuplicateManager {
                     eoHist = (EnterpriseObject) objectHistMap.get(key);
                     
                     HashMap editEnterpriseObjectHashMap = masterControllerService.getEnterpriseObjectAsHashMap(eoHist, sourceHandler.buildSystemObjectEpaths(rootNodeName));
+                   
+                    for (int r = 0; r < rootFieldConfigs.length; r++) {
+                        FieldConfig fieldConfig = rootFieldConfigs[r];
+                        //set the menu list values here
+                        if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                            Object value = editEnterpriseObjectHashMap.get(fieldConfig.getFullFieldName());
+                            if (value != null) {
+                                strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                editEnterpriseObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
+                            }
+                            //System.out.println("value list ==> " + fieldConfig.getValueList() + "   IN COMPARE DUP MANAGER (strVal) ===> " + strVal);
+                        }
+
+                    }
 
                     //add SystemCode and LID value to the new Hash Map  
                     histEOMap.put("EUID", eoHist.getEUID()); // set LID here
@@ -500,17 +591,34 @@ public class CompareDuplicateManager {
 
                     ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
 
+
                     //Build and array of minor object values from the screen object child object nodes
                     for (int j = 0; j < childNodeConfigs.length; j++) {
 
                         //get the child object node configs
                         ObjectNodeConfig objectNodeConfig = childNodeConfigs[j];
 
+                        FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs(); 
+
                         //set address array list of hasmap for editing
                         ArrayList soMinorObjectsMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(eoHist, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
                         for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
                             HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
                             minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
+
+                            for (int m = 0; m < minorFiledConfigs.length; m++) {
+                                FieldConfig fieldConfig = minorFiledConfigs[m];
+                                //set the menu list values here
+                                if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                                    Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
+                                    if (value != null) {
+                                        strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                        minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
+                                    }
+                                    
+                                }
+
+                            }
                         }
 
                         histEOMap.put("EO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
@@ -541,20 +649,41 @@ public class CompareDuplicateManager {
 
         SourceHandler sourceHandler = new SourceHandler();
         String rootNodeName = screenObject.getRootObj().getName();
+        
+        FieldConfig[] rootFieldConfigs = screenObject.getRootObj().getFieldConfigs();
+
+        String strVal = new String();
 
         try {
             while (iterSources.hasNext()) {
                 HashMap systemObjectHashMap = new HashMap();
 
                 SystemObject systemObject = (SystemObject) iterSources.next();
-                System.out.println("---LID------------> " + systemObject.getLID());
-                System.out.println("----SYSTEM CODE-----------> " + systemObject.getSystemCode());
+                //System.out.println("---LID------------> " + systemObject.getLID());
+                //System.out.println("----SYSTEM CODE-----------> " + systemObject.getSystemCode());
 
                 systemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
                 systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, masterControllerService.getSystemDescription(systemObject.getSystemCode()));
                 systemObjectHashMap.put("Status", systemObject.getStatus()); // set Status here
                 HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
 
+                
+                    for (int r = 0; r < rootFieldConfigs.length; r++) {
+                        FieldConfig fieldConfig = rootFieldConfigs[r];
+                        //set the menu list values here
+                        if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                            Object value = editSystemObjectHashMap.get(fieldConfig.getFullFieldName());
+                            if (value != null) {
+                                strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                editSystemObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
+                            }
+                            //System.out.println("value list ==> " + fieldConfig.getValueList() + "   IN COMPARE DUP MANAGER (strVal) ===> " + strVal);
+                        }
+
+                    }
+                
+                
+                
                 //add SystemCode and LID value to the new Hash Map
                 editSystemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID());
                 editSystemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
@@ -568,9 +697,26 @@ public class CompareDuplicateManager {
 
                     //get the child object node configs
                     ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
+
+                    FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs(); 
+                    
                     ArrayList soMinorObjectsMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
                     for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
                         HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
+                        for (int m = 0; m < minorFiledConfigs.length; m++) {
+                            FieldConfig fieldConfig = minorFiledConfigs[m];
+                            //set the menu list values here
+                            if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                                Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
+                                if (value != null) {
+                                    strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                    minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
+                                }
+                                //System.out.println("value list ==> " + fieldConfig.getValueList() + "   IN COMPARE DUP MANAGER (strVal) ===> " + strVal);
+                            }
+
+                        }
+                        
                         minorObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
                         minorObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
                         minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE

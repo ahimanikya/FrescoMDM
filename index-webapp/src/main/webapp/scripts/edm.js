@@ -1403,11 +1403,11 @@ function finalMultiMergeEuids(mergeDivId,thisEvent)  {
 
 var mergePreEuids="";
 
-function populateMergeFields(fieldName,value) {
-       document.getElementById(fieldName).innerHTML = value;
+function populateMergeFields(fieldName,value,displayValue) {
+       document.getElementById(fieldName).innerHTML = displayValue;
        document.getElementById(fieldName).className='highlight';
        mergePreEuids+=fieldName+"##"+value+'>>';     
-       document.getElementById('mergeFinalForm:selectedMergeFields').value = mergePreEuids;
+       document.getElementById('mergeFinalForm:selectedMergeFields').value = value;
        
 }
 
