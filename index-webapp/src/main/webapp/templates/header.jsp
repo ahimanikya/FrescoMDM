@@ -14,7 +14,18 @@
 <%@ page isErrorPage="false" errorPage="../error500.jsp" %>
 
 <%
+ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+if(session!=null && session.isNew()) {
+	//System.out.println("SESSION INVALDATED CONDITION " + screenObject.getDisplayTitle());
+%>
+   <c:redirect url="login.jsf"/>
+<%}
+%>
+
+<%
 if(session.getAttribute("ScreenObject") == null  ) {
+	//System.out.println("redirecting if screen object is null ");
+
 %>
    <c:redirect url="login.jsf"/>
 <%}
@@ -30,7 +41,7 @@ if(session.getAttribute("user") == null  ) {
 <%
 ConfigManager.init();
 
-ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+
 String uri = request.getRequestURI();
 String requestPage = uri.substring(uri.lastIndexOf("/")+1,uri.length());
 String recordDetailsLabel = ConfigManager.getInstance().getScreenObjectFromScreenName("record-details").getDisplayTitle();

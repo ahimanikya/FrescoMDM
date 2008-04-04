@@ -279,18 +279,29 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 ArrayList searchScreenArray = super.screenObject.getSearchScreensConfig();
                 Iterator searchScreenArrayIter = searchScreenArray.iterator();
                 String eoSearchOptionQueryBuilder = new String();
-               
+               boolean weightedSearch = false;
                 while (searchScreenArrayIter.hasNext()) {
-                    searchScreenConfig = (SearchScreenConfig) searchScreenArrayIter.next();                   
+                    searchScreenConfig = (SearchScreenConfig) searchScreenArrayIter.next(); 
+                   
                     if (searchScreenConfig.getScreenTitle().equalsIgnoreCase(super.getSelectedSearchType())) {
                         //get the EO search option from the EDM.xml file here as per the search type                      
                         eoSearchOptionQueryBuilder = searchScreenConfig.getOptions().getQueryBuilder();
+                        //set the weighted searched paramater here.
+                        if (searchScreenConfig.getOptions().getIsWeighted()) {
+                            httpRequest.setAttribute("WeightedSearch", "true");
+                            weightedSearch = true;
+                        }
                     }
                 }
 
                 resultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
 
                 EOSearchOptions eoSearchOptions = new EOSearchOptions(eoSearchOptionQueryBuilder, resultFields);
+                
+                
+                if(weightedSearch) {
+                   eoSearchOptions.setWeighted(weightedSearch);
+                }
               
 
                 EOSearchCriteria eoSearchCriteria = new EOSearchCriteria();
@@ -363,9 +374,17 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 String strVal = new String();
                 while (eoSearchResultIterator.hasNext()) {
                     EOSearchResultRecord eoSearchResultRecord = eoSearchResultIterator.next();
+                    
                     ObjectNode objectNode = eoSearchResultRecord.getObject();
+                    //System.out.println("----setting weight-->>> " + objectNode);
+                    
                     HashMap fieldvalues = new HashMap();
 
+                    //set the comparision score here
+                    if (weightedSearch) {
+                        fieldvalues.put("Weight", eoSearchResultRecord.getComparisonScore());
+                    }
+                    
                     for (int m = 0; m < ePathArrayList.size(); m++) {
                         FieldConfig fieldConfig  = (FieldConfig) resultsConfigArray.get(m);
                         //System.out.println("DISPLAY NAMRE====> " + fieldConfig.getDisplayName()+ " VALUE LIST====> " + fieldConfig.getValueList());
@@ -442,7 +461,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             
             //resolve the potential duplicate as per resolve type
             boolean resolveBoolean = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? false : true;
-            String resolveString = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? "A": "R";
+            String resolveString = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? "R": "A";
 
             //flag=false incase of autoresolve
             //flag = true incase of permanant resolve

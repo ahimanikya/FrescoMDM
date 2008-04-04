@@ -116,6 +116,7 @@
                                                 
                                                 <h:inputText   required="#{feildConfig.required}" 
 												               id="LID"
+															   readonly="true"
                                                                label="#{feildConfig.displayName}" 
                                                                onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
@@ -273,9 +274,17 @@
             var  selectedValue = field.options[field.selectedIndex].value;
             var formNameValue = document.forms[formName];
             var lidField =  getDateFieldName(formNameValue.name,'LID');
+			
 			if(lidField != null) {
              document.getElementById(lidField).value = "";
+			 document.getElementById(lidField).readOnly = false;
 			}
+
+			if(field.selectedIndex == 0 ) {
+             document.getElementById(lidField).value = "";
+			 document.getElementById(lidField).readOnly = true;
+		    }
+
             
             formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
          }   

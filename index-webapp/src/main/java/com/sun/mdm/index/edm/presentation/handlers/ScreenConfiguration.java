@@ -148,7 +148,9 @@ public class ScreenConfiguration {
      */
     private int lidMaskLength = getAllSystemCodes()[1][0].length();
 
-    private String selectedSearchType = new String();
+    private String selectedSearchType = searchScreenConfig.getScreenTitle();
+    
+    private String instructionLine  = searchScreenConfig.getInstruction();
     
     /** Creates a new instance of ScreenConfiguration */
     public ScreenConfiguration() {
@@ -179,6 +181,8 @@ public class ScreenConfiguration {
                 if (screenObject.getSearchScreensConfig().size() > 1 && this.searchType.equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
                     // Get an array list of field config groups
                     basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
+                    //set the instruction line here
+                    setInstructionLine(objSearchScreenConfig.getInstruction());
                     ////System.out.println("size() > 1  Basic --> " + basicSearchFieldConfigs);
                     Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
                     //Iterate the the FieldConfigGroup array list
@@ -197,6 +201,9 @@ public class ScreenConfiguration {
                 } else if (screenObject.getSearchScreensConfig().size() == 1){
                     // Get an array list of field config groups
                     basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
+                    //set the instruction line here
+                    setInstructionLine(objSearchScreenConfig.getInstruction());
+
                     Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
                     //Iterate the the FieldConfigGroup array list
                     while (basicSearchFieldConfigsIterator.hasNext()) {
@@ -604,6 +611,10 @@ public class ScreenConfiguration {
             SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
             //System.out.println("screenObject.getSearchScreensConfig().size()"+screenObject.getSearchScreensConfig().size()+"this.searchType ==> : " + this.searchType+ "objSearchScreenConfig.getScreenTitle() --> " + objSearchScreenConfig.getScreenTitle());
             if (this.searchType.equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
+                
+                //set the instruction line here
+                setInstructionLine(objSearchScreenConfig.getInstruction());
+
                 // Get an array list of field config groups
                 ArrayList basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
                 ////System.out.println("size() > 1  Basic --> " + basicSearchFieldConfigs);
@@ -798,6 +809,14 @@ public class ScreenConfiguration {
 
     public void setAllSystemCodes(String[][] allSystemCodes) {
         this.allSystemCodes = allSystemCodes;
+    }
+
+    public String getInstructionLine() {
+        return instructionLine;
+    }
+
+    public void setInstructionLine(String instructionLine) {
+        this.instructionLine = instructionLine;
     }
 
 }

@@ -90,6 +90,11 @@
             <h:form id="advancedformData" >
                 <h:inputHidden id="selectedSearchType" value="#{PatientDetailsHandler.selectedSearchType}"/>
                 <table border="0" cellpadding="0" cellspacing="0" >
+			   <tr>
+			     <td align="left">
+				 <h:outputText  value="#{PatientDetailsHandler.instructionLine}" />
+				 </td>
+			   </tr>
                     <tr>
                         <td>
                             <input id='lidmask' type='hidden' name='lidmask' value='' />
@@ -140,7 +145,8 @@
                                                 <h:inputText   required="#{feildConfig.required}" 
 												               id="LID"
                                                                label="#{feildConfig.displayName}" 
-                                                               onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
+															   readonly="true"
+															   onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
                                                                onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value);javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
 															   value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"
@@ -324,7 +330,12 @@
             var lidField =  getDateFieldName(formNameValue.name,'LID');
 			if(lidField != null) {
              document.getElementById(lidField).value = "";
+             document.getElementById(lidField).readOnly = false;
 			}
+			if(field.selectedIndex == 0 ) {
+             document.getElementById(lidField).value = "";
+			 document.getElementById(lidField).readOnly = true;
+		    }
             
             formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
          }   
@@ -380,6 +391,12 @@
             labelsList.add(fieldConfig.getDisplayName());
             fullFieldNamesList.add(fieldConfig.getFullFieldName());
         }
+        
+        if(request.getAttribute("WeightedSearch") != null ) {
+            keysList.add("Weight");
+            labelsList.add("Weight");
+            fullFieldNamesList.add("Weight");
+       }
         
         //set EUID values here
         String[] keys = new String[keysList.size()];

@@ -173,6 +173,7 @@ public class SourceHandler {
     private ArrayList allSOChildNodesLists =  new ArrayList();
     CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
     private int euidLength;
+    private String enteredFieldValues = new String();
     /** Creates a new instance of SourceHandler */
     public SourceHandler() {
     }
@@ -256,7 +257,7 @@ public class SourceHandler {
                   FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("system_object_not_found_error_message"), bundle.getString("system_object_not_found_error_message")));
                   return this.SEARCH_SOURCE_SUCCESS;
                 }
-                EPathArrayList personEPathArrayList = buildSystemObjectEpaths(screenObject.getRootObj().getName());
+                //EPathArrayList personEPathArrayList = buildSystemObjectEpaths(screenObject.getRootObj().getName());
                
                 HashMap systemObjectMap = compareDuplicateManager.getSystemObjectAsHashMap(singleSystemObject, screenObject);
                         
@@ -828,6 +829,11 @@ public class SourceHandler {
     }
 
     public ArrayList getViewEditResultsConfigArray() {
+
+        HttpSession sessionLocal = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    
+        ScreenObject screenObjectLocal = (ScreenObject) sessionLocal.getAttribute("ScreenObject");
+
         ArrayList subScreenObjectList = screenObject.getSubscreensConfig();
         ScreenObject subScreenObject = null;
 
@@ -1414,6 +1420,14 @@ public class SourceHandler {
 
     public String getSystemCodeDescription(String systemCode) {
         return masterControllerService.getSystemDescription(systemCode);
+    }
+
+    public String getEnteredFieldValues() {
+        return enteredFieldValues;
+    }
+
+    public void setEnteredFieldValues(String enteredFieldValues) {
+        this.enteredFieldValues = enteredFieldValues;
     }
 
     

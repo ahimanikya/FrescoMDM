@@ -70,6 +70,12 @@
                             </tr>
                         </table>
                         <table border="0" cellpadding="0" cellspacing="0" >
+        		           <tr>
+		   	                <td align="left">
+ 				             <h:outputText  value="#{TransactionHandler.instructionLine}" />
+				            </td>
+			               </tr>
+
                             <tr>
                                 <td>
                                     <input id='lidmask' type='hidden' name='lidmask' value='<h:outputText value="#{TransactionHandler.lidMask}"/>' />
@@ -118,6 +124,7 @@
                                                 
                                                 <h:inputText   required="#{feildConfig.required}" 
 												               id="LID"
+															   readonly="true"
                                                                label="#{feildConfig.displayName}" 
                                                                onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
@@ -248,7 +255,12 @@
             var lidField =  getDateFieldName(formNameValue.name,'LID');
 			if(lidField != null) {
              document.getElementById(lidField).value = "";
+             document.getElementById(lidField).readOnly = false;
 			}
+			if(field.selectedIndex == 0 ) {
+             document.getElementById(lidField).value = "";
+			 document.getElementById(lidField).readOnly = true;
+		    }
             
             formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
          }  

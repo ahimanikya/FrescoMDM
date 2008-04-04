@@ -799,11 +799,12 @@
                                                             <!--Rendering Non Updateable HTML Text Area-->
                                                             <h:column>
                                                                 <h:outputText value="#{feildConfig.displayName}" />
-								                           </h:column>
+								                           </h:column> 
                                                             <!--Rendering HTML Select Menu List-->
                                                             <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
                                                                <h:selectOneMenu value="#{SourceHandler.updateableFeildsMap[feildConfig.name]}" rendered="#{feildConfig.name eq 'SystemCode'}"
                                                                                  onchange="javascript:setLidMaskValue(this,'basicViewformData')">
+																     <f:selectItem itemLabel="" itemValue="" />
                                                                     <f:selectItems  value="#{feildConfig.selectOptions}" />
                                                                 </h:selectOneMenu>
                                                                <h:selectOneMenu value="#{SourceHandler.updateableFeildsMap[feildConfig.name]}" rendered="#{feildConfig.name ne 'SystemCode'}">
@@ -833,7 +834,8 @@
                                                             </h:column>
                                                             
                                                             <h:column rendered="#{ feildConfig.guiType eq 'TextBox' && feildConfig.name eq 'LID'}" >
-                                                                <h:inputText label="#{feildConfig.displayName}"    id="LID" value="#{SourceHandler.LID}" required="#{feildConfig.required}"
+															  
+                                                                <h:inputText label="#{feildConfig.displayName}"   id="LID"  value="#{SourceHandler.LID}" required="#{feildConfig.required}"
                                                                              onkeydown="javascript:qws_field_on_key_down(this, document.basicViewformData.lidmask.value)"
                                                                              onkeyup="javascript:qws_field_on_key_up(this)"
                                                                              />
@@ -1009,8 +1011,9 @@
                                                                                               id="SystemCode" 
                                                                                               value="#{SourceAddHandler.systemCode}" 
                                                                                               rendered="#{feildConfig.name eq 'SystemCode'}"
-                                                                                              required="true">
 
+                                                                                              required="true">
+                                                                                <f:selectItem itemLabel="" itemValue="" />
                                                                                 <f:selectItems  value="#{feildConfig.selectOptions}" />
                                                                             </h:selectOneMenu>
                                                                         </nobr>
@@ -1028,11 +1031,12 @@
                                                                         <nobr>
                                                                             <h:inputText   id="LID"
                                                                                            required="true" 
-                                                                                           label="#{feildConfig.displayName}" 
+																						   label="#{feildConfig.displayName}" 
 																						    maxlength="#{feildConfig.maxLength}"     onkeydown="javascript:qws_field_on_key_down(this, document.basicAddformData.lidmask.value)"
                                                                                            onblur="javascript:qws_field_on_key_down(this, document.basicAddformData.lidmask.value);"
                                                                                            onkeyup="javascript:qws_field_on_key_up(this)"
                                                                                            value="#{SourceAddHandler.LID}"
+
                                                                                            />
                                                                                            
                                                                         </nobr>
@@ -1204,6 +1208,7 @@
                                                                    <h:selectOneMenu  onchange="javascript:setLidMaskMergeValue(this,'basicMergeformData')"
                                                                                      id="sourceOption" 
                                                                                      value="#{SourceMergeHandler.source}" >
+																	   <f:selectItem itemLabel="" itemValue="" />
                                                                        <f:selectItems  value="#{SourceMergeHandler.selectOptions}" />
                                                                    </h:selectOneMenu>
                                                                </td>
@@ -1896,13 +1901,41 @@
             document.getElementById(lidField3).value = "";
             document.getElementById(lidField4).value = "";
 
+
+
+            /*
+			if(field.selectedIndex == 0 ) {
+             document.getElementById(lidField1).value = "";
+			 document.getElementById(lidField1).readOnly = true;
+
+			 document.getElementById(lidField2).value = "";
+			 document.getElementById(lidField3).readOnly = true;
+             
+			 document.getElementById(lidField3).value = "";
+			 document.getElementById(lidField3).readOnly = true;
+             
+			 document.getElementById(lidField4).value = "";
+			 document.getElementById(lidField4).readOnly = true;
+		    }
+			*/
+
             formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
          }   
         function setLidMaskValue(field,formName) {
             var  selectedValue = field.options[field.selectedIndex].value;
             var formNameValue = document.forms[formName];
             var lidField =  getDateFieldName(formNameValue.name,'LID');
-            document.getElementById(lidField).value = "";
+            //document.getElementById(lidField).value = "";
+
+			if(lidField != null) {
+             document.getElementById(lidField).value = "";
+             //document.getElementById(lidField).readOnly = false;
+             //document.getElementById(lidField).disabled = false;
+			}
+			if(field.selectedIndex == 0 ) {
+             document.getElementById(lidField).value = "";
+			 //document.getElementById(lidField).disabled = true;
+		    }
             
             formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
          }   

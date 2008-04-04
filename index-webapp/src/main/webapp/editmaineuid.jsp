@@ -989,7 +989,7 @@
                                             <!--Rendering HTML Select Menu List-->
                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'MenuList'}" >
                                                 <h:selectOneMenu 
-												disabled="#{!childFieldConfigAdd.updateable}"												onblur="javascript:accumilateMinorObjectSelectFieldsOnBlur('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}')"
+		onblur="javascript:accumilateMinorObjectSelectFieldsOnBlur('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}')"
                                                                  value="">
                                                     <f:selectItem itemLabel="" itemValue="" />
                                                     <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />

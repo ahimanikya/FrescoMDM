@@ -1304,7 +1304,7 @@ public class EditMainEuidHandler {
                 HashMap systemObjectHashMap = new HashMap();
                 //add SystemCode and LID value to the new Hash Map
                 systemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID());// set LID here 
-                systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode());// set System code here 
+                systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, masterControllerService.getSystemDescription(systemObject.getSystemCode()));// set System code here 
                 systemObjectHashMap.put("Status", systemObject.getStatus());// set Status here 
                 
                 HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, personEPathArrayList);

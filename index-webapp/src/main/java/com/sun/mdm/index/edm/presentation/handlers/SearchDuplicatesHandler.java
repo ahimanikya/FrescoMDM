@@ -238,54 +238,10 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
         CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
         
         try {
-                //EPathArrayList epathList  = compareDuplicateManager.retrieveEpathResultsFields(screenObject.getSearchResultsConfig());
-                EPathArrayList epathList = retrieveResultsFields(screenObject.getSearchResultsConfig());
-                //System.out.println("epathList" + epathList);
+              //EPathArrayList epathList  = compareDuplicateManager.retrieveEpathResultsFields(screenObject.getSearchResultsConfig());
+              EPathArrayList epathList = retrieveResultsFields(screenObject.getSearchResultsConfig());
+             //System.out.println("epathList" + epathList);
 
-
-                // Rajani Kanth START
-                PotentialDuplicateIterator pdPageIter = masterControllerService.lookupPotentialDuplicates(potentialDuplicateSearchObject);
-                while (pdPageIter.hasNext()) {
-                    mainPotentialDuplicateSummary = pdPageIter.next();
-                    ObjectNode objMain = mainPotentialDuplicateSummary.getObject1(); //<-------- Object node being fetched
-
-                    //System.out.println("mainPotentialDuplicateSummary.getParent()    ===> " + mainPotentialDuplicateSummary.getParent());
-                    //System.out.println("mainPotentialDuplicateSummary.getObject1()    ===> " + mainPotentialDuplicateSummary.getObject1());
-                    //System.out.println("mainPotentialDuplicateSummary.getObject2()    ===> " + mainPotentialDuplicateSummary.getObject2());
-                    
-                    Collection fieldvaluesMain;
-                    for (int m = 0; m < epathList.size(); m++) {
-                        EPath ePath = epathList.get(m);
-                        fieldvaluesMain = getFieldValue(objMain, ePath);
-                        System.out.println("Main Duplicate ePath ===> : " + ePath + " value ====> " + fieldvaluesMain);
-                    }
-                    PotentialDuplicateIterator pdi = mainPotentialDuplicateSummary.getAssociatedPotentialDuplicates();
-                    int count = mainPotentialDuplicateSummary.getAssociatedPotentialDuplicates().count();
-                    
-                    PotentialDuplicateSummary[] associatePDSummary = pdi.next(count);
-                    for (int i = 0; i < associatePDSummary.length; i++) {
-                        PotentialDuplicateIterator pditerator = associatePDSummary[i].getAssociatedPotentialDuplicates();
-                        int count1 = associatePDSummary[i].getAssociatedPotentialDuplicates().count();
-                        pditerator.first(count1);
-                        ObjectNode obj = associatePDSummary[i].getObject2(); //<-------- Object node being fetched
-
-                        //System.out.println("*************associatePDSummary[" + i + "].getParent()******************************" + associatePDSummary[i].getParent());
-                        //System.out.println("*************associatePDSummary[" + i + "].getObject1()******************************" + associatePDSummary[i].getObject1());
-                        //System.out.println("*************associatePDSummary[" + i + "].getObject2()******************************" + associatePDSummary[i].getObject2());
-                        Collection fieldvalues;
-                        for (int m = 0; m < epathList.size(); m++) {
-                            EPath ePath = epathList.get(m);
-                            fieldvalues = getFieldValue(obj, ePath);
-                            System.out.println("Associate Duplicate ePath ===> : " + ePath + " value ====> " + fieldvalues);
-                        }
-                    }
-                }
-            
-            // Lookup potential duplicates using QWS controller END
-            
-            
-            
-            
             PotentialDuplicateIterator pdPageIterArray = masterControllerService.lookupPotentialDuplicates(potentialDuplicateSearchObject);
             
             // Code Added by Pratibha 
@@ -714,11 +670,11 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             //System.out.println("------this.getResolveType()-----" + this.getResolveType());
             //resolve the potential duplicate as per resolve type
             boolean resolveBoolean = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? false : true;
-            String resolveString = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? "A": "R";
+            String resolveString = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? "R": "A";
 
             //flag=false incase of autoresolve
             //flag = true incase of permanant resolve
-            System.out.println("------this.getResolveType()-----" + this.getResolveType() + "Resole boolean" + resolveBoolean);
+            //System.out.println("------this.getResolveType()-----" + this.getResolveType() + "Resole boolean" + resolveBoolean);
  
             masterControllerService.setAsDifferentPerson(this.getPotentialDuplicateId(), resolveBoolean);
             httpRequest.removeAttribute("finalArrayList");
@@ -1194,7 +1150,7 @@ public ArrayList resetOutputList(PotentialDuplicateSearchObject potentialDuplica
 //            arlResultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
 //        }
 
-        System.out.println(">>> arlResultFields " + arlResultFields);
+        //System.out.println(">>> arlResultFields " + arlResultFields);
         return arlResultFields;
     }
     
