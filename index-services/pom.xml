@@ -33,13 +33,13 @@
   <version>${mural.currentVersion}</version>
   <url>http://maven.apache.org</url>
   <build>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <testOutputDirectory>target/test-classes</testOutputDirectory>
     <finalName>com-sun-mdm-index-services</finalName>
     <resources>
       <resource>
         <directory>src/main/resources</directory>
-        <excludes>
-            <exclude>**/security/config/*.xml</exclude>
-        </excludes>
+        <excludes/>
       </resource>
     </resources>
     <plugins>
@@ -68,8 +68,117 @@
                         </tasks> 
                     </configuration>
                 </execution>
+                <execution>
+                    <id>copy-JUnit-test-resource-files</id>
+                    <phase>generate-test-sources</phase>
+                    <goals><goal>run</goal></goals>
+                    <configuration>
+                        <tasks>
+                            <unzip src="${settings.localRepository}/mural/matcher-resources/1.0/matcher-resources-1.0.jar" 
+                                dest="${project.build.testOutputDirectory}"/>
+                            <copy todir="${project.build.directory}/test-classes/com/sun/mdm/standardizer">
+                                    <fileset dir="../../open-dm-dq/standardizer/dist">
+                                        <include name="repositoryImage.zip"/>
+                                    </fileset>
+                            </copy>
+                        </tasks>          
+                    </configuration>
+                </execution>
+                <execution>
+                    <id>run-JUnit-test</id>
+                    <phase>test</phase>
+                    <goals><goal>run</goal></goals>
+                    <configuration>
+                        <tasks>
+                            <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+                                <classpath refid="maven.test.classpath"/>
+                            </taskdef>
+                            <taskdef name="propertyfile" classname="org.apache.tools.ant.taskdefs.optional.PropertyFile">
+                                <classpath refid="maven.test.classpath"/>
+                            </taskdef>
+                            <!--You may overwrite database properties in 
+                            ProxyJNDI.properties.Oracle file and ProxyJNDI.properties.SQLServer 
+                            file by setting corresponding properties in setting.xml file-->
+                            <if>
+                                <equals arg1="${database.properties.overwrite}" 
+                                        arg2="true" />
+                            <then>
+                                <propertyfile file="${basedir}/../index-core/target/test-classes/com/sun/mdm/index/util/ejbproxy/ProxyJNDI.properties.Oracle">
+                                    <entry key="proxy.datasource.user.id" value="${oracle.datasource.user.id}"/>
+                                    <entry key="proxy.datasource.password" value="${oracle.datasource.password}"/>
+                                    <entry key="proxy.datasource.port.number" value="${oracle.datasource.port.number}"/>                                    
+                                    <entry key="proxy.datasource.server.name" value="${oracle.datasource.server.name}"/>
+                                    <entry key="proxy.datasource.name" value="${oracle.datasource.name}"/>
+                                </propertyfile>
+                                <propertyfile file="${basedir}/../index-core/target/test-classes/com/sun/mdm/index/util/ejbproxy/ProxyJNDI.properties.SQLServer">
+                                    <entry key="proxy.datasource.user.id" value="${sqlserver.datasource.user.id}"/>
+                                    <entry key="proxy.datasource.password" value="${sqlserver.datasource.password}"/>
+                                    <entry key="proxy.datasource.port.number" value="${sqlserver.datasource.port.number}"/>                                    
+                                    <entry key="proxy.datasource.server.name" value="${sqlserver.datasource.server.name}"/>
+                                    <entry key="proxy.datasource.name" value="${sqlserver.datasource.name}"/>
+                                </propertyfile> 
+                            </then>
+                            </if>
+                            
+                            <if>
+                                <equals arg1="${env.RUN_JUNIT}" arg2="oracle" />
+                            <then>
+                                <echo>::Oracle JUnit Test</echo>
+                                <ant antfile="junitTest.xml" target="runtests_oracle">
+                                    <property name="build.dir" value="${project.build.directory}"/>
+                                    <property name="test.src.dir" value="${project.build.testSourceDirectory}"/>
+                                    <property name="build.test.classes.dir" value="${project.build.testOutputDirectory}"/>
+                                    <property name="run.test.classpath" refid="maven.test.classpath"/>
+                                    <property name="compile.classpath" refid="maven.compile.classpath"/>
+                                    <property name="localRepository.path" value="${settings.localRepository}"/>
+                                </ant>
+                            </then>                                
+                            <elseif>
+                                <equals arg1="${env.RUN_JUNIT}" arg2="sqlserver" />
+                            <then>
+                                <echo>::SQL Server JUnit Test</echo>
+                                <ant antfile="junitTest.xml" target="runtests_sqlserver">
+                                    <property name="build.dir" value="${project.build.directory}"/>
+                                    <property name="test.src.dir" value="${project.build.testSourceDirectory}"/>
+                                    <property name="build.test.classes.dir" value="${project.build.testOutputDirectory}"/>
+                                    <property name="run.test.classpath" refid="maven.test.classpath"/>
+                                    <property name="compile.classpath" refid="maven.compile.classpath"/>
+                                    <property name="localRepository.path" value="${settings.localRepository}"/>
+                                </ant>
+                            </then>
+                            </elseif>
+                            <elseif>
+                                <equals arg1="${env.RUN_JUNIT}" arg2="all" />
+                            <then>
+                                <echo>::ALL JUnit Test</echo>
+                                <ant antfile="junitTest.xml">
+                                    <property name="build.dir" value="${project.build.directory}"/>
+                                    <property name="test.src.dir" value="${project.build.testSourceDirectory}"/>
+                                    <property name="build.test.classes.dir" value="${project.build.testOutputDirectory}"/>
+                                    <property name="run.test.classpath" refid="maven.test.classpath"/>
+                                    <property name="compile.classpath" refid="maven.compile.classpath"/>
+                                    <property name="localRepository.path" value="${settings.localRepository}"/>
+                                </ant>
+                            </then>
+                            </elseif>                                  
+                            <else>
+                                <echo>::NO JUnit Test</echo>
+                            </else>
+                            </if>                      
+                        </tasks> 
+                    </configuration>
+                </execution>
             </executions>
         </plugin>
+        <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-surefire-plugin</artifactId>
+           <version>2.4.1</version>
+           <configuration>
+               <skipTests>true</skipTests>
+               <testFailureIgnore>true</testFailureIgnore>
+           </configuration>
+        </plugin> 
         </plugins>
     </build>
   <dependencies>
@@ -78,6 +187,24 @@
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>ant-contrib</groupId>
+        <artifactId>ant-contrib</artifactId>
+        <version>1.0b2</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>ant</groupId>
+        <artifactId>ant-nodeps</artifactId>
+        <version>1.6.5</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>ant</groupId>
+        <artifactId>ant-junit</artifactId>
+        <version>1.6.5</version>
+        <scope>test</scope>
     </dependency>
     <dependency>
         <groupId>net.java.hulp.i18ntask</groupId>
