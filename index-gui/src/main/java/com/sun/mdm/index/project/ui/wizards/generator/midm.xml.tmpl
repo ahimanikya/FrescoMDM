@@ -449,16 +449,9 @@
                         <root-object>[sbyntag:objname]</root-object>
                         <tab-name>Activity Report</tab-name>
                         <report-name>Transaction Summary Report</report-name>
-                        <screen-id>4</screen-id>
-                        <display-order>3</display-order> 
+                        <screen-id>5</screen-id>
+                        <display-order>4</display-order> 
                         <search-pages>
-                            <simple-search-page>
-                                <screen-title>Daily Activity</screen-title>
-                                <report-name>Daily Transaction Summary Report</report-name>
-                                <search-result-id>0</search-result-id>
-                                <search-screen-order>0</search-screen-order>
-                                <field-group/>
-                            </simple-search-page>
                             <simple-search-page>
                                 <screen-title>Weekly Activity</screen-title>
                                 <report-name>Weekly Transaction Summary Report</report-name>
@@ -487,6 +480,25 @@
                                 <item-per-page>10</item-per-page>
                                 <max-result-size>2000</max-result-size>
                                 <field-group/>
+                            </search-result-list-page>
+                        </search-result-pages>
+                    </subscreen>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>[sbyntag:objname]</root-object>
+                        <tab-name>Assumed Matches Report</tab-name>
+                        <report-name>Assumed Matches</report-name>
+                        <screen-id>6</screen-id>
+                        <display-order>6</display-order> 
+                        <search-pages/>
+                        <search-result-pages>
+                            <search-result-list-page>
+                                <search-result-id>0</search-result-id>
+                                <item-per-page>10</item-per-page>
+                                <max-result-size>2000</max-result-size>
+[SBYNTAG:REP-BEGIN]    
+[sbyntag:SearchResultFieldRef2()]
+[SBYNTAG:REP-END]
                             </search-result-list-page>
                         </search-result-pages>
                     </subscreen>
