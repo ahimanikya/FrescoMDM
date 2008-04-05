@@ -38,7 +38,7 @@
         
         <navigation-case>
             <from-outcome>record-details</from-outcome>
-            <to-view-id>/patientdetails.jsp</to-view-id>
+            <to-view-id>/recorddetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
@@ -106,7 +106,7 @@
         
         <navigation-case>
             <from-outcome>record-details</from-outcome>
-            <to-view-id>/patientdetails.jsp</to-view-id>
+            <to-view-id>/recorddetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
@@ -191,7 +191,7 @@
         
         <navigation-case>
             <from-outcome>record-details</from-outcome>
-            <to-view-id>/patientdetails.jsp</to-view-id>
+            <to-view-id>/recorddetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
@@ -236,7 +236,7 @@
     
 <!-- #~#~#~#~#~#~#~#~#~#~#~#~# from Patient details page #~#~#~#~#~#~#~#~#~#~#~#~#  -->            
     <navigation-rule>
-        <from-view-id>/patientdetails.jsp</from-view-id> 
+        <from-view-id>/recorddetails.jsp</from-view-id> 
         <navigation-case>
             <from-outcome>advancedSearchResults</from-outcome>
             <to-view-id>/duplicaterecords.jsp</to-view-id>
@@ -266,7 +266,7 @@
         
         <navigation-case>
             <from-outcome>record-details</from-outcome>
-            <to-view-id>/patientdetails.jsp</to-view-id>
+            <to-view-id>/recorddetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
@@ -345,7 +345,7 @@
         
         <navigation-case>
             <from-outcome>record-details</from-outcome>
-            <to-view-id>/patientdetails.jsp</to-view-id>
+            <to-view-id>/recorddetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
@@ -409,7 +409,7 @@
         
         <navigation-case>
             <from-outcome>record-details</from-outcome>
-            <to-view-id>/patientdetails.jsp</to-view-id>
+            <to-view-id>/recorddetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
@@ -534,7 +534,7 @@
         
         <navigation-case>
             <from-outcome>record-details</from-outcome>
-            <to-view-id>/patientdetails.jsp</to-view-id>
+            <to-view-id>/recorddetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
@@ -601,7 +601,7 @@
         
         <navigation-case>
             <from-outcome>record-details</from-outcome>
-            <to-view-id>/patientdetails.jsp</to-view-id>
+            <to-view-id>/recorddetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
@@ -689,7 +689,7 @@
         
         <navigation-case>
             <from-outcome>record-details</from-outcome>
-            <to-view-id>/patientdetails.jsp</to-view-id>
+            <to-view-id>/recorddetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
@@ -764,7 +764,7 @@
         
         <navigation-case>
             <from-outcome>record-details</from-outcome>
-            <to-view-id>/patientdetails.jsp</to-view-id>
+            <to-view-id>/recorddetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
@@ -833,7 +833,7 @@
         
         <navigation-case>
             <from-outcome>record-details</from-outcome>
-            <to-view-id>/patientdetails.jsp</to-view-id>
+            <to-view-id>/recorddetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
@@ -908,7 +908,7 @@
         
         <navigation-case>
             <from-outcome>record-details</from-outcome>
-            <to-view-id>/patientdetails.jsp</to-view-id>
+            <to-view-id>/recorddetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
@@ -973,7 +973,7 @@
         
         <navigation-case>
             <from-outcome>record-details</from-outcome>
-            <to-view-id>/patientdetails.jsp</to-view-id>
+            <to-view-id>/recorddetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
@@ -1046,7 +1046,7 @@
         
         <navigation-case>
             <from-outcome>record-details</from-outcome>
-            <to-view-id>/patientdetails.jsp</to-view-id>
+            <to-view-id>/recorddetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
@@ -1116,7 +1116,7 @@
         
         <navigation-case>
             <from-outcome>record-details</from-outcome>
-            <to-view-id>/patientdetails.jsp</to-view-id>
+            <to-view-id>/recorddetails.jsp</to-view-id>
         </navigation-case>
         
         <navigation-case>
@@ -1257,4 +1257,5 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 </faces-config>
+
 

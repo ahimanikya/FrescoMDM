@@ -186,6 +186,8 @@ public class EditMainEuidHandler {
 
     private String hiddenUnLockFields = new String();
     
+    private String hiddenLockFields = new String();
+    
     private ArrayList allNodeFieldConfigs = new ArrayList();
     
     private String enteredFieldValues = new String();
@@ -233,11 +235,11 @@ public class EditMainEuidHandler {
                 saveUnLinksSelected();
             }
 
-            System.out.println("==> UN LOCK FIELDS ===> :" + this.getHiddenUnLockFields());
+            //System.out.println("==> UN LOCK FIELDS ===> :" + this.getHiddenUnLockFields());
             if (this.getHiddenUnLockFields() != null && this.getHiddenUnLockFields().trim().length() > 0) {
                 //String[] allUnLinks = this.getHiddenUnLinkFields().split("##");
                 //save all the un links
-                saveUnLocksSelected();
+                //saveUnLocksSelected();
             }
 
             //get the updated minor object values here
@@ -1175,7 +1177,7 @@ public class EditMainEuidHandler {
                     newHashMap.put(values[0], values[1]);
                 }
 
-                System.out.println("FINAL newHashMap==>:" + newHashMap);
+                System.out.println("REMOVE FINAL newHashMap==>:" + newHashMap);
                //newHashMap.put(key, value);
             }
             EnterpriseObject updateEO = masterControllerService.removeLocks(newHashMap, updateEnterpriseObject);
@@ -1304,7 +1306,8 @@ public class EditMainEuidHandler {
                 HashMap systemObjectHashMap = new HashMap();
                 //add SystemCode and LID value to the new Hash Map
                 systemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID());// set LID here 
-                systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, masterControllerService.getSystemDescription(systemObject.getSystemCode()));// set System code here 
+                systemObjectHashMap.put("SYSTEM_CODE_DESC", masterControllerService.getSystemDescription(systemObject.getSystemCode()));// set System code here 
+                systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode());// set System code here 
                 systemObjectHashMap.put("Status", systemObject.getStatus());// set Status here 
                 
                 HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, personEPathArrayList);
@@ -1487,6 +1490,14 @@ public class EditMainEuidHandler {
 
     public void setRemoveEOMinorObjectsValues(String removeEOMinorObjectsValues) {
         this.removeEOMinorObjectsValues = removeEOMinorObjectsValues;
+    }
+
+    public String getHiddenLockFields() {
+        return hiddenLockFields;
+    }
+
+    public void setHiddenLockFields(String hiddenLockFields) {
+        this.hiddenLockFields = hiddenLockFields;
     }
 
  }

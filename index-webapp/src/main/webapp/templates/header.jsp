@@ -111,7 +111,7 @@ String dashBoardLabel = "Dashboard";
                          <h:commandLink styleClass="navbutton" id="allink" rendered="#{Operations.auditLog_SearchView}" action="#{NavigationHandler.toAuditLog}"><span><%=auditLogLabel%></span></h:commandLink>
                          
                          
-                         <%} else if ("patientdetails.jsp".equalsIgnoreCase(requestPage) || "euiddetails.jsp".equalsIgnoreCase(requestPage) || "editmaineuid.jsp".equalsIgnoreCase(requestPage)) {%>
+                         <%} else if ("recorddetails.jsp".equalsIgnoreCase(requestPage) || "euiddetails.jsp".equalsIgnoreCase(requestPage) || "editmaineuid.jsp".equalsIgnoreCase(requestPage)) {%>
                          
                          <h:commandLink styleClass="navbutton" id="dashlink" action="#{NavigationHandler.toDashboard}"><span><%=dashBoardLabel%></span></h:commandLink>
                          <h:commandLink styleClass="navbutton" id="duplicaterecordslink" rendered="#{Operations.potDup_SearchView}" action="#{NavigationHandler.toDuplicateRecords}"><span><%=duplicateRecordsLabel%></span></h:commandLink>

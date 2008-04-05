@@ -71,18 +71,22 @@
                         </table>
                         <table border="0" cellpadding="0" cellspacing="0" >
         		           <tr>
-		   	                <td align="left">
- 				             <h:outputText  value="#{TransactionHandler.instructionLine}" />
-				            </td>
+            			     <td align="left" style="padding-left:60px;"><h:outputText  style="font-size:12px;font-weight:bold;color:#0739B6;"  value="#{TransactionHandler.instructionLine}" /></td>
 			               </tr>
 
                             <tr>
                                 <td>
                                     <input id='lidmask' type='hidden' name='lidmask' value='<h:outputText value="#{TransactionHandler.lidMask}"/>' />
-                                    <h:dataTable headerClass="tablehead"  
-                                                 id="fieldConfigId" 
-                                                 var="feildConfig" 
-                                                 value="#{TransactionHandler.screenConfigArray}">
+                            <h:dataTable headerClass="tablehead"  
+                                         id="searchScreenFieldGroupArrayId" 
+                                         var="searchScreenFieldGroup" 
+                                         value="#{TransactionHandler.searchScreenFieldGroupArray}">
+						    <h:column>
+   				            <div style="font-size:12px;font-weight:bold;color:#0739B6;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h:outputText value="#{searchScreenFieldGroup.description}" /></div>
+                            <h:dataTable headerClass="tablehead"  
+                                         id="fieldConfigId" 
+                                         var="feildConfig" 
+                                         value="#{searchScreenFieldGroup.fieldConfigs}">
                                         <!--Rendering Non Updateable HTML Text Area-->
                                         <h:column>
                                             <nobr>
@@ -166,7 +170,9 @@
                                           </nobr>
                                         </h:column>
                                       </h:dataTable>
-                                    <table border="0" cellpadding="0" cellspacing="0" >
+                                      </h:column>
+                                      </h:dataTable>
+                                     <table  cellpadding="0" cellspacing="0" style="	border:0px red solid;padding-left:20px">
                                         <tr>
                                             <td>
                                                     <nobr>

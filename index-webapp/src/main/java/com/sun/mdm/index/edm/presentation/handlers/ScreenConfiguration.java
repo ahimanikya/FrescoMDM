@@ -34,6 +34,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class ScreenConfiguration {
 
+    private ArrayList searchScreenFieldGroupArray = new ArrayList();
+
     private ArrayList searchScreenConfigArray = new ArrayList();
     /**
      * Screen Config Array 
@@ -817,6 +819,66 @@ public class ScreenConfiguration {
 
     public void setInstructionLine(String instructionLine) {
         this.instructionLine = instructionLine;
+    }
+
+    public ArrayList getSearchScreenFieldGroupArray() {
+        searchScreenFieldGroupArray = new ArrayList();
+        
+        ArrayList basicSearchFieldConfigs;
+        try {
+            ////System.out.println("possilbeSearchTypes --> " + this.possilbeSearchTypes.size());
+//          if(this.possilbeSearchTypes.size() > 1) {
+//            setSearchType(searchScreenConfig.getScreenTitle());
+//          }
+
+            ArrayList screenConfigList = screenObject.getSearchScreensConfig();
+
+            Iterator iteratorScreenConfig = screenConfigList.iterator();
+            while (iteratorScreenConfig.hasNext()) {
+                SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
+
+                //System.out.println("screenObject.getSearchScreensConfig().size()"+screenObject.getSearchScreensConfig().size()+"this.searchType ==> : " + this.searchType+ "objSearchScreenConfig.getScreenTitle() --> " + objSearchScreenConfig.getScreenTitle());
+                if (screenObject.getSearchScreensConfig().size() > 1 && this.searchType.equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
+                    // Get an array list of field config groups
+                    basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
+                    //set the instruction line here
+                    setInstructionLine(objSearchScreenConfig.getInstruction());
+                    ////System.out.println("size() > 1  Basic --> " + basicSearchFieldConfigs);
+                    Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
+                    //Iterate the the FieldConfigGroup array list
+                    while (basicSearchFieldConfigsIterator.hasNext()) {
+                        //Build array of field config groups 
+                        FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
+                        //Build array of field configs from 
+                        searchScreenFieldGroupArray.add(basicSearchFieldGroup);
+                    }
+                } else if (screenObject.getSearchScreensConfig().size() == 1){
+                    // Get an array list of field config groups
+                    basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
+                    //set the instruction line here
+                    setInstructionLine(objSearchScreenConfig.getInstruction());
+
+                    Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
+                    //Iterate the the FieldConfigGroup array list
+                    while (basicSearchFieldConfigsIterator.hasNext()) {
+                        //Build array of field config groups 
+                        FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
+                        searchScreenFieldGroupArray.add(basicSearchFieldGroup);
+                        //Build array of field configs from 
+                        //screenConfigArray = basicSearchFieldGroup.getFieldConfigs();
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            Logger.getLogger(ScreenConfiguration.class.getName()).log(Level.SEVERE, "Failed Get the Screen Config Array Object: ", e);
+        }
+        
+        return searchScreenFieldGroupArray;
+    }
+
+    public void setSearchScreenFieldGroupArray(ArrayList searchScreenFieldGroupArray) {
+        this.searchScreenFieldGroupArray = searchScreenFieldGroupArray;
     }
 
 }

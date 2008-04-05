@@ -36,7 +36,7 @@
           } else  if(tagName.equalsIgnoreCase("duplicate-records")) {
             FacesContext.getCurrentInstance().getExternalContext().redirect("duplicaterecords.jsf");
           } else  if(tagName.equalsIgnoreCase("record-details")) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("patientdetails.jsf");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("recorddetails.jsf");
           } else  if(tagName.equalsIgnoreCase("assumed-matches")) {
             FacesContext.getCurrentInstance().getExternalContext().redirect("assumedmatches.jsf");
           } else  if(tagName.equalsIgnoreCase("source-record")) {

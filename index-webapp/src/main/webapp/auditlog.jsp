@@ -68,13 +68,22 @@
                     <h:form id="advancedformData">
                         <h:inputHidden id="selectedSearchType" value="#{AuditLogHandler.selectedSearchType}"/>
                         <table border="0" cellpadding="0" cellspacing="0" >
-                            <tr>
+		       	           <tr>
+			    			     <td align="left" style="padding-left:60px;"><h:outputText  style="font-size:12px;font-weight:bold;color:#0739B6;"  value="#{AuditLogHandler.instructionLine}" /></td>
+				           </tr>
+						   <tr>
                                 <td>
                                     <input id='lidmask' type='hidden' name='lidmask' value='DDD-DDD-DDDD' />
-                                    <h:dataTable headerClass="tablehead"  
-                                                 id="fieldConfigId" 
-                                                 var="feildConfig" 
-                                                 value="#{AuditLogHandler.screenConfigArray}">
+                            <h:dataTable headerClass="tablehead"  
+                                         id="searchScreenFieldGroupArrayId" 
+                                         var="searchScreenFieldGroup" 
+                                         value="#{AuditLogHandler.searchScreenFieldGroupArray}">
+						    <h:column>
+   				            <div style="font-size:12px;font-weight:bold;color:#0739B6;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h:outputText value="#{searchScreenFieldGroup.description}" /></div>
+                            <h:dataTable headerClass="tablehead"  
+                                         id="fieldConfigId" 
+                                         var="feildConfig" 
+                                         value="#{searchScreenFieldGroup.fieldConfigs}">
                                         <!--Rendering Non Updateable HTML Text Area-->
                                         <h:column>
                                             <nobr>
@@ -159,7 +168,10 @@
                                         </h:column>
                                         
                                     </h:dataTable>
-                                    <table border="0" cellpadding="0" cellspacing="0" >
+                                    </h:column>
+                                        
+                                    </h:dataTable>
+                                   <table  cellpadding="0" cellspacing="0" style="	border:0px red solid;padding-left:20px">
                                         <tr>
                                             <td>
                                                 <nobr>
@@ -405,6 +417,7 @@ var myConfigs = {
        </body>     
     </html>
 </f:view>
+
 
 
 

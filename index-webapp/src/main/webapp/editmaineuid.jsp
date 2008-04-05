@@ -170,14 +170,13 @@
                                                      </div> 
                                                      <div id="lockSourceDiv">
                                                      <h:outputLink  rendered="#{!EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"   
-                                                                    value="javascript:void(0)" onclick="javascript:showExtraLinkDivs(event,'#{fieldConfigPer.name}','#{fieldConfigPer.fullFieldName}')">
+                                                                    value="javascript:void(0)" >
                                                             <h:graphicImage  alt="lock" styleClass="imgClass" 
                                                                              url="./images/lock.PNG"/>               
                                                       </h:outputLink>
                                                      </div> 
                                                      <div id='lockSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>' style='visibility:hidden;display:block'>
-                                                     <h:outputLink  value="javascript:void(0)" 
-                                                                    onclick="javascript:showExtraLinkDivs(event,'#{fieldConfigPer.name}','#{fieldConfigPer.fullFieldName}')">
+                                                     <h:outputLink  value="javascript:void(0)" >
                                                             <h:graphicImage  alt="lock" styleClass="imgClass"
                                                                              url="./images/lock.PNG"/>               
                                                       </h:outputLink>
@@ -458,7 +457,7 @@
                                                                     <table border="0" width="100%">
                                                                         <tr>
                                                                             <td class="tablehead" colspan="2">
-                                                                                <h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/> - <h:outputText value="#{eoSystemObjectMap['LID']}" /> 
+                                                                                <h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE_DESC']}"/> - <h:outputText value="#{eoSystemObjectMap['LID']}" /> 
                                                                             </td>
                                                                         </tr>
                                                                     </table>

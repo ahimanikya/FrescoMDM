@@ -75,18 +75,24 @@
                 <h:inputHidden id="selectedSearchType" value="#{SearchDuplicatesHandler.selectedSearchType}"/>
                 <table border="0" cellpadding="0" cellspacing="0" >
 		           <tr>
-			         <td align="left">
-				     <h:outputText  value="#{SearchDuplicatesHandler.instructionLine}" />
-				     </td>
+				     <td align="left" style="padding-left:60px;"><h:outputText  style="font-size:12px;font-weight:bold;color:#0739B6;"  value="#{SearchDuplicatesHandler.instructionLine}" /></td>
 			       </tr>
 
                     <tr>
                         <td>
                             <input id='lidmask' type='hidden' name='lidmask' value='' />
+							
+                            <h:dataTable headerClass="tablehead"  
+                                         id="searchScreenFieldGroupArrayId" 
+                                         var="searchScreenFieldGroup" 
+                                         value="#{SearchDuplicatesHandler.searchScreenFieldGroupArray}">
+						    <h:column>
+   				            <div style="font-size:12px;font-weight:bold;color:#0739B6;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h:outputText value="#{searchScreenFieldGroup.description}" /></div>
                             <h:dataTable headerClass="tablehead"  
                                          id="fieldConfigId" 
                                          var="feildConfig" 
-                                         value="#{SearchDuplicatesHandler.screenConfigArray}">
+                                         value="#{searchScreenFieldGroup.fieldConfigs}">
+
                                 <!--Rendering Non Updateable HTML Text Area-->
                                  <h:column>
                                             <nobr>
@@ -169,8 +175,11 @@
                                                  </a>
                                           </nobr>
                                         </h:column>
-                            </h:dataTable>
-                            <table border="0" cellpadding="0" cellspacing="0" >
+                            </h:dataTable> <!--Field config loop-->
+							</h:column>
+                            </h:dataTable> <!--Field groups loop-->
+
+                            <table  cellpadding="0" cellspacing="0" style="	border:0px red solid;padding-left:20px">
                                 <tr>
                                     <td>
                                         <nobr>
@@ -179,7 +188,8 @@
                                             </h:outputLink>
                                         </nobr>
                                         <nobr>
-                                            <h:commandLink  styleClass="button" rendered="#{Operations.potDup_SearchView}"  action="#{SearchDuplicatesHandler.performSubmit}" >  
+                                            <h:commandLink  styleClass="button" 
+											                rendered="#{Operations.potDup_SearchView}"  action="#{SearchDuplicatesHandler.performSubmit}" >  
                                                 <span>
                                                     <h:outputText value="#{msgs.search_button_label}"/>
                                                 </span>
@@ -782,7 +792,6 @@
 			}
 		}
       }         
-
     </script>
 
     </html> 
