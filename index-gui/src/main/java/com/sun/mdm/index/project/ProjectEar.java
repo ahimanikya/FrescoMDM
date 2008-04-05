@@ -24,10 +24,17 @@ package com.sun.mdm.index.project;
 
 
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.util.Map;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import org.netbeans.modules.j2ee.deployment.devmodules.api.J2eeApplication;
 import org.netbeans.modules.j2ee.deployment.devmodules.spi.J2eeApplicationImplementation;
 import org.netbeans.modules.j2ee.deployment.devmodules.spi.J2eeModuleFactory;
@@ -92,7 +99,7 @@ public final class ProjectEar extends J2eeModuleProvider
     }
 
     public Iterator getArchiveContents() throws IOException {
-        return new IT(getContentDirectory());
+        return new IT (this, getContentDirectory ());
     }
 
     public FileObject getContentDirectory() throws IOException {
@@ -115,7 +122,7 @@ public final class ProjectEar extends J2eeModuleProvider
         File configFolder = FileUtil.toFile(moduleFolder);
         return new File(configFolder, path);
     }
-
+    
     private FileObject getMetaInf() {
         return project.getOrCreateMetaInfDir();
     }
@@ -173,23 +180,50 @@ public final class ProjectEar extends J2eeModuleProvider
     public <T> MetadataModel<T> getDeploymentDescriptor(Class<T> arg0) {
         throw new UnsupportedOperationException("ProjectEar.getDeploymentDescriptor()--Not supported yet.");
     }
-
+        
     private static class IT implements Iterator {
-        Enumeration ch;
+        Iterator<FileObject> it;
         FileObject root;
         
-        private IT (FileObject f) {
-            this.ch = f.getChildren (true);
+        private IT(ProjectEar pe, FileObject f) {
+            J2eeModule mods[] = pe.getModules();
+            // build filter
+            Set<String> filter = new HashSet<String>(mods.length);
+            for (int i = 0; i < mods.length; i++) {
+                FileObject modArchive = null;
+                try {
+                    modArchive = mods[i].getArchive();
+                } catch (java.io.IOException ioe) {
+                    Logger.getLogger(ProjectEar.class.getName()).log(Level.FINER,
+                            null,ioe);
+                    continue;
+                }
+                String modName = modArchive.getNameExt();
+                long modSize = modArchive.getSize();
+                filter.add(modName+"."+modSize);        // NOI18N
+            }
+            
+            ArrayList<FileObject> filteredContent = new ArrayList<FileObject>(5);
+            Enumeration ch = f.getChildren(true);
+            while (ch.hasMoreElements()) {
+                FileObject fo = (FileObject) ch.nextElement();
+                String fileName = fo.getNameExt();
+                long fileSize = fo.getSize();
+                if (filter.contains(fileName+"."+fileSize)) {   // NOI18N
+                    continue;
+                }
+                filteredContent.add(fo);
+            }
             this.root = f;
+            it = filteredContent.iterator();
         }
         
-        public boolean hasNext () {
-            return ch.hasMoreElements ();
+        public boolean hasNext() {
+            return it.hasNext();
         }
         
-        public Object next () {
-            FileObject f = (FileObject) ch.nextElement ();
-            return new FSRootRE (root, f);
+        public Object next() {
+            return new FSRootRE(root, it.next());
         }
         
         public void remove () {
