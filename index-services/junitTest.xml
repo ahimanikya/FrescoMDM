@@ -1,0 +1,79 @@
+<project name="testsuite builder" default="runtests" basedir=".">
+
+    <property name="test.report" value="${build.dir}/JUnitReport"/>
+    <property name = "junit.test.dir" value="${basedir}/../index-core/src/test"/>
+    <property environment="env"/>
+    <taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
+        <classpath>
+            <pathelement path="${run.test.classpath}"/>
+        </classpath>
+    </taskdef>
+    <taskdef name="junitreport" classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator">
+        <classpath>
+            <pathelement path="${run.test.classpath}"/>
+        </classpath>
+    </taskdef>
+
+    <target name="runtests" depends="runtests_oracle,runtests_sqlserver">
+        <echo>::JUNIT TASK</echo>
+        <echo message=""/>
+        <echo message="##### [All junit tests completed!] #####"/>
+    </target>
+    
+    <target name="runtests_oracle">
+        <echo>::Runing JUnit Test on Oracle dababase</echo>
+        <delete dir="${test.report}/oracle"/>
+        <mkdir dir="${test.report}/oracle"/>
+        <copy file="${junit.test.dir}/eindex-templates/object-oracle.xml" tofile="${build.test.classes.dir}/object.xml" overwrite="true"/>
+        <copy file="${junit.test.dir}/eindex-templates/eindex/src/Configuration/midm.xml" tofile="${build.test.classes.dir}/midm.xml" overwrite="true"/>
+        <copy file="${junit.test.dir}/java/com/sun/mdm/index/util/ejbproxy/ProxyJNDI.properties.Oracle" 
+              tofile="${junit.test.dir}/java/com/sun/mdm/index/util/ejbproxy/ProxyJNDI.properties" overwrite="true"/>
+        <antcall target="do-testing">
+            <param name="test.report.db" value="${test.report}/oracle"/>
+            <param name="test.report.html.db" value="${test.report}/html/oracle"/>
+        </antcall>
+        <echo message="##### [JUnit tests on Oracle completed!] #####"/>
+    </target>
+    
+    <target name="runtests_sqlserver">
+        <echo>::Runing JUnit Test on SQL Server dababase</echo> 
+        <delete dir="${test.report}/sqlserver"/>
+        <mkdir dir="${test.report}/sqlserver"/>
+        <copy file="${junit.test.dir}/eindex-templates/object-sqlserver.xml" tofile="${build.test.classes.dir}/object.xml" overwrite="true"/>
+        <copy file="${junit.test.dir}/eindex-templates/eindex/src/Configuration/midm.xml" tofile="${build.test.classes.dir}/midm.xml" overwrite="true"/>
+        <copy file="${junit.test.dir}/java/com/sun/mdm/index/util/ejbproxy/ProxyJNDI.properties.SQLServer" 
+              tofile="${junit.test.dir}/java/com/sun/mdm/index/util/ejbproxy/ProxyJNDI.properties" overwrite="true"/>
+        <antcall target="do-testing">
+            <param name="test.report.db" value="${test.report}/sqlserver"/>
+            <param name="test.report.html.db" value="${test.report}/html/sqlserver"/>
+        </antcall>
+        <echo message="##### [JUnit tests on SQL Server completed!] #####"/>
+    </target>
+        
+    <target name="do-testing">
+    
+        <junit maxmemory="1024m" printsummary="yes" haltonfailure="no" failureProperty="test.failure" >
+            <classpath>
+                <pathelement path="${run.test.classpath}"/>
+            </classpath>
+            <!-- run all tests in the test dir and create xml results  -->
+            <batchtest fork="yes"  todir="${test.report.db}"> 
+                <formatter type="xml"/>
+                <fileset dir="${build.test.classes.dir}">
+                    <include name="**/*Test.class"/>
+                    <include name="**/*Tester.class"/>
+                </fileset>
+            </batchtest>
+        </junit>
+        
+        
+        <!-- create report from xml result files  -->
+        <junitreport todir="${test.report}">
+            <fileset dir="${test.report.db}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${test.report.html.db}"/>
+        </junitreport>
+        <copy file="${junit.test.dir}/templates/index.html" todir="${test.report}/html"/>
+    </target>
+</project>
