@@ -475,11 +475,13 @@
                                                                                                      url="./images/link.PNG"/>               
                                                                                 </h:outputLink>
                                                                             </div> 
+																			 <div id='<h:outputText value="#{fieldConfigPer.fullFieldName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT']['LINK_KEY']}"/>'
                                                                             <h:outputLink  rendered="#{EditMainEuidHandler.linkedSOFieldsHashMapFromDB[fieldConfigPer.fullFieldName] eq eoSystemObjectMap['SYSTEM_OBJECT']['LINK_KEY'] }"   
                                                                                            value="javascript:void(0)" onclick="javascript:showExtraUnLinkDivs(event,'#{fieldConfigPer.name}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}')">
                                                                                 <h:graphicImage  alt="link" styleClass="imgClass"
                                                                                                  url="./images/link.PNG"/>               
                                                                             </h:outputLink>
+																			 </div> 
                                                                         </h:column>                                                        
                                                                         
                                                                         <!--Rendering HTML Select Menu List-->

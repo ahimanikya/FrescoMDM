@@ -239,7 +239,7 @@ public class EditMainEuidHandler {
             if (this.getHiddenUnLockFields() != null && this.getHiddenUnLockFields().trim().length() > 0) {
                 //String[] allUnLinks = this.getHiddenUnLinkFields().split("##");
                 //save all the un links
-                //saveUnLocksSelected();
+                saveUnLocksSelected();
             }
 
             //get the updated minor object values here
@@ -1171,13 +1171,15 @@ public class EditMainEuidHandler {
 
             for (int i = 0; i < allUnLocks.length; i++) {
                 String string = allUnLocks[i];
-                String[] values = string.split(">>");
-                for (int j = 0; j < values.length; j++) {
-                    String string1 = values[j];
-                    newHashMap.put(values[0], values[1]);
-                }
+                newHashMap.put(string, null);
+                
+//                String[] values = string.split(">>");
+//                for (int j = 0; j < values.length; j++) {
+//                    String string1 = values[j];
+//                    newHashMap.put(values[0], values[1]);
+//                }
 
-                System.out.println("REMOVE FINAL newHashMap==>:" + newHashMap);
+//                System.out.println("REMOVE FINAL newHashMap==>:" + newHashMap);
                //newHashMap.put(key, value);
             }
             EnterpriseObject updateEO = masterControllerService.removeLocks(newHashMap, updateEnterpriseObject);

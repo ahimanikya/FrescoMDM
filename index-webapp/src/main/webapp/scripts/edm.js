@@ -1266,6 +1266,10 @@ function populateLinkFields() {
 
 function showExtraUnLinkDivs(thisEvent,displayName,fieldName,fullFieldName)  {
     //alert("fieldName ==>" + fieldName);
+	var repField  = fieldName.replace(">>","");
+    //alert("fieldName ==>" + repField);
+	
+	//alert(document.getElementById(repField).style.visibility);
     var y;
     var x;      
     //////alert(document.getElementById(divId).style.visibility);
@@ -1290,6 +1294,8 @@ function showExtraUnLinkDivs(thisEvent,displayName,fieldName,fullFieldName)  {
 document.getElementById('unLinkedValueDiv').innerHTML = fieldName;
 document.getElementById('unLinkedDisplayValueDiv').innerHTML = displayName;
 document.getElementById('unLinkedFullFieldDiv').innerHTML = fullFieldName;
+
+   
 }
 
 var unLinkValues="";
@@ -1309,6 +1315,10 @@ function populateUnLinkFields() {
     
     document.getElementById('unLinkSoDiv').style.visibility = "hidden";
     document.getElementById('unLinkSoDiv').style.display = "none";
+    var repField  = fieldName.replace(">>","");
+	document.getElementById(repField).style.visibility = "hidden";
+    document.getElementById(repField).style.display = "none";
+
 }
 /**************END UNLINK RELATED METHODS**************/
 
