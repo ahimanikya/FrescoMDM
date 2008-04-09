@@ -66,30 +66,19 @@ import com.sun.mdm.index.objects.epath.EPathArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-
-/**
- * 
- * @author Rajani Kanth
- */
 public class SearchDuplicatesHandler extends ScreenConfiguration {
     private HashMap updateableFeildsMap =  new HashMap();    
     private HashMap actionMap =  new HashMap();    
-    private ArrayList nonUpdateableFieldsArray = new ArrayList();    
-    
-    String errorMessage = null;
-    
+    private ArrayList nonUpdateableFieldsArray = new ArrayList();      
+    String errorMessage = null;   
     private  static final String SEARCH_DUPLICATES="Search Duplicates";
     
      /**
      * Variable to hold the results defaulted to negative
      */
-    private int resultsSize = -1;
-
-   
+    private int resultsSize = -1;   
     private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.SearchDuplicatesHandler");
-
     private String searchType = "Advanced Search";
-
     private static final String  BASIC_SEARCH_RES     = "basicSearchResults";
     private static final String  ADV_SEARCH_RES       = "advancedSearchResults";
     private static final String  POT_DUP_SEARCH_RES   = "potentialduplicates";
@@ -130,11 +119,8 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
            
             super.setUpdateableFeildsMap(newFieldValuesMap);
 
-            //System.out.println("-------------1-------------------" + super.getUpdateableFeildsMap());
-
             //set the search type as per the user choice
             super.setSearchType(super.getSelectedSearchType());
-            
             
             //check one of many condtion here
             if (super.checkOneOfManyCondition()) {
@@ -229,7 +215,6 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
 
             }
         
-        
         //End Validation
         
         
@@ -240,7 +225,6 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
         try {
               //EPathArrayList epathList  = compareDuplicateManager.retrieveEpathResultsFields(screenObject.getSearchResultsConfig());
               EPathArrayList epathList = retrieveResultsFields(screenObject.getSearchResultsConfig());
-             //System.out.println("epathList" + epathList);
 
             PotentialDuplicateIterator pdPageIterArray = masterControllerService.lookupPotentialDuplicates(potentialDuplicateSearchObject);
             
@@ -465,9 +449,6 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                 }
             }
 
-
-
-
             //Set StartDate to the potentialDuplicateSearchObject
             if (super.getUpdateableFeildsMap().get("create_start_date") != null && super.getUpdateableFeildsMap().get("create_start_date").toString().trim().length() > 0) {
                 try {
@@ -549,21 +530,13 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
         return euidsArray;
     }
 
-    /**
-     * 
-     * @param event
-     */
     public void setSearchTypeAction(ActionEvent event){
             String searchTypeValue = (String) event.getComponent().getAttributes().get("searchType");
             //set the search type as per the form
-            this.setSearchType(searchTypeValue);
-    
+            this.setSearchType(searchTypeValue);  
    }
-    /**
-     * 
-     * @param event
-     */
-    public void buildEuidsAction(ActionEvent event){
+
+	public void buildEuidsAction(ActionEvent event){
            try {
             String searchTitle = (String) event.getComponent().getAttributes().get("searchTitle");
             ArrayList euidAtrributeList = (ArrayList) event.getComponent().getAttributes().get("euids");
@@ -602,8 +575,6 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
     public String toCompareScreen(){
         return "Record Details";
     }
-
-  
 
     PotentialDuplicateSummary getComparePotentialDuplicateSummary() {
         return comparePotentialDuplicateSummary;
@@ -650,31 +621,21 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
         this.resultsSize = resultsSize;
     }
     
-     /**
-     * 
-     * @param event
-     */
     public void buildCompareDuplicateEuids(ActionEvent event){
             ArrayList euidsMapList = (ArrayList) event.getComponent().getAttributes().get("euidsMap");
             session.setAttribute("comapreEuidsArrayList", euidsMapList);
     }
-     /**
-     * 
-     * @param event
-     */
-    public void resolvePotentialDuplicate(ActionEvent event) {
+
+	public void resolvePotentialDuplicate(ActionEvent event) {
         try {
             ArrayList duplicatesArray = (ArrayList) event.getComponent().getAttributes().get("finalArrayListVE");
         
-            //System.out.println("------this.getPotentialDuplicateId()-----" + this.getPotentialDuplicateId());
-            //System.out.println("------this.getResolveType()-----" + this.getResolveType());
             //resolve the potential duplicate as per resolve type
             boolean resolveBoolean = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? false : true;
             String resolveString = ("AutoResolve".equalsIgnoreCase(this.getResolveType())) ? "R": "A";
 
             //flag=false incase of autoresolve
             //flag = true incase of permanant resolve
-            //System.out.println("------this.getResolveType()-----" + this.getResolveType() + "Resole boolean" + resolveBoolean);
  
             masterControllerService.setAsDifferentPerson(this.getPotentialDuplicateId(), resolveBoolean);
             httpRequest.removeAttribute("finalArrayList");
@@ -695,8 +656,8 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                 }
                 finalDuplicatesList.add(arlInnerTemp);
             }
-            //System.out.println("--finalDuplicatesList-------" + finalDuplicatesList);
-            httpRequest.setAttribute("finalArrayList", finalDuplicatesList);                
+
+			httpRequest.setAttribute("finalArrayList", finalDuplicatesList);                
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
         } catch (UserException ex) {
@@ -705,10 +666,6 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
    
     }
 
-        /**
-     * 
-     * @param event
-     */
     public void unresolvePotentialDuplicateAction(ActionEvent event) {
         try {
             //get potential duplicate ID
@@ -757,11 +714,6 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             httpRequest.setAttribute("duplicateSearchObject", duplicateSearchObject);                
         try {
             //httpRequest.setAttribute("comapreEuidsArrayList", httpRequest.getAttribute("comapreEuidsArrayList"));
-            //System.out.println("mergeEuids ===> " + mergeEuids);
-            
-            //System.out.println(" destnEuid ===> " + destnEuid);
-            //System.out.println("rowCount ===> " + rowCount);
-
 
             EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
             String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
@@ -808,10 +760,6 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
         
 }
     
-    
-    
-    
-    
 public void cancelMultiMergeOperation(ActionEvent event) {
         PotentialDuplicateSearchObject duplicateSearchObject = (PotentialDuplicateSearchObject) event.getComponent().getAttributes().get("duplicateSearchObjectVE");
         httpRequest.setAttribute("duplicateSearchObject", duplicateSearchObject);                
@@ -820,23 +768,16 @@ public void cancelMultiMergeOperation(ActionEvent event) {
         ArrayList finalArrayList  = resetOutputList(duplicateSearchObject);
         httpRequest.setAttribute("finalArrayList", finalArrayList);                
         
-}        
+}  
+
 public void performMultiMergeEnterpriseObject(ActionEvent event) {
         PotentialDuplicateSearchObject duplicateSearchObject = (PotentialDuplicateSearchObject) event.getComponent().getAttributes().get("duplicateSearchObjectVE");
         httpRequest.setAttribute("duplicateSearchObject", duplicateSearchObject);                
-//        System.out.println("duplicateSearchObject----" + duplicateSearchObject);
-//        System.out.println("destnEuid----" + destnEuid);
-//        System.out.println("mergeEuids----" + mergeEuids);
         try {
-         
-            
             EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
-
             String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
-            
             String[] allEUIDs = mergeEuids.split("##");
-            
-            ArrayList srcsList  = new ArrayList();
+             ArrayList srcsList  = new ArrayList();
             for (int i = 0; i < allEUIDs.length; i++) {
                 if(i !=0 ) {
                     srcsList.add(allEUIDs[i]);
@@ -887,16 +828,13 @@ public void performMultiMergeEnterpriseObject(ActionEvent event) {
         //Reset the search criteria here
         ArrayList finalArrayList  = resetOutputList(duplicateSearchObject);
         httpRequest.setAttribute("finalArrayList", finalArrayList);                
-        
 
 }        
 
 public ArrayList resetOutputList(PotentialDuplicateSearchObject potentialDuplicateSearchObject ) {
-        //System.out.println("---------IN RESET METHOD----potentialDuplicateSearchObject----" + potentialDuplicateSearchObject);
        ArrayList newFinalArray  = new ArrayList();        
         try {
             PotentialDuplicateIterator pdPageIterArray = masterControllerService.lookupPotentialDuplicates(potentialDuplicateSearchObject);
-
             
             // Code Added by Pratibha 
             int count = pdPageIterArray.count();
@@ -1016,7 +954,6 @@ public ArrayList resetOutputList(PotentialDuplicateSearchObject potentialDuplica
                 
                 newFinalArray.add(newInnerArray);
         }
-//            System.out.println("-------------IN RESET METHOD---newFinalArray.size()--" + newFinalArray.size());
         } catch (Exception ex) {
                // UserException and ValidationException don't need a stack trace.
                 // ProcessingException stack trace logged by MC
@@ -1105,53 +1042,46 @@ public ArrayList resetOutputList(PotentialDuplicateSearchObject potentialDuplica
                 return c;
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            mLogger.error(e.getMessage());
         }
         return c;
     }
 // Method added to handle Service Layer dynamic result fields
 
-    public EPathArrayList retrieveResultsFields(ArrayList arlResultsConfig) throws Exception {
+public EPathArrayList retrieveResultsFields(ArrayList arlResultsConfig) throws Exception {
         EPathArrayList arlResultFields = new EPathArrayList();
         SearchResultsConfig searchResultConfig = null;
         ArrayList arlEPaths = null;
         Iterator ePathsIterator = null;
         Iterator resultConfigIterator = arlResultsConfig.iterator();
         String objectRef = null;
-        
-        ArrayList resultsList  = super.getResultsConfigArray();
-        for (int i = 0; i < resultsList.size(); i++) {
-            FieldConfig object = (FieldConfig) resultsList.get(i);
-            arlResultFields.add("Enterprise.SystemSBR."+object.getFullFieldName());
+
+        while (resultConfigIterator.hasNext()) {
+            searchResultConfig = (SearchResultsConfig) resultConfigIterator.next();
+            arlEPaths = searchResultConfig.getEPaths();
+            ePathsIterator = arlEPaths.iterator();
+            while (ePathsIterator.hasNext()) {
+                String strEPath = (String) ePathsIterator.next();
+                // copy EPath strings to the EPathArrayList
+                arlResultFields.add("Enterprise.SystemSBR." + strEPath);
+                // POTENTIAL DUPLICATE-RELATED FIX from Raymond
+                // retrieve the object reference eg, if the epath is is "Person.Address.City" this retrieves "Person".
+                if (objectRef == null) {
+                    int index = strEPath.indexOf(".");
+                    objectRef = strEPath.substring(0, index);
+                 
+                }
+            //
+            }
+            // POTENTIAL DUPLICATE-RELATED FIX from Raymond
+            // Add an EUID field for the PotentialDuplicateAManager.  This is required.
+            arlResultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
         }
-        arlResultFields.add("Enterprise.SystemSBR." + screenObject.getRootObj().getName() + ".EUID");
 
-//        while (resultConfigIterator.hasNext()) {
-//            searchResultConfig = (SearchResultsConfig) resultConfigIterator.next();
-//            searchResultConfig.getFieldConfigs();
-//            arlEPaths = searchResultConfig.getEPaths();
-//            ePathsIterator = arlEPaths.iterator();
-//            while (ePathsIterator.hasNext()) {
-//                String strEPath = (String) ePathsIterator.next();
-//                //System.out.println("+++++++++++  "+strEPath);
-//                // copy EPath strings to the EPathArrayList
-//                arlResultFields.add("Enterprise.SystemSBR." + strEPath);
-//                // POTENTIAL DUPLICATE-RELATED FIX from Raymond
-//                // retrieve the object reference eg, if the epath is is "Person.Address.City" this retrieves "Person".
-//                if (objectRef == null) {
-//                    int index = strEPath.indexOf(".");
-//                    objectRef = strEPath.substring(0, index);
-//                    System.out.println("+++++++++++  " + objectRef);
-//                }
-//            //
-//            }
-//            // POTENTIAL DUPLICATE-RELATED FIX from Raymond
-//            // Add an EUID field for the PotentialDuplicateAManager.  This is required.
-//            arlResultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
-//        }
-
-        //System.out.println(">>> arlResultFields " + arlResultFields);
+       
         return arlResultFields;
     }
+
     
 }
+
