@@ -119,15 +119,20 @@ where <i>user_name</i> is your username in the Open Data Quality project.</p></l
 <li>For Oracle, run the scripts at \open-dm-mi\index-core\src\test\eindex-templates\database-scripts\oracle</li>
 <li>For SQL Server, run the scripts at \open-dm-miindex-core\src\test\eindex-templates\database-scripts\sqlserver</li>
 </ul></p>
-<p>Run this scripts in the following order:
+<p>To create the database, run these scripts in the following order:
 <ul>
 <li>create.sql</li>
 <li>createUserIndex.sql</li>
 <li>systems.sql</li>
 <li>codelist.sql</li>
 </ul>
-<p>You do not need to run createUserCodeData.sql. To drop the database, run drop.sql and dropUserIndex.sql.</p>
-<p>After you create the database, set the connection properties.
+<p>To drop the database, run these scripts in the following order:</p>
+<ul>
+<li>drop.sql</li>
+<li>dropUserIndex.sql</li>
+</ul>
+<p>You do not need to run createUserCodeData.sql.</p>
+<p>After you create the database, set the connection properties.</p>
 <ul>
 <li>For Oracle, set the properties in the file \open-dm-mi\index-core\src\test\java\com\sun\mdm\index\util\ejbproxy\ProxyJNDI.properties.Oracle </li>
 <li>For SQL Server, set the properties in the file \open-dm-mi\index-core\src\test\java\com\sun\mdm\index\util\ejbproxy\ProxyJNDI.properties.SQLServer</li>
