@@ -1521,7 +1521,6 @@ public class EDMType {
         
         if (mPageDefinition.createEO != null) {
             if (bMidm) {
-                // Convert edm's createEO to midm's source-record
                 mPageDefinition.midmConverter.createEO();
             } else {
                 buffer.append(getCreateEoXML());
@@ -1531,7 +1530,7 @@ public class EDMType {
         if (mPageDefinition.history != null) {
             if (bMidm) {
                 // No conversion?
-                mPageDefinition.midmConverter.history();
+                mPageDefinition.midmConverter.history(rootObject);
             } else {
                 buffer.append(getHistoryXML());
             }
@@ -1540,7 +1539,7 @@ public class EDMType {
         if (mPageDefinition.matchReview != null) {
             if (bMidm) {
                 // Convert edm's matchReview to midm's assumed-matches
-                mPageDefinition.midmConverter.matchReview();
+                mPageDefinition.midmConverter.matchReview(rootObject);
             } else {
                 buffer.append(getMatchingReviewXML());
             }
@@ -2500,6 +2499,7 @@ public class EDMType {
         }
         
         class MidmConverter {
+            // No conversion for dashboard, just add it
             void dashBoard(String rootObject) {
                 createDashboard();
                 dashboard.commonBlock.pageTab.rootObject = rootObject;
@@ -2536,10 +2536,11 @@ public class EDMType {
                 subScreen.commonBlock.displayOrder = "3";
             }
             
+            // No conversion for sourceRecord, just add it
             void sourceRecord(String rootObject) {
                 ArrayList alFieldGroup = null;
-                if (mPageDefinition.reports != null) {
-                    alFieldGroup = mPageDefinition.reports.getAlFieldGroup();
+                if (mPageDefinition.recordDetails != null) {
+                    alFieldGroup = mPageDefinition.recordDetails.getAlFieldGroup();
                 }
                 createSourceRecord();
                 sourceRecord.commonBlock.pageTab.rootObject = rootObject;
@@ -2609,7 +2610,7 @@ public class EDMType {
                 searchResultListPage.searchResultID = "0";
                 searchResultListPage.itemPerPage = "10";
                 searchResultListPage.maxResultSize = "100";
-                searchResultListPage.alFieldGroup = alFieldGroup;
+                //searchResultListPage.alFieldGroup = alFieldGroup;
                 
                 // 3rd subscreen
                 subScreen = sourceRecord.subscreenConfigurations.addSubscreen();
@@ -2633,40 +2634,61 @@ public class EDMType {
                 searchResultListPage.searchResultID = "0";
                 searchResultListPage.itemPerPage = "10";
                 searchResultListPage.maxResultSize = "100";
-                searchResultListPage.alFieldGroup = alFieldGroup;
+                //searchResultListPage.alFieldGroup = alFieldGroup;
             }
             
             // Convert edm's eoSearch to midm's record-details
             void eoSearch() {
-                if (eoSearch != null && eoSearch.commonBlock != null && eoSearch.commonBlock.alSimpleSearchPages != null) {
+                if (eoSearch != null && eoSearch.commonBlock != null) {
                     createRecordDetails();
-                    recordDetails.pageTab.rootObject = eoSearch.commonBlock.pageTab.rootObject;
+                    String rootObject = eoSearch.commonBlock.pageTab.rootObject;
+                    recordDetails.pageTab.rootObject = rootObject;
                     recordDetails.pageTab.tabName = "Record Details";
                     recordDetails.screenID = "1";
                     recordDetails.displayOrder = "2";
-                    ArrayList alSimpleSearchPages = eoSearch.commonBlock.alSimpleSearchPages;
-                    
-                    for (int i=0; i < alSimpleSearchPages.size(); i++) {
-                        SimpleSearchPage simpleSearchPage = (SimpleSearchPage) alSimpleSearchPages.get(i);
-                        SimpleSearchPage newSimpleSearchPage;
-                        if (simpleSearchPage.alSearchOption != null) {
-                            if (simpleSearchPage.alSearchOption.size() == 1) {
-                                newSimpleSearchPage = simpleSearchPage;
-                                newSimpleSearchPage.searchResultID = "1";
-                                newSimpleSearchPage.searchScreenOrder = String.valueOf(i);
-                                recordDetails.addSimpleSearchPage(newSimpleSearchPage);
-                            } else {
-                                for (int j=0; j < simpleSearchPage.alSearchOption.size(); j++) {
-                                    newSimpleSearchPage = recordDetails.addSimpleSearchPage();
-
+                    if (eoSearch.commonBlock.alSimpleSearchPages != null) {
+                        ArrayList alSimpleSearchPages = eoSearch.commonBlock.alSimpleSearchPages;
+                        for (int i=0; i < alSimpleSearchPages.size(); i++) {
+                            SimpleSearchPage simpleSearchPage = (SimpleSearchPage) alSimpleSearchPages.get(i);
+                            SimpleSearchPage newSimpleSearchPage;
+                            if (simpleSearchPage.alSearchOption != null) {
+                                if (simpleSearchPage.alSearchOption.size() == 1) {
+                                    newSimpleSearchPage = simpleSearchPage;
                                     newSimpleSearchPage.searchResultID = "1";
-                                    newSimpleSearchPage.searchScreenOrder = String.valueOf(i+j);
-                                    newSimpleSearchPage.alFieldGroup = simpleSearchPage.alFieldGroup;
-                                    PageDefinition.SearchOption searchOption = (PageDefinition.SearchOption) simpleSearchPage.alSearchOption.get(j);
-                                    newSimpleSearchPage.addSearchOption(searchOption);
-                                    newSimpleSearchPage.screenTitle = simpleSearchPage.screenTitle + " (" + searchOption.displayName + ")";
+                                    newSimpleSearchPage.searchScreenOrder = String.valueOf(i);
+                                    recordDetails.addSimpleSearchPage(newSimpleSearchPage);
+                                } else {
+                                    for (int j=0; j < simpleSearchPage.alSearchOption.size(); j++) {
+                                        newSimpleSearchPage = recordDetails.addSimpleSearchPage();
+
+                                        newSimpleSearchPage.searchResultID = "1";
+                                        newSimpleSearchPage.searchScreenOrder = String.valueOf(i+j);
+                                        newSimpleSearchPage.alFieldGroup = simpleSearchPage.alFieldGroup;
+                                        PageDefinition.SearchOption searchOption = (PageDefinition.SearchOption) simpleSearchPage.alSearchOption.get(j);
+                                        newSimpleSearchPage.addSearchOption(searchOption);
+                                        newSimpleSearchPage.screenTitle = simpleSearchPage.screenTitle + " (" + searchOption.displayName + ")";
+                                    }
                                 }
                             }
+                        }
+                    }
+                    if (eoSearch.commonBlock.searchResultListPage != null) {
+                        SearchResultListPage searchResultListPage = recordDetails.addSearchResultListPage();
+                        ArrayList alFieldRef = eoSearch.commonBlock.searchResultListPage.alFieldRef;
+                        for (int j=0; alFieldRef != null && j < alFieldRef.size(); j++) {
+                            PageDefinition.FieldRef fieldRef = (PageDefinition.FieldRef) alFieldRef.get(j);
+                            String parentName;
+                            int idx = fieldRef.fieldName.indexOf(rootObject + ".");
+                            if (idx >= 0) {
+                                parentName = rootObject;
+                                // find the field group for root object
+                            } else {
+                                idx = fieldRef.fieldName.lastIndexOf('.');
+                                parentName = rootObject + "." + fieldRef.fieldName.substring(0, idx);
+                                fieldRef.fieldName = rootObject + "." + fieldRef.fieldName;
+                            }
+                            FieldGroup fieldGroup = searchResultListPage.getFieldGroup(parentName);
+                            fieldGroup.addFieldRef(fieldRef);
                         }
                     }
                     eoSearch = null;
@@ -2674,18 +2696,86 @@ public class EDMType {
             }
             
             void createEO() {
-                // Convert edm's createEO to midm's source-record
-                //mPageDefinition.createEO = null;
+                createEO = null;
             }
             
-            void history() {
+            void history(String rootObject) {
                 // Convert edm's history to midm's transactions
+                createTransactions();
+                
+                transactions.pageTab.rootObject = rootObject;
+                transactions.pageTab.tabName = "Transactions";
+                transactions.screenID = "2";
+                transactions.displayOrder = "4";
+                
+                SimpleSearchPage simpleSearchPage = transactions.addSimpleSearchPage();
+                simpleSearchPage.showEuid = "true";
+                simpleSearchPage.showLid = "true";
+                
+                SearchResultListPage searchResultListPage = transactions.addSearchResultListPage();
+                searchResultListPage.searchResultID = "0";
+                searchResultListPage.itemPerPage = "10";
+                searchResultListPage.maxResultSize = "100";
+                
                 history = null;
             }
             
-            void matchReview() {
-                // Convert edm's matchReview to midm's assumed-matches & duplicated records
-                //mPageDefinition.matchReview = null;
+            // Convert edm's matchReview to midm's duplicated records and assumed-matches
+            void matchReview(String rootObject) {
+                ArrayList alFieldGroup = null;
+                if (mPageDefinition.reports != null) {
+                    alFieldGroup = mPageDefinition.recordDetails.getAlFieldGroup();
+                }
+                
+                // duplicated records
+                createDuplicateRecords();
+
+                duplicateRecords.pageTab.rootObject = rootObject;
+                duplicateRecords.pageTab.tabName = "Duplicate Records";
+                duplicateRecords.screenID = "3";
+                duplicateRecords.displayOrder = "1";
+                
+                SimpleSearchPage simpleSearchPage = duplicateRecords.addSimpleSearchPage();
+                simpleSearchPage.screenTitle = "Basic Search";
+                simpleSearchPage.searchResultID = "0";
+                simpleSearchPage.searchScreenOrder = "0";
+                simpleSearchPage.showEuid = "false";
+                simpleSearchPage.showLid = "false";
+                simpleSearchPage.showStatus = "false";
+                simpleSearchPage.showCreateDate = "true";
+                simpleSearchPage.showCreateTime = "false";
+                
+                simpleSearchPage = duplicateRecords.addSimpleSearchPage();
+                simpleSearchPage.screenTitle = "Advanced Search";
+                simpleSearchPage.searchResultID = "0";
+                simpleSearchPage.searchScreenOrder = "1";
+                simpleSearchPage.showEuid = "true";
+                simpleSearchPage.showLid = "true";
+                simpleSearchPage.showStatus = "true";
+                simpleSearchPage.showCreateDate = "true";
+                simpleSearchPage.showCreateTime = "true";
+                
+                SearchResultListPage searchResultListPage = duplicateRecords.addSearchResultListPage();
+                searchResultListPage.searchResultID = "0";
+                searchResultListPage.itemPerPage = "10";
+                searchResultListPage.maxResultSize = "100";
+                searchResultListPage.alFieldGroup = alFieldGroup;
+                
+                // assumed-matches
+                createAssumedMatches();
+                //assumedMatches
+                assumedMatches.pageTab.rootObject = rootObject;
+                assumedMatches.pageTab.tabName = "Assumed Matches";
+                assumedMatches.screenID = "4";
+                assumedMatches.displayOrder = "3";
+
+                searchResultListPage = assumedMatches.addSearchResultListPage();
+                searchResultListPage.searchResultID = "0";
+                searchResultListPage.itemPerPage = "10";
+                searchResultListPage.maxResultSize = "100";
+                searchResultListPage.alFieldGroup = alFieldGroup;
+
+                matchReview = null;
             }
             
             // Convert edm's alReports to midm's subscreen-configurations sub-screens
@@ -2723,7 +2813,7 @@ public class EDMType {
             }
             
             void auditLog() {
-                
+                // nothing to convert
             }
         }
     
@@ -2892,6 +2982,15 @@ public class EDMType {
                 }
                 return searchResultListPage;
             }
+            
+            
+            ArrayList getAlFieldGroup() {
+                if (searchResultListPage != null) {
+                    return searchResultListPage.alFieldGroup;
+                }
+                return null;
+            }
+
         }
 
         class EOViewPage {
