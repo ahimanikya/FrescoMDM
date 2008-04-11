@@ -111,6 +111,7 @@ public class EDMType {
     private final String mTagFieldRef = "field-ref";        // -> EDMFieldDef.usedInSearchScreen
     private final String mAttrRequired = "required";        // -> EDMFieldDef.requiredInSearchScreen
     private final String mTagDescription = "description";
+    private final String mTagDescriptionBlank = "<description/>\n";
     
     private final String mTagSearchResultListPage = "search-result-list-page";
     private final String mTagItemPerPage = "item-per-page";
@@ -1111,6 +1112,8 @@ public class EDMType {
                     buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagDescription) + 
                                   fieldGroup.description + 
                                   Utils.endTag(mTagDescription));
+                } else {
+                    buffer.append(startTab + Utils.TAB + mTagDescriptionBlank);
                 }
                 for (int j=0; j < fieldGroup.alFieldRef.size(); j++) {
                     PageDefinition.FieldRef fieldRef = (PageDefinition.FieldRef) fieldGroup.alFieldRef.get(j);
@@ -1467,6 +1470,7 @@ public class EDMType {
      */
     String getPageDefinitionXML(boolean bMidm) {
         StringBuffer buffer = new StringBuffer();
+        String rootObject = "unknown";
         
 	buffer.append(Utils.TAB2 + Utils.startTag(mTagPageDefinition));
         if (bMidm) {
@@ -1502,6 +1506,7 @@ public class EDMType {
             mPageDefinition.matchReview != null ||
             (mPageDefinition.reports != null && mPageDefinition.reports.alReport != null)) {
             // Inform user the conversion is in process
+            rootObject = mPageDefinition.eoSearch.commonBlock.pageTab.rootObject;
         }
         
         // Classic EDM
@@ -1542,6 +1547,19 @@ public class EDMType {
         }
         
         // Master Index DM
+        String xmlReports = "";
+        // Do this first for alFieldGroup in midm's source record
+        if (mPageDefinition.reports != null) {
+            xmlReports = getReportsXML(bMidm);
+        }
+
+        if (mPageDefinition.dashboard == null && bMidm) {
+            mPageDefinition.midmConverter.dashBoard(rootObject);
+        }
+        
+        if (mPageDefinition.sourceRecord == null && bMidm) {
+            mPageDefinition.midmConverter.sourceRecord(rootObject);
+        }
         
         if (mPageDefinition.dashboard != null) {
             buffer.append(getDashboardXML());
@@ -1569,7 +1587,7 @@ public class EDMType {
         
         // Classic EDM and Master Index DM
         if (mPageDefinition.reports != null) {
-            buffer.append(getReportsXML(bMidm));
+            buffer.append(xmlReports);
         }
         
         if (mPageDefinition.auditLog != null) {
@@ -2482,6 +2500,142 @@ public class EDMType {
         }
         
         class MidmConverter {
+            void dashBoard(String rootObject) {
+                createDashboard();
+                dashboard.commonBlock.pageTab.rootObject = rootObject;
+                dashboard.commonBlock.pageTab.tabName = "Dashboard";
+                dashboard.commonBlock.screenID = "8";
+                dashboard.commonBlock.displayOrder = "0";
+                
+                Subscreen subScreen = dashboard.subscreenConfigurations.addSubscreen();
+                subScreen.enable = "true";
+                subScreen.commonBlock.pageTab.rootObject = rootObject;
+                subScreen.commonBlock.pageTab.tabName = "Summary";
+                subScreen.commonBlock.screenID = "0";
+                subScreen.commonBlock.displayOrder = "0";
+                
+                subScreen = dashboard.subscreenConfigurations.addSubscreen();
+                subScreen.enable = "true";
+                subScreen.commonBlock.pageTab.rootObject = rootObject;
+                subScreen.commonBlock.pageTab.tabName = "Reports";
+                subScreen.commonBlock.screenID = "1";
+                subScreen.commonBlock.displayOrder = "1";
+                
+                subScreen = dashboard.subscreenConfigurations.addSubscreen();
+                subScreen.enable = "true";
+                subScreen.commonBlock.pageTab.rootObject = rootObject;
+                subScreen.commonBlock.pageTab.tabName = "Compare EUIDs";
+                subScreen.commonBlock.screenID = "2";
+                subScreen.commonBlock.displayOrder = "2";
+                
+                subScreen = dashboard.subscreenConfigurations.addSubscreen();
+                subScreen.enable = "true";
+                subScreen.commonBlock.pageTab.rootObject = rootObject;
+                subScreen.commonBlock.pageTab.tabName = "Lookup EUID";
+                subScreen.commonBlock.screenID = "3";
+                subScreen.commonBlock.displayOrder = "3";
+            }
+            
+            void sourceRecord(String rootObject) {
+                ArrayList alFieldGroup = null;
+                if (mPageDefinition.reports != null) {
+                    alFieldGroup = mPageDefinition.reports.getAlFieldGroup();
+                }
+                createSourceRecord();
+                sourceRecord.commonBlock.pageTab.rootObject = rootObject;
+                sourceRecord.commonBlock.pageTab.tabName = "Source Record";
+                sourceRecord.commonBlock.screenID = "5";
+                sourceRecord.commonBlock.displayOrder = "6";
+                
+                Subscreen subScreen = sourceRecord.subscreenConfigurations.addSubscreen();
+                subScreen.enable = "true";
+                subScreen.commonBlock.pageTab.rootObject = rootObject;
+                subScreen.commonBlock.pageTab.tabName = "View/Edit";
+                subScreen.commonBlock.screenID = "0";
+                subScreen.commonBlock.displayOrder = "0";
+                
+                SimpleSearchPage simpleSearchPage = subScreen.commonBlock.addSimpleSearchPage();
+                simpleSearchPage.screenTitle = "Basic Search";
+                simpleSearchPage.searchResultID = "0";
+                simpleSearchPage.searchScreenOrder = "0";
+                simpleSearchPage.showEuid = "false";
+                simpleSearchPage.showLid = "true";
+                simpleSearchPage.showStatus = "false";
+                simpleSearchPage.showCreateDate = "false";
+                simpleSearchPage.showCreateTime = "false";
+                
+                simpleSearchPage = subScreen.commonBlock.addSimpleSearchPage();
+                simpleSearchPage.screenTitle = "Advanced Search";
+                simpleSearchPage.searchResultID = "0";
+                simpleSearchPage.searchScreenOrder = "0";
+                simpleSearchPage.showEuid = "true";
+                simpleSearchPage.showLid = "false";
+                simpleSearchPage.showStatus = "false";
+                simpleSearchPage.showCreateDate = "true";
+                simpleSearchPage.showCreateTime = "true";
+                simpleSearchPage.instruction = "Enter search criteria";
+                
+                SearchResultListPage searchResultListPage = subScreen.commonBlock.addSearchResultListPage();
+                searchResultListPage.searchResultID = "0";
+                searchResultListPage.itemPerPage = "10";
+                searchResultListPage.maxResultSize = "100";
+                searchResultListPage.showEuid = "true";
+                searchResultListPage.showLid = "true";
+                searchResultListPage.showStatus = "false";
+                searchResultListPage.showCreateDate = "false";
+                searchResultListPage.showCreateTime = "false";
+                searchResultListPage.showTimeStamp = "true";
+                searchResultListPage.alFieldGroup = alFieldGroup;
+                
+                // 2nd subscreen
+                subScreen = sourceRecord.subscreenConfigurations.addSubscreen();
+                subScreen.enable = "true";
+                subScreen.commonBlock.pageTab.rootObject = rootObject;
+                subScreen.commonBlock.pageTab.tabName = "Add";
+                subScreen.commonBlock.screenID = "1";
+                subScreen.commonBlock.displayOrder = "1";
+                
+                simpleSearchPage = subScreen.commonBlock.addSimpleSearchPage();
+                simpleSearchPage.screenTitle = "Basic Search";
+                simpleSearchPage.searchResultID = "0";
+                simpleSearchPage.searchScreenOrder = "0";
+                simpleSearchPage.showEuid = "false";
+                simpleSearchPage.showLid = "true";
+                simpleSearchPage.showStatus = "false";
+                simpleSearchPage.showCreateDate = "false";
+                simpleSearchPage.showCreateTime = "false";
+                
+                searchResultListPage = subScreen.commonBlock.addSearchResultListPage();
+                searchResultListPage.searchResultID = "0";
+                searchResultListPage.itemPerPage = "10";
+                searchResultListPage.maxResultSize = "100";
+                searchResultListPage.alFieldGroup = alFieldGroup;
+                
+                // 3rd subscreen
+                subScreen = sourceRecord.subscreenConfigurations.addSubscreen();
+                subScreen.enable = "true";
+                subScreen.commonBlock.pageTab.rootObject = rootObject;
+                subScreen.commonBlock.pageTab.tabName = "Merge";
+                subScreen.commonBlock.screenID = "2";
+                subScreen.commonBlock.displayOrder = "2";
+                
+                simpleSearchPage = subScreen.commonBlock.addSimpleSearchPage();
+                simpleSearchPage.screenTitle = "LID Search";
+                simpleSearchPage.searchResultID = "0";
+                simpleSearchPage.searchScreenOrder = "0";
+                simpleSearchPage.showEuid = "false";
+                simpleSearchPage.showLid = "true";
+                simpleSearchPage.showStatus = "false";
+                simpleSearchPage.showCreateDate = "false";
+                simpleSearchPage.showCreateTime = "false";
+                
+                searchResultListPage = subScreen.commonBlock.addSearchResultListPage();
+                searchResultListPage.searchResultID = "0";
+                searchResultListPage.itemPerPage = "10";
+                searchResultListPage.maxResultSize = "100";
+                searchResultListPage.alFieldGroup = alFieldGroup;
+            }
+            
             // Convert edm's eoSearch to midm's record-details
             void eoSearch() {
                 if (eoSearch != null && eoSearch.commonBlock != null && eoSearch.commonBlock.alSimpleSearchPages != null) {
@@ -2497,11 +2651,20 @@ public class EDMType {
                         SimpleSearchPage newSimpleSearchPage;
                         if (simpleSearchPage.alSearchOption != null) {
                             if (simpleSearchPage.alSearchOption.size() == 1) {
-                                newSimpleSearchPage = recordDetails.addSimpleSearchPage();
                                 newSimpleSearchPage = simpleSearchPage;
+                                newSimpleSearchPage.searchResultID = "1";
+                                newSimpleSearchPage.searchScreenOrder = String.valueOf(i);
+                                recordDetails.addSimpleSearchPage(newSimpleSearchPage);
                             } else {
                                 for (int j=0; j < simpleSearchPage.alSearchOption.size(); j++) {
                                     newSimpleSearchPage = recordDetails.addSimpleSearchPage();
+
+                                    newSimpleSearchPage.searchResultID = "1";
+                                    newSimpleSearchPage.searchScreenOrder = String.valueOf(i+j);
+                                    newSimpleSearchPage.alFieldGroup = simpleSearchPage.alFieldGroup;
+                                    PageDefinition.SearchOption searchOption = (PageDefinition.SearchOption) simpleSearchPage.alSearchOption.get(j);
+                                    newSimpleSearchPage.addSearchOption(searchOption);
+                                    newSimpleSearchPage.screenTitle = simpleSearchPage.screenTitle + " (" + searchOption.displayName + ")";
                                 }
                             }
                         }
@@ -2516,12 +2679,12 @@ public class EDMType {
             }
             
             void history() {
-                // No Conversion?
+                // Convert edm's history to midm's transactions
                 history = null;
             }
             
             void matchReview() {
-                // Convert edm's matchReview to midm's assumed-matches
+                // Convert edm's matchReview to midm's assumed-matches & duplicated records
                 //mPageDefinition.matchReview = null;
             }
             
@@ -2610,16 +2773,15 @@ public class EDMType {
                 alFieldRef.add(fieldRef);
             }
             
-            String getParentName() {
-                String name = "";
+            boolean exists(String groupName) {
                 if (alFieldRef != null && alFieldRef.size() > 0) {
                     PageDefinition.FieldRef fieldDef = (PageDefinition.FieldRef) alFieldRef.get(0);
-                    int i = fieldDef.fieldName.indexOf('.');
+                    int i = fieldDef.fieldName.indexOf(groupName);
                     if (i >=0) {
-                        name = fieldDef.fieldName.substring(0, i);
+                        return true;
                     }
                 }
-                return name;
+                return false;
             }
         }
         
@@ -2655,6 +2817,14 @@ public class EDMType {
                 alSearchOption.add(searchOption);
                 return searchOption;
             }
+            
+            void addSearchOption(SearchOption searchOption) {
+                if (alSearchOption == null) {
+                    alSearchOption = new ArrayList();
+                }
+                alSearchOption.add(searchOption);
+                return;
+            }       
         }
         
         class SearchResultListPage {
@@ -2683,7 +2853,7 @@ public class EDMType {
                 FieldGroup fieldGroup = null; // = new FieldGroup();
                 for (int i=0; alFieldGroup != null && i < alFieldGroup.size(); i++) {
                     fieldGroup = (FieldGroup) alFieldGroup.get(i);
-                    if (fieldGroup.getParentName().equals(fieldGroupName)) {
+                    if (fieldGroup.exists(fieldGroupName)) {
                         return fieldGroup;
                     }
                 }
@@ -2706,6 +2876,14 @@ public class EDMType {
                 }
                 alSimpleSearchPages.add(simpleSearchPage);
                 return simpleSearchPage;
+            }
+
+            void addSimpleSearchPage(SimpleSearchPage simpleSearchPage) {
+                if (alSimpleSearchPages == null) {
+                    alSimpleSearchPages = new ArrayList();
+                }
+                alSimpleSearchPages.add(simpleSearchPage);
+                return;
             }
             
             SearchResultListPage addSearchResultListPage() {
@@ -2819,6 +2997,21 @@ public class EDMType {
                 Report report = new Report();
                 alReport.add(report);
                 return report;
+            }
+            
+            ArrayList getAlFieldGroup() {
+                ArrayList alSubscreens = subscreenConfigurations.alSubscreens;
+                for (int i = 0; alSubscreens != null && i < alSubscreens.size(); i++) {
+                    Subscreen subscreen = (Subscreen) alSubscreens.get(i);
+                    if (subscreen.commonBlock != null) {
+                        if (subscreen.commonBlock.searchResultListPage != null) {
+                            if (subscreen.commonBlock.searchResultListPage.alFieldGroup != null) {
+                                return subscreen.commonBlock.searchResultListPage.alFieldGroup;
+                            }
+                        }
+                    }
+                }
+                return null;
             }
         }
         
