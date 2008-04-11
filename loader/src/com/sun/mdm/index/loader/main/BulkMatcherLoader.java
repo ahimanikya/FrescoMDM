@@ -84,6 +84,8 @@ public class BulkMatcherLoader {
 	private boolean bulkLoad = false;
 	private static int UPTO_EUIDASSIGN = 1; // generate upto EUIDAssign
 	private static int MIGENERATE_ONLY = 2; // generate master Index only
+	private static int BLOCKDISTRIBUTE_ONLY = 3;
+	private static int BLOCKDISTRIBUTE_AFTER = 4;
 	private int loadMode_ = 0; // default mode
 	public BulkMatcherLoader() throws Exception {
             new LoaderLogManager().init();
@@ -105,6 +107,7 @@ public class BulkMatcherLoader {
 	
 	public void bulkMatchLoad() throws Exception {	
 	 if (loadMode_ != MIGENERATE_ONLY)	 {
+	  if (loadMode_ != BLOCKDISTRIBUTE_AFTER) {
 		clusterSynchronizer_.initLoaderName(loaderName_, isMasterLoader_);
 	    if (isMasterLoader_) { 
 		  logger.info("block_distribution_started");
@@ -116,6 +119,11 @@ public class BulkMatcherLoader {
 	    } else {
 		  logger.info("waiting_for_block_distribution");
 		  clusterSynchronizer_.waitMatchingReady();		 
+	    }
+	  }
+	    
+	    if (loadMode_ == BLOCKDISTRIBUTE_ONLY) {
+	    	return;
 	    }
 	    logger.info("matcher_started");	
 	    Matcher matcher = new Matcher(matchPaths_, matchTypes_, blockLk_, false);
@@ -224,9 +232,13 @@ public class BulkMatcherLoader {
 			  loadMode_ = MIGENERATE_ONLY;
 			} else if (sloadMode.equals("UPTO_EUIDASSIGN")) { 
 			  loadMode_ = UPTO_EUIDASSIGN;
+			} else if (sloadMode.equals("BLOCKDISTRIBUTE_AFTER")) { 
+			  loadMode_ = BLOCKDISTRIBUTE_AFTER;
+			} else if (sloadMode.equals("BLOCKDISTRIBUTE_ONLY")) { 
+			  loadMode_ = BLOCKDISTRIBUTE_ONLY;
 			} 
         }
-		if (loadMode_ != MIGENERATE_ONLY) {
+		if (loadMode_ != MIGENERATE_ONLY && loadMode_ != BLOCKDISTRIBUTE_AFTER) {
 		  cleanDirs();
 		  FileManager.initDirs();
 		}
