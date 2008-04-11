@@ -40,12 +40,14 @@ import java.sql.Connection;
 
 import com.sun.mdm.index.matching.Standardizer;
 import com.sun.mdm.index.configurator.ConfigurationService;
+import com.sun.mdm.index.configurator.impl.decision.DecisionMakerConfiguration;
 import com.sun.mdm.index.configurator.impl.standardization.StandardizationConfiguration;
 import com.sun.mdm.index.dataobject.DataObjectFileReader;
 import com.sun.mdm.index.dataobject.DataObjectReader;
 import com.sun.mdm.index.dataobject.objectdef.Field;
 import com.sun.mdm.index.dataobject.objectdef.Lookup;
 import com.sun.mdm.index.dataobject.objectdef.ObjectDefinition;
+import com.sun.mdm.index.decision.impl.DefaultDecisionMaker;
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterSynchronizer;
 import com.sun.mdm.index.loader.common.FileManager;
 import com.sun.mdm.index.loader.config.LoaderConfig;
@@ -104,6 +106,11 @@ public class MasterIndex {
    public void generateMasterIndex() throws Exception {
 		
 	 File bucketFile;
+	 DecisionMakerConfiguration dmConfig = (DecisionMakerConfiguration) ConfigurationService
+     .getInstance().getConfiguration(
+             DecisionMakerConfiguration.DECISION_MAKER);
+	 DefaultDecisionMaker decision = (DefaultDecisionMaker) dmConfig.getDecisionMaker();
+     boolean sameSystemMatch = decision.isSameSystemMatchEnabled();          
 	 
 	 Standardizer[] standardizer = new Standardizer[poolSize_];
 	 for (int i = 0; i < poolSize_; i++)  {	 
@@ -137,7 +144,8 @@ public class MasterIndex {
 			Map<String,TableData> tableMap = new HashMap<String, TableData>();
 			allTableData.add(tableMap);
 			MIndexTask task = 
-				 new MIndexTask(tableMap, cursor, objectDef_, standardizer[i], endGate, con_);
+				 new MIndexTask(tableMap, cursor, objectDef_, standardizer[i], endGate, con_,
+						 sameSystemMatch);
 		    executor_.execute(task);		    
 		}
 		
