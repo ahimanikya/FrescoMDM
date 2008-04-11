@@ -758,8 +758,8 @@ function ajaxURL(url,thisInnerHtmlDivName,e)    {
            document.getElementById(innerHtmlDiv).innerHTML = xhr.responseText;
            document.getElementById(innerHtmlDiv).style.display = 'block';
            document.getElementById(innerHtmlDiv).style.visibility = 'visible';
-           var xpos = thisEvent.layerX? thisEvent.layerX : thisEvent.offsetX? thisEvent.offsetX : 0;
-           var ypos = thisEvent.layerY? thisEvent.layerY : thisEvent.offsetY? thisEvent.offsetY : 0;
+           //var xpos = thisEvent.layerX? thisEvent.layerX : thisEvent.offsetX? thisEvent.offsetX : 0;
+           //var ypos = thisEvent.layerY? thisEvent.layerY : thisEvent.offsetY? thisEvent.offsetY : 0;
            //////alert(xpos+'---'+ypos);
            var divID = document.getElementById(innerHtmlDiv);
            var x = divID.getElementsByTagName("script");    
@@ -1948,4 +1948,5 @@ function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,m
 }
 
 } 
+
 
