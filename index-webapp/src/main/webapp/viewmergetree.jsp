@@ -23,16 +23,17 @@
        </head>
 <f:view>
 <body>	
-     <table>
+     <table  width="100%">
          <tr>
-             <td align="left">Merge Tree</td>
+             <td align="left"><font style="font-size:14px;font-style:bold;">Merge Tree</font></td>
              <td align="right">
                  <a href="javascript:void(0);" onclick="javascript:closeTree();">Close</a>
                  <a href="javascript:void(0);" onclick="javascript:closeTree();"><img src="images/close.gif" width="12" height="12" border="0" alt="close"/></a>
              </td>
          </tr>
+
          <tr>
-             <td colspan="2" align="center">
+             <td colspan="2" align="left">
                  <h:form>
                      <yui:treeView id="treeView" value="#{ViewMergeTreeHandler.htmlNodeTreeDataModel}" expandAnim="FADE_IN" collapseAnim="fade_out"></yui:treeView>
                  </h:form>                 
