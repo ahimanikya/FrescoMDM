@@ -121,19 +121,20 @@ public class ScreenConfiguration {
     /**
      * SearchScreenConfig
      */
-     SearchScreenConfig searchScreenConfig = (SearchScreenConfig) screenObject.getSearchScreensConfig().toArray()[0];
+     SearchScreenConfig searchScreenConfig = null;
 
     /**
      * Search type
      */
-    private String searchType = searchScreenConfig.getScreenTitle();
+    private String searchType = new String("");
     
-    SearchResultsConfig searchResultsConfig = (SearchResultsConfig) screenObject.getSearchResultsConfig().toArray()[0];
+    SearchResultsConfig searchResultsConfig = null;
 
     /**
      * Search type
      */
-    private String resultsType = searchResultsConfig.getMaxRecords() + " Records"+ " (" + searchResultsConfig.getSearchResultID() + ")";
+    private String resultsType = new String("");
+    
     
     /**
      * all system codes
@@ -148,14 +149,27 @@ public class ScreenConfiguration {
     /**
      *LID mask length
      */
-    private int lidMaskLength = getAllSystemCodes()[1][0].length();
+      private int lidMaskLength = 0;
 
-    private String selectedSearchType = searchScreenConfig.getScreenTitle();
+      private String selectedSearchType = new String("");
     
-    private String instructionLine  = searchScreenConfig.getInstruction();
+      private String instructionLine  = new String("");
     
     /** Creates a new instance of ScreenConfiguration */
     public ScreenConfiguration() {
+        searchScreenConfig = (screenObject.getSearchScreensConfig().size() > 0) ? (SearchScreenConfig) screenObject.getSearchScreensConfig().toArray()[0] : null;
+        
+        searchType = (searchScreenConfig != null) ? searchScreenConfig.getScreenTitle() : new String("");
+        
+        searchResultsConfig = (screenObject.getSearchResultsConfig().size() > 0) ? (SearchResultsConfig) screenObject.getSearchResultsConfig().toArray()[0] : null;
+        
+        resultsType = (searchResultsConfig != null) ? searchResultsConfig.getMaxRecords() + " Records"+ " (" + searchResultsConfig.getSearchResultID() + ")" : new String("");
+        
+        selectedSearchType = (searchScreenConfig != null) ? searchScreenConfig.getScreenTitle() : new String("");
+        instructionLine  = (searchScreenConfig != null) ? searchScreenConfig.getInstruction() : new String("");
+       
+        lidMaskLength = (getAllSystemCodes()[1][0] != null)? getAllSystemCodes()[1][0].length():0;
+        
     }
 
     /**
@@ -167,11 +181,8 @@ public class ScreenConfiguration {
         screenConfigArray = new ArrayList();
         
         ArrayList basicSearchFieldConfigs;
+
         try {
-            ////System.out.println("possilbeSearchTypes --> " + this.possilbeSearchTypes.size());
-//          if(this.possilbeSearchTypes.size() > 1) {
-//            setSearchType(searchScreenConfig.getScreenTitle());
-//          }
 
             ArrayList screenConfigList = screenObject.getSearchScreensConfig();
 
@@ -243,58 +254,6 @@ public class ScreenConfiguration {
      * @return ArrayList
      */
     public ArrayList getResultsConfigArray() {
-//        ArrayList basicSearchFieldConfigs = null;
-//        try {
-//            ArrayList resultsScreenConfigArray = screenObject.getSearchResultsConfig();
-//            Iterator iteratorScreenConfig = resultsScreenConfigArray.iterator();
-//
-//            while (iteratorScreenConfig.hasNext()) {
-//                SearchResultsConfig objSearchScreenConfig = (SearchResultsConfig) iteratorScreenConfig.next();
-//                            System.out.println("possilbeResultsTypesCount ===> " + objSearchScreenConfig);
-//                if (possilbeResultsTypesCount > 1 && this.resultsType.equalsIgnoreCase(objSearchScreenConfig.getMaxRecords()+" Records"+ " (" + objSearchScreenConfig.getSearchResultID() + ")" ) ) {
-//                    setMaxRecords(objSearchScreenConfig.getMaxRecords());
-//                    setPageSize(objSearchScreenConfig.getPageSize());
-//
-//                    // Get an array list of field config groups
-//                    basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
-//                    Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
-//                    //Iterate the the FieldConfigGroup array list
-//                    while (basicSearchFieldConfigsIterator.hasNext()) {
-//                        //Build array of field config groups 
-//                        FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
-//                        //Build array of field configs from 
-//                        //screenConfigArray = basicSearchFieldGroup.getFieldConfigs();
-//                        ArrayList fieldConfigsList = basicSearchFieldGroup.getFieldConfigs();
-//                        for (int i = 0; i < fieldConfigsList.size(); i++) {
-//                            FieldConfig object = (FieldConfig) fieldConfigsList.get(i);
-//                            resultsConfigArray.add(object);
-//                        }
-//                    }
-//                } else if (screenObject.getSearchResultsConfig().size() == 1){
-//
-//                    setMaxRecords(objSearchScreenConfig.getMaxRecords());
-//                    setPageSize(objSearchScreenConfig.getPageSize());
-//
-//                    // Get an array list of field config groups
-//                    basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
-//                    Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
-//                    //Iterate the the FieldConfigGroup array list
-//                    while (basicSearchFieldConfigsIterator.hasNext()) {
-//                        //Build array of field config groups 
-//                        FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
-//                        //Build array of field configs from 
-//                        //screenConfigArray = basicSearchFieldGroup.getFieldConfigs();
-//                        ArrayList fieldConfigsList = basicSearchFieldGroup.getFieldConfigs();
-//                        for (int i = 0; i < fieldConfigsList.size(); i++) {
-//                            FieldConfig object = (FieldConfig) fieldConfigsList.get(i);
-//                            resultsConfigArray.add(object);
-//                        }
-//                    }
-//                }
-//            }
-//        } catch (Exception e) {
-//            Logger.getLogger(ScreenConfiguration.class.getName()).log(Level.SEVERE, "Failed Get the Screen Config Array Object: ", e);
-//        }
             ArrayList resultsScreenConfigArray = screenObject.getSearchResultsConfig();
             Iterator iteratorScreenConfig = resultsScreenConfigArray.iterator();
             ArrayList newArrayList = new ArrayList();
@@ -826,25 +785,19 @@ public class ScreenConfiguration {
         
         ArrayList basicSearchFieldConfigs;
         try {
-            ////System.out.println("possilbeSearchTypes --> " + this.possilbeSearchTypes.size());
-//          if(this.possilbeSearchTypes.size() > 1) {
-//            setSearchType(searchScreenConfig.getScreenTitle());
-//          }
-
             ArrayList screenConfigList = screenObject.getSearchScreensConfig();
 
             Iterator iteratorScreenConfig = screenConfigList.iterator();
             while (iteratorScreenConfig.hasNext()) {
                 SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
-
-                //System.out.println("screenObject.getSearchScreensConfig().size()"+screenObject.getSearchScreensConfig().size()+"this.searchType ==> : " + this.searchType+ "objSearchScreenConfig.getScreenTitle() --> " + objSearchScreenConfig.getScreenTitle());
                 if (screenObject.getSearchScreensConfig().size() > 1 && this.searchType.equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
                     // Get an array list of field config groups
                     basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
                     //set the instruction line here
                     setInstructionLine(objSearchScreenConfig.getInstruction());
-                    ////System.out.println("size() > 1  Basic --> " + basicSearchFieldConfigs);
+                    
                     Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
+                    
                     //Iterate the the FieldConfigGroup array list
                     while (basicSearchFieldConfigsIterator.hasNext()) {
                         //Build array of field config groups 
@@ -855,6 +808,7 @@ public class ScreenConfiguration {
                 } else if (screenObject.getSearchScreensConfig().size() == 1){
                     // Get an array list of field config groups
                     basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
+
                     //set the instruction line here
                     setInstructionLine(objSearchScreenConfig.getInstruction());
 
@@ -864,8 +818,6 @@ public class ScreenConfiguration {
                         //Build array of field config groups 
                         FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
                         searchScreenFieldGroupArray.add(basicSearchFieldGroup);
-                        //Build array of field configs from 
-                        //screenConfigArray = basicSearchFieldGroup.getFieldConfigs();
                     }
                 }
             }
