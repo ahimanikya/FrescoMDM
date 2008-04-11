@@ -203,10 +203,72 @@ public class ObjectNodeXML {
     private Object convert(Object obj) {
         if (obj instanceof java.util.Date) {
             return mDateFormatter.format((java.util.Date) obj);
+        } else if (obj instanceof java.lang.String) {
+        	if (hasEscapedCharacter((java.lang.String) obj)) {
+        		return encodeString((java.lang.String) obj);
+        	}
         }
         return obj;
     }
-    
+
+    /**
+     * Check if a string contains any escaped character
+     *
+     * @param str the string to be checked
+     * @return boolean
+     */
+    private boolean hasEscapedCharacter(String str) {
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            switch (ch) {
+                case '\'':
+                case '"':
+                case '<':
+                case '>':
+                case '&':
+                	return true;
+                default:
+                	continue;
+            }
+        }
+        return false;
+    }
+	    
+    /**
+     * Encode xml escaped characters accordingly
+     *
+     * @param str the string to be encoded
+     * @return encoded xml string
+     */
+    private String encodeString(String str) {
+        if (!hasEscapedCharacter(str)) {
+        	return str;
+        }
+       
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if (ch == '<') {
+                buf.append("&lt;");
+                continue;
+            } else if (ch == '&') {
+                buf.append("&amp;");
+                continue;
+            } else if (ch == '"') {
+                buf.append("&quot;");
+                continue;
+            } else if (ch == '\'') {
+                buf.append("&apos;");
+                continue;
+            } else if (ch == '>') {
+                buf.append("&gt;");
+                continue;
+            }
+            buf.append(ch);            
+        }
+        return buf.toString();        
+    }
+
     /**
      * Converts the object node into an xml string
      * @param object node to convert
