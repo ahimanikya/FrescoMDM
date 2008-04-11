@@ -94,6 +94,11 @@
                                             <img src="./images/down-chevron-button.png" border="0" alt="Advanced search"/>
                                        </span>
                                     </h:commandLink>                                     
+			            <FORM>
+					<a class="button" href="javascript:void()" onclick="history.go(-1)">
+						<span><h:outputText  value="#{msgs.back_button_text}"/></span>
+					</a>
+  				    </FORM>
                                 </td>
                             </tr>
                         </table>
@@ -600,8 +605,8 @@
                                                 }
                                               }%>                                            
                                                 <%
-                                                  if (request.getAttribute("mergeEOList") != null) {
-                                                    ArrayList mergeEOList = (ArrayList) request.getAttribute("mergeEOList");
+                                                  if (request.getAttribute("mergeEOList"+mainEUID) != null) {
+                                                    ArrayList mergeEOList = (ArrayList) request.getAttribute("mergeEOList"+mainEUID);
                                                     for (int eomerge = 0; eomerge < mergeEOList.size(); eomerge++) {
                                                         HashMap objectMergeMap =(HashMap) mergeEOList.get(eomerge);
                                                         HashMap mergeeoValuesMap = (HashMap) objectMergeMap.get("ENTERPRISE_OBJECT");
@@ -745,8 +750,7 @@
                                         <td>
                                         <td valign="top">
                                             <div id="dynamicMainEuidButtonContent<%=countEnt%>">
-                                                <table border="0" cellspacing="0" cellpadding="0" border="1">
-
+                                                <table border="0" cellspacing="0" cellpadding="0" border="0">
                                                     <h:form>
                                                         
                                                         <%if ("active".equalsIgnoreCase(eoStatus)) {%>
@@ -796,11 +800,9 @@
                                                           <a href="javascript:showViewHistory('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','0')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
                                                       </td>                                              
                                                   </tr>
-									<tr>
                                         <%if(eoHistory.size() > 0) {
 												   %>
 										
-                                        <td valign="top">
                                                      <%
 											            String mergekey = new String();
                                                         for(int i=0;i<eoHistory.size();i++) {
@@ -811,10 +813,8 @@
                                                         ValueExpression tranNoValueExpressionviewmerge = ExpressionFactory.newInstance().createValueExpression(tranNo, tranNo.getClass());
                                                         ValueExpression eoArrayListVE = ExpressionFactory.newInstance().createValueExpression(eoArrayList, eoArrayList.getClass());
                                                       %>  
-                                                      <div id="unmerge">    
-                                                      <table cellpadding="0" cellspacing="0" border="0">
                                                           <tr>
-                                                            <td valign="top" colspan="2">
+                                                            <td valign="top">
                                                                 <h:outputLink styleClass="viewbtn" rendered="#{Operations.EO_Unmerge}"
                                                                               onclick="Javascript:showConfirm('unmergePopupDiv',event)" 
                                                                               value="Javascript:void(0)">
@@ -823,12 +823,13 @@
                                                             </td> 
                                                         </tr>
                                                         <tr>
-                                                            <td valign="top" colspan="2">
+                                                            <td valign="top">
                                                                 <h:form>
                                                                     <h:commandLink styleClass="activeviewbtn" rendered="#{Operations.EO_Merge}"
                                                                                    actionListener="#{PatientDetailsHandler.viewMergedRecords}">
-                                                                        <f:attribute name="eoArrayList" value="<%=eoArrayListVE%>"/>                   
-                                                                        <f:attribute name="tranNoValueExpressionviewmerge" value="<%=tranNoValueExpressionviewmerge%>"/>                   
+                                                                        <f:attribute name="eoArrayList" value="<%=eoArrayListVE%>"/>        
+                                                                        <f:attribute name="euidValueExpression" value="<%=euidValueExpression%>"/>
+																		<f:attribute name="tranNoValueExpressionviewmerge" value="<%=tranNoValueExpressionviewmerge%>"/>                   
                                                                         <h:outputText  value="#{msgs.View_Merge_Records_but_text}"/>                                                            
                                                                     </h:commandLink>
                                                                 </h:form>
@@ -841,22 +842,17 @@
                                                           URI = URI.substring(1, URI.lastIndexOf("/"));
                                                           %>
                                                          <a href="javascript:void(0);" class="viewbtn" onclick="javascript:ajaxURL('/<%=URI%>/viewmergetree.jsf?euid=<%=personfieldValuesMapEO.get("EUID")%>&rand=<%=rand%>','tree',event)">
-                                                          <h:outputText value="#{msgs.View_MergeTree_but_text}"/>
+                                                          <h:outputText  value="#{msgs.View_MergeTree_but_text}"/>
                                                          </a>
                                                       </td>
                                                   </tr>
-                                                        
-                                                        </table>
-                                                      </div>
                                                    <%}%>
-                                          </td>  
 										<%
                                         unMergeEuidVE = ExpressionFactory.newInstance().createValueExpression(euid, euid.getClass());
                                          %> 
 
                                           <%}%> 
 
-									</tr>
 
   											   </div>
                                                </table>                                               
@@ -872,6 +868,8 @@
                 </div>
                 
             </div>    
+<div id="tree" style="LEFT:189px;TOP:350px;PADDING-LEFT: 5px; VISIBILITY: hidden; WIDTH: 180px; PADDING-TOP: 5px;  POSITION: absolute;  OVERFLOW: auto;  HEIGHT: 150px; BACKGROUND-COLOR: #c4c8e1; BORDER-RIGHT:  #000099 thin solid; BORDER-TOP: #000099 thin solid; BORDER-LEFT: #000099 thin solid; BORDER-BOTTOM:  #000099 thin solid"></div> 
+
                 <div id="unmergePopupDiv" class="alert" style="TOP: 2250px; LEFT: 500px; HEIGHT: 150px;  WIDTH: 300px;VISIBILITY: hidden;">
                                                         <table cellpadding="0" cellspacing="0">
                                                             <h:form>
@@ -903,7 +901,6 @@
                                                     </div>                                 
                        
          <div id="unmergepopuphelp" class="balloonstyle"><h:outputText  value="#{msgs.unmergepopup_help}"/></div>     
-         <div id="tree" style="PADDING-LEFT: 5px; LEFT: 25px; VISIBILITY: hidden; WIDTH: 200px; PADDING-TOP: 5px;  POSITION: absolute;  OVERFLOW: auto; TOP: 260px; HEIGHT: 150px; BACKGROUND-COLOR: #c4c8e1; BORDER-RIGHT:  #000099 thin solid; BORDER-TOP: #000099 thin solid; BORDER-LEFT: #000099 thin solid; BORDER-BOTTOM:  #000099 thin solid"></div> 
         </body>
 <script>
          if( document.potentialDupBasicForm.elements[0]!=null) {
