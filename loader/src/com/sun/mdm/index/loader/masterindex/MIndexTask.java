@@ -35,6 +35,10 @@ import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 import java.sql.Connection;
+import com.sun.mdm.index.configurator.impl.decision.DecisionMakerConfiguration;
+import com.sun.mdm.index.decision.impl.DefaultDecisionMaker;
+import com.sun.mdm.index.configurator.ConfigurationService;
+
 
 //import com.sun.mdm.index.objects.PersonObject;
 //import com.sun.mdm.index.objects.AddressObject;
@@ -52,6 +56,7 @@ import com.sun.mdm.index.dataobject.DataObject;
 import com.sun.mdm.index.dataobject.objectdef.Lookup;
 import com.sun.mdm.index.dataobject.objectdef.ObjectDefinition;
 import com.sun.mdm.index.objects.ObjectNode;
+import com.sun.mdm.index.idgen.EuidGenerator;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.loader.common.ObjectNodeUtil;
 import com.sun.mdm.index.loader.common.Util;
@@ -92,6 +97,8 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
     private String sdate_;
     private Date date_;
     private static String dateFormatString_;
+    private boolean sameSystemMatch_;
+    private EuidGenerator euidGenerator;
     
     private static String empty_s = "";
     private static String ADD = "Add";
@@ -106,11 +113,12 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	// This format is used for storing dates in systemobjects, sbr, transaction table,
       // per database loader .ctl.
     
-    private Standardizer mstandardizer;
+  
 	MIndexTask(Map<String, TableData> tableMap, EUIDBucket.EOCursor cursor,  
-			 ObjectDefinition objDef, Standardizer standardizer, CountDownLatch endGate, Connection con) 
+			 ObjectDefinition objDef, Standardizer standardizer, CountDownLatch endGate, Connection con, 
+			 boolean sameSystemMatch) 
 			      throws Exception {
-		mstandardizer = standardizer;
+		
 		tableMap_ = tableMap;
 		mCalculator = new SurvivorCalculator(standardizer);	
 		eoCursor_ = cursor;
@@ -121,37 +129,40 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		  // written to master index files is - "object def date Format" + "hh:mm:ss"
 		date_ = new Date();	    
 	    sdate_ = sysdateFormat_.format(date_);
+	    euidGenerator = config.getEuidGenerator();
+        sameSystemMatch_ = sameSystemMatch;                
 	}
 		
 	public void run() {
-	  try {	
-		
-		List<DataObject> nextsolist = null;
-		List<DataObject> solist = null;
-		while (true ) {		
-			solist = eoCursor_.next();
-			
-		  if (solist == null) {
-			  break;
-		  }		
-		  
-		  Map<String,String> weightMap = new HashMap<String,String>();
-          if (solist.size() < 1) {
-			  weightMap = null;
-		  } else {
-		    for(DataObject d: solist) {
-			  String syslocalid = d.getFieldValue(2) + d.getFieldValue(3);
-			  String weight = d.getFieldValue(4); // weight is at position 5 in EUID bucket
-			  String wt = weightMap.get(syslocalid);			  
-			  if (wt == null && !weight.equals(MatcherTask.SDUPSCORE)) {
-				weightMap.put(syslocalid, weight);  
-			  }			 
-		    }
-		  }
-		  
-		 EnterpriseObject eo =  calculateSBR(solist);
-		 addEnterprise(eo, weightMap);		 		 
-		}
+		 try {				
+				while (true ) {		
+				  List<DataObject> solist = eoCursor_.next();
+				  if (solist == null) {
+					  break;
+				  }		
+				  
+				  List<List<DataObject>> solists = splitSameSystem(solist);
+				  for (List<DataObject> slist: solists) {
+				  
+				    Map<String,String> weightMap = new HashMap<String,String>();
+		            if (slist.size() < 1) {
+					  weightMap = null;
+				    } else {
+				     for(DataObject d: slist) {
+					  String syslocalid = d.getFieldValue(2) + d.getFieldValue(3);
+					  String weight = d.getFieldValue(4); // weight is at position 5 in EUID bucket
+					  String wt = weightMap.get(syslocalid);			  
+					  if (wt == null && !weight.equals(MatcherTask.SDUPSCORE)) {
+						weightMap.put(syslocalid, weight);  
+					  }			 
+				     }
+				  }
+				  
+				 EnterpriseObject eo =  calculateSBR(slist);
+				 addEnterprise(eo, weightMap);		 		 
+				}
+			   }
+
 	  } catch (Throwable ex){
 		  logger.severe(ex + ex.getMessage());
 		  logger.severe(Util.getStackTrace(ex));
@@ -164,6 +175,101 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	  }
 		
 	}
+	
+	
+	/*
+	public void run() {
+		  try {	
+			
+			List<DataObject> nextsolist = null;
+			List<DataObject> solist = null;
+			while (true ) {		
+				solist = eoCursor_.next();
+				
+			  if (solist == null) {
+				  break;
+			  }		
+			  
+			  Map<String,String> weightMap = new HashMap<String,String>();
+	          if (solist.size() < 1) {
+				  weightMap = null;
+			  } else {
+			    for(DataObject d: solist) {
+				  String syslocalid = d.getFieldValue(2) + d.getFieldValue(3);
+				  String weight = d.getFieldValue(4); // weight is at position 5 in EUID bucket
+				  String wt = weightMap.get(syslocalid);			  
+				  if (wt == null && !weight.equals(MatcherTask.SDUPSCORE)) {
+					weightMap.put(syslocalid, weight);  
+				  }			 
+			    }
+			  }
+			  
+			 EnterpriseObject eo =  calculateSBR(solist);
+			 addEnterprise(eo, weightMap);		 		 
+			}
+		  } catch (Throwable ex){
+			  logger.severe(ex + ex.getMessage());
+			  logger.severe(Util.getStackTrace(ex));
+			  ex.printStackTrace();
+			 // if (ex instanceof Error) {
+				//  throw (Error) ex;
+			  //}
+		  } finally {		
+		     endGate_.countDown();
+		  }
+			
+		}
+	*/
+	
+	
+	private List<List<DataObject>> splitSameSystem(List<DataObject> solist) throws Exception {
+		List<List<DataObject>> solists = new ArrayList<List<DataObject>>();
+		boolean found = true;
+		boolean init = false;
+		String curEUID = null;
+		for ( DataObject d: solist  ) {
+			String syscode = d.getFieldValue(2);
+			/*
+			 * for each dataobject in input solist, go through all the lists in solists,
+			 * If in any list, that systemcode is not found, add to that list.
+			 * If every list in solists has that systemcode, then create a new list.
+			 */
+			for (List<DataObject> list: solists) {
+				found = false;
+				if (sameSystemMatch_) {
+				  for (DataObject dobject: list) {
+					curEUID = dobject.getFieldValue(0);
+					String syscode2 = dobject.getFieldValue(2);
+					if (syscode.equals(syscode2)) {
+						found = true;
+						continue;
+					}
+				  }
+				}
+				if (found == false) {					
+					d.setFieldValue(0, curEUID);
+					list.add(d);
+					break;
+				}
+			}
+			/** 
+			 * this code is executed, at very first time, and when same system match is found in all existing  lists
+			 */
+			if (found == true) {
+				List<DataObject> newlist = new ArrayList<DataObject>();
+				if (curEUID == null) {
+					curEUID = d.getFieldValue(0);
+				} else {
+					curEUID = euidGenerator.getNextEUID(con_);
+					d.setFieldValue(0, curEUID);
+				}
+				newlist.add(d);
+				solists.add(newlist);
+			}						
+		}
+		return solists;				
+	}
+	
 	
 	static {
 		objDef_ = initDef();
