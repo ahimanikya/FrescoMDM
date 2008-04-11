@@ -118,9 +118,9 @@ public class Matcher {
 			break;
 		}			    		
 		Comparator<MatchRecord> comp = getComparator();									
-		DataObjectReader reader = new DataObjectFileReader(bucketFile);		
+		DataObjectReader reader = new DataObjectFileReader(bucketFile.getAbsolutePath(), true);		
 		Bucket bucket = new Bucket(reader, bucketFile, isSBR_);
-		logger.fine("Block bucket:"+ bucket.getFile().getName() + " processing");
+		logger.info("Block bucket:"+ bucket.getFile().getName() + " processing");
 		bucket.load();
 	
 		
@@ -173,6 +173,7 @@ public class Matcher {
 		for (int i = 0; i < treeMaps.length; i++)  {			
 		  allMap.putAll(treeMaps[i]);
 		}
+		logger.info("TreeMap size: " + allMap.size());
 		
 		File matchFile = null;
 		if (!isSBR_) {
@@ -214,6 +215,7 @@ public class Matcher {
 			  finalMatchStageFileList.add(finalMatchStageFiles[i]);
 		    }
 		    fileMerger = new MatchFileMerger(isSBR_);
+		    logger.info("merging match files");
 		    fileMerger.merge(finalMatchStageFileList, finalMatch);
 		 } else {
 			 clusterSynchronizer_.waitMatchingDone();	
@@ -224,6 +226,7 @@ public class Matcher {
 				 finalMatchStageFileList.add(finalMatchStageFiles[i]);
 			 }		 
 			 fileMerger = new MatchFileMerger(isSBR_);
+			 logger.info("merging match files");
 			 fileMerger.merge(finalMatchStageFileList, finalMatch);
 		 }
 	   }
@@ -233,17 +236,14 @@ public class Matcher {
    
    }
 	
-	int buccount = 0;
+	
 	File getBucketFile() throws IOException {
 		String fileName = null;
 		if (!isSBR_) {
 		   fileName = clusterSynchronizer_.getBlockBucket();
 		} else {
 		   fileName = clusterSynchronizer_.getSBRBucket();
-			if (buccount == 0) {
-			//  fileName = "SBRBlockB_2";
-			}
-			buccount++;
+			
 		}
  		if (fileName == null) {
 			return null;
