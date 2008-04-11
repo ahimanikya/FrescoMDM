@@ -106,7 +106,9 @@ public class BlockDistributor {
 						
 		DataObjectReader reader = getReader();
 		
+		
 		while (true) {
+			
 		
 		   DataObject inputdataObject = reader.readDataObject();
 		   try {
@@ -215,7 +217,7 @@ public class BlockDistributor {
 		
 		buckets_ = new Bucket[numBuckets_];
 		for (int i = 0; i < numBuckets_; i++) {
-			DataObjectWriter dataObjectWriter = new DataObjectFileWriter(files[i]);
+			DataObjectWriter dataObjectWriter = new DataObjectFileWriter(files[i].getAbsolutePath(), true);
 			buckets_[i] = new Bucket(dataObjectWriter, files[i]);
 		}		
 	}
