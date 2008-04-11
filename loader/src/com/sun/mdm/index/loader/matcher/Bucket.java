@@ -271,7 +271,11 @@ public class Bucket {
 				   }				   
 			   }
 			   return bp;				  			   
-		   }		   
+		   }
+		   
+		   String getBucketFile() {
+			   return file.getName();
+		   }
 	 }
 	 	 	 
 	 	
