@@ -69,6 +69,8 @@ public class EnterpriseUpdatePolicy implements UpdatePolicy {
         //Add alias overwrite values for all SBR's on the list
         AliasHelper.addAliasOverwrite(afterImage);
         
+        AliasHelper.deleteAliasSBR(afterImage);
+        
         return afterImage;
     }
     

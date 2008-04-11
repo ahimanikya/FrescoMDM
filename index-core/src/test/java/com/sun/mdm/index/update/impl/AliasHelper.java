@@ -470,4 +470,93 @@ public class AliasHelper {
         return null;
     }
     
+    public static void deleteAliasSBR(EnterpriseObject afterImage) 
+    throws SystemObjectException, ObjectException {
+
+        Collection aliasesDeleted = getDeletedAliasesFromSOs(afterImage);
+        if (aliasesDeleted == null) {
+        	return;
+        }
+
+        SBR afterSBR = afterImage.getSBR();
+        ArrayList overwritesSBR = afterSBR.getOverWrites();
+        PersonObject personSBR = (PersonObject) afterSBR.getObject();
+        
+        Collection aliasesSBR = personSBR.getAlias();
+        if (aliasesSBR == null) {
+        	return;
+        }
+        AliasSet aliasSetSBR = new AliasSet();
+        aliasSetSBR.addAliases(aliasesSBR);
+        
+        Collection aliasesSO = getAliasesFromSOs(afterImage);
+        AliasSet aliasSetRemaining = new AliasSet();
+        if (aliasesSO != null) {
+            aliasSetRemaining.addAliases(aliasesSO);
+        }
+        
+        Iterator aliasIter = aliasesDeleted.iterator();
+        while (aliasIter.hasNext()) {
+        	AliasObject alias = (AliasObject) aliasIter.next();
+            if (!aliasSetRemaining.hasAlias(alias)) {
+                AliasObject aliasSBR = aliasSetSBR.getAlias(alias);
+                if (aliasSBR != null) {
+                    aliasSBR.setRemoveFlag(true);
+                    ArrayList aliasOverwrites = convertAliasToOverwrite(aliasSBR, afterSBR);
+                    Iterator overwriteIterator = aliasOverwrites.iterator();
+                    while (overwriteIterator.hasNext()) {
+                        String path = ((SBROverWrite) overwriteIterator.next()).getEPath();
+                        SBROverWrite overwrite = findOverwrite(path, overwritesSBR);
+                        if (overwrite != null) {
+                            overwrite.setRemoveFlag(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static Collection getDeletedAliasesFromSOs(EnterpriseObject eo) 
+    throws ObjectException, SystemObjectException {
+        //Go through active system objects and add their aliases to the SBR alias set
+        Collection afterSysObjs = eo.getSystemObjects();
+        Set allAliases = null;
+        if (afterSysObjs != null) {
+            Iterator afterSysObjIterator = afterSysObjs.iterator();
+            while (afterSysObjIterator.hasNext()) {
+                SystemObject afterSysObj = (SystemObject) afterSysObjIterator.next();
+                if (afterSysObj.getStatus().equals(SystemObject.STATUS_INACTIVE) || afterSysObj.isRemoved()) {
+                    PersonObject afterPersonObject = (PersonObject) afterSysObj.getObject();
+                    Collection aliases = afterPersonObject.getAlias();
+                    if (aliases != null) {                        
+                        Iterator i = aliases.iterator();
+                        while (i.hasNext()) {
+                            AliasObject alias = (AliasObject) i.next();
+                            if (allAliases == null) {
+                               allAliases = new HashSet();
+                            }
+                            allAliases.add(alias);
+                        }
+                    }
+                } else {
+                    PersonObject afterPersonObject = (PersonObject) afterSysObj.getObject();
+                    Collection aliases = afterPersonObject.getAlias();
+                    if (aliases != null) {                        
+                        Iterator i = aliases.iterator();
+                        while (i.hasNext()) {
+                            AliasObject alias = (AliasObject) i.next();
+                            if (alias.isRemoved()) {
+                                if (allAliases == null) {
+                                   allAliases = new HashSet();
+                                }
+                                allAliases.add(alias);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return allAliases;
+    }
+    
 }
