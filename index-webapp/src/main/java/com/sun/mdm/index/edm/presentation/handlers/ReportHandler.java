@@ -547,7 +547,6 @@ public class ReportHandler {
                     resultsScreenObject = subScreenObject;
                 }
             }
-            System.out.println("SUB SCREEN " + resultsScreenObject + "subScreenObject" + subScreenObject + "getReportType()" + getReportType());
              ArrayList resultsScreenConfigArraySub = resultsScreenObject.getSearchResultsConfig();
             Iterator iteratorScreenConfig = resultsScreenConfigArraySub.iterator();
             while (iteratorScreenConfig.hasNext()) {
@@ -711,7 +710,7 @@ public class ReportHandler {
                 resultsScreenObject = subScreenObject;
             }
         }
-        //System.out.println("SUB SCREEN " + resultsScreenObject + "subScreenObject" + subScreenObject);
+
         ArrayList screenConfigArraySub = resultsScreenObject.getSearchScreensConfig();
         return screenConfigArraySub;
     }
@@ -757,7 +756,6 @@ public class ReportHandler {
             if (subScreenObject.getDisplayTitle().equalsIgnoreCase(tabName)) {
                 displayOrder = subScreenObject.getDisplayOrder();
             }
-            //System.out.println("tabName  +==> " + tabName + "   ========> " + subScreenObject.getDisplayTitle() + "  displayOrder===> " + displayOrder);
         }
         
         return displayOrder;
