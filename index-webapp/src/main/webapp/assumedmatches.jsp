@@ -48,7 +48,10 @@
     <body class="yui-skin-sam">
     <%@include file="./templates/header.jsp"%>
      <div id="mainContent" style="overflow:hidden;">   
-    
+<%
+        AssumeMatchHandler assumeMatchHandler = new AssumeMatchHandler();
+
+%>
     <div id ="assumedmatches " class="basicSearch">
             <table border="0" cellpadding="0" cellspacing="0" align="right">
                 <h:form id="searchTypeForm" >
@@ -71,6 +74,15 @@
 
                     <tr>
                         <td>
+						   <%
+						   int countFc = 0;
+						   ArrayList sList  = assumeMatchHandler.getSearchScreenFieldGroupArray();
+						   for(int i=0;i<sList.size();i++) {
+							    FieldConfigGroup fcg = (FieldConfigGroup)  sList.get(i);
+								countFc = fcg.getFieldConfigs().size();
+						   }
+                           %>
+                            
                             <input id='lidmask' type='hidden' name='lidmask' value='DDD-DDD-DDDD' />
                             <h:dataTable headerClass="tablehead"  
                                          id="searchScreenFieldGroupArrayId" 
@@ -165,40 +177,51 @@
                                                  </a>
                                           </nobr>
                                         </h:column>
+							  <f:facet name="footer">
+                                     <h:column>
+                                       <div>
+                                        <table  cellpadding="0" cellspacing="0">
+                                         <tr>
+                                          <td>
+                                           <nobr>
+                                              <h:outputLink  styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')" >
+                                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
+                                              </h:outputLink>
+                                           </nobr>
+                                          <nobr>
+                                               <h:commandLink  styleClass="button" rendered="#{Operations.assumedMatch_SearchView}"  action="#{AssumeMatchHandler.performSubmit}" >  
+                                                 <span>
+                                                     <h:outputText value="#{msgs.search_button_label}"/>
+                                                </span>
+                                             </h:commandLink>                                     
+                                        </nobr>
+                                      </td>
+                                        </tr>
+                                      </table>
+									   </div>
+                                     </h:column>
+                               </f:facet>
+
                             </h:dataTable>
 								</h:column>
                             </h:dataTable>
-                            <table  cellpadding="0" cellspacing="0" style="	border:0px red solid;padding-left:20px">
-                                <tr>
-                                    <td>
-                                        <nobr>
-                                            <h:outputLink  styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
-                                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
-                                            </h:outputLink>
-                                        </nobr>
-                                        <nobr>
-                                            <h:commandLink  styleClass="button" rendered="#{Operations.assumedMatch_SearchView}"  action="#{AssumeMatchHandler.performSubmit}" >  
-                                                <span>
-                                                    <h:outputText value="#{msgs.search_button_label}"/>
-                                                </span>
-                                            </h:commandLink>                                     
-                                        </nobr>
-                                        
-                                    </td>
-                                </tr>
-                            </table>
                         </td>
                         <td valign="top">
                             <h:messages styleClass="errorMessages"  layout="list" />
                         </td>
                     </tr>
+					<%if(countFc == 0) {%>
+					<tr>
+					  <td> 
+					     <h:outputText value="#{msgs.search_config_error}" />
+					  </td>
+					</tr>
+					<%}%>
                 </table>
                 <h:inputHidden id="enteredFieldValues" value="#{AssumeMatchHandler.enteredFieldValues}"/>
             </h:form>
     </div>
-     
       <%
-        AssumeMatchHandler assumeMatchHandler = new AssumeMatchHandler();
         ArrayList fcArrayList  = assumeMatchHandler.getResultsConfigArray();
         ArrayList assumeMatchArrayList = new ArrayList();
         //ArrayList assumeMatchArrayList = (ArrayList) request.getAttribute("assumeMatchList");
