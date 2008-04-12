@@ -59,7 +59,7 @@ class EviewProjectActionProvider implements ActionProvider {
         ActionProvider.COMMAND_REBUILD, 
         EviewProject.COMMAND_GENEVIEW,
         EviewProject.COMMAND_GENLOADER,
-        EviewProject.COMMAND_GENBULKLOADER,
+        //EviewProject.COMMAND_GENBULKLOADER,
         EviewProject.COMMAND_CLEANSER,
         EviewProject.COMMAND_PROFILER,
         EviewProject.COMMAND_DEPLOY,
@@ -86,7 +86,7 @@ class EviewProjectActionProvider implements ActionProvider {
         commands.put(ActionProvider.COMMAND_REBUILD, new String[] {"clean", "dist"}); // NOI18N
         commands.put(EviewProject.COMMAND_GENEVIEW, new String[] {"gen-mdm-index-files"}); // NOI18N
         commands.put(EviewProject.COMMAND_GENLOADER, new String[] {"gen-loader-zip"}); // NOI18N
-        commands.put(EviewProject.COMMAND_GENBULKLOADER, new String[] {"gen-bulkloader-zip"}); // NOI18N
+        //commands.put(EviewProject.COMMAND_GENBULKLOADER, new String[] {"gen-bulkloader-zip"}); // NOI18N
         
         commands.put(EviewProject.COMMAND_CLEANSER, new String[] {"gen-cleanser-zip"}); // NOI18N
         commands.put(EviewProject.COMMAND_PROFILER, new String[] {"gen-profiler-zip"}); // NOI18N

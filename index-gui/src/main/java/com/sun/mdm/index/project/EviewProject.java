@@ -90,7 +90,7 @@ public class EviewProject implements Project, AntProjectListener {
 
     public static final String COMMAND_GENEVIEW = "gen-mdm-index-files";
     public static final String COMMAND_GENLOADER = "gen-loader-zip";
-    public static final String COMMAND_GENBULKLOADER = "gen-bulkloader-zip";
+    //public static final String COMMAND_GENBULKLOADER = "gen-bulkloader-zip";
     
     public static final String COMMAND_CLEANSER = "gen-cleanser-zip";
     public static final String COMMAND_PROFILER = "gen-profiler-zip";
