@@ -86,9 +86,17 @@ public class FinishVisualPanel extends javax.swing.JPanel {
         jLabelXmlObject.setText(NbBundle.getMessage(
                 FinishVisualPanel.class, "MSG_Xml_Object_Definition"));
 
-        javax.swing.JLabel jLabelXmlEDM = new javax.swing.JLabel();
-        jLabelXmlEDM.setText(NbBundle.getMessage(
-                FinishVisualPanel.class, "MSG_Xml_EDM"));
+        //javax.swing.JLabel jLabelXmlEDM = new javax.swing.JLabel();
+        //jLabelXmlEDM.setText(NbBundle.getMessage(
+        //        FinishVisualPanel.class, "MSG_Xml_EDM"));
+        
+        javax.swing.JLabel jLabelXmlMIDM = new javax.swing.JLabel();
+        jLabelXmlMIDM.setText(NbBundle.getMessage(
+                FinishVisualPanel.class, "MSG_Xml_MIDM"));
+        
+        javax.swing.JLabel jLabelXmlMIDMSecurity = new javax.swing.JLabel();
+        jLabelXmlMIDMSecurity.setText(NbBundle.getMessage(
+                FinishVisualPanel.class, "MSG_Xml_MIDM_Security"));
 
         javax.swing.JLabel jLabelXmlMefa = new javax.swing.JLabel();
         jLabelXmlMefa.setText(NbBundle.getMessage(
@@ -135,24 +143,42 @@ public class FinishVisualPanel extends javax.swing.JPanel {
                 "MSG_DB_Script_CodeList"));
 
         jLabelFinish.setBounds(0, 0, 400, 20);
-        jLabelXmlConfiguration.setBounds(0, 30, 400, 20);
-            jLabelXmlObject.setBounds(10, 50, 400, 20);
-            jLabelXmlEDM.setBounds(10, 70, 400, 20);
-            jLabelXmlMaster.setBounds(10, 90, 400, 20);
-            jLabelXmlMefa.setBounds(10, 110, 400, 20);
-            jLabelXmlQuery.setBounds(10, 130, 400, 20);
-            jLabelXmlUpdate.setBounds(10, 150, 400, 20);
-            jLabelXmlMatchEngine.setBounds(10, 170, 400, 20);
-            jLabelXmlSecurity.setBounds(10, 190, 400, 20);
-        jLabelDBScript.setBounds(0, 210, 400, 20);
-            jLabelDBScriptSystems.setBounds(10, 230, 400, 20);
-            jLabelDBScriptCodeList.setBounds(10, 250, 400, 20);
-        //jLabelFinish2.setBounds(0, 280, 400, 20);
+        int yPos = 30;
+        jLabelXmlConfiguration.setFont(new java.awt.Font("TimesRoman",java.awt.Font.BOLD,12));
+        jLabelXmlConfiguration.setBounds(0, yPos, 400, 20);
+            yPos += 20;
+            jLabelXmlObject.setBounds(10, yPos, 400, 20);
+            yPos += 20;
+            //jLabelXmlEDM.setBounds(10, yPos, 400, 20);
+            jLabelXmlMIDM.setBounds(10, yPos, 400, 20);
+            yPos += 20;
+            jLabelXmlMIDMSecurity.setBounds(10, yPos, 400, 20);
+            yPos += 20;
+            jLabelXmlMaster.setBounds(10, yPos, 400, 20);
+            yPos += 20;
+            jLabelXmlMefa.setBounds(10, yPos, 400, 20);
+            yPos += 20;
+            jLabelXmlQuery.setBounds(10, yPos, 400, 20);
+            yPos += 20;
+            jLabelXmlUpdate.setBounds(10, yPos, 400, 20);
+            yPos += 20;
+            jLabelXmlMatchEngine.setBounds(10, yPos, 400, 20);
+            yPos += 20;
+            jLabelXmlSecurity.setBounds(10, yPos, 400, 20);
+            yPos += 20;
+        jLabelDBScript.setFont(new java.awt.Font("TimesRoman",java.awt.Font.BOLD,12));
+        jLabelDBScript.setBounds(0, yPos, 400, 20);
+            yPos += 20;
+            jLabelDBScriptSystems.setBounds(10, yPos, 400, 20);
+            yPos += 20;
+            jLabelDBScriptCodeList.setBounds(10, yPos, 400, 20);
 
         add(jLabelFinish);
         add(jLabelXmlConfiguration);
         add(jLabelXmlObject);
-        add(jLabelXmlEDM);
+        //add(jLabelXmlEDM);
+        add(jLabelXmlMIDM);
+        add(jLabelXmlMIDMSecurity);
         add(jLabelXmlMaster);
         add(jLabelXmlMefa);
         add(jLabelXmlQuery);
@@ -164,7 +190,8 @@ public class FinishVisualPanel extends javax.swing.JPanel {
         add(jLabelDBScriptCodeList);
         
         //mAutoGenerateOption.setSelected(true);
-        mAutoGenerateOption.setBounds(0, 280, 400, 20);
+        yPos += 30;
+        mAutoGenerateOption.setBounds(0, yPos, 400, 20);
         mAutoGenerateOption.setBorder(null);
         add(mAutoGenerateOption);
     }
