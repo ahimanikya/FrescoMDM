@@ -20,22 +20,22 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
         this.txtDisplayName.setText(displayName);
         this.txtInputMask.setText(inputMask);
         this.txtValueMask.setText(valueMask);
-        this.chkSearchResult.setSelected(searchResult);
-        this.chkGenerateReport.setSelected(generateReport);
+        this.jComboBoxSearchResult.setSelectedItem(searchResult ? "true" : "false");
+        this.jComboBoxReport.setSelectedItem(generateReport ? "true" : "false");
         this.jComboBoxSearchRequired.setSelectedItem(searchRequired);
         this.jComboBoxSearchRequired.setEnabled(searchScreen);
         
-        chkSearchScreen.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent e) {
-                if (!chkSearchScreen.isSelected()) {
+        jComboBoxSearchScreen.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    if (jComboBoxSearchScreen.getSelectedItem().equals("true")) {
+                        jComboBoxSearchRequired.setEnabled(true);
+                    } else {
                     jComboBoxSearchRequired.setSelectedItem("false");
                     jComboBoxSearchRequired.setEnabled(false);
-                } else {
-                    jComboBoxSearchRequired.setEnabled(true);
+                    }
                 }
-            }
-        });
-        this.chkSearchScreen.setSelected(searchScreen);
+            });
+        this.jComboBoxSearchScreen.setSelectedItem(searchScreen ? "true" : "false");
     }
     
     /** This method is called from within the constructor to
@@ -56,10 +56,10 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
         txtDisplayName = new javax.swing.JTextField();
         txtInputMask = new javax.swing.JTextField();
         txtValueMask = new javax.swing.JTextField();
-        chkSearchScreen = new javax.swing.JCheckBox();
-        chkSearchResult = new javax.swing.JCheckBox();
-        chkGenerateReport = new javax.swing.JCheckBox();
         jComboBoxSearchRequired = new javax.swing.JComboBox();
+        jComboBoxSearchScreen = new javax.swing.JComboBox();
+        jComboBoxSearchResult = new javax.swing.JComboBox();
+        jComboBoxReport = new javax.swing.JComboBox();
 
         jLabelDisplayName.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "MSG_DisplayName")); // NOI18N
 
@@ -83,19 +83,14 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
 
         txtValueMask.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "TabEDMPropertiesJPanel.txtValueMask.text")); // NOI18N
 
-        chkSearchScreen.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "TabEDMPropertiesJPanel.chkSearchScreen.text")); // NOI18N
-        chkSearchScreen.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        chkSearchScreen.setMaximumSize(new java.awt.Dimension(13, 13));
-        chkSearchScreen.setMinimumSize(new java.awt.Dimension(13, 13));
-        chkSearchScreen.setPreferredSize(new java.awt.Dimension(13, 13));
-
-        chkSearchResult.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "TabEDMPropertiesJPanel.chkSearchResult.text")); // NOI18N
-        chkSearchResult.setMargin(new java.awt.Insets(0, 0, 0, 0));
-
-        chkGenerateReport.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "TabEDMPropertiesJPanel.chkGenerateReport.text")); // NOI18N
-        chkGenerateReport.setMargin(new java.awt.Insets(0, 0, 0, 0));
-
         jComboBoxSearchRequired.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "true", "false", "oneof" }));
+        jComboBoxSearchRequired.setPreferredSize(new java.awt.Dimension(48, 20));
+
+        jComboBoxSearchScreen.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "true", "false" }));
+
+        jComboBoxSearchResult.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "true", "false" }));
+
+        jComboBoxReport.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "true", "false" }));
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -115,11 +110,14 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(txtInputMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                     .add(txtDisplayName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                    .add(chkGenerateReport)
-                    .add(jComboBoxSearchRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(chkSearchResult)
-                    .add(chkSearchScreen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, txtValueMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, txtValueMask, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                        .add(jComboBoxReport, 0, 0, Short.MAX_VALUE)
+                        .add(jComboBoxSearchResult, 0, 0, Short.MAX_VALUE)
+                        .add(layout.createSequentialGroup()
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                            .add(jComboBoxSearchScreen, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .add(jComboBoxSearchRequired, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -140,30 +138,29 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelSearchScreen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(chkSearchScreen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jComboBoxSearchScreen, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelSearchRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jComboBoxSearchRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 17, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jComboBoxSearchRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 19, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jLabelSearchResult, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(chkSearchResult, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jLabelGenerateReport, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 18, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(chkGenerateReport, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(115, Short.MAX_VALUE))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabelSearchResult, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jComboBoxSearchResult, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabelGenerateReport, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 18, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jComboBoxReport, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(113, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox chkGenerateReport;
-    private javax.swing.JCheckBox chkSearchResult;
-    private javax.swing.JCheckBox chkSearchScreen;
+    private javax.swing.JComboBox jComboBoxReport;
     private javax.swing.JComboBox jComboBoxSearchRequired;
+    private javax.swing.JComboBox jComboBoxSearchResult;
+    private javax.swing.JComboBox jComboBoxSearchScreen;
     private javax.swing.JLabel jLabelDisplayName;
     private javax.swing.JLabel jLabelGenerateReport;
     private javax.swing.JLabel jLabelInputMask;
@@ -220,30 +217,14 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
                     onTextFieldKeyReleased(evt);
                     char c = evt.getKeyChar();
                     if (c == '\n') {
-                        chkSearchScreen.requestFocus();
+                        jComboBoxSearchScreen.requestFocus();
                     }
                 }
                 public void keyTyped(java.awt.event.KeyEvent evt) {
                     onTextFieldKeyTyped(evt);
                 }
         });
-        
-
-        this.chkSearchScreen.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-            }
-        });
-        
-        this.chkSearchResult.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-            }
-        });
-        
-        this.chkGenerateReport.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-            }
-        });
-        
+                
         this.jComboBoxSearchRequired.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent e) {
             }
@@ -309,7 +290,7 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
      *@return UsedInSearchScreen
      */
     public boolean getUsedInSearchScreen() {
-        return chkSearchScreen.isSelected();
+        return jComboBoxSearchScreen.getSelectedItem().equals("true");
     }
 
     /**
@@ -323,14 +304,14 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
      *@return DisplayedInSearchResult
      */
     public boolean getDisplayedInSearchResult() {
-        return chkSearchResult.isSelected();
+        return jComboBoxSearchResult.getSelectedItem().equals("true");
     }
 
     /**
      *@return GenerateReport
      */
     public boolean getGenerateReport() {
-        return chkGenerateReport.isSelected();
+        return jComboBoxReport.getSelectedItem().equals("true");
     }
     
     /**

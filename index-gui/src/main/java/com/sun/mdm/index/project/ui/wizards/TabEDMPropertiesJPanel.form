@@ -30,11 +30,16 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="txtInputMask" pref="237" max="32767" attributes="1"/>
                   <Component id="txtDisplayName" alignment="0" pref="237" max="32767" attributes="1"/>
-                  <Component id="chkGenerateReport" min="-2" max="-2" attributes="0"/>
-                  <Component id="jComboBoxSearchRequired" min="-2" max="-2" attributes="0"/>
-                  <Component id="chkSearchResult" min="-2" max="-2" attributes="1"/>
-                  <Component id="chkSearchScreen" alignment="0" min="-2" pref="21" max="-2" attributes="1"/>
                   <Component id="txtValueMask" alignment="1" pref="237" max="32767" attributes="1"/>
+                  <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jComboBoxReport" min="0" pref="0" max="32767" attributes="1"/>
+                      <Component id="jComboBoxSearchResult" min="0" pref="0" max="32767" attributes="1"/>
+                      <Group type="102" alignment="0" attributes="1">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jComboBoxSearchScreen" max="32767" attributes="0"/>
+                      </Group>
+                      <Component id="jComboBoxSearchRequired" alignment="0" max="32767" attributes="1"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -61,26 +66,24 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabelSearchScreen" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="chkSearchScreen" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="jComboBoxSearchScreen" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabelSearchRequired" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="jComboBoxSearchRequired" alignment="3" min="-2" pref="17" max="-2" attributes="0"/>
+                  <Component id="jComboBoxSearchRequired" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabelSearchResult" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                          <Component id="chkSearchResult" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabelGenerateReport" min="-2" pref="18" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="chkGenerateReport" min="-2" pref="20" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelSearchResult" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="jComboBoxSearchResult" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="115" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelGenerateReport" alignment="3" min="-2" pref="18" max="-2" attributes="0"/>
+                  <Component id="jComboBoxReport" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="113" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -162,45 +165,6 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="chkSearchScreen">
-      <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/index/project/ui/wizards/Bundle.properties" key="TabEDMPropertiesJPanel.chkSearchScreen.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
-        </Property>
-        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-          <Insets value="[0, 0, 0, 0]"/>
-        </Property>
-        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[13, 13]"/>
-        </Property>
-        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[13, 13]"/>
-        </Property>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[13, 13]"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="chkSearchResult">
-      <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/index/project/ui/wizards/Bundle.properties" key="TabEDMPropertiesJPanel.chkSearchResult.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
-        </Property>
-        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-          <Insets value="[0, 0, 0, 0]"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="chkGenerateReport">
-      <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="com/sun/mdm/index/project/ui/wizards/Bundle.properties" key="TabEDMPropertiesJPanel.chkGenerateReport.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
-        </Property>
-        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-          <Insets value="[0, 0, 0, 0]"/>
-        </Property>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JComboBox" name="jComboBoxSearchRequired">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -208,6 +172,39 @@
             <StringItem index="0" value="true"/>
             <StringItem index="1" value="false"/>
             <StringItem index="2" value="oneof"/>
+          </StringArray>
+        </Property>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[48, 20]"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="jComboBoxSearchScreen">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="2">
+            <StringItem index="0" value="true"/>
+            <StringItem index="1" value="false"/>
+          </StringArray>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="jComboBoxSearchResult">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="2">
+            <StringItem index="0" value="true"/>
+            <StringItem index="1" value="false"/>
+          </StringArray>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="jComboBoxReport">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="2">
+            <StringItem index="0" value="true"/>
+            <StringItem index="1" value="false"/>
           </StringArray>
         </Property>
       </Properties>

@@ -23,36 +23,8 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabelName" min="-2" pref="90" max="-2" attributes="0"/>
-                      <Component id="txtName" min="-2" pref="240" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabelDataType" min="-2" pref="90" max="-2" attributes="0"/>
-                      <Component id="cbDataType" min="-2" pref="130" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabelMatchType" min="-2" pref="90" max="-2" attributes="0"/>
-                      <Component id="cbMatchType" min="-2" pref="130" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabelUpdateable" min="-2" pref="90" max="-2" attributes="0"/>
-                      <Component id="chkUpdateable" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabelRequired" min="-2" pref="90" max="-2" attributes="0"/>
-                      <Component id="chkRequired" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabelFieldSize" min="-2" pref="90" max="-2" attributes="0"/>
-                      <Component id="spFieldSize" min="-2" pref="50" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabelPattern" min="-2" pref="90" max="-2" attributes="0"/>
-                      <Component id="txtPattern" min="-2" pref="240" max="-2" attributes="0"/>
-                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabelCodeModule" min="-2" pref="90" max="-2" attributes="0"/>
                       <Component id="txtCodeModule" min="-2" pref="240" max="-2" attributes="0"/>
@@ -66,15 +38,33 @@
                       <Component id="txtConstrainedBy" min="-2" pref="240" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabelBlocking" min="-2" pref="90" max="-2" attributes="0"/>
-                      <Component id="chkBlocking" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelPattern" min="-2" pref="90" max="-2" attributes="0"/>
+                      <Component id="txtPattern" min="-2" pref="240" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabelKeyType" min="-2" pref="90" max="-2" attributes="0"/>
-                      <Component id="chkKeyType" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabelFieldSize" alignment="0" min="-2" pref="90" max="-2" attributes="0"/>
+                          <Component id="jLabelUpdateable" alignment="1" pref="90" max="32767" attributes="0"/>
+                          <Component id="jLabelKeyType" alignment="1" pref="90" max="32767" attributes="0"/>
+                          <Component id="jLabelRequired" alignment="0" pref="90" max="32767" attributes="0"/>
+                          <Component id="jLabelBlocking" alignment="1" pref="90" max="32767" attributes="0"/>
+                          <Component id="jLabelMatchType" alignment="1" pref="90" max="32767" attributes="0"/>
+                          <Component id="jLabelDataType" alignment="1" pref="90" max="32767" attributes="0"/>
+                          <Component id="jLabelName" alignment="1" pref="90" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jComboBoxBlocking" min="-2" max="-2" attributes="0"/>
+                          <Component id="jComboBoxRequired" min="-2" max="-2" attributes="0"/>
+                          <Component id="spFieldSize" alignment="0" min="-2" pref="50" max="-2" attributes="0"/>
+                          <Component id="jComboBoxUpdateable" min="-2" max="-2" attributes="0"/>
+                          <Component id="jComboBoxKeyType" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbMatchType" min="-2" pref="130" max="-2" attributes="0"/>
+                          <Component id="cbDataType" min="-2" pref="130" max="-2" attributes="0"/>
+                          <Component id="txtName" min="-2" pref="240" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -82,41 +72,41 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabelName" min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="txtName" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelName" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="txtName" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="5" pref="5" max="5" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabelDataType" min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="cbDataType" min="-2" pref="20" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelDataType" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="cbDataType" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="5" pref="5" max="5" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabelMatchType" min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="cbMatchType" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelMatchType" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="cbMatchType" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="3" pref="3" max="3" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabelBlocking" min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="chkBlocking" min="-2" pref="20" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelBlocking" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="jComboBoxBlocking" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabelKeyType" min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="chkKeyType" min="-2" pref="20" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelKeyType" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="jComboBoxKeyType" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabelUpdateable" min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="chkUpdateable" min="-2" pref="20" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelUpdateable" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="jComboBoxUpdateable" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabelRequired" min="-2" pref="20" max="-2" attributes="0"/>
-                  <Component id="chkRequired" min="-2" pref="20" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelRequired" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="jComboBoxRequired" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="5" pref="5" max="5" attributes="0"/>
+              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabelFieldSize" min="-2" pref="20" max="-2" attributes="0"/>
                   <Component id="spFieldSize" min="-2" max="-2" attributes="0"/>
@@ -198,34 +188,10 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="chkBlocking">
-      <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-            <EmptyBorder bottom="0" left="0" right="0" top="0"/>
-          </Border>
-        </Property>
-        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-          <Insets value="[0, 0, 0, 0]"/>
-        </Property>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabelKeyType">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="MSG_KeyType" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="chkKeyType">
-      <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-            <EmptyBorder bottom="0" left="0" right="0" top="0"/>
-          </Border>
-        </Property>
-        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-          <Insets value="[0, 0, 0, 0]"/>
         </Property>
       </Properties>
     </Component>
@@ -236,34 +202,10 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="chkUpdateable">
-      <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-            <EmptyBorder bottom="0" left="0" right="0" top="0"/>
-          </Border>
-        </Property>
-        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-          <Insets value="[0, 0, 0, 0]"/>
-        </Property>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabelRequired">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="MSG_Required" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="chkRequired">
-      <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-            <EmptyBorder bottom="0" left="0" right="0" top="0"/>
-          </Border>
-        </Property>
-        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-          <Insets value="[0, 0, 0, 0]"/>
         </Property>
       </Properties>
     </Component>
@@ -314,6 +256,49 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtConstrainedBy">
+    </Component>
+    <Component class="javax.swing.JComboBox" name="jComboBoxBlocking">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="2">
+            <StringItem index="0" value="true"/>
+            <StringItem index="1" value="false"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBoxBlockingActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="jComboBoxKeyType">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="2">
+            <StringItem index="0" value="true"/>
+            <StringItem index="1" value="false"/>
+          </StringArray>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="jComboBoxUpdateable">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="2">
+            <StringItem index="0" value="true"/>
+            <StringItem index="1" value="false"/>
+          </StringArray>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="jComboBoxRequired">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="2">
+            <StringItem index="0" value="true"/>
+            <StringItem index="1" value="false"/>
+          </StringArray>
+        </Property>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
