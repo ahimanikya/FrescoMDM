@@ -201,7 +201,6 @@ public class SourceHandler {
             
              if (fieldConfig.getName().equalsIgnoreCase("SystemCode")) {
                 this.setSystemCode(feildValue);
-               //System.out.println("SYS/LIDCODe" + this.getSystemCode() + "/" + this.getLID());
              }
 
              if("MenuList".equalsIgnoreCase(fieldConfig.getGuiType()) && feildValue == null)  {
@@ -211,7 +210,6 @@ public class SourceHandler {
              }
         }
         String lid = this.getLID().replaceAll("-", ""); 
-        //System.out.println("SYS/LIDCODe" + this.getSystemCode() + "/" + this.getLID());
         this.setLID(lid);
         
         //Checking one of many condition here   
@@ -657,7 +655,6 @@ public class SourceHandler {
         ArrayList subScreenObjectList = screenObjectLocal.getSubscreensConfig();
         ScreenObject subScreenObject = null;
 
-        //System.out.println("---------------" + screenObjectLocal.getDisplayTitle() + "---------subsclist---" + subScreenObjectList);
         // build the screen  as per the subscreen title (this.getSubScreenTab())
         for (int i = 0; i < subScreenObjectList.size(); i++) {
             ScreenObject object = (ScreenObject) subScreenObjectList.get(i);
@@ -913,17 +910,19 @@ public class SourceHandler {
         try {
             ConfigManager.init();
             ObjectNodeConfig objectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(objectType);
-            FieldConfig[] allFeildConfigs = objectNodeConfig.getFieldConfigs();
-            String rootName = screenObject.getRootObj().getName();
+			if (objectNodeConfig != null)
+			{
+			    FieldConfig[] allFeildConfigs = objectNodeConfig.getFieldConfigs();
+				String rootName = screenObject.getRootObj().getName();
 
-            //Build Person Epath Arraylist
-            for (int i = 0; i < allFeildConfigs.length; i++) {
-                FieldConfig fieldConfig = allFeildConfigs[i];
-                if(     !(rootName+ ".EUID").equalsIgnoreCase(fieldConfig.getFullFieldName())
-                    ) {
-                  ePathArrayList.add(fieldConfig.getFullFieldName());
-                }
-            }
+				//Build Person Epath Arraylist
+				for (int i = 0; i < allFeildConfigs.length; i++) {
+					FieldConfig fieldConfig = allFeildConfigs[i];
+					if(     !(rootName+ ".EUID").equalsIgnoreCase(fieldConfig.getFullFieldName())) {
+		                  ePathArrayList.add(fieldConfig.getFullFieldName());
+			        }
+				}
+			}
         } catch (Exception ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
