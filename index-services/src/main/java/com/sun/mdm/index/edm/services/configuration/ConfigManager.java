@@ -431,11 +431,21 @@ public class ConfigManager implements java.io.Serializable {
         // Process all search pages.
         Element e = (Element)element.getElementsByTagName(SEARCH_PAGES).item(0);
 
-        ChildElementIterator itr = new ChildElementIterator(e);
+        
+        // If no simple search pages are found, continue processing.  
+        // Some screens, such as Assumed Match, contain automatically-generated
+        // search critera that the user cannot modify.  There can be only 
+        // one such search page per tab.  This situation occurs if the <search-pages>
+        // tag is not found.
+        boolean simpleSearchPageFound = false;
+        ChildElementIterator itr = null;
+        if (e != null) {
+            itr = new ChildElementIterator(e);
+        }
 
         ArrayList searchScreensConfig = new ArrayList();
         ArrayList searchResultsConfig = new ArrayList();
-        while (itr.hasNext() ) {
+        while (itr != null && itr.hasNext() ) {
             Element sscElement = (Element)itr.next();
         
             if (sscElement.getTagName().equalsIgnoreCase(SIMPLE_SEARCH_PAGE)) {
@@ -444,9 +454,21 @@ public class ConfigManager implements java.io.Serializable {
                                                   objNodeConfig, 
                                                   configType);
                 searchScreensConfig.add(ssconfig);
+                simpleSearchPageFound = true;
             }
         }        
-        
+
+        // If no simple search pages are found, continue processing.  
+        // Some screens, such as Assumed Match, contain automatically-generated
+        // search critera that the user cannot modify.  There can be only 
+        // one such search page per tab.  This situation occurs if this is encountered
+        // in the config file:  <search-pages/>
+        if (!simpleSearchPageFound) {
+                SearchScreenConfig ssconfig 
+                        = buildSearchScreenConfig(objNodeConfig, 
+                                                  configType);
+                searchScreensConfig.add(ssconfig);
+        }
         // Process search result list page
         Element searchResultsElement 
                 = (Element)element.getElementsByTagName(SEARCH_RESULT_PAGES).item(0);
@@ -1026,7 +1048,7 @@ public class ConfigManager implements java.io.Serializable {
                                                        ObjectNodeConfig rootNodeConfig,
                                                        String configType) 
                 throws Exception {
-        
+                    
         String screenTitle = NodeUtil.getChildNodeText(element, SCREEN_TITLE);
 
         // Metadata fields.  Some of these may be required for 
@@ -1193,6 +1215,106 @@ public class ConfigManager implements java.io.Serializable {
                 = new SearchScreenOptions(displayName, queryBuilderName, 
                                         isWeighted, candidateThreshold,
                                         nameValuePairs);
+        SearchScreenConfig searchScreenConfig 
+                    = new SearchScreenConfig(rootNodeConfig, screenTitle, 
+                                              instruction, searchResultID,
+                                              searchScreenOrder,  
+                                              showEUID, showLID, showCreateDate,
+                                              showCreateTime, showStatus, 
+                                              sScreenOptions,
+                                              fieldConfigGroup);
+        return searchScreenConfig;
+    }
+
+    /**
+     * Parses the search screen configuration block and stores the 
+     * configuration information in a SearchScreenConfig object.
+     * This method builds the search screen configuration block for 
+     * searches where the user cannot customize the search critera (e.g. Assumed Match).
+     * That is, the search fields are generated automatically.  There can be 
+     * only one such search screen for a tab.
+     *
+     * @param rootNodeConfig  This is the object containing the root node 
+     * configuration information that is used to construct the SearchScreenConfig
+     * object that is returned from this method.
+     * @param configType This is the type for the configuration block that
+     * invoked this method.
+     * @return SearchScreenConfig object.
+     * @throws Exception if any errors are encountered.
+     */
+    private SearchScreenConfig buildSearchScreenConfig(ObjectNodeConfig rootNodeConfig,
+                                                       String configType) 
+                throws Exception {
+        
+        int searchResultID = 0;
+        int searchScreenOrder = 0;
+        boolean showEUID = true;
+        boolean showLID = true;
+        boolean showCreateDate = true;
+        boolean showCreateTime = true;
+        boolean showStatus = true;
+        String screenTitle = null;
+        String instruction = null;
+        SearchScreenOptions sScreenOptions = null;
+        
+        ArrayList fieldConfigGroup = new ArrayList();
+        ArrayList searchFieldList = new ArrayList();
+        
+        // Create FieldConfig objects for the metadata fields.  
+        if  (configType.compareTo(TRANSACTIONS) == 0) {
+            String localIdDesignation 
+                    = getConfigurableQwsValue(LID, "Local ID");
+            TransactionUtil.addTransactionSearchFields(rootNodeConfig, 
+                                                       searchFieldList,
+                                                       localIdDesignation,
+                                                       showEUID,
+                                                       showLID);
+                                                       
+        } else if  (configType.compareTo(ASSUMED_MATCHES) == 0) {
+            String localIdDesignation 
+                    = getConfigurableQwsValue(LID, "Local ID");
+            AssumedMatchesUtil.addAssumedMatchesSearchFields(rootNodeConfig, 
+                                                             searchFieldList, 
+                                                             localIdDesignation);
+        } else if  (configType.compareTo(AUDIT_LOG) == 0) {
+            String localIdDesignation 
+                    = getConfigurableQwsValue(LID, "Local ID");
+            AuditLogUtil.addAuditLogSearchFields(rootNodeConfig, 
+                                                 searchFieldList,
+                                                 localIdDesignation,  
+                                                 showEUID, 
+                                                 showLID);
+                                                 
+        } else if (configType.compareToIgnoreCase(ACTIVITY_REPORT) == 0) {  
+            ReportUtil.addActivityReportSearchFields(rootNodeConfig, 
+                                                     searchFieldList);
+        // Merged/Unmerged/Activate/Deactive
+        } else if (configType.compareToIgnoreCase(DEACTIVATED_REPORT) == 0
+                   || configType.compareToIgnoreCase(MERGED_REPORT) == 0 
+                   || configType.compareToIgnoreCase(UNMERGED_REPORT) == 0 )  { 
+                       
+            String localIdDesignation 
+                    = getConfigurableQwsValue(LID, "Local ID");
+            ReportUtil.addMergeReportSearchFields(rootNodeConfig, 
+                                                  searchFieldList,
+                                                  localIdDesignation);
+        } else if (configType.compareToIgnoreCase(UPDATE_REPORT) == 0 ||
+                   configType.compareToIgnoreCase(ASSUMED_MATCH_REPORT) == 0 )  { 
+                       
+            String localIdDesignation 
+                    = getConfigurableQwsValue(LID, "Local ID");
+            ReportUtil.addUpdateReportSearchFields(rootNodeConfig, 
+                                                   searchFieldList,
+                                                   localIdDesignation);
+        }         
+        
+        // create a FieldGroup for any metadata fields
+        if (searchFieldList.size() > 0) {
+            EosFieldGroupConfig fgconfig = new EosFieldGroupConfig(null, rootNodeConfig);
+            FieldConfig[] fconfigs = fgconfig.getFieldConfigs();
+            FieldConfigGroup fgc = new FieldConfigGroup(null, searchFieldList);
+            fieldConfigGroup.add(fgc);
+        }
         SearchScreenConfig searchScreenConfig 
                     = new SearchScreenConfig(rootNodeConfig, screenTitle, 
                                               instruction, searchResultID,
