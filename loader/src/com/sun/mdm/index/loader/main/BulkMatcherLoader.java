@@ -88,6 +88,7 @@ public class BulkMatcherLoader {
 	private static int BLOCKDISTRIBUTE_AFTER = 4;
 	private int loadMode_ = 0; // default mode
 	public BulkMatcherLoader() throws Exception {
+		RuntimeStats();
             new LoaderLogManager().init();
 		logger.info("bulk_boader_started");				
 		loadConfig();
@@ -105,16 +106,21 @@ public class BulkMatcherLoader {
 	    ObjectNodeUtil.initDataObjectAdapter();	
 	}
 	
-	public void bulkMatchLoad() throws Exception {	
+	public void bulkMatchLoad() throws Exception {
+		
 	 if (loadMode_ != MIGENERATE_ONLY)	 {
 	  if (loadMode_ != BLOCKDISTRIBUTE_AFTER) {
 		clusterSynchronizer_.initLoaderName(loaderName_, isMasterLoader_);
 	    if (isMasterLoader_) { 
-		  logger.info("block_distribution_started");
+		  
 		  clusterSynchronizer_.setClusterState(ClusterState.BLOCK_DISTRIBUTION);		
 	      BlockDistributor blockDistributor = new BlockDistributor(matchPaths_, inputLookup_, blockLk_, false);	
+	      RuntimeStats();
+	      logger.info("block_distribution_started");
 	      blockDistributor.distributeBlocks();
 	      logger.info("block_distribution_completed");
+	      RuntimeStats();
+	      
 	      clusterSynchronizer_.setClusterState(ClusterState.MATCHING);	    
 	    } else {
 		  logger.info("waiting_for_block_distribution");
@@ -128,7 +134,8 @@ public class BulkMatcherLoader {
 	    logger.info("matcher_started");	
 	    Matcher matcher = new Matcher(matchPaths_, matchTypes_, blockLk_, false);
 	    matcher.match();
-	    logger.info("matching_done"); 
+	    logger.info("matching_done");
+	    RuntimeStats();
 	 
 	    FileManager.deleteBlockDir(false);
 	    if (ismatchAnalyzer) {
@@ -142,6 +149,7 @@ public class BulkMatcherLoader {
 	    }  else {
 		    clusterSynchronizer_.waitMasterIndexGenerationReady(); 
 	    }
+	    RuntimeStats();
 	  
 	    FileManager.deleteMatchDir(false);
 	  
@@ -154,6 +162,7 @@ public class BulkMatcherLoader {
 	    MasterIndex masterIndex = new MasterIndex();
 	    masterIndex.generateMasterIndex();
 	    
+	    RuntimeStats();
 	    if (loadMode_ == MIGENERATE_ONLY ) {
 	      logger.info("Master Index Generated");
 	      
@@ -384,6 +393,19 @@ public class BulkMatcherLoader {
 		
 		Lookup lookup = Lookup.createLookup(obd);
 		return lookup;
+	}
+	
+	private void RuntimeStats() {
+		
+		Runtime rt = Runtime.getRuntime();
+		long free = rt.freeMemory();
+		long total = rt.totalMemory();
+		long max = rt.maxMemory();
+		
+		logger.info("Max Memory: " + max/1000000 + "M");
+		logger.info("total Memory: " + total/1000000 + "M");
+		logger.info("free Memory: " + free/1000000 + "M");
+		
 	}
 	
 	
