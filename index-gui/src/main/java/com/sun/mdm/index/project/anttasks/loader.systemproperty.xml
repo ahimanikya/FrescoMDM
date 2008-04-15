@@ -36,7 +36,7 @@
 			<property name="cluster.database" value="Oracle" />
 			<property name="cluster.database.url" value="jdbc:oracle:thin:@server:1521:SID" />
 			<property name="cluster.database.user" value="user" />
-			<property name="cluster.database.password" value="user" />
+			<property name="cluster.database.password" value="password" />
 			<property name="cluster.database.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
 
 
