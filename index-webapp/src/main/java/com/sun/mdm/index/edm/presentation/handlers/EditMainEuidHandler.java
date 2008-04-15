@@ -417,9 +417,14 @@ public class EditMainEuidHandler {
      public void deactivateEOSO(ActionEvent event ) {
         try {
             HashMap soHashMap = (HashMap) event.getComponent().getAttributes().get("eoSystemObjectMapVE");
+                
+            
+            // Start -- modified by Anil fix for 6688417
+            //SystemObject systemObject = masterControllerService.getSystemObject((String) soHashMap.get("SystemCode"), (String) soHashMap.get("LID"));
 
-            //////System.out.println("in action even for Deactivate SO" + soHashMap);
-            SystemObject systemObject = masterControllerService.getSystemObject((String) soHashMap.get("SystemCode"), (String) soHashMap.get("LID"));
+            SystemObject systemObject = masterControllerService.getSystemObject((String) soHashMap.get(masterControllerService.SYSTEM_CODE), (String) soHashMap.get(masterControllerService.LID));
+            
+            // End -- modified by Anil fix for 6688417
             //call mastercontroller service to deactivate the system object
             masterControllerService.deactivateSystemObject(systemObject);
         } catch (ProcessingException ex) {
