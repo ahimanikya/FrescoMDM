@@ -26,24 +26,24 @@
 
 
 			<!-- ftp properties -->
-			<property name="ftp.server" value="sbiswas-acer" />
-			<property name="ftp.username" value="loader" />
-			<property name="ftp.password" value="loader" />
+			<property name="ftp.server" value="ftp-server" />
+			<property name="ftp.username" value="user" />
+			<property name="ftp.password" value="password" />
 
 
 
 			<!-- cluster database properties -->
 			<property name="cluster.database" value="Oracle" />
-			<property name="cluster.database.url" value="jdbc:oracle:thin:@sbiswas-acer:1521:mural" />
-			<property name="cluster.database.user" value="sujit" />
-			<property name="cluster.database.password" value="sujit" />
+			<property name="cluster.database.url" value="jdbc:oracle:thin:@server:1521:SID" />
+			<property name="cluster.database.user" value="user" />
+			<property name="cluster.database.password" value="user" />
 			<property name="cluster.database.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
 
 
 
 
 			<!-- oracle SQL loader properties -->
-			<property name="sqlldr.userid" value="sujit/sujit@mdm.stc.com" />
+			<property name="sqlldr.userid" value="user/password@mdm.stc.com" />
 			<property name="sqlldr.record.delimiter" value="$$$" />
 
 		</properties>
