@@ -25,6 +25,8 @@ package com.sun.mdm.index.loader.clustersynchronizer.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.sun.mdm.index.loader.clustersynchronizer.dao.javadb.JavadbDAOFactory;
 import com.sun.mdm.index.loader.clustersynchronizer.dao.mssql.MssqlDAOFactory;
@@ -50,6 +52,8 @@ public abstract class DAOFactory {
 	public abstract BucketDAO getBucketDAO();
 
 	public abstract LoaderDAO getLoaderDAO();
+	
+	private static Logger logger = Logger.getLogger(DAOFactory.class.getName());
 
 	public static DAOFactory getDAOFactory(int dbType) {
 
@@ -93,7 +97,7 @@ public abstract class DAOFactory {
 		try {
 			Class.forName(driver).newInstance();
 		} catch (Exception e) {
-			// logger.info(e.getMessage());
+			logger.log(Level.SEVERE, "check classpath has jdbc driver", e);
 		}
 		String username = loaderConfig
 				.getSystemProperty("cluster.database.user");

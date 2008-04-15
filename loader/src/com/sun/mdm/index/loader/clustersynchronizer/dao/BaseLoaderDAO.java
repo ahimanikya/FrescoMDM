@@ -29,6 +29,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterState;
@@ -70,8 +71,7 @@ public abstract class BaseLoaderDAO implements LoaderDAO {
 		try {
 			c = DAOFactory.getConnection();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "check connection params", e);
 		}
 	}
 
