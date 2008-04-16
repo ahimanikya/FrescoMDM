@@ -58,7 +58,7 @@ import com.sun.mdm.index.loader.common.Util;
 	private DataObjectTupleCursor tupleCursor_;
 	private double matchThreshold_ = 0;
 	private double duplicateThreshold_ = 0;
-	private Map<MatchRecord, MatchRecord> matchTree_ ;
+	private Map<MatchRecord, String> matchTree_ ;
 	private Bucket.MatchCursor matchCursor_;
 	private CountDownLatch endGate_;
 	//private SbmeMatcher matchEngine_ ;
@@ -69,8 +69,9 @@ import com.sun.mdm.index.loader.common.Util;
 	private boolean isSBR_;
 	private static int DUPSCORE = 999999;
 	public static final String SDUPSCORE = "999999";
+	private static final String empty_str = "";
 	
-	MatcherTask(TreeMap<MatchRecord,MatchRecord> map, 
+	MatcherTask(TreeMap<MatchRecord,String> map, 
 			Bucket.MatchCursor cursor, String[] paths, String[] matchTypes, 
 			Lookup blLk, double matchThreshold, double duplicateThreshold,
 			CountDownLatch endGate, boolean isSBR) throws Exception {
@@ -94,10 +95,17 @@ import com.sun.mdm.index.loader.common.Util;
 			  break;
 		  }	
 		  int size = blockPosition.getBlock().getSize();
+		  String bucketName = matchCursor_.getBucketFile();
+		 
+		  if (bucketName.indexOf("_24")>=0) {
+			  Block block = blockPosition.getBlock();
+			  String blockid = block.getBlockId();  
+			  //logger.info("blockid:" + blockid);
+		  }
 		  
-		  if (blockPosition.recordPosition == 0 && size > 20){
+		  if (blockPosition.recordPosition == 0 && size > 20 && bucketName.indexOf("_24")>=0){
 			 Block block = blockPosition.getBlock();
-	//	    logger.info("block size:" + size + ", blockID:" + block.getBlockId());
+		    logger.info("block size:" + size + ", blockID:" + block.getBlockId());
 		  }
 		  
 		  match(blockPosition);		  
@@ -143,9 +151,9 @@ import com.sun.mdm.index.loader.common.Util;
 	    	if (BlockDistributor.isSystemBlock(blockid) && !isSBR_) {
 	    		score = DUPSCORE;
 	    		MatchRecord record = new MatchGIDRecord(gid1, gid2, score);
-	    		matchTree_.put(record, record);
+	    		matchTree_.put(record, empty_str);
 	    		record = new MatchGIDRecord(gid2, gid1, score);
-	    		matchTree_.put(record, record);
+	    		matchTree_.put(record, empty_str);
 	    		continue;
 
 	    	}  else if (matched == false) { // do matching only if block is not already set to MATCHED
@@ -159,15 +167,15 @@ import com.sun.mdm.index.loader.common.Util;
 	    			String euid1 = data1.getFieldValue(1);
 	    			String euid2 = data2.getFieldValue(1);
 	    			MatchRecord record = new MatchEUIDRecord(euid1, euid2, score);
-		    		matchTree_.put(record, record);		    		
+		    		matchTree_.put(record, empty_str);		    		
 	    		}
 	    	}
 	    	else if (score >= matchThreshold_) {
 	    			    		
 	    		MatchRecord record = new MatchGIDRecord(data1, data2, score);
-	    		matchTree_.put(record, record);
+	    		matchTree_.put(record, empty_str);
 	    		record = new MatchGIDRecord(data2, data1, score);
-	    		matchTree_.put(record, record);
+	    		matchTree_.put(record, empty_str);
 	    		/**
 	    		 * put any systemcode/lid duplicates (with different gid) on the Match File too. Duplicates
 	    		 * are not used during matching. These all will have same EUID
@@ -176,18 +184,18 @@ import com.sun.mdm.index.loader.common.Util;
 	    		if (dupList!= null) {
 	    			for(String gid: dupList) {
 	    				record = new MatchGIDRecord(gid1, gid, score);
-	    	    		matchTree_.put(record, record);
+	    	    		matchTree_.put(record, empty_str);
 	    	    		record = new MatchGIDRecord(gid, gid1, score);
-	    	    		matchTree_.put(record, record);
+	    	    		matchTree_.put(record, empty_str);
 	    			}
 	    		}
 	    		dupList = block.getDup(gid2);
 	    		if (dupList!= null) {
 	    			for(String gid: dupList) {
 	    				record = new MatchGIDRecord(gid2, gid, score);
-	    	    		matchTree_.put(record, record);
+	    	    		matchTree_.put(record, empty_str);
 	    	    		record = new MatchGIDRecord(gid, gid2, score);
-	    	    		matchTree_.put(record, record);
+	    	    		matchTree_.put(record, empty_str);
 	    			}
 	    		}
  	    			    		
@@ -346,11 +354,9 @@ import com.sun.mdm.index.loader.common.Util;
 		return matchValues;
 	}
 	
-	private boolean isFieldFiltered(String field) {
-		return false;
-	}
-	
+		
 	private boolean isFieldValueFiltered(String field, String value) {
+		//return false;
 		ExclusionListLookup exlookup = new ExclusionListLookup();
 		return exlookup.isFieldValueInExclusion(value, field, FilterConstants.MATCH_EXCLUSION_TYPE);			
 	}
