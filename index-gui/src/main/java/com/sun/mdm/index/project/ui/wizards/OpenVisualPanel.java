@@ -116,6 +116,13 @@ public class OpenVisualPanel extends javax.swing.JPanel {
 
     // End of variables declaration//variables
 
+    /** for OpenPanel to set ViewName entered from the project configuration panel
+     *@param ViewName
+     */
+    public void setViewName(String name) {
+        mNewView.setText(name);
+    }
+    
     /** for OpenPanel to save ViewName for the next panels
      *@return ViewName
      */

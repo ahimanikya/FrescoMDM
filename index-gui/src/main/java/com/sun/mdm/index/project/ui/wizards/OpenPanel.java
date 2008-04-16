@@ -128,6 +128,9 @@ public class OpenPanel implements WizardDescriptor.Panel {
      */
     public void readSettings(Object settings) {
         getComponent();
+        WizardDescriptor d = (WizardDescriptor) settings;
+        String name = (String) d.getProperty(WizardProperties.NAME);
+        mComponent.setViewName(name);
     }
 
     /** Save user inputs

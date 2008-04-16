@@ -53,14 +53,16 @@
                           <Component id="jLabelName" alignment="1" pref="90" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jComboBoxBlocking" min="-2" max="-2" attributes="0"/>
-                          <Component id="jComboBoxRequired" min="-2" max="-2" attributes="0"/>
-                          <Component id="spFieldSize" alignment="0" min="-2" pref="50" max="-2" attributes="0"/>
-                          <Component id="jComboBoxUpdateable" min="-2" max="-2" attributes="0"/>
-                          <Component id="jComboBoxKeyType" min="-2" max="-2" attributes="0"/>
                           <Component id="cbMatchType" min="-2" pref="130" max="-2" attributes="0"/>
                           <Component id="cbDataType" min="-2" pref="130" max="-2" attributes="0"/>
                           <Component id="txtName" min="-2" pref="240" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="spFieldSize" alignment="0" max="32767" attributes="1"/>
+                              <Component id="jComboBoxRequired" alignment="0" max="32767" attributes="1"/>
+                              <Component id="jComboBoxUpdateable" alignment="0" max="32767" attributes="1"/>
+                              <Component id="jComboBoxKeyType" alignment="0" max="32767" attributes="1"/>
+                              <Component id="jComboBoxBlocking" alignment="0" pref="56" max="32767" attributes="1"/>
+                          </Group>
                       </Group>
                   </Group>
               </Group>
@@ -111,7 +113,7 @@
                   <Component id="jLabelFieldSize" min="-2" pref="20" max="-2" attributes="0"/>
                   <Component id="spFieldSize" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabelPattern" min="-2" pref="20" max="-2" attributes="0"/>
                   <Component id="txtPattern" min="-2" max="-2" attributes="0"/>
@@ -131,7 +133,7 @@
                   <Component id="jLabelConstrainedBy" min="-2" pref="20" max="-2" attributes="0"/>
                   <Component id="txtConstrainedBy" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="14" max="32767" attributes="0"/>
+              <EmptySpace pref="13" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
