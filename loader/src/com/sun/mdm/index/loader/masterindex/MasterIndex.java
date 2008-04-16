@@ -110,12 +110,15 @@ public class MasterIndex {
      .getInstance().getConfiguration(
              DecisionMakerConfiguration.DECISION_MAKER);
 	 DefaultDecisionMaker decision = (DefaultDecisionMaker) dmConfig.getDecisionMaker();
-     boolean sameSystemMatch = decision.isSameSystemMatchEnabled();          
+     boolean sameSystemMatch = false; //decision.isSameSystemMatchEnabled();          
 	 
+     /*
 	 Standardizer[] standardizer = new Standardizer[poolSize_];
 	 for (int i = 0; i < poolSize_; i++)  {	 
 	   standardizer[i] = StandardizerFactory.getInstance();	 	 
 	 }
+	 */
+	 Standardizer standardizer = StandardizerFactory.getInstance();
 	 
      while (true) {
 		bucketFile = getBucketFile();
@@ -124,7 +127,7 @@ public class MasterIndex {
 		}			    												
 		DataObjectReader reader = new DataObjectFileReader(bucketFile.getAbsolutePath(), true);		
 		EUIDBucket bucket = new EUIDBucket(reader, bucketFile.getName());
-		logger.fine("EUID bucket:"+ bucketFile.getName() + " processing");
+		logger.info("EUID bucket:"+ bucketFile.getName() + " processing");
 		bucket.load();
 				
 		/**
@@ -144,7 +147,7 @@ public class MasterIndex {
 			Map<String,TableData> tableMap = new HashMap<String, TableData>();
 			allTableData.add(tableMap);
 			MIndexTask task = 
-				 new MIndexTask(tableMap, cursor, objectDef_, standardizer[i], endGate, con_,
+				 new MIndexTask(tableMap, cursor, objectDef_, standardizer, endGate, con_,
 						 sameSystemMatch);
 		    executor_.execute(task);		    
 		}
