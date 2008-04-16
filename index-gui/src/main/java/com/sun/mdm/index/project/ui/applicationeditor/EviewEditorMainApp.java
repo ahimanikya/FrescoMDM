@@ -84,6 +84,7 @@ public class EviewEditorMainApp {
     private ArrayList candidateFields;
     private String validationMsg = "";
     private boolean bCheckedOut = true;
+    private boolean bMidm = true;
     
     /**
      * Creates a new instance of EviewEditorMainApp the constructor is decleared private
@@ -311,9 +312,11 @@ public class EviewEditorMainApp {
             EDMWriter edmWriter = new EDMWriter();
             FileObject cf = mEviewApplication.getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.MIDM_XML, false);
             if (cf == null) {
+                bMidm = false;
                 cf = mEviewApplication.getConfigurationFile(EviewProjectProperties.CONFIGURATION_FOLDER, EviewProjectProperties.EDM_XML, false);
                 data = edmWriter.generateEDM(primaryNode, viewName, mEviewApplication.getEDMType(false));
             } else {
+                bMidm = true;
                 data = edmWriter.generateMIDM(primaryNode, viewName, mEviewApplication.getEDMType(false));
             }
 
@@ -541,7 +544,8 @@ public class EviewEditorMainApp {
             } else {
                 String msg = NbBundle.getMessage(EntityNode.class, "MSG_Save_Failed") +
                         ((objectXml == null) ? "\n" + NbBundle.getMessage(EviewEditorMainApp.class, "MSG_Empty_ObjectXml") : "") +
-                        ((edmXml == null) ? "\n" + NbBundle.getMessage(EviewEditorMainApp.class, "MSG_Empty_EDMXml") : "") +
+                        ((edmXml == null && !bMidm) ? "\n" + NbBundle.getMessage(EviewEditorMainApp.class, "MSG_Empty_EDMXml") : "") +
+                        ((edmXml == null && bMidm) ? "\n" + NbBundle.getMessage(EviewEditorMainApp.class, "MSG_Empty_MIDMXml") : "") +
                         ((mefaXml == null) ? "\n" + NbBundle.getMessage(EviewEditorMainApp.class, "MSG_Empty_MefaXml") : "") +
                         ((queryXml == null) ? "\n" + NbBundle.getMessage(EviewEditorMainApp.class, "MSG_Empty_QueryXml") : "") +
                         ((masterXml == null) ? "\n" + NbBundle.getMessage(EviewEditorMainApp.class, "MSG_Empty_MasterXml") : "") +
