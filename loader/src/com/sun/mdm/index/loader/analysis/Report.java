@@ -80,7 +80,7 @@ public class Report {
 			
 			double d = getMinWeight(connection);
 
-			String s = "select * from weight_analysis where Total_wt > "+ d + " order by Total_wt DESC";
+			String s = "select * from weight_analysis where Total_wt >= "+ d + " order by Total_wt DESC";
 			
 			ResultSet resultSet = statement.executeQuery(s);
 
