@@ -1500,10 +1500,12 @@ public class EDMType {
                             Utils.endTag(mTagInitialScreen));
         }
 
-        if (mPageDefinition.eoSearch != null ||
-            mPageDefinition.createEO != null ||
-            mPageDefinition.history != null ||
-            mPageDefinition.matchReview != null) {
+        if (mPageDefinition.eoSearch != null &&
+            mPageDefinition.eoSearch.commonBlock != null &&
+            mPageDefinition.eoSearch.commonBlock.pageTab != null) {
+            //mPageDefinition.createEO != null ||
+            //mPageDefinition.history != null ||
+            //mPageDefinition.matchReview != null) {
             // Inform user the conversion is in process
             rootObject = mPageDefinition.eoSearch.commonBlock.pageTab.rootObject;
         }
