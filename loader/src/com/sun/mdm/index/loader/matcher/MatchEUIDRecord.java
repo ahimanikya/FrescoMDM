@@ -68,6 +68,16 @@ import com.sun.mdm.index.dataobject.DataObject;
 			}
 						 		
 		}
+		
+		public int hashCode() {
+			
+			return euid1.hashCode();
+		}
+		
+		public boolean equals(Object o) {
+			int res = compare((MatchEUIDRecord)o);
+			return res == 0 ? true: false;
+		}
 	}
 	
 	
