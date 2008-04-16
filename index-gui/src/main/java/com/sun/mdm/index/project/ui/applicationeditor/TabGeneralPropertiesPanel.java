@@ -68,10 +68,10 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
         this.txtName.setEnabled(bCheckedOut);
         this.cbDataType.setEnabled(bCheckedOut);
         this.cbMatchType.setEnabled(bCheckedOut);
-        //this.chkBlocking.setEnabled(bCheckedOut);
-        this.chkKeyType.setEnabled(bCheckedOut);
-        this.chkUpdateable.setEnabled(bCheckedOut);
-        this.chkRequired.setEnabled(bCheckedOut);
+        this.jComboBoxBlocking.setEnabled(false);
+        this.jComboBoxKeyType.setEnabled(bCheckedOut);
+        this.jComboBoxUpdateable.setEnabled(bCheckedOut);
+        this.jComboBoxRequired.setEnabled(bCheckedOut);
         this.spFieldSize.setEnabled(bCheckedOut);
         this.txtPattern.setEnabled(bCheckedOut);
         this.txtCodeModule.setEnabled(bCheckedOut);
@@ -116,9 +116,9 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
                     onNameKeyTyped(evt);}
         });
         
-        chkBlocking.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent e) {
-                mEntityNode.enableBlockingTab(chkBlocking.isSelected());
+        jComboBoxBlocking.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent e) {
+                mEntityNode.enableBlockingTab(jComboBoxBlocking.getSelectedItem().equals("true"));
             }
         });
     }
@@ -153,23 +153,20 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
             }
         });
         
-        this.chkKeyType.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        this.jComboBoxKeyType.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent e) {
                 enableSaveAction();
             }
         });
 
-        this.chkRequired.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        this.jComboBoxRequired.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent e) {
                 enableSaveAction();
             }
         });
         
-        this.chkUpdateable.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        this.jComboBoxUpdateable.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent e) {
                 enableSaveAction();
             }
         });
@@ -316,7 +313,6 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
             setMatchType(parentNode, fieldDef.getFieldName());
             //setStandardizationType(parentNode, fieldDef.getFieldName());
             //cbMatchType.setEnabled(!mEntityNode.isGeneratedField());
-            //chkBlocking.setEnabled(!mEntityNode.isGeneratedField());
             setBlockOn(mEntityNode.isBlockOn());
             setKeyType(fieldDef.isKeyType());
             setUpdateable(fieldDef.isUpdateable());
@@ -538,55 +534,55 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
      *@return Blocking
      */
     public void setBlockOn(boolean bBlocking) {
-        chkBlocking.setSelected(bBlocking);
+        jComboBoxBlocking.setSelectedItem(bBlocking ? "true" : "false");
     }
 
     /**
      *@return Blocking
      */
     public String getBlocking() {
-        return chkBlocking.isSelected() ? "true" : "false";
+        return jComboBoxBlocking.getSelectedItem().toString();
     }
 
     /**
      *@param keyType
      */
     private void setKeyType(boolean keyType) {
-        chkKeyType.setSelected(keyType);
+        jComboBoxKeyType.setSelectedItem(keyType ? "true" : "false");
     }
     /**
      *@return KeyType
      */
     public String getKeyType() {
-        return chkKeyType.isSelected() ? "true" : "false";
+        return jComboBoxKeyType.getSelectedItem().toString();
     }
 
     /**
      *@param Required
      */
     private void setRequired(boolean required) {
-        chkRequired.setSelected(required);
+        jComboBoxRequired.setSelectedItem(required ? "true" : "false");
     }
 
     /**
      *@return Required
      */
     public String getRequired() {
-        return chkRequired.isSelected() ? "true" : "false";
+        return jComboBoxRequired.getSelectedItem().toString();
     }
 
     /**
      *@param Updateable
      */
     private void setUpdateable(boolean updateable) {
-        chkUpdateable.setSelected(updateable);
+        jComboBoxUpdateable.setSelectedItem(updateable ? "true" : "false");
     }
 
     /**
      *@return Updateable
      */
     public String getUpdateable() {
-        return chkUpdateable.isSelected() ? "true" : "false";
+        return jComboBoxUpdateable.getSelectedItem().toString();
     }
 
     /**
@@ -698,13 +694,9 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
         jLabelMatchType = new javax.swing.JLabel();
         cbMatchType = new javax.swing.JComboBox();
         jLabelBlocking = new javax.swing.JLabel();
-        chkBlocking = new javax.swing.JCheckBox();
         jLabelKeyType = new javax.swing.JLabel();
-        chkKeyType = new javax.swing.JCheckBox();
         jLabelUpdateable = new javax.swing.JLabel();
-        chkUpdateable = new javax.swing.JCheckBox();
         jLabelRequired = new javax.swing.JLabel();
-        chkRequired = new javax.swing.JCheckBox();
         jLabelFieldSize = new javax.swing.JLabel();
         spFieldSize = new javax.swing.JSpinner();
         jLabelPattern = new javax.swing.JLabel();
@@ -715,6 +707,10 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
         txtUserCode = new javax.swing.JTextField();
         jLabelConstrainedBy = new javax.swing.JLabel();
         txtConstrainedBy = new javax.swing.JTextField();
+        jComboBoxBlocking = new javax.swing.JComboBox();
+        jComboBoxKeyType = new javax.swing.JComboBox();
+        jComboBoxUpdateable = new javax.swing.JComboBox();
+        jComboBoxRequired = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
         jLabelDisplayName = new javax.swing.JLabel();
         jLabelInputMask = new javax.swing.JLabel();
@@ -731,29 +727,21 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
         jLabelDataType.setText(bundle.getString("MSG_DataType")); // NOI18N
 
         cbDataType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "string", "char", "date", "int", "float", "boolean" }));
+        cbDataType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbDataTypeActionPerformed(evt);
+            }
+        });
 
         jLabelMatchType.setText(bundle.getString("MSG_MatchType")); // NOI18N
 
         jLabelBlocking.setText(bundle.getString("MSG_Blocking")); // NOI18N
 
-        chkBlocking.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        chkBlocking.setEnabled(false);
-        chkBlocking.setMargin(new java.awt.Insets(0, 0, 0, 0));
-
         jLabelKeyType.setText(bundle.getString("MSG_KeyType")); // NOI18N
-
-        chkKeyType.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        chkKeyType.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
         jLabelUpdateable.setText(bundle.getString("MSG_Updateable")); // NOI18N
 
-        chkUpdateable.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        chkUpdateable.setMargin(new java.awt.Insets(0, 0, 0, 0));
-
         jLabelRequired.setText(bundle.getString("MSG_Required")); // NOI18N
-
-        chkRequired.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        chkRequired.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
         jLabelFieldSize.setText(bundle.getString("MSG_FieldSize")); // NOI18N
 
@@ -771,6 +759,14 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
 
         jLabelConstrainedBy.setText(bundle.getString("MSG_ConstrainedBy")); // NOI18N
 
+        jComboBoxBlocking.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "true", "false" }));
+
+        jComboBoxKeyType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "true", "false" }));
+
+        jComboBoxUpdateable.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "true", "false" }));
+
+        jComboBoxRequired.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "true", "false" }));
+
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -779,92 +775,112 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
                 .add(4, 4, 4)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(txtName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabelDataType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(cbDataType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 130, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabelMatchType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(cbMatchType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 130, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabelBlocking, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(chkBlocking))
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabelKeyType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(chkKeyType))
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabelUpdateable, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(chkUpdateable))
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabelRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(chkRequired))
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabelFieldSize, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(spFieldSize, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jPanel1Layout.createSequentialGroup()
                         .add(jLabelPattern, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(txtPattern, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(jLabelCodeModule, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(txtCodeModule, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabelUserCode, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(txtUserCode, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(jLabelMatchType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(cbMatchType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 130, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabelConstrainedBy, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(txtConstrainedBy, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                            .add(jLabelName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(jLabelDataType, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(txtName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(cbDataType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 130, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                            .add(jLabelConstrainedBy, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(jLabelUserCode, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(txtUserCode, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(txtConstrainedBy, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 240, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(jLabelFieldSize, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(spFieldSize))
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .add(jLabelRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                    .add(jComboBoxRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 57, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .add(jLabelUpdateable, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(jComboBoxUpdateable, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 57, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                                        .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1Layout.createSequentialGroup()
+                                            .add(jLabelKeyType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                            .add(jComboBoxKeyType, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1Layout.createSequentialGroup()
+                                            .add(jLabelBlocking, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                            .add(jComboBoxBlocking, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 57, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))))
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(txtName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(5, 5, 5)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(txtName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabelName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelDataType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(cbDataType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(5, 5, 5)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelMatchType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(cbMatchType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(3, 3, 3)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelBlocking, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(chkBlocking, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jComboBoxBlocking, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(5, 5, 5)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelKeyType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(chkKeyType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jComboBoxKeyType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(5, 5, 5)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelUpdateable, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(chkUpdateable, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jComboBoxUpdateable, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(5, 5, 5)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(chkRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jComboBoxRequired, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(5, 5, 5)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelFieldSize, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(spFieldSize, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(5, 5, 5)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelPattern, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(txtPattern, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(5, 5, 5)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelCodeModule, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(txtCodeModule, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(5, 5, 5)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelUserCode, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(txtUserCode, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(5, 5, 5)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jLabelConstrainedBy, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(txtConstrainedBy, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(txtConstrainedBy, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), bundle.getString("MSG_EDM"))); // NOI18N
@@ -922,7 +938,7 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .add(10, 10, 10)
-                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 330, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(10, 10, 10)
                 .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 110, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
@@ -931,15 +947,19 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
     private void txtCodeModuleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodeModuleActionPerformed
 // TODO add your handling code here:
     }//GEN-LAST:event_txtCodeModuleActionPerformed
+
+private void cbDataTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbDataTypeActionPerformed
+// TODO add your handling code here:
+}//GEN-LAST:event_cbDataTypeActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbDataType;
     private javax.swing.JComboBox cbMatchType;
-    private javax.swing.JCheckBox chkBlocking;
-    private javax.swing.JCheckBox chkKeyType;
-    private javax.swing.JCheckBox chkRequired;
-    private javax.swing.JCheckBox chkUpdateable;
+    private javax.swing.JComboBox jComboBoxBlocking;
+    private javax.swing.JComboBox jComboBoxKeyType;
+    private javax.swing.JComboBox jComboBoxRequired;
+    private javax.swing.JComboBox jComboBoxUpdateable;
     private javax.swing.JLabel jLabelBlocking;
     private javax.swing.JLabel jLabelCodeModule;
     private javax.swing.JLabel jLabelConstrainedBy;

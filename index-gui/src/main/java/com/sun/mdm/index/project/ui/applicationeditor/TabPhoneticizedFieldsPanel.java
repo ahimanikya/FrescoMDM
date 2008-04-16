@@ -85,14 +85,20 @@ public class TabPhoneticizedFieldsPanel extends javax.swing.JPanel {
     private void initComponents() {
         jPanel1 = new javax.swing.JPanel();
         jScrollPaneTable = new javax.swing.JScrollPane();
-        btnRemovePhoneticizedFields = new javax.swing.JButton();
         btnAddPhoneticizedFields = new javax.swing.JButton();
+        btnAddPhoneticizedFields.setMnemonic('A');
+        btnRemovePhoneticizedFields = new javax.swing.JButton();
+        btnRemovePhoneticizedFields.setMnemonic('R');
         btnEditPhoneticizedFields = new javax.swing.JButton();
+        btnEditPhoneticizedFields.setMnemonic('E');
         jPanel2 = new javax.swing.JPanel();
         jScrollPaneEncoders = new javax.swing.JScrollPane();
         btnAddEncoder = new javax.swing.JButton();
+        btnAddEncoder.setMnemonic('d');
         btnRemoveEncoder = new javax.swing.JButton();
+        btnRemoveEncoder.setMnemonic('m');
         btnEditEncoder = new javax.swing.JButton();
+        btnEditEncoder.setMnemonic('t');
 
         setLayout(null);
 
