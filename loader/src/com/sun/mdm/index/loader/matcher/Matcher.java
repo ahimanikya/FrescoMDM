@@ -57,14 +57,13 @@ import com.sun.mdm.index.loader.analysis.WeightAnalyzer;
 public class Matcher {
 	
 	private double matchThreshold_ = 0;
-	//private Map<MatchRecord, MatchRecord> matchTree_ = new TreeMap<MatchRecord, MatchRecord>();
 	private int poolSize_ = 1;
 	private ExecutorService executor_;
 	private String[] paths_;
 	private String[] matchTypes_;
 	private Lookup lookup_;
 	private List<File> matchFiles_ = new ArrayList<File>();
-	ClusterSynchronizer clusterSynchronizer_ = ClusterSynchronizer.getInstance();
+	private ClusterSynchronizer clusterSynchronizer_ = ClusterSynchronizer.getInstance();
 	private LoaderConfig config_ =  LoaderConfig.getInstance();
 	boolean isMasterLoader_;
 	private boolean ismatchAnalyzer = false;
