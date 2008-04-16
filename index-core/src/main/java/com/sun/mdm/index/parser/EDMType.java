@@ -1503,8 +1503,7 @@ public class EDMType {
         if (mPageDefinition.eoSearch != null ||
             mPageDefinition.createEO != null ||
             mPageDefinition.history != null ||
-            mPageDefinition.matchReview != null ||
-            (mPageDefinition.reports != null && mPageDefinition.reports.alReport != null)) {
+            mPageDefinition.matchReview != null) {
             // Inform user the conversion is in process
             rootObject = mPageDefinition.eoSearch.commonBlock.pageTab.rootObject;
         }
