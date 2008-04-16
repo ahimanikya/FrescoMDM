@@ -84,6 +84,15 @@ import com.sun.mdm.index.dataobject.DataObject;
 			}
 						 		
 		}
+		
+        public int hashCode() {		
+			return (int)GIDFrom;
+		}
+		
+		public boolean equals(Object o) {
+			int res = compare((MatchGIDRecord)o);
+			return res == 0 ? true: false;
+		}
 	}
 	
 	
