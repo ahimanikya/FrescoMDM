@@ -58,7 +58,7 @@ public class Matcher {
 	
 	private double matchThreshold_ = 0;
 	//private Map<MatchRecord, MatchRecord> matchTree_ = new TreeMap<MatchRecord, MatchRecord>();
-	private int poolSize_ = 2;
+	private int poolSize_ = 1;
 	private ExecutorService executor_;
 	private String[] paths_;
 	private String[] matchTypes_;
@@ -68,7 +68,6 @@ public class Matcher {
 	private LoaderConfig config_ =  LoaderConfig.getInstance();
 	boolean isMasterLoader_;
 	private boolean ismatchAnalyzer = false;
-	private WeightAnalyzer matchAnalyzer;
 	private double duplicateThreshold_ = 0;
 	private boolean isSBR_ = false;
 	private static Logger logger = Logger.getLogger(Matcher.class
@@ -91,7 +90,6 @@ public class Matcher {
 		if (numThreads != null) {
 		    poolSize_ = Integer.parseInt(numThreads);
 		}
-		poolSize_ = 1;
 		
 		executor_ = Executors.newFixedThreadPool(poolSize_);
 		paths_ = paths;
@@ -137,8 +135,8 @@ public class Matcher {
 		CountDownLatch endGate = new CountDownLatch(poolSize_);
 		
 		for (int i = 0; i < poolSize_; i++)  {
-			treeMaps[i] = new TreeMap<MatchRecord, MatchRecord>(comp);
-			MatcherTask task = new MatcherTask((TreeMap<MatchRecord,MatchRecord>)treeMaps[i], 
+			treeMaps[i] = new TreeMap<MatchRecord,String>(comp);
+			MatcherTask task = new MatcherTask((TreeMap<MatchRecord,String>)treeMaps[i], 
 			cursor, paths_,  matchTypes_, lookup_, matchThreshold_, duplicateThreshold_, endGate, isSBR_);
 			
 			if (i == 0 && ismatchAnalyzer) {
@@ -168,7 +166,7 @@ public class Matcher {
 			continue; // skip match files
 		}
 		
-		TreeMap<MatchRecord, MatchRecord> allMap = new TreeMap<MatchRecord, MatchRecord>(comp);
+		TreeMap<MatchRecord,String> allMap = new TreeMap<MatchRecord,String>(comp);
 		
 		for (int i = 0; i < treeMaps.length; i++)  {			
 		  allMap.putAll(treeMaps[i]);
@@ -189,9 +187,18 @@ public class Matcher {
 	 } // end while true
      
      executor_.shutdown();
+        
      
      if (!ismatchAnalyzer) {
-    	 File output = null;
+    	 mergeMatchFiles();  
+     } else {
+    	 analyzer.close();
+     }
+   
+   }
+   
+   private void mergeMatchFiles() throws Exception {
+	   File output = null;
        if (!isSBR_) {
 	      output = FileManager.createMatchStageFile();
        } else {
@@ -230,10 +237,6 @@ public class Matcher {
 			 fileMerger.merge(finalMatchStageFileList, finalMatch);
 		 }
 	   }
-     } else {
-    	 analyzer.close();
-     }
-   
    }
 	
 	
@@ -259,8 +262,8 @@ public class Matcher {
 		return file;
 	}
 	
-	private boolean write( TreeMap<MatchRecord,MatchRecord> map, File matchFile) throws IOException {			
-	    Set<Map.Entry<MatchRecord,MatchRecord>> set = map.entrySet();
+	private boolean write( TreeMap<MatchRecord,String> map, File matchFile) throws IOException {			
+	    Set<Map.Entry<MatchRecord,String>> set = map.entrySet();
 	    
 	    if (set.isEmpty()) {
 	    	return false;
@@ -273,7 +276,7 @@ public class Matcher {
 	    	writer = new MatchEUIDWriter(matchFile);
 	    }
 	    
-	    for(Map.Entry<MatchRecord,MatchRecord> entry : set) {
+	    for(Map.Entry<MatchRecord,String> entry : set) {
 	    	MatchRecord record = entry.getKey();
 	    	writer.write(record);
 	    }
