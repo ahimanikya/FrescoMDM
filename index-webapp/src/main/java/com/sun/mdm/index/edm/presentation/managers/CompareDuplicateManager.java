@@ -59,6 +59,7 @@ import com.sun.mdm.index.objects.epath.EPathAPI;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Collection;
 import java.util.HashMap;
@@ -327,6 +328,20 @@ public class CompareDuplicateManager {
             systemObjectHashMap.put("Status", systemObject.getStatus()); // set Status here
 
             HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
+            
+            HashMap editSystemObjectHashMapUpdate = masterControllerService.getSystemObjectAsHashMap(systemObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
+
+            //add SystemCode and LID value to the new Hash Map
+            editSystemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
+            editSystemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
+            editSystemObjectHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SYSTEM_OBJECT_UPDATE); // set UPDATE TYPE HERE
+
+            //add SystemCode and LID value to the new Hash Map
+            editSystemObjectHashMapUpdate.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
+            editSystemObjectHashMapUpdate.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
+            editSystemObjectHashMapUpdate.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SYSTEM_OBJECT_UPDATE); // set UPDATE TYPE HERE
+
+            systemObjectHashMap.put("SYSTEM_OBJECT_EDIT", editSystemObjectHashMapUpdate); // Set the edit SystemObject here
 
             FieldConfig[] rootFieldConfigs = screenObject.getRootObj().getFieldConfigs();
 
@@ -367,6 +382,22 @@ public class CompareDuplicateManager {
 
                 //set address array list of hasmap for editing
                 ArrayList soMinorObjectsMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
+                
+                ArrayList soMinorObjectsMapArrayListEdit = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);;
+
+
+                for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
+                    HashMap minorObjectHashMapEdit = (HashMap) soMinorObjectsMapArrayListEdit.get(k);
+
+                    minorObjectHashMapEdit.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
+                    minorObjectHashMapEdit.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
+                    minorObjectHashMapEdit.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
+                }
+
+                //set the values for the minor objects with keys only
+                systemObjectHashMap.put("SOEDIT" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayListEdit); // set SO addresses as arraylist here
+
+                
                 for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
                     HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
                     
@@ -472,6 +503,13 @@ public class CompareDuplicateManager {
 
                 //set address array list of hasmap for editing
                 ArrayList soMinorObjectsMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(enterpriseObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
+                ArrayList soMinorObjectsMapArrayListCodes = masterControllerService.getEnterpriseObjectChildrenArrayList(enterpriseObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
+                for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
+                    HashMap minorObjectHashMapCodes = (HashMap) soMinorObjectsMapArrayListCodes.get(k);
+                    minorObjectHashMapCodes.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
+                }
+                enterpriseObjectHashMap.put("EOCODES" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayListCodes); // set SO addresses as arraylist here
+                
                 for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
                     HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
                     minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
@@ -492,6 +530,7 @@ public class CompareDuplicateManager {
                 }
 
                 enterpriseObjectHashMap.put("EO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
+                enterpriseObjectHashMap.put("EO" + objectNodeConfig.getName() + "ArrayListSize", new Integer(soMinorObjectsMapArrayList.size())); // set SO addresses as arraylist here
             }
 
             ArrayList newMinorObjectsLinkedList = new ArrayList();
@@ -672,6 +711,12 @@ public class CompareDuplicateManager {
                 systemObjectHashMap.put("Status", systemObject.getStatus()); // set Status here
                 HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
 
+                //add SystemCode and LID value to the new Hash Map
+                editSystemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID());
+                editSystemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
+                editSystemObjectHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SYSTEM_OBJECT_UPDATE); // set UPDATE TYPE HERE
+
+                systemObjectHashMap.put("SYSTEM_OBJECT_EDIT", editSystemObjectHashMap); // Set the edit EnterpriseObject here
                 
                     for (int r = 0; r < rootFieldConfigs.length; r++) {
                         FieldConfig fieldConfig = rootFieldConfigs[r];
@@ -706,13 +751,19 @@ public class CompareDuplicateManager {
                     FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs(); 
                     
                     ArrayList soMinorObjectsMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
+                    ArrayList soMinorObjectsMapArrayListEdit = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
                     for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
                         HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
+
+                        //Build an array of edit so minor objects here 
+                        HashMap minorObjectHashMapEdit = (HashMap) soMinorObjectsMapArrayListEdit.get(k);
+                        
                         for (int m = 0; m < minorFiledConfigs.length; m++) {
                             FieldConfig fieldConfig = minorFiledConfigs[m];
                             //set the menu list values here
                             if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                                 Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
+                                minorObjectHashMapEdit.put(fieldConfig.getFullFieldName(), value);
                                 if (value != null) {
                                     strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                                     minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
@@ -725,8 +776,14 @@ public class CompareDuplicateManager {
                         minorObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
                         minorObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
                         minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
+
+                        //Edit fields here  
+                        minorObjectHashMapEdit.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
+                        minorObjectHashMapEdit.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
+                        minorObjectHashMapEdit.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
                     }
                     systemObjectHashMap.put("SO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
+                    systemObjectHashMap.put("SOEDIT" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
                 }
                 newArrayList.add(systemObjectHashMap);
             }
@@ -738,4 +795,24 @@ public class CompareDuplicateManager {
         return newArrayList;
     }
 
+    public int getMinorObjectsMaxSize(ArrayList valuesObjectHashMapList, ScreenObject screenObject, String childObjectName) {
+        int countMinorObjectsMax = 0;
+        ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
+        int[] countsArray = new int[valuesObjectHashMapList.size()];
+   
+        //Build and array of minor object values from the screen object child object nodes
+        for (int j = 0; j < valuesObjectHashMapList.size(); j++) {
+            HashMap valuesObjectHashMap = (HashMap) valuesObjectHashMapList.get(j);
+            for (int i = 0; i < childNodeConfigs.length; i++) {
+                //get the child object node configs
+                ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
+                if (childObjectName.equalsIgnoreCase(objectNodeConfig.getName())) {
+                    countsArray[j] = ((Integer) valuesObjectHashMap.get("EO" + childObjectName + "ArrayListSize")).intValue();
+                }
+            }
+        }
+        Arrays.sort(countsArray);
+        
+        return countsArray[countsArray.length-1];
+    }
 }
