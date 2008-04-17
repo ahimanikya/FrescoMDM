@@ -636,8 +636,8 @@ width:25px;
 	   color:#837F74;
            width:1024px;
            float:left;
-           text-align:right;
-	   vertical-align:top;	      
+           text-align:left;
+	   vertical-align:top;
 }
 
 .reportYUISearch table {

@@ -4,6 +4,19 @@
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <%@ page import="javax.servlet.http.HttpServletRequest"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.DashboardHandler"  %>
+<%@ page import="javax.faces.context.FacesContext"  %>
+<%@ page import="java.util.ResourceBundle"  %>
+
+
+<%
+   ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+   String summaryText = bundle.getString("dashboard_summary_table_text");
+   String lookupText = bundle.getString("dashboard_lookup_euid_table_text");
+   String reportsText = bundle.getString("dashboard_reports_table_text");
+   String compareText = bundle.getString("dashboard_compareeuid_table_text");
+%>
+    
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
 
@@ -16,14 +29,18 @@
         </head>
         <title><h:outputText value="#{msgs.application_heading}"/></title>   
         <body onload="javascript:setFocusOnFirstField(QuickSearchForm);">
-                <%@include file="./templates/header.jsp"%>
-                
+       <%@include file="./templates/header.jsp"%>
+       
 <div id="mainContent">  <!-- Main content -->
 <table border="0" cellpadding="3" cellspacing="1">
   <tr>
    <td> 
-   <%HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();%>
-   
+   <%HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+     DashboardHandler dashboardHandler = new DashboardHandler();
+	 System.out.println("=====>" + dashboardHandler + "dashboardHandler.showSubscreenTab(summaryText)" + dashboardHandler.showSubscreenTab(summaryText));
+	 //Summary
+   %>
+   <%if(dashboardHandler.showSubscreenTab(summaryText)) {%>
    <div class="dashboardHeadMessage"> <h:outputLabel for="#{msgs.dashboard_summary_table_text}" value="#{msgs.dashboard_summary_table_text}"/> </div>
          <div id="dashboardSummary" class="dashboardSummary"> 
           <h:form>
@@ -32,15 +49,13 @@
                 <!--caption class="euidHeadMessage">Summary</caption-->
                 <tr><td><h:outputText value="#{msgs.dashboard_summary_table_link1}"/> : <h:commandLink  action="#{NavigationHandler.toDuplicateRecords}"><h:outputText value="#{DashboardHandler.countPotentialDuplicates} " /></h:commandLink></td></tr>
                 <tr><td><h:outputText value="#{msgs.dashboard_summary_table_link4}"/> : <h:commandLink  action="#{NavigationHandler.toAssumedMatches}"><h:outputText value="#{DashboardHandler.countAssumedMatches} " /></h:commandLink></td></tr>
-                <!--
-                <tr><td><h:outputText value="#{msgs.dashboard_summary_table_link2}"/></td></tr>
-                <tr><td><h:outputText value="#{msgs.dashboard_summary_table_link3}"/></td></tr>
-                -->
             </table>
           </h:form>
          </div>
+	<%}%>
    </td>
    <td> 
+   <%if(dashboardHandler.showSubscreenTab(lookupText)) {%>
        <div class="dashboardHeadMessage"><h:outputLabel for="#{msgs.dashboard_quicksearch_table_text}" value="#{msgs.dashboard_quicksearch_table_text}"/></div> 
         <div id="qs" class="dashboardSummaryQS"> 
             <table border="0" cellspacing="0" cellpadding="4">
@@ -48,11 +63,12 @@
                 <!--Caption class = "euidHeadMessage">Quick Search</Caption-->
                 <h:form id="QuickSearchForm">
                 <tr><td> &nbsp;</td></tr>
+
                 <tr>
                     <td> 
                         <span><h:outputText value="#{msgs.dashboard_quick_search_text}" /></span>
                     </td>
-                    <td> <h:inputText id="euidField" value="#{PatientDetailsHandler.singleEUID}"  maxlength="#{SourceHandler.euidLength}" /> </td>
+                    <td> <h:inputText id="euidField" value="#{DashboardHandler.euid1}"  maxlength="#{SourceHandler.euidLength}" /> </td>
                 </tr>
                 <tr>
                     <td colspan="2">&nbsp;</td>
@@ -60,7 +76,7 @@
 
                 <tr>
                       <td>
-                          <h:commandLink  action="#{PatientDetailsHandler.singleEuidSearch}">
+                          <h:commandLink  action="#{DashboardHandler.lookupEuid1}">
                               <h:outputText value="#{msgs.dashboard_search_but_text}" />
                           </h:commandLink> 
                       </td>
@@ -77,11 +93,15 @@
 
             </table>
         </div>
+	<%}%>
    </td>
   </tr>
 
   <tr>
    <td> 
+     
+
+   <%if(dashboardHandler.showSubscreenTab(reportsText)) {%>
    <div class="dashboardHeadMessage"><h:outputLabel for="#{msgs.dashboard_reports_table_text}" value="#{msgs.dashboard_reports_table_text}"/></div>
         <div id="dashboardSummary" class="dashboardSummary">
             <h:form>
@@ -134,9 +154,11 @@
             </table>
            </h:form>
         </div>
+	<%}%>
    </td>
                 
    <td> 
+   <%if(dashboardHandler.showSubscreenTab(compareText)) {%>
        <div class="dashboardHeadMessage">
            <h:outputLabel for="#{msgs.dashboard_compareeuid_table_text}" value="#{msgs.dashboard_compareeuid_table_text}"/>
        </div>
@@ -147,45 +169,45 @@
             <!--Caption included-->
                 <!--Caption class = "euidHeadMessage"> Compare EUID's </caption-->                
                 <tr>
-                    <td><h:inputText  id="euid1Field" value="#{PatientDetailsHandler.euid1}" maxlength="#{SourceHandler.euidLength}" /></td>
+                    <td><h:inputText  id="euid1Field" value="#{DashboardHandler.euid1}" maxlength="#{SourceHandler.euidLength}" /></td>
                     <td>
                         <nobr>
-                            <h:commandLink  action="#{PatientDetailsHandler.lookupEuid1}">  
-                                                        <h:outputText value="#{msgs.dashboard_lookup_euid1}"/> 
+                            <h:commandLink  action="#{DashboardHandler.lookupEuid1}">  
+                                 <h:outputText value="#{msgs.dashboard_lookup_euid1}"/> 
                             </h:commandLink>                        
                         </nobr>
                     </td>
                 </tr>
-                <tr><td><h:inputText  id="euid2Field" value="#{PatientDetailsHandler.euid2}" maxlength="#{SourceHandler.euidLength}" />
+                <tr><td><h:inputText  id="euid2Field" value="#{DashboardHandler.euid2}" maxlength="#{SourceHandler.euidLength}" />
                     <td>
                         <nobr>
-                            <h:commandLink   action="#{PatientDetailsHandler.lookupEuid2}">  
-                                                        <h:outputText value="#{msgs.dashboard_lookup_euid2}"/> 
+                            <h:commandLink   action="#{DashboardHandler.lookupEuid2}">  
+                                <h:outputText value="#{msgs.dashboard_lookup_euid2}"/> 
                             </h:commandLink>                        
                         </nobr>
                     </td>
                 </tr>
-                <tr><td><h:inputText  id="euid3Field" value="#{PatientDetailsHandler.euid3}" maxlength="#{SourceHandler.euidLength}" /></td>
+                <tr><td><h:inputText  id="euid3Field" value="#{DashboardHandler.euid3}" maxlength="#{SourceHandler.euidLength}" /></td>
                     <td>
                         <nobr>
-                            <h:commandLink  action="#{PatientDetailsHandler.lookupEuid3}">  
-                                                        <h:outputText value="#{msgs.dashboard_lookup_euid3}"/> 
+                            <h:commandLink  action="#{DashboardHandler.lookupEuid3}">  
+                                 <h:outputText value="#{msgs.dashboard_lookup_euid3}"/> 
                             </h:commandLink>                        
                         </nobr>
                     </td>
                 </tr>
                 <tr>
-                    <td><h:inputText  id="euid4Field" value="#{PatientDetailsHandler.euid4}" maxlength="#{SourceHandler.euidLength}" /></td>
+                    <td><h:inputText  id="euid4Field" value="#{DashboardHandler.euid4}" maxlength="#{SourceHandler.euidLength}" /></td>
                     <td align="right" width="70px">
                         <nobr>
-                            <h:commandLink  action="#{PatientDetailsHandler.lookupEuid4}">  
-                                                        <h:outputText value="#{msgs.dashboard_lookup_euid4}"/> 
+                            <h:commandLink  action="#{DashboardHandler.lookupEuid4}">  
+                                  <h:outputText value="#{msgs.dashboard_lookup_euid4}"/> 
                             </h:commandLink>
                         </nobr>
                     </td>
                     <td align="right" width="70px">
                         <nobr>
-                            <h:commandLink  action="#{PatientDetailsHandler.compareEuidSearch}">  
+                            <h:commandLink  action="#{DashboardHandler.compareEuidSearch}">  
                                 <h:outputText value="#{msgs.dashboard_compare_but_text}"/>
                            </h:commandLink>
                         </nobr>
@@ -202,6 +224,7 @@
             
             </h:form>
         </div>
+	<%}%>
    </td>
   </tr>
   

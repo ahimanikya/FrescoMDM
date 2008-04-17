@@ -9,14 +9,17 @@
 <%@ page import="javax.faces.context.FacesContext"  %>
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
+<%@ page import="java.util.ArrayList"  %>
+<%@ page import="javax.el.*"  %>
+<%@ page import="javax.el.ValueExpression" %>
 
 <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
 <%@ page isErrorPage="false" errorPage="../error500.jsp" %>
 
 <%
 ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+
 if(session!=null && session.isNew()) {
-	//System.out.println("SESSION INVALDATED CONDITION " + screenObject.getDisplayTitle());
 %>
    <c:redirect url="login.jsf"/>
 <%}
@@ -41,18 +44,9 @@ if(session.getAttribute("user") == null  ) {
 <%
 ConfigManager.init();
 
-
 String uri = request.getRequestURI();
 String requestPage = uri.substring(uri.lastIndexOf("/")+1,uri.length());
-String recordDetailsLabel = ConfigManager.getInstance().getScreenObjectFromScreenName("record-details").getDisplayTitle();
 
-String transactionsLabel = ConfigManager.getInstance().getScreenObjectFromScreenName("transactions").getDisplayTitle();
-String duplicateRecordsLabel = ConfigManager.getInstance().getScreenObjectFromScreenName("duplicate-records").getDisplayTitle();
-String assumeMatchesLabel = ConfigManager.getInstance().getScreenObjectFromScreenName("assumed-matches").getDisplayTitle();
-String sourceRecordsLabel = ConfigManager.getInstance().getScreenObjectFromScreenName("source-record").getDisplayTitle();
-String reportsLabel = ConfigManager.getInstance().getScreenObjectFromScreenName("reports").getDisplayTitle();
-String auditLogLabel = ConfigManager.getInstance().getScreenObjectFromScreenName("audit-log").getDisplayTitle();
-String dashBoardLabel = "Dashboard";
 %>
 <!-- 
   Author Sridhar Narsingh
@@ -84,134 +78,51 @@ String dashBoardLabel = "Dashboard";
                  </td>
              </tr>    
          </h:form>   
-         <tr>
+		 <!--Start dynamic header content code here -->
+		 <%
+         ArrayList headerTabsLabelsList = ConfigManager.getInstance().getAllScreenObjects(); 
+		 Object[] headerTabsLabelsListObj = headerTabsLabelsList.toArray();
+		 ScreenObject allScreensArrayOrdered[] = new ScreenObject[headerTabsLabelsListObj.length];
+         
+		 String headerClassName = "";
+
+		 //System.out.println("newArrayListOrdered (size) ===> " + newArrayListOrdered.size());
+
+		 for(int aIndex = 0 ;aIndex <headerTabsLabelsListObj.length; aIndex++) {
+		    ScreenObject screenObjectLocal = (ScreenObject) headerTabsLabelsListObj[aIndex];
+            allScreensArrayOrdered[screenObjectLocal.getDisplayOrder()] = screenObjectLocal;
+		 }
+		 %>
+          
+		  <tr>
              <td colspan="2">
-                 <div id="header">    
-                     <h:form>   
-                         <% if ("dashboard.jsp".equalsIgnoreCase(requestPage)) {%>                 
-                         <h:commandLink styleClass="navbuttonselected" id="dashlink"  action="#{NavigationHandler.toDashboard}"><span><%=dashBoardLabel%></span> </h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="duplicaterecordslink" rendered="#{Operations.potDup_SearchView}" action="#{NavigationHandler.toDuplicateRecords}"><span><%=duplicateRecordsLabel%></span> </h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="patlink" rendered="#{Operations.EO_SearchViewSBR}"  action="#{NavigationHandler.toPatientDetails}"><span><%=recordDetailsLabel%></span> </h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="amlink" rendered="#{Operations.assumedMatch_SearchView}"  action="#{NavigationHandler.toAssumedMatches}"><span><%=assumeMatchesLabel%></span> </h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="tralink"  rendered="#{Operations.transLog_SearchView}"  action="#{NavigationHandler.toTransactions}"><span><%=transactionsLabel%></span> </h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="replink" rendered="#{Operations.reports_View}"  action="#{NavigationHandler.toReports}"><span><%=reportsLabel%></span> </h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="sourcelink" rendered="#{Operations.SO_SearchView}"  action="#{NavigationHandler.toSourceRecords}"><span><%=sourceRecordsLabel%></span> </h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="allink" rendered="#{Operations.auditLog_SearchView}"  action="#{NavigationHandler.toAuditLog}"><span><%=auditLogLabel%></span> </h:commandLink>    
-                         
-                         
-                         <%} else if ("duplicaterecords.jsp".equalsIgnoreCase(requestPage) || "compareduplicates.jsp".equalsIgnoreCase(requestPage)) {%>
-                         
-                         <h:commandLink styleClass="navbutton" id="dashlink" action="#{NavigationHandler.toDashboard}"><span><%=dashBoardLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbuttonselected" id="duplicaterecordslink" rendered="#{Operations.potDup_SearchView}" action="#{NavigationHandler.toDuplicateRecords}"><span><%=duplicateRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="patlink" rendered="#{Operations.EO_SearchViewSBR}" action="#{NavigationHandler.toPatientDetails}"><span><%=recordDetailsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="amlink" rendered="#{Operations.assumedMatch_SearchView}" action="#{NavigationHandler.toAssumedMatches}"><span><%=assumeMatchesLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="tralink"  rendered="#{Operations.transLog_SearchView}" action="#{NavigationHandler.toTransactions}"><span><%=transactionsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="replink" rendered="#{Operations.reports_View}" action="#{NavigationHandler.toReports}"><span><%=reportsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="sourcelink" rendered="#{Operations.SO_SearchView}" action="#{NavigationHandler.toSourceRecords}"><span><%=sourceRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="allink" rendered="#{Operations.auditLog_SearchView}" action="#{NavigationHandler.toAuditLog}"><span><%=auditLogLabel%></span></h:commandLink>
-                         
-                         
-                         <%} else if ("recorddetails.jsp".equalsIgnoreCase(requestPage) || "euiddetails.jsp".equalsIgnoreCase(requestPage) || "editmaineuid.jsp".equalsIgnoreCase(requestPage)) {%>
-                         
-                         <h:commandLink styleClass="navbutton" id="dashlink" action="#{NavigationHandler.toDashboard}"><span><%=dashBoardLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="duplicaterecordslink" rendered="#{Operations.potDup_SearchView}" action="#{NavigationHandler.toDuplicateRecords}"><span><%=duplicateRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbuttonselected" id="patlink" rendered="#{Operations.EO_SearchViewSBR}" action="#{NavigationHandler.toPatientDetails}"><span><%=recordDetailsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="amlink" rendered="#{Operations.assumedMatch_SearchView}" action="#{NavigationHandler.toAssumedMatches}"><span><%=assumeMatchesLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="tralink"  rendered="#{Operations.transLog_SearchView}" action="#{NavigationHandler.toTransactions}"><span><%=transactionsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="replink" rendered="#{Operations.reports_View}" action="#{NavigationHandler.toReports}"><span><%=reportsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="sourcelink" rendered="#{Operations.SO_SearchView}" action="#{NavigationHandler.toSourceRecords}"><span><%=sourceRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="allink" rendered="#{Operations.auditLog_SearchView}" action="#{NavigationHandler.toAuditLog}"><span><%=auditLogLabel%></span></h:commandLink>
-                         
-                         
-                         <%} else if ("assumedmatches.jsp".equalsIgnoreCase(requestPage) || "ameuiddetails.jsp".equalsIgnoreCase(requestPage)) {%> 
-                         
-                         <h:commandLink styleClass="navbutton" id="dashlink" action="#{NavigationHandler.toDashboard}"><span><%=dashBoardLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="duplicaterecordslink" rendered="#{Operations.potDup_SearchView}" action="#{NavigationHandler.toDuplicateRecords}"><span><%=duplicateRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="patlink" rendered="#{Operations.EO_SearchViewSBR}" action="#{NavigationHandler.toPatientDetails}"><span><%=recordDetailsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbuttonselected" id="amlink" rendered="#{Operations.assumedMatch_SearchView}" action="#{NavigationHandler.toAssumedMatches}"><span><%=assumeMatchesLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="tralink"  rendered="#{Operations.transLog_SearchView}" action="#{NavigationHandler.toTransactions}"><span><%=transactionsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="replink" rendered="#{Operations.reports_View}" action="#{NavigationHandler.toReports}"><span><%=reportsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="sourcelink" rendered="#{Operations.SO_SearchView}" action="#{NavigationHandler.toSourceRecords}"><span><%=sourceRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="allink" rendered="#{Operations.auditLog_SearchView}" action="#{NavigationHandler.toAuditLog}"><span><%=auditLogLabel%></span></h:commandLink>
-                         
-                         
-                         <%} else if ("transactions.jsp".equalsIgnoreCase(requestPage) || "transeuiddetails.jsp".equalsIgnoreCase(requestPage)) {%> 
-                         
-                         <h:commandLink styleClass="navbutton" id="dashlink" action="#{NavigationHandler.toDashboard}"><span><%=dashBoardLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="duplicaterecordslink" rendered="#{Operations.potDup_SearchView}" action="#{NavigationHandler.toDuplicateRecords}"><span><%=duplicateRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="patlink" rendered="#{Operations.EO_SearchViewSBR}" action="#{NavigationHandler.toPatientDetails}"><span><%=recordDetailsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="amlink" rendered="#{Operations.assumedMatch_SearchView}" action="#{NavigationHandler.toAssumedMatches}"><span><%=assumeMatchesLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbuttonselected" id="tralink"  rendered="#{Operations.transLog_SearchView}" action="#{NavigationHandler.toTransactions}"><span><%=transactionsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="replink" rendered="#{Operations.reports_View}" action="#{NavigationHandler.toReports}"><span><%=reportsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="sourcelink" rendered="#{Operations.SO_SearchView}" action="#{NavigationHandler.toSourceRecords}"><span><%=sourceRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="allink" rendered="#{Operations.auditLog_SearchView}" action="#{NavigationHandler.toAuditLog}"><span><%=auditLogLabel%></span></h:commandLink>
-                         
-                         
-                         <%} else if ("reports.jsp".equalsIgnoreCase(requestPage)) {%> 
-                         
-                         <h:commandLink styleClass="navbutton" id="dashlink" action="#{NavigationHandler.toDashboard}"><span><%=dashBoardLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="duplicaterecordslink" rendered="#{Operations.potDup_SearchView}" action="#{NavigationHandler.toDuplicateRecords}"><span><%=duplicateRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="patlink" rendered="#{Operations.EO_SearchViewSBR}" action="#{NavigationHandler.toPatientDetails}"><span><%=recordDetailsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="amlink" rendered="#{Operations.assumedMatch_SearchView}" action="#{NavigationHandler.toAssumedMatches}"><span><%=assumeMatchesLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="tralink"  rendered="#{Operations.transLog_SearchView}"   action="#{NavigationHandler.toTransactions}"><span><%=transactionsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbuttonselected" id="replink" rendered="#{Operations.reports_View}"  action="#{NavigationHandler.toReports}"><span><%=reportsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="sourcelink" rendered="#{Operations.SO_SearchView}"  action="#{NavigationHandler.toSourceRecords}"><span><%=sourceRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="allink" rendered="#{Operations.auditLog_SearchView}"  action="#{NavigationHandler.toAuditLog}"><span><%=auditLogLabel%></span></h:commandLink>
-                         
-                         
-                         <%} else if ("sourcerecords.jsp".equalsIgnoreCase(requestPage)) {%>
-                         
-                         <h:commandLink styleClass="navbutton" id="dashlink" action="#{NavigationHandler.toDashboard}"><span><%=dashBoardLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="duplicaterecordslink" rendered="#{Operations.potDup_SearchView}" action="#{NavigationHandler.toDuplicateRecords}"><span><%=duplicateRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="patlink" rendered="#{Operations.EO_SearchViewSBR}" action="#{NavigationHandler.toPatientDetails}"><span><%=recordDetailsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="amlink" rendered="#{Operations.assumedMatch_SearchView}" action="#{NavigationHandler.toAssumedMatches}"><span><%=assumeMatchesLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="tralink"  rendered="#{Operations.transLog_SearchView}" action="#{NavigationHandler.toTransactions}"><span><%=transactionsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="replink" rendered="#{Operations.reports_View}" action="#{NavigationHandler.toReports}"><span><%=reportsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbuttonselected" id="sourcelink" rendered="#{Operations.SO_SearchView}" action="#{NavigationHandler.toSourceRecords}"><span><%=sourceRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="allink" rendered="#{Operations.auditLog_SearchView}" action="#{NavigationHandler.toAuditLog}"><span><%=auditLogLabel%></span></h:commandLink>
-                         
-                         
-                         <%} else if ("auditlog.jsp".equalsIgnoreCase(requestPage)) {%> 
-                         
-                         <h:commandLink styleClass="navbutton" id="dashlink" action="#{NavigationHandler.toDashboard}"><span><%=dashBoardLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="duplicaterecordslink" rendered="#{Operations.potDup_SearchView}" action="#{NavigationHandler.toDuplicateRecords}"><span><%=duplicateRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="patlink" rendered="#{Operations.EO_SearchViewSBR}" action="#{NavigationHandler.toPatientDetails}"><span><%=recordDetailsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="amlink" rendered="#{Operations.assumedMatch_SearchView}" action="#{NavigationHandler.toAssumedMatches}"><span><%=assumeMatchesLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="tralink"  rendered="#{Operations.transLog_SearchView}" action="#{NavigationHandler.toTransactions}"><span><%=transactionsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="replink" rendered="#{Operations.reports_View}" action="#{NavigationHandler.toReports}"><span><%=reportsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="sourcelink" rendered="#{Operations.SO_SearchView}" action="#{NavigationHandler.toSourceRecords}"><span><%=sourceRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbuttonselected" id="allink" rendered="#{Operations.auditLog_SearchView}" action="#{NavigationHandler.toAuditLog}"><span><%=auditLogLabel%></span></h:commandLink>
-                         
-                         
-                         <%} else if (("error404.jsp".equalsIgnoreCase(requestPage)) || ("error500.jsp".equalsIgnoreCase(requestPage))) {%>                         
-                         
-                         <h:commandLink styleClass="navbutton" id="dashlink" action="#{NavigationHandler.toDashboard}"><span><%=dashBoardLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="duplicaterecordslink" rendered="#{Operations.potDup_SearchView}" action="#{NavigationHandler.toDuplicateRecords}"><span><%=duplicateRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="patlink" rendered="#{Operations.EO_SearchViewSBR}" action="#{NavigationHandler.toPatientDetails}"><span><%=recordDetailsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="amlink" rendered="#{Operations.assumedMatch_SearchView}" action="#{NavigationHandler.toAssumedMatches}"><span><%=assumeMatchesLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="tralink"  rendered="#{Operations.transLog_SearchView}" action="#{NavigationHandler.toTransactions}"><span><%=transactionsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="replink" rendered="#{Operations.reports_View}" action="#{NavigationHandler.toReports}"><span><%=reportsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="sourcelink" rendered="#{Operations.SO_SearchView}" action="#{NavigationHandler.toSourceRecords}"><span><%=sourceRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="allink" rendered="#{Operations.auditLog_SearchView}" action="#{NavigationHandler.toAuditLog}"><span><%=auditLogLabel%></span></h:commandLink>
-                         
-                         
-                         <%} else {%>                                               
-                         
-                         <h:commandLink styleClass="navbutton" id="dashlink" action="#{NavigationHandler.toDashboard}"><span><%=dashBoardLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="duplicaterecordslink" rendered="#{Operations.potDup_SearchView}" action="#{NavigationHandler.toDuplicateRecords}"><span><%=duplicateRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="patlink" rendered="#{Operations.EO_SearchViewSBR}" action="#{NavigationHandler.toPatientDetails}"><span><%=recordDetailsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="amlink" rendered="#{Operations.assumedMatch_SearchView}" action="#{NavigationHandler.toAssumedMatches}"><span><%=assumeMatchesLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="tralink"  rendered="#{Operations.transLog_SearchView}" action="#{NavigationHandler.toTransactions}"><span><%=transactionsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="replink" rendered="#{Operations.reports_View}" action="#{NavigationHandler.toReports}"><span><%=reportsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="sourcelink" rendered="#{Operations.SO_SearchView}" action="#{NavigationHandler.toSourceRecords}"><span><%=sourceRecordsLabel%></span></h:commandLink>
-                         <h:commandLink styleClass="navbutton" id="allink" rendered="#{Operations.auditLog_SearchView}" action="#{NavigationHandler.toAuditLog}"><span><%=auditLogLabel%></span></h:commandLink>
-                         
-                         
-                         <%}%>
-                     </h:form>            
-                 </div>                 
-             </td>
-         </tr>
+                 <div id="header">
+                                 <%   for(int i=0;i<allScreensArrayOrdered.length;i++){  
+                                  %> 
+                                  <% 
+                                    ValueExpression screenID = ExpressionFactory.newInstance().createValueExpression(allScreensArrayOrdered[i].getID(), allScreensArrayOrdered[i].getID().getClass());
+                                  %>
+
+                                  <h:form>
+								  <%if(screenObject.getDisplayTitle().equalsIgnoreCase(allScreensArrayOrdered[i].getDisplayTitle())) {%>
+                                       <h:commandLink  styleClass ="navbuttonselected" 
+                                                  actionListener="#{NavigationHandler.setHeaderByTabName}" > 
+                                          <f:attribute name="screenId" value="<%=screenID%>"/>
+                                          <span><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
+                                      </h:commandLink>
+								 <%} else {%>
+                                       <h:commandLink  styleClass ="navbutton" 
+                                                  actionListener="#{NavigationHandler.setHeaderByTabName}" > 
+                                          <f:attribute name="screenId" value="<%=screenID%>"/>
+                                          <span><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
+                                      </h:commandLink>
+								 <%}%>
+                                 </h:form>
+                                 <%}%>
+
+				 </div>
+		     </td>
+		 </tr>
          <tr>
              <td width="100%" colspan="2"><div class="blueline">&nbsp;</div></td>
          </tr>
