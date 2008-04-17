@@ -69,6 +69,7 @@ public class Matcher {
 	private boolean ismatchAnalyzer = false;
 	private double duplicateThreshold_ = 0;
 	private boolean isSBR_ = false;
+	private File bucketFile_;
 	private static Logger logger = Logger.getLogger(Matcher.class
 			.getName());
 	
@@ -81,7 +82,7 @@ public class Matcher {
 		isMasterLoader_ = Boolean.parseBoolean(isSMasterLoader);
 		
 		String isSmatchAnalyzer = config_.getSystemProperty("matchAnalyzerMode");
-		if (isSmatchAnalyzer != null) {
+		if (isSmatchAnalyzer != null && !isSBR) {
 		  ismatchAnalyzer = Boolean.parseBoolean(isSmatchAnalyzer);
 		}
 		
@@ -106,17 +107,18 @@ public class Matcher {
 	 */
    public void match() throws Exception {
 		
-	 File bucketFile;
 	 WeightAnalyzer analyzer = null;
 	 
+	 boolean first = false;
      while (true) {
-		bucketFile = getBucketFile();
-		if (bucketFile == null) {
+		bucketFile_ = getBucketFile();
+		if (bucketFile_ == null) {
 			break;
-		}			    		
+		}			
+		
 		Comparator<MatchRecord> comp = getComparator();									
-		DataObjectReader reader = new DataObjectFileReader(bucketFile.getAbsolutePath(), true);		
-		Bucket bucket = new Bucket(reader, bucketFile, isSBR_);
+		DataObjectReader reader = new DataObjectFileReader(bucketFile_.getAbsolutePath(), true);		
+		Bucket bucket = new Bucket(reader, bucketFile_, isSBR_);
 		logger.info("Block bucket:"+ bucket.getFile().getName() + " processing");
 		bucket.load();
 	
@@ -125,7 +127,7 @@ public class Matcher {
 		 * Each TreeMap is for different MatcherTask that is executed on a pooled 
 		 * thread. This treeMap stores the MatchResult from each thread.
 		 */
-		TreeMap[] treeMaps = new TreeMap[poolSize_];		
+		TreeMap<MatchRecord, String>[] treeMaps = new TreeMap[poolSize_];		
 		/*
 		 All MatcherTask would share the same MatchCursor and match on
 		 one BlockPosition at a time.
@@ -136,22 +138,19 @@ public class Matcher {
 		for (int i = 0; i < poolSize_; i++)  {
 			treeMaps[i] = new TreeMap<MatchRecord,String>(comp);
 			MatcherTask task = new MatcherTask((TreeMap<MatchRecord,String>)treeMaps[i], 
-			cursor, paths_,  matchTypes_, lookup_, matchThreshold_, duplicateThreshold_, endGate, isSBR_);
+			cursor, paths_,  matchTypes_, lookup_, matchThreshold_, duplicateThreshold_, endGate, isSBR_, this);
 			
-			if (i == 0 && ismatchAnalyzer) {
+			if (first == false && ismatchAnalyzer) {				
+				first = true;
 				String[] matchEpaths = task.getMatchEpaths();
-				ArrayList<String> matchPathList = new ArrayList<String>();
-				for (String path: matchEpaths) {
-				  matchPathList.add(path);
-				}
-				matchPathList.add(0,"systemcode");
-				matchPathList.add(1,"localid");				
-				analyzer = new WeightAnalyzer(matchPathList);
+				analyzer = initAnalyzer(matchEpaths);
+				
 			}
 			task.setMatchAnalyzer(analyzer);
 									
 		    executor_.execute(task);
 		}
+		
 		
 		/**
 		 * wait for all MatcherTasks to finish, that will output MatchRecord
@@ -174,11 +173,17 @@ public class Matcher {
 		
 		File matchFile = null;
 		if (!isSBR_) {
-		  matchFile = FileManager.createMatchFile(bucketFile);	
+		    matchFile = FileManager.createMatchFile(bucketFile_);	
 		} else {
-			matchFile = FileManager.createSBRMatchFile(bucketFile);
+			matchFile = FileManager.createSBRMatchFile(bucketFile_);
 		}
 		boolean flag = write(allMap, matchFile);
+		
+		allMap.clear();
+		for (int i = 0; i < treeMaps.length; i++)  {			
+		   treeMaps[i].clear();
+		}
+		
 		if (flag == true) {
 		  matchFiles_.add(matchFile);
 		}
@@ -186,13 +191,26 @@ public class Matcher {
 	 } // end while true
      
      executor_.shutdown();
-        
-     
+          
      if (!ismatchAnalyzer) {
     	 mergeMatchFiles();  
      } else {
     	 analyzer.close();
      }
+   
+   }
+   
+  private WeightAnalyzer initAnalyzer(String[] matchEpaths)  {
+	  WeightAnalyzer analyzer;
+	
+	  ArrayList<String> matchPathList = new ArrayList<String>();
+	  for (String path: matchEpaths) {
+	     matchPathList.add(path);
+	  }
+	  matchPathList.add(0,"systemcode");
+	  matchPathList.add(1,"localid");				
+	  analyzer = new WeightAnalyzer(matchPathList);
+	  return analyzer;
    
    }
    
@@ -261,6 +279,10 @@ public class Matcher {
 		return file;
 	}
 	
+	void write(TreeMap<MatchRecord,String> map) {
+		
+	}
+	
 	private boolean write( TreeMap<MatchRecord,String> map, File matchFile) throws IOException {			
 	    Set<Map.Entry<MatchRecord,String>> set = map.entrySet();
 	    
@@ -281,6 +303,10 @@ public class Matcher {
 	    }
 	    writer.close();	
 	    return true;
+	}
+	
+	private void write ( ) {
+		
 	}
 	
 	
