@@ -118,6 +118,24 @@ public class WeightAnalyzer {
 			matchFields.add(1, LID);
 			// TODO order the match fields in the specific-order
 			matchFields.toArray(new String[0]);
+			
+		}
+		
+		for(int i=0;i<matchFields.size();i++){
+			String f = matchFields.get(i);
+			f= f.replaceAll("[*]","");
+			f= f.replaceAll("\\[","");
+			f= f.replaceAll("\\]","");
+			
+			if(f.length() > 27){
+				int k = f.length()-27;
+				f=f.substring(k);
+				if(f.charAt(0)=='.'){
+					f = f.substring(1);
+				}
+			}
+			
+			matchFields.set(i, f);//fix ORA-00972: identifier is too long
 		}
 
 	}
@@ -147,7 +165,7 @@ public class WeightAnalyzer {
 			stmt.execute("drop table weight_analysis");
 			stmt.close();
 		} catch (SQLException e) {
-			logger.log(Level.SEVERE,e.getMessage(),e);
+			logger.info(e.getMessage());
 		}
 
 		String create_sql = createSQL();
