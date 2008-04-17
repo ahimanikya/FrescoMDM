@@ -140,7 +140,7 @@ public class EuidIndexAssigner {
 		try {
 			euidIndexFile.allocateSpace(totalrecord);
 		} catch (IOException e) {
-			logger.info(e.getMessage());
+			logger.severe(e.getMessage());
 		}
 
 		while (true) {
@@ -168,7 +168,7 @@ public class EuidIndexAssigner {
 			euidIndexFile.close();
 			updateSequenceTable();
 		} catch (Exception e) {
-			logger.info(e.getMessage());
+			logger.severe(e.getMessage());
 		}
 
 		logger.info("Euid assigner finish at : " + new Date());
@@ -235,7 +235,7 @@ public class EuidIndexAssigner {
 			matchFileReader.seek(0);
 			euidIndexFile.seek(0);
 		} catch (IOException e) {
-			logger.info(e.getMessage());
+			logger.severe(e.getMessage());
 		}
 
 		long index = 0;
@@ -281,7 +281,7 @@ public class EuidIndexAssigner {
 		try {
 			euid = euidGenerator.getNextEUID(null);
 		} catch (Exception e) {
-			logger.info(e.getMessage());
+			logger.severe(e.getMessage());
 		}
 
 		if (debug) {
@@ -407,7 +407,7 @@ public class EuidIndexAssigner {
 			distributor.close();
 
 		} catch (Exception e) {
-			logger.info(e.getMessage());
+			logger.severe(e.getMessage());
 		}
 
 	}
