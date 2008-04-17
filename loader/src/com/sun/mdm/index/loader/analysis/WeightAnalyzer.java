@@ -54,6 +54,7 @@ public class WeightAnalyzer {
 	private Connection connection;
 
 	private ArrayList<String> matchFields;
+	private ArrayList<String> originalMatchFields;
 
 	private String insertSQL;
 
@@ -120,6 +121,8 @@ public class WeightAnalyzer {
 			matchFields.toArray(new String[0]);
 			
 		}
+		
+		this.originalMatchFields=new ArrayList<String>(matchFields);
 		
 		for(int i=0;i<matchFields.size();i++){
 			String f = matchFields.get(i);
@@ -246,7 +249,7 @@ public class WeightAnalyzer {
 			else {
 				clusterSynchronizer.waitAnalysisDone();
 
-				Report r = new Report(connection, matchFields);
+				Report r = new Report(connection, matchFields,originalMatchFields);
 				r.generate();
 			}
 

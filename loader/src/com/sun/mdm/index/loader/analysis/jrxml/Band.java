@@ -33,19 +33,19 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
  */
 public class Band {
 
-	private static final int WEIGHT_X = 480;
-	private static final int VALUE_2_X = 320;
-	private static final int VALUE_1_X = 160;
+	private static final int WEIGHT_X = 500;
+	private static final int VALUE_2_X = 350;
+	private static final int VALUE_1_X = 200;
 	private static final int NAME_X = 0;
 	int height;
 	boolean isSplitAllowed = false;
 
 	ArrayList<TextField> textFields = new ArrayList<TextField>();
 
-	public Band(ArrayList<String> fields) {
+	public Band(ArrayList<String> fields, ArrayList<String> originalMatchFields) {
 		height = fields.size() * 20 + 40;
 
-		createTextFieldForName(fields);
+		createTextFieldForName(originalMatchFields);
 		createTextFieldForValue1(fields);
 		createTextFieldForValue2(fields);
 		createTextFieldForWeight(fields);
@@ -90,7 +90,7 @@ public class Band {
 	public static void main(String[] args) {
 
 		LoaderConfig.getInstance().getMatchFields();
-		Band exp = new Band(LoaderConfig.getInstance().getMatchFields());
+		Band exp = new Band(LoaderConfig.getInstance().getMatchFields(),LoaderConfig.getInstance().getMatchFields());
 
 		System.out.println(exp.toString());
 	}

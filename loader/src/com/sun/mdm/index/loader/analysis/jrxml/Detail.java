@@ -36,10 +36,11 @@ public class Detail {
 	Band band;
 	
 	/**
+	 * @param originalMatchFields 
 	 * 
 	 */
-	public Detail(ArrayList<String> mFields) {
-		band = new Band(mFields);
+	public Detail(ArrayList<String> mFields, ArrayList<String> originalMatchFields) {
+		band = new Band(mFields,originalMatchFields);
 	}
 
 	

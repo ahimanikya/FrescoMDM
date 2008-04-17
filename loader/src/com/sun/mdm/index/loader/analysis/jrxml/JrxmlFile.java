@@ -41,13 +41,14 @@ public class JrxmlFile {
 	private JasperReport report;
 
 	/**
+	 * @param originalMatchFields 
 	 * 
 	 */
-	public JrxmlFile(ArrayList<String> fields) {
+	public JrxmlFile(ArrayList<String> fields, ArrayList<String> originalMatchFields) {
 		try {
 			writer = new BufferedWriter( new FileWriter(fileName));
 			
-			report = new JasperReport(fields);
+			report = new JasperReport(fields,originalMatchFields);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

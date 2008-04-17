@@ -40,9 +40,10 @@ public class JasperReport {
 	Detail detail;
 
 	/**
+	 * @param originalMatchFields 
 	 * 
 	 */
-	public JasperReport(ArrayList<String> mFields) {
+	public JasperReport(ArrayList<String> mFields, ArrayList<String> originalMatchFields) {
 		for (int i = 0; i < mFields.size(); i++) {
 
 			String field = mFields.get(i);
@@ -60,7 +61,7 @@ public class JasperReport {
 
 		}
 
-		detail = new Detail(mFields);
+		detail = new Detail(mFields,originalMatchFields);
 	}
 
 	String header = "<?xml version=\"1.0\"?>"
@@ -105,7 +106,7 @@ public class JasperReport {
 	public static void main(String[] args) {
 
 		JasperReport r = new JasperReport(LoaderConfig.getInstance()
-				.getMatchFields());
+				.getMatchFields(),LoaderConfig.getInstance().getMatchFields());
 
 		System.out.println(r.toString());
 

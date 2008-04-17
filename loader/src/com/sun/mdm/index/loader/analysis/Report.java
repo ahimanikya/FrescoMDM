@@ -52,14 +52,17 @@ public class Report {
 	
 	private ArrayList<String> matchFields;
 	
+	private ArrayList<String> originalMatchFields;
+	
 	private String reportSize;
 
 	
 
-	public Report(Connection connection, ArrayList<String> matchFields) {
+	public Report(Connection connection, ArrayList<String> matchFields, ArrayList<String> originalMatchFields) {
 		this.connection = connection;
 		
 		this.matchFields=matchFields;
+		this.originalMatchFields=originalMatchFields;
 		
 		reportSize=LoaderConfig.getInstance().getSystemProperty("report.size");
 	}
@@ -127,7 +130,7 @@ public class Report {
 	}
 
 	private void createJrxmlFile() {
-		JrxmlFile jrxml = new JrxmlFile(matchFields);
+		JrxmlFile jrxml = new JrxmlFile(matchFields,originalMatchFields);
 		jrxml.write();
 		
 	}
@@ -152,7 +155,7 @@ public class Report {
 
 	public static void main(String[] args) {
 		try {
-			Report r = new Report( DAOFactory.getConnection()   ,LoaderConfig.getInstance().getMatchFields());
+			Report r = new Report( DAOFactory.getConnection()   ,LoaderConfig.getInstance().getMatchFields(),LoaderConfig.getInstance().getMatchFields());
 			r.generate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
