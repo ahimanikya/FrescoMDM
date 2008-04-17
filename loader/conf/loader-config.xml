@@ -4,7 +4,7 @@
 
 
 	<threshold-config>
-		<duplicateThreshold>7.25</duplicateThreshold>
+		<duplicateThreshold>7.5</duplicateThreshold>
 		<matchThreshold>30.0</matchThreshold>
 	</threshold-config>
 
@@ -96,16 +96,19 @@
 			<property name="loaderName" value="master-loader" />
 			<property name="isMasterLoader" value="true" />
 			<property name="matchAnalyzerMode" value="false" />
+                  <property name="BulkLoad" value="false" />
+                  <property name="standardizationMode" value="true" />
+
 
 			<property name="rmiPort" value="9999" />
 			<property name="workingDir" value="test/data/eview/loader" />
 			<property name="ftp.workingDir" value="/loader" />
 
-			<property name="numBlockBuckets" value="5" />
+			<property name="numBlockBuckets" value="10" />
 			<property name="numThreads" value="1" />
 
 			<!-- used by euid assigner -->
-			<property name="numEUIDBuckets" value="3" />
+			<property name="numEUIDBuckets" value="10" />
 			<property name="totalNoOfRecords" value="400" />
 
 
