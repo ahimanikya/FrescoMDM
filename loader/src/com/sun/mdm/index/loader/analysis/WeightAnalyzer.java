@@ -29,6 +29,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.sun.mdm.index.Resource;
@@ -146,7 +147,7 @@ public class WeightAnalyzer {
 			stmt.execute("drop table weight_analysis");
 			stmt.close();
 		} catch (SQLException e) {
-			logger.config(e.getMessage());
+			logger.log(Level.SEVERE,e.getMessage(),e);
 		}
 
 		String create_sql = createSQL();
@@ -156,7 +157,8 @@ public class WeightAnalyzer {
 			stmt.execute(create_sql);
 			stmt.close();
 		} catch (SQLException e) {
-			logger.info(e.getMessage());
+			logger.log(Level.SEVERE, "invalid sql: "+ create_sql, e);
+			logger.info("match fields used for the sql is " + matchFields.toString());
 		}
 
 	}
