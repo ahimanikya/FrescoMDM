@@ -20,8 +20,6 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-
-     
 /*
  * ViewMergeTreeHandler.java 
  * Created on November 29, 2007
@@ -30,13 +28,13 @@
  */
 package com.sun.mdm.index.edm.presentation.handlers;
 
-
 import com.sun.mdm.index.edm.presentation.valueobjects.EuidTreeVO;
 import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.master.search.merge.MergeHistoryNode;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
@@ -44,27 +42,25 @@ import net.sf.yui4jsf.component.treeview.node.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-public class ViewMergeTreeHandler  {
-    
+public class ViewMergeTreeHandler {
+
     private EuidTreeVO htmlNodeTreeDataModel = new EuidTreeVO();
     private String SERVICE_LAYER_ERROR = "SLError";
     private String SUCCESS = "Tree";
     /*
      *  Request Object Handle
-     */  
+     */
     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     /**
      *Http session variable
      */
     HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-
     /**
      *get Screen Object from the session
      */
     ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
-    
     private String euid = request.getParameter("euid");
-    
+
     public ViewMergeTreeHandler() {
         //createHtmlNodeTreeDataModel();        
     }
@@ -107,13 +103,13 @@ public class ViewMergeTreeHandler  {
 
     public EuidTreeVO getHtmlNodeTreeDataModel() throws ProcessingException, UserException {
         if (euid != null && euid.trim().length() > 0) {
-            viewMergeTree(euid);    
+            viewMergeTree(euid);
             return htmlNodeTreeDataModel;
-        }  else {
+        } else {
             return null;
         }
-        
-        //createHtmlNodeTreeDataModel(); uncomment to test the Tree Structure        
+
+    //createHtmlNodeTreeDataModel(); uncomment to test the Tree Structure        
     }
 
     /**
@@ -123,46 +119,34 @@ public class ViewMergeTreeHandler  {
     public void setHtmlNodeTreeDataModel(EuidTreeVO htmlNodeTreeDataModel) {
         this.htmlNodeTreeDataModel = htmlNodeTreeDataModel;
     }
-    
+
     // added by samba for viewmergeTree
-    public String viewMergeTree(String euid)  {
+    public String viewMergeTree(String euid) {
         try {
-            int count = 0;
+//            int count = 0;
             htmlNodeTreeDataModel = new EuidTreeVO();
             MasterControllerService masterControllerService = new MasterControllerService();
             MergeHistoryNode mergeHistoryNode = masterControllerService.getMergeHistoryNode(euid); // arg: EUID
-            
-       //String userName, String euid1, String euid2, String function, int screeneID, String detail
-        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                                               euid, 
-                                               "",
-                                               "View Merge Tree",
-                                               new Integer(screenObject.getID()).intValue(),
-                                               "View Merge Tree");
-            
-            
-            MergeHistoryNode mergeHistoryNodeCount = mergeHistoryNode;
-            while (mergeHistoryNodeCount != null) {
-                mergeHistoryNodeCount = mergeHistoryNodeCount.getParentNode();
-                ++count;
-            }
-            TextNode[] euidNodes = new TextNode[count];
-            System.out.println("<<== Total Nodes :" + count);
-            while (mergeHistoryNode != null) {
-                String sourceEUID = mergeHistoryNode.getSourceNode().getEUID();
-                String destEUID = mergeHistoryNode.getDestinationNode().getEUID();
-                euidNodes[--count] = new TextNode(mergeHistoryNode.getEUID(), mergeHistoryNode.getEUID());
-                euidNodes[count].addNode(new TextNode(mergeHistoryNode.getSourceNode().getEUID(), mergeHistoryNode.getSourceNode().getEUID()));
-                euidNodes[count].addNode(new TextNode(mergeHistoryNode.getDestinationNode().getEUID(), mergeHistoryNode.getDestinationNode().getEUID()));
-                if (mergeHistoryNode.getParentNode() != null) {
-                    System.out.println("ParentNode for " + mergeHistoryNode.getEUID() + " is :" + mergeHistoryNode.getParentNode().getEUID());
-                }
-                mergeHistoryNode = mergeHistoryNode.getParentNode();
-            }
-            for (int i = 0; i < euidNodes.length; i++) {
-                TextNode textNode = euidNodes[i];
-                htmlNodeTreeDataModel.addNode(textNode);
-            }
+
+            //String userName, String euid1, String euid2, String function, int screeneID, String detail
+            masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                    euid,
+                    "",
+                    "View Merge Tree",
+                    new Integer(screenObject.getID()).intValue(),
+                    "View Merge Tree");
+//                String sourceEUID = mergeHistoryNode.getSourceNode().getEUID();
+//                String destEUID = mergeHistoryNode.getDestinationNode().getEUID();
+            MergeHistoryNode node = mergeHistoryNode;
+            TextNode euidNode = null;
+            euidNode = buildTree(node, euidNode);
+
+
+
+//            for (int i = 0; i < euidNodes.length; i++) {
+//                TextNode textNode = euidNodes[i];
+                htmlNodeTreeDataModel.addNode(euidNode);
+//            }
         } catch (ProcessingException ex) {
             Logger.getLogger(ViewMergeTreeHandler.class.getName()).log(Level.SEVERE, null, ex);
             return SERVICE_LAYER_ERROR;
@@ -174,5 +158,28 @@ public class ViewMergeTreeHandler  {
             return SERVICE_LAYER_ERROR;
         }
         return SUCCESS;
-    }    
+    }
+    
+    public TextNode buildTree(MergeHistoryNode rootNode, TextNode textNode) {
+        if (textNode == null)
+            textNode = new TextNode(rootNode.getEUID(), rootNode.getEUID());
+        TextNode leftTextNode = new TextNode(rootNode.getSourceNode().getEUID(), rootNode.getSourceNode().getEUID());
+        TextNode rightTextNode = new TextNode(rootNode.getDestinationNode().getEUID(), rootNode.getDestinationNode().getEUID());
+        textNode.addNode(leftTextNode);
+        textNode.addNode(rightTextNode);
+        
+        // System.out.println("came here ");
+        
+        MergeHistoryNode rootNodeLeft = rootNode.getSourceNode();
+        if (rootNodeLeft.getTransactionObject() != null) {
+            // System.out.println("calling with left...");
+            buildTree(rootNodeLeft, leftTextNode);
+        }
+        MergeHistoryNode rootNodeRight = rootNode.getDestinationNode();
+        if (rootNodeRight.getTransactionObject() != null) {
+            // System.out.println("calling with right...");
+            buildTree(rootNodeRight, rightTextNode);
+        }
+        return textNode;
+    }
 }
