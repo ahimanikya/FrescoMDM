@@ -58,10 +58,9 @@ import com.sun.mdm.index.loader.common.Util;
 	private DataObjectTupleCursor tupleCursor_;
 	private double matchThreshold_ = 0;
 	private double duplicateThreshold_ = 0;
-	private Map<MatchRecord, String> matchTree_ ;
+	private TreeMap<MatchRecord, String> matchTree_ ;
 	private Bucket.MatchCursor matchCursor_;
 	private CountDownLatch endGate_;
-	//private SbmeMatcher matchEngine_ ;
 	private MatcherAdapter matchEngine_;
 	private static Logger logger = Logger.getLogger(MatcherTask.class
 			.getName());
@@ -70,11 +69,12 @@ import com.sun.mdm.index.loader.common.Util;
 	private static int DUPSCORE = 999999;
 	public static final String SDUPSCORE = "999999";
 	private static final String empty_str = "";
+	private Matcher matcher_;
 	
 	MatcherTask(TreeMap<MatchRecord,String> map, 
 			Bucket.MatchCursor cursor, String[] paths, String[] matchTypes, 
 			Lookup blLk, double matchThreshold, double duplicateThreshold,
-			CountDownLatch endGate, boolean isSBR) throws Exception {
+			CountDownLatch endGate, boolean isSBR, Matcher matcher) throws Exception {
 		matchThreshold_ = matchThreshold;
 		duplicateThreshold_ = duplicateThreshold;
 		tupleCursor_ = new DataObjectTupleCursor(paths, matchTypes, blLk, isSBR);
@@ -84,6 +84,7 @@ import com.sun.mdm.index.loader.common.Util;
 		matchEngine_ = new MatcherAdapter(tupleCursor_.matchFieldIDs_);
 		//matchEngine_ = new SbmeMatcher(tupleCursor_.matchFieldIDs_);
 	    isSBR_ = isSBR;
+	    matcher_ = matcher;
 	}
 	
 		
