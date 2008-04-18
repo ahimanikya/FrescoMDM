@@ -395,14 +395,14 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                            if(value instanceof java.util.Date) {
                                 dateField = simpleDateFormatFields.format(value);
                                 
-                                fieldvalues.put(ePath.getName(), dateField);
+                                fieldvalues.put(fieldConfig.getFullFieldName(), dateField);
                            } else {
                                 if((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0 ) && value != null) {
                                    strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
                                    //value
-                                   fieldvalues.put(ePath.getName(), strVal);
+                                   fieldvalues.put(fieldConfig.getFullFieldName(), strVal);
                                 } else {
-                                   fieldvalues.put(ePath.getName(), value);
+                                   fieldvalues.put(fieldConfig.getFullFieldName(), value);
                                 }
                             }
                         } catch (Exception npe) {
@@ -906,7 +906,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     
                 }
             }
-            if (this.getEuid4() != null && !"EUID 4".equalsIgnoreCase(this.getEuid4())) {
+            if (this.getEuid4() != null && this.getEuid4().length() > 0 ) {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid4());
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
@@ -936,165 +936,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             mLogger.error("UserException ex : " + ex.toString());
         }
 
-        return "EUID Details";
-    }
-
-    public String lookupEuid1() {
-        try {
-            NavigationHandler navigationHandler = new NavigationHandler();
-            session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
-            
-            EnterpriseObject enterpriseObject = null;
-
-            ArrayList newArrayList = new ArrayList();
-            HashMap eoMap = new HashMap();
-
-            if (this.getEuid1() != null && !"EUID 1".equalsIgnoreCase(this.getEuid1())) {
-                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid1());
-                //Throw exception if EO is found null.
-                if (enterpriseObject == null) {
-                    session.removeAttribute("enterpriseArrayList");
-                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                } else {
-                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-                    newArrayList.add(eoMap);
-                    //Insert audit log here for EUID search
-                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                            this.getEuid1(),
-                            "",
-                            "EO View/Edit",
-                            new Integer(screenObject.getID()).intValue(),
-                            "View/Edit detail of enterprise object");
-                }
-            }
-            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("ProcessingException ex : " + ex.toString());
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("UserException ex : " + ex.toString());
-        }
-        return "EUID Details";
-    }
-
-    public String lookupEuid2() {
-        try {
-            NavigationHandler navigationHandler = new NavigationHandler();
-            session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
-            EnterpriseObject enterpriseObject = null;
-
-            ArrayList newArrayList = new ArrayList();
-            HashMap eoMap = new HashMap();
-
-            if (this.getEuid2() != null && !"EUID 2".equalsIgnoreCase(this.getEuid2())) {
-                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid2());
-                //Throw exception if EO is found null.
-                if (enterpriseObject == null) {
-                    session.removeAttribute("enterpriseArrayList");
-                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                } else {
-                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-                    newArrayList.add(eoMap);
-                    //Insert audit log here for EUID search
-                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                            this.getEuid2(),
-                            "",
-                            "EO View/Edit",
-                            new Integer(screenObject.getID()).intValue(),
-                            "View/Edit detail of enterprise object");
-                }
-            }
-            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("ProcessingException ex : " + ex.toString());
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("UserException ex : " + ex.toString());
-        }
-        return "EUID Details";
-    }
-
-    public String lookupEuid3() {
-        try {
-            NavigationHandler navigationHandler = new NavigationHandler();
-            session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
-            EnterpriseObject enterpriseObject = null;
-
-            ArrayList newArrayList = new ArrayList();
-            HashMap eoMap = new HashMap();
-
-            if (this.getEuid3() != null && !"EUID 3".equalsIgnoreCase(this.getEuid3())) {
-                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid3());
-                //Throw exception if EO is found null.
-                if (enterpriseObject == null) {
-                    session.removeAttribute("enterpriseArrayList");
-                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                } else {
-                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-                    newArrayList.add(eoMap);
-                    //Insert audit log here for EUID search
-                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                            this.getEuid3(),
-                            "",
-                            "EO View/Edit",
-                            new Integer(screenObject.getID()).intValue(),
-                            "View/Edit detail of enterprise object");
-                    
-                }
-            }
-            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("ProcessingException ex : " + ex.toString());
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("UserException ex : " + ex.toString());
-        }
-        return "EUID Details";
-    }
-
-    public String lookupEuid4() {
-        try {
-            NavigationHandler navigationHandler = new NavigationHandler();
-            session.setAttribute("ScreenObject", navigationHandler.getScreenObject("record-details"));
-            EnterpriseObject enterpriseObject = null;
-
-            ArrayList newArrayList = new ArrayList();
-            HashMap eoMap = new HashMap();
-
-            if (this.getEuid4() != null && !"EUID 4".equalsIgnoreCase(this.getEuid4())) {
-                enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid4());
-                //Throw exception if EO is found null.
-                if (enterpriseObject == null) {
-                    session.removeAttribute("enterpriseArrayList");
-                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                } else {
-                    eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-                    newArrayList.add(eoMap);
-                    //Insert audit log here for EUID search
-                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                            this.getEuid4(),
-                            "",
-                            "EO View/Edit",
-                            new Integer(screenObject.getID()).intValue(),
-                            "View/Edit detail of enterprise object");
-                    
-                }
-            }
-            httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
-        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("ProcessingException ex : " + ex.toString());
-        } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("UserException ex : " + ex.toString());
-        }
         return "EUID Details";
     }
 
