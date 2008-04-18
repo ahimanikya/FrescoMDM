@@ -90,10 +90,13 @@ public class BlockDistributor {
 	    matchGroups_ = groupEpaths(matchEpaths_);
 		initializeBuckets();	
 		String sisStandardize = config_.getSystemProperty("standardizationMode");
-		if (sisStandardize != null) {
+		if (sisStandardize != null && !isSBR_) { // SBR data is already standardized
 			isStandardize = Boolean.parseBoolean(sisStandardize);
 		}
-		mStandardizer = StandardizerFactory.getInstance();
+		if (isStandardize) { // standardize only if standardize option is set
+			                        // and block distribution is done for Block buckets
+		  mStandardizer = StandardizerFactory.getInstance();
+		}
 	}
 	
 	
@@ -106,7 +109,7 @@ public class BlockDistributor {
 						
 		DataObjectReader reader = getReader();
 		
-		
+		int countRec = 0;
 		while (true) {
 			
 		
@@ -116,7 +119,8 @@ public class BlockDistributor {
 			   break;
 		   }
 		   
-		   if (!isSBR_ && isStandardize ) { // SBR data is already standardized
+		   countRec++;
+		   if (isStandardize ) { // 
 		     inputdataObject = standardize(inputdataObject);
 		   }
 		   
@@ -160,7 +164,8 @@ public class BlockDistributor {
 			  f.delete();
 		  }
 		}	
-		reader.close();						
+		reader.close();
+		logger.info("Number of Input records:" + countRec);
 	}
 	
 
