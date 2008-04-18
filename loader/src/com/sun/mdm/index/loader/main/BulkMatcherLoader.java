@@ -234,6 +234,24 @@ public class BulkMatcherLoader {
 						
 		String workingDir = config_.getSystemProperty("workingDir");
 		loaderName_ = config_.getSystemProperty("loaderName");
+		String isMasterLoader = config_.getSystemProperty("isMasterLoader");
+		isMasterLoader_ = Boolean.parseBoolean(isMasterLoader);
+		
+		String isSmatchAnalyzer = config_.getSystemProperty("matchAnalyzerMode");
+		if (isSmatchAnalyzer != null) {
+		  ismatchAnalyzer = Boolean.parseBoolean(isSmatchAnalyzer);
+		}
+		
+		String sdelInterMediateDir = config_.getSystemProperty("deleteIntermediateDirs");
+		if (sdelInterMediateDir != null) {
+			delInterMediateDir = Boolean.parseBoolean(sdelInterMediateDir);
+		}
+		
+		String sbulkLoad = config_.getSystemProperty("BulkLoad");
+		if (sbulkLoad != null) {
+			bulkLoad = Boolean.parseBoolean(sbulkLoad);
+		}
+		
 		FileManager.setWorkingDir(workingDir, loaderName_, delInterMediateDir);
 		String sloadMode= config_.getSystemProperty("loadMode");
 		if (sloadMode != null) {
@@ -254,25 +272,6 @@ public class BulkMatcherLoader {
 				
         clusterSynchronizer_ = ClusterSynchronizer.getInstance();
 		
-		String isMasterLoader = config_.getSystemProperty("isMasterLoader");
-		isMasterLoader_ = Boolean.parseBoolean(isMasterLoader);
-		
-		//clusterSynchronizer_.initLoaderName(loaderName_, isMasterLoader_);
-		
-		String isSmatchAnalyzer = config_.getSystemProperty("matchAnalyzerMode");
-		if (isSmatchAnalyzer != null) {
-		  ismatchAnalyzer = Boolean.parseBoolean(isSmatchAnalyzer);
-		}
-		
-		String sdelInterMediateDir = config_.getSystemProperty("deleteIntermediateDirs");
-		if (sdelInterMediateDir != null) {
-			delInterMediateDir = Boolean.parseBoolean(sdelInterMediateDir);
-		}
-		
-		String sbulkLoad = config_.getSystemProperty("BulkLoad");
-		if (sbulkLoad != null) {
-			bulkLoad = Boolean.parseBoolean(sbulkLoad);
-		}
 		
 		List<String> matchlPaths = config_.getMatchFields();//readMatchConfiguration();	
 		String[] matchPaths = new String[matchlPaths.size()];
