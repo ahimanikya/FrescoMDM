@@ -199,7 +199,8 @@ public class FileManager {
 	}
 	
 	
-	public static File createMatchFile(File bucket) {
+	
+	public static File createMatchFile(File bucket, int counter) {
 		String name = bucket.getName();
 	    int index = name.indexOf("_");
 	    int endindex = name.indexOf('.');
@@ -209,14 +210,13 @@ public class FileManager {
 	    } else {
 	    	bucketNum = name.substring(index+1);
 	    }
-	    
-	    
-	    File file = new File(matchFileDir, MATCH_FILE_PREFIX + bucketNum);
+	    	    
+	    File file = new File(matchFileDir, MATCH_FILE_PREFIX + bucketNum + "_" + counter);
 	    
 	    return file;
 	}
 	
-	public static File createSBRMatchFile(File bucket) {
+	public static File createSBRMatchFile(File bucket, int counter) {
 		String name = bucket.getName();
 	    int index = name.indexOf("_");
 	    int endindex = name.indexOf('.');
@@ -228,7 +228,7 @@ public class FileManager {
 	    }
 	    
 	    
-	    File file = new File(sbrmatchFileDir, MATCH_FILE_PREFIX + bucketNum);
+	    File file = new File(sbrmatchFileDir, MATCH_FILE_PREFIX + bucketNum + "_" + counter);
 	    
 	    return file;
 	}
