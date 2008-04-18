@@ -72,7 +72,7 @@ public class Matcher {
 	private File bucketFile_;
 	private static Logger logger = Logger.getLogger(Matcher.class
 			.getName());
-	
+	private int matchCacheSize_ = 0;
 	
 	public Matcher(String[] paths,  String[] matchTypes, Lookup blLk, boolean isSBR) throws Exception {
 		matchThreshold_ = config_.getMatchThreshold();
@@ -89,6 +89,11 @@ public class Matcher {
 		String numThreads = config_.getSystemProperty("numThreads");
 		if (numThreads != null) {
 		    poolSize_ = Integer.parseInt(numThreads);
+		}
+		
+		String smatchCacheSize = config_.getSystemProperty("matchCacheSize");
+		if (smatchCacheSize != null) {
+		    matchCacheSize_ = Integer.parseInt(smatchCacheSize);
 		}
 		
 		executor_ = Executors.newFixedThreadPool(poolSize_);
@@ -138,7 +143,8 @@ public class Matcher {
 		for (int i = 0; i < poolSize_; i++)  {
 			treeMaps[i] = new TreeMap<MatchRecord,String>(comp);
 			MatcherTask task = new MatcherTask((TreeMap<MatchRecord,String>)treeMaps[i], 
-			cursor, paths_,  matchTypes_, lookup_, matchThreshold_, duplicateThreshold_, endGate, isSBR_, this);
+			cursor, paths_,  matchTypes_, lookup_, matchThreshold_, duplicateThreshold_, endGate, 
+			isSBR_, this, matchCacheSize_);
 			
 			if (first == false && ismatchAnalyzer) {				
 				first = true;
@@ -147,7 +153,7 @@ public class Matcher {
 				
 			}
 			task.setMatchAnalyzer(analyzer);
-									
+			
 		    executor_.execute(task);
 		}
 		
@@ -169,8 +175,9 @@ public class Matcher {
 		for (int i = 0; i < treeMaps.length; i++)  {			
 		  allMap.putAll(treeMaps[i]);
 		}
-		logger.info("TreeMap size: " + allMap.size());
-		
+				
+		flushMap(allMap);
+		/*
 		File matchFile = null;
 		if (!isSBR_) {
 		    matchFile = FileManager.createMatchFile(bucketFile_);	
@@ -187,6 +194,7 @@ public class Matcher {
 		if (flag == true) {
 		  matchFiles_.add(matchFile);
 		}
+		*/
 		
 	 } // end while true
      
@@ -210,8 +218,7 @@ public class Matcher {
 	  matchPathList.add(0,"systemcode");
 	  matchPathList.add(1,"localid");				
 	  analyzer = new WeightAnalyzer(matchPathList);
-	  return analyzer;
-   
+	  return analyzer;   
    }
    
    private void mergeMatchFiles() throws Exception {
@@ -279,9 +286,30 @@ public class Matcher {
 		return file;
 	}
 	
-	void write(TreeMap<MatchRecord,String> map) {
+	
+	private int counter;
+	private Object lock = new Object();
+	void flushMap(TreeMap<MatchRecord,String> map) throws Exception {		
+		File matchFile;
+		logger.info("TreeMap size: " + map.size());
+		synchronized(lock) {
+		  counter++;
+		  if (!isSBR_) {
+		    matchFile = FileManager.createMatchFile(bucketFile_, counter);	
+		  } else {
+			matchFile = FileManager.createSBRMatchFile(bucketFile_, counter);
+		  }
+		}
 		
+		boolean flag = write(map, matchFile);
+		synchronized(lock) {
+		  if (flag == true) {
+			  matchFiles_.add(matchFile);
+	      }
+		}
+		map.clear();
 	}
+	
 	
 	private boolean write( TreeMap<MatchRecord,String> map, File matchFile) throws IOException {			
 	    Set<Map.Entry<MatchRecord,String>> set = map.entrySet();
@@ -305,10 +333,6 @@ public class Matcher {
 	    return true;
 	}
 	
-	private void write ( ) {
-		
-	}
-	
 	
 	private Comparator<MatchRecord> getComparator() {
 		Comparator<MatchRecord> comp = new Comparator<MatchRecord>() {
@@ -316,7 +340,6 @@ public class Matcher {
 				return record1.compare(record2);
 			}			
 		};
-		return comp;
-		
+		return comp;	
 	}	
 }
