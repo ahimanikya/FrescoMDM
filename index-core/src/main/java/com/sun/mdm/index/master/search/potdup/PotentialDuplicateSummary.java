@@ -94,7 +94,8 @@ public class PotentialDuplicateSummary extends ObjectNode {
 
     private transient final Localizer mLocalizer = Localizer.get();
 
-    public PotentialDuplicateSummary() {
+    public PotentialDuplicateSummary() throws ObjectException {
+        super("PotentialDuplicate", mFieldNames, mFieldTypes);
     }
     
 

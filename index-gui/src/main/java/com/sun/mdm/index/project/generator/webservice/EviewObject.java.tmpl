@@ -33,12 +33,18 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchCriteria;
 import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 import com.sun.mdm.index.master.search.enterprise.EOSearchResultIterator;
 import com.sun.mdm.index.master.search.enterprise.EOSearchResultRecord;
+import com.sun.mdm.index.master.search.potdup.PotentialDuplicateIterator;
+import com.sun.mdm.index.master.search.potdup.PotentialDuplicateSearchObject;
+import com.sun.mdm.index.master.search.potdup.PotentialDuplicateSummary;
 import com.sun.mdm.index.objects.metadata.MetaDataService;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.*;
+import com.sun.mdm.index.page.PageException;
+import com.sun.mdm.index.util.Constants;
 import com.sun.mdm.index.util.LogUtil;
 import com.sun.mdm.index.util.Logger;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -1055,6 +1061,55 @@ public class [sbyntag:objname.makeClassName]EJB {
         SystemObjectPK skey = new SystemObjectPK(systemCode, localid);
         mMC.transferSystemObject(toEUID, skey);
     }
+    
+    /**
+     * Returns an array of potential duplicate record based on search
+     * criteria.
+     * @param pdsoBean PotentialDuplicateSearchObjectBean
+     * @exception ProcessingException An error has occured.
+     * @exception UserException Invalid search object.
+     * @exception PageException An error has occured.
+     * @exception RemoteException An error has occured.
+     * @return an array of PotentialDuplicateResult.
+     */
+    @WebMethod
+    public PotentialDuplicateResult[] lookupPotentialDuplicates(
+            @WebParam(name = "PotentialDuplicateSearchObjectBean")PotentialDuplicateSearchObjectBean pdsoBean) 
+            throws ProcessingException, UserException, PageException, RemoteException{
+        //if no value of pageSize or pageNumber are set(they default to 0), or 
+        //they are set to 0 or less, then retrieve maximum records.
+        int startIndex=(pdsoBean.getPageNumber()-1) * pdsoBean.getPageSize()+1;
+        int endIndex=pdsoBean.getPageNumber() * pdsoBean.getPageSize();
+        if (pdsoBean.getPageNumber()<1 || pdsoBean.getPageSize()<1){
+            startIndex = 1;            
+            if (pdsoBean.getMaxElements()>0){
+                endIndex = pdsoBean.getMaxElements();
+            }else{
+                endIndex = Constants.DEFAULT_MAX_ELEMENTS;
+            }                   
+        }
+
+        PotentialDuplicateIterator iterator = 
+                mMC.lookupPotentialDuplicates(pdsoBean.getPotentialDuplicateSearchObjec());
+        
+        
+        int count =0;
+        ArrayList<PotentialDuplicateResult> results = new ArrayList<PotentialDuplicateResult>();
+        while (iterator.hasNext()) {
+            count++;
+            if (count>endIndex){
+                break;
+            }
+            PotentialDuplicateSummary pds = iterator.next();
+            if (count>=startIndex){
+                PotentialDuplicateResult pdbresult = new PotentialDuplicateResult(pds);
+                results.add(pdbresult);
+            }
+        }
+        int size = results.size();
+        PotentialDuplicateResult[] pdbarray= new PotentialDuplicateResult[size];
+        return results.toArray(pdbarray);        
+    }
  
     /** 
      * Return EnterpiseObject associated with EUID or null if not found.
@@ -1110,7 +1165,6 @@ public class [sbyntag:objname.makeClassName]EJB {
             throw new ProcessingException(ex);
         }        
     }
-     
 
     /** 
      * Populate EPath list.
