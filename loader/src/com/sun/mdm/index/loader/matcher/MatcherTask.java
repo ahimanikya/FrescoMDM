@@ -70,11 +70,12 @@ import com.sun.mdm.index.loader.common.Util;
 	public static final String SDUPSCORE = "999999";
 	private static final String empty_str = "";
 	private Matcher matcher_;
+	private int treeFlushSize_ = 20000;
 	
 	MatcherTask(TreeMap<MatchRecord,String> map, 
 			Bucket.MatchCursor cursor, String[] paths, String[] matchTypes, 
 			Lookup blLk, double matchThreshold, double duplicateThreshold,
-			CountDownLatch endGate, boolean isSBR, Matcher matcher) throws Exception {
+			CountDownLatch endGate, boolean isSBR, Matcher matcher, int matchCacheSize) throws Exception {
 		matchThreshold_ = matchThreshold;
 		duplicateThreshold_ = duplicateThreshold;
 		tupleCursor_ = new DataObjectTupleCursor(paths, matchTypes, blLk, isSBR);
@@ -85,6 +86,9 @@ import com.sun.mdm.index.loader.common.Util;
 		//matchEngine_ = new SbmeMatcher(tupleCursor_.matchFieldIDs_);
 	    isSBR_ = isSBR;
 	    matcher_ = matcher;
+	    if (matchCacheSize != 0) {
+	      treeFlushSize_ = matchCacheSize;
+	    }
 	}
 	
 		
@@ -202,6 +206,9 @@ import com.sun.mdm.index.loader.common.Util;
 	    		}
  	    			    		
 	    	}
+	    }
+	    if (matchTree_.size() > treeFlushSize_ ) {
+	    	matcher_.flushMap(matchTree_);	    	
 	    }
 	    	    		
 	}
