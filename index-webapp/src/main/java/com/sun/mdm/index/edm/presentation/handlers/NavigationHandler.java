@@ -32,6 +32,8 @@
 
 package com.sun.mdm.index.edm.presentation.handlers;
 
+import java.io.IOException;
+import java.util.logging.Level;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import javax.servlet.http.HttpSession;
@@ -158,7 +160,7 @@ public  class NavigationHandler {
      */
     public String toDashboard() {
         // There is no screen object defined in the EDM.xml file for the "Dashboard"
-        session.setAttribute("ScreenObject",getScreenObject(RECORD_DETAILS));
+        session.setAttribute("ScreenObject",getScreenObject(DASH_BOARD));
         return DASH_BOARD;
     }
     /**
@@ -192,5 +194,38 @@ public  class NavigationHandler {
         }
         return tagName;
     }
+
+    public void setHeaderByTabName(ActionEvent event) {
+        Integer screenId = (Integer) event.getComponent().getAttributes().get("screenId");
+        String midmTagName = getTagNameByScreenId(screenId);
+        //String tabName = (String) event.getComponent().getAttributes().get("headertabName");
+        System.out.println("midmTagName" + midmTagName);
+        //System.out.println("tabName" + tabName);
+        try {
+            if (midmTagName.equalsIgnoreCase("dashboard")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("dashboard.jsf");
+            } else if (midmTagName.equalsIgnoreCase("duplicate-records")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("duplicaterecords.jsf");
+            } else if (midmTagName.equalsIgnoreCase("record-details")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("recorddetails.jsf");
+            } else if (midmTagName.equalsIgnoreCase("assumed-matches")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("assumedmatches.jsf");
+            } else if (midmTagName.equalsIgnoreCase("source-record")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("sourcerecords.jsf");
+            } else if (midmTagName.equalsIgnoreCase("reports")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("reports.jsf");
+            } else if (midmTagName.equalsIgnoreCase("transactions")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("transactions.jsf");
+            } else if (midmTagName.equalsIgnoreCase("audit-log")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("auditlog.jsf");
+            }
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(NavigationHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("--getScreenObject(midmTagName)---" + getScreenObject(midmTagName));
+        session.setAttribute("ScreenObject", getScreenObject(midmTagName));
+    //return headertabName;
+    }
     
+
 }
