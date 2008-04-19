@@ -157,6 +157,8 @@ public class ScreenConfiguration {
     
     /** Creates a new instance of ScreenConfiguration */
     public ScreenConfiguration() {
+        if (screenObject!=null){ //fix for 6679172,6684209
+        
         searchScreenConfig = (screenObject.getSearchScreensConfig().size() > 0) ? (SearchScreenConfig) screenObject.getSearchScreensConfig().toArray()[0] : null;
         
         searchType = (searchScreenConfig != null) ? searchScreenConfig.getScreenTitle() : new String("");
@@ -171,6 +173,7 @@ public class ScreenConfiguration {
         lidMaskLength = (getAllSystemCodes()[1][0] != null)? getAllSystemCodes()[1][0].length():0;
         
     }
+    }
 
     /**
      * This method will return an array of search field configs as configured in edm.xml.
@@ -183,7 +186,8 @@ public class ScreenConfiguration {
         ArrayList basicSearchFieldConfigs;
 
         try {
-
+            
+            if (screenObject!=null){//fix for 6679172,6684209
             ArrayList screenConfigList = screenObject.getSearchScreensConfig();
 
             Iterator iteratorScreenConfig = screenConfigList.iterator();
@@ -232,7 +236,7 @@ public class ScreenConfiguration {
                         }
                     }
                 }
-            }
+            }}
 
         } catch (Exception e) {
             Logger.getLogger(ScreenConfiguration.class.getName()).log(Level.SEVERE, "Failed Get the Screen Config Array Object: ", e);
@@ -254,6 +258,7 @@ public class ScreenConfiguration {
      * @return ArrayList
      */
     public ArrayList getResultsConfigArray() {
+            if(screenObject!=null){//fix for 6679172,6684209
             ArrayList resultsScreenConfigArray = screenObject.getSearchResultsConfig();
             Iterator iteratorScreenConfig = resultsScreenConfigArray.iterator();
             ArrayList newArrayList = new ArrayList();
@@ -271,8 +276,10 @@ public class ScreenConfiguration {
                 
             }    
             this.resultsConfigArray = newArrayList;
+            }
         return resultsConfigArray;
     }
+    
 
     /**
      * 
@@ -298,11 +305,16 @@ public class ScreenConfiguration {
 
     public int getMaxRecords() {
         int mRecords = 0;
+        
+        if(screenObject!=null){ //fix for 6679172,6684209
         ArrayList resultsScreenConfigArray = screenObject.getSearchResultsConfig();
         SearchResultsConfig objSearchScreenConfig = (SearchResultsConfig) resultsScreenConfigArray.get(0);
         mRecords = objSearchScreenConfig.getMaxRecords();
-      
         return mRecords;
+        }
+        else  {
+           return mRecords;
+        }
     }
 
     public void setMaxRecords(int maxRecords) {
@@ -311,11 +323,17 @@ public class ScreenConfiguration {
 
     public int getPageSize() {
         int psize = 0;
+        
+        if(screenObject!=null){ //fix for 6679172,6684209
         ArrayList resultsScreenConfigArray = screenObject.getSearchResultsConfig();
         SearchResultsConfig objSearchScreenConfig = (SearchResultsConfig) resultsScreenConfigArray.get(0);
-        psize = objSearchScreenConfig.getPageSize();
-       
+        psize = objSearchScreenConfig.getPageSize();       
         return psize;
+        }
+        else {
+            return psize;
+        } 
+          
     }
 
     public void setPageSize(int pageSize) {
@@ -509,6 +527,7 @@ public class ScreenConfiguration {
      * @return 
      */
     public ArrayList<SelectItem> getPossilbeSearchTypes() {
+        if(screenObject!=null){//fix for 6679172,6684209
         ArrayList screenConfigPossibleTypes = screenObject.getSearchScreensConfig();
         Iterator iteratorScreenConfigIter = screenConfigPossibleTypes.iterator();
         SearchScreenConfig objSearchScreenConfig;
@@ -524,7 +543,7 @@ public class ScreenConfiguration {
         }
         possilbeSearchTypes = newArrayList;
 
-        
+        }
         // returning the arraylist of searchTitles
         return possilbeSearchTypes;
     }
@@ -534,7 +553,13 @@ public class ScreenConfiguration {
      * @return int
      */
     public int getPossilbeSearchTypesCount() {
-        return screenObject.getSearchScreensConfig().size();
+        int searchCount= 0;
+        if (screenObject!=null){
+                 return screenObject.getSearchScreensConfig().size();
+        }else
+        {
+            return searchCount;
+        }
     }
 
     /**
@@ -564,8 +589,10 @@ public class ScreenConfiguration {
         String selectedSearchType = (String) event.getNewValue();
         //this.searchType = selectedSearchType;
         setSearchType(selectedSearchType);
+          HashMap newHashMap = new HashMap();
+        if(screenObject!=null){//fix for 6679172,6684209
         ArrayList screenConfigList = screenObject.getSearchScreensConfig();
-        HashMap newHashMap = new HashMap();
+      
         
         Iterator iteratorScreenConfig = screenConfigList.iterator();
         while (iteratorScreenConfig.hasNext()) {
@@ -597,6 +624,7 @@ public class ScreenConfiguration {
                     }
                 }
             }
+        }
         }
         this.setUpdateableFeildsMap(newHashMap);        
         
@@ -669,6 +697,7 @@ public class ScreenConfiguration {
     }
 
     public ArrayList<SelectItem> getPossilbeResultsTypes() {
+        if (screenObject!=null){//fix for 6679172,6684209
         ArrayList searchResultsConfigPossibleTypes = screenObject.getSearchResultsConfig();
         Iterator iteratorSearchResultsConfigIter = searchResultsConfigPossibleTypes.iterator();
         SearchResultsConfig objSearchResultsConfig;
@@ -687,7 +716,7 @@ public class ScreenConfiguration {
 
         //set possilble results types count
         setPossilbeResultsTypesCount(possilbeResultsTypes.size());
-  
+        }
         return possilbeResultsTypes;
     }
 
@@ -696,7 +725,14 @@ public class ScreenConfiguration {
     }
 
     public int getPossilbeResultsTypesCount() {
-        return screenObject.getSearchResultsConfig().size();
+        int resultsCount =0;
+        if (screenObject!=null){
+            return screenObject.getSearchResultsConfig().size();
+        }
+        else 
+        {
+            return resultsCount;
+        }
     }
 
     public void setPossilbeResultsTypesCount(int possilbeResultsTypesCount) {
@@ -737,7 +773,15 @@ public class ScreenConfiguration {
      * @return
      */
     public ArrayList getSearchScreenConfigArray() {
-        return screenObject.getSearchScreensConfig();
+        ArrayList configArray = null;
+        if (screenObject!=null){
+             return screenObject.getSearchScreensConfig();
+        }
+        else
+        {
+            return configArray;
+        }
+       
     }
 
     /**
@@ -785,6 +829,8 @@ public class ScreenConfiguration {
         
         ArrayList basicSearchFieldConfigs;
         try {
+            
+            if(screenObject!=null){ //fix for 6679172,6684209
             ArrayList screenConfigList = screenObject.getSearchScreensConfig();
 
             Iterator iteratorScreenConfig = screenConfigList.iterator();
@@ -820,6 +866,7 @@ public class ScreenConfiguration {
                         searchScreenFieldGroupArray.add(basicSearchFieldGroup);
                     }
                 }
+            }
             }
 
         } catch (Exception e) {

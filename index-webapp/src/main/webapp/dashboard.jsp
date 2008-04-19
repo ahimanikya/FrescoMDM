@@ -34,14 +34,28 @@
 <div id="mainContent">  <!-- Main content -->
 <table border="0" cellpadding="3" cellspacing="1">
   <tr>
-   <td> 
+    
    <%HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
      DashboardHandler dashboardHandler = new DashboardHandler();
 	 System.out.println("=====>" + dashboardHandler + "dashboardHandler.showSubscreenTab(summaryText)" + dashboardHandler.showSubscreenTab(summaryText));
+         
+        System.out.println("=====>" + dashboardHandler + "dashboardHandler.showSubscreenTab(summaryText)" + dashboardHandler.showSubscreenTab(summaryText));
+        
+        
+        boolean check1=dashboardHandler.showSubscreenTab(summaryText);
+        boolean check2=dashboardHandler.showSubscreenTab(lookupText);
+        boolean check3=dashboardHandler.showSubscreenTab(reportsText);
+        boolean check4=dashboardHandler.showSubscreenTab(compareText);
+        
+       
+      
+        int dashboadComponentDisplayCount = 0;
+        
 	 //Summary
    %>
    <%if(dashboardHandler.showSubscreenTab(summaryText)) {%>
-   <div class="dashboardHeadMessage"> <h:outputLabel for="#{msgs.dashboard_summary_table_text}" value="#{msgs.dashboard_summary_table_text}"/> </div>
+   <td>
+    <div class="dashboardHeadMessage"> <h:outputLabel for="#{msgs.dashboard_summary_table_text}" value="#{msgs.dashboard_summary_table_text}"/> </div>
          <div id="dashboardSummary" class="dashboardSummary"> 
           <h:form>
             <table border="0" cellspacing="10" cellpadding="4">
@@ -52,10 +66,20 @@
             </table>
           </h:form>
          </div>
-	<%}%>
-   </td>
-   <td> 
+        </td>
+	<%
+        dashboadComponentDisplayCount++;
+        if (dashboadComponentDisplayCount%2 == 0){
+            %>
+                </tr> <tr>
+            <%
+        }
+    }%>
+   
+   
+   
    <%if(dashboardHandler.showSubscreenTab(lookupText)) {%>
+       <td>
        <div class="dashboardHeadMessage"><h:outputLabel for="#{msgs.dashboard_quicksearch_table_text}" value="#{msgs.dashboard_quicksearch_table_text}"/></div> 
         <div id="qs" class="dashboardSummaryQS"> 
             <table border="0" cellspacing="0" cellpadding="4">
@@ -93,16 +117,27 @@
 
             </table>
         </div>
-	<%}%>
-   </td>
-  </tr>
-
-  <tr>
-   <td> 
+        </td>
+        <%
+        dashboadComponentDisplayCount++;
+        if (dashboadComponentDisplayCount%2 == 0){
+            %>
+                </tr> <tr>
+            <%
+        }
+        }%>
+   
+   
+   
+   
+  
+      
+   
      
 
    <%if(dashboardHandler.showSubscreenTab(reportsText)) {%>
-   <div class="dashboardHeadMessage"><h:outputLabel for="#{msgs.dashboard_reports_table_text}" value="#{msgs.dashboard_reports_table_text}"/></div>
+   <td>
+    <div class="dashboardHeadMessage"><h:outputLabel for="#{msgs.dashboard_reports_table_text}" value="#{msgs.dashboard_reports_table_text}"/></div>
         <div id="dashboardSummary" class="dashboardSummary">
             <h:form>
             <table border="0" cellspacing="0" cellpadding="4"> 
@@ -154,8 +189,16 @@
             </table>
            </h:form>
         </div>
-	<%}%>
-   </td>
+        </td>
+        <%
+        dashboadComponentDisplayCount++;
+        if (dashboadComponentDisplayCount%2 == 0){
+            %>
+                </tr> <tr>
+            <%
+        }
+        }%>
+   
                 
    <td> 
    <%if(dashboardHandler.showSubscreenTab(compareText)) {%>

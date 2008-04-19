@@ -19,7 +19,11 @@
 <%
 ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 
+// fix for 6679172,6684209
 if(session!=null && session.isNew()) {
+	
+	request.setAttribute("Logout", "LoggedOut");	
+	session.invalidate();
 %>
    <c:redirect url="login.jsf"/>
 <%}
