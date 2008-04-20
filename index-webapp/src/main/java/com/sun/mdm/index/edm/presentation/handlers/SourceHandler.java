@@ -32,6 +32,7 @@
 
 package com.sun.mdm.index.edm.presentation.handlers;
 
+import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
@@ -132,7 +133,7 @@ public class SourceHandler {
     private ArrayList aliasFieldConfigs;
 
     MasterControllerService  masterControllerService = new MasterControllerService();
-    
+    private HashMap deactivatedSOHashMap = new HashMap();
     
     //Hash map for single SO  for view
     private ArrayList singleSOHashMapArrayList = new ArrayList();
@@ -174,6 +175,7 @@ public class SourceHandler {
     CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
     private int euidLength;
     private String enteredFieldValues = new String();
+
     /** Creates a new instance of SourceHandler */
     public SourceHandler() {
     }
@@ -190,60 +192,83 @@ public class SourceHandler {
         ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
         //get the hidden fields search type from the form usin the facesContext
         // get the array list as per the search
-        ArrayList fieldConfigArrayList  = this.getViewEditScreenConfigArray();
-        Iterator fieldConfigArrayIter =  fieldConfigArrayList.iterator();
-        int totalFields = fieldConfigArrayList.size();
-        int countMenuFields = 0;
-        int countEmptyFields = 0;
-        while(fieldConfigArrayIter.hasNext())  {           
-             FieldConfig  fieldConfig = (FieldConfig) fieldConfigArrayIter.next();
-             String feildValue = (String) this.getUpdateableFeildsMap().get(fieldConfig.getName());                          
-            
-             if (fieldConfig.getName().equalsIgnoreCase("SystemCode")) {
-                this.setSystemCode(feildValue);
-             }
+//        ArrayList fieldConfigArrayList  = this.getViewEditScreenConfigArray();
+//        Iterator fieldConfigArrayIter =  fieldConfigArrayList.iterator();
+//        int totalFields = fieldConfigArrayList.size();
+//        int countMenuFields = 0;
+//        int countEmptyFields = 0;
+//        while(fieldConfigArrayIter.hasNext())  {           
+//             FieldConfig  fieldConfig = (FieldConfig) fieldConfigArrayIter.next();
+//             String feildValue = (String) this.getUpdateableFeildsMap().get(fieldConfig.getName());                          
+//            
+//             if (fieldConfig.getName().equalsIgnoreCase("SystemCode")) {
+//                this.setSystemCode(feildValue);
+//             }
+//
+//             if("MenuList".equalsIgnoreCase(fieldConfig.getGuiType()) && feildValue == null)  {
+//                 countMenuFields++;     
+//             } else if(!"MenuList".equalsIgnoreCase(fieldConfig.getGuiType()) && feildValue != null && feildValue.trim().length() == 0)  { 
+//               countEmptyFields++;       
+//             }
+//        }
+//        String lid = this.getLID().replaceAll("-", ""); 
+//        this.setLID(lid);
+//        
+//        //Checking one of many condition here   
+//        if( (totalFields > 0 && countEmptyFields+countMenuFields == totalFields)   && // all updateable fields are left blank
+//           (this.getEUID() == null || (this.getEUID()  != null && this.getEUID().trim().length() == 0))  &&
+//           (this.getLID()  == null || (this.getLID()  != null && this.getLID().trim().length() == 0))  &&
+//           (this.getCreate_start_date()  == null || (this.getCreate_start_date()  != null && this.getCreate_start_date().trim().length() == 0))  &&
+//           (this.getCreate_start_time()  == null || (this.getCreate_start_time()  != null && this.getCreate_start_time().trim().length() == 0))  &&
+//           (this.getCreate_end_date()  == null  || (this.getCreate_end_date()  != null && this.getCreate_end_date().trim().length() == 0))  &&
+//           (this.getCreate_end_time()  == null || (this.getCreate_end_time()  != null && this.getCreate_end_time().trim().length() == 0))  &&
+//           (this.getSystemCode()  == null) &&  
+//           (this.getStatus()  == null ) 
+//           )  {
+//                String errorMessage = bundle.getString("potential_dup_search_error");
+//                FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+//                return VALIDATION_ERROR;  
+//        }
 
-             if("MenuList".equalsIgnoreCase(fieldConfig.getGuiType()) && feildValue == null)  {
-                 countMenuFields++;     
-             } else if(!"MenuList".equalsIgnoreCase(fieldConfig.getGuiType()) && feildValue != null && feildValue.trim().length() == 0)  { 
-               countEmptyFields++;       
-             }
-        }
-        String lid = this.getLID().replaceAll("-", ""); 
-        this.setLID(lid);
+        HashMap newFieldValuesMap = new HashMap();
+
+        if (enteredFieldValues != null && enteredFieldValues.length() > 0) {
+                String[] fieldNameValues = enteredFieldValues.split(">>");
+                for (int i = 0; i < fieldNameValues.length; i++) {
+                    String string = fieldNameValues[i];
+                    String[] keyValues = string.split("##");
+                    if(keyValues.length ==2) {
+                      if(keyValues[1] != null && keyValues[1].trim().length() == 0 ) {
+                        newFieldValuesMap.put(keyValues[0], null);
+                      } else {
+                        newFieldValuesMap.put(keyValues[0], keyValues[1]);
+                      }
+                    }
+                }
+            }
         
-        //Checking one of many condition here   
-        if( (totalFields > 0 && countEmptyFields+countMenuFields == totalFields)   && // all updateable fields are left blank
-           (this.getEUID() == null || (this.getEUID()  != null && this.getEUID().trim().length() == 0))  &&
-           (this.getLID()  == null || (this.getLID()  != null && this.getLID().trim().length() == 0))  &&
-           (this.getCreate_start_date()  == null || (this.getCreate_start_date()  != null && this.getCreate_start_date().trim().length() == 0))  &&
-           (this.getCreate_start_time()  == null || (this.getCreate_start_time()  != null && this.getCreate_start_time().trim().length() == 0))  &&
-           (this.getCreate_end_date()  == null  || (this.getCreate_end_date()  != null && this.getCreate_end_date().trim().length() == 0))  &&
-           (this.getCreate_end_time()  == null || (this.getCreate_end_time()  != null && this.getCreate_end_time().trim().length() == 0))  &&
-           (this.getSystemCode()  == null) &&  
-           (this.getStatus()  == null ) 
-           )  {
-                String errorMessage = bundle.getString("potential_dup_search_error");
-                FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
-                return VALIDATION_ERROR;  
-        }
-        
-        //get array of lids 
+            //set LID and system codes here.  
+            setLID((String) newFieldValuesMap.get(MasterControllerService.LID));
+            setSystemCode((String) newFieldValuesMap.get("SystemCode"));
+
+		//get array of lids 
         String lids[] = this.getStringEUIDs(this.getLID());
         //instantiate master controller service
         SystemObject singleSystemObject = null;
         SystemObject[] systemObjectArrays = null;
         ArrayList systemObjectsMapList = new ArrayList();
         EPathArrayList ePathArrayList = new EPathArrayList();
-        ArrayList newArrayList  = this.getViewEditResultsConfigArray();
-        try {
-            for (int i = 0; i < newArrayList.size(); i++) {
-                FieldConfig fieldConfig = (FieldConfig) newArrayList.get(i);
-                ePathArrayList.add(fieldConfig.getFullFieldName());
-            }
-        } catch (EPathException ex) {
-            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        ArrayList newArrayList  = this.getViewEditResultsConfigArray();
+//        try {
+//            for (int i = 0; i < newArrayList.size(); i++) {
+//                FieldConfig fieldConfig = (FieldConfig) newArrayList.get(i);
+//                ePathArrayList.add(fieldConfig.getFullFieldName());
+//            }
+//        } catch (EPathException ex) {
+//            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        
+//       
 
           SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
           String createDate = null;
@@ -472,6 +497,29 @@ public class SourceHandler {
             session.removeAttribute("singleSystemObjectLID");   
    }
     
+   public String cancelEditLID(){
+        // set the tab name to be view/edit
+        session.setAttribute("tabName", "View/Edit");
+        session.removeAttribute("singleSystemObjectLID");   
+        SourceAddHandler sourceAddHandlerFaces = (SourceAddHandler)session.getAttribute("SourceAddHandler");
+        sourceAddHandlerFaces.getNewSOHashMap().clear();
+
+        return NavigationHandler.SOURCE_RECORDS;
+   }
+
+   public String cancelSaveLID(){
+        // set the tab name to be view/edit
+        session.setAttribute("tabName", "Add");
+        session.removeAttribute("singleSystemObjectLID");   
+        SourceAddHandler sourceAddHandlerFaces = (SourceAddHandler)session.getAttribute("SourceAddHandler"); 
+        
+        //reset all the fields here for root node and minor objects
+        sourceAddHandlerFaces.getNewSOHashMap().clear();
+        sourceAddHandlerFaces.getNewSOMinorObjectsHashMapArrayList().clear();
+
+        return NavigationHandler.SOURCE_RECORDS;
+   }
+    
     /**
      * 
      * @param event
@@ -522,10 +570,17 @@ public class SourceHandler {
     
         try {
             SystemObject systemObject = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");
-                masterControllerService.activateSystemObject(systemObject);             
+            masterControllerService.activateSystemObject(systemObject);             
             SystemObject updatedSystemObject = masterControllerService.getSystemObject(systemObject.getSystemCode(), systemObject.getLID());
-    
-            //Keep the updated SO in the session again
+            //get the System Object as hashmap
+            HashMap updatedSoMap = compareDuplicateManager.getSystemObjectAsHashMap(updatedSystemObject, screenObject);
+             
+            SourceAddHandler sourceAddHandler = (SourceAddHandler) session.getAttribute("SourceAddHandler");
+
+            //update the handler variable for editing
+            sourceAddHandler.setNewSOHashMap(updatedSoMap);
+            
+           //Keep the updated SO in the session again
             session.setAttribute("singleSystemObjectLID", updatedSystemObject);
             session.setAttribute("keyFunction", "editSO");
                         
@@ -547,7 +602,9 @@ public class SourceHandler {
             SystemObject systemObject = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");          
             masterControllerService.deactivateSystemObject(systemObject);
             SystemObject updatedSystemObject = masterControllerService.getSystemObject(systemObject.getSystemCode(), systemObject.getLID());
-
+           
+            setDeactivatedSOHashMap(compareDuplicateManager.getSystemObjectAsHashMap(updatedSystemObject, screenObject));
+           
             //Keep the updated SO in the session again
             session.setAttribute("singleSystemObjectLID", updatedSystemObject);
             session.setAttribute("keyFunction","editSO");
@@ -889,15 +946,14 @@ public class SourceHandler {
             ConfigManager.init();
             String rootName = screenObject.getRootObj().getName();
             ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(rootName);
-            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
-
-            //Build Person Epath Arraylist
-            for (int i = 0; i < allFeildConfigs.length; i++) {
-                FieldConfig fieldConfig = allFeildConfigs[i];
-                if(!(rootName+ ".EUID").equalsIgnoreCase(fieldConfig.getFullFieldName())) {
-                  ePathArrayList.add(fieldConfig.getFullFieldName());
-                }
-            }
+					FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
+		            //Build Person Epath Arraylist
+				    for (int i = 0; i < allFeildConfigs.length; i++) {
+						FieldConfig fieldConfig = allFeildConfigs[i];
+						if(!(rootName+ ".EUID").equalsIgnoreCase(fieldConfig.getFullFieldName())) {
+								ePathArrayList.add(fieldConfig.getFullFieldName());
+						}
+					}
         } catch (Exception ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -912,16 +968,17 @@ public class SourceHandler {
             ObjectNodeConfig objectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(objectType);
 			if (objectNodeConfig != null)
 			{
-			    FieldConfig[] allFeildConfigs = objectNodeConfig.getFieldConfigs();
-				String rootName = screenObject.getRootObj().getName();
+            FieldConfig[] allFeildConfigs = objectNodeConfig.getFieldConfigs();
+            String rootName = screenObject.getRootObj().getName();
 
-				//Build Person Epath Arraylist
-				for (int i = 0; i < allFeildConfigs.length; i++) {
-					FieldConfig fieldConfig = allFeildConfigs[i];
-					if(     !(rootName+ ".EUID").equalsIgnoreCase(fieldConfig.getFullFieldName())) {
-		                  ePathArrayList.add(fieldConfig.getFullFieldName());
-			        }
-				}
+            //Build Person Epath Arraylist
+            for (int i = 0; i < allFeildConfigs.length; i++) {
+                FieldConfig fieldConfig = allFeildConfigs[i];
+                if(     !(rootName+ ".EUID").equalsIgnoreCase(fieldConfig.getFullFieldName())
+                    ) {
+                  ePathArrayList.add(fieldConfig.getFullFieldName());
+                }
+            }
 			}
         } catch (Exception ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -1209,6 +1266,7 @@ public class SourceHandler {
      */
     public HashMap getAllNodeFieldConfigs() {
          HashMap newHashMap = new HashMap();
+
         try {
 
             String rootNodeName = screenObject.getRootObj().getName();
@@ -1229,6 +1287,7 @@ public class SourceHandler {
         } catch (Exception ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
+         
         return newHashMap;
     }
 
@@ -1237,8 +1296,8 @@ public class SourceHandler {
      * @param allNodeFieldConfigs
      */
     public void setAllNodeFieldConfigs(HashMap allNodeFieldConfigs) {
-        this.allNodeFieldConfigs = allNodeFieldConfigs;
-    }
+        this.allNodeFieldConfigs = allNodeFieldConfigs;    
+}
 
 
     /**
@@ -1249,12 +1308,13 @@ public class SourceHandler {
         ArrayList newArrayList = new ArrayList();
         try {
             ConfigManager.init();
+            if (screenObject != null) {
+                ObjectNodeConfig[] arrObjectNodeConfig = screenObject.getRootObj().getChildConfigs();
 
-            ObjectNodeConfig[] arrObjectNodeConfig = screenObject.getRootObj().getChildConfigs();
-
-            for (int i = 0; i < arrObjectNodeConfig.length; i++) {
-                ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
-                newArrayList.add(childObjectNodeConfig.getName());
+                for (int i = 0; i < arrObjectNodeConfig.length; i++) {
+                    ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
+                    newArrayList.add(childObjectNodeConfig.getName());
+                }
             }
 
         } catch (Exception ex) {
@@ -1382,6 +1442,7 @@ public class SourceHandler {
                 ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
                 HashMap newHashMap = new HashMap();
                 newHashMap.put("KEYLIST","SO" + childObjectNodeConfig.getName() + "ArrayList");
+                    newHashMap.put("EDITKEYLIST","SOEDIT" + childObjectNodeConfig.getName() + "ArrayList");
                 newHashMap.put("NAME", childObjectNodeConfig.getName());
                 newHashMap.put("FIELDCONFIGS", childObjectNodeConfig.getFieldConfigs());
                 newArrayList.add(newHashMap);
@@ -1429,6 +1490,80 @@ public class SourceHandler {
         this.enteredFieldValues = enteredFieldValues;
     }
 
+
+    public HashMap removeFieldInputMasking(HashMap valueEnteredMap, String objectType) {
+        //get Field Config for the root 
+        FieldConfig[] fcRootArray = (FieldConfig[]) getAllNodeFieldConfigs().get(objectType);
+        //loop through all the FieldConfig values 
+        for (int k = 0; k < fcRootArray.length; k++) {
+            String inputMask = fcRootArray[k].getInputMask();
+            //replace all the masked fields here
+            if (inputMask != null && inputMask.length() > 0 && fcRootArray[k].getValueType() == ObjectField.OBJECTMETA_STRING_TYPE) {
+                inputMask = inputMask.replace("D", ":");
+                inputMask = inputMask.replace("L", ":");
+                String unMaskedValueEntered = (String) valueEnteredMap.get(fcRootArray[k].getFullFieldName());
+                String[] maskChars = inputMask.split(":");
+                for (int i = 0; unMaskedValueEntered != null  && i <  maskChars.length; i++) {
+                    unMaskedValueEntered = unMaskedValueEntered.replace(maskChars[i], "");
+                }
+                if (unMaskedValueEntered != null)  valueEnteredMap.put(fcRootArray[k].getFullFieldName(), unMaskedValueEntered);
+                
+            }
+        }
+
+        return valueEnteredMap;
+    }
+
+    public HashMap getDeactivatedSOHashMap() {
+        return deactivatedSOHashMap;
+    }
+
+    public void setDeactivatedSOHashMap(HashMap deactivatedSOHashMap) {
+        this.deactivatedSOHashMap = deactivatedSOHashMap;
+    }
     
-   
+    public boolean isNumber(String thisValue)  {
+        if (thisValue != null && thisValue.length() > 0) {
+            try {
+
+                Integer.parseInt(thisValue);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return true;
+    }
+//(DDD)DDD-DDDD
+    public boolean checkMasking(String thisValue, String masking)  {
+        Character c;
+//        if ((thisValue != null && thisValue.trim().length() > 0 )&&  (masking.length() != thisValue.length()) ) return false; //check length
+        try {
+            if (thisValue != null && thisValue.trim().length() > 0) {
+                for (int i = 0; i < masking.length(); i++) {  //Digit 
+
+                    if (masking.charAt(i) == 'D') {
+                        if (!Character.isDigit(thisValue.charAt(i))) {
+                            return false;
+                        }
+                    } else if (masking.charAt(i) == 'L') {  //Char 
+
+                        if (!Character.isLetter(thisValue.charAt(i))) {
+                            return false;
+                        }
+                    } else {
+                        if (masking.charAt(i) != thisValue.charAt(i)) {
+                            return false;
+                        }
+                    }
+                }
+
+            }
+        } catch (Exception e)  {
+            e.printStackTrace();
+            return false;
+        }        
+        
+        return true;
+    }
+    
 }

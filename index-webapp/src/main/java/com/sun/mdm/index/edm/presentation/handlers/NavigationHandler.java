@@ -51,7 +51,7 @@ public  class NavigationHandler {
     private static final String DUPLICATE_RECORDS = "duplicate-records";
     private static final String RECORD_DETAILS = "record-details";
     private static final String ASUMMED_MATCHES = "assumed-matches";
-    private static final String SOURCE_RECORDS = "source-record";
+    public static final String SOURCE_RECORDS = "source-record";
     private static final String TRANSACTIONS = "transactions";
     private static final String REPORTS = "reports";
     private static final String AUDIT_LOG = "audit-log";
@@ -160,7 +160,7 @@ public  class NavigationHandler {
      */
     public String toDashboard() {
         // There is no screen object defined in the EDM.xml file for the "Dashboard"
-        session.setAttribute("ScreenObject",getScreenObject(DASH_BOARD));
+        session.setAttribute("ScreenObject",getScreenObject(RECORD_DETAILS));
         return DASH_BOARD;
     }
     /**
@@ -194,13 +194,10 @@ public  class NavigationHandler {
         }
         return tagName;
     }
-
     public void setHeaderByTabName(ActionEvent event) {
         Integer screenId = (Integer) event.getComponent().getAttributes().get("screenId");
         String midmTagName = getTagNameByScreenId(screenId);
         //String tabName = (String) event.getComponent().getAttributes().get("headertabName");
-        System.out.println("midmTagName" + midmTagName);
-        //System.out.println("tabName" + tabName);
         try {
             if (midmTagName.equalsIgnoreCase("dashboard")) {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("dashboard.jsf");
@@ -222,10 +219,8 @@ public  class NavigationHandler {
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(NavigationHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("--getScreenObject(midmTagName)---" + getScreenObject(midmTagName));
         session.setAttribute("ScreenObject", getScreenObject(midmTagName));
     //return headertabName;
     }
     
-
 }
