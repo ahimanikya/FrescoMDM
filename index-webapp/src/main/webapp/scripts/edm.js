@@ -673,12 +673,11 @@ function getDateFieldName(formName,idName)  {
 
 
 function ClearContents(thisForm)  { 
-	
-    thisFrm = document.forms[thisForm];
-    for(i=0; i< thisFrm.elements.length; i++)   {      
+	thisFrm = document.forms[thisForm];
+	for(i=0; i< thisFrm.elements.length; i++)   {      
         if(!thisFrm.elements[i].name != 'lidmask') {
            thisFrm.elements[i].value = "";
-	}
+	    }
     }
     return;
 } 
@@ -735,6 +734,43 @@ var xhr;
 // call the URL
 var innerHtmlDiv = '';
 var thisEvent;
+
+
+// Begin Source Record
+function ajaxMinorObjects(url,thisInnerHtmlDivName,isEdit)    {
+    innerHtmlDiv = thisInnerHtmlDivName;
+	if (isEdit == "edit") 	{
+		innerHtmlDiv = "stealth";
+	}
+    document.getElementById(innerHtmlDiv).style.visibility='visible';
+    xhr = getXmlHttpObject(minorObjectsStateChanged); 
+    //Send the xmlHttp get to the specified url 
+    xmlHttpGet(xhr, url); 
+} 
+
+    function minorObjectsStateChanged()     { 
+        //readyState of 4 or 'complete' represents that data has been returned 
+        if (xhr.readyState == 4 || xhr.readyState == 'complete')        { 
+            //Gather the results from the callback 
+           var str = xhr.responseText; 
+		   //Will only generate the script to populate the form, so don't update the content
+		   document.getElementById(innerHtmlDiv).innerHTML = xhr.responseText;
+		   document.getElementById(innerHtmlDiv).style.display = 'block';
+		   document.getElementById(innerHtmlDiv).style.visibility = 'visible';
+           var divID = document.getElementById(innerHtmlDiv);
+           var x = divID.getElementsByTagName("script");    
+           for(var i=0;i<x.length;i++)   {       
+                eval(x[i].text);   
+           }
+           //get values
+         } else   {
+                 document.getElementById(innerHtmlDiv).innerHTML =  "<div style='width:100%'><table><tr><td><img src='./images/loading.gif' border='0'> <p>Loading ...Please Wait</p></td></tr></table> </div>";
+         }
+    } 
+
+// End Source Record
+
+
 function ajaxURL(url,thisInnerHtmlDivName,e)    {
     innerHtmlDiv = thisInnerHtmlDivName;
 
@@ -753,14 +789,9 @@ function ajaxURL(url,thisInnerHtmlDivName,e)    {
         if (xhr.readyState == 4 || xhr.readyState == 'complete')        { 
             //Gather the results from the callback 
            var str = xhr.responseText; 
-           //////alert(str);
-           //var closeButton ="<a align='right' onclick='javascript:document.getElementById('tree').style.visibility = 'hidden'>Close</a>"; 
            document.getElementById(innerHtmlDiv).innerHTML = xhr.responseText;
            document.getElementById(innerHtmlDiv).style.display = 'block';
            document.getElementById(innerHtmlDiv).style.visibility = 'visible';
-           //var xpos = thisEvent.layerX? thisEvent.layerX : thisEvent.offsetX? thisEvent.offsetX : 0;
-           //var ypos = thisEvent.layerY? thisEvent.layerY : thisEvent.offsetY? thisEvent.offsetY : 0;
-           //////alert(xpos+'---'+ypos);
            var divID = document.getElementById(innerHtmlDiv);
            var x = divID.getElementsByTagName("script");    
            for(var i=0;i<x.length;i++)   {       
@@ -768,11 +799,8 @@ function ajaxURL(url,thisInnerHtmlDivName,e)    {
            }
            //get values
          } else   {
-            document.getElementById(innerHtmlDiv).innerHTML =  "<img src='./images/loading.gif' border='0'> <p>Loading ...</p>";
+            document.getElementById(innerHtmlDiv).innerHTML =  "<div style='width:100%'><table><tr><td><img src='./images/loading.gif' border='0'> <p>Loading ...Please Wait</p></td></tr></table> </div>";
          }
-           //document.getElementById(innerHtmlDiv).style.top = ypos;
-           //document.getElementById(innerHtmlDiv).style.left = xpos;
-           //////alert(xpos+'---'+ypos);
     } 
 
     // XMLHttp send GET request 
@@ -1266,10 +1294,6 @@ function populateLinkFields() {
 
 function showExtraUnLinkDivs(thisEvent,displayName,fieldName,fullFieldName)  {
     //alert("fieldName ==>" + fieldName);
-	var repField  = fieldName.replace(">>","");
-    //alert("fieldName ==>" + repField);
-	
-	//alert(document.getElementById(repField).style.visibility);
     var y;
     var x;      
     //////alert(document.getElementById(divId).style.visibility);
@@ -1294,8 +1318,6 @@ function showExtraUnLinkDivs(thisEvent,displayName,fieldName,fullFieldName)  {
 document.getElementById('unLinkedValueDiv').innerHTML = fieldName;
 document.getElementById('unLinkedDisplayValueDiv').innerHTML = displayName;
 document.getElementById('unLinkedFullFieldDiv').innerHTML = fullFieldName;
-
-   
 }
 
 var unLinkValues="";
@@ -1315,10 +1337,6 @@ function populateUnLinkFields() {
     
     document.getElementById('unLinkSoDiv').style.visibility = "hidden";
     document.getElementById('unLinkSoDiv').style.display = "none";
-    var repField  = fieldName.replace(">>","");
-	document.getElementById(repField).style.visibility = "hidden";
-    document.getElementById(repField).style.display = "none";
-
 }
 /**************END UNLINK RELATED METHODS**************/
 
@@ -1406,10 +1424,46 @@ function finalMultiMergeEuids(mergeDivId,thisEvent)  {
    /*Accumulate EUID for the Patient details screen*/
    function getEUIDS(euid) {
        //alert(document.getElementById('yuiform:compareEuids'));
+	   alert(_utf8_encode(euid));
        euids += euid + "##";
        document.getElementById('yuiform:compareEuids').value = euids;
        //alert(document.getElementById('yuiform:compareEuids').value);
    }
+
+
+/**
+*
+*  URL encode / decode
+**/
+function _utf8_encode (string) {
+	    var str = string;
+		alert(str); alert(string);
+        //string = str.replace(/\r\n/g,"\n");
+        var utftext = "";
+
+        for (var n = 0; n < string.length; n++) {
+
+            var c = string.charCodeAt(n);
+
+            if (c < 128) {
+                utftext += String.fromCharCode(c);
+            }
+            else if((c > 127) && (c < 2048)) {
+                utftext += String.fromCharCode((c >> 6) | 192);
+                utftext += String.fromCharCode((c & 63) | 128);
+            }
+            else {
+                utftext += String.fromCharCode((c >> 12) | 224);
+                utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                utftext += String.fromCharCode((c & 63) | 128);
+            }
+
+        }
+
+	alert(utftext);
+        return utftext;
+    }
+
 
 var mergePreEuids="";
 
@@ -1664,7 +1718,7 @@ function accumilateNewPersonFieldsOnBlur(field,fullFieldName,mask,valueType) {
     //alert(fullFieldName  + "field.value====> " + field.value);
     fieldNameValues += fullFieldName + "##"+valueEntered+">>";
     document.getElementById("basicAddformData:newSOEnteredFieldValues").value = fieldNameValues;
-    //alert(document.getElementById("advancedformData:enteredFieldValues").value);
+    //alert(document.getElementById("basicAddformData:enteredFieldValues").value);
  
 }
 
@@ -1949,4 +2003,184 @@ function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,m
 
 } 
 
+function accumilateLidSearchFieldsOnBlur(field,fullFieldName,mask,valueType,formName) {
+    var maskChars = new Array();
+    var str = mask;
+    //alert(fullFieldName +"=====>" +mask + "======" + valueType);
+    str  = str.replace(/D/g,"");
+    
+    maskChars = str.split('');
+    
+    var valueEntered =  "";
+    var valueTypeLocal =  "";
+    valueEntered =  field.value;
+    valueTypeLocal =  valueType;
+    alert(valueEntered);
+    
+    //valueEntered  = valueEntered.replace(/\)/g,"");
+    //valueEntered  = valueEntered.replace(/\(/g,"");
+    
+    alert(valueType);
+    if(valueTypeLocal == '6' || valueTypeLocal == '8' ) {
+      valueEntered =  field.value;
+      //alert(valueTypeLocal + "====");
+    } else {
+      for(var i=0;i<maskChars.length;i++) {
+        valueEntered  = valueEntered.replace(maskChars[i],'');
+      }    
+    }
 
+    
+    //alert(fullFieldName + "valueEntered ==>" + valueEntered+":");
+    if(fieldNames != fullFieldName+':') {
+       fieldNames+=fullFieldName+':';
+    }
+    //alert(fullFieldName  + "field.value====> " + field.value);
+    fieldNameValues += fullFieldName + "##"+valueEntered+">>";
+    document.getElementById(formName+":newSOEnteredFieldValues").value = fieldNameValues;
+    //alert(document.getElementById("advancedformData:enteredFieldValues").value);
+ 
+}
+
+
+
+
+function accumilateFormFieldsOnBlur(field,fullFieldName,mask,valueType,formName) {
+	//alert(field+ "===1===" +fullFieldName+ "===2===" +mask+ "======" +valueType+ "======" +formName);
+    var maskChars = new Array();
+    var str = mask;
+    //alert(fullFieldName +"=====>" +mask + "======" + valueType);
+    str  = str.replace(/D/g,"");
+    
+    maskChars = str.split('');
+    
+    var valueEntered =  "";
+    var valueTypeLocal =  "";
+    valueEntered =  field.value;
+    valueTypeLocal =  valueType;
+    //alert(valueEntered);
+    
+    //valueEntered  = valueEntered.replace(/\)/g,"");
+    //valueEntered  = valueEntered.replace(/\(/g,"");
+    
+    //alert(valueType);
+    if(valueTypeLocal == '6' || valueTypeLocal == '8' ) {
+      valueEntered =  field.value;
+      //alert(valueTypeLocal + "====");
+    } else {
+      for(var i=0;i<maskChars.length;i++) {
+        valueEntered  = valueEntered.replace(maskChars[i],'');
+      }    
+    }
+
+    
+    //alert(fullFieldName + "valueEntered ==>" + valueEntered+":");
+    if(fieldNames != fullFieldName+':') {
+       fieldNames+=fullFieldName+':';
+    }
+    //alert(fullFieldName  + "field.value====> " + field.value);
+    fieldNameValues += fullFieldName + "##"+valueEntered+">>";
+    document.getElementById(formName+":enteredFieldValues").value = fieldNameValues;
+    //alert(document.getElementById("advancedformData:enteredFieldValues").value);
+
+
+}
+
+function accumilateFormSelectFieldsOnBlur(formName,field,fullFieldName) {
+    var selectedValue = field.options[field.selectedIndex].value;
+    
+    if(fieldNames != fullFieldName+':') {
+       fieldNames+=fullFieldName+':';
+    }
+  //  alert(fullFieldName  + "field.value====> " + field.value);
+    fieldNameValues += fullFieldName + "##"+selectedValue+">>";
+    document.getElementById(formName+":enteredFieldValues").value = fieldNameValues;
+//	alert(document.getElementById(formName+":enteredFieldValues").value);
+
+}
+
+
+function ClearMinorObjectContents(divElement)  { 
+	 //var divElement = document.getElementById('Address')
+	//alert("------");
+	var forms = divElement.forms;
+	alert(forms);
+	for (var i=0;i<forms.length;i++)   {
+		var thisForm = forms[i]
+			alert(thisForm);
+	    for (var j = 0; j<thisForm.elements();j++)    {
+		   //checkthisField here
+			if(!thisFrm.elements[i].name != 'lidmask') {
+			   thisFrm.elements[i].value = "";
+	    	}
+		}
+	}
+   /*
+	for(var j=0;j<minorObjectDiv.forms.length;j++) {
+    var thisFrm = minorObjectDiv.forms[thisForm];
+
+	alert(thisFrm);
+    for(i=0; i< thisFrm.elements.length; i++)   {      
+        if(!thisFrm.elements[i].name != 'lidmask') {
+           thisFrm.elements[i].value = "";
+	}
+    }
+	}
+	*/
+    return;
+} 
+
+var queryStr="";
+function getFormValues(formName)   {
+  //alert(formName);
+  var thisFrm = document.getElementById(formName);
+  
+
+  var query = "";
+   for(i=0; i< thisFrm.elements.length; i++)   {      
+	    //alert(thisFrm.elements[i].title.length);
+			if(thisFrm.elements[i].title.length != 0 ) {
+				query +="&"+thisFrm.elements[i].title +"="+  thisFrm.elements[i].value;
+	    	}
+		  //alert(thisFrm.elements[i].title +"="+  thisFrm.elements[i].value);            		  
+    }
+
+	query +="&editThisID="+ editIndexid;
+
+	 
+	//alert('queryStr ' + query);
+    queryStr  = query;
+}
+
+
+function showEOMinorObjectsDiv(minorObj,divName)  {
+	alert("minorObj,divName" + minorObj + " divName " + divName );
+}
+
+function showMinorObjectsDiv(divId) {
+	//animateDiv(divId,document.getElementById(divId).style.height)
+    if (document.getElementById(divId).style.visibility == 'visible')    {
+        document.getElementById(divId).style.visibility = "hidden";
+        document.getElementById(divId).style.display = "none";
+    } else {
+        document.getElementById(divId).style.visibility = "visible";
+        document.getElementById(divId).style.display = "block";
+	}
+}
+
+  function animateDiv(divId,thisHeight) {
+      alert("This Div : " +  divId + " To Height : " + thisHeight);
+      var attributes = { 
+	                height : { to: 500 },
+	                width : { to: 1025 }
+                   };
+	  var anim = new YAHOO.util.Anim(divId,attributes);
+	  anim.animate();
+}
+
+/* Used for edit EO on Edit main EUID*/
+  var editEOIndexid = "-1";
+  function setEOEditIndex(editIndex)   {
+	editEOIndexid = editIndex;
+	//alert("Index to be edited :: " + editEOIndexid);
+  }
