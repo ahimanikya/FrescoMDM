@@ -637,7 +637,7 @@ width:25px;
            width:1024px;
            float:left;
            text-align:right;
-	   vertical-align:top;
+	   vertical-align:top;	      
 }
 
 .reportYUISearch table {
@@ -1289,6 +1289,105 @@ a.button:active span {
 	padding-right:25px;
 	padding-left:10px;
 }
+
+.SourceRecordmessages {
+    padding-top:0px;
+    padding-left:0px;
+    padding-right:0px;
+    padding-bottom:0px;
+    VISIBILITY: visible; 
+    POSITION: absolute;  
+    OVERFLOW: auto; 
+    text-align:center;
+    BACKGROUND-COLOR: #c4c8e1; 
+}
+
+/* styles defined for ERROR messages START*/
+
+.ajaxalert 
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight:normal;
+	color:red;
+    text-align:left;
+    vertical-align:top;         
+}
+
+.ajaxalert table 
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight:normal;
+	color:red;
+    text-align:left;
+    vertical-align:top;         
+}
+.ajaxalert  td   
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight:normal;
+	color:red;
+    text-align:left;
+    vertical-align:top;         
+}
+
+.ajaxalert table tr td  ul li 
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight:normal;
+	color:red;
+    text-align:left;
+    vertical-align:top;         
+}
+/* styles defined for ERROR messages END*/
+
+/* styles defined for success messages START*/
+.ajaxsuccess
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight:normal;
+	color:GREEN;
+    text-align:left;
+    vertical-align:top;         
+}
+
+.ajaxsuccess table 
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight:green;
+	color:red;
+    text-align:left;
+    vertical-align:top;         
+}
+.ajaxsuccess  td   
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight:normal;
+	color:green;
+    text-align:left;
+    vertical-align:top;         
+}
+
+.ajaxsuccess table tr td  ul li 
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight:normal;
+	color:green;
+    text-align:left;
+    vertical-align:top;         
+}
+/* styles defined for success messages END*/
+
+
+
+
 .alert {
     padding-top:0px;
     padding-left:0px;
@@ -1330,6 +1429,8 @@ a.button:active span {
     text-align:center;
     vertical-align:top;         
 }
+
+
 
 .alertSource {
     padding-top:0px;
