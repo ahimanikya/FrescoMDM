@@ -203,7 +203,7 @@
         </div>
         
          <div class="printClass">
-             <h:panelGrid rendered="#{TransactionHandler.searchSize gt 0}" columns="3">
+             <h:panelGrid rendered="#{TransactionHandler.searchSize gt -1}" columns="3">
                                 <h:outputText  rendered="#{TransactionHandler.searchSize gt -1}" value="#{msgs.total_records_text}"/>
                                 <h:outputText rendered="#{TransactionHandler.searchSize gt -1}" value="#{TransactionHandler.searchSize}"/>
                                 <h:outputLink value="javascript:window.print()" styleClass="button" rendered="#{Operations.transLog_Print && TransactionHandler.searchSize gt 0}">

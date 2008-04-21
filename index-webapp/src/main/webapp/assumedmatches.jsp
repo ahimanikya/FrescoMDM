@@ -234,7 +234,7 @@
    %>
       
         <%
-         if (assumeMatchArrayList != null && assumeMatchArrayList.size() > 0) {
+        if(request.getAttribute("assumeMatchList") != null) {
         %>
         <div class="printClass">
             <table cellpadding="0" cellspacing="0" border="0">
