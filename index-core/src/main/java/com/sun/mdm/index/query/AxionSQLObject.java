@@ -32,144 +32,164 @@ import java.util.regex.Pattern;
  */
 public class AxionSQLObject {
 
-	private static Pattern blankPattern = Pattern.compile("[\\s]*");	
-	
-	/**
-	 * joins using non-ansi SQL
-	 * @param pTable
-	 * @param pk
-	 * @param sTable
-	 * @param fkey
-	 * @param outerJoin
-	 * @return join String
-	 */
-	static String createJoin(String pTable, String[] pk, String sTable, String[] fkey, boolean outerJoin) {
-	    StringBuffer joinFields = new StringBuffer();
-	    
-	    for (int i = 0; i < pk.length && i < fkey.length; i++) {
-	       if (i > 0) {
-		      joinFields.append(" AND ");
-	       }
-		   joinFields.append(" ");
-		   joinFields.append(pTable);
-		   joinFields.append(".");
-		   joinFields.append(pk[i]);
-		   if (outerJoin == false) {
-		      joinFields.append(" = ");
-		   } else {
-			  joinFields.append(" = ");
-		   }			
-		   joinFields.append(sTable);
-		   joinFields.append(".");
-		   joinFields.append(fkey[i]);
-		   joinFields.append(" ");
-	   }
-	   return joinFields.toString();
-	
-	}
-	
-	/**
-	 * creates SQL statement. 
-	 * @param selectbuf select statement
-	 * @param fromTable  for ansi sql, fromTable is null
-	 * @param joinbuf join clause. for ansi includes table names
-	 * @param conditionbuf where clause
-	 * @param maxRows if >0, use it in select query
-	 * @param hint , if non-empty use it as OPTION hint
-	 * @return
-	 */
-	static StringBuffer createSQL(StringBuffer selectbuf,
-			StringBuffer fromTable, StringBuffer joinbuf, StringBuffer conditionbuf, 
-			int maxRows, String hint) {
-		StringBuffer sql = new StringBuffer();
-		if (conditionbuf == null) {
-			conditionbuf = new StringBuffer();
-		}
+    private static Pattern blankPattern = Pattern.compile("[\\s]*");
 
-		hint = convertHint(hint);
+    /**
+     * joins using non-ansi SQL
+     * @param pTable
+     * @param pk
+     * @param sTable
+     * @param fkey
+     * @param outerJoin
+     * @return join String
+     */
+    static String createJoin(String pTable, String[] pk, String sTable, String[] fkey, boolean outerJoin) {
+        StringBuffer joinFields = new StringBuffer();
 
-		sql.append("SELECT ");
-		if (maxRows > -1) {
-			sql.append(getMaxRowsCondition(maxRows));
-		}		
-		sql.append(" ");
-		sql.append(selectbuf);
-		sql.append(" FROM ");
-		if (fromTable != null) { // non-ansi sql
-			sql.append(fromTable);
-		} else { //asci SQL
-			sql.append(trimCurlyBraces(joinbuf));
-		}
-		
-		if (fromTable != null) {  //non-ansi sql		
-		  if ((joinbuf.length() > 0) || (conditionbuf.length() > 0)) {
-			sql.append(" WHERE ");			
-			sql.append(joinbuf);
-			
-			if ((joinbuf.length() > 0) && (conditionbuf.length() > 0)) {
-				sql.append(" AND ");
-			}
-			sql.append(conditionbuf);
-		  }
-		} else {
-			if (conditionbuf.length() > 0) {
-				sql.append(" WHERE ");
-				sql.append(conditionbuf);
-			}
-		}
-		sql.append(hint);
-		return sql;
-	}
-        
-        private static String trimCurlyBraces(StringBuffer joinbuf){
-            int start = joinbuf.toString().indexOf("(");
-            int end = joinbuf.toString().indexOf(")");
-            if ( start != -1){
-                if (end != -1){
-                    return " " + joinbuf.substring(start + 1, end) + " ";
-                }
+        for (int i = 0; i < pk.length && i < fkey.length; i++) {
+            if (i > 0) {
+                joinFields.append(" AND ");
             }
-            return joinbuf.toString();
+            joinFields.append(" ");
+            joinFields.append(pTable);
+            joinFields.append(".");
+            joinFields.append(pk[i]);
+            joinFields.append(" = ");
+            joinFields.append(sTable);
+            joinFields.append(".");
+            joinFields.append(fkey[i]);
+            joinFields.append(" ");
         }
 
-	private static String convertHint(String hint) {
+        return joinFields.toString();
 
-		if (hint == null || hint.equals("")) {
+    }
 
-			return "";
-		}
+    /**
+     * creates SQL statement. 
+     * @param selectbuf select statement
+     * @param fromTable  for ansi sql, fromTable is null
+     * @param joinbuf join clause. for ansi includes table names
+     * @param conditionbuf where clause
+     * @param maxRows if >0, use it in select query
+     * @param hint , if non-empty use it as OPTION hint
+     * @return
+     */
+    static StringBuffer createSQL(StringBuffer selectbuf,
+            StringBuffer fromTable, StringBuffer joinbuf, StringBuffer conditionbuf,
+            int maxRows, String hint) {
+        StringBuffer sql = new StringBuffer();
+        if (conditionbuf == null) {
+            conditionbuf = new StringBuffer();
+        }
 
-		/*
-		 * return same if it is blank string
-		 * 
-		 */
-		Matcher m = blankPattern.matcher(hint);
-		if (m.matches()) {
-			return hint;
-		}
+        hint = convertHint(hint);
 
-		hint = " Option (" + hint + " )";
-		return hint;
-	}
-	
-	private static String getMaxRowsCondition(int maxRows) {
-		// Axion DB use "top" to limit the number of row to return
-		return " TOP " + maxRows + " ";
-	}	
-	/**
-	 * is the String blank
-	 * @param s
-	 * @return
-	 */
-	
-	static boolean isBlank(String s) {
-		if (s == null) {
-			return true;
-		}
-		Matcher m = blankPattern.matcher(s);
-		if (m.matches()) {
-			return true;
-		}
-		return false;
-	}
+        sql.append("SELECT ");
+        if (maxRows > -1) {
+            sql.append(getMaxRowsCondition(maxRows));
+        }
+        sql.append(" ");
+        sql.append(selectbuf);
+        sql.append(" FROM ");
+
+        if (fromTable != null) { // non-ansi sql - This is always true as master index project for axion is not available. This follows oracle trends. Its always ansi join for aixon here.
+
+            sql.append(addOuterJoin(fromTable));
+        } else { //asci SQL
+
+            sql.append(trimCurlyBraces(joinbuf));
+        }
+
+        if (fromTable != null) {  //non-ansi sql (This is being used for ANSI joins but enters here due to DB in object.xml is oracle)	
+
+            if ((joinbuf.length() > 0) || (conditionbuf.length() > 0)) {
+
+                if (joinbuf.length() > 0) {
+                    sql.append(" ON ");
+                    sql.append(joinbuf);
+                }
+
+                if ((conditionbuf.length() > 0)) {
+                    sql.append(" WHERE ");
+                }
+
+                sql.append(conditionbuf);
+            }
+        } else {
+            if (conditionbuf.length() > 0) {
+                sql.append(" WHERE ");
+                sql.append(conditionbuf);
+            }
+        }
+        sql.append(hint);
+        return sql;
+    }
+
+    private static String trimCurlyBraces(StringBuffer joinbuf) {
+        int start = joinbuf.toString().indexOf("(");
+        int end = joinbuf.toString().indexOf(")");
+        if (start != -1) {
+            if (end != -1) {
+                return " " + joinbuf.substring(start + 1, end) + " ";
+            }
+        }
+        return joinbuf.toString();
+    }
+
+    private static String convertHint(String hint) {
+
+        if (hint == null || hint.equals("")) {
+
+            return "";
+        }
+
+        /*
+         * return same if it is blank string
+         * 
+         */
+        Matcher m = blankPattern.matcher(hint);
+        if (m.matches()) {
+            return hint;
+        }
+
+        hint = " Option (" + hint + " )";
+        return hint;
+    }
+
+    private static String getMaxRowsCondition(int maxRows) {
+        // Axion DB use "top" to limit the number of row to return
+        return " TOP " + maxRows + " ";
+    }
+
+    // This portion is being used to prepare commands for DI-MI-PLUGIN. Thus right outer join is what we need. Extend this when required.
+    //To convert <Child Table>, <Parent Table> to <Child Table> RIGHT OUTER JOIN <Parent Table>
+    private static String addOuterJoin(StringBuffer tablenames) {
+        StringBuilder sb = new StringBuilder();
+        int commaindex = tablenames.toString().indexOf(",");
+        if (commaindex != -1) {
+            String firstTable = tablenames.toString().substring(0, commaindex);
+            String secondTable = tablenames.toString().substring(commaindex + 1, tablenames.toString().length());
+            sb.append(firstTable + " RIGHT OUTER JOIN " + secondTable);
+        } else {
+            sb.append(tablenames.toString());
+        }
+        return sb.toString();
+    }
+
+    /**
+     * is the String blank
+     * @param s
+     * @return
+     */
+    static boolean isBlank(String s) {
+        if (s == null) {
+            return true;
+        }
+        Matcher m = blankPattern.matcher(s);
+        if (m.matches()) {
+            return true;
+        }
+        return false;
+    }
 }

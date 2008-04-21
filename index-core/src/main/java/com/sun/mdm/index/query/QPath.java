@@ -268,7 +268,6 @@ class QPath {
             createOuterJoin(joinbuf, primaryObject, secondaryObject);
 
         }
-
         return joinbuf;
     }
     
@@ -318,7 +317,7 @@ void createJoin(StringBuffer joinFields, String primaryObject,
       String secondaryObject) {
 
    createJoin(joinFields, primaryObject,
-		      secondaryObject, false);
+		      secondaryObject, true); // Manish : Always create outer joins
 			
 	
 }
@@ -328,7 +327,7 @@ private void createJoin(StringBuffer joinFields, String primaryObject,
 		      String secondaryObject, boolean outerJoin) {
 			
    String[] pk = getPrimaryKey(primaryObject, secondaryObject);
-   String[] fkey = getForeignKey(primaryObject, secondaryObject);;
+   String[] fkey = getForeignKey(primaryObject, secondaryObject);
 	
   String pTable = MetaDataService.getDBTableName(primaryObject);
   String sTable = MetaDataService.getDBTableName(secondaryObject);
