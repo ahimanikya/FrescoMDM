@@ -224,11 +224,12 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	
 	private List<List<DataObject>> splitSameSystem(List<DataObject> solist) throws Exception {
 		List<List<DataObject>> solists = new ArrayList<List<DataObject>>();
-		boolean found = true;
+		boolean found = true; // found = true means new list is to be created
 		boolean init = false;
 		String curEUID = null;
 		for ( DataObject d: solist  ) {
 			String syscode = d.getFieldValue(2);
+			String localid = d.getFieldValue(3);
 			/*
 			 * for each dataobject in input solist, go through all the lists in solists,
 			 * If in any list, that systemcode is not found, add to that list.
@@ -240,10 +241,14 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 				  for (DataObject dobject: list) {
 					curEUID = dobject.getFieldValue(0);
 					String syscode2 = dobject.getFieldValue(2);
-					if (syscode.equals(syscode2)) {
+					String localid2 = dobject.getFieldValue(3);
+					if (syscode.equals(syscode2) && localid.equals(localid2) ) {
+						found = false; // so add to the existing list
+						break;
+					} else if (syscode.equals(syscode2) ) {
 						found = true;
 						continue;
-					}
+					} 
 				  }
 				}
 				if (found == false) {					
@@ -267,6 +272,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 				solists.add(newlist);
 			}						
 		}
+			
 		return solists;				
 	}
 	
@@ -274,6 +280,40 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	static {
 		objDef_ = initDef();
 	}
+	
+	/**
+	 * Not used. ONly for debugging
+	 * @param solists
+	 */
+	private void verifyIncorrectEUID(List<List<DataObject>> solists) {
+		for (List<DataObject> list: solists) {
+		  String euid = null;
+		  for (int i = 0; i < list.size(); i++) {
+			 DataObject d = list.get(i);
+			 String e = d.getFieldValue(0);
+		     if (i == 0) {
+		    	 euid = e;
+		     } else if (!e.equals(euid)) { 
+		    	 logger.info("euid: " + euid + "e: " + e);
+		     }
+		  }
+		}
+		
+		if (solists.size() > 1) {
+			for (List<DataObject> list: solists) {
+				  
+				  for (int i = 0; i < list.size(); i++) {
+					 DataObject d = list.get(i);
+					 String euid = d.getFieldValue(0);
+					 String syscode = d.getFieldValue(2);
+					 String localid = d.getFieldValue(3);
+					 String e = d.getFieldValue(0);
+					 logger.info("euid:" + euid +" syscode:" + syscode + " lid:" +localid ); 
+				  }
+			}
+		}
+	}
+	
 	
 	private static ObjectDefinition initDef() {
 		ObjectDefinition objDef = config.getObjectDefinition();
