@@ -577,7 +577,15 @@ public class LoaderConfig {
 		long totalNoOfRecords = Long.parseLong(getSystemProperty("totalNoOfRecords"));
 		if (totalNoOfRecords <= 0) {
 			throw new ConfigException("totalNoOfRecords is invalid.");	
+		}		
+		if (getSystemProperty("numThreads") == null) {
+			throw new ConfigException("numThreads is not configured.");						
 		}
+		long numThreads = Long.parseLong(getSystemProperty("numThreads"));
+		if (numThreads <= 0) {
+			throw new ConfigException("numThreads is invalid.");	
+		}
+				
 		DataObjectFileReader reader = null;
 		String record = null;
 		String fileName = ((DataObjectFileReader)getDataObjectReader()).getFileName();
@@ -600,10 +608,10 @@ public class LoaderConfig {
 		}		
 		long recordSize = record.length();
 		long numOfRecordsInBlockBuckets = totalNoOfRecords/numBlockBuckets;
-		long blockBucketMemory = (numOfRecordsInBlockBuckets*recordSize) * WEIGHT;
+		long blockBucketMemory = (numOfRecordsInBlockBuckets*recordSize) * WEIGHT * numThreads;
 		
 		long numOfRecordsInEUIDBuckets = totalNoOfRecords/numEUIDBuckets;
-		long EUIDBucketMemory = (numOfRecordsInEUIDBuckets*recordSize) * WEIGHT;
+		long EUIDBucketMemory = (numOfRecordsInEUIDBuckets*recordSize) * WEIGHT * numThreads;
 		
 		logger.log(Level.INFO, "The number of input records is " + totalNoOfRecords);
 		logger.log(Level.INFO, "The size of a record is " + display(recordSize));
