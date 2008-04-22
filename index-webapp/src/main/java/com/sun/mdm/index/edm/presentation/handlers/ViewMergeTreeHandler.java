@@ -34,6 +34,7 @@ import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.master.search.merge.MergeHistoryNode;
+import com.sun.mdm.index.objects.exception.ObjectException;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -160,11 +161,16 @@ public class ViewMergeTreeHandler {
         return SUCCESS;
     }
     
-    public TextNode buildTree(MergeHistoryNode rootNode, TextNode textNode) {
+    public TextNode buildTree(MergeHistoryNode rootNode, TextNode textNode) throws ObjectException {
         if (textNode == null)
             textNode = new TextNode(rootNode.getEUID(), rootNode.getEUID());
         TextNode leftTextNode = new TextNode(rootNode.getSourceNode().getEUID(), rootNode.getSourceNode().getEUID());
         TextNode rightTextNode = new TextNode(rootNode.getDestinationNode().getEUID(), rootNode.getDestinationNode().getEUID());
+        
+        String transactionNumberRoot = rootNode.getTransactionObject().getTransactionNumber();
+        String urlRoot = "transeuiddetails.jsf?transactionId=" + transactionNumberRoot + "&function=euidMerge";
+        textNode.setHref(urlRoot);
+        
         textNode.addNode(leftTextNode);
         textNode.addNode(rightTextNode);
         
