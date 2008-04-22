@@ -40,6 +40,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import com.sun.mdm.index.loader.common.FileManager;
 import com.sun.mdm.index.loader.config.LoaderConfig;
+import com.sun.mdm.index.dataobject.objectdef.ObjectDefinition;
 
 import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 
@@ -56,6 +57,7 @@ public class MasterImageWriter {
 	private static LoaderConfig config = LoaderConfig.getInstance();
 	private DataObjectWriter dwriter_;
 	private static String recordDelim = config.getSystemProperty("sqlldr.record.delimiter");
+	
 	
 	public MasterImageWriter() throws Exception {
 	  masterImageDir_ = FileManager.getMasterImageDir();
@@ -87,6 +89,38 @@ public class MasterImageWriter {
 	  file = FileManager.getInputSBRFile();
 	  dwriter_ = new DataObjectFileWriter(file);
 	  
+	  configWriters();
+	  
+	}
+	
+	private void configWriters() throws Exception {		
+		ObjectDefinition objectDef = config.getObjectDefinition();
+		  String name = objectDef.getName();
+		  String table = name;
+		  File file = new File(masterImageDir_, "SBYN_" + table  + ".data");
+		  FileWriter fwriter = new FileWriter(file);	     
+		  BufferedWriter  bwriter = new BufferedWriter(fwriter);
+		  writerMap.put(table, bwriter); 
+		  table = table + "SBR";
+		  file = new File(masterImageDir_, "SBYN_" + table + ".data");
+		  fwriter = new FileWriter(file);	     
+		  bwriter = new BufferedWriter(fwriter);
+		  writerMap.put(table, bwriter);
+		List<ObjectDefinition> children = objectDef.getChildren();
+		
+		for (ObjectDefinition child: children) {
+		  String childName = child.getName();
+		   table =  childName;
+		   file = new File(masterImageDir_, "SBYN_" + table  + ".data");
+		   fwriter = new FileWriter(file);	     
+		   bwriter = new BufferedWriter(fwriter);
+		  writerMap.put(table, bwriter); 
+		  table = table + "SBR";
+		  file = new File(masterImageDir_, "SBYN_" + table + ".data");
+		  fwriter = new FileWriter(file);	     
+		  bwriter = new BufferedWriter(fwriter);
+		  writerMap.put(table, bwriter); 
+		}						
 	}
 	
 	void write(List<Map<String,TableData>> tableData) throws Exception {
@@ -118,10 +152,12 @@ public class MasterImageWriter {
 	}
 	
 	public static void write(DataObjectWriter dwriter, TableData tableData) throws Exception{
-	  	List<DataObject> dataObjects = tableData.getDataObjects();
-	  	for (DataObject d: dataObjects) {
+		if (tableData != null) {
+	  	  List<DataObject> dataObjects = tableData.getDataObjects();
+	  	  for (DataObject d: dataObjects) {
 	  		dwriter.writeDataObject(d);
-	  	}
+	  	  }
+		}
  	}
 	
 	public void write(BufferedWriter writer, TableData tableData) throws Exception{
