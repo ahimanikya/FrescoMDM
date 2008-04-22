@@ -307,6 +307,10 @@ function qws_field_on_key_up(field) {
       return;
     }
     var oldvalue=global_old_value;
+	if (field.value.length == 0 )
+	{
+		oldvalue=""; //reset - commented by Sridhar
+	} 
     var pos1=getNewCharPosL(field.value, oldvalue);
     // if too many chars entered before releasing key; take the first char that's different
     // from old value and place the others on queue
