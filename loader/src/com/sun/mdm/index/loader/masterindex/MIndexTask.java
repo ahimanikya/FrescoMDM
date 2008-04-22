@@ -167,9 +167,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		  logger.severe(ex + ex.getMessage());
 		  logger.severe(Util.getStackTrace(ex));
 		  ex.printStackTrace();
-		 // if (ex instanceof Error) {
-			//  throw (Error) ex;
-		  //}
+		 
 	  } finally {		
 	     endGate_.countDown();
 	  }
@@ -177,51 +175,15 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	}
 	
 	
-	/*
-	public void run() {
-		  try {	
-			
-			List<DataObject> nextsolist = null;
-			List<DataObject> solist = null;
-			while (true ) {		
-				solist = eoCursor_.next();
-				
-			  if (solist == null) {
-				  break;
-			  }		
-			  
-			  Map<String,String> weightMap = new HashMap<String,String>();
-	          if (solist.size() < 1) {
-				  weightMap = null;
-			  } else {
-			    for(DataObject d: solist) {
-				  String syslocalid = d.getFieldValue(2) + d.getFieldValue(3);
-				  String weight = d.getFieldValue(4); // weight is at position 5 in EUID bucket
-				  String wt = weightMap.get(syslocalid);			  
-				  if (wt == null && !weight.equals(MatcherTask.SDUPSCORE)) {
-					weightMap.put(syslocalid, weight);  
-				  }			 
-			    }
-			  }
-			  
-			 EnterpriseObject eo =  calculateSBR(solist);
-			 addEnterprise(eo, weightMap);		 		 
-			}
-		  } catch (Throwable ex){
-			  logger.severe(ex + ex.getMessage());
-			  logger.severe(Util.getStackTrace(ex));
-			  ex.printStackTrace();
-			 // if (ex instanceof Error) {
-				//  throw (Error) ex;
-			  //}
-		  } finally {		
-		     endGate_.countDown();
-		  }
-			
-		}
-	*/
-	
-	
+	/**
+	 * takes an input list consisting of system objects and if sameSystemMatch is set to true,
+	 * then if a system object for a partcular system is in the list, then another sysemtem obejct
+	 * with same system is taken out of the input list, and added to the list which does not has
+	 * same system. If no such list exist, then a new list is created and SO is added to that list.
+	 * @param solist
+	 * @return  List of SO list. If samesystemMatch is false, there will be only one list.
+	 * @throws Exception
+	 */
 	private List<List<DataObject>> splitSameSystem(List<DataObject> solist) throws Exception {
 		List<List<DataObject>> solists = new ArrayList<List<DataObject>>();
 		boolean found = true; // found = true means new list is to be created
@@ -422,9 +384,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	          so.setCreateFunction(SystemObject.ACTION_ADD);      
 	          
 		      if (mHelper.updateSO(so, eo, copyflag, replaceSO) == null) {
-		          
-		          eo.addSystemObject(so);
-		                 
+		          eo.addSystemObject(so);		                 
 		      }               		       		           		          		    	 
 		     }	
 		    } catch (Exception ex) {
@@ -435,8 +395,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		 }
 	     try { 
 	       mCalculator.determineSurvivor(eo);
-	   //    logger.info("EO:" + eo.toString());
-	    	// logger.info("SBR:" + eo.getSBR().toString());
+	   
 	     } catch (Exception ex) {
 	    	 logger.severe("EO:" + eo.toString());
 	    		    		    	 
@@ -445,8 +404,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	     return eo;
 	}
 	
-	
-	
+		
 	
 	SystemObject getSystemObject(DataObject d) throws Exception {
 	  
@@ -596,8 +554,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 			for (DataObject c: children) {
 				c.remove(0);
 			}
-		}
-		
+		}	
 		
 	}
 	
@@ -657,12 +614,6 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
        addData(SYSTEMSBR, list);
 	}
 	
-	
-	/*
-	private void addPrimaryTable(ObjectNode o, List<String> list, String tag, boolean isSBR ) throws Exception {	   				
-		addConfigTableData(objDef_, o, list, null, isSBR ); 		  						    
-	}
-	*/
 	
 		
 	private void addConfigTableData(ObjectDefinition objectDef, ObjectNode o, 
@@ -728,7 +679,12 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	}
 	
 
-	public static void main(String[] args) {
+
+	
+	
+	/*
+	 * 
+	 * 	public static void main(String[] args) {
 		try {
 		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");	
 		
@@ -739,9 +695,6 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 		}
 				
 	}
-	
-	
-	/*
 	SystemObject getSystemObject1()throws Exception {
 		
 		PersonObject per = new PersonObject();
