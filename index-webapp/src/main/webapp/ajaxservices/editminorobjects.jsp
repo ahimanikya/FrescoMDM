@@ -107,8 +107,7 @@ boolean isSaveEditedValues = false;
 if (saveEditedValues != null && !("-1".equalsIgnoreCase(saveEditedValues)))   {
 	isSaveEditedValues = true;
 }
-%>
-<%
+
 if(isSave) {
 	isSaveEditedValues = false;
 %>
@@ -144,14 +143,20 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
     						 valiadtions.put(fcArray[k].getDisplayName(),": is Required");
 						  }							 
 
-						  //check for numberic fields here
-						   if((attributeValue != null && attributeValue.trim().length() > 0) && !isValidationErrorOccured && fcArray[k].getValueType() == 0 && !attributeValue.equalsIgnoreCase("")) {           if(!fcArray[k].getDisplayName().equalsIgnoreCase("EUID")  && (attributeValue != null && attributeValue.trim().length() > 0) && !sourceHandler.isNumber(attributeValue)) {
-                                  requiredValuesArray.add(fcArray[k].getDisplayName());
- 							      valiadtions.put(fcArray[k].getDisplayName(),": is not a Number");
+                         //--------------------------Is Numeric Validations -------------------------------------
+						 if (fcArray[k].getName().equalsIgnoreCase("EUID")) {continue; } // Ignore validation of EUID
+				         if (attributeValue.equalsIgnoreCase("")) { continue; }	   
+						 if (fcArray[k].getFullFieldName().equalsIgnoreCase(attributeName) &&
+							   (fcArray[k].getValueType() == 0 || 
+							    fcArray[k].getValueType() == 4 || 
+							    fcArray[k].getValueType() == 7))   {
+							 //Check numeric values
+							 if (!sourceHandler.isNumber(attributeValue,fcArray[k].getValueType()))   {
+                                  valiadtions.put(fcArray[k].getDisplayName(),": is not a Number");
 								  isValidationErrorOccured = true;
-						      }
-						   }
-                         //--------------------------Validations End -------------------------------------
+							 }
+						 }
+                         //--------------------------End Is Numeric Validation -------------------------------------
 
                      }
 				      if (attributeValue.equalsIgnoreCase("")) { continue; }	   
@@ -176,14 +181,21 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
     						 valiadtions.put(fcArray[k].getDisplayName(),": is Required");
 						  }							 
 
-						  //check for numberic fields here
-						   if((attributeValue != null && attributeValue.trim().length() > 0) && !isValidationErrorOccured && fcArray[k].getValueType() == 0 && !attributeValue.equalsIgnoreCase("")) {           if(!fcArray[k].getDisplayName().equalsIgnoreCase("EUID")  && (attributeValue != null && attributeValue.trim().length() > 0) && !sourceHandler.isNumber(attributeValue)) {
-                                  requiredValuesArray.add(fcArray[k].getDisplayName());
- 							      valiadtions.put(fcArray[k].getDisplayName(),": is not a Number");
+                         //--------------------------Is Numeric Validations -------------------------------------
+						 if (fcArray[k].getName().equalsIgnoreCase("EUID"))   {continue;}  // Ignore validation of EUID
+				         if (attributeValue.equalsIgnoreCase("")) { continue; }	   
+                         
+						 if (fcArray[k].getFullFieldName().equalsIgnoreCase(attributeName)  &&
+							      (fcArray[k].getValueType() == 0 || 
+							       fcArray[k].getValueType() == 4 || 
+							       fcArray[k].getValueType() == 7))   {
+							 //Check numeric values
+							 if (!sourceHandler.isNumber(attributeValue,fcArray[k].getValueType()))   {
+                                  valiadtions.put(fcArray[k].getDisplayName(),": is not a Number");
 								  isValidationErrorOccured = true;
-						      }
-						   }
-                         //--------------------------Validations End -------------------------------------
+							 }
+						 }
+                         //--------------------------End Is Numeric Validation -------------------------------------			
                      }
 					  
 
@@ -413,7 +425,6 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                   thisMinorObject.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_REMOVE);
 			   }
            %>
-            
  <!-- Regenerate the table -->
    <div style="BORDER-RIGHT: #91bedb 1px solid; BORDER-TOP: #91bedb 1px solid; PADDING-LEFT: 1px;BORDER-LEFT: #91bedb 1px solid; PADDING-TOP: 0px; width:100%;BORDER-BOTTOM: #91bedb 1px solid; BACKGROUND-REPEAT: no-repeat; POSITION: relative;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 10px; text-align: left; overflow:auto">
 		  <% 
@@ -493,13 +504,19 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                              requiredValuesArray.add(fcArray[k].getDisplayName());
 							 valiadtions.put(fcArray[k].getDisplayName(),": is Required");
 						  }							 
-						  //check for numberic fields here
-						   if((attributeValue != null && attributeValue.trim().length() > 0) && !isValidationErrorOccured && fcArray[k].getValueType() == 0 && !attributeValue.equalsIgnoreCase("")) {           if(!fcArray[k].getDisplayName().equalsIgnoreCase("EUID")  && (attributeValue != null && attributeValue.trim().length() > 0) && !sourceHandler.isNumber(attributeValue)) {
-                                  requiredValuesArray.add(fcArray[k].getDisplayName());
- 							      valiadtions.put(fcArray[k].getDisplayName(),": is not a Number");
+						 if (fcArray[k].getName().equalsIgnoreCase("EUID"))   {continue;}  // Ignore validation of EUID
+				         if (attributeValue.equalsIgnoreCase("")) { continue; }	   
+                         
+						 if (fcArray[k].getFullFieldName().equalsIgnoreCase(attributeName)  &&
+							      (fcArray[k].getValueType() == 0 || 
+							       fcArray[k].getValueType() == 4 || 
+							       fcArray[k].getValueType() == 7))   {
+							 //Check numeric values
+							 if (!sourceHandler.isNumber(attributeValue,fcArray[k].getValueType()))   {
+                                  valiadtions.put(fcArray[k].getDisplayName(),": is not a Number");
 								  isValidationErrorOccured = true;
-						      }
-						   }
+							 }
+						 }
                          //--------------------------Validations End -------------------------------------
 			         }
 			     if (attributeValue.equalsIgnoreCase("rand")) continue;
@@ -561,6 +578,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		 FieldConfig[] fcArrayLocal = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getParameter("MOT"));
          for(int mo = 0; mo < thisMinorObjectList.size();mo++) {
 			 HashMap moHashMap = (HashMap)thisMinorObjectList.get(mo);
+ 
 			 if(new Integer(saveEditedValues).intValue() != mo) {
 	          for(int k=0;k<fcArrayLocal.length;k++) {
 			    if("MenuList".equalsIgnoreCase(fcArrayLocal[k].getGuiType()) && fcArrayLocal[k].isKeyType()) {
@@ -688,8 +706,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
     </script>
 		  <% 
 		  int minorObjCount = 0;
-		  ArrayList thisMinorObjectList = (ArrayList) sourceAddHandler.getNewSOHashMap().get("SOEDIT"+request.getParameter("MOT")+"ArrayList");
-        
+		  ArrayList thisMinorObjectList = (ArrayList) sourceAddHandler.getNewSOHashMap().get("SOEDIT"+request.getParameter("MOT")+"ArrayList");        
          // removefield masking here
 	      if(thisMinorObject.keySet().size() > 0 ) sourceHandler.removeFieldInputMasking(thisMinorObject, request.getParameter("MOT"));
 %>

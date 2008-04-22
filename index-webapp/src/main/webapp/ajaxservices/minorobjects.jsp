@@ -106,8 +106,7 @@ boolean isSaveEditedValues = false;
 if (saveEditedValues != null && !("-1".equalsIgnoreCase(saveEditedValues)))   {
 	isSaveEditedValues = true;
 }
-%>
-<%
+
 if(isSave) {
 	isSaveEditedValues = false;
 %>
@@ -147,19 +146,26 @@ if(isSave) {
 							 valiadtions.put(fcArray[k].getDisplayName(),": is Required");
 						  }							 
 						  //check for numberic fields here
-						   if((attributeValue != null && attributeValue.trim().length() > 0) && !isValidationErrorOccured && fcArray[k].getValueType() == 0 && !attributeValue.equalsIgnoreCase("")) {           if(!fcArray[k].getDisplayName().equalsIgnoreCase("EUID")  && (attributeValue != null && attributeValue.trim().length() > 0) && !sourceHandler.isNumber(attributeValue)) {
-                                  requiredValuesArray.add(fcArray[k].getDisplayName());
- 							      valiadtions.put(fcArray[k].getDisplayName(),": is not a Number");
+                         //--------------------------Is Numeric Validations -------------------------------------
+						 if (fcArray[k].getName().equalsIgnoreCase("EUID")) {continue; } // Ignore validation of EUID
+				         if (attributeValue.equalsIgnoreCase("")) { continue; }	   
+						 if (fcArray[k].getFullFieldName().equalsIgnoreCase(attributeName) &&
+							   (fcArray[k].getValueType() == 0 || 
+							    fcArray[k].getValueType() == 4 || 
+							    fcArray[k].getValueType() == 7))   {
+							 //Check numeric values
+							 if (!sourceHandler.isNumber(attributeValue,fcArray[k].getValueType()))   {
+                                  valiadtions.put(fcArray[k].getDisplayName(),": is not a Number");
 								  isValidationErrorOccured = true;
-						      }
-						   }
-                         //--------------------------Validations End -------------------------------------
+							 }
+						 }
+                         //--------------------------End Is Numeric Validation -------------------------------------
                      }
-				      if (attributeValue.equalsIgnoreCase("")) { continue; }	   
                       if (valiadtions.isEmpty() && !("rand".equalsIgnoreCase(attributeName)) && 
 						  !("save".equalsIgnoreCase(attributeName)) && 
 						  !("MOT".equalsIgnoreCase(attributeName)) && 
 						  !("listIndex".equalsIgnoreCase(attributeName)) && 
+						  !("SYS".equalsIgnoreCase(attributeName)) && 
 						  !("minorObjSave".equalsIgnoreCase(attributeName)) && 
 						  !("editThisID".equalsIgnoreCase(attributeName)) 
 						  )  {
@@ -173,28 +179,35 @@ if(isSave) {
 					  //validate all the mandatory fields before adding to the hashmap
 				      FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(rootNodeName);
                       for(int k=0;k<fcArray.length;k++) {
- 			            if(fcArray[k].isRequired() && fcArray[k].getFullFieldName().equalsIgnoreCase(attributeName) &&       attributeValue.equalsIgnoreCase("")) {  
-                             isValidationErrorOccured = true;
-			                 //build array of required values here
-                             requiredValuesArray.add(fcArray[k].getDisplayName());
-			                 valiadtions.put(fcArray[k].getDisplayName()," is Required");
-                       }
-
-				       //check for numberic fields here
-				       if(!isValidationErrorOccured && fcArray[k].getValueType() == 0 && !attributeValue.equalsIgnoreCase("")) {       
-                                 if(!attributeName.equalsIgnoreCase("EUID") && (attributeValue != null && attributeValue.trim().length() > 0) &&  !sourceHandler.isNumber(attributeValue)) {
-                                   requiredValuesArray.add(fcArray[k].getDisplayName());
- 							       valiadtions.put(fcArray[k].getDisplayName()," is not a Number");
-								    isValidationErrorOccured = true;
-				                  }
-				       }
-
+ 			                if(fcArray[k].isRequired() && fcArray[k].getFullFieldName().equalsIgnoreCase(attributeName) &&           attributeValue.equalsIgnoreCase("")) {  
+                                 isValidationErrorOccured = true;
+			                     //build array of required values here
+                                 requiredValuesArray.add(fcArray[k].getDisplayName());
+			                     valiadtions.put(fcArray[k].getDisplayName()," is Required");
+                             }            
+                         //--------------------------Is Numeric Validations -------------------------------------
+						 if (fcArray[k].getName().equalsIgnoreCase("EUID"))   {continue;}  // Ignore validation of EUID
+				         if (attributeValue.equalsIgnoreCase("")) { continue; }	   
+                         
+						 if (fcArray[k].getFullFieldName().equalsIgnoreCase(attributeName)  &&
+							      (fcArray[k].getValueType() == 0 || 
+							       fcArray[k].getValueType() == 4 || 
+							       fcArray[k].getValueType() == 7))   {
+							 //Check numeric values
+							 if (!sourceHandler.isNumber(attributeValue,fcArray[k].getValueType()))   {
+                                  valiadtions.put(fcArray[k].getDisplayName(),": is not a Number");
+								  isValidationErrorOccured = true;
+							 }
+						 }
+                         //--------------------------End Is Numeric Validation -------------------------------------			
 				      }
+
 				      if (!isValidationErrorOccured  && !("rand".equalsIgnoreCase(attributeName)) && 
 						  !("save".equalsIgnoreCase(attributeName)) && 
 						  !("MOT".equalsIgnoreCase(attributeName)) && 
 						  !("listIndex".equalsIgnoreCase(attributeName)) && 
 						  !("minorObjSave".equalsIgnoreCase(attributeName)) && 
+						  !("SYS".equalsIgnoreCase(attributeName)) && 
 						  !("editThisID".equalsIgnoreCase(attributeName)) 
 						  )  {
 					      if (attributeValue.equalsIgnoreCase("")) { continue; }	   
@@ -256,6 +269,7 @@ if(isSave) {
 
 	    }
 		if(newFinalMinorArrayList.size() > 0 ) sourceAddHandler.setNewSOMinorObjectsHashMapArrayList(newFinalMinorArrayList);
+
 		sourceAddHandler.setNewSOHashMap(rootNodesHashMap);
 		String isSuccess = sourceAddHandler.addNewSO();
         Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
@@ -275,6 +289,18 @@ if(isSave) {
 			   document.getElementById('validateButtons').style.display = 'block';
 			   //CLEAR ALL FORM FIELDS
 			   ClearContents('basicValidateAddformData');
+
+               var formNameValue = document.forms['basicValidateAddformData'];
+               var lidField =  getDateFieldName(formNameValue.name,'LID');
+               var systemField =  getDateFieldName(formNameValue.name,'SystemCode');
+
+			   document.getElementById(lidField).readOnly = false;
+               document.getElementById(lidField).disabled = false;
+               document.getElementById(lidField).style.backgroundColor = '';
+
+				document.getElementById(systemField).readOnly = false;
+                document.getElementById(systemField).disabled = false;
+                document.getElementById(systemField).style.backgroundColor  = '';
 		  </script>
          
 		  <script> 
@@ -409,12 +435,9 @@ if(isSave) {
 <% } else if (!isValidationErrorOccured && isSaveEditedValues) { %>   <!-- this condition has to be before isminorObjectSave  -->
 	   <%  thisMinorObject = (HashMap)sourceAddHandler.getNewSOMinorObjectsHashMapArrayList().get(new Integer(saveEditedValues).intValue());
 		   HashMap tempMinorObjectMap = new HashMap();
-       %>
-	
-<%    while(parameterNames.hasMoreElements())   { %>
-               <% String attributeName = (String) parameterNames.nextElement(); %>
-               <% String attributeValue = (String) request.getParameter(attributeName); %>
-   		   <%
+    while(parameterNames.hasMoreElements())   { 
+		String attributeName = (String) parameterNames.nextElement(); 
+		String attributeValue = (String) request.getParameter(attributeName); 
 				      FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getParameter("MOT"));
                       for(int k=0;k<fcArray.length;k++) {
                         //--------------------------Validations -------------------------------------					 
@@ -424,14 +447,21 @@ if(isSave) {
                              requiredValuesArray.add(fcArray[k].getDisplayName());
 							 valiadtions.put(fcArray[k].getDisplayName(),": is Required");
 						  }							 
-						  //check for numberic fields here
-						   if((attributeValue != null && attributeValue.trim().length() > 0) && !isValidationErrorOccured && fcArray[k].getValueType() == 0 && !attributeValue.equalsIgnoreCase("")) {           if(!fcArray[k].getDisplayName().equalsIgnoreCase("EUID")  && (attributeValue != null && attributeValue.trim().length() > 0) && !sourceHandler.isNumber(attributeValue)) {
-                                  requiredValuesArray.add(fcArray[k].getDisplayName());
- 							      valiadtions.put(fcArray[k].getDisplayName(),": is not a Number");
+                         //--------------------------Is Numeric Validations -------------------------------------
+						 if (fcArray[k].getName().equalsIgnoreCase("EUID"))   {continue;}  // Ignore validation of EUID
+				         if (attributeValue.equalsIgnoreCase("")) { continue; }	   
+                         
+						 if (fcArray[k].getFullFieldName().equalsIgnoreCase(attributeName)  &&
+							      (fcArray[k].getValueType() == 0 || 
+							       fcArray[k].getValueType() == 4 || 
+							       fcArray[k].getValueType() == 7))   {
+							 //Check numeric values
+							 if (!sourceHandler.isNumber(attributeValue,fcArray[k].getValueType()))   {
+                                  valiadtions.put(fcArray[k].getDisplayName(),": is not a Number");
 								  isValidationErrorOccured = true;
-						      }
-						   }
-                         //--------------------------Validations End -------------------------------------
+							 }
+						 }
+                         //--------------------------End Is Numeric Validation -------------------------------------			
 			         }
 			     /*if (attributeValue.equalsIgnoreCase("")) continue;
 			     if (attributeValue.equalsIgnoreCase("rand")) continue;
@@ -446,6 +476,7 @@ if(isSave) {
 						  !("rand".equalsIgnoreCase(attributeName)) && 
 						  !("save".equalsIgnoreCase(attributeName)) && 
 						  !("MOT".equalsIgnoreCase(attributeName)) && 
+						  !("SYS".equalsIgnoreCase(attributeName)) && 
 						  !("listIndex".equalsIgnoreCase(attributeName)) && 
 						  !("minorObjSave".equalsIgnoreCase(attributeName)) && 
 						  !("editThisID".equalsIgnoreCase(attributeName)) 
@@ -470,6 +501,7 @@ if(isSave) {
 <%if (!valiadtions.isEmpty()) {
 	Object[] keysValidations = valiadtions.keySet().toArray();
 	%>
+
 	<div class="ajaxalert">
    	   	  <table>
 			<tr>
@@ -852,45 +884,72 @@ if(isSave) {
 		</table>
 	</div>
 	<%} else {%> <!--If systemcode/lid is not entered condition ends here-->
-    <%
+	       <%
+        	boolean isMaskingCorrect = sourceHandler.checkMasking(validateLID,request.getParameter("lidmask"));
+         	if (!isMaskingCorrect)   { %>
+            <div class="ajaxalert">
+        	  <table>
+	    		<tr>
+		    		<td>
+			    	      <ul>
+				                <li>
+					    		  LID is not in the format <%=request.getParameter("lidmask")%>.
+				               </li>
+				         </ul>
+				    <td>
+			    <tr>
+	     	</table>
+			</div>
+           <% } else { 
+				String tempValidateLid = validateLID;
+				String sysDesc  = masterControllerService.getSystemDescription(validateSystemCode);
+				validateLID = validateLID.replaceAll("-","");
+				sourceAddHandler.setLID(validateLID);
+				sourceAddHandler.setSystemCode(validateSystemCode);
+				boolean validated =  sourceAddHandler.validateSystemCodeLID(validateLID,validateSystemCode); 
+				 if(validated)  {	%>
+				  <script>
+                       var formNameValue = document.forms['basicValidateAddformData'];
+                       var lidField =  getDateFieldName(formNameValue.name,'LID');
+                       var systemField =  getDateFieldName(formNameValue.name,'SystemCode');
 
-	String tempValidateLid = validateLID;
-    String sysDesc  = masterControllerService.getSystemDescription(validateSystemCode);
-	validateLID = validateLID.replaceAll("-","");
-    sourceAddHandler.setLID(validateLID);
-    sourceAddHandler.setSystemCode(validateSystemCode);
-    boolean validated =  sourceAddHandler.validateSystemCodeLID(validateLID,validateSystemCode); 
-    %>
-    <% if(validated)  {	%>
-      <script>
-	       document.getElementById('saveButtons').style.visibility = 'visible';
-     	   document.getElementById('saveButtons').style.display = 'block';
+					   document.getElementById(lidField).readOnly = true;
+                       document.getElementById(lidField).disabled = true;
+                       document.getElementById(lidField).style.backgroundColor = '#efefef';
 
-	       document.getElementById('addFormFields').style.visibility = 'visible';
-    	   document.getElementById('addFormFields').style.display = 'block';
+					   document.getElementById(systemField).readOnly = true;
+                       document.getElementById(systemField).disabled = true;
+                       document.getElementById(systemField).style.backgroundColor  = '#efefef';
 
-	       document.getElementById('validateButtons').style.visibility = 'hidden';
-	       document.getElementById('validateButtons').style.display = 'none';
-      </script>
-    <%} else {%>
-       <!--script>
-		//alert("System Code and LID " + "'<%=validateSystemCode%>'" + "/" + "'<%=validateLID%>' "+ " is already found !");
-       </script-->
-	<div class="ajaxalert">
-	   	  <table>
-			<tr>
-				<td>
-				      <ul>
-				             <li>
-							  <%=sysDesc%>/<%=tempValidateLid%> is already found.
-				             </li>
-				      </ul>
-				<td>
-			<tr>
-		</table>
-	</div>
 
-     <%}%>
+					   document.getElementById('saveButtons').style.visibility = 'visible';
+					   document.getElementById('saveButtons').style.display = 'block';
+
+					   document.getElementById('addFormFields').style.visibility = 'visible';
+					   document.getElementById('addFormFields').style.display = 'block';
+
+					   document.getElementById('validateButtons').style.visibility = 'hidden';
+					   document.getElementById('validateButtons').style.display = 'none';
+				  </script>
+			   <%} else {%>
+			   `    <!--script>
+				    //alert("System Code and LID " + "'<%=validateSystemCode%>'" + "/" + "'<%=validateLID%>' "+ " is already found !");
+			        </script-->
+					<div class="ajaxalert">
+						  <table>
+							<tr>
+								<td>
+									  <ul>
+											 <li>
+											  <%=sysDesc%>/<%=tempValidateLid%> is already found.
+											 </li>
+									  </ul>
+								<td>
+							<tr>
+						</table>
+					</div>
+			   <%}%>
+         <%}%>
   <%}%>
 <% } %>
 
