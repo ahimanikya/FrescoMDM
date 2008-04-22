@@ -158,6 +158,7 @@ public class EDMType {
     private ImplDetails mImplDetails = new ImplDetails();
     private PageDefinition mPageDefinition = new PageDefinition();
     private boolean mModified = false;
+    private boolean bMidm = false;
 
     /**
      * default constructor
@@ -316,7 +317,7 @@ public class EDMType {
         }
     }
     
-    String getAuditLogXML(boolean bMidm) {
+    String getAuditLogXML() {
         StringBuffer buffer = new StringBuffer();
         
 	buffer.append(Utils.TAB3 + Utils.startTag(mTagAuditLog));
@@ -330,10 +331,19 @@ public class EDMType {
             buffer.append(Utils.TAB4 + Utils.startTagNoLine(mTagScreenID) +
                             mPageDefinition.auditLog.screenID + 
                             Utils.endTag(mTagScreenID));
+        } else if (bMidm) {
+            buffer.append(Utils.TAB4 + Utils.startTagNoLine(mTagScreenID) +
+                            "7" + 
+                            Utils.endTag(mTagScreenID));
         }
+
         if (mPageDefinition.auditLog.displayOrder != null) {
             buffer.append(Utils.TAB4 + Utils.startTagNoLine(mTagDisplayOrder) +
                             mPageDefinition.auditLog.displayOrder + 
+                            Utils.endTag(mTagDisplayOrder));
+        } else if (bMidm) {
+            buffer.append(Utils.TAB4 + Utils.startTagNoLine(mTagDisplayOrder) +
+                            "7" + 
                             Utils.endTag(mTagDisplayOrder));
         }
         buffer.append(getSearchPagesXML(mPageDefinition.auditLog.alSimpleSearchPages, Utils.TAB4));
@@ -550,12 +560,12 @@ public class EDMType {
     }
     
     //mTagReports
-    String getReportsXML(boolean bMidm) {
+    String getReportsXML() {
         StringBuffer buffer = new StringBuffer();
         
 	buffer.append(Utils.TAB3 + Utils.startTag(mTagReports));
         buffer.append(getPageTabXML(mPageDefinition.reports.commonBlock.pageTab, Utils.TAB4));
-        if (mPageDefinition.reports.searchPageFieldPerRow != null) {
+        if (!bMidm && mPageDefinition.reports.searchPageFieldPerRow != null) {
             buffer.append(Utils.TAB4 + Utils.startTagNoLine(mTagSearchPageFieldPerRow) + 
                           mPageDefinition.reports.searchPageFieldPerRow + 
                           Utils.endTag(mTagSearchPageFieldPerRow));
@@ -564,10 +574,18 @@ public class EDMType {
             buffer.append(Utils.TAB4 + Utils.startTagNoLine(mTagScreenID) +
                             mPageDefinition.reports.commonBlock.screenID + 
                             Utils.endTag(mTagScreenID));
+        } else if (bMidm) {
+            buffer.append(Utils.TAB4 + Utils.startTagNoLine(mTagScreenID) +
+                            "6" + 
+                            Utils.endTag(mTagScreenID));
         }
         if (mPageDefinition.reports.commonBlock.displayOrder != null) {
             buffer.append(Utils.TAB4 + Utils.startTagNoLine(mTagDisplayOrder) +
                             mPageDefinition.reports.commonBlock.displayOrder + 
+                            Utils.endTag(mTagDisplayOrder));
+        } else if (bMidm) {
+            buffer.append(Utils.TAB4 + Utils.startTagNoLine(mTagDisplayOrder) +
+                            "5" + 
                             Utils.endTag(mTagDisplayOrder));
         }
         
@@ -905,15 +923,27 @@ public class EDMType {
             buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagSearchResultID) + 
                           searchResultListPage.searchResultID + 
                           Utils.endTag(mTagSearchResultID));
+        } else if (bMidm) {
+            buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagSearchResultID) + 
+                          "0" + 
+                          Utils.endTag(mTagSearchResultID));
         }
         if (searchResultListPage.itemPerPage != null) {
             buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagItemPerPage) + 
                           searchResultListPage.itemPerPage + 
                           Utils.endTag(mTagItemPerPage));
+        } else if (bMidm) {
+            buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagItemPerPage) + 
+                          "10" + 
+                          Utils.endTag(mTagItemPerPage));
         }
         if (searchResultListPage.maxResultSize != null) {
             buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagMaxResultSize) + 
                           searchResultListPage.maxResultSize + 
+                          Utils.endTag(mTagMaxResultSize));
+        } else if (bMidm) {
+            buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagMaxResultSize) + 
+                          "100" + 
                           Utils.endTag(mTagMaxResultSize));
         }
         if (searchResultListPage.showEuid != null) {
@@ -1215,7 +1245,7 @@ public class EDMType {
                           simpleSearchPage.reportName + 
                           Utils.endTag(mTagReportName));
         }
-        if (simpleSearchPage.fieldPerRow != null) {
+        if (!bMidm && simpleSearchPage.fieldPerRow != null) {
             buffer.append(startTab + Utils.TAB + Utils.startTagNoLine(mTagFieldPerRow) + 
                           simpleSearchPage.fieldPerRow + 
                           Utils.endTag(mTagFieldPerRow));
@@ -1468,7 +1498,7 @@ public class EDMType {
      * @return String - page-definition portion of edm.xml or midm.xml
      * 
      */
-    String getPageDefinitionXML(boolean bMidm) {
+    String getPageDefinitionXML() {
         StringBuffer buffer = new StringBuffer();
         String rootObject = "unknown";
         
@@ -1550,7 +1580,7 @@ public class EDMType {
         String xmlReports = "";
         // Do this first for alFieldGroup in midm's source record
         if (mPageDefinition.reports != null) {
-            xmlReports = getReportsXML(bMidm);
+            xmlReports = getReportsXML();
         }
 
         if (mPageDefinition.dashboard == null && bMidm) {
@@ -1591,7 +1621,7 @@ public class EDMType {
         }
         
         if (mPageDefinition.auditLog != null) {
-            buffer.append(getAuditLogXML(bMidm));
+            buffer.append(getAuditLogXML());
         }
 
         buffer.append(Utils.TAB2 + Utils.endTag(mTagPageDefinition));
@@ -1624,12 +1654,12 @@ public class EDMType {
      */
     public String getGuiDefinitionXML(boolean bMidm) {
         StringBuffer buffer = new StringBuffer();
-        
+        this.bMidm = bMidm;
 	buffer.append(Utils.TAB + Utils.startTag(mTagGuiDefinition));
         if (!bMidm && mSystemDisplayNameOverrides != null) {
             buffer.append(getSystemDisplayNameOverridesXML());
         }
-        buffer.append(getPageDefinitionXML(bMidm));
+        buffer.append(getPageDefinitionXML());
         buffer.append(Utils.TAB + Utils.endTag(mTagGuiDefinition));
 
         return buffer.toString();
