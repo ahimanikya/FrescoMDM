@@ -246,12 +246,13 @@ public class SourceHandler {
                     }
                 }
             }
-        
-            //set LID and system codes here.  
+           
+            //set LID and system codes here.
+  
             setLID((String) newFieldValuesMap.get(MasterControllerService.LID));
             setSystemCode((String) newFieldValuesMap.get("SystemCode"));
-
-		//get array of lids 
+        
+        //get array of lids 
         String lids[] = this.getStringEUIDs(this.getLID());
         //instantiate master controller service
         SystemObject singleSystemObject = null;
@@ -602,9 +603,9 @@ public class SourceHandler {
             SystemObject systemObject = (SystemObject) event.getComponent().getAttributes().get("soValueExpression");          
             masterControllerService.deactivateSystemObject(systemObject);
             SystemObject updatedSystemObject = masterControllerService.getSystemObject(systemObject.getSystemCode(), systemObject.getLID());
-           
+            
             setDeactivatedSOHashMap(compareDuplicateManager.getSystemObjectAsHashMap(updatedSystemObject, screenObject));
-           
+            
             //Keep the updated SO in the session again
             session.setAttribute("singleSystemObjectLID", updatedSystemObject);
             session.setAttribute("keyFunction","editSO");
@@ -946,14 +947,15 @@ public class SourceHandler {
             ConfigManager.init();
             String rootName = screenObject.getRootObj().getName();
             ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(rootName);
-					FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
-		            //Build Person Epath Arraylist
-				    for (int i = 0; i < allFeildConfigs.length; i++) {
-						FieldConfig fieldConfig = allFeildConfigs[i];
-						if(!(rootName+ ".EUID").equalsIgnoreCase(fieldConfig.getFullFieldName())) {
-								ePathArrayList.add(fieldConfig.getFullFieldName());
-						}
-					}
+            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
+
+            //Build Person Epath Arraylist
+            for (int i = 0; i < allFeildConfigs.length; i++) {
+                FieldConfig fieldConfig = allFeildConfigs[i];
+                if(!(rootName+ ".EUID").equalsIgnoreCase(fieldConfig.getFullFieldName())) {
+                  ePathArrayList.add(fieldConfig.getFullFieldName());
+                }
+            }
         } catch (Exception ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -966,19 +968,17 @@ public class SourceHandler {
         try {
             ConfigManager.init();
             ObjectNodeConfig objectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(objectType);
-			if (objectNodeConfig != null)
+            if (objectNodeConfig != null)
 			{
-            FieldConfig[] allFeildConfigs = objectNodeConfig.getFieldConfigs();
-            String rootName = screenObject.getRootObj().getName();
-
-            //Build Person Epath Arraylist
-            for (int i = 0; i < allFeildConfigs.length; i++) {
-                FieldConfig fieldConfig = allFeildConfigs[i];
-                if(     !(rootName+ ".EUID").equalsIgnoreCase(fieldConfig.getFullFieldName())
-                    ) {
-                  ePathArrayList.add(fieldConfig.getFullFieldName());
-                }
-            }
+				FieldConfig[] allFeildConfigs = objectNodeConfig.getFieldConfigs();
+	            String rootName = screenObject.getRootObj().getName();
+	            //Build Person Epath Arraylist
+		        for (int i = 0; i < allFeildConfigs.length; i++) {
+			        FieldConfig fieldConfig = allFeildConfigs[i];
+				    if(     !(rootName+ ".EUID").equalsIgnoreCase(fieldConfig.getFullFieldName())) 
+						{    ePathArrayList.add(fieldConfig.getFullFieldName());
+						}
+				}
 			}
         } catch (Exception ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -1522,11 +1522,17 @@ public class SourceHandler {
         this.deactivatedSOHashMap = deactivatedSOHashMap;
     }
     
-    public boolean isNumber(String thisValue)  {
+    public boolean isNumber(String thisValue,int type)  {
+	   
         if (thisValue != null && thisValue.length() > 0) {
             try {
-
-                Integer.parseInt(thisValue);
+                if (type == 0) {  //Int value
+                    Integer.parseInt(thisValue);
+                } else if (type == 4) { // Long value
+                    Long.parseLong(thisValue);
+                } else if (type == 7) { // Float value
+                    Float.parseFloat(thisValue);
+                }
             } catch (Exception e) {
                 return false;
             }
@@ -1536,7 +1542,9 @@ public class SourceHandler {
 //(DDD)DDD-DDDD
     public boolean checkMasking(String thisValue, String masking)  {
         Character c;
-//        if ((thisValue != null && thisValue.trim().length() > 0 )&&  (masking.length() != thisValue.length()) ) return false; //check length
+        if ((thisValue != null && thisValue.trim().length() > 0 ) &&  (masking.length() != thisValue.length()) ) { 
+			return false; //check length
+		}
         try {
             if (thisValue != null && thisValue.trim().length() > 0) {
                 for (int i = 0; i < masking.length(); i++) {  //Digit 
@@ -1546,8 +1554,11 @@ public class SourceHandler {
                             return false;
                         }
                     } else if (masking.charAt(i) == 'L') {  //Char 
-
                         if (!Character.isLetter(thisValue.charAt(i))) {
+                            return false;
+                        }
+                    } else if (masking.charAt(i) == 'A') {  //Char 
+                        if (!Character.isLetter(thisValue.charAt(i)) && !Character.isDigit(thisValue.charAt(i))) {
                             return false;
                         }
                     } else {
@@ -1556,13 +1567,11 @@ public class SourceHandler {
                         }
                     }
                 }
-
             }
         } catch (Exception e)  {
             e.printStackTrace();
             return false;
-        }        
-        
+        }                
         return true;
     }
     
