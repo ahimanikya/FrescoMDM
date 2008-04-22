@@ -266,7 +266,7 @@
                                                         <table border="0" cellpadding="0" cellspacing="0">
                                                             <tr>  
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createStDateField"   value="#{msgs.source_edit_fromDatePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createStDateField"   value="#{msgs.source_edit_fromDatePrompt}"/></nobr>
                                                                 </td>
                                                                 <td align="left">    
                                                                    <nobr> <h:inputText 
@@ -287,7 +287,7 @@
                                                                    </nobr>
                                                                 </td>
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createEndDateField"   value="#{msgs.source_edit_toDatePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createEndDateField"   value="#{msgs.source_edit_toDatePrompt}"/></nobr>
                                                                 </td>
                                                                 <td align="left">    
                                                                     <nobr><h:inputText 
@@ -309,7 +309,7 @@
                                                             </tr>
                                                             <tr> 
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createStartTimeField"   value="#{msgs.source_edit_fromTimePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createStartTimeField"   value="#{msgs.source_edit_fromTimePrompt}"/></nobr>
                                                                 </td>
                                                                 <td>    
                                                                     <h:inputText 
@@ -322,7 +322,7 @@
                                                                         maxlength="8"/>
                                                                 </td>
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createStartTimeToField"   value="#{msgs.source_edit_toTimePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createStartTimeToField"   value="#{msgs.source_edit_toTimePrompt}"/></nobr>
                                                                 </td>
                                                                 <td>    
                                                                     <h:inputText 
@@ -556,7 +556,7 @@ var myConfigs = {
                                                         <table border="0">
                                                             <tr>  
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createStDateField"   value="#{msgs.source_edit_fromDatePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createStDateField"   value="#{msgs.source_edit_fromDatePrompt}"/></nobr>
                                                                 </td>
                                                                 <td align="left">    
                                                                     <nobr><h:inputText 
@@ -576,7 +576,7 @@ var myConfigs = {
                                                                     </A></nobr>
                                                                 </td>
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createEndDateField"   value="#{msgs.source_edit_toDatePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createEndDateField"   value="#{msgs.source_edit_toDatePrompt}"/></nobr>
                                                                 </td>
                                                                 <td align="left">    
                                                                     <nobr><h:inputText 
@@ -598,7 +598,7 @@ var myConfigs = {
                                                             </tr>
                                                             <tr> 
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createStartTimeField"   value="#{msgs.source_edit_fromTimePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createStartTimeField"   value="#{msgs.source_edit_fromTimePrompt}"/></nobr>
                                                                 </td>
                                                                 <td>    
                                                                     <nobr><h:inputText 
@@ -612,7 +612,7 @@ var myConfigs = {
                                                                     </nobr>
                                                                 </td>
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createEndTimeField"   value="#{msgs.source_edit_toTimePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createEndTimeField"   value="#{msgs.source_edit_toTimePrompt}"/></nobr>
                                                                 </td>
                                                                 <td>    
                                                                     <h:inputText 
@@ -847,7 +847,7 @@ var myConfigs = {
                                                         <table border="0">
                                                             <tr>  
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createStDateField"   value="#{msgs.source_edit_fromDatePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createStDateField"   value="#{msgs.source_edit_fromDatePrompt}"/></nobr>
                                                                 </td>
                                                                 <td align="left">    
                                                                    <nobr> <h:inputText 
@@ -867,7 +867,7 @@ var myConfigs = {
                                                                     </A></nobr>
                                                                 </td>
                                                                 <td>
-                                                                   <nobr> <h:outputLabel for="createEndDateField"   value="#{msgs.source_edit_toDatePrompt}"/>:</nobr>
+                                                                   <nobr> <h:outputLabel for="createEndDateField"   value="#{msgs.source_edit_toDatePrompt}"/></nobr>
                                                                 </td>
                                                                 <td align="left">    
                                                                    <nobr> <h:inputText 
@@ -889,7 +889,7 @@ var myConfigs = {
                                                             </tr>
                                                             <tr> 
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createStartTimeField"   value="#{msgs.source_edit_fromTimePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createStartTimeField"   value="#{msgs.source_edit_fromTimePrompt}"/></nobr>
                                                                 </td>
                                                                 <td>    
                                                                     <h:inputText 
@@ -902,7 +902,7 @@ var myConfigs = {
                                                                         maxlength="8"/>
                                                                 </td>
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createEndTimeField"   value="#{msgs.source_edit_toTimePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createEndTimeField"   value="#{msgs.source_edit_toTimePrompt}"/></nobr>
                                                                 </td>
                                                                 <td>    
                                                                     <h:inputText 
@@ -1140,7 +1140,7 @@ var myConfigs = {
                                                         <table border="0">
                                                             <tr>  
                                                                 <td>
-                                                                   <nobr> <h:outputLabel for="createStDateField"   value="#{msgs.source_edit_fromDatePrompt}"/>:</nobr>
+                                                                   <nobr> <h:outputLabel for="createStDateField"   value="#{msgs.source_edit_fromDatePrompt}"/></nobr>
                                                                 </td>
                                                                 <td align="left">    
                                                                     <nobr><h:inputText 
@@ -1160,7 +1160,7 @@ var myConfigs = {
                                                                     </A></nobr>
                                                                 </td>
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createEndDateField"   value="#{msgs.source_edit_toDatePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createEndDateField"   value="#{msgs.source_edit_toDatePrompt}"/></nobr>
                                                                 </td>
                                                                 <td align="left">    
                                                                     <nobr><h:inputText 
@@ -1182,7 +1182,7 @@ var myConfigs = {
                                                             </tr>
                                                             <tr> 
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createStartTimeField"   value="#{msgs.source_edit_fromTimePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createStartTimeField"   value="#{msgs.source_edit_fromTimePrompt}"/></nobr>
                                                                 </td>
                                                                 <td>    
                                                                     <h:inputText 
@@ -1195,7 +1195,7 @@ var myConfigs = {
                                                                         maxlength="8"/>
                                                                 </td>
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createEndTimeField"   value="#{msgs.source_edit_toTimePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createEndTimeField"   value="#{msgs.source_edit_toTimePrompt}"/></nobr>
                                                                 </td>
                                                                 <td>    
                                                                     <h:inputText 
@@ -1438,7 +1438,7 @@ var myConfigs = {
                                                         <table border="0">
                                                             <tr>    
                                                                 <td>
-                                                                   <nobr> <h:outputLabel for="createStDateField"   value="#{msgs.source_edit_fromDatePrompt}"/>:</nobr>
+                                                                   <nobr> <h:outputLabel for="createStDateField"   value="#{msgs.source_edit_fromDatePrompt}"/></nobr>
                                                                 </td>
                                                                 <td align="left">    
                                                                     <nobr><h:inputText 
@@ -1459,7 +1459,7 @@ var myConfigs = {
                                                                     </nobr>
                                                                 </td>
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createEndDateField"   value="#{msgs.source_edit_toDatePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createEndDateField"   value="#{msgs.source_edit_toDatePrompt}"/></nobr>
                                                                 </td>
                                                                 <td align="left">    
                                                                     <nobr><h:inputText 
@@ -1481,7 +1481,7 @@ var myConfigs = {
                                                             </tr>
                                                             <tr> 
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createStartTimeField"   value="#{msgs.source_edit_fromTimePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createStartTimeField"   value="#{msgs.source_edit_fromTimePrompt}"/></nobr>
                                                                 </td>
                                                                 <td>    
                                                                     <nobr><h:inputText 
@@ -1494,7 +1494,7 @@ var myConfigs = {
                                                                         maxlength="8"/></nobr>
                                                                 </td>
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createEndTimeField"   value="#{msgs.source_edit_toTimePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createEndTimeField"   value="#{msgs.source_edit_toTimePrompt}"/></nobr>
                                                                 </td>
                                                                 <td>    
                                                                     <nobr><h:inputText 
@@ -1712,7 +1712,7 @@ var myConfigs = {
                                                         <table border="0">
                                                             <tr>  
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createStDateField"   value="#{msgs.source_edit_fromDatePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createStDateField"   value="#{msgs.source_edit_fromDatePrompt}"/></nobr>
                                                                 </td>
                                                                 <td align="left">    
                                                                     <nobr>
@@ -1734,7 +1734,7 @@ var myConfigs = {
                                                                     </nobr>
                                                                 </td>
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createEndDateField"   value="#{msgs.source_edit_toDatePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createEndDateField"   value="#{msgs.source_edit_toDatePrompt}"/></nobr>
                                                                 </td>
                                                                 <td align="left">    
                                                                     <nobr><h:inputText 
@@ -1757,7 +1757,7 @@ var myConfigs = {
                                                             </tr>
                                                             <tr> 
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createStartTimeField"   value="#{msgs.source_edit_fromTimePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createStartTimeField"   value="#{msgs.source_edit_fromTimePrompt}"/></nobr>
                                                                 </td>
                                                                 <td>    
                                                                     <h:inputText 
@@ -1771,7 +1771,7 @@ var myConfigs = {
                                                                         
                                                                 </td>
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createEndTimeField"   value="#{msgs.source_edit_toTimePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createEndTimeField"   value="#{msgs.source_edit_toTimePrompt}"/></nobr>
                                                                 </td>
                                                                 <td>    
                                                                     <h:inputText 
@@ -2031,7 +2031,7 @@ var myConfigs = {
                                                         <table border="0">
                                                             <tr>  
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createStDateField"   value="#{msgs.source_edit_fromDatePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createStDateField"   value="#{msgs.source_edit_fromDatePrompt}"/></nobr>
                                                                 </td>
                                                                 <td align="left">    
                                                                     <nobr><h:inputText 
@@ -2051,7 +2051,7 @@ var myConfigs = {
                                                                     </A></nobr>
                                                                 </td>
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createEndDateField"   value="#{msgs.source_edit_toDatePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createEndDateField"   value="#{msgs.source_edit_toDatePrompt}"/></nobr>
                                                                 </td>
                                                                 <td align="left">    
                                                                     <nobr><h:inputText 
@@ -2073,7 +2073,7 @@ var myConfigs = {
                                                             </tr>
                                                             <tr> 
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createStartTimeField"   value="#{msgs.source_edit_fromTimePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createStartTimeField"   value="#{msgs.source_edit_fromTimePrompt}"/></nobr>
                                                                 </td>
                                                                 <td>    
                                                                     <nobr><h:inputText 
@@ -2086,7 +2086,7 @@ var myConfigs = {
                                                                         maxlength="8"/></nobr>
                                                                 </td>
                                                                 <td>
-                                                                    <nobr><h:outputLabel for="createEndTimeField"   value="#{msgs.source_edit_toTimePrompt}"/>:</nobr>
+                                                                    <nobr><h:outputLabel for="createEndTimeField"   value="#{msgs.source_edit_toTimePrompt}"/></nobr>
                                                                 </td>
                                                                 <td>    
                                                                     <nobr><h:inputText 
