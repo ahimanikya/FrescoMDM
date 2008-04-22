@@ -62,24 +62,26 @@ import com.sun.mdm.index.idgen.EuidGenerator;
 import com.sun.mdm.index.loader.blocker.BlockDefinition;
 import com.sun.mdm.index.loader.euid.LoaderEuidGenerator;
 
+import com.sun.mdm.index.loader.common.FileManager;
+import com.sun.mdm.index.dataobject.DataObjectFileReader;
+
 /**
  * @author Sujit Biswas
  * 
  */
 public class LoaderConfig {
-
 	private static Logger logger = Logger.getLogger(LoaderConfig.class
 			.getName(), Resource.BUNDLE_NAME);
-
+	private static long MB = 1024 * 1024;
+	private static long KB = 1024;
+	private static long WEIGHT = 4;
 	private static LoaderConfig instance;
 
 	/**
 	 * the loader configuration document object
 	 */
 	private Document doc;
-
 	private HashMap<String, String> systemProps = new HashMap<String, String>();
-
 	private EuidGenerator euidGenerator;
 
 	private ArrayList<String> matchFields = new ArrayList<String>();
@@ -89,10 +91,6 @@ public class LoaderConfig {
 	private Double duplicateThreshold;
 	private Double matchThreshold;
 	private DataObjectReader dataObjectReader;
-
-	/**
-	 * 
-	 */
 	boolean debug = Boolean.getBoolean("loader.debug");
 
 	private static String default_config_file = "conf/loader-config.xml";
@@ -446,6 +444,10 @@ public class LoaderConfig {
 		return systemProps.get(propertyName);
 	}
 
+	public void setSystemProperty(String propertyName, String propertyValue) {
+		systemProps.put(propertyName, propertyValue);
+	}
+	
 	/**
 	 * @return the euidGenerator
 	 */
@@ -548,5 +550,128 @@ public class LoaderConfig {
 	public HashMap<String, String> getEuidParams() {
 		return euidParams;
 	}
-
+	
+   /**
+	* Validates numBlockBuckets and numEUIDBuckets 
+	* @throws InvalidConfigurationException if numBlockBuckets and numEUIDBuckets are invalid. 
+	*/
+	public void validation() throws ConfigException {
+		
+		if (getSystemProperty("numBlockBuckets")== null) {
+			throw new ConfigException("numBlockBuckets is not configured.");
+		}
+		long numBlockBuckets  = Long.parseLong(getSystemProperty("numBlockBuckets"));
+		if (numBlockBuckets <= 0) {
+			throw new ConfigException("numBlockBuckets is invalid.");
+		}
+		if (getSystemProperty("numEUIDBuckets") == null) {
+			throw new ConfigException("numEUIDBuckets is not configured.");			
+		}
+		long numEUIDBuckets = Long.parseLong(getSystemProperty("numEUIDBuckets"));
+		if (numEUIDBuckets <= 0) {
+			throw new ConfigException("numEUIDBuckets is invalid");
+		}
+		if (getSystemProperty("totalNoOfRecords") == null) {
+			throw new ConfigException("totalNoOfRecords is not configured.");						
+		}
+		long totalNoOfRecords = Long.parseLong(getSystemProperty("totalNoOfRecords"));
+		if (totalNoOfRecords <= 0) {
+			throw new ConfigException("totalNoOfRecords is invalid.");	
+		}
+		DataObjectFileReader reader = null;
+		String record = null;
+		String fileName = ((DataObjectFileReader)getDataObjectReader()).getFileName();
+		try {
+			reader = new DataObjectFileReader(fileName);
+			record = reader.readRecordString();
+		} catch (FileNotFoundException ex) {
+			throw new ConfigException(ex);
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException ignore) {
+				}
+			}	
+		}
+		
+		if (record == null || record.length() == 0) {
+			throw new ConfigException("The records are invalid in " + fileName);
+		}		
+		long recordSize = record.length();
+		long numOfRecordsInBlockBuckets = totalNoOfRecords/numBlockBuckets;
+		long blockBucketMemory = (numOfRecordsInBlockBuckets*recordSize) * WEIGHT;
+		
+		long numOfRecordsInEUIDBuckets = totalNoOfRecords/numEUIDBuckets;
+		long EUIDBucketMemory = (numOfRecordsInEUIDBuckets*recordSize) * WEIGHT;
+		
+		logger.log(Level.INFO, "The number of input records is " + totalNoOfRecords);
+		logger.log(Level.INFO, "The size of a record is " + display(recordSize));
+		
+		logger.log(Level.INFO, "The number of block buckets is " + numBlockBuckets);
+		logger.log(Level.INFO, "The number of records in a block bucket is " + numOfRecordsInBlockBuckets);
+		logger.log(Level.INFO, "The memory size for a block bucket is " + display(blockBucketMemory));		
+			
+		logger.log(Level.INFO, "The number of EUID buckets is " + numEUIDBuckets);
+		logger.log(Level.INFO, "The number of records in a EUID bucket is " + numOfRecordsInEUIDBuckets);
+		logger.log(Level.INFO, "The memory size for a EUID bucket is " + display(EUIDBucketMemory));		
+			
+		Runtime rt = Runtime.getRuntime();
+		long maxMemory = rt.maxMemory() - rt.totalMemory(); 
+		
+		logger.log(Level.INFO, "The maximum available JVM heap size is " + display(maxMemory));
+		
+		maxMemory = maxMemory - (200 * MB);
+		if (maxMemory < 0) {
+			throw new ConfigException("The JVM maximum heap size is not large enough to run the loader, please raise it.");	
+		}
+		
+		logger.log(Level.INFO, "The maximum heap size that can be used for caching buckets is " + display(maxMemory));
+			
+		if (blockBucketMemory > (maxMemory/WEIGHT)) {
+			long numBucketRecords = (maxMemory/recordSize)/(WEIGHT*WEIGHT);
+			numBlockBuckets = (totalNoOfRecords/numBucketRecords)*WEIGHT;
+			throw new ConfigException("numBlockBuckets is too small, please rasie it and suggest at least large than " + numBlockBuckets);				
+		}
+		
+		if (EUIDBucketMemory > (maxMemory/WEIGHT)) {
+			long numEUIDBucketRecords = (maxMemory/recordSize)/(WEIGHT*WEIGHT);
+			numEUIDBuckets = (totalNoOfRecords/numEUIDBucketRecords)*WEIGHT;	
+			throw new ConfigException("numEUIDBuckets is too small, please raise it and suggest at least large than " + numEUIDBuckets);				
+		}
+		
+		/*
+		if (getSystemProperty("matchCacheSize") == null) {
+			throw new ConfigException("matcheCacheSize is not configured.");						
+		}
+		
+		long matchCacheSize = Long.parseLong(getSystemProperty("matchCacheSize"));
+	    if (matchCacheSize <= 0) {
+			throw new ConfigException("matcheCacheSize is invalid.");			    	
+	    }
+		
+		if (matchCacheSize > (maxMemory/(WEIGHT*WEIGHT))) {
+			matchCacheSize = (maxMemory/(WEIGHT*WEIGHT))/48;
+			throw new ConfigException("matcheCacheSize is too large and suggest less than " + matchCacheSize);			    	    	
+	    }
+	    */
+	}
+	
+	/**
+	 * Returns string expressed in BYTES, KB or MB.
+	 * @param value
+	 * @return String 
+	 */
+	private String display(long value) {
+		String stringValue = null;
+		if (value > MB) {	
+			stringValue = new String("" + (value/MB) +"MB");		
+		} else if (value > KB) {
+			stringValue= new String("" + (value/KB) +"KB");				
+		} else {
+			stringValue = new String("" + value + "BYTES");	
+		}	
+		return stringValue;
+	}
+	
 }
