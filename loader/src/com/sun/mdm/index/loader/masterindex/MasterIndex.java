@@ -110,7 +110,7 @@ public class MasterIndex {
      .getInstance().getConfiguration(
              DecisionMakerConfiguration.DECISION_MAKER);
 	 DefaultDecisionMaker decision = (DefaultDecisionMaker) dmConfig.getDecisionMaker();
-     boolean sameSystemMatch = false; //decision.isSameSystemMatchEnabled();          
+     boolean sameSystemMatch = decision.isSameSystemMatchEnabled();          
 	 
      
 	 Standardizer[] standardizer = new Standardizer[poolSize_];
