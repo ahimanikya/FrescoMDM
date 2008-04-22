@@ -101,6 +101,7 @@
                 
                 var valueEntered =  "";
                 valueEntered =  field.value;
+
                 //valueEntered  = valueEntered.replace(/\)/g,"");
                 //valueEntered  = valueEntered.replace(/\(/g,"");
                 
@@ -117,16 +118,14 @@
                 fieldNameValuesLocal += fullFieldName + "##"+valueEntered+ ">>" + minorObjTypeLocalCount + ">>";
                 //document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = fieldNameValuesLocal;
                 
-                fieldNameValuesLocal = fieldNameValuesLocal  + minorObjTypeLocal ;
+                fieldNameValuesLocal = fieldNameValuesLocal  + minorObjTypeLocal ;              
                 minorArrayLocal.push(fieldNameValuesLocal);
                 //RESET THE FIELD VALUES HERE
-                fieldNameValuesLocal = "";              
-               //document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = minorArrayLocal;
-                
+                fieldNameValuesLocal = "";
+                //document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = minorArrayLocal;                
             }
             var selectedValue;
             function accumilateMinorObjectSelectFieldsOnBlurLocal(objectType,field,fullFieldName,keyType) {
-				//check if key type is already selected
 				if(keyType == 'true' && selectedValue == field.options[field.selectedIndex].value) {
 					alert("Cannot add " + objectType + "type '"+ field.options[field.selectedIndex].text +"' again. Please choose different value");
 					field.selectedIndex =0;
@@ -140,12 +139,10 @@
                 }
                 fieldNameValuesLocal += fullFieldName + "##"+selectedValue + ">>" + minorObjTypeLocalCount +">>";
                 //document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = fieldNameValuesLocal;
-                
-                fieldNameValuesLocal = fieldNameValuesLocal  + minorObjTypeLocal;
+                fieldNameValuesLocal = fieldNameValuesLocal  + minorObjTypeLocal;               
                 minorArrayLocal.push(fieldNameValuesLocal);
                 //RESET THE FIELD VALUES HERE
                 fieldNameValuesLocal = "";
-                
                 ////document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = minorArrayLocal;
                  
             }
@@ -247,6 +244,7 @@
 
 									HttpSession sessionFaces = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                              		SourceAddHandler  sourceAddHandlerFaces   = (SourceAddHandler)sessionFaces.getAttribute("SourceAddHandler");
+
                                         int addressSize;
                                         int phoneSize;
                                         int aliasSize;
@@ -907,7 +905,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                                    readonly="true"
                                                                                    onkeydown="javascript:qws_field_on_key_down(this, document.basicViewformData.lidmask.value)"
                                                                                    onkeyup="javascript:qws_field_on_key_up(this)"
-                                                                                   onblur="javascript:validateLidValue(this, 'basicViewformData');accumilateFormFieldsOnBlur(this,'#{feildConfig.name}',document.basicViewformData.lidmask.value,'#{feildConfig.valueType}','basicViewformData')"
+                                                                                   onblur="javascript:accumilateFormFieldsOnBlur(this,'#{feildConfig.name}',document.basicViewformData.lidmask.value,'#{feildConfig.valueType}','basicViewformData')"
                                                                                    rendered="#{feildConfig.name eq 'LID'}"/>
                                                                                        
                                                                     <h:inputText   required="#{feildConfig.required}" 
@@ -991,8 +989,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                     <table width="100%">
                                                         <tr><td>
                                                     <!--Start Add source record form-->
-                                                    <input type="hidden" name="lidmask" value="DDD-DDD-DDDD" />
-                                                    <input type="hidden" name="ssnmask" value="DDD-DD-DDDD" />
+                                                    <input type="hidden" title="lidmask" name="lidmask" value="DDD-DDD-DDDD" />
                                                     <h:dataTable headerClass="tablehead"  
                                                                              id="fieldConfigId" 
                                                                              var="feildConfig" 
@@ -1034,7 +1031,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 																						   readonly="true"
 																						   label="#{feildConfig.displayName}" 
 																						   maxlength="#{feildConfig.maxLength}"    onkeydown="javascript:qws_field_on_key_down(this, document.basicValidateAddformData.lidmask.value)"
-                                                                                           onblur="javascript:validateLidValue(this, 'basicValidateAddformData');javascript:qws_field_on_key_down(this, document.basicValidateAddformData.lidmask.value);"
+                                                                                           onblur="javascript:qws_field_on_key_down(this, document.basicValidateAddformData.lidmask.value);"
                                                                                            onkeyup="javascript:qws_field_on_key_up(this)"
                                                                                            />
                                                                                            
@@ -1278,9 +1275,10 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                 </nobr>
                                                                 <nobr>
                                                                     <a class="button" 
-																	   href="javascript:void(0);"
+																	   href="javascript:void(0);"													
 																	   onclick="javascript:getFormValues('basicValidateAddformData');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&validate=true&rand=<%=rand%>','addFormValidate','');" >  
-                                                                        <span><h:outputText value="#{msgs.validate_button_text}"/></span>
+<!--- Validate Button -->
+                                                                         <span><h:outputText value="#{msgs.validate_button_text}"/></span>
                                                                     </a>                                     
                                                                 </nobr>
                                                             </td>
@@ -1972,19 +1970,19 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 			 document.getElementById(lidField).disabled = true;
 		    }
             
-            formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
-		
+            formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);	
          }   
 
-           function validateLidValue(field,formName) {
+           function validateLidValue(formName) {
             var formNameValue = document.forms[formName];
             var lidField =  getDateFieldName(formNameValue.name,'LID');
 
             if(document.getElementById(lidField).value.length > 0 && document.getElementById(lidField).value.length != formNameValue.lidmask.value.length) {
 			   alert("'" + document.getElementById(lidField).value + "' is invalid LID Format please change the value! Should be in '" + formNameValue.lidmask.value +"' Format");
 			   //document.getElementById(lidField).value = "";
+			   return false;
 			}
-			
+			return true;
          }   
 
          function resetLidFields(formName,validString) {
@@ -2061,8 +2059,6 @@ function onclickCaptureAllMinorObjects() {
 
         document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = localArray;
         document.getElementById("basicAddformData:minorObjectTotal").value = minorObjTypeLocalCount;
-
-
 }
 
 
