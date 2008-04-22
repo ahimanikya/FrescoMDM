@@ -21,11 +21,8 @@
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
 package com.sun.mdm.index.loader.main;
-import java.io.InputStream;
-import java.io.FileInputStream;
 import java.io.File;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import com.sun.mdm.index.dataobject.objectdef.Lookup;
@@ -45,9 +42,7 @@ import com.sun.mdm.index.loader.log.LoaderLogManager;
 import com.sun.mdm.index.loader.masterindex.MasterIndex;
 import com.sun.mdm.index.loader.masterindex.PotDupGenerator;
 import com.sun.mdm.index.loader.sqlloader.BulkLoader;
-
 import com.sun.mdm.index.configurator.ConfigurationService;
-import com.sun.mdm.index.configurator.ConfigurationInfo;
 
 
 /** Main class to bulk Match and load data to eview master index. 
@@ -87,16 +82,17 @@ public class BulkMatcherLoader {
 	private static int BLOCKDISTRIBUTE_ONLY = 3;
 	private static int BLOCKDISTRIBUTE_AFTER = 4;
 	private int loadMode_ = 0; // default mode
+	
 	public BulkMatcherLoader() throws Exception {
 		RuntimeStats();
-            new LoaderLogManager().init();
-		logger.info("bulk_boader_started");				
+        new LoaderLogManager().init();
+		logger.info("bulk_boader_started");
+
+		config_.validation();
 		loadConfig();
-		
-		ConfigurationService.getInstance();
-		
+		ConfigurationService.getInstance();	
 		logger.info("configuation_loaded");
-		
+	
 		if (isMasterLoader_) {
 		   logger.info("master_loader:" + loaderName_);
 		} else {
@@ -406,8 +402,4 @@ public class BulkMatcherLoader {
 		logger.info("free Memory: " + free/1000000 + "M");
 		
 	}
-	
-	
-	
-
 }
