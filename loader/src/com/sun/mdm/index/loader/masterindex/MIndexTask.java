@@ -142,6 +142,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 				  }		
 				  
 				  List<List<DataObject>> solists = splitSameSystem(solist);
+				  shiftSOs(solists);
 				  for (List<DataObject> slist: solists) {
 				  
 				    Map<String,String> weightMap = new HashMap<String,String>();
@@ -242,6 +243,36 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	static {
 		objDef_ = initDef();
 	}
+	
+	/**
+	 * shifts SO to the front of the list, that has max assumed match weight. This is done because
+	 * assumed match weight for the first SO in the list is not added to the assumed match table. 
+	 * The reason to leave out max score is to balance out the match weight associated with a SO  
+	 * which are max of all match weights with different SOs in the SO list (EUID Bucket)
+	 * @param solists
+	 * @return
+	 */
+	private void shiftSOs(List<List<DataObject>> solists) {
+		
+		for (List<DataObject> solist: solists) {
+			int pos = 0;
+			double max = 0;
+			for (int i = 0; i < solist.size(); i++) {
+				DataObject d =  solist.get(i);
+				String sscore = d.getFieldValue(4);
+				double score = Double.parseDouble(sscore);
+				if (score > max) {
+					pos = i;
+					max = score;
+				}
+			}
+			if (solist.size() > 1 && pos != 0) { // shift only if there are > 1 SOs
+				DataObject d = solist.remove(pos);
+				solist.add(0, d);				
+			}
+		}		
+	}
+	
 	
 	/**
 	 * Not used. ONly for debugging
