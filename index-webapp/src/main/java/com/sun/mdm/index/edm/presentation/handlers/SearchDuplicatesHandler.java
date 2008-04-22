@@ -37,6 +37,8 @@ import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.master.search.potdup.PotentialDuplicateIterator;
 import com.sun.mdm.index.master.search.potdup.PotentialDuplicateSearchObject;
 import com.sun.mdm.index.master.search.potdup.PotentialDuplicateSummary;
+import com.sun.mdm.index.objects.epath.EPathException;
+import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.util.LogUtil;
 import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
@@ -57,12 +59,14 @@ import javax.faces.context.FacesContext;
 import com.sun.mdm.index.edm.presentation.validations.HandlerException;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.SearchResultsConfig;
+import com.sun.mdm.index.edm.services.configuration.ValidationService;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathAPI;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -329,32 +333,36 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             ArrayList newFinalArray  = new ArrayList();        
             float wt = 0.0f;
             for (int i = 0; i < finalArrayList.size(); i++) {
-                ArrayList newInnerArray  = new ArrayList();        
+                ArrayList newInnerArray = new ArrayList();
                 ArrayList innerArrayList = (ArrayList) finalArrayList.get(i);
                 for (int j = 0; j < innerArrayList.size(); j++) {
                     String euids = (String) innerArrayList.get(j);
                     EnterpriseObject eo = masterControllerService.getEnterpriseObject(euids);
                     HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
-                  if(j > 0) {
-                  //Add weight to the hashmap 
-                   //eoMap.put("Weight", masterControllerService.getPotentialDuplicateWeight((String) innerArrayList.get(0), euids));
+                    //System.out.println(eoMap1);
+                    //HashMap eoMap = new HashMap();
+                    eoMap.put("ENTERPRISE_OBJECT_PREVIEW", getValuesForResultFields(eo, retrieveEPathsResultsFields(screenObject.getSearchResultsConfig())));
+                    eoMap.put("EUID", eo.getEUID());
+                    if (j > 0) {
+                        //Add weight to the hashmap 
+                        //eoMap.put("Weight", masterControllerService.getPotentialDuplicateWeight((String) innerArrayList.get(0), euids));
 //                   eoMap.put("PotDupId", masterControllerService.getPotentialDuplicateID((String) innerArrayList.get(0), euids));
 //                   eoMap.put("Status", masterControllerService.getPotentialDuplicateStatus((String) innerArrayList.get(0), euids));
-                      
-                  eoMap.put("Weight", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids,"WEIGHT"));
-                  eoMap.put("PotDupId", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0),euids, "duplicateid"));
-                  eoMap.put("Status", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids,"status"));
-                  } else {
-                   eoMap.put("Weight", wt);
-                   eoMap.put("PotDupId", "000");
-                   eoMap.put("Status", "U");
-                  }    
 
-                   newInnerArray.add(eoMap);
+                        eoMap.put("Weight", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids, "WEIGHT"));
+                        eoMap.put("PotDupId", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids, "duplicateid"));
+                        eoMap.put("Status", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids, "status"));
+                    } else {
+                        eoMap.put("Weight", wt);
+                        eoMap.put("PotDupId", "000");
+                        eoMap.put("Status", "U");
+                    }
+
+                    newInnerArray.add(eoMap);
                 }
-                
+
                 newFinalArray.add(newInnerArray);
-        }
+            }
             httpRequest.setAttribute("finalArrayList", newFinalArray);                
         } catch (Exception ex) {
                // UserException and ValidationException don't need a stack trace.
@@ -934,26 +942,30 @@ public ArrayList resetOutputList(PotentialDuplicateSearchObject potentialDuplica
                     String euids = (String) innerArrayList.get(j);
                     EnterpriseObject eo = masterControllerService.getEnterpriseObject(euids);
                     HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
-                  if(j > 0) {
-                  //Add weight to the hashmap 
-                   //eoMap.put("Weight", masterControllerService.getPotentialDuplicateWeight((String) innerArrayList.get(0), euids));
+                    //set the values for the preview
+                    eoMap.put("ENTERPRISE_OBJECT_PREVIEW", getValuesForResultFields(eo, retrieveEPathsResultsFields(screenObject.getSearchResultsConfig())));
+                    eoMap.put("EUID", eo.getEUID());
+
+                    if (j > 0) {
+                        //Add weight to the hashmap 
+                        //eoMap.put("Weight", masterControllerService.getPotentialDuplicateWeight((String) innerArrayList.get(0), euids));
 //                   eoMap.put("PotDupId", masterControllerService.getPotentialDuplicateID((String) innerArrayList.get(0), euids));
 //                   eoMap.put("Status", masterControllerService.getPotentialDuplicateStatus((String) innerArrayList.get(0), euids));
-                      
-                  eoMap.put("Weight", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids,"WEIGHT"));
-                  eoMap.put("PotDupId", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0),euids, "duplicateid"));
-                  eoMap.put("Status", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids,"status"));
-                  } else {
-                   eoMap.put("Weight", wt);
-                   eoMap.put("PotDupId", "000");
-                   eoMap.put("Status", "U");
-                  }    
 
-                   newInnerArray.add(eoMap);
+                        eoMap.put("Weight", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids, "WEIGHT"));
+                        eoMap.put("PotDupId", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids, "duplicateid"));
+                        eoMap.put("Status", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids, "status"));
+                    } else {
+                        eoMap.put("Weight", wt);
+                        eoMap.put("PotDupId", "000");
+                        eoMap.put("Status", "U");
+                    }
+
+                    newInnerArray.add(eoMap);
                 }
-                
+
                 newFinalArray.add(newInnerArray);
-        }
+            }
         } catch (Exception ex) {
                // UserException and ValidationException don't need a stack trace.
                 // ProcessingException stack trace logged by MC
@@ -1080,6 +1092,75 @@ public EPathArrayList retrieveResultsFields(ArrayList arlResultsConfig) throws E
 
        
         return arlResultFields;
+    }
+
+public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) throws Exception {
+        EPathArrayList arlResultFields = new EPathArrayList();
+        SearchResultsConfig searchResultConfig = null;
+        ArrayList arlEPaths = null;
+        Iterator ePathsIterator = null;
+        Iterator resultConfigIterator = arlResultsConfig.iterator();
+        String objectRef = null;
+
+        while (resultConfigIterator.hasNext()) {
+            searchResultConfig = (SearchResultsConfig) resultConfigIterator.next();
+            arlEPaths = searchResultConfig.getEPaths();
+            ePathsIterator = arlEPaths.iterator();
+            while (ePathsIterator.hasNext()) {
+                String strEPath = (String) ePathsIterator.next();
+                // copy EPath strings to the EPathArrayList
+                arlResultFields.add(strEPath);
+                // POTENTIAL DUPLICATE-RELATED FIX from Raymond
+                // retrieve the object reference eg, if the epath is is "Person.Address.City" this retrieves "Person".
+//                if (objectRef == null) {
+//                    int index = strEPath.indexOf(".");
+//                    objectRef = strEPath.substring(0, index);
+//                 
+//                }
+            //
+            }
+            // POTENTIAL DUPLICATE-RELATED FIX from Raymond
+            // Add an EUID field for the PotentialDuplicateAManager.  This is required.
+            // arlResultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
+        }
+
+       
+        return arlResultFields;
+    }
+
+    private HashMap getValuesForResultFields(EnterpriseObject eo, EPathArrayList retrieveResultsFields) throws ObjectException, EPathException {
+        // System.out.println("<<=== eo " + eo);
+        // System.out.println("<<=== retrieveResultsFields " + retrieveResultsFields);  
+        HashMap resultHashMap=new HashMap();
+        ArrayList fieldConfigArray = super.getResultsConfigArray();
+        //System.out.println("===================================================");
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        String dateField = new String();
+        if(retrieveResultsFields!=null){
+            for (int i = 0; i < retrieveResultsFields.size(); i++) {
+                FieldConfig fieldConfig = (FieldConfig) fieldConfigArray.get(i);
+                String epath = retrieveResultsFields.get(i).toString();
+                Object value = EPathAPI.getFieldValue(epath, eo.getSBR().getObject());
+                if (value instanceof java.util.Date) {
+                    dateField = simpleDateFormatFields.format(value);
+                    resultHashMap.put(fieldConfig.getFullFieldName(), dateField);
+                } else {
+                    if ((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) && value != null) {
+                        //value
+                        resultHashMap.put(fieldConfig.getFullFieldName(), ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString()));
+                    } else {
+                        resultHashMap.put(fieldConfig.getFullFieldName(), value);
+                    }
+                }
+
+                //System.out.println("epath : " + retrieveResultsFields.get(i));
+                //System.out.println("value : " + value);
+                //resultHashMap.put(epath, value);
+            }
+        }
+        
+        //System.out.println("===================================================" + resultHashMap);
+        return resultHashMap;
     }
 
     

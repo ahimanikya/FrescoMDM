@@ -304,11 +304,14 @@
                                                String potDupStatus = (String) eoHashMapValues.get("Status");
                                                 String potDupId = (String) eoHashMapValues.get("PotDupId");
 
-   						potDupIdValueExpression = ExpressionFactory.newInstance().createValueExpression(potDupId, potDupId.getClass());
+   						                        potDupIdValueExpression = ExpressionFactory.newInstance().createValueExpression(potDupId, potDupId.getClass());
                                                //weight = (new BigDecimal(weight)).ROUND_CEILING;
                                                //float weight = ((Float) eoHashMapValues.get("Weight")).floatValue();
                                                
-                                               HashMap fieldValuesMapSource = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT");
+                                               HashMap fieldValuesMapSource = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT_PREVIEW");
+											   fieldValuesMapSource.put("EUID",eoHashMapValues.get("EUID"));
+											   //System.out.println("fieldValuesMapSource EUID ====>" + fieldValuesMapSource.get("EUID"));
+											   //System.out.println("eoHashMapValues EUID ====>" + eoHashMapValues.get("EUID"));
                                                
 
                                                // Code to render headers
@@ -476,12 +479,13 @@
                                                         if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
                                                              epathValue = fieldConfigMap.getFullFieldName();
                                                          } else {
-                                                             epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
+                                                             //epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
+															 epathValue = fieldConfigMap.getFullFieldName();
                                                          }
                                                              
                                                     %>
                                                     <tr>                                                        
-                                                       <td>
+                                                       <td> 
                                                                 <%if (fieldValuesMapSource.get(epathValue) != null) {%>
                                                                 
                                                                 <%if ((j > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) &&
