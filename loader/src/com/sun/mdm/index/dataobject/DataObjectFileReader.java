@@ -54,6 +54,11 @@ public class DataObjectFileReader implements DataObjectReader {
 	private BufferedReader loaderFile;
 
 	/**
+	 * loader input filename
+	 */
+	private String loaderFileName;
+	
+	/**
 	 * this mode is used when the record fields contains delimiters characters
 	 * or newline character
 	 */
@@ -74,6 +79,7 @@ public class DataObjectFileReader implements DataObjectReader {
 	 *             if given string does not denote an existing regular file
 	 */
 	public DataObjectFileReader(String fileName) throws FileNotFoundException {
+		loaderFileName = fileName;
 		this.loaderFile = new BufferedReader(new FileReader(fileName));
 	}
 
@@ -90,6 +96,7 @@ public class DataObjectFileReader implements DataObjectReader {
 	 */
 	public DataObjectFileReader(String fileName, boolean specialMode)
 			throws FileNotFoundException {
+		loaderFileName = fileName;
 		this.loaderFile = new BufferedReader(new FileReader(fileName));
 		this.specialMode = specialMode;
 	}
@@ -104,12 +111,17 @@ public class DataObjectFileReader implements DataObjectReader {
 	 * @throws FileNotFoundException
 	 */
 	public DataObjectFileReader(File f) throws FileNotFoundException {
+		loaderFileName = f.getAbsolutePath();
 		this.loaderFile = new BufferedReader(new FileReader(f));
 	}
 
-	
-	
-	
+	/**
+	 * Gets loader input filename
+	 * @return String
+	 */
+	public String getFileName() {
+		return loaderFileName;
+	}
 	
 	/*
 	 * (non-Javadoc)
@@ -133,10 +145,11 @@ public class DataObjectFileReader implements DataObjectReader {
 	
 	
 	/**
-	 * reads the next record string from the file or null if end of the file is
+	 * Reads the next record string from the file or null if end of the file is
 	 * encountered
+	 * @return String the record string.
 	 */
-	private String readRecordString() {
+	public String readRecordString() {
 		try {
 			String record = loaderFile.readLine();
 
@@ -391,14 +404,4 @@ public class DataObjectFileReader implements DataObjectReader {
 
 		child.addFieldValue(sb.toString());
 	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-
-	}
-
-	
-
 }
