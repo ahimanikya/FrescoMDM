@@ -169,7 +169,7 @@ import com.sun.mdm.index.loader.common.Util;
 	    	}
 	    	
 	    	if (isSBR_) {
-	    		if (score >= duplicateThreshold_ ) {
+	    		if (score >= duplicateThreshold_ && score < matchThreshold_) {
 	    			String euid1 = data1.getFieldValue(1);
 	    			String euid2 = data2.getFieldValue(1);
 	    			MatchRecord record = new MatchEUIDRecord(euid1, euid2, score);
