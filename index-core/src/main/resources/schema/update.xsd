@@ -27,7 +27,7 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="SurvivorHelperConfig"/>
-				<xs:element ref="WeightedCalculator"/>
+				<xs:element ref="WeightedCalculator" maxOccurs="unbounded"/>
 				<xs:element ref="UpdateManagerConfig"/>
 			</xs:sequence>
 		</xs:complexType>
@@ -144,6 +144,7 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="strategy-class"/>
+				<xs:element ref="parameters" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
