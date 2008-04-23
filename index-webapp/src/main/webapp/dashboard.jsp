@@ -61,8 +61,8 @@
             <table border="0" cellspacing="10" cellpadding="4">
                 <!--Caption included-->                
                 <!--caption class="euidHeadMessage">Summary</caption-->
-                <tr><td><h:outputText value="#{msgs.dashboard_summary_table_link1}"/> : <h:commandLink  action="#{NavigationHandler.toDuplicateRecords}"><h:outputText value="#{DashboardHandler.countPotentialDuplicates} " /></h:commandLink></td></tr>
-                <tr><td><h:outputText value="#{msgs.dashboard_summary_table_link4}"/> : <h:commandLink  action="#{NavigationHandler.toAssumedMatches}"><h:outputText value="#{DashboardHandler.countAssumedMatches} " /></h:commandLink></td></tr>
+                <tr><td> <h:commandLink  action="#{NavigationHandler.toDuplicateRecords}"> <h:outputText value="#{msgs.dashboard_summary_table_link1}"/></h:commandLink> : <b><h:commandLink  action="#{NavigationHandler.toDuplicateRecords}"><h:outputText value="#{DashboardHandler.countPotentialDuplicates} " /> </h:commandLink> </b></td></tr>
+                <tr><td> <h:commandLink  action="#{NavigationHandler.toAssumedMatches}"> <h:outputText value="#{msgs.dashboard_summary_table_link4}"/></h:commandLink> : <b><h:commandLink  action="#{NavigationHandler.toAssumedMatches}"> <h:outputText value="#{DashboardHandler.countAssumedMatches} " /> </h:commandLink></b></td></tr>
             </table>
           </h:form>
          </div>
@@ -241,7 +241,7 @@
                 </tr>
                 <tr>
                     <td><h:inputText  id="euid4Field" value="#{DashboardHandler.euid4}" maxlength="#{SourceHandler.euidLength}" /></td>
-                    <td align="right" width="70px">
+                    <td align="right" width="66px">
                         <nobr>
                             <h:commandLink  action="#{DashboardHandler.lookupEuid4}">  
                                   <h:outputText value="#{msgs.dashboard_lookup_euid4}"/> 
