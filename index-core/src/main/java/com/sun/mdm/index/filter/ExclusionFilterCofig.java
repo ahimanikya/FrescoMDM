@@ -244,7 +244,10 @@ public class ExclusionFilterCofig implements ConfigurationInfo {
             String optionName = option.getNodeName();
             if (optionName.equals(FilterConstants.TAG_FILE_NAME)) {
                 String filename = parseFileName(option);
-                fileValueList = parseFlatFile(filename, delimiter);
+                
+                if (filename != null && filename.trim().length() != 0) {
+                    fileValueList = parseFlatFile(filename, delimiter);
+                }
             }
         }
         return fileValueList;
