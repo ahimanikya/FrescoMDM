@@ -1,32 +1,23 @@
 body {background-color:#F7FBFF;}
 INPUT{
            font-family: Arial, Helvetica, sans-serif;
-           background-repeat:no-repeat;      
-           background-image: url(../images/field-box.png);
-           width:182px;
-           height:25px;
+           background-repeat:no-repeat;     
            font-size:12px;
-           padding-left:10px;
            padding-top:2px;
            padding-bottom:2px;
-           border:none;
            color:#837F74;           
 }
 
 INPUT.READONLY{
            font-family: Arial, Helvetica, sans-serif;
            background-repeat:no-repeat;      
-           background-image: url(../images/field-box.png);
+           
            background: buttonface;
            background-color:#efefef;
-           font-color:#efefef;
-           width:182px;
-           height:25px;
-           font-size:12px;
-           padding-left:10px;
+           font-color:#efefef;          
+           font-size:12px;          
            padding-top:2px;
-           padding-bottom:2px;
-           border:none;
+           padding-bottom:2px;          
            color:#837F74;           
 }
 
