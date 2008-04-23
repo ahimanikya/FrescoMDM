@@ -588,16 +588,27 @@ function getDateFieldName(formName,idName)  {
     return 'null';
 } 
 
-
-function ClearContents(thisForm)  { 
-	thisFrm = document.forms[thisForm];
-	for(i=0; i< thisFrm.elements.length; i++)   {      
-        if(!thisFrm.elements[i].name != 'lidmask') {
-           thisFrm.elements[i].value = "";
-	    }
+ // Start Fix for 6691127  Modified by Anil
+ function ClearContents(thisForm)  {
+    
+    thisFrm = document.forms[thisForm];    
+    for(i=0; i< thisFrm.elements.length; i++)   {                      
+        
+        var fieldName = thisFrm.elements[i].name;        
+        if(thisFrm.elements[i].name != 'lidmask') {            
+            if(thisFrm.elements[i].name !=  'javax.faces.ViewState')   {                
+                if ( fieldName.indexOf("selectedSearchType") == -1 ) {                    
+                    thisFrm.elements[i].value = "";                 
+                    
+                }               
+            }            
+        }     
     }
+    
     return;
-} 
+    
+}
+
 
 function  confirmResolve(countDupId){
     
