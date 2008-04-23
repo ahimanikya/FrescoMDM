@@ -8,7 +8,6 @@ package com.sun.mdm.index.project.ui.wizards;
 
 /**
  *
- * @author  kkao
  */
 public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
     
@@ -76,12 +75,6 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
         jLabelSearchResult.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "MSG_SearchResult")); // NOI18N
 
         jLabelGenerateReport.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "MSG_GenerateReport")); // NOI18N
-
-        txtDisplayName.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "TabEDMPropertiesJPanel.txtDisplayName.text")); // NOI18N
-
-        txtInputMask.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "TabEDMPropertiesJPanel.txtInputMask.text")); // NOI18N
-
-        txtValueMask.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "TabEDMPropertiesJPanel.txtValueMask.text")); // NOI18N
 
         jComboBoxSearchRequired.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "true", "false", "oneof" }));
         jComboBoxSearchRequired.setPreferredSize(new java.awt.Dimension(48, 20));

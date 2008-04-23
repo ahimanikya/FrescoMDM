@@ -83,7 +83,8 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
     private static JTree mEntityTree = null;
     final JTextField mText = new JTextField();
     static EntityNode mPreviousSelectedNode = null;
-
+    EntityNode mCurrentSelectedNode = null;
+    
     static String mOldObjName = null;    
     static final boolean DEBUG = false;
     static final ImageIcon ROOTIMAGEICON = new ImageIcon(Utilities.loadImage(
@@ -114,6 +115,7 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
     private EntityNode mRootNode;
     private JPopupMenu mMenu;
     private JPopupMenu mTemplatesMenu;
+    private JPopupMenu mSubTemplatesMenu;
     private boolean mCreated = false;
     JLabel jLabelNoProperties;
     private JButton mButtonAddPrimary;
@@ -337,10 +339,52 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         mTemplatesMenu.add(createMenuItem(NbBundle.getMessage(
                         DefineEntityVisualPanel.class,
                         "MSG_menu_AddTemplatePerson"), TEMPLATEPERSONIMAGEICON));
+        
+        mSubTemplatesMenu = new JPopupMenu();
+        mSubTemplatesMenu.add(createMenuItem(NbBundle.getMessage(
+                        DefineEntityVisualPanel.class,
+                        "MSG_menu_AddSubNodeAlias"), SUBNODEIMAGEICON));
+        mSubTemplatesMenu.add(createMenuItem(NbBundle.getMessage(
+                        DefineEntityVisualPanel.class,
+                        "MSG_menu_AddSubNodeAddress"), SUBNODEIMAGEICON));
+        mSubTemplatesMenu.add(createMenuItem(NbBundle.getMessage(
+                        DefineEntityVisualPanel.class,
+                        "MSG_menu_AddSubNodePhone"), SUBNODEIMAGEICON));
+        mSubTemplatesMenu.add(createMenuItem(NbBundle.getMessage(
+                        DefineEntityVisualPanel.class,
+                        "MSG_menu_AddSubNodeAuxId"), SUBNODEIMAGEICON));
+
+
         mButtonTemplates = new JButton(TEMPLATESIMAGEICON);
         mButtonTemplates.setToolTipText(NbBundle.getMessage(DefineEntityVisualPanel.class,
                         "MSG_ToolTip_Templates"));
         mButtonTemplates.addMouseListener(new TemplatePopupListener());
+        mButtonTemplates.addFocusListener(new java.awt.event.FocusListener() {
+            public void focusGained(java.awt.event.FocusEvent e) {
+                if (mButtonTemplates.isEnabled()) {
+                    //mTemplatesMenu.show(e.getComponent(), e.getX(), e.getY());
+                    JButton button = (JButton) e.getComponent();
+                    int height = button.getHeight();
+                    int width = button.getWidth();
+                    int orX = button.getX();
+                    int orY = button.getY();
+                    int dispX = orX - (orX);
+                    int dispY = orY + (height - 1);
+
+                    if (mCurrentSelectedNode.isPrimary()) {
+                        mSubTemplatesMenu.show(e.getComponent(),
+                               dispX, dispY);
+                    } else {
+                        mTemplatesMenu.show(e.getComponent(),
+                               dispX, dispY);
+                    }
+                }
+            }
+
+            public void focusLost(java.awt.event.FocusEvent ev) {
+            }
+        });
+
         mButtonTemplates.setMnemonic('T');
         toolBar.add(mButtonTemplates);
 
@@ -699,24 +743,24 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
      *
      */
     public void valueChanged(TreeSelectionEvent e) {
-        EntityNode selectedNode = (EntityNode) e.getPath().getLastPathComponent();
-        if (mPreviousSelectedNode != selectedNode) {
-            mPreviousSelectedNode = selectedNode;
+        mCurrentSelectedNode = (EntityNode) e.getPath().getLastPathComponent();
+        if (mPreviousSelectedNode != mCurrentSelectedNode) {
+            mPreviousSelectedNode = mCurrentSelectedNode;
         }
-        mOldObjName = selectedNode.toString();
+        mOldObjName = mCurrentSelectedNode.toString();
         // Just hide it
         mTemplatesMenu.setVisible(false);
         
         // We should create the menu at selection
-        createMenu(selectedNode);
+        createMenu(mCurrentSelectedNode);
 
-        if (selectedNode.isField()) {
-            mSplitPane.setRightComponent(selectedNode.getPropertySheet());
+        if (mCurrentSelectedNode.isField()) {
+            mSplitPane.setRightComponent(mCurrentSelectedNode.getPropertySheet());
         } else {
             mSplitPane.setRightComponent(jLabelNoProperties);
         }
 
-        if (selectedNode.isRoot() || selectedNode.isPrimaryFields()) {
+        if (mCurrentSelectedNode.isRoot() || mCurrentSelectedNode.isPrimaryFields()) {
             mEntityTree.setEditable(false);
         } else {
             mEntityTree.setEditable(true);

@@ -248,7 +248,7 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
         pnlConfiguration.add(lblDesc);
         lblDesc.setBounds(10, 10, 120, 20);
         pnlConfiguration.add(cbStandardizationDataTypes);
-        cbStandardizationDataTypes.setBounds(130, 10, 440, 22);
+        cbStandardizationDataTypes.setBounds(130, 10, 440, 20);
 
         lblStep4.setText(bundle.getString("LBL_Variant_Field_Name")); // NOI18N
         pnlConfiguration.add(lblStep4);
@@ -289,7 +289,7 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
 
         jTextFieldVariant.setEnabled(false);
         pnlConfiguration.add(jTextFieldVariant);
-        jTextFieldVariant.setBounds(130, 70, 350, 19);
+        jTextFieldVariant.setBounds(130, 70, 350, 20);
 
         btnSelectVariantFieldName.setText(bundle.getString("LBL_Select")); // NOI18N
         btnSelectVariantFieldName.addActionListener(new java.awt.event.ActionListener() {
@@ -306,7 +306,7 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
 
         cbDomainSelector.setEditable(true);
         pnlConfiguration.add(cbDomainSelector);
-        cbDomainSelector.setBounds(130, 40, 440, 22);
+        cbDomainSelector.setBounds(130, 40, 440, 20);
 
         btnCancel.setText(bundle.getString("LBL_Cancel")); // NOI18N
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
