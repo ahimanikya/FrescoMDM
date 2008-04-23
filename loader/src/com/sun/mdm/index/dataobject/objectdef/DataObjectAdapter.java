@@ -51,9 +51,7 @@ public class DataObjectAdapter {
     private static ObjectDefinition objDef;
     private static HashMap<String,ObjectDefinition> objDefMap;
     private static SimpleDateFormat dateFormat_ = null;
-
    
-    
   
     public static void init(String eViewConfigFilePath) {
         DataObjectAdapter.configFilePath = eViewConfigFilePath;
@@ -323,7 +321,14 @@ public class DataObjectAdapter {
         ArrayList types = new ArrayList();
         ArrayList values = new ArrayList();
 
+        int datasize = dataObject.getFieldValues().size();
         Iterator iter = fields.iterator();
+        
+        if (fields.size() != datasize) {
+        	//logger.severe(""# of fields in data mismatches with object definition fields");
+        	throw new ObjectException( objectTag + ":# of fields in data don't match with # of object definition fields");
+        	
+        }
         int i = 0;
         while(iter.hasNext()) {
             Field f = (Field) iter.next();
