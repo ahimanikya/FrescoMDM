@@ -1,4 +1,4 @@
 export loader_home=${PWD}
 export CLASSPATH=_REPLACE_WITH_CLASSPATH_
 
-java  com.sun.mdm.index.loader.main.BulkMatcherLoader
+java -Xmx512M com.sun.mdm.index.loader.main.BulkMatcherLoader
