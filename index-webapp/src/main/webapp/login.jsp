@@ -67,38 +67,43 @@ if (request.getAttribute("Logout") == null && request.getRemoteUser() != null &&
                             <form name="loginform" id ="formid" method="POST" action="j_security_check" focus="j_username">
                             </f:verbatim>
                             <table border="0" cellpadding="0" cellspacing="0">
+                                
                                 <tbody>
                                     <tr>
                                         <!--alt=Enterprise Data Manager-->                                    
-                                        <td colspan='2'><img src='images/spacer.gif' alt="Enterprise Data Manager" height='120px'></td>
+                                        <td colspan="2"><img src='images/spacer.gif' alt="Enterprise Data Manager" height='120px'></td>
                                     </tr>
                                     <tr>
-                                        <td colspan='2'>
-                                            <f:verbatim>
-                                                <input type="text" name="j_username"  onkeyup=""  size="25"/>
-                                            </f:verbatim>
+                                        <td>
+                                            <h:outputText style="font-size:13px;" value="#{msgs.login_user_name_prompt}" />
                                         </td>
+                                        
+                                        <td colspan="1">
+                                            
+                                            <input type="text" name="j_username"  onkeyup=""  size="10"/>
+                                        </td>
+                                        
                                     </tr>
                                     <tr>
-                                        <td colspan='2'> 
-                                            <f:verbatim>
-                                                <input type="password" name="j_password" onkeyup="" size="25" redisplay="false"/>
-                                            </f:verbatim>
+                                        
+                                        
+                                        <td>
+                                            <h:outputText style="font-size:13px;" value="#{msgs.login_password_prompt}" />
+                                        </td>
+                                        <td colspan="1"> 
+                                            
+                                            <input type="password" name="j_password" onkeyup="" size="10" redisplay="false"/>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="2">                                          
-                                            <f:verbatim>
-                                            <nobr>
-                                                <a href="javascript:submitAction();" class="button"><span><h:outputText value="#{msgs.header_login_prompt}"/></span></a>
-                                            </nobr>
-                                            </f:verbatim>
+                                            <a href="javascript:submitAction();" class="button"><span><h:outputText value="#{msgs.header_login_prompt}"/></span></a>
                                         </td>
                                     </tr>
                                     <tr>
-                                    <!--alt=Sun Microsystems Logo-->
-                                    <td colspan='2'><img src='images/spacer.gif' alt="Sun Microsystems Logo" height='75px'></td>
-                                </tr>
+                                        <!--alt=Sun Microsystems Logo-->
+                                        <td colspan="2"><img src='images/spacer.gif' alt="Sun Microsystems Logo" height='75px'></td>
+                                    </tr>
                             </tbody>
                         </table>
                         <f:verbatim>
