@@ -326,7 +326,8 @@ public class DataObjectAdapter {
         
         if (fields.size() != datasize) {
         	//logger.severe(""# of fields in data mismatches with object definition fields");
-        	throw new ObjectException( objectTag + ":# of fields in data don't match with # of object definition fields");
+        	throw new ObjectException( objectTag + ":# of fields (" + datasize +" )in data don't match with # of (" +
+        			fields.size()+ " ) object definition fields");
         	
         }
         int i = 0;
