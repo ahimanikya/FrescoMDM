@@ -67,7 +67,7 @@ String requestPage = uri.substring(uri.lastIndexOf("/")+1,uri.length());
          <h:form>   
              <tr>
                  <td align="left">
-                     <img src='images/EDM-logo.png' alt="Enterprise Data Manager">
+  				     <img src='images/EDM-logo.png' alt="Master Index Data Manager" title="Master Index Data Manager" />
                  </td>
                  <td align="right">
                      <% if (session.getAttribute("user") != null) {%>
@@ -77,7 +77,7 @@ String requestPage = uri.substring(uri.lastIndexOf("/")+1,uri.length());
                      </h:commandLink>
                      
                      <%}%>             
-                     <img src='images/sun-logo.png' alt="Sun Microsystems Logo">
+                     <img src='images/sun-logo.png' alt="Sun Microsystems Logo" title="Sun Microsystems Logo"/>
                  </td>
              </tr>    
          </h:form>   
