@@ -159,8 +159,7 @@ public  class NavigationHandler {
      * @return <CODE>String</CODE>
      */
     public String toDashboard() {
-        // There is no screen object defined in the EDM.xml file for the "Dashboard"
-        session.setAttribute("ScreenObject",getScreenObject(RECORD_DETAILS));
+        session.setAttribute("ScreenObject",getScreenObject(DASH_BOARD));
         return DASH_BOARD;
     }
     /**
@@ -220,6 +219,8 @@ public  class NavigationHandler {
             java.util.logging.Logger.getLogger(NavigationHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         session.setAttribute("ScreenObject", getScreenObject(midmTagName));
+        //Remove the memory used for edit source records.
+        session.removeAttribute("singleSystemObjectLID");   
     //return headertabName;
     }
     
