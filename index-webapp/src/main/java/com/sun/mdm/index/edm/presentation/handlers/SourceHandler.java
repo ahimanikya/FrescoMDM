@@ -269,7 +269,7 @@ public class SourceHandler {
 //            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //        
-//       
+//          
 
           SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
           String createDate = null;
@@ -525,7 +525,7 @@ public class SourceHandler {
      * 
      * @param event
      */
-    public void editLID(ActionEvent event){
+    public void editLID(ActionEvent event){ 
         // set the tab name to be view/edit
         session.setAttribute("tabName", "View/Edit");
         try {
@@ -709,6 +709,8 @@ public class SourceHandler {
         HttpSession sessionLocal = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     
         ScreenObject screenObjectLocal = (ScreenObject) sessionLocal.getAttribute("ScreenObject");
+        
+        if(screenObjectLocal!=null){
     
         ArrayList subScreenObjectList = screenObjectLocal.getSubscreensConfig();
         ScreenObject subScreenObject = null;
@@ -743,6 +745,7 @@ public class SourceHandler {
                 }
             }
         }
+        }
         return viewEditScreenConfigArray;
     }
 
@@ -752,6 +755,8 @@ public class SourceHandler {
 
     public ArrayList getAddScreenConfigArray() {
         ArrayList basicSearchFieldConfigs;
+        
+        if(screenObject!=null){
         
         ArrayList subScreenObjectList = screenObject.getSubscreensConfig();
         ScreenObject subScreenObject = null;
@@ -785,6 +790,7 @@ public class SourceHandler {
                 }
             }
         }
+        }
         return addScreenConfigArray;
     }
 
@@ -794,6 +800,8 @@ public class SourceHandler {
 
     public ArrayList getMergeScreenConfigArray() {
         ArrayList basicSearchFieldConfigs;
+        
+        if(screenObject!=null){
         
         ArrayList subScreenObjectList = screenObject.getSubscreensConfig();
         ScreenObject subScreenObject = null;
@@ -825,6 +833,7 @@ public class SourceHandler {
                     mergeScreenConfigArray = basicSearchFieldGroup.getFieldConfigs();
                 }
         }
+        }
         
         return mergeScreenConfigArray;
     }
@@ -840,6 +849,8 @@ public class SourceHandler {
     public ArrayList getSearchScreenConfigArray() {
         ArrayList basicSearchFieldConfigs;
         
+        if (screenObject!=null){
+            
         ArrayList subScreenObjectList = screenObject.getSubscreensConfig();
         ScreenObject subScreenObject = null;
 
@@ -872,6 +883,7 @@ public class SourceHandler {
                 }
             }
         }
+        }
         return searchScreenConfigArray;
     }
 
@@ -887,7 +899,9 @@ public class SourceHandler {
 
         HttpSession sessionLocal = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     
+      
         ScreenObject screenObjectLocal = (ScreenObject) sessionLocal.getAttribute("ScreenObject");
+       if (screenObjectLocal!=null){
 
         ArrayList subScreenObjectList = screenObject.getSubscreensConfig();
         ScreenObject subScreenObject = null;
@@ -917,6 +931,7 @@ public class SourceHandler {
                 viewEditResultsConfigArray = basicSearchFieldGroup.getFieldConfigs();
             }
         }
+        }
         return viewEditResultsConfigArray;
     }
 
@@ -945,6 +960,8 @@ public class SourceHandler {
         EPathArrayList ePathArrayList = new EPathArrayList();
         try {
             ConfigManager.init();
+            
+            if(screenObject!=null){
             String rootName = screenObject.getRootObj().getName();
             ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(rootName);
             FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
@@ -956,6 +973,8 @@ public class SourceHandler {
                   ePathArrayList.add(fieldConfig.getFullFieldName());
                 }
             }
+            }
+            
         } catch (Exception ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -971,6 +990,8 @@ public class SourceHandler {
             if (objectNodeConfig != null)
 			{
 				FieldConfig[] allFeildConfigs = objectNodeConfig.getFieldConfigs();
+                                
+                     if (screenObject!=null){
 	            String rootName = screenObject.getRootObj().getName();
 	            //Build Person Epath Arraylist
 		        for (int i = 0; i < allFeildConfigs.length; i++) {
@@ -980,6 +1001,7 @@ public class SourceHandler {
 						}
 				}
 			}
+            }
         } catch (Exception ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -993,12 +1015,15 @@ public class SourceHandler {
             ConfigManager.init();
             ObjectNodeConfig objectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(objectType);
             FieldConfig[] allFeildConfigs = objectNodeConfig.getFieldConfigs();
+            
+            if(screenObject!=null){
             String rootName = screenObject.getRootObj().getName();
 
             //Build Person Epath Arraylist
             for (int i = 0; i < allFeildConfigs.length; i++) {
                 FieldConfig fieldConfig = allFeildConfigs[i];
                 fcArrayList.add(fieldConfig);
+            }
             }
         } catch (Exception ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -1018,7 +1043,8 @@ public class SourceHandler {
         ArrayList newArrayList = new ArrayList();
         try {
             ConfigManager.init();
-    
+            
+            if(screenObject!=null){
             String rootName  = screenObject.getRootObj().getName();
             ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(rootName);
             FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
@@ -1039,7 +1065,7 @@ public class SourceHandler {
                     FieldConfig fieldConfig = allChildFeildConfigs[j];
                     newArrayList.add(fieldConfig);
                 }
-            }
+            }}
         } catch (Exception ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1190,6 +1216,7 @@ public class SourceHandler {
         try {
             ConfigManager.init();
             
+            if(screenObject!=null){
             ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(screenObject.getRootObj().getName());
             FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
 
@@ -1202,6 +1229,7 @@ public class SourceHandler {
                 if(!strCheckEuid.equalsIgnoreCase(fieldConfig.getFullFieldName())) {
                   newArrayList.add(fieldConfig);
                 }
+            }
             }
 
         } catch (Exception ex) {
@@ -1269,19 +1297,21 @@ public class SourceHandler {
 
         try {
 
+            if(screenObject!=null){
             String rootNodeName = screenObject.getRootObj().getName();
-
             ConfigManager.init();
             ObjectNodeConfig rootNodeObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(rootNodeName);
 
             //Build and array of field configs for the root node for ex: PERSON
             newHashMap.put(rootNodeName, rootNodeObjectNodeConfig.getFieldConfigs());
-
+            
+            
             ObjectNodeConfig[] arrObjectNodeConfig = screenObject.getRootObj().getChildConfigs();
 
             for (int i = 0; i < arrObjectNodeConfig.length; i++) {
                 ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
                 newHashMap.put(childObjectNodeConfig.getName(), childObjectNodeConfig.getFieldConfigs());
+            }
             }
 
         } catch (Exception ex) {
@@ -1317,6 +1347,7 @@ public class SourceHandler {
                 }
             }
 
+
         } catch (Exception ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1334,20 +1365,21 @@ public class SourceHandler {
     public HashMap getAllNodeFieldConfigsSizes() {
          HashMap newHashMap = new HashMap();
         try {
-
-            String rootNodeName = screenObject.getRootObj().getName();
-
+            
+            
             ConfigManager.init();
+        
+            if(screenObject!=null){
+            
+            String rootNodeName = screenObject.getRootObj().getName();
             ObjectNodeConfig rootNodeObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(rootNodeName);
-
             //Build and array of field configs for the root node for ex: PERSON
             newHashMap.put(rootNodeName, rootNodeObjectNodeConfig.getFieldConfigs());
-
             ObjectNodeConfig[] arrObjectNodeConfig = screenObject.getRootObj().getChildConfigs();
-
             for (int i = 0; i < arrObjectNodeConfig.length; i++) {
                 ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
                 newHashMap.put(childObjectNodeConfig.getName(), childObjectNodeConfig.getFieldConfigs().length*60);
+            }
             }
 
         } catch (Exception ex) {
@@ -1370,20 +1402,19 @@ public class SourceHandler {
         try {
             ConfigManager.init();
             
+            if (screenObject!=null){    
             ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(screenObject.getRootObj().getName());
             FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
 
             //Build Person Epath Arraylist
             for (int i = 0; i < allFeildConfigs.length; i++) {
                 FieldConfig fieldConfig = allFeildConfigs[i];
-               
-                String strCheckEuid = screenObject.getRootObj().getName()+".EUID";
-               
+                String strCheckEuid = screenObject.getRootObj().getName()+".EUID";               
                 if(!strCheckEuid.equalsIgnoreCase(fieldConfig.getFullFieldName())) {
                   newArrayList.add(fieldConfig);
                 }
             }
-
+            }
         } catch (Exception ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1405,9 +1436,10 @@ public class SourceHandler {
         ArrayList newArrayList = new ArrayList();
         try {
             ConfigManager.init();
-
+            
+            if(screenObject!=null){
             ObjectNodeConfig[] arrObjectNodeConfig = screenObject.getRootObj().getChildConfigs();
-
+            
             for (int i = 0; i < arrObjectNodeConfig.length; i++) {
                 ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
                 HashMap newHashMap = new HashMap();
@@ -1416,6 +1448,7 @@ public class SourceHandler {
                 newHashMap.put("FIELDCONFIGS", childObjectNodeConfig.getFieldConfigs());
                 newArrayList.add(newHashMap);
             }
+           }
 
         } catch (Exception ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -1435,7 +1468,8 @@ public class SourceHandler {
         ArrayList newArrayList = new ArrayList();
         try {
             ConfigManager.init();
-
+            
+            if(screenObject!=null){
             ObjectNodeConfig[] arrObjectNodeConfig = screenObject.getRootObj().getChildConfigs();
 
             for (int i = 0; i < arrObjectNodeConfig.length; i++) {
@@ -1447,7 +1481,7 @@ public class SourceHandler {
                 newHashMap.put("FIELDCONFIGS", childObjectNodeConfig.getFieldConfigs());
                 newArrayList.add(newHashMap);
             }
-
+            }
         } catch (Exception ex) {
             Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
