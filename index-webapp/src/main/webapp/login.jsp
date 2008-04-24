@@ -1,4 +1,3 @@
-
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
@@ -30,7 +29,6 @@ if (request.getAttribute("Logout") == null && request.getRemoteUser() != null &&
         </head>
 <script language="JavaScript">
     function submitAction() {
-        //alert('submitActionsubmitAction');
         document.loginform.submit();
     }
 
@@ -71,7 +69,7 @@ if (request.getAttribute("Logout") == null && request.getRemoteUser() != null &&
                                 <tbody>
                                     <tr>
                                         <!--alt=Enterprise Data Manager-->                                    
-                                        <td colspan="2"><img src='images/spacer.gif' alt="Enterprise Data Manager" height='120px'></td>
+                                        <td colspan="2"><img src='images/spacer.gif' alt="Master Index Data Manager" title="Master Index Data Manager" height='120px'></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -102,7 +100,7 @@ if (request.getAttribute("Logout") == null && request.getRemoteUser() != null &&
                                     </tr>
                                     <tr>
                                         <!--alt=Sun Microsystems Logo-->
-                                        <td colspan="2"><img src='images/spacer.gif' alt="Sun Microsystems Logo" height='75px'></td>
+                                        <td colspan="2"><img src='images/spacer.gif' alt="Sun Microsystems Logo" title="Sun Microsystems" height='75px'></td>
                                     </tr>
                             </tbody>
                         </table>
