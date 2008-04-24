@@ -30,8 +30,6 @@ if(session!=null && session.isNew()) {
 
 <%
 if(session.getAttribute("ScreenObject") == null  ) {
-	//System.out.println("redirecting if screen object is null ");
-
 %>
    <c:redirect url="login.jsf"/>
 <%}
@@ -77,7 +75,7 @@ String requestPage = uri.substring(uri.lastIndexOf("/")+1,uri.length());
                      </h:commandLink>
                      
                      <%}%>             
-                     <img src='images/sun-logo.png' alt="Sun Microsystems Logo" title="Sun Microsystems Logo"/>
+                     <img src='images/sun-logo.png' alt="Sun Microsystems" title="Sun Microsystems"/>
                  </td>
              </tr>    
          </h:form>   
