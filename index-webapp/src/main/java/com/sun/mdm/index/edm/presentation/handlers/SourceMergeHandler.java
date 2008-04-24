@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package com.sun.mdm.index.edm.presentation.handlers;
+package com.sun.mdm.index.edm.presentation.handlers;   
 
 import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
 import com.sun.mdm.index.edm.services.configuration.ScreenObject;
@@ -231,20 +231,23 @@ public class SourceMergeHandler {
   
   
      public String performLidMergeSearch () {
-         session.setAttribute("tabName","Merge");
+        session.setAttribute("tabName","Merge");
         try {
-          
-					  
+            String errorMessage = bundle.getString("system_object_not_found_error_message");					  
+            errorMessage += this.source ; 
             SystemObject systemObjectLID = null;
             ArrayList newArrayList  = new ArrayList();
+	    CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+
+            boolean validateSystemCode = false;
             if (this.getLid1() != null && this.getLid1().trim().length()>0 ) {
                 String lid1 = this.getLid1().replaceAll("-", "");
                 this.setLid1(lid1);
                 systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid1);
                 //Throw exception if SO is found null.
                 if (systemObjectLID == null) {
-                    String errorMessage = bundle.getString("system_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    errorMessage +=  "," + this.getLid1();
+                    validateSystemCode = true; 
                  } else {
                     newArrayList.add(systemObjectLID);
                 }
@@ -255,8 +258,8 @@ public class SourceMergeHandler {
                 systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid2);
                 //Throw exception if SO is found null.
                 if (systemObjectLID == null) {
-                    String errorMessage = bundle.getString("system_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    errorMessage += "," + this.getLid2();
+                    validateSystemCode = true; 
                 } else {
                     newArrayList.add(systemObjectLID);
                 }
@@ -267,8 +270,8 @@ public class SourceMergeHandler {
                  systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid3);
                 //Throw exception if SO is found null.
                 if (systemObjectLID == null) {
-                   String errorMessage = bundle.getString("system_object_not_found_error_message");
-                   FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                   errorMessage += "," + this.getLid3();
+                   validateSystemCode = true; 
                 } else {
                     newArrayList.add(systemObjectLID);
                 }
@@ -279,12 +282,16 @@ public class SourceMergeHandler {
                 systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid4);
                 //Throw exception if SO is found null.
                 if (systemObjectLID == null) {
-                    String errorMessage = bundle.getString("system_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    errorMessage += "," +  this.getLid4();
+                    validateSystemCode = true; 
                 } else {
                     newArrayList.add(systemObjectLID);
                 }
             }
+            if(validateSystemCode) {
+               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            }
+
             ArrayList newSoArrayList  = new ArrayList();
         for (int i = 0; i < newArrayList.size(); i++) {
                 SystemObject systemObject = (SystemObject) newArrayList.get(i);
@@ -296,38 +303,18 @@ public class SourceMergeHandler {
                 systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode());// set System code here 
                 systemObjectHashMap.put("Status", systemObject.getStatus());// set Status here 
                 
-                HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, personEPathArrayList);
-                
-                //add SystemCode and LID value to the new Hash Map
-                systemObjectHashMap.put("SYSTEM_OBJECT", editSystemObjectHashMap);// Set the edit SystemObject here
 
-                //set address array list of hasmap for editing
-                ArrayList addressMapSOArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths("Address"), "Address", MasterControllerService.MINOR_OBJECT_UPDATE);
-            
-                    systemObjectHashMap.put("SOAddressList", addressMapSOArrayList);// set SO addresses as arraylist here    
-
-                //set phone array list of hasmap for editing
-                ArrayList phoneMapSOArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths("Phone"), "Phone", MasterControllerService.MINOR_OBJECT_UPDATE);
-                
-                    systemObjectHashMap.put("SOPhoneList", phoneMapSOArrayList);// set SO phones as arraylist here    
-
-                //set alias array list of hasmap for editing
-                ArrayList aliasMapSOArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths("Alias"), "Alias", MasterControllerService.MINOR_OBJECT_UPDATE);
-                
-                systemObjectHashMap.put("SOAliasList", aliasMapSOArrayList);// set SO alias as arraylist here
-
-                //build the system object hashmap for editing 
-                newSoArrayList.add(systemObjectHashMap);
+                //HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, personEPathArrayList);
+                HashMap editSystemObjectHashMap  = (HashMap) compareDuplicateManager.getSystemObjectAsHashMap(systemObject, screenObject);
+                newSoArrayList.add(editSystemObjectHashMap);
                 
                 //System.out.println("IN ACTION EVENT ===> : this.editSOMinorObjectsHashMapArrayList" + this.editSOMinorObjectsHashMapArrayList);
             }
             
             if(newSoArrayList.size() > 0) {
                 setSoArrayList(newSoArrayList);
+                session.setAttribute("soHashMapArrayList", newSoArrayList);
             }
-            //System.out.println("IN ACTION EVENT ===> : this.soArrayList" + this.soArrayList);
-            //System.out.println("IN ACTION EVENT ===> : this.newSoArrayList" + newSoArrayList);
-            session.setAttribute("soHashMapArrayList", newSoArrayList);
             
        } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
@@ -430,8 +417,8 @@ public class SourceMergeHandler {
 
 
             String[] lids = this.formlids.split(":");
-            String sourceLid = lids[0];
-            String destnLid = lids[1];
+            String sourceLid = lids[1];
+            String destnLid = lids[0];
 
             CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
             HashMap mergredHashMapVaueExpression = (HashMap) event.getComponent().getAttributes().get("mergedEOValueExpression");
@@ -451,7 +438,7 @@ public class SourceMergeHandler {
                 ArrayList finalMergredDestnEOArrayList = new ArrayList();
                 finalMergredDestnEOArrayList.add(finalMergredDestnSO);
                 session.removeAttribute("soHashMapArrayList");
-
+				System.out.println("mergeComplete is updated ");
                 request.setAttribute("mergedSOMap", finalMergredDestnEOArrayList);
             } catch (ProcessingException ex) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
@@ -485,7 +472,7 @@ public class SourceMergeHandler {
              
            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
         
-            HashMap destnMap  = (HashMap) compareDuplicateManager.getSystemObjectAsHashMap(so, screenObject).get("SYSTEM_OBJECT");
+            HashMap destnMap  = (HashMap) compareDuplicateManager.getSystemObjectAsHashMap(so, screenObject).get("SYSTEM_OBJECT_EDIT");
            // System.out.println("destnMap" + destnMap);
             session.removeAttribute("soHashMapArrayList");
             
@@ -497,7 +484,8 @@ public class SourceMergeHandler {
             session.setAttribute("soHashMapArrayList",finalMergredDestnEOArrayList);            
             request.setAttribute("lids", lids);
             request.setAttribute("lidsource", this.lidsource);
-            
+            request.setAttribute("mergeComplete", "mergeComplete");			
+
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
             mLogger.error("ProcessingException ex : " + ex.toString());
