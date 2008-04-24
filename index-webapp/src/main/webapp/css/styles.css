@@ -244,7 +244,7 @@ width:25px;
 {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size:18px;
-	color:#837F74;
+	color:#837F74;	
 	font-weight:bold;	
 }
 
@@ -289,7 +289,7 @@ width:25px;
 {
   font-family: Arial, Helvetica, sans-serif;
   font-size:18px;
-  color:#837F74;
+  color:#837F74;  
   font-weight:bold;  
 }
 
@@ -367,8 +367,8 @@ width:25px;
 }
 
 .loginForm  table {
-           font-family: Arial, Helvetica, sans-serif;
-           width:330px;
+           font-family:  Arial, Helvetica, sans-serif;
+           width:230px;
            height:370px;
            font-size:15px;
            
@@ -378,13 +378,11 @@ width:25px;
            font-family: Arial, Helvetica, sans-serif;
            background-repeat:no-repeat;      
            font-size:15px;
-           padding-left:95px;
+           padding-left:30px;
            color:#837F74;
-           font-weight:bold;
-           width:127px;
+           /* font-weight:bold; */
            height:22px;
-
-           
+    
 }
 
 
@@ -745,6 +743,7 @@ width:25px;
 	  padding-top:0px; 
 	  padding-bottom:0px;   
 }
+
 
 .printClass
 {
