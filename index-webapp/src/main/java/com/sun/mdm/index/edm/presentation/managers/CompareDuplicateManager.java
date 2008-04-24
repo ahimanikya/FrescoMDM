@@ -359,6 +359,10 @@ public class CompareDuplicateManager {
             
             }
 
+            //add SystemCode and LID value to the new Hash Map
+            editSystemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
+            editSystemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
+            editSystemObjectHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SYSTEM_OBJECT_UPDATE); // set UPDATE TYPE HERE
 
             systemObjectHashMap.put("SYSTEM_OBJECT", editSystemObjectHashMap); // Set the edit SystemObject here
 
@@ -582,11 +586,17 @@ public class CompareDuplicateManager {
             String strVal = new String();
 
             ArrayList viewHistoryEOList = masterControllerService.viewHistory(euid);
-            HashMap histEOMap = new HashMap();
+           // Commented By Anil (fix for 6677999,6681656,6685729), this Hashmap has to be local 
+		   //HashMap histEOMap = new HashMap();
             for (int i = 0; i < viewHistoryEOList.size(); i++) {
+			
+				// Start fix for 6677999,6681656,6685729
+				HashMap histEOMap = new HashMap();
+
+				// End fix  
+
                 HashMap objectHistMap = (HashMap) viewHistoryEOList.get(i);
                 String key = (String) objectHistMap.keySet().toArray()[0];
-
                 HashMap objectHistMapUpdated = new HashMap();
                 if (objectHistMap.get(key) != null) {
                     eoHist = (EnterpriseObject) objectHistMap.get(key);
@@ -709,6 +719,10 @@ public class CompareDuplicateManager {
                 
                 
                 
+                //add SystemCode and LID value to the new Hash Map
+                editSystemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID());
+                editSystemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
+                editSystemObjectHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SYSTEM_OBJECT_UPDATE); // set UPDATE TYPE HERE
                 systemObjectHashMap.put("SYSTEM_OBJECT", editSystemObjectHashMap); // Set the edit SystemObject here
 
                 
