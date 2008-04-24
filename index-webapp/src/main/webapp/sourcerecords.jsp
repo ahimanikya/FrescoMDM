@@ -978,11 +978,14 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                     
 
                                         <table width="100%">
+                                       <%if ("Add".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
                                             <tr>
                                                 <td>
+
                                                     <h:messages  warnClass="warningMessages" infoClass="infoMessages" errorClass="errorMessages"  fatalClass="errorMessages" layout="list" />    
                                                 </td>
                                             </tr>
+									   <%}%>
                                             <tr>
                                                 <td>
 				                <h:form id="basicValidateAddformData">
@@ -1326,52 +1329,64 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                               <% if(operations.isSO_Merge()){%> 
                                 <div id="mergeTab">
                                         <table border="0" cellpadding="0" cellspacing="0">
+                                       <%if ("Merge".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
+                                            <tr>
+                                                <td>
+
+                                                    <h:messages  warnClass="warningMessages" infoClass="infoMessages" errorClass="errorMessages"  fatalClass="errorMessages" layout="list" />    
+                                                </td>
+                                            </tr>
+									   <%}%>
+
                                             <tr>
                                                 <td>
                                                    <h:form id="basicMergeformData">
-                                                     <table border="0" cellpadding="0" cellspacing="0">
+                                                     <table border="0" cellpadding="1" cellspacing="0">
                                                            <tr>
                                                                <td>
-                                                                   <h:outputLabel for="#{msgs.transaction_source}" value="#{msgs.transaction_source}"/>
+                                                                   <h:outputLabel style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   for="#{msgs.transaction_source}" value="#{msgs.transaction_source}"/>
                                                                 </td>
                                                                <td>
                                                                    <h:selectOneMenu  onchange="javascript:setLidMaskMergeValue(this,'basicMergeformData')"
-                                                                                     id="sourceOption" 
-                                                                                     value="#{SourceMergeHandler.source}" >
+																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"id="sourceOption" 
+                                                                   value="#{SourceMergeHandler.source}" >
 																	   <f:selectItem itemLabel="" itemValue="" />
                                                                        <f:selectItems  value="#{SourceMergeHandler.selectOptions}" />
                                                                    </h:selectOneMenu>
                                                                </td>
-                                                               <input id='lidmask' type='hidden' name='lidmask' value='DDD-DDD-DDDD' />
-                                                               
-                                                               <td> &nbsp;&nbsp</td>
+                                                               <input id='lidmask' type='hidden' name='lidmask' value='DDD-DDD-DDDD' />           
                                                                <td>
-                                                               <h:outputText value="#{msgs.source_merge_head1}"/>
+                                                               <h:outputText style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   value="#{msgs.source_merge_head1}"/>
                                                                <h:inputText value="#{SourceMergeHandler.lid1}" id="LID1"
-                                                                            onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
-                                                                            onkeyup="javascript:qws_field_on_key_up(this)"/>  
-                                                               <td>&nbsp;&nbsp</td>
+																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                    onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
+                                                                    onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                <td>
-                                                                   <h:outputText value="#{msgs.source_merge_head2}"/>
+                                                                   <h:outputText 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   value="#{msgs.source_merge_head2}"/>
                                                                    <h:inputText value="#{SourceMergeHandler.lid2}" id="LID2"
-                                                                                onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
-                                                                                onkeyup="javascript:qws_field_on_key_up(this)"/>  
+																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
+                                                                   onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
-                                                               <td> &nbsp;&nbsp</td>
                                                                <td>
-                                                                   <h:outputText value="#{msgs.source_merge_head3}"/>
+                                                                   <h:outputText 																    style="font-family: Arial, Helvetica,  sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   value="#{msgs.source_merge_head3}"/>
                                                                    <h:inputText value="#{SourceMergeHandler.lid3}" id="LID3"
+																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                                 onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
-                                                               <td> &nbsp;&nbsp</td>
                                                                <td>
-                                                                   <h:outputText value="#{msgs.source_merge_head4}"/>
+                                                                   <h:outputText 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   value="#{msgs.source_merge_head4}"/>
                                                                    <h:inputText value="#{SourceMergeHandler.lid4}" id="LID4"
+																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                                 onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
-                                                               <td> &nbsp;&nbsp</td>
                                                                <td><nobr>
                                                                        <h:commandLink  styleClass="button" rendered="#{Operations.SO_SearchView}"
                                                                                        action="#{SourceMergeHandler.performLidMergeSearch}">
@@ -1532,7 +1547,13 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                         <td id="previewmenu" class="menutop"><h:outputText value="#{msgs.preview_column_text}" /></td>
                                                                     </tr> 
                                                                         <tr>
-                                                                            <td valign="top"  id="previewcurve">&nbsp;</td>
+                                                                            <td valign="top"  id="previewcurve">
+																			<%if(request.getAttribute("mergedSOMap") != null) {%>
+																			  <b><%=previewpersonfieldValuesMapEO.get("LID")%></b>
+																			<%} else {%>
+																			   &nbsp;
+																			<%}%>
+																			</td>
                                                                         </tr>
                                                                 </table>
                                                             </div>
@@ -1710,12 +1731,12 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                      <tr><td colspan="2"> &nbsp;</td></tr>
                      <tr><td colspan="2"> &nbsp;</td></tr>
                       <tr>
-                          <th align="center"><h:outputText value="#{msgs.lid_merge_popup_text}"/></th><th style="padding-right:160px;"><div id="confirmContent"></div></th>
+                          <th  align="center" valign="top"><h:outputText value="#{msgs.lid_merge_popup_text}"/></th><th style="padding-right:160px;"><div id="confirmContent"></div></th>
                      </tr>
                      <tr><td colspan="2"> &nbsp;</td></tr>
                      <tr><td colspan="2"> &nbsp;</td></tr>
                     <tr>
-                         <td colspan=2>
+                         <td colspan=2  align="center" valign="top">
                              <h:commandLink styleClass="button" 
                                             action="#{SourceMergeHandler.mergePreviewSystemObject}">
                                  <span><h:outputText value="#{msgs.ok_text_button}" /></span>
@@ -1855,11 +1876,16 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
               <div id="editballoon<h:outputText value="#{childNodesName}"/>" class="balloonstyle">"<h:outputText  value="#{childNodesName}"/>" Help text goes here.</div>
           </h:column>                 
     </h:dataTable>
-    
-        <%if( request.getAttribute("lids") != null) {
-           
+    <!--Fix for Bug : 6692060 (By Sridhar) START-->
+        <%if( request.getAttribute("mergeComplete") != null) {%>
+		     <script>
+			   alert("Complete......" + request.getAttribute("mergeComplete"));
+		      document.getElementById('confirmationButton').style.visibility = 'hidden';
+		      document.getElementById('confirmationButton').style.display = 'none';
+       		 </script>
+        <%} else if( request.getAttribute("lids") != null) {           
         String[] srcs  = (String[]) request.getAttribute("lids");
-        String  lidsSource  = (String) request.getAttribute("lidsource");
+        String  lidsSource  = (String) request.getAttribute("lidsource");		
         for(int i=0;i<srcs.length;i++) {
         %>    
         
@@ -1872,11 +1898,12 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
         </script>
         <%}%>
         <script>
-            document.getElementById("confirmContent").innerHTML  = '<%=srcs[0]%>';
+            document.getElementById("confirmContent").innerHTML  = '<%=srcs[1]%>';
             document.getElementById("finalMergeForm:previewhiddenLid1").value  = '<%=srcs[0]+":" + srcs[1]%>';
             document.getElementById("finalMergeForm:previewhiddenLid1source").value  = '<%=lidsSource%>';
         </script>
         <%}%> 
+	  <!--Fix for Bug : 6692060 (By Sridhar) ENDS -->
 
 <form id="EditIndexForm" name="EditIndexForm">
 		<input type="hidden" id="EditIndexFormID" value="-1" />

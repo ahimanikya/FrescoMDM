@@ -893,8 +893,9 @@ function submitFormData(form, thisInnerHtmlDivName) {
 
            document.getElementById("LID1").innerHTML = one;
            document.getElementById("LID2").innerHTML = two;
-           document.getElementById("previewlid1Form:previewhiddenLid1").value = lidArray[0] + ':' + lidArray[1];
-           document.getElementById("previewlid2Form:previewhiddenLid2").value = lidArray[1] + ':'+ lidArray[0];
+            document.getElementById("previewlid1Form:previewhiddenLid1").value = lidArray[1] + ':' + lidArray[0];
+
+            document.getElementById("previewlid2Form:previewhiddenLid2").value = lidArray[0] + ':'+ lidArray[1];
            //Set System
            document.getElementById("previewlid1Form:previewhiddenLid1source").value = system;
            document.getElementById("previewlid2Form:previewhiddenLid2source").value = system;
