@@ -2599,7 +2599,7 @@ public class EDMType {
                 simpleSearchPage = subScreen.commonBlock.addSimpleSearchPage();
                 simpleSearchPage.screenTitle = "Advanced Search";
                 simpleSearchPage.searchResultID = "0";
-                simpleSearchPage.searchScreenOrder = "0";
+                simpleSearchPage.searchScreenOrder = "1";
                 simpleSearchPage.showEuid = "true";
                 simpleSearchPage.showLid = "false";
                 simpleSearchPage.showStatus = "false";
