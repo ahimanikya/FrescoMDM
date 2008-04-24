@@ -1142,9 +1142,35 @@ public class MasterControllerService {
      * @throws com.sun.mdm.index.master.ProcessingException
      * @throws com.sun.mdm.index.master.UserException
      */
-    public boolean isEUIDMerge(String transactionNumber) throws ProcessingException, UserException{
+    public boolean isEUIDMerge(String transactionNumber) throws ProcessingException, UserException, PageException, RemoteException {
         TransactionSummary transactionSummary = QwsController.getMasterController().lookupTransaction(transactionNumber);
-        return transactionSummary.getTransactionObject().getFunction().equalsIgnoreCase("euidMerge");        
+        // return transactionSummary.getTransactionObject().getFunction().equalsIgnoreCase("euidMerge");         
+        boolean result = false;
+        TransactionObject transactionObject = transactionSummary.getTransactionObject();
+        if (transactionObject == null) {
+            return false;
+        }
+        String euid = transactionObject.getEUID();
+        boolean merged = false;
+        TransactionObject transactionObjectNew = this.findMergeType(euid);
+        if (transactionObjectNew == null) {
+            merged = false;
+        } else {
+            String function = transactionObjectNew.getFunction();
+            if (function == null) {
+                merged = false;
+            } else {
+                if ("euidMerge".equalsIgnoreCase(function)) {
+                    merged = true;
+                }
+            }
+        }
+        if (merged == true && transactionObject.getTransactionNumber().equals(transactionObjectNew.getTransactionNumber())) {
+            result = true;
+        } else {
+            result = false;
+        }
+        return result;
     }
     
     public String getPotentialDuplicateID(String euid, String dupID) throws ProcessingException, UserException, PageException, RemoteException {

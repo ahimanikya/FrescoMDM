@@ -32,6 +32,7 @@
 package com.sun.mdm.index.edm.presentation.handlers;
 import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
 import com.sun.mdm.index.master.MergeResult;
+import com.sun.mdm.index.master.search.merge.MergeHistoryNode;
 import com.sun.mdm.index.page.PageException;
 import java.rmi.RemoteException;
 import javax.faces.event.*;
@@ -78,6 +79,7 @@ import java.util.StringTokenizer;
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
 import com.sun.mdm.index.edm.services.configuration.ScreenObject;
+import com.sun.mdm.index.objects.TransactionObject;
 
 public class TransactionHandler extends ScreenConfiguration {
     /**
@@ -116,7 +118,7 @@ public class TransactionHandler extends ScreenConfiguration {
     
     public String performSubmit() throws HandlerException  {
         try {
-
+           
             HashMap newFieldValuesMap = new HashMap();
             if (super.getEnteredFieldValues() != null && super.getEnteredFieldValues().length() > 0) {
                 String[] fieldNameValues = super.getEnteredFieldValues().split(">>");
@@ -728,7 +730,7 @@ public class TransactionHandler extends ScreenConfiguration {
         this.selectOptions = selectOptions;
     }
 
-    public void unmergeEnterpriseObject(ActionEvent event) throws ObjectException {
+    public void unmergeEnterpriseObject(ActionEvent event) throws ObjectException, ProcessingException, UserException, PageException, RemoteException {
         
         String transactionNumber = (String) event.getComponent().getAttributes().get("tranNoValueExpressionviewunmerge");
         ArrayList eoArrayList = new ArrayList();
@@ -766,7 +768,7 @@ public class TransactionHandler extends ScreenConfiguration {
     }
 
     
-    public boolean isEUIDMerge(String trasnNumber) throws ProcessingException, UserException{
+    public boolean isEUIDMerge(String trasnNumber) throws ProcessingException, UserException, PageException, RemoteException{
          TransactionSearchObject transactionSearchObject = new TransactionSearchObject();
          //set the transaction number to the transaction summary object
           transactionSearchObject.getTransactionObject().setTransactionNumber(trasnNumber);
