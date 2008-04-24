@@ -272,7 +272,6 @@ public class EviewEditorMainPanel extends javax.swing.JPanel implements TreeSele
         mButtonTemplates.addFocusListener(new java.awt.event.FocusListener() {
             public void focusGained(java.awt.event.FocusEvent e) {
                 if (mButtonTemplates.isEnabled()) {
-                    //mTemplatesMenu.show(e.getComponent(), e.getX(), e.getY());
                     JButton button = (JButton) e.getComponent();
                     int height = button.getHeight();
                     int width = button.getWidth();
@@ -281,11 +280,11 @@ public class EviewEditorMainPanel extends javax.swing.JPanel implements TreeSele
                     int dispX = orX - (orX);
                     int dispY = orY + (height - 1);
 
-                    if (mCurrentSelectedNode.isPrimary()) {
-                        mSubTemplatesMenu.show(e.getComponent(),
+                    if (mCurrentSelectedNode == null || mCurrentSelectedNode.isPrimary()) {
+                        mTemplatesMenu.show(e.getComponent(),
                                dispX, dispY);
                     } else {
-                        mTemplatesMenu.show(e.getComponent(),
+                        mSubTemplatesMenu.show(e.getComponent(),
                                dispX, dispY);
                     }
                 }
@@ -294,6 +293,7 @@ public class EviewEditorMainPanel extends javax.swing.JPanel implements TreeSele
             public void focusLost(java.awt.event.FocusEvent ev) {
             }
         });
+
         mButtonTemplates.setMnemonic('T');
         toolBar.add(mButtonTemplates);
 

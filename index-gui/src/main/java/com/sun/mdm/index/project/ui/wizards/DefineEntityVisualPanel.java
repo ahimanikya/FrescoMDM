@@ -371,11 +371,11 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
                     int dispX = orX - (orX);
                     int dispY = orY + (height - 1);
 
-                    if (mCurrentSelectedNode.isPrimary()) {
-                        mSubTemplatesMenu.show(e.getComponent(),
+                    if (mCurrentSelectedNode == null || mCurrentSelectedNode.isPrimary()) {
+                        mTemplatesMenu.show(e.getComponent(),
                                dispX, dispY);
                     } else {
-                        mTemplatesMenu.show(e.getComponent(),
+                        mSubTemplatesMenu.show(e.getComponent(),
                                dispX, dispY);
                     }
                 }
