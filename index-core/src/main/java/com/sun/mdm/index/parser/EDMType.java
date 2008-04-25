@@ -2596,17 +2596,6 @@ public class EDMType {
                 simpleSearchPage.showCreateDate = "false";
                 simpleSearchPage.showCreateTime = "false";
                 
-                simpleSearchPage = subScreen.commonBlock.addSimpleSearchPage();
-                simpleSearchPage.screenTitle = "Advanced Search";
-                simpleSearchPage.searchResultID = "0";
-                simpleSearchPage.searchScreenOrder = "1";
-                simpleSearchPage.showEuid = "true";
-                simpleSearchPage.showLid = "false";
-                simpleSearchPage.showStatus = "false";
-                simpleSearchPage.showCreateDate = "true";
-                simpleSearchPage.showCreateTime = "true";
-                simpleSearchPage.instruction = "Enter search criteria";
-                
                 SearchResultListPage searchResultListPage = subScreen.commonBlock.addSearchResultListPage();
                 searchResultListPage.searchResultID = "0";
                 searchResultListPage.itemPerPage = "10";
@@ -2887,7 +2876,7 @@ public class EDMType {
         }
         
         class FieldGroup {
-            String description;
+            String description = null;
             ArrayList alFieldRef = new ArrayList();
             
             void addFieldRef(PageDefinition.FieldRef fieldRef) {
