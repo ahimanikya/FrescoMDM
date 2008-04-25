@@ -40,6 +40,7 @@ import com.sun.mdm.index.dataobject.epath.ChildMissingException;
 import com.sun.mdm.index.dataobject.epath.DOEpath;
 import com.sun.mdm.index.dataobject.objectdef.DataObjectAdapter;
 import com.sun.mdm.index.dataobject.objectdef.Lookup;
+import com.sun.mdm.index.dataobject.objectdef.ObjectDefinition;
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterState;
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterSynchronizer;
 import com.sun.mdm.index.loader.common.FileManager;
@@ -79,8 +80,9 @@ public class BlockDistributor {
 			.getName());
 	private boolean isStandardize = false;
 	private DataObjectReader reader_ = null;
+	private ObjectDefinition inputobd_;
 	
-	public BlockDistributor(String[] matchpaths, Lookup inLk, Lookup blLk, boolean isSBR) throws Exception {
+	public BlockDistributor(String[] matchpaths, Lookup inLk, ObjectDefinition inputobd, Lookup blLk, boolean isSBR) throws Exception {
 							
 		this.matchEpaths_ = matchpaths;
 	    blockDefinitions_ = readBlockConfiguration();
@@ -97,6 +99,7 @@ public class BlockDistributor {
 			                        // and block distribution is done for Block buckets
 		  mStandardizer = StandardizerFactory.getInstance();
 		}
+		inputobd_ = inputobd;
 	}
 	
 	
@@ -451,6 +454,7 @@ public class BlockDistributor {
 			objMeta.matchFieldPositions[i] = blockLk_.getFieldIndex(fields.get(i), prefix); 
 		}				
 	}
+	
 		
 	  
 	/**
