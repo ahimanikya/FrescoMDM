@@ -380,10 +380,12 @@ public class SourceAddHandler {
             if(systemObject != null) {
                 errorMessage = bundle.getString("SystemCode_LID_Validation"); //"Validation Failed. SystemCode/LID already found.";
                 FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+                mLogger.error(mLocalizer.x("SRC077: {0}",errorMessage));
                 session.setAttribute("validation", "Validation Failed");
             } else if(systemObject == null) {
                errorMessage = bundle.getString("Validation_Success"); //"Validation Success.";
                //FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,errorMessage,errorMessage));
+               mLogger.error(mLocalizer.x("SRC078: {0}",errorMessage));
                session.setAttribute("validation", "Validation Success");
             }
            

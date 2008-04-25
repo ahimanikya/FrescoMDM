@@ -20,7 +20,7 @@ import com.sun.mdm.index.objects.epath.EPathArrayList;
 import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+//import com.sun.mdm.index.util.Logger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,11 +33,16 @@ import javax.faces.event.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.faces.model.SelectItem;
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
 /**
  *
  * @author admin
  */
 public class SourceMergeHandler {
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.SourceMergeHandler");
+    private static transient final Localizer mLocalizer = Localizer.get();
     
      private String lid1;
      
@@ -73,7 +78,7 @@ public class SourceMergeHandler {
     private int lidMaskLength  = allSystemCodes[1][0].length();
 
 
-    private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.SourceMergeHandler");
+    //private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.SourceMergeHandler");
      
     
     ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
@@ -181,22 +186,24 @@ public class SourceMergeHandler {
             request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview, screenObject));
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-            mLogger.error("ProcessingException ex : " + ex.toString());
+           mLogger.error(mLocalizer.x("SRC045: Failed to generate LID preview {0}",ex.getMessage()));
         } catch (UserException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-            mLogger.error("UserException ex : " + ex.toString());
+            //mLogger.error("UserException ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("SRC046: Failed to generate LID preview {0}",ex.getMessage()));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-            mLogger.error("Exception ex : " + ex.toString());
+            //mLogger.error("Exception ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("SRC047: Failed to generate LID preview {0}",ex.getMessage()));
         }
         
         try {
             //Insert audit Log for LID Merge
             masterControllerService.insertAuditLog((String) session.getAttribute("user"), sourceEuid, destnEuid, "LID Merge - Selection", new Integer(screenObject.getID()).intValue(), "View two selected EUIDs of the LID merge confirm page");
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("SRC048: Failed to insert audit Log for LID Merge {0}",ex.getMessage()));
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("SRC049: Failed to insert audit Log for LID Merge {0}",ex.getMessage()));
         }
 
         return ""; //reload the same page
@@ -217,13 +224,16 @@ public class SourceMergeHandler {
             request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview,screenObject));
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("ProcessingException ex : " + ex.toString());
+            //mLogger.error("ProcessingException ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("SRC050: Failed to Merge LID {0}",ex.getMessage())); 
         } catch (UserException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("UserException ex : " + ex.toString());
+            //mLogger.error("UserException ex : " + ex.toString());
+             mLogger.error(mLocalizer.x("SRC051: Failed to Merge LID {0}",ex.getMessage()));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("Exception ex : " + ex.toString());
+            //mLogger.error("Exception ex : " + ex.toString());
+             mLogger.error(mLocalizer.x("SRC052: Failed to Merge LID {0}",ex.getMessage()));
         }
          return ""; //reload the same page
      }
@@ -318,10 +328,10 @@ public class SourceMergeHandler {
             
        } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("ProcessingException ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("SRC053: Failed to search  LIDMerge {0}",ex.getMessage()));
         } catch (UserException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("UserException ex : " + ex.toString());
+             mLogger.error(mLocalizer.x("SRC054: Failed to search LIDMerge {0}",ex.getMessage()));
         }
         return "LID Details";
     }
@@ -397,13 +407,13 @@ public class SourceMergeHandler {
             
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("ProcessingException ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("SRC055: Failed to get System object preview {0}",ex.getMessage()));
         } catch (UserException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("UserException ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("SRC056: Failed to get System object preview {0}",ex.getMessage()));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("Exception ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("SRC057: Failed to get System object preview {0}",ex.getMessage()));
         }
         //System.out.println("=====1====" + mergredHashMapVaueExpression.get("Person.FirstName"));
       }
@@ -442,22 +452,22 @@ public class SourceMergeHandler {
                 request.setAttribute("mergedSOMap", finalMergredDestnEOArrayList);
             } catch (ProcessingException ex) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-                mLogger.error("ProcessingException ex : " + ex.toString());
+                mLogger.error(mLocalizer.x("SRC058: Failed to get merge System object preview {0}",ex.getMessage()));
             } catch (UserException ex) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-                mLogger.error("UserException ex : " + ex.toString());
+                mLogger.error(mLocalizer.x("SRC059: Failed to get merge System object preview {0}",ex.getMessage()));
             } catch (Exception ex) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-                mLogger.error("Exception ex : " + ex.toString());
+               mLogger.error(mLocalizer.x("SRC060: Failed to get merge System object preview {0}",ex.getMessage()));
             }
             //Insert audit Log for LID Mer
             masterControllerService.insertAuditLog((String) session.getAttribute("user"), sourceEuid, destnEuid, "LID Merge Confirm", new Integer(screenObject.getID()).intValue(), "View two selected EUIDs of the merge confirm page");
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("ProcessingException ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("SRC061: Failed to insert audit Log for LID Merge {0}",ex.getMessage()));
         } catch (UserException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("UserException ex : " + ex.toString());
+           mLogger.error(mLocalizer.x("SRC062: Failed to insert audit Log for LID Merge {0}",ex.getMessage()));
         }
       }
 
@@ -488,13 +498,13 @@ public class SourceMergeHandler {
 
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("ProcessingException ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("SRC063: Failed to get merge System object preview {0}",ex.getMessage()));
         } catch (UserException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("UserException ex : " + ex.toString());
+             mLogger.error(mLocalizer.x("SRC064: Failed to get merge System object preview {0}",ex.getMessage()));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("Exception ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("SRC065: Failed to get merge System object preview {0}",ex.getMessage()));
         }
 
         
@@ -570,10 +580,10 @@ public class SourceMergeHandler {
             }
         } catch (EPathException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("EpathException ex : " + ex.toString());
+             mLogger.error(mLocalizer.x("SRC066: Failed to get  System object  {0}",ex.getMessage()));
         } catch (ObjectException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("ObjectException ex : " + ex.toString());
+             mLogger.error(mLocalizer.x("SRC067: Failed to get  System object  {0}",ex.getMessage()));
         }
          return systemObjectHashMap;   
      
@@ -678,9 +688,9 @@ public class SourceMergeHandler {
 
             session.setAttribute("comapreEuidsArrayList", newEOArrayList);
         } catch (ProcessingException ex) {
-            java.util.logging.Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("SRC068: Failed to view EUID {0}",ex.getMessage()));
         } catch (UserException ex) {
-            java.util.logging.Logger.getLogger(SourceMergeHandler.class.getName()).log(Level.SEVERE, null, ex);
+             mLogger.error(mLocalizer.x("SRC069: Failed to view EUID {0}",ex.getMessage()));
         }
    }
 
