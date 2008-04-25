@@ -56,12 +56,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Iterator;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import java.util.ResourceBundle;
+import net.java.hulp.i18n.LocalizationSupport;
 public class ReportHandler {
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.ReportHandler");
+    private static transient final Localizer mLocalizer = Localizer.get();
+    String errorMessage = null;
     
     /**
      * Variable which identifies one of the the report.
@@ -188,6 +195,7 @@ public class ReportHandler {
 
     private ArrayList<SelectItem> activityReportTypes = new ArrayList();
     
+    ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 
     public String deactivatedReport() {      
         try {
@@ -200,15 +208,20 @@ public class ReportHandler {
             setDeactivatedRecordsVO(deactivatedReport.deactivateReport());
             setResultsSize(getDeactivatedRecordsVO().length);
         } catch (ValidationException ex) {
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            mLogger.error(mLocalizer.x("RPT043: Unable to get deactivated report :{0} ", ex.getMessage()));
+            //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return "ReportFormError";
         } catch (EPathException ex) {
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured, please try again", "Error Occured, please try again"));
+                mLogger.error(mLocalizer.x("RPT044: Unable to get deactivated report: {0} ", ex.getMessage()));
+                errorMessage = bundle.getString("Error_Occured");
+                //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            FacesContext.getCurrentInstance().addMessage("EPathException", new FacesMessage(FacesMessage.SEVERITY_ERROR,   errorMessage,   errorMessage));
             return ("ProcessingException");
         } catch (Exception ex) {
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured, please try again", "Error Occured, please try again"));
+                mLogger.error(mLocalizer.x("RPT027: Unable to get deactivated report:{0} ", ex.getMessage()));
+                errorMessage = bundle.getString("Error_Occured");
+                // Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR,  errorMessage, errorMessage));
             return ("ProcessingException");
         }
         return "DeactivateReportResults";
@@ -224,15 +237,20 @@ public class ReportHandler {
             setMergedRecordsVO(mergedRecordsHandler.mergeReport());
             setResultsSize(getMergedRecordsVO().length);
         } catch (ValidationException ex) {            
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+              mLogger.error(mLocalizer.x("RPT028: Failed to get Merge report {0} ", ex.getMessage()));          
+            //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return "ReportFormError";
         } catch (EPathException ex) {
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured, please try again", "Error Occured, please try again"));
+                mLogger.error(mLocalizer.x("RPT029: Failed to get Merge report {0} ", ex.getMessage()));
+                errorMessage = bundle.getString("Error_Occured");
+                //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
             return ("ProcessingException");
         } catch (Exception ex) {
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured, please try again", "Error Occured, please try again"));
+                mLogger.error(mLocalizer.x("RPT030: Failed to get Merge report {0} ", ex.getMessage()));
+                errorMessage = bundle.getString("Error_Occured");
+                //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
             return ("ProcessingException");
         }
         return "Merge Report";
@@ -249,13 +267,18 @@ public class ReportHandler {
             setActivityRecordsVO(activityReport.activityReport());
             setResultsSize(getActivityRecordsVO().length);
         } catch (ValidationException ex) {
-            Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                mLogger.error(mLocalizer.x("RPT031: Unable to get activity report {0} ", ex.getMessage()));
+           // Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return "ReportFormError";
         } catch (EPathException ex) {
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured, please try again", "Error Occured, please try again"));
+                mLogger.error(mLocalizer.x("RPT032: Unable to get activity report {0} ", ex.getMessage()));
+                errorMessage = bundle.getString("Error_Occured");
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
             return ("ProcessingException");
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured, please try again", "Error Occured, please try again"));
+                mLogger.error(mLocalizer.x("RPT033: Unable to get activity report {0} ", ex.getMessage()));
+            errorMessage = bundle.getString("Error_Occured");
+                FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage, errorMessage));
             return ("ProcessingException");
         }
         return "ActivityReportResults";
@@ -271,15 +294,20 @@ public class ReportHandler {
             setUnmergedRecordsVO(unmergedRecordsHandler.unmergeReport());
             setResultsSize(getUnmergedRecordsVO().length);
         } catch (ValidationException ex) {            
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            mLogger.error(mLocalizer.x("RPT034: Failed to get unMerge report {0} ", ex.getMessage()));
+            //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return "ReportFormError";
         } catch (EPathException ex) {
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured, please try again", "Error Occured, please try again"));
+            mLogger.error(mLocalizer.x("RPT035: Failed to get unMerge report {0} ", ex.getMessage()));
+           // Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            errorMessage = bundle.getString("Error_Occured");
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
             return ("ProcessingException");
         } catch (Exception ex) {
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured, please try again", "Error Occured, please try again"));
+            mLogger.error(mLocalizer.x("RPT036: Failed to get unMerge report  {0} ", ex.getMessage()));
+           // Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            errorMessage = bundle.getString("Error_Occured");
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
             return ("ProcessingException");
         }
         return "UnMerge Report";
@@ -301,15 +329,20 @@ public class ReportHandler {
             }
             
         } catch (ValidationException ex) {
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            mLogger.error(mLocalizer.x("RPT037: Unable to update the report  {0} ", ex.getMessage()));
+            //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return "ReportFormError";
         } catch (EPathException ex) {
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured, please try again", "Error Occured, please try again"));
+            mLogger.error(mLocalizer.x("RPT038: Unable to update the report  {0} ", ex.getMessage()));
+            errorMessage = bundle.getString("Error_Occured");
+            //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
             return ("ProcessingException");
         } catch (Exception ex) {
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured, please try again", "Error Occured, please try again"));
+            mLogger.error(mLocalizer.x("RPT039: Unable to update the report  {0} ", ex.getMessage()));
+            errorMessage = bundle.getString("Error_Occured");
+           // Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
             return ("ProcessingException");
         }
         return "Update Report";
@@ -327,15 +360,18 @@ public class ReportHandler {
             setDuplicateRecordsVO(duplicateReport.duplicateReport());
             setResultsSize(getDuplicateRecordsVO().length);
         } catch (ValidationException ex) {
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return "ReportFormError";
         } catch (EPathException ex) {
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured, please try again", "Error Occured, please try again"));
+            mLogger.error(mLocalizer.x("RPT054: Unable to duplicate the report  {0} ", ex.getMessage()));
+            errorMessage = bundle.getString("Error_Occured");
+            //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
             return ("ProcessingException");
         } catch (Exception ex) {
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured, please try again", "Error Occured, please try again"));
+             mLogger.error(mLocalizer.x("RPT055: Unable to duplicate the report {0} ", ex.getMessage()));
+             errorMessage = bundle.getString("Error_Occured");
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
             return ("ProcessingException");
         }
         return "Duplicate Report";
@@ -352,15 +388,19 @@ public class ReportHandler {
             setAssumematchesRecordsVO(assumeMatchReport.assumeMatchReport());            
             setResultsSize(getAssumematchesRecordsVO().length);
         } catch (ValidationException ex) {
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+             mLogger.error(mLocalizer.x("RPT040: Unable to get assumeMatch report {0} ", ex.getMessage()));
+           // Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return "ReportFormError";
         } catch (EPathException ex) {
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured, please try again", "Error Occured, please try again"));
+            mLogger.error(mLocalizer.x("RPT041: Unable to get assumeMatch report {0} ", ex.getMessage()));
+            errorMessage = bundle.getString("Error_Occured");
+            //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,errorMessage));
             return ("ProcessingException");
         } catch (Exception ex) {
-            Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured, please try again", "Error Occured, please try again"));
+            mLogger.error(mLocalizer.x("RPT042: Unable to get assumeMatch report {0} ", ex.getMessage()));
+            errorMessage = bundle.getString("Error_Occured");// Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
             return ("ProcessingException");
         }
         return "Assumed Matches";
@@ -588,7 +628,7 @@ public class ReportHandler {
 //                }
 //            }
         } catch (Exception e) {
-            e.printStackTrace();
+            mLogger.error(mLocalizer.x("RPT101: Unable to get search result config :{0} ", e.getMessage()));
        }
        
         this.searchResultsScreenConfigArray = newArrayList;
@@ -686,7 +726,7 @@ public class ReportHandler {
                 
             }
         } catch (Exception e) {
-            e.printStackTrace();
+             mLogger.error(mLocalizer.x("RPT102: Unable to get search results : {0} ", e.getMessage()));
        }
        return newArrayList;
 

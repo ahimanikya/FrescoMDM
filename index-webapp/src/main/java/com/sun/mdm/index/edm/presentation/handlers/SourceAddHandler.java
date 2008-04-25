@@ -48,7 +48,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -56,9 +56,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import java.util.ResourceBundle;
+import net.java.hulp.i18n.LocalizationSupport;
 
 public class SourceAddHandler {
 
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler");
+    private static transient final Localizer mLocalizer = Localizer.get();
     //Array list for all person fields
     private ArrayList personFieldConfigs;
     //Array list for all address fields
@@ -135,7 +141,10 @@ public class SourceAddHandler {
     //sub screen tab name for each tab on the source records page
     private String subScreenTab = "Add";
 
-   
+     /**
+     * ResourceBundle
+     */
+    ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm", FacesContext.getCurrentInstance().getViewRoot().getLocale());
     /**
      * all system codes
      */
@@ -211,21 +220,24 @@ public class SourceAddHandler {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,summaryInfo,summaryInfo));
         
         } catch (UserException ex) {   
-            errorMessage = "Service Layer User Exception occurred";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));            
-            Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+           // errorMessage = "Service Layer User Exception occurred";
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            //Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("SRC001: Service Layer User Exception has occurred"));
             //session.removeAttribute("validation");
             return this.SERVICE_LAYER_ERROR;
         } catch (ObjectException ex) {
-            errorMessage = "Service Layer Object Exception occurred";
+            //errorMessage = "Service Layer Object Exception occurred";
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("SRC002: Service Layer Object Exception occurred"));
             //session.removeAttribute("validation");
             return this.SERVICE_LAYER_ERROR;
         } catch (Exception ex) {
-            errorMessage = "Service Layer Exception occurred";
+            //errorMessage = "Service Layer Exception occurred";
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("SRC003: Service Layer Exception occurred"));
             //session.removeAttribute("validation");
             return this.SERVICE_LAYER_ERROR;
         }
@@ -240,19 +252,21 @@ public class SourceAddHandler {
                                                new Integer(screenObject.getID()).intValue(),
                                                masterControllerService.getAuditMsg());
         } catch (UserException ex) {   
-            errorMessage = "Service Layer User Exception occurred while inserting audit log";
+           // errorMessage = "Service Layer User Exception occurred while inserting audit log";
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("SRC004: Service Layer User Exception occurred while inserting audit log"));
             return this.SERVICE_LAYER_ERROR;
         } catch (ObjectException ex) {
-            errorMessage = "Service Layer Object Exception occurred while inserting audit log";
+            //errorMessage = "Service Layer Object Exception occurred while inserting audit log";
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+             mLogger.error(mLocalizer.x("SRC005: Service Layer Object Exception occurred while inserting audit log"));
             return this.SERVICE_LAYER_ERROR;
         } catch (Exception ex) {
-            errorMessage = "Service Layer Exception occurred while inserting audit log";
+          //  errorMessage = "Service Layer Exception occurred while inserting audit log";
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+             mLogger.error(mLocalizer.x("SRC006: Service Layer Exception occurred while inserting audit log"));
             return this.SERVICE_LAYER_ERROR;
         }
         session.removeAttribute("validation");
@@ -364,24 +378,24 @@ public class SourceAddHandler {
         try {
             SystemObject systemObject = masterControllerService.getSystemObject(getSystemCode(), getLID());
             if(systemObject != null) {
-                errorMessage = "Validation Failed. SystemCode/LID already found.";
+                errorMessage = bundle.getString("SystemCode_LID_Validation"); //"Validation Failed. SystemCode/LID already found.";
                 FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
                 session.setAttribute("validation", "Validation Failed");
             } else if(systemObject == null) {
-               errorMessage = "Validation Success.";
+               errorMessage = bundle.getString("Validation_Success"); //"Validation Success.";
                //FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,errorMessage,errorMessage));
                session.setAttribute("validation", "Validation Success");
             }
            
         } catch (ProcessingException ex) {
-            errorMessage = "Processing Exception occurred";
+           // errorMessage = "Processing Exception occurred";
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+           mLogger.error(mLocalizer.x("SRC007: Processing Exception occurred :{0}",ex.getMessage()));
             return this.SERVICE_LAYER_ERROR;
         } catch (UserException ex) {
-            errorMessage = "UserException Exception occurred";
+            //errorMessage = "UserException Exception occurred";
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("SRC008: UserException Exception occurred:{0}",ex.getMessage()));
             return this.SERVICE_LAYER_ERROR;
         }
         return this.VALIDATE_SOURCE_SUCCESS;
@@ -405,13 +419,13 @@ public boolean validateSystemCodeLID(String LID,String systemCode){
             }
            
         } catch (ProcessingException ex) {
-            errorMessage = "Processing Exception occurred";
+            
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("SRC071: ProcessingException has occurred:{0}",ex.getMessage()));
         } catch (UserException ex) {
-            errorMessage = "UserException Exception occurred";
+            
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+           mLogger.error(mLocalizer.x("SRC072: UserException  has occurred:{0}",ex.getMessage()));
         }
         return validated;
    }    
@@ -429,7 +443,7 @@ public boolean validateSystemCodeLID(String LID,String systemCode){
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("SRC009: Failed to get Field Config:{0}",ex.getMessage()));
         }
 
         addressFieldConfigs = newArrayList;//store all the fields in the arraylist
@@ -455,7 +469,7 @@ public boolean validateSystemCodeLID(String LID,String systemCode){
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("SRC010: Failed to get Field Config :{0}",ex.getMessage()));
         }
 
         phoneFieldConfigs = newArrayList;//store all the fields in the arraylist
@@ -480,7 +494,7 @@ public boolean validateSystemCodeLID(String LID,String systemCode){
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("SRC011: Failed to get Field Config:{0}",ex.getMessage()));
         }
 
         aliasFieldConfigs = newArrayList;//store all the fields in the arraylist
@@ -507,7 +521,7 @@ public boolean validateSystemCodeLID(String LID,String systemCode){
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+             mLogger.error(mLocalizer.x("SRC012: Failed to get Field Config :{0}",ex.getMessage()));
         }
 
         personFieldConfigs = newArrayList;//store all the fields in the arraylist
@@ -914,7 +928,8 @@ public boolean validateSystemCodeLID(String LID,String systemCode){
             session.setAttribute("singleSystemObjectLID", updatedSystemObject);
             session.setAttribute("keyFunction", "editSO");
         } catch (Exception ex) {
-            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+           // Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("SRC073: Exception has occurred:{0}",ex.getMessage()));
         }
         
         return UPDATE_SUCCESS;

@@ -58,7 +58,7 @@ import com.sun.mdm.index.edm.services.configuration.ValidationService;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+//import com.sun.mdm.index.util.Logger;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -71,8 +71,16 @@ import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
+
  
 public class UnmergedRecordsHandler    {
+    
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.UnmergedRecordsHandler");
+    private static transient final Localizer mLocalizer = Localizer.get();
+    
     private String reportType;
     private ArrayList dataRowList1 = null;
     private TransactionIterator updateIterator = null;
@@ -82,7 +90,7 @@ public class UnmergedRecordsHandler    {
     private String createEndDate = new String();    
     private String createStartTime = new String();
     private String createEndTime = new String();    
-    private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.UnmergedRecordsHandler");    
+    //private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.UnmergedRecordsHandler");    
     /*
      *  Request Object Handle
      */  
@@ -281,17 +289,18 @@ public class UnmergedRecordsHandler    {
                 (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() == 0) &&
                 (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() == 0)){
                 errorMessage = bundle.getString("ERROR_one_of_many");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "One of Many :: " + errorMessage));
-                mLogger.error(errorMessage);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+               mLogger.error(mLocalizer.x("UMG001: {0}",errorMessage));
            }
 
         //Form Validation of  Start Time
         if (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)    {
             String message = edmValidation.validateTime(this.getCreateStartTime());
             if (!"success".equalsIgnoreCase(message)) {
+                String msg = bundle.getString("timeFrom");
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?errorMessage:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Create Time From:: " + errorMessage, errorMessage));
-                mLogger.error(errorMessage);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg + errorMessage, errorMessage));
+                mLogger.error(mLocalizer.x("UMG002: {0}",errorMessage));
             }            
         }
 
@@ -301,7 +310,7 @@ public class UnmergedRecordsHandler    {
             if (!"success".equalsIgnoreCase(message)) {
                  errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 mLogger.error(errorMessage);
+                 mLogger.error(mLocalizer.x("UMG003: {0}",errorMessage));
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
@@ -317,7 +326,7 @@ public class UnmergedRecordsHandler    {
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    mLogger.error(errorMessage);
+                     mLogger.error(mLocalizer.x("UMG004: Failed to unmerge the search object reports  :{0}",validationException.getMessage()));
                 }
             }
         }
@@ -326,9 +335,10 @@ public class UnmergedRecordsHandler    {
        if (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)    {            
             String message = edmValidation.validateTime(this.getCreateEndTime());
             if (!"success".equalsIgnoreCase(message)) {
+                String msg1 = bundle.getString("timeTo");
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Create Time To:: " + errorMessage, errorMessage));
-                mLogger.error(errorMessage);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1 + errorMessage, errorMessage));
+                mLogger.error(mLocalizer.x("UMG005: {0}",errorMessage));
             } 
        }    
          
@@ -337,8 +347,8 @@ public class UnmergedRecordsHandler    {
             String message = edmValidation.validateDate(this.getCreateEndDate());
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0? message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "End Date:: " + errorMessage));
-                mLogger.error(errorMessage);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
+                mLogger.error(mLocalizer.x("UMG006: {0}",errorMessage));
             } else {
                 try {
                      if (getCreateEndTime().trim().length() == 0) {
@@ -352,7 +362,7 @@ public class UnmergedRecordsHandler    {
                     }
                     createEndTime="";
                 } catch (ValidationException validationException) {
-                    mLogger.error(errorMessage);
+                     mLogger.error(mLocalizer.x("UMG007: Failed to unmerge the search object reports  :{0}",validationException.getMessage()));
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 }
@@ -367,8 +377,8 @@ public class UnmergedRecordsHandler    {
                long endDate = todate.getTime();
                  if(endDate < startDate){
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "fromdate :: " + errorMessage));
-                    mLogger.error(errorMessage);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                     mLogger.error(mLocalizer.x("UMG008: {0}",errorMessage));
                    }
         }  
    

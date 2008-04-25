@@ -20,19 +20,24 @@ import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 import javax.faces.event.*;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
 /**
  * Generic class to build the screen object
  * @author Sridhar Narsingh, Rajani Kanth
  * www.ligaturesoftware.com
  */
 public class ScreenConfiguration {
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.ScreenConfiguration");
+    private static transient final Localizer mLocalizer = Localizer.get();
 
     private ArrayList searchScreenFieldGroupArray = new ArrayList();
 
@@ -111,7 +116,7 @@ public class ScreenConfiguration {
     /**
      *Logger for logging 
      */
-    private static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.ScreenConfiguration");
+    //private static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.ScreenConfiguration");
 
     /**
      *get Screen Object from the session
@@ -239,7 +244,8 @@ public class ScreenConfiguration {
             }}
 
         } catch (Exception e) {
-            Logger.getLogger(ScreenConfiguration.class.getName()).log(Level.SEVERE, "Failed Get the Screen Config Array Object: ", e);
+            //Logger.getLogger(ScreenConfiguration.class.getName()).log(Level.SEVERE, "Failed Get the Screen Config Array Object: ", e);
+            mLogger.error(mLocalizer.x("SNC001: Failed to get screen Config array ", e.getMessage()));
         }
         return screenConfigArray;
     }
@@ -402,7 +408,8 @@ public class ScreenConfiguration {
                 message = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
             }
         } catch (ValidationException ex) {
-            Logger.getLogger(ScreenConfiguration.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("SNC002: {0}:{1}",message, ex.getMessage())); 
+           // Logger.getLogger(ScreenConfiguration.class.getName()).log(Level.SEVERE, null, ex);
         }
         return message;
     }
@@ -426,7 +433,7 @@ public class ScreenConfiguration {
                 if (startDateValue != null) {
                     if (startDateValue.trim().length() > 0) {
                         if (!"success".equalsIgnoreCase(edmValidation.validateDate(startDateValue))) {
-                            messages.add(objectFieldConfig.getDisplayName() + ":" + edmValidation.validateDate(startDateValue));
+                            messages.add(objectFieldConfig.getDisplayName() + ">>" + edmValidation.validateDate(startDateValue));
                             //System.out.println("Adding fields and message" + messages);
                         }
                     }
@@ -460,7 +467,7 @@ public class ScreenConfiguration {
                 if (timeValue != null) {
                     if (timeValue.trim().length() > 0) {
                         if (!"success".equalsIgnoreCase(edmValidation.validateTime(timeValue))) {
-                            messages.add(objectFieldConfig.getDisplayName() + ":" + edmValidation.validateTime(timeValue));
+                            messages.add(objectFieldConfig.getDisplayName() + ">>" + edmValidation.validateTime(timeValue));
                             //System.out.println("Adding fields and message" + messages);
                         }
                     }
@@ -870,7 +877,8 @@ public class ScreenConfiguration {
             }
 
         } catch (Exception e) {
-            Logger.getLogger(ScreenConfiguration.class.getName()).log(Level.SEVERE, "Failed Get the Screen Config Array Object: ", e);
+            //Logger.getLogger(ScreenConfiguration.class.getName()).log(Level.SEVERE, "Failed Get the Screen Config Array Object: ", e);
+            mLogger.error(mLocalizer.x("SNC004: Failed to get SearchScreenField GroupArray:{0}", e.getMessage())); 
         }
         
         return searchScreenFieldGroupArray;

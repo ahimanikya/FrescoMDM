@@ -39,13 +39,21 @@ import com.sun.mdm.index.objects.exception.ObjectException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
+
+
 public class SourceEditHandler {
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.SourceEditHandler");
+    private static transient final Localizer mLocalizer = Localizer.get();
+    
     private  static final String EDITRECORD="editRecord";
 
     //Get the session variable from faces context
@@ -136,7 +144,7 @@ public class SourceEditHandler {
             session.setAttribute("singleSystemObjectLID", updatedSystemObject);
             session.setAttribute("keyFunction", "editSO");
         } catch (Exception ex) {
-            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("SRC013: Failed to update the SO:{0}" , ex.getMessage()));
         }
         return UPDATE_SUCCESS;
    }
@@ -173,9 +181,11 @@ public class SourceEditHandler {
            
             session.setAttribute("keyFunction", "editSO");
         } catch (ObjectException ex) {
-            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+        mLogger.error(mLocalizer.x("SRC014: Failed to edit LID:{0}",ex.getMessage()));
         } catch (EPathException ex) {
-            Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+       mLogger.error(mLocalizer.x("SRC015: Failed to edit LID:{0}",ex.getMessage()));
         }
    }
 

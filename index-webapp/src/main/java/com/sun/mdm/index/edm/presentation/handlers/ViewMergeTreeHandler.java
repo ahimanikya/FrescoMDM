@@ -37,14 +37,21 @@ import com.sun.mdm.index.master.search.merge.MergeHistoryNode;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import java.util.Stack;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import net.sf.yui4jsf.component.treeview.node.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import java.util.ResourceBundle;
+import net.java.hulp.i18n.LocalizationSupport;
 public class ViewMergeTreeHandler {
 
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.ViewMergeTreeHandler");
+    private static transient final Localizer mLocalizer = Localizer.get();
+    ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
     private EuidTreeVO htmlNodeTreeDataModel = new EuidTreeVO();
     private String SERVICE_LAYER_ERROR = "SLError";
     private String SUCCESS = "Tree";
@@ -149,13 +156,13 @@ public class ViewMergeTreeHandler {
                 htmlNodeTreeDataModel.addNode(euidNode);
 //            }
         } catch (ProcessingException ex) {
-            Logger.getLogger(ViewMergeTreeHandler.class.getName()).log(Level.SEVERE, null, ex);
+           mLogger.error(mLocalizer.x("VMT001: Failed to get view merge tree  records:{0}",ex.getMessage()));
             return SERVICE_LAYER_ERROR;
         } catch (UserException ex) {
-            Logger.getLogger(ViewMergeTreeHandler.class.getName()).log(Level.SEVERE, null, ex);
+           mLogger.error(mLocalizer.x("VMT002: Failed to get view merge tree  records:{0}",ex.getMessage()));
             return SERVICE_LAYER_ERROR;
         } catch (Exception ex) {
-            Logger.getLogger(ViewMergeTreeHandler.class.getName()).log(Level.SEVERE, null, ex);
+           mLogger.error(mLocalizer.x("VMT003: Failed to get view merge tree  records:{0}",ex.getMessage()));
             return SERVICE_LAYER_ERROR;
         }
         return SUCCESS;
