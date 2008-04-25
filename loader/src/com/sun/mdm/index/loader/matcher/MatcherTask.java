@@ -44,11 +44,11 @@ import com.sun.mdm.index.loader.blocker.BlockDistributor;
 import com.sun.mdm.index.loader.common.Util;
 
 /**
- *  each concurrent MatcherTask is executed in a different thread 
-    Matches one BlockPosition for a Block at a time that is retrieved from
-    Bucket.matchCursor.
+ *  Each concurrent MatcherTask is executed in a different thread 
+    Matches one BlockPosition for a Block at a time.
     Many concurrent threads matches different portion of same bucket at a given time.
-    The MatchRecords from the matcherTask are output to the passed TreeMap.
+    The MatchRecords from the matcherTask are added to the input TreeMap.
+    Uses Match Engine to do the actual matching.
    
  * @author Swaranjit Dua
  *
@@ -75,17 +75,19 @@ import com.sun.mdm.index.loader.common.Util;
 	MatcherTask(TreeMap<MatchRecord,String> map, 
 			Bucket.MatchCursor cursor, String[] paths, String[] matchTypes, 
 			Lookup blLk, double matchThreshold, double duplicateThreshold,
-			CountDownLatch endGate, boolean isSBR, Matcher matcher, int matchCacheSize) throws Exception {
+			CountDownLatch endGate, boolean isSBR, Matcher matcher, int matchCacheSize,
+			String dateFormat) throws Exception {
 		matchThreshold_ = matchThreshold;
 		duplicateThreshold_ = duplicateThreshold;
 		tupleCursor_ = new DataObjectTupleCursor(paths, matchTypes, blLk, isSBR);
 		matchTree_ = map;
 		matchCursor_ = cursor;
 		endGate_ = endGate;
-		matchEngine_ = new MatcherAdapter(tupleCursor_.matchFieldIDs_);
+		matchEngine_ = new MatcherAdapter(tupleCursor_.matchFieldIDs_, dateFormat);
 		//matchEngine_ = new SbmeMatcher(tupleCursor_.matchFieldIDs_);
 	    isSBR_ = isSBR;
 	    matcher_ = matcher;
+	    
 	    if (matchCacheSize != 0) {
 	      treeFlushSize_ = matchCacheSize;
 	    }
@@ -176,7 +178,7 @@ import com.sun.mdm.index.loader.common.Util;
 		    		matchTree_.put(record, empty_str);		    		
 	    		}
 	    	}
-	    	else if (score >= matchThreshold_) {
+	    	else if (score >= matchThreshold_ || (matchAnalyzer_ != null && score >= duplicateThreshold_)) {
 	    			    		
 	    		MatchRecord record = new MatchGIDRecord(data1, data2, score);
 	    		matchTree_.put(record, empty_str);
@@ -217,6 +219,7 @@ import com.sun.mdm.index.loader.common.Util;
 	private double match(DataObject dataObject1, DataObject dataObject2) 
 	throws Exception {
 	
+	 
 	    String syscode1 = null;
 		String syscode2 = null;
 		String lid1 = null;
@@ -248,17 +251,38 @@ import com.sun.mdm.index.loader.common.Util;
 			}
 		}
 		return maxscore;
-	}
+	 
+ 	}
 	
 	
 	private double match(List<String> tuple1, List<String> tuple2) throws Exception
-	{
+	{		
 		String[] values = tuple1.toArray(new String[tuple1.size()]);
 		String[] refValues = tuple2.toArray(new String[tuple2.size()]);
-		double weight = 0;
+		try {
+		  return matchEngine_.compareRecords(values, refValues);
 		
-		return matchEngine_.compareRecords(values, refValues);
-					
+		} catch (Exception ex) {
+			StringBuilder str = new StringBuilder();
+			for(int i = 0; i < values.length; i++) {
+				String value = values[i];
+				if (i != 0) {
+					str.append(",");
+				}	
+				str.append(value);
+			}
+			logger.info("values:" + str);
+			str = new StringBuilder();
+			for(int i = 0; i < refValues.length; i++) {
+				String value = refValues[i];
+				if (i != 0) {
+					str.append(",");
+				}
+				str.append(value);
+			}
+			logger.info("refvalues:" + str);
+			throw ex;
+		}							
 	}
 	
 	
