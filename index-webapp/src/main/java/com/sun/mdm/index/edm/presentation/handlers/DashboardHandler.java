@@ -36,8 +36,8 @@ import com.sun.mdm.index.edm.presentation.validations.HandlerException;
 import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.master.UserException;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+//import com.sun.mdm.index.util.LogUtil;
+//import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.page.PageException;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
@@ -54,9 +54,13 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
 
 public class DashboardHandler  {
-    private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.DashboardHandler");
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.DashboardHandler");
+    private static transient final Localizer mLocalizer = Localizer.get();
     ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
     HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     HttpServletRequest httpRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -97,23 +101,20 @@ public class DashboardHandler  {
                // UserException and ValidationException don't need a stack trace.
                 // ProcessingException stack trace logged by MC
                 if (ex instanceof ValidationException) {
-                    mLogger.info("Validation failed. Message displayed to the user: " 
-                                  + QwsUtil.getRootCause(ex).getMessage());
+                mLogger.error(mLocalizer.x("DHB001: Encountered the ValidationException : {0}", ex.getMessage()));
                 } else if (ex instanceof UserException) {
-                    mLogger.info("UserException. Message displayed to the user: "
-                                  + QwsUtil.getRootCause(ex).getMessage());
+                mLogger.error(mLocalizer.x("DHB002: Encountered the UserException: {0}", ex.getMessage()));
                 } else if (!(ex instanceof ProcessingException)) {
-                    mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
-                    mLogger.error("ProcessingException ex : " + ex.toString());
+                mLogger.error(mLocalizer.x("DHB003: Encountered the ProcessingException {0}", ex.getMessage()));
                     //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
                 } else if (!(ex instanceof PageException)) {
-                    mLogger.error("PageException : " + QwsUtil.getRootCause(ex).getMessage());
-                    //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
+                mLogger.error(mLocalizer.x("DHB004: Encountered the PageException: {0}", ex.getMessage()));
                 } else if (!(ex instanceof RemoteException)) {
-                    mLogger.error("RemoteException : " + QwsUtil.getRootCause(ex).getMessage());
+                mLogger.error(mLocalizer.x("DHB005: Encountered the RemoteException: {0}", ex.getMessage()));
                     //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
-                }else
-                { mLogger.error("Exception : " + QwsUtil.getRootCause(ex).getMessage());
+            } else {
+                mLogger.error(mLocalizer.x("DHB006: {0}", ex));
+
                 }
         }
         return countPotentialDuplicates;
@@ -132,23 +133,21 @@ public class DashboardHandler  {
                // UserException and ValidationException don't need a stack trace.
                 // ProcessingException stack trace logged by MC
                 if (ex instanceof ValidationException) {
-                    mLogger.info("Validation failed. Message displayed to the user: " 
-                                  + QwsUtil.getRootCause(ex).getMessage());
+                      mLogger.error(mLocalizer.x("DHB007: Encountered ValidationException: {0}", ex.getMessage()));
                 } else if (ex instanceof UserException) {
-                    mLogger.info("UserException. Message displayed to the user: "
-                                  + QwsUtil.getRootCause(ex).getMessage());
+                      mLogger.error(mLocalizer.x("DHB008: Encountered UserException: {0}", ex.getMessage()));
                 } else if (!(ex instanceof ProcessingException)) {
-                    mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
-                    mLogger.error("ProcessingException ex : " + ex.toString());
+                     mLogger.error(mLocalizer.x("DHB009: Encountered the ProcessingException: {0}", ex.getMessage()));
                     //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
                 } else if (!(ex instanceof PageException)) {
-                    mLogger.error("PageException : " + QwsUtil.getRootCause(ex).getMessage());
+                    mLogger.error(mLocalizer.x("DHB010: Encountered the PageException: {0}", ex.getMessage()));
                     //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
                 } else if (!(ex instanceof RemoteException)) {
-                    mLogger.error("RemoteException : " + QwsUtil.getRootCause(ex).getMessage());
+                     mLogger.error(mLocalizer.x("DHB011: Encountered the RemoteException: {0}", ex.getMessage()));
                     //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
                 }else
-                { mLogger.error("Exception : " + QwsUtil.getRootCause(ex).getMessage());
+                { //mLogger.error("Exception : " + QwsUtil.getRootCause(ex).getMessage());
+                  mLogger.error(mLocalizer.x("DHB012: Encountered the exception:{0}", ex.getMessage()));  
                 }
         }
         return countAssumedMatches;
@@ -197,10 +196,10 @@ public class DashboardHandler  {
             httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("ProcessingException ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("DHB013: Encountered the ProcessingException:{0}", ex.getMessage()));  
         } catch (UserException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("UserException ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("DHB014: Encountered the UserException:{0}", ex.getMessage()));  
         }
         return "EUID Details";
     }
@@ -236,10 +235,10 @@ public class DashboardHandler  {
             httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("ProcessingException ex : " + ex.toString());
+             mLogger.error(mLocalizer.x("DHB015: Encountered the ProcessingException:{0}", ex.getMessage()));  
         } catch (UserException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("UserException ex : " + ex.toString());
+             mLogger.error(mLocalizer.x("DHB016: Encountered the UserException:{0}", ex.getMessage()));  
         }
         return "EUID Details";
     }
@@ -276,10 +275,10 @@ public class DashboardHandler  {
             httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("ProcessingException ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("DHB017: Encountered the ProcessingException:{0}", ex.getMessage()));  
         } catch (UserException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("UserException ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("DHB018: Encountered the UserException:{0}", ex.getMessage()));  
         }
         return "EUID Details";
     }
@@ -316,10 +315,10 @@ public class DashboardHandler  {
             httpRequest.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("ProcessingException ex : " + ex.toString());
+           mLogger.error(mLocalizer.x("DHB019: Encountered the UserException:{0}", ex.getMessage()));  
         } catch (UserException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("UserException ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("DHB020: Encountered the UserException:{0}", ex.getMessage()));  
         }
         return "EUID Details";
     }
@@ -340,7 +339,8 @@ public class DashboardHandler  {
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
                     String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "EUID 1 :" + errorMessage, errorMessage));
+                    String msg1 = bundle.getString("EUID1");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1 + errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
@@ -360,7 +360,8 @@ public class DashboardHandler  {
                 if (enterpriseObject == null) {
 //                    session.removeAttribute("comapreEuidsArrayList");
                     String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "EUID 2 :" + errorMessage, errorMessage));
+                    String msg2 = bundle.getString("EUID2");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg2 + errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
@@ -378,7 +379,8 @@ public class DashboardHandler  {
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
                     String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "EUID 3 :" + errorMessage, errorMessage));
+                     String msg3 = bundle.getString("EUID3");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg3 + errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
@@ -397,7 +399,8 @@ public class DashboardHandler  {
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
                     String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "EUID 4 :" + errorMessage, errorMessage));
+                    String msg4 = bundle.getString("EUID4");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg4+ errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
@@ -416,10 +419,10 @@ public class DashboardHandler  {
             session.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("Processing  ex : " + ex.toString());
+            mLogger.error(mLocalizer.x("DHB021: Encountered the ProcessingException:{0}", ex.getMessage()));  
         } catch (UserException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error("UserException ex : " + ex.toString());
+           mLogger.error(mLocalizer.x("DHB022: Encountered the UserException:{0}", ex.getMessage()));  
         }
 
         return "EUID Details";

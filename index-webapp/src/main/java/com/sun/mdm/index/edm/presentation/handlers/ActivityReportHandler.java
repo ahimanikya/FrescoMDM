@@ -54,16 +54,24 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 import java.util.ResourceBundle;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 import com.sun.mdm.index.edm.services.configuration.SearchScreenConfig;
 import java.util.HashMap;
 
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
+
 
 /** Creates a new instance of ActivityReportHandler*/ 
 public class ActivityReportHandler {
+    
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.ActivityReportHandler");
+    private static transient final Localizer mLocalizer = Localizer.get();
+    
     private String reportType;
     /* @param dataRowList1 */
     ArrayList dataRowList1 = null;
@@ -341,8 +349,9 @@ public class ActivityReportHandler {
                 (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() == 0) &&
                 (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() == 0)) {
             errorMessage = bundle.getString("ERROR_one_of_many");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "One of Many :: " + errorMessage));
-            Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
+            //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
+            mLogger.error(mLocalizer.x("RPT001: {0}", errorMessage));
         }
 
         //Form Validation of  Start Time
@@ -350,8 +359,10 @@ public class ActivityReportHandler {
             String message = edmValidation.validateTime(this.getCreateStartTime());
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0 ? errorMessage : message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Create Time From:: " + errorMessage, errorMessage));
-                Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
+                String em = bundle.getString("timeFrom");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, em + errorMessage, errorMessage));
+                //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
+             mLogger.error(mLocalizer.x("RPT002: {0}",errorMessage));
             }
         }
 
@@ -361,7 +372,8 @@ public class ActivityReportHandler {
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
+                //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
+                 mLogger.error(mLocalizer.x("RPT003: {0}" ,message));
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
@@ -373,7 +385,8 @@ public class ActivityReportHandler {
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
+                    //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
+                     mLogger.error(mLocalizer.x("RPT004: {0}" , errorMessage),validationException);
                 }
             }
         }
@@ -383,8 +396,10 @@ public class ActivityReportHandler {
             String message = edmValidation.validateTime(this.getCreateEndTime());
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Create Time To:: " + errorMessage, errorMessage));
-                Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
+                String msg = bundle.getString("timeTo");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg+ errorMessage, errorMessage));
+                //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
+                mLogger.error(mLocalizer.x("RPT005: {0}" , message));
             }
         }
 
@@ -393,8 +408,9 @@ public class ActivityReportHandler {
             String message = edmValidation.validateDate(this.getCreateEndDate());
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "End Date:: " + errorMessage));
-                Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
+                mLogger.error(mLocalizer.x("RPT006: {0}" , message));
             } else {
                 try {
                     //If Time is supplied append it to the date to check if it parses into a valid Date
@@ -404,9 +420,10 @@ public class ActivityReportHandler {
                         arConfig.setEndDate(new Timestamp(date.getTime()));
                     }
                 } catch (ValidationException validationException) {
-                    Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
+                   // Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                     mLogger.error(mLocalizer.x("RPT007: {0}" , validationException.toString()),validationException);
                 }
             }
         }
@@ -419,9 +436,10 @@ public class ActivityReportHandler {
                long endDate = todate.getTime();
                  if(endDate < startDate){
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "fromdate :: " + errorMessage));
-                    Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                   }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
+                    //Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
+                   mLogger.error(mLocalizer.x("RPT008: {0}" , errorMessage));
+                 }
         }
         
         //HardCoded for now, has to come from ConfigManager
@@ -431,7 +449,7 @@ public class ActivityReportHandler {
             arConfig.setMaxResultSize(new Integer(maxResultSize));
         } // Set labels, path and other UI attributes here        
         if (errorMessage != null && errorMessage.length() != 0)  {            
-            throw new ValidationException(errorMessage);
+            throw new ValidationException(mLocalizer.t("RPT501: Encountered the validationException:{0}",errorMessage));
         } else {
             return arConfig;
         }                                 

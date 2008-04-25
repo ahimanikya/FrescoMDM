@@ -68,16 +68,23 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
 
 
 public class DuplicateReportHandler    {
     /* @param reportType the report type*/
     /* @param dataRowList1 */
+     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.DuplicateReportHandler");
+    private static transient final Localizer mLocalizer = Localizer.get();
+    
     ArrayList dataRowList1 = null;
     TransactionIterator updateIterator = null;
     PotentialDuplicateIterator pdIter = null;
@@ -154,7 +161,6 @@ public class DuplicateReportHandler    {
             }
             resultArrayList.add(getOutPutValuesMap(pdrConfig, reportRow));
         }            
-        //System.out.println("TOTAL RECORDS" + resultArrayList);
         request.setAttribute("duplicateReportList", resultArrayList);
         return dataRowList2Array(dataRowList);
     }
@@ -391,8 +397,9 @@ public class DuplicateReportHandler    {
                 (this.getReportSize() != null && this.getReportSize().trim().length() == 0)
             ){
                 errorMessage = bundle.getString("ERROR_one_of_many");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "One of Many :: " + errorMessage));
-                Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
+                //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
+                mLogger.error(mLocalizer.x("RPT017: {0}",errorMessage));
            }
 
         //Form Validation of  Start Time
@@ -400,8 +407,10 @@ public class DuplicateReportHandler    {
             String message = edmValidation.validateTime(this.getCreateStartTime());
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?errorMessage:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Create Time From:: " + errorMessage, errorMessage));
-                Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
+                String msg1 = bundle.getString("timeFrom");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1 + errorMessage, errorMessage));
+                //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
+                 mLogger.error(mLocalizer.x("RPT018: {0}",errorMessage));
             }            
         }
 
@@ -411,7 +420,8 @@ public class DuplicateReportHandler    {
             if (!"success".equalsIgnoreCase(message)) {
                  errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
+                // Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
+                  mLogger.error(mLocalizer.x("RPT025: {0}",message));
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
@@ -423,7 +433,8 @@ public class DuplicateReportHandler    {
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
+                    //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
+                     mLogger.error(mLocalizer.x("RPT019: {0}",errorMessage));
                 }
             }
         }
@@ -433,8 +444,10 @@ public class DuplicateReportHandler    {
             String message = edmValidation.validateTime(this.getCreateEndTime());
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Create Time To:: " + errorMessage, errorMessage));
-                Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
+                String msg1 = bundle.getString("timeTo");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  errorMessage, errorMessage));
+                //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
+                 mLogger.error(mLocalizer.x("RPT020: {0}",message));
             } 
        }    
          
@@ -443,8 +456,9 @@ public class DuplicateReportHandler    {
             String message = edmValidation.validateDate(this.getCreateEndDate());
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0? message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "End Date:: " + errorMessage));
-                Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+               // Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
+                mLogger.error(mLocalizer.x("RPT021: {0}",message));
             } else {
                 try {
                     //If Time is supplied append it to the date to check if it parses into a valid Date
@@ -454,9 +468,10 @@ public class DuplicateReportHandler    {
                         pdrConfig.setEndDate(new Timestamp(date.getTime()));
                     }
                 } catch (ValidationException validationException) {
-                    Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
+                    //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    mLogger.error(mLocalizer.x("RPT022: {0}",errorMessage));
                 }
             }           
         }
@@ -468,8 +483,9 @@ public class DuplicateReportHandler    {
                long endDate = todate.getTime();
                  if(endDate < startDate){
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "fromdate :: " + errorMessage));
-                    Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    //Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
+                    mLogger.error(mLocalizer.x("RPT023: {0}",errorMessage));
                    }
         }
          if (getReportFunction() != null && getReportFunction().length() > 0)    {
@@ -481,8 +497,10 @@ public class DuplicateReportHandler    {
             pdrConfig.setMaxResultSize(new Integer(this.getReportSize()));        
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ReportSize:: " + errorMessage, errorMessage));
-                java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
+                 String msg3 = bundle.getString("ReportSize");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg3 + errorMessage, errorMessage));
+                //java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
+                mLogger.error(mLocalizer.x("RPT024: {0}",message));
                 
             }
         } 
@@ -506,7 +524,7 @@ public class DuplicateReportHandler    {
         }    
         */
         if (errorMessage != null && errorMessage.length() != 0)  {            
-            throw new ValidationException(errorMessage);
+            throw new ValidationException(mLocalizer.t("RPT503: {0}",errorMessage));
         } else {
             return pdrConfig;
         }                                 

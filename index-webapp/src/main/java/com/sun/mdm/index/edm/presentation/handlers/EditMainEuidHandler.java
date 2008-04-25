@@ -46,19 +46,24 @@ import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.s;
+//import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
 /**
  *
  * @author Rajani Kanth
  */
 public class EditMainEuidHandler {
+     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.EditMainEuidHandler");
+    private static transient final Localizer mLocalizer = Localizer.get();
 
     private static final String EDIT_SUCCESS = "EO_EDIT_SUCCESS";
     
@@ -343,9 +348,8 @@ public class EditMainEuidHandler {
 //            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
 //            return this.SERVICE_LAYER_ERROR;
         } catch (Exception ex) {
-            errorMessage = "Exception occurred";
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.toString()));
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("EME001: Unable to update the EUID :{0}",ex.getMessage()));
             return this.SERVICE_LAYER_ERROR;
         }
         
@@ -383,11 +387,11 @@ public class EditMainEuidHandler {
             //set the search type as per the form
             //this.singleAddressHashMapArrayList.remove(remAddressMap);
         } catch (UserException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+                 mLogger.error(mLocalizer.x("EME002: Unable to remove the minor objects :{0}", ex.getMessage()));
         } catch (ObjectException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+                 mLogger.error(mLocalizer.x("EME003: Unable to remove the minor objects :{0}", ex.getMessage()));
         } catch (Exception ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+                 mLogger.error(mLocalizer.x("EME004: Unable to remove the minor objects :{0}", ex.getMessage()));
         }
 
          //this.changedSBRArrayList.add(this.editEOAddressHashMap);
@@ -408,9 +412,10 @@ public class EditMainEuidHandler {
             setUpdatedEOFields(editEnterpriseObject); //set the updated values here
 
         } catch (ProcessingException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("EME005: Unable to update EO fields :{0}",ex.getMessage()));
         } catch (UserException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+           mLogger.error(mLocalizer.x("EME006: Unable to update EO fields :{0}",ex.getMessage())); 
         }
     }
 
@@ -428,9 +433,9 @@ public class EditMainEuidHandler {
             //call mastercontroller service to deactivate the system object
             masterControllerService.deactivateSystemObject(systemObject);
         } catch (ProcessingException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+             mLogger.error(mLocalizer.x("EME007: Unable to deactivate  System Object :{0}",ex.getMessage()));
         } catch (UserException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("EME008: Unable to deactivate  System Object :{0}",ex.getMessage()));
         }
      }
      
@@ -443,9 +448,10 @@ public class EditMainEuidHandler {
             //call mastercontroller service to deactivate the system object
             masterControllerService.activateSystemObject(systemObject);
         } catch (ProcessingException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("EME009: Unable to activate  System Object :{0}",ex.getMessage()));
         } catch (UserException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("EME010: Unable to activate  System Object :{0}",ex.getMessage()));
         }
      }
      public void addEOAddress(ActionEvent event ) {
@@ -617,11 +623,12 @@ public class EditMainEuidHandler {
             setUpdatedEOFields(eoFinal); //set the updated values here
             
         } catch (UserException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+             mLogger.error(mLocalizer.x("EME011: Unable to add  System Object :{0}",ex.getMessage()));
         } catch (ObjectException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("EME012: Unable to add  System Object :{0}",ex.getMessage()));
         } catch (Exception ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("EME013: Unable to add  System Object :{0}",ex.getMessage()));
+            //Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return this.EDIT_SUCCESS;
     }
@@ -924,9 +931,9 @@ public class EditMainEuidHandler {
             
 
         } catch (ObjectException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("EME014: Encountered the exception while modifying the SBR values :{0}",ex.getMessage()));
         } catch (EPathException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("EME015: Encountered the exception while modifying the SBR values :{0}",ex.getMessage()));
         }
   
         
@@ -983,9 +990,9 @@ public class EditMainEuidHandler {
             session.setAttribute("enterpriseArrayList", newArrayList);
             
         } catch (ProcessingException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("EME016: Unable to update EUID details :{0}",ex.getMessage()));
         } catch (UserException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("EME017: Unable to update EUID details:{0}",ex.getMessage()));
         }
         
     }
@@ -1131,9 +1138,9 @@ public class EditMainEuidHandler {
             // masterControllerService.updateEnterpriseObject(updateEO);
             
         } catch (ProcessingException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("EME018: Unable to save selected links :{0}",ex.getMessage()));
         } catch (UserException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("EME019: Unable to save selected links:{0}",ex.getMessage()));
         }
     }
 
@@ -1161,9 +1168,9 @@ public class EditMainEuidHandler {
             session.setAttribute("editEnterpriseObject",updateEO);
 
         } catch (ProcessingException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+             mLogger.error(mLocalizer.x("EME020: Unable to save selected unlinks:{0}",ex.getMessage()));
         } catch (UserException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+             mLogger.error(mLocalizer.x("EME021: Unable to save selected unlinks:{0}",ex.getMessage()));
         }
     }
     private void saveUnLocksSelected() {
@@ -1192,9 +1199,9 @@ public class EditMainEuidHandler {
             session.setAttribute("editEnterpriseObject",updateEO);
 
         } catch (ProcessingException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("EME022: Unable to save selected unlocks:{0}",ex.getMessage()));
         } catch (UserException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("EME023: Unable to save selected unlocks:{0}",ex.getMessage()));
         }
     }
     private void unSetMinorObjectPrimaryValues(ArrayList minorObjects) {
@@ -1379,9 +1386,9 @@ public class EditMainEuidHandler {
             setEoSystemObjects(eoSOobjects);
 
         } catch (UserException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("EME024: Unable to set updated EO fields:{0}",ex.getMessage()));
         } catch (ProcessingException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+             mLogger.error(mLocalizer.x("EME025: Unable to set updated EO fields:{0}",ex.getMessage()));
         }
     }
 

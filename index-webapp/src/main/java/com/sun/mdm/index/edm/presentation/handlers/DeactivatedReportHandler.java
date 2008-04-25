@@ -65,12 +65,15 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
 /**
  * @author Sridhar Narsingh
  * @exception ValidationException when entry is not valid.
@@ -78,6 +81,9 @@ import javax.servlet.http.HttpSession;
  */
 /** Creates a new instance of DeactivatedReport*/ 
 public class DeactivatedReportHandler    {
+    
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.DeactivatedReportHandler");
+    private static transient final Localizer mLocalizer = Localizer.get();
     // dataRowList1 
     ArrayList dataRowList1 = null;
     DeactivateReportConfig drConfig = null;
@@ -152,7 +158,6 @@ public class DeactivatedReportHandler    {
             }
             resultArrayList.add(getOutPutValuesMap(drConfig, reportRow));
         }
-        //System.out.println("resultArrayList" + resultArrayList);
         request.setAttribute("deactivatedReportList", resultArrayList);
         return dataRowList2Array(dataRowList);
     }
@@ -327,8 +332,9 @@ public class DeactivatedReportHandler    {
                 (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() == 0) &&
                 (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() == 0)){
                 errorMessage = bundle.getString("ERROR_one_of_many");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "One of Many :: " + errorMessage));
-                Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
+               // Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
+                 mLogger.error(mLocalizer.x("RPT009: {0}",errorMessage));
            }
 
         //Form Validation of  Start Time
@@ -336,8 +342,10 @@ public class DeactivatedReportHandler    {
             String message = edmValidation.validateTime(this.getCreateStartTime());
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?errorMessage:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Create Time From:: " + errorMessage, errorMessage));
-                Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
+                String msg2 = bundle.getString("timeFrom"); 
+                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
+                mLogger.error(mLocalizer.x("RPT010: {0}",errorMessage));
             }            
         }
 
@@ -347,7 +355,8 @@ public class DeactivatedReportHandler    {
             if (!"success".equalsIgnoreCase(message)) {
                  errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
+                 //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
+                 mLogger.error(mLocalizer.x("RPT011: {0}",errorMessage));
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
@@ -363,7 +372,8 @@ public class DeactivatedReportHandler    {
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
+                    //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
+                    mLogger.error(mLocalizer.x("RPT012: {0}",errorMessage));
                 }
             }
         }
@@ -373,8 +383,10 @@ public class DeactivatedReportHandler    {
             String message = edmValidation.validateTime(this.getCreateEndTime());
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Create Time To:: " + errorMessage, errorMessage));
-                Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
+                 
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage, errorMessage));
+               // Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
+                mLogger.error(mLocalizer.x("RPT013: {0}",errorMessage));
             } 
        }    
          
@@ -383,8 +395,9 @@ public class DeactivatedReportHandler    {
             String message = edmValidation.validateDate(this.getCreateEndDate());
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0? message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "End Date:: " + errorMessage));
-                Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
+                //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
+                mLogger.error(mLocalizer.x("RPT014: {0}",errorMessage));
             } else {
                 try {
                     if (getCreateEndTime().trim().length() == 0) {
@@ -398,9 +411,10 @@ public class DeactivatedReportHandler    {
                     }
                     createEndTime = "";
                 } catch (ValidationException validationException) {
-                    Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
+                    //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    mLogger.error(mLocalizer.x("RPT015: {0}",errorMessage));
                 }
             }           
         }
@@ -413,8 +427,9 @@ public class DeactivatedReportHandler    {
                long endDate = todate.getTime();
                  if(endDate < startDate){
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "fromdate :: " + errorMessage));
-                    Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
+                    //Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
+                    mLogger.error(mLocalizer.x("RPT016: {0}",errorMessage));
                    }
         }
           
@@ -426,7 +441,7 @@ public class DeactivatedReportHandler    {
         drc.addTransactionField(DeactivateReport.TIMESTAMP, "Timestamp", 20);        
         
         if (errorMessage != null && errorMessage.length() != 0)  {            
-            throw new ValidationException(errorMessage);
+            throw new ValidationException(mLocalizer.t("RPT502: {0}",errorMessage));
         } else {
            return drc;    
         }                                 
