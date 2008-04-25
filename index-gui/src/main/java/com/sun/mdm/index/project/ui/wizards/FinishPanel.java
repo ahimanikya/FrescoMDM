@@ -1421,8 +1421,11 @@ public class FinishPanel implements WizardDescriptor.Panel {
 
     private ArrayList getAlSearchResultFieldRef(String tab) {
         EntityNode currentNode = mPrimaryNode;
+        String fieldRef_begin = (tab + "<field-group>\n");
         String fieldRef = "";
+        String fieldRef_end = ("\n" + tab + "</field-group>");
         ArrayList alRet = new ArrayList();
+        boolean bDescription = false;
         
         int cnt = currentNode.getChildCount();
         if (cnt > 0) {
@@ -1431,10 +1434,9 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 EntityNode targetNode = currentNode;
                 String str = getSearchResultFieldRef(targetNode, currentNode.getName(), tab + tab4);
                 if (str.length() > 0) {
-                    fieldRef += (tab + "<field-group>\n");
+                    bDescription = true;
                     fieldRef += (tab + tab4 + "<description/>\n");
                     fieldRef += str;
-                    fieldRef += (tab + "</field-group>\n");
                 }
                 i = 1;
             }
@@ -1445,10 +1447,10 @@ public class FinishPanel implements WizardDescriptor.Panel {
                 if (subNode.isSub()) {
                     String str = getSearchResultFieldRef(subNode, currentNode.getName() + "." + subNode.getName(), tab + tab4);
                     if (str.length() > 0) {
-                        fieldRef += (tab + "<field-group>\n");
-                        fieldRef += (tab + tab4 + "<description/>\n");
+                        if (!bDescription) {
+                            fieldRef += (tab + tab4 + "<description/>\n");
+                        }
                         fieldRef += str;
-                        fieldRef += (tab + "</field-group>\n");
                     }
                 }
             }
@@ -1457,7 +1459,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
         if (idx > 0) {
             fieldRef = fieldRef.substring(0, idx);
         }
-        alRet.add(fieldRef);
+        alRet.add(fieldRef_begin + fieldRef + fieldRef_end);
         return alRet;
     }
     
