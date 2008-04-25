@@ -22,6 +22,7 @@
  */
 package com.sun.mdm.index.loader.main;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -82,6 +83,8 @@ public class BulkMatcherLoader {
 	private static int BLOCKDISTRIBUTE_ONLY = 3;
 	private static int BLOCKDISTRIBUTE_AFTER = 4;
 	private int loadMode_ = 0; // default mode
+	private ObjectDefinition inputobd_;
+	private String dateFormatString_;
 	
 	public BulkMatcherLoader() throws Exception {
 		RuntimeStats();
@@ -100,6 +103,7 @@ public class BulkMatcherLoader {
 		}
 		
 	    ObjectNodeUtil.initDataObjectAdapter();	
+	    dateFormatString_ = ObjectNodeUtil.getDateFormatString();
 	}
 	
 	public void bulkMatchLoad() throws Exception {
@@ -110,7 +114,7 @@ public class BulkMatcherLoader {
 	    if (isMasterLoader_) { 
 		  
 		  clusterSynchronizer_.setClusterState(ClusterState.BLOCK_DISTRIBUTION);		
-	      BlockDistributor blockDistributor = new BlockDistributor(matchPaths_, inputLookup_, blockLk_, false);	
+	      BlockDistributor blockDistributor = new BlockDistributor(matchPaths_, inputLookup_, inputobd_, blockLk_, false);	
 	      RuntimeStats();
 	      logger.info("block_distribution_started");
 	      blockDistributor.distributeBlocks();
@@ -128,7 +132,7 @@ public class BulkMatcherLoader {
 	    	return;
 	    }
 	    logger.info("matcher_started");	
-	    Matcher matcher = new Matcher(matchPaths_, matchTypes_, blockLk_, false);
+	    Matcher matcher = new Matcher(matchPaths_, matchTypes_, blockLk_, false, dateFormatString_);
 	    matcher.match();
 	    logger.info("matching_done");
 	    RuntimeStats();
@@ -182,7 +186,7 @@ public class BulkMatcherLoader {
 	  
 	    if (isMasterLoader_) { 	 
 			clusterSynchronizer_.setClusterState(ClusterState.POT_DUPLICATE_BLOCK);							
-		    BlockDistributor blockDistributor = new BlockDistributor(sbrmatchPaths_, sbrLookup_, sbrblockLk_, true);	
+		    BlockDistributor blockDistributor = new BlockDistributor(sbrmatchPaths_, sbrLookup_, inputobd_,  sbrblockLk_, true);	
 		    blockDistributor.distributeBlocks();
 		    logger.info("Potental Dups SBR block distribution completed");
 		    clusterSynchronizer_.setClusterState(ClusterState.POT_DUPLICATE_MATCH);	    
@@ -192,7 +196,7 @@ public class BulkMatcherLoader {
 		 }
 		 
 		 	
-	   Matcher matcher = new Matcher(sbrmatchPaths_, matchTypes_, sbrblockLk_, true);
+	   Matcher matcher = new Matcher(sbrmatchPaths_, matchTypes_, sbrblockLk_, true, dateFormatString_);
 	   matcher.match();
 	   logger.info("Potental Dups maching completed");
 	   FileManager.deleteSBRBlockDir(false);
@@ -279,6 +283,8 @@ public class BulkMatcherLoader {
 		initLookup();				
 				
 	}	
+	
+	
 	
 	
 	public static void  main(String[] args) {
@@ -375,6 +381,8 @@ public class BulkMatcherLoader {
 		f = new Field();
 		f.setName("createUser");
 		obd.addField(4,f);
+		
+		inputobd_ = obd;
 	
 		Lookup lookup = Lookup.createLookup(obd);
 		return lookup;
