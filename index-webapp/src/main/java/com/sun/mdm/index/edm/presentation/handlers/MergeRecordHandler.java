@@ -56,8 +56,8 @@ import com.sun.mdm.index.edm.services.configuration.ValidationService;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+//import com.sun.mdm.index.util.LogUtil;
+//import com.sun.mdm.index.util.Logger;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -70,9 +70,16 @@ import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
 
 /** Creates a new instance of DeactivatedReportsHandler*/ 
 public class MergeRecordHandler    {
+    
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.MergeRecordHandler");
+    private static transient final Localizer mLocalizer = Localizer.get();
+    
     private String reportType;
     ArrayList dataRowList1 = null;
     private ArrayList vOList = new ArrayList();
@@ -81,7 +88,7 @@ public class MergeRecordHandler    {
     private String createEndDate = new String();    
     private String createStartTime = new String();
     private String createEndTime = new String();  
-    private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.MergeRecordHandler");    
+    //private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.MergeRecordHandler");    
     /*
      *  Request Object Handle
      */  
@@ -121,7 +128,6 @@ public class MergeRecordHandler    {
         while (mRpt.hasNext()) {
             MergeReportRow reportRow = mRpt.getNextReportRow();
             ReportDataRow[] dataRows = writeRow(mrConfig, reportRow);
-            //System.out.println("count -----"+dataRows.length);
             //for (int i = 0; i < dataRows.length; i++) {
             //    dataRowList.add(dataRows[i]);
             //}
@@ -270,8 +276,10 @@ public class MergeRecordHandler    {
                 (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() == 0) &&
                 (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() == 0)){
                 errorMessage = bundle.getString("ERROR_one_of_many");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "One of Many :: " + errorMessage));
-                mLogger.error(errorMessage);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
+                //mLogger.error(errorMessage);
+                mLogger.error(mLocalizer.x("MRG001: {0} ",errorMessage));
+                
            }
 
         //Form Validation of  Start Time
@@ -279,8 +287,11 @@ public class MergeRecordHandler    {
             String message = edmValidation.validateTime(this.getCreateStartTime());
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?errorMessage:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Create Time From:: " + errorMessage, errorMessage));
-                mLogger.error(errorMessage);
+                String msg1 = bundle.getString("timeFrom");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,msg1 + errorMessage, errorMessage));
+                //mLogger.error(errorMessage);
+                 mLogger.error(mLocalizer.x("MRG002: {0} ",errorMessage));
+                
             }            
         }
 
@@ -290,7 +301,8 @@ public class MergeRecordHandler    {
             if (!"success".equalsIgnoreCase(message)) {
                  errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 mLogger.error(errorMessage);
+                // mLogger.error(errorMessage);
+                 mLogger.error(mLocalizer.x("MRG003: {0} ",errorMessage));
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
@@ -302,7 +314,8 @@ public class MergeRecordHandler    {
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    mLogger.error(errorMessage);
+                    //mLogger.error(errorMessage);
+                    mLogger.error(mLocalizer.x("MRG004: {0}:{1} ",errorMessage,validationException.getMessage()));
                 }
             }
         }
@@ -312,8 +325,10 @@ public class MergeRecordHandler    {
             String message = edmValidation.validateTime(this.getCreateEndTime());
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Create Time To:: " + errorMessage, errorMessage));
-                mLogger.error(errorMessage);
+                 String msg2 = bundle.getString("timeTo");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg2 + errorMessage, errorMessage));
+                //mLogger.error(errorMessage);
+                mLogger.error(mLocalizer.x("MRG005: {0} ",errorMessage));
             } 
        }    
          
@@ -322,8 +337,9 @@ public class MergeRecordHandler    {
             String message = edmValidation.validateDate(this.getCreateEndDate());
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0? message:message);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "End Date:: " + errorMessage));
-                mLogger.error(errorMessage);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                //mLogger.error(errorMessage);
+                mLogger.error(mLocalizer.x("MRG006: {0} ",errorMessage));
             } else {
                 try {
 //                    if (getCreateEndTime().trim().length() == 0) {
@@ -339,7 +355,8 @@ public class MergeRecordHandler    {
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    mLogger.error(errorMessage);
+                    //mLogger.error(errorMessage);
+                    mLogger.error(mLocalizer.x("MRG007: {0}:{1} ",errorMessage,validationException.getMessage()));
                 }
             }           
         }
@@ -352,8 +369,9 @@ public class MergeRecordHandler    {
                long endDate = todate.getTime();
                  if(endDate < startDate){
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "fromdate :: " + errorMessage));
-                    mLogger.error(errorMessage);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    //mLogger.error(errorMessage);
+                    mLogger.error(mLocalizer.x("MRG008: {0} ",errorMessage));
                    }
         }   
         
@@ -436,11 +454,9 @@ public class MergeRecordHandler    {
      */
    public MergedRecords[] getMergedRecordsVO() {
         mergedRecordsVO = new MergedRecords[vOList.size()];
-        //System.out.println("Results Size :: " + vOList.size());
         for (int i = 0; i < vOList.size(); i++) {
             mergedRecordsVO[i] = new MergedRecords();
             mergedRecordsVO[i] = (MergedRecords)vOList.get(i);
-            //System.out.println("Results DATA :: " + mergedRecordsVO[i].getEuid());
         }
         request.setAttribute("size", new Integer(mergedRecordsVO.length));        
         request.setAttribute("tabName", "MERGED_RECORDS");               

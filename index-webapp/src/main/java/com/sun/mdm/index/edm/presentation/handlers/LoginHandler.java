@@ -50,8 +50,14 @@ import com.sun.mdm.index.edm.services.security.SecurityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
 
 public class LoginHandler {
+    
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.LoginHandler");
+    private static transient final Localizer mLocalizer = Localizer.get();
     
     private String userNameValue ="eview";
     private String userName ="eview";
@@ -86,8 +92,9 @@ public class LoginHandler {
     
     
     public String authorizeAndLoginUser() {
-        String errorMessage = "Login Success";
+       
         ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        String errorMessage =bundle.getString("Login_Success");
         //Logon logon  = new Logon();
         //Use LogOn class here
         try {
@@ -95,9 +102,10 @@ public class LoginHandler {
             
         } catch(Exception ex) {
             
-            ex.printStackTrace();
+           // ex.printStackTrace();
             errorMessage = bundle.getString("login_user_login_init_load_message");
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+            mLogger.error(mLocalizer.x("HND004: {0}:{1}",errorMessage,ex.getMessage()));
             return FAIL_INITIALIZATION;
         }
         UserProfile userProfile = null;
@@ -112,9 +120,10 @@ public class LoginHandler {
             // Initialize the QWS Controller, Validation, and Date services
             Logon.initializeQWSControllerValidationDate();
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
             errorMessage = bundle.getString("login_user_login_failure_message");
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+            mLogger.error(mLocalizer.x("HND005: {0} :{1}",errorMessage,e.getMessage()));
             return FAILURE;
 
         }
@@ -127,13 +136,15 @@ public class LoginHandler {
                 //Build the screen feilds array from EDM.xml file here and put it in session
                 session.setAttribute("ScreenObject",ConfigManager.getInstance().getInitialScreen());
             } catch(Exception ex) {
-                 ex.printStackTrace();
+                 //ex.printStackTrace();
+                mLogger.error(mLocalizer.x("HND006: {0} ",ex.getMessage()));
                  return FAILURE;
             }
             return initialScreenName;            
         } else {
             errorMessage = bundle.getString("login_user_login_failure_message");
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+            mLogger.error(mLocalizer.x("HND007: {0} :{1}",errorMessage));
             return FAILURE;
         } 
     }
@@ -153,6 +164,7 @@ public class LoginHandler {
             ConfigManager.init();
         } catch (Exception t) {
             request.setAttribute("Error while initializing ConfigManager", QwsUtil.getRootCause(t).getMessage());
+            mLogger.error(mLocalizer.x("HND008: Error while initializing ConfigManager {0}",t.getMessage()));
             return FAIL_INITIALIZATION;
         }
 
@@ -180,6 +192,7 @@ public class LoginHandler {
                 // this piece of info in ConfigManager comes from MC
                 ConfigManager.getInstance().setEuidLength(euidLength);
             } catch (Exception e) {
+                 mLogger.error(mLocalizer.x("HND09: Error while initializing QwsController : {0}",e.getMessage()));
                 request.setAttribute("Error while initializing QwsController", QwsUtil.getRootCause(e).getMessage());
             }
  
@@ -197,6 +210,7 @@ public class LoginHandler {
                 DateUtil.init();
             } catch (Exception t) {
                 request.setAttribute("Error while initializing DateUtil", QwsUtil.getRootCause(t).getMessage());
+               mLogger.error(mLocalizer.x("HND010: Error while initializing DateUtil : {0}",t.getMessage()));
                 return FAIL_INITIALIZATION;
             }
         } else {
@@ -207,6 +221,7 @@ public class LoginHandler {
                 ValidationService.init();
             } catch (Exception t) {
                 request.setAttribute("Error while initializing ValidationService", QwsUtil.getRootCause(t).getMessage());
+                 mLogger.error(mLocalizer.x("HND011: Error while initializing ValidationService : {0}",t.getMessage()));
                 return FAIL_INITIALIZATION;
             }
             
@@ -215,6 +230,7 @@ public class LoginHandler {
                 DateUtil.init();
             } catch (Exception t) {
                 request.setAttribute("Error while initializing ValidationService", QwsUtil.getRootCause(t).getMessage());
+                mLogger.error(mLocalizer.x("HND012: Error while initializing ValidationService : {0}",t.getMessage()));
                 return FAIL_INITIALIZATION;
             }
             

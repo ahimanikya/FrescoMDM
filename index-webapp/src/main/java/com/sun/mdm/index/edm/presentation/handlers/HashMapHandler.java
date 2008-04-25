@@ -44,14 +44,21 @@ import java.util.Iterator;
 
 import javax.faces.event.*;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+//import com.sun.mdm.index.util.LogUtil;
+//import com.sun.mdm.index.util.Logger;
 
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
 
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 
 public class HashMapHandler {
+    
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.HashMapHandler");
+    private static transient final Localizer mLocalizer = Localizer.get();
+    
     private HashMap updateableFeildsMap =  new HashMap();    
     private ArrayList nonUpdateableFieldsArray = new ArrayList();    
     private HashMap actionMap =  new HashMap();    
@@ -60,7 +67,7 @@ public class HashMapHandler {
     private ArrayList screenConfigArray;
     private  static final String ADDEUID="success";
     
-    private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.HashMapHandler");
+   // private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.HashMapHandler");
 
     // Create fields for non updateable fields as per screen config array
     private String EUID;
@@ -145,7 +152,8 @@ public class HashMapHandler {
                 }
             }            
         } catch (Exception e) {
-            mLogger.error("Failed Get the Screen Object: ", e);
+           // mLogger.error("Failed Get the Screen Object: ", e);
+             mLogger.error(mLocalizer.x("HND001: Failed to get the Screen Object :{0}",e.getMessage()));
         }
         
         return fieldConfigArray;
@@ -165,7 +173,8 @@ public class HashMapHandler {
             }
             //headerScreenObjectsArray = arrayList;
         } catch(Exception e) {
-            mLogger.error("Failed Get the Screen Object: ", e);
+            //mLogger.error("Failed Get the Screen Object: ", e);
+             mLogger.error(mLocalizer.x("HND002: Failed to get the Screen Object :{0}",e.getMessage()));
         }
         
         return headerScreenObjectsArray;
@@ -190,7 +199,8 @@ public class HashMapHandler {
             screenConfigArray = ConfigManager.getInstance().getScreen(new Integer("3")).getSearchScreensConfig();
                         
         } catch (Exception e) {
-            mLogger.error("Failed Get the Screen Config Array Object: ", e);
+           // mLogger.error("Failed Get the Screen Config Array Object: ", e);
+             mLogger.error(mLocalizer.x("HND003: Failed to get the Screen Config Array Object: :{0}",e.getMessage()));
         }
 
         return screenConfigArray;
