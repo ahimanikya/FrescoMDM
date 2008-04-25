@@ -30,14 +30,14 @@ import com.sun.mdm.matcher.api.MatcherConfigurationException;
 import com.sun.mdm.matcher.api.MatchingEngine;
 //import com.stc.sbmeapi.impl.StandConfigFilesAccessImpl;
 import com.sun.mdm.matcher.api.impl.MatchConfigFilesAccessImpl;
-
+import com.sun.mdm.matcher.comparators.MatchComparator;
 
 public class MatcherAdapter {
     
     private  MatchingEngine mSbmeMatch;
     private  String[] matchFieldIDs;
 
-    public MatcherAdapter(String[] matchFldIds) throws Exception {
+    public MatcherAdapter(String[] matchFldIds, String dateFormat) throws Exception {
      
     	 matchFieldIDs = matchFldIds;	
         //ConfigFilesAccess files = new NewMatcher.CSConfigFileAccess();
@@ -47,19 +47,22 @@ public class MatcherAdapter {
 //        mSbmeMatch.initializeData(files);
         mSbmeMatch.upLoadConfigFile();
 //        StandConfigFilesAccessImpl filesAccess = new StandConfigFilesAccessImpl();
-
- 
+        MatchComparator codeClass = mSbmeMatch.getComparatorManager(mSbmeMatch).getComparatorInstance("ds");
+        //codeClass.setRTParameters("DateFormat", "yyyyMMdd:HH:mm:ss");
+        codeClass.setRTParameters("DateFormat", dateFormat);
+    
     }
         
-      
-    
+       
     public float compareRecords(String[] rec1, String[] rec2) throws Exception {
         
         String [][] candRecArrayVals = { (rec1) };
         String [][] refRecArrayVals = { (rec2) };
+       // return 0;
         
         double[][] score = mSbmeMatch.matchWeight(matchFieldIDs, candRecArrayVals, refRecArrayVals);
         return (float) score[0][0];
+        
     }
     
     public float compareRecords(String rec1, String rec2, String matchField) throws Exception {
@@ -67,44 +70,13 @@ public class MatcherAdapter {
         String [][] candRecArrayVals = { {rec1} };
         String [][] refRecArrayVals = { {rec2} };
         String [] matchFields = {matchField};
-    	//mSbmeMatch.m
+     //   return 0;
         
         double[][] score = mSbmeMatch.matchWeight(matchFields, candRecArrayVals, refRecArrayVals);
         return (float) score[0][0];
+        
     }
     
-    public static class CSConfigFileAccess implements ConfigFilesAccess {
-        
-        public java.io.InputStream getConfigFileAsStream(String name)
-        throws MatcherConfigurationException {
-            
-            InputStream stream = null;
-            
-            try {
-                stream = ClassLoader.getSystemResourceAsStream("match/" + name);
-            	//stream = ClassLoader.getSystemResourceAsStream(name);
-            } catch (RuntimeException ex) {
-                System.out.println("Error: " + ex);
-                throw new MatcherConfigurationException(ex);
-            }
-            
-            return stream;
-        }
-        
-        public java.io.InputStream getConfigFileAsStream(String name, String name2)
-        throws MatcherConfigurationException {
-            
-            InputStream stream = null;
-            
-            try {
-                stream = ClassLoader.getSystemResourceAsStream("match/" + name);
-            } catch (RuntimeException ex) {
-                System.out.println("Error: " + ex);
-                throw new MatcherConfigurationException(ex);
-            }
-            
-            return stream;
-        }
-    }
+   
     
 }
