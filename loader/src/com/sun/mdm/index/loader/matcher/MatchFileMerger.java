@@ -32,10 +32,10 @@ import java.io.BufferedWriter;
 
 /**
  * Merges many MatchFile (contains MatchRecord data) into one file.
- * Merge is done presevering the sorting order. So the output file
+ * Merge is done preserving the sorting order. So the output file
  * contains MatchRecord (GID1, GID2, weight) sorted from GID1, GID2.
  * Assumption: Each MatchFile is already sorted.
- * @author sdua
+ * @author Swaranjit Dua
  *
  */
 public class MatchFileMerger {
