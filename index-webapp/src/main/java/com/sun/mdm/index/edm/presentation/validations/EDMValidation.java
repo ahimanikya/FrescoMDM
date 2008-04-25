@@ -38,13 +38,23 @@ import java.text.SimpleDateFormat;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import java.util.ResourceBundle;
+import net.java.hulp.i18n.LocalizationSupport;
 
 public class EDMValidation {
+    
+   private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.validations.EDMValidation");
+    private static transient final Localizer mLocalizer = Localizer.get();
+   ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm");
    private Hashtable MONTH_DAY_HASH = new Hashtable();
    private String[] MONTHS = new String[13];   
-     
+   
+   
+   
    public EDMValidation()    {
    }
    
@@ -55,6 +65,7 @@ public class EDMValidation {
  */
    public String validateDate(String thisDate)    {
        
+       String errorMessage = null;
         try {
             this.MONTHS[0] = "Error";
             this.MONTHS[1] = "1";
@@ -92,7 +103,8 @@ public class EDMValidation {
             String[] dateTokens = new String[st.countTokens()];
             //There should be a minimum of three tokens
             if (st.countTokens() != 3) {
-                return "Invalid Date Format! The format of Date is MM/DD/YYYY";
+                errorMessage = bundle.getString("Invalid_Date_Format");
+                return  errorMessage; //"Invalid Date Format! The format of Date is MM/DD/YYYY";
             }
             
             int i = 0;
@@ -103,7 +115,9 @@ public class EDMValidation {
                 try {
                     dateInt = new Integer(dateTokens[i]);
                 } catch (NumberFormatException numberFormatException) {
-                    return "Date is not a Number"; 
+                    mLogger.error(mLocalizer.x("EVL006: Date is not a Number :{0}", numberFormatException.getMessage()));
+                    errorMessage = bundle.getString("Date_Number");
+                   return errorMessage ;//"Date is not a Number"; 
                 }
                 if (i == 0) {
                     month = dateInt;
@@ -114,7 +128,8 @@ public class EDMValidation {
                 if (i == 2) {
                     year = dateInt;
                     if (dateTokens[i].length() != 4) {
-                        return "Year Should be 4 digits"; 
+                        String msg = bundle.getString("Year_digits");
+                        return msg; //"Year Should be 4 digits"; 
                     }
                 }
                 i++;
@@ -127,11 +142,11 @@ public class EDMValidation {
 
             //Month should < 12
             if (month > 12 || month <= 0) {
-                return "Invalid Month Entered";
+                return bundle.getString("Invalid_Month");//"Invalid Month Entered";
             }
             //Day should be according to the MONTH_DAY table
             if (day > new Integer((String) this.MONTH_DAY_HASH.get(MONTHS[month])).intValue() || day < 1) {
-                return "Invalid Day Entered";
+                return bundle.getString("Invalid_Day");//"Invalid Day Entered";
             }
             // If leap year and month should be not more than 29
 //            if ((year % 4 == 0 && year % 100 == 0) || (year % 400 == 0)) {
@@ -141,15 +156,16 @@ public class EDMValidation {
 //            } else 
            
             if (month > 12 || month < 1) {
-                return "Invalid Month The format of Date is MM/DD/YYYY"; //Month should be between 1 and 12
+                return bundle.getString("Invalid_Month_format"); //"Invalid Month The format of Date is MM/DD/YYYY"; //Month should be between 1 and 12
             }
-            Logger.getLogger(EDMValidation.class.getName()).log(Level.WARNING, "DAY :: " + new Integer(day).toString(), "DAY :: " + new Integer(day).toString());
-            Logger.getLogger(EDMValidation.class.getName()).log(Level.WARNING, "Month :: " + new Integer(month).toString(), "Month :: " + new Integer(month).toString());
-            Logger.getLogger(EDMValidation.class.getName()).log(Level.WARNING, "Year :: " + new Integer(year).toString(), "Year :: " + new Integer(year).toString());
+           mLogger.error(mLocalizer.x("EVL001: Day: Month: Year: {0}:{1}:{2}", new Integer(day).toString(),new Integer(month).toString(),new Integer(year).toString()));
+           //mLogger.error(mLocalizer.x("EVL002: Month :: {0}", new Integer(month).toString()));
+           //mLogger.error(mLocalizer.x("EVL003: Year :: {0}", new Integer(year).toString()));
 
-        } catch (Exception ex) {
-            Logger.getLogger(EDMValidation.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+       } catch (Exception ex) {
+           mLogger.error(mLocalizer.x("EVL004: Date validation failed :{0}", ex.getMessage()));
+       }
         return "success";
    }
    
@@ -168,7 +184,7 @@ public class EDMValidation {
        String timeTokens[] = new String[st.countTokens()];
 
        //There should be a minimum of three tokens
-       if (st.countTokens() != 3) return "Invalid Time Format!, The format of Time is HH:MM:SS";
+       if (st.countTokens() != 3) return bundle.getString("Invalid_Time_Format"); //"Invalid Time Format!, The format of Time is HH:MM:SS";
 
        //Parse each Token to see if it has got digits
        int i = 0;
@@ -179,7 +195,8 @@ public class EDMValidation {
            try {
                timeInt = new Integer(timeTokens[i]);
            } catch (NumberFormatException numberFormatException) {
-               return "Invalid Time Format!, The format of Time is HH:MM:SS";  //Either HH or MM or SS Not a number
+               mLogger.error(mLocalizer.x("EVL005: Invalid Time Format!, The format of Time is HH:MM:SS :{0}", numberFormatException.getMessage()));
+               return bundle.getString("Invalid_Time_Format"); //"Invalid Time Format!, The format of Time is HH:MM:SS";  //Either HH or MM or SS Not a number
            }
            if (i == 0) hours = timeInt;
            if (i == 1) minutes = timeInt;
@@ -188,11 +205,11 @@ public class EDMValidation {
        }
        //System.out.println("Hours,minutes,seconds" + hours + ','+minutes+','+seconds);
        //Hours should be > 24       
-       if (hours  > 24 || hours < 0) return "Invalid Hours Entered, The format of Time is HH:MM:SS";   
+       if (hours  > 24 || hours < 0) return bundle.getString("Invalid_Hours");//"Invalid Hours Entered, The format of Time is HH:MM:SS";   
        //Minutes should be > 60
-       if (minutes  > 60 || minutes < 0) return "Invalid Minutes Entered, The format of Time is HH:MM:SS";   
+       if (minutes  > 60 || minutes < 0) return bundle.getString("Invalid_Minutes"); //"Invalid Minutes Entered, The format of Time is HH:MM:SS";   
        //Hours should be > 24       
-       if (seconds  > 60 || seconds < 0) return "Invalid Seconds Entered, The format of Time is HH:MM:SS";   
+       if (seconds  > 60 || seconds < 0) return  bundle.getString("Invalid_Seconds"); //"Invalid Seconds Entered, The format of Time is HH:MM:SS";   
        
        return "success";
    }
@@ -208,7 +225,7 @@ public class EDMValidation {
        String localIDTokens[] = new String[st.countTokens()];
 
        //There should be a minimum of three tokens
-       if (st.countTokens() != 3) return "Invalid Local ID. The format of Local ID is DDD-DDD-DDDD";
+       if (st.countTokens() != 3) return bundle.getString("Local_ID_format");//"Invalid Local ID. The format of Local ID is DDD-DDD-DDDD";
 
        //Parse each Token to see if it has got digits
        int i = 0;
@@ -219,18 +236,19 @@ public class EDMValidation {
            try {
                localIdInt = new Integer(localIDTokens[i]);               
            } catch (NumberFormatException numberFormatException) {
-               return "Local ID is not a Number";  //Either day or month or Year Not a number
+                mLogger.error(mLocalizer.x("EVL007: Local ID is not a Number :{0}", numberFormatException.getMessage()));
+               return bundle.getString("Local_ID_Number") ; //"Local ID is not a Number";  //Either day or month or Year Not a number
            }
            if (i == 0 || i == 1)   {
                if (localIDTokens[i].length() != 3)  {                   
                    if (!"success".equalsIgnoreCase(validateNumber(localIDTokens[i])))    {
-                      return "Invalid Local ID. Local ID should be Numeric";   
+                      return bundle.getString("Invalid_Local_ID"); //"Invalid Local ID. Local ID should be Numeric";   
                    }                   
-                   return "Invalid Local ID. The format of Local ID is DDD-DDD-DDDD";
+                   return bundle.getString("Local_ID_format"); //"Invalid Local ID. The format of Local ID is DDD-DDD-DDDD";
                }                 
            }
            if (i == 2) {
-               if (localIDTokens[i].length() != 4) return "Invalid Local ID. The format of Local ID is DDD-DDD-DDDD";  
+               if (localIDTokens[i].length() != 4) return bundle.getString("Local_ID_format");//"Invalid Local ID. The format of Local ID is DDD-DDD-DDDD";  
            }
            i++;           
        }
@@ -246,7 +264,8 @@ public class EDMValidation {
        try {
            int tempNum = Integer.parseInt(thisNumber);
        } catch (NumberFormatException numberFormatException) {
-           return "Invalid Number";
+            mLogger.error(mLocalizer.x("EVL008: Invalid Number :{0}", numberFormatException.getMessage()));
+           return  bundle.getString("Invalid_Number"); //"Invalid Number";
        }       
        return "success";
    }
