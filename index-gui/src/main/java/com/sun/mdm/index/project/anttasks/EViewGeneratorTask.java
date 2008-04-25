@@ -136,7 +136,7 @@ public class EViewGeneratorTask extends Task {
                 InputSource source = new InputSource(new FileInputStream(
                         objectFile));
                 EIndexObject eo = Utils.parseEIndexObject(source);
-                String objName = eo.getName();
+                String applicationName = eo.getName();
 
                 // generate database scripts, application.xml,
                 // sun-application.xml, jbi.xml, object files,
@@ -150,7 +150,7 @@ public class EViewGeneratorTask extends Task {
                 generateEbjFiles(eo);
 
                 // put the web files into war project
-                generateWarFiles(objName);
+                generateWarFiles(applicationName);
 
                 // add lib to ejb project by modifing ejb project's
                 // project.properties file.
@@ -700,7 +700,7 @@ public class EViewGeneratorTask extends Task {
         return doc;
     }
 
-    private void generateWarFiles(String objName) {
+    private void generateWarFiles(String applicationName) {
         String edmVersion = getProject().getProperty("edm-version");
         String edmWarName = "edm.war";
         boolean jspExcluded = true;
@@ -715,7 +715,7 @@ public class EViewGeneratorTask extends Task {
         File destDir = new File(mWardir, "web");
         FileSet fileSet = new FileSet();
         fileSet.setDir(destDir);
-                //fileSet.setExcludes("**/lib/*.jar");
+        //fileSet.setExcludes("**/lib/*.jar");
         Delete delete = (Delete) getProject().createTask("delete");
         //delete.setDir(destDir);
         delete.addFileset(fileSet);
@@ -765,7 +765,7 @@ public class EViewGeneratorTask extends Task {
         if (null != edmVersion && edmVersion.equalsIgnoreCase("master-index-edm")) {
             String token = "/SunEdm";
             String sunWebXml= (mWardir.getAbsolutePath()+"/web/WEB-INF/sun-web.xml");
-            replaceToken(sunWebXml, token, "/"+objName+"edm" );         
+            replaceToken(sunWebXml, token, "/"+applicationName+"edm" );         
         }               
     }
 
