@@ -4,7 +4,7 @@
 
 
 	<threshold-config>
-		<duplicateThreshold>7.5</duplicateThreshold>
+		<duplicateThreshold>20.0</duplicateThreshold>
 		<matchThreshold>30.0</matchThreshold>
 	</threshold-config>
 
@@ -98,7 +98,7 @@
 			<property name="matchAnalyzerMode" value="false" />
                   <property name="BulkLoad" value="false" />
                   <property name="standardizationMode" value="true" />
-
+                  <property name="deleteIntermediateDirs" value="false" />
 
 			<property name="rmiPort" value="9999" />
 			<property name="workingDir" value="test/data/eview/loader" />
@@ -118,24 +118,21 @@
 
 
 			<!-- ftp properties -->
-			<property name="ftp.server" value="sbiswas-acer" />
+			<property name="ftp.server" value="master-index" />
 			<property name="ftp.username" value="loader" />
 			<property name="ftp.password" value="loader" />
 
-
-
 			<!-- cluster database properties -->
 			<property name="cluster.database" value="Oracle" />
-			<property name="cluster.database.url" value="jdbc:oracle:thin:@sbiswas-acer.stc.com:1521:mural" />
-			<property name="cluster.database.user" value="sujit" />
-			<property name="cluster.database.password" value="sujit" />
+			<property name="cluster.database.url" value="jdbc:oracle:thin:@localhost:1521:oracle" />
+			<property name="cluster.database.user" value="mdm" />
+			<property name="cluster.database.password" value="mdm" />
 			<property name="cluster.database.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
 
 
 
-
 			<!-- oracle SQL loader properties -->
-			<property name="sqlldr.userid" value="sujit/sujit@mdm.stc.com" />
+			<property name="sqlldr.userid" value="eview/eview@mdm" />
 			<property name="sqlldr.record.delimiter" value="$$$" />
 
 		</properties>
