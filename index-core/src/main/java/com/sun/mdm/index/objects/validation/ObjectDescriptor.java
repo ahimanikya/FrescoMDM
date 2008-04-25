@@ -291,16 +291,16 @@ public class ObjectDescriptor {
                 fd.validate(objectFields[i], newObject);
             } catch (UnknownDataTypeException e) {
                 throw new ValidationException(mLocalizer.t("OBJ698: Invalid data " +
-                                          "type for {0}[{1}]",
-                                          objectName, objectFields[i].getName()));
+                                          "type for {0}[{1}]: {2}",
+                                          objectName, objectFields[i].getName(), e.getMessage()));
             } catch (UpdateNotAllowedException e) {
                 throw new ValidationException(mLocalizer.t("OBJ699: The value of " +
-                                          "{0}[{1}] cannot be updated.",
-                                          objectName, objectFields[i].getName()));
+                                          "{0}[{1}] cannot be updated: {2}",
+                                          objectName, objectFields[i].getName(), e.getMessage()));
             } catch (MissingValueOnRequiredError e) {
                 throw new ValidationException(mLocalizer.t("OBJ700: A value for " +
-                                          "{0}[{1}] is required.",
-                                          objectName, objectFields[i].getName()));
+                                          "{0}[{1}] is required: {2}",
+                                          objectName, objectFields[i].getName(), e.getMessage()));
             }
             
             if (objectFields[i].getValue() != null) {
