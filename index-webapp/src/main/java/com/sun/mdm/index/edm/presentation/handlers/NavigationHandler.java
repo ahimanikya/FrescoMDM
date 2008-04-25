@@ -41,11 +41,14 @@ import javax.servlet.http.HttpSession;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 
-import com.sun.mdm.index.util.LogUtil;
-import com.sun.mdm.index.util.Logger;
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
 
 public  class NavigationHandler {
     
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.NavigationHandler");
+    private static transient final Localizer mLocalizer = Localizer.get();
     /** Static field for SOURCE_RECORDS*/
     private static final String DASH_BOARD = "dashboard";
     private static final String DUPLICATE_RECORDS = "duplicate-records";
@@ -57,7 +60,6 @@ public  class NavigationHandler {
     private static final String AUDIT_LOG = "audit-log";
     
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-    private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.NavigationHandler");
     
     /** Creates a new instance of NavigationHandler */
     public NavigationHandler() {
@@ -178,7 +180,8 @@ public  class NavigationHandler {
             screenObject = ConfigManager.getInstance().getScreenObjectFromScreenName(tagName);
             session.removeAttribute("ScreenObject");
         } catch (Exception e) {
-            mLogger.error("Failed Get the Screen Object: ", e);
+           // mLogger.error("Failed Get the Screen Object: ", e);
+             mLogger.error(mLocalizer.x("NAV001: Failed to get the Screen Object :{0} ",e.getMessage()));
         }
         return screenObject;
     }
@@ -189,7 +192,8 @@ public  class NavigationHandler {
             ConfigManager.init();
             tagName = ConfigManager.getInstance().getScreenObjectTagName(screenId.toString());
         } catch (Exception e) {
-            mLogger.error("Failed Get the Screen Object: ", e);
+            //mLogger.error("Failed Get the Screen Object: ", e);
+             mLogger.error(mLocalizer.x("NAV002: Failed to get the Screen Object:{0} ",e.getMessage()));
         }
         return tagName;
     }
