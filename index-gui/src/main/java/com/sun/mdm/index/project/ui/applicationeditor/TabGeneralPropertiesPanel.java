@@ -51,6 +51,9 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
                     String type = (String) cbDataType.getSelectedItem();
                     if (type.equals("char") || type.equals("boolean")) {
                         setDataSize(1);
+                        spFieldSize.setEnabled(false);
+                    } else {
+                        spFieldSize.setEnabled(true);
                     }
                 }
             });
@@ -441,9 +444,6 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
      */
     public String getDataType() {
         String dataType = this.cbDataType.getSelectedItem().toString();
-        if (dataType.equals("char")) {
-            dataType = "byte";
-        }
         return dataType;
     }
    
@@ -598,6 +598,10 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
      *@return DataSize
      */
     public String getDataSize() {
+        String dataType = this.cbDataType.getSelectedItem().toString();
+        if (dataType.equals("char")) {
+            return "1";
+        }
         return this.spFieldSize.getValue().toString();
     }
 
