@@ -50,7 +50,8 @@ import com.sun.mdm.index.loader.analysis.WeightAnalyzer;
  * (via ClusterSynchronizer). 
    2. Load block bucket in memory. 
    3. Match records for each block.
-   4. Determine assumed match and write them to Match file.
+   4. Determine matches and write Match Records toa Match file.
+   5. Merge Match Files into single Match File.
  * @author Swaranjit Dua
  *
  */
@@ -73,8 +74,9 @@ public class Matcher {
 	private static Logger logger = Logger.getLogger(Matcher.class
 			.getName());
 	private int matchCacheSize_ = 0;
+	private String dateFormatString_;
 	
-	public Matcher(String[] paths,  String[] matchTypes, Lookup blLk, boolean isSBR) throws Exception {
+	public Matcher(String[] paths,  String[] matchTypes, Lookup blLk, boolean isSBR, String dateFormat) throws Exception {
 		matchThreshold_ = config_.getMatchThreshold();
 		duplicateThreshold_ = config_.getDuplicateThreshold();
 		isSBR_ = isSBR;		
@@ -100,7 +102,7 @@ public class Matcher {
 		paths_ = paths;
 		matchTypes_ = matchTypes;
 		lookup_ = blLk;
-						
+	    dateFormatString_ = dateFormat;					
 	}
 	
 		
@@ -144,7 +146,7 @@ public class Matcher {
 			treeMaps[i] = new TreeMap<MatchRecord,String>(comp);
 			MatcherTask task = new MatcherTask((TreeMap<MatchRecord,String>)treeMaps[i], 
 			cursor, paths_,  matchTypes_, lookup_, matchThreshold_, duplicateThreshold_, endGate, 
-			isSBR_, this, matchCacheSize_);
+			isSBR_, this, matchCacheSize_, dateFormatString_);
 			
 			if (first == false && ismatchAnalyzer) {				
 				first = true;
