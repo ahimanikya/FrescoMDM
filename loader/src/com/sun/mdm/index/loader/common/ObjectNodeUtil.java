@@ -53,6 +53,7 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
     private static SimpleDateFormat dateFormat_;  // This format is used in
         // user defined objects per object definition
     
+	private static String dateFormatString_;
 	
 	public static ObjectDefinition initDataObjectAdapter() {
 		ObjectDefinition objDef = config.getObjectDefinition();
@@ -63,21 +64,28 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
 		if (timeFormat != null) {
 			dateString = dateString + " " + timeFormat;
 		}
-		dateFormat_ = new SimpleDateFormat(dateString); // + " hh:mm:ss");
+		dateFormatString_ = dateString;
+		dateFormat_ = new SimpleDateFormat(dateFormatString_); // + " hh:mm:ss");
 		DataObjectAdapter.setDateFormat(dateFormat_);
 		//objDef_ = objDef;
 		return objDef;
 	}
 	
+	public static String getDateFormatString() {
+		return dateFormatString_;
+	}
+	
+	/*
 	public static void initDateFormat() {
 		ObjectDefinition objDef = config.getObjectDefinition();
-		String dateString = objDef.getDateFormat();
+		dateString_ = objDef.getDateFormat();
 		String timeFormat = config.getSystemProperty("TimeFormat");
 		if (timeFormat != null) {
 			dateString = dateString + " " + timeFormat;
 		}
 		dateFormat_ = new SimpleDateFormat(dateString); // + " hh:mm:ss");
 	}
+	*/
 	
 	
 	public static SystemObject getSystemObject(DataObject d, String lid, String systemcode,
