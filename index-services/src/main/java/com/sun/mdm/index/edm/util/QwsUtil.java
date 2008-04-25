@@ -460,7 +460,7 @@ public final class QwsUtil {
             ObjectNodeConfig config = ConfigManager.getInstance()
                                                .getObjectNodeConfig(node.pGetType());
             String fieldDisplayName = config.getFieldConfig(field).getDisplayName(); 
-            throw new ValidationException(mLocalizer.t("SRU501: Invalid value [{0}] for field [(1)]: {2}", 
+            throw new ValidationException(mLocalizer.t("SRU501: Invalid value [{0}] for field [{1}]: {2}", 
                                                        valueString, fieldDisplayName, e.getMessage()));
         }
     }
@@ -522,7 +522,7 @@ public final class QwsUtil {
                       return (Object) valueString;
                 }
         } catch (Exception e) {
-            throw new ObjectException(mLocalizer.t("SRU502: Invalid value [{0}] for field type [(1)]: {2}", 
+            throw new ObjectException(mLocalizer.t("SRU502: Invalid value [{0}] for field type [{1}]: {2}", 
                                                    valueString, type, e.getMessage()));
         }
     }
