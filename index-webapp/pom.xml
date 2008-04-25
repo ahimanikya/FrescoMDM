@@ -91,6 +91,20 @@
                      </tasks>
                    </configuration>
                  </execution> 
+
+				 <execution>
+                        <id>extract-globalized-messages</id>
+                        <phase>process-classes</phase>
+                        <goals><goal>run</goal></goals>
+                        <configuration>
+                            <tasks>
+                                <taskdef name="i18n" classname="net.java.hulp.i18n.buildtools.I18NTask">
+                                    <classpath refid="maven.test.classpath"/>
+                                </taskdef>
+                                <i18n dir="${project.build.directory}/classes" file="${basedir}/src/main/resources/com/sun/mdm/index/edm/presentation/util/mdm_errorCode.properties" prefix="MDM-MI-" strict="false" pattern="([A-Z][A-Z][A-Z]\d\d\d)(: )(.*)" />               
+                            </tasks> 
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
