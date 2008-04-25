@@ -43,7 +43,7 @@ import com.sun.mdm.index.ops.exception.OPSException;
 import com.sun.mdm.index.page.PageException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 import javax.faces.event.*;
 
 import com.sun.mdm.index.edm.services.configuration.SearchResultsConfig;
@@ -65,8 +65,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
+import com.sun.mdm.index.edm.presentation.util.Localizer;
+import com.sun.mdm.index.edm.presentation.util.Logger;
+import net.java.hulp.i18n.LocalizationSupport;
 
 public class CompareDuplicateManager {
+    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager");
+    private static transient final Localizer mLocalizer = Localizer.get();
     private MasterControllerService masterControllerService = new MasterControllerService();
     /** Creates a new instance of CompareDuplicateManager*/
     public CompareDuplicateManager() {
@@ -123,7 +128,7 @@ public class CompareDuplicateManager {
                 return c;
             } catch (ObjectException ex) {
                 //Throwing object exception
-                Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+                mLogger.error(mLocalizer.x("CPD001: Failed to get field values :{0}", ex.getMessage()));
             }
         } else {    // Check the children using a depth-first search.
             ArrayList childNodes = objNode.pGetChildren();
@@ -166,7 +171,7 @@ public class CompareDuplicateManager {
         try {
             enterpriseObject = masterControllerService.getEnterpriseObject(EUID);
         } catch (Exception ex) {
-            ex.printStackTrace();
+           mLogger.error(mLocalizer.x("CPD002: Failed to get EnterpriseObject :{0}", ex.getMessage()));
         }
         return enterpriseObject;
     }
@@ -216,7 +221,7 @@ public class CompareDuplicateManager {
                 Object value = EPathAPI.getFieldValue(field, objectNode);
                 eoFieldValuesMap.put(field, value);
             } catch (Exception npe) {
-                Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, "Unable to get value from Child Object"+field);
+              mLogger.error(mLocalizer.x("CPD003: Unable to get value from child objects  :{0}", npe.getMessage()));
             // THIS SHOULD BE FIXED
             // npe.printStackTrace();
             }
@@ -246,7 +251,7 @@ public class CompareDuplicateManager {
                 Object value = EPathAPI.getFieldValue(ePath, objectNode);
                 eoFieldValuesMap.put(ePath.toString(), value);
             } catch (Exception npe) {
-                Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, "Unable to get value from Child Object"+ePath);
+               mLogger.error(mLocalizer.x("CPD004: Unable to get value from child objects  :{0}", npe.getMessage()));
             // THIS SHOULD BE FIXED
             // npe.printStackTrace();
             }
@@ -276,11 +281,11 @@ public class CompareDuplicateManager {
         try {
             dupStatus = masterControllerService.getPotentialDuplicateStatus(mainEuid, dupId);
         } catch (ProcessingException ex) {
-            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("CPD005: Failed to get Potential duplicate status  :{0}", ex.getMessage()));
         } catch (UserException ex) {
-            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("CPD006: Failed to get Potential duplicate status  :{0}", ex.getMessage()));
         } catch (RemoteException ex) {
-            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+           mLogger.error(mLocalizer.x("CPD007: Failed to get Potential duplicate status   :{0}", ex.getMessage()));
         }
         return dupStatus;
     
@@ -418,9 +423,9 @@ public class CompareDuplicateManager {
             }
 
         } catch (EPathException ex) {
-            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("CPD008: Failed to get SystemObject   :{0}", ex.getMessage()));
         } catch (ObjectException ex) {
-            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+           mLogger.error(mLocalizer.x("CPD009: Failed to get SystemObject  :{0}", ex.getMessage()));
         }
 
 
@@ -558,15 +563,15 @@ public class CompareDuplicateManager {
 
             return enterpriseObjectHashMap;
         } catch (ObjectException ex) {
-            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+           mLogger.error(mLocalizer.x("CPD010: Failed to get EnterpriseObject  :{0}", ex.getMessage()));
         } catch (ConnectionInvalidException ex) {
-            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+           mLogger.error(mLocalizer.x("CPD011: Failed to get EnterpriseObject  :{0}", ex.getMessage()));
         } catch (OPSException ex) {
-            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("CPD012: Failed to get EnterpriseObject  :{0}", ex.getMessage()));
         } catch (ProcessingException ex) {
-            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("CPD013: Failed to get EnterpriseObject  :{0}", ex.getMessage()));
         } catch (UserException ex) {
-            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+            mLogger.error(mLocalizer.x("CPD014: Failed to get EnterpriseObject  :{0}", ex.getMessage()));
         }
 
             return enterpriseObjectHashMap;
@@ -664,11 +669,11 @@ public class CompareDuplicateManager {
                 }
             }
         } catch (ProcessingException ex) {
-            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+             mLogger.error(mLocalizer.x("CPD015: Failed to get EnterpriseObject history :{0}", ex.getMessage()));
         } catch (UserException ex) {
-            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+             mLogger.error(mLocalizer.x("CPD016: Failed to get EnterpriseObject history :{0}", ex.getMessage()));
         } catch (RemoteException ex) {
-            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+             mLogger.error(mLocalizer.x("CPD017: Failed to get EnterpriseObject history :{0}", ex.getMessage()));
         }
         return newArrayListHistory;
     }
@@ -773,9 +778,9 @@ public class CompareDuplicateManager {
                 newArrayList.add(systemObjectHashMap);
             }
         } catch (EPathException ex) {
-            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+             mLogger.error(mLocalizer.x("CPD018: Failed to get EOSources :{0}", ex.getMessage()));
         } catch (ObjectException ex) {
-            Logger.getLogger(CompareDuplicateManager.class.getName()).log(Level.SEVERE, null, ex);
+             mLogger.error(mLocalizer.x("CPD019: Failed to get EOSources :{0}", ex.getMessage()));
         }
         return newArrayList;
     }
