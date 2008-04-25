@@ -195,7 +195,12 @@
                                         <delete file="${install.dir}/${netbeans.cluster}/update_tracking/com-sun-mdm-index-project.xml"></delete>
                                         <delete file="${install.dir}/${netbeans.cluster}/config/Modules/com-sun-mdm-index-project.xml"></delete>
                                         <delete file="${install.dir}/${netbeans.cluster}/modules/com-sun-mdm-index-project.jar"></delete>
-                                        <delete dir="${install.dir}/${netbeans.cluster}/modules/ext/mdm"></delete>
+                                        <delete>
+                                            <fileset dir="${install.dir}/${netbeans.cluster}/modules/ext/mdm/loader"/>
+                                            <fileset dir="${install.dir}/${netbeans.cluster}/modules/ext/mdm/repository"/>
+                                            <fileset dir="${install.dir}/${netbeans.cluster}/modules/ext/mdm/standardizer"/>
+                                            <fileset dir="${install.dir}/${netbeans.cluster}/modules/ext/mdm" includes="*.*"/>
+                                        </delete>
                                         <copy todir="${install.dir}">
                                             <fileset dir="${project.build.directory}/nbm/netbeans">
                                                 <exclude name="module_tracking.xml"></exclude>                
