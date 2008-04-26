@@ -371,9 +371,16 @@
                                                     </tr> 
                                                     <tr>
                                                         <td valign="top" class="dupfirst">
+                                                        <%if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) == null ){%>
                                                             <a class="dupbtn" href="javascript:accumilateMultiMergeEuidsPreview('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>')">
                                                                 <%=fieldValuesMapSource.get("EUID")%>
                                                             </a>
+														<%} else {%>
+                                                            <span class="dupbtn" href="javascript:void(0)">
+                                                                <%=fieldValuesMapSource.get("EUID")%>
+                                                            </span>
+														<%} %>
+
                                                         </td>
                                                     </tr>
                                                         
@@ -383,17 +390,13 @@
                                                     <%
                                                      for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
                                                         FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-                                                        if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
-                                                             epathValue = fieldConfigMap.getFullFieldName();
-                                                         } else {
-                                                             epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
-                                                         }
-
+														epathValue = fieldConfigMap.getFullFieldName();
+                                                        
                                                      %>
                                                     <tr>
                                                         <td>
+														    <%if (fieldValuesMapSource.get(epathValue) != null) {%>
 
-                                                            <%if (fieldValuesMapSource.get(epathValue) != null) {%>
                                                               <%=fieldValuesMapSource.get(epathValue)%>
                                                             <%} else {%>
                                                             &nbsp;
@@ -440,10 +443,18 @@
                                                                 <%=fieldValuesMapSource.get("EUID")%>
     
                                                       <%} else {%>        
+                                                        <%if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) == null ){%>
                                                             <a class="dupbtn" href="javascript:accumilateMultiMergeEuidsPreview('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>')">
                                                                 <%=fieldValuesMapSource.get("EUID")%>
                                                             </a>
-                                                      <%} %>        
+
+														<%} else {%>
+                                                            <span class="dupbtn" href="javascript:void(0)">
+                                                                <%=fieldValuesMapSource.get("EUID")%>
+                                                            </span>
+														<%} %>
+
+													  <%} %>        
 
                                                       </td>
                                                     </tr>
@@ -476,14 +487,7 @@
                                                     <%
                                                      for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
                                                         FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-                                                        if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
-                                                             epathValue = fieldConfigMap.getFullFieldName();
-                                                         } else {
-                                                             //epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
-															 epathValue = fieldConfigMap.getFullFieldName();
-                                                         }
-                                                             
-                                                    %>
+                                                        epathValue = fieldConfigMap.getFullFieldName();                                            %>
                                                     <tr>                                                        
                                                        <td> 
                                                                 <%if (fieldValuesMapSource.get(epathValue) != null) {%>
@@ -556,47 +560,49 @@
                                               <tr>
                                                   <td width="100%" class="menutop1">Preview</td>
                                               </tr>
+												<%
+ 											      HashMap previewHashMap = new HashMap();
+                                                  HashMap eoMapPreview = new HashMap();
+											       if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) != null ) {
+														previewHashMap  = (HashMap) request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString());
+														eoMapPreview = (HashMap) previewHashMap.get("ENTERPRISE_OBJECT_PREVIEW");
+                                                   }%>
+
                                                  <tr>
-                                                        <td>&nbsp;</td>
+                                                        <td>
+                                                        <%if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) != null ){%>
+                                                          <b><%=previewHashMap.get("EUID")%></b>
+														<%} else {%>
+														  &nbsp;
+														<%}%>														
+														</td>
                                                 </tr>
                                                 <%
-											      HashMap previewHashMap = new HashMap();
                                                    for (int i = 0; i < resultsConfigFeilds.length; i++) {
                                                      FieldConfig fieldConfig = (FieldConfig) resultsConfigFeilds[i];
-                                                        if (fieldConfig.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
-                                                             epathValue = fieldConfig.getFullFieldName();
-                                                         } else {
-                                                             epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
-                                                         }
-
+                                                        epathValue = fieldConfig.getFullFieldName();                                            
                                                     %>
-                                                      <%if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) != null ) {
-														previewHashMap  = (HashMap) request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString());
-														HashMap eoMapPreview = (HashMap) previewHashMap.get("ENTERPRISE_OBJECT");
-                                                         %>
 
                                                     <tr>
                                                         <td>
-														 <%if(eoMapPreview.get(epathValue) != null)  {%>
-   														     <%=eoMapPreview.get(epathValue)%>
+														 <%if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) != null ){%>
+														     <%if(eoMapPreview.get(epathValue) != null)  {%>
+   														        <%=eoMapPreview.get(epathValue)%>
+														      <%} else {%>
+														        &nbsp;
+														      <%}%>
 														   <%} else {%>
 														     &nbsp;
 														   <%}%>
 														</td>
 
                                                     </tr>
-													<%} else {%>
-													 <tr>
-                                                        <td>&nbsp;</td>
-                                                    </tr>
-
-													<%}%>
                                                 <%}%>
 
                                                 <tr>
-                                                    <td valign="top" align="right">
-                                                        <div id="buttonsDiv<%=fac%>" style="visibility:hidden;">
-														 <p>
+                                                    <td valign="top" align="left">
+													  <nobr>
+                                                        <div id="buttonsDiv<%=fac%>" style="visibility:hidden;display:none;">
                                                             <h:form id="mergeFinalForm">
                                                               <h:commandLink rendered="#{Operations.potDup_SearchView}"  styleClass="button"
                                                                           actionListener="#{SearchDuplicatesHandler.previewPostMultiMergedEnterpriseObject}">
@@ -613,20 +619,16 @@
    		                                                     <h:inputHidden id="destinationEO" value="#{SearchDuplicatesHandler.destnEuid}"/>
                                                  			 <h:inputHidden id="previewhiddenMergeEuids" value="#{SearchDuplicatesHandler.mergeEuids}"/>
                                                             </h:form>   
-															</p>
                                                         </div>
 														
 														<%if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) != null ) {
                                                          %>
-														   <nobr>
                                                             <h:form id="mergeFinal">
                                                                <h:commandLink rendered="#{Operations.potDup_SearchView}"  styleClass="button"
                                                                           actionListener="#{SearchDuplicatesHandler.performMultiMergeEnterpriseObject}">
                                                                     <f:attribute name="duplicateSearchObjectVE"  value="<%=duplicateSearchObjectVE%>"  />
                                                                     <span>Merge</span>
                                                                </h:commandLink>
-														   </nobr>
-														   <nobr>
                                                                 <h:commandLink rendered="#{Operations.potDup_SearchView}"  styleClass="button"
                                                                                actionListener="#{SearchDuplicatesHandler.cancelMultiMergeOperation}">
                                                                     <span>Cancel</span>
@@ -635,9 +637,9 @@
    		                                                     <h:inputHidden id="destinationEO" value="#{SearchDuplicatesHandler.destnEuid}"/>
                                                  			 <h:inputHidden id="previewhiddenMergeEuids" value="#{SearchDuplicatesHandler.mergeEuids}"/>
                                                             </h:form>   
-														   </nobr>
 														 <%}%>
 
+													  </nobr>
                                                     </td>
                                                 </tr>
                                                     
