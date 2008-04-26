@@ -25,6 +25,7 @@ function showEoDetails() {
     
     document.getElementById("eoDatadiv").innerHTML = document.getElementById("datadiv").innerHTML;
     document.getElementById("eoDatadiv").style.visibility = "visible";
+    
 }
 function showBasicSearch()  {
     document.getElementById("advancedSearch").style.visibility = "hidden";
@@ -72,6 +73,7 @@ document.getElementById("preview").style.background = "#cecff9";
 document.getElementById("preview").style.visibility = "visible";
 }
 function populateDuplicatesPreview(divId,previewId)   {
+
     document.getElementById(previewId).innerHTML =  document.getElementById(divId).innerHTML;
     document.getElementById(previewId).style.background = "#cecff9";
 }
@@ -167,19 +169,25 @@ function closeExtraDivs(divId,closeId)  {
        document.getElementById(divId).style.visibility = "hidden";
        document.getElementById(divId).style.display = "none";
        document.getElementById(divId).innerHTML = "";
+
        document.getElementById(closeId).style.visibility = "hidden";
-       document.getElementById(closeId).style.display = "none"; 
+       document.getElementById(closeId).style.display = "none";
+       
+
 }
 
 function populateExtraDivs(sourceDivId,destnDivId,rootDiv,closeDivId)  {
+       
         document.getElementById(destnDivId).innerHTML += document.getElementById(sourceDivId).innerHTML;
         document.getElementById(destnDivId).style.visibility = "visible";
         document.getElementById(destnDivId).style.display = "block";
         //close the div after populating
         document.getElementById(rootDiv).style.visibility = "hidden";
         document.getElementById(rootDiv).style.display = "none";
+
         document.getElementById(closeDivId).style.visibility = "visible";
-        document.getElementById(closeDivId).style.display = "block";        
+        document.getElementById(closeDivId).style.display = "block";
+        
 }
 
 function showReportDivs(divId)  {
@@ -237,11 +245,13 @@ function populatePreviewDiv(previewDivIndex)   {
     
     // hide read only compare screen buttons
     document.getElementById("showReadonlyButtonDiv").style.visibility = "hidden";
-    document.getElementById("showReadonlyButtonDiv").style.display = "none";    
+    document.getElementById("showReadonlyButtonDiv").style.display = "none";
+    
     
     // Change the class name for the divs
     //document.getElementById(mainEuidDiv).className = 'dynaprevieww169';
     //document.getElementById("previewEuidContentDiv"+previewDivIndex).className = 'dynaprevieww169';
+   
     //document.getElementById("previewEuidContentDivAbove"+previewDivIndex).innerHTML = document.getElementById(contentDiv).innerHTML;
     //document.getElementById("previewEuidContentDivExtra"+previewDivIndex).innerHTML = document.getElementById(extraContentDiv).innerHTML;
     
@@ -269,8 +279,10 @@ function populateAssociatePreviewDiv(assoDivIndex,previewDivIndex)   {
     document.getElementById(mainEuidDiv).className = 'dynaprevieww169';
     document.getElementById("previewEuidContentDiv"+previewDivIndex).className = 'dynaprevieww169';
     document.getElementById("previewEuidContentDivAbove"+previewDivIndex).innerHTML = document.getElementById(contentDiv).innerHTML;
-    document.getElementById("previewEuidContentDivExtra"+previewDivIndex).innerHTML = document.getElementById(extraContentDiv).innerHTML;  
+    document.getElementById("previewEuidContentDivExtra"+previewDivIndex).innerHTML = document.getElementById(extraContentDiv).innerHTML;
+    
 }
+
 
 
 /*
@@ -280,6 +292,7 @@ function populateAssociatePreviewDiv(assoDivIndex,previewDivIndex)   {
 *
 *
 */
+
 function showExtraFields(mainEuidDivId,assDupCount,optionHideDisplay,mainDupCount) {
     var height;
     var displayOption;
@@ -331,9 +344,9 @@ function showExtraFields(mainEuidDivId,assDupCount,optionHideDisplay,mainDupCoun
     document.getElementById("previewEuidDiv"+mainEuidDivId).style.visibility = "visible";
     document.getElementById("previewEuidDiv"+mainEuidDivId).style.display = "block";
     
-    document.getElementById("previewEuidContentDiv"+mainEuidDivId).className = 'dynaw169';    
+    document.getElementById("previewEuidContentDiv"+mainEuidDivId).className = 'dynaw169';
+    
 }
-
 
 // Show/hide Heading Div id
 document.getElementById("dynamicContent"+mainEuidDivId).style.visibility = optionHideDisplay;
@@ -380,7 +393,8 @@ for(var i=0;i<assDupCount;i++) {
     } else {
     document.getElementById("dynamicAssAddressEuidDiv"+mainEuidDivId+i).style.visibility = "visible";
     document.getElementById("dynamicAssAddressEuidDiv"+mainEuidDivId+i).style.height = "25px";
-    document.getElementById("dynamicAssAddressEuidDiv"+mainEuidDivId+i).style.display = "block";    
+    document.getElementById("dynamicAssAddressEuidDiv"+mainEuidDivId+i).style.display = "block";
+    
 }
 
 }
@@ -412,6 +426,7 @@ document.getElementById("separator"+i).style.display = "block";
 }
 }
 
+
 /***
 // Transparent Background on the different Person
 **/
@@ -429,7 +444,9 @@ function toggleDifferentPerson(divToAnimate,showHide,AssocDiv,ToggleFlagId,nRows
         var animShowRight = new YAHOO.util.Anim(divToAnimate, attribShowRight, 2, YAHOO.util.Easing.easeNone);
         animShowRight.animate();
         
-        /* Change the styling of the different person*/  
+        /* Change the styling of the different person*/
+        
+        
         //Close Animation div
         if (nRows == 2)  {
             document.getElementById(AssocDiv).style.height= '400px';
@@ -444,7 +461,6 @@ function toggleDifferentPerson(divToAnimate,showHide,AssocDiv,ToggleFlagId,nRows
 var attribShowLeft = {
     width: { from: 2, to:165}
 };
-
 //Close Content div
 var animShowLeft = new YAHOO.util.Anim(divToAnimate, attribShowLeft, 2, YAHOO.util.Easing.easeNone);
 document.getElementById(AssocDiv).style.height='0px';
@@ -497,9 +513,9 @@ function activePreviewButtons(totalAssociates,assoDivIndex,previewDivIndex)   {
         if(previewDivIndex+i != assoDivIndex) {
             document.getElementById("assEuidDataContent"+previewDivIndex+i).className = 'dynaw169';
         }
-    }    
+    }
+    
 }
-
 
 /*
 function showViewSources(mainDupSources,count,countEnt,totalColumns) {
@@ -588,27 +604,21 @@ function getDateFieldName(formName,idName)  {
     return 'null';
 } 
 
- // Start Fix for 6691127  Modified by Anil
- function ClearContents(thisForm)  {
-    
-    thisFrm = document.forms[thisForm];    
-    for(i=0; i< thisFrm.elements.length; i++)   {                      
-        
-        var fieldName = thisFrm.elements[i].name;        
-        if(thisFrm.elements[i].name != 'lidmask') {            
-            if(thisFrm.elements[i].name !=  'javax.faces.ViewState')   {                
-                if ( fieldName.indexOf("selectedSearchType") == -1 ) {                    
-                    thisFrm.elements[i].value = "";                 
-                    
-                }               
-            }            
-        }     
-    }
-    
-    return;
-    
-}
 
+function ClearContents(thisForm)  { 
+	thisFrm = document.forms[thisForm];
+	for(i=0; i< thisFrm.elements.length; i++)   {      		
+		var fieldName = thisFrm.elements[i].name;
+        if(thisFrm.elements[i].name != 'lidmask') {
+             if(thisFrm.elements[i].name !=  'javax.faces.ViewState')   {
+				 if ( fieldName.indexOf("selectedSearchType") == -1 ) {
+				     thisFrm.elements[i].value = "";
+			     }
+			 }
+	    }
+    }
+    return;
+} 
 
 function  confirmResolve(countDupId){
     
@@ -691,7 +701,7 @@ function ajaxMinorObjects(url,thisInnerHtmlDivName,isEdit)    {
            }
            //get values
          } else   {
-                 document.getElementById(innerHtmlDiv).innerHTML =  "<div style='width:100%'><table><tr><td><img src='./images/loading.gif' border='0'> <p>Loading ...Please Wait</p></td></tr></table> </div>";
+                 document.getElementById(innerHtmlDiv).innerHTML =  "<table style='font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 10px; text-align: left;'><tr><td><img src='./images/loading.gif' border='0'> <p>Loading ...Please Wait</p></td></tr></table>";
          }
     } 
 
@@ -706,6 +716,7 @@ function ajaxURL(url,thisInnerHtmlDivName,e)    {
     //Send the xmlHttp get to the specified url 
     xmlHttpGet(xhr, url); 
 } 
+
 
     function ajaxstateChangeHandler()     { 
         //readyState of 4 or 'complete' represents that data has been returned 
@@ -722,7 +733,7 @@ function ajaxURL(url,thisInnerHtmlDivName,e)    {
            }
            //get values
          } else   {
-            document.getElementById(innerHtmlDiv).innerHTML =  "<div style='width:100%'><table><tr><td><img src='./images/loading.gif' border='0'> <p>Loading ...Please Wait</p></td></tr></table> </div>";
+            document.getElementById(innerHtmlDiv).innerHTML =  "<table><tr><td><img src='./images/loading.gif' border='0'> <p>Loading ...Please Wait</p></td></tr></table>";
          }
     } 
 
@@ -837,7 +848,9 @@ function submitFormData(form, thisInnerHtmlDivName) {
     return xhr;
 }
 
-	var lids="";
+
+
+    var lids="";
     var lidArray = [];
     var alllidsArray = [];
     var alllidsactionText = [];
@@ -851,15 +864,18 @@ function submitFormData(form, thisInnerHtmlDivName) {
             allLIdsCheck[i] = alllidsArray[i];
             disableArray[i] = alllidsArray[i];
         }
-        for (var i=0; i<lidArray.length; i++) {            
+
+       for (var i=0; i<lidArray.length; i++) {            
             if (lidArray[i] == euid)   {
                 lidArray.splice(i,1);
                 found = "true";
             }
         }
+
         if (found != "true")    {
             lidArray.push(euid);
         }  
+       
 
         var tab = document.getElementById('mainEuidContent'+euid);
         if (tab.className == 'yellow')   {
@@ -867,7 +883,8 @@ function submitFormData(form, thisInnerHtmlDivName) {
         } else {
             tab.className = 'yellow';
         }
-        
+
+     
         var tab = document.getElementById('personEuidDataContent'+euid);
         if (tab.className == 'yellow')   {
             tab.className = 'blue';
@@ -875,7 +892,8 @@ function submitFormData(form, thisInnerHtmlDivName) {
             tab.className = 'yellow';
         }
 
-        if (lidArray.length == 2)    {         
+        if (lidArray.length == 2)    {
+            
             //showAction ButtonDiv
             document.getElementById("previewActionButton").style.visibility = "visible";
             document.getElementById("previewActionButton").style.display = "block";
@@ -891,23 +909,23 @@ function submitFormData(form, thisInnerHtmlDivName) {
             }
             var system = document.getElementById("basicMergeformData:sourceOption").options[document.getElementById("basicMergeformData:sourceOption").selectedIndex].value;
 
-           document.getElementById("LID1").innerHTML = one;
-           document.getElementById("LID2").innerHTML = two;
+            document.getElementById("LID1").innerHTML = one;
+            document.getElementById("LID2").innerHTML = two;           
             document.getElementById("previewlid1Form:previewhiddenLid1").value = lidArray[1] + ':' + lidArray[0];
-
             document.getElementById("previewlid2Form:previewhiddenLid2").value = lidArray[0] + ':'+ lidArray[1];
-           //Set System
-           document.getElementById("previewlid1Form:previewhiddenLid1source").value = system;
+            //Set System
+            document.getElementById("previewlid1Form:previewhiddenLid1source").value = system;
            document.getElementById("previewlid2Form:previewhiddenLid2source").value = system;
-           document.getElementById("finalMergeForm:previewhiddenLid1source").value = system;
-
+            document.getElementById("finalMergeForm:previewhiddenLid1source").value = system;
+    
             for (var i=0; i< lidArray.length; i++) { 
-                 for (var j=0; j<disableArray.length; j++) {            
+                 for (var j=0; j<disableArray.length; j++) {          
                      if (disableArray[j] == lidArray[i])   {
                          disableArray.splice(j,1);
                      }
                  }
             }
+
 
             for (var i=0; i<disableArray.length; i++) {
                 for (var j=0; j<alllidsactionText.length; j++) {
@@ -916,16 +934,18 @@ function submitFormData(form, thisInnerHtmlDivName) {
                        document.getElementById('curve' + disableArray[i]).style.cursor= 'not-allowed';
                     }
                 }
-            }
+            }  
         }  else {
             for (var i=0; i< disableArray.length; i++) { 
                 found = false;
-                 for (var j=0; j<lidArray.length; j++) {            
+                 for (var j=0; j<lidArray.length; j++) { 
                      if (disableArray[i] == lidArray[j])   {
                          disableArray.splice(i,1);
                      }
                  }
             }
+
+        
             for (var i=0; i<disableArray.length; i++) {
                 for (var j=0; j<alllidsactionText.length; j++) {
                     if (alllidsactionText[j].lastIndexOf(disableArray[i]) != -1 )  {
@@ -933,14 +953,15 @@ function submitFormData(form, thisInnerHtmlDivName) {
                        document.getElementById('curve' + disableArray[i]).style.cursor= 'hand';
                     }
                 }
-           }
+            }
+
             document.getElementById("previewActionButton").style.visibility = "hidden";
             document.getElementById("previewActionButton").style.display = "none";                        
             document.getElementById('confirmationButton').style.visibility = 'hidden';
         }
     }
 
-  
+   
 function showSearchType(searchId) {
     document.getElementById(searchId).style.visibility = "visible";
     document.getElementById(searchId).style.display = "block";
@@ -979,14 +1000,12 @@ function showLIDDiv(divId,thisEvent)  {
    document.getElementById(divId).style.visibility = "hidden";
    document.getElementById(divId).style.display = "none";
 }
-
-
 }
 
 function showExtraLinkDivs(thisEvent,displayName,fieldName)  {
     var y;
     var x;      
-   
+    
     if(document.getElementById('linkSoDiv').style.visibility == 'hidden') {
         document.getElementById('linkSoDiv').style.visibility = "visible";
         document.getElementById('linkSoDiv').style.display = "block";
@@ -1006,6 +1025,10 @@ function showExtraLinkDivs(thisEvent,displayName,fieldName)  {
 }
 document.getElementById('linkedValueDiv').innerHTML = fieldName;
 document.getElementById('linkedDisplayValueDiv').innerHTML = displayName;
+
+//store the full field name here
+document.linkForm.sbrfullfieldname.value = fieldName;
+
 }
 
 var linkValues="";
@@ -1021,7 +1044,9 @@ function populateLinkFields() {
     //Person.PersonCatCode:HOSPITAL:1238990001
     document.getElementById(linkId+':'+sysLidCode).style.visibility = 'visible';
     document.getElementById(linkId+':'+sysLidCode).style.display = 'block';    
-    linkValues+=fieldName+sysLidCode+'##';            
+    
+    linkValues+=fieldName+sysLidCode+'##';         
+    
     var hiddenLinkFieldsVar = 'basicAddformData:hiddenLinkFields';    
     document.getElementById('basicAddformData:hiddenLinkFields').value = linkValues;
     document.getElementById('linkSoDiv').style.visibility = "hidden";
@@ -1053,6 +1078,9 @@ function showExtraUnLinkDivs(thisEvent,displayName,fieldName,fullFieldName)  {
 document.getElementById('unLinkedValueDiv').innerHTML = fieldName;
 document.getElementById('unLinkedDisplayValueDiv').innerHTML = displayName;
 document.getElementById('unLinkedFullFieldDiv').innerHTML = fullFieldName;
+
+//store the full field name here
+document.unlinkForm.sbrfullfieldname.value = fieldName;
 }
 
 var unLinkValues="";
@@ -1093,22 +1121,22 @@ tab.className = 'yellow';
 }
 
 mergeEuids+=mergeEuidVar+'##';     
+
 var mainEuidArray = mergeEuids.split("##");
 var mainEuid = mainEuidArray[0];
 
 document.getElementById('previewForm:destinationEO').value = mainEuid;
 document.getElementById('mergeFinalForm:destinationEO').value = mainEuid;
+
 document.getElementById('clickButton' + mainEuid).style.cursor= 'not-allowed';
 
  if(mainEuidArray.length > 2) {
     document.getElementById('previewForm:previewhiddenMergeEuids').value = mergeEuids;
-    document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value = mergeEuids;
+    document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value = mergeEuids; 
     document.getElementById('mergeEuidsDiv').style.visibility = "visible";
     document.getElementById('mergeEuidsDiv').style.display = "block";
  }
 }
-
-
 
 function finalMultiMergeEuids(mergeDivId,thisEvent)  {
     var y;
@@ -1147,7 +1175,7 @@ function finalMultiMergeEuids(mergeDivId,thisEvent)  {
 **/
 function _utf8_encode (string) {
 	    var str = string;
-        //string = str.replace(/\r\n/g,"\n");
+		//string = str.replace(/\r\n/g,"\n");
         var utftext = "";
 
         for (var n = 0; n < string.length; n++) {
@@ -1203,7 +1231,6 @@ function showResolveDivs(divId,thisEvent,potDupId)  {
    document.getElementById(divId).style.visibility = "hidden";
    document.getElementById(divId).style.display = "none";
 }
-
 document.getElementById('reportYUISearch:potentialDuplicateId').value = potDupId;
 
 }
@@ -1214,6 +1241,7 @@ function accumilateFieldsOnBlur(field,fullFieldName) {
     }
     fieldNameValues += fullFieldName + "##"+field.value+">>";
     document.getElementById("advancedformData:enteredFieldValues").value = fieldNameValues;
+
   //set the search type here
     if(document.getElementById("searchTypeForm:searchType") != null) {
        var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
@@ -1233,7 +1261,6 @@ function accumilateSelectFieldsOnBlur(field,fullFieldName) {
      var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
      document.getElementById("advancedformData:selectedSearchType").value = selectedSearchValue;
     }
-
 }
 
 function getLidMask(systemCode,systemCodes,lidMasks) {
@@ -1256,11 +1283,9 @@ function unlockFields(fieldName) {
         document.getElementById('unlockSourceDiv:'+fieldName).style.visibility = 'hidden';
         document.getElementById('unlockSourceDiv:'+fieldName).style.display = 'none';
         
-       hiddenUnLockFields += fieldName + "##";
-       document.getElementById("basicAddformData:hiddenUnLockFields").value = hiddenUnLockFields;
-        
-    
-}
+       //hiddenUnLockFields += fieldName + "##";
+       //document.getElementById("basicAddformData:hiddenUnLockFields").value = hiddenUnLockFields;      
+    }
 
 
 function accumilatePersonFieldsOnBlur(field,fullFieldName) {
@@ -1269,6 +1294,7 @@ function accumilatePersonFieldsOnBlur(field,fullFieldName) {
     }
     fieldNameValues += fullFieldName + "##"+field.value+">>";
     document.getElementById("basicAddformData:enteredFieldValues").value = fieldNameValues;
+
 }
 
 function accumilatePersonSelectFieldsOnBlur(field,fullFieldName) {
@@ -1279,7 +1305,10 @@ function accumilatePersonSelectFieldsOnBlur(field,fullFieldName) {
     }
     fieldNameValues += fullFieldName + "##"+selectedValue+">>";
     document.getElementById("basicAddformData:enteredFieldValues").value = fieldNameValues;
+ 
 }
+
+
 
 function accumilateMinorObjectFieldsOnBlur(objectType,field,fullFieldName) {
    minorObjType =   objectType;
@@ -1287,12 +1316,14 @@ function accumilateMinorObjectFieldsOnBlur(objectType,field,fullFieldName) {
        fieldNames+=fullFieldName+':';
     }
     fieldNameValues += fullFieldName + "##"+field.value+">>";
-    //document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = fieldNameValues;    
+    //document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = fieldNameValues;
+    
         fieldNameValues = fieldNameValues  + minorObjType;
         minorArray.push(fieldNameValues);
         //RESET THE FIELD VALUES HERE
-        fieldNameValues = "";        
+        fieldNameValues = "";      
         document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = minorArray;
+
 }
 
 function accumilateMinorObjectSelectFieldsOnBlur(objectType,field,fullFieldName) {
@@ -1303,11 +1334,13 @@ function accumilateMinorObjectSelectFieldsOnBlur(objectType,field,fullFieldName)
     }
     fieldNameValues += fullFieldName + "##"+selectedValue+">>";
     //document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = fieldNameValues;
+
         fieldNameValues = fieldNameValues  + minorObjType;
         minorArray.push(fieldNameValues);
         //RESET THE FIELD VALUES HERE
         fieldNameValues = "";        
         document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = minorArray;
+
 }
 
 
@@ -1327,9 +1360,21 @@ function populateMinorObjectsExtraDivs(sourceDivId,destnDivId,rootDiv,closeDivId
         
         //populate the minor object values here.
         minorArray.push(minorArrayLocal);
+        
         var localArray = minorArray[minorArray.length-1];
+//        for(var i=0;i<minorArray.length;i++) {
+//            
+//            for(var j=0;j<localArray.length;j++) {
+//               if(j > 0 ) {
+//                   alert( j + "INDEX" + localArray[j] +" ------ minorArray final in loop ------"+localArray[j-1]);      
+//               }
+//               if(j < localArray.length && localArray[j] == localArray[j+1]) {
+//                   alert(localArray[j] +" ------ ===== ------"+localArray[j+1]);      
+//               }
+//            }    
+//        }
         document.getElementById("basicAddformData:minorObjectsEnteredFieldValues").value = localArray;
-        document.getElementById("basicAddformData:minorObjectTotal").value = minorArray.length;
+        document.getElementById("basicAddformData:minorObjectTotal").value = minorArray.length;        
 }
 
           
@@ -1344,7 +1389,7 @@ function accumilateNewPersonFieldsOnBlur(field,fullFieldName,mask,valueType) {
     var valueTypeLocal =  "";
     valueEntered =  field.value;
     valueTypeLocal =  valueType;
-   
+    
     //valueEntered  = valueEntered.replace(/\)/g,"");
     //valueEntered  = valueEntered.replace(/\(/g,"");
     
@@ -1361,6 +1406,7 @@ function accumilateNewPersonFieldsOnBlur(field,fullFieldName,mask,valueType) {
     }
     fieldNameValues += fullFieldName + "##"+valueEntered+">>";
     document.getElementById("basicAddformData:newSOEnteredFieldValues").value = fieldNameValues;
+
 }
 
 function accumilateNewPersonSelectFieldsOnBlur(field,fullFieldName) {
@@ -1370,7 +1416,8 @@ function accumilateNewPersonSelectFieldsOnBlur(field,fullFieldName) {
        fieldNames+=fullFieldName+':';
     }
     fieldNameValues += fullFieldName + "##"+selectedValue+">>";
-    document.getElementById("basicAddformData:newSOEnteredFieldValues").value = fieldNameValues; 
+    document.getElementById("basicAddformData:newSOEnteredFieldValues").value = fieldNameValues;
+ 
 }
 
 function accumilateEOMinorFieldsOnBlur(field,fullFieldName,minorId,minorobjectType) {
@@ -1398,6 +1445,7 @@ function accumilateEOMinorObjectsRemove(minorId,minorobjectType) {
     var remArray = new Array();
     remArray.push(fieldNameValues);
     document.getElementById("basicAddformData:removeEOMinorObjectsValues").value = remArray;
+
 }
 
 
@@ -1416,7 +1464,6 @@ function toggleDupDivClass(fac,count,euid) {
 		buttonsDiv.style.visibility = 'visible';
 		buttonsDiv.style.display = 'block';
 }
-
 
 var mergeEuidsPreview="";
 function accumilateMultiMergeEuidsPreview(fac,count,mergeEuidVar) {
@@ -1439,11 +1486,13 @@ function accumilateMultiMergeEuidsPreview(fac,count,mergeEuidVar) {
         //previewDataEmpty.style.visibility = 'hidden';
 
         mergeEuidsPreview+=mergeEuidVar+'##';     
+
        var mainEuidArray = mergeEuidsPreview.split("##");
        var mainEuid = mainEuidArray[0];
 
        document.getElementById('mergeFinalForm:destinationEO').value = mainEuid;
 	   document.getElementById('mergeFinalForm:rowCount').value = fac;
+    
      //document.getElementById('clickButton' + mainEuid).style.cursor= 'not-allowed';
 
      if(mainEuidArray.length > 2) {
@@ -1452,7 +1501,8 @@ function accumilateMultiMergeEuidsPreview(fac,count,mergeEuidVar) {
 		buttonsDiv.style.visibility = 'visible';
 		buttonsDiv.style.display = 'block';
 
-   	    document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value = mergeEuidsPreview;   	    
+   	    document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value = mergeEuidsPreview;
+   	    
       //document.getElementById('mergeEuidsDiv').style.visibility = "visible";
       //document.getElementById('mergeEuidsDiv').style.display = "block";
    }
@@ -1460,6 +1510,7 @@ function accumilateMultiMergeEuidsPreview(fac,count,mergeEuidVar) {
 
 //Functions for view sources/history in euid details pages
 function showViewSources(mainDupSources,count,countEnt,totalColumns,historySize) {
+  
     var divLayerMain;
     var divLayerHistory;
     //hideOther(mainDupSources,count,countEnt);
@@ -1524,7 +1575,8 @@ function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,m
     var divLayerHist;
     var divLayerSources;
     //hideOther(mainDupSources,count,countEnt);
-    for(var i=0;i<count;i++) {
+
+	for(var i=0;i<count;i++) {
     divLayerHist = document.getElementById(mainDupHistory+countEnt+i);
     
     if (divLayerHist.style.display=="none" || divLayerHist.style.display=="") {
@@ -1592,6 +1644,7 @@ function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,m
             document.getElementById("dynamicMainEuidButtonContent"+c).style.visibility = "visible";
             document.getElementById("dynamicMainEuidButtonContent"+c).style.display = "block";
           }
+
  }
 }
 
@@ -1600,7 +1653,8 @@ function showViewHistory(mainDupHistory,count,countEnt,totalColumns,sourceSize,m
 function accumilateLidSearchFieldsOnBlur(field,fullFieldName,mask,valueType,formName) {
     var maskChars = new Array();
     var str = mask;
-    str  = str.replace(/D/g,"");    
+    str  = str.replace(/D/g,"");
+    
     maskChars = str.split('');
     
     var valueEntered =  "";
@@ -1610,6 +1664,7 @@ function accumilateLidSearchFieldsOnBlur(field,fullFieldName,mask,valueType,form
     
     //valueEntered  = valueEntered.replace(/\)/g,"");
     //valueEntered  = valueEntered.replace(/\(/g,"");
+    
     if(valueTypeLocal == '6' || valueTypeLocal == '8' ) {
       valueEntered =  field.value;
     } else {
@@ -1618,12 +1673,15 @@ function accumilateLidSearchFieldsOnBlur(field,fullFieldName,mask,valueType,form
       }    
     }
 
+    
     if(fieldNames != fullFieldName+':') {
        fieldNames+=fullFieldName+':';
     }
     fieldNameValues += fullFieldName + "##"+valueEntered+">>";
     document.getElementById(formName+":newSOEnteredFieldValues").value = fieldNameValues;
+
 }
+
 
 function accumilateFormFieldsOnBlur(field,fullFieldName,mask,valueType,formName) {
     var maskChars = new Array();
@@ -1647,6 +1705,7 @@ function accumilateFormFieldsOnBlur(field,fullFieldName,mask,valueType,formName)
         valueEntered  = valueEntered.replace(maskChars[i],'');
       }    
     }
+
     
     if(fieldNames != fullFieldName+':') {
        fieldNames+=fullFieldName+':';
@@ -1682,7 +1741,7 @@ function ClearMinorObjectContents(divElement)  {
 	for(var j=0;j<minorObjectDiv.forms.length;j++) {
     var thisFrm = minorObjectDiv.forms[thisForm];
 
-    for(i=0; i< thisFrm.elements.length; i++)   {      
+   for(i=0; i< thisFrm.elements.length; i++)   {      
         if(!thisFrm.elements[i].name != 'lidmask') {
            thisFrm.elements[i].value = "";
 	}
@@ -1695,6 +1754,8 @@ function ClearMinorObjectContents(divElement)  {
 var queryStr="";
 function getFormValues(formName)   {
   var thisFrm = document.getElementById(formName);
+  
+
   var query = "";
    for(i=0; i< thisFrm.elements.length; i++)   {      
 			if(thisFrm.elements[i].title.length != 0 ) {
@@ -1703,12 +1764,13 @@ function getFormValues(formName)   {
     }
 
 	query +="&editThisID="+ editIndexid;
+
+	 
     queryStr  = query;
 }
 
 
 function showEOMinorObjectsDiv(minorObj,divName)  {
-//	alert("minorObj,divName" + minorObj + " divName " + divName );
 }
 
 function showMinorObjectsDiv(divId) {
