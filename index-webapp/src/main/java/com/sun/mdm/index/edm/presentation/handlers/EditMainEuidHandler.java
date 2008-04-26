@@ -34,6 +34,7 @@ import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.ObjectNodeConfig;
 import com.sun.mdm.index.edm.services.configuration.ScreenObject;
+import com.sun.mdm.index.edm.services.configuration.ValidationService;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.master.UserException;
@@ -78,6 +79,9 @@ public class EditMainEuidHandler {
     
     //Hash map for singl EO  for EDITING
     private HashMap editSingleEOHashMap = new HashMap();
+    
+    //Hash map for singl EO  for EDITING
+    private HashMap editSingleEOHashMapOld = new HashMap();
 
     //Hash map for single EO Address  for EDITING
     private HashMap editEOAddressHashMap = new HashMap();
@@ -91,6 +95,8 @@ public class EditMainEuidHandler {
 
     //Hash map arraylist for  SO 
     private ArrayList eoSystemObjects;
+    
+    private ArrayList eoSystemObjectsOld;
 
     //Hash map arraylist for  SO sl
     private ArrayList eoSystemObjectSL;
@@ -115,20 +121,14 @@ public class EditMainEuidHandler {
     ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
     
     private String errorMessage;
-
-    private static final String SERVICE_LAYER_ERROR = "servicelayererror";
-    
-    SourceHandler sourceHandler = new SourceHandler();
-    
+    private static final String SERVICE_LAYER_ERROR = "servicelayererror";    
+    SourceHandler sourceHandler = new SourceHandler();    
     EPathArrayList personEPathArrayList = sourceHandler.buildPersonEpaths();
-
     //Adding the following variablefor getting the select options if the FieldConfig type is "Menu List"
     private ArrayList<SelectItem> systemCodes = new ArrayList();
-
     private String newSoSystemCode;
-
     private String newSoLID;
-    
+	
     //Hash map arraylist for newSO SO 
     private HashMap newSOHashMap  = new HashMap();
 
@@ -171,6 +171,8 @@ public class EditMainEuidHandler {
     
     private HashMap lockedFieldsHashMapFromDB = new HashMap();
     
+    private HashMap unLockedFieldsHashMapByUser = new HashMap();
+    
     private HashMap linkedSOFieldsHashMapFromDB = new HashMap();
     
     
@@ -200,171 +202,13 @@ public class EditMainEuidHandler {
 
     public String performSubmit()  {
         try {
-            
-            HashMap newFieldValuesMap = new HashMap();
+            String updateEuid = (String) session.getAttribute("editEuid");
+            EnterpriseObject updateEnterpriseObject = masterControllerService.getEnterpriseObject(updateEuid);
 
-            ////System.out.println("---------------1-------------------" + getEnteredFieldValues());
-            if (getEnteredFieldValues() != null && getEnteredFieldValues().length() > 0) {
-                String[] fieldNameValues = getEnteredFieldValues().split(">>");
-                for (int i = 0; i < fieldNameValues.length; i++) {
-                    String string = fieldNameValues[i];
-                    String[] keyValues = string.split("##");
-                    if(keyValues.length ==2) {
-                      ////System.out.println("Key " + keyValues[0] + "Value ==> : " + keyValues[1]);
-                      newFieldValuesMap.put(keyValues[0], keyValues[1]);
-                    }
-                }
-            }
-            ArrayList newArrayListSbr = new ArrayList();
-            
-            //set the KEY SBR_UPDATE HERE (MasterControllerService.HASH_MAP_TYPE ===> MasterControllerService.SBR_UPDATE)
-            newFieldValuesMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE);
-            newArrayListSbr.add(newFieldValuesMap);
-            ////System.out.println("---------------1-------(newFieldValuesMap)------------" + newFieldValuesMap);
-            
-            if (this.getHiddenLinkFields() != null && this.getHiddenLinkFields().trim().length() > 0) {
-//                String[] allLinks = this.getHiddenLinkFields().split(":");
-                //save all the links
-                saveLinksSelected();
-            }
-
-            ////System.out.println("==> UN LINKED FIELDS ===> :" + this.getHiddenUnLinkFields());
-            if (this.getHiddenUnLinkFields() != null && this.getHiddenUnLinkFields().trim().length() > 0) {
-                //String[] allUnLinks = this.getHiddenUnLinkFields().split("##");
-                //save all the un links
-                saveUnLinksSelected();
-            }
-
-            //System.out.println("==> UN LOCK FIELDS ===> :" + this.getHiddenUnLockFields());
-            if (this.getHiddenUnLockFields() != null && this.getHiddenUnLockFields().trim().length() > 0) {
-                //String[] allUnLinks = this.getHiddenUnLinkFields().split("##");
-                //save all the un links
-                saveUnLocksSelected();
-            }
-
-            //get the updated minor object values here
-            
-         HashMap newFieldValuesMapMinor = new HashMap();
-            ArrayList allChildNodesList = sourceHandler.getAllChildNodesNames();
-            //System.out.println("---------------1-------------------" + minorFieldsEO);
-            for (int c = 0; c < allChildNodesList.size(); c++) {
-                String childObjectType = (String) allChildNodesList.get(c);
-                ////System.out.println("childObjectType ==> : " + childObjectType );
-
-                if (minorFieldsEO != null && minorFieldsEO.length() > 0) {
-                    String[] fieldNameValues = minorFieldsEO.split(">>" + "++" + childObjectType);
-                    for (int i = 0; i < fieldNameValues.length; i++) {
-                        String string = fieldNameValues[i];
-                        String[] keyValues = string.split("##");
-                        if (keyValues.length == 2) {
-                            //System.out.println("Key " + keyValues[0] + "Value ==> : " + keyValues[1]);
-                            newFieldValuesMapMinor.put(keyValues[0], keyValues[1]);
-                        }
-                    }
-                }
-            }
-
-            //System.out.println("---------------removeEOMinorObjectsValues-------------------" + removeEOMinorObjectsValues);
-               ArrayList newMinorRemList = new ArrayList();
-                if (removeEOMinorObjectsValues != null && removeEOMinorObjectsValues.length() > 0) {
-                    String[] fieldNameValues = removeEOMinorObjectsValues.split(">>");
-                    
-                    for (int i = 0; i < fieldNameValues.length; i++) {
-                        String string = fieldNameValues[i];
-                        String[] keyValues = string.split("##");
-                        if (keyValues.length == 2) {
-                            //System.out.println("Key " + keyValues[0] + "Value ==> : " + keyValues[1]);
-                            String[] innerValues  = keyValues[0].split("::");
-                            String[] innerValues1  = keyValues[1].split("::");
-                            HashMap newHashMapMinorRem  = new HashMap();
-                            for (int j = 0; j < innerValues.length; j++) {
-                               //System.out.println("innerValues " + innerValues[0] + "Value ==> : " + innerValues[1]);
-                               newHashMapMinorRem.put(innerValues[0], innerValues[1]);
-                               newHashMapMinorRem.put(innerValues1[0], innerValues1[1]);
-                               newHashMapMinorRem.put("HASH_MAP_TYPE", "MINOR_OBJECT_REMOVE");
-                            }
-                            newMinorRemList.add(newHashMapMinorRem);
-                        }
-                    }
-                    //HASH_MAP_TYPE=MINOR_OBJECT_REMOVE
-                }
-            
-            //System.out.println("---------------newHashMapMinorRem-------------------" + newMinorRemList);
-            
-            EnterpriseObject updateEnterpriseObject = (EnterpriseObject) session.getAttribute("editEnterpriseObject");
-            
-            
-            //setUpdatedEOFields(masterControllerService.getEnterpriseObject(updateEnterpriseObject.getEUID())); //set the updated values here
-            
-            // Keep the EO in session
-            //build an array of modified system object arrays  
-            buildChangedSystemObjects();
-      
-            // checkAndBuildModifiedSBRValues(updateEnterpriseObject);
-  
             masterControllerService.setRootNodeName(screenObject.getRootObj().getName());
 
-//            //System.out.println("===> : this.editSingleEOHashMap" + this.editSingleEOHashMap.get("ENTERPRISE_OBJECT"));
-//            ArrayList newArrayListSbr = new ArrayList();
-//            newArrayListSbr.add((HashMap)this.editSingleEOHashMap.get("ENTERPRISE_OBJECT"));
-//            setChangedSBRArrayList(newArrayListSbr);
-            //this.changedSBRArrayList.add((HashMap) this.editSingleEOHashMap.get("ENTERPRISE_OBJECT"));
-            ////System.out.println("===> : this.changedSBRArrayList" + this.changedSBRArrayList);
-            
-            
             //EDIT the EO and its system objects here
-            EnterpriseObject eoFinal = masterControllerService.save(updateEnterpriseObject,   //Enterprise Object
-                                                                    newArrayListSbr,  //Changed SBR hashmap array
-                                                                    null, //this.editSOHashMapArrayList, //Changed/New System objects hashmap array
-                                                                    null  //this.editSOMinorObjectsHashMapArrayList // ChangedNew Minor Objects hashmap Array
-                                                                    ); 
-            //Get the Summary Info after the changes
-            String summaryInfo = masterControllerService.getSummaryInfo();
-                     
-            //adding summary message after creating/editing systemobjects along with EO
-            if(summaryInfo != null && summaryInfo.length() > 0) {
-               FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,summaryInfo,summaryInfo));
-            }
-
-            String successMessage  = "EUID : \""+eoFinal.getEUID()+"\" details have been successfully updated";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,successMessage,successMessage));
-            
-            setUpdatedEOFields(masterControllerService.getEnterpriseObject(updateEnterpriseObject.getEUID())); //set the updated values here
-
-//        } catch (ObjectException ex) {
-//            errorMessage = "ObjectException occurred";
-//            
-//            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.toString()));
-//            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
-//            return this.SERVICE_LAYER_ERROR;
-//        } catch (ValidationException ex) {
-//            errorMessage = "ValidationException occurred";
-//            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.toString()));
-//            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
-//            return this.SERVICE_LAYER_ERROR;
-        } catch (Exception ex) {
-            errorMessage = "Exception occurred";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.toString()));
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
-            return this.SERVICE_LAYER_ERROR;
-        }
-        
-        return this.EDIT_SUCCESS;
-    }
-
-         public void removeEOMinorObjects(ActionEvent event ) {
-            
-         
-        try {
-            HashMap remMinorMap = (HashMap) event.getComponent().getAttributes().get("EOMinorObject");
-            EnterpriseObject updateEnterpriseObject = (EnterpriseObject) session.getAttribute("editEnterpriseObject");
-
-            remMinorMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_REMOVE); // set MINOR_OBJECT_TYPE
-            ////System.out.println("remMinorMapremMinorMap" + remMinorMap);
-            this.editEOMinorHashMapArrayList.add(remMinorMap);
-            //System.out.println("remMinorMapremMinorMap" + editEOMinorHashMapArrayList);
-            //EDIT the EO and its system objects here
-            EnterpriseObject eoFinal = masterControllerService.save(updateEnterpriseObject, this.editEOMinorHashMapArrayList, null, null);
+            EnterpriseObject eoFinal = masterControllerService.save(updateEnterpriseObject, this.changedSBRArrayList, this.editSOHashMapArrayList, this.editSOMinorObjectsHashMapArrayList);
             //Get the Summary Info after the changes
             String summaryInfo = masterControllerService.getSummaryInfo();
 
@@ -373,29 +217,33 @@ public class EditMainEuidHandler {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summaryInfo, summaryInfo));
             }
 
-            String successMessage = "Deleted " + (String) remMinorMap.get(MasterControllerService.MINOR_OBJECT_TYPE) +  " and EUID : \"" + eoFinal.getEUID() + "\" details have been successfully updated";
+            String successMessage = "EUID : \"" + eoFinal.getEUID() + "\" details have been successfully updated";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, successMessage, successMessage));
 
-            setUpdatedEOFields(masterControllerService.getEnterpriseObject(updateEnterpriseObject.getEUID())); //set the updated values here
-
-            //this.changedSBRArrayList.add(this.editEOAddressHashMap);
-            //////System.out.println("in action even for remove ADDRESS hashmap" + remAddressMap);
-            //set the search type as per the form
-            //this.singleAddressHashMapArrayList.remove(remAddressMap);
+            //setUpdatedEOFields(masterControllerService.getEnterpriseObject(updateEnterpriseObject.getEUID())); //set the updated values here
         } catch (UserException ex) {
+            errorMessage = "UserException occurred";
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.toString()));
             Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            return this.SERVICE_LAYER_ERROR;
         } catch (ObjectException ex) {
+            errorMessage = "ObjectException occurred";
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.toString()));
             Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            return this.SERVICE_LAYER_ERROR;
+        } catch (ProcessingException ex) {
+            errorMessage = "ProcessingException occurred";
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.toString()));
+            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            return this.SERVICE_LAYER_ERROR;
         } catch (Exception ex) {
+            errorMessage = "Exception occurred";
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.toString()));
             Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+            return this.SERVICE_LAYER_ERROR;
         }
-
-         //this.changedSBRArrayList.add(this.editEOAddressHashMap);
-
-        //////System.out.println("in action even for remove ADDRESS hashmap" + remAddressMap);
-        //set the search type as per the form
-        //this.singleAddressHashMapArrayList.remove(remAddressMap);
-     }
+        return this.EDIT_SUCCESS;
+    }
 
     
     
@@ -414,17 +262,26 @@ public class EditMainEuidHandler {
         }
     }
 
+    public void setEditEOFields(String euid ) {
+        try {
+            //String euid = (String) event.getComponent().getAttributes().get("euidValueExpression");
+
+            EnterpriseObject editEnterpriseObject = masterControllerService.getEnterpriseObject(euid);
+
+            setUpdatedEOFields(editEnterpriseObject); //set the updated values here
+
+            session.setAttribute("", "");
+        } catch (ProcessingException ex) {
+            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserException ex) {
+            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
      public void deactivateEOSO(ActionEvent event ) {
         try {
             HashMap soHashMap = (HashMap) event.getComponent().getAttributes().get("eoSystemObjectMapVE");
-                
-            
-            // Start -- modified by Anil fix for 6688417
-            //SystemObject systemObject = masterControllerService.getSystemObject((String) soHashMap.get("SystemCode"), (String) soHashMap.get("LID"));
-
-            SystemObject systemObject = masterControllerService.getSystemObject((String) soHashMap.get(masterControllerService.SYSTEM_CODE), (String) soHashMap.get(masterControllerService.LID));
-            
-            // End -- modified by Anil fix for 6688417
+            SystemObject systemObject = masterControllerService.getSystemObject((String) soHashMap.get("SystemCode"), (String) soHashMap.get("LID"));
             //call mastercontroller service to deactivate the system object
             masterControllerService.deactivateSystemObject(systemObject);
         } catch (ProcessingException ex) {
@@ -437,8 +294,6 @@ public class EditMainEuidHandler {
      public void activateEOSO(ActionEvent event ) {
         try {
             HashMap soHashMap = (HashMap) event.getComponent().getAttributes().get("eoSystemObjectMapVE");
-
-            //////System.out.println("in action even for activate SO" + soHashMap);
             SystemObject systemObject = masterControllerService.getSystemObject((String) soHashMap.get("SystemCode"), (String) soHashMap.get("LID"));
             //call mastercontroller service to deactivate the system object
             masterControllerService.activateSystemObject(systemObject);
@@ -448,25 +303,41 @@ public class EditMainEuidHandler {
             Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
      }
+ 
+    public void deactivateEO(String euid) {
+
+        try {
+
+            //Deactivate the enterprise object
+            masterControllerService.deactivateEnterpriseObject(euid);
+
+            EnterpriseObject updatedEnterpriseObject = masterControllerService.getEnterpriseObject(euid);
+            
+            // Keep the EO in session
+            session.setAttribute("editEuid", updatedEnterpriseObject.getEUID());
+
+
+        } catch (Exception ex) {
+            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    //Keep the updated SO in the session again
+    }
+ 
+     
      public void addEOAddress(ActionEvent event ) {
-        //////System.out.println("in action even for add EO address hashmap" + this.editEOAddressHashMap);
          this.editEOAddressHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Address");// set MINOR_OBJECT_TYPE
          this.editEOAddressHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_BRAND_NEW);// set MINOR_OBJECT_TYPE
-         
          this.changedSBRArrayList.add(this.editEOAddressHashMap);
-
          //set the search type as per the form
         this.singleAddressHashMapArrayList.add(this.editEOAddressHashMap);
      }
 
      public void removeEOAddress(ActionEvent event ) {
          HashMap remAddressMap = (HashMap) event.getComponent().getAttributes().get("remAddressMap");
-
          this.editEOAddressHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_REMOVE);// set MINOR_OBJECT_TYPE
-
          this.changedSBRArrayList.add(this.editEOAddressHashMap);
-
-        //////System.out.println("in action even for remove ADDRESS hashmap" + remAddressMap);
         //set the search type as per the form
         this.singleAddressHashMapArrayList.remove(remAddressMap);
      }
@@ -477,8 +348,6 @@ public class EditMainEuidHandler {
          this.editEOPhoneHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Phone");// set MINOR_OBJECT_TYPE
          this.editEOPhoneHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_BRAND_NEW);// set MINOR_OBJECT_TYPE
          this.changedSBRArrayList.add(this.editEOPhoneHashMap);
-
-         //////System.out.println("in action even for add EO phone  hashmap" + this.editEOPhoneHashMap);
          //set the search type as per the form
          this.singlePhoneHashMapArrayList.add(this.editEOPhoneHashMap);
      }
@@ -489,8 +358,6 @@ public class EditMainEuidHandler {
          this.editEOPhoneHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_REMOVE);// set MINOR_OBJECT_TYPE
 
          this.changedSBRArrayList.add(this.editEOPhoneHashMap);
-
-         //////System.out.println("in action even for remove phone hashmap" + remPhoneMap);
         //set the search type as per the form
         this.singlePhoneHashMapArrayList.remove(remPhoneMap);
      }
@@ -499,17 +366,13 @@ public class EditMainEuidHandler {
          this.editEOAliasHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Alias");// set MINOR_OBJECT_TYPE
          this.editEOAliasHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_BRAND_NEW);// set MINOR_OBJECT_TYPE
          this.changedSBRArrayList.add(this.editEOAliasHashMap);
-         //////System.out.println("in action even for add EO alias hashmap" + this.editEOAliasHashMap);
          //set the search type as per the form
          this.singleAliasHashMapArrayList.add(this.editEOAliasHashMap);
      }
 
      public void removeEOAlias(ActionEvent event ) {
         HashMap remAliasMap = (HashMap) event.getComponent().getAttributes().get("remAliasMap");
-
         this.editEOAliasHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_REMOVE);// set MINOR_OBJECT_TYPE
-
-        //////System.out.println("in action even for remove alias hashmap" + remAliasMap);
         //set the search type as per the form
         this.singleAliasHashMapArrayList.remove(remAliasMap);
          
@@ -524,75 +387,9 @@ public class EditMainEuidHandler {
     public String addNewSO() {
         try {
             masterControllerService.setRootNodeName(screenObject.getRootObj().getName());
-            EnterpriseObject updateEnterpriseObject = (EnterpriseObject) session.getAttribute("editEnterpriseObject");
-            
-            ////System.out.println("=> IN ADD NEW SO METHOD ===> : " + this.newSOHashMap + this.newSoSystemCode + "==> : LID" + this.newSoLID);
-            this.newSoLID = this.newSoLID.replaceAll("-", "");
-            
-            //add SystemCode and LID value to the new Hash Map
-            newSOHashMap.put(MasterControllerService.SYSTEM_CODE, this.newSoSystemCode);
-            newSOHashMap.put(MasterControllerService.LID, this.newSoLID);
+            String updateEuid = (String) session.getAttribute("editEuid");
+            EnterpriseObject updateEnterpriseObject = masterControllerService.getEnterpriseObject(updateEuid);
 
-            //take care of SSN masking here
-            String ssn  = (String) newSOHashMap.get("Person.SSN");
-            if(newSOHashMap.get("Person.SSN") != null) {
-               if(ssn.length() > 1 ) {
-                 ssn = ssn.replaceAll("-", "");
-                 newSOHashMap.put("Person.SSN",ssn);
-               }  else {
-                 newSOHashMap.put("Person.SSN",null);
-               }
-            }
-            
-            //add the key as brand new in the hashmap
-            newSOHashMap.put(MasterControllerService.HASH_MAP_TYPE,MasterControllerService.SYSTEM_OBJECT_BRAND_NEW);
-           
-            //add new SO to the arraylist
-            this.newSOHashMapArrayList.add(newSOHashMap);
-
-            if (this.newSOAddressHashMapArrayList.size() > 0) {
-                    for (int k = 0; k < newSOAddressHashMapArrayList.size(); k++) {
-                        HashMap addressHashMap = (HashMap) newSOAddressHashMapArrayList.get(k);
-                        addressHashMap.put(MasterControllerService.LID, this.newSoLID);// set LID here 
-                        addressHashMap.put(MasterControllerService.SYSTEM_CODE, this.newSoSystemCode);// set System code here 
-                        addressHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Address");// set MINOR_OBJECT_TYPE
-                        addressHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_BRAND_NEW);// set MINOR_OBJECT_TYPE
-                        this.newSOMinorObjectsHashMapArrayList.add(addressHashMap);
-                    }
-                }
-
-
-                //set phone array list of hasmap for editing
-                if (this.newSOPhoneHashMapArrayList.size()> 0) {
-                    for (int k = 0; k < this.newSOPhoneHashMapArrayList.size() ; k++) {
-                        HashMap phoneHashMap = (HashMap) this.newSOPhoneHashMapArrayList.get(k);
-                        phoneHashMap.put(MasterControllerService.LID, this.newSoLID);// set LID here 
-                        phoneHashMap.put(MasterControllerService.SYSTEM_CODE, this.newSoSystemCode);// set System code here 
-                        phoneHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Phone");// set MINOR_OBJECT_TYPE
-                        phoneHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_BRAND_NEW);// set MINOR_OBJECT_TYPE
-                        this.newSOMinorObjectsHashMapArrayList.add(phoneHashMap);
-                    }
-                }
-
-                //set alias array list of hasmap for editing
-                if (this.newSOAliasHashMapArrayList.size() > 0) {
-                    for (int k = 0; k < this.newSOAliasHashMapArrayList.size(); k++) {
-                        HashMap aliasHashMap = (HashMap) this.newSOAliasHashMapArrayList.get(k);
-                        aliasHashMap.put(MasterControllerService.LID, this.newSoLID);// set LID here 
-                        aliasHashMap.put(MasterControllerService.SYSTEM_CODE, this.newSoSystemCode);// set System code here 
-                        aliasHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Alias");// set MINOR_OBJECT_TYPE
-                        aliasHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_BRAND_NEW);// set MINOR_OBJECT_TYPE
-                        this.newSOMinorObjectsHashMapArrayList.add(aliasHashMap);
-                    }
-                }
-
-            //SystemObject createSystemObject = masterControllerService.createSystemObject(this.newSoSystemCode, this.newSoLID, newSOHashMap);
-            //////System.out.println("===> createSystemObject" + createSystemObject);
-            //createSystemObject.setUpdateUser("eview");
-            
-
-            // Keep the EO in session
-            ////System.out.println("===> enterpriseObject" + updateEnterpriseObject);
             //Add new SO here
             EnterpriseObject eoFinal = masterControllerService.save(updateEnterpriseObject, 
                                                                     null, 
@@ -601,18 +398,10 @@ public class EditMainEuidHandler {
 
 
             String summaryInfo = masterControllerService.getSummaryInfo();
-            ////System.out.println("===> summaryInfo" + summaryInfo);
-            
-
             //adding summary message after creating/editing systemobjects along with EO
             if (summaryInfo != null && summaryInfo.length() > 0) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summaryInfo, summaryInfo));
             }
-            //
-            unSetMinorObjectPrimaryValues(this.newSOAddressHashMapArrayList);
-            unSetMinorObjectPrimaryValues(this.newSOPhoneHashMapArrayList);
-            unSetMinorObjectPrimaryValues(this.newSOAliasHashMapArrayList);
-            this.newSOHashMap.clear();
             
             setUpdatedEOFields(eoFinal); //set the updated values here
             
@@ -631,8 +420,6 @@ public class EditMainEuidHandler {
      * @param event
      */
     public void addNewSOAddress(ActionEvent event) {
-
-        //////System.out.println("in action even for add EO address hashmap" + this.newSOAddressHashMap);
          this.newSOAddressHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Address");// set MINOR_OBJECT_TYPE
          this.newSOAddressHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_BRAND_NEW);// set MINOR_OBJECT_TYPE
 
@@ -669,12 +456,8 @@ public class EditMainEuidHandler {
      * @param event
      */
     public void addNewSOPhone(ActionEvent event) {
-
-        //////System.out.println("in action even for add EO phone hashmap" + this.newSOPhoneHashMap);
          this.newSOPhoneHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Phone");// set MINOR_OBJECT_TYPE
          this.newSOPhoneHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_BRAND_NEW);// set MINOR_OBJECT_TYPE
-
-
         //set the phone arraylist for displaying in the jsp page
         this.newSOPhoneHashMapArrayList.add(this.newSOPhoneHashMap);
 
@@ -706,8 +489,6 @@ public class EditMainEuidHandler {
      * @param event
      */
     public void addNewSOAlias(ActionEvent event) {
-
-        //////System.out.println("in action even for add EO alias hashmap" + this.newSOAliasHashMap);
          this.newSOAliasHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Alias");// set MINOR_OBJECT_TYPE
          this.newSOAliasHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_BRAND_NEW);// set MINOR_OBJECT_TYPE
 
@@ -851,7 +632,6 @@ public class EditMainEuidHandler {
                 
                 //take care of SSN masking here
                 String ssnField = screenObject.getRootObj().getName() + ".SSN";
-                //////System.out.println("SSN FIELD==>: " + ssnField);
                 String ssn = (String) systemObjectMap.get(ssnField);
                 if (systemObjectMap.get(ssnField) != null) {
                     if (ssn.length() > 1) {
@@ -867,71 +647,7 @@ public class EditMainEuidHandler {
         
     }
 
-    private void checkAndBuildModifiedSBRValues(EnterpriseObject updateEnterpriseObjectArg) {
-                       
-        try {
 
-            HashMap eoOldMap = masterControllerService.getEnterpriseObjectAsHashMap(updateEnterpriseObjectArg, personEPathArrayList);
-
-            eoOldMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE); //SBR_UPDATE HASH MAP type here
-
-            //all field configs as per the root objects
-            ArrayList allFieldConfigs = sourceHandler.getAllFieldConfigs();
-
-            String ePathName = new String();
-            String rootName  = screenObject.getRootObj().getName();
-            
-            
-//            //System.out.println("Before Updating (size)" + this.editSingleEOHashMap.size());
-            HashMap eoHashMap = (HashMap) this.editSingleEOHashMap.get("ENTERPRISE_OBJECT");
-            HashMap newUpdatedMap = new HashMap();
-            ////System.out.println( "befoew eoHashMap ===> : " +  eoHashMap);
-                if (MasterControllerService.SBR_UPDATE.equalsIgnoreCase((String) eoHashMap.get(MasterControllerService.HASH_MAP_TYPE))) {
-                    for (int j = 0; j < allFieldConfigs.size(); j++) {
-                        FieldConfig fieldConfig = (FieldConfig) allFieldConfigs.get(j);
-                        ePathName = fieldConfig.getFullFieldName();
-
-                        String oldValue = (String) eoOldMap.get(ePathName);
-                        String newValue = (String) eoHashMap.get(ePathName);
-                        //check if no value entered put null into the value
-                        if ((oldValue == null && (newValue != null && newValue.trim().length() == 0) )) {
-                            eoHashMap.put(ePathName,null);
-                        }
-                        //check if old value is equal to new value
-                        if ((oldValue == null && newValue == null)) {
-                            ////System.out.println(ePathName + "ALL NULL ePathName===> : "   +eoHashMap.get(ePathName));
-                            eoHashMap.remove(ePathName);
-//                        } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
-//                            //System.out.println("oldValue != null && newValue != null===> : " + ePathName  +eoHashMap);
-//                            eoHashMap.remove(ePathName);
-                        } else if ((oldValue != null && newValue != null) && oldValue.equalsIgnoreCase(newValue)) {
-//                            //System.out.println(ePathName + "oldValue != null && newValue != null ePathName===> : " + eoHashMap.get(ePathName));
-                            eoHashMap.remove(ePathName);
-                        }
-                    }
-                }
-            
-            Object[] keys = eoHashMap.keySet().toArray();
-            for (int i = 0; i < keys.length; i++) {
-                String key = (String)keys[i];
-                if(eoHashMap.get(key) != null) {
-                    newUpdatedMap.put(key,eoHashMap.get(key));
-                }
-            }
-            this.editSingleEOHashMap.put("ENTERPRISE_OBJECT",newUpdatedMap);
-            
-            ////System.out.println("after===> : "  + "AFTER  TOTAL KEYS" + this.editSingleEOHashMap);
-            
-
-        } catch (ObjectException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (EPathException ex) {
-            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-  
-        
-        
-    }
 
     public ArrayList<SelectItem> getSystemCodes() {
         String[][] systemCodesWithLIDMasking = masterControllerService.getSystemCodes();
@@ -939,7 +655,6 @@ public class EditMainEuidHandler {
         ArrayList newArrayList = new ArrayList();
         for (int i = 0; i < pullDownListItems.length; i++) {
             SelectItem selectItem = new SelectItem();
-            ////////System.out.println("Adding Select item label" + pullDownListItems[i] + "Value" + pullDownListItems[i]);
             selectItem.setLabel(masterControllerService.getSystemDescription(pullDownListItems[i]));
             selectItem.setValue(pullDownListItems[i]);
             newArrayList.add(selectItem);
@@ -972,16 +687,12 @@ public class EditMainEuidHandler {
         try {
 
             session.removeAttribute("enterpriseArrayList");
-
-            EnterpriseObject eo = (EnterpriseObject) session.getAttribute("editEnterpriseObject");
-
-            EnterpriseObject eoUpdated = masterControllerService.getEnterpriseObject(eo.getEUID());
+            String eoEuid = (String) session.getAttribute("editEuid");
+            EnterpriseObject eoUpdated = masterControllerService.getEnterpriseObject(eoEuid);
 
             ArrayList newArrayList = new ArrayList();
-            newArrayList.add(eoUpdated);
-            
-            session.setAttribute("enterpriseArrayList", newArrayList);
-            
+            newArrayList.add(eoUpdated);            
+            session.setAttribute("enterpriseArrayList", newArrayList);            
         } catch (ProcessingException ex) {
             Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
@@ -1103,33 +814,12 @@ public class EditMainEuidHandler {
         this.newSOHashMapArrayList = newSOHashMapArrayList;
     }
 
-    private void saveLinksSelected() {
+    public void saveLinksSelected() {
         try {
-            EnterpriseObject updateEnterpriseObject = (EnterpriseObject) session.getAttribute("editEnterpriseObject");
-            HashMap newHashMap = new HashMap();
-     
-            //System.out.println("==>:" + this.getHiddenLinkFields());
-            String[] allLinks  = this.getHiddenLinkFields().split("##");
-
-            for (int i = 0; i < allLinks.length; i++) {
-                String string = allLinks[i];
-                ////System.out.println(" string ==>: " + string);
-                String[] values = string.split(">>");
-                for (int j = 0; j < values.length; j++) {
-                    String string1 = values[j];
-                    newHashMap.put(values[0], values[1]);
-//                 String key = string.split(">>")[0];
-//                  String value = string.split(">>")[1];
-                   // //System.out.println("key ==>:" + j + " value ==>: " + string1);
-              }
-                
-               ////System.out.println("FINAL newHashMap==>:" + newHashMap);
-                //newHashMap.put(key, value);
-            }
-            EnterpriseObject updateEO = masterControllerService.saveLinks(newHashMap, updateEnterpriseObject);
-            session.setAttribute("editEnterpriseObject",updateEO);
-            // masterControllerService.updateEnterpriseObject(updateEO);
-            
+            String updateEuid = (String) session.getAttribute("editEuid");
+            EnterpriseObject updateEnterpriseObject = masterControllerService.getEnterpriseObject(updateEuid);
+            EnterpriseObject updateEO = masterControllerService.saveLinks(linkedFieldsHashMapByUser, updateEnterpriseObject);
+            session.setAttribute("editEuid",updateEO.getEUID());
         } catch (ProcessingException ex) {
             Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
@@ -1137,28 +827,13 @@ public class EditMainEuidHandler {
         }
     }
 
-    private void saveUnLinksSelected() {
+    public void saveUnLinksSelected() {
         try {
-            EnterpriseObject updateEnterpriseObject = (EnterpriseObject) session.getAttribute("editEnterpriseObject");
-            HashMap newHashMap = new HashMap();
-            ////System.out.println("==>:" + this.getHiddenUnLinkFields());
-
-            String[] allLinks = this.getHiddenUnLinkFields().split("##");
-
-            for (int i = 0; i < allLinks.length; i++) {
-                String string = allLinks[i];
-                String[] values = string.split(">>");
-                for (int j = 0; j < values.length; j++) {
-                    String string1 = values[j];
-                    newHashMap.put(values[0], values[1]);
-                }
-
-                ////System.out.println("FINAL newHashMap==>:" + newHashMap);
-               //newHashMap.put(key, value);
-            }
-            EnterpriseObject updateEO = masterControllerService.removeLinks(newHashMap, updateEnterpriseObject);
+            String updateEuid = (String) session.getAttribute("editEuid");
+            EnterpriseObject updateEnterpriseObject = masterControllerService.getEnterpriseObject(updateEuid);
+            EnterpriseObject updateEO = masterControllerService.removeLinks(unLinkedFieldsHashMapByUser, updateEnterpriseObject);
             //masterControllerService.updateEnterpriseObject(updateEO);
-            session.setAttribute("editEnterpriseObject",updateEO);
+            session.setAttribute("editEuid",updateEO.getEUID());
 
         } catch (ProcessingException ex) {
             Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -1166,30 +841,14 @@ public class EditMainEuidHandler {
             Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    private void saveUnLocksSelected() {
+    public void saveUnLocksSelected() {
         try {
-            EnterpriseObject updateEnterpriseObject = (EnterpriseObject) session.getAttribute("editEnterpriseObject");
-            HashMap newHashMap = new HashMap();
-            ////System.out.println("==>:" + this.getHiddenUnLinkFields());
+            String updateEuid = (String) session.getAttribute("editEuid");
 
-            String[] allUnLocks = this.getHiddenUnLockFields().split("##");
-
-            for (int i = 0; i < allUnLocks.length; i++) {
-                String string = allUnLocks[i];
-                newHashMap.put(string, null);
-                
-//                String[] values = string.split(">>");
-//                for (int j = 0; j < values.length; j++) {
-//                    String string1 = values[j];
-//                    newHashMap.put(values[0], values[1]);
-//                }
-
-//                System.out.println("REMOVE FINAL newHashMap==>:" + newHashMap);
-               //newHashMap.put(key, value);
-            }
-            EnterpriseObject updateEO = masterControllerService.removeLocks(newHashMap, updateEnterpriseObject);
+            EnterpriseObject updateEnterpriseObject = masterControllerService.getEnterpriseObject(updateEuid);
+            EnterpriseObject updateEO = masterControllerService.removeLocks(unLockedFieldsHashMapByUser, updateEnterpriseObject);
             //masterControllerService.updateEnterpriseObject(updateEO);
-            session.setAttribute("editEnterpriseObject",updateEO);
+            session.setAttribute("editEuid",updateEO.getEUID());
 
         } catch (ProcessingException ex) {
             Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -1213,170 +872,160 @@ public class EditMainEuidHandler {
     public void setUpdatedEOFields(EnterpriseObject editEnterpriseObject) {
         try {
             // Keep the EO in session
-            session.setAttribute("editEnterpriseObject",editEnterpriseObject);
-            
-            String rootName = screenObject.getRootObj().getName();
-            ObjectNodeConfig[] arrObjectNodeConfig = screenObject.getRootObj().getChildConfigs();
-            
-            
+            session.setAttribute("editEuid", editEnterpriseObject.getEUID());
             HashMap editEOMap = masterControllerService.getEnterpriseObjectAsHashMap(editEnterpriseObject, personEPathArrayList);
-
             HashMap eoWithLinkedHashMap = masterControllerService.getLinkedFields(editEnterpriseObject);
-            ////System.out.println("==> ; eoWithLinkedHashMap"  + eoWithLinkedHashMap);
-            HashMap newHashMapWithLinks  = new HashMap();
-            Object[] keySet  = editEOMap.keySet().toArray();
+            HashMap newHashMapWithLinks = new HashMap();
+            Object[] keySet = editEOMap.keySet().toArray();
             //BUILD the hash map with links
             for (int i = 0; i < keySet.length; i++) {
-                 String key = (String) keySet[i];
-                if(eoWithLinkedHashMap.get(key) != null ) {
-                   newHashMapWithLinks.put(key, true);
+                String key = (String) keySet[i];
+                if (eoWithLinkedHashMap.get(key) != null) {
+                    newHashMapWithLinks.put(key, true);
                 } else {
-                   newHashMapWithLinks.put(key, false);
+                    newHashMapWithLinks.put(key, false);
                 }
             }
-            ////System.out.println("newHashMapWithLinks +++ from DB >>>>" + newHashMapWithLinks);
             //set the EO linked information here
             setLinkedFieldsHashMapFromDB(newHashMapWithLinks);
 
             HashMap eoLockedFeildsHashMap = masterControllerService.getLockedFields(editEnterpriseObject);
-            ////System.out.println("==> ; eoLockedFeildsHashMap"  + eoLockedFeildsHashMap);
-            
             setLockedFieldsHashMapFromDB(eoLockedFeildsHashMap);
-             //set the linkedfields for so here
+            //set the linkedfields for so here
             setLinkedSOFieldsHashMapFromDB(eoWithLinkedHashMap);
-            
-            
+
+
             HashMap editEOMapMain = compareDuplicateManager.getEnterpriseObjectAsHashMap(editEnterpriseObject, screenObject);
 
             editEOMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE); //SBR_UPDATE HASH MAP type here
-            
+
             HashMap eoHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(editEnterpriseObject, screenObject);
-            
+            HashMap eoHashMapOld = compareDuplicateManager.getEnterpriseObjectAsHashMap(editEnterpriseObject, screenObject);
+
             //set EO as hash map for display
             setEditSingleEOHashMap(eoHashMap);
-            
-            //set the EO person details in the SBR arraylist for sending to the SL for editing
-            this.changedSBRArrayList.add(editEOMap);
 
-//            //set address array list of hasmap for editing
-//            ArrayList addressMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(editEnterpriseObject, sourceHandler.buildSystemObjectEpaths("Address"), "Address",MasterControllerService.MINOR_OBJECT_UPDATE);
-//            setSingleAddressHashMapArrayList(addressMapArrayList);
-//
-//            //set the EO address in the SBR arraylist for sending to the SL for editing
-//            if (addressMapArrayList.size() > 0) {
-//                for (int k = 0; k < addressMapArrayList.size(); k++) {
-//                    HashMap sbrAddressHashMap = (HashMap) addressMapArrayList.get(k);
-//                    sbrAddressHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Address");// set MINOR_OBJECT_TYPE
-//                    //this.changedSBRArrayList.add(sbrAddressHashMap);
-//                }
-//            }
-//            
-//            //set phone array list of hasmap for editing
-//            ArrayList phoneMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(editEnterpriseObject, sourceHandler.buildSystemObjectEpaths("Phone"), "Phone",MasterControllerService.MINOR_OBJECT_UPDATE);
-//            setSinglePhoneHashMapArrayList(phoneMapArrayList);
-//
-//            //set the EO phone in the SBR arraylist for sending to the SL for editing
-//            if (phoneMapArrayList.size() > 0) {
-//                for (int k = 0; k < phoneMapArrayList.size(); k++) {
-//                    HashMap sbrPhoneHashMap = (HashMap) phoneMapArrayList.get(k);
-//                    sbrPhoneHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Phone");// set MINOR_OBJECT_TYPE
-//                    //this.changedSBRArrayList.add(sbrPhoneHashMap);
-//                }
-//            }
-//           
-//            //set alias array list of hasmap for editing
-//            ArrayList aliasMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(editEnterpriseObject, sourceHandler.buildSystemObjectEpaths("Alias"), "Alias",MasterControllerService.MINOR_OBJECT_UPDATE);
-//            setSingleAliasHashMapArrayList(aliasMapArrayList);
-//
-//            //set the EO alias in the SBR arraylist for sending to the SL for editing
-//            if (aliasMapArrayList.size() > 0) {
-//                for (int k = 0; k < aliasMapArrayList.size(); k++) {
-//                    HashMap sbrAliasHashMap = (HashMap) aliasMapArrayList.get(k);
-//                    //////System.out.println("Alias middle Name" + sbrAliasHashMap.get("Alias.MiddleName"));
-//                    sbrAliasHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Alias");// set MINOR_OBJECT_TYPE
-//                    //this.changedSBRArrayList.add(sbrAliasHashMap);
-//                }
-//            }           
+            //Old values are stored 
+            setEditSingleEOHashMapOld(eoHashMapOld);
+
+            //set the EO person details in the SBR arraylist for sending to the SL for editing
+            //this.changedSBRArrayList.add(editEOMap);
+
             //set EO system objects here.
             Object[] soArrayObj = editEnterpriseObject.getSystemObjects().toArray();
             ArrayList eoSOobjects = new ArrayList();
-            ArrayList newSelectItemArrayList  = new ArrayList();
+            ArrayList eoSOobjectsOld = new ArrayList();
+            ArrayList newSelectItemArrayList = new ArrayList();
             for (int i = 0; i < soArrayObj.length; i++) {
                 SystemObject systemObject = (SystemObject) soArrayObj[i];
-                //System.out.println(i + "==> :  LID " + systemObject.getLID() + "===> : Code " + systemObject.getSystemCode());
-
                 SelectItem selectItem = new SelectItem();
                 selectItem.setLabel(systemObject.getSystemCode() + ":" + systemObject.getLID());
                 selectItem.setValue(systemObject.getSystemCode() + ":" + systemObject.getLID());
                 newSelectItemArrayList.add(selectItem);
 
                 HashMap systemObjectHashMap = new HashMap();
+                HashMap systemObjectHashMapOld = new HashMap();
                 //add SystemCode and LID value to the new Hash Map
                 systemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID());// set LID here 
+                systemObjectHashMapOld.put(MasterControllerService.LID, systemObject.getLID());// set LID here 
+
                 systemObjectHashMap.put("SYSTEM_CODE_DESC", masterControllerService.getSystemDescription(systemObject.getSystemCode()));// set System code here 
+                systemObjectHashMapOld.put("SYSTEM_CODE_DESC", masterControllerService.getSystemDescription(systemObject.getSystemCode()));// set System code here 
+
                 systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode());// set System code here 
+                systemObjectHashMapOld.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode());// set System code here 
+
                 systemObjectHashMap.put("Status", systemObject.getStatus());// set Status here 
-                
+                systemObjectHashMapOld.put("Status", systemObject.getStatus());// set Status here 
+
                 HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, personEPathArrayList);
-                
+
                 //add SystemCode and LID value to the new Hash Map
                 editSystemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID());// set LID here 
+
                 editSystemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode());// set System code here 
+
                 editSystemObjectHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SYSTEM_OBJECT_UPDATE);// set UPDATE TYPE HERE 
+
                 editSystemObjectHashMap.put("LINK_KEY", systemObject.getSystemCode() + ":" + systemObject.getLID());// set UPDATE TYPE HERE 
 
                 systemObjectHashMap.put("SYSTEM_OBJECT", editSystemObjectHashMap);// Set the edit SystemObject here
+                systemObjectHashMapOld.put("SYSTEM_OBJECT", editSystemObjectHashMap);// Set the edit SystemObject here
 
-//                //set address array list of hasmap for editing
-//                ArrayList addressMapSOArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths("Address"), "Address", MasterControllerService.MINOR_OBJECT_UPDATE);
-//                systemObjectHashMap.put("SOAddressList", addressMapSOArrayList);// set SO addresses as arraylist here
-//
-//                if (addressMapSOArrayList.size() > 0) {
-//                    for (int k = 0; k < addressMapSOArrayList.size(); k++) {
-//                        HashMap addressHashMap = (HashMap) addressMapSOArrayList.get(k);
-//                        addressHashMap.put(MasterControllerService.LID, systemObject.getLID());// set LID here 
-//                        addressHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode());// set System code here 
-//                        addressHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Address");// set MINOR_OBJECT_TYPE
-//
-//                        //this.editSOMinorObjectsHashMapArrayList.add(addressHashMap);
-//                    }
-//                }
-//
-//
-//                //set phone array list of hasmap for editing
-//                ArrayList phoneMapSOArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths("Phone"), "Phone", MasterControllerService.MINOR_OBJECT_UPDATE);
-//                systemObjectHashMap.put("SOPhoneList", phoneMapSOArrayList);// set SO phones as arraylist here
-//                if (phoneMapSOArrayList.size() > 0) {
-//                    for (int k = 0; k < phoneMapSOArrayList.size(); k++) {
-//                        HashMap phoneHashMap = (HashMap) phoneMapSOArrayList.get(k);
-//                        phoneHashMap.put(MasterControllerService.LID, systemObject.getLID());// set LID here 
-//                        phoneHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode());// set System code here 
-//                        phoneHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Phone");// set MINOR_OBJECT_TYPE
-//                        //this.editSOMinorObjectsHashMapArrayList.add(phoneHashMap);
-//                    }
-//                }
-//
-//                //set alias array list of hasmap for editing
-//                ArrayList aliasMapSOArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths("Alias"), "Alias", MasterControllerService.MINOR_OBJECT_UPDATE);
-//                systemObjectHashMap.put("SOAliasList", aliasMapSOArrayList);// set SO alias as arraylist here
-//                if (aliasMapSOArrayList.size() > 0) {
-//                    for (int k = 0; k < aliasMapSOArrayList.size(); k++) {
-//                        HashMap aliasHashMap = (HashMap) aliasMapSOArrayList.get(k);
-//                        aliasHashMap.put(MasterControllerService.LID, systemObject.getLID());// set LID here 
-//                        aliasHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode());// set System code here 
-//                        aliasHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Alias");// set MINOR_OBJECT_TYPE
-//                        //this.editSOMinorObjectsHashMapArrayList.add(aliasHashMap);
-//                    }
-//                }
+                //HashMap soEuidHashMap = compareDuplicateManager.getSystemObjectAsHashMap(systemObject, screenObject);
+
+                ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
+
+                //Build and array of minotr object values from the screen object child object nodes
+                for (int j = 0; j < childNodeConfigs.length; j++) {
+
+                    //get the child object node configs
+                    ObjectNodeConfig objectNodeConfig = childNodeConfigs[j];
+                    FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs();
+
+                    //set address array list of hasmap for editing
+                    ArrayList soMinorObjectsMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
+
+                    ArrayList soMinorObjectsMapArrayListEdit = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
+                    
+                    for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
+                        HashMap minorObjectHashMapEdit = (HashMap) soMinorObjectsMapArrayListEdit.get(k);
+
+                        minorObjectHashMapEdit.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
+
+                        minorObjectHashMapEdit.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
+
+                        minorObjectHashMapEdit.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
+
+                    }
+
+                    //set the values for the minor objects with keys only
+                    systemObjectHashMap.put("SOEDIT" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayListEdit); // set SO addresses as arraylist here
+                    systemObjectHashMapOld.put("SOEDIT" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayListEdit); // set SO addresses as arraylist here
+
+                    String strVal = new String();
+                    for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
+                        HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
+                        for (int m = 0; m < minorFiledConfigs.length; m++) {
+                            FieldConfig fieldConfig = minorFiledConfigs[m];
+                            //set the menu list values here
+                            if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                                Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
+                                if (value != null) {
+                                    strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                    minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
+                                }
+
+                            }
+
+                        }
+
+                        minorObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
+
+                        minorObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
+
+                        minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
+
+                    }
+                    systemObjectHashMap.put("SO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
+                    systemObjectHashMapOld.put("SO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
+
+                }
+
+
                 //build the system object hashmap for editing 
                 eoSOobjects.add(systemObjectHashMap);
-                
+                eoSOobjectsOld.add(systemObjectHashMapOld);
+
             }
             //Add new select item for systemcode/lid drop down
             setEoSystemObjectCodesWithLids(newSelectItemArrayList);
 
             //set all system objects here
             setEoSystemObjects(eoSOobjects);
+
+            //set all system objects here
+            setEoSystemObjectsOld(eoSOobjectsOld);
 
         } catch (UserException ex) {
             Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -1505,6 +1154,215 @@ public class EditMainEuidHandler {
 
     public void setHiddenLockFields(String hiddenLockFields) {
         this.hiddenLockFields = hiddenLockFields;
+    }
+    
+    public void checkAndBuildModifiedSBRValues(String updateEnterpriseObjectArg) {
+                       
+        try {
+
+            EnterpriseObject eo = masterControllerService.getEnterpriseObject(updateEnterpriseObjectArg);
+            HashMap eoOldMap = masterControllerService.getEnterpriseObjectAsHashMap(eo, personEPathArrayList);
+
+            eoOldMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE); //SBR_UPDATE HASH MAP type here
+
+            //all field configs as per the root objects
+            ArrayList allFieldConfigs = sourceHandler.getAllFieldConfigs();
+
+            String ePathName = new String();
+            String rootName  = screenObject.getRootObj().getName();
+            
+            HashMap eoHashMap = (HashMap) this.editSingleEOHashMap.get("ENTERPRISE_OBJECT_CODES");
+            HashMap newUpdatedMap = new HashMap();
+                if (MasterControllerService.SBR_UPDATE.equalsIgnoreCase((String) eoHashMap.get(MasterControllerService.HASH_MAP_TYPE))) {
+                    for (int j = 0; j < allFieldConfigs.size(); j++) {
+                        FieldConfig fieldConfig = (FieldConfig) allFieldConfigs.get(j);
+                        ePathName = fieldConfig.getFullFieldName();
+
+                        String oldValue = (String) eoOldMap.get(ePathName);
+                        String newValue = (String) eoHashMap.get(ePathName);
+                        //check if no value entered put null into the value
+                        if ((oldValue == null && (newValue != null && newValue.trim().length() == 0) )) {
+                            eoHashMap.put(ePathName,null);
+                        }
+                        //check if old value is equal to new value
+                        if ((oldValue == null && newValue == null)) {
+                            eoHashMap.remove(ePathName);
+//                        } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
+//                            eoHashMap.remove(ePathName);
+                        } else if ((oldValue != null && newValue != null) && oldValue.equalsIgnoreCase(newValue)) {
+                            eoHashMap.remove(ePathName);
+                        }
+                    }
+                }
+            
+            Object[] keys = eoHashMap.keySet().toArray();
+            for (int i = 0; i < keys.length; i++) {
+                String key = (String)keys[i];
+                if(eoHashMap.get(key) != null) {
+                    newUpdatedMap.put(key,eoHashMap.get(key));
+                }
+            }
+            this.editSingleEOHashMap.put("ENTERPRISE_OBJECT_CODES",newUpdatedMap);
+            
+            
+            //BUILD AND THE VALUES FOR THE MINOR OBJECTS HERE
+           ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
+
+           //get the child object node configs
+            for (int i = 0; i < childNodeConfigs.length; i++) {
+                //get the child object node configs and build an array of minor objects here
+                ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
+                ArrayList thisMinorObjectList = (ArrayList) this.editSingleEOHashMap.get("EOCODES" + objectNodeConfig.getName() + "ArrayList");
+                for (int j = 0; j < thisMinorObjectList.size(); j++) {
+                    HashMap minorObjectMap = (HashMap) thisMinorObjectList.get(j);
+                    minorObjectMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName());
+                    //add minor objects for SBR here 
+
+                }
+            }
+    
+
+        } catch (ProcessingException ex) {
+            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserException ex) {
+            Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+  
+        
+        
+    }
+
+    
+    //build an array of changed SBR values here
+    public void buildModifiedSBRValues() {
+        //this.changedSBRArrayList
+        HashMap rootNodesHashMap = (HashMap) this.editSingleEOHashMap.get("ENTERPRISE_OBJECT_CODES");
+
+        //build the hashmap with only modified values only
+
+
+        //add root node for SBR here 
+        this.changedSBRArrayList.add(rootNodesHashMap);
+
+        ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
+
+        //get the child object node configs
+        for (int i = 0; i < childNodeConfigs.length; i++) {
+            //get the child object node configs and build an array of minor objects here
+            ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
+            ArrayList thisMinorObjectList = (ArrayList) this.editSingleEOHashMap.get("EOCODES" + objectNodeConfig.getName() + "ArrayList");
+            for (int j = 0; j < thisMinorObjectList.size(); j++) {
+                HashMap minorObjectMap = (HashMap) thisMinorObjectList.get(j);
+                minorObjectMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName());
+                //add minor objects for SBR here 
+                this.changedSBRArrayList.add(minorObjectMap);
+
+            }
+        }
+
+    }
+
+    
+    //build an array of changed SBR values here for the system objects here
+    public void buildModifiedSystemObjects() {
+        
+        for (int so = 0; so < this.getEoSystemObjects().size(); so++) {
+            HashMap systemObjectsMap = (HashMap) this.eoSystemObjects.get(so);
+        
+            HashMap soRootNodesMap = (HashMap) systemObjectsMap.get("SYSTEM_OBJECT");
+            HashMap soRootNodesMapNew = new HashMap();
+            
+            Object[] keys = soRootNodesMap.keySet().toArray();
+            //build an array of hashmap with out link key
+            for (int i = 0; i < keys.length; i++) {
+                String  objectKey  = (String) keys[i];
+
+                //ignore keys like SOSYS, SOLID and LINK_KEY
+                if(!"LINK_KEY".equalsIgnoreCase(objectKey) &&
+                   !"SOSYS".equalsIgnoreCase(objectKey) &&
+                   !"SOLID".equalsIgnoreCase(objectKey)
+                ) {
+                    soRootNodesMapNew.put(objectKey, soRootNodesMap.get(objectKey));
+                }
+            }
+            //build an array of system object hashmaps for sending to the SL
+            this.editSOHashMapArrayList.add(soRootNodesMapNew);
+
+            ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
+
+            //get the child object node configs
+            for (int i = 0; i < childNodeConfigs.length; i++) {
+                //get the child object node configs and build an array of minor objects here
+                ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
+                ArrayList thisMinorObjectList = (ArrayList) systemObjectsMap.get("SOEDIT" + objectNodeConfig.getName() + "ArrayList");
+                for (int j = 0; j < thisMinorObjectList.size(); j++) {
+                    HashMap minorObjectMap = (HashMap) thisMinorObjectList.get(j);
+                    HashMap minorObjectMapNew = new HashMap();
+                    Object[] minorkeys = minorObjectMap.keySet().toArray();
+                    //build an array of hashmap with out link key
+                    for (int k = 0; k < minorkeys.length; k++) {
+                        String objectKey = (String) minorkeys[k];
+                        //ignore keys like SOSYS, SOLID and LINK_KEY
+                        if (!"LINK_KEY".equalsIgnoreCase(objectKey) &&
+                            !"SOSYS".equalsIgnoreCase(objectKey) &&
+                            !"SOLID".equalsIgnoreCase(objectKey)) {
+                            minorObjectMapNew.put(objectKey, minorObjectMap.get(objectKey));
+                        }
+                    }
+                    this.editSOMinorObjectsHashMapArrayList.add(minorObjectMapNew);
+
+                }
+            }
+
+        }
+    }
+
+    public boolean validateSystemCodeLID(String LID,String systemCode){
+        boolean validated = false;
+        
+        //convert the masked value here to 10 digit number
+        try {
+            SystemObject systemObject = masterControllerService.getSystemObject(systemCode, LID);
+            if(systemObject != null) {
+                validated = false;
+            } else if(systemObject == null) {
+                validated = true;
+            }
+           
+        } catch (ProcessingException ex) {
+            errorMessage = "Processing Exception occurred";
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserException ex) {
+            errorMessage = "UserException Exception occurred";
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return validated;
+   }    
+
+    public ArrayList getEoSystemObjectsOld() {
+        return eoSystemObjectsOld;
+    }
+
+    public void setEoSystemObjectsOld(ArrayList eoSystemObjectsOld) {
+        this.eoSystemObjectsOld = eoSystemObjectsOld;
+    }
+
+    public HashMap getEditSingleEOHashMapOld() {
+        return editSingleEOHashMapOld;
+    }
+
+    public void setEditSingleEOHashMapOld(HashMap editSingleEOHashMapOld) {
+        this.editSingleEOHashMapOld = editSingleEOHashMapOld;
+    }
+
+    public HashMap getUnLockedFieldsHashMapByUser() {
+        return unLockedFieldsHashMapByUser;
+    }
+
+    public void setUnLockedFieldsHashMapByUser(HashMap unLockedFieldsHashMapByUser) {
+        this.unLockedFieldsHashMapByUser = unLockedFieldsHashMapByUser;
     }
 
  }
