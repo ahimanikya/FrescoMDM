@@ -764,6 +764,8 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
             EnterpriseObject resulteo = masterControllerService.getPostMergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);
             HashMap eoMultiMergePreview = compareDuplicateManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
+            eoMultiMergePreview.put("ENTERPRISE_OBJECT_PREVIEW", getValuesForResultFields(resulteo, retrieveEPathsResultsFields(screenObject.getSearchResultsConfig())));
+            eoMultiMergePreview.put("EUID", resulteo.getEUID());
             httpRequest.setAttribute("eoMultiMergePreview" + getRowCount(), eoMultiMergePreview);
             
         } catch (ProcessingException ex) {
@@ -772,7 +774,11 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
         } catch (UserException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
             mLogger.error(mLocalizer.x("SDP025: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()));
+        }catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error(mLocalizer.x("SDP025: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()));
         }
+           
          httpRequest.setAttribute("finalArrayList", duplicatesArray);                
         
 }
