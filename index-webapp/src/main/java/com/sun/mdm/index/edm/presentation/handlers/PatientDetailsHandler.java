@@ -120,7 +120,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     String string = fieldNameValues[i];
                     String[] keyValues = string.split("##");
                     if(keyValues.length ==2) {
-                      //System.out.println("Key " + keyValues[0] + "Value ==> : " + keyValues[1]);
                       newFieldValuesMap.put(keyValues[0], keyValues[1]);
                     }
                 }
@@ -219,7 +218,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 for (int i = 0; i < messObjs.length; i++) {
                     String obj = (String) messObjs[i];
                     String[] fieldErrors = obj.split(">>");
-                    //////System.out.println("===> Field" + fieldErrors[0] + "===> Message" + fieldErrors[1]);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
                     mLogger.error(mLocalizer.x("PDH008: Validation failed :{0}:{1} ", fieldErrors[0],fieldErrors[1]));
                     return VALIDATION_ERROR;
@@ -228,7 +226,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             }
 
 
-//            //System.out.println("eoSearchCriteria ==>: " + eoSearchCriteria);
             EOSearchResultIterator eoSearchResultIterator = null;
 
             ArrayList arlResultsConfig = screenObject.getSearchResultsConfig();
@@ -242,7 +239,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             ArrayList newEoArrayList = new ArrayList();
             if (super.getUpdateableFeildsMap().get("EUID") != null) {
                 String euid = (String) super.getUpdateableFeildsMap().get("EUID");
-                //System.out.println("ONLYYYY EUID ==> ; " + euid);
                 EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
                 HashMap eoHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
                 newEoArrayList.add(eoHashMap);
@@ -253,7 +249,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 String lid = (String) super.getUpdateableFeildsMap().get("LID");
                 lid = lid.replaceAll("-", "");
                 String systemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
-                //System.out.println("ONLYYYY LID AND SYSTEM CODE ==> ; " + lid + "/" + systemCode);
                 SystemObject so = masterControllerService.getSystemObject(systemCode, lid);
 
                 EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(so);
@@ -322,7 +317,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 for (int i = 0; i < fcObjects.length; i++) {
                     FieldConfig objectFieldConfig = (FieldConfig) fcObjects[i];
                     String rootNode = objectFieldConfig.getRootObj();
-                    //System.out.println(objectFieldConfig.isRange() + "==>: " + objectFieldConfig.getDisplayName() + "name==> " + objectFieldConfig.getName() + "Value name ==> " + super.getUpdateableFeildsMap().get(objectFieldConfig.getFullFieldName()) + "Value dp ==> " + super.getUpdateableFeildsMap().get(objectFieldConfig.getDisplayName()));
 
                     //Get the Field Value as per the field config range type
                     //if (objectFieldConfig.isRange()) {
@@ -332,25 +326,18 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     //}
                     if (feildValue != null && feildValue.trim().length() > 0) {
                         //Remove all masking fields from the field valued if any like SSN,LID...etc
-                        //System.out.println("DOB FROM Putting ==>: BEFORE feildValue==> " + feildValue);
                         feildValue = feildValue.replaceAll("-", "");
-                        //System.out.println("DOB FROM Putting ==>: " + objectFieldConfig.getDisplayName() + "feildValue==> " + feildValue);
                         if (objectFieldConfig.isRange() && objectFieldConfig.getDisplayName().endsWith("From")) {
                             gSearchCriteriaFromDOB.put(objectFieldConfig.getFullFieldName(), feildValue);
                         } else if (objectFieldConfig.isRange() && objectFieldConfig.getDisplayName().endsWith("To")) {
-                            ////System.out.println("DOB TO Putting ==>: " + objectFieldConfig.getDisplayName() + "feildValue==> " +feildValue);
                             gSearchCriteriaToDOB.put(objectFieldConfig.getFullFieldName(), feildValue);
                         } else {
-                            ////System.out.println("OTHER Putting ==>: " + objectFieldConfig.getDisplayName() + "feildValue==> " +feildValue);
                             gSearchCriteria.put(objectFieldConfig.getFullFieldName(), feildValue);
                         }
 
                     }
 
                 }
-
-//            //System.out.println("gSearchCriteriaToDOB: " + gSearchCriteriaToDOB);
-//            //System.out.println("gSearchCriteriaFromDOB==>: " + gSearchCriteriaFromDOB);
 
                 String objRef = objectRef;
                 // following code is from buildObjectNodeFromSearchCriteria()
@@ -362,15 +349,12 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 if (!gSearchCriteriaFromDOB.isEmpty()) {
                     sysobj2 = buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteriaFromDOB);
                     eoSearchCriteria.setSystemObject2(sysobj2); // for dob from
-//                //System.out.println("<<== dob from set....");
                 }
                 if (!gSearchCriteriaToDOB.isEmpty()) {
                     sysobj3 = buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteriaToDOB);
                     eoSearchCriteria.setSystemObject3(sysobj3); // for dob to
-//                //System.out.println("<<== dob t set....");
                 }
                 eoSearchCriteria.setSystemObject(sysobj);  // for all search attributes other than dob range
-                //System.out.println("OTHERRRRSSS ==> ; ");
                 eoSearchResultIterator = masterControllerService.searchEnterpriseObject(eoSearchCriteria, eoSearchOptions);
                 SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
                 String dateField = new String();
@@ -380,8 +364,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     EOSearchResultRecord eoSearchResultRecord = eoSearchResultIterator.next();
                     
                     ObjectNode objectNode = eoSearchResultRecord.getObject();
-                    //System.out.println("----setting weight-->>> " + objectNode);
-                    
+                   
                     HashMap fieldvalues = new HashMap();
 
                     //set the comparision score here
@@ -391,7 +374,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     
                     for (int m = 0; m < ePathArrayList.size(); m++) {
                         FieldConfig fieldConfig  = (FieldConfig) resultsConfigArray.get(m);
-                        //System.out.println("DISPLAY NAMRE====> " + fieldConfig.getDisplayName()+ " VALUE LIST====> " + fieldConfig.getValueList());
                         EPath ePath = ePathArrayList.get(m);
                         try {
                             Object value = EPathAPI.getFieldValue(ePath, objectNode);
@@ -516,7 +498,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             //reset the status and set it back in session
             for (int i = 0; i < eoArrayList.size(); i++) {
                 HashMap objectHashMap = (HashMap) eoArrayList.get(i);
-                ////System.out.println("IN UN RESOLVEEE" + potDupId + "==="+ objectHashMap.get("PotDupId") + "==> ; " + objectHashMap.get("Status") + objectHashMap.keySet());
                 //set the resolve type to "U" (UnResolve)for the selected potential duplicate
                 if(potDupId.equals((String)objectHashMap.get("PotDupId"))) {
                   objectHashMap.put("Status", "U");
@@ -608,10 +589,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         public String previewPostMultiMergedEnterpriseObject() {
         try {
             //httpRequest.setAttribute("comapreEuidsArrayList", httpRequest.getAttribute("comapreEuidsArrayList"));
-            ////System.out.println("===> " + mergeEuids);
-            
-            ////System.out.println("===> " + destnEuid);
-
             EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
             String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
 
@@ -702,8 +679,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 for (int i = 0; i < selectedFieldsValue.length; i++) {
                     String[] sourceEuidFull = selectedFieldsValue[i].split("##");
                     eoHashMap.put(sourceEuidFull[0], sourceEuidFull[1]);
-//                    //System.out.println(sourceEuidFull[0] + "====" + sourceEuidFull[1]);
-                    
+                  
                 }
                 //Modify CHANGED sbr values here
                 masterControllerService.modifySBR(destinationEO.getSBR(), eoHashMap);
@@ -937,7 +913,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 }
             }
            
-//            //System.out.println("===> : " + newArrayList);
             session.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
            mLogger.error(mLocalizer.x("PDH033: Encountered  ProcessingException:{0} ", ex.getMessage()));
@@ -969,7 +944,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
      */
     public void activateEO(ActionEvent event) {
         try {
-            String euid = (String) event.getComponent().getAttributes().get("euidValueExpression");
+            String euid = (String) event.getComponent().getAttributes().get("eoValueExpression");
 
             EnterpriseObject enterpriseObject = masterControllerService.getEnterpriseObject(euid);
 
@@ -1004,7 +979,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
     public void deactivateEO(ActionEvent event) {
         try {
 
-            String euid = (String) event.getComponent().getAttributes().get("euidValueExpression");
+            String euid = (String) event.getComponent().getAttributes().get("eoValueExpression");
 
             EnterpriseObject enterpriseObject = masterControllerService.getEnterpriseObject(euid);
 
@@ -1245,7 +1220,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 HashMap objectHistMap  = (HashMap) viewHistoryEOList.get(i);
                 String key = (String) objectHistMap.keySet().toArray()[0];
                 
-                ////System.out.println(i + "  <==>keysSet " + key + "==> : objectHistMap");
                 HashMap objectHistMapUpdated  = new HashMap();
                 if(objectHistMap.get(key) != null) {
                     eoHist = (EnterpriseObject) objectHistMap.get(key);
@@ -1255,7 +1229,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                                
             }
          
-            ////System.out.println("FINAL HISTORY LIST" + newArrayListHistory.size());
             httpRequest.setAttribute("eoHistory" + euid, newArrayListHistory);
 
         } catch (Exception ex) {
@@ -1282,7 +1255,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 newArrayList.add(compareDuplicateManager.getSystemObjectAsHashMap(systemObject, screenObject));
            }
 
-            ////System.out.println("newArrayList" + newArrayList.size());
             httpRequest.setAttribute("eoSources"+enterpriseObject.getEUID(), newArrayList);
 
         } catch (Exception ex) {
@@ -1300,7 +1272,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 //        patientDetailsVO = new PatientDetails[this.resultArrayList.size()];
 //        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
 //        int size = this.resultArrayList.size();
-//    //    //System.out.println("this.resultArrayList ===> ; "  + this.resultArrayList);
 //
 //        HashMap values = new HashMap();
 //        for (int i = 0; i < size; i++) {
@@ -1416,7 +1387,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
      */
     public String buildCompareEuids() {
         ArrayList euidsMapList = new ArrayList();
-        ////System.out.println("===> EUIDS " + this.compareEuids);
 
         String[] euids = this.compareEuids.split("##");
         for (int i = 0; i < euids.length; i++) {
@@ -1433,7 +1403,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                         new Integer(screenObject.getID()).intValue(),
                         "View/Edit detail of enterprise object");
 
-            ////System.out.println("===> " + sourceEuid + "srcRevisionNumbers" + eo.getEUID());
             } catch (ProcessingException ex) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
                   mLogger.error(mLocalizer.x("PDH055: Failed to unmerge EO  ", ex.getMessage()));
