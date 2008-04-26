@@ -256,7 +256,23 @@ public class SourceHandler {
   
             setLID((String) newFieldValuesMap.get(MasterControllerService.LID));
             setSystemCode((String) newFieldValuesMap.get("SystemCode"));
-        
+                    String  validationMessage  = new String();            
+            if( this.getLID() == null) {
+                  validationMessage = "Please Enter LID Value";
+                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+                  return this.SEARCH_SOURCE_SUCCESS;
+            } else if( this.getSystemCode()  == null ) {
+                  validationMessage = "Please Enter SystemCode Value";
+                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+                  return this.SEARCH_SOURCE_SUCCESS;
+            } else if( (this.getLID() != null && this.getLID().trim().length() == 0 )
+		 && (this.getSystemCode() != null && this.getSystemCode().trim().length() > 0 )) {
+                  validationMessage = "Please Enter LID Value";
+                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessage, validationMessage));
+                  return this.SEARCH_SOURCE_SUCCESS;                
+            }
+
+
         //get array of lids 
         String lids[] = this.getStringEUIDs(this.getLID());
         //instantiate master controller service
