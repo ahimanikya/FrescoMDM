@@ -30,7 +30,10 @@
 <%@ page import="javax.el.ValueExpression" %>
 <%
  double rand = java.lang.Math.random();
-%>
+ String URI = request.getRequestURI();
+  URI = URI.substring(1, URI.lastIndexOf("/"));
+ %>
+
 <f:view>
     <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
     <html>
@@ -46,6 +49,7 @@
             <script type="text/javascript" src="scripts/yui/animation.js"></script>            
             <script type="text/javascript" src="scripts/events.js"></script>            
             <script language="JavaScript" src="scripts/edm.js"></script>
+            <script language="JavaScript" src="scripts/Validation.js"></script>
             <script type="text/javascript" src="scripts/calpopup.js"></script>
             <script type="text/javascript" src="scripts/Control.js"></script>
             <script type="text/javascript" src="scripts/dateparse.js"></script>
@@ -59,29 +63,45 @@
             
             <script type="text/javascript" src="scripts/yui4jsf/yahoo-dom-event/yahoo-dom-event.js"></script>
             <script type="text/javascript" src="scripts/yui4jsf/animation/animation-min.js"></script>                        
-        </head>
-        <title><h:outputText value="#{msgs.application_heading}"/></title> 
-        <body>
-        <script>
-              function closeTree()    {                            
+
+		   <script type="text/javascript" >
+  			 var editIndexid = "-1";
+             function closeTree()    {                            
                     document.getElementById('tree').style.visibility='hidden';
                     document.getElementById('tree').style.display='none';
               }
-        </script>
+              function setEOEditIndex(editIndex)   {
+				editIndexid = editIndex;
+	   		  }
+              function cancelEdit(formName, thisDiv,minorObject)   {
+                ClearContents(formName); 
+                setEditIndex("-1");
+				document.getElementById(thisDiv).style.visibility = 'hidden';
+				document.getElementById(thisDiv).style.display  = 'none';
+                document.getElementById(minorObject+'buttonspan').innerHTML = 'Save '+ minorObject;
+		      }
+		</script>
+        </head>
+        <title><h:outputText value="#{msgs.application_heading}"/></title> 
+        <body>
+
+        
+
             <%@include file="./templates/header.jsp"%>
-            <div id="mainContent">
+            <div id="mainContent1">
+            <div id="ajaxContent">
                 <div id="basicSearch" class="basicSearch" style="visibility:visible;display:block;">
-                    <h:form id="potentialDupBasicForm">
                         <table border="0" cellpadding="0" cellspacing="0" width="90%" align="left"> 
                             <tr>
+                              <h:form id="potentialDupBasicForm">
                                 <td align="left">
                                     <h:outputText value="#{msgs.datatable_euid_text}"/>
                                 </td>
                                    <td align="left">
-                                    <h:inputText   
-                                        id="euidField"
-                                        value="#{PatientDetailsHandler.singleEUID}" 
-                                        maxlength="10"/>
+                                         <h:inputText    id="euidField"
+                                                         label="EUID"  
+												         maxlength="#{SourceHandler.euidLength}" 
+                                                         value="#{PatientDetailsHandler.singleEUID}" />
                                 </td>
                                 <td>                                    
                                     <h:commandLink  styleClass="button" action="#{PatientDetailsHandler.singleEuidSearch}">  
@@ -94,15 +114,18 @@
                                             <img src="./images/down-chevron-button.png" border="0" alt="Advanced search"/>
                                        </span>
                                     </h:commandLink>                                     
-			            <FORM>
-					<a class="button" href="javascript:void()" onclick="history.go(-1)">
-						<span><h:outputText  value="#{msgs.back_button_text}"/></span>
-					</a>
-  				    </FORM>
                                 </td>
+                             </h:form>
+							 <!--td>
+                                <FORM>
+			               		<a class="button" href="javascript:void(0)" onclick="history.go(-1)">
+						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
+					            </a>
+  				              </FORM-->
+							 </td>
                             </tr>
                         </table>
-                    </h:form>
+
                 </div>
                 <div id="errorDiv" style="padding-left:350px;">
                     <h:messages style="color: red;font-size:12px" id="errorMessages" layout="table" />
@@ -112,8 +135,8 @@
                     <table cellspacing="0" cellpadding="0" border="0">
                         <tr>
                             <td>
-                                <div style="height:500px;overflow:auto;">
-                                    <table cellspacing="5" cellpadding="0" border="0">
+                                <div style="height:700px;overflow:auto;">
+                                    <table cellspacing="0" cellpadding="0" border="0">
                                         <tr>
                                             
                                             <%
@@ -210,9 +233,9 @@
                                                     </div>
                                                     <div id="mainEuidContentButtonDiv<%=countEnt%>" class="<%=cssMain%>">
                                                         <div id="assEuidDataContent<%=countEnt%>" style="visibility:visible;display:block;">
-                                                            <div id="personassEuidDataContent" style="visibility:visible;display:block;">
+                                                            <div id="personassEuidDataContent" style="visibility:visible;display:block;" class="yellow">
                                                                 
-                                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
+                                                                <table border="0" cellspacing="0" cellpadding="0">
                                                                     <tr>
                                                                     <%
 
@@ -242,9 +265,12 @@
                                                                     <tr><td><b style="font-size:12px; color:blue;"><%=childObjectNodeConfig.getName()%> Info</b></td></tr>
                                                                     <tr>
                                                                     <%
-                                                                    for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
-                                                                     FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
-                                                                    %>  
+                                                 int maxMinorObjects  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
+                                                 maxMinorObjects = (maxMinorObjects != 0 ) ? maxMinorObjects : 1;
+												              for (int max = 0; max< maxMinorObjects; max++) {
+                               		 		                   for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
+                                                                       FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
+                                                                      %>  
                                                                     <tr>
                                                                         <td>
                                                                             <%=fieldConfigMap.getDisplayName()%>
@@ -252,6 +278,10 @@
                                                                     </tr>
                                                                     <%
                                                                       }
+                                                                     }
+																	 %>
+
+																	 <%
                                                                      }
                                                                     %>
                                                                 </table>
@@ -348,9 +378,9 @@
                                                                     ArrayList  minorObjectMapList =  (ArrayList) eoHashMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayList");
                                                                     HashMap minorObjectHashMap = new HashMap();
                                                                     //for(int ar =0;ar<minorObjectMapList.size();ar++) {
-                                                                     if(minorObjectMapList.size() >0) {
-                                                                       minorObjectHashMap = (HashMap) minorObjectMapList.get(0);
-                                                                     }  
+                                                                     //if(minorObjectMapList.size() >0) {
+                                                                       //minorObjectHashMap = (HashMap) minorObjectMapList.get(0);
+                                                                     //}  
                                                                     //}   
                                                                       FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
                                                                     
@@ -359,16 +389,11 @@
                                                                     <tr><td>&nbsp;</td></tr>
                                                                     <tr>
                                                                     <%
+                                                                    for (int ii = 0; ii < minorObjectMapList.size(); ii++) {
+																	  minorObjectHashMap = (HashMap) minorObjectMapList.get(ii);
                                                                     for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
                                                                      FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
                                                                      epathValue = fieldConfigMap.getFullFieldName();
-                                        if(minorObjectMapList.size() >0) {
-                                        if (countEnt > 0) {
-                                            resultArrayMapCompare.put(epathValue, minorObjectHashMap.get(epathValue));
-                                        } else {
-                                            resultArrayMapMain.put(epathValue, minorObjectHashMap.get(epathValue));
-                                        }
-                                        }
                                                                     %>  
                                                                     <tr>
                                                                         <td>
@@ -381,6 +406,7 @@
                                                                     </tr>
                                                                     <%
                                                                       }
+                                                                    }
                                                                     }
                                                                     %>
                                                                 </table>
@@ -751,22 +777,21 @@
                                         <td valign="top">
                                             <div id="dynamicMainEuidButtonContent<%=countEnt%>">
                                                 <table border="0" cellspacing="0" cellpadding="0" border="0">
-                                                    <h:form>
-                                                        
                                                         <%if ("active".equalsIgnoreCase(eoStatus)) {%>
                                                 <tr> 
                                                     <td valign="top" width="125px">
-                                                        <h:commandLink  styleClass="button" rendered="#{Operations.EO_Edit}"
-                                                                        action="#{NavigationHandler.toEditMainEuid}"
-                                                                        actionListener="#{EditMainEuidHandler.setEditEOFields}">
-                                                             <f:attribute name="euidValueExpression" value="<%=euidValueExpression%>"/>
+                                                        <a  class="button" href="javascript:void(0)"
+                                                                        onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=euid%>','ajaxContent','')">
                                                             <span><h:outputText value="#{msgs.edit_euid_button_text}" /> </span>
-                                                        </h:commandLink>  
+                                                        </a>  
+<!--  -->
+                                                    <h:form>
                                                         <h:commandLink  styleClass="button" rendered="#{Operations.EO_Deactivate}"
                                                                         actionListener="#{PatientDetailsHandler.deactivateEO}">
-                                                             <f:attribute name="euidValueExpression" value="<%=euidValueExpression%>"/>
+                                                             <f:attribute name="eoValueExpression" value="<%=euidValueExpression%>"/>
                                                             <span><h:outputText value="#{msgs.source_rec_deactivate_but}" /></span>
                                                         </h:commandLink> 
+                                                    </h:form>
                                                     </td>
                                                 </tr>
                                                         <%}%>            
@@ -774,11 +799,13 @@
                                                         
                                                     <tr>
                                                          <td valign="top" width="125px">
+                                                    <h:form>
                                                         <h:commandLink  styleClass="button" rendered="#{Operations.EO_Activate}"
                                                                         actionListener="#{PatientDetailsHandler.activateEO}">
-                                                             <f:attribute name="euidValueExpression" value="<%=euidValueExpression%>"/>
+                                                             <f:attribute name="eoValueExpression" value="<%=euidValueExpression%>"/>
                                                             <span><h:outputText value="#{msgs.source_rec_activate_but}" /></span>
                                                         </h:commandLink>
+                                                    </h:form>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -787,7 +814,6 @@
                                                          </td>
                                                       </tr>
                                                         <%}%>            
-                                                    </h:form>
                                                 <tr> 
                                                       <td valign="top">
                                                           <a class="viewbtn" href="javascript:showViewSources('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','0')" >  
@@ -837,10 +863,6 @@
                                                         </tr>
                                                     <tr>
                                                       <td valign="top">
-                                                         <%
-                                                          String URI = request.getRequestURI();
-                                                          URI = URI.substring(1, URI.lastIndexOf("/"));
-                                                          %>
                                                          <a href="javascript:void(0);" class="viewbtn" onclick="javascript:ajaxURL('/<%=URI%>/viewmergetree.jsf?euid=<%=personfieldValuesMapEO.get("EUID")%>&rand=<%=rand%>','tree',event)">
                                                           <h:outputText  value="#{msgs.View_MergeTree_but_text}"/>
                                                          </a>
@@ -868,6 +890,9 @@
                 </div>
                 
             </div>    
+ </div> <!-- end mainEuidContent -->
+
+
 <div id="tree" style="LEFT:189px;TOP:350px;PADDING-LEFT: 5px; VISIBILITY: hidden; WIDTH: 180px; PADDING-TOP: 5px;  POSITION: absolute;  OVERFLOW: auto;  HEIGHT: 150px; BACKGROUND-COLOR: #c4c8e1; BORDER-RIGHT:  #000099 thin solid; BORDER-TOP: #000099 thin solid; BORDER-LEFT: #000099 thin solid; BORDER-BOTTOM:  #000099 thin solid"></div> 
 
                 <div id="unmergePopupDiv" class="alert" style="TOP: 2250px; LEFT: 500px; HEIGHT: 150px;  WIDTH: 300px;VISIBILITY: hidden;">
@@ -901,7 +926,67 @@
                                                     </div>                                 
                        
          <div id="unmergepopuphelp" class="balloonstyle"><h:outputText  value="#{msgs.unmergepopup_help}"/></div>     
+		 <form id="EditIndexForm" name="EditIndexForm">
+		   <input type="hidden" id="EditIndexFormID" value="-1" />
+       </form>
+
         </body>
+        <%
+		 MasterControllerService masterControllerService = new MasterControllerService();
+         String[][] lidMaskingArray = masterControllerService.getSystemCodes();
+          
+          
+        %>
+        <script>
+            var systemCodes = new Array();
+            var lidMasks = new Array();
+        </script>
+        
+        <%
+        for(int i=0;i<lidMaskingArray.length;i++) {
+            String[] innerArray = lidMaskingArray[i];
+            for(int j=0;j<innerArray.length;j++) {
+            if(i==0) {
+         %>       
+         <script>
+           systemCodes['<%=j%>']  = '<%=lidMaskingArray[i][j]%>';
+         </script>      
+         <%       
+            } else {
+         %>
+         <script>
+           lidMasks ['<%=j%>']  = '<%=lidMaskingArray[i][j]%>';
+         </script>
+         <%       
+            }
+           }
+           }
+        %>
+
+<script>
+		function setLidMaskValue(field,formName) {
+			var  selectedValue = field.options[field.selectedIndex].value;
+			
+            var formNameValue = document.forms[formName];
+			
+            var lidField =  getDateFieldName(formName,'LID');
+            //document.getElementById(lidField).value = "";
+			if(lidField != null) {
+             document.getElementById(lidField).value = "";
+             document.getElementById(lidField).readOnly = false;
+             document.getElementById(lidField).disabled = false;
+			}
+			if(field.selectedIndex == 0 ) {
+             document.getElementById(lidField).value = "";
+			 document.getElementById(lidField).disabled = true;
+		    }
+            
+            formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
+         }   
+</script>
+
+
+
 <script>
          if( document.potentialDupBasicForm.elements[0]!=null) {
 		var i;
