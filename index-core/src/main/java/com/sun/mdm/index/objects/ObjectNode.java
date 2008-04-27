@@ -1966,6 +1966,7 @@ public class ObjectNode implements Externalizable {
                node.setKeyType(name, isKeyType(name));
                node.setFieldReadAccess(name, hasFieldReadAccess(name));
                node.setFieldUpdateAccess(name, hasFieldUpdateAccess(name));
+               node.setNullable(name, isNullable(name));
            }
 
            node.setRemoveFlag(isRemoved());
