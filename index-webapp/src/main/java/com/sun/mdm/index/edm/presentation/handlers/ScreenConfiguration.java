@@ -245,7 +245,7 @@ public class ScreenConfiguration {
 
         } catch (Exception e) {
             //Logger.getLogger(ScreenConfiguration.class.getName()).log(Level.SEVERE, "Failed Get the Screen Config Array Object: ", e);
-            mLogger.error(mLocalizer.x("SNC001: Failed to get screen Config array ", e.getMessage()));
+            mLogger.error(mLocalizer.x("SNC001: Failed to get screen Config array ", e.getMessage()),e);
         }
         return screenConfigArray;
     }

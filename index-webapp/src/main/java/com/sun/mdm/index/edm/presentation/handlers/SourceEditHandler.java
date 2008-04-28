@@ -144,7 +144,7 @@ public class SourceEditHandler {
             session.setAttribute("singleSystemObjectLID", updatedSystemObject);
             session.setAttribute("keyFunction", "editSO");
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC013: Failed to update the SO:{0}" , ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC013: Failed to update the SO:{0}" , ex.getMessage()),ex);
         }
         return UPDATE_SUCCESS;
    }
@@ -182,10 +182,10 @@ public class SourceEditHandler {
             session.setAttribute("keyFunction", "editSO");
         } catch (ObjectException ex) {
             //Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
-        mLogger.error(mLocalizer.x("SRC014: Failed to edit LID:{0}",ex.getMessage()));
+        mLogger.error(mLocalizer.x("SRC014: Failed to edit LID:{0}",ex.getMessage()),ex);
         } catch (EPathException ex) {
             //Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
-       mLogger.error(mLocalizer.x("SRC015: Failed to edit LID:{0}",ex.getMessage()));
+       mLogger.error(mLocalizer.x("SRC015: Failed to edit LID:{0}",ex.getMessage()),ex);
         }
    }
 

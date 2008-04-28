@@ -426,7 +426,7 @@ public class UpdateReportHandler    {
                 (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() == 0)) {
             errorMessage = bundle.getString("ERROR_one_of_many");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
-             mLogger.error(mLocalizer.x("RPT046: {0}",errorMessage));
+             mLogger.info(mLocalizer.x("RPT046: {0}",errorMessage));
         }
 
         //Form Validation of  Start Time
@@ -436,7 +436,7 @@ public class UpdateReportHandler    {
                 String msg1 = bundle.getString("timeFrom");
                 errorMessage = (errorMessage != null && errorMessage.length() > 0 ? errorMessage : message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1 + errorMessage, errorMessage));
-                mLogger.error(mLocalizer.x("RPT047: {0}",errorMessage));
+                mLogger.info(mLocalizer.x("RPT047: {0}",errorMessage));
             }
         }
 
@@ -446,7 +446,7 @@ public class UpdateReportHandler    {
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                mLogger.error(mLocalizer.x("RPT048: {0}",errorMessage));
+                mLogger.info(mLocalizer.x("RPT048: {0}",errorMessage));
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
@@ -461,7 +461,7 @@ public class UpdateReportHandler    {
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    mLogger.error(mLocalizer.x("RPT049: {0}:{1}",errorMessage,validationException.getMessage()));
+                    mLogger.info(mLocalizer.x("RPT049: {0}:{1}",errorMessage,validationException.getMessage()));
                 }
             }
         }
@@ -474,7 +474,7 @@ public class UpdateReportHandler    {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg2 + errorMessage, errorMessage));
                 //Logger.getLogger(UpdateReportHandler.class.getName()).log(Level.WARNING, message, message);
-                 mLogger.error(mLocalizer.x("RPT050: {0}",errorMessage));
+                 mLogger.info(mLocalizer.x("RPT050: {0}",errorMessage));
             }
         }
 
@@ -484,7 +484,7 @@ public class UpdateReportHandler    {
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
-                mLogger.error(mLocalizer.x("RPT051: {0}",errorMessage));
+                mLogger.info(mLocalizer.x("RPT051: {0}",errorMessage));
             } else {
                 try {
                     //If Time is supplied append it to the date to check if it parses into a valid Date
@@ -499,7 +499,7 @@ public class UpdateReportHandler    {
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    mLogger.error(mLocalizer.x("RPT052: {0}:{1}",errorMessage,validationException.getMessage()));
+                    mLogger.error(mLocalizer.x("RPT052: {0}:{1}",errorMessage,validationException.getMessage()),validationException);
                 }
             }
         }
@@ -513,7 +513,7 @@ public class UpdateReportHandler    {
                  if(endDate < startDate){
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    mLogger.error(mLocalizer.x("RPT053: {0}",errorMessage));
+                    mLogger.info(mLocalizer.x("RPT053: {0}",errorMessage));
                    }
         }
         urConfig.addTransactionField(UpdateReport.EUID, UpdateReport.EUID, 20);

@@ -290,7 +290,7 @@ public class UnmergedRecordsHandler    {
                 (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() == 0)){
                 errorMessage = bundle.getString("ERROR_one_of_many");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-               mLogger.error(mLocalizer.x("UMG001: {0}",errorMessage));
+               mLogger.info(mLocalizer.x("UMG001: {0}",errorMessage));
            }
 
         //Form Validation of  Start Time
@@ -300,7 +300,7 @@ public class UnmergedRecordsHandler    {
                 String msg = bundle.getString("timeFrom");
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?errorMessage:message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg + errorMessage, errorMessage));
-                mLogger.error(mLocalizer.x("UMG002: {0}",errorMessage));
+                mLogger.info(mLocalizer.x("UMG002: {0}",errorMessage));
             }            
         }
 
@@ -310,7 +310,7 @@ public class UnmergedRecordsHandler    {
             if (!"success".equalsIgnoreCase(message)) {
                  errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 mLogger.error(mLocalizer.x("UMG003: {0}",errorMessage));
+                 mLogger.info(mLocalizer.x("UMG003: {0}",errorMessage));
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
@@ -326,7 +326,7 @@ public class UnmergedRecordsHandler    {
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                     mLogger.error(mLocalizer.x("UMG004: Failed to unmerge the search object reports  :{0}",validationException.getMessage()));
+                     mLogger.info(mLocalizer.x("UMG004: Failed to unmerge the search object reports  :{0}",validationException.getMessage()));
                 }
             }
         }
@@ -338,7 +338,7 @@ public class UnmergedRecordsHandler    {
                 String msg1 = bundle.getString("timeTo");
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1 + errorMessage, errorMessage));
-                mLogger.error(mLocalizer.x("UMG005: {0}",errorMessage));
+                mLogger.info(mLocalizer.x("UMG005: {0}",errorMessage));
             } 
        }    
          
@@ -348,7 +348,7 @@ public class UnmergedRecordsHandler    {
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0? message:message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
-                mLogger.error(mLocalizer.x("UMG006: {0}",errorMessage));
+                mLogger.info(mLocalizer.x("UMG006: {0}",errorMessage));
             } else {
                 try {
                      if (getCreateEndTime().trim().length() == 0) {
@@ -378,7 +378,7 @@ public class UnmergedRecordsHandler    {
                  if(endDate < startDate){
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                     mLogger.error(mLocalizer.x("UMG008: {0}",errorMessage));
+                     mLogger.info(mLocalizer.x("UMG008: {0}",errorMessage));
                    }
         }  
    

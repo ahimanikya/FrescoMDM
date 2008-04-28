@@ -338,10 +338,10 @@ public class SourceHandler {
             }
 
         } catch (ProcessingException ex) {
-             mLogger.error(mLocalizer.x("SRC018: Unable to perform submit :{0}", ex.getMessage()));
+             mLogger.error(mLocalizer.x("SRC018: Unable to perform submit :{0}", ex.getMessage()),ex);
             //Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserException ex) {
-             mLogger.error(mLocalizer.x("SRC019: Unable to perform submit :{0}", ex.getMessage()));
+             mLogger.error(mLocalizer.x("SRC019: Unable to perform submit :{0}", ex.getMessage()),ex);
             //Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -578,9 +578,9 @@ public class SourceHandler {
 
             session.setAttribute("keyFunction", "editSO");
         } catch (ObjectException ex) {
-             mLogger.error(mLocalizer.x("SRC020: Unable to edit LID :{0}", ex.getMessage()));
+             mLogger.error(mLocalizer.x("SRC020: Unable to edit LID :{0}", ex.getMessage()),ex);
         } catch (EPathException ex) {
-            mLogger.error(mLocalizer.x("SRC021: Unable to edit LID :{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC021: Unable to edit LID :{0}", ex.getMessage()),ex);
         }
    }
     
@@ -609,9 +609,9 @@ public class SourceHandler {
             session.setAttribute("keyFunction", "editSO");
                         
         } catch (ProcessingException ex) {
-         mLogger.error(mLocalizer.x("SRC023: Unable to activate SO :{0}", ex.getMessage()));
+         mLogger.error(mLocalizer.x("SRC023: Unable to activate SO :{0}", ex.getMessage()),ex);
         } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("SRC024: Unable to activate SO :{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC024: Unable to activate SO :{0}", ex.getMessage()),ex);
         }
    }
     /**
@@ -633,11 +633,11 @@ public class SourceHandler {
             session.setAttribute("singleSystemObjectLID", updatedSystemObject);
             session.setAttribute("keyFunction","editSO");
         } catch (ObjectException ex) {
-             mLogger.error(mLocalizer.x("SRC025: Unable to deactivate SO :{0}", ex.getMessage()));
+             mLogger.error(mLocalizer.x("SRC025: Unable to deactivate SO :{0}", ex.getMessage()),ex);
         } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("SRC026: Unable to deactivate SO :{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC026: Unable to deactivate SO :{0}", ex.getMessage()),ex);
         } catch (UserException ex) {
-             mLogger.error(mLocalizer.x("SRC027: Unable to deactivate SO :{0}", ex.getMessage()));
+             mLogger.error(mLocalizer.x("SRC027: Unable to deactivate SO :{0}", ex.getMessage()),ex);
         }
           //session.setAttribute("keyFunction","editSO");
    }
@@ -666,7 +666,7 @@ public class SourceHandler {
             //session.setAttribute("singleSystemObjectLID", updatedSystemObject);
             session.setAttribute("keyFunction","editSO");
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("SRC028: Unable to update SO :{0}", ex.getMessage()));
+           mLogger.error(mLocalizer.x("SRC028: Unable to update SO :{0}", ex.getMessage()),ex);
         }
         return UPDATE_SUCCESS;
           //session.setAttribute("keyFunction","viewSO");
@@ -722,7 +722,7 @@ public class SourceHandler {
             session.setAttribute("keyFunction","viewSO");
            
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC029: Unable to set LID value :{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC029: Unable to set LID value :{0}", ex.getMessage()),ex);
         }
     
    }
@@ -999,7 +999,7 @@ public class SourceHandler {
             }
             
         } catch (Exception ex) {
-             mLogger.error(mLocalizer.x("SRC030: Failed to build Epaths :{0}", ex.getMessage()));
+             mLogger.error(mLocalizer.x("SRC030: Failed to build Epaths :{0}", ex.getMessage()),ex);
         }
         return ePathArrayList;
 
@@ -1026,7 +1026,7 @@ public class SourceHandler {
 			}
             }
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC031: Failed to build Epaths :{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC031: Failed to build Epaths :{0}", ex.getMessage()),ex);
         }
         return ePathArrayList;
 
@@ -1049,7 +1049,7 @@ public class SourceHandler {
             }
             }
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("SRC070: Failed to build Field config list :{0}", ex.getMessage()));
+           mLogger.error(mLocalizer.x("SRC070: Failed to build Field config list :{0}", ex.getMessage()),ex);
         }
         return fcArrayList;
 
@@ -1090,7 +1090,7 @@ public class SourceHandler {
                 }
             }}
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("SRC032: Failed to get all field configs :{0}", ex.getMessage()));
+           mLogger.error(mLocalizer.x("SRC032: Failed to get all field configs :{0}", ex.getMessage()),ex);
         }
 
         allFieldConfigs = newArrayList;//store all the fields in the arraylist
@@ -1172,7 +1172,7 @@ public class SourceHandler {
             }
 
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("SRC033: Failed to get field configs :{0}", ex.getMessage()));
+           mLogger.error(mLocalizer.x("SRC033: Failed to get field configs :{0}", ex.getMessage()),ex);
         }
 
         addressFieldConfigs = newArrayList;//store all the fields in the arraylist
@@ -1198,7 +1198,7 @@ public class SourceHandler {
             }
 
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("SRC034: Failed to get field configs :{0}", ex.getMessage()));
+           mLogger.error(mLocalizer.x("SRC034: Failed to get field configs :{0}", ex.getMessage()),ex);
         }
 
         phoneFieldConfigs = newArrayList;//store all the fields in the arraylist
@@ -1223,7 +1223,7 @@ public class SourceHandler {
             }
 
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC035: Failed to get field configs :{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC035: Failed to get field configs :{0}", ex.getMessage()),ex);
         }
 
         aliasFieldConfigs = newArrayList;//store all the fields in the arraylist
@@ -1256,7 +1256,7 @@ public class SourceHandler {
             }
 
         } catch (Exception ex) {
-          mLogger.error(mLocalizer.x("SRC036: Failed to get field configs :{0}", ex.getMessage()));
+          mLogger.error(mLocalizer.x("SRC036: Failed to get field configs :{0}", ex.getMessage()),ex);
         }
 
         personFieldConfigs = newArrayList;//store all the fields in the arraylist
@@ -1338,7 +1338,7 @@ public class SourceHandler {
             }
 
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC037: Failed to get all node field configs :{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC037: Failed to get all node field configs :{0}", ex.getMessage()),ex);
         }
          
         return newHashMap;
@@ -1372,7 +1372,7 @@ public class SourceHandler {
 
 
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("SRC038: Failed to get all child Node Names :{0}", ex.getMessage()));
+           mLogger.error(mLocalizer.x("SRC038: Failed to get all child Node Names :{0}", ex.getMessage()),ex);
         }
         return newArrayList;
     }
@@ -1406,7 +1406,7 @@ public class SourceHandler {
             }
 
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC039: Failed to get all field configs sizes:{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC039: Failed to get all field configs sizes:{0}", ex.getMessage()),ex);
         }
         return newHashMap;
     }
@@ -1474,7 +1474,7 @@ public class SourceHandler {
            }
 
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC041: Failed to get EO child list:{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC041: Failed to get EO child list:{0}", ex.getMessage()),ex);
         }
         return newArrayList;
     }
@@ -1506,7 +1506,7 @@ public class SourceHandler {
             }
             }
         } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC042: Failed to get child node list :{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC042: Failed to get child node list :{0}", ex.getMessage()),ex);
         }
         return newArrayList;
     }
@@ -1524,9 +1524,9 @@ public class SourceHandler {
         try {
             euidLen = masterControllerService.getEuidLength();
         } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("SRC043: Failed to get EUID length :{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC043: Failed to get EUID length :{0}", ex.getMessage()),ex);
         } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("SRC044: Failed to get EUID length :{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC044: Failed to get EUID length :{0}", ex.getMessage()),ex);
         }
         return euidLen;
     }
@@ -1591,7 +1591,7 @@ public class SourceHandler {
                     Float.parseFloat(thisValue);
                 }
             } catch (Exception e) {
-                 mLogger.error(mLocalizer.x("SRC075: Failed to check isNumber() :{0}", e.getMessage()));
+                 mLogger.error(mLocalizer.x("SRC075: Failed to check isNumber() :{0}", e.getMessage()),e);
                 return false;
             }
         }
@@ -1627,7 +1627,7 @@ public class SourceHandler {
                 }
             }
         } catch (Exception e)  {
-                             mLogger.error(mLocalizer.x("SRC076: Failed to check masking :{0}", e.getMessage()));
+                             mLogger.error(mLocalizer.x("SRC076: Failed to check masking :{0}", e.getMessage()),e);
             return false;
         }                
         return true;

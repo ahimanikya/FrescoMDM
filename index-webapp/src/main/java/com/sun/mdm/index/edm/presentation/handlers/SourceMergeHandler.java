@@ -82,7 +82,7 @@ public class SourceMergeHandler {
      
     
     ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
- 
+    String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
     SourceHandler sourceHandler = new SourceHandler();
     Object[] resultsConfigFeilds = sourceHandler.getAllFieldConfigs().toArray();
     Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
@@ -185,25 +185,25 @@ public class SourceMergeHandler {
             SystemObject finalMergredDestnSOPreview = masterControllerService.getPostMergeSystemObject(this.lidsource, sourceLid, destnLid);
             request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview, screenObject));
         } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-           mLogger.error(mLocalizer.x("SRC045: Failed to generate LID preview {0}",ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage, ex.getMessage()));
+           mLogger.error(mLocalizer.x("SRC045: Failed to generate LID preview {0}",ex.getMessage()),ex);
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
             //mLogger.error("UserException ex : " + ex.toString());
-            mLogger.error(mLocalizer.x("SRC046: Failed to generate LID preview {0}",ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC046: Failed to generate LID preview {0}",ex.getMessage()),ex);
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
             //mLogger.error("Exception ex : " + ex.toString());
-            mLogger.error(mLocalizer.x("SRC047: Failed to generate LID preview {0}",ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC047: Failed to generate LID preview {0}",ex.getMessage()),ex);
         }
         
         try {
             //Insert audit Log for LID Merge
             masterControllerService.insertAuditLog((String) session.getAttribute("user"), sourceEuid, destnEuid, "LID Merge - Selection", new Integer(screenObject.getID()).intValue(), "View two selected EUIDs of the LID merge confirm page");
         } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("SRC048: Failed to insert audit Log for LID Merge {0}",ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC048: Failed to insert audit Log for LID Merge {0}",ex.getMessage()),ex);
         } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("SRC049: Failed to insert audit Log for LID Merge {0}",ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC049: Failed to insert audit Log for LID Merge {0}",ex.getMessage()),ex);
         }
 
         return ""; //reload the same page
@@ -223,17 +223,17 @@ public class SourceMergeHandler {
             SystemObject finalMergredDestnSOPreview  = masterControllerService.getPostMergeSystemObject(this.lidsource, sourceLid, destnLid);
             request.setAttribute("mergedSOMap", compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSOPreview,screenObject));
         } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
             //mLogger.error("ProcessingException ex : " + ex.toString());
-            mLogger.error(mLocalizer.x("SRC050: Failed to Merge LID {0}",ex.getMessage())); 
+            mLogger.error(mLocalizer.x("SRC050: Failed to Merge LID {0}",ex.getMessage()),ex); 
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
             //mLogger.error("UserException ex : " + ex.toString());
-             mLogger.error(mLocalizer.x("SRC051: Failed to Merge LID {0}",ex.getMessage()));
+             mLogger.error(mLocalizer.x("SRC051: Failed to Merge LID {0}",ex.getMessage()),ex);
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
             //mLogger.error("Exception ex : " + ex.toString());
-             mLogger.error(mLocalizer.x("SRC052: Failed to Merge LID {0}",ex.getMessage()));
+             mLogger.error(mLocalizer.x("SRC052: Failed to Merge LID {0}",ex.getMessage()),ex);
         }
          return ""; //reload the same page
      }
@@ -327,11 +327,11 @@ public class SourceMergeHandler {
             }
             
        } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("SRC053: Failed to search  LIDMerge {0}",ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC053: Failed to search  LIDMerge {0}",ex.getMessage()),ex);
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-             mLogger.error(mLocalizer.x("SRC054: Failed to search LIDMerge {0}",ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("SRC054: Failed to search LIDMerge {0}",ex.getMessage()),ex);
         }
         return "LID Details";
     }
@@ -406,14 +406,14 @@ public class SourceMergeHandler {
             request.setAttribute("mergedSOMap", getSystemObjectAsHashMap(finalMergredDestnSOPreview));
             
         } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("SRC055: Failed to get System object preview {0}",ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC055: Failed to get System object preview {0}",ex.getMessage()),ex);
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("SRC056: Failed to get System object preview {0}",ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC056: Failed to get System object preview {0}",ex.getMessage()),ex);
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("SRC057: Failed to get System object preview {0}",ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC057: Failed to get System object preview {0}",ex.getMessage()),ex);
         }
         //System.out.println("=====1====" + mergredHashMapVaueExpression.get("Person.FirstName"));
       }
@@ -451,23 +451,23 @@ public class SourceMergeHandler {
 				System.out.println("mergeComplete is updated ");
                 request.setAttribute("mergedSOMap", finalMergredDestnEOArrayList);
             } catch (ProcessingException ex) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-                mLogger.error(mLocalizer.x("SRC058: Failed to get merge System object preview {0}",ex.getMessage()));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+                mLogger.error(mLocalizer.x("SRC058: Failed to get merge System object preview {0}",ex.getMessage()),ex);
             } catch (UserException ex) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-                mLogger.error(mLocalizer.x("SRC059: Failed to get merge System object preview {0}",ex.getMessage()));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+                mLogger.error(mLocalizer.x("SRC059: Failed to get merge System object preview {0}",ex.getMessage()),ex);
             } catch (Exception ex) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-               mLogger.error(mLocalizer.x("SRC060: Failed to get merge System object preview {0}",ex.getMessage()));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage, ex.getMessage()));
+               mLogger.error(mLocalizer.x("SRC060: Failed to get merge System object preview {0}",ex.getMessage()),ex);
             }
             //Insert audit Log for LID Mer
             masterControllerService.insertAuditLog((String) session.getAttribute("user"), sourceEuid, destnEuid, "LID Merge Confirm", new Integer(screenObject.getID()).intValue(), "View two selected EUIDs of the merge confirm page");
         } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("SRC061: Failed to insert audit Log for LID Merge {0}",ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC061: Failed to insert audit Log for LID Merge {0}",ex.getMessage()),ex);
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-           mLogger.error(mLocalizer.x("SRC062: Failed to insert audit Log for LID Merge {0}",ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+           mLogger.error(mLocalizer.x("SRC062: Failed to insert audit Log for LID Merge {0}",ex.getMessage()),ex);
         }
       }
 
@@ -497,14 +497,14 @@ public class SourceMergeHandler {
             request.setAttribute("mergeComplete", "mergeComplete");			
 
         } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("SRC063: Failed to get merge System object preview {0}",ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC063: Failed to get merge System object preview {0}",ex.getMessage()),ex);
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-             mLogger.error(mLocalizer.x("SRC064: Failed to get merge System object preview {0}",ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("SRC064: Failed to get merge System object preview {0}",ex.getMessage()),ex);
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("SRC065: Failed to get merge System object preview {0}",ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC065: Failed to get merge System object preview {0}",ex.getMessage()),ex);
         }
 
         
@@ -579,11 +579,11 @@ public class SourceMergeHandler {
                 systemObjectHashMap.put("SOAliasList", aliasMapSOArrayList); // set SO alias as arraylist here
             }
         } catch (EPathException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-             mLogger.error(mLocalizer.x("SRC066: Failed to get  System object  {0}",ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("SRC066: Failed to get  System object  {0}",ex.getMessage()),ex);
         } catch (ObjectException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-             mLogger.error(mLocalizer.x("SRC067: Failed to get  System object  {0}",ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("SRC067: Failed to get  System object  {0}",ex.getMessage()),ex);
         }
          return systemObjectHashMap;   
      
@@ -688,9 +688,9 @@ public class SourceMergeHandler {
 
             session.setAttribute("comapreEuidsArrayList", newEOArrayList);
         } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("SRC068: Failed to view EUID {0}",ex.getMessage()));
+            mLogger.error(mLocalizer.x("SRC068: Failed to view EUID {0}",ex.getMessage()),ex);
         } catch (UserException ex) {
-             mLogger.error(mLocalizer.x("SRC069: Failed to view EUID {0}",ex.getMessage()));
+             mLogger.error(mLocalizer.x("SRC069: Failed to view EUID {0}",ex.getMessage()),ex);
         }
    }
 

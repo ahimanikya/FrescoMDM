@@ -81,7 +81,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
     private ArrayList nonUpdateableFieldsArray = new ArrayList();      
     String errorMessage = null;   
     private  static final String SEARCH_DUPLICATES="Search Duplicates";
-    
+    String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
      /**
      * Variable to hold the results defaulted to negative
      */
@@ -136,7 +136,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                 errorMessage = bundle.getString("ERROR_one_of_many");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 //mLogger.error("Validation failed. Message displayed to the user: " + "One of Many :: " + errorMessage);
-                 mLogger.error(mLocalizer.x("SDP001: Validation failed : {0} ", errorMessage));
+                 mLogger.info(mLocalizer.x("SDP001: Validation failed : {0} ", errorMessage));
                 return VALIDATION_ERROR;
             }
 
@@ -145,7 +145,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                 errorMessage =bundle.getString("LID_only"); // "Please Enter System Code";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 //mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
-                 mLogger.error(mLocalizer.x("SDP002: {0} ",errorMessage));
+                 mLogger.info(mLocalizer.x("SDP002: {0} ",errorMessage));
                 return VALIDATION_ERROR;
 
             }
@@ -154,7 +154,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                errorMessage =bundle.getString("enter_LID");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 //mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
-                mLogger.error(mLocalizer.x("SDP003:{0}",errorMessage));
+                mLogger.info(mLocalizer.x("SDP003:{0}",errorMessage));
                 return VALIDATION_ERROR;
 
             }
@@ -166,7 +166,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                    errorMessage =bundle.getString("enter_LID");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  errorMessage, errorMessage));
                    // mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
-                    mLogger.error(mLocalizer.x("SDP004: {0}",errorMessage));
+                    mLogger.info(mLocalizer.x("SDP004: {0}",errorMessage));
                     return VALIDATION_ERROR;
 
                 }
@@ -186,14 +186,14 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                             errorMessage = bundle.getString("system_object_not_found_error_message");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                            // mLogger.error("Validation failed. Message displayed to the user: " + "LID/SYSTEM CODE :: " + errorMessage);
-                            mLogger.error(mLocalizer.x("SDP005: {0} ", errorMessage));
+                            mLogger.info(mLocalizer.x("SDP005: {0} ", errorMessage));
                             return VALIDATION_ERROR;
                         }
                     } catch (ProcessingException ex) {
-                        mLogger.error(mLocalizer.x("SDP006: Failed  during submit {0} ", ex.getMessage()));
+                        mLogger.error(mLocalizer.x("SDP006: Failed  during submit {0} ", ex.getMessage()),ex);
                         return VALIDATION_ERROR;
                     } catch (UserException ex) {
-                        mLogger.error(mLocalizer.x("SDP007: Failed  during submit {0} ", ex.getMessage()));                       
+                        mLogger.error(mLocalizer.x("SDP007: Failed  during submit {0} ", ex.getMessage()),ex);                       
                         return VALIDATION_ERROR;
                     }
 
@@ -378,20 +378,20 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                // UserException and ValidationException don't need a stack trace.
                 // ProcessingException stack trace logged by MC
                 if (ex instanceof ValidationException) {
-                    mLogger.error(mLocalizer.x("SDP010: Unable to perform submit :{0} ", ex.getMessage()));
+                    mLogger.error(mLocalizer.x("SDP010: Unable to perform submit :{0} ", ex.getMessage()),ex);
                 } else if (ex instanceof UserException) {
-                    mLogger.error(mLocalizer.x("SDP011: Unable to perform submit :{0} ", ex.getMessage()));
+                    mLogger.error(mLocalizer.x("SDP011: Unable to perform submit :{0} ", ex.getMessage()),ex);
                 } else if (!(ex instanceof ProcessingException)) {
-                    mLogger.error(mLocalizer.x("SDP012: Unable to perform submit :{0} ", ex.getMessage()));
+                    mLogger.error(mLocalizer.x("SDP012: Unable to perform submit :{0} ", ex.getMessage()),ex);
                     //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
                 } else if (!(ex instanceof PageException)) {
-                    mLogger.error(mLocalizer.x("SDP013: Unable to perform submit :{0} ", ex.getMessage()));
+                    mLogger.error(mLocalizer.x("SDP013: Unable to perform submit :{0} ", ex.getMessage()),ex);
                     //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
                 } else if (!(ex instanceof RemoteException)) {
-                    mLogger.error(mLocalizer.x("SDP014: Unable to perform submit :{0} ", ex.getMessage()));
+                    mLogger.error(mLocalizer.x("SDP014: Unable to perform submit :{0} ", ex.getMessage()),ex);
                 }else
                 { //mLogger.error("Exception : " + QwsUtil.getRootCause(ex).getMessage());
-                     mLogger.error(mLocalizer.x("SDP015: Unable to perform submit :{0} ", ex.getMessage()));
+                     mLogger.error(mLocalizer.x("SDP015: Unable to perform submit :{0} ", ex.getMessage()),ex);
                 }
         }
         return this.SEARCH_DUPLICATES;
@@ -429,7 +429,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                             errorMessage = bundle.getString("system_object_not_found_error_message");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                            // mLogger.error("LID/SYSTEM CODE:: " + errorMessage);
-                             mLogger.error(mLocalizer.x("SDP036: LID/SYSTEM CODE: {0} ", errorMessage));
+                             mLogger.info(mLocalizer.x("SDP036: LID/SYSTEM CODE: {0} ", errorMessage));
                         } else {
                             EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(so);
                             //potentialDuplicateSearchObject.setEUID(eo.getEUID());
@@ -442,11 +442,11 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                             }
                         }
                     } catch (ProcessingException ex) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
-                        mLogger.error(mLocalizer.x("SDP016: Failed to get PotentialDuplicate search objects: {0} ", ex.getMessage()));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
+                        mLogger.error(mLocalizer.x("SDP016: Failed to get PotentialDuplicate search objects: {0} ", ex.getMessage()),ex);
                     } catch (UserException ex) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), ex.toString()));
-                        mLogger.error(mLocalizer.x("SDP017: Failed to get PotentialDuplicate search objects: {0} ", ex.getMessage()));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage, ex.toString()));
+                        mLogger.error(mLocalizer.x("SDP017: Failed to get PotentialDuplicate search objects: {0} ", ex.getMessage()),ex);
                     }
                 }
             }
@@ -481,7 +481,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                     }
                 } catch (ValidationException ex) {
                     //java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.SEVERE, null, ex);
-                    mLogger.error(mLocalizer.x("SDP018: Failed to get PotentialDuplicate search objects: {0} ", ex.getMessage()));
+                    mLogger.error(mLocalizer.x("SDP018: Failed to get PotentialDuplicate search objects: {0} ", ex.getMessage()),ex);
                 }
             }
 
@@ -502,7 +502,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                         potentialDuplicateSearchObject.setCreateEndDate(new Timestamp(date.getTime()));
                     }
                 } catch (ValidationException ex) {
-                    java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.SEVERE, null, ex);
+                    mLogger.error(mLocalizer.x("SDP050: Failed to set PotentialDuplicate search objects: {0} ", ex.getMessage()),ex);
                 }
             }
             //EndTime=, StartTime=, EndDate=, StartDate=, Function=null, SystemUser=, SystemCode=null, LID=, EUID=
@@ -529,7 +529,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
            
 
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("SDP019: Failed to get PotentialDuplicate search objects: {0} ", ex.getMessage()));
+           mLogger.error(mLocalizer.x("SDP019: Failed to get PotentialDuplicate search objects: {0} ", ex.getMessage()),ex);
         }
         return potentialDuplicateSearchObject;
     }
@@ -583,7 +583,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             session.setAttribute("searchTitle", searchTitle); //Display simple person look up in patient details
             
            } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SDP020: Encountered an Exception : {0} ", ex.getMessage()));
+            mLogger.error(mLocalizer.x("SDP020: Encountered an Exception : {0} ", ex.getMessage()),ex);
         }
     }
 
@@ -621,9 +621,9 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                 strEuid.add(associatedDuplicates[i].getEUID1());
             }
         } catch (RemoteException ex) {
-           mLogger.error(mLocalizer.x("SDP040: Failed to get the EUIDs  : {0} ", ex.getMessage()));
+           mLogger.error(mLocalizer.x("SDP040: Failed to get the EUIDs  : {0} ", ex.getMessage()),ex);
         } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("SDP041: Failed to get the EUIDs  : {0} ", ex.getMessage()));
+            mLogger.error(mLocalizer.x("SDP041: Failed to get the EUIDs  : {0} ", ex.getMessage()),ex);
         }
         return strEuid;
     }
@@ -674,11 +674,11 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
 
 			httpRequest.setAttribute("finalArrayList", finalDuplicatesList);                
         } catch (ProcessingException ex) {
-             mLogger.error(mLocalizer.x("SDP021: Unable to resolve  PotentialDuplicates : {0} ", ex.getMessage()));
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+             mLogger.error(mLocalizer.x("SDP021: Unable to resolve  PotentialDuplicates : {0} ", ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
         } catch (UserException ex) {
-             mLogger.error(mLocalizer.x("SDP022: Unable to resolve PotentialDuplicates : {0} ", ex.getMessage()));
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+             mLogger.error(mLocalizer.x("SDP022: Unable to resolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
         }
    
     }
@@ -714,12 +714,12 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
 
   
         } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-           mLogger.error(mLocalizer.x("SDP023: Unable  to unResolve PotentialDuplicates : {0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+           mLogger.error(mLocalizer.x("SDP023: Unable  to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
 
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("SDP024: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("SDP024: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
         }
 
     }
@@ -769,14 +769,14 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             httpRequest.setAttribute("eoMultiMergePreview" + getRowCount(), eoMultiMergePreview);
             
         } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-             mLogger.error(mLocalizer.x("SDP037: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("SDP037: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("SDP025: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("SDP025: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
         }catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("SDP025: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("SDP025: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
         }
            
          httpRequest.setAttribute("finalArrayList", duplicatesArray);                
@@ -823,11 +823,11 @@ public void performMultiMergeEnterpriseObject(ActionEvent event) {
             
             
         } catch (ValidationException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-             mLogger.error(mLocalizer.x("SDP026: Unable to perform MultiMergeEnterpriseObject : {0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("SDP026: Unable to perform MultiMergeEnterpriseObject : {0} ", ex.getMessage()),ex);
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-             mLogger.error(mLocalizer.x("SDP027: Unable to perform MultiMergeEnterpriseObject : {0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("SDP027: Unable to perform MultiMergeEnterpriseObject : {0} ", ex.getMessage()),ex);
         }
       //Insert Audit logs 
        try {
@@ -839,11 +839,11 @@ public void performMultiMergeEnterpriseObject(ActionEvent event) {
                                                new Integer(screenObject.getID()).intValue(),
                                                "View two selected EUIDs of the merge confirm page");
         } catch (UserException ex) {   
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-           mLogger.error(mLocalizer.x("SDP028: Failed to insert AuditLogs : {0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+           mLogger.error(mLocalizer.x("SDP028: Failed to insert AuditLogs : {0} ", ex.getMessage()),ex);
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-           mLogger.error(mLocalizer.x("SDP029: Failed to insert AuditLogs : {0} ", ex.getMessage()));
+           mLogger.error(mLocalizer.x("SDP029: Failed to insert AuditLogs : {0} ", ex.getMessage()),ex);
         }
         
         httpRequest.removeAttribute("finalArrayList");
@@ -985,20 +985,20 @@ public ArrayList resetOutputList(PotentialDuplicateSearchObject potentialDuplica
                // UserException and ValidationException don't need a stack trace.
                 // ProcessingException stack trace logged by MC
                 if (ex instanceof ValidationException) {
-                    mLogger.error(mLocalizer.x("SDP030: Failed to reset OutputList : {0} ", ex.getMessage()));
+                    mLogger.error(mLocalizer.x("SDP030: Failed to reset OutputList : {0} ", ex.getMessage()),ex);
                 } else if (ex instanceof UserException) {
-                    mLogger.error(mLocalizer.x("SDP031: Failed to reset OutputList : {0} ", ex.getMessage()));
+                    mLogger.error(mLocalizer.x("SDP031: Failed to reset OutputList : {0} ", ex.getMessage()),ex);
                 } else if (!(ex instanceof ProcessingException)) {
-                   mLogger.error(mLocalizer.x("SDP032: Failed to reset OutputList : {0} ", ex.getMessage()));
+                   mLogger.error(mLocalizer.x("SDP032: Failed to reset OutputList : {0} ", ex.getMessage()),ex);
                     //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
                 } else if (!(ex instanceof PageException)) {
-                   mLogger.error(mLocalizer.x("SDP033: Failed to reset OutputList : {0} ", ex.getMessage()));
+                   mLogger.error(mLocalizer.x("SDP033: Failed to reset OutputList : {0} ", ex.getMessage()),ex);
                     //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
                 } else if (!(ex instanceof RemoteException)) {
-                   mLogger.error(mLocalizer.x("SDP034: Failed to reset OutputList : {0} ", ex.getMessage()));
+                   mLogger.error(mLocalizer.x("SDP034: Failed to reset OutputList : {0} ", ex.getMessage()),ex);
                     //log(QwsUtil.getRootCause(ex).getMessage(), QwsUtil.getRootCause(ex));
                 }else
-                { mLogger.error(mLocalizer.x("SDP035: Failed to reset OutputList : {0} ", ex.getMessage()));
+                { mLogger.error(mLocalizer.x("SDP035: Failed to reset OutputList : {0} ", ex.getMessage()),ex);
                 }
         }
     
@@ -1066,7 +1066,7 @@ public ArrayList resetOutputList(PotentialDuplicateSearchObject potentialDuplica
                 return c;
             }
         } catch (Exception e) {
-            mLogger.error(mLocalizer.x("SDP038: Failed to get Field values  : {0} ", e.getMessage()));
+            mLogger.error(mLocalizer.x("SDP038: Failed to get Field values  : {0} ", e.getMessage()),e);
         }
         return c;
     }

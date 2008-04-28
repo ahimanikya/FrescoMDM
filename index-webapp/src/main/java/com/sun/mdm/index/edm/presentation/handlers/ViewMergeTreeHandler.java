@@ -156,13 +156,13 @@ public class ViewMergeTreeHandler {
                 htmlNodeTreeDataModel.addNode(euidNode);
 //            }
         } catch (ProcessingException ex) {
-           mLogger.error(mLocalizer.x("VMT001: Failed to get view merge tree  records:{0}",ex.getMessage()));
+           mLogger.error(mLocalizer.x("VMT001: Failed to get view merge tree  records:{0}",ex.getMessage()),ex);
             return SERVICE_LAYER_ERROR;
         } catch (UserException ex) {
-           mLogger.error(mLocalizer.x("VMT002: Failed to get view merge tree  records:{0}",ex.getMessage()));
+           mLogger.error(mLocalizer.x("VMT002: Failed to get view merge tree  records:{0}",ex.getMessage()),ex);
             return SERVICE_LAYER_ERROR;
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("VMT003: Failed to get view merge tree  records:{0}",ex.getMessage()));
+           mLogger.error(mLocalizer.x("VMT003: Failed to get view merge tree  records:{0}",ex.getMessage()),ex);
             return SERVICE_LAYER_ERROR;
         }
         return SUCCESS;
