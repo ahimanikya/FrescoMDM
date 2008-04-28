@@ -236,7 +236,7 @@
             <xs:element name="debug-flag" type="xs:boolean"/>
             <xs:element name="debug-dest" type="xs:string"/>
             <xs:element name="enable-security" type="xs:boolean" default="true" minOccurs="0"/>
-            <xs:element name="object-sensitive-plug-in-class" type="xs:string"/>
+            <xs:element name="object-sensitive-plug-in-class" type="xs:string" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 </xs:schema>
