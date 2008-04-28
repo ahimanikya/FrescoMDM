@@ -6,6 +6,7 @@
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"  %>
 <%@ page import="javax.faces.context.FacesContext"  %>
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
@@ -81,27 +82,69 @@ String requestPage = uri.substring(uri.lastIndexOf("/")+1,uri.length());
          </h:form>   
 		 <!--Start dynamic header content code here -->
 		 <%
-         ArrayList headerTabsLabelsList = ConfigManager.getInstance().getAllScreenObjects(); 
+         ArrayList headerTabsLabelsList = ConfigManager.getInstance().getAllScreenObjects();                    
 		 Object[] headerTabsLabelsListObj = headerTabsLabelsList.toArray();
 		 ScreenObject allScreensArrayOrdered[] = new ScreenObject[headerTabsLabelsListObj.length];
          
-		 String headerClassName = "";
-
-		 //System.out.println("newArrayListOrdered (size) ===> " + newArrayListOrdered.size());
-
+		 String headerClassName = "";		
+                   // modfied by Anil , fix for MIDM security Isssue
 		 for(int aIndex = 0 ;aIndex <headerTabsLabelsListObj.length; aIndex++) {
 		    ScreenObject screenObjectLocal = (ScreenObject) headerTabsLabelsListObj[aIndex];
-            allScreensArrayOrdered[screenObjectLocal.getDisplayOrder()] = screenObjectLocal;
+                    
+                    if (screenObjectLocal!=null){
+                     String screenName = ConfigManager.getInstance().getScreenObjectTagName(screenObjectLocal.getID().toString());
+                 
+                     Operations ops = new Operations();
+                     
+                     if (screenName.equalsIgnoreCase("assumed-matches")){
+                         if(!ops.isAssumedMatch_SearchView()){
+                             screenObjectLocal = null;
+                             
+                         }
+                     }
+                      if (screenName.equalsIgnoreCase("transactions")){
+                         if(!ops.isTransLog_SearchView()){
+                             screenObjectLocal = null;
+                             
+                         }
+                     }
+                     if (screenName.equalsIgnoreCase("audit-log")){
+                         if(!ops.isAuditLog_SearchView()){
+                             screenObjectLocal = null;
+                             
+                         }
+                     }
+                     if (screenName.equalsIgnoreCase("record-details")){
+                         if(!ops.isEO_SearchViewSBR()){
+                             screenObjectLocal = null;
+                             
+                         }
+                     }
+                      if (screenName.equalsIgnoreCase("duplicate-records")){
+                         if(!ops.isPotDup_SearchView()){
+                             screenObjectLocal = null;
+                             
+                         }
+                     }
+                    }
+                
+                if (screenObjectLocal!=null){
+                     allScreensArrayOrdered[screenObjectLocal.getDisplayOrder()] = screenObjectLocal;
+                }
 		 }
 		 %>
           
 		  <tr>
              <td colspan="2">
                  <div id="header">
-                                 <%   for(int i=0;i<allScreensArrayOrdered.length;i++){  
+                                 <%                                  
+                                 for(int i=0;i<allScreensArrayOrdered.length;i++){  
                                   %> 
                                   <% 
+                                  
+                                  if (allScreensArrayOrdered[i]!=null){
                                     ValueExpression screenID = ExpressionFactory.newInstance().createValueExpression(allScreensArrayOrdered[i].getID(), allScreensArrayOrdered[i].getID().getClass());
+                                    
                                   %>
 
                                   <h:form>
@@ -119,7 +162,7 @@ String requestPage = uri.substring(uri.lastIndexOf("/")+1,uri.length());
                                       </h:commandLink>
 								 <%}%>
                                  </h:form>
-                                 <%}%>
+                                 <%}}%>
 
 				 </div>
 		     </td>
