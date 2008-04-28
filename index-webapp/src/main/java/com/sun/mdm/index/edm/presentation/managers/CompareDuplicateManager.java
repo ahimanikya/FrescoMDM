@@ -128,7 +128,7 @@ public class CompareDuplicateManager {
                 return c;
             } catch (ObjectException ex) {
                 //Throwing object exception
-                mLogger.error(mLocalizer.x("CPD001: Failed to get field values :{0}", ex.getMessage()));
+                mLogger.error(mLocalizer.x("CPD001: Failed to get field values :{0}", ex.getMessage()),ex);
             }
         } else {    // Check the children using a depth-first search.
             ArrayList childNodes = objNode.pGetChildren();
@@ -171,7 +171,7 @@ public class CompareDuplicateManager {
         try {
             enterpriseObject = masterControllerService.getEnterpriseObject(EUID);
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("CPD002: Failed to get EnterpriseObject :{0}", ex.getMessage()));
+           mLogger.error(mLocalizer.x("CPD002: Failed to get EnterpriseObject :{0}", ex.getMessage()),ex);
         }
         return enterpriseObject;
     }
@@ -221,7 +221,7 @@ public class CompareDuplicateManager {
                 Object value = EPathAPI.getFieldValue(field, objectNode);
                 eoFieldValuesMap.put(field, value);
             } catch (Exception npe) {
-              mLogger.error(mLocalizer.x("CPD003: Unable to get value from child objects  :{0}", npe.getMessage()));
+              mLogger.error(mLocalizer.x("CPD003: Unable to get value from child objects  :{0}", npe.getMessage()),npe);
             // THIS SHOULD BE FIXED
             // npe.printStackTrace();
             }
@@ -251,7 +251,7 @@ public class CompareDuplicateManager {
                 Object value = EPathAPI.getFieldValue(ePath, objectNode);
                 eoFieldValuesMap.put(ePath.toString(), value);
             } catch (Exception npe) {
-               mLogger.error(mLocalizer.x("CPD004: Unable to get value from child objects  :{0}", npe.getMessage()));
+               mLogger.error(mLocalizer.x("CPD004: Unable to get value from child objects  :{0}", npe.getMessage()),npe);
             // THIS SHOULD BE FIXED
             // npe.printStackTrace();
             }
@@ -281,11 +281,11 @@ public class CompareDuplicateManager {
         try {
             dupStatus = masterControllerService.getPotentialDuplicateStatus(mainEuid, dupId);
         } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("CPD005: Failed to get Potential duplicate status  :{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("CPD005: Failed to get Potential duplicate status  :{0}", ex.getMessage()),ex);
         } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("CPD006: Failed to get Potential duplicate status  :{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("CPD006: Failed to get Potential duplicate status  :{0}", ex.getMessage()),ex);
         } catch (RemoteException ex) {
-           mLogger.error(mLocalizer.x("CPD007: Failed to get Potential duplicate status   :{0}", ex.getMessage()));
+           mLogger.error(mLocalizer.x("CPD007: Failed to get Potential duplicate status   :{0}", ex.getMessage()),ex);
         }
         return dupStatus;
     
@@ -423,9 +423,9 @@ public class CompareDuplicateManager {
             }
 
         } catch (EPathException ex) {
-            mLogger.error(mLocalizer.x("CPD008: Failed to get SystemObject   :{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("CPD008: Failed to get SystemObject   :{0}", ex.getMessage()),ex);
         } catch (ObjectException ex) {
-           mLogger.error(mLocalizer.x("CPD009: Failed to get SystemObject  :{0}", ex.getMessage()));
+           mLogger.error(mLocalizer.x("CPD009: Failed to get SystemObject  :{0}", ex.getMessage()),ex);
         }
 
 
@@ -563,11 +563,11 @@ public class CompareDuplicateManager {
 
             return enterpriseObjectHashMap;
         } catch (ObjectException ex) {
-           mLogger.error(mLocalizer.x("CPD010: Failed to get EnterpriseObject  :{0}", ex.getMessage()));
+           mLogger.error(mLocalizer.x("CPD010: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
         } catch (ConnectionInvalidException ex) {
-           mLogger.error(mLocalizer.x("CPD011: Failed to get EnterpriseObject  :{0}", ex.getMessage()));
+           mLogger.error(mLocalizer.x("CPD011: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
         } catch (OPSException ex) {
-            mLogger.error(mLocalizer.x("CPD012: Failed to get EnterpriseObject  :{0}", ex.getMessage()));
+            mLogger.error(mLocalizer.x("CPD012: Failed to get EnterpriseObject  :{0}", ex.getMessage()),ex);
         } catch (ProcessingException ex) {
             mLogger.error(mLocalizer.x("CPD013: Failed to get EnterpriseObject  :{0}", ex.getMessage()));
         } catch (UserException ex) {
@@ -669,11 +669,11 @@ public class CompareDuplicateManager {
                 }
             }
         } catch (ProcessingException ex) {
-             mLogger.error(mLocalizer.x("CPD015: Failed to get EnterpriseObject history :{0}", ex.getMessage()));
+             mLogger.error(mLocalizer.x("CPD015: Failed to get EnterpriseObject history :{0}", ex.getMessage()),ex);
         } catch (UserException ex) {
-             mLogger.error(mLocalizer.x("CPD016: Failed to get EnterpriseObject history :{0}", ex.getMessage()));
+             mLogger.error(mLocalizer.x("CPD016: Failed to get EnterpriseObject history :{0}", ex.getMessage()),ex);
         } catch (RemoteException ex) {
-             mLogger.error(mLocalizer.x("CPD017: Failed to get EnterpriseObject history :{0}", ex.getMessage()));
+             mLogger.error(mLocalizer.x("CPD017: Failed to get EnterpriseObject history :{0}", ex.getMessage()),ex);
         }
         return newArrayListHistory;
     }
@@ -778,9 +778,9 @@ public class CompareDuplicateManager {
                 newArrayList.add(systemObjectHashMap);
             }
         } catch (EPathException ex) {
-             mLogger.error(mLocalizer.x("CPD018: Failed to get EOSources :{0}", ex.getMessage()));
+             mLogger.error(mLocalizer.x("CPD018: Failed to get EOSources :{0}", ex.getMessage()),ex);
         } catch (ObjectException ex) {
-             mLogger.error(mLocalizer.x("CPD019: Failed to get EOSources :{0}", ex.getMessage()));
+             mLogger.error(mLocalizer.x("CPD019: Failed to get EOSources :{0}", ex.getMessage()),ex);
         }
         return newArrayList;
     }
