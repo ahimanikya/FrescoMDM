@@ -81,6 +81,7 @@ public class BlockDistributor {
 	private boolean isStandardize = false;
 	private DataObjectReader reader_ = null;
 	private ObjectDefinition inputobd_;
+	private DataObjectWriter inputWriter_;
 	
 	public BlockDistributor(String[] matchpaths, Lookup inLk, ObjectDefinition inputobd, Lookup blLk, boolean isSBR) throws Exception {
 							
@@ -98,6 +99,8 @@ public class BlockDistributor {
 		if (isStandardize) { // standardize only if standardize option is set
 			                        // and block distribution is done for Block buckets
 		  mStandardizer = StandardizerFactory.getInstance();
+		  inputWriter_ = new DataObjectFileWriter(FileManager.getInputStandardizedFile().getAbsolutePath(), true);
+		  
 		}
 		inputobd_ = inputobd;
 	}
@@ -125,6 +128,7 @@ public class BlockDistributor {
 		   countRec++;
 		   if (isStandardize ) { // 
 		     inputdataObject = standardize(inputdataObject);
+		     inputWriter_.writeDataObject(inputdataObject);
 		   }
 		   
 		   List<String> blockids = getBlockIds(inputdataObject);
@@ -152,8 +156,6 @@ public class BlockDistributor {
 		  }		   						   
 		}
 		
-	//	logger.info("countNullBlids:" + countNullBlids);
-		
 		for (int i = 0; i < buckets_.length; i++) {
 		  buckets_[i].close();
 		  File f = buckets_[i].getFile();
@@ -168,6 +170,9 @@ public class BlockDistributor {
 		  }
 		}	
 		reader.close();
+		if (isStandardize) {
+		  inputWriter_.close();
+		}
 		logger.info("Number of Input records:" + countRec);
 	}
 	
@@ -179,7 +184,6 @@ public class BlockDistributor {
 		return false;
 	}
 	
-//	Map systemMap = new HashMap();
 	
 	/**
 	 * This is special block that contains only systemcode, lid, GID. The purpose of this block is to associate
