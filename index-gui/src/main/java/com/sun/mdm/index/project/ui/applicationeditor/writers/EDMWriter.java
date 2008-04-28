@@ -60,7 +60,7 @@ public class EDMWriter {
         String tagTailEDM = "</edm>";
 
         String strXml = xmlHEADER + tagHeaderEDM +
-            getAllNodesForEDM(mPrimaryNode) + getRelationships() + edmType.getImplDetailsXML() +
+            getAllNodesForEDM(mPrimaryNode) + getRelationships() + edmType.getImplDetailsXML(false) +
             edmType.getGuiDefinitionXML(false) + tagTailEDM;
         
         return strXml;
@@ -77,7 +77,7 @@ public class EDMWriter {
         String tagTailEDM = "</midm>";
 
         String strXml = xmlHEADER + tagHeaderEDM +
-            getAllNodesForMIDM(mPrimaryNode) + getRelationships() + edmType.getImplDetailsXML() +
+            getAllNodesForMIDM(mPrimaryNode) + getRelationships() + edmType.getImplDetailsXML(true) +
             edmType.getGuiDefinitionXML(true) + tagTailEDM;
         
         return strXml;
