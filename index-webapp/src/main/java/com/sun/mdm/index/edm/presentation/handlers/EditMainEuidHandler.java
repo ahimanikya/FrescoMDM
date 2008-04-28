@@ -835,6 +835,9 @@ public class EditMainEuidHandler {
             EnterpriseObject updateEnterpriseObject = masterControllerService.getEnterpriseObject(updateEuid);
             EnterpriseObject updateEO = masterControllerService.saveLinks(linkedFieldsHashMapByUser, updateEnterpriseObject);
             session.setAttribute("editEuid",updateEO.getEUID());
+            
+            masterControllerService.updateEnterpriseObject(updateEO);
+            
         } catch (ProcessingException ex) {
            // Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
             mLogger.error(mLocalizer.x("EME018: Unable to save selected links :{0}",ex.getMessage()));
@@ -852,6 +855,8 @@ public class EditMainEuidHandler {
             //masterControllerService.updateEnterpriseObject(updateEO);
             session.setAttribute("editEuid",updateEO.getEUID());
 
+            masterControllerService.updateEnterpriseObject(updateEO);
+
         } catch (ProcessingException ex) {
              mLogger.error(mLocalizer.x("EME020: Unable to save selected unlinks:{0}",ex.getMessage()));
            // Logger.getLogger(EditMainEuidHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -868,6 +873,8 @@ public class EditMainEuidHandler {
             EnterpriseObject updateEO = masterControllerService.removeLocks(unLockedFieldsHashMapByUser, updateEnterpriseObject);
             //masterControllerService.updateEnterpriseObject(updateEO);
             session.setAttribute("editEuid",updateEO.getEUID());
+
+            masterControllerService.updateEnterpriseObject(updateEO);
 
         } catch (ProcessingException ex) {
             mLogger.error(mLocalizer.x("EME022: Unable to save selected unlocks:{0}",ex.getMessage()));
@@ -1264,8 +1271,10 @@ public class EditMainEuidHandler {
         //build the hashmap with only modified values only
 
 
-        //add root node for SBR here 
-        this.changedSBRArrayList.add(rootNodesHashMap);
+        //add root node for SBR here if at least one value is entered
+        if(rootNodesHashMap.keySet().size() != 2) {
+          this.changedSBRArrayList.add(rootNodesHashMap);
+        }
 
         ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
 

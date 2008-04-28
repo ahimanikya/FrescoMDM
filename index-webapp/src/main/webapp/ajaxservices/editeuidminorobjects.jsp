@@ -459,7 +459,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                     <% } %>
 				<% if (!MasterControllerService.MINOR_OBJECT_REMOVE.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)))  { %>
 			              <tr class="<%=styleClass%>">
-			                    <td valign="center">
+			                    <td valign="center" width="14px">
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
@@ -469,7 +469,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
-							   <td valign="center">							   
+							   <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)" 
 											 onclick='javascript:ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EOMinorDiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
@@ -558,7 +558,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 					
 				<% if (!MasterControllerService.MINOR_OBJECT_REMOVE.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)))  { %>
 			              <tr class="<%=styleClass%>">
-			                    <td valign="center">
+			                    <td valign="center" width="14px">
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
@@ -568,7 +568,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
-							   <td valign="center">							   
+							   <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)" 
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EOMinorDiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
@@ -767,7 +767,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 				<% if (!MasterControllerService.MINOR_OBJECT_REMOVE.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)))  { %>
 
 			              <tr class="<%=styleClass%>">
-			                    <td valign="center">
+			                    <td valign="center"n width="14px">
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
@@ -777,7 +777,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 												 <nobr>Edit&nbsp;<img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
-							   <td valign="center">							   
+							   <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)" 
 											 onclick='javascript:ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EOMinorDiv","")'> 
 												 <nobr>Delete&nbsp;<img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
@@ -919,7 +919,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 				<% if (!MasterControllerService.MINOR_OBJECT_REMOVE.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)))  { %>
 
 			              <tr class="<%=styleClass%>">
-                    <td valign="center">
+                    <td valign="center" width="14px">
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
@@ -929,7 +929,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
-							   <td valign="center">							   
+							   <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)" 
 											 onclick='javascript:ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EOMinorDiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
@@ -1038,6 +1038,10 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
      document.getElementById('<%=sbrFullFieldName%>:<%=systemCodeWithLid%>').style.display = 'block';
 
   </script>
+  <script>
+            ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
+  </script>
+
 <% } else if (isUnLinking){ %> 	<!-- UnLinking the SO fields-->
      
      <% String sbrFullFieldName = request.getParameter("sbrfullfieldname");
@@ -1072,6 +1076,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 	 document.getElementById('<%=keysValues[0]%>:<%=keysValues[1]%>').style.visibility = 'hidden';
      document.getElementById('<%=keysValues[0]%>:<%=keysValues[1]%>').style.display = 'none';
 
+  </script>
+  <script>
+            ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
   </script>
 <% } else if (isUnLocking){ %> 	<!-- UnLocking the SBR fields-->
      <% 
@@ -1120,6 +1127,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
         document.getElementById('unlockSourceDiv:'+'<%=sbrFullFieldName%>').style.visibility = 'hidden';
         document.getElementById('unlockSourceDiv:'+'<%=sbrFullFieldName%>').style.display = 'none';
+  </script>
+  <script>
+            ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=editEuid%>','ajaxContent','');
   </script>
 
 <% } else if (isDeactiveEO){ %> 	<!-- isDeactiveEO the SBR -->

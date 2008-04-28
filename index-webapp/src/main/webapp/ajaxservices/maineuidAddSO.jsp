@@ -107,6 +107,13 @@
    				      style="width:100%;background-color:#c4c8e1;;border-top:1px solid #efefef;border-left:1px solid #efefef;border-right:1px solid #efefef;border-bottom:1px solid #efefef;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"
                       var="fieldConfigPerAdd" 
                       value="#{SourceHandler.rootNodeFieldConfigs}">
+        <h:column>
+           <nobr>
+			 <h:outputText value="#{fieldConfigPerAdd.displayName}" />
+              <h:outputText value="*" rendered="#{fieldConfigPerAdd.required}" />
+              <h:outputText value=":"/>
+			</nobr>
+         </h:column>                                                        
             <!--Rendering HTML Select Menu List-->
             <h:column rendered="#{fieldConfigPerAdd.guiType eq 'MenuList' &&  fieldConfigPerAdd.valueType ne 6}" >
                 <h:selectOneMenu title="#{fieldConfigPerAdd.fullFieldName}" >
@@ -206,11 +213,17 @@
                                                     <h:dataTable  headerClass="tablehead" 
                                                                   id="childFieldConfigsAdd" 
                                                                   var="childFieldConfigAdd" 
-                                                                  value="#{allNodeFieldConfigsMapAdd[childNodesName]}">
+                               				      style="width:100%;background-color:#c4c8e1;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"                                      value="#{allNodeFieldConfigsMapAdd[childNodesName]}">
+       <h:column>
+           <nobr>
+			 <h:outputText value="#{childFieldConfigAdd.displayName}" />
+              <h:outputText value="*" rendered="#{childFieldConfigAdd.required}" />
+              <h:outputText value=":"/>
+			</nobr>
+         </h:column>                                                        
                                                         <!--Rendering HTML Select Menu List-->
                                                         <h:column rendered="#{childFieldConfigAdd.guiType eq 'MenuList'}" >
-                                                            <h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}" 
-                                                                             onblur="javascript:accumilateMinorObjectSelectFieldsOnBlurLocal('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}','#{childFieldConfigAdd.keyType}')">
+                                                            <h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}" >
                                                                 <f:selectItem itemLabel="" itemValue="" />
                                                                 <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
                                                             </h:selectOneMenu>
@@ -286,11 +299,6 @@
                 <tr>
                     <td>
                         <div id="<h:outputText value="#{childNodesName}"/>AddNewSODiv"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        &nbsp;
                     </td>
                 </tr>
             </table>   

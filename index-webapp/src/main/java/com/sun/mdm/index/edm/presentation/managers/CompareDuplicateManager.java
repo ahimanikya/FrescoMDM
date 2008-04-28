@@ -469,6 +469,15 @@ public class CompareDuplicateManager {
             for (int i = 0; i < keySet.length; i++) {
                 String key = (String) keySet[i];
                 if (eoWithLinkedHashMap.get(key) != null) {
+                    String[] sysLid = ((String)eoWithLinkedHashMap.get(key)).split(":");
+                    if (sysLid.length == 2) {
+                        HashMap soHashMapCodes = (HashMap) getSystemObjectAsHashMap(masterControllerService.getSystemObject(sysLid[0], sysLid[1]), screenObject).get("SYSTEM_OBJECT_EDIT");
+                        HashMap soHashMap = (HashMap) getSystemObjectAsHashMap(masterControllerService.getSystemObject(sysLid[0], sysLid[1]), screenObject).get("SYSTEM_OBJECT");
+                        //put the linked values here for the SBR from the linked system object
+                        editEnterpriseObjectHashMap.put(key, soHashMap.get(key));
+                        codesEnterpriseObjectHashMap.put(key, soHashMapCodes.get(key));
+                    }
+                    
                     newLinkedHashMap.put(key, true);
                 } else {
                     newLinkedHashMap.put(key, false);

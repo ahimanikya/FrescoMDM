@@ -405,7 +405,7 @@
                     <tr>
 					  <td><nobr>
                           <a href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>EOInnerForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>EOMinorDiv',event)">
-                             <span id="EO<h:outputText value='#{childNodesName}'/>buttonspan">??Save <h:outputText value='#{childNodesName}'/> </span>
+                             <span id="EO<h:outputText value='#{childNodesName}'/>buttonspan">Save <h:outputText value='#{childNodesName}'/> </span>
                           </a>
                            <a class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText value="#{childNodesName}"/>EOInnerForm');setEOEditIndex('-1')">
                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
@@ -467,10 +467,8 @@
                                     %>
 									   <%if(eoList.size() == 1) {%>
                                         <div id="sourceRecordsDiv">
-									   <%}else if(eoList.size() == 2) {%>
-                                        <div id="sourceRecordsDiv" style="width:460px;overflow:auto;overflow-y:hidden;">
-									   <%}else if(eoList.size() >= 3) {%>
-                                        <div id="sourceRecordsDiv" style="width:690px;overflow:auto;overflow-y:hidden;">
+									   <%}else if(eoList.size() >= 2) {%>
+                                        <div id="sourceRecordsDiv" style="width:660px;overflow:auto;overflow-y:hidden;">
 									   <%}%>
 
                                         <table border="0" cellpadding="0px" cellspacing="0px" style="width:100%;background-color:#cddcb1;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;border-top:1px solid #efefef;border-left:1px solid #efefef;border-right:1px solid #efefef;border-bottom:1px solid #efefef;">
@@ -485,14 +483,15 @@
 %>
 
                                                         <td valign="top" style="background-color:#cddcb1;border-top:1px solid #efefef;border-left:1px solid #efefef;border-right:1px solid #efefef;border-bottom:1px solid #efefef;">
-                                                        <table border="0" cellspacing="0" cellpadding="0" style="width:230px;background-color:#cddcb1;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;">
+                                                        <table border="0" cellspacing="0" cellpadding="0" style="width:100%;background-color:#cddcb1;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;">
                                                                  <tr>
-                                                                            <td class="tablehead" >
+                                                                            <td class="tablehead" colspan="2">
                                                                                 <%=valueMap.get("SYSTEM_CODE_DESC")%>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td> 
+                                                                            <td  align="left">&nbsp;</td>
+                                                                            <td  align="left"> 
                                                                                 <input type="text" style="background-color:#cddcb1" readonly="true" value='<%=valueMap.get("LID")%>'/> 
 																				
                                                                             </td>
@@ -510,7 +509,15 @@
                                                                                   id="hashIdEdit" 
                                                                                   var="fieldConfigPer" 
 																				  style="width:100%;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"
-                                                                                  value="#{SourceHandler.rootNodeFieldConfigs}">                                                    
+                                                                                  value="#{SourceHandler.rootNodeFieldConfigs}">     
+                                                <h:column>
+                                                     <nobr>
+													  <h:outputText value="#{fieldConfigPer.displayName}" />
+                                                      <h:outputText value="*" rendered="#{fieldConfigPer.required}" />
+                                                      <h:outputText value=":"/>
+													 </nobr>
+                                                 </h:column>                                                        
+                             
                                                                         <h:column>
                                                                             <div id='<h:outputText value="#{fieldConfigPer.fullFieldName}"/>:<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT']['LINK_KEY']}"/>'
                                                                                  style="visibility:hidden;display:none;">
@@ -540,6 +547,8 @@
                                                                         <!--Rendering Updateable HTML Text boxes-->
                                                                         <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6}" >
                                                                             <h:inputText label="#{fieldConfigPer.displayName}"  
+                                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')" 
+																	 onkeyup="javascript:qws_field_on_key_up(this)"
 																			             title="#{fieldConfigPer.fullFieldName}"
                                                                                          id="fieldConfigIdTextbox"   
                                                                                          maxlength="#{fieldConfigPer.maxLength}"
@@ -640,6 +649,13 @@
                                                       id="soChildFieldConfigsAdd" 
                                                       var="soChildFieldConfigAdd" 
                                                       style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"                                                      value="#{allNodeFieldConfigsMapAdd[childNodesName]}">
+                                                 <h:column>
+                                                     <nobr>
+													  <h:outputText value="#{soChildFieldConfigAdd.displayName}" />
+                                                      <h:outputText value="*" rendered="#{soChildFieldConfigAdd.required}" />
+                                                      <h:outputText value=":"/>
+													 </nobr>
+                                                 </h:column>                                                        
                                             
                                             <!--Rendering HTML Select Menu List-->
                                             <h:column rendered="#{soChildFieldConfigAdd.guiType eq 'MenuList'}" >

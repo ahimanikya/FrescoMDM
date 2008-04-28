@@ -559,7 +559,7 @@ if (isCancel){
 			              </tr>
                     <% } %>
 			              <tr class="<%=styleClass%>">
-			                    <td valign="center">
+			                    <td valign="center" width="14px">
 								  <% 
 									  String thisIndex = ((Integer)minorObjectMap.get("listIndex")).toString();
 									  String minorObjType = request.getParameter("MOT");
@@ -570,7 +570,7 @@ if (isCancel){
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
-							   <td valign="center">							   
+							   <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)" 
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&deleteIndex=<%=thisIndex%>&MOT=<%=minorObjType%>","<%=minorObjType%>AddNewSODiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
@@ -789,7 +789,7 @@ if (isCancel){
 			              </tr>
                     <% } %>
 			              <tr class="<%=styleClass%>">
-			                    <td valign="center">
+			                    <td valign="center" width="14px">
 								  <% 
 									  String thisIndex = ((Integer)minorObjectMap.get("listIndex")).toString();
 									  String minorObjType = request.getParameter("MOT");
@@ -800,7 +800,7 @@ if (isCancel){
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
-							   <td valign="center">							   
+							   <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)" 
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&deleteIndex=<%=thisIndex%>&MOT=<%=minorObjType%>","<%=minorObjType%>AddNewSODiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
@@ -953,7 +953,7 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 			              </tr>
                     <% } %>
 	              <tr class="<%=styleClass%>">
-			                    <td valign="center">
+			                    <td valign="center" width="14px">
 								  <% 
 									  String thisIndex = ((Integer)minorObjectMap.get("listIndex")).toString();
 									  String minorObjType = request.getParameter("MOT");
@@ -964,7 +964,7 @@ thisMinorObject.put(MasterControllerService.MINOR_OBJECT_TYPE, request.getParame
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
-							   <td valign="center">
+							   <td valign="center" width="14px">
 									  <a href="javascript:void(0)" 
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?&deleteIndex=<%=thisIndex%>&MOT=<%=minorObjType%>","<%=minorObjType%>AddNewSODiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
