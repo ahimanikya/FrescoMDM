@@ -765,7 +765,7 @@ public class EViewGeneratorTask extends Task {
         if (null != edmVersion && edmVersion.equalsIgnoreCase("master-index-edm")) {
             String token = "/SunEdm";
             String sunWebXml= (mWardir.getAbsolutePath()+"/web/WEB-INF/sun-web.xml");
-            replaceToken(sunWebXml, token, "/"+applicationName+"edm" );         
+            replaceToken(sunWebXml, token, "/"+applicationName+"MIDM" );         
         }               
     }
 
