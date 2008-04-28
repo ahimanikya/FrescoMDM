@@ -23,6 +23,7 @@
 
 package com.sun.mdm.index.loader.euid;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -35,8 +36,10 @@ import java.util.List;
 import java.util.Stack;
 import java.util.logging.Logger;
 
+import com.sun.mdm.index.loader.common.FileManager;
 import com.sun.mdm.index.dataobject.DataObject;
 import com.sun.mdm.index.dataobject.DataObjectReader;
+import com.sun.mdm.index.dataobject.DataObjectFileReader;
 import com.sun.mdm.index.idgen.EuidGenerator;
 import com.sun.mdm.index.idgen.SEQException;
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterState;
@@ -81,6 +84,7 @@ public class EuidIndexAssigner {
 
 	private boolean debug = false;
 
+	private boolean isStandardize;
 	public EuidIndexAssigner() {
 		config = LoaderConfig.getInstance();
 		;
@@ -98,6 +102,10 @@ public class EuidIndexAssigner {
 				.getEUIDLength());
 
 		distributor = new EuidBucketDistributor();
+		String sisStandardize = config.getSystemProperty("standardizationMode");
+		if (sisStandardize != null) { // SBR data is already standardized
+			isStandardize = Boolean.parseBoolean(sisStandardize);
+		}
 
 	}
 
@@ -322,9 +330,7 @@ public class EuidIndexAssigner {
 			}
 
 		}
-
-		
-
+	
 	}
 
 	
@@ -389,7 +395,8 @@ public class EuidIndexAssigner {
 	protected void distributeBucket() {
 
 		try {
-			DataObjectReader reader = config.getDataObjectReader();
+			
+			DataObjectReader reader = getReader() ; config.getDataObjectReader();
 			while (true) {
 				DataObject d = reader.readDataObject();
 
@@ -438,6 +445,18 @@ public class EuidIndexAssigner {
 		ew.setEuid(euidGenerator.getNextEUID(null));
 
 		return ew;
+	}
+	
+	private DataObjectReader getReader() throws Exception  {
+		if (isStandardize) {	
+		  File file = FileManager.getInputStandardizedFile();
+		  return new DataObjectFileReader(file.getAbsolutePath(), true);
+		 
+		} else {
+			return config.getDataObjectReader();
+		}
+	
+		
 	}
 
 	private double getWeight(long sysidIndex) {
