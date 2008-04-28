@@ -115,7 +115,7 @@ public class EDMValidation {
                 try {
                     dateInt = new Integer(dateTokens[i]);
                 } catch (NumberFormatException numberFormatException) {
-                    mLogger.error(mLocalizer.x("EVL006: Date is not a Number :{0}", numberFormatException.getMessage()));
+                    mLogger.error(mLocalizer.x("EVL006: Date is not a Number :{0}", numberFormatException.getMessage()),numberFormatException);
                     errorMessage = bundle.getString("Date_Number");
                    return errorMessage ;//"Date is not a Number"; 
                 }
@@ -158,13 +158,13 @@ public class EDMValidation {
             if (month > 12 || month < 1) {
                 return bundle.getString("Invalid_Month_format"); //"Invalid Month The format of Date is MM/DD/YYYY"; //Month should be between 1 and 12
             }
-           mLogger.error(mLocalizer.x("EVL001: Day: Month: Year: {0}:{1}:{2}", new Integer(day).toString(),new Integer(month).toString(),new Integer(year).toString()));
+          // mLogger.info(mLocalizer.x("EVL001: Day: Month: Year: {0}:{1}:{2}", new Integer(day).toString(),new Integer(month).toString(),new Integer(year).toString()));
            //mLogger.error(mLocalizer.x("EVL002: Month :: {0}", new Integer(month).toString()));
            //mLogger.error(mLocalizer.x("EVL003: Year :: {0}", new Integer(year).toString()));
 
 
        } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("EVL004: Date validation failed :{0}", ex.getMessage()));
+           mLogger.error(mLocalizer.x("EVL004: Date validation failed :{0}", ex.getMessage()),ex);
        }
         return "success";
    }
@@ -195,7 +195,7 @@ public class EDMValidation {
            try {
                timeInt = new Integer(timeTokens[i]);
            } catch (NumberFormatException numberFormatException) {
-               mLogger.error(mLocalizer.x("EVL005: Invalid Time Format!, The format of Time is HH:MM:SS :{0}", numberFormatException.getMessage()));
+               mLogger.error(mLocalizer.x("EVL005: Invalid Time Format!, The format of Time is HH:MM:SS :{0}", numberFormatException.getMessage()),numberFormatException);
                return bundle.getString("Invalid_Time_Format"); //"Invalid Time Format!, The format of Time is HH:MM:SS";  //Either HH or MM or SS Not a number
            }
            if (i == 0) hours = timeInt;
@@ -236,7 +236,7 @@ public class EDMValidation {
            try {
                localIdInt = new Integer(localIDTokens[i]);               
            } catch (NumberFormatException numberFormatException) {
-                mLogger.error(mLocalizer.x("EVL007: Local ID is not a Number :{0}", numberFormatException.getMessage()));
+                mLogger.error(mLocalizer.x("EVL007: Local ID is not a Number :{0}", numberFormatException.getMessage()),numberFormatException);
                return bundle.getString("Local_ID_Number") ; //"Local ID is not a Number";  //Either day or month or Year Not a number
            }
            if (i == 0 || i == 1)   {
@@ -264,7 +264,7 @@ public class EDMValidation {
        try {
            int tempNum = Integer.parseInt(thisNumber);
        } catch (NumberFormatException numberFormatException) {
-            mLogger.error(mLocalizer.x("EVL008: Invalid Number :{0}", numberFormatException.getMessage()));
+            mLogger.error(mLocalizer.x("EVL008: Invalid Number :{0}", numberFormatException.getMessage()),numberFormatException);
            return  bundle.getString("Invalid_Number"); //"Invalid Number";
        }       
        return "success";
