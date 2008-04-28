@@ -50,6 +50,7 @@ import com.sun.mdm.index.project.EviewProjectProperties;
 import org.openide.util.lookup.Lookups;
 import org.openide.loaders.DataFolder;
 
+//import org.netbeans.spi.project.ui.support.DefaultProjectOperations;
 /**
  * Support for creating logical views.
  */
@@ -128,20 +129,22 @@ public class EviewProjectLogicalViewProvider implements LogicalViewProvider {
             this.addNodeListener(new NodeAdapter() {
                 @Override
                 public void propertyChange(PropertyChangeEvent ev) {
-                    if (ev.getPropertyName().equals(Node.PROP_DISPLAY_NAME)) {
+                    if (ev.getPropertyName().equals(Node.PROP_NAME)) {
                         String newName = node.getName();
                         if (!oldName.equals(newName) && !com.sun.mdm.index.project.ui.applicationeditor.EntityNode.checkNodeNameValue(newName)) {
                             node.setName(oldName);
+                        } else {
+                            //DefaultProjectOperations.performDefaultRenameOperation(project, newName);
                         }
                         oldName = node.getName();
                     }
                 }
             });
         }
-
+        
         @Override
         public boolean canRename() {
-            return true;
+            return false;
         }
 
         @Override
