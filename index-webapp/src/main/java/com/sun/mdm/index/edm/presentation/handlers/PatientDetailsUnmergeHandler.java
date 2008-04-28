@@ -59,11 +59,11 @@ public class PatientDetailsUnmergeHandler {
             // UserException and ValidationException don't need a stack trace.
             // ProcessingException stack trace logged by MC
             if (ex instanceof ValidationException) {
-                throw new ValidationException(mLocalizer.t("PDH501: Encountered a Validation error : {0}", QwsUtil.getRootCause(ex).getMessage()));
+                throw new ValidationException(mLocalizer.t("PDH501: Encountered a Validation error : {0}", QwsUtil.getRootCause(ex).getMessage()),ex);
             } else if (ex instanceof UserException) {
-                throw new UserException(mLocalizer.t("PDH502: Encountered an UserException : {0}", QwsUtil.getRootCause(ex).getMessage()));
+                throw new UserException(mLocalizer.t("PDH502: Encountered an UserException : {0}", QwsUtil.getRootCause(ex).getMessage()),ex);
             } else if (!(ex instanceof ProcessingException)) {
-                throw new ProcessingException(mLocalizer.t("PDH503: Encountered the error:: {0}", QwsUtil.getRootCause(ex).getMessage()));
+                throw new ProcessingException(mLocalizer.t("PDH503: Encountered the error:: {0}", QwsUtil.getRootCause(ex).getMessage()),ex);
 
             }
         }

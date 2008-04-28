@@ -334,7 +334,7 @@ public class DeactivatedReportHandler    {
                 errorMessage = bundle.getString("ERROR_one_of_many");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                // Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                 mLogger.error(mLocalizer.x("RPT009: {0}",errorMessage));
+                 mLogger.info(mLocalizer.x("RPT009: {0}",errorMessage));
            }
 
         //Form Validation of  Start Time
@@ -345,7 +345,7 @@ public class DeactivatedReportHandler    {
                 String msg2 = bundle.getString("timeFrom"); 
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
-                mLogger.error(mLocalizer.x("RPT010: {0}",errorMessage));
+                mLogger.info(mLocalizer.x("RPT010: {0}",errorMessage));
             }            
         }
 
@@ -356,7 +356,7 @@ public class DeactivatedReportHandler    {
                  errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                  //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
-                 mLogger.error(mLocalizer.x("RPT011: {0}",errorMessage));
+                 mLogger.info(mLocalizer.x("RPT011: {0}",errorMessage));
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
@@ -373,7 +373,7 @@ public class DeactivatedReportHandler    {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
-                    mLogger.error(mLocalizer.x("RPT012: {0}",errorMessage));
+                    mLogger.error(mLocalizer.x("RPT012: {0}",errorMessage),validationException);
                 }
             }
         }
@@ -386,7 +386,7 @@ public class DeactivatedReportHandler    {
                  
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage, errorMessage));
                // Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
-                mLogger.error(mLocalizer.x("RPT013: {0}",errorMessage));
+                mLogger.info(mLocalizer.x("RPT013: {0}",errorMessage));
             } 
        }    
          
@@ -397,7 +397,7 @@ public class DeactivatedReportHandler    {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0? message:message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                 //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
-                mLogger.error(mLocalizer.x("RPT014: {0}",errorMessage));
+                mLogger.info(mLocalizer.x("RPT014: {0}",errorMessage));
             } else {
                 try {
                     if (getCreateEndTime().trim().length() == 0) {
@@ -414,7 +414,7 @@ public class DeactivatedReportHandler    {
                     //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    mLogger.error(mLocalizer.x("RPT015: {0}",errorMessage));
+                    mLogger.error(mLocalizer.x("RPT015: {0}",errorMessage),validationException);
                 }
             }           
         }
@@ -429,7 +429,7 @@ public class DeactivatedReportHandler    {
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                     //Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                    mLogger.error(mLocalizer.x("RPT016: {0}",errorMessage));
+                    mLogger.info(mLocalizer.x("RPT016: {0}",errorMessage));
                    }
         }
           

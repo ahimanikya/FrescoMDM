@@ -410,7 +410,7 @@ public class DuplicateReportHandler    {
                 String msg1 = bundle.getString("timeFrom");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1 + errorMessage, errorMessage));
                 //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
-                 mLogger.error(mLocalizer.x("RPT018: {0}",errorMessage));
+                 mLogger.info(mLocalizer.x("RPT018: {0}",errorMessage));
             }            
         }
 
@@ -421,7 +421,7 @@ public class DuplicateReportHandler    {
                  errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 // Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
-                  mLogger.error(mLocalizer.x("RPT025: {0}",message));
+                  mLogger.info(mLocalizer.x("RPT025: {0}",message));
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
@@ -434,7 +434,7 @@ public class DuplicateReportHandler    {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
-                     mLogger.error(mLocalizer.x("RPT019: {0}",errorMessage));
+                     mLogger.error(mLocalizer.x("RPT019: {0}",errorMessage),validationException);
                 }
             }
         }
@@ -447,7 +447,7 @@ public class DuplicateReportHandler    {
                 String msg1 = bundle.getString("timeTo");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  errorMessage, errorMessage));
                 //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
-                 mLogger.error(mLocalizer.x("RPT020: {0}",message));
+                 mLogger.info(mLocalizer.x("RPT020: {0}",message));
             } 
        }    
          
@@ -471,7 +471,7 @@ public class DuplicateReportHandler    {
                     //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    mLogger.error(mLocalizer.x("RPT022: {0}",errorMessage));
+                    mLogger.error(mLocalizer.x("RPT022: {0}",errorMessage), validationException);
                 }
             }           
         }
@@ -485,7 +485,7 @@ public class DuplicateReportHandler    {
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                    mLogger.error(mLocalizer.x("RPT023: {0}",errorMessage));
+                    mLogger.info(mLocalizer.x("RPT023: {0}",errorMessage));
                    }
         }
          if (getReportFunction() != null && getReportFunction().length() > 0)    {
@@ -500,7 +500,7 @@ public class DuplicateReportHandler    {
                  String msg3 = bundle.getString("ReportSize");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg3 + errorMessage, errorMessage));
                 //java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                mLogger.error(mLocalizer.x("RPT024: {0}",message));
+                mLogger.info(mLocalizer.x("RPT024: {0}",message));
                 
             }
         } 

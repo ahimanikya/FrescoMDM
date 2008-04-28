@@ -181,7 +181,7 @@ public  class NavigationHandler {
             session.removeAttribute("ScreenObject");
         } catch (Exception e) {
            // mLogger.error("Failed Get the Screen Object: ", e);
-             mLogger.error(mLocalizer.x("NAV001: Failed to get the Screen Object :{0} ",e.getMessage()));
+             mLogger.error(mLocalizer.x("NAV001: Failed to get the Screen Object :{0} ",e.getMessage()),e);
         }
         return screenObject;
     }
@@ -193,7 +193,7 @@ public  class NavigationHandler {
             tagName = ConfigManager.getInstance().getScreenObjectTagName(screenId.toString());
         } catch (Exception e) {
             //mLogger.error("Failed Get the Screen Object: ", e);
-             mLogger.error(mLocalizer.x("NAV002: Failed to get the Screen Object:{0} ",e.getMessage()));
+             mLogger.error(mLocalizer.x("NAV002: Failed to get the Screen Object:{0} ",e.getMessage()),e);
         }
         return tagName;
     }
@@ -220,7 +220,7 @@ public  class NavigationHandler {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("auditlog.jsf");
             }
         } catch (IOException ex) {
-            java.util.logging.Logger.getLogger(NavigationHandler.class.getName()).log(Level.SEVERE, null, ex);
+             mLogger.error(mLocalizer.x("NAV003: Exception has occured:{0} ",ex.getMessage()),ex);
         }
         session.setAttribute("ScreenObject", getScreenObject(midmTagName));
         //Remove the memory used for edit source records.

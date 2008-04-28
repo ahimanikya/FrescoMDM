@@ -153,7 +153,7 @@ public class HashMapHandler {
             }            
         } catch (Exception e) {
            // mLogger.error("Failed Get the Screen Object: ", e);
-             mLogger.error(mLocalizer.x("HND001: Failed to get the Screen Object :{0}",e.getMessage()));
+             mLogger.error(mLocalizer.x("HND001: Failed to get the Screen Object :{0}",e.getMessage()),e);
         }
         
         return fieldConfigArray;
@@ -174,7 +174,7 @@ public class HashMapHandler {
             //headerScreenObjectsArray = arrayList;
         } catch(Exception e) {
             //mLogger.error("Failed Get the Screen Object: ", e);
-             mLogger.error(mLocalizer.x("HND002: Failed to get the Screen Object :{0}",e.getMessage()));
+             mLogger.error(mLocalizer.x("HND002: Failed to get the Screen Object :{0}",e.getMessage()),e);
         }
         
         return headerScreenObjectsArray;
@@ -200,7 +200,7 @@ public class HashMapHandler {
                         
         } catch (Exception e) {
            // mLogger.error("Failed Get the Screen Config Array Object: ", e);
-             mLogger.error(mLocalizer.x("HND003: Failed to get the Screen Config Array Object: :{0}",e.getMessage()));
+             mLogger.error(mLocalizer.x("HND003: Failed to get the Screen Config Array Object: :{0}",e.getMessage()),e);
         }
 
         return screenConfigArray;
@@ -310,7 +310,7 @@ public class HashMapHandler {
             }
             
         } catch(Exception ex) {
-            ex.printStackTrace();
+             mLogger.error(mLocalizer.x("HND014: Failed to get non UpdateableFieldsArray :{0}",ex.getMessage()),ex);
         }
         return nonUpdateableFieldsArray;
     }

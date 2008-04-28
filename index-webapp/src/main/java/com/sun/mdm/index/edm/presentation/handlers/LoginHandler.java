@@ -105,7 +105,7 @@ public class LoginHandler {
            // ex.printStackTrace();
             errorMessage = bundle.getString("login_user_login_init_load_message");
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
-            mLogger.error(mLocalizer.x("HND004: {0}:{1}",errorMessage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("HND004: {0}:{1}",errorMessage,ex.getMessage()),ex);
             return FAIL_INITIALIZATION;
         }
         UserProfile userProfile = null;
@@ -123,7 +123,7 @@ public class LoginHandler {
            // e.printStackTrace();
             errorMessage = bundle.getString("login_user_login_failure_message");
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
-            mLogger.error(mLocalizer.x("HND005: {0} :{1}",errorMessage,e.getMessage()));
+            mLogger.error(mLocalizer.x("HND005: {0} :{1}",errorMessage,e.getMessage()),e);
             return FAILURE;
 
         }
@@ -192,7 +192,7 @@ public class LoginHandler {
                 // this piece of info in ConfigManager comes from MC
                 ConfigManager.getInstance().setEuidLength(euidLength);
             } catch (Exception e) {
-                 mLogger.error(mLocalizer.x("HND09: Error while initializing QwsController : {0}",e.getMessage()));
+                 mLogger.error(mLocalizer.x("HND09: Error while initializing QwsController : {0}",e.getMessage()),e);
                 request.setAttribute("Error while initializing QwsController", QwsUtil.getRootCause(e).getMessage());
             }
  
@@ -210,7 +210,7 @@ public class LoginHandler {
                 DateUtil.init();
             } catch (Exception t) {
                 request.setAttribute("Error while initializing DateUtil", QwsUtil.getRootCause(t).getMessage());
-               mLogger.error(mLocalizer.x("HND010: Error while initializing DateUtil : {0}",t.getMessage()));
+               mLogger.error(mLocalizer.x("HND010: Error while initializing DateUtil : {0}",t.getMessage()),t);
                 return FAIL_INITIALIZATION;
             }
         } else {
@@ -221,7 +221,7 @@ public class LoginHandler {
                 ValidationService.init();
             } catch (Exception t) {
                 request.setAttribute("Error while initializing ValidationService", QwsUtil.getRootCause(t).getMessage());
-                 mLogger.error(mLocalizer.x("HND011: Error while initializing ValidationService : {0}",t.getMessage()));
+                 mLogger.error(mLocalizer.x("HND011: Error while initializing ValidationService : {0}",t.getMessage()),t);
                 return FAIL_INITIALIZATION;
             }
             
@@ -230,7 +230,7 @@ public class LoginHandler {
                 DateUtil.init();
             } catch (Exception t) {
                 request.setAttribute("Error while initializing ValidationService", QwsUtil.getRootCause(t).getMessage());
-                mLogger.error(mLocalizer.x("HND012: Error while initializing ValidationService : {0}",t.getMessage()));
+                mLogger.error(mLocalizer.x("HND012: Error while initializing ValidationService : {0}",t.getMessage()),t);
                 return FAIL_INITIALIZATION;
             }
             

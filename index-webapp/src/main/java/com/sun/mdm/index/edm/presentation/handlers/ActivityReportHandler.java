@@ -351,7 +351,7 @@ public class ActivityReportHandler {
             errorMessage = bundle.getString("ERROR_one_of_many");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
             //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-            mLogger.error(mLocalizer.x("RPT001: {0}", errorMessage));
+            mLogger.info(mLocalizer.x("RPT001: {0}", errorMessage));
         }
 
         //Form Validation of  Start Time
@@ -362,7 +362,7 @@ public class ActivityReportHandler {
                 String em = bundle.getString("timeFrom");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, em + errorMessage, errorMessage));
                 //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
-             mLogger.error(mLocalizer.x("RPT002: {0}",errorMessage));
+             mLogger.info(mLocalizer.x("RPT002: {0}",errorMessage));
             }
         }
 
@@ -373,7 +373,7 @@ public class ActivityReportHandler {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
-                 mLogger.error(mLocalizer.x("RPT003: {0}" ,message));
+                 mLogger.info(mLocalizer.x("RPT003: {0}" ,message));
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
@@ -399,7 +399,7 @@ public class ActivityReportHandler {
                 String msg = bundle.getString("timeTo");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg+ errorMessage, errorMessage));
                 //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
-                mLogger.error(mLocalizer.x("RPT005: {0}" , message));
+                mLogger.info(mLocalizer.x("RPT005: {0}" , message));
             }
         }
 
@@ -410,7 +410,7 @@ public class ActivityReportHandler {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
-                mLogger.error(mLocalizer.x("RPT006: {0}" , message));
+                mLogger.info(mLocalizer.x("RPT006: {0}" , message));
             } else {
                 try {
                     //If Time is supplied append it to the date to check if it parses into a valid Date
@@ -438,7 +438,7 @@ public class ActivityReportHandler {
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                     //Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                   mLogger.error(mLocalizer.x("RPT008: {0}" , errorMessage));
+                   mLogger.info(mLocalizer.x("RPT008: {0}" , errorMessage));
                  }
         }
         

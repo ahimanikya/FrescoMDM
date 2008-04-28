@@ -91,7 +91,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
     private String destnEuid  = new String();
     private String selectedMergeFields = new String();
 
-    
+    String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
     CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
     
     /** Creates a new instance of PatientDetailsHandler */
@@ -138,7 +138,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 errorMessage = bundle.getString("ERROR_one_of_many");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                // mLogger.error("Validation failed. Message displayed to the user: " + "One of Many :: " + errorMessage);
-                mLogger.error(mLocalizer.x("PDH001: Failed Get the Screen Object:{0} ", errorMessage));
+                mLogger.info(mLocalizer.x("PDH001: Failed Get the Screen Object:{0} ", errorMessage));
                 return VALIDATION_ERROR;
             }
 
@@ -146,7 +146,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             if ((super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("SystemCode") == null) {
                 errorMessage = bundle.getString("LID_only");   //"Please Enter System Code";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                mLogger.error(mLocalizer.x("PDH002: {0}",errorMessage));
+                mLogger.info(mLocalizer.x("PDH002: {0}",errorMessage));
                 return VALIDATION_ERROR;
 
             }
@@ -154,7 +154,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             if ((super.getUpdateableFeildsMap().get("SystemCode") != null && super.getUpdateableFeildsMap().get("SystemCode").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("LID") == null) {
                 errorMessage = bundle.getString("enter_LID");//"Please Enter LID Value";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-               mLogger.error(mLocalizer.x("PDH003: {0}",errorMessage));
+               mLogger.info(mLocalizer.x("PDH003: {0}",errorMessage));
                 return VALIDATION_ERROR;
 
             }
@@ -165,7 +165,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 if (SystemCode.trim().length() > 0 && LID.trim().length() == 0) {
                     errorMessage = bundle.getString("enter_LID");// "Please Enter LID Value";
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    mLogger.error(mLocalizer.x("PDH003: {0}",errorMessage));
+                    mLogger.info(mLocalizer.x("PDH003: {0}",errorMessage));
                     return VALIDATION_ERROR;
 
                 }
@@ -184,14 +184,14 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                         if (so == null) {
                             errorMessage = bundle.getString("system_object_not_found_error_message");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage, errorMessage));
-                             mLogger.error(mLocalizer.x("PDH004: {0} ", errorMessage));
+                             mLogger.info(mLocalizer.x("PDH004: {0} ", errorMessage));
                             return VALIDATION_ERROR;
                         }
                     } catch (ProcessingException ex) {
-                         mLogger.error(mLocalizer.x("PDH005: Encountered the ProcessingException:{0} ", ex.getMessage()));
+                         mLogger.error(mLocalizer.x("PDH005: Encountered the ProcessingException:{0} ", ex.getMessage()),ex);
                         return VALIDATION_ERROR;
                     } catch (UserException ex) {
-                        mLogger.error(mLocalizer.x("PDH006: Encountered the UserException:{0} ", ex.getMessage()));
+                        mLogger.error(mLocalizer.x("PDH006: Encountered the UserException:{0} ", ex.getMessage()),ex);
                         return VALIDATION_ERROR;
                     }
 
@@ -206,7 +206,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     String obj = (String) messObjs[i];
                     String[] fieldErrors = obj.split(">>");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
-                    mLogger.error(mLocalizer.x("PDH007: Validation failed :{0}:{1} ", fieldErrors[0],fieldErrors[1]));
+                    mLogger.info(mLocalizer.x("PDH007: Validation failed :{0}:{1} ", fieldErrors[0],fieldErrors[1]));
                     return VALIDATION_ERROR;
                 }
 
@@ -219,7 +219,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     String obj = (String) messObjs[i];
                     String[] fieldErrors = obj.split(">>");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
-                    mLogger.error(mLocalizer.x("PDH008: Validation failed :{0}:{1} ", fieldErrors[0],fieldErrors[1]));
+                    mLogger.info(mLocalizer.x("PDH008: Validation failed :{0}:{1} ", fieldErrors[0],fieldErrors[1]));
                     return VALIDATION_ERROR;
                 }
 
@@ -407,7 +407,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         // SambaG
 
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("PDH009: Exception has occured  :{0} ", ex.getMessage()));
+           mLogger.error(mLocalizer.x("PDH009: Exception has occured  :{0} ", ex.getMessage()),ex);
             return this.VALIDATION_ERROR;
         }
         return this.SEARCH_PATIENT_DETAILS;
@@ -467,11 +467,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             session.setAttribute("comapreEuidsArrayList",modifiedArrayList);
 
         } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("PDH010: Encountered the ProcessingException :{0} ", ex.getMessage()));
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH010: Encountered the ProcessingException :{0} ", ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
         } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("PDH011: Encountered the  UserException :{0} ", ex.getMessage()));
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH011: Encountered the  UserException :{0} ", ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
         }
    
         return "Compare Duplicates";
@@ -507,11 +507,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             session.setAttribute("comapreEuidsArrayList",modifiedArrayList);
 
         } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
             mLogger.error(mLocalizer.x("PDH012: Encountered the  ProcessingException :{0} ", ex.getMessage()));
 
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
              mLogger.error(mLocalizer.x("PDH013: Encountered the  UserException :{0} ", ex.getMessage()));
         }
 
@@ -532,10 +532,10 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             session.setAttribute("enterpriseArrayList", newEOArrayList);
 
         } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
              mLogger.error(mLocalizer.x("PDH014: Encountered the  ProcessingException :{0} ", ex.getMessage()));
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
             mLogger.error(mLocalizer.x("PDH015: Encountered the  UserException :{0} ", ex.getMessage()));
         }
 
@@ -626,11 +626,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
 
         } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-             mLogger.error(mLocalizer.x("PDH017: Encountered the  ProcessingException :{0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
+             mLogger.error(mLocalizer.x("PDH017: Encountered the  ProcessingException :{0} ", ex.getMessage()),ex);
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("PDH018: Encountered the  UserException :{0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
+            mLogger.error(mLocalizer.x("PDH018: Encountered the  UserException :{0} ", ex.getMessage()),ex);
         }
         
       //Insert Audit logs 
@@ -643,16 +643,16 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                                                new Integer(screenObject.getID()).intValue(),
                                                "View two selected EUIDs of the merge confirm page");
         } catch (UserException ex) {   
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-           mLogger.error(mLocalizer.x("PDH019: Encountered the  UserException :{0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+           mLogger.error(mLocalizer.x("PDH019: Encountered the  UserException :{0} ", ex.getMessage()),ex);
             return this.SERVICE_LAYER_ERROR;
         } catch (ObjectException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-          mLogger.error(mLocalizer.x("PDH020: Encountered the  ObjectException :{0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+          mLogger.error(mLocalizer.x("PDH020: Encountered the  ObjectException :{0} ", ex.getMessage()),ex);
             return this.SERVICE_LAYER_ERROR;
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-           mLogger.error(mLocalizer.x("PDH021: Encountered the Exception :{0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+           mLogger.error(mLocalizer.x("PDH021: Encountered the Exception :{0} ", ex.getMessage()),ex);
             return this.SERVICE_LAYER_ERROR;
         }
         
@@ -723,14 +723,14 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             session.setAttribute("comapreEuidsArrayList",finalMergeList);
             
         } catch (ObjectException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-           mLogger.error(mLocalizer.x("PDH022: Encountered the ObjectException :{0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+           mLogger.error(mLocalizer.x("PDH022: Encountered the ObjectException :{0} ", ex.getMessage()),ex);
         } catch (ValidationException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-           mLogger.error(mLocalizer.x("PDH023: Encountered the  ValidationException :{0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+           mLogger.error(mLocalizer.x("PDH023: Encountered the  ValidationException :{0} ", ex.getMessage()),ex);
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-              mLogger.error(mLocalizer.x("PDH024: Encountered the Exception :{0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+              mLogger.error(mLocalizer.x("PDH024: Encountered the Exception :{0} ", ex.getMessage()),ex);
         }
       //Insert Audit logs 
        try {
@@ -742,16 +742,16 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                                                new Integer(screenObject.getID()).intValue(),
                                                "View two selected EUIDs of the merge confirm page");
         } catch (UserException ex) {   
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-             mLogger.error(mLocalizer.x("PDH025: Encountered the UserException :{0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("PDH025: Encountered the UserException :{0} ", ex.getMessage()),ex);
             return this.SERVICE_LAYER_ERROR;
         } catch (ObjectException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-   mLogger.error(mLocalizer.x("PDH026: Encountered the ObjectException :{0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+   mLogger.error(mLocalizer.x("PDH026: Encountered the ObjectException :{0} ", ex.getMessage()),ex);
             return this.SERVICE_LAYER_ERROR;
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("PDH027: Encountered the Exception :{0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH027: Encountered the Exception :{0} ", ex.getMessage()),ex);
             return this.SERVICE_LAYER_ERROR;
         }
 
@@ -791,8 +791,8 @@ public class PatientDetailsHandler extends ScreenConfiguration {
              mLogger.error(mLocalizer.x("PDH028: Encountered the ProcessingException :{0} ", ex.getMessage()));
             return this.SERVICE_LAYER_ERROR;
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("PDH029: Encountered the UserException :{0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH029: Encountered the UserException :{0} ", ex.getMessage()),ex);
             return this.SERVICE_LAYER_ERROR;
         }
         
@@ -807,16 +807,16 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                                                new Integer(screenObject.getID()).intValue(),
                                                "View/Edit detail of enterprise object");
         } catch (UserException ex) {   
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("PDH032: Failed to insert Audit log :{0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH032: Failed to insert Audit log :{0} ", ex.getMessage()),ex);
             return this.SERVICE_LAYER_ERROR;
         } catch (ObjectException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-         mLogger.error(mLocalizer.x("PDH030: Failed to insert Audit log :{0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+         mLogger.error(mLocalizer.x("PDH030: Failed to insert Audit log :{0} ", ex.getMessage()),ex);
             return this.SERVICE_LAYER_ERROR;
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-           mLogger.error(mLocalizer.x("PDH031: Failed to insert Audit log :{0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+           mLogger.error(mLocalizer.x("PDH031: Failed to insert Audit log :{0} ", ex.getMessage()),ex);
             return this.SERVICE_LAYER_ERROR;
         }
 
@@ -915,11 +915,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
            
             session.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
-           mLogger.error(mLocalizer.x("PDH033: Encountered  ProcessingException:{0} ", ex.getMessage()));
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+           mLogger.error(mLocalizer.x("PDH033: Encountered  ProcessingException:{0} ", ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-             mLogger.error(mLocalizer.x("PDH034: Encountered  UserException:{0} ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("PDH034: Encountered  UserException:{0} ", ex.getMessage()),ex);
         }
 
         return "EUID Details";
@@ -962,11 +962,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             httpRequest.setAttribute("comapreEuidsArrayList", updatedEOList);
 
         } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-           mLogger.error(mLocalizer.x("PDH043: ProcessingException: Failed to activate EO ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+           mLogger.error(mLocalizer.x("PDH043: ProcessingException: Failed to activate EO ", ex.getMessage()),ex);
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("PDH044: UserException: Failed to activate EO ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH044: UserException: Failed to activate EO ", ex.getMessage()),ex);
         }
 
 
@@ -998,11 +998,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             httpRequest.setAttribute("comapreEuidsArrayList", updatedEOList);
 
         } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-             mLogger.error(mLocalizer.x("PDH045: ProcessingException: Failed to deactivate EO ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("PDH045: ProcessingException: Failed to deactivate EO ", ex.getMessage()),ex);
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("PDH046: UserException: Failed to deactivate EO ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH046: UserException: Failed to deactivate EO ", ex.getMessage()),ex);
         }
 
     //Keep the updated SO in the session again
@@ -1117,11 +1117,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             session.setAttribute("enterpriseArrayList", finalMergredDestnEOArrayList);
 
         } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
            mLogger.error(mLocalizer.x("PDH047: ProcessingException: Unable to get Preview of the merge EO ", ex.getMessage()));
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-           mLogger.error(mLocalizer.x("PDH048: UserException: Unable to get Preview of the merge EO  ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+           mLogger.error(mLocalizer.x("PDH048: UserException: Unable to get Preview of the merge EO  ", ex.getMessage()),ex);
         }
     }
 
@@ -1156,14 +1156,14 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
 
         } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-           mLogger.error(mLocalizer.x("PDH049: Failed to unmerge EO  ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+           mLogger.error(mLocalizer.x("PDH049: Failed to unmerge EO  ", ex.getMessage()),ex);
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-            mLogger.error(mLocalizer.x("PDH050: Failed to unmerge EO  ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+            mLogger.error(mLocalizer.x("PDH050: Failed to unmerge EO  ", ex.getMessage()),ex);
         } catch (RemoteException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-             mLogger.error(mLocalizer.x("PDH051: Failed to unmerge EO  ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+             mLogger.error(mLocalizer.x("PDH051: Failed to unmerge EO  ", ex.getMessage()),ex);
         }
 
     }
@@ -1202,8 +1202,8 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             httpRequest.setAttribute("mergeEOList"+euid, mergeEOList);
 
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-             mLogger.error(mLocalizer.x("PDH052: Failed to get merge records ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("PDH052: Failed to get merge records ", ex.getMessage()),ex);
         }
     }
 
@@ -1232,8 +1232,8 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             httpRequest.setAttribute("eoHistory" + euid, newArrayListHistory);
 
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-              mLogger.error(mLocalizer.x("PDH053: Failed to get history ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+              mLogger.error(mLocalizer.x("PDH053: Failed to get history ", ex.getMessage()),ex);
         }
     }
 
@@ -1258,8 +1258,8 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             httpRequest.setAttribute("eoSources"+enterpriseObject.getEUID(), newArrayList);
 
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-             mLogger.error(mLocalizer.x("PDH054: Failed to view source ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("PDH054: Failed to view source ", ex.getMessage()),ex);
         }
     }
 
@@ -1404,11 +1404,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                         "View/Edit detail of enterprise object");
 
             } catch (ProcessingException ex) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-                  mLogger.error(mLocalizer.x("PDH055: Failed to unmerge EO  ", ex.getMessage()));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+                  mLogger.error(mLocalizer.x("PDH055: Failed to unmerge EO  ", ex.getMessage()),ex);
             } catch (UserException ex) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
-                  mLogger.error(mLocalizer.x("PDH056: Failed to unmerge EO  ", ex.getMessage()));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
+                  mLogger.error(mLocalizer.x("PDH056: Failed to unmerge EO  ", ex.getMessage()),ex);
             }
 
         }
@@ -1441,11 +1441,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                                                new Integer(screenObject.getID()).intValue(),
                                                "View/Edit detail of enterprise object");
     } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-             mLogger.error(mLocalizer.x("PDH057: Failed to build EUIDs  ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
+             mLogger.error(mLocalizer.x("PDH057: Failed to build EUIDs  ", ex.getMessage()),ex);
         } catch (UserException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
-            mLogger.error(mLocalizer.x("PDH058: Failed to build EUIDs ", ex.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
+            mLogger.error(mLocalizer.x("PDH058: Failed to build EUIDs ", ex.getMessage()),ex);
         }
         return euidsMapList;        
   }

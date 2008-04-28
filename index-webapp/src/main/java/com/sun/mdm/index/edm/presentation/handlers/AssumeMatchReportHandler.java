@@ -347,7 +347,7 @@ public class AssumeMatchReportHandler  {
                 errorMessage = bundle.getString("ERROR_one_of_many");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                 //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                mLogger.error(mLocalizer.x("ASM027: {0} ",errorMessage));
+                mLogger.info(mLocalizer.x("ASM027: {0} ",errorMessage));
            }
 
         //Form Validation of  Start Time
@@ -358,7 +358,7 @@ public class AssumeMatchReportHandler  {
                 String msg1 = bundle.getString("timeFrom");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1+ errorMessage, errorMessage));
                 //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, message, message);
-                mLogger.error(mLocalizer.x("ASM028: Start time validation failed: {0}",message));
+                mLogger.info(mLocalizer.x("ASM028: Start time validation failed: {0}",message));
             }            
         }
 
@@ -369,7 +369,7 @@ public class AssumeMatchReportHandler  {
                  errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                  //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, message, message);
-                 mLogger.error(mLocalizer.x("ASM029: Start Date validation failed :{0} :{1}",message,errorMessage));
+                 mLogger.info(mLocalizer.x("ASM029: Start Date validation failed :{0} :{1}",message,errorMessage));
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
@@ -386,7 +386,7 @@ public class AssumeMatchReportHandler  {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
-                    mLogger.error(mLocalizer.x("ASM030: Validation failed :{0}",errorMessage));
+                    mLogger.error(mLocalizer.x("ASM030: Validation failed :{0}",errorMessage),validationException);
                 }
             }
         }
@@ -399,7 +399,7 @@ public class AssumeMatchReportHandler  {
                 String msg2 = bundle.getString("timeTo");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg2 + errorMessage, errorMessage));
                 //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, message, message);
-                 mLogger.error(mLocalizer.x("ASM031: Validation failed :{0}",msg2+errorMessage));
+                 mLogger.info(mLocalizer.x("ASM031: Validation failed :{0}",msg2+errorMessage));
             } 
        }    
          
@@ -411,7 +411,7 @@ public class AssumeMatchReportHandler  {
                  //String msg3 = bundle.getString("End_Date");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                 //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, message, message);
-                 mLogger.error(mLocalizer.x("ASM032: Validation failed :{0}",errorMessage));
+                 mLogger.info(mLocalizer.x("ASM032: Validation failed :{0}",errorMessage));
             } else {
                 try {
                     if (getCreateEndTime().trim().length() == 0) {
@@ -428,7 +428,7 @@ public class AssumeMatchReportHandler  {
                     //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    mLogger.error(mLocalizer.x("ASM033: Validation failed :{0}",errorMessage));
+                    mLogger.error(mLocalizer.x("ASM033: Validation failed :{0}",errorMessage),validationException);
                 }
             }           
         }
@@ -442,7 +442,7 @@ public class AssumeMatchReportHandler  {
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                    // Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                   mLogger.error(mLocalizer.x("ASM034: Validation failed :{0}",errorMessage));
+                   mLogger.info(mLocalizer.x("ASM034: Validation failed :{0}",errorMessage));
                    }
         }
           if (this.getReportSize() != null && this.getReportSize().length() > 0)    {
@@ -453,7 +453,7 @@ public class AssumeMatchReportHandler  {
                 String msg4 = bundle.getString("ReportSize");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg4+errorMessage, errorMessage));
                 //java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                mLogger.error(mLocalizer.x("ASM035: Validation failed :{0}",errorMessage));
+                mLogger.info(mLocalizer.x("ASM035: Validation failed :{0}",errorMessage));
             }
         }    
                
