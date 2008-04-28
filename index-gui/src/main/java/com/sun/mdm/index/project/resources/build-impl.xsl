@@ -237,7 +237,7 @@ is divided into following sections:
                     description="generate loader zip">
                 <mkdir dir="loader-generated/loader/conf" />
                 <mkdir dir="loader-generated/loader/lib" />
-                <mkdir dir="loader-generated/bulkloader"/>
+                <!-- mkdir dir="loader-generated/bulkloader"/ -->
                 <copy todir="loader-generated/loader/lib">
                     
                     <fileset dir="lib">
@@ -247,9 +247,15 @@ is divided into following sections:
                         <include name="*.jar" />
                     </fileset>
                 </copy>
-                <copy todir="loader-generated/bulkloader">
+                <!--copy todir="loader-generated/bulkloader"-->
+                <copy todir="loader-generated/loader">
                     <fileset dir="${{module.install.dir}}/ext/mdm/bulkloader"/>
                 </copy>
+                <move todir="loader-generated/loader/lib">
+                    <fileset dir="loader-generated/loader">
+                    	<include name="*.jar"/>
+                    </fileset>
+                </move>
                 <generate-loader-zip srcDir="${{src.dir}}" configDir="loader-generated/loader/conf" />
                 
                 <zip destfile="loader-generated/loader.zip" basedir="loader-generated"
@@ -257,7 +263,7 @@ is divided into following sections:
                 </zip>
                 
                 <delete dir="loader-generated/loader"></delete>
-                <delete dir="loader-generated/bulkloader"/>
+                <!-- delete dir="loader-generated/bulkloader"/-->
             </target>
             
             <target name="gen-cleanser-zip" depends="pre-pre-compile" description="generate cleanser zip">
