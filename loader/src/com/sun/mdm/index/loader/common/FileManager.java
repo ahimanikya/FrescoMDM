@@ -249,6 +249,12 @@ public class FileManager {
 	    	    	  return file;  
 	}
 	
+
+	public static File getInputStandardizedFile() {
+		File file = new File(workingDir, "input_standardized.txt");		
+	    	    	  return file;  
+	}
+	
 	public static File getInputSBRFile() {
 		
 		File file = new File(sbrInputStageDir, "SBRInput" + loader);		
