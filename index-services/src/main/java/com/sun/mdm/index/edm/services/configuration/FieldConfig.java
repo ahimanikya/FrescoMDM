@@ -30,11 +30,14 @@ package com.sun.mdm.index.edm.services.configuration;
 
 import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.edm.common.PullDownListItem;
+import com.sun.mdm.index.util.Localizer;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 //Adding the import for select options if the FieldConfig type is "Menu List"
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.model.SelectItem;
 
 /**
@@ -44,6 +47,9 @@ import javax.faces.model.SelectItem;
  * @created August 6, 2002
  */
 public class FieldConfig implements java.io.Serializable, Comparable {
+    
+    private static transient final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.services.configuration.FieldConfig");
+    private static transient final Localizer mLocalizer = Localizer.get();
     /** constant
      */
     public static final String GUI_TYPE_MENULIST = "MenuList";
@@ -441,16 +447,28 @@ public class FieldConfig implements java.io.Serializable, Comparable {
      *      object
      * @return the items
      */
-    public PullDownListItem[] getPossibleValues() {
+    public PullDownListItem[] getPossibleValues() 
+    throws Exception
+    {
         PullDownListItem[] ret;
-        if (getUserCode() != null) {
-            ret =  ValidationService.getInstance().getUserCodeValueItems(getUserCode());
+        String lookup = getUserCode();
+        if (lookup != null) {
+            ret =  ValidationService.getInstance().getUserCodeValueItems(lookup);
+           
         } else {
-            ret =  ValidationService.getInstance().getValueItems(this.valueList);
+            // ALK - saved for error handling
+            lookup = this.valueList;
+            ret =  ValidationService.getInstance().getValueItems(lookup);
         }
         if (ret != null) {
             Arrays.sort((Object[]) ret);
-	}
+	} else {
+            throw new Exception(mLocalizer.t(
+                    "SRC534: Could not find values for {0}.  Make sure" +
+                    " this is  either defined via the codelist.sql " + 
+                    " or in the appropriate database table.", lookup));
+            
+        }
         return ret;
     }
 
@@ -459,16 +477,21 @@ public class FieldConfig implements java.io.Serializable, Comparable {
      * FieldConfig object
      * @return the possible values
      */
-    public List getPossibleValuesList() {
+    public List getPossibleValuesList() 
+    throws Exception {
         List list = new ArrayList();
-        PullDownListItem[] items = getPossibleValues();
+        try {
+            PullDownListItem[] items = getPossibleValues();
 
-        if (items != null) {
-            for (int i = 0; i < items.length; i++) {
-                list.add(items[i]);
+            if (items != null) {
+                for (int i = 0; i < items.length; i++) {
+                    list.add(items[i]);
+                }
             }
+        } catch (Exception e){
+            mLogger.log(Level.SEVERE, e.getMessage(), e);
+            throw e;
         }
-
         return list;
     }
 
@@ -864,16 +887,25 @@ public class FieldConfig implements java.io.Serializable, Comparable {
      * 
      * @return ArrayList<SelectItem>
      */
-    public ArrayList<SelectItem> getSelectOptions() {
-        PullDownListItem[] pullDownListItems = getPossibleValues();
-        ArrayList newArrayList = new ArrayList();
-        for (int i = 0; i < pullDownListItems.length; i++) {
-            SelectItem selectItem = new SelectItem();
-            selectItem.setLabel(pullDownListItems[i].getDescription());
-            selectItem.setValue(pullDownListItems[i].getName());
-            newArrayList.add(selectItem);
+    public ArrayList<SelectItem> getSelectOptions()
+    throws Exception 
+    {
+        PullDownListItem[] pullDownListItems;
+        selectOptions = null;
+        try {
+            pullDownListItems = getPossibleValues();
+            ArrayList newArrayList = new ArrayList();
+            for (int i = 0; i < pullDownListItems.length; i++) {
+                SelectItem selectItem = new SelectItem();
+                selectItem.setLabel(pullDownListItems[i].getDescription());
+                selectItem.setValue(pullDownListItems[i].getName());
+                newArrayList.add(selectItem);
+            }
+            selectOptions = newArrayList;
+        } catch (Exception e) {
+           mLogger.log(Level.SEVERE, e.getMessage(), e);
         }
-        selectOptions = newArrayList;
+
         return selectOptions;
     }
 
