@@ -92,10 +92,10 @@
                                          id="fieldConfigId" 
                                          var="feildConfig" 
                                          value="#{searchScreenFieldGroup.fieldConfigs}">
-
+	
                                 <!--Rendering Non Updateable HTML Text Area-->
-                                 <h:column>
-                                            <nobr>
+                                        <h:column>
+									      <nobr>
                                                 <h:outputText value="*" rendered="#{feildConfig.required}" />
                                                 <h:outputText value="#{feildConfig.displayName}" />
                                             </nobr>
@@ -247,8 +247,7 @@
                     %>                
                 <br>   
                   <%
-                     if(finalArrayList != null && finalArrayList.size() >0 ) {
-						 //System.out.println("-------------IN JSPPPP---finalArrayList.size()--" + finalArrayList.size());
+                     if(finalArrayList != null && finalArrayList.size() >0 ) {						
 						finalArrayListVE = ExpressionFactory.newInstance().createValueExpression(finalArrayList, finalArrayList.getClass());
 						
 
@@ -526,10 +525,10 @@
                                                         </h:commandLink>  
 												   </h:form>
 												<%}else{%>
-                                                           <a onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" 
-                                                              href="javascript:void(0)">
+                                                           <h:outputLink rendered="#{Operations.potDup_ResolveUntilRecalc}"   onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" 
+                                                              value="javascript:void(0)">
 															  <img src="./images/diff.gif" alt="Different Person" border="0">
-                                                            </a>   
+                                                            </h:outputLink>   
 
 												<%}%>
 
@@ -624,12 +623,12 @@
 														<%if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) != null ) {
                                                          %>
                                                             <h:form id="mergeFinal">
-                                                               <h:commandLink rendered="#{Operations.potDup_SearchView}"  styleClass="button"
+                                                               <h:commandLink rendered="#{Operations.EO_Merge}"  styleClass="button"
                                                                           actionListener="#{SearchDuplicatesHandler.performMultiMergeEnterpriseObject}">
                                                                     <f:attribute name="duplicateSearchObjectVE"  value="<%=duplicateSearchObjectVE%>"  />
                                                                     <span>Merge</span>
                                                                </h:commandLink>
-                                                                <h:commandLink rendered="#{Operations.potDup_SearchView}"  styleClass="button"
+                                                                <h:commandLink rendered="#{Operations.EO_Merge}"  styleClass="button"
                                                                                actionListener="#{SearchDuplicatesHandler.cancelMultiMergeOperation}">
                                                                     <span>Cancel</span>
                                                                 </h:commandLink>

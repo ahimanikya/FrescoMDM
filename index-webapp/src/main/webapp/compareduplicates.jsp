@@ -363,10 +363,10 @@
                                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
                                                                     ArrayList  minorObjectMapList =  (ArrayList) eoHashMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayList");
                                                                     HashMap minorObjectHashMap = new HashMap();
-                                                                    //for(int ar =0;ar<minorObjectMapList.size();ar++) {
-                                                                     if(minorObjectMapList.size() >0) {
-                                                                       minorObjectHashMap = (HashMap) minorObjectMapList.get(0);
-                                                                     }  
+                                                                    for(int ar =0;ar<minorObjectMapList.size();ar++) {
+                                                                    // if(minorObjectMapList.size() >0) {
+                                                                       minorObjectHashMap = (HashMap) minorObjectMapList.get(ar);
+                                                                     //}  
                                                                     //}   
                                                                       FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
                                                                     
@@ -396,6 +396,7 @@
                                                                         </td>
                                                                     </tr>
                                                                     <%
+                                                                      }
                                                                       }
                                                                     }
                                                                     %>
@@ -473,9 +474,11 @@
                                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[io];
                                                                     ArrayList  minorObjectMapList =  (ArrayList) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList");
                                                                     HashMap minorObjectHashMap = new HashMap();
-                                                                     if(minorObjectMapList.size() >0) {
-                                                                       minorObjectHashMap = (HashMap) minorObjectMapList.get(0);
-                                                                     }  
+                                                                    for(int ar =0;ar<minorObjectMapList.size();ar++) {
+                                                                    
+                                                                     //if(minorObjectMapList.size() >0) {
+                                                                       minorObjectHashMap = (HashMap) minorObjectMapList.get(ar);
+                                                                       
                                                                      FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
                                                                     
 
@@ -498,6 +501,7 @@
                                                                     </tr>
                                                                     <%
                                                                       }
+                                                                     }
                                                                     }
                                                                     %>
 
@@ -692,11 +696,23 @@
                                                                     <%
                                                                      }
                                                                     %>
-                                                                    <%
-
+                                                                   <%
+                                                                  
                                                                    for (int i = 0; i < arrObjectNodeConfig.length; i++) {
                                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
-                                                                    FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
+								    ArrayList  minorObjectMapList =  new ArrayList();
+								  if( request.getAttribute("eoMultiMergePreview") != null  ) {
+                                                                      minorObjectMapList =  (ArrayList) eoMultiMergePreviewMap.get("EO" + childObjectNodeConfig.getName() + "ArrayList");
+								 }
+                                                                    HashMap minorObjectHashMap = new HashMap();
+								
+                                                                    for(int ar =0;ar<minorObjectMapList.size();ar++) {
+                                                                    // if(minorObjectMapList.size() >0) {
+                                                                       minorObjectHashMap = (HashMap) minorObjectMapList.get(ar);
+                                                                     //}  
+                                                                    //}   
+                                                                      FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
+                                                                    
 
                                                                    %>
                                                                     <tr><td>&nbsp;</td></tr>
@@ -704,32 +720,28 @@
                                                                     <%
                                                                     for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
                                                                      FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
-                                                                       if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
-                                                                         epathValue = fieldConfigMap.getFullFieldName();
-                                                                       } else {
-                                                                         epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
-                                                                       }
+                                                                     epathValue = fieldConfigMap.getFullFieldName();
+
                                                                     %>  
                                                                     <tr>
                                                                         <td>
-                                                                            <%
-                                                                            if( request.getAttribute("eoMultiMergePreview") != null  ) {
-                                                                            %>
-                                                                              
-                                                                              <%if(mergePersonfieldValuesMapEO.get(epathValue) != null ) {%>
-                                                                               <span id="<%=epathValue%>"><%=mergePersonfieldValuesMapEO.get(epathValue)%></span>
-                                                                             <%}else{%>
-                                                                               <span id="<%=epathValue%>">&nbsp;</span>
-                                                                             <%}%>
-                                                                             
-                                                                             <%}else{%>
-                                                                              &nbsp;
-                                                                            <%}%>
+										<%if( request.getAttribute("eoMultiMergePreview") != null  ) {%>
+                                                                                <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
+                                                                                <%=minorObjectHashMap.get(epathValue)%>
+                                                                                <%} else {%>
+                                                                                &nbsp;
+                                                                                <%}%>
+										<%} else {%>
+										&nbsp;
+										<%}%>
                                                                         </td>
                                                                     </tr>
                                                                     <%
                                                                       }
-                                                                     }
+                                                                      }
+																     
+                                                  
+                                                                    }
                                                                     %>
 
                                                                 </table>
@@ -799,11 +811,13 @@
                                                              <h:outputText value="#{msgs.potential_dup_button}"/>
                                                         </h:commandLink>  
                                                       <%} else  {%> 
-                                                      <a onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" 
-                                                          class="diffviewbtn"  
-                                                          href="javascript:void(0)">
+
+                                                      <h:outputLink 
+													  rendered="#{Operations.potDup_ResolveUntilRecalc}" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" 
+                                                          styleClass="diffviewbtn"  
+                                                          value="javascript:void(0)">
                                                           <h:outputText value="#{msgs.diff_person_heading_text}"/>
-                                                       </a>   
+                                                       </h:outputLink>   
                                                       <%}%> 
                                                 </tr>
                                                 <%} else {%> 
