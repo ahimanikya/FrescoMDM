@@ -1670,7 +1670,7 @@ public class EDMType {
      * @return String - impl-details portion of edm.xml or midm.xml
      * 
      */
-    public String getImplDetailsXML() {
+    public String getImplDetailsXML(boolean bMidm) {
         StringBuffer buffer = new StringBuffer();
         
 	buffer.append(Utils.TAB + Utils.startTag(mTagImplDetails));
@@ -1701,9 +1701,9 @@ public class EDMType {
                           Utils.endTag(mTagEnableSecurity));
         }
         
-        if (mImplDetails.objectSensitivePlugInClass != null) {
+        if (bMidm) {
             buffer.append(Utils.TAB2 + Utils.startTagNoLine(this.mTagObjectSensitivePlugInClass) + 
-                            mImplDetails.objectSensitivePlugInClass + 
+                            ((mImplDetails.objectSensitivePlugInClass != null) ? mImplDetails.objectSensitivePlugInClass : "") + 
                             Utils.endTag(mTagObjectSensitivePlugInClass));
         }
         
