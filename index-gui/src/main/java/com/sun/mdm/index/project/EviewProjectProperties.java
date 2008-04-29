@@ -65,7 +65,7 @@ public class EviewProjectProperties {
     public static final String OBJECT_XML = "object.xml";
     public static final String OBJECT_XSD = "eIndex.xsd";
     public static final String EDM_XML = "edm.xml";
-    public static final String EDM_XSD = "EDM.xsd";
+    public static final String EDM_XSD = "edm.xsd";
     public static final String MIDM_XML = "midm.xml";
     public static final String MIDM_XSD = "midm.xsd";
     public static final String MASTER_XML = "master.xml";
