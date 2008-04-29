@@ -756,12 +756,16 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     AssumedMatchSummary amSummary = (AssumedMatchSummary) amIter.next();
                     if (amSummary.getBeforeEO() != null) {
                         //eoArrayList.add(amSummary.getBeforeEO());
-                        HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(amSummary.getBeforeEO(), screenObject);
+						// commented  fix for 6694538
+                       // HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(amSummary.getBeforeEO(), screenObject);
+                        HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(masterControllerService.getEnterpriseObject(amSummary.getBeforeEO().getEUID()), screenObject);
                         eoArrayList.add(eoMap);
                     }
                     if (amSummary.getAfterEO() != null) {
                         //eoArrayList.add(amSummary.getAfterEO());
-                        HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(amSummary.getAfterEO(), screenObject);
+						// commented  fix for 6694538
+                        //HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(amSummary.getAfterEO(), screenObject);
+						   HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(masterControllerService.getEnterpriseObject(amSummary.getBeforeEO().getEUID()), screenObject);
                         eoArrayList.add(eoMap);
                     }
                 }
