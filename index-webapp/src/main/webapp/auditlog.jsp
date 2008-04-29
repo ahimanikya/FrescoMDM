@@ -180,7 +180,7 @@
                                                     </h:outputLink>
                                                 </nobr>
                                                 <nobr>
-                                                    <h:commandLink  styleClass="button" rendered="#{Operations.AuditLog_SearchView}"  action="#{AuditLogHandler.performSubmit}" >  
+                                                    <h:commandLink  styleClass="button" rendered="#{Operations.auditLog_SearchView}"  action="#{AuditLogHandler.performSubmit}" >  
                                                         <span>
                                                             <h:outputText value="#{msgs.search_button_label}"/>
                                                         </span>
