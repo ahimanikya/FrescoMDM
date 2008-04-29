@@ -173,6 +173,11 @@ is divided into following sections:
                     <classpath refid="generate.class.path"/>
                 </taskdef>
                 
+                <taskdef name="mi-validation"
+                         classname="com.sun.mdm.index.project.anttasks.ValidationTask">
+                    <classpath refid="generate.class.path"/>
+                </taskdef>
+                
                 <taskdef name="generate-loader-zip"
                          classname="com.sun.mdm.index.project.anttasks.LoaderGeneratorTask">
                     <classpath>
@@ -224,15 +229,16 @@ is divided into following sections:
                 <xsl:with-param name="type" select="'j2ee_ear_archive'" />
             </xsl:call-template>
             
+            <target name="validate-mi">
+                <mi-validation srcdir="${{src.dir}}" />
+            </target>
+            
             <target name="gen-mdm-index-files">
-                <xsl:attribute name="depends">init</xsl:attribute>
+                <xsl:attribute name="depends">init,validate-mi</xsl:attribute>
                 <generate-mdm-index-files srcdir="${{src.dir}}" ejbdir="${{ejb.dir}}"
                                           wardir="${{war.dir}}" />
             </target>
-            
-            
-            
-            
+                        
             <target name="gen-loader-zip" depends="pre-pre-compile"
                     description="generate loader zip">
                 <mkdir dir="loader-generated/loader/conf" />

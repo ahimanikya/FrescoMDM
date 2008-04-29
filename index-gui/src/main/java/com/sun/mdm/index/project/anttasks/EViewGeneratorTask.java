@@ -112,14 +112,15 @@ public class EViewGeneratorTask extends Task {
 
     public void execute() throws BuildException {
 
-        if (mSrcdir == null) {
+        if (mSrcdir == null||!mSrcdir.exists()) {
             throw new BuildException(
-                    "Must specify the Master Index source directory");
+                "The attribute,\"srcdir\", must be set to " +
+                "Master Index Project source directory.");
         }
-        if (mEjbdir == null) {
+        if (mEjbdir == null||!mEjbdir.exists()) {
             throw new BuildException("Must specify the ejb project directory");
         }
-        if (mWardir == null) {
+        if (mWardir == null||!mWardir.exists()) {
             throw new BuildException("Must specify the war project directory");
         }
         if (mTemplateDir == null) {
