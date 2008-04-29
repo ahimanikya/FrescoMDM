@@ -37,18 +37,7 @@
     
    <%HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
      DashboardHandler dashboardHandler = new DashboardHandler();
-	 System.out.println("=====>" + dashboardHandler + "dashboardHandler.showSubscreenTab(summaryText)" + dashboardHandler.showSubscreenTab(summaryText));
-         
-        System.out.println("=====>" + dashboardHandler + "dashboardHandler.showSubscreenTab(summaryText)" + dashboardHandler.showSubscreenTab(summaryText));
-        
-        
-        boolean check1=dashboardHandler.showSubscreenTab(summaryText);
-        boolean check2=dashboardHandler.showSubscreenTab(lookupText);
-        boolean check3=dashboardHandler.showSubscreenTab(reportsText);
-        boolean check4=dashboardHandler.showSubscreenTab(compareText);
-        
-       
-      
+	  
         int dashboadComponentDisplayCount = 0;
         
 	 //Summary
