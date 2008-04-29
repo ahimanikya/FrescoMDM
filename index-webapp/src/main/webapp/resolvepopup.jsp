@@ -32,7 +32,7 @@
             <script type="text/javascript" src="scripts/newdateformat1.js"></script>
     
    
-        <title>Different Person</title>
+        <title>Different Records</title>
     </head>
     <%
             String sourceEUID = (String) session.getAttribute("sourceEUIDSessionObj");

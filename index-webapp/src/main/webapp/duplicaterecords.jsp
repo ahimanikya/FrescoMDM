@@ -30,7 +30,7 @@
 <%@ page import="java.util.Iterator"  %>
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
-
+<%@ page import="java.util.ResourceBundle"  %>
 
 <f:view>
     
@@ -525,9 +525,12 @@
                                                         </h:commandLink>  
 												   </h:form>
 												<%}else{%>
+												<%ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+                                                String diff_person_heading_text = bundle.getString("diff_person_heading_text");
+												%>
                                                            <h:outputLink rendered="#{Operations.potDup_ResolveUntilRecalc}"   onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" 
                                                               value="javascript:void(0)">
-															  <img src="./images/diff.gif" alt="Different Person" border="0">
+															  <img src="./images/diff.gif" alt="<%=diff_person_heading_text%>" border="0">
                                                             </h:outputLink>   
 
 												<%}%>
