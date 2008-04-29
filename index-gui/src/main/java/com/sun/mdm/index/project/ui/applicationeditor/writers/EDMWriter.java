@@ -53,10 +53,10 @@ public class EDMWriter {
         mPrimaryNode = primaryNode;
         mViewName = viewName;
         
-        // create EDM.xml
+        // create edm.xml
         String tagHeaderEDM = "<edm xmlns:xsi=" +
             "\"http://www.w3.org/2001/XMLSchema-instance" +
-            "\" xsi:noNamespaceSchemaLocation=\"schema/EDM.xsd\">\n";
+            "\" xsi:noNamespaceSchemaLocation=\"schema/edm.xsd\">\n";
         String tagTailEDM = "</edm>";
 
         String strXml = xmlHEADER + tagHeaderEDM +
@@ -70,7 +70,7 @@ public class EDMWriter {
         mPrimaryNode = primaryNode;
         mViewName = viewName;
         
-        // create EDM.xml
+        // create edm.xml
         String tagHeaderEDM = "<midm xmlns:xsi=" +
             "\"http://www.w3.org/2001/XMLSchema-instance" +
             "\" xsi:noNamespaceSchemaLocation=\"schema/midm.xsd\">\n";
@@ -180,7 +180,7 @@ public class EDMWriter {
     }
 
     /** Get all nodes for current node
-     *  For EDM.xml
+     *  For edm.xml
      *
      *@return XML string
      *

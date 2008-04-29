@@ -223,7 +223,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     /**
      * When Finish button is pressed...
      * Generate the configuration files -
-     * <View>.xml, EDM.xml and runtime config
+     * <View>.xml, edm.xml and runtime config
      *
      * @param wiz the WizardDescriptor
      */
@@ -541,10 +541,10 @@ public class FinishPanel implements WizardDescriptor.Panel {
     }
 
     private void createClassicEDMXml(WizardDescriptor wiz) {
-        // create EDM.xml
+        // create edm.xml
         String tagHeaderEDM = "<edm xmlns:xsi=" +
             "\"http://www.w3.org/2001/XMLSchema-instance" +
-            "\" xsi:noNamespaceSchemaLocation=\"schema/EDM.xsd\">\n";
+            "\" xsi:noNamespaceSchemaLocation=\"schema/edm.xsd\">\n";
         String tagTailEDM = "</edm>";
 
         String strXml = xmlHEADER + tagHeaderEDM +
@@ -959,7 +959,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     }
 
     /** Get all nodes for current node
-     *  For EDM.xml
+     *  For edm.xml
      *
      *@return XML string
      *
@@ -1042,7 +1042,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     }
 
     /** Get gui definition
-     *  For EDM.xml
+     *  For edm.xml
      *
      *@return XML string
      *
@@ -1107,7 +1107,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     }
     
     /** Get field group for a subnode
-     *  For EDM.xml
+     *  For edm.xml
      *
      *@return XML string
      *
@@ -1158,7 +1158,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     }
     
     /** Get simple search
-     *  For EDM.xml
+     *  For edm.xml
      *
      *@return XML string
      *
@@ -1225,7 +1225,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     }
 
     /** Get field ref
-     *  For EDM.xml
+     *  For edm.xml
      *
      *@return XML string
      *
@@ -1248,7 +1248,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     }
 
     /** Get field ref
-     *  For EDM.xml
+     *  For edm.xml
      *
      *@return XML string
      *
@@ -1488,7 +1488,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     }
 
     /** Get field report for a subnode
-     *  For EDM.xml
+     *  For edm.xml
      *
      *@return XML string
      *
@@ -1509,7 +1509,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     }
 
     /** Get Report Generator
-     *  For EDM.xml
+     *  For edm.xml
      *
      *@return XML string
      *
