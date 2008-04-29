@@ -1670,9 +1670,9 @@ public class ConfigManager implements java.io.Serializable {
         
                 if(securityClassName != null) {
                     try {
-                        //Class securityClass = Class.forName(securityClassName);
-                        //security = (ObjectSensitivePlugIn)securityClass.newInstance();
-                    } catch (Exception ex) {
+                        Class securityClass = Class.forName(securityClassName);
+                        this.security = (ObjectSensitivePlugIn)securityClass.newInstance();
+                   } catch (Exception ex) {
                         throw new Exception(mLocalizer.t("SRC511: Error loading security plug-in class: {0}", 
                                                          ex.getMessage()));
                     }
