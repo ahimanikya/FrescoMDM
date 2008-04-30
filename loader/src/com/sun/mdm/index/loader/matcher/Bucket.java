@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.sun.mdm.index.dataobject.DataObject;
 import com.sun.mdm.index.dataobject.DataObjectReader;
@@ -50,7 +51,10 @@ public class Bucket {
 	private File file;
 	private boolean isSBR_;
 	private int numBlocks;
-	
+	private int numRecords;
+	private int blockPrintSize;
+	private static Logger logger = Logger.getLogger(Bucket.class
+			.getName());
 	
 	public Bucket(DataObjectWriter writer, File f) {
 		this.writer = writer;
@@ -71,6 +75,13 @@ public class Bucket {
 		return numBlocks;
 	}
 	
+	public int getNumRecords() {
+		return numRecords;
+	}
+	
+	public void setBlockPrintSize(int size) {
+		blockPrintSize = size;		
+	}
 	
 	/**
 	 * loads the data from the file into a HashMap.
@@ -84,6 +95,7 @@ public class Bucket {
 			if (dataObject == null) {
 				break;
 			}
+			numRecords++;
 			
 			String blockid = dataObject.getFieldValue(0);
 			Block block = blockMap.get(blockid);
@@ -100,6 +112,9 @@ public class Bucket {
 		if (!isSBR_) {
 		  removeDups(blockMap);
 		}
+		
+		printMap();
+		
 		return blockMap;				
 	}
 	
@@ -113,6 +128,17 @@ public class Bucket {
 		}
 		if (reader != null) {
 		   reader.close();
+		}
+	}
+	
+	private void printMap() {
+		logger.info("#of blocks:" + getNumBlocks() + ", #of records:" + getNumRecords());
+		for(Map.Entry<String,Block> entry: blockMap.entrySet() ) {
+			Block b = entry.getValue();
+			String blockid = b.getBlockId();
+			if (blockPrintSize > 0 && b.getSize() > blockPrintSize) {
+				logger.info("blockid:" + blockid + ", size:" + b.getSize());
+			}
 		}
 	}
 	
