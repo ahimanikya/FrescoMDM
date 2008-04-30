@@ -45,6 +45,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 public class PotDupGenerator {
  
 	private static String TRANS_PIGGY = ":T:";
+	private static int TRANS_PIGGY_LENGTH = 3;
 	private static String empty_str = "";
 	private String masterImageDir_;
 	private BufferedWriter bwriter_;
@@ -82,12 +83,12 @@ public class PotDupGenerator {
         "POTENTIALDUPLICATE");
 		
 		int index1 = euid1.indexOf(TRANS_PIGGY);
-		int index2 = euid2.indexOf(TRANS_PIGGY);
+		//int index2 = euid2.indexOf(TRANS_PIGGY);
 		
 		
 		String e1 = euid1.substring(0,index1);
-		String e2 = euid2.substring(0,index2);
-		String trans = euid2.substring(index2+7);
+		String e2 = euid2; //.substring(0,index2);
+		String trans = euid1.substring(index1+TRANS_PIGGY_LENGTH);
 				
 		//"POTENTIALDUPLICATEID",
 		//"WEIGHT", "TYPE", "DESCRIPTION", "STATUS", "HIGHMATCHFLAG",
