@@ -104,18 +104,7 @@ import com.sun.mdm.index.loader.common.Util;
 		  int size = blockPosition.getBlock().getSize();
 		  String bucketName = matchCursor_.getBucketFile();
 		
-		  /*
-		  if (bucketName.indexOf("_24")>=0) {
-			  Block block = blockPosition.getBlock();
-			  String blockid = block.getBlockId();  
-			  //logger.info("blockid:" + blockid);
-		  }
-		  
-		  if (blockPosition.recordPosition == 0 && size > 20 && bucketName.indexOf("_24")>=0){
-			 Block block = blockPosition.getBlock();
-		    logger.info("block size:" + size + ", blockID:" + block.getBlockId());
-		  }
-		  */
+		  		   
 		  match(blockPosition);		  
 		}
 	  } catch (Throwable ex){
