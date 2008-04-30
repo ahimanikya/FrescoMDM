@@ -116,12 +116,12 @@
                                     </h:commandLink>                                     
                                 </td>
                              </h:form>
-							 <!--td>
+							 <td>	
                                 <FORM>
 			               		<a class="button" href="javascript:void(0)" onclick="history.go(-1)">
 						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
 					            </a>
-  				              </FORM-->
+  				              </FORM>
 							 </td>
                             </tr>
                         </table>
@@ -482,9 +482,13 @@
                                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[io];
                                                                     ArrayList  minorObjectMapList =  (ArrayList) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList");
                                                                     HashMap minorObjectHashMap = new HashMap();
-                                                                     if(minorObjectMapList.size() >0) {
-                                                                       minorObjectHashMap = (HashMap) minorObjectMapList.get(0);
-                                                                     }  
+                                                                    for (int ii = 0; ii < minorObjectMapList.size(); ii++) {
+                       						                           minorObjectHashMap = (HashMap) minorObjectMapList.get(ii);
+																	//}
+
+																	 //if(minorObjectMapList.size() >0) {
+                                                                       //minorObjectHashMap = (HashMap) minorObjectMapList.get(0);
+                                                                     //}  
                                                                      FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
                                                                     
 
@@ -508,6 +512,7 @@
                                                                     <%
                                                                       }
                                                                     }
+																   }
                                                                     %>
 
                                                                 </table>

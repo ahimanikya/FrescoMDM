@@ -343,15 +343,20 @@ public class DashboardHandler  {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1 + errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-                    newArrayList.add(eoMap);
 
-                    //Insert audit log here for EUID search
-                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                            this.getEuid1(),
-                            "",
-                            "EO View/Edit",
-                            new Integer(screenObject.getID()).intValue(),
-                            "View/Edit detail of enterprise object");
+                   
+                    //add the EO if it is active only
+                    if ("active".equalsIgnoreCase(enterpriseObject.getStatus())) {
+                        newArrayList.add(eoMap);
+
+                        //Insert audit log here for EUID search
+                        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                this.getEuid1(),
+                                "",
+                                "EO View/Edit",
+                                new Integer(screenObject.getID()).intValue(),
+                                "View/Edit detail of enterprise object");
+                    }
                 }
             }
             if (this.getEuid2() != null && !"EUID 2".equalsIgnoreCase(this.getEuid2())) {
@@ -364,14 +369,17 @@ public class DashboardHandler  {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg2 + errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-                    newArrayList.add(eoMap);
-                    //Insert audit log here for EUID search
-                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                            this.getEuid2(),
-                            "",
-                            "EO View/Edit",
-                            new Integer(screenObject.getID()).intValue(),
-                            "View/Edit detail of enterprise object");
+                    //add the EO if it is active only
+                    if ("active".equalsIgnoreCase(enterpriseObject.getStatus())) {
+                        newArrayList.add(eoMap);
+                        //Insert audit log here for EUID search
+                        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                this.getEuid2(),
+                                "",
+                                "EO View/Edit",
+                                new Integer(screenObject.getID()).intValue(),
+                                "View/Edit detail of enterprise object");
+                    }
                 }
             }
             if (this.getEuid3() != null && !"EUID 3".equalsIgnoreCase(this.getEuid3())) {
@@ -383,15 +391,18 @@ public class DashboardHandler  {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg3 + errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-                    newArrayList.add(eoMap);
-                    //Insert audit log here for EUID search
-                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                            this.getEuid3(),
-                            "",
-                            "EO View/Edit",
-                            new Integer(screenObject.getID()).intValue(),
-                            "View/Edit detail of enterprise object");
-                    
+                    //add the EO if it is active only
+                    if ("active".equalsIgnoreCase(enterpriseObject.getStatus())) {
+                         newArrayList.add(eoMap);
+                        //Insert audit log here for EUID search
+                        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                this.getEuid3(),
+                                "",
+                                "EO View/Edit",
+                                new Integer(screenObject.getID()).intValue(),
+                                "View/Edit detail of enterprise object");
+
+                    }
                 }
             }
             if (this.getEuid4() != null && this.getEuid4().length() > 0 ) {
@@ -403,19 +414,23 @@ public class DashboardHandler  {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg4+ errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
-                    newArrayList.add(eoMap);
-                    //Insert audit log here for EUID search
-                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                            this.getEuid4(),
-                            "",
-                            "EO View/Edit",
-                            new Integer(screenObject.getID()).intValue(),
-                            "View/Edit detail of enterprise object");
-                    
+                    //add the EO if it is active only
+                    if ("active".equalsIgnoreCase(enterpriseObject.getStatus())) {
+                        newArrayList.add(eoMap);
+                        //Insert audit log here for EUID search
+                        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                this.getEuid4(),
+                                "",
+                                "EO View/Edit",
+                                new Integer(screenObject.getID()).intValue(),
+                                "View/Edit detail of enterprise object");
+
+                    }
                 }
             }
+            session.setAttribute("eocomparision", "yes");
            
-//            //System.out.println("===> : " + newArrayList);
+
             session.setAttribute("comapreEuidsArrayList", newArrayList);
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
@@ -425,7 +440,7 @@ public class DashboardHandler  {
            mLogger.error(mLocalizer.x("DHB022: Encountered the UserException:{0}", ex.getMessage()),ex);  
         }
 
-        return "EUID Details";
+        return "Compare Duplicates";
     }
 
     

@@ -196,6 +196,7 @@
                             </h:dataTable> <!--Field config loop-->
 						    </h:column>
                             </h:dataTable> <!--Field groups loop-->
+
                             <table  cellpadding="0" cellspacing="0" style="	border:0px red solid;padding-left:20px">
                                 <tr>
                                     <td align="left">
@@ -258,6 +259,7 @@
                      </td>
                  </tr>
              </table>
+			 <!--
              <table align="left">
                  <tr>
                      <td align="right">
@@ -275,6 +277,7 @@
                      </td>
                  </tr>
              </table>                     
+			 -->
          </div>
          <%}%>
                 
@@ -425,7 +428,7 @@
         for(int i=0;i<keysList.size();i++) {
             if(keys[i].equalsIgnoreCase("EUID")) {
               value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ","+
-                       "formatter:function (elCell,oRecord,oColumn,oData) {elCell.innerHTML = '<input style=\"background-image:url(../images/none.gif);width:20px;valign:top;\" type=\"checkbox\" onclick=\"javascript: getEUIDS(' + oData + ')\"/>&nbsp;<a href=\"euiddetails.jsf?euid=' + oData + '\" style=\"text-align:middle;valign:middle;\">' + oData + '</a>';}" +
+                       "formatter:function (elCell,oRecord,oColumn,oData) {elCell.innerHTML = '<a href=\"euiddetails.jsf?euid=' + oData + '\" style=\"text-align:middle;valign:middle;\">' + oData + '</a>';}" +
                        ",sortable:true,resizeable:true,width:150}";
             } else {
               value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ",sortable:true,resizeable:true}";

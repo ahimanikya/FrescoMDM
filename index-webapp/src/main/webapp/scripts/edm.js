@@ -916,7 +916,7 @@ function submitFormData(form, thisInnerHtmlDivName) {
             //Set System
             document.getElementById("previewlid1Form:previewhiddenLid1source").value = system;
            document.getElementById("previewlid2Form:previewhiddenLid2source").value = system;
-            document.getElementById("finalMergeForm:previewhiddenLid1source").value = system;
+            document.getElementById("mergeFinalForm:previewhiddenLid1source").value = system;
     
             for (var i=0; i< lidArray.length; i++) { 
                  for (var j=0; j<disableArray.length; j++) {          
@@ -1127,12 +1127,13 @@ var mainEuid = mainEuidArray[0];
 
 document.getElementById('previewForm:destinationEO').value = mainEuid;
 document.getElementById('mergeFinalForm:destinationEO').value = mainEuid;
-
+//alert(document.getElementById('mergeFinalForm:destinationEO').value);
 document.getElementById('clickButton' + mainEuid).style.cursor= 'not-allowed';
 
  if(mainEuidArray.length > 2) {
     document.getElementById('previewForm:previewhiddenMergeEuids').value = mergeEuids;
     document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value = mergeEuids; 
+//alert(document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value);
     document.getElementById('mergeEuidsDiv').style.visibility = "visible";
     document.getElementById('mergeEuidsDiv').style.display = "block";
  }
@@ -1203,11 +1204,20 @@ function _utf8_encode (string) {
 
 var mergePreEuids="";
 
-function populateMergeFields(fieldName,value,displayValue) {
+function populateMergeFields(fieldName,value,displayValue,highLightId) {
        document.getElementById(fieldName).innerHTML = displayValue;
        document.getElementById(fieldName).className='highlight';
        mergePreEuids+=fieldName+"##"+value+'>>';     
-       document.getElementById('mergeFinalForm:selectedMergeFields').value = value;
+       //document.getElementById('mergeFinalForm:selectedMergeFields').value = value;
+        document.getElementById('mergeFinalForm:selectedMergeFields').value = mergePreEuids;
+
+	   //alert("selectedMergeFields" + document.getElementById('mergeFinalForm:selectedMergeFields').value );
+
+	   document.getElementById('highlight'+highLightId).style.visibility = 'hidden';
+	   document.getElementById('highlight'+highLightId).style.display = 'none';
+
+	   document.getElementById('unHighlight'+highLightId).style.visibility = 'visible';
+	   document.getElementById('unHighlight'+highLightId).style.display = 'block';
        
 }
 
@@ -1492,6 +1502,8 @@ function accumilateMultiMergeEuidsPreview(fac,count,mergeEuidVar) {
 
        document.getElementById('mergeFinalForm:destinationEO').value = mainEuid;
 	   document.getElementById('mergeFinalForm:rowCount').value = fac;
+
+	   //alert(document.getElementById('mergeFinalForm:destinationEO').value);
     
      //document.getElementById('clickButton' + mainEuid).style.cursor= 'not-allowed';
 
@@ -1502,6 +1514,7 @@ function accumilateMultiMergeEuidsPreview(fac,count,mergeEuidVar) {
 		buttonsDiv.style.display = 'block';
 
    	    document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value = mergeEuidsPreview;
+	   //alert( document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value);
    	    
       //document.getElementById('mergeEuidsDiv').style.visibility = "visible";
       //document.getElementById('mergeEuidsDiv').style.display = "block";

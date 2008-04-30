@@ -270,7 +270,7 @@
                                                         </table>
                                                     </div>
                                                 </div>
-                                                <% if (countEnt > 0) {%>
+                                                <% if (session.getAttribute("eocomparision") == null && countEnt > 0) {%>
                                          <%
                                             String userAgent = request.getHeader("User-Agent");
                                             boolean isFirefox = (userAgent != null && userAgent.indexOf("Firefox/") != -1);
@@ -338,11 +338,17 @@
         fvalueVaueExpression = ExpressionFactory.newInstance().createValueExpression(personfieldValuesMapEO.get(epathValue), personfieldValuesMapEO.get(epathValue).getClass());
 
                                                                                 %>
-                                                                                <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>')" >
+									     <div id="highlight<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>" style="background-color:none;">							
+                                                                                <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>')" >
                                                                                     <font class="highlight">
                                                                                         <%=personfieldValuesMapEO.get(epathValue)%>
                                                                                     </font>
                                                                                 </a>  
+																				</div>
+									     <div id="unHighlight<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>" style="visibility:hidden;display:none">							
+                                                                                <%=personfieldValuesMapEO.get(epathValue)%>
+																				</div>
+
                                                                                 <%} else {
                                                                                 %>
                                                                                 <%=personfieldValuesMapEO.get(epathValue)%>
@@ -800,7 +806,8 @@
                                             <div id="dynamicMainEuidButtonContent<%=countEnt%>" style="visibility:visible;display:block;">
                                                 <table border="0" cellspacing="0" cellpadding="0" border="1">
                                                     <h:form>
-                                               <% if (countEnt > 0 ) { %>
+                                               <% if (session.getAttribute("eocomparision") == null  && countEnt > 0 ) { %>
+											   
                                                <tr> 
                                                     <td valign="top">
                                                       <% if (countEnt > 0 && "A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) { %>

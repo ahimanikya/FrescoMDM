@@ -223,9 +223,11 @@ public  class NavigationHandler {
              mLogger.error(mLocalizer.x("NAV003: Exception has occured:{0} ",ex.getMessage()),ex);
         }
         session.setAttribute("ScreenObject", getScreenObject(midmTagName));
-        //Remove the memory used for edit source records.
+        //Remove the memory used for edit and merge source records.
         session.removeAttribute("singleSystemObjectLID");   
-    //return headertabName;
+        session.removeAttribute("soHashMapArrayList");
+        session.removeAttribute("eocomparision");
+        //return headertabName;
     }
     
 }

@@ -1208,10 +1208,10 @@ public class EditMainEuidHandler {
                         FieldConfig fieldConfig = (FieldConfig) allFieldConfigs.get(j);
                         ePathName = fieldConfig.getFullFieldName();
 
-                        String oldValue = (String) eoOldMap.get(ePathName);
-                        String newValue = (String) eoHashMap.get(ePathName);
+                        Object oldValue =  eoOldMap.get(ePathName);
+                        Object newValue =  eoHashMap.get(ePathName);
                         //check if no value entered put null into the value
-                        if ((oldValue == null && (newValue != null && newValue.trim().length() == 0) )) {
+                        if ((oldValue == null && (newValue != null && newValue.toString().trim().length() == 0) )) {
                             eoHashMap.put(ePathName,null);
                         }
                         //check if old value is equal to new value
@@ -1219,7 +1219,7 @@ public class EditMainEuidHandler {
                             eoHashMap.remove(ePathName);
 //                        } else if ((oldValue != null && newValue != null) && (oldValue.length() == 0 && newValue.length() == 0)) {
 //                            eoHashMap.remove(ePathName);
-                        } else if ((oldValue != null && newValue != null) && oldValue.equalsIgnoreCase(newValue)) {
+                        } else if ((oldValue != null && newValue != null) && oldValue.toString().equalsIgnoreCase(newValue.toString())) {
                             eoHashMap.remove(ePathName);
                         }
                     }
