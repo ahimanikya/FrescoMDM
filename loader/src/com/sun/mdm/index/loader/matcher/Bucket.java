@@ -136,7 +136,7 @@ public class Bucket {
 		for(Map.Entry<String,Block> entry: blockMap.entrySet() ) {
 			Block b = entry.getValue();
 			String blockid = b.getBlockId();
-			if (blockPrintSize > 0 && b.getSize() > blockPrintSize) {
+			if (blockPrintSize > 0 && b.getSize() >= blockPrintSize) {
 				logger.info("blockid:" + blockid + ", size:" + b.getSize());
 			}
 		}
