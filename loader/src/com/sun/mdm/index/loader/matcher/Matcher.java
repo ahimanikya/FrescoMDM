@@ -186,24 +186,7 @@ public class Matcher {
 		}
 				
 		flushMap(allMap);
-		/*
-		File matchFile = null;
-		if (!isSBR_) {
-		    matchFile = FileManager.createMatchFile(bucketFile_);	
-		} else {
-			matchFile = FileManager.createSBRMatchFile(bucketFile_);
-		}
-		boolean flag = write(allMap, matchFile);
 		
-		allMap.clear();
-		for (int i = 0; i < treeMaps.length; i++)  {			
-		   treeMaps[i].clear();
-		}
-		
-		if (flag == true) {
-		  matchFiles_.add(matchFile);
-		}
-		*/
 		
 	 } // end while true
      
@@ -270,6 +253,7 @@ public class Matcher {
 			 fileMerger.merge(finalMatchStageFileList, finalMatch);
 		 }
 	   }
+	   logger.info("merged match files");
    }
 	
 	
