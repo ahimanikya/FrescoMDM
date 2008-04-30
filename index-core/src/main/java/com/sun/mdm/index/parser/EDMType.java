@@ -1113,12 +1113,12 @@ public class EDMType {
     
     String getFieldRefXML(PageDefinition.FieldRef fieldRef, String startTab) {
         StringBuffer buffer = new StringBuffer();
-        if (fieldRef.required != null && (fieldRef.required.equals("true") || fieldRef.required.equals("oneof"))) {
-            buffer.append(startTab + "<field-ref required=\"" + fieldRef.required + "\">" +
+         if (fieldRef.choice != null) {
+            buffer.append(startTab + "<field-ref choice=\"" + fieldRef.choice + "\">" +
                             fieldRef.fieldName + 
                             Utils.endTag(mTagFieldRef));
-        } else if (fieldRef.choice != null) {
-            buffer.append(startTab + "<field-ref choice=\"" + fieldRef.choice + "\">" +
+        } else if (fieldRef.required != null && (fieldRef.required.equals("true") || fieldRef.required.equals("oneof"))) {
+            buffer.append(startTab + "<field-ref required=\"" + fieldRef.required + "\">" +
                             fieldRef.fieldName + 
                             Utils.endTag(mTagFieldRef));
         } else {
