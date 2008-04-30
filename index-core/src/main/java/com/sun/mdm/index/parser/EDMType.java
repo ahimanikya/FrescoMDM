@@ -110,6 +110,7 @@ public class EDMType {
     private final String mTagFieldGroupBlank = "<field-group/>\n";    
     private final String mTagFieldRef = "field-ref";        // -> EDMFieldDef.usedInSearchScreen
     private final String mAttrRequired = "required";        // -> EDMFieldDef.requiredInSearchScreen
+    private final String mAttrChoice = "choice";
     private final String mTagDescription = "description";
     private final String mTagDescriptionBlank = "<description/>\n";
     
@@ -1112,8 +1113,12 @@ public class EDMType {
     
     String getFieldRefXML(PageDefinition.FieldRef fieldRef, String startTab) {
         StringBuffer buffer = new StringBuffer();
-        if (fieldRef.required != null && fieldRef.required.equals("true")) {
+        if (fieldRef.required != null && (fieldRef.required.equals("true") || fieldRef.required.equals("oneof"))) {
             buffer.append(startTab + "<field-ref required=\"" + fieldRef.required + "\">" +
+                            fieldRef.fieldName + 
+                            Utils.endTag(mTagFieldRef));
+        } else if (fieldRef.choice != null) {
+            buffer.append(startTab + "<field-ref choice=\"" + fieldRef.choice + "\">" +
                             fieldRef.fieldName + 
                             Utils.endTag(mTagFieldRef));
         } else {
@@ -1194,6 +1199,15 @@ public class EDMType {
                                     }
                                     edmFieldDef.setRequiredInSearchScreen(requiredValue);
                                     fieldRef.required = requiredValue;
+                                } catch (DOMException ex) {
+                                }
+                                Node choice = nnm.getNamedItem(mAttrChoice);
+                                try {
+                                    if (choice != null) {
+                                        fieldRef.choice = choice.getNodeValue(); // "range"
+                                    }
+                                    //edmFieldDef.setRequiredInSearchScreen(requiredValue);
+                                    
                                 } catch (DOMException ex) {
                                 }
                             }
@@ -2522,7 +2536,9 @@ public class EDMType {
                     // Add it
                     FieldRef fieldRef = getFieldRef(alFieldRef);
                     fieldRef.fieldName = fieldNamePath;
-                    fieldRef.required = required;
+                    if (required != null) {
+                        fieldRef.required = required;
+                    }
                     bRet = true;
                 }
             }
@@ -2872,6 +2888,7 @@ public class EDMType {
         
         class FieldRef {
             String required = null;    // Optional for Report
+            String choice;
             String fieldName;
         }
         
