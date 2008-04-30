@@ -24,18 +24,41 @@ package com.sun.mdm.index.loader.matcher;
 
 import com.sun.mdm.index.dataobject.DataObject;
 	
+
 	public class MatchEUIDRecord implements MatchRecord {
 		private String euid1;
 		private String euid2;
 		private double weight;
-				
+		private static String TRANS_PIGGY = ":T:";
+		
 		MatchEUIDRecord(String euid1, String euid2, double weight) {
 			this.euid1 = euid1;
-			this.euid2 = euid2;
+			/*
+			 * split euid2 of Transaction number (that was put by MasterIndexTask) and so saves space in
+			 * writing, since this transnumber is not used during pot dup generation in PotDupGenerator.
+			 */
+			int index2 = euid2.indexOf(TRANS_PIGGY);
+			String e2 = euid2.substring(0, index2);;
+			this.euid2 = e2;
+			//this.euid2 = euid2;
 			this.weight = weight;
 						
 		}	
 		
+		/**
+		 * This is invoked by EUIDReader and so euid2 is already split of transaction number, 
+		 * @param euid1
+		 * @param euid2
+		 * @param weight
+		 * @param flag
+		 */
+		MatchEUIDRecord(String euid1, String euid2, double weight, boolean flag) {
+			this.euid1 = euid1;
+			this.euid2 = euid2;
+			//this.euid2 = euid2;
+			this.weight = weight;
+						
+		}	
 		
 		public String getEUID1() {
 			return euid1;
