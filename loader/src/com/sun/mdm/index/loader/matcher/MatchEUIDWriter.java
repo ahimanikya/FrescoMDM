@@ -45,7 +45,9 @@ public class MatchEUIDWriter implements MatchWriter {
 		writer_.write("|");
 		writer_.write(mrecord.getEUID2());
 		writer_.write("|");
-		String weight = String.valueOf(mrecord.getWeight());
+		double wt = mrecord.getWeight() *100;
+		wt= (Math.round(wt))/100.0;
+		String weight = String.valueOf(wt);
 		writer_.write(weight);
 		writer_.write('\n');
 	}
