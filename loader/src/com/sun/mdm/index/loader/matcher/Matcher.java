@@ -75,6 +75,7 @@ public class Matcher {
 			.getName());
 	private int matchCacheSize_ = 0;
 	private String dateFormatString_;
+	private int blockPrintSize_ = 0;
 	
 	public Matcher(String[] paths,  String[] matchTypes, Lookup blLk, boolean isSBR, String dateFormat) throws Exception {
 		matchThreshold_ = config_.getMatchThreshold();
@@ -96,6 +97,11 @@ public class Matcher {
 		String smatchCacheSize = config_.getSystemProperty("matchCacheSize");
 		if (smatchCacheSize != null) {
 		    matchCacheSize_ = Integer.parseInt(smatchCacheSize);
+		}
+		
+		String sblockPrintSize = config_.getSystemProperty("blockPrintSize");
+		if (sblockPrintSize != null) {
+			blockPrintSize_ = Integer.parseInt(sblockPrintSize);
 		}
 		
 		executor_ = Executors.newFixedThreadPool(poolSize_);
@@ -126,9 +132,10 @@ public class Matcher {
 		Comparator<MatchRecord> comp = getComparator();									
 		DataObjectReader reader = new DataObjectFileReader(bucketFile_.getAbsolutePath(), true);		
 		Bucket bucket = new Bucket(reader, bucketFile_, isSBR_);
-		logger.info("Block bucket:"+ bucket.getFile().getName() + " processing");
+		bucket.setBlockPrintSize(blockPrintSize_);
+		logger.info("Block bucket:"+ bucket.getFile().getName() + " processing ");
+		
 		bucket.load();
-	
 		
 		/**
 		 * Each TreeMap is for different MatcherTask that is executed on a pooled 
