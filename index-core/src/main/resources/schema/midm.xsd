@@ -45,6 +45,7 @@
     <xs:element name="input-mask" type="xs:string"/>
     <xs:element name="value-mask" type="xs:string"/>
     <xs:element name="value-type" type="xs:string"/>
+    <xs:element name="is-sensitive" type="xs:boolean"/>
     <xs:element name="key-type" type="xs:boolean"/>
     <xs:element name="root-object" type="xs:string"/>
     <xs:element name="tab-name" type="xs:string"/>
@@ -64,6 +65,7 @@
                 <xs:element ref="input-mask" minOccurs="0"/>
                 <xs:element ref="value-mask" minOccurs="0"/>
                 <xs:element ref="value-type"/>
+                <xs:element ref="is-sensitive" minOccurs="0"/>
                 <xs:element ref="key-type"/>
             </xs:sequence>
         </xs:complexType>
