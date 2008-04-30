@@ -103,6 +103,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
     private static String empty_s = "";
     private static String ADD = "Add";
     private static String ASSUMEDMATCHSEQ = "ASSUMEDMATCH";
+    private static String TRANS_PIGGY = ":T:";
     
     
    // private static SimpleDateFormat dateFormat_;  // This format is used in
@@ -562,7 +563,7 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	
 	private void writeSBRPot(ObjectNode primarySBR, String euid, String transnum) throws Exception {
 		DataObject data = ObjectNodeUtil.fromObjectNode(primarySBR);
-		data.add(0, euid+":TRANS:" + transnum );  // add back EUID, that is not in data Object returned
+		data.add(0, euid+ TRANS_PIGGY + transnum );  // add back EUID, that is not in data Object returned
 		// from Util.fromObjectNode
 		//deleteChildIDs(data);
 		addData(POTENTIALDUPLICATES, data);
