@@ -73,7 +73,7 @@ public class Matcher {
 	private File bucketFile_;
 	private static Logger logger = Logger.getLogger(Matcher.class
 			.getName());
-	private int matchCacheSize_ = 0;
+	private int matchFlushSize_ = 0;
 	private String dateFormatString_;
 	private int blockPrintSize_ = 0;
 	
@@ -94,9 +94,9 @@ public class Matcher {
 		    poolSize_ = Integer.parseInt(numThreads);
 		}
 		
-		String smatchCacheSize = config_.getSystemProperty("matchCacheSize");
-		if (smatchCacheSize != null) {
-		    matchCacheSize_ = Integer.parseInt(smatchCacheSize);
+		String smatchFlushSize = config_.getSystemProperty("matchFlushSize");
+		if (smatchFlushSize != null) {
+		    matchFlushSize_ = Integer.parseInt(smatchFlushSize);
 		}
 		
 		String sblockPrintSize = config_.getSystemProperty("blockPrintSize");
@@ -153,7 +153,7 @@ public class Matcher {
 			treeMaps[i] = new TreeMap<MatchRecord,String>(comp);
 			MatcherTask task = new MatcherTask((TreeMap<MatchRecord,String>)treeMaps[i], 
 			cursor, paths_,  matchTypes_, lookup_, matchThreshold_, duplicateThreshold_, endGate, 
-			isSBR_, this, matchCacheSize_, dateFormatString_);
+			isSBR_, this, matchFlushSize_, dateFormatString_);
 			
 			if (first == false && ismatchAnalyzer) {				
 				first = true;
