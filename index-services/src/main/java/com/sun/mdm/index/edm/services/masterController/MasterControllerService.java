@@ -70,6 +70,7 @@ import com.sun.mdm.index.objects.epath.EPathParser;
 import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathAPI;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
+import com.sun.mdm.index.objects.epath.EPathBuilder;
 import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.ops.exception.OPSException;
@@ -79,6 +80,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import com.sun.mdm.index.util.Localizer;
+import java.lang.Object;
+import java.lang.Object;
 import java.util.logging.Level;
 import net.java.hulp.i18n.LocalizationSupport;
 import net.java.hulp.i18n.Logger;
@@ -653,7 +656,9 @@ public class MasterControllerService {
         for (Object obj : hm.keySet()) {
             Object value = hm.get(obj);
             if (!obj.equals(MasterControllerService.SYSTEM_CODE) && !obj.equals(MasterControllerService.LID) && !obj.equals(MasterControllerService.HASH_MAP_TYPE)) {
-                setObjectNodeFieldValue(majorObject, (String) obj, (String) value);
+                //String valString = (value != null)? value.toString():null;
+                String valString = (value != null && value.toString().trim().length() > 0 )? value.toString():null;
+                setObjectNodeFieldValue(majorObject, (String) obj, valString);
             }
         }
         sysObj.setObject(majorObject);
@@ -680,7 +685,9 @@ public class MasterControllerService {
                 int startOfPrefix = key.indexOf(type);
                 int startSubString = startOfPrefix + type.length() + 1; // 1 is for .
                 key = key.substring(startSubString);
-                setObjectNodeFieldValue(majorObject, key, (String) value);
+                //String valString = (value != null)? value.toString():null;
+                String valString = (value != null && value.toString().trim().length() > 0 )? value.toString():null;
+                setObjectNodeFieldValue(majorObject, key, valString);
             }
         }
         sysObj.setObject(majorObject);
@@ -694,7 +701,8 @@ public class MasterControllerService {
         for (Object obj : hm.keySet()) {
             Object value = hm.get(obj);
             if (!obj.equals(MasterControllerService.SYSTEM_CODE) && !obj.equals(MasterControllerService.LID) && !obj.equals(MasterControllerService.HASH_MAP_TYPE) && !obj.equals(MINOR_OBJECT_TYPE)) {
-                setObjectNodeFieldValue(minorObject, (String) obj, (String) value);
+               String valString = (value != null && value.toString().trim().length() > 0 )? value.toString():null;               
+                setObjectNodeFieldValue(minorObject, (String) obj,  valString);
             }
         }
         majorObject.addChildHard(minorObject);
@@ -702,16 +710,26 @@ public class MasterControllerService {
     }
 
     public SystemObject addMinorObject(SBR sbr, String objectType, HashMap hm) throws ObjectException, ValidationException {
-        ObjectNode minorObject = SimpleFactory.create(objectType); // objectType eg value "Address"
-
+//        ObjectNode minorObject = SimpleFactory.create(objectType); // objectType eg value "Address"
+       
+        ArrayList overWrites = new ArrayList();
         for (Object obj : hm.keySet()) {
             Object value = hm.get(obj);
             if (!obj.equals(MasterControllerService.SYSTEM_CODE) && !obj.equals(MasterControllerService.LID) && !obj.equals(MasterControllerService.HASH_MAP_TYPE) && !obj.equals(MINOR_OBJECT_TYPE)) {
-                setObjectNodeFieldValue(minorObject, (String) obj, (String) value);
+                // setObjectNodeFieldValue(minorObject, (String) obj, (String) value);
+                SBROverWrite sbrOverWrite = new SBROverWrite();   
+                sbrOverWrite.setAddFlag(true);
+//                String createEPath = EPathBuilder.createEPath(minorObject, sbr.getObject().pGetTag() + "." + (String) obj);
+//                System.out.println("==> constructed epath: " + createEPath);
+                sbrOverWrite.setPath( sbr.getObject().pGetTag() + "." + (String) obj); // This is Person.Address.AddresLine1
+                sbrOverWrite.setData(value);
+                overWrites.add(sbrOverWrite);
             }
         }
         // majorObject.addChild(minorObject);
-        sbr.addChild(minorObject);
+        // sbr.addChild(minorObject);
+        
+        sbr.addOverWrites(overWrites);
         return sbr;
     }
 
@@ -726,7 +744,9 @@ public class MasterControllerService {
                 && !obj.equals(MasterControllerService.MINOR_OBJECT_UPDATE)
                 && !obj.equals(MasterControllerService.MINOR_OBJECT_ID)
                 && !obj.equals(MasterControllerService.HASH_MAP_TYPE)) {
-                setObjectNodeFieldValue(minorObject, (String) obj, (String) value);
+                //String valString = (value != null)? value.toString():null;
+                String valString = (value != null && value.toString().trim().length() > 0 )? value.toString():null;
+                setObjectNodeFieldValue(minorObject, (String) obj, valString);
             } // Example Key: City Value: Bangalore
         }
         return minorObject;
@@ -742,7 +762,9 @@ public class MasterControllerService {
                 && !obj.equals(MasterControllerService.MINOR_OBJECT_UPDATE)
                 && !obj.equals(MasterControllerService.MINOR_OBJECT_ID)
                 && !obj.equals(MasterControllerService.HASH_MAP_TYPE)) {
-                setObjectNodeFieldValue(minorObject, (String) obj, (String) value, sbr);
+               // String valString = (value != null)? value.toString():null;
+                String valString = (value != null && value.toString().trim().length() > 0 )? value.toString():null;
+                setObjectNodeFieldValue(minorObject, (String) obj, valString, sbr);
             } // Example Key: City Value: Bangalore
         }
         return minorObject;
@@ -772,7 +794,9 @@ public class MasterControllerService {
         for (Object obj : hm.keySet()) {
             Object value = hm.get(obj);
             if (!obj.equals(MasterControllerService.SYSTEM_CODE) && !obj.equals(MasterControllerService.LID) && !obj.equals(MasterControllerService.HASH_MAP_TYPE) && !obj.equals(MasterControllerService.MINOR_OBJECT_ID)&& !obj.equals("EUID")) {
-                setObjectNodeFieldValue(majorObject, (String) obj, (String) value, sbr);
+                //String valString = (value != null)? value.toString():null;
+                String valString = (value != null && value.toString().trim().length() > 0 )? value.toString():null;
+                setObjectNodeFieldValue(majorObject, (String) obj, valString, sbr);
             }
         }
         return sbr;
@@ -810,8 +834,8 @@ public class MasterControllerService {
                                                              "MINOR_OBJECT_TYPE, MINOR_OBJECT_ID " +
                                                              "for removing a MinorObject"));
                     }
-                    ObjectNode child = systemObject.getObject().getChild(type, id);
-                    removeMinorObject(child, hm);
+                    // ObjectNode child = systemObject.getObject().getChild(type, id);
+                    removeMinorObject(eo.getSBR(), hm);
                 } else if (hm.get(MasterControllerService.HASH_MAP_TYPE).equals(MasterControllerService.MINOR_OBJECT_UPDATE)) {
                     SystemObject systemObject = eo.getSBR();
                     String type = (String) hm.get(MasterControllerService.MINOR_OBJECT_TYPE);
@@ -892,9 +916,34 @@ public class MasterControllerService {
     }
 
     public void removeMinorObject(ObjectNode minorObject, HashMap hm) throws ObjectException {
-        minorObject.setRemoveFlag(true);
+        if(minorObject!=null)
+            minorObject.setRemoveFlag(true);        
     }
 
+    public void removeMinorObject(SBR sbr, HashMap hm) throws ObjectException {
+        if (sbr != null) {
+
+
+            for (Object obj : hm.keySet()) {
+                // Object value = hm.get(obj);
+                String key = obj.toString();
+                if (!obj.equals(MasterControllerService.SYSTEM_CODE) && !obj.equals(MasterControllerService.LID) && !obj.equals(MasterControllerService.HASH_MAP_TYPE) && !obj.equals(MINOR_OBJECT_TYPE)) {
+                    // setObjectNodeFieldValue(minorObject, (String) obj, (String) value);
+                    ArrayList overWrites = sbr.getOverWrites();
+                    for (Object overWriteObj : overWrites) {
+                        SBROverWrite overWrite = (SBROverWrite) overWriteObj;
+                        if (overWrite.getEPath().indexOf(key) != -1) {
+                            overWrite.setRemoveFlag(true);
+                        }
+                    }
+                }
+            }
+        // majorObject.addChild(minorObject);
+        // sbr.addChild(minorObject);
+
+
+        }
+    }
     public String[][] getSystemCodes() {
         int sysCount = ValidationService.getInstance().getValueCount(ValidationService.CONFIG_MODULE_SYSTEM);
         String[][] sysMasks = ValidationService.getInstance().getSystemInputMasks();
@@ -1615,7 +1664,9 @@ public class MasterControllerService {
         // strip [...] from token in tokenQueue as well
         char firstToken ='[';
         char lastToken =']';
-        String res = s.substring(0, s.indexOf(firstToken)) + s.substring(s.indexOf(lastToken)+1)   ;
+        String res = s;
+        if( s!=null && s.indexOf("[") != -1 && s.indexOf("]") != -1 )
+            res = s.substring(0, s.indexOf(firstToken)) + s.substring(s.indexOf(lastToken)+1);
         return res;
     }
 public EnterpriseObject removeLocks(HashMap hm, EnterpriseObject eo) throws ProcessingException, UserException {
