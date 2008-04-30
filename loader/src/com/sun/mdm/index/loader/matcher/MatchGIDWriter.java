@@ -44,7 +44,9 @@ public class MatchGIDWriter implements MatchWriter {
 		MatchGIDRecord mr = (MatchGIDRecord) mrecord;
 		dostream_.writeLong(mr.getGIDFrom());
 		dostream_.writeLong(mr.getGIDTo());
-		dostream_.writeDouble(mr.getWeight());
+		double wt = mr.getWeight() *100;
+		wt= (Math.round(wt))/100.0;
+		dostream_.writeDouble(wt);
 	}
 	
 	public void close() throws IOException {
