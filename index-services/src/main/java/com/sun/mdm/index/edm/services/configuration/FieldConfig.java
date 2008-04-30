@@ -456,17 +456,26 @@ public class FieldConfig implements java.io.Serializable, Comparable {
             ret =  ValidationService.getInstance().getUserCodeValueItems(lookup);
            
         } else {
-            // ALK - saved for error handling
+            // AJK - saved for error handling
             lookup = this.valueList;
             ret =  ValidationService.getInstance().getValueItems(lookup);
+        } 
+        /* AJK: If the above did not find the values try the usercode table
+           In this case the user may have forgotten to define this as a 
+           user-code in the object.xml so this code will check anyway to 
+           see if it is there. */
+        if (ret == null){
+            lookup = this.valueList;
+            ret = ValidationService.getInstance().getUserCodeValueItems(lookup);
         }
         if (ret != null) {
             Arrays.sort((Object[]) ret);
 	} else {
             throw new Exception(mLocalizer.t(
                     "SRC534: Could not find values for {0}.  Make sure" +
-                    " this is  either defined via the codelist.sql " + 
-                    " or in the appropriate database table.", lookup));
+                    " this value is defined in the sbyn_common_header and" +
+                    " the sbyn_common_detail tables by updating the codelist.sql " + 
+                    " or in the sbyn_user_code table.", lookup));
             
         }
         return ret;
