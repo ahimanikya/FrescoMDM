@@ -66,7 +66,7 @@ public class MatchEUIDRecordReader implements MatchReader {
 		  String sweight = fields[2];
 		  double weight = Double.parseDouble(sweight);
 		
-		MatchRecord record = new MatchEUIDRecord(euid1, euid2, weight);
+		MatchRecord record = new MatchEUIDRecord(euid1, euid2, weight, true);
 		return record;
 		 
 	  }  catch (EOFException ex) {
