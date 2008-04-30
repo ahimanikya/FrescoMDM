@@ -695,9 +695,8 @@ public class FinishPanel implements WizardDescriptor.Panel {
                     nodes += (tab12 + "<updateable>" +
                     subNode.getUpdateable() + "</updateable>\n");
                     nodes += (tab12 + "<required>" + subNode.getRequired() + "</required>\n");
-                    nodes += (tab12 + "<code-module>" + subNode.getCodeModule() + "</code-module>\n");
                     nodes += (tab12 + "<pattern>" + subNode.getPattern() + "</pattern>\n");
-                    nodes += (tab12 + "<key-type>" + subNode.getKeyType() +"</key-type>\n");
+                    nodes += (tab12 + "<code-module>" + subNode.getCodeModule() + "</code-module>\n");
                     if ((subNode.getUserCode() != null) &&
                             (subNode.getUserCode().length() > 0)) {
                         nodes += (tab12 + "<user-code>" + subNode.getUserCode() + "</user-code>\n");
@@ -706,6 +705,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
                             (subNode.getConstraintBy().length() > 0)) {
                         nodes += (tab12 + "<constraint-by>" + subNode.getConstraintBy() + "</constraint-by>\n");
                     }
+                    nodes += (tab12 + "<key-type>" + subNode.getKeyType() +"</key-type>\n");
                     nodes += (tab8 + "</fields>\n");
 
                     //

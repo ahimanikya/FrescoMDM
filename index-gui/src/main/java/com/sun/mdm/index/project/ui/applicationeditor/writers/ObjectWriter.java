@@ -118,33 +118,31 @@ public class ObjectWriter {
                 if (subNode.isField()) {
                     nodes += ("        " + "<fields>\n");
                     nodes += ("            <field-name>" + subNode.getName() +
-                    "</field-name>\n");
+                        "</field-name>\n");
                     nodes += ("            <field-type>" +
                     subNode.getDataType() + "</field-type>\n");
                     nodes += ("            <size>" + subNode.getDataSize() +
-                    "</size>\n");
+                        "</size>\n");
                     nodes += ("            <updateable>" +
                     subNode.getUpdateable() + "</updateable>\n");
                     nodes += ("            <required>" + subNode.getRequired() +
-                    "</required>\n");
-
-                    //nodes += "            <minimum-value>1900-01-01</minimum-value>\n";
-                    nodes += ("            <code-module>" +
-                    subNode.getCodeModule() + "</code-module>\n");
+                        "</required>\n");
                     nodes += ("            <pattern>" + subNode.getPattern() +
-                    "</pattern>\n");
-                    nodes += ("            <key-type>" + subNode.getKeyType() +
-                    "</key-type>\n");
+                        "</pattern>\n");
+                    nodes += ("            <code-module>" +
+                        subNode.getCodeModule() + "</code-module>\n");
                     if ((subNode.getUserCode() != null) &&
                             (subNode.getUserCode().length() > 0)) {
                         nodes += ("            <user-code>" + subNode.getUserCode() +
-                        "</user-code>\n");
+                            "</user-code>\n");
                     }
                     if ((subNode.getConstraintBy() != null) &&
                             (subNode.getConstraintBy().length() > 0)) {
                         nodes += ("            <constraint-by>" + subNode.getConstraintBy() +
-                        "</constraint-by>\n");
+                            "</constraint-by>\n");
                     }
+                    nodes += ("            <key-type>" + subNode.getKeyType() +
+                        "</key-type>\n");
                     nodes += ("        " + "</fields>\n");
 
                     //
