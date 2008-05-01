@@ -1552,7 +1552,7 @@ public class ConfigManager implements java.io.Serializable {
                                                         Integer.parseInt(searchResultID),
                                                         Integer.parseInt(itemPerPage), 
                                                         Integer.parseInt(maxResultSize), 
-                                                        false, false, 
+                                                        showEUID, showLID, 
                                                         fieldConfigGroup);
         
         return sResultsConfig;
