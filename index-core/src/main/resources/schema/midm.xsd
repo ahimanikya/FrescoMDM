@@ -170,7 +170,13 @@
                         <xs:extension base="xs:string">
                             <xs:attribute name="required">
                                 <xs:simpleType>
-                                    <xs:restriction base="xs:boolean">
+                                    <xs:restriction base="xs:string">
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:attribute>
+                            <xs:attribute name="choice">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:attribute>
