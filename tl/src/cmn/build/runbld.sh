@@ -492,9 +492,13 @@ send_buildmail()
     rm -f $TMPA
     touch $TMPA
 
-    if [ $RUNBUILD_STATUS -eq 0 -a $TOOLSBUILD_STATUS -eq 0 ]; then
-        strstatus="SUCCEEDED"
-    else
+    if [ $SRCUPDATE_STATUS -eq 0 ]; then
+        if [ $RUNBUILD_STATUS -eq 0 -a $TOOLSBUILD_STATUS -eq 0 ]; then
+            strstatus="SUCCEEDED"
+        else
+            strstatus="FAILED"
+        fi
+    else 
         strstatus="FAILED"
     fi
 
@@ -682,6 +686,11 @@ if [ $DOSRCUPDATE -eq 1 ]; then
     scm_update_tmp >> $SRCUPLOG 2>&1
     SRCUPDATE_STATUS=$?
     bldmsg -p $p -markend -status $SRCUPDATE_STATUS "local source update on $HOST_NAME" >> $MAINLOG
+    if [ $SRCUPDATE_STATUS -ne 0 ]; then
+        send_buildmail
+        cleanup
+        exit $SRCUPDATE_STATUS
+    fi
 fi
 
 if [ $DOTOOLS -eq 1 ]; then
