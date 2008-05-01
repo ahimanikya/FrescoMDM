@@ -23,11 +23,14 @@
 package com.sun.mdm.index.objects.validation;
 
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.objects.validation.exception.PatternMismatchedException;
 import com.sun.mdm.index.objects.validation.exception.UnknownDataTypeException;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.util.Localizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -38,6 +41,8 @@ public class PatternValidator {
     private Pattern mPattern;
     private String  mRegularExpression;
     private transient final Localizer mLocalizer = Localizer.get();
+    private transient final Logger mLogger = Logger.getLogger(
+            "com.sun.mdm.index.objects.validation.PatternValidator");
 
     /**
      * Creates a new instance of PatternValidator
@@ -49,9 +54,18 @@ public class PatternValidator {
      * @param pattern a regular expression
      * @todo Document this constructor
      */
-    public PatternValidator(String pattern) {
-        mPattern = Pattern.compile(pattern);
-        mRegularExpression = pattern;
+    public PatternValidator(String pattern)
+    throws PatternSyntaxException
+    {
+        try {
+            mPattern = Pattern.compile(pattern);
+            mRegularExpression = pattern;
+        } catch (PatternSyntaxException e) {
+          mLogger.log(Level.SEVERE, 
+                  mLocalizer.t("OBJ778: Illegal regex pattern \"{0}\"", pattern),
+                  e);
+          throw e;
+        }
     }
 
     /**
