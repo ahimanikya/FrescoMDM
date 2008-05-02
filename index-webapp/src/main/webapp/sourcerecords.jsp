@@ -657,7 +657,7 @@
                                                          </h:form>
                                              
                                                           <!-- End EDIT Fields-->														   
-                                                         <%} else if ("inactive".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>          
+                                                         <%} else if ("inactive".equalsIgnoreCase(singleSystemObjectLID.getStatus()) || "merged".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>          
                                                                    <!-- Start READ ONY Fields-->
                                                                    <!--Start Displaying the root node fields -->                                        
 							

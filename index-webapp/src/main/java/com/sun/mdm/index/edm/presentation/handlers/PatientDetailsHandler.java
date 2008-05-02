@@ -240,10 +240,15 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             if (super.getUpdateableFeildsMap().get("EUID") != null) {
                 String euid = (String) super.getUpdateableFeildsMap().get("EUID");
                 EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
-                HashMap eoHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
-                newEoArrayList.add(eoHashMap);
-                httpRequest.setAttribute("comapreEuidsArrayList", newEoArrayList);
-                return this.SEARCH_EUID_DETAILS;
+                if (eo != null) {
+                    HashMap eoHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+                    newEoArrayList.add(eoHashMap);
+                    httpRequest.setAttribute("comapreEuidsArrayList", newEoArrayList);
+                    return this.SEARCH_EUID_DETAILS;
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "EUID: " + euid + " not found", "EUID: " + euid + " not found"));
+                    return this.VALIDATION_ERROR;
+                }
 
             } else if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
                 String lid = (String) super.getUpdateableFeildsMap().get("LID");

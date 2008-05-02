@@ -423,12 +423,19 @@
                                                 for(int i=0;i<eoSources.size();i++) {
                                                     soHashMap = (HashMap) eoSources.get(i);
                                                     HashMap soHashMapValues = (HashMap) soHashMap.get("SYSTEM_OBJECT");
+													String soStatus = (String) soHashMap.get("Status");
                                             %>
                                                <td  valign="top">
                                                 <div id="mainDupSources<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
                                                     <div style="width:170px;overflow:hidden;">
-                                                    <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="source" >
-                                                        <table border="0" cellspacing="0" cellpadding="0" >
+											   <%if("inactive".equalsIgnoreCase(soStatus)) {%>
+                                                    <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="deactivate" >
+												<%} else if("merged".equalsIgnoreCase(soStatus)) {%>
+												<div id="mainEuidContent<%=soHashMap.get("LID")%>" class="transaction" >
+												<%} else {%>
+												<div id="mainEuidContent<%=soHashMap.get("LID")%>" class="source" >
+												<%}%>
+												<table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
                                                                 <td class="<%=menuClass%>"><%=soHashMap.get("SYSTEM_CODE")%></td>
                                                             </tr> 
@@ -442,10 +449,17 @@
                                                         </table>
                                                     </div>
                                                 </div>
+											   <%if("inactive".equalsIgnoreCase(soStatus)) {%>
+                                                   <div id="mainEuidContentButtonDiv<%=countEnt%>" class="deactivate">
+												<%} else if("merged".equalsIgnoreCase(soStatus)) {%>
+												   <div id="mainEuidContentButtonDiv<%=countEnt%>" class="transaction">
+												<%} else {%>
+												<div id="mainEuidContentButtonDiv<%=countEnt%>" class="source">
+												<%}%>
 
-                                                    <div id="mainEuidContentButtonDiv<%=countEnt%>" class="source">
-                                                        <div id="assEuidDataContent<%=countEnt%>" >
+                                                   <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent" class="source">
+
                                                                 <table border="0" cellspacing="0" cellpadding="0">
                                                                     <%
                                     for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
@@ -820,7 +834,9 @@
                                                       <%} else  {%> 
 
                                                       <h:outputLink 
-													  rendered="#{Operations.potDup_ResolveUntilRecalc}" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" 
+													  rendered="#{Operations.potDup_ResolveUntilRecalc}" 
+													  title="#{msgs.diff_person_heading_text}"
+													  onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" 
                                                           styleClass="diffviewbtn"  
                                                           value="javascript:void(0)">
                                                           <h:outputText value="#{msgs.diff_person_heading_text}"/>
