@@ -30,6 +30,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceEditHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
 <%
  double rand = java.lang.Math.random();
  String URI = request.getRequestURI();
@@ -255,6 +256,8 @@
 
                                                         ValueExpression fnameExpression;
                                                         ValueExpression fvalueVaueExpression;
+                                                ObjectNodeConfig[] arrObjectNodeConfig = screenObject.getRootObj().getChildConfigs();
+                                                HashMap allNodefieldsMap = sourceHandler.getAllNodeFieldConfigs();
                                     %>
                             <div class="yui-content">
                               <% if(operations.isSO_SearchView()){%> 
@@ -357,6 +360,7 @@
                                                     %>
                                                     
                                                     <td>
+													    <!--Display edit link only when the system object-->
                                                         <h:commandLink  styleClass="button" 
                                                                         action="#{NavigationHandler.toSourceRecords}" 
                                                                         rendered="#{Operations.SO_Edit}"
@@ -1413,6 +1417,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                           <tr>
                                                               
                                                                <%
+																   CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
                                                     Object[] soHashMapArrayListObjects = newSoArrayList.toArray();
                                                     String cssClass = "dynaw169";
                                                     String cssMain = "maineuidpreview";
@@ -1455,7 +1460,38 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                         <%}%>
                                                              
                                                                                      <tr><td>&nbsp;</td></tr>
-                                                                                     <tr><td>&nbsp;</td></tr>
+                                                                   <%
+                                                                   
+                                                                   for (int i = 0; i < arrObjectNodeConfig.length; i++) {
+                                                                    ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
+                                                                    FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
+                                                                   int maxMinorObjectsMAX  = compareDuplicateManager.getSOMinorObjectsMaxSize(newSoArrayList,objScreenObject,childObjectNodeConfig.getName());
+                                                                    int  maxMinorObjectsMinorDB =  ((Integer) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
+                                                                   %>
+                                                                    <tr><td><b style="font-size:12px; color:blue;"><%=childObjectNodeConfig.getName()%> Info</b></td></tr>
+                                                                    <%
+                                                                      for (int max = 0; max< maxMinorObjectsMAX; max++) {
+																    %>
+
+																  <%
+                               		 		                       for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
+                                                                       FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
+                                                                      %>  
+                                                                    <tr>
+                                                                        <td>
+                                                                            <%=fieldConfigMap.getDisplayName()%>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <%
+                                                                      } // field config loop
+																	  %>
+
+																	<%
+                                                                      } // max minor objects loop
+																 	 %>
+																	<%
+                                                                      } // max minor objects loop
+																 	 %>
 
                                                                                 </table>
                                                                             </div>
@@ -1484,7 +1520,8 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                     <table border="0" cellspacing="0" cellpadding="0" id="buttoncontent<%=soHashMap.get("LID")%>"  >
                                                                         <%
                                                         HashMap personfieldValuesMapEO = (HashMap) soHashMap.get("SYSTEM_OBJECT");
-                                                        String epathValue;
+                                                        HashMap codesValuesMapEO = (HashMap) soHashMap.get("SYSTEM_OBJECT_EDIT");
+                                                        String epathValue = new String();
                                                         for (int ifc = 0; ifc < personConfigFeilds.length; ifc++) {
                                                             FieldConfig fieldConfigMap = (FieldConfig) personConfigFeilds[ifc];
                                                             if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
@@ -1507,7 +1544,15 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
         fnameExpression = ExpressionFactory.newInstance().createValueExpression(epathValue, epathValue.getClass());
         fvalueVaueExpression = ExpressionFactory.newInstance().createValueExpression(personfieldValuesMapEO.get(epathValue), personfieldValuesMapEO.get(epathValue).getClass());
                                                                 %>
+																     <div id="highlight<%=soHashMap.get("LID")%><%=soHashMap.get("SYSTEM_CODE")%>:<%=epathValue%>">
+																            <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=soHashMap.get("LID")%><%=soHashMap.get("SYSTEM_CODE")%>:<%=epathValue%>')" >
                                                                                             <font class="highlight"><%=personfieldValuesMapEO.get(epathValue)%></font>
+																							</a>
+                                                                                       </div>
+																     <div id="unHighlight<%=soHashMap.get("LID")%><%=soHashMap.get("SYSTEM_CODE")%>:<%=epathValue%>"
+																	 style="visibility:hidden;display:none">
+																	                  <%=personfieldValuesMapEO.get(epathValue)%>
+																	 </div>
                                                                                        <%} else {%>
                                                                                            <%=personfieldValuesMapEO.get(epathValue)%>
                                                                                        <%}%>
@@ -1520,7 +1565,69 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                         <%}%>
                                                              
                                                                         <tr><td>&nbsp;</td></tr>
-                                                                        <tr><td>&nbsp;</td></tr>
+                                                                   <%
+                                                                   
+                                                                   for (int io = 0; io < arrObjectNodeConfig.length; io++) {
+																	   %>
+                                                                    <tr><td>&nbsp;</td></tr>
+
+																	   <%
+                                                                    ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[io];
+                                                                    ArrayList  minorObjectMapList =  (ArrayList) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList");
+                                                                    HashMap minorObjectHashMap = new HashMap();
+                                                                    int  maxMinorObjectsMinorDB =  ((Integer) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
+                                                 int maxMinorObjectsMAX  = compareDuplicateManager.getSOMinorObjectsMaxSize(newSoArrayList,objScreenObject,childObjectNodeConfig.getName());
+												 int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
+
+                                                 FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
+			 //if (maxMinorObjectsDiff > 0 ) {
+			 %>
+
+		     <%
+								for(int ar = 0; ar < minorObjectMapList.size() ;ar ++) {
+                                                                       minorObjectHashMap = (HashMap) minorObjectMapList.get(ar);
+                                                                   %>
+																    
+                                                                    <%
+                                                                    for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
+                                                                     FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
+                                                                     epathValue = fieldConfigMap.getFullFieldName();
+                                                                    %>  
+                                                                    <tr>
+                                                                        <td>
+                                                                                <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
+																				<%if(fieldConfigMap.isKeyType()) {%>
+                                                                                   <b><%=minorObjectHashMap.get(epathValue)%></b>
+																				<%} else {%>
+																				   <%=minorObjectHashMap.get(epathValue)%>
+																				<%}%>
+                                                                                <%} else {%>
+                                                                                &nbsp;
+                                                                                <%}%>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <%
+                                                                      }//field config loop
+								       } //minor objects values list
+                                                                      %>
+
+                                                                    <%
+								    for (int iex = 0; iex < maxMinorObjectsDiff; iex++) {							
+								   %>
+
+								 <%
+                                                                    for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
+                                                                     FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
+													                 %>  
+                                                                    <tr><td>&nbsp;</td></tr>
+                                                                    <%                                                                                     }//field config loop
+                                                                        }//Extra minor objects loop
+								 %>
+
+
+								 <%  
+                                                                    } //total minor objects loop
+                                                                    %>
 
                                                                     </table>
                                                                 </div>
@@ -1532,6 +1639,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                 <%
                                                                           HashMap mergedSOMap = new HashMap();
                                                                           String styleclass = "yellow";
+													                      ArrayList mergePreviewMinorObjectList = new ArrayList();
                                                                           HashMap previewpersonfieldValuesMapEO = new HashMap();
                                                                          if(request.getAttribute("mergedSOMap") != null) {
                                                                           mergedSOMap = (HashMap) request.getAttribute("mergedSOMap");
@@ -1563,7 +1671,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                     <table border="0" cellspacing="0" cellpadding="0" id="previewbuttoncontent<%=soHashMap.get("LID")%>">
                                                                         <%
 
-                                                        String previewepathValue;
+                                                        String previewepathValue = new String();
                                                         for (int ifcp = 0; ifcp < personConfigFeilds.length; ifcp++) {
                                                             FieldConfig fieldConfigMap = (FieldConfig) personConfigFeilds[ifcp];
                                                             if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
@@ -1577,9 +1685,9 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                             <td>
                                                                                 <%if(request.getAttribute("mergedSOMap") != null) {%>
                                                                                     <%if (previewpersonfieldValuesMapEO.get(previewepathValue) != null) {%> 
-                                                                                          <%=previewpersonfieldValuesMapEO.get(previewepathValue)%>
+                                                                                          <span id="<%=previewepathValue%>"><%=previewpersonfieldValuesMapEO.get(previewepathValue)%></span>
                                                                                     <%} else {%>
-                                                                                        &nbsp;
+                                                                                        <span id="<%=previewepathValue%>">&nbsp;</span>
                                                                                     <%}%>
                                                                                 
                                                                                 <%}else{  %>
@@ -1591,6 +1699,65 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                              
                                                                         <tr><td>&nbsp;</td></tr>
                                                                         <tr><td>&nbsp;</td></tr>
+                                                                   <%
+                                                                   HashMap minorObjectHashMapPreview = new HashMap();
+                                                                   for (int i = 0; i < arrObjectNodeConfig.length; i++) {
+                                                                    ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
+                                                                    FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
+                                                                    int maxMinorObjectsMAX  = compareDuplicateManager.getSOMinorObjectsMaxSize(newSoArrayList,objScreenObject,childObjectNodeConfig.getName());
+                                                                    int  maxMinorObjectsMinorDB =  (request.getAttribute("mergedSOMap")  != null) ?((Integer) mergedSOMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue():0;
+								    int  maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
+								    mergePreviewMinorObjectList = (request.getAttribute("mergedSOMap")  != null)?(ArrayList) mergedSOMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList"):new ArrayList();
+                                                                   %>
+                                                                    <%
+                                                                     for(int ar = 0; ar < mergePreviewMinorObjectList.size() ;ar ++) {
+                                                                       minorObjectHashMapPreview = (HashMap) mergePreviewMinorObjectList.get(ar);                                                                    %>
+                                                                  
+								    <%
+                               		 		            for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
+                                                                       FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
+								       previewepathValue = fieldConfigMap.getFullFieldName();
+                                                                      %>  
+                                                                    <tr>
+                                                                        <td>
+                                                                                <%if(request.getAttribute("mergedSOMap") != null) {%>
+                                                                                    <%if (minorObjectHashMapPreview.get(previewepathValue) != null) {%> 
+                                                                                          <span id="<%=previewepathValue%>"><%=minorObjectHashMapPreview.get(previewepathValue)%></span>
+                                                                                    <%} else {%>
+                                                                                        <span id="<%=previewepathValue%>">&nbsp;</span>
+                                                                                    <%}%>
+                                                                                
+                                                                                <%}else{  %>
+                                                                                    &nbsp;
+                                                                                <%} %>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <%
+                                                                      } // field config loop
+								    %>
+
+								    <%
+                                                                      } // max minor objects loop
+								     %>
+
+                                    <%
+								    for (int iex = 0; iex < maxMinorObjectsDiff; iex++) {							
+								   %>
+
+								   <%
+                                                                    for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
+                                                                     FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
+                                                                    %>  
+                                                                    <tr><td>&nbsp;</td></tr>
+                                                                    <%                                                                                     }//field config loop
+                                                                        }//Extra minor objects loop
+								  %>
+
+                                                                        <tr><td>&nbsp;</td></tr>
+                                                                     
+							       <%
+                                                                     } // all child nodes loop
+								   %>
 
                                                                     </table>
                                                                 </div>
@@ -1629,7 +1796,8 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                            <% ValueExpression soValueExpressionMerge = null;
                                            for (int countEnt = 0; countEnt < soHashMapArrayListObjects.length; countEnt++) { 
                                                HashMap soHashMapMerge = (HashMap) soHashMapArrayListObjects[countEnt];
-                                               soValueExpressionMerge = ExpressionFactory.newInstance().createValueExpression(soHashMapMerge , soHashMapMerge.getClass());
+											   HashMap soHashMap = (HashMap) soHashMapMerge.get("SYSTEM_OBJECT");
+                                               soValueExpressionMerge = ExpressionFactory.newInstance().createValueExpression(soHashMap, soHashMap.getClass());
 
                                                %>
                                                <% if (countEnt == 0)    { %>
@@ -1693,9 +1861,12 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                                 </a>
                                                                             </td>
                                                                             <td>
-                                                                                <a class="button" >
+                                                                               <h:form>
+                                                                                    <h:commandLink  styleClass="button"   rendered="#{Operations.SO_Merge}"
+                                                                                    action="#{SourceMergeHandler.cancelMergeOperation}" >  
                                                                                    <span id="confirmcancel"><h:outputText value="#{msgs.cancel_but_text}" /></span>
-                                                                                </a>
+                                                                                    </h:commandLink>                                                 
+                                                                               </h:form>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -1724,7 +1895,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
         </div> <!--end source records div -->
          <!-- START Extra divs for add  SO-->
          <div id="mergeDiv" class="alert" style="top:500px;height:130px;left:560px;visibility:hidden">
-             <h:form id="finalMergeForm">
+             <h:form id="mergeFinalForm">
                  <table cellspacing="0" cellpadding="0" border="0">
                      <tr><th align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th>
                      <th align="right"><a href="javascript:void(0)" rel="mergepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th></tr>
@@ -1748,6 +1919,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                              </h:outputLink>   
                              <h:inputHidden id="previewhiddenLid1" value="#{SourceMergeHandler.formlids}" />
                              <h:inputHidden id="previewhiddenLid1source" value="#{SourceMergeHandler.lidsource}" />
+                             <h:inputHidden id="selectedMergeFields" value="#{SourceMergeHandler.selectedMergeFields}" />
                          </td>
                      </tr>
                      
@@ -1899,8 +2071,8 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
         <%}%>
         <script>
             document.getElementById("confirmContent").innerHTML  = '<%=srcs[1]%>';
-            document.getElementById("finalMergeForm:previewhiddenLid1").value  = '<%=srcs[0]+":" + srcs[1]%>';
-            document.getElementById("finalMergeForm:previewhiddenLid1source").value  = '<%=lidsSource%>';
+            document.getElementById("mergeFinalForm:previewhiddenLid1").value  = '<%=srcs[0]+":" + srcs[1]%>';
+            document.getElementById("mergeFinalForm:previewhiddenLid1source").value  = '<%=lidsSource%>';
         </script>
         <%}%> 
 	  <!--Fix for Bug : 6692060 (By Sridhar) ENDS -->
