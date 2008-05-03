@@ -419,6 +419,7 @@ public class CompareDuplicateManager {
                     minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
                 }
                 systemObjectHashMap.put("SO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
+                systemObjectHashMap.put("SO" + objectNodeConfig.getName() + "ArrayListSize", new Integer(soMinorObjectsMapArrayList.size())); // set SO addresses as arraylist here
                 
             }
 
@@ -533,6 +534,7 @@ public class CompareDuplicateManager {
                     }
                 }
 
+                enterpriseObjectHashMap.put("EOCODES" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayListCodes); // set SO addresses as arraylist here
                 enterpriseObjectHashMap.put("EO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
                 enterpriseObjectHashMap.put("EO" + objectNodeConfig.getName() + "ArrayListSize", new Integer(soMinorObjectsMapArrayList.size())); // set SO addresses as arraylist here
             }
@@ -807,6 +809,27 @@ public class CompareDuplicateManager {
                 ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
                 if (childObjectName.equalsIgnoreCase(objectNodeConfig.getName())) {
                     countsArray[j] = ((Integer) valuesObjectHashMap.get("EO" + childObjectName + "ArrayListSize")).intValue();
+                                                                                                 
+                    System.out.println( j + "ADDING =====> " + countsArray[j]);
+                }
+            }
+        }
+        Arrays.sort(countsArray);
+        return countsArray[countsArray.length-1];
+    }
+
+    public int getSOMinorObjectsMaxSize(ArrayList valuesObjectHashMapList, ScreenObject screenObject, String childObjectName) {
+        ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
+        int[] countsArray = new int[valuesObjectHashMapList.size()];
+   
+        //Build and array of minor object values from the screen object child object nodes
+        for (int j = 0; j < valuesObjectHashMapList.size(); j++) {
+            HashMap valuesObjectHashMap = (HashMap) valuesObjectHashMapList.get(j);
+            for (int i = 0; i < childNodeConfigs.length; i++) {
+                //get the child object node configs
+                ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
+                if (childObjectName.equalsIgnoreCase(objectNodeConfig.getName())) {
+                    countsArray[j] = ((Integer) valuesObjectHashMap.get("SO" + childObjectName + "ArrayListSize")).intValue();
                 }
             }
         }
