@@ -361,20 +361,20 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                     <% } %>
 				<% if (!MasterControllerService.MINOR_OBJECT_REMOVE.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)))  { %>
 			              <tr class="<%=styleClass%>">
-			                    <td valign="center">
+			                    <td width="14px" valign="center">
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
 
 									  <a href="javascript:void(0)" 
 											 onclick='javascript:setEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&editIndex=<%=i%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
-												 <nobr>Edit&nbsp;<img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
+												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
-							   <td valign="center">							   
+							   <td width="14px" valign="center">							   
 									  <a href="javascript:void(0)" 
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>NewDiv","")'> 
-												 <nobr>Delete&nbsp;<img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
+												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 							   </td>
 
@@ -453,20 +453,20 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                     <% } %>
 					<% if (!MasterControllerService.MINOR_OBJECT_REMOVE.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)))  { %>
 			              <tr class="<%=styleClass%>">
-			                    <td valign="center">
+			                    <td valign="center" width="14px">
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
 
 									  <a href="javascript:void(0)" 
 											 onclick='javascript:setEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&editIndex=<%=i%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
-												 <nobr>Edit&nbsp;<img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
+												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
-							   <td valign="center">							   
+							   <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)" 
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>NewDiv","")'> 
-												 <nobr>Delete&nbsp;<img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
+												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 							   </td>
 
@@ -651,20 +651,20 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 				<% if (!MasterControllerService.MINOR_OBJECT_REMOVE.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)))  { %>
 
 			              <tr class="<%=styleClass%>">
-			                    <td valign="center">
+			                    <td valign="center" width="14px">
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
 
 									  <a href="javascript:void(0)" 
 											 onclick='javascript:setEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&editIndex=<%=i%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
-												 <nobr>Edit&nbsp;<img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
+												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
-							   <td valign="center">							   
+							   <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)" 
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>NewDiv","")'> 
-												 <nobr>Delete&nbsp;<img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
+												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 							   </td>
 
@@ -789,20 +789,20 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 				<% if (!MasterControllerService.MINOR_OBJECT_REMOVE.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)))  { %>
 			              <tr class="<%=styleClass%>">
-			                    <td valign="center">
+			                    <td width="14px" valign="center">
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
 
 									  <a href="javascript:void(0)" 
 											 onclick='javascript:setEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
-												 <nobr>Edit&nbsp;<img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
+												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
-							   <td valign="center">
+							   <td width="14px" valign="center">
 									  <a href="javascript:void(0)" 
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>NewDiv","")'> 
-												 <nobr>Delete&nbsp;<img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
+												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 							   </td>
 

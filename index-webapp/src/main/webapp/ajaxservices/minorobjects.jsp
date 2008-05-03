@@ -398,7 +398,7 @@ if(isSave) {
 			              </tr>
                     <% } %>
 			              <tr class="<%=styleClass%>">
-			                    <td valign="center">
+			                    <td valign="center" width="14px">
 								  <% 
 									  String thisIndex = ((Integer)minorObjectMap.get("listIndex")).toString();
 									  String minorObjType = request.getParameter("MOT");
@@ -406,13 +406,13 @@ if(isSave) {
 
 									  <a href="javascript:void(0)" 
 											 onclick='javascript:setEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
-												 <nobr>Edit&nbsp;<img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
+												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
-							   <td valign="center">							   
+							   <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)" 
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&deleteIndex=<%=thisIndex%>&MOT=<%=minorObjType%>","<%=minorObjType%>AddNewSODiv","")'> 
-												 <nobr>Delete&nbsp;<img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
+												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 							   </td>
 
@@ -617,7 +617,7 @@ if(isSave) {
 			              </tr>
                     <% } %>
 			              <tr class="<%=styleClass%>">
-			                    <td valign="center">
+			                    <td valign="center" width="14px">
 								  <% 
 									  String thisIndex = ((Integer)minorObjectMap.get("listIndex")).toString();
 									  String minorObjType = request.getParameter("MOT");
@@ -625,13 +625,13 @@ if(isSave) {
 
 									  <a href="javascript:void(0)" 
 											 onclick='javascript:setEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
-												 <nobr>Edit&nbsp;<img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
+												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
-							   <td valign="center">							   
+							   <td valign="center" width="14px">							   
 									  <a href="javascript:void(0)" 
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&deleteIndex=<%=thisIndex%>&MOT=<%=minorObjType%>","<%=minorObjType%>AddNewSODiv","")'> 
-												 <nobr>Delete&nbsp;<img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
+												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 							   </td>
 
@@ -765,7 +765,7 @@ if(isSave) {
 			              </tr>
                     <% } %>
 			              <tr class="<%=styleClass%>">
-			                    <td valign="center">
+			                    <td valign="center" width="14px">
 								  <% 
 									  String thisIndex = ((Integer)minorObjectMap.get("listIndex")).toString();
 									  String minorObjType = request.getParameter("MOT");
@@ -773,13 +773,13 @@ if(isSave) {
 
 									  <a href="javascript:void(0)" 
 											 onclick='javascript:setEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
-												 <nobr>Edit&nbsp;<img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
+												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
-							   <td valign="center">
+							   <td valign="center" width="14px">
 									  <a href="javascript:void(0)" 
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&deleteIndex=<%=thisIndex%>&MOT=<%=minorObjType%>","<%=minorObjType%>AddNewSODiv","")'> 
-												 <nobr>Delete&nbsp;<img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
+												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
 							   </td>
 
