@@ -83,6 +83,7 @@ public class SourceMergeHandler {
     
     ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
     String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
+    String enterLidsMessaage =bundle.getString("lid_enter_more_lids");
     SourceHandler sourceHandler = new SourceHandler();
     Object[] resultsConfigFeilds = sourceHandler.getAllFieldConfigs().toArray();
     Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
@@ -90,6 +91,8 @@ public class SourceMergeHandler {
     EPathArrayList personEPathArrayList = sourceHandler.buildPersonEpaths();
     private ArrayList soArrayList = new ArrayList();
     private HashMap systemObjectHashMap;
+    /** Selected merge fields */
+    private String selectedMergeFields = new String();
 
     
     /** Creates a new instance of SourceMergeHandler */
@@ -142,7 +145,8 @@ public class SourceMergeHandler {
         String[] pullDownListItems = systemCodes[0];
         ArrayList newArrayList = new ArrayList();
         for (int i = 0; i < pullDownListItems.length; i++) {
-            SelectItem selectItem = new SelectItem();            
+            SelectItem selectItem = new SelectItem();
+            //System.out.println("Adding Select item label" + pullDownListItems[i] + "Value" + pullDownListItems[i]);
             selectItem.setLabel(masterControllerService.getSystemDescription(pullDownListItems[i]));
             selectItem.setValue(pullDownListItems[i]);
             newArrayList.add(selectItem);
@@ -165,7 +169,8 @@ public class SourceMergeHandler {
     
     public String performPreviewLID() {
 
-        String[] lids = this.formlids.split(":");      
+        String[] lids = this.formlids.split(":");
+        //System.out.println(" Request " +   request);
         String sourceLid = lids[0];
         String destnLid = lids[1];
         request.setAttribute("lids", lids);
@@ -210,7 +215,8 @@ public class SourceMergeHandler {
   
   public String performMergeLIDs () {
     
-         String[] lids = this.formlids.split(":");         
+         String[] lids = this.formlids.split(":");
+         //System.out.println(" Request " +   request);
          String sourceLid = lids[0];
          String destnLid = lids[1];
          request.setAttribute("lids", lids);
@@ -238,6 +244,7 @@ public class SourceMergeHandler {
   
   
      public String performLidMergeSearch () {
+        session.removeAttribute("soHashMapArrayList");
         session.setAttribute("tabName","Merge");
         try {
             String errorMessage = bundle.getString("system_object_not_found_error_message");					  
@@ -248,51 +255,72 @@ public class SourceMergeHandler {
 
             boolean validateSystemCode = false;
             if (this.getLid1() != null && this.getLid1().trim().length()>0 ) {
-                String lid1 = this.getLid1().replaceAll("-", "");
-                this.setLid1(lid1);
+                this.setLid1(this.getLid1().replaceAll("-", ""));
                 systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid1);
                 //Throw exception if SO is found null.
                 if (systemObjectLID == null) {
                     errorMessage +=  "," + this.getLid1();
                     validateSystemCode = true; 
                  } else {
-                    newArrayList.add(systemObjectLID);
+                    //display the message if the user is searching for either inactive/merged system objects
+                    if ("merged".equalsIgnoreCase(systemObjectLID.getStatus()) || "inactive".equalsIgnoreCase(systemObjectLID.getStatus())) {
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid1() + " is " + systemObjectLID.getStatus(), this.getLid4() + "/" + this.getLid4() + " is " + systemObjectLID.getStatus()));
+                    }
+                    
+                    //Add only active system objects to the array list
+                    if("active".equalsIgnoreCase(systemObjectLID.getStatus())) newArrayList.add(systemObjectLID);
                 }
             }
             if (this.getLid2() != null && this.getLid2().trim().length()>0) {
-                String lid2 = this.getLid2().replaceAll("-", ""); 
-                this.setLid2(lid2);
+                this.setLid2(this.getLid2().replaceAll("-", ""));
                 systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid2);
                 //Throw exception if SO is found null.
                 if (systemObjectLID == null) {
                     errorMessage += "," + this.getLid2();
                     validateSystemCode = true; 
                 } else {
-                    newArrayList.add(systemObjectLID);
+                    //display the message if the user is searching for either inactive/merged system objects
+                    if ("merged".equalsIgnoreCase(systemObjectLID.getStatus()) || "inactive".equalsIgnoreCase(systemObjectLID.getStatus())) {
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + systemObjectLID.getStatus(), this.getLid4() + "/" + this.getLid4() + " is " + systemObjectLID.getStatus()));
+                    }
+                    //Add only active system objects to the array list
+                    if("active".equalsIgnoreCase(systemObjectLID.getStatus())) newArrayList.add(systemObjectLID);
                 }
             }
             if (this.getLid3() != null && this.getLid3().trim().length()>0) {
-                 String lid3 = this.getLid3().replaceAll("-", ""); 
-                 this.setLid3(lid3);
+                 this.setLid3(this.getLid3().replaceAll("-", ""));
                  systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid3);
                 //Throw exception if SO is found null.
                 if (systemObjectLID == null) {
                    errorMessage += "," + this.getLid3();
                    validateSystemCode = true; 
                 } else {
-                    newArrayList.add(systemObjectLID);
+                    //display the message if the user is searching for either inactive/merged system objects
+                    if ("merged".equalsIgnoreCase(systemObjectLID.getStatus()) || "inactive".equalsIgnoreCase(systemObjectLID.getStatus())) {
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid3() + " is " + systemObjectLID.getStatus(), this.getLid4() + "/" + this.getLid4() + " is " + systemObjectLID.getStatus()));
+                    }
+                    //Add only active system objects to the array list
+                    if("active".equalsIgnoreCase(systemObjectLID.getStatus())) newArrayList.add(systemObjectLID);
                 }
             }
             if (this.getLid4() != null && this.getLid4().trim().length()>0) {
-                String lid4 = this.getLid4().replaceAll("-", "");
-                this.setLid4(lid4);
+                this.setLid4(this.getLid4().replaceAll("-", ""));
                 systemObjectLID = masterControllerService.getSystemObject(this.source, this.lid4);
                 //Throw exception if SO is found null.
                 if (systemObjectLID == null) {
                     errorMessage += "," +  this.getLid4();
                     validateSystemCode = true; 
                 } else {
-                    newArrayList.add(systemObjectLID);
+                    //display the message if the user is searching for either inactive/merged system objects
+                    if ("merged".equalsIgnoreCase(systemObjectLID.getStatus()) || "inactive".equalsIgnoreCase(systemObjectLID.getStatus())) {
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid4() + " is " + systemObjectLID.getStatus(), this.getLid4() + "/" + this.getLid4() + " is " + systemObjectLID.getStatus()));
+                    }
+                    //Add only active system objects to the array list
+                    if("active".equalsIgnoreCase(systemObjectLID.getStatus())) newArrayList.add(systemObjectLID);
                 }
             }
             if(validateSystemCode) {
@@ -300,23 +328,19 @@ public class SourceMergeHandler {
             }
 
             ArrayList newSoArrayList  = new ArrayList();
-        for (int i = 0; i < newArrayList.size(); i++) {
-                SystemObject systemObject = (SystemObject) newArrayList.get(i);               
-                HashMap systemObjectHashMap = new HashMap();
-                //add SystemCode and LID value to the new Hash Map
-                systemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID());// set LID here 
-                systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode());// set System code here 
-                systemObjectHashMap.put("Status", systemObject.getStatus());// set Status here 
-                
-
+            for (int i = 0; i < newArrayList.size(); i++) {
+                SystemObject systemObject = (SystemObject) newArrayList.get(i);
                 //HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, personEPathArrayList);
-                HashMap editSystemObjectHashMap  = (HashMap) compareDuplicateManager.getSystemObjectAsHashMap(systemObject, screenObject);
+                HashMap editSystemObjectHashMap = (HashMap) compareDuplicateManager.getSystemObjectAsHashMap(systemObject, screenObject);
                 newSoArrayList.add(editSystemObjectHashMap);
             }
-            
+    
             if(newSoArrayList.size() > 0) {
                 setSoArrayList(newSoArrayList);
                 session.setAttribute("soHashMapArrayList", newSoArrayList);
+                if(newSoArrayList.size() ==1 ) { 
+                    FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,enterLidsMessaage,enterLidsMessaage));
+                }
             }
             
        } catch (ProcessingException ex) {
@@ -343,7 +367,8 @@ public class SourceMergeHandler {
      */
     public void keepLidsAction(ActionEvent event) {
         //String lid = (String) event.getComponent().getAttributes().get("lidDiff");
-        String sourceLID = (String) event.getComponent().getAttributes().get("sourceLID");       
+        String sourceLID = (String) event.getComponent().getAttributes().get("sourceLID");
+        //System.out.println("IN keepLidsAction ==: > " + sourceLID);
         this.mergeLidsList.add(sourceLID);
         session.setAttribute("mergeLidsList", mergeLidsList);
     }
@@ -356,13 +381,16 @@ public class SourceMergeHandler {
         
         String fnameExpression = (String) event.getComponent().getAttributes().get("fnameExpression");
         Object fvalueValueExpression = (Object) event.getComponent().getAttributes().get("fvalueValueExpression");
+
+        //System.out.println("IN fnameExpression " + fnameExpression + "fvalueValueExpression" + fvalueValueExpression);
+
         HashMap fieldValuesMerge = (HashMap)request.getAttribute("mergedSOMap");
-        
+        //System.out.println("fieldValuesMerge ==> " + fieldValuesMerge);
         if (fieldValuesMerge != null) {
-         
+            //System.out.println("Before Changing the hashmap for " + fnameExpression + "with" + fieldValuesMerge.get(fnameExpression));
             fieldValuesMerge.put(fnameExpression, fvalueValueExpression); //set the value for the preview section
             request.setAttribute("mergedSOMap", fieldValuesMerge);  //restore the session object again.
-         
+            //System.out.println("After Changing the hashmap for " + fnameExpression + "with" + fieldValuesMerge.get(fnameExpression));
 
         }
 
@@ -390,6 +418,23 @@ public class SourceMergeHandler {
             SystemObject sourceSO = masterControllerService.getSystemObject(this.source,sbrLID);
             SystemObject destinationSO = masterControllerService.getSystemObject(this.source,destnId);
             
+             String[] selectedFieldsValue = this.getSelectedMergeFields().split(">>");
+
+             HashMap soHashMap = (HashMap)compareDuplicateManager.getSystemObjectAsHashMap(destinationSO, screenObject).get("SYSTEM_OBJECT_EDIT");
+
+            //when user modifies the person fields the only  update the enterprise object
+            if (selectedFieldsValue.length > 1) {
+                //Modify destination SO values with selected values 
+                for (int i = 0; i < selectedFieldsValue.length; i++) {
+                    String[] sourceEuidFull = selectedFieldsValue[i].split("##");
+                    soHashMap.put(sourceEuidFull[0], sourceEuidFull[1]);
+                  
+                }
+                //Modify CHANGED SYSTEM OBJECT values here
+                masterControllerService.modifySystemObject(destinationSO, soHashMap);
+            }
+           
+            
             SystemObject finalMergredDestnSOPreview  = masterControllerService.getPostMergeSystemObject(this.source, sbrLID, destnId);
             
             request.setAttribute("mergedSOMap", getSystemObjectAsHashMap(finalMergredDestnSOPreview));
@@ -404,7 +449,7 @@ public class SourceMergeHandler {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
             mLogger.error(mLocalizer.x("SRC057: Failed to get System object preview {0}",ex.getMessage()),ex);
         }
-      
+        //System.out.println("=====1====" + mergredHashMapVaueExpression.get("Person.FirstName"));
       }
 /**
      * 
@@ -416,13 +461,14 @@ public class SourceMergeHandler {
 
 
             String[] lids = this.formlids.split(":");
-            String sourceLid = lids[1];
-            String destnLid = lids[0];
+            String sourceLid = lids[0];
+            String destnLid = lids[1];
 
+        
             CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
             HashMap mergredHashMapVaueExpression = (HashMap) event.getComponent().getAttributes().get("mergedEOValueExpression");
 
-
+            //System.out.println("=====IN mergePreviewEnterpriseObject ====" + mergredHashMapVaueExpression);
             String sbrLID = (String) mergredHashMapVaueExpression.get("LID");
             String destnId = (sbrLID.equalsIgnoreCase(sourceLid)) ? destnLid : sourceLid;
 
@@ -437,7 +483,7 @@ public class SourceMergeHandler {
                 ArrayList finalMergredDestnEOArrayList = new ArrayList();
                 finalMergredDestnEOArrayList.add(finalMergredDestnSO);
                 session.removeAttribute("soHashMapArrayList");
-			
+		
                 request.setAttribute("mergedSOMap", finalMergredDestnEOArrayList);
             } catch (ProcessingException ex) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.getMessage()));
@@ -463,20 +509,32 @@ public class SourceMergeHandler {
     public String mergePreviewSystemObject() {
 
         String[] lids = this.formlids.split(":");
-        String sourceLid = lids[1];
-        String destnLid = lids[0];
+        String sourceLid = lids[0];
+        String destnLid = lids[1];
         try{
            SystemObject so = masterControllerService.getSystemObject(this.lidsource,  destnLid);
+             
            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
         
             HashMap destnMap  = (HashMap) compareDuplicateManager.getSystemObjectAsHashMap(so, screenObject).get("SYSTEM_OBJECT_EDIT");
-        
-            session.removeAttribute("soHashMapArrayList");
+           
+            String[] selectedFieldsValue = this.getSelectedMergeFields().split(">>");
+
+            //when user modifies the person fields the only  update the enterprise object
+            if (selectedFieldsValue.length > 1) {
+                //Modify destination SO values with selected values 
+                for (int i = 0; i < selectedFieldsValue.length; i++) {
+                    String[] sourceEuidFull = selectedFieldsValue[i].split("##");
+                    destnMap.put(sourceEuidFull[0], sourceEuidFull[1]);
+                }
+            }
             
             SystemObject finalMergredDestnSO  = masterControllerService.mergeSystemObject(this.lidsource, sourceLid, destnLid, destnMap);
             ArrayList finalMergredDestnEOArrayList = new ArrayList();
             
             finalMergredDestnEOArrayList.add(compareDuplicateManager.getSystemObjectAsHashMap(finalMergredDestnSO, screenObject));
+            
+            session.removeAttribute("soHashMapArrayList");
             
             session.setAttribute("soHashMapArrayList",finalMergredDestnEOArrayList);            
             request.setAttribute("lids", lids);
@@ -494,9 +552,6 @@ public class SourceMergeHandler {
             mLogger.error(mLocalizer.x("SRC065: Failed to get merge System object preview {0}",ex.getMessage()),ex);
         }
 
-        
-        
-        
         return "";
       }
 
@@ -505,7 +560,8 @@ public class SourceMergeHandler {
 
         try {
 
-                      
+            //System.out.println("==> :  LID " + systemObject.getLID() + "===> : Code " + systemObject.getSystemCode());
+            
             HashMap systemObjectHashMap = new HashMap();
             //add SystemCode and LID value to the new Hash Map
             systemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); 
@@ -581,17 +637,18 @@ public class SourceMergeHandler {
     }
 
     private String getMaskedValue(String systemCodeSelected)  {
-        String lidMaskValue = new String();       
+        String lidMaskValue = new String();
+        //System.out.println("systemCodeSelected ==> : " +  systemCodeSelected);
         String[][] lidMaskingArray = masterControllerService.getSystemCodes();
 
         for (int i = 0; i < lidMaskingArray.length; i++) {
             String[] strings = lidMaskingArray[i];
-           
+            //System.out.println("Outer Loop ==> : " +  strings);
             //Get the lid masking values here
             for (int j = 0; j < strings.length; j++) {
                 String string = strings[j];
                 if(systemCodeSelected.equalsIgnoreCase(string)) {
-
+//                     System.out.println( systemCodeSelected + "<=== [" +i + "]"  + "[" +j + "]" + "Inner Loop ==> : ");
                      lidMaskValue = lidMaskingArray[i+1][j];
                 }
                 
@@ -624,9 +681,23 @@ public class SourceMergeHandler {
         this.lidsource = lidsource;
     }
     /**
+     * Method used to cancel the merge operation by the user.
+     * Clears the session memory.
+     *
+     * @return String
      * 
      * @param event
      */
+    public String  cancelMergeOperation(){
+        session.removeAttribute("soHashMapArrayList");
+        return "source-record";
+        
+    }
+    /**
+     * 
+     * @param event
+     */
+    
     public void viewEUID(ActionEvent event){
         try {
 
@@ -649,6 +720,14 @@ public class SourceMergeHandler {
              mLogger.error(mLocalizer.x("SRC069: Failed to view EUID {0}",ex.getMessage()),ex);
         }
    }
+
+    public String getSelectedMergeFields() {
+        return selectedMergeFields;
+    }
+
+    public void setSelectedMergeFields(String selectedMergeFields) {
+        this.selectedMergeFields = selectedMergeFields;
+    }
 
 
      
