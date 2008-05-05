@@ -21,6 +21,8 @@ import com.sun.mdm.index.loader.blocker.DataObjectReader;
 import com.sun.mdm.index.loader.blocker.DataObjectFileReader;
 import com.sun.mdm.index.loader.blocker.BlockDefinition.Operator;
 
+import com.sun.mdm.index.loader.blocker.BlockDistributor;
+
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.context.support.GenericApplicationContext;
 
@@ -34,6 +36,7 @@ public class BlockDistributorTest extends TestCase {
 	private Lookup sbrblockLk_;
 	private Lookup sbrLookup_;
 	private String workingDir;
+	private ObjectDefinition inputobd_;
 	
 	/*
 	 * @param name
@@ -222,6 +225,8 @@ public class BlockDistributorTest extends TestCase {
 		f.setName("createUser");
 		obd.addField(4,f);
 	
+		inputobd_ = obd;
+
 		Lookup lookup = Lookup.createLookup(obd);
 		return lookup;
 	}
@@ -236,14 +241,14 @@ public class BlockDistributorTest extends TestCase {
 		return lookup;
 	}
 	
-	public void xxxtest0(){
+	public void test0(){
 		try {			
 			setDataObjectReader("inputData1.txt");
 			
 			ArrayList<BlockDefinition> blockDefinitions = config.getBlockDefinitions();
 			blockDefinitions.clear();
-			
-			BlockDistributor blockDistributor = new BlockDistributor(matchPaths_, inputLookup_, blockLk_, false);	
+						
+			BlockDistributor blockDistributor = new BlockDistributor(matchPaths_, inputLookup_,inputobd_, blockLk_, false);	
 			blockDistributor.distributeBlocks();
 			
 			String blockFileName = config.getSystemProperty("workingDir") + File.separatorChar 
@@ -274,7 +279,7 @@ public class BlockDistributorTest extends TestCase {
 			blockDefinitions.add(blockDefinition);
 			config.setBlockDefinitions(blockDefinitions);
 			
-			BlockDistributor blockDistributor = new BlockDistributor(matchPaths_, inputLookup_, blockLk_, false);	
+			BlockDistributor blockDistributor = new BlockDistributor(matchPaths_, inputLookup_, inputobd_, blockLk_, false);	
 			blockDistributor.distributeBlocks();
 			
 			String blockFileName = config.getSystemProperty("workingDir") + File.separatorChar 
@@ -308,7 +313,7 @@ public class BlockDistributorTest extends TestCase {
 			config.setBlockDefinitions(blockDefinitions);
 
 			BlockDistributor blockDistributor = new BlockDistributor(
-					matchPaths_, inputLookup_, blockLk_, false);
+					matchPaths_, inputLookup_, inputobd_, blockLk_, false);
 			blockDistributor.distributeBlocks();
 
 			String blockFileName = config.getSystemProperty("workingDir")
@@ -343,7 +348,7 @@ public class BlockDistributorTest extends TestCase {
 			config.setBlockDefinitions(blockDefinitions);
 
 			BlockDistributor blockDistributor = new BlockDistributor(
-					matchPaths_, inputLookup_, blockLk_, false);
+					matchPaths_, inputLookup_, inputobd_, blockLk_, false);
 			blockDistributor.distributeBlocks();
 
 			String blockFileName = config.getSystemProperty("workingDir")
@@ -384,7 +389,7 @@ public class BlockDistributorTest extends TestCase {
 			config.setBlockDefinitions(blockDefinitions);
 
 			BlockDistributor blockDistributor = new BlockDistributor(
-					matchPaths_, inputLookup_, blockLk_, false);
+					matchPaths_, inputLookup_, inputobd_, blockLk_, false);
 			blockDistributor.distributeBlocks();
 
 			String blockFileName = config.getSystemProperty("workingDir")
@@ -428,7 +433,7 @@ public class BlockDistributorTest extends TestCase {
 			config.setBlockDefinitions(blockDefinitions);
 
 			BlockDistributor blockDistributor = new BlockDistributor(
-					matchPaths_, inputLookup_, blockLk_, false);
+					matchPaths_, inputLookup_, inputobd_, blockLk_, false);
 			blockDistributor.distributeBlocks();
 
 			String blockFileName = config.getSystemProperty("workingDir")
@@ -472,7 +477,7 @@ public class BlockDistributorTest extends TestCase {
 			config.setBlockDefinitions(blockDefinitions);
 
 			BlockDistributor blockDistributor = new BlockDistributor(
-					matchPaths_, inputLookup_, blockLk_, false);
+					matchPaths_, inputLookup_, inputobd_, blockLk_, false);
 			blockDistributor.distributeBlocks();
 
 			String blockFileName = config.getSystemProperty("workingDir")
@@ -534,7 +539,7 @@ public class BlockDistributorTest extends TestCase {
 			config.setBlockDefinitions(blockDefinitions);
 
 			BlockDistributor blockDistributor = new BlockDistributor(
-					matchPaths_, inputLookup_, blockLk_, false);
+					matchPaths_, inputLookup_, inputobd_, blockLk_, false);
 			blockDistributor.distributeBlocks();
 
 			String blockFileName = config.getSystemProperty("workingDir")
@@ -583,7 +588,7 @@ public class BlockDistributorTest extends TestCase {
 			config.setBlockDefinitions(blockDefinitions);
 
 			BlockDistributor blockDistributor = new BlockDistributor(
-					matchPaths_, inputLookup_, blockLk_, false);
+					matchPaths_, inputLookup_, inputobd_, blockLk_, false);
 			blockDistributor.distributeBlocks();
 
 			String blockFileName = config.getSystemProperty("workingDir")
@@ -630,7 +635,7 @@ public class BlockDistributorTest extends TestCase {
 			config.setBlockDefinitions(blockDefinitions);
 
 			BlockDistributor blockDistributor = new BlockDistributor(
-					matchPaths_, inputLookup_, blockLk_, false);
+					matchPaths_, inputLookup_, inputobd_, blockLk_, false);
 			blockDistributor.distributeBlocks();
 
 			String blockFileName = config.getSystemProperty("workingDir")
@@ -683,7 +688,7 @@ public class BlockDistributorTest extends TestCase {
 			config.setBlockDefinitions(blockDefinitions);
 			
 			BlockDistributor blockDistributor = new BlockDistributor(
-					matchPaths_, inputLookup_, blockLk_, false);
+					matchPaths_, inputLookup_, inputobd_, blockLk_, false);
 			blockDistributor.distributeBlocks();
 
 			String blockFileName = config.getSystemProperty("workingDir")
@@ -722,7 +727,7 @@ public class BlockDistributorTest extends TestCase {
 			config.setBlockDefinitions(blockDefinitions);
 						
 			BlockDistributor blockDistributor = new BlockDistributor(
-					matchPaths_, inputLookup_, blockLk_, false);
+					matchPaths_, inputLookup_, inputobd_, blockLk_, false);
 			blockDistributor.distributeBlocks();
 
 			String blockFileName = config.getSystemProperty("workingDir")
@@ -762,7 +767,7 @@ public class BlockDistributorTest extends TestCase {
 			config.setBlockDefinitions(blockDefinitions);
 						
 			BlockDistributor blockDistributor = new BlockDistributor(
-					matchPaths_, inputLookup_, blockLk_, false);
+					matchPaths_, inputLookup_, inputobd_, blockLk_, false);
 			blockDistributor.distributeBlocks();
 
 			String blockFileName = config.getSystemProperty("workingDir")
@@ -802,7 +807,7 @@ public class BlockDistributorTest extends TestCase {
 			config.setBlockDefinitions(blockDefinitions);
 						
 			BlockDistributor blockDistributor = new BlockDistributor(
-					matchPaths_, inputLookup_, blockLk_, false);
+					matchPaths_, inputLookup_, inputobd_, blockLk_, false);
 			blockDistributor.distributeBlocks();
 
 			String blockFileName = config.getSystemProperty("workingDir")
