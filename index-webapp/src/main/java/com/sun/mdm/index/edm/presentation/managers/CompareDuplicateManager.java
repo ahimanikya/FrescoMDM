@@ -670,7 +670,8 @@ public class CompareDuplicateManager {
                             }
                         }
 
-                        histEOMap.put("EO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
+                        histEOMap.put("EO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set EO minor objects here as arraylist here
+                        histEOMap.put("EO" + objectNodeConfig.getName() + "ArrayListSize", new Integer(soMinorObjectsMapArrayList.size()).intValue()); // set SO addresses as arraylist here
                     }
 
                     objectHistMapUpdated.put(key, histEOMap);
@@ -783,7 +784,8 @@ public class CompareDuplicateManager {
                         minorObjectHashMapEdit.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
                         minorObjectHashMapEdit.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
                     }
-                    systemObjectHashMap.put("SO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
+                    systemObjectHashMap.put("SO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO minor objects list here
+                    systemObjectHashMap.put("SO" + objectNodeConfig.getName() + "ArrayListSize", new Integer(soMinorObjectsMapArrayList.size()).intValue()); // set SO minor objects size here
                     systemObjectHashMap.put("SOEDIT" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
                 }
                 newArrayList.add(systemObjectHashMap);
@@ -809,8 +811,6 @@ public class CompareDuplicateManager {
                 ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
                 if (childObjectName.equalsIgnoreCase(objectNodeConfig.getName())) {
                     countsArray[j] = ((Integer) valuesObjectHashMap.get("EO" + childObjectName + "ArrayListSize")).intValue();
-                                                                                                 
-                    System.out.println( j + "ADDING =====> " + countsArray[j]);
                 }
             }
         }
