@@ -166,6 +166,38 @@
             <artifactId>jmock-legacy</artifactId>
             <version>2.4.0</version>
         </dependency>
+        <!-- dependency for Junit tests -->
+        <dependency>
+            <groupId>loader.test</groupId>
+            <artifactId>resources</artifactId>
+            <version>6.0</version>
+        </dependency>      
+        <dependency>
+            <groupId>loader.test</groupId>
+            <artifactId>master-index-client</artifactId>
+            <version>6.0</version>
+        </dependency>
+    	  <dependency>
+            <groupId>mural</groupId>
+            <artifactId>standardizer-api</artifactId>
+            <version>${mural.currentVersion}</version>
+        </dependency>     
+    	  <dependency>
+            <groupId>mural</groupId>
+            <artifactId>standardizer-impl</artifactId>
+            <version>${mural.currentVersion}</version>
+        </dependency>                   
+    	  <dependency>
+            <groupId>mural</groupId>
+            <artifactId>inti-components</artifactId>
+            <version>${mural.currentVersion}</version>
+        </dependency>                   
+    	  <dependency>
+            <groupId>mural</groupId>
+            <artifactId>inti-container</artifactId>
+            <version>${mural.currentVersion}</version>
+        </dependency>                     
+        <!-- dependency for Junit tests -->        
     </dependencies>
 </project>
 
