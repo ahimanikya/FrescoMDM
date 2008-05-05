@@ -99,7 +99,7 @@
       <property name="deleteIntermediateDirs" value="false" />
 
 			<property name="rmiPort" value="9999" />
-			<property name="workingDir" value="c:/MDM/open-dm-mi/loader/test/workspace" />
+			<property name="workingDir" value="test/workspace" />
 			<property name="ftp.workingDir" value="/loader" />
 
 			<property name="numBlockBuckets" value="1" />
