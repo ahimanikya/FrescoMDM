@@ -46,15 +46,15 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
  * @author Swaranjit Dua
  *
  */
-   public class ObjectNodeUtil {
+public class ObjectNodeUtil {
 	private static LoaderConfig config = LoaderConfig.getInstance();	
-	
+
 	private static Date date_ = new Date();	    ;
-    private static SimpleDateFormat dateFormat_;  // This format is used in
-        // user defined objects per object definition
-    
+	private static SimpleDateFormat dateFormat_;  // This format is used in
+	// user defined objects per object definition
+
 	private static String dateFormatString_;
-	
+
 	public static ObjectDefinition initDataObjectAdapter() {
 		ObjectDefinition objDef = config.getObjectDefinition();
 		addIDs(objDef);
@@ -70,11 +70,11 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
 		//objDef_ = objDef;
 		return objDef;
 	}
-	
+
 	public static String getDateFormatString() {
 		return dateFormatString_;
 	}
-	
+
 	/*
 	public static void initDateFormat() {
 		ObjectDefinition objDef = config.getObjectDefinition();
@@ -85,9 +85,9 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
 		}
 		dateFormat_ = new SimpleDateFormat(dateString); // + " hh:mm:ss");
 	}
-	*/
-	
-	
+	 */
+
+
 	public static SystemObject getSystemObject(DataObject d, String lid, String systemcode,
 			String updateDateTime, String updateUser) throws Exception {
 		SystemObject so = new SystemObject();
@@ -96,98 +96,98 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
 		so.setStatus(SystemObject.STATUS_ACTIVE);
 		String s = updateDateTime;
 		if (s != null && !s.equals("")) {
-		  synchronized(dateFormat_) {
-			Date dt = dateFormat_.parse(s);
-			so.setUpdateDateTime(dt);
-		  }
+			synchronized(dateFormat_) {
+				Date dt = dateFormat_.parse(s);
+				so.setUpdateDateTime(dt);
+			}
 		}
 		so.setUpdateUser(updateUser);
-				  		  		  
+
 		if (so.getUpdateDateTime() == null) {
-            so.setUpdateDateTime(date_);
-        }
-		  
-        if (so.getCreateDateTime() == null) {
-           so.setCreateDateTime(so.getUpdateDateTime());
-        }
-        
-        if (so.getCreateUser() == null) {
-      	  so.setCreateUser("Loader");
-      	  so.setUpdateUser("Loader");
-        }
-        
-        addIdvals(d);
-	    ObjectNode o = DataObjectAdapter.toObjectNode(d);		
-		  String tag = o.pGetTag();
-		  so.addChild(o);
-		  so.setChildType(tag);
-		
-		
+			so.setUpdateDateTime(date_);
+		}
+
+		if (so.getCreateDateTime() == null) {
+			so.setCreateDateTime(so.getUpdateDateTime());
+		}
+
+		if (so.getCreateUser() == null) {
+			so.setCreateUser("Loader");
+			so.setUpdateUser("Loader");
+		}
+
+		addIdvals(d);
+		ObjectNode o = DataObjectAdapter.toObjectNode(d);		
+		String tag = o.pGetTag();
+		so.addChild(o);
+		so.setChildType(tag);
+
+
 		return so;
 	}
-	
-	public static DataObject fromObjectNode(ObjectNode o)throws Exception {
-	
-	  DataObject data = DataObjectAdapter.fromObjectNode(o);
-	   data.remove(0);  // replace ObjectId (such as PersonId) that are not
-	    // part of DataObject.
-	   deleteChildIDs(data);
-	   return data;
-					
-}
 
-/*
- * remove 1st field from each child. This is invoked after converson
- * from ObjectNode to DataObject. The ObjectNode contains ids such as 
- * AddressId. But object definition does has these Ids. So these must be
- * removed before DataObject is output.
- */
-private static void deleteChildIDs(DataObject d) {
-	
-	List<ChildType> childtypes = d.getChildTypes();
-	
-	for (ChildType ct: childtypes) {
-		List<DataObject> children = ct.getChildren();
-		
-		for (DataObject c: children) {
-			c.remove(0);
-		}
+	public static DataObject fromObjectNode(ObjectNode o)throws Exception {
+
+		DataObject data = DataObjectAdapter.fromObjectNode(o);
+		data.remove(0);  // replace ObjectId (such as PersonId) that are not
+		                 // part of DataObject.
+		deleteChildIDs(data);
+		return data;
+
 	}
 
-}
-	
-	
+	/*
+	 * remove 1st field from each child. This is invoked after converson
+	 * from ObjectNode to DataObject. The ObjectNode contains ids such as 
+	 * AddressId. But object definition does has these Ids. So these must be
+	 * removed before DataObject is output.
+	 */
+	private static void deleteChildIDs(DataObject d) {
+
+		List<ChildType> childtypes = d.getChildTypes();
+
+		for (ChildType ct: childtypes) {
+			List<DataObject> children = ct.getChildren();
+
+			for (DataObject c: children) {
+				c.remove(0);
+			}
+		}
+
+	}
+
+
 	/*
 	 * These ids like PersonId is not part of set of fields defined in
 	 * object.xml, but are implicitly created when creating Master Index
 	 * object schema classes such as PersonObject.
 	 */
 	private static void addIDs(ObjectDefinition objdef) {
-        String name = objdef.getName();
-        String idName = name + "Id";
-        Field f = new Field();
-        f.setName(idName);
-        objdef.addField(0, f);
-               
-        List<ObjectDefinition> children = objdef.getChildren();
-        
-        for (ObjectDefinition child: children) {
-        	addIDs(child);
-        }        
+		String name = objdef.getName();
+		String idName = name + "Id";
+		Field f = new Field();
+		f.setName(idName);
+		objdef.addField(0, f);
+
+		List<ObjectDefinition> children = objdef.getChildren();
+
+		for (ObjectDefinition child: children) {
+			addIDs(child);
+		}        
 	}		
-	
+
 	private static void addIdvals(DataObject d) {
 		d.add(0, "");
 		List<ChildType> childTypes = d.getChildTypes();
-		
+
 		for (int i = 0; i < childTypes.size(); i++) {
 			if (d.hasChild(i)) {
-			  List<DataObject> children =  d.getChildren(i);
-			  for (DataObject dobject: children) {
-			    addIdvals(dobject);
-			  }
+				List<DataObject> children =  d.getChildren(i);
+				for (DataObject dobject: children) {
+					addIdvals(dobject);
+				}
 			}
 		}
 	}
-   				
+
 }
