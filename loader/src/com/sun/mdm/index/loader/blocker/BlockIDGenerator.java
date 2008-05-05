@@ -30,17 +30,16 @@ import com.sun.mdm.index.objects.epath.EPath;
 
 /**
  * A user call back that generates a blockId from a given DataObject.
- * Bulk Matcher will pass thoese records to Match Engine for matching, whose
- * blockids are same. Say for BlockID  "John", all "John" records are
- * passed to MatchEngine for comparison.
- * @author sdua
+ * Bulk Matcher will match all records among each other which compute same blockid value.
+ * 
+ * @author Swaranjit Dua
  *
  */
 public interface BlockIDGenerator {
 	/**
 	 *  computes Block Id from input data
 	 * @param field EPath for a field on which this method is invoked.
-	 * This is specified in block cofiguration file.
+	 * This is specified in block configuration file.
 	 * @param data input root data object. (Can have child objects).
 	 * @param l Lookup that has meta data information about data.
 	 * 
