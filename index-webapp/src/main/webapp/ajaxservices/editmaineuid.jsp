@@ -135,7 +135,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        LID : 
+                                                        &nbsp;
                                                     </td>
                                                 </tr>
                                             </table>
@@ -477,6 +477,8 @@
                                                         <!-- Start Main Euid SO Details-->
                                     <%
             ValueExpression eoSystemObjectsValueExpression = ExpressionFactory.newInstance().createValueExpression(eoList, eoList.getClass());
+            String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
+
             for (int i = 0; i < eoList.size(); i++) {
                 HashMap valueMap = (HashMap) eoList.get(i);
                 ValueExpression eoMapValueExpression = ExpressionFactory.newInstance().createValueExpression(valueMap, valueMap.getClass());
@@ -485,16 +487,16 @@
                                                         <td valign="top" style="background-color:#cddcb1;border-top:1px solid #efefef;border-left:1px solid #efefef;border-right:1px solid #efefef;border-bottom:1px solid #efefef;">
                                                         <table border="0" cellspacing="0" cellpadding="0" style="width:100%;background-color:#cddcb1;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;">
                                                                  <tr>
-                                                                            <td class="tablehead" colspan="2">
+                                                                        <td class="tablehead" colspan="2">
                                                                                 <%=valueMap.get("SYSTEM_CODE_DESC")%>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td  align="left">&nbsp;</td>
-                                                                            <td  align="left"> 
-                                                                                <input type="text" style="background-color:#cddcb1" readonly="true" value='<%=valueMap.get("LID")%>'/> 
-																				
-                                                                            </td>
+                                                                        </td>
+                                                                 </tr>
+                                                                  <tr>
+                                                                        <td style="width:50%;padding-left:5px; font-size: 12px; text-align: left;">  <%=localIdDesignation%></td>
+                                                                        <td style="width:50%;padding-left:5px; font-size: 12px; text-align: left;">  
+																		    <b><%=valueMap.get("LID")%></b>
+                                                                                <!--input type="text" style="background-color:#cddcb1" readonly="true" value='<%=valueMap.get("LID")%>'/--> 	
+                                                                        </td>
                                                                  </tr>
                                                         </table>
                                                             <h:dataTable id="hashIdEditEo" 

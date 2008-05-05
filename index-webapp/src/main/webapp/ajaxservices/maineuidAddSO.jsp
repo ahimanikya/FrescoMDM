@@ -80,26 +80,40 @@
 <table valign="top" border="0" cellpadding="0" cellspacing="0" style="width:100%;background-color:#c4c8e1;;border-top:1px solid #efefef;border-left:1px solid #efefef;border-right:1px solid #efefef;border-bottom:1px solid #efefef;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;">
     <input type="hidden" title="lidmask" name="lidmask" value="DDD-DDD-DDDD" />
      <tr height="22px" valign="top">
-			<td> 
+         <td align="left">
+		     System:
+         </td>
+    	  <td align="left">
              <h:selectOneMenu id="SystemCode" title="SystemCode"
 			 style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 10px; text-align: left;width:220px"
 			 onchange="javascript:setLidMaskValue(this,'RootNodeInnerForm')" >
               <f:selectItem itemLabel="Select Source" itemValue="" />
                <f:selectItems  value="#{EditMainEuidHandler.systemCodes}" />
              </h:selectOneMenu>
-             </td>
+         </td>
+		 <td>&nbsp;</td>
     </tr>
     <tr>
-			 <td>
+        <td align="left" nowrap>
+		        <%=localIdDesignation%>:
+   	    </td>
+   	    <td align="left">
                 <h:inputText id="LID" 
 				             title="LID" 
 				             readonly="true"
                              onkeydown="javascript:qws_field_on_key_down(this, document.RootNodeInnerForm.lidmask.value)"
                              onkeyup="javascript:qws_field_on_key_up(this)"/>
-             </td>
+         </td>
+   	    <td align="left">
+	       <a class="button"  href="javascript:void(0)" onclick="javascript:getFormValues('RootNodeInnerForm');javascript:ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&validateLID=true','validateMessages','');">
+           <span><h:outputText value="#{msgs.validate_button_text}"/></span></a>
+         </td>
+	</tr>
+    <tr>
+         <td colspan="3"><div id="validateMessages"></div></td>
     </tr>                                            
 <tr>
-<td valign="top" colspan="2">
+<td valign="top" colspan="3">
     <!-- Start ADD  Fields-->
         <h:dataTable  headerClass="tablehead"  
                       id="hashIdEdit" 

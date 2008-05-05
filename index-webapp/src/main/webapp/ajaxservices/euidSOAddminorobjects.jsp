@@ -87,6 +87,10 @@ boolean isEdit = (null == editIndex?false:true);
 String validate = request.getParameter("validate");
 boolean isValidate = true;
 
+//validate LID fields 
+String validateLIDString = request.getParameter("validateLID");
+boolean isValidateLID = (null == validateLIDString?false:true);
+
 //Variables for linking 
 String isCancelString = request.getParameter("cancel");
 boolean isCancel = (null == isCancelString?false:true);
@@ -137,8 +141,124 @@ if (isCancel){
      document.getElementById('AddSO').style.display = 'none';
    </script>
 <%}else{%> <!--IF NOT CANCEL-->
-<% 
-  if(isSave) {
+<%if(isValidateLID) {%>
+<%
+	 if( (validateLID != null && validateLID.trim().length() == 0 )
+		 && (validateSystemCode != null && validateSystemCode.trim().length() > 0 )) {
+		isValidate = false;
+
+	%>
+	<div class="ajaxalert">
+	   	  <table>
+			<tr>
+				<td>
+				      <ul>
+				             <li>
+							  Please enter LID value.
+				             </li>
+				      </ul>
+				<td>
+			<tr>
+		</table>
+		</div>
+
+   <% } else if( (validateLID != null && validateLID.trim().length() == 0 )
+		 && (validateSystemCode != null && validateSystemCode.trim().length() == 0 )) {
+		isValidate = false;
+	%>
+		<div class="ajaxalert">
+	   	  <table>
+			<tr>
+				<td>
+				      <ul>
+				             <li>
+							  Please enter System and LID values.
+				             </li>
+				      </ul>
+				<td>
+			<tr>
+		</table>
+	</div>
+<%} else {%> <!--If systemcode/lid is not entered condition ends here-->
+	       <%
+        	boolean isMaskingCorrect = sourceHandler.checkMasking(validateLID,request.getParameter("lidmask"));
+         	if (!isMaskingCorrect)   { %>
+            <div class="ajaxalert">
+        	  <table>
+	    		<tr>
+		    		<td>
+			    	      <ul>
+				                <li>
+					    		  LID is not in the format <%=request.getParameter("lidmask")%>.
+				               </li>
+				         </ul>
+				    <td>
+			    <tr>
+	     	</table>
+			</div>
+           <% 
+			 isValidate = false;
+	
+			} else { 
+				String tempValidateLid = validateLID;
+				String sysDesc  = masterControllerService.getSystemDescription(validateSystemCode);
+				validateLID = validateLID.replaceAll("-","");
+				boolean validated =  editMainEuidHandler.validateSystemCodeLID(validateLID,validateSystemCode); 
+				%>
+			    <% if(validated)  {	
+					 isValidate = true;
+					%>
+				  <script>
+                       var formNameValue = document.forms['RootNodeInnerForm'];
+                       var lidField =  getDateFieldName(formNameValue.name,'LID');
+                       var systemField =  getDateFieldName(formNameValue.name,'SystemCode');
+
+					   document.getElementById(lidField).readOnly = true;
+                       document.getElementById(lidField).disabled = true;
+                       document.getElementById(lidField).style.backgroundColor = '#efefef';
+
+					   document.getElementById(systemField).readOnly = true;
+                       document.getElementById(systemField).disabled = true;
+                       document.getElementById(systemField).style.backgroundColor  = '#efefef';
+				  </script>
+					<div class="ajaxsuccess">
+						  <table>
+							<tr>
+								<td>
+									  <ul>
+											 <li>
+											  <%=sysDesc%>/<%=tempValidateLid%> is valid.
+											 </li>
+									  </ul>
+								<td>
+							<tr>
+						</table>
+					</div>
+			   <%} else {
+					   isValidate = false;
+					   %>
+					<div class="ajaxalert">
+						  <table>
+							<tr>
+								<td>
+									  <ul>
+											 <li>
+											  <%=sysDesc%>/<%=tempValidateLid%> is already found.
+											 </li>
+									  </ul>
+								<td>
+							<tr>
+						</table>
+					</div>
+			   <%}%>
+
+		 <%}%>
+
+
+<%}%>
+
+<%}else  if(isSave) {%>
+<%
 	 if( (validateLID != null && validateLID.trim().length() == 0 )
 		 && (validateSystemCode != null && validateSystemCode.trim().length() > 0 )) {
 		isValidate = false;
