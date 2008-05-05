@@ -61,87 +61,88 @@ import com.sun.mdm.index.dataobject.objectdef.ObjectDefinitionBuilder;
 import com.sun.mdm.index.idgen.EuidGenerator;
 import com.sun.mdm.index.loader.blocker.BlockDefinition;
 import com.sun.mdm.index.loader.euid.LoaderEuidGenerator;
-
-import com.sun.mdm.index.loader.common.FileManager;
 import com.sun.mdm.index.dataobject.DataObjectFileReader;
 
 /**
- * @author Sujit Biswas
- * 
+ * LoaderConfig bulkloader configuration class
+ * @version	6.0  06 May 2008
+ * @author	Sujit Biswas, Charles Ye
  */
 public class LoaderConfig {
-	private static Logger logger = Logger.getLogger(LoaderConfig.class
-			.getName(), Resource.BUNDLE_NAME);
+	private static Logger logger = Logger.getLogger(LoaderConfig.class.getName(), Resource.BUNDLE_NAME);
+	
 	private static long MB = 1024 * 1024;
 	private static long KB = 1024;
 	private static long WEIGHT = 4;
 	private static LoaderConfig instance;
+	private static String default_config_file = "conf/loader-config.xml";
+	private static Lock lock = new ReentrantLock();
 
-	/**
-	 * the loader configuration document object
-	 */
 	private Document doc;
 	private HashMap<String, String> systemProps = new HashMap<String, String>();
 	private EuidGenerator euidGenerator;
 
 	private ArrayList<String> matchFields = new ArrayList<String>();
 	private ArrayList<String> matchFieldTypes = new ArrayList<String>();
-	ArrayList<BlockDefinition> blockDefinitions = new ArrayList<BlockDefinition>();
+	private ArrayList<BlockDefinition> blockDefinitions = new ArrayList<BlockDefinition>();
+	private HashMap<String, String> euidParams = new HashMap<String, String>();
 
 	private Double duplicateThreshold;
 	private Double matchThreshold;
 	private DataObjectReader dataObjectReader;
-	boolean debug = Boolean.getBoolean("loader.debug");
+	private GenericApplicationContext context;	
+	private boolean debug = Boolean.getBoolean("loader.debug");
 
-	private static String default_config_file = "conf/loader-config.xml";
-
+	/**
+	 * LoaderConfig construtor  
+	 * @param configFile
+	 */
 	protected LoaderConfig(String configFile) {
 		super();
 		init(configFile);
 	}
 
+	/**
+	 * LoaderConfig construtor
+	 */
 	protected LoaderConfig() {
 		super();
-		// TODO read from system property
 		init(default_config_file);
 	}
 
+	/**
+	 * Initialize based on bulkloader configuration file.
+	 * @param filename
+	 */
 	private void init(String filename) {
 		try {
 			doc = getDocument(filename);
 		} catch (Exception e) {
 			e.printStackTrace();
-
 			logger.log(Level.CONFIG, e.getMessage());
 		}
 
 		initSystemProperties();
-
 		initEuidGenerator();
-
 		initMatchFields();
-
 		initThreshold();
-
 		initBlockDefinitions();
-
 		initDataObjectReader();
 	}
 
+	/**
+	 * Initialize thresholds
+	 */
 	private void initThreshold() {
 		try {
 			Node item = doc.getElementsByTagName("threshold-config").item(0);
 
 			XPath xpath = XPathFactory.newInstance().newXPath();
-
 			String element = (String) xpath.evaluate("//duplicateThreshold",
 					item, XPathConstants.STRING);
-
 			duplicateThreshold = Double.valueOf(element);
-
 			element = (String) xpath.evaluate("//matchThreshold", item,
 					XPathConstants.STRING);
-
 			matchThreshold = Double.valueOf(element);
 
 		} catch (XPathExpressionException e) {
@@ -151,58 +152,47 @@ public class LoaderConfig {
 
 	}
 
-	HashMap<String, String> euidParams = new HashMap<String, String>();
-
+	/**
+	 * Initialize EUID generator
+	 */
 	private void initEuidGenerator() {
 
 		InputStream is = getClass().getClassLoader().getResourceAsStream(
 				"master.xml");
-
 		try {
 			Document document = getDocument(is);
+			Node item = document.getElementsByTagName("EuidGeneratorConfig").item(0);
 
-			Node item = document.getElementsByTagName("EuidGeneratorConfig")
-					.item(0);
-
-			// TODO get it from config
 			initLoaderEuidGeneratorClass();
-
 			XPath xpath = XPathFactory.newInstance().newXPath();
 
-			NodeList elements = (NodeList) xpath.evaluate(
-					"//EuidGeneratorConfig/parameters/parameter", item,
-					XPathConstants.NODESET);
+			NodeList elements = (NodeList) xpath.evaluate("//EuidGeneratorConfig/parameters/parameter", item,
+													      XPathConstants.NODESET);
 
 			for (int i = 0; i < elements.getLength(); i++) {
 				Element e = (Element) elements.item(i);
-
 				String name = e.getElementsByTagName("parameter-name").item(0)
 						.getTextContent();
 				String value = e.getElementsByTagName("parameter-value")
 						.item(0).getTextContent();
-
 				euidParams.put(name, value);
 				euidGenerator.setParameter(name, Integer.valueOf(value));
-
 			}
 
 		} catch (Exception e) {
 			logger.info(e.getMessage());
 		}
-
 	}
 
 	/**
-	 * 
+	 * Initialize EUID generator
 	 */
 	private void initLoaderEuidGeneratorClass() {
 
 		Node item = doc.getElementsByTagName("EuidGenerator").item(0);
-
 		try {
 			if (item != null) {
 				String className = ((Element) item).getAttribute("class");
-
 				euidGenerator = (EuidGenerator) Class.forName(className)
 						.newInstance();
 			} else {
@@ -215,12 +205,13 @@ public class LoaderConfig {
 
 	}
 
+	/**
+	 * Initialize match fields
+	 */
 	private void initMatchFields() {
 		try {
 			Node item = doc.getElementsByTagName("MatchingConfig").item(0);
-
 			XPath xpath = XPathFactory.newInstance().newXPath();
-
 			NodeList elements = (NodeList) xpath
 					.evaluate(
 							"//match-system-object/match-columns/match-column/column-name",
@@ -228,7 +219,6 @@ public class LoaderConfig {
 
 			for (int i = 0; i < elements.getLength(); i++) {
 				String s = elements.item(i).getFirstChild().getNodeValue();
-
 				if (s.contains("Enterprise.SystemSBR."))
 					s = s.substring("Enterprise.SystemSBR.".length());
 				matchFields.add(s);
@@ -249,8 +239,9 @@ public class LoaderConfig {
 		}
 	}
 
-	private GenericApplicationContext context;
-
+	/**
+	 * Initialize dataobject reader
+	 */
 	private void initDataObjectReader() {
 
 		try {
@@ -272,40 +263,39 @@ public class LoaderConfig {
 				targetDocument.getDocumentElement().appendChild(node);
 			}
 
-			// TransformerFactory transformerFactory =
-			// TransformerFactory.newInstance();
-
-			// Transformer identityTransformer =
-			// transformerFactory.newTransformer();
-			// identityTransformer.transform(new DOMSource(targetDocument), new
-			// StreamResult(System.out));
-
 			context = new GenericApplicationContext();
 			XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(
 					context);
 			reader.registerBeanDefinitions(targetDocument,
 					new DescriptiveResource("A document"));
-
 			context.setClassLoader(this.getClass().getClassLoader());
 			context.refresh();
-
-			// dataObjectReader = (DataObjectReader)
-			// context.getBean("dataObjectReader");
-
-			// dataObjectReader = (DataObjectReader)
-			// context.getBean("dataObjectReader");
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
+	/**
+	 * Gets block definitions
+	 * @return ArrayList<BlockDefinition>
+	 */
 	public ArrayList<BlockDefinition> getBlockDefinitions() {
 		return blockDefinitions;
 	}
 
+	/**
+	 * Sets block definitions
+	 * @param blockDefinitions ArrayList<BlockDefinition>
+	 */
+	public void setBlockDefinitions(ArrayList<BlockDefinition> blockDefinitions) {
+		this.blockDefinitions = blockDefinitions;
+	}
+	
+	/**
+	 * Initialize block definitions
+	 */
 	private void initBlockDefinitions() {
 		try {
 			Node item = doc.getElementsByTagName("query-builder").item(0);
@@ -317,11 +307,8 @@ public class LoaderConfig {
 
 			for (int i = 0; i < elements.getLength(); i++) {
 				Element e = (Element) elements.item(i);
-
 				BlockDefinition b = new BlockDefinition();
-
 				b.setId(e.getAttribute("number"));
-
 				NodeList nl = e.getElementsByTagName("block-rule");
 
 				for (int j = 0; j < nl.getLength(); j++) {
@@ -329,9 +316,7 @@ public class LoaderConfig {
 					if (rule != null)
 						addRules(b, rule);
 				}
-
 				blockDefinitions.add(b);
-
 			}
 
 		} catch (XPathExpressionException e) {
@@ -344,64 +329,56 @@ public class LoaderConfig {
 
 	}
 
+	/**
+	 * Adds rule in a block definition
+	 * @param b BlockDefinition
+	 * @param rule Element
+	 */
 	private void addRules(BlockDefinition b, Element rule) {
 		NodeList nlFields = rule.getElementsByTagName("field");
 		NodeList nlSource = rule.getElementsByTagName("source");
 
 		for (int i = 0; i < nlFields.getLength(); i++) {
-
 			try {
-
 				String s = nlFields.item(i).getTextContent();
 				String s1 = nlSource.item(i).getTextContent();
-
-				if (s.contains("Enterprise.SystemSBR."))
+				if (s.contains("Enterprise.SystemSBR.")) {
 					s = s.substring("Enterprise.SystemSBR.".length());
-
+				}
 				b.addRule(s, s1);
 			} catch (Exception e) {
 				logger.info(e.getMessage());
 			}
-
 		}
 
 	}
 
+	/**
+	 * Initialize system properties
+	 */
 	private void initSystemProperties() {
 
 		Element root = doc.getDocumentElement();
-
 		Element sys = (Element) root.getElementsByTagName("system").item(0);
-
-		Element props = (Element) sys.getElementsByTagName("properties")
-				.item(0);
-
+		Element props = (Element) sys.getElementsByTagName("properties").item(0);
+		
 		NodeList nl = props.getElementsByTagName("property");
-
 		for (int i = 0; i < nl.getLength(); i++) {
-
 			Element prop = (Element) nl.item(i);
-
-			systemProps.put(prop.getAttribute("name"), prop
-					.getAttribute("value"));
-
+			systemProps.put(prop.getAttribute("name"), prop.getAttribute("value"));
 		}
 
 		try {
 			File f = new File("target/test-classes/loader.properties");
 			if (f.exists() && f.isFile()) {
-
-				logger
-						.warning("running in test environment, this will override some of the systems properties which is read from the loader config.xml");
+				logger.warning("running in test environment, this will override some of the systems properties which is read from the loader config.xml");
 				Properties p = new Properties();
 				p.load(new FileInputStream(f));
-
 				for (Object key : p.keySet()) {
 					systemProps.put((String) key, (String) p.get(key));
 				}
 				systemProps.toString();
 			}
-
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -409,10 +386,10 @@ public class LoaderConfig {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
+	 * Gets document based on the input file name.
 	 * @return loader configuration document object
 	 * @throws ParserConfigurationException
 	 * @throws SAXException
@@ -420,43 +397,58 @@ public class LoaderConfig {
 	 */
 	private Document getDocument(String filename)
 			throws ParserConfigurationException, SAXException, IOException {
-		DocumentBuilderFactory docFactory = DocumentBuilderFactory
-				.newInstance();
+		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		// docFactory.setValidating(true);
-
 		DocumentBuilder builder = docFactory.newDocumentBuilder();
-
 		return builder.parse(filename);
 	}
 
+	/**
+	 * Gets document based on the input stream.
+	 * @param filename
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
 	private Document getDocument(InputStream filename)
 			throws ParserConfigurationException, SAXException, IOException {
-		DocumentBuilderFactory docFactory = DocumentBuilderFactory
-				.newInstance();
+		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		// docFactory.setValidating(true);
-
 		DocumentBuilder builder = docFactory.newDocumentBuilder();
-
 		return builder.parse(filename);
 	}
 
+	/**
+	 * Gets system property value for the given property name.
+	 * @param propertyName
+	 * @return
+	 */
 	public String getSystemProperty(String propertyName) {
 		return systemProps.get(propertyName);
 	}
 
+	/**
+	 * Sets the system property value for the given property name.
+	 * @param propertyName
+	 * @param propertyValue
+	 */
 	public void setSystemProperty(String propertyName, String propertyValue) {
 		systemProps.put(propertyName, propertyValue);
 	}
 	
 	/**
+	 * Gets EUID generator
 	 * @return the euidGenerator
 	 */
 	public EuidGenerator getEuidGenerator() {
 		return euidGenerator;
 	}
 
-	private static Lock lock = new ReentrantLock();
-
+	/**
+	 * Gets LoaderConfig instance.
+	 * @return LoaderConfig
+	 */
 	public static LoaderConfig getInstance() {
 
 		lock.lock();
@@ -475,23 +467,31 @@ public class LoaderConfig {
 		return instance;
 	}
 
+	/**
+	 * Gets Object definition.
+	 * @return ObjectDefinition
+	 */
 	public ObjectDefinition getObjectDefinition() {
 
 		InputStream ins = LoaderConfig.class.getClassLoader()
 				.getResourceAsStream("object.xml");
-
 		ObjectDefinitionBuilder b = new ObjectDefinitionBuilder();
-
 		ObjectDefinition o = b.parse(ins);
-
 		return o;
-
 	}
 
+	/**
+	 * Gets match fields.
+	 * @return ArrayList<String>
+	 */
 	public ArrayList<String> getMatchFields() {
 		return new ArrayList<String>(matchFields);
 	}
 
+	/**
+	 * Gets match field types.
+	 * @return ArrayList<String>
+	 */
 	public ArrayList<String> getMatchFieldTypes() {
 		return matchFieldTypes;
 	}
@@ -500,19 +500,12 @@ public class LoaderConfig {
 		LoaderConfig lc = LoaderConfig.getInstance();
 
 		System.out.println(lc.getMatchFields());
-
 		System.out.println(lc.getMatchFieldTypes());
-
 		lc.getSystemProperty("cluster.database");
-
 		lc.getBlockDefinitions();
-
 		lc.getDataObjectReader();
-
 		lc.getCustomDataObjectReader();
-
 		System.out.println(lc.getObjectDefinition());
-
 		lc.getEuidGenerator();
 	}
 
@@ -529,20 +522,30 @@ public class LoaderConfig {
 
 	}
 
+	/**
+	 * Sets DataObjectReader.
+	 * @param dataObjectReader
+	 */
+	public void setDataObjectReader(DataObjectReader dataObjectReader) {		
+		this.dataObjectReader = dataObjectReader;
+	}
+	
+	/**
+	 * Gets DataObjectReader.
+	 * @return DataObjectReader
+	 */
 	public DataObjectReader getDataObjectReader() {
-		dataObjectReader = (DataObjectReader) context
-				.getBean("dataObjectReader");
+		if (dataObjectReader == null) {
+			dataObjectReader = (DataObjectReader) context.getBean("dataObjectReader");
+		}
 		return dataObjectReader;
 	}
 
 	public DataObjectReader getCustomDataObjectReader() {
-
 		if (context.containsBeanDefinition("customDataObjectReader")) {
-			dataObjectReader = (DataObjectReader) context
-					.getBean("customDataObjectReader");
+			dataObjectReader = (DataObjectReader) context.getBean("customDataObjectReader");
 		} else {
-			dataObjectReader = (DataObjectReader) context
-					.getBean("dataObjectReader");
+			dataObjectReader = (DataObjectReader) context.getBean("dataObjectReader");
 		}
 		return dataObjectReader;
 	}
