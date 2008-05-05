@@ -20,206 +20,207 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-package com.sun.mdm.index.loader.masterindex;
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
-import java.util.HashMap;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import com.sun.mdm.index.dataobject.DataObject;
-import com.sun.mdm.index.dataobject.DataObjectReader;
-import com.sun.mdm.index.dataobject.DataObjectWriter;
-import com.sun.mdm.index.dataobject.DataObjectFileWriter;
-import java.io.BufferedWriter;
-import java.io.File;
-import com.sun.mdm.index.loader.common.FileManager;
-import com.sun.mdm.index.loader.config.LoaderConfig;
-import com.sun.mdm.index.dataobject.objectdef.ObjectDefinition;
-
-import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
-
-
-/**
- * Writes Mater image to master index directory
- * @author sdua
- *
- */
-public class MasterImageWriter {
- 
-	private Map<String, BufferedWriter> writerMap = new HashMap<String, BufferedWriter>();
-	private String masterImageDir_;
-	private static LoaderConfig config = LoaderConfig.getInstance();
-	private DataObjectWriter dwriter_;
-	private static String recordDelim = config.getSystemProperty("sqlldr.record.delimiter");
+	package com.sun.mdm.index.loader.masterindex;
+	import java.util.Map;
+	import java.util.Set;
+	import java.util.Map.Entry;
+	import java.util.HashMap;
+	import java.io.FileWriter;
+	import java.io.IOException;
+	import java.util.Iterator;
+	import java.util.List;
+	import java.util.ArrayList;
+	import java.util.Collection;
+	
+	import com.sun.mdm.index.dataobject.DataObject;
+	import com.sun.mdm.index.dataobject.DataObjectReader;
+	import com.sun.mdm.index.dataobject.DataObjectWriter;
+	import com.sun.mdm.index.dataobject.DataObjectFileWriter;
+	import java.io.BufferedWriter;
+	import java.io.File;
+	import com.sun.mdm.index.loader.common.FileManager;
+	import com.sun.mdm.index.loader.config.LoaderConfig;
+	import com.sun.mdm.index.dataobject.objectdef.ObjectDefinition;
+	
+	import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 	
 	
-	public MasterImageWriter() throws Exception {
-	  masterImageDir_ = FileManager.getMasterImageDir();
-	  File file = new File(masterImageDir_, TRANSACTION + ".data");
-	  FileWriter fwriter = new FileWriter(file);	     
-	  BufferedWriter bwriter = new BufferedWriter(fwriter);
-	  writerMap.put(TRANSACTION, bwriter);
-	  
-	  file = new File(masterImageDir_, ASSUMEDMATCH +".data");
-	  fwriter = new FileWriter(file);	     
-	  bwriter = new BufferedWriter(fwriter);
-	  writerMap.put(ASSUMEDMATCH, bwriter);
-	  
-	  file = new File(masterImageDir_, ENTERPRISE+".data");
-	  fwriter = new FileWriter(file);	     
-	  bwriter = new BufferedWriter(fwriter);
-	  writerMap.put(ENTERPRISE, bwriter);
-	  
-	  file = new File(masterImageDir_, SYSTEMOBJECT+".data");
-	  fwriter = new FileWriter(file);	     
-	  bwriter = new BufferedWriter(fwriter);
-	  writerMap.put(SYSTEMOBJECT, bwriter);
-	  
-	  file = new File(masterImageDir_, SYSTEMSBR+".data");
-	  fwriter = new FileWriter(file);	     
-	  bwriter = new BufferedWriter(fwriter);
-	  writerMap.put(SYSTEMSBR, bwriter);  	 
-	  
-	  file = FileManager.getInputSBRFile();
-	  dwriter_ = new DataObjectFileWriter(file);
-	  
-	  configWriters();
-	  
+	/**
+	 * Writes Mater image files to master index directory
+	 * @author Swaranjit Dua
+	 *
+	 */
+	public class MasterImageWriter {
+	
+		private Map<String, BufferedWriter> writerMap = new HashMap<String, BufferedWriter>();
+		private String masterImageDir_;
+		private static LoaderConfig config = LoaderConfig.getInstance();
+		private DataObjectWriter dwriter_; // used for Input SBR file, that is eventually used for potential dups
+		private static String recordDelim = config.getSystemProperty("sqlldr.record.delimiter");
+		private final static String DATA = ".data";
+		private final static String SBYN = "SBYN_";
+	
+	
+	    MasterImageWriter() throws Exception {
+		masterImageDir_ = FileManager.getMasterImageDir();
+		File file = new File(masterImageDir_, TRANSACTION + DATA);
+		FileWriter fwriter = new FileWriter(file);	     
+		BufferedWriter bwriter = new BufferedWriter(fwriter);
+		writerMap.put(TRANSACTION, bwriter);
+	
+		file = new File(masterImageDir_, ASSUMEDMATCH +DATA);
+		fwriter = new FileWriter(file);	     
+		bwriter = new BufferedWriter(fwriter);
+		writerMap.put(ASSUMEDMATCH, bwriter);
+	
+		file = new File(masterImageDir_, ENTERPRISE+DATA);
+		fwriter = new FileWriter(file);	     
+		bwriter = new BufferedWriter(fwriter);
+		writerMap.put(ENTERPRISE, bwriter);
+	
+		file = new File(masterImageDir_, SYSTEMOBJECT+DATA);
+		fwriter = new FileWriter(file);	     
+		bwriter = new BufferedWriter(fwriter);
+		writerMap.put(SYSTEMOBJECT, bwriter);
+	
+		file = new File(masterImageDir_, SYSTEMSBR+DATA);
+		fwriter = new FileWriter(file);	     
+		bwriter = new BufferedWriter(fwriter);
+		writerMap.put(SYSTEMSBR, bwriter);  	 
+	
+		file = FileManager.getInputSBRFile();
+		dwriter_ = new DataObjectFileWriter(file);
+	
+		configWriters();
+	
 	}
 	
+	/**
+	 * writes DataObject to underlying DataObjectWriter.
+	 * @param dwriter
+	 * @param tableData
+	 * @throws Exception
+	 */
+	static void write(DataObjectWriter dwriter, TableData tableData) throws Exception{
+		if (tableData != null) {
+			List<DataObject> dataObjects = tableData.getDataObjects();
+			for (DataObject d: dataObjects) {
+				dwriter.writeDataObject(d);
+			}
+		}
+	}
+	
+	void write(BufferedWriter writer, TableData tableData) throws Exception{
+		if (tableData.getName().equals(POTENTIALDUPLICATES)) {
+			write(dwriter_, tableData);
+		} else {
+			List<List<String>> dataList = tableData.getData();	  	
+			for(List<String> data: dataList) {
+				for (int i = 0; i < data.size(); i++) {
+					String str = data.get(i);
+					if (str == null) {
+						str = "";
+					}
+					writer.write(str);
+					if (i < data.size()-1) {
+						writer.write("|");
+					}
+				}	  		
+				writer.write(recordDelim);
+			}
+		}
+	}
+	
+	/**
+	 * initializes writerMap.
+	 * @throws Exception
+	 */
 	private void configWriters() throws Exception {		
 		ObjectDefinition objectDef = config.getObjectDefinition();
-		  String name = objectDef.getName();
-		  String table = name;
-		  File file = new File(masterImageDir_, "SBYN_" + table  + ".data");
-		  FileWriter fwriter = new FileWriter(file);	     
-		  BufferedWriter  bwriter = new BufferedWriter(fwriter);
-		  writerMap.put(table, bwriter); 
-		  table = table + "SBR";
-		  file = new File(masterImageDir_, "SBYN_" + table + ".data");
-		  fwriter = new FileWriter(file);	     
-		  bwriter = new BufferedWriter(fwriter);
-		  writerMap.put(table, bwriter);
+		String name = objectDef.getName();
+		String table = name;
+		File file = new File(masterImageDir_, SBYN + table  + DATA);
+		FileWriter fwriter = new FileWriter(file);	     
+		BufferedWriter  bwriter = new BufferedWriter(fwriter);
+		writerMap.put(table, bwriter); 
+		table = table + "SBR";
+		file = new File(masterImageDir_, SBYN + table + DATA);
+		fwriter = new FileWriter(file);	     
+		bwriter = new BufferedWriter(fwriter);
+		writerMap.put(table, bwriter);
 		List<ObjectDefinition> children = objectDef.getChildren();
-		
+	
 		for (ObjectDefinition child: children) {
-		  String childName = child.getName();
-		   table =  childName;
-		   file = new File(masterImageDir_, "SBYN_" + table  + ".data");
-		   fwriter = new FileWriter(file);	     
-		   bwriter = new BufferedWriter(fwriter);
-		  writerMap.put(table, bwriter); 
-		  table = table + "SBR";
-		  file = new File(masterImageDir_, "SBYN_" + table + ".data");
-		  fwriter = new FileWriter(file);	     
-		  bwriter = new BufferedWriter(fwriter);
-		  writerMap.put(table, bwriter); 
+			String childName = child.getName();
+			table =  childName;
+			file = new File(masterImageDir_, SBYN + table  + DATA);
+			fwriter = new FileWriter(file);	     
+			bwriter = new BufferedWriter(fwriter);
+			writerMap.put(table, bwriter); 
+			table = table + "SBR";
+			file = new File(masterImageDir_, SBYN + table + DATA);
+			fwriter = new FileWriter(file);	     
+			bwriter = new BufferedWriter(fwriter);
+			writerMap.put(table, bwriter); 
 		}						
 	}
 	
 	void write(List<Map<String,TableData>> tableData) throws Exception {
-      
-	  for (Map<String,TableData> map: tableData) {
-		 Set<Map.Entry<String,TableData>> entryset = map.entrySet();
-		 
-    	for (Map.Entry<String,TableData> entry: entryset) {
-    		String key = entry.getKey();
-    		TableData data = entry.getValue();
-    		BufferedWriter writer = writerMap.get(key);
-    		if (writer != null) {
-    			write(writer, data);    			
-    		} else {
-    			String name = data.getName();
-    			if (name.equals(POTENTIALDUPLICATES)) {
-    				 write(dwriter_, data);
-    			} else {
-    			  File file = new File(masterImageDir_, "SBYN_" + name +".data");
-    			  FileWriter fw = new FileWriter(file);	     
-    			  writer = new BufferedWriter(fw);
-    			  writerMap.put(name, writer);
-    			  write(writer, data);
-    			}
-    		}
-    	}
-      }			
-		
+	
+		for (Map<String,TableData> map: tableData) {
+			Set<Map.Entry<String,TableData>> entryset = map.entrySet();
+	
+			for (Map.Entry<String,TableData> entry: entryset) {
+				String key = entry.getKey();
+				TableData data = entry.getValue();
+				BufferedWriter writer = writerMap.get(key);
+				if (writer != null) {
+					write(writer, data);    			
+				} else {
+					String name = data.getName();
+					if (name.equals(POTENTIALDUPLICATES)) {
+						write(dwriter_, data);
+					} else {
+						File file = new File(masterImageDir_, SBYN + name +DATA);
+						FileWriter fw = new FileWriter(file);	     
+						writer = new BufferedWriter(fw);
+						writerMap.put(name, writer);
+						write(writer, data);
+					}
+				}
+			}
+		}			
+	
 	}
 	
-	public static void write(DataObjectWriter dwriter, TableData tableData) throws Exception{
-		if (tableData != null) {
-	  	  List<DataObject> dataObjects = tableData.getDataObjects();
-	  	  for (DataObject d: dataObjects) {
-	  		dwriter.writeDataObject(d);
-	  	  }
+	
+	
+	static void write(BufferedWriter writer, List<String> data) throws Exception{
+	
+		for (int i = 0; i < data.size(); i++) {
+			String str = data.get(i);
+			if (str == null) {
+				str = "";
+			}
+			writer.write(str);
+			if (i < data.size()-1) {
+				writer.write("|");
+			}
 		}
- 	}
 	
-	public void write(BufferedWriter writer, TableData tableData) throws Exception{
-	  	if (tableData.getName().equals(POTENTIALDUPLICATES)) {
-	  		write(dwriter_, tableData);
-	  	} else {
-		 List<List<String>> dataList = tableData.getData();	  	
-	  	 for(List<String> data: dataList) {
-	  		for (int i = 0; i < data.size(); i++) {
-	  		  String str = data.get(i);
-	  		  if (str == null) {
-	  			  str = "";
-	  		  }
-	  		  writer.write(str);
-	  		  if (i < data.size()-1) {
-	  			  writer.write("|");
-	  		  }
-	  		}	  		
-	  		writer.write(recordDelim);
-	  	 }
-	  	}
-	}
-	
-	public static void write(BufferedWriter writer, List<String> data) throws Exception{
-	  		  		  	
-	  	for (int i = 0; i < data.size(); i++) {
-	  		  String str = data.get(i);
-	  		  if (str == null) {
-	  			  str = "";
-	  		  }
-	  		  writer.write(str);
-	  		  if (i < data.size()-1) {
-	  			  writer.write("|");
-	  		  }
-	  	}
-	  			  		
-	   writer.write(recordDelim); 			
+		writer.write(recordDelim); 			
 	}
 	
 	
-		
-   void close() throws IOException {
+	
+	void close() throws IOException {
 		Collection<BufferedWriter> writers = writerMap.values();
 		for (BufferedWriter writer: writers) {
 			writer.close();
 		}
-		
-		dwriter_.close();
-		
-	}
 	
-   /*
-	void write(List<String> list, String object) throws Exception {
-		BufferedWriter writer = writerMap.get(object);
-		for (int i = 0; i < list.size(); i++) {
-		  String str = list.get(i);
-		  writer.write(str);
-		  if (i != list.size()-1) { // last string does not has | symbol
-		    writer.write("|");
-		  }
-		}						
+		dwriter_.close();
+	
 	}
-	*/	
-		 	 	
+		
 }
