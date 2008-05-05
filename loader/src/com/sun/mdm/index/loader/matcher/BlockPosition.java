@@ -24,8 +24,8 @@ package com.sun.mdm.index.loader.matcher;
 
 /**
  * Position of record within a Block.
- * A thread can choose to match a "recordPosition" Record from recordPostion +1 
- * to every record until end of block by passing each pair to MatchEngine 
+ * A thread will match a Record with every other record in the same block,
+ * from recordPostion +1 until end of block
  * @author Swaranjit Dua
  *
  */
