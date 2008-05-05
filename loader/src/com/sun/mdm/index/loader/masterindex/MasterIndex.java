@@ -56,130 +56,119 @@ import com.sun.mdm.index.loader.clustersynchronizer.dao.DAOFactory;
 import com.sun.mdm.index.matching.StandardizerFactory;
 
 /**
- * 1. 
+ * This component generates Master Index Files.
+ * Reads one EUID Bucket at a time and pass it to MIndexTask that creates Master Index data
+ *  
  * @author Swaranjit Dua
  *
  */
 public class MasterIndex {
-	
+
 	private int poolSize_ = 1;
 	private ExecutorService executor_;
-	//private Lookup lookup_;
 	private MasterImageWriter writer;
 
-	/*
-	private static String[] fixedTables = {SYSTEMOBJECT, SYSTEMSBR, ENTERPRISE,
-			TRANSACTION, ASSUMEDMATCH };
-*/
+
 	ClusterSynchronizer clusterSynchronizer_ = ClusterSynchronizer.getInstance();
 	private LoaderConfig config_ =  LoaderConfig.getInstance();
 	private ObjectDefinition objectDef_;
 	private static Logger logger = Logger.getLogger(MasterIndex.class
 			.getName());
 	Connection con_;
-	
-	
 
-	
-	
+
 	public MasterIndex() throws Exception {
-		
+
 		String isSMasterLoader = config_.getSystemProperty("isMasterLoader");
-		//isMasterLoader_ = Boolean.parseBoolean(isSMasterLoader);
-		
+
 		String numThreads = config_.getSystemProperty("numThreads");
 		if (numThreads != null) {
-		    poolSize_ = Integer.parseInt(numThreads);
+			poolSize_ = Integer.parseInt(numThreads);
 		}
-		
+
 		executor_ = Executors.newFixedThreadPool(poolSize_);
-		
+
 		con_ = DAOFactory.getConnection();
 		objectDef_ = config_.getObjectDefinition();
-		//getEUIDLookup();
 		writer = new MasterImageWriter();
-		
-	}
-	
 
-		
-   public void generateMasterIndex() throws Exception {
-		
-	 File bucketFile;
-	 DecisionMakerConfiguration dmConfig = (DecisionMakerConfiguration) ConfigurationService
-     .getInstance().getConfiguration(
-             DecisionMakerConfiguration.DECISION_MAKER);
-	 DefaultDecisionMaker decision = (DefaultDecisionMaker) dmConfig.getDecisionMaker();
-     boolean sameSystemMatch = decision.isSameSystemMatchEnabled();          
-	 
-     
-	 Standardizer[] standardizer = new Standardizer[poolSize_];
-	 for (int i = 0; i < poolSize_; i++)  {	 
-	   standardizer[i] = StandardizerFactory.getInstance();	 	 
-	 }
-	 
-	 //Standardizer standardizer = StandardizerFactory.getInstance();
-	 
-     while (true) {
-		bucketFile = getBucketFile();
-		if (bucketFile == null) {
-			break;
-		}			    												
-		DataObjectReader reader = new DataObjectFileReader(bucketFile.getAbsolutePath(), true);		
-		EUIDBucket bucket = new EUIDBucket(reader, bucketFile.getName());
-		logger.info("EUID bucket:"+ bucketFile.getName() + " processing");
-		bucket.load();
-				
-		/**
-		 * Each Map is for different MIndexTask that is executed on a pooled 
-		 * thread. allTableData stores the Map<String,TableData> for each thread.
-		 */
-		List<Map<String,TableData>> allTableData = new ArrayList<Map<String,TableData>>();
-				
-		/*
-		 All MIndexTask would share the same EOCursor that is one per bucket, 
-		 and compute one EO/SBR and related objects at a time.
-		*/
-		EUIDBucket.EOCursor cursor = bucket.getEOCursor();
-		CountDownLatch endGate = new CountDownLatch(poolSize_);
-		for (int i = 0; i < poolSize_; i++)  {
-			// tableMap- String - name of table, TableData- data for that table
-			Map<String,TableData> tableMap = new HashMap<String, TableData>();
-			allTableData.add(tableMap);
-			MIndexTask task = 
-				 new MIndexTask(tableMap, cursor, objectDef_, standardizer[i], endGate, con_,
-						 sameSystemMatch);
-		    executor_.execute(task);		    
+	}
+
+
+
+	public void generateMasterIndex() throws Exception {
+
+		File bucketFile;
+		DecisionMakerConfiguration dmConfig = (DecisionMakerConfiguration) ConfigurationService
+		.getInstance().getConfiguration(
+				DecisionMakerConfiguration.DECISION_MAKER);
+		DefaultDecisionMaker decision = (DefaultDecisionMaker) dmConfig.getDecisionMaker();
+		boolean sameSystemMatch = decision.isSameSystemMatchEnabled();          
+
+
+		Standardizer[] standardizer = new Standardizer[poolSize_];
+		for (int i = 0; i < poolSize_; i++)  {	 
+			standardizer[i] = StandardizerFactory.getInstance();	 	 
 		}
-		
-		/**
-		 * wait for all MIndexTasks to finish
-		 */
-		endGate.await();
-		writer.write(allTableData);
-		bucket.close();
-	
-	 } // end while true
-     		 
-	// clusterSynchronizer_.setMatchDone(output.getName());
-     
-     con_.close();
-     writer.close(); 
-     executor_.shutdown();
-              
-   }
-	
-	
+
+
+		while (true) {
+			bucketFile = getBucketFile();
+			if (bucketFile == null) {
+				break;
+			}			    												
+			DataObjectReader reader = new DataObjectFileReader(bucketFile.getAbsolutePath(), true);		
+			EUIDBucket bucket = new EUIDBucket(reader, bucketFile.getName());
+			logger.info("EUID bucket:"+ bucketFile.getName() + " processing");
+			bucket.load();
+
+			/**
+			 * Each Map is for different MIndexTask that is executed on a pooled 
+			 * thread. allTableData stores the Map<String,TableData> for each thread.
+			 */
+			List<Map<String,TableData>> allTableData = new ArrayList<Map<String,TableData>>();
+
+			/*
+		 All MIndexTask would share the same EOCursor that point to same bucket, but different instance of "SO list" 
+		 These compute one EO/SBR and related objects at a time.
+			 */
+			EUIDBucket.EOCursor cursor = bucket.getEOCursor();
+			CountDownLatch endGate = new CountDownLatch(poolSize_);
+			for (int i = 0; i < poolSize_; i++)  {
+				Map<String,TableData> tableMap = new HashMap<String, TableData>();
+				allTableData.add(tableMap);
+				MIndexTask task = 
+					new MIndexTask(tableMap, cursor, objectDef_, standardizer[i], endGate, con_,
+							sameSystemMatch);
+				executor_.execute(task);		    
+			}
+
+			/**
+			 * wait for all MIndexTasks to finish
+			 */
+			endGate.await();
+			writer.write(allTableData);
+			bucket.close();
+
+		} // end while true
+
+		con_.close();
+		writer.close(); 
+		executor_.shutdown();
+
+	}
+
+
 	private File getBucketFile() throws IOException {
-	    String fileName = clusterSynchronizer_.getEUIDBucket();
+		String fileName = clusterSynchronizer_.getEUIDBucket();
 		if (fileName == null) {
 			return null;
 		}
 		String euidDir = FileManager.getEUIDBucketDir();				
-		 File  file = new File(euidDir, fileName);
-		
+		File  file = new File(euidDir, fileName);
+
 		return file;
 	}
-		
-		
+
+
 }

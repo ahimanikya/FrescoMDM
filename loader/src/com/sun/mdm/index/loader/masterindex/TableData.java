@@ -28,46 +28,48 @@ import java.util.List;
 import com.sun.mdm.index.dataobject.DataObject;
 
 /**
+ * Stores data that is put in the Master Index image file
+ * Internal class used by Master Index.
  * @author Swaranjit Dua
  * 
  */
 public class TableData {
 
-	private String name;
-	private List<List<String>> data = new ArrayList<List<String>>();
+	private String name; // name of table
+	private List<List<String>> data = new ArrayList<List<String>>();  // list of records
 	private List<DataObject> dataObjects = new ArrayList<DataObject>();
 
-	/**
-	 * @param name
+	/** constructor
+	 * @param name name of table
 	 * @param columns
 	 */
-     TableData(String name) {
+	TableData(String name) {
 		this.name = name;
-		
+
 	}
 
-	public String getName() {
+	String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	void setName(String name) {
 		this.name = name;
 	}
 
-	public List<List<String>> getData() {
+	List<List<String>> getData() {
 		return data;
 	}
-	
-	public List<DataObject> getDataObjects() {
+
+	List<DataObject> getDataObjects() {
 		return dataObjects;
 	}
 
-	public void addData(List<String> data) {
+	void addData(List<String> data) {
 		this.data.add(data);
 	}
-	
-	public void addData(DataObject d) {
-	     dataObjects.add(d);	
+
+	void addData(DataObject d) {
+		dataObjects.add(d);	
 	}
 
 }

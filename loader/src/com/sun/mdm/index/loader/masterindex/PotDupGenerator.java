@@ -38,25 +38,26 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 
 
 /**
- * Writes Pot Dups to master index directory
- * @author sdua
+ * Writes Potential Duplicates to master index directory
+ * @author Swaranjit Dua
  *
  */
 public class PotDupGenerator {
- 
-	private static String TRANS_PIGGY = ":T:";
+
+	private static String TRANS_PIGGY = ":T:"; // This is a seperator for a Transaction number and EUID that 
+	                                           // combined and saved as one field in EUID Match file.
 	private static int TRANS_PIGGY_LENGTH = 3;
 	private static String empty_str = "";
 	private String masterImageDir_;
 	private BufferedWriter bwriter_;
 	private Connection con_;
 	public PotDupGenerator() throws Exception {
-	  masterImageDir_ = FileManager.getMasterImageDir();
-	  File file = new File(masterImageDir_, POTENTIALDUPLICATES + ".data");
-	  FileWriter fwriter = new FileWriter(file);	     
-	  bwriter_ = new BufferedWriter(fwriter);    
+		masterImageDir_ = FileManager.getMasterImageDir();
+		File file = new File(masterImageDir_, POTENTIALDUPLICATES + ".data");
+		FileWriter fwriter = new FileWriter(file);	     
+		bwriter_ = new BufferedWriter(fwriter);    
 	}
-	
+
 	public void generatePotDups() throws Exception {
 		con_ = DAOFactory.getConnection();
 		File matchFile = FileManager.getFinalSBRMatchFile();
@@ -75,21 +76,19 @@ public class PotDupGenerator {
 		}		
 		bwriter_.close();
 	}
-	
+
 	private void addPotDupTable(String euid1, String euid2,
 			String weight) throws Exception {
-		
+
 		String potdupId = com.sun.mdm.index.idgen.CUIDManager.getNextUID(con_,
-        "POTENTIALDUPLICATE");
-		
+		"POTENTIALDUPLICATE");
+
 		int index1 = euid1.indexOf(TRANS_PIGGY);
-		//int index2 = euid2.indexOf(TRANS_PIGGY);
-		
-		
+
 		String e1 = euid1.substring(0,index1);
 		String e2 = euid2; //.substring(0,index2);
 		String trans = euid1.substring(index1+TRANS_PIGGY_LENGTH);
-				
+
 		//"POTENTIALDUPLICATEID",
 		//"WEIGHT", "TYPE", "DESCRIPTION", "STATUS", "HIGHMATCHFLAG",
 		//"RESOLVEDUSER", "RESOLVEDDATE", "RESOLVEDCOMMENT", "EUID2",
