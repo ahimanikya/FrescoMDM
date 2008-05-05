@@ -41,28 +41,33 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 
+/**
+ * Reads Match File containing GID records
+ * @author Swaranjit Dua
+ *
+ */
 public class MatchGIDRecordReader implements MatchReader {
-	
-		private DataInputStream distream_ = null;
-		MatchGIDRecordReader(File file) throws FileNotFoundException {
-			FileInputStream is = new FileInputStream(file);
-			distream_ = new DataInputStream(is);
-			
-			
-		}
-		
-		public MatchRecord next() throws IOException {
-		  try {
+
+	private DataInputStream distream_ = null;
+	MatchGIDRecordReader(File file) throws FileNotFoundException {
+		FileInputStream is = new FileInputStream(file);
+		distream_ = new DataInputStream(is);
+
+
+	}
+
+	public MatchRecord next() throws IOException {
+		try {
 			long GID1 = distream_.readLong();			
 			long GID2 = distream_.readLong();
 			double weight = distream_.readDouble();
 			MatchRecord record = new MatchGIDRecord(GID1, GID2, weight);
 			return record;
-			 
-		  }  catch (EOFException ex) {
-			  distream_.close();
-			  return null;
-		  }
-	  }
-		   	  	
- }
+
+		}  catch (EOFException ex) {
+			distream_.close();
+			return null;
+		}
+	}
+
+}

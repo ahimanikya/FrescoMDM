@@ -30,6 +30,11 @@ import java.io.FileOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+/**
+ * writes GID Record to match file
+ * @author Swaranjit Dua
+ *
+ */
 public class MatchGIDWriter implements MatchWriter {
 	
 	private DataOutputStream dostream_;

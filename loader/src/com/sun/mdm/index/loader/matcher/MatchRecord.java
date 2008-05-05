@@ -23,10 +23,15 @@
 package com.sun.mdm.index.loader.matcher;
 
 import com.sun.mdm.index.dataobject.DataObject;
-	
-	interface MatchRecord {
-				
-		int compare(MatchRecord record2); 
-	}
-	
+
+/**
+ * MatchRecord used by MatchReader
+ * @author Swaranjit Dua
+ *
+ */
+interface MatchRecord {
+
+	int compare(MatchRecord record2); 
+}
+
 	

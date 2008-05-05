@@ -24,8 +24,19 @@ package com.sun.mdm.index.loader.matcher;
 import java.io.IOException;
 import java.io.EOFException;
 
+/**
+ * 
+ * Reader interface to read different kind of Match File. 
+ * @author Swaranjit Dua
+ *
+ */
 public interface MatchReader  {
-			
+	
+	/**
+	 * reads MatchRecord from a Match File
+	 * @return
+	 * @throws IOException
+	 */
    MatchRecord next() throws IOException; 
 		   	  	
  }

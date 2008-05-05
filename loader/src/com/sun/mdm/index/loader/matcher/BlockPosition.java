@@ -26,24 +26,30 @@ package com.sun.mdm.index.loader.matcher;
  * Position of record within a Block.
  * A thread can choose to match a "recordPosition" Record from recordPostion +1 
  * to every record until end of block by passing each pair to MatchEngine 
- * @author sdua
+ * @author Swaranjit Dua
  *
  */
 public class BlockPosition {
-	Block block; // which Block
-    int recordPosition; // which record within Block
-    
-    BlockPosition(Block block, int recordPosition) {
-    	this.block = block;
-    	this.recordPosition = recordPosition;
-    }
-    
-    Block getBlock() {
-    	return block;
-    }
-    
-    int getRecordPosition() {
-    	return recordPosition;
-    }
+	/**
+	 * block that this BlockPosition refers to 
+	 */
+	private Block block;
+	/*
+	 * position within Block that this BlockPosition refers to
+	 */
+	private int recordPosition;
+
+	BlockPosition(Block block, int recordPosition) {
+		this.block = block;
+		this.recordPosition = recordPosition;
+	}
+
+	Block getBlock() {
+		return block;
+	}
+
+	int getRecordPosition() {
+		return recordPosition;
+	}
 
 }

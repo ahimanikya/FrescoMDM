@@ -24,75 +24,75 @@ package com.sun.mdm.index.loader.matcher;
 
 import com.sun.mdm.index.dataobject.DataObject;
 	
-	class MatchGIDRecord implements MatchRecord {
-		private long GIDFrom;
-		private long GIDTo;
-		private double weight;
-				
-		MatchGIDRecord(DataObject dataObject1, DataObject dataObject2, double weight) {
-			String GID1 = dataObject1.getFieldValue(1);
-			String GID2 = dataObject2.getFieldValue(1);
-			
-			GIDFrom = Long.parseLong(GID1);
-			GIDTo = Long.parseLong(GID2);
-			this.weight = weight;
-						
-		}	
-		
-		MatchGIDRecord(long gid1, long gid2, double weight) {
-						
-			GIDFrom = gid1;
-			GIDTo = gid2;
-			this.weight = weight;
-						
-		}
-		
-		MatchGIDRecord(String gid1, String gid2, double weight) {
-			GIDFrom = Long.parseLong(gid1);
-			GIDTo = Long.parseLong(gid2);			
-			this.weight = weight;
-						
-		}	
-		
-		long getGIDFrom() {
-			return GIDFrom;
-		}
-		
-		long getGIDTo() {
-			return GIDTo;
-		}
-		
-		double getWeight() {
-			return weight;
-		}
-		
-		public int compare(MatchRecord rec2) {
-			
-			MatchGIDRecord record2 = (MatchGIDRecord) rec2;
-			if (GIDFrom < record2.GIDFrom) {
-				return -1;
-			} else if (GIDFrom > record2.GIDFrom) {
-				return 1;
-			} else  {
-				if (GIDTo < record2.GIDTo) {
-					return -1;
-				} else if (GIDTo > record2.GIDTo) {
-					return 1;
-				} else {
-					return 0;
-				}
-			}
-						 		
-		}
-		
-        public int hashCode() {		
-			return (int)GIDFrom;
-		}
-		
-		public boolean equals(Object o) {
-			int res = compare((MatchGIDRecord)o);
-			return res == 0 ? true: false;
-		}
+class MatchGIDRecord implements MatchRecord {
+	private long GIDFrom;
+	private long GIDTo;
+	private double weight;
+
+	MatchGIDRecord(DataObject dataObject1, DataObject dataObject2, double weight) {
+		String GID1 = dataObject1.getFieldValue(1);
+		String GID2 = dataObject2.getFieldValue(1);
+
+		GIDFrom = Long.parseLong(GID1);
+		GIDTo = Long.parseLong(GID2);
+		this.weight = weight;
+
+	}	
+
+	MatchGIDRecord(long gid1, long gid2, double weight) {
+
+		GIDFrom = gid1;
+		GIDTo = gid2;
+		this.weight = weight;
+
 	}
-	
-	
+
+	MatchGIDRecord(String gid1, String gid2, double weight) {
+		GIDFrom = Long.parseLong(gid1);
+		GIDTo = Long.parseLong(gid2);			
+		this.weight = weight;
+
+	}	
+
+	long getGIDFrom() {
+		return GIDFrom;
+	}
+
+	long getGIDTo() {
+		return GIDTo;
+	}
+
+	double getWeight() {
+		return weight;
+	}
+
+	public int compare(MatchRecord rec2) {
+
+		MatchGIDRecord record2 = (MatchGIDRecord) rec2;
+		if (GIDFrom < record2.GIDFrom) {
+			return -1;
+		} else if (GIDFrom > record2.GIDFrom) {
+			return 1;
+		} else  {
+			if (GIDTo < record2.GIDTo) {
+				return -1;
+			} else if (GIDTo > record2.GIDTo) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
+
+	}
+
+	public int hashCode() {		
+		return (int)GIDFrom;
+	}
+
+	public boolean equals(Object o) {
+		int res = compare((MatchGIDRecord)o);
+		return res == 0 ? true: false;
+	}
+}
+
+

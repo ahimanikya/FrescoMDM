@@ -30,6 +30,11 @@ import java.io.FileOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+/**
+ * writes MatchRecord to a Match File
+ * @author Swaranjit Dua
+ *
+ */
 public interface MatchWriter {
 	
 	

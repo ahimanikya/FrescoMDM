@@ -29,71 +29,72 @@ import java.util.HashMap;
 import com.sun.mdm.index.dataobject.DataObject;
 
 /**
- * A  block abstracts list of records that is compared within themselves using Match Engine.
- * Each {Rx, Ry}, where x,y are 1 to block size N, pair within a block
- * is compared by Matcher using Match Engine. 
- * @author sdua
+ * A  block abstracts list of records that are compared among themselves. 
+ * @author Swaranjit Dua
  *
  */
 
 public class Block {
-	
-	
+
+
 	private List<DataObject> dataObjects = new ArrayList<DataObject>();
 	private String blockID;
 	private boolean matched = false;
 	private Map<String,List<String>> dupMap = new HashMap<String, List<String>>();
-		
+
 	Block(String blockid) {
 		blockID = blockid;
+		/*
+		 * MATCHED blockid is special that is pre-matched
+		 */
 		if (blockid.startsWith("MATCHED")) {
 			matched = true;
 		}
-		
+
 	}
-	
-	
+
+
 	void add(DataObject dataObject){
 		dataObjects.add(dataObject);
 	}
-	
+
 	int getSize() {
 		return dataObjects.size();
 	}
-	
+
 	DataObject getRecord(int position) {
 		return dataObjects.get(position);
 	}
-	
+
 	List <DataObject> getRecords() {
 		return dataObjects;
 	}
-	
+
 	public void clear() {
 		dataObjects.clear();
-		
+
 	}
-	
+
 	boolean isMatched() {
 		return matched;
 	}
-	
+
 	String getBlockId() {
 		return blockID;
 	}
-	
+
 	void addDup(String GID1, String GID2) {
-	   List<String> gids = dupMap.get(GID1);
-	   if (gids == null) {
-		   List<String> list = new ArrayList<String>();
-		   list.add(GID2);
-		   dupMap.put(GID1,list);
-	   } else {
-		   gids.add(GID2);
-	   }
-	   
+		List<String> gids = dupMap.get(GID1);
+		if (gids == null) {
+			List<String> list = new ArrayList<String>();
+			list.add(GID2);
+			dupMap.put(GID1,list);
+		} else {
+			gids.add(GID2);
+		}
+
 	}
-	
+
 	List<String> getDup(String gid) {
 		return dupMap.get(gid);
 	}

@@ -37,11 +37,10 @@ import com.sun.mdm.index.loader.blocker.BlockDistributor;
 
 
 /**
- * Bucket is a persisted container of many groups. 
- * This is container of many "Block".
+ * Bucket is a persisted container of many blocks. 
  * It is a unit execution of work and can be loaded in memory by any
  * processor.
- * @author sdua
+ * @author Swaranjit Dua
  *
  */
 public class Bucket {
@@ -55,34 +54,34 @@ public class Bucket {
 	private int blockPrintSize;
 	private static Logger logger = Logger.getLogger(Bucket.class
 			.getName());
-	
+
 	public Bucket(DataObjectWriter writer, File f) {
 		this.writer = writer;
 		file = f;
 	}
-	
+
 	public Bucket(DataObjectReader reader, File f, boolean sbr) {
 		this.reader = reader;
 		file = f;
 		isSBR_ = sbr;
 	}
-	
+
 	public File getFile() {
 		return file;
 	}
-	
+
 	public int getNumBlocks() {
 		return numBlocks;
 	}
-	
+
 	public int getNumRecords() {
 		return numRecords;
 	}
-	
+
 	public void setBlockPrintSize(int size) {
 		blockPrintSize = size;		
 	}
-	
+
 	/**
 	 * loads the data from the file into a HashMap.
 	 * @return
@@ -96,7 +95,7 @@ public class Bucket {
 				break;
 			}
 			numRecords++;
-			
+
 			String blockid = dataObject.getFieldValue(0);
 			Block block = blockMap.get(blockid);
 			if (block == null) {
@@ -107,85 +106,91 @@ public class Bucket {
 			} else {
 				block.add(dataObject);
 			}
-			
+
 		}
 		if (!isSBR_) {
-		  removeDups(blockMap);
+			removeDups(blockMap);
 		}
-		
+
 		printMap();
-		
+
 		return blockMap;				
 	}
-	
+
 	public void write(DataObject dataObject) throws Exception {
 		writer.writeDataObject(dataObject);
 	}
-	
+
 	public void close() throws Exception {
 		if (writer != null) {
-		  writer.close();
+			writer.close();
 		}
 		if (reader != null) {
-		   reader.close();
+			reader.close();
 		}
 	}
-	
+
 	private void printMap() {
 		logger.info("#of blocks:" + getNumBlocks() + ", #of records:" + getNumRecords());
+		if (blockPrintSize <= 0) {
+			return;
+		}
+		int matches = 0;
 		for(Map.Entry<String,Block> entry: blockMap.entrySet() ) {
 			Block b = entry.getValue();
 			String blockid = b.getBlockId();
 			if (blockPrintSize > 0 && b.getSize() >= blockPrintSize) {
-				logger.info("blockid:" + blockid + ", size:" + b.getSize());
+				matches = b.getSize();
+				matches = matches*(matches-1)/2;
+				logger.info("blockid:" + blockid + ", size:" + b.getSize() + ", # of matches:" + matches);
 			}
 		}
 	}
-	
+
 	private void removeDups(Map<String,Block> blockMap) {
-						
+
 		for(Map.Entry<String,Block> entry: blockMap.entrySet() ) {
 			Block b = entry.getValue();
-	        removeDup(b);	      
+			removeDup(b);	      
 		}		
-				
+
 	}
-	
+
 	private void removeDup(Block block) {
 		if (BlockDistributor.isSystemBlock(block.getBlockId())) {
 			// systemlid block have records that have same systemcode, lid. We don't want to remove them. As these
 			// are special case of determining EUID for records with same systemcode, lid
 			return;
 		}
-		
+
 		Map<String,DataObject> map = new HashMap<String,DataObject>();
-		
+
 		List<DataObject> records = block.getRecords();
 		for (int i = 0; i < records.size(); i++) {
-		  DataObject d = records.get(i);
-		  String lid = d.getFieldValue(2);
-		  String systemcode = d.getFieldValue(3);
-		  DataObject dexist = map.get(systemcode+lid);
-		  
-		  if (dexist == null) {
-			  map.put(systemcode+lid, d);
-		  } else {
-			  String GID1 = dexist.getFieldValue(1);
-			  String GID2 = d.getFieldValue(1);
-			  block.addDup(GID1, GID2);
-			  combine(dexist, d);
-			  //map.put(systemcode+lid, dexist);
-			 // b.addDup()
-		  }		  
+			DataObject d = records.get(i);
+			String lid = d.getFieldValue(2);
+			String systemcode = d.getFieldValue(3);
+			DataObject dexist = map.get(systemcode+lid);
+
+			if (dexist == null) {
+				map.put(systemcode+lid, d);
+			} else {
+				String GID1 = dexist.getFieldValue(1);
+				String GID2 = d.getFieldValue(1);
+				block.addDup(GID1, GID2);
+				combine(dexist, d);
+				//map.put(systemcode+lid, dexist);
+				// b.addDup()
+			}		  
 		}
 		block.clear();
-		
+
 		for (DataObject d: map.values()) {
 			block.add(d);
 		}							
 	}
-	
-	
+
+
 	private void combine(DataObject d1, DataObject d2) {
 		List<String> fieldValues = d1.getFieldValues();
 		// copy parent field values from d2 to d1 for which d1 field value is null
@@ -195,30 +200,30 @@ public class Bucket {
 				d1.setFieldValue(0, d2.getFieldValue(i));
 			}			
 		}
-		
+
 		List<ChildType>  d1childTypes = d1.getChildTypes();
 		List<ChildType>  d2childTypes = d2.getChildTypes();
-		
+
 		List<ChildType> bigger = d1childTypes;
 		if (d1childTypes.size() < d2childTypes.size()) {
 			bigger = d2childTypes;
 		}
-		
+
 		for (int i = 0; i < d1childTypes.size(); i++) {
-	        ChildType ctype = d1childTypes.get(i);
-	        List<DataObject> children = ctype.getChildren();
-	        if (i < d2childTypes.size()) {
-	           List<DataObject>  children2 = d2childTypes.get(i).getChildren();
- 	           for (int j = 0; j < children2.size(); j++) {
-	          	 DataObject d = children2.get(j);
-	             boolean found = contains(children, d);
-	             if (found == false) {
-	            	 ctype.addChild(d);
-	             }
-	           } 
-	        }	        	        
+			ChildType ctype = d1childTypes.get(i);
+			List<DataObject> children = ctype.getChildren();
+			if (i < d2childTypes.size()) {
+				List<DataObject>  children2 = d2childTypes.get(i).getChildren();
+				for (int j = 0; j < children2.size(); j++) {
+					DataObject d = children2.get(j);
+					boolean found = contains(children, d);
+					if (found == false) {
+						ctype.addChild(d);
+					}
+				} 
+			}	        	        
 		}
-		
+
 		/**
 		 * Add childtypes from d2 which are not in d1
 		 */
@@ -227,7 +232,7 @@ public class Bucket {
 			d1.addChildType(ctype);
 		}				
 	}
-	
+
 	private boolean contains(List<DataObject> children, DataObject d) {
 		boolean found = false;
 		for (DataObject d1: children) {
@@ -238,71 +243,71 @@ public class Bucket {
 		}
 		return found;
 	}
-	
-	
+
+
 	public synchronized MatchCursor getMatchCursor() {
 		MatchCursor matchCursor = new MatchCursor(blockMap);
 		return matchCursor;
 	}
-	
-	 class MatchCursor {
-		   //private final Map map_;
-		   private Map.Entry<String,Block> entry_;
-		   Iterator<Map.Entry<String,Block>> blockIterator_;
-		   private int listPos_;
-		   
-		   MatchCursor(final Map<String,Block> map) {
+
+	class MatchCursor {
+		//private final Map map_;
+		private Map.Entry<String,Block> entry_;
+		Iterator<Map.Entry<String,Block>> blockIterator_;
+		private int listPos_;
+
+		MatchCursor(final Map<String,Block> map) {
 			//    map_ = map;
-			    blockIterator_ =
-			    	 map.entrySet().iterator();
-		   }
-		   
-		   /**
-		    * returns one BlockPosition at a time.
-		    * A BlockPosition is defined as a position of a record within a block.
-		    * It is expected that calling code would match the record at blockPosition.recordPosition
-		    * to all records within this block that are at position > recordPosition.
-		    * This requires {B-record position in the block} comparions by calling thread, where B is size of block.
-		    * For multi-threading, this seems most performance oriented algorithm.
-		    * Other variations that were considered but not used are:
-		    *  1   This wouldn't scale if size of block is very big such as for common names,
-		    *     causing only one thread to do all the work.
-		    *  2. return two records at a time. This would cause B*B invocations for each block 
+			blockIterator_ =
+				map.entrySet().iterator();
+		}
+
+		/**
+		 * returns one BlockPosition at a time.
+		 * A BlockPosition is defined as a position of a record within a block.
+		 * It is expected that calling code would match the record at blockPosition.recordPosition
+		 * to all records within this block that are at position > recordPosition.
+		 * This requires {B-record position in the block} comparions by calling thread, where B is size of block.
+		 * For multi-threading, this seems most performance oriented algorithm.
+		 * Other variations that were considered but not used are:
+		 *  1   This wouldn't scale if size of block is very big such as for common names,
+		 *     causing only one thread to do all the work.
+		 *  2. return two records at a time. This would cause B*B invocations for each block 
 		           Since this method is synchronized, too much time will be spent on object monitor
 		           release and acquire method, which is synchronized.  
-		    * @return BlockPosition
-		    */
-		   public synchronized BlockPosition next()  {
-			   BlockPosition bp = null;
-			   if (listPos_ == 0) {
-			     while (blockIterator_.hasNext()) {
-				   entry_ = blockIterator_.next();
-				   Block block = entry_.getValue();
-				   if (block.getSize() < 2) {
-					   continue; // find block that has at least 2 records
-				   }
-				   bp = new BlockPosition(block, 0);				  
-				   if (++listPos_ == block.getSize()-1) {
-					   // listPos should be at least 1 less than block size
-					   // because a match comparison needs at least two records
-					  listPos_ = 0;
-				   }
-				   break;
-			     }
-			   } else {
-				   Block block = entry_.getValue();
-				   bp = new BlockPosition(block, listPos_);
-				   if (++listPos_ == block.getSize()-1) {
-						  listPos_ = 0;
-				   }				   
-			   }
-			   return bp;				  			   
-		   }
-		   
-		   String getBucketFile() {
-			   return file.getName();
-		   }
-	 }
-	 	 	 
-	 	
+		 * @return BlockPosition
+		 */
+		public synchronized BlockPosition next()  {
+			BlockPosition bp = null;
+			if (listPos_ == 0) {
+				while (blockIterator_.hasNext()) {
+					entry_ = blockIterator_.next();
+					Block block = entry_.getValue();
+					if (block.getSize() < 2) {
+						continue; // find block that has at least 2 records
+					}
+					bp = new BlockPosition(block, 0);				  
+					if (++listPos_ == block.getSize()-1) {
+						// listPos should be at least 1 less than block size
+						// because a match comparison needs at least two records
+						listPos_ = 0;
+					}
+					break;
+				}
+			} else {
+				Block block = entry_.getValue();
+				bp = new BlockPosition(block, listPos_);
+				if (++listPos_ == block.getSize()-1) {
+					listPos_ = 0;
+				}				   
+			}
+			return bp;				  			   
+		}
+
+		String getBucketFile() {
+			return file.getName();
+		}
+	}
+
+
 }

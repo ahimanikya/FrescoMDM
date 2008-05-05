@@ -53,7 +53,7 @@ public class MatchEUIDRecordReader implements MatchReader {
 		
 	}
 	
-	public  MatchRecord next() throws IOException {
+	public MatchRecord next() throws IOException {
 	  try {
 		  String line = reader_.readLine();
 		  if (line == null) {
