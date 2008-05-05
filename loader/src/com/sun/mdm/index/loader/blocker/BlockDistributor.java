@@ -462,8 +462,9 @@ public class BlockDistributor {
 		
 	  
 	/**
-	 *  This contains an object type and the Epaths for fields that is contained in that
-	 *  object type.
+	 *  This stores field position for a match field in the input data and the position in the output match 
+	 *  record.
+	 *  The fields considered are for one object type like Person, Address etc.
 	 *  
 	 *  
 	 */
@@ -483,30 +484,7 @@ public class BlockDistributor {
 		
 		BlockDefinition[] blockdefs = new BlockDefinition[blockDefList.size()];
 		blockDefList.toArray(blockdefs);
-		
-		/*
-		BlockDefinition[] blockdefs = new BlockDefinition[3];
-		
-		blockdefs[0] = new BlockDefinition();
-		BlockDefinition.Rule ruleC = new BlockDefinition.Rule();
-		BlockDefinition.Rule rule = new BlockDefinition.Rule(new String[]{"Person.FnamePhoneticCode","Person.LnamePhoneticCode"});
-		ruleC.addChild(rule);
-	    rule = new BlockDefinition.Rule(new String[] {"Person.Alias.FnamePhoneticCode","Person.Alias.LnamePhoneticCode"});
-		ruleC.addChild(rule);
-		ruleC.setOperator(BlockDefinition.Operator.OR);
-		blockdefs[0].addRule(ruleC);
-		blockdefs[0].setId("1");
-		
-		blockdefs[1] = new BlockDefinition();
-		blockdefs[1].addRule("Person.SSN");
-		blockdefs[1].setId("2");
-		
-		blockdefs[2] = new BlockDefinition();
-		blockdefs[2].addRule("Person.FnamePhoneticCode");
-		blockdefs[2].addRule("Person.Gender");
-		blockdefs[2].addRule("Person.DOB");
-		blockdefs[2].setId("3");
-		*/
+				
 		return blockdefs;
 	}
 	
