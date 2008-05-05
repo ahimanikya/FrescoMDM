@@ -18,12 +18,21 @@
 <%@ page isErrorPage="false" errorPage="../error500.jsp" %>
 
 <%
+Operations operationsGlobal = null;
+HttpSession sessionFacesGlobal = null;
+
+sessionFacesGlobal = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+
+operationsGlobal = new Operations();
+sessionFacesGlobal.setAttribute("Operations",operationsGlobal);
+
+ 
 ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 
 // fix for 6679172,6684209
 if(session!=null && session.isNew()) {	
 	
-	session.invalidate();
+	//session.invalidate();
 %>
    <c:redirect url="login.jsf"/>
 <%}
