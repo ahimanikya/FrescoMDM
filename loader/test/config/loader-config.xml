@@ -1,0 +1,154 @@
+<loader>
+    <threshold-config>
+        <duplicateThreshold>7.25</duplicateThreshold>
+        <matchThreshold>29.0</matchThreshold>
+    </threshold-config>
+
+        <query-builder name="BLOCKER-SEARCH" class="com.sun.mdm.index.querybuilder.BlockerQueryBuilder" parser-class="com.sun.mdm.index.configurator.impl.blocker.BlockerConfig" standardize="true" phoneticize="true">
+            <config>
+                <block-definition  number="ID0">
+                    <hint>
+									  </hint>
+                    <block-rule>
+                       <equals>
+                            <field>Enterprise.SystemSBR.Person.FirstName_Phon</field>
+                            <source>Person.FirstName_Phon</source>
+                        </equals>
+                    </block-rule>
+                </block-definition>
+<!--                
+                <block-definition  number="ID1">
+                     <hint>
+									   </hint>
+                     <block-rule>
+                        <equals>
+                            <field>Enterprise.SystemSBR.Person.LastName_Phon</field>
+                            <source>Person.LastName_Phon</source>
+                        </equals>
+                    </block-rule>
+                </block-definition>
+                <block-definition  number="ID2">
+                    <hint>
+									  </hint>
+                   <block-rule>
+                        <equals>
+                            <field>Enterprise.SystemSBR.Person.SSN</field>
+                            <source>Person.SSN</source>
+                        </equals>
+                    </block-rule>
+                </block-definition>
+                <block-definition  number="ID3">
+                    <hint>
+										 </hint>
+                    <block-rule>
+                        <equals>
+                            <field>Enterprise.SystemSBR.Person.Address.AddressLine1_HouseNo</field>
+                            <source>Person.Address.AddressLine1_HouseNo</source>
+                        </equals>
+                        <equals>
+                            <field>Enterprise.SystemSBR.Person.Address.AddressLine1_StPhon</field>
+                            <source>Person.Address.AddressLine1_StPhon</source>
+                        </equals>
+                    </block-rule>
+                </block-definition>
+-->                
+            </config>
+        </query-builder>
+    <MatchingConfig module-name="Matching" parser-class="com.sun.mdm.index.configurator.impl.matching.MatchingConfiguration">
+        <match-system-object>
+            <object-name>Person</object-name>
+            <match-columns>
+                <match-column>
+                    <column-name>Enterprise.SystemSBR.Person.FirstName_Std</column-name>
+                    <match-type>FirstName</match-type>
+                </match-column>
+                <match-column>
+                    <column-name>Enterprise.SystemSBR.Person.LastName_Std</column-name>
+                    <match-type>LastName</match-type>
+                </match-column>
+                <match-column>
+                    <column-name>Enterprise.SystemSBR.Person.Address[*].AddressLine1_StName</column-name>
+                    <match-type>StreetName</match-type>
+                </match-column>
+                <match-column>
+                    <column-name>Enterprise.SystemSBR.Person.Address[*].AddressLine1_HouseNo</column-name>
+                    <match-type>HouseNumber</match-type>
+                </match-column>
+                <match-column>
+                    <column-name>Enterprise.SystemSBR.Person.Address[*].AddressLine1_StDir</column-name>
+                    <match-type>StreetDir</match-type>
+                </match-column>
+                <match-column>
+                    <column-name>Enterprise.SystemSBR.Person.Address[*].AddressLine1_StType</column-name>
+                    <match-type>StreetType</match-type>
+                </match-column>
+            </match-columns>
+         </match-system-object>
+     </MatchingConfig>
+	   <EuidGenerator class="com.sun.mdm.index.loader.euid.LoaderEuidGenerator"/>
+	   <!-- all configuration with regard to the initial loader components
+				  specific config needs to be put in like isMasterLoader... -->
+
+	 <system>
+		<properties>
+			<property name="loaderName" value="master-loader" />
+			<property name="isMasterLoader" value="true" />
+			<property name="matchAnalyzerMode" value="false" />
+      <property name="BulkLoad" value="false" />
+      <property name="standardizationMode" value="true" />
+      <property name="deleteIntermediateDirs" value="false" />
+
+			<property name="rmiPort" value="9999" />
+			<property name="workingDir" value="c:/MDM/open-dm-mi/loader/test/workspace" />
+			<property name="ftp.workingDir" value="/loader" />
+
+			<property name="numBlockBuckets" value="1" />
+			<property name="numThreads" value="1" />
+
+			<!-- used by euid assigner -->
+			<property name="numEUIDBuckets" value="1" />
+			<property name="totalNoOfRecords" value="100" />
+
+			<!-- time in milli seconds -->
+			<property name="pollInterval" value="1000" />
+			<property name="maxWaitTime" value="1000000000" />
+
+			<!-- ftp properties -->
+			<property name="ftp.server" value="ftp-server" />
+			<property name="ftp.username" value="user" />
+			<property name="ftp.password" value="password" />
+
+			<!-- cluster database properties -->
+			<property name="cluster.database" value="Oracle" />
+			<property name="cluster.database.url" value="jdbc:oracle:thin:@localhost:1521:exchange" />
+			<property name="cluster.database.user" value="eview" />
+			<property name="cluster.database.password" value="eview" />
+			<property name="cluster.database.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
+
+			<!-- oracle SQL loader properties -->
+			<property name="sqlldr.userid" value="eview/eview@exchange" />
+			<property name="sqlldr.record.delimiter" value="$$$" />
+
+		</properties>
+		<monitoring-control>
+			<!-- info to support standard jmx based monitoring and management 
+				this can be made part of the properties-->
+		</monitoring-control>
+		<dataObjectReader>
+			<beans>
+				<bean id="dataObjectReader"
+					class="com.sun.mdm.index.dataobject.DataObjectFileReader" singleton="false">
+<!--					
+					<constructor-arg type="java.lang.String"
+						value="c:/MDM/open-dm-mi/loader/test/data/loader/inputdata1.txt" />
+-->						
+					<constructor-arg type="java.lang.String"
+						value="test/data/loader/inputdata1.txt" />
+					<constructor-arg type="boolean" value="false" />
+				</bean>
+			</beans>
+		</dataObjectReader>
+		
+	</system>
+
+</loader>
