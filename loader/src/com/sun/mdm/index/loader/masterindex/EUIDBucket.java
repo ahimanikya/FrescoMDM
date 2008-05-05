@@ -34,55 +34,42 @@ import com.sun.mdm.index.dataobject.DataObjectReader;
 import com.sun.mdm.index.dataobject.DataObjectWriter;
 
 
-/**
- * EUIDBucket is a persisted container of many groups. 
+
+
+/**. 
  * This is container of many Enterprise Objects - System Records that have
- * same EUID".
+ * same "EUID".
  * It is a unit execution of work and can be loaded in memory by any
  * processor.
- * @author sdua
+ * @author Swaranjit Dua
  *
  */
 public class EUIDBucket {
-//	private DataObjectWriter writer;
+	//	private DataObjectWriter writer;
 	private DataObjectReader reader;
-	private Map<String,List<DataObject>> EUIDMap;
+	private Map<String, List<DataObject>> EUIDMap;
 	private String bucketName_;
 	private int numEOs;
-//	private File file;
-	
-	/*
-	public EUIDBucket(DataObjectWriter writer) {
-		this.writer = writer;
-	}
-	*/
-	
-	public EUIDBucket(DataObjectReader reader, String bucket) {
+
+	EUIDBucket(DataObjectReader reader, String bucket) {
 		this.reader = reader;
 		bucketName_ = bucket;
-	//	file = f;
+		//	file = f;
 	}
-	
-	/*
-	
-	public File getFile() {
-		return file;
-	}
-	*/
-	
+
 	/**
 	 * loads the data from the file into a HashMap.
 	 * @return
 	 * @throws Exception
 	 */
-	public Map load() throws Exception {
-		EUIDMap = new HashMap<String,List<DataObject>>();
-		while (true) {			
+	 Map load() throws Exception {
+		EUIDMap = new HashMap<String, List<DataObject>>();
+		while (true) {
 			DataObject dataObject = reader.readDataObject();
 			if (dataObject == null) {
 				break;
 			}
-			
+
 			String euid = dataObject.getFieldValue(0);
 			List<DataObject> SOlist = EUIDMap.get(euid);
 			if (SOlist == null) {
@@ -93,61 +80,53 @@ public class EUIDBucket {
 			} else {
 				SOlist.add(dataObject);
 			}
-			
-		}
-		return EUIDMap;				
-	}
-	
-	public void close() throws Exception {
-		
-		if (reader != null) {
-		   reader.close();
-		}
-	}
-	
-	/*
-	public void write(DataObject dataObject) throws Exception {
-		writer.writeDataObject(dataObject);
-	}
-	*/
 
-	/*
-	public void close() throws IOException {
-		writer.close();
+		}
+		return EUIDMap;
 	}
-	*/
-	
-	public synchronized EOCursor getEOCursor() {
+
+	void close() throws Exception {
+
+		if (reader != null) {
+			reader.close();
+		}
+	}
+
+	synchronized EOCursor getEOCursor() {
 		EOCursor eoCursor = new EOCursor(EUIDMap);
 		return eoCursor;
 	}
-	
-	 class EOCursor {
-		   //private final Map map_;
-		   private Map.Entry<String,List<DataObject>> entry_;
-		   Iterator<Map.Entry<String,List<DataObject>>> eoIterator_;
-		   //private int listPos_;
-		   
-		   EOCursor(final Map<String,List<DataObject>> map) {
-			//    map_ = map;
-			    eoIterator_ =
-			    	 map.entrySet().iterator();
-		   }
-		   
-		   /**
-		    * returns one list of System Objects that have same EUID at a time.
-		    * 
-		    * @return List of DataObject representing System Objects
-		    */
-		   synchronized List<DataObject> next()  {
-			   	 if (eoIterator_.hasNext()) {
-				   entry_ = eoIterator_.next();
-				   List<DataObject> solist = entry_.getValue();
-				   return solist;
-			     }
-			   	 return null;
-			   				  			   
-		   }		   
-	 }
-	 	 	
+
+	/**
+	 * 
+	 * @author Swaranjit Dua
+	 * returns pointer to an "EO" object - list of Data Objects that have same EUID.
+	 *
+	 */
+	class EOCursor {
+
+		private Map.Entry<String, List<DataObject>> entry_;
+		Iterator<Map.Entry<String, List<DataObject>>> eoIterator_;
+
+		EOCursor(final Map<String, List<DataObject>> map) {
+
+			eoIterator_ = map.entrySet().iterator();
+		}
+
+		/**
+		 * returns one list of System Objects that have same EUID at a time.
+		 * 
+		 * @return List of DataObject representing System Objects
+		 */
+		synchronized List<DataObject> next() {
+			if (eoIterator_.hasNext()) {
+				entry_ = eoIterator_.next();
+				List<DataObject> solist = entry_.getValue();
+				return solist;
+			}
+			return null;
+
+		}
+	}
+
 }
