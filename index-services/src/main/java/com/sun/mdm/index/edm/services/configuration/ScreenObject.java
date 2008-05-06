@@ -46,14 +46,10 @@ public class ScreenObject implements java.io.Serializable {
     private String mDisplayTitle;           // title to be displayed 
     private ObjectNodeConfig mRootObj;      // object configuration
     private int mDisplayOrder;     // order in which the screen is displayed
-    private Object mEntrance;   // JSP/JSF page to be executed when this screen
-                                // is chosen from the menu.  This is
-                                // impelmentation-dependent on the Presentation
-                                // Layer, so the details remain to be defined.
     private ArrayList mSearchResultsConfig;   // ArrayList of SearchResultsConfig
                                               // objects that define the search 
                                               // result configurations
-    private ArrayList mSearchScreensConfig;   // ArrayList SearchScreenConfig 
+    private ArrayList mSearchScreensConfig;   // ArrayList of SearchScreenConfig 
                                               // objects that define the search
                                               // field configurations
     private ArrayList mSubscreensConfig;      // ArrayList of ScreenObjects
@@ -66,9 +62,6 @@ public class ScreenObject implements java.io.Serializable {
      * @param rootObj The object configuration.
      * @param displayOrder The order in which the screen dashboard 
      * title is to be displayed on the dashboard.
-     * @param entrance The JSP/JSF page to be executed when this
-     * screen is chosen from the dashboard.  This is implementation-dependent.
-     * and remains to be defined in detail.
      * @param sScreensConfig The ArrayList containg SearchScreensConfig objects
      * that specify how to display the search criteria for a search screen.
      * @param sResultsConfig The ArrayList containg SearchResultsConfig objects
@@ -78,15 +71,13 @@ public class ScreenObject implements java.io.Serializable {
      * that define the subscreens for an instance of this class.
      */
     public ScreenObject(Integer id, String displayTitle, ObjectNodeConfig rootObj, 
-                        int displayOrder, Object entrance, 
-                        ArrayList sScreensConfig, ArrayList sResultsConfig,
-                        ArrayList subscreensConfig) {
+                        int displayOrder, ArrayList sScreensConfig, 
+                        ArrayList sResultsConfig, ArrayList subscreensConfig) {
                     
         mID = id;
         mDisplayTitle = displayTitle;
         mRootObj = rootObj;
         mDisplayOrder = displayOrder;
-        mEntrance = entrance;
         mSearchScreensConfig = sScreensConfig;
         mSearchResultsConfig = sResultsConfig;
         mSubscreensConfig = subscreensConfig;
@@ -160,17 +151,6 @@ public class ScreenObject implements java.io.Serializable {
      */
     public int getDisplayOrder() {
         return mDisplayOrder;
-    }
-
-    /**
-     * Getter for the mEntrance attribute
-     *
-     * @return The JSP/JSF page to be executed when the screen represented by
-     * this object is chosen from the dashboard.  This is implementation-
-     * dependent on the Presentation Layer, so it remains to be defined.
-     */
-    public Object getEntrance() {
-        return mEntrance;
     }
 
     /**

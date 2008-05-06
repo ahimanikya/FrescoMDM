@@ -73,7 +73,7 @@ public class ReportUtil extends ScreenUtil {
     }
 
     /**
-     * Adds required fields for Deactivated, Merged, and Unmerged report searches.
+     * Adds required fields for Merged, and Unmerged report searches.
      *
      * @param nodeConfigObj  The ObjectNodeConfig instance.
      * @param searchFieldList This an ArrayList of FieldConfig objects
@@ -81,16 +81,29 @@ public class ReportUtil extends ScreenUtil {
      * @param localIdDesignation  Local ID designation.
      */
     public static void addMergeReportSearchFields(ObjectNodeConfig nodeConfigObj, 
-						  ArrayList searchFieldList, 
-                                                  String localIdDesignation) {
-        addEUIDField(nodeConfigObj, searchFieldList);
-        addLIDFields(nodeConfigObj, localIdDesignation, searchFieldList);
+						                          ArrayList searchFieldList, 
+						                          String localIdDesignation) {
         addDateFields(nodeConfigObj, searchFieldList);
         addTimeFields(nodeConfigObj, searchFieldList);
     }
     
     /**
-     * Adds required fields for Update and Assumed Matches report searches.
+     * Adds required fields for Deactivated report searches.
+     *
+     * @param nodeConfigObj  The ObjectNodeConfig instance.
+     * @param searchFieldList This an ArrayList of FieldConfig objects
+     * representing the search fields.
+     * @param localIdDesignation  Local ID designation.
+     */
+    public static void addDeactivatedReportSearchFields(ObjectNodeConfig nodeConfigObj, 
+						                                ArrayList searchFieldList, 
+						                                String localIdDesignation) {
+        addDateFields(nodeConfigObj, searchFieldList);
+        addTimeFields(nodeConfigObj, searchFieldList);
+    }
+    
+    /**
+     * Adds required fields for Update report searches.
      *
      * @param nodeConfigObj  The ObjectNodeConfig instance.
      * @param searchFieldList This an ArrayList of FieldConfig objects
@@ -98,11 +111,26 @@ public class ReportUtil extends ScreenUtil {
      * @param localIdDesignation  Local ID designation.
      */
     public static void addUpdateReportSearchFields(ObjectNodeConfig nodeConfigObj, 
-						  ArrayList searchFieldList,
-                                                  String localIdDesignation) {
+                                                   ArrayList searchFieldList, 
+                                                   String localIdDesignation) {
                                                       
-        addEUIDField(nodeConfigObj, searchFieldList);
-        addLIDFields(nodeConfigObj, localIdDesignation, searchFieldList);
+        addDateFields(nodeConfigObj, searchFieldList);
+        addTimeFields(nodeConfigObj, searchFieldList);
+        addMaxReportSizeField(nodeConfigObj, searchFieldList);
+    }
+    
+    /**
+     * Adds required fields for Assumed Matches report searches.
+     *
+     * @param nodeConfigObj  The ObjectNodeConfig instance.
+     * @param searchFieldList This an ArrayList of FieldConfig objects
+     * representing the search fields.
+     * @param localIdDesignation  Local ID designation.
+     */
+    public static void addAssumedMatchReportSearchFields(ObjectNodeConfig nodeConfigObj, 
+                                                         ArrayList searchFieldList, 
+                                                         String localIdDesignation) {
+                                                      
         addDateFields(nodeConfigObj, searchFieldList);
         addTimeFields(nodeConfigObj, searchFieldList);
         addMaxReportSizeField(nodeConfigObj, searchFieldList);
@@ -117,11 +145,9 @@ public class ReportUtil extends ScreenUtil {
      * @param localIdDesignation  Local ID designation.
      */
     public static void addPotDupReportSearchFields(ObjectNodeConfig nodeConfigObj, 
-						  ArrayList searchFieldList,
-                                                  String localIdDesignation) {
+						                           ArrayList searchFieldList,
+                                                   String localIdDesignation) {
                                                       
-        addEUIDField(nodeConfigObj, searchFieldList);
-        addLIDFields(nodeConfigObj, localIdDesignation, searchFieldList);
         addDateFields(nodeConfigObj, searchFieldList);
         addTimeFields(nodeConfigObj, searchFieldList);
         addStatusField(nodeConfigObj, searchFieldList);
@@ -135,8 +161,9 @@ public class ReportUtil extends ScreenUtil {
      * @param searchFieldList This an ArrayList of FieldConfig objects
      * representing the search fields.
      */
+     
     public static void addEUIDField(ObjectNodeConfig nodeConfigObj, 
-                               ArrayList searchFieldList) {
+                                    ArrayList searchFieldList) {
                                    
         addSearchField(nodeConfigObj.getName(), FIELD_NAME_EUID, EUID,
             FieldConfig.GUI_TYPE_TEXTBOX, "", DEFAULT_FIELD_LENGTH, null,
@@ -151,9 +178,10 @@ public class ReportUtil extends ScreenUtil {
      * @param searchFieldList This an ArrayList of FieldConfig objects
      * representing the search fields.
      */
+     
     public static void addLIDFields(ObjectNodeConfig nodeConfigObj, 
-                              String localIdDesignation, 
-                              ArrayList searchFieldList) {
+                                    String localIdDesignation, 
+                                    ArrayList searchFieldList) {
                                    
         addSearchField(nodeConfigObj.getName(), FIELD_NAME_SYSTEM, SYSTEM,
             FieldConfig.GUI_TYPE_MENULIST, 
@@ -172,7 +200,7 @@ public class ReportUtil extends ScreenUtil {
      * representing the search fields.
      */
     private static void addDateFields(ObjectNodeConfig nodeConfigObj, 
-                                     ArrayList searchFieldList) {
+                                      ArrayList searchFieldList) {
                                          
         addSearchField(nodeConfigObj.getName(), FIELD_NAME_START_DATE, 
             START_DATE, FieldConfig.GUI_TYPE_TEXTBOX, "", DEFAULT_FIELD_LENGTH, 
@@ -192,7 +220,7 @@ public class ReportUtil extends ScreenUtil {
      * representing the search fields.
      */
     private static void addTimeFields(ObjectNodeConfig nodeConfigObj, 
-                                     ArrayList searchFieldList) {
+                                      ArrayList searchFieldList) {
         addSearchField(nodeConfigObj.getName(), FIELD_NAME_START_TIME, 
             START_TIME, FieldConfig.GUI_TYPE_TEXTBOX, "", DEFAULT_FIELD_LENGTH, 
             DATE_STRING_FORMAT, ObjectField.OBJECTMETA_TIMESTAMP_TYPE, 

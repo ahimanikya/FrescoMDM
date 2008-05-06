@@ -102,13 +102,12 @@ public class ConfigManager implements java.io.Serializable {
     private static final String ASSUMED_MATCHES = "assumed-matches";
     private static final String TRANSACTIONS = "transactions";
     private static final String REPORTS = "reports";
-    public static final String REPORT_NAME = "report-name";
+    private static final String REPORT_NAME = "report-name";
     private static final String SOURCE_RECORD = "source-record";
     private static final String AUDIT_LOG = "audit-log";
     private static final String DASHBOARD = "dashboard";
     
     private static final String TAB_NAME = "tab-name";
-    private static final String TAB_ENTRANCE = "tab-entrance";
     private static final String INITIAL_SCREEN_ID = "initial-screen-id";
     private static final String ROOT_OBJ = "root-object";
     private static final String SHOW_LID = "show-lid";
@@ -149,10 +148,10 @@ public class ConfigManager implements java.io.Serializable {
     private static final String POTENTIAL_DUPLICATE_REPORT = "Potential Duplicate";
     private static final String DEACTIVATED_REPORT= "Deactivated";
     private static final String MERGED_REPORT = "Merged";
-    private static final String UNMERGED_REPORT= "Unmerged";
-    private static final String UPDATE_REPORT= "Update";
-    private static final String ASSUMED_MATCH_REPORT= "Assumed Match";
-    private static final String ACTIVITY_REPORT = "Transaction Summary Report";
+    private static final String UNMERGED_REPORT = "Unmerged";
+    private static final String UPDATE_REPORT = "Update";
+    private static final String ASSUMED_MATCH_REPORT = "Assumed Match";
+    private static final String ACTIVITY_REPORT = "Transaction Summary";
    
     // ArrayList of Integers identifying ScreenObjects with EUID fields.  
     private ArrayList screensWithEUIDFields = new ArrayList();
@@ -419,7 +418,6 @@ public class ConfigManager implements java.io.Serializable {
         String rootObjName = NodeUtil.getChildNodeText(element, ROOT_OBJ);
         ObjectNodeConfig objNodeConfig = (ObjectNodeConfig) objNodeConfigMap.get(rootObjName);
         String title = NodeUtil.getChildNodeText(element, TAB_NAME);
-        String entrance = NodeUtil.getChildNodeText(element, TAB_ENTRANCE);
         Integer screenID = Integer.valueOf(NodeUtil.getChildNodeText(element, SCREEN_ID));
         String displayOrder = NodeUtil.getChildNodeText(element, DISPLAY_ORDER);
         int pageSize = 0;
@@ -489,7 +487,6 @@ public class ConfigManager implements java.io.Serializable {
                                                title, 
                                                objNodeConfig, 
                                                Integer.parseInt(displayOrder),
-                                               entrance,
                                                searchScreensConfig, 
                                                searchResultsConfig,
                                                null);
@@ -569,7 +566,6 @@ public class ConfigManager implements java.io.Serializable {
         String rootObjName = NodeUtil.getChildNodeText(element, ROOT_OBJ);
         ObjectNodeConfig objNodeConfig = (ObjectNodeConfig) objNodeConfigMap.get(rootObjName);
         String title = NodeUtil.getChildNodeText(element, TAB_NAME);
-        String entrance = NodeUtil.getChildNodeText(element, TAB_ENTRANCE);
         Integer screenID = Integer.valueOf(NodeUtil.getChildNodeText(element, SCREEN_ID));
         String displayOrder = NodeUtil.getChildNodeText(element, DISPLAY_ORDER);
 
@@ -600,7 +596,6 @@ public class ConfigManager implements java.io.Serializable {
                                                title, 
                                                objNodeConfig, 
                                                Integer.parseInt(displayOrder),
-                                               entrance,
                                                null, 
                                                null,
                                                subscreensArrayList);
@@ -631,7 +626,6 @@ public class ConfigManager implements java.io.Serializable {
         String rootObjName = NodeUtil.getChildNodeText(element, ROOT_OBJ);
         ObjectNodeConfig objNodeConfig = (ObjectNodeConfig) objNodeConfigMap.get(rootObjName);
         String title = NodeUtil.getChildNodeText(element, TAB_NAME);
-        String entrance = NodeUtil.getChildNodeText(element, TAB_ENTRANCE);
         Integer screenID = Integer.valueOf(NodeUtil.getChildNodeText(element, SCREEN_ID));
         String displayOrder = NodeUtil.getChildNodeText(element, DISPLAY_ORDER);
 
@@ -641,32 +635,43 @@ public class ConfigManager implements java.io.Serializable {
 
         ArrayList searchScreensConfig = new ArrayList();
         ArrayList searchResultsConfig = new ArrayList();
-        // blockType defaults to the configType.  This will be changed later
-        // for REPORTS, where the blockType is the specific type of report
-        // that is being processed.
+        // blockType defaults to the configType.  For REPORTS, change the
+        // blockType is the name of report that is being processed.
         String blockType = configType;
+        if  (configType.compareTo(REPORTS) == 0) {
+            blockType = NodeUtil.getChildNodeText(element, REPORT_NAME);
+        } 
+        
+        // If no simple search pages are found, continue processing.  
+        // Some screens, such as Assumed Match, contain automatically-generated
+        // search critera that the user cannot modify.  There can be only 
+        // one such search page per tab.  This situation occurs if the <search-pages>
+        // tag is not found.
+        boolean simpleSearchPageFound = false;
+        
         while (itr.hasNext() ) {
             Element sscElement = (Element)itr.next();
-
             if (sscElement.getTagName().equalsIgnoreCase(SIMPLE_SEARCH_PAGE)) {
-                // Change the configType to the actual name of the 
-                // report for Reports.  Otherwise, leave it as is.
-                if  (configType.compareTo(REPORTS) == 0) {
-                    blockType = NodeUtil.getChildNodeText(element, REPORT_NAME);
-                } 
-                SearchScreenConfig ssconfig 
-                        = buildSearchScreenConfig(sscElement, 
-                                                  objNodeConfig,
-                                                  blockType);
-                searchScreensConfig.add(ssconfig);
-            } else if (configType.compareToIgnoreCase(DASHBOARD) == 0) {    // dashboard
-                SearchScreenConfig ssconfig 
-                        = buildSearchScreenConfig(sscElement, 
-                                                  objNodeConfig,
-                                                  blockType);
-                searchScreensConfig.add(ssconfig);
+                simpleSearchPageFound = true;
             }
+            SearchScreenConfig ssconfig     
+                    = buildSearchScreenConfig(sscElement, 
+                                              objNodeConfig,
+                                              blockType);
+            searchScreensConfig.add(ssconfig);
         }        
+        
+        // If no simple search pages are found, continue processing.  
+        // Some screens, such as Assumed Match, contain automatically-generated
+        // search critera that the user cannot modify.  There can be only 
+        // one such search page per tab.  This situation occurs if this is encountered
+        // in the config file:  <search-pages/>
+        if (!simpleSearchPageFound) {
+            SearchScreenConfig ssconfig 
+                    = buildSearchScreenConfig(objNodeConfig, 
+                                              blockType);
+            searchScreensConfig.add(ssconfig);
+        }
         
         // Process search result list page
         Element searchResultsElement 
@@ -687,7 +692,6 @@ public class ConfigManager implements java.io.Serializable {
                                                title, 
                                                objNodeConfig, 
                                                Integer.parseInt(displayOrder),
-                                               entrance,
                                                searchScreensConfig, 
                                                searchResultsConfig,
                                                null);
@@ -1086,15 +1090,15 @@ public class ConfigManager implements java.io.Serializable {
         
         // Create FieldConfig objects for the metadata fields.  Sometimes, these
         // fields are configurable by the user.  Other times, they are mandatory.
+        
+        String localIdDesignation = getConfigurableQwsValue(LID, "Local ID");
+        
         if (configType.compareTo(DUPLICATE_RECORDS) == 0
                 || configType.compareTo(RECORD_DETAILS) == 0 
-                || configType.compareToIgnoreCase(SOURCE_RECORD) == 0 
-                || configType.compareToIgnoreCase(POTENTIAL_DUPLICATE_REPORT) == 0) {
+                || configType.compareToIgnoreCase(SOURCE_RECORD) == 0) {
                     
             addMetadataSearchFields(rootNodeConfig, element, searchFieldList);
         } else if  (configType.compareTo(TRANSACTIONS) == 0) {
-            String localIdDesignation 
-                    = getConfigurableQwsValue(LID, "Local ID");
             TransactionUtil.addTransactionSearchFields(rootNodeConfig, 
                                                        searchFieldList,
                                                        localIdDesignation,
@@ -1102,42 +1106,41 @@ public class ConfigManager implements java.io.Serializable {
                                                        showLID);
                                                        
         } else if  (configType.compareTo(ASSUMED_MATCHES) == 0) {
-            String localIdDesignation 
-                    = getConfigurableQwsValue(LID, "Local ID");
             AssumedMatchesUtil.addAssumedMatchesSearchFields(rootNodeConfig, 
                                                              searchFieldList, 
                                                              localIdDesignation);
         } else if  (configType.compareTo(AUDIT_LOG) == 0) {
-            String localIdDesignation 
-                    = getConfigurableQwsValue(LID, "Local ID");
             AuditLogUtil.addAuditLogSearchFields(rootNodeConfig, 
                                                  searchFieldList,
                                                  localIdDesignation,  
                                                  showEUID, 
                                                  showLID);
-                                                 
         } else if (configType.compareToIgnoreCase(ACTIVITY_REPORT) == 0) {  
             ReportUtil.addActivityReportSearchFields(rootNodeConfig, 
                                                      searchFieldList);
-        // Merged/Unmerged/Activate/Deactive
-        } else if (configType.compareToIgnoreCase(DEACTIVATED_REPORT) == 0
-                   || configType.compareToIgnoreCase(MERGED_REPORT) == 0 
+        } else if (configType.compareToIgnoreCase(MERGED_REPORT) == 0 
                    || configType.compareToIgnoreCase(UNMERGED_REPORT) == 0 )  { 
                        
-            String localIdDesignation 
-                    = getConfigurableQwsValue(LID, "Local ID");
             ReportUtil.addMergeReportSearchFields(rootNodeConfig, 
                                                   searchFieldList,
                                                   localIdDesignation);
-        } else if (configType.compareToIgnoreCase(UPDATE_REPORT) == 0 ||
-                   configType.compareToIgnoreCase(ASSUMED_MATCH_REPORT) == 0 )  { 
-                       
-            String localIdDesignation 
-                    = getConfigurableQwsValue(LID, "Local ID");
+        } else if (configType.compareToIgnoreCase(DEACTIVATED_REPORT) == 0)  { 
+            ReportUtil.addDeactivatedReportSearchFields(rootNodeConfig, 
+                                                        searchFieldList,
+                                                        localIdDesignation);
+        } else if (configType.compareToIgnoreCase(UPDATE_REPORT) == 0)  { 
             ReportUtil.addUpdateReportSearchFields(rootNodeConfig, 
                                                    searchFieldList,
                                                    localIdDesignation);
-        }         
+        } else if (configType.compareToIgnoreCase(ASSUMED_MATCH_REPORT) == 0 )  { 
+            ReportUtil.addAssumedMatchReportSearchFields(rootNodeConfig, 
+                                                         searchFieldList,
+                                                         localIdDesignation);
+        } else if (configType.compareToIgnoreCase(POTENTIAL_DUPLICATE_REPORT) == 0) {
+            ReportUtil.addPotDupReportSearchFields(rootNodeConfig, 
+                                                   searchFieldList,
+                                                   localIdDesignation);
+        }
         
         // create a FieldGroup for any metadata fields
         if (searchFieldList.size() > 0) {
@@ -1260,10 +1263,10 @@ public class ConfigManager implements java.io.Serializable {
         ArrayList fieldConfigGroup = new ArrayList();
         ArrayList searchFieldList = new ArrayList();
         
+        String localIdDesignation = getConfigurableQwsValue(LID, "Local ID");
+        
         // Create FieldConfig objects for the metadata fields.  
         if  (configType.compareTo(TRANSACTIONS) == 0) {
-            String localIdDesignation 
-                    = getConfigurableQwsValue(LID, "Local ID");
             TransactionUtil.addTransactionSearchFields(rootNodeConfig, 
                                                        searchFieldList,
                                                        localIdDesignation,
@@ -1271,42 +1274,40 @@ public class ConfigManager implements java.io.Serializable {
                                                        showLID);
                                                        
         } else if  (configType.compareTo(ASSUMED_MATCHES) == 0) {
-            String localIdDesignation 
-                    = getConfigurableQwsValue(LID, "Local ID");
             AssumedMatchesUtil.addAssumedMatchesSearchFields(rootNodeConfig, 
                                                              searchFieldList, 
                                                              localIdDesignation);
         } else if  (configType.compareTo(AUDIT_LOG) == 0) {
-            String localIdDesignation 
-                    = getConfigurableQwsValue(LID, "Local ID");
             AuditLogUtil.addAuditLogSearchFields(rootNodeConfig, 
                                                  searchFieldList,
                                                  localIdDesignation,  
                                                  showEUID, 
                                                  showLID);
-                                                 
         } else if (configType.compareToIgnoreCase(ACTIVITY_REPORT) == 0) {  
             ReportUtil.addActivityReportSearchFields(rootNodeConfig, 
                                                      searchFieldList);
-        // Merged/Unmerged/Activate/Deactive
-        } else if (configType.compareToIgnoreCase(DEACTIVATED_REPORT) == 0
-                   || configType.compareToIgnoreCase(MERGED_REPORT) == 0 
+        } else if (configType.compareToIgnoreCase(MERGED_REPORT) == 0 
                    || configType.compareToIgnoreCase(UNMERGED_REPORT) == 0 )  { 
-                       
-            String localIdDesignation 
-                    = getConfigurableQwsValue(LID, "Local ID");
             ReportUtil.addMergeReportSearchFields(rootNodeConfig, 
                                                   searchFieldList,
                                                   localIdDesignation);
-        } else if (configType.compareToIgnoreCase(UPDATE_REPORT) == 0 ||
-                   configType.compareToIgnoreCase(ASSUMED_MATCH_REPORT) == 0 )  { 
-                       
-            String localIdDesignation 
-                    = getConfigurableQwsValue(LID, "Local ID");
+        } else if (configType.compareToIgnoreCase(DEACTIVATED_REPORT) == 0)  { 
+            ReportUtil.addDeactivatedReportSearchFields(rootNodeConfig, 
+                                                        searchFieldList,
+                                                        localIdDesignation);
+        } else if (configType.compareToIgnoreCase(UPDATE_REPORT) == 0)  { 
             ReportUtil.addUpdateReportSearchFields(rootNodeConfig, 
                                                    searchFieldList,
                                                    localIdDesignation);
-        }         
+        } else if (configType.compareToIgnoreCase(ASSUMED_MATCH_REPORT) == 0)  { 
+            ReportUtil.addAssumedMatchReportSearchFields(rootNodeConfig, 
+                                                         searchFieldList,
+                                                         localIdDesignation);
+        } else if (configType.compareToIgnoreCase(POTENTIAL_DUPLICATE_REPORT) == 0) {
+            ReportUtil.addPotDupReportSearchFields(rootNodeConfig, 
+                                                   searchFieldList,
+                                                   localIdDesignation);
+        }
         
         // create a FieldGroup for any metadata fields
         if (searchFieldList.size() > 0) {
