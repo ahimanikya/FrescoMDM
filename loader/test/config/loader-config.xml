@@ -120,9 +120,9 @@
 
 			<!-- cluster database properties -->
 			<property name="cluster.database" value="Oracle" />
-			<property name="cluster.database.url" value="jdbc:oracle:thin:@localhost:1521:exchange" />
-			<property name="cluster.database.user" value="eview" />
-			<property name="cluster.database.password" value="eview" />
+			<property name="cluster.database.url" value="jdbc:oracle:thin:@localhost:1521:oracle" />
+			<property name="cluster.database.user" value="mdm" />
+			<property name="cluster.database.password" value="mdm" />
 			<property name="cluster.database.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
 
 			<!-- oracle SQL loader properties -->
