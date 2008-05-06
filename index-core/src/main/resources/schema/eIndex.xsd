@@ -65,11 +65,11 @@
                         <xs:element ref="size" minOccurs="0"/>
                         <xs:element ref="updateable"/>
                         <xs:element ref="required"/>
-                        <xs:element ref="pattern" minOccurs="0"/>
                         <xs:element ref="code-module" minOccurs="0"/>
+                        <xs:element ref="pattern" minOccurs="0"/>
+                        <xs:element ref="key-type"/>
                         <xs:element ref="user-code" minOccurs="0"/>
                         <xs:element ref="constraint-by" minOccurs="0"/>
-                        <xs:element ref="key-type"/>
                         <xs:element ref="minimum-value" minOccurs="0"/>
                         <xs:element ref="visible" minOccurs="0"/>
                     </xs:sequence>

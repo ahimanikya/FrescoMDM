@@ -1195,7 +1195,7 @@ public class EDMType {
                                 Node required = nnm.getNamedItem(mAttrRequired);
                                 try {
                                     if (required != null) {
-                                        requiredValue = required.getNodeValue(); // "true" or "false"
+                                        requiredValue = required.getNodeValue(); // "true/false/oneof"
                                     }
                                     edmFieldDef.setRequiredInSearchScreen(requiredValue);
                                     fieldRef.required = requiredValue;
@@ -1204,7 +1204,7 @@ public class EDMType {
                                 Node choice = nnm.getNamedItem(mAttrChoice);
                                 try {
                                     if (choice != null) {
-                                        fieldRef.choice = choice.getNodeValue(); // "range"
+                                        fieldRef.choice = choice.getNodeValue(); // "exact/range"
                                     }
                                     //edmFieldDef.setRequiredInSearchScreen(requiredValue);
                                     
