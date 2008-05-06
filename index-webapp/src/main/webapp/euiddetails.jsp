@@ -171,6 +171,7 @@
             ArrayList eoSources = null;
             ArrayList eoHistory = null;
             ValueExpression unMergeEuidVE = null;
+			int countInactive = 0;
 			%>
                         			<%
             if (eoArrayList != null && eoArrayList.size() > 0) {%>
@@ -472,9 +473,13 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 									
                                                 <div id="mainDupSources<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
                                                     <div style="width:170px;overflow:hidden">
-											   <%if("inactive".equalsIgnoreCase(soStatus)) {%>
+											   <%if("inactive".equalsIgnoreCase(soStatus)) {
+													countInactive++;
+													%>
                                                     <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="deactivate" >
-												<%} else if("merged".equalsIgnoreCase(soStatus)) {%>
+												<%} else if("merged".equalsIgnoreCase(soStatus)) {
+													countInactive++;
+												%>
 												<div id="mainEuidContent<%=soHashMap.get("LID")%>" class="transaction" >
 												<%} else {%>
 												<div id="mainEuidContent<%=soHashMap.get("LID")%>" class="source" >
@@ -931,6 +936,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                     <h:form>
                                                         <h:commandLink  styleClass="button" rendered="#{Operations.EO_Deactivate}"
                                                                         actionListener="#{PatientDetailsHandler.deactivateEO}">
+
                                                              <f:attribute name="eoValueExpression" value="<%=euidValueExpression%>"/>
                                                             <span><h:outputText value="#{msgs.source_rec_deactivate_but}" /></span>
                                                         </h:commandLink> 
@@ -938,8 +944,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                     </td>
                                                 </tr>
                                                         <%}%>            
-                                                        <%if ("inactive".equalsIgnoreCase(eoStatus)) {%>
-                                                        
+                                                    <%if (countInactive != eoSources.size() && "inactive".equalsIgnoreCase(eoStatus)) {%>
                                                     <tr>
                                                          <td valign="top" width="125px">
                                                     <h:form>
