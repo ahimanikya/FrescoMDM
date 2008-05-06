@@ -27,6 +27,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Random;
 
 import junit.framework.TestCase;
 
@@ -68,6 +70,33 @@ public class LoaderEuidGeneratorTest extends TestCase {
 	}
 
 	/**
+	 * Test EUID uniqueness.
+	 * @throws Exception If the test fails.
+	 */
+	public void testEUIDUniqueness() 
+		throws Exception {
+		
+		EuidGenerator euidGenerator = new LoaderEuidGenerator();
+		
+		euidGenerator.setParameter("IdLength", Integer.valueOf(17));
+		euidGenerator.setParameter("ChecksumLength", Integer.valueOf(5));
+		euidGenerator.setParameter("ChunkSize", Integer.valueOf(3));
+		
+		HashSet<String> euids = new HashSet<String>();
+
+		Random randomGenerator = new Random();
+		randomGenerator.setSeed(System.currentTimeMillis());
+		
+		int start = randomGenerator.nextInt(10000);
+
+		System.out.println("euid1 = " + euidGenerator.getNextEUID(null));		
+		for (int i = start; i < (start + 30000); i++) {
+			assertTrue(euids.add(euidGenerator.getNextEUID(null)));
+		}		
+		System.out.println("euid2 = " + euidGenerator.getNextEUID(null));
+	}
+	
+	/**
 	 * Test method for
 	 * {@link com.sun.mdm.index.loader.euid.LoaderEuidGenerator#getNextEUID(java.sql.Connection)}.
 	 */
@@ -88,17 +117,11 @@ public class LoaderEuidGeneratorTest extends TestCase {
 		}
 
 		String euid = e.getNextEUID(null);
-
 		euid = e.getNextEUID(null);
-
 		euid = e.getNextEUID(null);
-
 		euid = e.getNextEUID(null);
-
 		euid = e.getNextEUID(null);
-
 		euid.toString();
-
 	}
 
 	public void testGetSequenceNumber() throws Exception {
@@ -116,51 +139,24 @@ public class LoaderEuidGeneratorTest extends TestCase {
 		}
 		
 		String euid = e.getNextEUID(null);
-
-		
-
 		int checksumlen = Integer.parseInt(params.get("ChecksumLength"));
-
 		long chunkSize = Long.parseLong(params.get("ChunkSize"));
-
 		int seqStrLen = euid.length() - checksumlen;
-
+		
 		String seqStr = euid.substring(0, seqStrLen);
-
+		
 		long l = Long.parseLong(seqStr);
-
 		long mod = l % chunkSize;
-
 		long seqNo = l + chunkSize - mod;
-		
-		
-		String sql = "update sbyn_seq_table set seq_count=? where seq_name='EUID'";
-		
-		Connection c = DAOFactory.getConnection();
-		
-		PreparedStatement ps =  c.prepareStatement(sql);
-		
+				
+		String sql = "update sbyn_seq_table set seq_count=? where seq_name='EUID'";		
+		Connection c = DAOFactory.getConnection();		
+		PreparedStatement ps =  c.prepareStatement(sql);		
 		ps.setLong(1, seqNo);
 		
-		int i = ps.executeUpdate();
-		
-		ps.close();
-		
-		c.close();
-		
-//		e = new DefaultEuidGenerator();
-//		e.setParameter("IdLength", Integer.valueOf(params.get("IdLength")));
-//		e.setParameter("ChecksumLength", Integer.valueOf(params.get("ChecksumLength")));
-//		e.setParameter("ChunkSize", Integer.valueOf(params.get("ChunkSize")));
-//		
-//		String s = e.getNextEUID(c);
-//		
-//		s.toString();
-		
-		
-		
-		
-
+		int i = ps.executeUpdate();		
+		ps.close();	
+		c.close();							
 	}
 
 }
