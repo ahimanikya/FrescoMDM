@@ -63,7 +63,7 @@ public class EviewProjectProperties {
     public static final String J2EE_MODULES_FOLDER = "J2EE Modules"; //NOI18N
     
     public static final String OBJECT_XML = "object.xml";
-    public static final String OBJECT_XSD = "eIndex.xsd";
+    public static final String OBJECT_XSD = "object.xsd";
     public static final String EDM_XML = "edm.xml";
     public static final String EDM_XSD = "edm.xsd";
     public static final String MIDM_XML = "midm.xml";

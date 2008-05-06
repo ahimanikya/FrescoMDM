@@ -524,7 +524,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
     private void createObjectXml(WizardDescriptor wiz) {
         String tagHeaderObject = "<Configuration xmlns:xsi=" +
             "\"http://www.w3.org/2001/XMLSchema-instance" +
-            "\" xsi:noNamespaceSchemaLocation=\"schema/eIndex.xsd\">\n";
+            "\" xsi:noNamespaceSchemaLocation=\"schema/object.xsd\">\n";
         String tagTailObject = "</Configuration>";
 
         String strXml = xmlHEADER + tagHeaderObject + "    <name>" + mViewName +
@@ -695,8 +695,10 @@ public class FinishPanel implements WizardDescriptor.Panel {
                     nodes += (tab12 + "<updateable>" +
                     subNode.getUpdateable() + "</updateable>\n");
                     nodes += (tab12 + "<required>" + subNode.getRequired() + "</required>\n");
-                    nodes += (tab12 + "<pattern>" + subNode.getPattern() + "</pattern>\n");
+                    
                     nodes += (tab12 + "<code-module>" + subNode.getCodeModule() + "</code-module>\n");
+                    nodes += (tab12 + "<pattern>" + subNode.getPattern() + "</pattern>\n");
+                    nodes += (tab12 + "<key-type>" + subNode.getKeyType() +"</key-type>\n");
                     if ((subNode.getUserCode() != null) &&
                             (subNode.getUserCode().length() > 0)) {
                         nodes += (tab12 + "<user-code>" + subNode.getUserCode() + "</user-code>\n");
@@ -705,7 +707,7 @@ public class FinishPanel implements WizardDescriptor.Panel {
                             (subNode.getConstraintBy().length() > 0)) {
                         nodes += (tab12 + "<constraint-by>" + subNode.getConstraintBy() + "</constraint-by>\n");
                     }
-                    nodes += (tab12 + "<key-type>" + subNode.getKeyType() +"</key-type>\n");
+                    
                     nodes += (tab8 + "</fields>\n");
 
                     //

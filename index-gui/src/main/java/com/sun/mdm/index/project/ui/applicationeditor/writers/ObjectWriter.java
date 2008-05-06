@@ -55,7 +55,7 @@ public class ObjectWriter {
         
         String tagHeaderObject = "<Configuration xmlns:xsi=" +
             "\"http://www.w3.org/2001/XMLSchema-instance" +
-            "\" xsi:noNamespaceSchemaLocation=\"schema/eIndex.xsd\">\n";
+            "\" xsi:noNamespaceSchemaLocation=\"schema/object.xsd\">\n";
         String tagTailObject = "</Configuration>";
 
         String strXml = xmlHEADER + tagHeaderObject + "    <name>" + viewName +
@@ -127,10 +127,12 @@ public class ObjectWriter {
                     subNode.getUpdateable() + "</updateable>\n");
                     nodes += ("            <required>" + subNode.getRequired() +
                         "</required>\n");
-                    nodes += ("            <pattern>" + subNode.getPattern() +
-                        "</pattern>\n");
                     nodes += ("            <code-module>" +
                         subNode.getCodeModule() + "</code-module>\n");
+                    nodes += ("            <pattern>" + subNode.getPattern() +
+                        "</pattern>\n");
+                    nodes += ("            <key-type>" + subNode.getKeyType() +
+                        "</key-type>\n");
                     if ((subNode.getUserCode() != null) &&
                             (subNode.getUserCode().length() > 0)) {
                         nodes += ("            <user-code>" + subNode.getUserCode() +
@@ -141,8 +143,6 @@ public class ObjectWriter {
                         nodes += ("            <constraint-by>" + subNode.getConstraintBy() +
                             "</constraint-by>\n");
                     }
-                    nodes += ("            <key-type>" + subNode.getKeyType() +
-                        "</key-type>\n");
                     nodes += ("        " + "</fields>\n");
 
                     //
