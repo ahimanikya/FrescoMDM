@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<eView xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/eIndex.xsd">
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/eIndex.xsd">
     <name>Person</name>
     <database>Oracle</database>
     <dateformat>MM/dd/yyyy</dateformat>
@@ -25,24 +25,24 @@
             <pattern></pattern>
             <key-type>false</key-type>
         </fields>
-		<fields>
-			<field-name>FirstName_Std</field-name>
-			<field-type>string</field-type>
-			<size>40</size>
-			<updateable>true</updateable>
-			<required>false</required>
-			<key-type>false</key-type>
-			<visible>true</visible>
-		</fields>
-		<fields>
-			<field-name>FirstName_Phon</field-name>
-			<field-type>string</field-type>
-			<size>8</size>
-			<updateable>true</updateable>
-			<required>false</required>
-			<key-type>false</key-type>
-			<visible>true</visible>
-		</fields>
+        <fields>
+            <field-name>FirstName_Std</field-name>
+            <field-type>string</field-type>
+            <size>40</size>
+            <updateable>true</updateable>
+            <required>false</required>
+            <key-type>false</key-type>
+            <visible>true</visible>
+        </fields>
+        <fields>
+            <field-name>FirstName_Phon</field-name>
+            <field-type>string</field-type>
+            <size>8</size>
+            <updateable>true</updateable>
+            <required>false</required>
+            <key-type>false</key-type>
+            <visible>true</visible>
+        </fields>
         <fields>
             <field-name>MiddleName</field-name>
             <field-type>string</field-type>
@@ -63,24 +63,24 @@
             <pattern></pattern>
             <key-type>false</key-type>
         </fields>
-		<fields>
-			<field-name>LastName_Std</field-name>
-			<field-type>string</field-type>
-			<size>40</size>
-			<updateable>true</updateable>
-			<required>false</required>
-			<key-type>false</key-type>
-			<visible>true</visible>
-		</fields>
-		<fields>
-			<field-name>LastName_Phon</field-name>
-			<field-type>string</field-type>
-			<size>8</size>
-			<updateable>true</updateable>
-			<required>false</required>
-			<key-type>false</key-type>
-			<visible>true</visible>
-		</fields>
+        <fields>
+            <field-name>LastName_Std</field-name>
+            <field-type>string</field-type>
+            <size>40</size>
+            <updateable>true</updateable>
+            <required>false</required>
+            <key-type>false</key-type>
+            <visible>true</visible>
+        </fields>
+        <fields>
+            <field-name>LastName_Phon</field-name>
+            <field-type>string</field-type>
+            <size>8</size>
+            <updateable>true</updateable>
+            <required>false</required>
+            <key-type>false</key-type>
+            <visible>true</visible>
+        </fields>
         <fields>
             <field-name>Suffix</field-name>
             <field-type>string</field-type>
@@ -417,51 +417,51 @@
             <pattern></pattern>
             <key-type>false</key-type>
         </fields>
-		<fields>
-			<field-name>AddressLine1_HouseNo</field-name>
-			<field-type>string</field-type>
-			<size>10</size>
-			<updateable>true</updateable>
-			<required>false</required>
-			<key-type>false</key-type>
-			<visible>true</visible>
-		</fields>
-		<fields>
-			<field-name>AddressLine1_StDir</field-name>
-			<field-type>string</field-type>
-			<size>5</size>
-			<updateable>true</updateable>
-			<required>false</required>
-			<key-type>false</key-type>
-			<visible>true</visible>
-		</fields>
-		<fields>
-			<field-name>AddressLine1_StName</field-name>
-			<field-type>string</field-type>
-			<size>40</size>
-			<updateable>true</updateable>
-			<required>false</required>
-			<key-type>false</key-type>
-			<visible>true</visible>
-		</fields>
-		<fields>
-			<field-name>AddressLine1_StPhon</field-name>
-			<field-type>string</field-type>
-			<size>8</size>
-			<updateable>true</updateable>
-			<required>false</required>
-			<key-type>false</key-type>
-			<visible>true</visible>
-		</fields>
-		<fields>
-			<field-name>AddressLine1_StType</field-name>
-			<field-type>string</field-type>
-			<size>5</size>
-			<updateable>true</updateable>
-			<required>false</required>
-			<key-type>false</key-type>
-			<visible>true</visible>
-		</fields>
+        <fields>
+            <field-name>AddressLine1_HouseNo</field-name>
+            <field-type>string</field-type>
+            <size>10</size>
+            <updateable>true</updateable>
+            <required>false</required>
+            <key-type>false</key-type>
+            <visible>true</visible>
+        </fields>
+        <fields>
+            <field-name>AddressLine1_StDir</field-name>
+            <field-type>string</field-type>
+            <size>5</size>
+            <updateable>true</updateable>
+            <required>false</required>
+            <key-type>false</key-type>
+            <visible>true</visible>
+        </fields>
+        <fields>
+            <field-name>AddressLine1_StName</field-name>
+            <field-type>string</field-type>
+            <size>40</size>
+            <updateable>true</updateable>
+            <required>false</required>
+            <key-type>false</key-type>
+            <visible>true</visible>
+        </fields>
+        <fields>
+            <field-name>AddressLine1_StPhon</field-name>
+            <field-type>string</field-type>
+            <size>8</size>
+            <updateable>true</updateable>
+            <required>false</required>
+            <key-type>false</key-type>
+            <visible>true</visible>
+        </fields>
+        <fields>
+            <field-name>AddressLine1_StType</field-name>
+            <field-type>string</field-type>
+            <size>5</size>
+            <updateable>true</updateable>
+            <required>false</required>
+            <key-type>false</key-type>
+            <visible>true</visible>
+        </fields>
         <fields>
             <field-name>AddressLine2</field-name>
             <field-type>string</field-type>
@@ -572,4 +572,4 @@
         <children>Address</children>
         <children>Phone</children>
     </relationships>
-</eView>
+</Configuration>
