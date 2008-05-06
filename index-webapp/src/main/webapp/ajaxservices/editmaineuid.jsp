@@ -484,11 +484,30 @@
                 ValueExpression eoMapValueExpression = ExpressionFactory.newInstance().createValueExpression(valueMap, valueMap.getClass());
 %>
 
-                                                        <td valign="top" style="background-color:#cddcb1;border-top:1px solid #efefef;border-left:1px solid #efefef;border-right:1px solid #efefef;border-bottom:1px solid #efefef;">
-                                                        <table border="0" cellspacing="0" cellpadding="0" style="width:100%;background-color:#cddcb1;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;">
+                                                 <%String soStatus = (String) valueMap.get("Status");
+												   String colorCode = "#cddcb1";%>
+                                                 <%if("active".equalsIgnoreCase(soStatus)) {
+													   colorCode = "#cddcb1";
+												 %>
+											     <%} else if("inactive".equalsIgnoreCase(soStatus)){
+													   colorCode = "#e7e7d6";
+												 %>
+											     
+											     <%} else if("merged".equalsIgnoreCase(soStatus)){
+													   colorCode = "#fdeddf";
+													 %>
+											     <%} else{
+													   colorCode = "#cddcb1";
+												 %>
+											     <%} %>
+                                                        <td valign="top" style="background-color:<%=colorCode%>;border-top:1px solid #efefef;border-left:1px 
+														solid #efefef;border-right:1px solid #efefef;border-bottom:1px solid #efefef;">
+												
+
+                                                        <table border="0" cellspacing="0" cellpadding="0" style="width:100%;background-color:<%=colorCode%>;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;">
                                                                  <tr>
                                                                         <td class="tablehead" colspan="2">
-                                                                                <%=valueMap.get("SYSTEM_CODE_DESC")%>
+                                                                                <%=valueMap.get("SYSTEM_CODE_DESC")%> (<%=valueMap.get("Status")%>)
                                                                         </td>
                                                                  </tr>
                                                                   <tr>
@@ -499,13 +518,17 @@
                                                                         </td>
                                                                  </tr>
                                                         </table>
+
+
                                                             <h:dataTable id="hashIdEditEo" 
-                                                                          style="background-color:#cddcb1;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"
+                                                                          style="background-color:<%=colorCode%>;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"
                                                                           var="eoSystemObjectMap"  
                                                                           value="<%=eoMapValueExpression%>">
 																<h:column>
 																	<!-- SYSTEM OBJECT ROOT NODE FIELDS FORM START HERE-->
                                                    			    <form id="<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SORootNodeInnerForm" >
+                                                 <%if("active".equalsIgnoreCase(soStatus)) {%>
+
                                                                     <h:dataTable  headerClass="tablehead"                                        
                                                                                   width="100%"
                                                                                   id="hashIdEdit" 
@@ -540,7 +563,7 @@
 																			title="#{fieldConfigPer.fullFieldName}"
 																			style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"			
 																			disabled="#{!fieldConfigPer.updateable}"
-																			readonly="#{!fieldConfigPer.updateable}"
+																			readonly="#{ !fieldConfigPer.updateable}"
 																			value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}">
                                                                                 <f:selectItem itemLabel="" itemValue="" />
                                                                                 <f:selectItems  value="#{fieldConfigPer.selectOptions}"  />
@@ -549,18 +572,38 @@
                                                                         <!--Rendering Updateable HTML Text boxes-->
                                                                         <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6}" >
                                                                             <h:inputText label="#{fieldConfigPer.displayName}"  
-                                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')" 
-																	 onkeyup="javascript:qws_field_on_key_up(this)"
+                                                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')" 
+																	                     onkeyup="javascript:qws_field_on_key_up(this)"
 																			             title="#{fieldConfigPer.fullFieldName}"
                                                                                          id="fieldConfigIdTextbox"   
                                                                                          maxlength="#{fieldConfigPer.maxLength}"
-																						 readonly="#{!fieldConfigPer.updateable}"	value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
+																			             disabled="#{!fieldConfigPer.updateable}"
+																			             readonly="#{!fieldConfigPer.updateable}"
+                                                                               value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                                          required="#{fieldConfigPer.required}"
                                                                                          />
                                                                         </h:column>
                                                                         <!--Rendering Updateable HTML Text boxes date fields-->
-                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' && fieldConfigPer.valueType eq 6 }">
+                                                                        <h:column rendered="#{!fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextBox' && fieldConfigPer.valueType eq 6}">
 																		    <nobr>
+                                                                            <input type="text" 
+																			       title="<h:outputText value="#{fieldConfigPer.fullFieldName}"/>"
+																				   readonly="true"
+																				   disabled="true"
+                                                                                   id = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>"  
+                                                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');"
+                                                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
+                                                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                                   value = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
+                                                                                   />
+                                                                                      
+                                                                                <h:graphicImage alt="#{fieldConfigPer.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
+																		   </nobr>
+                                                                       </h:column>
+
+																		<h:column rendered="#{fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextBox' && fieldConfigPer.valueType eq 6}">
+																		    <nobr>
+
                                                                             <input type="text" 
 																			       title="<h:outputText value="#{fieldConfigPer.fullFieldName}"/>"
                                                                                    id = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>"  
@@ -584,10 +627,95 @@
                                                                                              required="#{fieldConfigPer.required}"/>
                                                                         </h:column>
                                                             </h:dataTable>
+															<%} else {%>
+                                                               <h:dataTable  headerClass="tablehead"                                        
+                                                                                  width="100%"
+                                                                                  id="hashIdReadOnly" 
+                                                                                  var="fieldConfigPer" 
+																				  style="width:100%;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"
+                                                                                  value="#{SourceHandler.rootNodeFieldConfigs}">     
+                                                <h:column>
+                                                     <nobr>
+													  <h:outputText value="#{fieldConfigPer.displayName}" />
+                                                      <h:outputText value="*" rendered="#{fieldConfigPer.required}" />
+                                                      <h:outputText value=":"/>
+													 </nobr>
+                                                 </h:column>                                                        
+                             
+                                                                        <h:column>
+                                                                            <div id='<h:outputText value="#{fieldConfigPer.fullFieldName}"/>:<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT']['LINK_KEY']}"/>'
+                                                                                 style="visibility:hidden;display:none;">
+                                                                                <h:outputLink  value="javascript:void(0)" onclick="javascript:showExtraUnLinkDivs(event,'#{fieldConfigPer.name}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}')">
+                                                                                    <h:graphicImage  alt="link" styleClass="imgClass" url="./images/link.PNG"/>               
+                                                                                </h:outputLink>
+                                                                            </div> 
+                                                                            <h:outputLink  rendered="#{EditMainEuidHandler.linkedSOFieldsHashMapFromDB[fieldConfigPer.fullFieldName] eq eoSystemObjectMap['SYSTEM_OBJECT']['LINK_KEY'] }"   
+                                                                                           value="javascript:void(0)" onclick="javascript:showExtraUnLinkDivs(event,'#{fieldConfigPer.name}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}')">
+                                                                                <h:graphicImage  alt="link" styleClass="imgClass"
+                                                                                                 url="./images/link.PNG"/>               
+                                                                            </h:outputLink>
+                                                                        </h:column>                                                        
+                                                                        
+                                                                        <!--Rendering HTML Select Menu List-->
+                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'MenuList' &&  fieldConfigPer.valueType ne 6}" >
+                                                                            <h:selectOneMenu 													
+																			title="#{fieldConfigPer.fullFieldName}"
+																			style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"			
+																			disabled="true"
+																			readonly="true"
+																			value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}">
+                                                                                <f:selectItem itemLabel="" itemValue="" />
+                                                                                <f:selectItems  value="#{fieldConfigPer.selectOptions}"  />
+                                                                            </h:selectOneMenu>
+                                                                        </h:column>
+                                                                        <!--Rendering Updateable HTML Text boxes-->
+                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' &&  fieldConfigPer.valueType ne 6}" >
+                                                                            <h:inputText label="#{fieldConfigPer.displayName}"  
+                                                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')" 
+																	                     onkeyup="javascript:qws_field_on_key_up(this)"
+																			             title="#{fieldConfigPer.fullFieldName}"
+                                                                                         id="fieldConfigIdTextbox"   
+                                                                                         maxlength="#{fieldConfigPer.maxLength}"
+																			             disabled="true"
+																			             readonly="true"
+                                                                               value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
+                                                                                         required="#{fieldConfigPer.required}"
+                                                                                         />
+                                                                        </h:column>
+                                                                        <!--Rendering Updateable HTML Text boxes date fields-->
+                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' && fieldConfigPer.valueType eq 6 }">
+																		    <nobr>
+                                                                            <input type="text" 
+																			       title="<h:outputText value="#{fieldConfigPer.fullFieldName}"/>"
+																				   readonly="true"
+																				   disabled="true"
+                                                                                   id = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>"  
+                                                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');"
+                                                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
+                                                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                                   value = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
+                                                                                   />
+                                                                                       
+                                                                                <h:graphicImage   alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+																		   </nobr>
+                                                                       </h:column>
+                                                                        <!--Rendering Updateable HTML Text Area-->
+                                                                        <h:column rendered="#{fieldConfigPer.guiType eq 'TextArea' &&  fieldConfigPer.valueType ne 6}" >
+                                                                            <h:inputTextarea label="#{fieldConfigPer.displayName}"  
+																			                 title="#{fieldConfigPer.fullFieldName}"
+                                                                                             id="fieldConfigIdTextArea"   
+																							 readonly="true"
+                                                                                             value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
+                                                                                             required="#{fieldConfigPer.required}"/>
+                                                                        </h:column>
+                                                            </h:dataTable>
+
+															<%}%>
                                 					     </form>
 														 <table>
                     <tr>
 					  <td><nobr>
+                       <%if("active".equalsIgnoreCase(soStatus)) {%>
                           <a href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SORootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&save=save','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>RootEditMessages',event)">
 
                                <span id="EObuttonspan">Update <%=rootNodeName%></span>
@@ -595,7 +723,11 @@
                            <a class="button"  href="javascript:void(0)" onclick="javascript:ClearContents(<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SORootNodeInnerForm);setEOEditIndex('-1')">
                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
 						   </a>
-						  </nobr>
+						 <%}else{%>
+						    <input type="button" value="Update <%=rootNodeName%>" readonly="true" disabled="true"/>
+						    <input type="button" value="Clear" readonly="true" disabled="true"/>
+						 <%}%>
+						</nobr>
 					  </td>
 					</tr>
 
@@ -622,9 +754,10 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="2">
+                                                      
 																	<a value="javascript:void(0)" onclick="javascript:showMinorObjectsDiv('extra<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event)" class="button">
 																	<span>
-																	<img src="./images/down-chevron-button.png" border="0" alt="Add <h:outputText value="#{childNodesName}"/>" />
+																	<img src="./images/down-chevron-button.png" border="0" alt="View <h:outputText value="#{childNodesName}"/>" />
 																	View &nbsp;<h:outputText value="#{childNodesName}"/>&nbsp;
 																	<img src="./images/down-chevron-button.png" border="0" alt="Add <h:outputText value="#{childNodesName}"/>" />
 																	</span>
@@ -656,14 +789,14 @@
 													  <h:outputText value="#{soChildFieldConfigAdd.displayName}" />
                                                       <h:outputText value="*" rendered="#{soChildFieldConfigAdd.required}" />
                                                       <h:outputText value=":"/>
-													 </nobr>
+                                					 </nobr>
                                                  </h:column>                                                        
-                                            
+                                          <%if("active".equalsIgnoreCase(soStatus)) {%>
+
                                             <!--Rendering HTML Select Menu List-->
                                             <h:column rendered="#{soChildFieldConfigAdd.guiType eq 'MenuList'}" >
                                                 <h:selectOneMenu title="#{soChildFieldConfigAdd.fullFieldName}"
-                                                                 style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"
->
+                                                                 style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;">
                                                     <f:selectItem itemLabel="" itemValue="" />
                                                     <f:selectItems  value="#{soChildFieldConfigAdd.selectOptions}"  />
                                                 </h:selectOneMenu>
@@ -674,7 +807,8 @@
  													              title="#{soChildFieldConfigAdd.fullFieldName}"
                                                                   id="soChildFieldConfigAdd"   
                                                                   maxlength="#{soChildFieldConfigAdd.maxLength}"
-																  readonly="#{!soChildFieldConfigAdd.updateable}"
+                                                                 disabled="#{ !soChildFieldConfigAdd.updateable}"
+                                                                 readonly="#{ !soChildFieldConfigAdd.updateable}"
                                                                   onkeydown="javascript:qws_field_on_key_down(this, '#{soChildFieldConfigAdd.inputMask}')" 
 																	 onkeyup="javascript:qws_field_on_key_up(this)"
 																	 required="#{soChildFieldConfigAdd.required}"  
@@ -685,6 +819,8 @@
                                      <h:column rendered="#{soChildFieldConfigAdd.guiType eq 'TextBox'  &&  soChildFieldConfigAdd.valueType eq 6}" >
                                           <nobr>
                                             <input type="text" title = "<h:outputText value="#{soChildFieldConfigAdd.fullFieldName}"/>"  
+                                                   readonly="<h:outputText value="#{!fieldConfigPer.updateable}" />"
+                                                   disabled="<h:outputText value="#{!fieldConfigPer.updateable}" />"
                                                    id = "<h:outputText value="#{soChildFieldConfigAdd.name}"/>"  
                                                    required="<h:outputText value="#{soChildFieldConfigAdd.required}"/>" 
                                                    maxlength="<h:outputText value="#{soChildFieldConfigAdd.maxLength}"/>"
@@ -702,22 +838,83 @@
                                             
                                             <h:column rendered="#{soChildFieldConfigAdd.guiType eq 'TextArea'}" >
                                                 <h:inputTextarea title="#{fieldConfigAddAddress.fullFieldName}"  
-							                                         required="#{fieldConfigAddAddress.required}" />
+                                                                 disabled="#{!fieldConfigAddAddress.updateable}"
+                                                                 readonly="#{!fieldConfigAddAddress.updateable}"
+							                                     required="#{fieldConfigAddAddress.required}" />
                                             </h:column>
+											<%}else{%>
+                                            <!--Rendering HTML Select Menu List-->
+                                            <h:column rendered="#{soChildFieldConfigAdd.guiType eq 'MenuList'}" >
+                                                <h:selectOneMenu title="#{soChildFieldConfigAdd.fullFieldName}"
+                                                                 disabled="true"
+                                                                 readonly="true"
+                                                                 style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;">
+                                                    <f:selectItem itemLabel="" itemValue="" />
+                                                    <f:selectItems  value="#{soChildFieldConfigAdd.selectOptions}"  />
+                                                </h:selectOneMenu>
+                                            </h:column>
+                                            <!--Rendering Updateable HTML Text boxes-->
+                                            <h:column rendered="#{soChildFieldConfigAdd.guiType eq 'TextBox' &&  soChildFieldConfigAdd.valueType ne 6}" >
+                                                     <h:inputText label="#{soChildFieldConfigAdd.displayName}" 
+ 													              title="#{soChildFieldConfigAdd.fullFieldName}"
+                                                                  id="soChildFieldConfigAdd"   
+                                                                  maxlength="#{soChildFieldConfigAdd.maxLength}"
+                                                                 disabled="true"
+                                                                 readonly="true"
+                                                                  onkeydown="javascript:qws_field_on_key_down(this, '#{soChildFieldConfigAdd.inputMask}')" 
+																	 onkeyup="javascript:qws_field_on_key_up(this)"
+																	 required="#{soChildFieldConfigAdd.required}"  
+																	 />
+
+                                            </h:column>                     
+ 
+                                     <h:column rendered="#{soChildFieldConfigAdd.guiType eq 'TextBox'  &&  soChildFieldConfigAdd.valueType eq 6}" >
+                                          <nobr>
+                                            <input type="text" title = "<h:outputText value="#{soChildFieldConfigAdd.fullFieldName}"/>"  
+                                                   readonly="true"
+                                                   disabled="true"
+                                                   id = "<h:outputText value="#{soChildFieldConfigAdd.name}"/>"  
+                                                   required="<h:outputText value="#{soChildFieldConfigAdd.required}"/>" 
+                                                   maxlength="<h:outputText value="#{soChildFieldConfigAdd.maxLength}"/>"
+                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{soChildFieldConfigAdd.inputMask}"/>')"
+                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                  onblur="javascript:validate_date(this,'MM/dd/yyyy');">
+                                                  <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{soChildFieldConfigAdd.name}"/>')" > 
+                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                 </a>
+                                          </nobr>
+                                     </h:column>                     
+
+
+                                           <!--Rendering Updateable HTML Text Area-->
+                                            
+                                            <h:column rendered="#{soChildFieldConfigAdd.guiType eq 'TextArea'}" >
+                                                <h:inputTextarea title="#{fieldConfigAddAddress.fullFieldName}"  
+                                                                 disabled="true"
+                                                                 readonly="true"
+							                                     required="#{fieldConfigAddAddress.required}" />
+                                            </h:column>
+											<%}%>
                                         </h:dataTable>                                                                                
 			                        </h:column>
                                 </h:dataTable>                                                                                
 						</td>
 					</tr>
                     <tr>
-					  <td><nobr>
-                          <a href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText  value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event)">
+					  <td>
+					  <nobr>
+					  <%if("active".equalsIgnoreCase(soStatus)) {%>
+					      <a href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText  value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event)">
                                <span id="<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>buttonspan">Save <h:outputText value='#{childNodesName}'/> </span>
                             </a>
 						    <a class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm');setEOEditIndex('-1')">
                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                           </a>
-						  </nobr>
+                        <%}else{%>
+                            <input type="button" value="Save <h:outputText value="#{childNodesName}"/>" readonly="true" disabled="true"/>
+                            <input type="button" value="Clear" readonly="true" disabled="true"/>
+                      	<%}%>
+						</nobr>
                          <div style="visibility:hidden;display:none;" id="<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>cancelEdit">
                                          <a href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm', 'EO<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>cancelEdit', '<h:outputText value='#{childNodesName}'/>')">
                                           <span>Cancel <h:outputText value='#{childNodesName}'/></span>
@@ -749,12 +946,31 @@
               </table>   
            </h:column>
           </h:dataTable>
+		  <table>
+		  	  <tr>
+				 <td colspan="2">
+				        <%if("active".equalsIgnoreCase(soStatus)) {%>
+					      <a href="javascript:void(0);" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&deactivateSO=true','<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMessageDiv',event)">
+                               <span>Deactivate</span>
+                            </a>
+						<%} else if("inactive".equalsIgnoreCase(soStatus)){%>
+							<a href="javascript:void(0);" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&activateSO=true','<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMessageDiv',event)">
+                               <span>Activate</span>
+                            </a>
+
+						<%}%>
+				 </td>
+		     </tr>
+		     <tr><td>&nbsp;<div id="<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMessageDiv"></div></td></tr>
+		  </table>
 			<!-- START EUID SO  MINOR OBJECTS END HERE -->
                                                                 </h:column>
                                                             </h:dataTable> 
                                                         </td>
                                                         <%}%>
                                                 </tr>
+
+
                                             </table>
                                                     </div>
                                             </td>

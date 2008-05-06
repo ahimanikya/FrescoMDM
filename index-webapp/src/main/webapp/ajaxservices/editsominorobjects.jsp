@@ -9,6 +9,10 @@
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ValidationService"  %>
+<%@ page import="com.sun.mdm.index.objects.EnterpriseObject"%>
+<%@ page import="com.sun.mdm.index.objects.ObjectNode"%>
+<%@ page import="com.sun.mdm.index.objects.SystemObject"%>
+<%@ page import="com.sun.mdm.index.objects.SystemObjectPK"%>
 
 <%@ page import="java.util.Enumeration"%>
 <%@ page import="javax.faces.context.FacesContext" %>
@@ -17,6 +21,7 @@
 <%@ page import="java.util.HashMap"  %>
 <%@ page import="java.util.ArrayList"  %>
 <%@ page import="java.util.Iterator"  %>
+<%@ page import="java.util.Collection"  %>
 
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.EditMainEuidHandler"  %>
@@ -88,8 +93,6 @@ String rootNodeName = objScreenObject.getRootObj().getName();
 //get Field Config for the root node
 FieldConfig[] fcRootArray = (FieldConfig[]) allNodeFieldConfigsMap.get(rootNodeName);
 MasterControllerService masterControllerService = new MasterControllerService();
-SystemObject singleSystemObjectLID = (SystemObject) session.getAttribute("singleSystemObjectLID");
-
 String URI = request.getRequestURI();
 URI = URI.substring(1, URI.lastIndexOf("/"));
 //remove the app name 
@@ -117,6 +120,15 @@ boolean isValidate = (null == validate?false:true);
 String selectedSoLID = request.getParameter("SOLID");
 String selectedSoSystemCode  = request.getParameter("SOSYS");
 
+//Variables for deactivateSO
+String deactivateSO = request.getParameter("deactivateSO");
+boolean isdeactivateSO = (null == deactivateSO?false:true);
+
+//Variables for activateSO
+String  activateSO = request.getParameter("activateSO");
+boolean isactivateSO = (null == activateSO?false:true);
+
+
 //HashMap for the root node fields
 HashMap rootNodesHashMap = (HashMap) editMainEuidHandler.getEditSingleEOHashMap().get("ENTERPRISE_OBJECT");
 HashMap rootNodesHashMapCodes = (HashMap) editMainEuidHandler.getEditSingleEOHashMap().get("ENTERPRISE_OBJECT_CODES");
@@ -132,6 +144,8 @@ for(int so = 0; so<eoSystemObjects.size();so++) {
 }
 
 HashMap soRootNodesMap  = (HashMap) thisEoSystemObjectMap.get("SYSTEM_OBJECT");
+String soStatus  = (String) thisEoSystemObjectMap.get("Status");
+
 HashMap soRootNodesMapTemp  = new HashMap();
 
 
@@ -327,17 +341,24 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
 
-
-									  <a href="javascript:void(0)" 
+                                    <%if("active".equalsIgnoreCase(soStatus)) {%>
+					                   <a href="javascript:void(0)" 
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
+								  <%} else {%>
+								    &nbsp;
+								  <%}%>
 								</td>
 							   <td valign="center" width="14px">							   
+                                    <%if("active".equalsIgnoreCase(soStatus)) {%>
 									  <a href="javascript:void(0)" 
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
+								  <%} else {%>
+								    &nbsp;
+								  <%}%>
 							   </td>
 
 							  <% for(int k=0;k<fcArray.length;k++) {
@@ -427,17 +448,26 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
 
-
+                                  <%if("active".equalsIgnoreCase(soStatus)) {%>
+					                
 									  <a href="javascript:void(0)" 
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
+								  <%} else {%>
+								    &nbsp;
+								  <%}%>
 								</td>
 							   <td valign="center" width="14px">							   
-									  <a href="javascript:void(0)" 
+							     <%if("active".equalsIgnoreCase(soStatus)) {%>
+					             	  <a href="javascript:void(0)" 
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
+								 <%} else {%>
+								    &nbsp;
+								 <%}%>
+
 							   </td>
 
 							  <% for(int k=0;k<fcArray.length;k++) {
@@ -651,17 +681,25 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
 
+							     <%if("active".equalsIgnoreCase(soStatus)) {%>
 
 									  <a href="javascript:void(0)" 
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
+								 <%} else {%>
+								    &nbsp;
+								 <%}%>
 								</td>
 							   <td valign="center" width="14px">							   
+							     <%if("active".equalsIgnoreCase(soStatus)) {%>
 									  <a href="javascript:void(0)" 
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
+								 <%} else {%>
+								    &nbsp;
+								 <%}%>
 							   </td>
 
 							  <% for(int k=0;k<fcArray.length;k++) {
@@ -804,17 +842,25 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
 
+							     <%if("active".equalsIgnoreCase(soStatus)) {%>
 
 									  <a href="javascript:void(0)" 
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
+								 <%} else {%>
+								    &nbsp;
+								 <%}%>
 								</td>
 							   <td valign="center" width="14px">							   
+							     <%if("active".equalsIgnoreCase(soStatus)) {%>
 									  <a href="javascript:void(0)" 
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
+								 <%} else {%>
+								    &nbsp;
+								 <%}%>
 							   </td>
 
 
@@ -886,6 +932,52 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 						
 		           <%}%>
 			   </script>
+<% } else if(isdeactivateSO){%>
+  <%
+				   SystemObject systemObject = masterControllerService.getSystemObject(selectedSoSystemCode,selectedSoLID);
+
+				   //Deactivate System Object
+				   masterControllerService.deactivateSystemObject(systemObject);
+				   
+				   EnterpriseObject systemObjectEO = masterControllerService.getEnterpriseObjectForSO(systemObject);
+				   Collection itemsSource = systemObjectEO.getSystemObjects();
+                   Iterator iterSources = itemsSource.iterator();
+				   int countDeactive = 0;
+				   //count the deactive/merged System Objects
+				   while (iterSources.hasNext()) {
+                     SystemObject systemObjectLocal = (SystemObject) iterSources.next();
+                     if(!"active".equalsIgnoreCase(systemObjectLocal.getStatus())) {
+                       countDeactive++;
+					 }
+				   }
+			   
+  %>
+
+<%if(itemsSource.size() == countDeactive) {%> <!-- if all system objects are either merged/deactivated navigate to the euid details page-->
+  <script>
+      window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=systemObjectEO.getEUID()%>';
+  </script>
+<%} else {%>
+  <script>
+      ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=systemObjectEO.getEUID()%>','ajaxContent','');
+  </script>
+<%}%>
+<% } else if(isactivateSO){%>
+  <%
+				   SystemObject systemObject = masterControllerService.getSystemObject(selectedSoSystemCode,selectedSoLID);
+
+				   //Deactivate System Object
+				   masterControllerService.activateSystemObject(systemObject);
+				   
+				   EnterpriseObject systemObjectEO = masterControllerService.getEnterpriseObjectForSO(systemObject);
+
+				   
+  %>
+
+  <script>
+      ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=systemObjectEO.getEUID()%>','ajaxContent','');
+  </script>
+
 <% } %>
 
  </body>
