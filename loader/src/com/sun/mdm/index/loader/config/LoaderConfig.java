@@ -453,7 +453,6 @@ public class LoaderConfig {
 
 		lock.lock();
 		if (instance == null) {
-
 			String s = System.getProperty("loader.config");
 			if (s == null) {
 				logger.log(Level.INFO, "loader_config", default_config_file);
@@ -467,6 +466,13 @@ public class LoaderConfig {
 		return instance;
 	}
 
+	/**
+	 * Resets LoaderConfig instance.
+	 */
+	public static void initInstance() {
+		instance = null;
+	}
+	
 	/**
 	 * Gets Object definition.
 	 * @return ObjectDefinition
