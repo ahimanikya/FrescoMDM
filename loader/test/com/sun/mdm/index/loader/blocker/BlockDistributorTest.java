@@ -50,7 +50,7 @@ public class BlockDistributorTest extends TestCase {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		//init();
+		init();
 	}
 
 	/* (non-Javadoc)
@@ -83,6 +83,7 @@ public class BlockDistributorTest extends TestCase {
 		*/
 		
 		//Load configuration
+		LoaderConfig.initInstance();
 		config = LoaderConfig.getInstance();
 
 		String loaderName = config.getSystemProperty("loaderName");
@@ -147,6 +148,8 @@ public class BlockDistributorTest extends TestCase {
 		builder.addConstructorArg(value1);
 		Boolean value2 = new Boolean("false");
 		builder.addConstructorArg(value2);
+		
+		System.out.println("inputdata=" + value1);
 		
 		GenericApplicationContext context = new GenericApplicationContext();
 		context.registerBeanDefinition("dataObjectReader", builder.getBeanDefinition());
@@ -241,11 +244,7 @@ public class BlockDistributorTest extends TestCase {
 		return lookup;
 	}
 	
-	public void testdump() {
-		
-	}
-	
-	public void xxxtest0(){
+	public void test0(){
 		try {			
 			setDataObjectReader("inputData1.txt");
 			
@@ -270,7 +269,7 @@ public class BlockDistributorTest extends TestCase {
 		}
 	}
 	
-	public void xxxtest1(){
+	public void test1(){
 		try {
 			setDataObjectReader("inputData1.txt");
 			
@@ -302,7 +301,7 @@ public class BlockDistributorTest extends TestCase {
 		}
 	}
 	
-	public void xxxtest2(){
+	public void test2(){
 		try {
 			setDataObjectReader("inputData1.txt");
 			
@@ -337,7 +336,7 @@ public class BlockDistributorTest extends TestCase {
 		}		
 	}
 	
-	public void xxxtest3(){
+	public void test3(){
 		try {
 			setDataObjectReader("inputData1.txt");
 			
@@ -372,7 +371,7 @@ public class BlockDistributorTest extends TestCase {
 		}				
 	}
 	
-	public void xxxtest4(){
+	public void test4(){
 		try {
 			setDataObjectReader("inputData1.txt");
 			
@@ -416,7 +415,7 @@ public class BlockDistributorTest extends TestCase {
 		}						
 	}
 	
-	public void xxxtest5(){
+	public void test5(){
 		try {
 			setDataObjectReader("inputData1.txt");
 			
@@ -460,7 +459,7 @@ public class BlockDistributorTest extends TestCase {
 		}								
 	}
 	
-	public void xxxtest6(){
+	public void test6(){
 		try {
 			setDataObjectReader("inputData1.txt");
 			
@@ -504,7 +503,7 @@ public class BlockDistributorTest extends TestCase {
 		}								
 	}
 	
-	public void xxxtest7(){
+	public void test7(){
 		try {
 			setDataObjectReader("inputData1.txt");
 			
@@ -568,7 +567,7 @@ public class BlockDistributorTest extends TestCase {
 		}										
 	}
 	
-	public void xxxtest8(){
+	public void test8(){
 		try {
 			setDataObjectReader("inputData1.txt");
 			
@@ -615,7 +614,7 @@ public class BlockDistributorTest extends TestCase {
 		}										
 	}		
 	
-	public void xxxtest9(){
+	public void test9(){
 		try {
 			setDataObjectReader("inputData1.txt");
 			
@@ -663,7 +662,7 @@ public class BlockDistributorTest extends TestCase {
 		}										
 	}		
 
-	public void xxxtest10(){
+	public void test10(){
 		try {
 			setDataObjectReader("inputData1.txt");
 			
@@ -717,7 +716,7 @@ public class BlockDistributorTest extends TestCase {
 		}										
 	}
 
-	public void xxxtest11(){
+	public void test11(){
 		try {			
 			setDataObjectReader("inputData2.txt");			
 			ArrayList<BlockDefinition> blockDefinitions = config
@@ -757,7 +756,7 @@ public class BlockDistributorTest extends TestCase {
 		}										
 	}
 
-	public void xxxtest12(){
+	public void test12(){
 		try {			
 			setDataObjectReader("inputData2.txt");			
 			ArrayList<BlockDefinition> blockDefinitions = config
@@ -797,7 +796,7 @@ public class BlockDistributorTest extends TestCase {
 		}										
 	}
 
-	public void xxxtest13(){
+	public void test13(){
 		try {			
 			setDataObjectReader("inputData3.txt");			
 			ArrayList<BlockDefinition> blockDefinitions = config
