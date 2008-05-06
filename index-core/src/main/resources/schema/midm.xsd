@@ -49,7 +49,6 @@
     <xs:element name="key-type" type="xs:boolean"/>
     <xs:element name="root-object" type="xs:string"/>
     <xs:element name="tab-name" type="xs:string"/>
-    <xs:element name="tab-entrance" type="xs:string"/>
     <xs:element name="report-name" type="xs:string"/>
     <xs:element name="enable" type="xs:boolean"/>
     <xs:element name="allow-insert" type="xs:boolean"/>
@@ -87,8 +86,8 @@
     </xs:complexType>
     <xs:complexType name="qwsDefinitionType">
         <xs:sequence>
-            <xs:element ref="local-id"/>
-            <xs:element ref="initial-screen-id"/>
+            <xs:element ref="local-id" minOccurs="0" maxOccurs="1"/>
+            <xs:element ref="initial-screen-id" minOccurs="0" maxOccurs="1"/>
             <xs:element name="dashboard" type="sourceRecordReportsType"/>
             <xs:element name="record-details" type="commonBlockType"/>
             <xs:element name="transactions" type="commonBlockType"/>
@@ -221,7 +220,6 @@
             <xs:element ref="allow-insert" minOccurs="0"/>
             <xs:element ref="root-object"/>
             <xs:element ref="tab-name"/>
-            <xs:element ref="tab-entrance" minOccurs="0"/>
             <xs:element ref="screen-id"/>
             <xs:element ref="display-order"/>
             <xs:element ref="search-pages" minOccurs="0" maxOccurs="unbounded"/>
