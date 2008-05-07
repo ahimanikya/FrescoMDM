@@ -140,6 +140,7 @@
                 <h:inputText label="#{fieldConfigPerAdd.displayName}"  
                              id="fieldConfigIdTextbox"  
                              title="#{fieldConfigPerAdd.fullFieldName}"
+							 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}')"
                              onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
                              maxlength="#{fieldConfigPerAdd.maxLength}"
                              onkeyup="javascript:qws_field_on_key_up(this)" 
@@ -248,6 +249,7 @@
                                                                    name = "<h:outputText value="#{childFieldConfigAdd.name}"/>"  
                                                                    id = "<h:outputText value="#{childFieldConfigAdd.name}"/>"  
                                                                    required="<h:outputText value="#{childFieldConfigAdd.required}"/>" 
+																    onblur="javascript:validate_Integer_fields(this,'<h:outputText value="#{childFieldConfigAdd.displayName}"/>','<h:outputText value="#{childFieldConfigAdd.valueType}"/>')"
                                                                    maxlength="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
                                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')" 
                                                                    onkeyup="javascript:qws_field_on_key_up(this)" />
