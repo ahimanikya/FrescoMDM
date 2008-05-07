@@ -476,6 +476,7 @@
                                                                                  id="fieldConfigIdTextbox"  
                                                                                  value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
                                                                                  title="#{fieldConfigPerAdd.fullFieldName}"
+                                                                                 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}')"
                                                                                  onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
                                                                                  maxlength="#{fieldConfigPerAdd.maxLength}"
                                                                                  onkeyup="javascript:qws_field_on_key_up(this)" 
@@ -506,7 +507,8 @@
                                                                     <h:inputTextarea label="#{fieldConfigPerAdd.displayName}"  
                                                                                      title="#{fieldConfigPerAdd.fullFieldName}"
                                                                                      value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
-                                                                                     id="fieldConfigIdTextArea"   
+                                                                                    
+																					 id="fieldConfigIdTextArea"   
                                                                                      required="#{fieldConfigPerAdd.required}"
                                                                                      />
                                                                 </h:column>
@@ -579,6 +581,7 @@
                                                                                                                        id = "<h:outputText value="#{childFieldConfigAdd.name}"/>"  
                                                                                                                        required="<h:outputText value="#{childFieldConfigAdd.required}"/>" 
                                                                                                                        maxlength="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
+																													   onblur="javascript:validate_Integer_fields(this,'<h:outputText value="#{childFieldConfigAdd.displayName}"/>','<h:outputText value="#{childFieldConfigAdd.valueType}"/>')"
                                                                                                                        onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')" 
                                                                                                                        onkeyup="javascript:qws_field_on_key_up(this)" />
                                                                                                             </h:column>                     
@@ -689,6 +692,7 @@
 																				 readonly="true" disabled="true"
                                                                                  value="#{SourceHandler.deactivatedSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
                                                                                  title="#{fieldConfigPerAdd.fullFieldName}"
+																				 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}')"
                                                                                  onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
                                                                                  maxlength="#{fieldConfigPerAdd.maxLength}"
                                                                                  onkeyup="javascript:qws_field_on_key_up(this)" 
@@ -766,6 +770,7 @@
                                                                                  id="fieldConfigIdTextbox"   
                                                                                  maxlength="#{childFieldConfigAdd.maxLength}"
 										 value="#{minorojectsMapArrayList[childFieldConfigAdd.fullFieldName]}" 
+
                                                                                  required="#{childFieldConfigAdd.required}"/>
                                                                 </h:column>
                                                                 
@@ -1087,6 +1092,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 																		 title="#{fieldConfigPerAdd.fullFieldName}"
                                                                          onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
 																		  maxlength="#{fieldConfigPerAdd.maxLength}"
+																		 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}')"
                                                                          onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                          required="#{fieldConfigPerAdd.required}"/>
                                                         </h:column>                     
@@ -1181,13 +1187,16 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                             </h:column>
                                             <!--Rendering Updateable HTML Text boxes-->
                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox' &&  childFieldConfigAdd.valueType ne 6}" >
-                                            <input type="text" title = "<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>"  
-											       name = "<h:outputText value="#{childFieldConfigAdd.name}"/>"  
-                                                   id = "<h:outputText value="#{childFieldConfigAdd.name}"/>"  
-                                                   required="<h:outputText value="#{childFieldConfigAdd.required}"/>" 
-                                                   maxlength="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
-                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')" 
-												   onkeyup="javascript:qws_field_on_key_up(this)" />
+                                           
+                                                            <h:inputText label="#{childFieldConfigAdd.displayName}"  
+                                                                         title="#{childFieldConfigAdd.fullFieldName}"
+                                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')"
+																		  maxlength="#{childFieldConfigAdd.maxLength}"
+																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                         required="#{childFieldConfigAdd.required}"/>
+
+
                                             </h:column>                     
  
                                      <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox'  &&  childFieldConfigAdd.valueType eq 6}" >
@@ -1929,99 +1938,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 	
        <!-- END Extra divs for add SO-->
        <!-- Start Extra divs for editing SO-->
-   <h:dataTable  headerClass="tablehead" 
-                 id="allChildNodesNames" 
-                 var="childNodesName" 
-                 value="#{SourceHandler.allChildNodesNames}">
-        <h:column>
-            <div id="extra<h:outputText value="#{childNodesName}"/>EditDiv" 
-                 class="alertSource"  
-                 style="TOP:580px;LEFT:450px;HEIGHT:<h:outputText value="#{SourceHandler.allNodeFieldConfigsSizes[childNodesName]}" />px;WIDTH:400px;visibility:hidden;">
-             <h:form>
-                <table>
-                    <tr>
-                        <td align="right" colspan="2">
-                            <div>
-                                <a href="javascript:void(0)" rel="editballoon<h:outputText value="#{childNodesName}"/>"><h:outputText value="#{msgs.help_link_text}"/> </a><br/>
-                            </div> 
-                        </td>
-                    </tr>
-                 <tr>
-                     <td colspan="2">
-                         <h:dataTable  headerClass="tablehead" 
-                                       id="allNodeFieldConfigsMap" 
-                                       var="allNodeFieldConfigsMap" 
-                                       value="#{SourceHandler.allNodeFieldConfigs}">
-                             <h:column>
-                                 <h:dataTable  headerClass="tablehead" 
-                                               id="childFieldConfigs" 
-                                               var="childFieldConfig" 
-                                               width="100%"
-                                               value="#{allNodeFieldConfigsMap[childNodesName]}">
-                                     
-                                     <h:column>
-                                         <h:outputText value="#{childFieldConfig.displayName}"  />
-                                         <h:outputText value="*" rendered="#{childFieldConfig.required}" />
-                                     </h:column>
-                                     <!--Rendering HTML Select Menu List-->
-                                     <h:column rendered="#{childFieldConfig.guiType eq 'MenuList'}" >
-                                         <h:selectOneMenu value="#{SourceEditHandler.editSoAddressHashMap[childFieldConfig.fullFieldName]}">
-                                             <f:selectItem itemLabel="" itemValue="" />
-                                             <f:selectItems  value="#{childFieldConfig.selectOptions}"  />
-                                         </h:selectOneMenu>
-                                     </h:column>
-                                     <!--Rendering Updateable HTML Text boxes-->
-                                     <h:column rendered="#{childFieldConfig.guiType eq 'TextBox' &&  childFieldConfig.valueType ne 6}" >
-                                         <h:inputText label="#{childFieldConfig.displayName}"
-													  maxlength="#{childFieldConfig.maxLength}"
-                                                      value="#{SourceEditHandler.editSoAddressHashMap[childFieldConfig.fullFieldName]}" 
-                                                      required="#{childFieldConfig.required}"/>
-                                     </h:column>                                     
-									 <h:column rendered="#{childFieldConfig.guiType eq 'TextBox' &&  childFieldConfig.valueType eq 6}" >
-                                         <h:inputText id="cal"
-										              label="#{childFieldConfig.displayName}"  
-										              maxlength="#{childFieldConfig.maxLength}"
-                                                      value="#{SourceEditHandler.editSoAddressHashMap[childFieldConfig.fullFieldName]}" 
-                                                      required="#{childFieldConfig.required}"
-													  onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfig.inputMask}')"
-                                                       onkeyup="javascript:qws_field_on_key_up(this)" 
-													  
-													  
-													  />
-									         <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'cal')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
-                                                 </a>
-                                     </h:column>                     
-                                     <!--Rendering Updateable HTML Text Area-->
-                                     <h:column rendered="#{childFieldConfig.guiType eq 'TextArea'}" >
-                                         <h:inputTextarea label="#{fieldConfigAddAddress.displayName}"  
-                                                          value="#{SourceEditHandler.editSoAddressHashMap[childFieldConfig.fullFieldName]}" 
-                                                          required="#{fieldConfigAddAddress.required}"
-                                                          />
-                                     </h:column>
-                                 </h:dataTable>                                                                                
-                             </h:column>
-                         </h:dataTable>                                                                                
-                     </td>
-                 </tr>
-                 <tr>
-                     <td>
-                          <a href="javascript:populateExtraDivs('<h:outputText value="#{childNodesName}"/>InnerDiv','add<h:outputText value="#{childNodesName}"/>Div','extra<h:outputText value="#{childNodesName}"/>AddDiv','add<h:outputText value="#{childNodesName}"/>DivClose')" class="button">
-                            <span><h:outputText value="#{msgs.ok_text_button}"/></span>
-                          </a>    
-                     </td>
-                     <td>
-                         <a HREF="javascript:void(0);" onclick="javascript:showExtraDivs('extra<h:outputText value="#{childNodesName}"/>EditDiv',event)" class="button"> 
-                         <span><h:outputText value="#{msgs.cancel_but_text}"/> </span>
-                          </a>    
-                     </td>
-                 </tr>
-                 
-                </table>
-             </h:form>
-            </div>
-        </h:column>                 
-    </h:dataTable>
+  
     <!-- End Extra divs for editing SO-->
      <!-- Start Extra divs for add SO-->
  <!-- End Extra divs for add SO-->                                                                                                                                       
