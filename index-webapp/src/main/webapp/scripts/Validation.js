@@ -580,4 +580,136 @@ function setchanged(checkFieldName) {
        document.AuditSearchForm.fieldchanged.value = "true";
 }
 
+function validate_Integer_fields(field,  label,valueType) {
+    if (field.value == "")  // if nothing entered, do not validate
+  return;
+
+   var val ;
+
+    var s = field.value;
+	var startPos = 0;
+
+   if ( (s.charAt(0) == "-") || (s.charAt(0) == "+") )
+            startPos = 1;
+
+   if(valueType == '0') 
+	  {
+     var avalue = s.substring(startPos, s.length);
+
+	    if (!isInteger(s.substring(startPos, s.length))) 
+	 { 
+        alert("Please enter a Integer value for the '" + label + "' field.");
+        field.focus();  // go to current field
+        return;
+	  }
+
+    }
+	else if(valueType == '4'){
+
+     if (!isInteger(s.substring(startPos, s.length))) 
+	 { 
+        alert("Please enter a long value for the '" + label + "' field.");
+        field.focus();  // go to current field
+        return;
+	  }
+
+	}
+	else if( valueType == '7' ){
+		
+        if(!isFloat(s.substring(startPos, s.length))){
+         alert("Please enter float value for the '" + label + "' field.");
+		field.focus();  // go to current field
+        return;
+     }
+
+
+
+	}
+
+}
+
+
+   
+    function isInteger (s)
+   {
+      var i;
+
+      if (isEmpty(s))
+      if (isInteger.arguments.length == 1) return 0;
+      else return (isInteger.arguments[1] == true);
+
+      for (i = 0; i < s.length; i++)
+      {
+       
+		 var c = s.charAt(i);
+
+         if (!isDigit(c)) return false;
+      }
+
+      return true;
+   }
+
+
+
+function isFloat(s)
+ 
+ {
+    
+
+   var str = s.indexOf('.');
+
+ var startPos = 0;
+   if(str != -1){
+ 
+   var s1 = s.substring(startPos, str);
+   var s2 = s.substring(str+1, s.length);
+
+
+  if(s1 .length !=0){
+
+      for (i = 0; i < s1.length; i++)
+      {
+    
+	  var c = s1.charAt(i);
+    
+      if (!isDigit(c)) return false;
+
+      }
+   }
+
+ if(s2 .length !=0){
+	   for (i = 0; i < s2.length; i++)
+      {
+    
+	  var c = s2.charAt(i);
+    
+      if (!isDigit(c)) return false;
+
+      }
+   }
+   
+   }else
+	{
+   return false;
+   }
+      return true;
+   }
+   
+
+
+
+
+   	  function isEmpty(s)
+   {
+      return ((s == null) || (s.length == 0))
+   }
+
+     
+	 
+	 function isDigit (c)
+   {
+      return ((c >= "0") && (c <= "9"))
+   }
+
+
 
