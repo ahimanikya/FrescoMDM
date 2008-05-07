@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <artifactId>open-dm-mi</artifactId>
         <groupId>mural</groupId>
@@ -15,16 +15,6 @@
     <url>http://maven.apache.org</url>
     <build>
         <sourceDirectory>src</sourceDirectory>
-        <testSourceDirectory>test</testSourceDirectory>
-        <testResources>
-            <testResource>
-                <directory>test/data</directory>
-                <includes>
-                    <include>object.xml</include>
-                    <include>master.xml</include>
-                </includes>
-            </testResource>
-        </testResources>
         <resources>
             <resource>
                 <directory>src</directory>
@@ -40,68 +30,26 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>create-loader-properties</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <tasks>
-                                <taskdef resource="net/sf/antcontrib/antcontrib.properties">
-                                    <classpath refid="maven.compile.classpath"></classpath>
-                                </taskdef>
-                                <taskdef name="propertyfile" classname="org.apache.tools.ant.taskdefs.optional.PropertyFile">
-                                    <classpath refid="maven.test.classpath"/>
-                                </taskdef>
-                                <!--You may overwrite loader.properties file by 
-                                setting corresponding properties in setting.xml file-->
-                                <if>
-                                    <equals arg1="${loader.properties.overwrite}" 
-                                            arg2="true" />
-                                    <then>
-                                        <mkdir dir ="${project.build.directory}/test-classes" />
-                                        <propertyfile file="${project.build.directory}/test-classes/loader.properties">
-                                            <entry key="cluster.database.url" value="${loader.cluster.database.url}"/>
-                                            <entry key="cluster.database.user" value="${loader.cluster.database.user}"/>
-                                            <entry key="cluster.database.password" value="${loader.cluster.database.password}"/>                                    
-                                            <entry key="sqlldr.userid" value="${loader.sqlldr.userid}"/>
-                                            <entry key="ftp.server" value="${loader.ftp.server}"/>
-                                            <entry key="ftp.username" value="${loader.ftp.username}"/>
-                                            <entry key="ftp.password" value="${loader.ftp.password}"/>
-                                        </propertyfile>
-                                    </then>
-                                </if>
-                            </tasks>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>install-to-netbeans</id>
                         <phase>package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
+                        <goals><goal>run</goal></goals>
                         <configuration>
                             <tasks>
                                 <taskdef resource="net/sf/antcontrib/antcontrib.properties">
                                     <classpath refid="maven.compile.classpath"></classpath>
                                 </taskdef>
                                 <property name="install.dir" value="${env.NB_HOME}"></property>
-                                <available file="${install.dir}" type="dir"
-                                    property="install.dir.present">
-                                </available>
+                                <available file="${install.dir}" type="dir" property="install.dir.present"></available>
                                 <if>
                                     <isset property="install.dir.present"></isset>
-                                    <then>
-                                        <copy
-                                            todir="${install.dir}/${netbeans.cluster}/modules/ext/mdm/loader">
+                                    <then> 
+                                        <copy todir="${install.dir}/${netbeans.cluster}/modules/ext/eview/loader">
                                             <fileset dir="lib">
-                                                <exclude name="resources.jar" />
                                             </fileset>
                                             <fileset dir="target">
                                                 <include name="loader.jar" />
-
                                             </fileset>
-                                        </copy>
+                                        </copy>                    
                                     </then>
                                 </if>
                             </tasks>
@@ -123,12 +71,6 @@
             <artifactId>ant-contrib</artifactId>
             <version>1.0b2</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>ant</groupId>
-            <artifactId>ant-nodeps</artifactId>
-            <version>1.6.5</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>mural</groupId>
@@ -156,15 +98,7 @@
             <version>10.1.0.2.0</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.jmock</groupId>
-            <artifactId>jmock-junit4</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jmock</groupId>
-            <artifactId>jmock-legacy</artifactId>
-            <version>2.4.0</version>
-        </dependency>
     </dependencies>
 </project>
+
+
