@@ -221,7 +221,8 @@
                                                                       maxlength="#{fieldConfigPer.maxLength}"
 																	  disabled="#{!fieldConfigPer.updateable || EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
                                                                      readonly="#{!fieldConfigPer.updateable || EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}" 
-                                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')"
+                                                                      onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
+																	 onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')"
                                                                      onkeyup="javascript:qws_field_on_key_up(this)"                    
                                                                  />
                                                          </div>            
@@ -368,6 +369,7 @@
 																	 title="#{childFieldConfigAdd.fullFieldName}"
                                                                      maxlength="#{childFieldConfigAdd.maxLength}"
 																	 readonly="#{!childFieldConfigAdd.updateable}"
+																	 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
                                                                      onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')" 
 																	 onkeyup="javascript:qws_field_on_key_up(this)"
 																	 required="#{childFieldConfigAdd.required}"  
@@ -579,6 +581,7 @@
                                                                                          maxlength="#{fieldConfigPer.maxLength}"
 																			             disabled="#{!fieldConfigPer.updateable}"
 																			             readonly="#{!fieldConfigPer.updateable}"
+																						 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
                                                                                value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                                          required="#{fieldConfigPer.required}"
                                                                                          />
@@ -679,6 +682,7 @@
 																			             disabled="true"
 																			             readonly="true"
                                                                                value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
+                                                                               onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
                                                                                          required="#{fieldConfigPer.required}"
                                                                                          />
                                                                         </h:column>
@@ -809,6 +813,7 @@
                                                                   maxlength="#{soChildFieldConfigAdd.maxLength}"
                                                                  disabled="#{ !soChildFieldConfigAdd.updateable}"
                                                                  readonly="#{ !soChildFieldConfigAdd.updateable}"
+																  onblur="javascript:validate_Integer_fields(this,'#{soChildFieldConfigAdd.displayName}','#{soChildFieldConfigAdd.valueType}')"
                                                                   onkeydown="javascript:qws_field_on_key_down(this, '#{soChildFieldConfigAdd.inputMask}')" 
 																	 onkeyup="javascript:qws_field_on_key_up(this)"
 																	 required="#{soChildFieldConfigAdd.required}"  
