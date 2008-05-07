@@ -122,8 +122,6 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
     private JButton mButtonAddSub;
     private JButton mButtonAddField;
     private JButton mButtonTemplates;
-    private JButton mButtonTemplateCompany;
-    private JButton mButtonTemplatePerson;
     private JButton mButtonDelete;
     private Project mProject = null;
     
@@ -318,20 +316,6 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         //separator for template buttons
         //toolBar.addSeparator(new Dimension(20, 0));
         toolBar.addSeparator();
-        
-        mButtonTemplateCompany = new JButton(new TemplateCompanyAction(
-                    TEMPLATECOMPANYIMAGEICON,
-                    NbBundle.getMessage(DefineEntityVisualPanel.class,
-                        "MSG_ToolTip_TemplateCompany")));
-        mButtonTemplateCompany.setBorder(null);
-        mButtonTemplateCompany.setName("Company");
-        
-        mButtonTemplatePerson = new JButton(new TemplatePersonAction(
-                    TEMPLATEPERSONIMAGEICON,
-                    NbBundle.getMessage(DefineEntityVisualPanel.class,
-                        "MSG_ToolTip_TemplatePerson")));
-        mButtonTemplatePerson.setBorder(null);
-        
         mTemplatesMenu = new JPopupMenu();
         mTemplatesMenu.add(createMenuItem(NbBundle.getMessage(
                         DefineEntityVisualPanel.class,
@@ -371,7 +355,7 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
                     int dispX = orX - (orX);
                     int dispY = orY + (height - 1);
 
-                    if (mCurrentSelectedNode == null || mCurrentSelectedNode.isPrimary()) {
+                    if (mCurrentSelectedNode == null || mCurrentSelectedNode.isRoot()) {
                         mTemplatesMenu.show(e.getComponent(),
                                dispX, dispY);
                     } else {
@@ -567,8 +551,6 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         mButtonAddSub.setEnabled(false);
         mButtonAddField.setEnabled(false);
         mButtonTemplates.setEnabled(false);
-        mButtonTemplateCompany.setEnabled(false);
-        mButtonTemplatePerson.setEnabled(false);
         mButtonDelete.setEnabled(false);
 
         if (node.isRoot()) {
@@ -580,8 +562,6 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
                 item.setEnabled(false);
             } else {
                 mButtonTemplates.setEnabled(true);
-                mButtonTemplateCompany.setEnabled(true);
-                mButtonTemplatePerson.setEnabled(true);
                 mButtonAddPrimary.setEnabled(true);
             }
 
@@ -600,11 +580,8 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
                         DefineEntityVisualPanel.class,
                         "MSG_menu_AddTemplatePerson"), TEMPLATEPERSONIMAGEICON));
 
+            smTemplates.setEnabled((node.getChildCount() == 0));
             mMenu.add(smTemplates);
-
-            if (node.getChildCount() != 0) {
-                smTemplates.setEnabled(false);
-            }
         }
 
         if (node.isPrimary()) {
