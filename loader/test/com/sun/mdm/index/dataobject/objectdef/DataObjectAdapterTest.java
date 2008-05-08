@@ -29,6 +29,7 @@ import com.sun.mdm.index.objects.exception.InvalidFieldValueException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import junit.framework.TestCase;
 
@@ -88,13 +89,22 @@ public class DataObjectAdapterTest extends TestCase {
             Integer intObj = (Integer) DataObjectAdapter.parseFieldValue(String.valueOf(Integer.MAX_VALUE), ObjectField.OBJECTMETA_INT_TYPE);
             //System.out.println(Integer.MAX_VALUE + "," + DataObjectAdapter.valueAsString(intObj, ObjectField.OBJECTMETA_INT_TYPE));
             
-            Date dateObj = (Date) DataObjectAdapter.parseFieldValue(DateFormat.getDateInstance().format(new java.util.Date(System.currentTimeMillis())), ObjectField.OBJECTMETA_DATE_TYPE);
+            Date date = new java.util.Date(System.currentTimeMillis());
+            String dateValue = DateFormat.getDateInstance().format(date);
+            
+            if (DataObjectAdapter.getDateFormat() != null) {
+            	// Test dateformat from object definition.
+            	DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");            
+            	dateValue = dateFormat.format(date);
+            }
+            Date dateObj = (Date) DataObjectAdapter.parseFieldValue(dateValue, ObjectField.OBJECTMETA_DATE_TYPE);            
             //System.out.println(DateFormat.getDateInstance().format(new java.util.Date(System.currentTimeMillis())) + "," + DataObjectAdapter.valueAsString(dateObj, ObjectField.OBJECTMETA_DATE_TYPE));
             
             Date timeObj = (Date) DataObjectAdapter.parseFieldValue(DateFormat.getDateTimeInstance().format(new java.util.Date(System.currentTimeMillis())), ObjectField.OBJECTMETA_TIMESTAMP_TYPE);
             outchar = (Character) DataObjectAdapter.parseFieldValue(inchar, ObjectField.OBJECTMETA_CHAR_TYPE);
             //System.out.println("all pass");
         } catch (Exception e) {
+        	e.printStackTrace();
             fail("test failed");
         }
       
