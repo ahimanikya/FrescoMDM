@@ -248,9 +248,9 @@ public class BlockDistributorTest extends TestCase {
 		
 	}
 	
-	public void xxxtest0(){
+	public void test0(){
 		try {			
-			setDataObjectReader("inputData1.txt");
+			setDataObjectReader("inputdata1.txt");
 			
 			ArrayList<BlockDefinition> blockDefinitions = config.getBlockDefinitions();
 			blockDefinitions.clear();
@@ -275,7 +275,7 @@ public class BlockDistributorTest extends TestCase {
 	
 	public void xxxtest1(){
 		try {
-			setDataObjectReader("inputData1.txt");
+			setDataObjectReader("inputdata1.txt");
 			
 			ArrayList<BlockDefinition> blockDefinitions = config.getBlockDefinitions();
 			blockDefinitions.clear();
@@ -307,7 +307,7 @@ public class BlockDistributorTest extends TestCase {
 	
 	public void xxxtest2(){
 		try {
-			setDataObjectReader("inputData1.txt");
+			setDataObjectReader("inputdata1.txt");
 			
 			ArrayList<BlockDefinition> blockDefinitions = config
 					.getBlockDefinitions();
@@ -342,7 +342,7 @@ public class BlockDistributorTest extends TestCase {
 	
 	public void xxxtest3(){
 		try {
-			setDataObjectReader("inputData1.txt");
+			setDataObjectReader("inputdata1.txt");
 			
 			ArrayList<BlockDefinition> blockDefinitions = config
 					.getBlockDefinitions();
@@ -377,7 +377,7 @@ public class BlockDistributorTest extends TestCase {
 	
 	public void xxxtest4(){
 		try {
-			setDataObjectReader("inputData1.txt");
+			setDataObjectReader("inputdata1.txt");
 			
 			ArrayList<BlockDefinition> blockDefinitions = config
 					.getBlockDefinitions();
@@ -421,7 +421,7 @@ public class BlockDistributorTest extends TestCase {
 	
 	public void xxxtest5(){
 		try {
-			setDataObjectReader("inputData1.txt");
+			setDataObjectReader("inputdata1.txt");
 			
 			ArrayList<BlockDefinition> blockDefinitions = config
 					.getBlockDefinitions();
@@ -465,7 +465,7 @@ public class BlockDistributorTest extends TestCase {
 	
 	public void xxxtest6(){
 		try {
-			setDataObjectReader("inputData1.txt");
+			setDataObjectReader("inputdata1.txt");
 			
 			ArrayList<BlockDefinition> blockDefinitions = config
 					.getBlockDefinitions();
@@ -509,7 +509,7 @@ public class BlockDistributorTest extends TestCase {
 	
 	public void xxxtest7(){
 		try {
-			setDataObjectReader("inputData1.txt");
+			setDataObjectReader("inputdata1.txt");
 			
 			ArrayList<BlockDefinition> blockDefinitions = config
 					.getBlockDefinitions();
@@ -573,7 +573,7 @@ public class BlockDistributorTest extends TestCase {
 	
 	public void xxxtest8(){
 		try {
-			setDataObjectReader("inputData1.txt");
+			setDataObjectReader("inputdata1.txt");
 			
 			ArrayList<BlockDefinition> blockDefinitions = config
 					.getBlockDefinitions();
@@ -620,7 +620,7 @@ public class BlockDistributorTest extends TestCase {
 	
 	public void xxxtest9(){
 		try {
-			setDataObjectReader("inputData1.txt");
+			setDataObjectReader("inputdata1.txt");
 			
 			ArrayList<BlockDefinition> blockDefinitions = config
 					.getBlockDefinitions();
@@ -668,7 +668,7 @@ public class BlockDistributorTest extends TestCase {
 
 	public void xxxtest10(){
 		try {
-			setDataObjectReader("inputData1.txt");
+			setDataObjectReader("inputdata1.txt");
 			
 			ArrayList<BlockDefinition> blockDefinitions = config
 					.getBlockDefinitions();
@@ -722,7 +722,7 @@ public class BlockDistributorTest extends TestCase {
 
 	public void xxxtest11(){
 		try {			
-			setDataObjectReader("inputData2.txt");			
+			setDataObjectReader("inputdata2.txt");			
 			ArrayList<BlockDefinition> blockDefinitions = config
 					.getBlockDefinitions();
 			blockDefinitions.clear();
@@ -762,7 +762,7 @@ public class BlockDistributorTest extends TestCase {
 
 	public void xxxtest12(){
 		try {			
-			setDataObjectReader("inputData2.txt");			
+			setDataObjectReader("inputdata2.txt");			
 			ArrayList<BlockDefinition> blockDefinitions = config
 					.getBlockDefinitions();
 			blockDefinitions.clear();
@@ -802,7 +802,7 @@ public class BlockDistributorTest extends TestCase {
 
 	public void xxxtest13(){
 		try {			
-			setDataObjectReader("inputData3.txt");			
+			setDataObjectReader("inputdata3.txt");			
 			ArrayList<BlockDefinition> blockDefinitions = config
 					.getBlockDefinitions();
 			blockDefinitions.clear();
