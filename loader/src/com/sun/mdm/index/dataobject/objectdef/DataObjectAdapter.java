@@ -82,6 +82,10 @@ public class DataObjectAdapter {
     public static void setDateFormat(SimpleDateFormat dateFormat) {
     	dateFormat_ = dateFormat;
     }
+
+    public static  DateFormat getDateFormat() {
+    	return dateFormat_;
+    }
     
     private static ObjectDefinition createObjectDefinition(String eviewConfigFilePath) {
         ObjectDefinition objDef = null;
@@ -232,12 +236,7 @@ public class DataObjectAdapter {
          }
          return type;
      }
-    
-    
-    public static void main(String[] args) {
-    }
-    
-    
+        
     public static String valueAsString(Object value, int type) {
         String str = null;
         if( value == null  ) {
