@@ -2007,4 +2007,19 @@ public EnterpriseObject removeLocks(HashMap hm, EnterpriseObject eo) throws Proc
         String systemDescription = ValidationService.getInstance().getSystemDescription(systemcode);
         return systemDescription;
     }
+    public MergeResult getPostLIDUnmerge(String systemCode,String sourceLid,String destLid) throws ProcessingException, UserException{
+        if(systemCode != null && sourceLid!=null && destLid!=null ){        
+        MergeResult lidUnmergeResult = QwsController.getMasterController().unmergeSystemObject(systemCode, sourceLid, destLid, false);        
+        return lidUnmergeResult;            
+        }
+        else {
+            throw new UserException(mLocalizer.t("SRM529: None of the systemcode , sourceLid and destination lid can not be null")); //user exception
+        }
+       
+    }
+    
 }
+
+
+
+        
