@@ -1,72 +1,148 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
+<head>
+   <title>Developing Master Indexes With Master Index Studio: DRAFT VERSION</title>
 
-
- <head>
-
-<title>Developing Master Indexes With Master Index Studio</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
-<meta http-equiv="Content-Style-Type" content="text/css" >
-<meta name="version" content="4.5.2.148.4" />
- <meta name="description" content="This document describes how to create a master index using Master Index Studio.">
- <meta name="author" content="Carol Thom"> <!--Optional tag-->
- <meta name="keywords" content="">
-
-  <style type="text/css">
-
-    @import url("../../css/netbeans.css");
-
-    #cnlogo            {display: none}
-    #collabnet         {display: none}
-    .topline           {display: none}
-    #toptabs           {display: none}
-    #breadcrumbs       {display: none}
-    #navcol            {display: none}
-    #bodycol .infomark {display: none}
-    #footer            {display: inherit}
-
-  </style>
-
-
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Developing Master Indexes With Master Index Studio describes how to develop a master index application using Master Index Studio, including creating the framework, custom plug-ins, and the master index database. It also provides instructions for defining the connection to the database.">
+   <meta name="date" content="2008-04-01">
+   <meta name="author" content="Carol Thom">
+   
+   <link rel="stylesheet" type="text/css" href="http://www.netbeans.org/netbeans.css" media="screen">
+   <link rel="stylesheet" type="text/css" href="css/mural.css">
 </head>
-
+ 
 <body>
+   
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
+   
+   <a name="top"></a>
+   <h1>Developing Master Indexes With Master Index Studio: DRAFT VERSION</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: April 2008</div>
 
+   <div class="embeddedtocpane">
+     <div class="cornerTL"><div class="cornerTR"></div></div>
 
-
-
-
-
- <!-- begin TopTabs  -->
-
-<!-- end TopTabs -->
-
-
-<!-- Servlet-Specific template -->
-
-
-
-<p><img src="../../images/MiBanner.gif"> </p>
-<hr width="98%"></hr>
-
-
-		<table class="colapse" id="wrap-table" ><!-- top level table --><tr><td class="floating-wrap-table">
-		<table id="floating-contenttable" class="colapse">
-		<td class="valign-top b-right full-width"><!-- main content column -->
-						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
-                        <div style="_width:95%;"><!-- IE hack-->
-<!-- Begin Content Area -->
-<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
-<!--     Use is subject to license terms.-->
-<a name="top"></a>
-<h1>Developing Master Indexes With Master Index Studio</h1>
-<h1 style="bold">DRAFT VERSION</h1>
-<div class="articledate" style="margin-left: 0px;font-style:italic;">
-  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
-    <br>
-    February 2008</em> <br>
-    This publication is a draft version, and is subject to change. It may contain errors and ommissions. </p>
+     <h5><span class="toctitle">Contents</span></span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="landingpage.html">Developing Master Indexes: DRAFT VERSION</a></p>
+<p class="toc level2"><a href="dsgn_eview-overview_c.html">Master Index Development Process Overview</a></p>
+<p class="toc level2"><a href="dsgn_eview-runtime_c.html">The Master Index Framework and the Runtime Environment</a></p>
+<p class="toc level2"><a href="dsgn_eview-prep_c.html">Before You Begin Developing a Master Index</a></p>
+<p class="toc level3"><a href="dsgn_eview-prep_c.html#dsgn_eview-analyze_c">Preliminary Data Analysis for a Master Index</a></p>
+<p class="toc level3"><a href="dsgn_eview-prep_c.html#dsgn_eview-plan_c">Planning a Master Index Project</a></p>
+<p class="toc level3"><a href="dsgn_eview-prep_c.html#dsgn_eview-checklist_c">Master Index Project Initiation Checklist</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-application_p.html">Creating a Master Index Application</a></p>
+<p class="toc level3"><a href="dsgn_eview-application_p.html#dsgn_eview-wizard_t">Step 1: Create a Project and Start the Wizard</a></p>
+<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-249">To Create a Project and Start the Wizard</a></p>
+<p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-name-app_t">Step 2: Name the Master Index Application</a></p>
+<p class="toc level5"><a href="dsgn_eview-application_p.html#gftkn">To Name the Master Index Application</a></p>
+<p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-systems_t">Step 3: Define Source Systems</a></p>
+<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-291">To Define Source Systems</a></p>
+<p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-deployment_t">Step 4: Define the Deployment Environment</a></p>
+<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-336">To Define the Deployment Environment</a></p>
+<p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-objects_t">Step 5: Define Parent and Child Objects</a></p>
+<p class="toc level4"><a href="dsgn_eview-application_p.html#gftij">Creating Undefined Objects</a></p>
+<p class="toc level4"><a href="dsgn_eview-application_p.html#gftkk">Creating Objects from a Template</a></p>
+<p class="toc level4"><a href="dsgn_eview-application_p.html#gftkb">Deleting an Object from the Structure</a></p>
+<p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-fields_t">Step 6: Define the Fields for Each Object</a></p>
+<p class="toc level4"><a href="dsgn_eview-application_p.html#gftjs">Adding a Field</a></p>
+<p class="toc level4"><a href="dsgn_eview-application_p.html#gftki">Configuring Field Properties</a></p>
+<p class="toc level4"><a href="dsgn_eview-application_p.html#gftix">Deleting a Field</a></p>
+<p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-wizard-gen_t">Step 7: Generate the Project Files</a></p>
+<p class="toc level5"><a href="dsgn_eview-application_p.html#gentextid-561">To Generate the Configuration Files</a></p>
+<p class="toc level3 tocsp"><a href="dsgn_eview-application_p.html#dsgn_eview-config-file_t">Step 8: Review the Configuration Files</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-fields_r.html">Master Index Wizard Field Properties and Name Restrictions</a></p>
+<p class="toc level3"><a href="dsgn_eview-fields_r.html#dsgn-eview-fieldname_c">Master Index Wizard Field Name Restrictions</a></p>
+<p class="toc level3"><a href="dsgn_eview-fields_r.html#dsgn_eview-field-props_r">Master Index Wizard General Field Properties</a></p>
+<p class="toc level3"><a href="dsgn_eview-fields_r.html#dsgn_eview-edm-props_r">Master Index Wizard MIDM Field Properties</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_c.html">Custom Plug-ins for Master Index Custom Transaction Processing</a></p>
+<p class="toc level3"><a href="dsgn_eview-plug-ins_c.html#dsgn_eview-update_c">Master Index Update Policy Plug-ins</a></p>
+<p class="toc level4"><a href="dsgn_eview-plug-ins_c.html#ahair">Enterprise Merge Policy</a></p>
+<p class="toc level4"><a href="dsgn_eview-plug-ins_c.html#ahais">Enterprise Unmerge Policy</a></p>
+<p class="toc level4"><a href="dsgn_eview-plug-ins_c.html#ahait">Enterprise Update Policy</a></p>
+<p class="toc level4"><a href="dsgn_eview-plug-ins_c.html#ahaiu">Enterprise Create Policy</a></p>
+<p class="toc level4"><a href="dsgn_eview-plug-ins_c.html#ahaiv">System Merge Policy</a></p>
+<p class="toc level4"><a href="dsgn_eview-plug-ins_c.html#ahaiw">System Unmerge Policy</a></p>
+<p class="toc level4"><a href="dsgn_eview-plug-ins_c.html#ahaix">Undo Assumed Match Policy</a></p>
+<p class="toc level3 tocsp"><a href="dsgn_eview-plug-ins_c.html#dsgn_eview-field-val_c">Master Index Field Validation Plug-ins</a></p>
+<p class="toc level3"><a href="dsgn_eview-plug-ins_c.html#dsgn_eview-field-mask_c">Master Index Field Masking Plug-ins</a></p>
+<p class="toc level3"><a href="dsgn_eview-plug-ins_c.html#dsgn_eview-match-logic_c">Master Index Match Processing Logic Plug-ins</a></p>
+<p class="toc level4"><a href="dsgn_eview-plug-ins_c.html#ahajc">Custom Match Processing Logic Methods</a></p>
+<p class="toc level4"><a href="dsgn_eview-plug-ins_c.html#ahajd">Custom Match Processing Logic Plug-in Requirements</a></p>
+<p class="toc level4"><a href="dsgn_eview-plug-ins_c.html#ahaje">Custom Match Processing Configuration</a></p>
+<p class="toc level3 tocsp"><a href="dsgn_eview-plug-ins_c.html#dsgn_eview-custom-except_c">Master Index Custom Plug-in Exception Processing</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins2_c.html">Custom Plug-Ins for Master Index Custom Components</a></p>
+<p class="toc level3"><a href="dsgn_eview-plug-ins2_c.html#dsgn_eview-surv-calc_c">Master Index Survivor Calculator Plug-ins</a></p>
+<p class="toc level3"><a href="dsgn_eview-plug-ins2_c.html#dsgn_eview-custom-query_c">Master Index Query Builder Plug-ins</a></p>
+<p class="toc level3"><a href="dsgn_eview-plug-ins2_c.html#dsgn_eview-custom-picker_c">Master Index Block Picker Plug-ins</a></p>
+<p class="toc level3"><a href="dsgn_eview-plug-ins2_c.html#dsgn_eview-custom-pass-c">Master Index Pass Controller Plug-ins</a></p>
+<p class="toc level3"><a href="dsgn_eview-plug-ins2_c.html#dsgn_eview-custom-match_c">Match Engine Plug-ins</a></p>
+<p class="toc level3"><a href="dsgn_eview-plug-ins2_c.html#dsgn_eview-custom-stand_c">Standardization Engine Plug-ins</a></p>
+<p class="toc level3"><a href="dsgn_eview-plug-ins2_c.html#dsgn_eview-custom-phon_c">Phonetic Encoders Plug-ins for a Master Index</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_t.html">Implementing Master Index Custom Plug-ins</a></p>
+<p class="toc level4"><a href="dsgn_eview-plug-ins_t.html#gentextid-1106">To Create Custom Plug-ins</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-generate_t.html">Generating the Master Index  Application</a></p>
+<p class="toc level4"><a href="dsgn_eview-generate_t.html#gentextid-1148">To Generate the Application for the First Time</a></p>
+<p class="toc level4"><a href="dsgn_eview-generate_t.html#gentextid-1160">To Regenerate the Application</a></p>
+<div class="onpage">
+<p class="toc level2 tocsp"><a href="">Master Index Database Scripts and Design</a></p>
+<p class="toc level3"><a href="#dsgn_eview-dbs-scripts_c">Master Index Database Scripts</a></p>
+<p class="toc level3"><a href="#dsgn_eview-dbs-req_c">Master Index Database Requirements</a></p>
+<p class="toc level4"><a href="#ahaka">Database Platform Requirements</a></p>
+<p class="toc level4"><a href="#ahakb">Operating System Requirements</a></p>
+<p class="toc level4"><a href="#ahakc">Hardware Requirements</a></p>
+<p class="toc level5"><a href="#ahakd">Oracle Database</a></p>
+<p class="toc level5"><a href="#ahake">Microsoft SQL Server</a></p>
+<p class="toc level3 tocsp"><a href="#dsgn_eview-dbs-struct_c">Master Index Database Structure</a></p>
+<p class="toc level3"><a href="#dsgn_eview-dbs-design_c">Designing the Master Index Database</a></p>
+<p class="toc level4"><a href="#ahakh">Designing for Performance Optimization</a></p>
+<p class="toc level4"><a href="#ahaki">Data Structure Analysis</a></p>
+<p class="toc level4"><a href="#ahakj">Common Table Data</a></p>
+<p class="toc level4"><a href="#ahakk">User Code Data</a></p>
+<p class="toc level4"><a href="#ahakl">Database Considerations</a></p>
+<p class="toc level5"><a href="#ahakm">Database Sizing</a></p>
+<p class="toc level5"><a href="#ahakn">Database Distribution</a></p>
+<p class="toc level5"><a href="#ahako">Database Indexes</a></p>
 </div>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database_t.html">Creating the Master Index Database</a></p>
+<p class="toc level3"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-analyze_t">Step 1: Analyze the Master Index Database Requirements</a></p>
+<p class="toc level3"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-create_t">Step 2: Create a Master Index Database and User</a></p>
+<p class="toc level3"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-index_t">Step 3: Define Master Index Database Indexes</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1500">To Define an Index</a></p>
+<p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-systems_t">Step 4: Define Master Index External Systems</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1536">To Define an External System</a></p>
+<p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-db-systems_r">Master Index Database Table Description for sbyn_systems</a></p>
+<p class="toc level3"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-codelist_t">Step 5: Define Master Index Code Lists</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1684">To Customize Common Table Data for Oracle</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1739">To Customize Common Table Data for SQL Server</a></p>
+<p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-usercode_t">Step 6: Define Master Index User Code Lists</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1798">To Define a User Code List</a></p>
+<p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-user-code_r">Master Index Database Table Description for sbyn_user_code</a></p>
+<p class="toc level3"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-custom_t">Step 7: Create Custom Master Index Database Scripts</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1888">To Create a Custom Script</a></p>
+<p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-install_t">Step 8: Create the Master Index Database Structure</a></p>
+<p class="toc level5"><a href="dsgn_eview-database_t.html#gentextid-1902">To Create the Database Structure</a></p>
+<p class="toc level3 tocsp"><a href="dsgn_eview-database_t.html#dsgn_eview-dbs-euid_t">Step 9: Specify a Starting EUID for a Master Index</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-dbs-delete_t.html">Deleting Master Index Database Tables</a></p>
+<p class="toc level4"><a href="dsgn_eview-dbs-delete_t.html#gfrjb">To Delete Database Tables</a></p>
+<p class="toc level2 tocsp"><a href="dsgn_eview-database-con_p.html">Defining a Database Connection Pool</a></p>
+<p class="toc level3"><a href="dsgn_eview-database-con_p.html#dsgn_eview-database-driv_t">Step 1: Add the Oracle Driver to the Application Server</a></p>
+<p class="toc level3"><a href="dsgn_eview-database-con_p.html#dsgn_eview-database-pool_t">Step 2: Create a JDBC Connection Pool</a></p>
+<p class="toc level5"><a href="dsgn_eview-database-con_p.html#gentextid-1978">To Create a JDBC Connection Pool</a></p>
+<p class="toc level3 tocsp"><a href="dsgn_eview-database-con_p.html#dsgn_eview-database-res_t">Step 3: Create a JDBC Resource</a></p>
+<p class="toc level5"><a href="dsgn_eview-database-con_p.html#gentextid-2031">To Create a JDBC Resource</a></p>
+
+     </div>
+     <div class="cornerBL"><div class="cornerBR"></div></div>
+   </div>
+
+
+   <div class="maincontent">
+      
 
 <a name="dsgn_eview-database_c"></a>
 
@@ -74,26 +150,26 @@
 <p>Before you create the master index database, familiarize yourself with the database scripts
 and the database structure. Analyze your database requirements, including hardware considerations, startup data,
 indexing needs, performance, and so on.</p><p>The following topics provide information to help you in your analysis. </p>
-<ul><li><p><a href="#dsgn_eview-dbs-scripts_c">Database Scripts</a></p></li>
-<li><p><a href="#dsgn_eview-dbs-req_c">Database Requirements</a></p></li>
-<li><p><a href="#dsgn_eview-dbs-struct_c">Database Structure</a></p></li>
-<li><p><a href="#dsgn_eview-dbs-design_c">Designing the Database</a></p></li></ul>
+<ul><li><p><a href="#dsgn_eview-dbs-scripts_c">Master Index Database Scripts</a></p></li>
+<li><p><a href="#dsgn_eview-dbs-req_c">Master Index Database Requirements</a></p></li>
+<li><p><a href="#dsgn_eview-dbs-struct_c">Master Index Database Structure</a></p></li>
+<li><p><a href="#dsgn_eview-dbs-design_c">Designing the Master Index Database</a></p></li></ul>
 
-<ul><li><p><a href="dsgn_eview-database_t.html#dsgn_eview-db-systems_r">Database Table Description for sbyn_systems</a></p></li>
-<li><p><a href="dsgn_eview-database_t.html#dsgn_eview-user-code_r">Database Table Description for sbyn_user_code </a></p></li></ul>
+<ul><li><p><a href="dsgn_eview-database_t.html#dsgn_eview-db-systems_r">Master Index Database Table Description for sbyn_systems</a></p></li>
+<li><p><a href="dsgn_eview-database_t.html#dsgn_eview-user-code_r">Master Index Database Table Description for sbyn_user_code</a></p></li></ul>
 
 
-<div class="indent"><a name="dsgn_eview-dbs-scripts_c"></a><h3>Database Scripts</h3>
+<div class="indent"><a name="dsgn_eview-dbs-scripts_c"></a><h3>Master Index Database Scripts</h3>
 <p><a name="indexterm-114"></a><a name="indexterm-115"></a><a name="indexterm-116"></a><a name="indexterm-117"></a><a name="indexterm-118"></a><a name="indexterm-119"></a><a name="indexterm-120"></a><a name="indexterm-121"></a><a name="indexterm-122"></a><a name="indexterm-123"></a><a name="indexterm-124"></a><a name="indexterm-125"></a><a name="indexterm-126"></a><a name="indexterm-127"></a><a name="indexterm-128"></a>The wizard creates SQL scripts based on information you specified about code lists
 and external systems that you can use to define startup data for the
 master index application. When you generate the application, additional scripts are generated for
 creating or dropping database tables. These scripts appear under the Database Script node of
-the master index Project, and are named <tt>create.sql</tt>, <tt>systems.sql</tt>, <tt>codelist.sql</tt>, and <tt>drop.sql</tt>. You can
-modify these scripts as needed to customize the tables, indexes, startup data, and
-database distribution. You can also create new database scripts if needed.</p></div>
+the master index project, and are named <tt>create.sql</tt>, <tt>systems.sql</tt>, <tt>codelist.sql</tt>, and <tt>drop.sql</tt>. You
+can modify these scripts as needed to customize the tables, indexes, startup data,
+and database distribution. You can also create new database scripts if needed.</p></div>
 
 
-<div class="indent"><a name="dsgn_eview-dbs-req_c"></a><h3>Database Requirements</h3>
+<div class="indent"><a name="dsgn_eview-dbs-req_c"></a><h3>Master Index Database Requirements</h3>
 <p><a name="indexterm-129"></a><a name="indexterm-130"></a>When configuring the master index database, there are several factors to consider, including
 basic software requirements, operating systems, disk space, and so on. This section provides
 a summary of requirements for the database. For more detailed information about designing
@@ -157,7 +233,7 @@ database.</p>
 </div>
 
 
-<div class="indent"><a name="dsgn_eview-dbs-struct_c"></a><h3>Database Structure</h3>
+<div class="indent"><a name="dsgn_eview-dbs-struct_c"></a><h3>Master Index Database Structure</h3>
 <p><a name="indexterm-134"></a>The master index database contains some common tables that are created for all
 implementations and some that are customized for each implementation. The common tables include
 standard Oracle or SQL Server tables and supporting tables, such as sbyn_seq_table, sbyn_common_header,
@@ -168,10 +244,10 @@ and sbyn_<i>parent_object</i>sbr, where <i>parent_object</i> is the name you spe
 in the object structure. The sbyn_<i>parent_object</i> table stores parent object data from
 each local system and the sbyn_<i>parent_object</i>sbr table stores the parent object data contained in
 the SBRs. Similar tables are created for each child object you defined in
-the object structure.</p><p>For a complete description of the database tables, see <a href="https://open-dm-mi.dev.java.net/docs/process/landingpage.html" target="_blank">Understanding Master Index Processing</a>.</p></div>
+the object structure.</p><p>For a complete description of the database tables, see <a href="https://open-dm-mi.dev.java.net/docs/process/landingpage.html">Understanding Master Index Processing</a>.</p></div>
 
 
-<div class="indent"><a name="dsgn_eview-dbs-design_c"></a><h3>Designing the Database</h3>
+<div class="indent"><a name="dsgn_eview-dbs-design_c"></a><h3>Designing the Master Index Database</h3>
 <p><a name="indexterm-135"></a>In designing the database, there are several factors to consider, such as the
 volume of data stored in the database and the number of transactions processed
 by the database daily. The master index database should be created in its
@@ -208,12 +284,12 @@ person objects, there might be processing codes for genders, such as F for
 female, M for male, and so on. The processing codes and their descriptions
 are stored in a set of database tables known as common maintenance tables.
 The wizard creates a script to help you load the processing codes into
-the database.</p><p><a name="indexterm-142"></a>When an enterprise object appears on the EDM, the master index application translates
-the processing codes defined in the common tables into their descriptions so the
-user is not required to decipher each code. The data elements stored in
-the common maintenance tables are also used to populate the drop-down lists that
-appear for certain fields in the EDM. Users can select from these options
-to populate the associated fields.</p></div>
+the database.</p><p><a name="indexterm-142"></a>When an enterprise object appears on the MIDM, the master index application translates the
+processing codes defined in the common tables into their descriptions so the user
+is not required to decipher each code. The data elements stored in the
+common maintenance tables are also used to populate the drop-down lists that appear
+for certain fields in the MIDM. Users can select from these options to
+populate the associated fields.</p></div>
 
 
 <div class="indent"><a name="ahakk"></a><h3>User Code Data</h3>
@@ -255,7 +331,7 @@ optimize the searching and matching processes. At a minimum, it is recommended t
 all combinations of fields used for blocking or matching be indexed. For each
 query block defined in the blocking query, create an index containing the fields
 in that block.</p><p>The following indexes are automatically created to improve performance when running large reports
-from the command line or EDM.</p><p><tt>CREATE INDEX SBYN_POTENTIALDUPLICATES3 ON SBYN_POTENTIALDUPLICATES (TRANSACTIONNUMBER ASC); </tt></p><p><tt>CREATE INDEX SBYN_ASSUMEDMATCH2 ON SBYN_ASSUMEDMATCH (TRANSACTIONNUMBER ASC); </tt></p><p><tt>CREATE INDEX SBYN_TRANSACTION4 on SBYN_TRANSACTION (EUID2 ASC, TIMESTAMP ASC); </tt> </p><p><tt>CREATE INDEX SBYN_TRANSACTION3 on SBYN_TRANSACTION (TIMESTAMP ASC, TRANSACTIONNUMBER ASC);</tt></p>
+from the command line or MIDM.</p><p><tt>CREATE INDEX SBYN_POTENTIALDUPLICATES3 ON SBYN_POTENTIALDUPLICATES (TRANSACTIONNUMBER ASC);</tt></p><p><tt>CREATE INDEX SBYN_ASSUMEDMATCH2 ON SBYN_ASSUMEDMATCH (TRANSACTIONNUMBER ASC);</tt></p><p><tt>CREATE INDEX SBYN_TRANSACTION4 on SBYN_TRANSACTION (EUID2 ASC, TIMESTAMP ASC);</tt> </p><p><tt>CREATE INDEX SBYN_TRANSACTION3 on SBYN_TRANSACTION (TIMESTAMP ASC, TRANSACTIONNUMBER ASC);</tt></p>
 <hr><p><b>Note - </b>To improve performance, these four indexes should be dropped prior to performing an
 initial load or batch load of data. They can be recreated once the
 load is complete if you are running the provided reports.</p>
@@ -264,36 +340,21 @@ load is complete if you are running the provided reports.</p>
 </div>
 </div>
 
+   </div>
 
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="dsgn_eview-generate_t.html">Previous</a>
+            </td>
+            <td class="pageright">
+               <a href="dsgn_eview-database_t.html">Next</a>
+            </td>
+         </tr>
+      </table>
+      
+   </div>
 
-<!-- End Content Area -->
-<td class="valign-top" >
-	<div id="floating-col-right" width="10px"><!-- right content column -->
-<p class="h1">Table of Contents</p>
-<p class="toc level2"><a href="dsgn_eview-overview_c.html">Master Index Development Process Overview</a></p>
-<p class="toc level2"><a href="dsgn_eview-runtime_c.html">How the Framework Corresponds to the Runtime Environment</a></p>
-<p class="toc level2"><a href="dsgn_eview-prep_c.html">Before you Begin</a></p>
-<p class="toc level2 tocsp"><a href="dsgn_eview-application_p.html">Creating a Master Index Application</a></p>
-<p class="toc level2 tocsp"><a href="dsgn_eview-fields_r.html">Master Index Wizard Field Properties and Name Restrictions</a></p>
-<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_c.html">Using Custom Plug-ins to Define Custom Transaction Processing</a></p>
-<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins2_c.html">Using Custom Plug-Ins to Define Custom Components</a></p>
-<p class="toc level2 tocsp"><a href="dsgn_eview-plug-ins_t.html">Implementing Custom Plug-ins</a></p>
-<p class="toc level2 tocsp"><a href="dsgn_eview-generate_t.html">Generating the Master Index Application</a></p>
-<p class="toc level2 tocsp"><a href="dsgn_eview-database_c.html">Master Index Database Scripts and Design</a></p>
-<p class="toc level2 tocsp"><a href="dsgn_eview-database_t.html">Creating the Database</a></p>
-<p class="toc level2 tocsp"><a href="dsgn_eview-dbs-delete_t.html">Deleting Tables</a></p>
-</div>
-</div>
-					</td></tr></table></div></div>
-	</td></tr></div>
-	</div>
-	<!-- /Servlet-Specific template -->
-
-<!-- end of right navigation -->
-
-
-
-</div>
-</div>
 </body>
 </html>
