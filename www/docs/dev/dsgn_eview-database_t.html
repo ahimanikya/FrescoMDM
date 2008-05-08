@@ -9,16 +9,16 @@
    <meta name="description" content="Developing Master Indexes With Master Index Studio describes how to develop a master index application using Master Index Studio, including creating the framework, custom plug-ins, and the master index database. It also provides instructions for defining the connection to the database.">
    <meta name="date" content="2008-04-01">
    <meta name="author" content="Carol Thom">
-   
+
    <link rel="stylesheet" type="text/css" href="http://www.netbeans.org/netbeans.css" media="screen">
-   <link rel="stylesheet" type="text/css" href="css/mural.css">
+   <link rel="stylesheet" type="text/css" href="../../css/mural.css">
 </head>
- 
+
 <body>
-   
+
    <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
    <!-- Use is subject to license terms. -->
-   
+
    <a name="top"></a>
    <h1>Developing Master Indexes With Master Index Studio: DRAFT VERSION</h1>
    <div class="articledate" style="margin-left: 0px;">Last Updated: April 2008</div>
@@ -142,7 +142,7 @@
 
 
    <div class="maincontent">
-      
+
 
 <a name="dsgn_eview-database_t"></a>
 
@@ -198,7 +198,7 @@ grant connect, resource to <i>username</i>;
 commit;</pre><p>where <i>username</i> is the login ID of the administrator user and <i>password</i> is
 the login password of the administrator user.</p><p>For SQL Server, assign this user to the &ldquo;db_owner&rdquo; role. You need to
 create the server login, create the user, and then assign the user to
-the role. For example:</p><pre>CREATE LOGIN <i>loginname</i> WITH PASSWORD = &rsquo;<i>password</i>&rsquo;, DEFAULT_DATABASE = <i>database</i>; 
+the role. For example:</p><pre>CREATE LOGIN <i>loginname</i> WITH PASSWORD = &rsquo;<i>password</i>&rsquo;, DEFAULT_DATABASE = <i>database</i>;
 CREATE USER <i>username</i> FOR LOGIN <i>loginname</i>; USE <i>database</i>;
 EXECUTE sp_addrolemember &rsquo;db_owner&rsquo;, &rsquo; <i>username</i>&rsquo; GO</pre><p>where <i>loginname</i> is the login ID for the administrator user, <i>password</i> is the
 login password, <i>database</i> is the database name, and <i>username</i> is the owner of
@@ -314,9 +314,9 @@ then open <tt>systems.sql</tt> in the NetBeans editor.</b></li>
 <li><b>On your computer, navigate to <tt></tt><i>project_home</i><tt>/src/DatabaseScript</tt>, where <i>project_home</i> is the location of the
 master index project files. Open <tt>systems.sql</tt> in a text editor.</b></li></ul></li>
 <li><b>For each system, create an INSERT statement using the column descriptions in <a href="#dsgn_eview-db-systems_r">Master Index Database Table Description for sbyn_systems</a>
-to define the VALUES clause.</b><p>For example:</p><pre>INSERT into sbyn_systems (systemcode, description, status, id_length, 
-format, input_mask, value_mask, create_date, create_userid) VALUES (&rsquo;ARS&rsquo;, 
-&rsquo;Automated Registration System&rsquo;, &rsquo;A&rsquo;, 10, &rsquo;[0-9]{10}&rsquo;, &rsquo;DDD-DDD-DDDD&rsquo;, 
+to define the VALUES clause.</b><p>For example:</p><pre>INSERT into sbyn_systems (systemcode, description, status, id_length,
+format, input_mask, value_mask, create_date, create_userid) VALUES (&rsquo;ARS&rsquo;,
+&rsquo;Automated Registration System&rsquo;, &rsquo;A&rsquo;, 10, &rsquo;[0-9]{10}&rsquo;, &rsquo;DDD-DDD-DDDD&rsquo;,
 &rsquo;DDD^DDD^DDDD&rsquo;, sysdate, &rdquo;admin&rsquo;);</pre></li>
 <li><b>Delete any default INSERT statements you do not need.</b></li>
 <li><b>Save and close the file.</b></li>
@@ -408,7 +408,7 @@ in the object structure to have a code module. The SQL script for
 entering processing codes and descriptions into the database is written in PL/SQL. The wizard
 creates a stanza in<tt>codelist.sql</tt> (located under the Database Script node of the project)
 for each code list you specified in the field properties. You need to
-customize the file by defining the entries for each code list. 
+customize the file by defining the entries for each code list.
 This script inserts data into two tables: sbyn_common_header, which lists the types of
 common table data, and sbyn_common_detail, which lists each common table data element. Before you
 begin this step, complete <a href="#dsgn_eview-dbs-systems_t">Step 4: Define Master Index External Systems</a>.</p>
@@ -583,7 +583,7 @@ the sequence name is &ldquo;EUID&rdquo;. For example:</p><p><tt>update sbyn_seq_
             </td>
          </tr>
       </table>
-      
+
    </div>
 
 </body>
