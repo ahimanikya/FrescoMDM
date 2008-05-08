@@ -7,6 +7,10 @@
 			<property name="loaderName" value="master-loader" />
 			<property name="isMasterLoader" value="true" />
 			<property name="matchAnalyzerMode" value="false" />
+                        
+                        <property name="BulkLoad" value="false" />
+                        <property name="standardizationMode" value="true" />
+                        <property name="deleteIntermediateDirs" value="false" />
 
 			<property name="rmiPort" value="9999" />
 			<property name="workingDir" value="/mdm/loader" />
