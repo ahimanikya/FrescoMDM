@@ -34,7 +34,7 @@ import com.sun.mdm.index.dataobject.DataObject;
  *
  */
 
-public class Block {
+class Block {
 
 
 	private List<DataObject> dataObjects = new ArrayList<DataObject>();
