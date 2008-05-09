@@ -44,12 +44,12 @@ import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import java.util.ResourceBundle;
 import net.java.hulp.i18n.LocalizationSupport;
-
+import com.sun.mdm.index.edm.presentation.handlers.NavigationHandler;
 public class EDMValidation {
     
    private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.validations.EDMValidation");
     private static transient final Localizer mLocalizer = Localizer.get();
-   ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm");
+   ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP );
    private Hashtable MONTH_DAY_HASH = new Hashtable();
    private String[] MONTHS = new String[13];   
    
