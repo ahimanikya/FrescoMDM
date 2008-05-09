@@ -183,11 +183,15 @@
             <groupId>loader.test</groupId>
             <artifactId>resources</artifactId>
             <version>6.0</version>
+					  <scope>system</scope>
+      		  <systemPath>${basedir}/test/config/resources.jar</systemPath>                        
         </dependency>      
         <dependency>
             <groupId>loader.test</groupId>
             <artifactId>master-index-client</artifactId>
             <version>6.0</version>
+					  <scope>system</scope>
+      		  <systemPath>${basedir}/test/config/master-index-client.jar</systemPath>            
         </dependency>
     	  <dependency>
             <groupId>mural</groupId>
