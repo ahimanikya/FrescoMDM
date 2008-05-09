@@ -51,7 +51,7 @@ public class ViewMergeTreeHandler {
 
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.ViewMergeTreeHandler");
     private static transient final Localizer mLocalizer = Localizer.get();
-    ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());
     private EuidTreeVO htmlNodeTreeDataModel = new EuidTreeVO();
     private String SERVICE_LAYER_ERROR = "SLError";
     private String SUCCESS = "Tree";

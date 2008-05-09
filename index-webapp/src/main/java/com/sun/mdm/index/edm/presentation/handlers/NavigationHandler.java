@@ -58,6 +58,9 @@ public  class NavigationHandler {
     private static final String TRANSACTIONS = "transactions";
     private static final String REPORTS = "reports";
     private static final String AUDIT_LOG = "audit-log";
+    public static final  String  MIDM_PROP = "com.sun.mdm.index.edm.presentation.messages.midm";
+    public String  MIDM_PROP_JSP = "com.sun.mdm.index.edm.presentation.messages.midm";
+    
     
     private HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     
@@ -229,5 +232,18 @@ public  class NavigationHandler {
         session.removeAttribute("eocomparision");
         //return headertabName;
     }
+    public String  getMIDM_PROP( ){
+    
+      return MIDM_PROP;
+    }
+
+    public String getMIDM_PROP_JSP() {
+        return MIDM_PROP_JSP;
+    }
+
+    public void setMIDM_PROP_JSP(String MIDM_PROP_JSP) {
+        this.MIDM_PROP_JSP = MIDM_PROP_JSP;
+    }
+    
     
 }

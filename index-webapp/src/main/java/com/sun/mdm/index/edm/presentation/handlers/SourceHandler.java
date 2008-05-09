@@ -194,7 +194,7 @@ public class SourceHandler {
         // set the tab name to be view/edit
         session.setAttribute("tabName", "View/Edit");
         
-        ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());
         //get the hidden fields search type from the form usin the facesContext
         // get the array list as per the search
 //        ArrayList fieldConfigArrayList  = this.getViewEditScreenConfigArray();

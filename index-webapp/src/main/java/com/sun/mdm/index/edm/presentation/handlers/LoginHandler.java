@@ -93,7 +93,7 @@ public class LoginHandler {
     
     public String authorizeAndLoginUser() {
        
-        ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());
         String errorMessage =bundle.getString("Login_Success");
         //Logon logon  = new Logon();
         //Use LogOn class here

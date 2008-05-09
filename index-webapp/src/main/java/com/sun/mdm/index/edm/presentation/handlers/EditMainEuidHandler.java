@@ -66,7 +66,7 @@ import net.java.hulp.i18n.LocalizationSupport;
 public class EditMainEuidHandler {
      private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.EditMainEuidHandler");
     private static transient final Localizer mLocalizer = Localizer.get();
-    ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm", FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+    ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());        
     String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
     private static final String EDIT_SUCCESS = "EO_EDIT_SUCCESS";
     

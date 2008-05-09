@@ -281,7 +281,7 @@ public class UnmergedRecordsHandler    {
   public UnmergeReportConfig getUnmergeReportSearchObject() throws ValidationException, EPathException {
          String errorMessage = null;
          EDMValidation edmValidation = new EDMValidation();         
-         ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm", FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+         ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());        
          UnmergeReportConfig umrConfig = new UnmergeReportConfig();
         // One of Many validation 
         if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0) &&

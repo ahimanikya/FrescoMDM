@@ -128,6 +128,8 @@ public class ActivityReportHandler {
     private static final String REPORT_TYPE_YEARLY_ACTIVITY = "Yearly Activity";
 
     
+     
+    
     public ActivityRecords[] activityReport() throws ValidationException, EPathException, ReportException, PageException, RemoteException, Exception{
              reportType = getFrequency();
              request.setAttribute("tabName", "ACTIVITY_REPORT");
@@ -339,7 +341,8 @@ public class ActivityReportHandler {
     public KeyStatisticsReportConfig getActivitySearchObject() throws ValidationException, EPathException {
         String errorMessage = null;
         EDMValidation edmValidation = new EDMValidation();
-        ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+       ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale()); 
+     
         String sStartDate = null, sEndDate = null;
         Date dStartDate = null, dEndDate = null;
         KeyStatisticsReportConfig arConfig = new KeyStatisticsReportConfig();

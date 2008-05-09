@@ -386,7 +386,7 @@ public class DuplicateReportHandler    {
          request.setAttribute("tabName", "DUPLICATE_REPORT");        
          String errorMessage = null;
          EDMValidation edmValidation = new EDMValidation();         
-         ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm", FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+         ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());        
          PotentialDuplicateReportConfig pdrConfig = new PotentialDuplicateReportConfig();
         // One of Many validation 
         if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0) &&

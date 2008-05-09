@@ -81,7 +81,7 @@ public class SourceMergeHandler {
     //private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.SourceMergeHandler");
      
     
-    ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());
     String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
     String enterLidsMessaage =bundle.getString("lid_enter_more_lids");
     SourceHandler sourceHandler = new SourceHandler();
