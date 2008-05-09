@@ -29,7 +29,7 @@ package com.sun.mdm.index.loader.matcher;
  * @author Swaranjit Dua
  *
  */
-public class BlockPosition {
+class BlockPosition {
 	/**
 	 * block that this BlockPosition refers to 
 	 */
