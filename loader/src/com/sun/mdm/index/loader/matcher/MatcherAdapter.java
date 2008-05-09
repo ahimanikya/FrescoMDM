@@ -37,7 +37,7 @@ public class MatcherAdapter {
 	private  MatchingEngine mSbmeMatch;
 	private  String[] matchFieldIDs;
 
-	public MatcherAdapter(String[] matchFldIds, String dateFormat) throws Exception {
+	MatcherAdapter(String[] matchFldIds, String dateFormat) throws Exception {
 
 		matchFieldIDs = matchFldIds;	
 		//ConfigFilesAccess files = new NewMatcher.CSConfigFileAccess();
