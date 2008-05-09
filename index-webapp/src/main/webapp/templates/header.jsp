@@ -13,8 +13,9 @@
 <%@ page import="java.util.ArrayList"  %>
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 
-<f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
+<f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />
 <%@ page isErrorPage="false" errorPage="../error500.jsp" %>
 
 <%
