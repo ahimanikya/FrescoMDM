@@ -218,7 +218,7 @@ public class MatchFileMerger {
 				String gid2 = String.valueOf(mr.getGIDTo());
 				String weight = String.valueOf(mr.getWeight());
 
-				bwriter.write(gid1 + "," + gid2 + "," + weight);
+				bwriter.write("," + gid1 + "," + gid2 + "," + weight);
 				bwriter.newLine();
 
 			}
