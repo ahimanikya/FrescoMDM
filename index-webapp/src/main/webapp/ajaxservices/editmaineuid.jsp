@@ -50,7 +50,7 @@
 %>
 
 <f:view>
- 
+    <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
     
     <html>
         <head>
@@ -369,8 +369,7 @@
                                                                      id="childFieldConfigAdd"   
 																	 title="#{childFieldConfigAdd.fullFieldName}"
                                                                      maxlength="#{childFieldConfigAdd.maxLength}"
-																	 readonly="#{!childFieldConfigAdd.updateable}"
-																	 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+                                                                     onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
                                                                      onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')" 
 																	 onkeyup="javascript:qws_field_on_key_up(this)"
 																	 required="#{childFieldConfigAdd.required}"  
@@ -397,8 +396,8 @@
                                            <!--Rendering Updateable HTML Text Area-->
                                             
                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextArea'}" >
-                                                <h:inputTextarea title="#{fieldConfigAddAddress.fullFieldName}"  
-                                                                 required="#{fieldConfigAddAddress.required}" />
+                                                <h:inputTextarea title="#{childFieldConfigAdd.fullFieldName}"  
+                                                                 required="#{childFieldConfigAdd.required}" />
                                             </h:column>
                                         </h:dataTable>                                                                                
 			                        </h:column>
@@ -812,9 +811,7 @@
  													              title="#{soChildFieldConfigAdd.fullFieldName}"
                                                                   id="soChildFieldConfigAdd"   
                                                                   maxlength="#{soChildFieldConfigAdd.maxLength}"
-                                                                 disabled="#{ !soChildFieldConfigAdd.updateable}"
-                                                                 readonly="#{ !soChildFieldConfigAdd.updateable}"
-																  onblur="javascript:validate_Integer_fields(this,'#{soChildFieldConfigAdd.displayName}','#{soChildFieldConfigAdd.valueType}')"
+                                                                 onblur="javascript:validate_Integer_fields(this,'#{soChildFieldConfigAdd.displayName}','#{soChildFieldConfigAdd.valueType}')"
                                                                   onkeydown="javascript:qws_field_on_key_down(this, '#{soChildFieldConfigAdd.inputMask}')" 
 																	 onkeyup="javascript:qws_field_on_key_up(this)"
 																	 required="#{soChildFieldConfigAdd.required}"  
@@ -825,15 +822,14 @@
                                      <h:column rendered="#{soChildFieldConfigAdd.guiType eq 'TextBox'  &&  soChildFieldConfigAdd.valueType eq 6}" >
                                           <nobr>
                                             <input type="text" title = "<h:outputText value="#{soChildFieldConfigAdd.fullFieldName}"/>"  
-                                                   readonly="<h:outputText value="#{!fieldConfigPer.updateable}" />"
-                                                   disabled="<h:outputText value="#{!fieldConfigPer.updateable}" />"
-                                                   id = "<h:outputText value="#{soChildFieldConfigAdd.name}"/>"  
+                                                    
+                                                   id = "<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/><h:outputText value="#{soChildFieldConfigAdd.name}"/>"  
                                                    required="<h:outputText value="#{soChildFieldConfigAdd.required}"/>" 
                                                    maxlength="<h:outputText value="#{soChildFieldConfigAdd.maxLength}"/>"
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{soChildFieldConfigAdd.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');">
-                                                  <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{soChildFieldConfigAdd.name}"/>')" > 
+                                                  <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/><h:outputText value="#{soChildFieldConfigAdd.name}"/>')" > 
                                                      <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                  </a>
                                           </nobr>
@@ -843,10 +839,9 @@
                                            <!--Rendering Updateable HTML Text Area-->
                                             
                                             <h:column rendered="#{soChildFieldConfigAdd.guiType eq 'TextArea'}" >
-                                                <h:inputTextarea title="#{fieldConfigAddAddress.fullFieldName}"  
-                                                                 disabled="#{!fieldConfigAddAddress.updateable}"
-                                                                 readonly="#{!fieldConfigAddAddress.updateable}"
-							                                     required="#{fieldConfigAddAddress.required}" />
+                                                <h:inputTextarea title="#{soChildFieldConfigAdd.fullFieldName}"  
+                                                                  
+							                                     required="#{soChildFieldConfigAdd.required}" />
                                             </h:column>
 											<%}else{%>
                                             <!--Rendering HTML Select Menu List-->

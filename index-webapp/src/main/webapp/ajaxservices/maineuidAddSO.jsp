@@ -45,7 +45,7 @@
 
 %>
 <f:view>
-     
+        <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
     <html>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -259,13 +259,13 @@
                                                         <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox'  &&  childFieldConfigAdd.valueType eq 6}" >
                                                             <nobr>
                                                                 <input type="text" title = "<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>"  
-                                                                       id = "<h:outputText value="#{childFieldConfigAdd.name}"/>"  
+                                                                       id = "New<h:outputText value="#{childFieldConfigAdd.name}"/>"  
                                                                        required="<h:outputText value="#{childFieldConfigAdd.required}"/>" 
                                                                        maxlength="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
                                                                        onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')"
                                                                        onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                        onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateMinorObjectFieldsOnBlurLocal('<h:outputText value="#{childFieldConfigAdd.objRef}"/>',this,'<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>','<h:outputText value="#{childFieldConfigAdd.inputMask}"/>','<h:outputText value="#{childFieldConfigAdd.valueType}"/>')">
-                                                                <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childFieldConfigAdd.name}"/>')" > 
+                                                                <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'New<h:outputText value="#{childFieldConfigAdd.name}"/>')" > 
                                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                                 </a>
                                                             </nobr>
@@ -275,7 +275,7 @@
                                                         <!--Rendering Updateable HTML Text Area-->
                                                         
                                                         <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextArea'}" >
-                                                            <h:inputTextarea title="#{fieldConfigAddAddress.fullFieldName}"  
+                                                            <h:inputTextarea title="#{childFieldConfigAdd.fullFieldName}"  
                                                                              onblur="javascript:accumilateMinorObjectFieldsOnBlurLocal('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}','#{childFieldConfigAdd.inputMask}','#{childFieldConfigAdd.valueType}')"
                                                                              required="#{fieldConfigAddAddress.required}" />
                                                         </h:column>
