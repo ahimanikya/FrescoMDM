@@ -142,7 +142,7 @@ public class Bucket {
 			if (blockPrintSize > 0 && b.getSize() >= blockPrintSize) {
 				matches = b.getSize();
 				matches = matches*(matches-1)/2;
-				logger.info("blockid:" + blockid + ", size:" + b.getSize() + ", # of matches:" + matches);
+				logger.info("blockid:" + blockid + ", size:" + b.getSize() + ", # of matches performed:" + matches);
 			}
 		}
 	}
