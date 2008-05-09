@@ -39,6 +39,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.EditMainEuidHandler"  %>
 
+
 <%
  double rand = java.lang.Math.random();
  String URI = request.getRequestURI();
@@ -49,7 +50,7 @@
 %>
 
 <f:view>
-    <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
+ 
     
     <html>
         <head>

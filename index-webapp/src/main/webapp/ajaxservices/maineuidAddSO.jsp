@@ -31,6 +31,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceEditHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
 
+
 <%
             double rand = java.lang.Math.random();
             ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
@@ -44,7 +45,7 @@
 
 %>
 <f:view>
-        <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
+     
     <html>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
