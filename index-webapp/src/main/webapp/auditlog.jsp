@@ -16,7 +16,7 @@
 <%@ page import="java.util.Date"  %>
 <%@ page import="java.util.ArrayList"  %>
 <f:view>
-    <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
+    
     
     <html>
         <head>

@@ -19,6 +19,7 @@
 <%@ page import="com.sun.mdm.index.objects.epath.EPath"%>
 <%@ page import="com.sun.mdm.index.objects.epath.EPathArrayList"%>
 
+
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
 <%@ page import="java.util.Set"  %>
@@ -35,7 +36,7 @@
  %>
 
 <f:view>
-    <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
+    
     <html>
         <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

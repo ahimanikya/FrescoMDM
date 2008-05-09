@@ -29,8 +29,9 @@
 <%@ page import="java.util.Iterator"  %>
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
+
 <f:view>
-    <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
+    
     <html>
         <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

@@ -20,6 +20,8 @@
 <%@ page import="com.sun.mdm.index.objects.TransactionObject"%>
 <%@ page import="com.sun.mdm.index.objects.epath.EPath"%>
 <%@ page import="com.sun.mdm.index.objects.epath.EPathArrayList"%>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+
 
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
@@ -34,7 +36,7 @@
 
 <f:view>
     
-    <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
+   
     <html>
         <head>
             <title><h:outputText value="#{msgs.application_heading}"/></title>  
@@ -525,7 +527,7 @@
                                                         </h:commandLink>  
 												   </h:form>
 												<%}else{%>
-												<%ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+												<%ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());
                                                 String diff_person_heading_text = bundle.getString("diff_person_heading_text");
 												%>
                                                            <h:outputLink rendered="#{Operations.potDup_ResolveUntilRecalc}"   onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" 

@@ -19,6 +19,7 @@
 <%@ page import="java.util.ArrayList"  %>
 <%@ page import="java.util.HashMap"  %>
 
+
 <%
 //Author Sridhar Narsingh
 //sridhar@ligaturesoftware.com
@@ -27,8 +28,7 @@
 <% Integer size = 0; %>
 
 <f:view>
-    <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
-    
+  
     <html>
        <head>
 <title><h:outputText value="#{msgs.application_heading}"/></title> 

@@ -7,10 +7,10 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.DashboardHandler"  %>
 <%@ page import="javax.faces.context.FacesContext"  %>
 <%@ page import="java.util.ResourceBundle"  %>
-
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 
 <%
-   ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.Edm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+   ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());
    String summaryText = bundle.getString("dashboard_summary_table_text");
    String lookupText = bundle.getString("dashboard_lookup_euid_table_text");
    String reportsText = bundle.getString("dashboard_reports_table_text");
@@ -21,7 +21,7 @@
 <%@ page import="javax.el.ValueExpression" %>
 
 <f:view>
-    <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
+    
     <html>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">

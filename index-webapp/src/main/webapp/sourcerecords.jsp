@@ -31,13 +31,16 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceEditHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+
+
 <%
  double rand = java.lang.Math.random();
  String URI = request.getRequestURI();
  URI = URI.substring(1, URI.lastIndexOf("/"));%>
 
 <f:view>
-        <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
+ <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />       
 
 <html>
     <head>

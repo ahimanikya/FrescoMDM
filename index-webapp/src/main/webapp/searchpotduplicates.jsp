@@ -6,8 +6,9 @@
 <%@ page import="com.sun.mdm.index.master.search.potdup.PotentialDuplicateIterator"  %>
 <%@ page import="com.sun.mdm.index.master.search.potdup.PotentialDuplicateSummary"  %>
 
+
 <f:view>
-    <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
+   
     <HTML>
         <HEAD>
             <title>Master Indexed Web Application </title>

@@ -7,7 +7,7 @@
 
 <f:view>
     
-    <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
+ 
     <html>
         <head>
             <title>EDM Driven Screen</title>  

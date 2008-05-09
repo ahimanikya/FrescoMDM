@@ -10,11 +10,12 @@
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LoginHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 
 <%@ page import="javax.faces.context.FacesContext"  %>
 
 <f:view>    
-    <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
+   <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />
     <html>
 <% 
 LoginHandler loginHandler = new LoginHandler();

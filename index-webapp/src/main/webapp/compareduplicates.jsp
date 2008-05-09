@@ -32,7 +32,7 @@
 <%@ page import="javax.el.ValueExpression" %>
 
 <f:view>
-    <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
+   
     <html>
         <head>
            <!-- YAHOO Global Object source file --> 

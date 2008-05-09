@@ -12,13 +12,14 @@
 <%@ page import="java.util.ArrayList"  %>
 <%@ page import="java.util.HashMap"  %>
 
+
 <%
 //Author Sridhar Narsingh
 //sridhar@ligaturesoftware.com
 //http://www.ligaturesoftware.com
 %>
 <f:view>    
-<f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
+
 <html>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
