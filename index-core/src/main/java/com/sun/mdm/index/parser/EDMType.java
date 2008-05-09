@@ -544,9 +544,15 @@ public class EDMType {
                                 if (mTagFieldRef.equals(tag)) {
                                     PageDefinition.FieldRef fieldRef = mPageDefinition.getFieldRef(report.alFieldRef);
                                     fieldRef.fieldName = value;
-                                    int index = value.indexOf('.');
-                                    String parentName = value.substring(0, index);
-                                    String fieldName = value.substring(index + 1);
+                                    int index0 = value.indexOf('.');
+                                    int index1 = value.lastIndexOf('.');
+                                    String parentName = null;
+                                    if (index0 == index1) {
+                                        parentName = value.substring(0, index1);
+                                    } else {
+                                        parentName = value.substring(index0 + 1, index1);
+                                    }
+                                    String fieldName = value.substring(index1 + 1);
                                     EDMFieldDef edmFieldDef = getEDMFieldDef(parentName, fieldName);
                                     if (edmFieldDef != null) {
                                         edmFieldDef.report = true;
@@ -1007,9 +1013,15 @@ public class EDMType {
                     } else if (mTagFieldRef.equals(tag)) {
                         PageDefinition.FieldRef fieldRef = mPageDefinition.getFieldRef(searchResultListPage.alFieldRef);
                         fieldRef.fieldName = value;
-                        int index = value.indexOf('.');
-                        String parentName = value.substring(0, index);
-                        String fieldName = value.substring(index + 1);
+                        int index0 = value.indexOf('.');
+                        int index1 = value.lastIndexOf('.');
+                        String parentName = null;
+                        if (index0 == index1) {
+                            parentName = value.substring(0, index1);
+                        } else {
+                            parentName = value.substring(index0 + 1, index1);
+                        }
+                        String fieldName = value.substring(index1 + 1);
                         EDMFieldDef edmFieldDef = getEDMFieldDef(parentName, fieldName);
                         if (edmFieldDef != null) {
                             edmFieldDef.setUsedInSearchResult(true);
@@ -1183,9 +1195,15 @@ public class EDMType {
                         PageDefinition.FieldRef fieldRef = mPageDefinition.getFieldRef(fieldGroup.alFieldRef);
                         fieldRef.fieldName = value;
                         
-                        int index = value.indexOf('.');
-                        String parentName = value.substring(0, index);
-                        String fieldName = value.substring(index + 1);
+                        int index0 = value.indexOf('.');
+                        int index1 = value.lastIndexOf('.');
+                        String parentName = null;
+                        if (index0 == index1) {
+                            parentName = value.substring(0, index1);
+                        } else {
+                            parentName = value.substring(index0 + 1, index1);
+                        }
+                        String fieldName = value.substring(index1 + 1);
                         EDMFieldDef edmFieldDef = getEDMFieldDef(parentName, fieldName);
                         if (edmFieldDef != null) {
                             edmFieldDef.setUsedInSearchScreen(true);
