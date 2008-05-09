@@ -32,8 +32,6 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
-
-
 <%
  double rand = java.lang.Math.random();
  String URI = request.getRequestURI();
@@ -608,9 +606,8 @@
                                                                                                             <!--Rendering Updateable HTML Text Area-->
                                                                                                                 
                                                                                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextArea'}" >
-                                                                                                                <h:inputTextarea title="#{fieldConfigAddAddress.fullFieldName}"  
-                                                                                                                                 onblur="javascript:accumilateMinorObjectFieldsOnBlurLocal('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}','#{childFieldConfigAdd.inputMask}','#{childFieldConfigAdd.valueType}')"
-                                                                                                                                 required="#{fieldConfigAddAddress.required}" />
+                                                                                                                <h:inputTextarea title="#{childFieldConfigAdd.fullFieldName}"  
+                                                                                                                                 required="#{childFieldConfigAdd.required}" />
                                                                                                             </h:column>
                                                                                                         </h:dataTable>                                                                                
                                                                                                     </h:column>
@@ -1221,8 +1218,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                            <!--Rendering Updateable HTML Text Area-->
                                             
                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextArea'}" >
-                                                <h:inputTextarea title="#{fieldConfigAddAddress.fullFieldName}"  
-                                                                 onblur="javascript:accumilateMinorObjectFieldsOnBlurLocal('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}','#{childFieldConfigAdd.inputMask}','#{childFieldConfigAdd.valueType}')"
+                                                <h:inputTextarea title="#{childFieldConfigAdd.fullFieldName}"  
                                                                  required="#{fieldConfigAddAddress.required}" />
                                             </h:column>
                                         </h:dataTable>                                                                                
