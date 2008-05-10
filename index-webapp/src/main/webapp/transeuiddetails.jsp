@@ -297,9 +297,11 @@
                                                                                     <font class="highlight">
                                                                                         <%=personfieldValuesMapEO.get(epathValue)%>
                                                                                     </font>
-                                                                                <%} else {
-                                                                                %>
-                                                                                <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                  <%} else {if(fieldConfigMap.isSensitive()){%>                                                                               
+                                                                                <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                 <%}else{%>
+                                                                                   <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                 <%}%>
                                                                                 <%}%>
                                                                                 <%} else {%>
                                                                                 &nbsp;
@@ -342,8 +344,14 @@
                                                                     %>  
                                                                     <tr>
                                                                         <td>
-                                                                                <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
+                                                                                 <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
+										<%if(fieldConfigMap.isKeyType()) {%>
+                                                                                   <b><%=minorObjectHashMap.get(epathValue)%></b>
+										<%}else{if (fieldConfigMap.isSensitive()){%>																				  
+                                                                                <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                <%}else {%>
                                                                                 <%=minorObjectHashMap.get(epathValue)%>
+										<%}}%>
                                                                                 <%} else {%>
                                                                                 &nbsp;
                                                                                 <%}%>

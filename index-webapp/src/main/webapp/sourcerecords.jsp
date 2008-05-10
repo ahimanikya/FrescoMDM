@@ -311,7 +311,8 @@
                                                                 <h:outputText value="#{fieldConfig.displayName}"  />
                                                             </h:column>
                                                             <h:column>
-                                                                <h:outputText value="#{SourceHandler.singleSOHashMap['SYSTEM_OBJECT'][fieldConfig.fullFieldName]}"  />
+                                                                <h:outputText value="#{SourceHandler.singleSOHashMap['SYSTEM_OBJECT'][fieldConfig.fullFieldName]}" rendered ="#{!fieldConfig.sensitive}"   />
+                                                                <h:outputText value="#{msgs.SENSITIVE_FIELD_MASKING}" rendered ="#{fieldConfig.sensitive}"   />
                                                             </h:column>
                                                     </h:dataTable>               
                                             </div>
@@ -341,7 +342,8 @@
                                                                     <h:outputText value="#{childFieldConfig.displayName}"  />
                                                                 </h:column>
                                                                 <h:column>
-                                                                    <h:outputText value="#{childMapArrayList[childFieldConfig.fullFieldName]}"  />
+                                                                    <h:outputText value="#{childMapArrayList[childFieldConfig.fullFieldName]}" rendered="#{!childFieldConfig.sensitive}" />
+                                                                    <h:outputText value="#{msgs.SENSITIVE_FIELD_MASKING}" rendered ="#{childFieldConfig.sensitive}"   />
                                                                 </h:column>
                                                             </h:dataTable>               
                                                         </h:column>

@@ -34,7 +34,7 @@
  String URI = request.getRequestURI();
   URI = URI.substring(1, URI.lastIndexOf("/"));
  %>
-
+<f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />
 <f:view>
     
     <html>
@@ -368,9 +368,11 @@
                                                                                         <%=personfieldValuesMapEO.get(epathValue)%>
                                                                                     </font>
                                                                                 </a>  
-                                                                                <%} else {
-                                                                                %>
-                                                                                <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                <%} else {if(fieldConfigMap.isSensitive()){%>                                                                               
+                                                                                <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                 <%}else{%>
+                                                                                   <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                 <%}%>
                                                                                 <%}%>
                                                                                 <%} else {%>
                                                                                 &nbsp;
@@ -415,11 +417,13 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                     <tr>
                                                                         <td>
                                                                                 <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
-																				  <%if(fieldConfigMap.isKeyType()) {%>
+										<%if(fieldConfigMap.isKeyType()) {%>
                                                                                    <b><%=minorObjectHashMap.get(epathValue)%></b>
-																				  <%}else{%>
-																				   <%=minorObjectHashMap.get(epathValue)%>
-																				  <%}%>
+										<%}else{if (fieldConfigMap.isSensitive()){%>																				  
+                                                                                <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                <%}else {%>
+                                                                                <%=minorObjectHashMap.get(epathValue)%>
+										<%}}%>
                                                                                 <%} else {%>
                                                                                 &nbsp;
                                                                                 <%}%>
