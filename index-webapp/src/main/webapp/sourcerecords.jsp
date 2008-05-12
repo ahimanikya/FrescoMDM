@@ -1371,31 +1371,31 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                </td>
                                                                <input id='lidmask' type='hidden' name='lidmask' value='DDD-DDD-DDDD' />           
                                                                <td>
-                                                               <h:outputText style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
-                                                                   value="#{msgs.source_merge_head1}"/>
+                                                               <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   /><%=localIdDesignation%>1</font>
                                                                <h:inputText value="#{SourceMergeHandler.lid1}" id="LID1"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                     onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                     onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                <td>
-                                                                   <h:outputText 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
-                                                                   value="#{msgs.source_merge_head2}"/>
+                                                              <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   /><%=localIdDesignation%>2</font>
                                                                    <h:inputText value="#{SourceMergeHandler.lid2}" id="LID2"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                    onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                    onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
                                                                <td>
-                                                                   <h:outputText 																    style="font-family: Arial, Helvetica,  sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
-                                                                   value="#{msgs.source_merge_head3}"/>
+                                                              <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   /><%=localIdDesignation%>3</font>
                                                                    <h:inputText value="#{SourceMergeHandler.lid3}" id="LID3"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                                 onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
                                                                <td>
-                                                                   <h:outputText 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
-                                                                   value="#{msgs.source_merge_head4}"/>
+                                                              <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   /><%=localIdDesignation%>4</font>
                                                                    <h:inputText value="#{SourceMergeHandler.lid4}" id="LID4"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
