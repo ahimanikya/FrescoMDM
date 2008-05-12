@@ -45,12 +45,12 @@ public interface DataObjectWriter {
 	public abstract void writeDataObject(DataObject d) throws IOException;
 
 	/**
-	 * flush any thing data which is in the buffer
+	 * Flush any thing data which is in the buffer
 	 */
 	public abstract void flush() throws IOException;
 
 	/**
-	 * close the outputStream
+	 * Close the outputStream
 	 */
 	public abstract void close() throws IOException;
 

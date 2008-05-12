@@ -27,109 +27,103 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
  * This is the Generic Object which represents a record in any input files in
  * the initial Loader or data analysis tool. The DataObject is mapped to single
- * line or record in loader file
+ * line or record in loader file.
  * 
- * 
- * 
- * <p>
  * Note the underlying data structure use by dataObject to store and retrieve
  * fields and childType is ArrayList. Hence any direct access to DataObject
- * methods apart from using epath API will throw runtime exception like
+ * methods apart from using ePath API will throw runtime exception like
  * IndexOutOfBoundsException if in-correct field index or childType index or
- * child instance index is used
+ * child instance index is used.
  * 
- * @author Sujit Biswas
+ * @author Sujit Biswas, Charles Ye
  * 
  */
 public class DataObject {
 
-	/**
-	 * list of fields belonging the data object
-	 */
+	/** A list of fields belonging the data object. */
 	protected ArrayList<String> fields = new ArrayList<String>();
 
-	/**
-	 * represent the list of childtypes, each child type contains the list of
-	 * child instance which is also a DataObject
+    /**
+	 * A list of child types, each child type contains a list of
+	 * child instance which is also a DataObject.
 	 */
 	protected ArrayList<ChildType> childTypes = new ArrayList<ChildType>();
 
 	/**
-	 * @return the childTypes
+	 * Get a list of child types.
+	 * 
+	 * @return ArrayList<ChildType>	 A list of child types.
 	 */
 	public ArrayList<ChildType> getChildTypes() {
 		return childTypes;
 	}
 
 	/**
-	 * use this method when childType are populated sequentially, i.e in the
-	 * order specified in the object definition, other wise use epath api
+	 * Add a child type. Use this method when childType are populated sequentially, 
+     * i.e in the order specified in the object definition, other wise use epath API.
 	 * 
-	 * @param o
-	 * @return
-	 * 
+	 * @param	childType	childType 
+	 * @return	boolean		true if add successfully.
 	 */
-	public boolean addChildType(ChildType o) {
-		return childTypes.add(o);
+	public boolean addChildType(ChildType childType) {
+		return childTypes.add(childType);
 	}
 
 	/**
-	 * @return the fields
+	 * Get a list of field values.
+	 * 
+	 * @return	ArrayList<String>	A list of fields.
 	 */
 	public ArrayList<String> getFieldValues() {
 		return fields;
 	}
 
 	/**
-	 * 
-	 * use this method when fields are populated sequentially, i.e in the order
-	 * specified in the object definition, other wise use epath api
-	 * 
-	 * @param o
-	 * @return
-	 * 
+	 * Add a field value. Use this method when fields are populated sequentially, 
+     * i.e in the order specified in the object definition, other wise use epath API.
+     *  
+	 * @param	field	field in String.	
+	 * @return	boolean	true if add successfully.
 	 */
-	public boolean addFieldValue(String o) {
-		return fields.add(o);
+	public boolean addFieldValue(String field) {
+		return fields.add(field);
 	}
 
 	/**
-	 * Inserts the specified element at the specified position in this list.
+	 * Insert the specified element at the specified position in this list.
 	 * Shifts the element currently at that position (if any) and any subsequent
 	 * elements to the right (adds one to their indices).
 	 * 
-	 * @param index
-	 *            index at which the specified element is to be inserted.
-	 * @param element
-	 *            element to be inserted.
-	 * @throws IndexOutOfBoundsException
-	 *             if index is out of range
-	 *             <tt>(index &lt; 0 || index &gt; size())</tt>.
+	 * @param index		index at which the specified element is to be inserted.
+	 * @param element	element to be inserted.
+	 * @throws IndexOutOfBoundsException	if the index is out of range
+	 *             						    <tt>(index &lt; 0 || index &gt; size())</tt>.
 	 */
 	public void add(int index, String element) {
 		fields.add(index, element);
 	}
 
+	/**
+	 * Ensure the minimum capacity for fields.
+	 * @param minCapacity
+	 */
 	private void ensureCapacity(int minCapacity) {
 
 		int size = minCapacity + 1;
-
 		if (fields.size() < size) {
 			for (int i = fields.size(); i < size; i++) {
 				fields.add(i, null);
 			}
 		}
-
 	}
 
 	/**
-	 * get the value of field at the given index
+	 * Get the value of field at the given index.
 	 * 
-	 * @param fieldIndex
-	 * @return
+	 * @param fieldIndex	Field index.
+	 * @return	String		Field value.
 	 * 
 	 */
 	public String getFieldValue(int fieldIndex) {
@@ -137,16 +131,13 @@ public class DataObject {
 	}
 
 	/**
-	 * 
-	 * Removes the field at the specified position in this list. Shifts any
+	 * Remove the field at the specified position in this list. Shifts any
 	 * subsequent elements to the left (subtracts one from their indices).
 	 * 
-	 * @param index
-	 *            the index of the element to removed.
-	 * @return the field that was removed from the list.
-	 * @throws IndexOutOfBoundsException
-	 *             if index out of range <tt>(index
-	 * 		  &lt; 0 || index &gt;= size())</tt>.
+	 * @param 	index	The index of the element to removed.
+	 * @return	String	The field that was removed from the list.
+	 * @throws IndexOutOfBoundsException	If index out of range <tt>(index
+	 * 		  								&lt; 0 || index &gt;= size())</tt>.
 	 */
 	public String remove(int index) {
 		return fields.remove(index);
@@ -157,16 +148,15 @@ public class DataObject {
 	 * @return
 	 */
 	public boolean hasField(int fieldIndex) {
-
-		if (fieldIndex < 0)
+		if (fieldIndex < 0) {			
 			return false;
-		else
+		} else {
 			return fieldIndex < fields.size();
+		}
 	}
 
 	/**
-	 * 
-	 * set the value of field at the given index
+	 * Set the value of field at the given index
 	 * 
 	 * @param fieldIndex
 	 * @param fieldValue
@@ -175,7 +165,6 @@ public class DataObject {
 	 */
 	public String setFieldValue(int fieldIndex, String fieldValue) {
 		ensureCapacity(fieldIndex);
-
 		return fields.set(fieldIndex, fieldValue);
 	}
 
@@ -232,20 +221,17 @@ public class DataObject {
 	}
 
 	/**
+	 * Check whether a child Instance exist for a given childType.
 	 * 
-	 * checks whether a child Instance exist for a given childType
-	 * 
-	 * @param childType
-	 * @return
+	 * @param	childType	child type.
+	 * @return	boolean		true if the specified child exists.
 	 */
 	public boolean hasChild(int childType) {
-
 		if (childType < 0) {
 			return false;
 		}
-
+		
 		int limit = childType + 1;
-
 		if (limit > childTypes.size()) {
 			return false;
 		} else {
@@ -255,20 +241,22 @@ public class DataObject {
 			}
 		}
 		return true;
-
 	}
 
 	/**
-	 * get all children for a given childType
+	 * Get all children for a given childType
 	 * 
-	 * @param childType
-	 * @return
+	 * @param	childType			child type.
+	 * @return	List<DataObject>	A list of children for given child type. 
 	 */
 	public List<DataObject> getChildren(int childType) {
 		return childTypes.get(childType).getChildren();
 
 	}
 	
+	/**
+	 * @see java.lang.Object#equals(Object).
+	 */
 	public boolean equals(DataObject d) {
 		if (fields.size() != d.getFieldValues().size()) {
 			return false;
@@ -290,18 +278,15 @@ public class DataObject {
 				  continue;
 			  }
 		  }
-		  if (!val1.equals(val2) ) {				  
+		  if (!val1.equals(val2) ) {
 			  return false;
 		  }		  
-		}
-		
+		}		
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
+	/**
+	 * @see java.lang.Object#toString().
 	 */
 	@Override
 	public String toString() {
@@ -314,8 +299,10 @@ public class DataObject {
 			sb.append("\n");
 		}
 
-		if (!childTypes.isEmpty())
+		if (!childTypes.isEmpty()) {
 			sb.append("childTypes: \n");
+		}
+		
 		int i = 1;
 		for (ChildType ct : childTypes) {
 			sb.append("childType-" + i++);

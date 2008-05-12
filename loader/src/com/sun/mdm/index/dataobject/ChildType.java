@@ -26,78 +26,78 @@ package com.sun.mdm.index.dataobject;
 import java.util.ArrayList;
 
 /**
+ * This represents a ChildType. E.g., a Person has a list of Address, so Address
+ * could the childType.  Similarly a Person may have a list of phone numbers so
+ * Phone could be childType with one or more instance of Phone(child).
  * 
- * This represents a ChildType, like a person has list of Address, so Address
- * could the childType, Similarly a person may have a list of phone numbers so
- * Phone could be childType with one or more instance of Phone(child)
- * 
- * @author Sujit Biswas
- * 
+ * @author Sujit Biswas, Charles Ye
  */
 public class ChildType {
 
-	/**
-	 * list of child instance for this type
-	 */
+	/** A list of child instance for this type. */
 	private ArrayList<DataObject> children = new ArrayList<DataObject>();
 
 	/**
+	 * Get a list of child objects.
+	 * 
 	 * @return the children
 	 */
 	public ArrayList<DataObject> getChildren() {
 		return children;
 	}
 
-	/**
-	 * adds a child instance
+     /**
+	 * Add a child instance.
 	 * 
-	 * @param o
-	 * @return
+	 * @param child	child DataObject. 
+	 * @return	Boolean true If a child adds successfully. 
 	 */
-	public boolean addChild(DataObject o) {
-		return children.add(o);
+	public boolean addChild(DataObject child) {
+		return children.add(child);
 	}
 
+	/**
+	 * Set minimum number of children as a capacity.
+	 * 
+	 * @param minCapacity 
+	 */
 	private void ensureCapacity(int minCapacity) {
 		children.ensureCapacity(minCapacity);
 	}
 
-	/**
-	 * get a child instance for the given position
+    /**
+	 * Get a child instance for the given position.
 	 * 
-	 * @param childPosition
-	 * @return
+	 * @param	childPosition index of the child.
+	 * @return	DataObject a child in the specified index.
 	 */
-	public DataObject get(int childPosition) {
+    public DataObject get(int childPosition) {
 		return children.get(childPosition);
 	}
 
-	/**
-	 * set a child instance for the given position
+    /**
+	 * Set a child instance for the given position.
 	 * 
-	 * @param childPosition
-	 * @param child
-	 * @return
+	 * @param	childPosition	index of the child. 
+	 * @param	child			child DataObject. 
+	 * @return	DataObject 		child DataObject.
 	 */
 	public DataObject set(int childPosition, DataObject child) {
 		ensureCapacity(childPosition);
 		return children.set(childPosition, child);
 	}
 
-	/*
+    /*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-
 		for (DataObject c : children) {
 			sb.append("\n\tchildInstance: ");
 			sb.append(c);
 		}
-
 		return sb.toString();
 	}
 }
