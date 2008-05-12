@@ -47,11 +47,12 @@ import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import java.util.ResourceBundle;
 import net.java.hulp.i18n.LocalizationSupport;
+
 public class ViewMergeTreeHandler {
 
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.ViewMergeTreeHandler");
     private static transient final Localizer mLocalizer = Localizer.get();
-    ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
     private EuidTreeVO htmlNodeTreeDataModel = new EuidTreeVO();
     private String SERVICE_LAYER_ERROR = "SLError";
     private String SUCCESS = "Tree";
@@ -117,7 +118,7 @@ public class ViewMergeTreeHandler {
             return null;
         }
 
-    //createHtmlNodeTreeDataModel(); uncomment to test the Tree Structure        
+
     }
 
     /**
@@ -131,66 +132,66 @@ public class ViewMergeTreeHandler {
     // added by samba for viewmergeTree
     public String viewMergeTree(String euid) {
         try {
-//            int count = 0;
+
             htmlNodeTreeDataModel = new EuidTreeVO();
             MasterControllerService masterControllerService = new MasterControllerService();
             MergeHistoryNode mergeHistoryNode = masterControllerService.getMergeHistoryNode(euid); // arg: EUID
 
-            //String userName, String euid1, String euid2, String function, int screeneID, String detail
+
             masterControllerService.insertAuditLog((String) session.getAttribute("user"),
                     euid,
                     "",
                     "View Merge Tree",
                     new Integer(screenObject.getID()).intValue(),
                     "View Merge Tree");
-//                String sourceEUID = mergeHistoryNode.getSourceNode().getEUID();
-//                String destEUID = mergeHistoryNode.getDestinationNode().getEUID();
+
             MergeHistoryNode node = mergeHistoryNode;
             TextNode euidNode = null;
             euidNode = buildTree(node, euidNode);
 
 
 
-//            for (int i = 0; i < euidNodes.length; i++) {
-//                TextNode textNode = euidNodes[i];
-                htmlNodeTreeDataModel.addNode(euidNode);
-//            }
+
+            htmlNodeTreeDataModel.addNode(euidNode);
+
         } catch (ProcessingException ex) {
-           mLogger.error(mLocalizer.x("VMT001: Failed to get view merge tree  records:{0}",ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("VMT001: Failed to get view merge tree  records:{0}", ex.getMessage()), ex);
             return SERVICE_LAYER_ERROR;
         } catch (UserException ex) {
-           mLogger.error(mLocalizer.x("VMT002: Failed to get view merge tree  records:{0}",ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("VMT002: Failed to get view merge tree  records:{0}", ex.getMessage()), ex);
             return SERVICE_LAYER_ERROR;
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("VMT003: Failed to get view merge tree  records:{0}",ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("VMT003: Failed to get view merge tree  records:{0}", ex.getMessage()), ex);
             return SERVICE_LAYER_ERROR;
         }
         return SUCCESS;
     }
-    
+
     public TextNode buildTree(MergeHistoryNode rootNode, TextNode textNode) throws ObjectException {
-        if (textNode == null)
+        if (textNode == null) {
             textNode = new TextNode(rootNode.getEUID(), rootNode.getEUID());
+        }
         TextNode leftTextNode = new TextNode(rootNode.getSourceNode().getEUID(), rootNode.getSourceNode().getEUID());
         TextNode rightTextNode = new TextNode(rootNode.getDestinationNode().getEUID(), rootNode.getDestinationNode().getEUID());
-        
+
         String transactionNumberRoot = rootNode.getTransactionObject().getTransactionNumber();
         String urlRoot = "transeuiddetails.jsf?transactionId=" + transactionNumberRoot + "&function=euidMerge";
         textNode.setHref(urlRoot);
-        
+
         textNode.addNode(leftTextNode);
         textNode.addNode(rightTextNode);
-        
-        // System.out.println("came here ");
-        
+
+        leftTextNode.setHref(urlRoot);
+        rightTextNode.setHref(urlRoot);
+
+
+
         MergeHistoryNode rootNodeLeft = rootNode.getSourceNode();
         if (rootNodeLeft.getTransactionObject() != null) {
-            // System.out.println("calling with left...");
             buildTree(rootNodeLeft, leftTextNode);
         }
         MergeHistoryNode rootNodeRight = rootNode.getDestinationNode();
         if (rootNodeRight.getTransactionObject() != null) {
-            // System.out.println("calling with right...");
             buildTree(rootNodeRight, rightTextNode);
         }
         return textNode;
