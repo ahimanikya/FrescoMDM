@@ -659,7 +659,7 @@ function isFloat(s)
    var str = s.indexOf('.');
 
  var startPos = 0;
-   if(str != -1){
+//   if(str != -1){
  
    var s1 = s.substring(startPos, str);
    var s2 = s.substring(str+1, s.length);
@@ -688,10 +688,10 @@ function isFloat(s)
       }
    }
    
-   }else
-	{
-   return false;
-   }
+//   }else
+//	{
+//   return false;
+//   }
       return true;
    }
    
@@ -710,6 +710,7 @@ function isFloat(s)
    {
       return ((c >= "0") && (c <= "9"))
    }
+
 
 
 
