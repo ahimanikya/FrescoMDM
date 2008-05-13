@@ -216,6 +216,7 @@ public class EditMainEuidHandler {
 
             //EDIT the EO and its system objects here
             EnterpriseObject eoFinal = masterControllerService.save(updateEnterpriseObject, this.changedSBRArrayList, this.editSOHashMapArrayList, this.editSOMinorObjectsHashMapArrayList);
+
             //Get the Summary Info after the changes
             String summaryInfo = masterControllerService.getSummaryInfo();
 
@@ -1286,8 +1287,9 @@ public class EditMainEuidHandler {
             for (int j = 0; j < thisMinorObjectList.size(); j++) {
                 HashMap minorObjectMap = (HashMap) thisMinorObjectList.get(j);
                 minorObjectMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName());
+               
                 //add minor objects for SBR here 
-                this.changedSBRArrayList.add(minorObjectMap);
+                //this.changedSBRArrayList.add(minorObjectMap);
 
             }
         }
