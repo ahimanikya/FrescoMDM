@@ -36,6 +36,7 @@
  <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />   
 
 <%
+ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 TransactionHandler transactionHandler= new TransactionHandler();
 
 Enumeration parameterNames = request.getParameterNames();
@@ -147,11 +148,9 @@ if (results != null)   {
                              for (int kc = 0; kc < fullFieldNamesList.size(); kc++) {
 				              %>
                                    <td style="text-align:right">
-								  
+						          <%  if ((screenObject.getRootObj().getName()+"."+"TransactionNumber").equalsIgnoreCase((String)fullFieldNamesList.toArray()[kc])) { %>
 
-								   <%  if ("TransactionNumber".equalsIgnoreCase((String)fullFieldNamesList.toArray()[kc])) { %>
-
-                                        <a href="transeuiddetails.jsf?transactionId=<%=valueMap.get("TransactionNumber")%>&function=<%=valueMap.get("Function")%>" >										
+                                        <a href="transeuiddetails.jsf?transactionId=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"TransactionNumber"))%>&function=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"Function"))%>" >										
 										<%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
 										</a>
 								   <%  }  else { %>
