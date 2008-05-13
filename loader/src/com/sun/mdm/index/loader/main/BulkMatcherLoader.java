@@ -43,6 +43,7 @@ import com.sun.mdm.index.loader.sqlloader.BulkLoader;
 import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.loader.util.Localizer;
 import net.java.hulp.i18n.Logger;
+import com.sun.mdm.index.loader.common.LoaderException;
 
 /** 
  *  Main driver class that bulk Match  and load Master Data to master index schema. 
