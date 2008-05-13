@@ -222,7 +222,7 @@ public class DashboardHandler  {
                     session.removeAttribute("enterpriseArrayList");
   					String errorMessage = this.getEuid2()+" : ";
 					errorMessage +=	bundle.getString("enterprise_object_not_found_error_message");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     newArrayList.add(eoMap);
@@ -345,7 +345,7 @@ public class DashboardHandler  {
                 if (enterpriseObject == null) {
                     String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
                     String msg1 = bundle.getString("EUID1");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, this.getEuid1()+ " : " + errorMessage, errorMessage));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, this.getEuid1()+ " : " + errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
 
@@ -363,7 +363,7 @@ public class DashboardHandler  {
                                 "View/Edit detail of enterprise object");
                     } else {
 					  String errorMessage = this.getEuid1() + " Enterprise Object is "+ enterpriseObject.getStatus();
-                      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage, errorMessage));
+                      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,errorMessage, errorMessage));
 					}
                 }
             }
@@ -374,7 +374,7 @@ public class DashboardHandler  {
 //                    session.removeAttribute("comapreEuidsArrayList");
                     String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
                     String msg2 = bundle.getString("EUID2");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, this.getEuid2()+ " : " + errorMessage, errorMessage));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, this.getEuid2()+ " : " + errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     //add the EO if it is active only
@@ -389,7 +389,7 @@ public class DashboardHandler  {
                                 "View/Edit detail of enterprise object");
                     } else {
 					  String errorMessage = this.getEuid2() + " Enterprise Object is "+ enterpriseObject.getStatus();
-                      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage, errorMessage));
+                      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,errorMessage, errorMessage));
 					}
                 }
             }
@@ -399,7 +399,7 @@ public class DashboardHandler  {
                 if (enterpriseObject == null) {
                     String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
                      String msg3 = bundle.getString("EUID3");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, this.getEuid3()+ " : " + errorMessage, errorMessage));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, this.getEuid3()+ " : " + errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     //add the EO if it is active only
@@ -415,7 +415,7 @@ public class DashboardHandler  {
 
                     } else {
 					  String errorMessage = this.getEuid3() + " Enterprise Object is "+ enterpriseObject.getStatus();
-                      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage, errorMessage));
+                      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,errorMessage, errorMessage));
 					}
                 }
             }
@@ -425,7 +425,7 @@ public class DashboardHandler  {
                 if (enterpriseObject == null) {
                     String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
                     String msg4 = bundle.getString("EUID4");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, this.getEuid4()+ " : "+ errorMessage, errorMessage));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, this.getEuid4()+ " : "+ errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     //add the EO if it is active only
@@ -441,7 +441,7 @@ public class DashboardHandler  {
 
                     } else {
 					  String errorMessage = this.getEuid4() + " Enterprise Object is "+ enterpriseObject.getStatus();
-                      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage, errorMessage));
+                      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,errorMessage, errorMessage));
 					}
                 }
             }
