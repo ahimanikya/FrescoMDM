@@ -153,11 +153,10 @@ public class FileManager {
 	/**
 	 * creates n number of unique block bucket File
 	 * @param n number of files to be created
-	 * @return File[] 
-	 * @throws IOException
+	 * @return File[]
 	 */
 	public static File[] createBlockBucketFiles(int n) 
-	throws IOException {
+	 {
 		File[] files = new File[n];
 		for ( int i = 0; i < n; i++) {
 			String file = BLOCK_BUCKET_PREFIX + i ;
@@ -172,11 +171,10 @@ public class FileManager {
 	 * creates n number of unique EUID bucket File
 	 * @param n number of files to be created
 	 * @return File[] 
-	 * @throws IOException
 	 */
 
 	public static File[] createEUIDBucketFiles(int n) 
-	throws IOException {
+	 {
 		File[] files = new File[n];
 		for ( int i = 0; i < n; i++) {
 			String file = EUID_BUCKET_PREFIX + i;
@@ -191,11 +189,10 @@ public class FileManager {
 	 * creates n number of unique SBR block bucket File
 	 * @param n number of files to be created
 	 * @return File[] 
-	 * @throws IOException
 	 */
 
 	public static File[] createSbrblockBucketFiles(int n) 
-	throws IOException {
+	 {
 		File[] files = new File[n];
 		for ( int i = 0; i < n; i++) {
 			String file = SBRBLOCK_BUCKET_PREFIX + i;
