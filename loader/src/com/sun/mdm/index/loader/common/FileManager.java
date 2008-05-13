@@ -63,9 +63,9 @@ public class FileManager {
 	private static boolean delIntermediateDir = true; // based on this flag, deletes certain directories during
 	// processing of Bulk Loader
 
-	private static final String BLOCK_BUCKET_PREFIX = "BlockB_";
-	private static final String EUID_BUCKET_PREFIX = "EUIDB_";
-	private static final String SBRBLOCK_BUCKET_PREFIX = "SBRBlockB_";
+	public static final String BLOCK_BUCKET_PREFIX = "BlockB_";
+	public static final String EUID_BUCKET_PREFIX = "EUIDB_";
+	public static final String SBRBLOCK_BUCKET_PREFIX = "SBRBlockB_";
 	private static final String MATCH_FILE_PREFIX = "Match_";
 	private static final String MATCH_STAGE_PREFIX = "MatchStage_";
 	//private static final String SBRMATCH_FILE_PREFIX = "SBRMatch_";
@@ -159,9 +159,9 @@ public class FileManager {
 	public static File[] createBlockBucketFiles(int n) 
 	throws IOException {
 		File[] files = new File[n];
-		for ( int i = 1; i <= n; i++) {
-			String file = BLOCK_BUCKET_PREFIX + i + ".txt" ;
-			files[i-1] = new File(blockBucketDir, file);
+		for ( int i = 0; i < n; i++) {
+			String file = BLOCK_BUCKET_PREFIX + i ;
+			files[i] = new File(blockBucketDir, file);
 
 		}	 	
 		blockBucketCounter += n;
@@ -178,9 +178,9 @@ public class FileManager {
 	public static File[] createEUIDBucketFiles(int n) 
 	throws IOException {
 		File[] files = new File[n];
-		for ( int i = 1; i <= n; i++) {
+		for ( int i = 0; i < n; i++) {
 			String file = EUID_BUCKET_PREFIX + i;
-			files[i-1] = new File(euidBucketDir, file);
+			files[i] = new File(euidBucketDir, file);
 
 		}	 	
 		euidBucketCounter += n;
@@ -197,9 +197,9 @@ public class FileManager {
 	public static File[] createSbrblockBucketFiles(int n) 
 	throws IOException {
 		File[] files = new File[n];
-		for ( int i = 1; i <= n; i++) {
+		for ( int i = 0; i < n; i++) {
 			String file = SBRBLOCK_BUCKET_PREFIX + i;
-			files[i-1] = new File(sbrblockBucketDir, file);						
+			files[i] = new File(sbrblockBucketDir, file);						
 		}
 
 		sbrBlockBucketCounter += n;
