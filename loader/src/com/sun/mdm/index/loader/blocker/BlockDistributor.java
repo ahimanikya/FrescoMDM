@@ -56,6 +56,7 @@ import com.sun.mdm.index.loader.common.ObjectNodeUtil;
 import com.sun.mdm.index.matching.Standardizer;
 import com.sun.mdm.index.matching.StandardizerFactory;
 import com.sun.mdm.index.objects.SystemObject;
+import com.sun.mdm.index.loader.common.BucketSplitter;
 
 /**
  * Read input data, 
@@ -83,99 +84,117 @@ public class BlockDistributor {
 	private ObjectDefinition inputobd_;
 	private DataObjectWriter inputWriter_;
 	
-	public BlockDistributor(String[] matchpaths, Lookup inLk, ObjectDefinition inputobd, Lookup blLk, boolean isSBR) throws Exception {
-							
+
+	public BlockDistributor(String[] matchpaths, Lookup inLk, ObjectDefinition inputobd, Lookup blLk, boolean isSBR) 
+	throws Exception {							
 		this.matchEpaths_ = matchpaths;
-	    blockDefinitions_ = readBlockConfiguration();
-	    this.inputLk_ = inLk;
+		blockDefinitions_ = readBlockConfiguration();
+		this.inputLk_ = inLk;
 		this.blockLk_ = blLk;
 		isSBR_ = isSBR;
-	    matchGroups_ = groupEpaths(matchEpaths_);
+		matchGroups_ = groupEpaths(matchEpaths_);
 		initializeBuckets();	
 		String sisStandardize = config_.getSystemProperty("standardizationMode");
 		if (sisStandardize != null && !isSBR_) { // SBR data is already standardized
 			isStandardize = Boolean.parseBoolean(sisStandardize);
 		}
 		if (isStandardize) { // standardize only if standardize option is set
-			                        // and block distribution is done for Block buckets
-		  mStandardizer = StandardizerFactory.getInstance();
-		  inputWriter_ = new DataObjectFileWriter(FileManager.getInputStandardizedFile().getAbsolutePath(), true);
-		  
+			// and block distribution is done for Block buckets
+			mStandardizer = StandardizerFactory.getInstance();
+			inputWriter_ = new DataObjectFileWriter(FileManager.getInputStandardizedFile().getAbsolutePath(), true);
+
 		}
 		inputobd_ = inputobd;
+				
 	}
-	
-	
-	
+
+
+
 	/**
 	 * distributes match Data to different block buckets.
 	 * @throws Exception
 	 */
-	public void distributeBlocks() throws Exception {
-						
+	public void distributeBlocks() throws Exception {						
 		DataObjectReader reader = getReader();
-		
+
 		int countRec = 0;
-		while (true) {
-			
-		
-		   DataObject inputdataObject = reader.readDataObject();
-		   try {
-		   if (inputdataObject == null) {
-			   break;
-		   }
-		   
-		   countRec++;
-		   if (isStandardize ) { // 
-		     inputdataObject = standardize(inputdataObject);
-		     inputWriter_.writeDataObject(inputdataObject);
-		   }
-		   
-		   List<String> blockids = getBlockIds(inputdataObject);
-		   
-		   if (blockids != null && blockids.size() > 0) {
-		     DataObject matchObject = new DataObject();			   
-		     setMatchObject(matchObject, inputdataObject);
-		   
-		     for (int i = 0; i < blockids.size(); i++) {
-			   String blockid = blockids.get(i);
-			   matchObject.setFieldValue(0, blockid);
-			   int bucketNum = getBucketNum(blockid);
-			   Bucket bucket = buckets_[bucketNum];
-			   bucket.write(matchObject);			   
-		     }
-		   }
-		   if (!isSBR_) {
-		       writeSystemBlock(inputdataObject);
-		   }
-		  }  catch (Throwable th) {
-			  logger.severe("DataObject:" + inputdataObject.toString());
-			  if (th instanceof Exception) {
-				  throw (Exception) th;
-			  }
-		  }		   						   
+		while (true) {					
+			DataObject inputdataObject = reader.readDataObject();
+			try {
+				if (inputdataObject == null) {
+					break;
+				}		   
+				countRec++;
+				if (isStandardize ) { // 
+					inputdataObject = standardize(inputdataObject);
+					inputWriter_.writeDataObject(inputdataObject);
+				}
+
+				List<String> blockids = getBlockIds(inputdataObject);
+
+				if (blockids != null && blockids.size() > 0) {
+					DataObject matchObject = new DataObject();			   
+					setMatchObject(matchObject, inputdataObject);
+
+					for (int i = 0; i < blockids.size(); i++) {
+						String blockid = blockids.get(i);
+						matchObject.setFieldValue(0, blockid);
+						int bucketNum = getBucketNum(blockid);
+						Bucket bucket = buckets_[bucketNum];
+						bucket.write(matchObject);			   
+					}
+				}
+				if (!isSBR_) {
+					writeSystemBlock(inputdataObject);
+				}
+			}  catch (Throwable th) {
+				logger.severe("DataObject:" + inputdataObject.toString());
+				if (th instanceof Exception) {
+					throw (Exception) th;
+				}
+			}		   						   
 		}
-		
-		for (int i = 0; i < buckets_.length; i++) {
-		  buckets_[i].close();
-		  File f = buckets_[i].getFile();
-		  if (f.length()>0) {	
-			if (!isSBR_) {
-		       clusterSynchronizer_.insertBlockBucket(buckets_[i].getFile().getName());
-			} else {
-			   clusterSynchronizer_.insertSBRBucket(buckets_[i].getFile().getName());
-			}
-		   } else {
-			  f.delete();
-		  }
-		}	
 		reader.close();
 		if (isStandardize) {
-		  inputWriter_.close();
+			inputWriter_.close();
 		}
+		splitBuckets();
 		logger.info("Number of Input records:" + countRec);
 	}
 	
+	private void splitBuckets() throws Exception {
+		HashMap<Integer, DataObjectWriter> buckets = new HashMap<Integer, DataObjectWriter>();
+
+		for (int i = 0; i < buckets_.length; i++) {
+			buckets_[i].close();
+			File f = buckets_[i].getFile();
+			if (f.length()>0) {	
+				buckets.put(i, null);
+			} else {
+				f.delete();
+			}
+		}			
+				
+		if (!isSBR_) {
+			String bDir = FileManager.getBlockBucketDir();
+			String bucketPrefix = FileManager.BLOCK_BUCKET_PREFIX;
+			BucketSplitter splitter = new BucketSplitter(bucketPrefix, bDir, numBuckets_, buckets);
+			buckets = splitter.splits();
+			for (int i : buckets.keySet()) {				
+				clusterSynchronizer_.insertBlockBucket(bucketPrefix + i);
+			}
+		} else {
+			String bDir = FileManager.getsbrBlockBucketDir();
+			String bucketPrefix = FileManager.SBRBLOCK_BUCKET_PREFIX;
+			BucketSplitter splitter = new BucketSplitter(bucketPrefix, bDir, numBuckets_, buckets);
+			buckets = splitter.splits();
+			for (int i : buckets.keySet()) {				
+				clusterSynchronizer_.insertSBRBucket(bucketPrefix + i);
+			}
+		}
+		
+	}
+ 
 
 	public static boolean isSystemBlock(String blockid) {
 		if(blockid != null && blockid.startsWith("Systemlid")) {
@@ -183,19 +202,19 @@ public class BlockDistributor {
 		}
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * This is special block that contains only systemcode, lid, GID. The purpose of this block is to associate
 	 * duplicate records that have same systemcode/lid and later these duplicates are assigned same EUID and then
 	 * are merged by Master Index Generator.
 	 */
-	
+
 	private void writeSystemBlock(DataObject d) throws Exception {
-	    String GID = d.getFieldValue(0);
+		String GID = d.getFieldValue(0);
 		String systemcode = d.getFieldValue(1);
 		String lid = d.getFieldValue(2);
-		
+
 		String blockid = "Systemlid:"+ systemcode + lid;
 		DataObject sysmatchObject = new DataObject();
 		sysmatchObject.addFieldValue(blockid);
@@ -205,12 +224,12 @@ public class BlockDistributor {
 		int bucketNum = getBucketNum(blockid);
 		Bucket bucket = buckets_[bucketNum];
 		bucket.write(sysmatchObject);
-		
-	//	systemMap.put(systemcode+lid, systemcode+lid);
-	
+
+		//	systemMap.put(systemcode+lid, systemcode+lid);
+
 	}
-	
-	
+
+
 	private void initializeBuckets() throws IOException {
 		long memorySize = 100000000;// bytes
 		long numRecords = 1000000;
@@ -221,29 +240,29 @@ public class BlockDistributor {
 		numBuckets_ = Integer.parseInt(snumbuckets);
 		File[] files = null;
 		if (!isSBR_) {
-		//numBuckets_ = (int)(numRecords*avgRecordSize*bucketFactor/maxBucketSize);
-		  files = FileManager.createBlockBucketFiles(numBuckets_);
+			//numBuckets_ = (int)(numRecords*avgRecordSize*bucketFactor/maxBucketSize);
+			files = FileManager.createBlockBucketFiles(numBuckets_);
 		} else {
-		  files = FileManager.createSbrblockBucketFiles(numBuckets_);
+			files = FileManager.createSbrblockBucketFiles(numBuckets_);
 		}
-		
+
 		buckets_ = new Bucket[numBuckets_];
 		for (int i = 0; i < numBuckets_; i++) {
 			DataObjectWriter dataObjectWriter = new DataObjectFileWriter(files[i].getAbsolutePath(), true);
 			buckets_[i] = new Bucket(dataObjectWriter, files[i]);
 		}		
 	}
-	
-	
-	
+
+
+
 	private int getBucketNum(String id) {
 		long hash = JSHash(id);
 		int bucketNum = (int)(hash%numBuckets_);
 		bucketNum = Math.abs(bucketNum);
 		return bucketNum;
-		
+
 	}
-	
+
 
 	private long JSHash(String str) {
 		long hash = 1315423911;
@@ -251,32 +270,31 @@ public class BlockDistributor {
 	}
 
 	private long JSHash(String str, long hash)
-	   {	      
-	      for(int i = 0; i < str.length(); i++)
-	      {
-	         hash ^= ((hash << 5) + str.charAt(i) + (hash >> 2));
-	      }
-	      return hash;
-	   }
-	
+	{	      
+		for(int i = 0; i < str.length(); i++)
+		{
+			hash ^= ((hash << 5) + str.charAt(i) + (hash >> 2));
+		}
+		return hash;
+	}
+
 	private int countNullBlids = 0;
-	
+
 	private List<String> getBlockIds(DataObject dataObject) throws Exception {		
 		List<String> blockids = new ArrayList<String>(); 
 		for (int i = 0; i < blockDefinitions_.length; i++) {
 			BlockDefinition blockDef = blockDefinitions_[i];
 			List<String> bids = blockDef.getBlockIds(dataObject, inputLk_);
 			if (bids!= null && bids.size() > 0) {
-		      blockids.addAll(bids);
+				blockids.addAll(bids);
 			} else {
 				countNullBlids++;
 			}
 		}
-		
-				
+
 		return blockids;
 	}
-	
+
 	/**
 	 * set match fields data from input Data to the matchDataObject.
 	 * precondtion: matchobject is an empty DataObject.
@@ -289,100 +307,100 @@ public class BlockDistributor {
 	 * @param matchObject top level object to which fields and objects need to be copied from input data
 	 * @param inputData top level input data from which data needs to be copied. 
 	 */
-	
+
 	private void setMatchObject(DataObject matchObject, DataObject inputData) 
 	throws Exception {
-							
+
 		for (int i = 0; i < matchGroups_.length; i++) {
-			
-		    ObjectMeta objectMeta = matchGroups_[i];
-			
+
+			ObjectMeta objectMeta = matchGroups_[i];
+
 			EPath objectEpath = objectMeta.objectEpath;
 			int[] matchFieldIndices = objectMeta.matchFieldPositions;
 			int[] inputFieldIndices = objectMeta.inputFieldPositions;
-						
+
 			if (i == 0) { // first one is the root
 				for (int k = 0; k < matchFieldIndices.length; k++) {
-		
+
 					int matchFieldIndex = matchFieldIndices[k];
-			    	int inputFieldIndex = inputFieldIndices[k];
-										
-			    	String value = inputData.getFieldValue(inputFieldIndex);
-			    	matchObject.setFieldValue(matchFieldIndex, value);
-			    }
-				
+					int inputFieldIndex = inputFieldIndices[k];
+
+					String value = inputData.getFieldValue(inputFieldIndex);
+					matchObject.setFieldValue(matchFieldIndex, value);
+				}
+
 			} else {
-			  
-			   List<DataObject> children = DOEpath.getDataObjectList(
-					objectEpath, inputData, inputLk_);
-			   if (children != null) {			   			
-			     for (int j = 0; j < children.size(); j++) {
-				   DataObject inputChild = children.get(j);  
-				   DataObject child = new DataObject();
-				   DOEpath.addDataObject(objectEpath, matchObject, child, blockLk_);
-			       for (int k = 0; k < matchFieldIndices.length; k++) {			    	
-			    	  int matchFieldIndex = matchFieldIndices[k];
-			    	  int inputFieldIndex = inputFieldIndices[k];			    	
-			    	  String value = inputChild.getFieldValue(inputFieldIndex);
-			    	  child.setFieldValue(matchFieldIndex, value);
-			       }
-			    
-			     }
-			   }
-			  				
-		   }
+
+				List<DataObject> children = DOEpath.getDataObjectList(
+						objectEpath, inputData, inputLk_);
+				if (children != null) {			   			
+					for (int j = 0; j < children.size(); j++) {
+						DataObject inputChild = children.get(j);  
+						DataObject child = new DataObject();
+						DOEpath.addDataObject(objectEpath, matchObject, child, blockLk_);
+						for (int k = 0; k < matchFieldIndices.length; k++) {			    	
+							int matchFieldIndex = matchFieldIndices[k];
+							int inputFieldIndex = inputFieldIndices[k];			    	
+							String value = inputChild.getFieldValue(inputFieldIndex);
+							child.setFieldValue(matchFieldIndex, value);
+						}
+
+					}
+				}
+
+			}
 		}
 	}
-	
+
 	DataObjectReader getReader() throws Exception  {
 		DataObjectReader reader = null;
 		if (reader_ != null) {
 			return reader_;
 		}
- 		//File file = FileManager.getInputGoodFile();				
+		//File file = FileManager.getInputGoodFile();				
 		//DataObjectReader reader = new DataObjectFileReader(file);		
 		//DataObjectReader reader = new DataObjectCreateReader(inputLk_);
 		if (!isSBR_) {
-		   reader = config_.getDataObjectReader();
+			reader = config_.getDataObjectReader();
 		} else {
-			
+
 			File dir = FileManager.getSBRStageDir();				
 			reader = new DataObjectDirReader(dir);
 		}
 		return reader;			
 	}
-	
+
 	void setReader(DataObjectReader reader) throws Exception {
 		reader_ = reader;
 	}
-	
+
 	private DataObject standardize(DataObject d)throws Exception {
-	    String id = d.remove(0); // GID
-	    String syscode = d.remove(0); // syscode
-	    String lid = d.remove(0); //lid
-	    String updateDateTime =  d.remove(0);  // update date
-	    String updateUser = d.remove(0);  // create user
-	    // Pass only object attributes in DataObject
-	    SystemObject so = ObjectNodeUtil.getSystemObject(d, lid, syscode,
+		String id = d.remove(0); // GID
+		String syscode = d.remove(0); // syscode
+		String lid = d.remove(0); //lid
+		String updateDateTime =  d.remove(0);  // update date
+		String updateUser = d.remove(0);  // create user
+		// Pass only object attributes in DataObject
+		SystemObject so = ObjectNodeUtil.getSystemObject(d, lid, syscode,
 				updateDateTime, updateUser);
-	    
-	    mStandardizer.standardize(so);
-	    ObjectNode o = so.getObject();
-	    
-	    DataObject data = ObjectNodeUtil.fromObjectNode(o);
-	    
-	    data.add(0,id);
-	    data.add(1,syscode);
-	    data.add(2,lid);
-	    data.add(3,updateDateTime);
-	    data.add(4,updateUser);
-	    return data;
-		
+
+		mStandardizer.standardize(so);
+		ObjectNode o = so.getObject();
+
+		DataObject data = ObjectNodeUtil.fromObjectNode(o);
+
+		data.add(0,id);
+		data.add(1,syscode);
+		data.add(2,lid);
+		data.add(3,updateDateTime);
+		data.add(4,updateUser);
+		return data;
+
 	}
-	
-	
+
+
 	private ObjectMeta[] groupEpaths(String[] matchEPaths) throws Exception {
-		
+
 		/*
 		 * The algorithm has two parts
 		 * 1.  it creates a Map of {key=childtype, value=List of fields}
@@ -390,7 +408,7 @@ public class BlockDistributor {
 		 * 2. It converts Map to array of ObjectMeta. The first element in ObjectMeta
 		 *    is a primary object (Person).
 		 */
-		
+
 		EPath primaryObject = null;
 		List<String> primaryFields = new ArrayList<String>();
 		Map<String, List<String>> map = new HashMap<String,List<String>>();
@@ -399,37 +417,37 @@ public class BlockDistributor {
 			String objectType = e.getLastChildPath();
 			String lastChildName = e.getLastChildName();
 			String fieldName = e.getFieldTag();
-			
+
 			if (fieldName.equals("blockID")) {
 				// Don't access blockId from input data. 
 				continue;
 			}
-			
+
 			// check if it is primary object, then don't add it to map
 			if (objectType.equals(lastChildName)) {
-			  if (primaryObject == null) {
-			     primaryObject = EPathParser.parse(objectType);
-			  }
-			  primaryFields.add(fieldName);			
+				if (primaryObject == null) {
+					primaryObject = EPathParser.parse(objectType);
+				}
+				primaryFields.add(fieldName);			
 			} else { 
-			  List<String> list = map.get(objectType);
-			  if (list == null) {
-				list = new ArrayList<String>();
-				list.add(fieldName);
-				map.put(objectType, list);
-			  } else {
-				list.add(fieldName);				
-			  }
+				List<String> list = map.get(objectType);
+				if (list == null) {
+					list = new ArrayList<String>();
+					list.add(fieldName);
+					map.put(objectType, list);
+				} else {
+					list.add(fieldName);				
+				}
 			}		    				
 		}
-				
+
 		/*
 		 *  convert map to array of ObjectMeta
 		 */
 		int size = map.size();
-		
+
 		ObjectMeta[] matchGroup = new ObjectMeta[size+1];
-		
+
 		matchGroup[0] = new ObjectMeta();
 		matchGroup[0].objectEpath = primaryObject;
 		//matchGroup[0].partialfieldEpaths = new EPath[primaryFields.size()];
@@ -438,17 +456,17 @@ public class BlockDistributor {
 		Set<Map.Entry<String,List<String>>> set = map.entrySet();
 		Iterator<Map.Entry<String, List<String>>> iterator = set.iterator();
 		for (int i = 1; iterator.hasNext(); i++ ) {
-		   
-		   matchGroup[i] = new ObjectMeta();
-		   Map.Entry<String,List<String>> entry = iterator.next();
-		   matchGroup[i].objectEpath = EPathParser.parse(entry.getKey());
-		   List<String> list = entry.getValue();
-		   setFieldIndices(matchGroup[i], list);
-		   
+
+			matchGroup[i] = new ObjectMeta();
+			Map.Entry<String,List<String>> entry = iterator.next();
+			matchGroup[i].objectEpath = EPathParser.parse(entry.getKey());
+			List<String> list = entry.getValue();
+			setFieldIndices(matchGroup[i], list);
+
 		}
 		return matchGroup;								
 	}
-	
+
 	private void setFieldIndices(ObjectMeta objMeta, List<String> fields) {
 		objMeta.inputFieldPositions = new int[fields.size()];
 		objMeta.matchFieldPositions = new int[fields.size()];
@@ -458,9 +476,9 @@ public class BlockDistributor {
 			objMeta.matchFieldPositions[i] = blockLk_.getFieldIndex(fields.get(i), prefix); 
 		}				
 	}
-	
-		
-	  
+
+
+
 	/**
 	 *  This stores field position for a match field in the input data and the position in the output match 
 	 *  record.
@@ -468,27 +486,27 @@ public class BlockDistributor {
 	 *  
 	 *  
 	 */
-	
+
 	private static class ObjectMeta {
-	   
-	   private EPath objectEpath; // such as Person.Address or Person
-	   private int[] matchFieldPositions;
-	   private int[] inputFieldPositions;
-	   	    	   
+
+		private EPath objectEpath; // such as Person.Address or Person
+		private int[] matchFieldPositions;
+		private int[] inputFieldPositions;
+
 	}
-	
-	
+
+
 	private BlockDefinition[] readBlockConfiguration() throws Exception {
-		
+
 		List<BlockDefinition> blockDefList = config_.getBlockDefinitions();
-		
+
 		BlockDefinition[] blockdefs = new BlockDefinition[blockDefList.size()];
 		blockDefList.toArray(blockdefs);
-				
+
 		return blockdefs;
 	}
-	
-	
 
-			
+
+
+
 }
