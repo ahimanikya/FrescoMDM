@@ -88,12 +88,13 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2">                                    
+                                <td colspan="2">                           
                                     <h:messages styleClass="errorMessages"  layout="list" />
                                 </td>
                             </tr>
                         </table>
                     </h:form>
+
                 </div>
              <br>        
                 <div id="mainDupSource" class="compareResults">
@@ -111,13 +112,23 @@
             //EPathArrayList ePathArrayList = compareDuplicateManager.retrieveEPathArrayList(objScreenObject);
             ArrayList objScreenObjectList = objScreenObject.getSearchResultsConfig();
             SourceHandler sourceHandler = new SourceHandler();
+            PatientDetailsHandler patientDetailsHandler= new PatientDetailsHandler();
 
             
             Object[] personConfigFeilds = sourceHandler.getPersonFieldConfigs().toArray();
             
             int countEnt = 0;
 
-            ArrayList eoArrayList = (ArrayList) session.getAttribute("comapreEuidsArrayList");
+           ArrayList eoArrayList = (ArrayList) session.getAttribute("comapreEuidsArrayList");
+
+			if (request.getParameter("euids") != null) {
+				String[]  compareEuids = request.getParameter("euids").split(",");
+					
+                eoArrayList = patientDetailsHandler.buildCompareEuids(compareEuids);
+
+                //request.setAttribute("comapreEuidsArrayList",eoArrayList);
+				session.setAttribute("comapreEuidsArrayList",eoArrayList);
+            } 
             HashMap resultArrayMapMain = new HashMap();
             HashMap resultArrayMapCompare = new HashMap();
             SystemObject so = null;
@@ -159,9 +170,19 @@
                                                 String potDupStatus = (String) eoHashMapValues.get("Status");
                                                 String potDupId = (String) eoHashMapValues.get("PotDupId");
                                                 if (countEnt > 0) {
-                                                    dupHeading = "<b> " + countEnt + "<sup>" + subscripts[countEnt] + "</sup> Duplicate</b>";
+													if (session.getAttribute("eocomparision") != null ) {
+                                                        dupHeading = "<b> EO " + (countEnt+1) + "</b>";
+													} else {
+                                                       dupHeading = "<b> " + countEnt + "<sup>" + subscripts[countEnt] + "</sup> Duplicate</b>";
+
+													}
                                                 } else if (countEnt == 0) {
-                                                    dupHeading = "<b> Main EUID</b>";
+
+													if (session.getAttribute("eocomparision") != null ) {
+                                                       dupHeading = "<b> EO " + (countEnt+1) + "</b>";
+													} else {
+                                                       dupHeading = "<b> Main EUID</b>";
+													}
                                                     mainEUID = (String) personfieldValuesMapEO.get("EUID");
                                                 }
 
