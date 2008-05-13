@@ -94,7 +94,7 @@ if (results != null)   {
 		//keys.add(fieldConfig.getDisplayName());
 		keys.add(fieldConfig.getName());
 		labelsList.add(fieldConfig.getDisplayName());
-		fullFieldNamesList.add(fieldConfig.getName());
+		fullFieldNamesList.add(fieldConfig.getFullFieldName());
 
     }
 
@@ -147,6 +147,8 @@ if (results != null)   {
                              for (int kc = 0; kc < fullFieldNamesList.size(); kc++) {
 				              %>
                                    <td style="text-align:right">
+								  
+
 								   <%  if ("TransactionNumber".equalsIgnoreCase((String)fullFieldNamesList.toArray()[kc])) { %>
 
                                         <a href="transeuiddetails.jsf?transactionId=<%=valueMap.get("TransactionNumber")%>&function=<%=valueMap.get("Function")%>" >										
