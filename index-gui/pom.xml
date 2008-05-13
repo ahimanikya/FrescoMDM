@@ -173,6 +173,10 @@
                                     <fileset dir="${basedir}/../loader/target">
                                         <include name="loader.jar"></include>
                                     </fileset>
+                                    <fileset dir="${basedir}/../loader">
+                                        <include name="clustersyn.sql" />
+                                        <include name="clustersyn-sqlserver.sql" />
+                                    </fileset>
                                 </copy>
                             </tasks>          
                         </configuration>
