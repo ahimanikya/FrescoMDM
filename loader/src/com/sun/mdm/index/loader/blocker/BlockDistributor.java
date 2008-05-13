@@ -36,27 +36,30 @@ import com.sun.mdm.index.dataobject.DataObject;
 import com.sun.mdm.index.dataobject.DataObjectFileWriter;
 import com.sun.mdm.index.dataobject.DataObjectReader;
 import com.sun.mdm.index.dataobject.DataObjectWriter;
-import com.sun.mdm.index.dataobject.epath.ChildMissingException;
+
 import com.sun.mdm.index.dataobject.epath.DOEpath;
-import com.sun.mdm.index.dataobject.objectdef.DataObjectAdapter;
+
 import com.sun.mdm.index.dataobject.objectdef.Lookup;
 import com.sun.mdm.index.dataobject.objectdef.ObjectDefinition;
-import com.sun.mdm.index.loader.clustersynchronizer.ClusterState;
+
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterSynchronizer;
 import com.sun.mdm.index.loader.common.FileManager;
 import com.sun.mdm.index.loader.config.LoaderConfig;
 import com.sun.mdm.index.loader.matcher.Bucket;
-import com.sun.mdm.index.loader.matcher.Matcher;
+
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.epath.EPath;
 import com.sun.mdm.index.objects.epath.EPathParser;
-import com.sun.mdm.index.dataobject.DataObjectFileReader;
+import com.sun.mdm.index.objects.epath.EPathException;
+
 import com.sun.mdm.index.dataobject.DataObjectDirReader;
 import com.sun.mdm.index.loader.common.ObjectNodeUtil;
 import com.sun.mdm.index.matching.Standardizer;
 import com.sun.mdm.index.matching.StandardizerFactory;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.loader.common.BucketSplitter;
+import com.sun.mdm.index.loader.common.LoaderException;
+
 
 /**
  * Read input data, 
@@ -83,29 +86,33 @@ public class BlockDistributor {
 	private DataObjectReader reader_ = null;
 	private ObjectDefinition inputobd_;
 	private DataObjectWriter inputWriter_;
-	
+
 
 	public BlockDistributor(String[] matchpaths, Lookup inLk, ObjectDefinition inputobd, Lookup blLk, boolean isSBR) 
-	throws Exception {							
-		this.matchEpaths_ = matchpaths;
-		blockDefinitions_ = readBlockConfiguration();
-		this.inputLk_ = inLk;
-		this.blockLk_ = blLk;
-		isSBR_ = isSBR;
-		matchGroups_ = groupEpaths(matchEpaths_);
-		initializeBuckets();	
-		String sisStandardize = config_.getSystemProperty("standardizationMode");
-		if (sisStandardize != null && !isSBR_) { // SBR data is already standardized
-			isStandardize = Boolean.parseBoolean(sisStandardize);
-		}
-		if (isStandardize) { // standardize only if standardize option is set
-			// and block distribution is done for Block buckets
-			mStandardizer = StandardizerFactory.getInstance();
-			inputWriter_ = new DataObjectFileWriter(FileManager.getInputStandardizedFile().getAbsolutePath(), true);
+	throws LoaderException {
+		try {
+			this.matchEpaths_ = matchpaths;
+			blockDefinitions_ = readBlockConfiguration();
+			this.inputLk_ = inLk;
+			this.blockLk_ = blLk;
+			isSBR_ = isSBR;
+			matchGroups_ = groupEpaths(matchEpaths_);
+			initializeBuckets();	
+			String sisStandardize = config_.getSystemProperty("standardizationMode");
+			if (sisStandardize != null && !isSBR_) { // SBR data is already standardized
+				isStandardize = Boolean.parseBoolean(sisStandardize);
+			}
+			if (isStandardize) { // standardize only if standardize option is set
+				// and block distribution is done for Block buckets
+				mStandardizer = StandardizerFactory.getInstance();
+				inputWriter_ = new DataObjectFileWriter(FileManager.getInputStandardizedFile().getAbsolutePath(), true);
 
+			}
+			inputobd_ = inputobd;
+		} catch (Exception ex) {
+			throw new LoaderException(ex);
 		}
-		inputobd_ = inputobd;
-				
+
 	}
 
 
@@ -114,13 +121,15 @@ public class BlockDistributor {
 	 * distributes match Data to different block buckets.
 	 * @throws Exception
 	 */
-	public void distributeBlocks() throws Exception {						
-		DataObjectReader reader = getReader();
+	public void distributeBlocks() throws LoaderException {	
+		DataObject inputdataObject = null;
+		try {
+			DataObjectReader reader = getReader();
 
-		int countRec = 0;
-		while (true) {					
-			DataObject inputdataObject = reader.readDataObject();
-			try {
+			int countRec = 0;
+			while (true) {					
+				inputdataObject = reader.readDataObject();
+
 				if (inputdataObject == null) {
 					break;
 				}		   
@@ -147,22 +156,26 @@ public class BlockDistributor {
 				if (!isSBR_) {
 					writeSystemBlock(inputdataObject);
 				}
-			}  catch (Throwable th) {
+
+			}
+			reader.close();
+			if (isStandardize) {
+				inputWriter_.close();
+			}
+			splitBuckets();
+			logger.info("Number of Input records:" + countRec);
+		}  catch (Throwable th) {
+			if (inputdataObject != null) {
 				logger.severe("DataObject:" + inputdataObject.toString());
-				if (th instanceof Exception) {
-					throw (Exception) th;
-				}
-			}		   						   
+			}
+			if (th instanceof Exception) {
+				throw new LoaderException((LoaderException) th);
+			}
 		}
-		reader.close();
-		if (isStandardize) {
-			inputWriter_.close();
-		}
-		splitBuckets();
-		logger.info("Number of Input records:" + countRec);
 	}
-	
-	private void splitBuckets() throws Exception {
+
+	private void splitBuckets() throws LoaderException {
+
 		HashMap<Integer, DataObjectWriter> buckets = new HashMap<Integer, DataObjectWriter>();
 
 		for (int i = 0; i < buckets_.length; i++) {
@@ -174,7 +187,7 @@ public class BlockDistributor {
 				f.delete();
 			}
 		}			
-				
+
 		if (!isSBR_) {
 			String bDir = FileManager.getBlockBucketDir();
 			String bucketPrefix = FileManager.BLOCK_BUCKET_PREFIX;
@@ -192,9 +205,10 @@ public class BlockDistributor {
 				clusterSynchronizer_.insertSBRBucket(bucketPrefix + i);
 			}
 		}
-		
+
+
 	}
- 
+
 
 	public static boolean isSystemBlock(String blockid) {
 		if(blockid != null && blockid.startsWith("Systemlid")) {
@@ -399,7 +413,7 @@ public class BlockDistributor {
 	}
 
 
-	private ObjectMeta[] groupEpaths(String[] matchEPaths) throws Exception {
+	private ObjectMeta[] groupEpaths(String[] matchEPaths) throws LoaderException {
 
 		/*
 		 * The algorithm has two parts
@@ -409,62 +423,66 @@ public class BlockDistributor {
 		 *    is a primary object (Person).
 		 */
 
-		EPath primaryObject = null;
-		List<String> primaryFields = new ArrayList<String>();
-		Map<String, List<String>> map = new HashMap<String,List<String>>();
-		for (int i = 0; i < matchEPaths.length; i++) {
-			EPath e = EPathParser.parse(matchEPaths[i]);
-			String objectType = e.getLastChildPath();
-			String lastChildName = e.getLastChildName();
-			String fieldName = e.getFieldTag();
+		try {
+			EPath primaryObject = null;
+			List<String> primaryFields = new ArrayList<String>();
+			Map<String, List<String>> map = new HashMap<String,List<String>>();
+			for (int i = 0; i < matchEPaths.length; i++) {
+				EPath e = EPathParser.parse(matchEPaths[i]);
+				String objectType = e.getLastChildPath();
+				String lastChildName = e.getLastChildName();
+				String fieldName = e.getFieldTag();
 
-			if (fieldName.equals("blockID")) {
-				// Don't access blockId from input data. 
-				continue;
+				if (fieldName.equals("blockID")) {
+					// Don't access blockId from input data. 
+					continue;
+				}
+
+				// check if it is primary object, then don't add it to map
+				if (objectType.equals(lastChildName)) {
+					if (primaryObject == null) {
+						primaryObject = EPathParser.parse(objectType);
+					}
+					primaryFields.add(fieldName);			
+				} else { 
+					List<String> list = map.get(objectType);
+					if (list == null) {
+						list = new ArrayList<String>();
+						list.add(fieldName);
+						map.put(objectType, list);
+					} else {
+						list.add(fieldName);				
+					}
+				}		    				
 			}
 
-			// check if it is primary object, then don't add it to map
-			if (objectType.equals(lastChildName)) {
-				if (primaryObject == null) {
-					primaryObject = EPathParser.parse(objectType);
-				}
-				primaryFields.add(fieldName);			
-			} else { 
-				List<String> list = map.get(objectType);
-				if (list == null) {
-					list = new ArrayList<String>();
-					list.add(fieldName);
-					map.put(objectType, list);
-				} else {
-					list.add(fieldName);				
-				}
-			}		    				
+			/*
+			 *  convert map to array of ObjectMeta
+			 */
+			int size = map.size();
+
+			ObjectMeta[] matchGroup = new ObjectMeta[size+1];
+
+			matchGroup[0] = new ObjectMeta();
+			matchGroup[0].objectEpath = primaryObject;
+			//matchGroup[0].partialfieldEpaths = new EPath[primaryFields.size()];
+			//primaryFields.toArray(matchGroup[0].partialfieldEpaths);
+			setFieldIndices(matchGroup[0], primaryFields);
+			Set<Map.Entry<String,List<String>>> set = map.entrySet();
+			Iterator<Map.Entry<String, List<String>>> iterator = set.iterator();
+			for (int i = 1; iterator.hasNext(); i++ ) {
+
+				matchGroup[i] = new ObjectMeta();
+				Map.Entry<String,List<String>> entry = iterator.next();
+				matchGroup[i].objectEpath = EPathParser.parse(entry.getKey());
+				List<String> list = entry.getValue();
+				setFieldIndices(matchGroup[i], list);
+
+			}
+			return matchGroup;	
+		} catch (EPathException epx) {
+			throw new LoaderException(epx);
 		}
-
-		/*
-		 *  convert map to array of ObjectMeta
-		 */
-		int size = map.size();
-
-		ObjectMeta[] matchGroup = new ObjectMeta[size+1];
-
-		matchGroup[0] = new ObjectMeta();
-		matchGroup[0].objectEpath = primaryObject;
-		//matchGroup[0].partialfieldEpaths = new EPath[primaryFields.size()];
-		//primaryFields.toArray(matchGroup[0].partialfieldEpaths);
-		setFieldIndices(matchGroup[0], primaryFields);
-		Set<Map.Entry<String,List<String>>> set = map.entrySet();
-		Iterator<Map.Entry<String, List<String>>> iterator = set.iterator();
-		for (int i = 1; iterator.hasNext(); i++ ) {
-
-			matchGroup[i] = new ObjectMeta();
-			Map.Entry<String,List<String>> entry = iterator.next();
-			matchGroup[i].objectEpath = EPathParser.parse(entry.getKey());
-			List<String> list = entry.getValue();
-			setFieldIndices(matchGroup[i], list);
-
-		}
-		return matchGroup;								
 	}
 
 	private void setFieldIndices(ObjectMeta objMeta, List<String> fields) {
@@ -496,7 +514,7 @@ public class BlockDistributor {
 	}
 
 
-	private BlockDefinition[] readBlockConfiguration() throws Exception {
+	private BlockDefinition[] readBlockConfiguration() throws LoaderException {
 
 		List<BlockDefinition> blockDefList = config_.getBlockDefinitions();
 
