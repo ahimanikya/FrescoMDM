@@ -237,14 +237,15 @@ public class TransactionHandler extends ScreenConfiguration {
                                                     new Integer(screenObject.getID()).intValue(), 
                                                     "View History Search Result");
                     HashMap resultsMap = new HashMap();
-                    resultsMap.put("TransactionNumber", ts.getTransactionObject().getTransactionNumber());
-                    resultsMap.put("EUID1", ts.getTransactionObject().getEUID());
-                    resultsMap.put("EUID2", ts.getTransactionObject().getEUID2());
-                    resultsMap.put("LID", ts.getTransactionObject().getLID());
-                    resultsMap.put("Function", ts.getTransactionObject().getFunction());
-                    resultsMap.put("SystemCode", ts.getTransactionObject().getSystemCode());
-                    resultsMap.put("SystemUser", ts.getTransactionObject().getSystemUser());
-                    resultsMap.put("TimeStamp", ts.getTransactionObject().getTimeStamp());
+                    resultsMap.put(screenObject.getRootObj().getName()+"."+"TransactionNumber", ts.getTransactionObject().getTransactionNumber());
+                    resultsMap.put(screenObject.getRootObj().getName()+"."+"EUID", ts.getTransactionObject().getEUID());
+                    resultsMap.put(screenObject.getRootObj().getName()+"."+"EUID2", ts.getTransactionObject().getEUID2());
+                    resultsMap.put(screenObject.getRootObj().getName()+"."+"LID", ts.getTransactionObject().getLID());
+                    resultsMap.put(screenObject.getRootObj().getName()+"."+"LID2", ts.getTransactionObject().getLID2());
+                    resultsMap.put(screenObject.getRootObj().getName()+"."+"Function", ts.getTransactionObject().getFunction());
+                    resultsMap.put(screenObject.getRootObj().getName()+"."+"SystemCode", ts.getTransactionObject().getSystemCode());
+                    resultsMap.put(screenObject.getRootObj().getName()+"."+"SystemUser", ts.getTransactionObject().getSystemUser());
+                    resultsMap.put(screenObject.getRootObj().getName()+"."+"TimeStamp", ts.getTransactionObject().getTimeStamp());
 
                     resultsArrayList.add(resultsMap);
                 }
