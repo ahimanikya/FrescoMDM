@@ -21,6 +21,71 @@ INPUT.READONLY{
            color:#837F74;           
 }
 
+.searchresults   {
+   font-family: Arial, Helvetica, sans-serif;
+   font-size:12px;
+   background-color:#f9f7de;
+   width: 1024px;
+   visibility:hidden;
+   color:#a4a39e;
+   border-left: 1px solid #6B757B; 
+   border-right: 1px solid #6B757B; 
+   border-bottom: 1px solid #6B757B;
+
+}
+
+.searchresults  table {
+   font-family: Arial, Helvetica, sans-serif;
+   width:100%;
+   font-size:12px;
+   color:#a4a39e;
+
+}
+
+.searchresults  td {
+   font-family: Arial, Helvetica, sans-serif;
+   font-size:12px;
+   color:#a4a39e;
+   padding-left:3px;
+}
+
+.searchresults  table th {
+}
+
+.reportresults   {
+  width:100%;
+  text-align:right;
+  position:relative;
+}
+
+.reportresults  table  {
+  padding-left:3px;
+  padding-top:3px;
+  padding-right:3px;
+  padding-bottom:3px;
+}
+
+.reportresults  table th {
+   font-family: Arial, Helvetica, sans-serif;
+   font-size:12px;
+   color:#a4a39e;
+    background: url(../images/results_head.gif) repeat-x;
+    color:#000;
+    text-decoration:none;		                      
+    border-right: 1px solid #6B757B;           
+    position : relative; /* A must for resizable columns */
+}
+
+.reportresults  td {
+   font-family: Arial, Helvetica, sans-serif;
+   font-size:12px;
+   text-align:right;
+   color:#a4a39e;
+    text-decoration:none;		                               
+    position : relative; /* A must for resizable columns */
+}
+
+
 #reportYUISearch table td input {
 background-image:url(../images/none.gif); /*fake it*/
 }
@@ -389,6 +454,66 @@ width:25px;
 /*
  Duplicate Records styles 
 */
+.duplicaterecords {
+           font-family: Arial, Helvetica, sans-serif;
+           font-size:15px;
+	       color:#837F74;
+           width: 1024px;
+           background-color:#f9f7de;           
+           text-align:left;
+	       vertical-align:middle;	      
+           font-weight:bold;
+           float:left;
+           position:relative;
+	       border-left: 1px solid #6B757B; 
+           border-right: 1px solid #6B757B; 
+           border-top: 1px solid #182442;  
+           border-bottom: 1px solid #6B757B;
+
+}
+.duplicaterecords select {
+           font-family: Arial, Helvetica, sans-serif;
+           font-size:10px;
+	   color:#837F74;
+           text-align:left;
+	   vertical-align:middle;	      
+           font-weight:bold;
+           padding-left:1px; 
+	   padding-right:1px;
+	   padding-top:1px; 
+	   padding-bottom:1px;   
+}
+
+.duplicaterecords  td {
+           font-family: Arial, Helvetica, sans-serif;
+           font-size:12px;
+	       color:#837F74;
+           text-align:left;
+	       vertical-align:middle;	      
+           font-weight:bold;
+		   width:80%;
+	   padding-top:3px; 
+	   padding-bottom:3px;   
+	   padding-left:18px; 
+	   padding-top:3px; 
+	   padding-bottom:3px;   
+}
+
+
+
+.duplicaterecords  p {
+           font-family: Arial, Helvetica, sans-serif;
+           font-size:12px;
+	       color:blue;
+           text-align:left;
+	       vertical-align:middle;	      
+           font-weight:bold;
+		   width:60%;
+	   padding-top:3px; 
+	   padding-bottom:3px;   
+	   padding-left:18px; 
+	   padding-right:5px;
+}
 
 .basicSearch {
            font-family: Arial, Helvetica, sans-serif;
@@ -414,15 +539,16 @@ width:25px;
            text-align:left;
 	   vertical-align:middle;	      
            font-weight:bold;
-	   padding-left:18px; 
-	   padding-right:18px;
            border-left-width:12px;
            border-right-width:12px;
            border-right-color:black;
            border-left-color:black;
+	   padding-left:18px; 
+	   padding-right:18px;
 	   padding-top:3px; 
 	   padding-bottom:3px;   
 }
+
 .basicSearch  th a {
            font-family: Arial, Helvetica, sans-serif;
            font-size:12px;
@@ -623,37 +749,32 @@ width:25px;
            font-family: Arial, Helvetica, sans-serif;
            font-size:12px;
 	   color:#837F74;
-           width:1024px;
+		  width:100%;
            float:left;
            text-align:right;
 	   vertical-align:top;	      
 }
 
 .reportYUISearch table {
-           font-family: Arial, Helvetica, sans-serif;
-           font-size:12px;
+       font-family: Arial, Helvetica, sans-serif;
+       font-size:12px;
 	   color:#837F74;
-           width:1020px;
-           text-align:left;
+		  width:100%;
+       text-align:left;
 	   vertical-align:top;	
-           border-right-style:none;
-           border-right: 1px solid #6B757B;
-           border-left: 1px solid #6B757B;
-           border-top: 1px solid #6B757B;
-           border-bottom: 1px solid #6B757B;
 }
 
 
 .reportYUISearch  #multicolumn{
-           font-family: Arial, Helvetica, sans-serif;
-           font-size:12px;
+       font-family: Arial, Helvetica, sans-serif;
+       font-size:12px;
 	   color:#3b3a36;
-           text-align:left;
+       text-align:left;
 	   vertical-align:top;	      
 	   padding-left:0px; 
 	   padding-right:0px;
 	   padding-top:0px; 
-           width:100px;
+       width:100px;
 	   padding-bottom:0px;       
 }
 
@@ -663,10 +784,10 @@ width:25px;
 }
 
 .reportYUISearch  td, a{
-           font-family: Arial, Helvetica, sans-serif;
-           font-size:12px;
+       font-family: Arial, Helvetica, sans-serif;
+       font-size:12px;
 	   color:#3b3a36;
-           text-align:left;
+       text-align:left;
 	   vertical-align:top;	      
 	   padding-left:0px; 
 	   padding-right:0px;
@@ -675,10 +796,10 @@ width:25px;
 }
 
 .reportYUISearch  td, span{
-           font-family: Arial, Helvetica, sans-serif;
-           font-size:12px;
+       font-family: Arial, Helvetica, sans-serif;
+       font-size:12px;
 	   color:#3b3a36;
-           text-align:left;
+       text-align:left;
 	   vertical-align:top;	      
 	   padding-left:0px; 
 	   padding-right:0px;
@@ -707,7 +828,7 @@ width:25px;
           font-size:12px;
           font-weight:bold;
 	      color:#454440;
-          color:#000;
+         color:#000;
           text-decoration:none;		                      
           position : relative; /* A must for resizable columns */
 	   padding-left:0px; 
@@ -724,7 +845,8 @@ width:25px;
 
 .columnclass {
  width:180px;
-    
+ text-align:left;
+ padding-left:0px;
 }
 
 .tablehead {
@@ -1145,7 +1267,7 @@ a.button:active span {
     padding-left:0px;
     padding-right:0px;
     height:93px;
-    color:white;
+    color:red;
     font-size:10px;    
 }
 
@@ -1160,46 +1282,38 @@ a.button:active span {
 
 
 .errorMessages {
-    background: url(../images/error_small.JPG);
-    background-position:0% 0%;
+    background: url(../images/error_medium.gif);
+    background-position:1% 1%;
     background-repeat:no-repeat;
-    background-color:#3e4450;
     vertical-align:top;
-    height:60px;
-    color:white;
-    font-size:10px;    
-    padding-top:5px;
-    padding-bottom:0px;
-    padding-left:50px;
-    padding-right:0px;
+	font-size:10px;    
+    background-color:#3e4450;
+    padding-bottom:10px;
+    padding-left:70px;
+    padding-top:10px;
+    padding-right:10px;
+    color:#ffffff;
 }
 
 .errorMessages li {
+	font-family: Arial, Helvetica, sans-serif;
     vertical-align:top;
-    padding-top:0px;
-    color:#ffffff;
     position:relative;
-    width:291px;
-    padding-top:5px;
-    padding-bottom:0px;
-    padding-left:0px;
-    padding-right:0px;
-    font-size:10px;    
+	font-size:10px;    
 }
 
 .infoMessages {
     background: url(../images/success.jpg);
-    background-position:0% 0%;
+    background-position:1% 1%;
     background-repeat:no-repeat;
-    background-color:#3e4450;
     vertical-align:top;
-    height:60px;
-    color:white;
-    font-size:10px;    
-    padding-top:5px;
-    padding-bottom:0px;
-    padding-left:50px;
-    padding-right:0px;
+	font-size:10px;    
+    background-color:#3e4450;
+    padding-bottom:10px;
+    padding-left:70px;
+    padding-top:10px;
+    padding-right:10px;
+    color:#ffffff;
 }
 
 .infoMessages li {
@@ -1222,7 +1336,6 @@ a.button:active span {
     background-color:#3e4450;
     vertical-align:top;
     height:60px;
-    color:white;
     font-size:10px;    
     padding-top:5px;
     padding-bottom:0px;
@@ -1340,7 +1453,7 @@ a.button:active span {
     font-family: Arial, Helvetica, sans-serif;
     font-size:12px;
     font-weight:normal;
-	color:GREEN;
+	color:green;
     text-align:left;
     vertical-align:top;         
 }
@@ -1383,17 +1496,17 @@ a.button:active span {
     padding-left:0px;
     padding-right:0px;
     padding-bottom:0px;
-    VISIBILITY: visible; 
+    VISIBILITY: hidden; 
     WIDTH: 310px; 
     POSITION: absolute;  
     OVERFLOW: auto; 
     HEIGHT: 180px; 
-    text-align:center;
+    text-align:left;
     BACKGROUND-COLOR: #c4c8e1; 
-    BORDER-RIGHT:  #000099 thin solid; 
-    BORDER-TOP: #000099 thin solid; 
-    BORDER-LEFT: #000099 thin solid; 
-    BORDER-BOTTOM:#000099 thin solid;
+    BORDER-RIGHT:  #000099 1px solid; 
+    BORDER-TOP: #000099 1px solid; 
+    BORDER-LEFT: #000099 1px solid; 
+    BORDER-BOTTOM:#000099 1px solid;
 }
 .alert table th
 {
@@ -1403,7 +1516,15 @@ a.button:active span {
     padding-right:0px;
     padding-bottom:0px;
     color:#ffffff;
-    width:100%;
+}
+
+.alert table td
+{
+    font-size:12px;
+    padding-top:3px;
+    padding-left:3px;
+    padding-right:3px;
+    padding-bottom:3px;
     background: url(../images/alert_head.JPG) repeat-x;
 }
 
@@ -1416,7 +1537,7 @@ a.button:active span {
     padding-left:0px;
     padding-right:0px;
     padding-bottom:0px;
-    text-align:center;
+    text-align:left;
     vertical-align:top;         
 }
 
@@ -1432,13 +1553,14 @@ a.button:active span {
     POSITION: absolute;  
     OVERFLOW: auto; 
     HEIGHT: 180px; 
-    text-align:center;
+    text-align:left;
     BACKGROUND-COLOR: #FAFBE4; 
-    BORDER-RIGHT:  #000099 thin solid; 
-    BORDER-TOP: #000099 thin solid; 
-    BORDER-LEFT: #000099 thin solid; 
-    BORDER-BOTTOM:#000099 thin solid;
+    BORDER-RIGHT:  #000099 1px solid; 
+    BORDER-TOP: #000099 1px solid; 
+    BORDER-LEFT: #000099 1px solid; 
+    BORDER-BOTTOM:#000099 1px solid;
 }
+
 .alertSource table th
 {
     font-size:12px;
@@ -2544,4 +2666,41 @@ a.navbuttonselected:active span {
     background-position: bottom left;
     /*padding: 6px 0 4px 18px;*/ /* push text down 1px */
     padding: 5px 0 5px 18px; 
+}
+
+.minorobjects {
+  BORDER-RIGHT: #91bedb 1px solid; 
+  BORDER-TOP: #91bedb 1px solid; 
+  PADDING-LEFT: 1px;
+  BORDER-LEFT: #91bedb 1px solid; 
+  PADDING-TOP: 0px;
+  BORDER-BOTTOM: #91bedb 1px solid; 
+  BACKGROUND-REPEAT: no-repeat; 
+  POSITION: relative;
+  font-family: Arial, Helvetica, sans-serif; 
+  color: #6B6D6B; 
+  font-size: 12px; 
+  text-align: left; 
+
+}
+
+.minorobjects   p {
+     font-family: Arial, Helvetica, sans-serif;
+     font-size:12px;
+	 color:blue;
+     text-align:left;
+	 vertical-align:middle;	      
+     font-weight:bold;
+	 width:60%;
+	 padding-left:18px; 
+	 padding-right:5px;
+}
+
+.minorobjects table {
+   cellpadding:5px;
+}
+.minorobjects td {
+  padding-left:18px; 
+   PADDING-TOP: 2px;
+   PADDING-Bottom: 2px;
 }
