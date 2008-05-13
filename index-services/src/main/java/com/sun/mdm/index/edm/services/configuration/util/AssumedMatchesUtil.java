@@ -70,10 +70,6 @@ public class AssumedMatchesUtil extends ScreenUtil  {
         addSearchField(nodeConfigObj.getName(), FIELD_NAME_EUID, "EUID",
             FieldConfig.GUI_TYPE_TEXTBOX, "", DEFAULT_FIELD_LENGTH, null,
             ObjectField.OBJECTMETA_STRING_TYPE, true, searchFieldList);
-        addSearchField(nodeConfigObj.getName(), FIELD_NAME_MATCHING_STATUS,
-            "Status", FieldConfig.GUI_TYPE_MENULIST, 
-            ValidationService.CONFIG_MODULE_RESOLVETYPE, DEFAULT_FIELD_LENGTH, null,
-            ObjectField.OBJECTMETA_STRING_TYPE, false, searchFieldList);
         addSearchField(nodeConfigObj.getName(), FIELD_NAME_SYSTEM, "System",
             FieldConfig.GUI_TYPE_MENULIST, 
             ValidationService.CONFIG_MODULE_SYSTEM, DEFAULT_FIELD_LENGTH, null,
