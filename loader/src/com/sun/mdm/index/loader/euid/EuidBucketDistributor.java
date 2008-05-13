@@ -25,12 +25,16 @@ package com.sun.mdm.index.loader.euid;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import com.sun.mdm.index.dataobject.DataObject;
 import com.sun.mdm.index.dataobject.DataObjectFileWriter;
 import com.sun.mdm.index.dataobject.DataObjectWriter;
+import com.sun.mdm.index.dataobject.DataObjectFileReader;
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterSynchronizer;
+import com.sun.mdm.index.loader.common.BucketSplitter;
 import com.sun.mdm.index.loader.config.LoaderConfig;
+import java.io.File;
 
 /**
  * distribute the input file or good file records into various euid buckets based
@@ -52,6 +56,7 @@ public class EuidBucketDistributor {
 	private int numBucket;
 
 	private HashMap<Integer, DataObjectWriter> buckets = new HashMap<Integer, DataObjectWriter>();
+	private HashSet<Integer> removeIds = new HashSet<Integer>();
 
 	ClusterSynchronizer clusterSynchronizer = ClusterSynchronizer.getInstance();
 
@@ -69,6 +74,7 @@ public class EuidBucketDistributor {
 		bucketDir = workingDir + "/euid/";
 
 		numBucket = Integer.parseInt(config.getSystemProperty("numEUIDBuckets"));
+		
 
 	}
 
@@ -104,7 +110,7 @@ public class EuidBucketDistributor {
 	 * @throws IOException
 	 */
 	private DataObjectWriter getDataObjectWriter(int bucketid)
-			throws IOException {
+	throws IOException {
 		DataObjectWriter w = buckets.get(bucketid);
 
 		if (w == null) {
@@ -128,10 +134,14 @@ public class EuidBucketDistributor {
 		int lastEightDigit = b.length - 8;
 
 		String s = new String(b, lastEightDigit, 8);
+		int i = Math.abs(s.hashCode());
 
-		int i = Integer.parseInt(s);
+		//int i = Integer.parseInt(s);
 
-		return i % numBucket;
+		int bid =  i % numBucket;
+
+
+		return bid + initFileNum;
 	}
 
 	/**
@@ -140,11 +150,105 @@ public class EuidBucketDistributor {
 	 * 
 	 * @throws IOException
 	 */
-	public void close() throws IOException {
+	public void close() throws IOException, Exception {
 		for (int i : buckets.keySet()) {
 			buckets.get(i).close();
+
+			//	clusterSynchronizer.insertEUIDBucket(EUID_BUCKET_PREFIX + i);
+		}
+		splits();				
+	}
+
+
+	private int maxFileSize = 20000000;;
+
+	private int initFileNum =  0;
+
+
+	private void splits() throws Exception {
+		BucketSplitter splitter = new BucketSplitter(EUID_BUCKET_PREFIX, bucketDir, numBucket, buckets);
+		buckets = splitter.splits();
+		for (int i : buckets.keySet()) {				
+			clusterSynchronizer.insertBlockBucket(EUID_BUCKET_PREFIX + i);
+		}
+		/*
+		boolean foundsplit = true;
+		initFileNum+= numBucket;
+		numBucket = 11;
+		while (foundsplit) {
+			foundsplit = false;
+			HashMap<Integer, DataObjectWriter> curBuckets = new HashMap<Integer, DataObjectWriter>();
+			curBuckets.putAll(buckets);
+			
+			for (int i : curBuckets.keySet()) {
+				boolean sf = split(bucketDir, EUID_BUCKET_PREFIX + i, i);
+				if (sf == true) {
+					foundsplit = true;
+				}
+			}
+		}
+		for (int i : removeIds) {
+			buckets.remove(i);
+		}
+
+		for (int i : buckets.keySet()) {				
 			clusterSynchronizer.insertEUIDBucket(EUID_BUCKET_PREFIX + i);
 		}
+		*/
 	}
+
+
+	private boolean split(String dir, String file, int bindex) throws IOException, Exception {
+		boolean splitFlag = false;
+		String firsteuid = null;
+		File f = new File(dir, file);
+
+		if (f.length() > maxFileSize ) {
+
+			splitFlag = true;
+
+			DataObjectFileReader reader = new DataObjectFileReader(f.getAbsolutePath(), true);
+			boolean foundTwoEuid = false;
+			while (true) {
+				DataObject d = reader.readDataObject();
+				if (d == null) {
+					break;
+				}
+				String euid = d.getFieldValue(0);
+				if (firsteuid == null) {
+					firsteuid = euid;
+				}
+
+				if (!firsteuid.equals(euid)) {
+					foundTwoEuid = true;
+				}
+
+				int bid = getBucketID(euid);
+				writeDataObject(d, bid);
+			}
+			reader.close();
+			f.delete();
+			removeIds.add(bindex);
+			for (int i : buckets.keySet()) {
+				if (i >= initFileNum) {
+					buckets.get(i).close();
+				}			
+				//	clusterSynchronizer.insertEUIDBucket(EUID_BUCKET_PREFIX + i);
+			}
+
+			if (foundTwoEuid == false) {
+				throw new Exception("EUID Bucket can't be split.");
+			}
+			initFileNum+= numBucket;
+			if (numBucket > 2) {		
+				numBucket = numBucket - 2;
+			} else {
+				numBucket = 11;
+			}
+
+		}				
+		return splitFlag;
+	}
+
 
 }
