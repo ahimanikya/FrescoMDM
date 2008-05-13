@@ -22,9 +22,7 @@
  */
 package com.sun.mdm.index.loader.main;
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.logging.Logger;
 
 import com.sun.mdm.index.dataobject.objectdef.Lookup;
 import com.sun.mdm.index.dataobject.objectdef.Field;
@@ -35,7 +33,6 @@ import com.sun.mdm.index.loader.clustersynchronizer.ClusterSynchronizer;
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterState;
 import com.sun.mdm.index.loader.common.FileManager;
 import com.sun.mdm.index.loader.common.ObjectNodeUtil;
-import com.sun.mdm.index.loader.common.Util;
 import com.sun.mdm.index.loader.matcher.Matcher;
 import com.sun.mdm.index.loader.config.LoaderConfig;
 import com.sun.mdm.index.loader.euid.EuidIndexAssigner;
@@ -44,9 +41,11 @@ import com.sun.mdm.index.loader.masterindex.MasterIndex;
 import com.sun.mdm.index.loader.masterindex.PotDupGenerator;
 import com.sun.mdm.index.loader.sqlloader.BulkLoader;
 import com.sun.mdm.index.configurator.ConfigurationService;
+import com.sun.mdm.index.loader.util.Localizer;
+import net.java.hulp.i18n.Logger;
 
-
-/** Main driver class that bulk Match  and load Master Data to master index schema. 
+/** 
+ *  Main driver class that bulk Match  and load Master Data to master index schema. 
  *  This in turn invokes:
  *  BlockDistributor: to distribute blocks to Bucket file.
  *  Matcher: to do match operation on records within a block
@@ -56,14 +55,14 @@ import com.sun.mdm.index.configurator.ConfigurationService;
  *  Database Loader: to load data into master index
  *  Potential duplicate Generator: To generate potential duplicates
  * 
- * @author Swaranjit Dua
- *
+ * @author Swaranjit Dua, Charles Ye
  */
 
 public class BulkMatcherLoader {
 
-	private static Logger logger = Logger.getLogger(BulkMatcherLoader.class
-			.getName());
+	private static Logger logger = Logger.getLogger("com.sun.mdm.index.loader.main.BulkMatcherLoader");
+	private static Localizer localizer = Localizer.getInstance();
+	    
 	private LoaderConfig config_ = LoaderConfig.getInstance();
 	private String[] matchPaths_;
 	private String[] sbrmatchPaths_;
@@ -87,19 +86,20 @@ public class BulkMatcherLoader {
 	private String dateFormatString_;
 
 	public BulkMatcherLoader() throws Exception {
+		
 		RuntimeStats();
 		new LoaderLogManager().init();
-		logger.info("bulk_boader_started");
+		logger.info(localizer.x("LDR001: Bulk Loader Started"));
 
 		config_.validation();
 		loadConfig();
 		ConfigurationService.getInstance();	
-		logger.info("configuation_loaded");
+		logger.info(localizer.x("LDR002: Configuration loaded"));
 
 		if (isMasterLoader_) {
-			logger.info("master_loader:" + loaderName_);
+			logger.info(localizer.x("LDR003: Master Loader: {0}", loaderName_));
 		} else {
-			logger.info("slave_loader:" + loaderName_);
+			logger.info(localizer.x("LDR004: Slave Loader: {0}", loaderName_));
 		}
 
 		ObjectNodeUtil.initDataObjectAdapter();	
@@ -116,14 +116,14 @@ public class BulkMatcherLoader {
 					clusterSynchronizer_.setClusterState(ClusterState.BLOCK_DISTRIBUTION);		
 					BlockDistributor blockDistributor = new BlockDistributor(matchPaths_, inputLookup_, inputobd_, blockLk_, false);	
 					RuntimeStats();
-					logger.info("block_distribution_started");
+					logger.info(localizer.x("LDR005: Block Distribution Started"));
 					blockDistributor.distributeBlocks();
-					logger.info("block_distribution_completed");
+					logger.info(localizer.x("LDR006: Block Distribution Completed"));
 					RuntimeStats();
 
 					clusterSynchronizer_.setClusterState(ClusterState.MATCHING);	    
 				} else {
-					logger.info("waiting_for_block_distribution");
+					logger.info(localizer.x("LDR007: Waiting for Block Distribution"));
 					clusterSynchronizer_.waitMatchingReady();		 
 				}
 			}
@@ -131,18 +131,18 @@ public class BulkMatcherLoader {
 			if (loadMode_ == BLOCKDISTRIBUTE_ONLY) {
 				return;
 			}
-			logger.info("matcher_started");	
+			logger.info(localizer.x("LDR008: Matcher Started"));
 			Matcher matcher = new Matcher(matchPaths_, matchTypes_, blockLk_, false, dateFormatString_);
 			matcher.match();
-			logger.info("matching_done");
+			logger.info(localizer.x("LDR009: Matching Done"));
 			RuntimeStats();
 
 			FileManager.deleteBlockDir(false);
 			if (ismatchAnalyzer) {
 				return;
 			}
-			logger.info("EUID_Assigner_started");	
-
+				
+			logger.info(localizer.x("LDR010: EUID Assigner Started"));
 			if (isMasterLoader_) { 
 				EuidIndexAssigner euidAssigner = new EuidIndexAssigner();
 				euidAssigner.start();
@@ -150,22 +150,18 @@ public class BulkMatcherLoader {
 				clusterSynchronizer_.waitMasterIndexGenerationReady(); 
 			}
 			RuntimeStats();
-
 			FileManager.deleteMatchDir(false);
-
-			logger.info("EUID_Assigner_Done");
-
+			logger.info(localizer.x("LDR011: EUID Assigner Done"));
 		}
 
-		if (loadMode_ != UPTO_EUIDASSIGN) {  // Do following operations only if mode is not EUIDASSIGN	 
-			logger.info("master_index_generation_started");	
+		if (loadMode_ != UPTO_EUIDASSIGN) {  // Do following operations only if mode is not EUIDASSIGN
+			logger.info(localizer.x("LDR012: Master Index Generation Started"));
 			MasterIndex masterIndex = new MasterIndex();
 			masterIndex.generateMasterIndex();
 
 			RuntimeStats();
 			if (loadMode_ == MIGENERATE_ONLY ) {
-				logger.info("Master Index Generated");
-
+				logger.info(localizer.x("LDR013: Master Index Generated"));
 				System.exit(0);
 			}
 
@@ -177,37 +173,32 @@ public class BulkMatcherLoader {
 			if (isMasterLoader_) {
 				clusterSynchronizer_.waitMasterIndexDone();
 			}
-
 			FileManager.deleteEUIDDir(false);
+			logger.info(localizer.x("LDR014: Master Index Generation Completed"));
 
-			logger.info("master_index_generation_completed");
-
-			logger.info("potential_duplicates_started");
-
+			logger.info(localizer.x("LDR015: Potential Duplicates Started"));
 			if (isMasterLoader_) { 	 
 				clusterSynchronizer_.setClusterState(ClusterState.POT_DUPLICATE_BLOCK);							
 				BlockDistributor blockDistributor = new BlockDistributor(sbrmatchPaths_, sbrLookup_, inputobd_,  sbrblockLk_, true);	
 				blockDistributor.distributeBlocks();
-				logger.info("Potental Dups SBR block distribution completed");
+				logger.info(localizer.x("LDR016: Potental Duplicates SBR Block Distribution Completed"));			
 				clusterSynchronizer_.setClusterState(ClusterState.POT_DUPLICATE_MATCH);	    
 			} else {
 				//logger.info("waiting for Pot Dup SBR block distribution to be completed");
 				clusterSynchronizer_.waitSBRMatchingReady();		 
 			}
 
-
+			logger.info(localizer.x("LDR017: Potential Duplicates Maching Started"));	
 			Matcher matcher = new Matcher(sbrmatchPaths_, matchTypes_, sbrblockLk_, true, dateFormatString_);
 			matcher.match();
-			logger.info("Potental Dups maching completed");
+			logger.info(localizer.x("LDR018: Potential Duplicates Maching Completed"));			
 			FileManager.deleteSBRBlockDir(false);
 			FileManager.deleteSBRInputDir(false);
 			if (isMasterLoader_) { 	 
 				PotDupGenerator potGen = new PotDupGenerator();
 				potGen.generatePotDups();
 			}
-
-			logger.info("Potential duplicates completed");
-
+			logger.info(localizer.x("LDR019: Potential Duplicates Completed"));
 			FileManager.deleteSBRMatchDir(false);
 
 			if (bulkLoad) {	 
@@ -215,9 +206,7 @@ public class BulkMatcherLoader {
 				bl.load(); 
 			}
 		}
-
-		logger.info("Bulk Loader Completed");
-
+		logger.info(localizer.x("LDR020: Bulk Loader Completed"));
 	}
 
 	private void cleanDirs() {
@@ -290,11 +279,8 @@ public class BulkMatcherLoader {
 		try {		 
 			BulkMatcherLoader bulkMatcher = new BulkMatcherLoader();
 			bulkMatcher.bulkMatchLoad();
-
 		} catch (Throwable ex) {
-			logger.severe(ex + ex.getMessage());
-			logger.severe(Util.getStackTrace(ex));
-			ex.printStackTrace();
+			logger.severe(localizer.x("LDR024: Bulk Loader failed: {0}", ex.getMessage()), ex);
 		}			
 	}
 
@@ -403,10 +389,8 @@ public class BulkMatcherLoader {
 		long free = rt.freeMemory();
 		long total = rt.totalMemory();
 		long max = rt.maxMemory();
-
-		logger.info("Max Memory: " + max/1000000 + "M");
-		logger.info("total Memory: " + total/1000000 + "M");
-		logger.info("free Memory: " + free/1000000 + "M");
-
+		logger.info(localizer.x("LDR021: Maximum Memory: {0}", "" + max/10000 + "M"));
+		logger.info(localizer.x("LDR022: Total Memory: {0}", "" + total/10000 + "M"));
+		logger.info(localizer.x("LDR023: Free Memory: {0}", "" + free/10000 + "M"));
 	}
 }
