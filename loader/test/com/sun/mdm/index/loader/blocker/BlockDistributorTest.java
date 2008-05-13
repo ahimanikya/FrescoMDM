@@ -260,7 +260,7 @@ public class BlockDistributorTest extends TestCase {
 			
 			String blockFileName = config.getSystemProperty("workingDir") + File.separatorChar 
 							  	   + "block" + File.separatorChar
-							  	   + "BlockB_1.txt";
+							  	   + "BlockB_0";
 			DataObject expected[] = new DataObject[] {new DataObject("Systemlid:CMH0000000018|1|CMH|0000000018"),
 													  new DataObject()};
 			DataObjectReader sources = new DataObjectFileReader(blockFileName);
@@ -291,7 +291,7 @@ public class BlockDistributorTest extends TestCase {
 			
 			String blockFileName = config.getSystemProperty("workingDir") + File.separatorChar 
 							  	   + "block" + File.separatorChar
-							  	   + "BlockB_1.txt";
+							  	   + "BlockB_0";
 			DataObject expected[] = new DataObject[] {new DataObject("ID0:E421|1|CMH|0000000018|ELIZABETH|FULL#$MAIN|123||St"),
 											  		  new DataObject("Systemlid:CMH0000000018|1|CMH|0000000018"),
 											  		  new DataObject()};
@@ -325,7 +325,7 @@ public class BlockDistributorTest extends TestCase {
 
 			String blockFileName = config.getSystemProperty("workingDir")
 					+ File.separatorChar + "block" + File.separatorChar
-					+ "BlockB_1.txt";
+					+ "BlockB_0";
 			DataObject expected[] = new DataObject[] {
 					new DataObject("ID1:FAL|1|CMH|0000000018|ELIZABETH|FULL#$MAIN|123||St"),
 					new DataObject("Systemlid:CMH0000000018|1|CMH|0000000018"),
@@ -360,7 +360,7 @@ public class BlockDistributorTest extends TestCase {
 
 			String blockFileName = config.getSystemProperty("workingDir")
 					+ File.separatorChar + "block" + File.separatorChar
-					+ "BlockB_1.txt";
+					+ "BlockB_0";
 			DataObject expected[] = new DataObject[] {
 					new DataObject("ID2:482-76-0425|1|CMH|0000000018|ELIZABETH|FULL#$MAIN|123||St"),
 					new DataObject("Systemlid:CMH0000000018|1|CMH|0000000018"),
@@ -401,7 +401,7 @@ public class BlockDistributorTest extends TestCase {
 
 			String blockFileName = config.getSystemProperty("workingDir")
 					+ File.separatorChar + "block" + File.separatorChar
-					+ "BlockB_1.txt";
+					+ "BlockB_0";
 			
 			DataObject expected[] = new DataObject[] {
 					new DataObject("ID0:E421|1|CMH|0000000018|ELIZABETH|FULL#$MAIN|123||St"),
@@ -445,7 +445,7 @@ public class BlockDistributorTest extends TestCase {
 
 			String blockFileName = config.getSystemProperty("workingDir")
 					+ File.separatorChar + "block" + File.separatorChar
-					+ "BlockB_1.txt";
+					+ "BlockB_0";
 			
 			DataObject expected[] = new DataObject[] {
 					new DataObject("ID0:E421|1|CMH|0000000018|ELIZABETH|FULL#$MAIN|123||St"),
@@ -489,7 +489,7 @@ public class BlockDistributorTest extends TestCase {
 
 			String blockFileName = config.getSystemProperty("workingDir")
 					+ File.separatorChar + "block" + File.separatorChar
-					+ "BlockB_1.txt";
+					+ "BlockB_0";
 			
 			DataObject expected[] = new DataObject[] {
 					new DataObject("ID1:FAL|1|CMH|0000000018|ELIZABETH|FULL#$MAIN|123||St"),
@@ -551,7 +551,7 @@ public class BlockDistributorTest extends TestCase {
 
 			String blockFileName = config.getSystemProperty("workingDir")
 					+ File.separatorChar + "block" + File.separatorChar
-					+ "BlockB_1.txt";
+					+ "BlockB_0";
 			
 			DataObject expected[] = new DataObject[] {
 					new DataObject("ID0:E421|1|CMH|0000000018|ELIZABETH|FULL#$MAIN|123||St"),
@@ -600,7 +600,7 @@ public class BlockDistributorTest extends TestCase {
 
 			String blockFileName = config.getSystemProperty("workingDir")
 					+ File.separatorChar + "block" + File.separatorChar
-					+ "BlockB_1.txt";
+					+ "BlockB_0";
 						
 			DataObject expected[] = new DataObject[] {
 					//E421E421FALFAL ?
@@ -647,7 +647,7 @@ public class BlockDistributorTest extends TestCase {
 
 			String blockFileName = config.getSystemProperty("workingDir")
 					+ File.separatorChar + "block" + File.separatorChar
-					+ "BlockB_1.txt";
+					+ "BlockB_0";
 								
 			// E421E421? FALFAL?
 			DataObject expected[] = new DataObject[] {
@@ -700,7 +700,7 @@ public class BlockDistributorTest extends TestCase {
 
 			String blockFileName = config.getSystemProperty("workingDir")
 					+ File.separatorChar + "block" + File.separatorChar
-					+ "BlockB_1.txt";
+					+ "BlockB_0";
 											
 			// E421E421? FALFAL?
 			DataObject expected[] = new DataObject[] {
@@ -739,7 +739,7 @@ public class BlockDistributorTest extends TestCase {
 
 			String blockFileName = config.getSystemProperty("workingDir")
 					+ File.separatorChar + "block" + File.separatorChar
-					+ "BlockB_1.txt";
+					+ "BlockB_0";
 														
 			DataObject expected[] = new DataObject[] {
 					new DataObject("ID0:E421|1|CMH|0000000018|ELIZABETH|FULL#$MAIN|123||St"),
@@ -779,7 +779,7 @@ public class BlockDistributorTest extends TestCase {
 
 			String blockFileName = config.getSystemProperty("workingDir")
 					+ File.separatorChar + "block" + File.separatorChar
-					+ "BlockB_1.txt";
+					+ "BlockB_0";
 														
 			DataObject expected[] = new DataObject[] {
 					new DataObject("ID1:182-76-0425|1|CMH|0000000018|ELIZABETH|FULL#$MAIN|123||St"),
@@ -819,7 +819,7 @@ public class BlockDistributorTest extends TestCase {
 
 			String blockFileName = config.getSystemProperty("workingDir")
 					+ File.separatorChar + "block" + File.separatorChar
-					+ "BlockB_1.txt";
+					+ "BlockB_0";
 														
 			DataObject expected[] = new DataObject[] {
 					new DataObject("ID1:182-76-0425|1|CMH|0000000018|ELIZABETH|FULL#$MAIN|123||St"),
