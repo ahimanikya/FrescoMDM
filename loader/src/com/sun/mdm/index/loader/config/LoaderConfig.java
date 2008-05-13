@@ -33,8 +33,6 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -61,7 +59,10 @@ import com.sun.mdm.index.dataobject.objectdef.ObjectDefinitionBuilder;
 import com.sun.mdm.index.idgen.EuidGenerator;
 import com.sun.mdm.index.loader.blocker.BlockDefinition;
 import com.sun.mdm.index.loader.euid.LoaderEuidGenerator;
+import com.sun.mdm.index.loader.util.Localizer;
 import com.sun.mdm.index.dataobject.DataObjectFileReader;
+import com.sun.mdm.index.loader.util.Localizer;
+import net.java.hulp.i18n.Logger;
 
 /**
  * LoaderConfig bulkloader configuration class
@@ -69,8 +70,9 @@ import com.sun.mdm.index.dataobject.DataObjectFileReader;
  * @author	Sujit Biswas, Charles Ye
  */
 public class LoaderConfig {
-	private static Logger logger = Logger.getLogger(LoaderConfig.class.getName(), Resource.BUNDLE_NAME);
-	
+	private static Logger logger = Logger.getLogger("com.sun.mdm.index.loader.config.LoaderConfig");
+	private static Localizer localizer = Localizer.getInstance();
+		
 	private static long MB = 1024 * 1024;
 	private static long KB = 1024;
 	private static long WEIGHT = 4;
@@ -117,9 +119,8 @@ public class LoaderConfig {
 	private void init(String filename) {
 		try {
 			doc = getDocument(filename);
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.log(Level.CONFIG, e.getMessage());
+		} catch (Exception ex) {
+			logger.severe(localizer.x("LDR025: LoaderCofig failed initialization : {0}", ex.getMessage()), ex);
 		}
 
 		initSystemProperties();
@@ -179,8 +180,8 @@ public class LoaderConfig {
 				euidGenerator.setParameter(name, Integer.valueOf(value));
 			}
 
-		} catch (Exception e) {
-			logger.info(e.getMessage());
+		} catch (Exception ex) {
+			logger.severe(localizer.x("LDR026: LoaderCofig failed to initialize EuidGenerator : {0}", ex.getMessage()), ex);
 		}
 	}
 
@@ -198,9 +199,9 @@ public class LoaderConfig {
 			} else {
 				euidGenerator = new LoaderEuidGenerator();
 			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception ex) {
+		logger.severe(localizer.x("LDR027: LoaderCofig failed to initialize Loader EuidGenerator : {0}", ex.getMessage()), ex);
+			
 		}
 
 	}
@@ -234,8 +235,8 @@ public class LoaderConfig {
 				matchFieldTypes.add(s);
 			}
 
-		} catch (XPathExpressionException e) {
-			logger.info(e.getMessage());
+		} catch (XPathExpressionException ex) {
+			logger.severe(localizer.x("LDR028: LoaderCofig failed to initialize match fields : {0}", ex.getMessage()), ex);
 		}
 	}
 
@@ -271,9 +272,8 @@ public class LoaderConfig {
 			context.setClassLoader(this.getClass().getClassLoader());
 			context.refresh();
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception ex) {
+			logger.severe(localizer.x("LDR029: LoaderCofig failed to initialize DataObjectReader : {0}", ex.getMessage()), ex);									
 		}
 	}
 
@@ -319,8 +319,8 @@ public class LoaderConfig {
 				blockDefinitions.add(b);
 			}
 
-		} catch (XPathExpressionException e) {
-			logger.info(e.getMessage());
+		} catch (XPathExpressionException ex) {
+			logger.severe(localizer.x("LDR030: LoaderCofig failed to initialize block definitions : {0}", ex.getMessage()), ex);									
 		}
 
 		BlockDefinitionMerger bm = new BlockDefinitionMerger(blockDefinitions);
@@ -346,8 +346,8 @@ public class LoaderConfig {
 					s = s.substring("Enterprise.SystemSBR.".length());
 				}
 				b.addRule(s, s1);
-			} catch (Exception e) {
-				logger.info(e.getMessage());
+			} catch (Exception ex) {
+				logger.severe(localizer.x("LDR031: LoaderCofig failed to add rules : {0}", ex.getMessage()), ex);												
 			}
 		}
 
@@ -371,7 +371,8 @@ public class LoaderConfig {
 		try {
 			File f = new File("target/test-classes/loader.properties");
 			if (f.exists() && f.isFile()) {
-				logger.warning("running in test environment, this will override some of the systems properties which is read from the loader config.xml");
+				logger.warn(localizer.x("LDR032: Running in test environment, this will override some of the systems properties which is read from : {0}", 
+										f.getName()));												
 				Properties p = new Properties();
 				p.load(new FileInputStream(f));
 				for (Object key : p.keySet()) {
@@ -379,12 +380,10 @@ public class LoaderConfig {
 				}
 				systemProps.toString();
 			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (FileNotFoundException ex) {
+			logger.severe(localizer.x("LDR033: LoaderCofig failed to initialize system properties : {0}", ex.getMessage()), ex);
+		} catch (IOException ex) {
+			logger.severe(localizer.x("LDR034: LoaderCofig failed to initialize system properties : {0}", ex.getMessage()), ex);
 		}
 	}
 
@@ -455,7 +454,7 @@ public class LoaderConfig {
 		if (instance == null) {
 			String s = System.getProperty("loader.config");
 			if (s == null) {
-				logger.log(Level.INFO, "loader_config", default_config_file);
+				logger.info(localizer.x("LDR035: loader.config property is not set, the default {0} is used", default_config_file));
 				instance = new LoaderConfig();
 			} else {
 				instance = new LoaderConfig(s);
@@ -622,29 +621,27 @@ public class LoaderConfig {
 		long numOfRecordsInEUIDBuckets = totalNoOfRecords/numEUIDBuckets;
 		long EUIDBucketMemory = (numOfRecordsInEUIDBuckets*recordSize) * WEIGHT * numThreads;
 		
-		logger.log(Level.INFO, "The number of input records is " + totalNoOfRecords);
-		logger.log(Level.INFO, "The size of a record is " + display(recordSize));
+		logger.info(localizer.x("LDR036: The number of input records is {0}", totalNoOfRecords));
+		logger.info(localizer.x("LDR037: The size of a record is {0}", display(recordSize)));
+				
+		logger.info(localizer.x("LDR038: The number of block buckets is {0}", numBlockBuckets));
+		logger.info(localizer.x("LDR039: The number of records in a block bucket is {0}", numOfRecordsInBlockBuckets));
+		logger.info(localizer.x("LDR040: The memory size for a block bucket is {0}", display(blockBucketMemory)));
+			
+		logger.info(localizer.x("LDR041: The number of EUID buckets is {0}", numEUIDBuckets));
+		logger.info(localizer.x("LDR042: The number of records in a EUID bucket is {0}", numOfRecordsInEUIDBuckets));
+		logger.info(localizer.x("LDR043: The memory size for a EUID bucket is {0}", display(EUIDBucketMemory)));
 		
-		logger.log(Level.INFO, "The number of block buckets is " + numBlockBuckets);
-		logger.log(Level.INFO, "The number of records in a block bucket is " + numOfRecordsInBlockBuckets);
-		logger.log(Level.INFO, "The memory size for a block bucket is " + display(blockBucketMemory));		
-			
-		logger.log(Level.INFO, "The number of EUID buckets is " + numEUIDBuckets);
-		logger.log(Level.INFO, "The number of records in a EUID bucket is " + numOfRecordsInEUIDBuckets);
-		logger.log(Level.INFO, "The memory size for a EUID bucket is " + display(EUIDBucketMemory));		
-			
 		Runtime rt = Runtime.getRuntime();
 		long maxMemory = rt.maxMemory() - rt.totalMemory(); 
 		
-		logger.log(Level.INFO, "The maximum available JVM heap size is " + display(maxMemory));
-		
+		logger.info(localizer.x("LDR044: The maximum available JVM heap size is {0}", display(maxMemory)));	
 		maxMemory = maxMemory - (200 * MB);
 		if (maxMemory < 0) {
 			throw new ConfigException("The JVM maximum heap size is not large enough to run the loader, please raise it.");	
 		}
-		
-		logger.log(Level.INFO, "The maximum heap size that can be used for caching buckets is " + display(maxMemory));
-			
+
+		logger.info(localizer.x("LDR045: The maximum heap size that can be used for caching buckets is {0}", display(maxMemory)));
 		if (blockBucketMemory > (maxMemory/WEIGHT)) {
 			long numBucketRecords = (maxMemory/recordSize)/(WEIGHT*WEIGHT);
 			numBlockBuckets = (totalNoOfRecords/numBucketRecords)*WEIGHT;
