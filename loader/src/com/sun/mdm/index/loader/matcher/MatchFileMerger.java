@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.File;
 import com.sun.mdm.index.loader.config.LoaderConfig;
+import com.sun.mdm.index.loader.common.LoaderException;
 
 import java.io.FileWriter;
 import java.io.BufferedWriter;
@@ -73,65 +74,74 @@ public class MatchFileMerger {
 	 * Precondition: All MatchFiles contains MatchRecord in asceneding order.
 	 * @param files list of files that have MatchRecord to be merged
 	 * @param outfile contains merged data
-	 * @throws Exception
+	 * @throws LoaderException
 	 */
-	public void merge(List<File> files, File outfile) throws Exception {
+	public void merge(List<File> files, File outfile) throws LoaderException {
+		try{
+			init(files, outfile);
+			while(moreRecords()) {	   
+				/*
+				 * gets the MatchRecord positions in MatchList that are minimum 
+				 * ;
+				 */
+				List<Integer> positions = leastRecords();
 
-		init(files, outfile);
-		while(moreRecords()) {	   
-			/*
-			 * gets the MatchRecord positions in MatchList that are minimum 
-			 * ;
-			 */
-			List<Integer> positions = leastRecords();
+				MatchRecord least = curMatchList_.get(positions.get(0));
+				writer_.write(least);
+				List<Integer> removeList = new ArrayList<Integer>();
 
-			MatchRecord least = curMatchList_.get(positions.get(0));
-			writer_.write(least);
-			List<Integer> removeList = new ArrayList<Integer>();
+				/**
+				 * get next MatchRecord from the relevant readers who had minimum
+				 * current MatchRecord. All such readers need to retrieve next record
+				 */
 
-			/**
-			 * get next MatchRecord from the relevant readers who had minimum
-			 * current MatchRecord. All such readers need to retrieve next record
-			 */
+				for (int i = 0; i < positions.size(); i++) {
+					int pos = positions.get(i);
+					MatchRecord record = readers_.get(pos).next();
+					if (record == null) {
+						// so no more data in the reader and we'll remove them from the list after this loop
+						removeList.add(pos);
 
-			for (int i = 0; i < positions.size(); i++) {
-				int pos = positions.get(i);
-				MatchRecord record = readers_.get(pos).next();
-				if (record == null) {
-					// so no more data in the reader and we'll remove them from the list after this loop
-					removeList.add(pos);
-
-				} else {
-					// set the retrieved record to the recordList for that reader.
-					setRecordtoList(record, pos);
+					} else {
+						// set the retrieved record to the recordList for that reader.
+						setRecordtoList(record, pos);
+					}
 				}
+				processRemoveList(removeList);
 			}
-			processRemoveList(removeList);
+			writer_.close();
+		} catch (java.io.IOException io) {
+			throw new LoaderException (io);
 		}
-		writer_.close();
 
 	}
 
 
-	private void init(List<File> files, File out) throws Exception {
-		for (int i = 0; i < files.size(); i++) {
-			MatchReader reader = null;
-			if (!isSBR_) {
-				reader = new MatchGIDRecordReader(files.get(i));
-			} else {
-				reader = new MatchEUIDRecordReader(files.get(i));
-			}
-			MatchRecord matchRecord = reader.next();
-			if (matchRecord != null) {
-				readers_.add(reader);
-				curMatchList_.add(matchRecord);
-			}
+	private void init(List<File> files, File out) throws LoaderException {
+		try {
+			for (int i = 0; i < files.size(); i++) {
+				MatchReader reader = null;
+				if (!isSBR_) {
+					reader = new MatchGIDRecordReader(files.get(i));
+				} else {
+					reader = new MatchEUIDRecordReader(files.get(i));
+				}
+				MatchRecord matchRecord = reader.next();
+				if (matchRecord != null) {
+					readers_.add(reader);
+					curMatchList_.add(matchRecord);
+				}
 
-		}
-		if (!isSBR_) {
-			writer_ = new MatchGIDWriter(out);
-		} else {
-			writer_ = new MatchEUIDWriter(out);
+			}
+			if (!isSBR_) {
+				writer_ = new MatchGIDWriter(out);
+			} else {
+				writer_ = new MatchEUIDWriter(out);
+			}
+		} catch (java.io.FileNotFoundException fe) {
+			throw new LoaderException (fe);
+		}  catch (java.io.IOException e) {
+			throw new LoaderException (e);
 		}
 	}
 
@@ -191,44 +201,47 @@ public class MatchFileMerger {
 	 *  this method is used for test purpose only. 
 	 *  To change double to string to make it readable via editor.
 	 */
-	private static void changeMatchFileFormat(String dir) throws Exception {
+	private static void changeMatchFileFormat(String dir) throws LoaderException {
+		try {
+			File fdir = new File(dir);
 
-		File fdir = new File(dir);
+			String[] files = fdir.list();
 
-		String[] files = fdir.list();
+			for (int i = 0; i < files.length; i++ ) {
+				File file =  new File(dir, files[i]);
+				String fileName = file.getName();
+				String out = fileName + ".txt";
+				File outfile = new File (dir, out);
+				FileWriter fwriter = new FileWriter(outfile);
 
-		for (int i = 0; i < files.length; i++ ) {
-			File file =  new File(dir, files[i]);
-			String fileName = file.getName();
-			String out = fileName + ".txt";
-			File outfile = new File (dir, out);
-			FileWriter fwriter = new FileWriter(outfile);
+				BufferedWriter bwriter = new BufferedWriter(fwriter);
 
-			BufferedWriter bwriter = new BufferedWriter(fwriter);
+				MatchGIDRecordReader reader = new MatchGIDRecordReader(file);
+				while(true) {
 
-			MatchGIDRecordReader reader = new MatchGIDRecordReader(file);
-			while(true) {
+					MatchGIDRecord mr = (MatchGIDRecord) reader.next();
+					if (mr == null) {
+						break;
+					}
 
-				MatchGIDRecord mr = (MatchGIDRecord) reader.next();
-				if (mr == null) {
-					break;
+					String gid1 = String.valueOf(mr.getGIDFrom());
+					String gid2 = String.valueOf(mr.getGIDTo());
+					String weight = String.valueOf(mr.getWeight());
+
+					bwriter.write("," + gid1 + "," + gid2 + "," + weight);
+					bwriter.newLine();
+
 				}
-
-				String gid1 = String.valueOf(mr.getGIDFrom());
-				String gid2 = String.valueOf(mr.getGIDTo());
-				String weight = String.valueOf(mr.getWeight());
-
-				bwriter.write("," + gid1 + "," + gid2 + "," + weight);
-				bwriter.newLine();
+				bwriter.close();
 
 			}
-			bwriter.close();
-
+		}catch (java.io.IOException e) {
+			throw new LoaderException (e);
 		}
 	}
 
 
-	private static void testMergeFiles(String dir) throws Exception {
+	private static void testMergeFiles(String dir) throws LoaderException {
 
 		MatchFileMerger merger = new MatchFileMerger(true);
 		File fdir = new File(dir);

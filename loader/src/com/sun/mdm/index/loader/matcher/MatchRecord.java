@@ -24,6 +24,7 @@ package com.sun.mdm.index.loader.matcher;
 
 import com.sun.mdm.index.dataobject.DataObject;
 
+
 /**
  * MatchRecord used by MatchReader
  * @author Swaranjit Dua

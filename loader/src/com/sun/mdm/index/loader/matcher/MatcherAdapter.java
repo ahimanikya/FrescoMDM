@@ -31,46 +31,56 @@ import com.sun.mdm.matcher.api.MatchingEngine;
 //import com.stc.sbmeapi.impl.StandConfigFilesAccessImpl;
 import com.sun.mdm.matcher.api.impl.MatchConfigFilesAccessImpl;
 import com.sun.mdm.matcher.comparators.MatchComparator;
+import com.sun.mdm.index.loader.common.LoaderException;
 
 public class MatcherAdapter {
 
 	private  MatchingEngine mSbmeMatch;
 	private  String[] matchFieldIDs;
 
-	MatcherAdapter(String[] matchFldIds, String dateFormat) throws Exception {
+	MatcherAdapter(String[] matchFldIds, String dateFormat) throws LoaderException {
+		try {
+			matchFieldIDs = matchFldIds;	
+			//ConfigFilesAccess files = new NewMatcher.CSConfigFileAccess();
+			String path = "match/";        
+			MatchConfigFilesAccess files = new MatchConfigFilesAccessImpl(path); 
+			mSbmeMatch = new MatchingEngine(files);
 
-		matchFieldIDs = matchFldIds;	
-		//ConfigFilesAccess files = new NewMatcher.CSConfigFileAccess();
-		String path = "match/";        
-		MatchConfigFilesAccess files = new MatchConfigFilesAccessImpl(path); 
-		mSbmeMatch = new MatchingEngine(files);
-//		mSbmeMatch.initializeData(files);
-		mSbmeMatch.upLoadConfigFile();
-//		StandConfigFilesAccessImpl filesAccess = new StandConfigFilesAccessImpl();
-		MatchComparator codeClass = mSbmeMatch.getComparatorManager(mSbmeMatch).getComparatorInstance("ds");
-		codeClass.setRTParameters("DateFormat", dateFormat);
+			mSbmeMatch.upLoadConfigFile();
 
-	}
-
-
-	public float compareRecords(String[] rec1, String[] rec2) throws Exception {
-
-		String [][] candRecArrayVals = { (rec1) };
-		String [][] refRecArrayVals = { (rec2) };
-
-		double[][] score = mSbmeMatch.matchWeight(matchFieldIDs, candRecArrayVals, refRecArrayVals);
-		return (float) score[0][0];
+			MatchComparator codeClass = mSbmeMatch.getComparatorManager(mSbmeMatch).getComparatorInstance("ds");
+			codeClass.setRTParameters("DateFormat", dateFormat);
+		} catch (Exception e) {
+			throw new LoaderException(e);
+		}
 
 	}
 
-	public float compareRecords(String rec1, String rec2, String matchField) throws Exception {
 
-		String [][] candRecArrayVals = { {rec1} };
-		String [][] refRecArrayVals = { {rec2} };
-		String [] matchFields = {matchField};
+	public float compareRecords(String[] rec1, String[] rec2) throws LoaderException {
+		try {
+			String [][] candRecArrayVals = { (rec1) };
+			String [][] refRecArrayVals = { (rec2) };
 
-		double[][] score = mSbmeMatch.matchWeight(matchFields, candRecArrayVals, refRecArrayVals);
-		return (float) score[0][0];
+			double[][] score = mSbmeMatch.matchWeight(matchFieldIDs, candRecArrayVals, refRecArrayVals);
+			return (float) score[0][0];
+		} catch (Exception e) {
+			throw new LoaderException(e);
+		}
+
+	}
+
+	public float compareRecords(String rec1, String rec2, String matchField) throws LoaderException {
+		try {
+			String [][] candRecArrayVals = { {rec1} };
+			String [][] refRecArrayVals = { {rec2} };
+			String [] matchFields = {matchField};
+
+			double[][] score = mSbmeMatch.matchWeight(matchFields, candRecArrayVals, refRecArrayVals);
+			return (float) score[0][0];
+		} catch (Exception e) {
+			throw new LoaderException(e);
+		}
 
 	}
 

@@ -41,7 +41,9 @@ import com.sun.mdm.index.loader.analysis.WeightAnalyzer;
 import com.sun.mdm.index.filter.ExclusionListLookup;
 import com.sun.mdm.index.filter.FilterConstants;
 import com.sun.mdm.index.loader.blocker.BlockDistributor;
+import com.sun.mdm.index.loader.common.LoaderException;
 import com.sun.mdm.index.loader.common.Util;
+
 
 /**
  *  workhorse class that compares block of records
@@ -77,7 +79,7 @@ public class MatcherTask implements Runnable {
 			Bucket.MatchCursor cursor, String[] paths, String[] matchTypes, 
 			Lookup blLk, double matchThreshold, double duplicateThreshold,
 			CountDownLatch endGate, boolean isSBR, Matcher matcher, int matchFlushSize,
-			String dateFormat) throws Exception {
+			String dateFormat) throws LoaderException {
 		matchThreshold_ = matchThreshold;
 		duplicateThreshold_ = duplicateThreshold;
 		tupleCursor_ = new DataObjectTupleCursor(paths, matchTypes, blLk, isSBR);
@@ -127,7 +129,7 @@ public class MatcherTask implements Runnable {
 		matchAnalyzer_ = analyzer;
 	}
 
-	private void match(BlockPosition blockPosition) throws Exception {
+	private void match(BlockPosition blockPosition) throws LoaderException {
 		//List<MatchRecord> list = new ArrayList<MatchRecord>();
 		int recordPosition = blockPosition.getRecordPosition();
 		Block block = blockPosition.getBlock();
@@ -206,7 +208,7 @@ public class MatcherTask implements Runnable {
 
 
 	private double match(DataObject dataObject1, DataObject dataObject2) 
-	throws Exception {
+	throws LoaderException {
 
 
 		String syscode1 = null;
@@ -244,14 +246,14 @@ public class MatcherTask implements Runnable {
 	}
 
 
-	private double match(List<String> tuple1, List<String> tuple2) throws Exception
+	private double match(List<String> tuple1, List<String> tuple2) throws LoaderException
 	{		
 		String[] values = tuple1.toArray(new String[tuple1.size()]);
 		String[] refValues = tuple2.toArray(new String[tuple2.size()]);
 		try {
 			return matchEngine_.compareRecords(values, refValues);
 
-		} catch (Exception ex) {
+		} catch (LoaderException ex) {
 			StringBuilder str = new StringBuilder();
 			for(int i = 0; i < values.length; i++) {
 				String value = values[i];
@@ -276,7 +278,7 @@ public class MatcherTask implements Runnable {
 
 
 	private double matchAnalysis(List<String> tuple1, List<String> tuple2, String syscode1, String syscode2,
-			String lid1, String lid2) throws Exception
+			String lid1, String lid2) throws LoaderException
 			{
 		String[] values = tuple1.toArray(new String[tuple1.size()]);
 		String[] refValues = tuple2.toArray(new String[tuple2.size()]);
@@ -330,7 +332,7 @@ public class MatcherTask implements Runnable {
 	 *                would result in :2*2*3 tuples.                          
 	 *                    
 	 */
-	private List<List<String>> convertTuple(DataObject dataObject) {
+	private List<List<String>> convertTuple(DataObject dataObject) throws LoaderException {
 
 		tupleCursor_.initObjectTypeInstance(dataObject);
 		List<List<String>> tuples = new ArrayList<List<String>>();
@@ -471,98 +473,102 @@ public class MatcherTask implements Runnable {
 
 		private int[] curInstanceIndex_;
 
-		DataObjectTupleCursor(String[] matchEPaths, String[] matchTypes, Lookup lk, boolean isSBR) throws EPathException {
+		DataObjectTupleCursor(String[] matchEPaths, String[] matchTypes, Lookup lk, boolean isSBR) throws LoaderException {
+			try {
 
+				/*
+				 * The algorithm has two parts
+				 * 1.  it creates a Map of {key=childtype, value=List of fields}
+				 *  and puts primary (root) object (Person) in primary object and primaryFields.
+				 * 2. It converts Map to field indices
+				 */
+				List<String> matchFieldIds = new ArrayList<String>();
+				List<String> matchFieldIDPaths = new ArrayList<String>(); // These epaths will correspond to matchfieldIDs.
 
-			/*
-			 * The algorithm has two parts
-			 * 1.  it creates a Map of {key=childtype, value=List of fields}
-			 *  and puts primary (root) object (Person) in primary object and primaryFields.
-			 * 2. It converts Map to field indices
-			 */
-			List<String> matchFieldIds = new ArrayList<String>();
-			List<String> matchFieldIDPaths = new ArrayList<String>(); // These epaths will correspond to matchfieldIDs.
+				String primaryObject = null;
+				List<MatchType> primaryFields = new ArrayList<MatchType>();
+				Map<String, List<MatchType>> map = new HashMap<String,List<MatchType>>();
 
-			String primaryObject = null;
-			List<MatchType> primaryFields = new ArrayList<MatchType>();
-			Map<String, List<MatchType>> map = new HashMap<String,List<MatchType>>();
+				for (int i = 0; i < matchEPaths.length; i++) {
+					EPath e = EPathParser.parse(matchEPaths[i]);
 
-			for (int i = 0; i < matchEPaths.length; i++) {
-				EPath e = EPathParser.parse(matchEPaths[i]);
-
-				String objectType = e.getLastChildPath();
-				String lastChildName = e.getLastChildName();
-				String fieldName = e.getFieldTag();			
-				if (fieldName.equals("blockID") 
-						|| fieldName.equals("GID")
-						|| fieldName.equals("systemcode")
-						|| fieldName.equals("lid")
-						|| fieldName.equals("EUID")
-				) {
-					// Don't access these fields from block data. 
-					continue;
-				}
-				int shiftIndex = 4; // shiftIndex is for the fields that are im matchFields but is not a match attribute.
-				if (isSBR) {
-					shiftIndex = 2; // blockID, EUID 
-				}
-				MatchType matchType = new MatchType(matchTypes[i-shiftIndex], fieldName, matchEPaths[i]); // match Types start after. 
-				// id fields. We come here after i = shfitIndex.
-
-				// check if it is primary object, then don't add it to map
-				if (objectType.equals(lastChildName)) {
-					if (primaryObject == null) {
-						primaryObject = objectType;
+					String objectType = e.getLastChildPath();
+					String lastChildName = e.getLastChildName();
+					String fieldName = e.getFieldTag();			
+					if (fieldName.equals("blockID") 
+							|| fieldName.equals("GID")
+							|| fieldName.equals("systemcode")
+							|| fieldName.equals("lid")
+							|| fieldName.equals("EUID")
+					) {
+						// Don't access these fields from block data. 
+						continue;
 					}
-
-					primaryFields.add(matchType);			
-				} else { 
-					List<MatchType> list = map.get(objectType);
-					if (list == null) {
-						list = new ArrayList<MatchType>();
-						list.add(matchType);
-						map.put(objectType, list);
-					} else {
-						list.add(matchType);				
+					int shiftIndex = 4; // shiftIndex is for the fields that are im matchFields but is not a match attribute.
+					if (isSBR) {
+						shiftIndex = 2; // blockID, EUID 
 					}
-				}		    				
+					MatchType matchType = new MatchType(matchTypes[i-shiftIndex], fieldName, matchEPaths[i]); // match Types start after. 
+					// id fields. We come here after i = shfitIndex.
+
+					// check if it is primary object, then don't add it to map
+					if (objectType.equals(lastChildName)) {
+						if (primaryObject == null) {
+							primaryObject = objectType;
+						}
+
+						primaryFields.add(matchType);			
+					} else { 
+						List<MatchType> list = map.get(objectType);
+						if (list == null) {
+							list = new ArrayList<MatchType>();
+							list.add(matchType);
+							map.put(objectType, list);
+						} else {
+							list.add(matchType);				
+						}
+					}		    				
+				}
+
+
+				/*
+				 *  convert map to indices
+				 */
+				int size = map.size();
+
+				childTypeIndices_ = new int[size];
+				//ObjectMeta[] matchGroup = new ObjectMeta[size+1];
+				fieldpositions_ = new int[size][];
+				numInstances_ = new int[size];
+				curInstanceIndex_ = new int[size];
+				primaryFieldPositions_ = new int[primaryFields.size()];
+				setFieldIndices(primaryFieldPositions_, primaryObject, matchFieldIds, matchFieldIDPaths, primaryFields, lk);		
+
+				Set<Map.Entry<String,List<MatchType>>> set = map.entrySet();
+				Iterator<Map.Entry<String, List<MatchType>>> iterator = set.iterator();
+				for (int i = 0; iterator.hasNext(); i++ ) {
+					Map.Entry<String,List<MatchType>> entry = iterator.next();
+					String objectName = entry.getKey();
+					List<MatchType> fieldlist = entry.getValue();
+					childTypeIndices_[i] = lk.getChildTypeIndex(objectName);
+					fieldpositions_[i] = new int[fieldlist.size()];
+					setFieldIndices(fieldpositions_[i], objectName, matchFieldIds, matchFieldIDPaths, fieldlist, lk);
+
+				}		
+				matchFieldIDs_ = new String[matchFieldIds.size()];		
+				matchFieldIds.toArray(matchFieldIDs_);
+				matchEPaths_ = new String[matchFieldIDPaths.size()];		
+				matchFieldIDPaths.toArray(matchEPaths_);
+			} catch (EPathException ex) {
+				throw new LoaderException (ex);
 			}
-
-
-			/*
-			 *  convert map to indices
-			 */
-			int size = map.size();
-
-			childTypeIndices_ = new int[size];
-			//ObjectMeta[] matchGroup = new ObjectMeta[size+1];
-			fieldpositions_ = new int[size][];
-			numInstances_ = new int[size];
-			curInstanceIndex_ = new int[size];
-			primaryFieldPositions_ = new int[primaryFields.size()];
-			setFieldIndices(primaryFieldPositions_, primaryObject, matchFieldIds, matchFieldIDPaths, primaryFields, lk);		
-
-			Set<Map.Entry<String,List<MatchType>>> set = map.entrySet();
-			Iterator<Map.Entry<String, List<MatchType>>> iterator = set.iterator();
-			for (int i = 0; iterator.hasNext(); i++ ) {
-				Map.Entry<String,List<MatchType>> entry = iterator.next();
-				String objectName = entry.getKey();
-				List<MatchType> fieldlist = entry.getValue();
-				childTypeIndices_[i] = lk.getChildTypeIndex(objectName);
-				fieldpositions_[i] = new int[fieldlist.size()];
-				setFieldIndices(fieldpositions_[i], objectName, matchFieldIds, matchFieldIDPaths, fieldlist, lk);
-
-			}		
-			matchFieldIDs_ = new String[matchFieldIds.size()];		
-			matchFieldIds.toArray(matchFieldIDs_);
-			matchEPaths_ = new String[matchFieldIDPaths.size()];		
-			matchFieldIDPaths.toArray(matchEPaths_);
 
 		}
 
 
 
-		private void setFieldIndices(int[] fieldpositions, String objectName, List<String> matchFieldIds, List<String> matchFieldIDPaths, List<MatchType> fields, Lookup lk) {
+		private void setFieldIndices(int[] fieldpositions, String objectName, 
+				List<String> matchFieldIds, List<String> matchFieldIDPaths, List<MatchType> fields, Lookup lk) {
 
 			for (int i = 0; i < fields.size(); i++) {				 
 				fieldpositions[i] = lk.getFieldIndex(fields.get(i).fieldName_, objectName); 
@@ -609,7 +615,7 @@ public class MatcherTask implements Runnable {
 			return true;
 		}
 
-		private void initObjectTypeInstance(DataObject dataObject) {
+		private void initObjectTypeInstance(DataObject dataObject) throws LoaderException {
 			for (int i = 0; i < childTypeIndices_.length; i++) {
 				try {
 					numInstances_[i] = 0;
@@ -624,7 +630,8 @@ public class MatcherTask implements Runnable {
 					}
 				} catch (Exception ex) {
 
-					logger.info(ex + ex.getMessage());
+					logger.severe(ex + ex.getMessage());
+					throw new LoaderException(ex);
 
 				}  finally {			 
 					curInstanceIndex_[i] = 0;

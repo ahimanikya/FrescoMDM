@@ -34,6 +34,7 @@ import com.sun.mdm.index.dataobject.DataObjectWriter;
 import java.io.File;
 import com.sun.mdm.index.dataobject.ChildType;
 import com.sun.mdm.index.loader.blocker.BlockDistributor;
+import com.sun.mdm.index.loader.common.LoaderException;
 
 
 /**
@@ -87,46 +88,58 @@ public class Bucket {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map load() throws Exception {
-		blockMap = new HashMap<String,Block>();
-		while (true) {			
-			DataObject dataObject = reader.readDataObject();
-			if (dataObject == null) {
-				break;
+	public Map load() throws LoaderException {
+		try {
+			blockMap = new HashMap<String,Block>();
+			while (true) {			
+				DataObject dataObject = reader.readDataObject();
+				if (dataObject == null) {
+					break;
+				}
+				numRecords++;
+
+				String blockid = dataObject.getFieldValue(0);
+				Block block = blockMap.get(blockid);
+				if (block == null) {
+					block = new Block(blockid);
+					block.add(dataObject);
+					blockMap.put(blockid, block);
+					numBlocks++;
+				} else {
+					block.add(dataObject);
+				}
+
 			}
-			numRecords++;
-
-			String blockid = dataObject.getFieldValue(0);
-			Block block = blockMap.get(blockid);
-			if (block == null) {
-				block = new Block(blockid);
-				block.add(dataObject);
-				blockMap.put(blockid, block);
-				numBlocks++;
-			} else {
-				block.add(dataObject);
+			if (!isSBR_) {
+				removeDups(blockMap);
 			}
 
-		}
-		if (!isSBR_) {
-			removeDups(blockMap);
-		}
+			printMap();
 
-		printMap();
-
-		return blockMap;				
+			return blockMap;
+		} catch (Exception ex) {
+			throw new LoaderException (ex);
+		}
 	}
 
-	public void write(DataObject dataObject) throws Exception {
-		writer.writeDataObject(dataObject);
+	public void write(DataObject dataObject) throws LoaderException {
+		try {
+			writer.writeDataObject(dataObject);
+		} catch (IOException ex) {
+			throw new LoaderException(ex);
+		}
 	}
 
-	public void close() throws Exception {
-		if (writer != null) {
-			writer.close();
-		}
-		if (reader != null) {
-			reader.close();
+	public void close() throws LoaderException {
+		try {
+			if (writer != null) {
+				writer.close();
+			}
+			if (reader != null) {
+				reader.close();
+			}
+		} catch (Exception ex) {
+			throw new LoaderException(ex);
 		}
 	}
 

@@ -43,6 +43,7 @@ import com.sun.mdm.index.loader.clustersynchronizer.ClusterSynchronizer;
 import com.sun.mdm.index.loader.common.FileManager;
 import com.sun.mdm.index.loader.config.LoaderConfig;
 import com.sun.mdm.index.loader.analysis.WeightAnalyzer;
+import com.sun.mdm.index.loader.common.LoaderException;
 
 
 /** Matches block of records.
@@ -77,7 +78,8 @@ public class Matcher {
 	private String dateFormatString_;
 	private int blockPrintSize_ = 0;
 
-	public Matcher(String[] paths,  String[] matchTypes, Lookup blLk, boolean isSBR, String dateFormat) throws Exception {
+	public Matcher(String[] paths,  String[] matchTypes, Lookup blLk, boolean isSBR, String dateFormat) 
+	{
 		matchThreshold_ = config_.getMatchThreshold();
 		duplicateThreshold_ = config_.getDuplicateThreshold();
 		isSBR_ = isSBR;		
@@ -118,84 +120,86 @@ public class Matcher {
 	 * Do until no more Block Bucket is to be matched.
 	 * @throws Exception
 	 */
-	public void match() throws Exception {
+	public void match() throws LoaderException {
+		try {
+			WeightAnalyzer analyzer = null;
 
-		WeightAnalyzer analyzer = null;
+			boolean first = false;
+			while (true) {
+				bucketFile_ = getBucketFile();
+				if (bucketFile_ == null) {
+					break;
+				}			
 
-		boolean first = false;
-		while (true) {
-			bucketFile_ = getBucketFile();
-			if (bucketFile_ == null) {
-				break;
-			}			
+				Comparator<MatchRecord> comp = getComparator();									
+				DataObjectReader reader = new DataObjectFileReader(bucketFile_.getAbsolutePath(), true);		
+				Bucket bucket = new Bucket(reader, bucketFile_, isSBR_);
+				bucket.setBlockPrintSize(blockPrintSize_);
+				logger.info("Block bucket:"+ bucket.getFile().getName() + " processing ");
 
-			Comparator<MatchRecord> comp = getComparator();									
-			DataObjectReader reader = new DataObjectFileReader(bucketFile_.getAbsolutePath(), true);		
-			Bucket bucket = new Bucket(reader, bucketFile_, isSBR_);
-			bucket.setBlockPrintSize(blockPrintSize_);
-			logger.info("Block bucket:"+ bucket.getFile().getName() + " processing ");
+				bucket.load();
 
-			bucket.load();
-
-			/**
-			 * Each TreeMap is for different MatcherTask that is executed on a pooled 
-			 * thread. This treeMap stores the MatchResult from each thread.
-			 */
-			TreeMap<MatchRecord, String>[] treeMaps = new TreeMap[poolSize_];		
-			/*
+				/**
+				 * Each TreeMap is for different MatcherTask that is executed on a pooled 
+				 * thread. This treeMap stores the MatchResult from each thread.
+				 */
+				TreeMap<MatchRecord, String>[] treeMaps = new TreeMap[poolSize_];		
+				/*
 		 All MatcherTask would share the same MatchCursor and match on
 		 one BlockPosition at a time.
-			 */
-			Bucket.MatchCursor cursor = bucket.getMatchCursor();
-			CountDownLatch endGate = new CountDownLatch(poolSize_);
+				 */
+				Bucket.MatchCursor cursor = bucket.getMatchCursor();
+				CountDownLatch endGate = new CountDownLatch(poolSize_);
 
-			for (int i = 0; i < poolSize_; i++)  {
-				treeMaps[i] = new TreeMap<MatchRecord,String>(comp);
-				MatcherTask task = new MatcherTask((TreeMap<MatchRecord,String>)treeMaps[i], 
-						cursor, paths_,  matchTypes_, lookup_, matchThreshold_, duplicateThreshold_, endGate, 
-						isSBR_, this, matchFlushSize_, dateFormatString_);
+				for (int i = 0; i < poolSize_; i++)  {
+					treeMaps[i] = new TreeMap<MatchRecord,String>(comp);
+					MatcherTask task = new MatcherTask((TreeMap<MatchRecord,String>)treeMaps[i], 
+							cursor, paths_,  matchTypes_, lookup_, matchThreshold_, duplicateThreshold_, endGate, 
+							isSBR_, this, matchFlushSize_, dateFormatString_);
 
-				if (first == false && ismatchAnalyzer) {				
-					first = true;
-					String[] matchEpaths = task.getMatchEpaths();
-					analyzer = initAnalyzer(matchEpaths);
+					if (first == false && ismatchAnalyzer) {				
+						first = true;
+						String[] matchEpaths = task.getMatchEpaths();
+						analyzer = initAnalyzer(matchEpaths);
 
+					}
+					task.setMatchAnalyzer(analyzer);
+
+					executor_.execute(task);
 				}
-				task.setMatchAnalyzer(analyzer);
 
-				executor_.execute(task);
+				/**
+				 * wait for all MatcherTasks to finish, that will output MatchRecord
+				 *  in the passed TreeMap.
+				 */
+				endGate.await();
+
+				bucket.close();
+
+				if (ismatchAnalyzer) {
+					continue; // skip match files
+				}
+
+				TreeMap<MatchRecord,String> allMap = new TreeMap<MatchRecord,String>(comp);
+
+				for (int i = 0; i < treeMaps.length; i++)  {			
+					allMap.putAll(treeMaps[i]);
+				}
+
+				flushMap(allMap);
+
+
+			} // end while true
+
+			executor_.shutdown();
+
+			if (!ismatchAnalyzer) {
+				mergeMatchFiles();  
+			} else {
+				analyzer.close();
 			}
-
-
-			/**
-			 * wait for all MatcherTasks to finish, that will output MatchRecord
-			 *  in the passed TreeMap.
-			 */
-			endGate.await();
-
-			bucket.close();
-
-			if (ismatchAnalyzer) {
-				continue; // skip match files
-			}
-
-			TreeMap<MatchRecord,String> allMap = new TreeMap<MatchRecord,String>(comp);
-
-			for (int i = 0; i < treeMaps.length; i++)  {			
-				allMap.putAll(treeMaps[i]);
-			}
-
-			flushMap(allMap);
-
-
-		} // end while true
-
-		executor_.shutdown();
-
-		if (!ismatchAnalyzer) {
-			mergeMatchFiles();  
-		} else {
-			analyzer.close();
+		} catch (Exception e) {
+			throw new LoaderException (e);
 		}
 
 	}
@@ -213,7 +217,7 @@ public class Matcher {
 		return analyzer;   
 	}
 
-	private void mergeMatchFiles() throws Exception {
+	private void mergeMatchFiles() throws LoaderException {
 		File output = null;
 		if (!isSBR_) {
 			output = FileManager.createMatchStageFile();
@@ -257,7 +261,7 @@ public class Matcher {
 	}
 
 
-	File getBucketFile() throws IOException {
+	File getBucketFile() {
 		String fileName = null;
 		if (!isSBR_) {
 			fileName = clusterSynchronizer_.getBlockBucket();
@@ -282,7 +286,7 @@ public class Matcher {
 
 	private int counter;
 	private Object lock = new Object();
-	void flushMap(TreeMap<MatchRecord,String> map) throws Exception {		
+	void flushMap(TreeMap<MatchRecord,String> map) throws LoaderException {		
 		File matchFile;
 		logger.info("TreeMap size: " + map.size());
 		synchronized(lock) {
@@ -303,26 +307,30 @@ public class Matcher {
 		map.clear();
 	}
 
-	private boolean write( TreeMap<MatchRecord,String> map, File matchFile) throws IOException {			
-		Set<Map.Entry<MatchRecord,String>> set = map.entrySet();
+	private boolean write( TreeMap<MatchRecord,String> map, File matchFile) throws LoaderException {	
+		try {
+			Set<Map.Entry<MatchRecord,String>> set = map.entrySet();
 
-		if (set.isEmpty()) {
-			return false;
-		}
+			if (set.isEmpty()) {
+				return false;
+			}
 
-		MatchWriter writer = null;
-		if (!isSBR_) {
-			writer = new MatchGIDWriter(matchFile);
-		} else {
-			writer = new MatchEUIDWriter(matchFile);
-		}
+			MatchWriter writer = null;
+			if (!isSBR_) {
+				writer = new MatchGIDWriter(matchFile);
+			} else {
+				writer = new MatchEUIDWriter(matchFile);
+			}
 
-		for(Map.Entry<MatchRecord,String> entry : set) {
-			MatchRecord record = entry.getKey();
-			writer.write(record);
+			for(Map.Entry<MatchRecord,String> entry : set) {
+				MatchRecord record = entry.getKey();
+				writer.write(record);
+			}
+			writer.close();	
+			return true;
+		} catch (java.io.IOException e) {
+			throw new LoaderException (e);
 		}
-		writer.close();	
-		return true;
 	}
 
 

@@ -24,6 +24,7 @@ package com.sun.mdm.index.loader.matcher;
 import java.io.IOException;
 import java.io.EOFException;
 
+
 /**
  * 
  * Reader interface to read different kind of Match File. 
