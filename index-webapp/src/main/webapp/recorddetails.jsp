@@ -39,9 +39,7 @@
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
 
-
 <f:view>
-
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -69,13 +67,54 @@
             <script type="text/javascript" src="./scripts/yui/connection/connection-min.js"></script>
             <!-- Source files -->
             <script type="text/javascript" src="./scripts/yui/datatable/datatable-beta-min.js"></script>
+<script>
+//not used in transactions, but since its require in the script we fake it
+var editIndexid = ""; 
+var thisForm;
+var rand = "";
+function setRand(thisrand)  {
+	rand = thisrand;
+}
+
+var checkedItems = new Array();
+function getCheckedValues(a,v)   {
+   if (a.checked == true)  {
+      checkedItems.push(v);
+   } else {
+     for(i=0;i<checkedItems.length;i++){
+       if(v == checkedItems[i]) checkedItems.splice(i, 1);
+     } 
+  }
+}
+
+function align(thisevent,divID) {
+	divID.style.visibility= 'visible';
+	divID.style.top = thisevent.clientY-180;
+	divID.style.left= thisevent.clientX;
+}
+</script>
+
+
 </head>
+<% 
+   Integer size = 0; 
+   double rand = java.lang.Math.random();
+   String URI = request.getRequestURI();
+   URI = URI.substring(1, URI.lastIndexOf("/"));
+
+   ArrayList keysList  = new ArrayList();
+   ArrayList labelsList  = new ArrayList();
+   ArrayList fullFieldNamesList  = new ArrayList();
+   StringBuffer myColumnDefs = new StringBuffer();
+%>
+
 <title><h:outputText value="#{msgs.application_heading}"/></title>  
 <body class="yui-skin-sam">
     <%@include file="./templates/header.jsp"%>
         
-    <div id="mainContent" style="overflow:hidden;">
-        <div id="advancedSearch" class="basicSearch" style="visibility:visible;display:block">
+    <div id="mainContent">
+        <div id="advancedSearch" class="duplicaterecords" style="visibility:visible;display:block">
+     <div id="searchType">
             <table border="0" cellpadding="0" cellspacing="0" align="right">
                 <h:form id="searchTypeForm" >
                             <tr>
@@ -86,25 +125,36 @@
                                     </h:selectOneMenu>
                                 </td>
                             </tr>
+       <tr>
+         <td><div style="padding-top:100px;color:red;" id="messages"></div></td>
+       </tr>
                 </h:form>
             </table>
-            <h:form id="advancedformData" >
-                <h:inputHidden id="selectedSearchType" value="#{PatientDetailsHandler.selectedSearchType}"/>
-                <table border="0" cellpadding="0" cellspacing="0" >
+   </div>            <h:form id="advancedformData" >
+                <input type="hidden" id="selectedSearchType" title='selectedSearchType' 
+				value='<h:outputText value="#{PatientDetailsHandler.selectedSearchType}"/>' />
+
+             <table border="0" cellpadding="0" cellspacing="0">
 			   <tr>
-			     <td align="left" style="padding-left:60px;"><h:outputText  style="font-size:12px;font-weight:bold;color:#0739B6;"  value="#{PatientDetailsHandler.instructionLine}" /></td>
+			     <td align="left"><p><nobr><h:outputText  value="#{PatientDetailsHandler.instructionLine}"/></nobr></p>
+				 </td>
+				 
+
 			   </tr>
                     <tr>
-                        <td>
+                        <td colspan="2">
                             <input id='lidmask' type='hidden' name='lidmask' value='' />
-                            <h:dataTable headerClass="tablehead"  
+                            <h:dataTable cellpadding="0" cellspacing="0"
                                          id="searchScreenFieldGroupArrayId" 
                                          var="searchScreenFieldGroup" 
                                          value="#{PatientDetailsHandler.searchScreenFieldGroupArray}">
 						    <h:column>
-   				            <div style="font-size:12px;font-weight:bold;color:#0739B6;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h:outputText value="#{searchScreenFieldGroup.description}" /></div>
+   				            <p>
+							     <h:outputText value="#{searchScreenFieldGroup.description}" />
+							</p>
                             <h:dataTable headerClass="tablehead"  
-                                         id="fieldConfigId" 
+							             cellpadding="0" cellspacing="0"
+                                         id="fieldConfigId" 										 
                                          var="feildConfig" 
                                          value="#{searchScreenFieldGroup.fieldConfigs}">
 
@@ -119,7 +169,7 @@
                                         <!--Rendering HTML Select Menu List-->
                                         <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
                                             <nobr>
-                                                <h:selectOneMenu onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                <h:selectOneMenu title='#{feildConfig.name}'
                                                                  rendered="#{feildConfig.name ne 'SystemCode'}"
 	                                                             value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}">
                                                     <f:selectItem itemLabel="" itemValue="" />
@@ -127,7 +177,7 @@
                                                 </h:selectOneMenu>
                                                 
                                                 <h:selectOneMenu  onchange="javascript:setLidMaskValue(this,'advancedformData')"
-                                                                  onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
+												                  title='#{feildConfig.name}'  
                                                                   id="SystemCode" 
     															  value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"
                                                                   rendered="#{feildConfig.name eq 'SystemCode'}">
@@ -140,29 +190,30 @@
                                         <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6 }" >
                                             <nobr>
                                                 <h:inputText   required="#{feildConfig.required}" 
+												               title='#{feildConfig.name}'
                                                                label="#{feildConfig.displayName}" 
                                                                onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
-                                                               onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
                                                                maxlength="#{feildConfig.maxLength}" 
 															   value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"
                                                                rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
                                                 
                                                 <h:inputText   required="#{feildConfig.required}" 
 												               id="LID"
+															   title='#{feildConfig.name}'
                                                                label="#{feildConfig.displayName}" 
 															   readonly="true"
 															   onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
-                                                               onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value);javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                               onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
 															   value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"
                                                                rendered="#{feildConfig.name eq 'LID'}"/>
                                                                
                                                 <h:inputText   required="#{feildConfig.required}" 
                                                                label="#{feildConfig.displayName}" 
+															   title='#{feildConfig.name}'
                                                                onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
-                                                               onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
                                                                maxlength="#{SourceHandler.euidLength}" 
 															   value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"
                                                                rendered="#{feildConfig.name eq 'EUID'}"/>
@@ -174,7 +225,8 @@
                                         <!--Rendering Updateable HTML Text Area-->
                                         <h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
                                             <nobr>
-                                                <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"   required="#{feildConfig.required}"/>
+                                                <h:inputTextarea label="#{feildConfig.displayName}"  title='#{feildConfig.name}'
+												id="fieldConfigIdTextArea"   required="#{feildConfig.required}"/>
                                             </nobr>
                                         </h:column>
                                         
@@ -182,12 +234,13 @@
                                           <nobr>
                                             <input type="text" 
                                                    id = "<h:outputText value="#{feildConfig.name}"/>"  
+												   title="<h:outputText value="#{feildConfig.name}"/>"  
                                                    value="<h:outputText value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"/>"
                                                    required="<h:outputText value="#{feildConfig.required}"/>" 
                                                    maxlength="<h:outputText value="#{feildConfig.maxLength}"/>"
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFieldsOnBlur(this,'<h:outputText value="#{feildConfig.name}"/>')">
+                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy')">
                                                   <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.name}"/>')" > 
                                                      <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                  </a>
@@ -197,7 +250,6 @@
                             </h:dataTable> <!--Field config loop-->
 						    </h:column>
                             </h:dataTable> <!--Field groups loop-->
-
                             <table  cellpadding="0" cellspacing="0" style="	border:0px red solid;padding-left:20px">
                                 <tr>
                                     <td align="left">
@@ -207,27 +259,27 @@
                                             </h:outputLink>
                                         </nobr>
                                         <nobr>
-                                            <h:commandLink  styleClass="button" rendered="#{Operations.EO_SearchViewSBR}"  action="#{PatientDetailsHandler.performSubmit}" >  
-                                                <span>
-                                                    <h:outputText value="#{msgs.search_button_label}"/>
-                                                </span>
-                                            </h:commandLink>                                     
+                                           <a  class="button" href="javascript:void(0)" onclick="javascript:getFormValues('advancedformData');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
+                                               <span>
+                                                 <h:outputText value="#{msgs.search_button_label}"/>
+                                               </span>
+                                           </a>
+
                                         </nobr>
                                         
                                     </td>
                                 </tr>
                             </table>
                         </td>
-                        <td valign="top">
-                            <h:messages styleClass="errorMessages"  layout="list" />
-                        </td>
                     </tr>
                 </table>
-                <h:inputHidden id="enteredFieldValues" value="#{PatientDetailsHandler.enteredFieldValues}"/>
             </h:form>
+			<form id="collectEuidsForm">
+			      <input type="hidden" id="collectEuids" title='collectEuids' />   
+            </form>
+     		
         </div>  
-        <br>    
-                
+
         <%
             ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
             CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
@@ -244,64 +296,17 @@
              resultArrayList = (ArrayList) request.getAttribute("resultArrayListReq"); 
              if (resultArrayList != null && resultArrayList.size() > 0) {
          %>                
-         <div class="printClass">
-             <table cellpadding="0" cellspacing="0" border="0" align="right">
-                 <tr>
-                     <td>
-                         <h:outputText value="#{msgs.total_records_text}"/><%=resultArrayList.size()%>&nbsp;&nbsp;
-                     </td>
-                     <td>
-                         <h:outputLink styleClass="button" 
-                                       rendered="#{Operations.EO_PrintSBR }"  
-                                       value="JavaScript:window.print();">
-                             <span><h:outputText value="#{msgs.print_text}"/>  </span>
-                         </h:outputLink>              
-                         
-                     </td>
-                 </tr>
-             </table>
-			 <!--
-             <table align="left">
-                 <tr>
-                     <td align="right">
-                         <h:form id="yuiform">
-                             <h:commandLink  styleClass="button" 
-                                             rendered="#{Operations.EO_Compare}"  
-                                             action="#{PatientDetailsHandler.buildCompareEuids}" >  
-                                 <span>
-                                     <h:outputText value="#{msgs.dashboard_compare_tab_button}"/>
-                                 </span>
-                             </h:commandLink>                                     
-                             <h:inputHidden id="compareEuids" value="#{PatientDetailsHandler.compareEuids}"/>
-                         </h:form> 
-                         
-                     </td>
-                 </tr>
-             </table>                     
-			 -->
-         </div>
          <%}%>
                 
-                <%
-              if (resultArrayList != null && resultArrayList.size() == 0) {
-           %>
-                <div class="printClass">
-                <table>
-                  <tr><td>No Records Found in the System. Please Refine your Search Criteria.</td></tr>
-                </table>                     
-         </div>
-      <%}%>
 <%}%>
     
-  <%    if (resultArrayList != null && resultArrayList.size() > 0) {
-  %>           
-             <div class="reportYUISearch" >
-                <div id="outputdiv"></div>
-             </div>  
-  <%}%>
 
 </div>
+<div class="searchresults" id="outputdiv"></div>
+
 </body>
+<div class="alert" id="ajaxOutputdiv"></div> 
+
         <%
           PatientDetailsHandler  patientDetailsHandler = new PatientDetailsHandler();
           String[][] lidMaskingArray = patientDetailsHandler.getAllSystemCodes();
@@ -351,7 +356,7 @@
             formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
          }   
          var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
-         document.getElementById("advancedformData:selectedSearchType").value = selectedSearchValue;
+         document.getElementById("selectedSearchType").value = selectedSearchValue;
                   
 
 	if( document.advancedformData.elements[0]!=null) {
@@ -367,169 +372,14 @@
 		}
      }         
     </script>
-     
-
-
-
-    <%
-    ArrayList fcArrayList  = patientDetailsHandler.getResultsConfigArray();
-     
-    %>
-
- 
-        <script>
-            var fieldsArray = new Array();
-        </script>
-         <%
-            
-        SearchResultsConfig searchResultsConfig = (SearchResultsConfig) screenObject.getSearchResultsConfig().toArray()[0];
-
-        int maxRecords = searchResultsConfig.getMaxRecords();
-        int pageSize = searchResultsConfig.getPageSize();
-        
-        
-        ArrayList keysList  = new ArrayList();
-        ArrayList labelsList  = new ArrayList();
-        ArrayList fullFieldNamesList  = new ArrayList();
-        
-        keysList.add("EUID");
-        labelsList.add("EUID");
-        fullFieldNamesList.add("EUID");
-        
-        for(int i=0;i<fcArrayList.size();i++) {
-            FieldConfig fieldConfig = (FieldConfig)fcArrayList.get(i);
-            keysList.add(fieldConfig.getName());
-            labelsList.add(fieldConfig.getDisplayName());
-            fullFieldNamesList.add(fieldConfig.getFullFieldName());
-        }
-        
-        if(request.getAttribute("WeightedSearch") != null ) {
-            keysList.add("Weight");
-            labelsList.add("Weight");
-            fullFieldNamesList.add("Weight");
-       }
-        
-        //set EUID values here
-        String[] keys = new String[keysList.size()];
-        String[] labels = new String[labelsList.size()];
-        String[] fullFieldNames = new String[fullFieldNamesList.size()];
-        
-        for(int i=0;i<keysList.size();i++) {
-            keys[i] = (String) keysList.get(i);
-            labels[i] = (String) labelsList.get(i);
-            fullFieldNames[i] = (String) fullFieldNamesList.get(i);
-        }
-        
-        
-        
-        StringBuffer myColumnDefs = new StringBuffer();
-
-        myColumnDefs.append("[");
-        String value = new String();
-        for(int i=0;i<keysList.size();i++) {
-            if(keys[i].equalsIgnoreCase("EUID")) {
-              value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ","+
-                       "formatter:function (elCell,oRecord,oColumn,oData) {elCell.innerHTML = '<a href=\"euiddetails.jsf?euid=' + oData + '\" style=\"text-align:middle;valign:middle;\">' + oData + '</a>';}" +
-                       ",sortable:true,resizeable:true,width:150}";
-            } else {
-              value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ",sortable:true,resizeable:true}";
-            }  
-            
-          myColumnDefs.append(value);
-          if(i != keys.length -1) myColumnDefs.append(",");
-         }   
-         myColumnDefs.append("]");
-
-         
-        StringBuffer sbr  = new StringBuffer();
-        sbr.append("[");
-        if (resultArrayList != null && resultArrayList.size() > 0) {
-                for (int i = 0; i < resultArrayList.size(); i++) {
-                    HashMap valueMap = (HashMap) resultArrayList.get(i);
-                    StringBuffer valueBuffer = new StringBuffer();
-                    valueBuffer.append("{");  
-                    for (int kc = 0; kc < fullFieldNames.length; kc++) {
-                        valueBuffer.append(keys[kc] + ":" + "\"" + ((valueMap.get(fullFieldNames[kc]) != null)?valueMap.get(fullFieldNames[kc]):"") + "\"");
-                        if (kc != fullFieldNames.length - 1) {
-                            valueBuffer.append(",");
-                        }
-                    }
-                    valueBuffer.append("}");                   
-
-                    sbr.append(valueBuffer.toString());
-
-                    if (i != resultArrayList.size() - 1) {
-                        sbr.append(",");
-                    }
-
-                }
-            }
-        sbr.append("]");           
-
-        for(int i=0;i<keysList.size();i++) {
-        %> 
-        <script>
-            fieldsArray[<%=i%>] = '<%=keys[i]%>';
-        </script>
-        <%}%>
-        
-
-<script>
-     var dataArray = new Array();
-     dataArray  = <%=sbr.toString()%>;
-
-</script>
-
-<script>
-
-    YAHOO.example.Data = {
-    outputValues: dataArray
- }
-</script>
-
 <script type="text/javascript">
-YAHOO.util.Event.addListener(window, "load", function() {
-    YAHOO.example.CustomSort = new function() {
-        var myColumnDefs = <%=myColumnDefs.toString()%>;
-        this.myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.outputValues);
-        this.myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-        this.myDataSource.responseSchema = {
-            fields: fieldsArray
-        };
-
-
-var myConfigs = {
-    paginator : new YAHOO.widget.Paginator({
-        rowsPerPage    : <%=pageSize%>, // REQUIRED
-        totalRecords   : dataArray.length // OPTIONAL
-
-        // use an existing container element
-        //containers : 'sort',
-
-        // use a custom layout for pagination controls
-        //template       : "{PageLinks} Show {RowsPerPageDropdown} per page",
-
-        // show all links
-        //pageLinks : YAHOO.widget.Paginator.VALUE_UNLIMITED,
-
-        // use these in the rows-per-page dropdown
-        //rowsPerPageOptions : [25,50,100],
-
-        // use custom page link labels
-        //pageLabelBuilder : function (page,paginator) {
-          //  var recs = paginator.getPageRecords(page);
-           //return (recs[0] + 1) + ' - ' + (recs[1] + 1);
-        //}
-    })
-     
-
-};
-        this.myDataTable = new YAHOO.widget.DataTable("outputdiv", myColumnDefs,
-                this.myDataSource, myConfigs);
-            
-    };
-});
+     function closeDiv()    {                            
+        document.getElementById('ajaxOutputdiv').style.visibility='hidden';
+        document.getElementById('ajaxOutputdiv').style.display='none';
+     }
 </script>
+     
 </html>
 </f:view>
+
 

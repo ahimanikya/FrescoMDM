@@ -267,8 +267,8 @@
                                     <%if (singleSystemObjectLID != null) {%>
                                     <%if ("viewSO".equalsIgnoreCase(keyFunction)) {%>
                                     <h:form>
-                                        <div id="sourceViewBasicSearch">                                            
-                                            <table border="0" width="60%">
+                                        <div  id="sourceViewBasicSearch">                                            
+                                            <table border="0" width="100%">
                                                     <tr>
                                                         <td>
                                                             <h:commandLink  styleClass="button" rendered="#{Operations.SO_SearchView}"
@@ -277,56 +277,55 @@
                                                                 <span><h:outputText value="#{msgs.source_rec_viewrecordslist_but}"/></span>
                                                             </h:commandLink>                                                                                                 
                                                         </td>
-                                                    </tr>  
-                                                    <tr class="odd">
-                                                        <td><h:outputText value="#{msgs.source_rec_status_but}"/></td>
+                                                        <td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><b><h:outputText value="#{msgs.source_rec_status_but}"/></b>:</td>
                                                         <td>
 														   <%=singleSystemObjectLID.getStatus()%> 
 														</td>
-                                                    </tr>                                                    
-                                                    <tr class="even">
-                                                        <td><h:outputText value="#{msgs.source_rec_sourcename_text}"/></td>
-                                                        <td><%=sourceHandler.getSystemCodeDescription(singleSystemObjectLID.getSystemCode())%> </td>
-                                                    </tr>
-                                                    <tr class="odd">
-                                                        <td><%=localIdDesignation%></td>
+                                                        <td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><b><h:outputText value="#{msgs.source_rec_sourcename_text}"/></b>:</td>
+                                                        <td><%=sourceHandler.getSystemCodeDescription(singleSystemObjectLID.getSystemCode())%></td>
+                                                        <td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><b><%=localIdDesignation%></b>:</td>
                                                         <td><%=singleSystemObjectLID.getLID()%> </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="tablehead" colspan="2">
-                                                          <b><%=objScreenObject.getRootObj().getName()%>&nbsp;Info</b>
-                                                        </td>
                                                     </tr>
                                             </table>
                                             
                                             <!--Start Displaying the root node fields -->                                        
-                                            <div style="height:300px;width:60%;overflow:auto">                                                    
+                                            <div class="minorobjects">                                                    
+											   <table>
+											     <tr>
+												   <td>
+												   <p><%=objScreenObject.getRootObj().getName()%>&nbsp;Info</p>
+												   <table>
+												 <tr>
+												   <td>
                                                     <h:dataTable  
-                                                        headerClass="tablehead" 
                                                         id="hashId" 
-                                                        width="100%"
                                                         var="fieldConfig" 
                                                         value="#{SourceHandler.rootNodeFieldConfigs}">
                                                             <h:column>
                                                                 <h:outputText value="#{fieldConfig.displayName}"  />
                                                             </h:column>
                                                             <h:column>
-                                                                <h:outputText value="#{SourceHandler.singleSOHashMap['SYSTEM_OBJECT'][fieldConfig.fullFieldName]}" rendered ="#{!fieldConfig.sensitive}"   />
-                                                                <h:outputText value="#{msgs.SENSITIVE_FIELD_MASKING}" rendered ="#{fieldConfig.sensitive}"   />
+                                                                <h:outputText value="#{SourceHandler.singleSOHashMap['SYSTEM_OBJECT'][fieldConfig.fullFieldName]}"  />
                                                             </h:column>
                                                     </h:dataTable>               
+												</td>
+												</tr>
+                                                </table>
+												   </td>
+												 </tr>
+												</table>
                                             </div>
 
                                      <!--End Displaying the root node fields -->    
                                      
                                     <!--End Displaying the minor object fields -->    
+									<div class="minorobjects">
                                      <h:dataTable  headerClass="tablehead" 
                                                           id="allChildNodesNamesSoEdit" 
-                                                          width="60%"
                                                           var="childNodesName" 
                                                           value="#{SourceHandler.allSOChildNodesLists}">
                                        <h:column>
-                                              <p><h:outputText styleClass="tablehead" style="width:100%;" value="#{childNodesName['NAME']}"  /></p>
+                                              <p><h:outputText value="#{childNodesName['NAME']}"  /></p>
                                               <h:dataTable  headerClass="tablehead" 
                                                                   width="100%"
                                                                   id="sofieldConfigDPId" 
@@ -335,21 +334,20 @@
                                                         <h:column>
                                                             <h:dataTable 
                                                                 id="minorHashId" 
-                                                                width="100%"
                                                                 var="childFieldConfig" 
                                                                 value="#{childNodesName['FIELDCONFIGS']}">
                                                                 <h:column>
                                                                     <h:outputText value="#{childFieldConfig.displayName}"  />
                                                                 </h:column>
                                                                 <h:column>
-                                                                    <h:outputText value="#{childMapArrayList[childFieldConfig.fullFieldName]}" rendered="#{!childFieldConfig.sensitive}" />
-                                                                    <h:outputText value="#{msgs.SENSITIVE_FIELD_MASKING}" rendered ="#{childFieldConfig.sensitive}"   />
+                                                                    <h:outputText value="#{childMapArrayList[childFieldConfig.fullFieldName]}"  />
                                                                 </h:column>
                                                             </h:dataTable>               
                                                         </h:column>
                                                     </h:dataTable>                                                             
                                        </h:column>
                                    </h:dataTable>
+								   </div>
 
                                     <!--End Displaying the minor object fields -->    
 
@@ -608,8 +606,9 @@
                                                                                                             <!--Rendering Updateable HTML Text Area-->
                                                                                                                 
                                                                                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextArea'}" >
-                                                                                                                <h:inputTextarea title="#{childFieldConfigAdd.fullFieldName}"  
-                                                                                                                                 required="#{childFieldConfigAdd.required}" />
+                                                                                                                <h:inputTextarea title="#{fieldConfigAddAddress.fullFieldName}"  
+                                                                                                                                 onblur="javascript:accumilateMinorObjectFieldsOnBlurLocal('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}','#{childFieldConfigAdd.inputMask}','#{childFieldConfigAdd.valueType}')"
+                                                                                                                                 required="#{fieldConfigAddAddress.required}" />
                                                                                                             </h:column>
                                                                                                         </h:dataTable>                                                                                
                                                                                                     </h:column>
@@ -1220,7 +1219,8 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                            <!--Rendering Updateable HTML Text Area-->
                                             
                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextArea'}" >
-                                                <h:inputTextarea title="#{childFieldConfigAdd.fullFieldName}"  
+                                                <h:inputTextarea title="#{fieldConfigAddAddress.fullFieldName}"  
+                                                                 onblur="javascript:accumilateMinorObjectFieldsOnBlurLocal('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}','#{childFieldConfigAdd.inputMask}','#{childFieldConfigAdd.valueType}')"
                                                                  required="#{fieldConfigAddAddress.required}" />
                                             </h:column>
                                         </h:dataTable>                                                                                
@@ -1371,31 +1371,31 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                </td>
                                                                <input id='lidmask' type='hidden' name='lidmask' value='DDD-DDD-DDDD' />           
                                                                <td>
-                                                               <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
-                                                                   /><%=localIdDesignation%>1</font>
+                                                               <h:outputText style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   value="#{msgs.source_merge_head1}"/>
                                                                <h:inputText value="#{SourceMergeHandler.lid1}" id="LID1"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                     onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                     onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                <td>
-                                                              <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
-                                                                   /><%=localIdDesignation%>2</font>
+                                                                   <h:outputText 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   value="#{msgs.source_merge_head2}"/>
                                                                    <h:inputText value="#{SourceMergeHandler.lid2}" id="LID2"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                    onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                    onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
                                                                <td>
-                                                              <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
-                                                                   /><%=localIdDesignation%>3</font>
+                                                                   <h:outputText 																    style="font-family: Arial, Helvetica,  sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   value="#{msgs.source_merge_head3}"/>
                                                                    <h:inputText value="#{SourceMergeHandler.lid3}" id="LID3"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                                 onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
                                                                <td>
-                                                              <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
-                                                                   /><%=localIdDesignation%>4</font>
+                                                                   <h:outputText 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   value="#{msgs.source_merge_head4}"/>
                                                                    <h:inputText value="#{SourceMergeHandler.lid4}" id="LID4"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
@@ -1969,7 +1969,6 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
     <!--Fix for Bug : 6692060 (By Sridhar) START-->
         <%if( request.getAttribute("mergeComplete") != null) {%>
 		     <script>
-			   alert("Complete......" + request.getAttribute("mergeComplete"));
 		      document.getElementById('confirmationButton').style.visibility = 'hidden';
 		      document.getElementById('confirmationButton').style.display = 'none';
        		 </script>

@@ -125,11 +125,13 @@
   				              </FORM>
 							 </td>
                             </tr>
+				             <tr>
+                                <td colspan="2">                           
+                                    <h:messages styleClass="errorMessages"  layout="list" />
+                                </td>
+                            </tr>
                         </table>
 
-                </div>
-                <div id="errorDiv" style="padding-left:350px;">
-                    <h:messages style="color: red;font-size:12px" id="errorMessages" layout="table" />
                 </div>
                 <br>       
 				                                            <%
@@ -148,7 +150,9 @@
             EnterpriseObject reqEnterpriseObject = new EnterpriseObject();
             if (request.getParameter("euid") != null) {
                 eoArrayList = patientDetailsHandler.buildEuids(request.getParameter("euid"));
-                request.setAttribute("comapreEuidsArrayList",eoArrayList);
+				if(eoArrayList != null && eoArrayList.size() > 0) {
+                  request.setAttribute("comapreEuidsArrayList",eoArrayList);
+				}
             } 
             
             if(request.getAttribute("comapreEuidsArrayList") != null) {

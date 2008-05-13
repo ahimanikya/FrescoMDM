@@ -15,6 +15,19 @@
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
 <%@ page import="java.util.ArrayList"  %>
+
+<% 
+   Integer size = 0; 
+   double rand = java.lang.Math.random();
+   String URI = request.getRequestURI();
+   URI = URI.substring(1, URI.lastIndexOf("/"));
+
+   ArrayList keysList  = new ArrayList();
+   ArrayList labelsList  = new ArrayList();
+   ArrayList fullFieldNamesList  = new ArrayList();
+   StringBuffer myColumnDefs = new StringBuffer();
+%>
+
 <f:view>
     
     
@@ -41,6 +54,16 @@
             <script type="text/javascript" src="./scripts/yui/connection/connection-min.js"></script>
             <!-- Source files -->
             <script type="text/javascript" src="./scripts/yui/datatable/datatable-beta-min.js"></script>
+<script>
+//not used in transactions, but since its require in the script we fake it
+var editIndexid = ""; 
+var thisForm;
+var rand = "";
+function setRand(thisrand)  {
+	rand = thisrand;
+}
+</script>
+
         </head>
         
         <title><h:outputText value="#{msgs.application_heading}"/></title>  
@@ -56,6 +79,7 @@
                                     <h:selectOneMenu  id="searchType"
                                                       rendered="#{AuditLogHandler.possilbeSearchTypesCount gt 1}" 
                                                       onchange="submit();" 
+													  title='#{feildConfig.name}'
                                                       style="width:220px;" 
                                                       value="#{AuditLogHandler.searchType}" 
                                                       valueChangeListener="#{AuditLogHandler.changeSearchType}" >
@@ -79,7 +103,7 @@
                                          var="searchScreenFieldGroup" 
                                          value="#{AuditLogHandler.searchScreenFieldGroupArray}">
 						    <h:column>
-   				            <div style="font-size:12px;font-weight:bold;color:#0739B6;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h:outputText value="#{searchScreenFieldGroup.description}" /></div>
+   				            <div style="font-size:12px;font-weight:bold;color:#0739B6;" ><h:outputText value="#{searchScreenFieldGroup.description}" /></div>
                             <h:dataTable headerClass="tablehead"  
                                          id="fieldConfigId" 
                                          var="feildConfig" 
@@ -94,7 +118,8 @@
                                         <!--Rendering HTML Select Menu List-->
                                         <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
                                             <nobr>
-                                                <h:selectOneMenu onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                <h:selectOneMenu 
+												title='#{feildConfig.name}'
                                                                  rendered="#{feildConfig.name ne 'SystemCode'}"
 	                                                             value="#{AuditLogHandler.updateableFeildsMap[feildConfig.name]}">
                                                     <f:selectItem itemLabel="" itemValue="" />
@@ -102,7 +127,7 @@
                                                 </h:selectOneMenu>
                                                 
                                                 <h:selectOneMenu  onchange="javascript:setLidMaskValue(this,'advancedformData')"
-                                                                  onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                                  title='#{feildConfig.name}'
                                                                   id="SystemCode" 
     															  value="#{AuditLogHandler.updateableFeildsMap[feildConfig.name]}"
                                                                   rendered="#{feildConfig.name eq 'SystemCode'}">
@@ -118,13 +143,14 @@
                                                                label="#{feildConfig.displayName}" 
                                                                onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
-                                                               onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                               title='#{feildConfig.name}'
                                                                maxlength="#{feildConfig.maxLength}" 
 															   value="#{AuditLogHandler.updateableFeildsMap[feildConfig.name]}"
                                                                rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
                                                 
                                                 <h:inputText   required="#{feildConfig.required}" 
 												               id="LID"
+															   title='#{feildConfig.name}'
 															   readonly="true"
                                                                label="#{feildConfig.displayName}" 
                                                                onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
@@ -134,7 +160,8 @@
                                                                rendered="#{feildConfig.name eq 'LID'}"/>
                                                                
                                                 <h:inputText   required="#{feildConfig.required}" 
-                                                               label="#{feildConfig.displayName}" 
+                                                               title='#{feildConfig.name}'
+															   label="#{feildConfig.displayName}" 
                                                                onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
                                                                maxlength="#{SourceHandler.euidLength}" 
 															   value="#{AuditLogHandler.updateableFeildsMap[feildConfig.name]}"
@@ -147,13 +174,14 @@
                                         <!--Rendering Updateable HTML Text Area-->
                                         <h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
                                             <nobr>
-                                                <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"   required="#{feildConfig.required}"/>
+                                                <h:inputTextarea title='#{feildConfig.name}' label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"   required="#{feildConfig.required}"/>
                                             </nobr>
                                         </h:column>
                                         
                                         <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6}" >
                                           <nobr>
                                             <input type="text" 
+											       title="<h:outputText value="#{feildConfig.name}"/>"  
                                                    id = "<h:outputText value="#{feildConfig.name}"/>"  
                                                    value="<h:outputText value="#{AuditLogHandler.updateableFeildsMap[feildConfig.name]}"/>"
                                                    required="<h:outputText value="#{feildConfig.required}"/>" 
@@ -180,11 +208,11 @@
                                                     </h:outputLink>
                                                 </nobr>
                                                 <nobr>
-                                                    <h:commandLink  styleClass="button" rendered="#{Operations.auditLog_SearchView}"  action="#{AuditLogHandler.performSubmit}" >  
-                                                        <span>
-                                                            <h:outputText value="#{msgs.search_button_label}"/>
-                                                        </span>
-                                                    </h:commandLink>                                     
+                                                        <a  class="button" href="javascript:void(0)" onclick="javascript:getFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/auditlogservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
+                                                            <span>
+                                                                <h:outputText value="#{msgs.search_button_label}"/>
+                                                            </span>
+                                                        </a>                                     
                                                 </nobr>
                                                 
                                             </td>
@@ -192,95 +220,18 @@
                                     </table>
                                 </td>
                                 <td valign="top">
-                                    <h:messages styleClass="errorMessages"  layout="list" />
+								   <div id="messages">                                   
+								   </div>
                                 </td>
                             </tr>
                         </table>
                         <h:inputHidden id="enteredFieldValues" value="#{AuditLogHandler.enteredFieldValues}"/>
                     </h:form>
+					<!--div class="reportresults" id="outputdiv"></div-->
                 </div> 
             </div>  
-            <br>       
-            
-            <div class="printClass"> 
-                <h:panelGrid rendered="#{AuditLogHandler.resultsSize gt 0}" columns="3">
-                    <h:outputText rendered="#{AuditLogHandler.resultsSize gt -1}" value="#{msgs.total_records_text}"/>
-                    <h:outputText rendered="#{AuditLogHandler.resultsSize gt -1}" value="#{AuditLogHandler.resultsSize}" />
-                    <h:outputLink styleClass="button" rendered="#{Operations.auditLog_Print && AuditLogHandler.resultsSize gt 0}" value="javaScript:window.print();">                                            
-                        <span> <h:outputText value="#{msgs.print_text}"/></span>
-                    </h:outputLink>                                                           
-                </h:panelGrid>          
-            </div>
-            
-            <% if(request.getAttribute("resultsSize")!=null &&  ((Integer)request.getAttribute("resultsSize")).intValue() == 0 ) {%>           
-            <div class="printClass" >
-                <table cellpadding="0" cellspacing="0" border="0">
-                    <tr>
-                        <td>
-                            <h:outputText rendered="#{AuditLogHandler.resultsSize gt -1}" value="#{msgs.total_records_text}"/>
-                            <h:outputText rendered="#{AuditLogHandler.resultsSize gt -1}" value="#{AuditLogHandler.resultsSize}" />&nbsp;&nbsp;
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <%}%>
-            <% if(request.getAttribute("resultsArrayList")!=null &&  ((ArrayList)request.getAttribute("resultsArrayList")).size() > 0 ) {%>           
-             <div class="reportYUISearch" >
-                <div id="outputdiv"></div>
-             </div>  
-            <%}%>
-    <script>
-         if( document.advancedformData.elements[0]!=null) {
-		var i;
-		var max = document.advancedformData.length;
-		for( i = 0; i < max; i++ ) {
-			if( document.advancedformData.elements[ i ].type != "hidden" &&
-				!document.advancedformData.elements[ i ].disabled &&
-				!document.advancedformData.elements[ i ].readOnly ) {
-				document.advancedformData.elements[ i ].focus();
-				break;
-			}
-		}
-      }         
-         
-    </script>
-         
-
-        <%
-         AuditLogHandler auditLogHandler = new AuditLogHandler();
-          String[][] lidMaskingArray = auditLogHandler.getAllSystemCodes();
-             ArrayList resultsArrayList = (ArrayList) request.getAttribute("resultsArrayList");
-             //System.out.println("resultsArrayList" + resultsArrayList);
-            ArrayList keyList = auditLogHandler.getKeysList();
-            ArrayList labelsList = auditLogHandler.getLabelsList();
-         
-        %>
-        <script>
-            var systemCodes = new Array();
-            var lidMasks = new Array();
-        </script>
-        
-        <%
-        for(int i=0;i<lidMaskingArray.length;i++) {
-            String[] innerArray = lidMaskingArray[i];
-            for(int j=0;j<innerArray.length;j++) {
-            
-            if(i==0) {
-         %>       
-         <script>
-           systemCodes['<%=j%>']  = '<%=lidMaskingArray[i][j]%>';
-         </script>      
-         <%       
-            } else {
-         %>
-         <script>
-           lidMasks ['<%=j%>']  = '<%=lidMaskingArray[i][j]%>';
-         </script>
-         <%       
-            }
-           }
-           }
-        %>
+   <div class="searchresults" id="outputdiv"></div>
+   </body>     
     <script>
         function setLidMaskValue(field,formName) {
             var  selectedValue = field.options[field.selectedIndex].value;
@@ -303,120 +254,9 @@
          //var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
          //document.getElementById("advancedformData:selectedSearchType").value = selectedSearchValue;
     </script>
-
-
-        <script>
-            var fieldsArray = new Array();
-        </script>
-        <% 
-        for(int i=0;i<keyList.size();i++) {
-            String key = (String)keyList.get(i);
-        %> 
-        <script>
-            fieldsArray[<%=i%>] = '<%=key%>';
-        </script>
-        <%}%>
-        
-        <%
-        SearchResultsConfig searchResultsConfig = (SearchResultsConfig) screenObject.getSearchResultsConfig().toArray()[0];
-
-        int maxRecords = searchResultsConfig.getMaxRecords();
-        int pageSize = searchResultsConfig.getPageSize();
-        
-        String[] keys = new String[keyList.size()];
-        for(int i=0;i<keyList.size();i++) {
-            keys[i] = (String)keyList.get(i);
-        }
-
-        String[] labels = new String[labelsList.size()];
-        for(int i=0;i<labelsList.size();i++) {
-            labels[i] = (String)labelsList.get(i);
-        }
-        
-        StringBuffer myColumnDefs = new StringBuffer();
-
-        myColumnDefs.append("[");
-        String value = new String();
-        //      <a href='transeuiddetails.jsf?transactionId=<h:outputText value="#{transactions.transactionId}"/>&function=<h:outputText value="#{transactions.function}"/>'>
-
-        for(int i=0;i<keys.length;i++) {
-            if(keys[i].equalsIgnoreCase("TransactionNumber")) {
-              value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ","+
-                       "formatter:function (elCell,oRecord,oColumn,oData) {elCell.innerHTML = '<a href=\"transeuiddetails.jsf?transactionId=' + oData +'&function='+ oRecord.getData(\'Function\')  + '\">' + oData + '</a>';}" +
-                       ",sortable:true,resizeable:true}";
-            } else {
-              value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ",sortable:true,resizeable:true}";
-            }  
-            
-          myColumnDefs.append(value);
-          if(i != keys.length -1) myColumnDefs.append(",");
-         }   
-         myColumnDefs.append("]");
-         %>       
-        
- 
-<script>
-     var dataArray = new Array();
-     dataArray = <%=resultsArrayList%>;
-
-</script>
-
-<script>
-
-    YAHOO.example.Data = {
-    outputValues: dataArray
- }
-</script>
-
-<script type="text/javascript">
-YAHOO.util.Event.addListener(window, "load", function() {
-    YAHOO.example.CustomSort = new function() {
-        var myColumnDefs = <%=myColumnDefs.toString()%>;
-        this.myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.outputValues);
-        this.myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-        this.myDataSource.responseSchema = {
-            fields: fieldsArray
-        };
-
-
-var myConfigs = {
-    paginator : new YAHOO.widget.Paginator({
-        rowsPerPage    : <%=pageSize%>, // REQUIRED
-        totalRecords   : dataArray.length // OPTIONAL
-
-        // use an existing container element
-        //containers : 'sort',
-
-        // use a custom layout for pagination controls
-        //template       : "{PageLinks} Show {RowsPerPageDropdown} per page",
-
-        // show all links
-        //pageLinks : YAHOO.widget.Paginator.VALUE_UNLIMITED,
-
-        // use these in the rows-per-page dropdown
-        //rowsPerPageOptions : [25,50,100],
-
-        // use custom page link labels
-        //pageLabelBuilder : function (page,paginator) {
-          //  var recs = paginator.getPageRecords(page);
-           //return (recs[0] + 1) + ' - ' + (recs[1] + 1);
-        //}
-    })
-     
-
-};
-        this.myDataTable = new YAHOO.widget.DataTable("outputdiv", myColumnDefs,
-                this.myDataSource, myConfigs);
-            
-    };
-});
-</script>
-
-
-         
-       </body>     
     </html>
 </f:view>
+
 
 
 
