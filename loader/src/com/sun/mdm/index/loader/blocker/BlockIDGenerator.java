@@ -27,6 +27,7 @@ import com.sun.mdm.index.dataobject.DataObject;
 import com.sun.mdm.index.dataobject.epath.DOEpath;
 import com.sun.mdm.index.dataobject.objectdef.Lookup;
 import com.sun.mdm.index.objects.epath.EPath;
+import com.sun.mdm.index.loader.common.LoaderException;
 
 /**
  * A user call back that generates a blockId from a given DataObject.
@@ -44,7 +45,9 @@ public interface BlockIDGenerator {
 	 * @param l Lookup that has meta data information about data.
 	 * 
 	 * @return List<String> of blockIds.
+	 * @throws LoaderException
 	 * @see DOEpath
 	 */
-    List<String> computeBlockID(EPath field, DataObject data, Lookup l);
+	
+    List<String> computeBlockID(EPath field, DataObject data, Lookup l) throws LoaderException;
 }

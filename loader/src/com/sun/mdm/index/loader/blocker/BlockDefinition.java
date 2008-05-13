@@ -36,6 +36,7 @@ import com.sun.mdm.index.objects.epath.EPathParser;
 import java.util.HashMap;
 import com.sun.mdm.index.filter.ExclusionListLookup;
 import com.sun.mdm.index.filter.FilterConstants;
+import com.sun.mdm.index.loader.common.LoaderException;
 
 /**
  * BlockDefinition
@@ -86,7 +87,7 @@ public class BlockDefinition {
 	 * configuration api. Add rule
 	 * @param epath Epath string
 	 */
-	public void addRule(String epath) throws Exception {
+	public void addRule(String epath) throws LoaderException {
 		Rule rule = new Rule(epath);
 		rules_.add(rule);
 	}
@@ -95,7 +96,7 @@ public class BlockDefinition {
 	 * configuration api. Add rule
 	 * @param epath Epath string. Source is from BlockDefinition source
 	 */
-	public void addRule(String epath,String source) throws Exception {
+	public void addRule(String epath,String source) throws LoaderException {
 		Rule rule = new Rule(epath,source);
 		rules_.add(rule);
 	}
@@ -131,7 +132,7 @@ public class BlockDefinition {
 	 *  @param lk Lookup used for getting desired values from dataobject
 	 */
 
-	List<String> getBlockIds(DataObject dataObject, Lookup lk) throws Exception {
+	List<String> getBlockIds(DataObject dataObject, Lookup lk) throws LoaderException {
 		List<String> blockids = new ArrayList<String>();
 		for (int i = 0; i < rules_.size(); i++) {
 			List<String> values = rules_.get(i).getValue(dataObject, lk);
@@ -170,26 +171,26 @@ public class BlockDefinition {
 		public Rule() {
 
 		}
-		public Rule(String epath) throws Exception {
+		public Rule(String epath) throws LoaderException {
 			isLeaf = true;
 			parseEpath(epath);
 		}
 
-		public Rule(String epath,String source) throws Exception {
+		public Rule(String epath,String source) throws LoaderException {
 			isLeaf = true;
 			parseEpath(epath);
 			this.source=source;
 		}
 
 
-		public Rule(List<String> epaths) throws Exception {
+		public Rule(List<String> epaths) throws LoaderException {
 			for (int i = 0; i < epaths.size(); i++) {
 				children.add(new Rule(epaths.get(i)));
 			}
 
 		}
 
-		public Rule(String[] epaths) throws Exception  {
+		public Rule(String[] epaths) throws LoaderException  {
 			for (int i = 0; i < epaths.length; i++) {
 				children.add(new Rule(epaths[i]));
 			}
@@ -199,127 +200,131 @@ public class BlockDefinition {
 		/*
 		 * configuration api
 		 */
-		 public void addChild(Rule rule) {
+		public void addChild(Rule rule) {
 			children.add(rule);
 		}
-		 /*
-		  * configuration api
-		  */
-		 public void setLeaf(boolean leaf) {
-			 isLeaf = leaf;	
-		 }
-		 /*
-		  * configuration api
-		  */
-		 public void setOperator(Operator oper) {
-			 operator_ = oper;
-		 }
+		/*
+		 * configuration api
+		 */
+		public void setLeaf(boolean leaf) {
+			isLeaf = leaf;	
+		}
+		/*
+		 * configuration api
+		 */
+		public void setOperator(Operator oper) {
+			operator_ = oper;
+		}
 
 
-		 private List<String> getValue(DataObject dataObject, Lookup lk) throws Exception {
-			 List<String> allvalues = new ArrayList<String>();
-			 if (blockIDGenerator != null) {
-				 allvalues = blockIDGenerator.computeBlockID(epath, dataObject, lk);
-			 }
-			 else if (isLeaf) {								
-				 try {
-					 List<String> values = DOEpath.getFieldValueList(epath, dataObject, lk);
-					 values = filter(qname, values);			
-					 if (values != null ) {
-						 allvalues.addAll(values);
-					 }
-				 }  catch (EPathException ex)  {
-					 logger.info(ex.getMessage());
-					 throw ex;					 
-				 }
+		private List<String> getValue(DataObject dataObject, Lookup lk) throws LoaderException {
+			List<String> allvalues = new ArrayList<String>();
+			if (blockIDGenerator != null) {
+				allvalues = blockIDGenerator.computeBlockID(epath, dataObject, lk);
+			}
+			else if (isLeaf) {								
+				try {
+					List<String> values = DOEpath.getFieldValueList(epath, dataObject, lk);
+					values = filter(qname, values);			
+					if (values != null ) {
+						allvalues.addAll(values);
+					}
+				}  catch (EPathException ex)  {
+					logger.severe(ex.getMessage());
+					throw new LoaderException(ex);					 
+				}
 
-			 } else {
-				 for (int i = 0; i < children.size(); i++) {
-					 Rule rule = children.get(i);
-					 List<String> values = rule.getValue(dataObject, lk);
-					 if (values == null || values.size()==0  ) {
-						 if (operator_.equals(Operator.AND)) {
-							 return null;
-						 }
-					 }
+			} else {
+				for (int i = 0; i < children.size(); i++) {
+					Rule rule = children.get(i);
+					List<String> values = rule.getValue(dataObject, lk);
+					if (values == null || values.size()==0  ) {
+						if (operator_.equals(Operator.AND)) {
+							return null;
+						}
+					}
 
-					 allvalues = add(allvalues, values, operator_);
-				 }				
-			 }
-			 return (allvalues.size()==0 ? null: allvalues);
-		 }
+					allvalues = add(allvalues, values, operator_);
+				}				
+			}
+			return (allvalues.size()==0 ? null: allvalues);
+		}
 
-		 private List<String> filter(String epath, List<String> values) {
-			 if (values == null) {
-				 return null;
-			 }
-			 List<String> newvalues = new ArrayList<String>();
-			 for (int i = 0; i < values.size(); i++) {
-				 String  value = values.get(i);
-				 if (!isFieldValueFiltered(epath, value)) {
-					 newvalues.add(value);
+		private List<String> filter(String epath, List<String> values) {
+			if (values == null) {
+				return null;
+			}
+			List<String> newvalues = new ArrayList<String>();
+			for (int i = 0; i < values.size(); i++) {
+				String  value = values.get(i);
+				if (!isFieldValueFiltered(epath, value)) {
+					newvalues.add(value);
 
 
-				 }
-			 }
-			 if (newvalues.size() == 0) { // if empty, return null
-				 return null;
-			 }
-			 return newvalues;
-		 }
+				}
+			}
+			if (newvalues.size() == 0) { // if empty, return null
+				return null;
+			}
+			return newvalues;
+		}
 
-		 private boolean isFieldValueFiltered(String field, String value) {
-			 if (value == null || value.equals("")) {
-				 return true;
-			 }
-			 ExclusionListLookup exlookup = new ExclusionListLookup();
-			 return exlookup.isFieldValueInExclusion(value, field, FilterConstants.BLOCK_EXCLUSION_TYPE);			
+		private boolean isFieldValueFiltered(String field, String value) {
+			if (value == null || value.equals("")) {
+				return true;
+			}
+			ExclusionListLookup exlookup = new ExclusionListLookup();
+			return exlookup.isFieldValueInExclusion(value, field, FilterConstants.BLOCK_EXCLUSION_TYPE);			
 
-		 }
+		}
 
-		 private void parseEpath(String path) throws Exception {
-			 String e = path;
-			 int index = path.indexOf('+');
-			 if (index > 0) {
-				 e = path.substring(0, index);
-				 if (index + 1 < path.length()) {
-					 String blockIDGclass = path.substring(index+1);
+		private void parseEpath(String path) throws LoaderException {
+			try {
+				String e = path;
+				int index = path.indexOf('+');
+				if (index > 0) {
+					e = path.substring(0, index);
+					if (index + 1 < path.length()) {
+						String blockIDGclass = path.substring(index+1);
 
-					 Class c = Class.forName(blockIDGclass);
-					 blockIDGenerator = (BlockIDGenerator)c.newInstance();
-				 }
-			 }
-			 qname = e;
-			 e = convertStarEpath(e);
-			 this.epath = EPathParser.parse(e);
+						Class c = Class.forName(blockIDGclass);
+						blockIDGenerator = (BlockIDGenerator)c.newInstance();
+					}
+				}
+				qname = e;
+				e = convertStarEpath(e);
+				this.epath = EPathParser.parse(e);
+			} catch (Exception ex) {
+				throw new LoaderException(ex);
+			}
 
-		 }
+		}
 
-		 public String toString() {
-			 StringBuffer buf = new StringBuffer("Rule:");
-			 if (isLeaf) {
-				 buf.append( "field:" + epath.toString());
-			 } else {
+		public String toString() {
+			StringBuffer buf = new StringBuffer("Rule:");
+			if (isLeaf) {
+				buf.append( "field:" + epath.toString());
+			} else {
 
-				 buf.append("Operator:" + operator_);
-				 for (int i = 0; i < children.size(); i++) {
-					 Rule rule = children.get(i);
-					 String str = rule.toString();
-					 buf.append(str);
+				buf.append("Operator:" + operator_);
+				for (int i = 0; i < children.size(); i++) {
+					Rule rule = children.get(i);
+					String str = rule.toString();
+					buf.append(str);
 
-				 }
-			 }
-			 return buf.toString();
-		 }
-		 public String getSource() {
-			 return source;
-		 }
-		 public boolean isLeaf() {
-			 return isLeaf;
-		 }
-		 public List<Rule> getChildren() {
-			 return children;
-		 }			
+				}
+			}
+			return buf.toString();
+		}
+		public String getSource() {
+			return source;
+		}
+		public boolean isLeaf() {
+			return isLeaf;
+		}
+		public List<Rule> getChildren() {
+			return children;
+		}			
 
 	}
 	/**
