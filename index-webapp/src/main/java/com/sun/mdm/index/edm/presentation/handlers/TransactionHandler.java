@@ -116,11 +116,171 @@ public class TransactionHandler extends ScreenConfiguration {
     private ArrayList keysList  = new ArrayList();
     
     private ArrayList labelsList  = new ArrayList();
-
+/*
+ * Map to hold the parameters
+ **/
+    private HashMap parametersMap  = new HashMap();
     
     /** Creates a new instance of TransactionHandler */
 
     public TransactionHandler() {
+    }
+
+    public ArrayList transactionSearch() throws HandlerException  {
+        ArrayList resultsArrayList = new ArrayList();
+        try {
+            //parametersMap is set using the Ajax call
+            super.setUpdateableFeildsMap(getParametersMap());
+            //check one of many condtion here
+            if (super.checkOneOfManyCondition()) {
+                errorMessage = bundle.getString("ERROR_one_of_many");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
+                mLogger.info(mLocalizer.x("TRS001: {0}",errorMessage));
+                return null;
+            }
+
+            //if user enters LID ONLY 
+            if ((super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("SystemCode") == null) {
+                 //errorMessage = "Please Enter System Code";
+                errorMessage = bundle.getString("LID_only");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                 mLogger.info(mLocalizer.x("TRS002: {0}",errorMessage));
+                return null;
+            }
+            
+            //if user enters LID and SystemCode Validate the LID 
+            if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
+                String LID = (String) super.getUpdateableFeildsMap().get("LID");
+                String SystemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
+                if (SystemCode.trim().length() > 0 && LID.trim().length() == 0) {
+                    errorMessage = bundle.getString("enter_LID");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    mLogger.info(mLocalizer.x("TRS003: {0}",errorMessage));
+                    return null;
+                }
+            }
+
+
+            //if user enters LID and SystemCode Validate the LID 
+            if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
+                String LID = (String) super.getUpdateableFeildsMap().get("LID");
+                String SystemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
+                if (LID.trim().length() > 0 && SystemCode.trim().length() > 0) {
+                    try {
+                        //remove masking for LID field
+                        LID = LID.replaceAll("-", "");
+                        SystemObject so = masterControllerService.getSystemObject(SystemCode, LID);
+                        if (so == null) {
+                            errorMessage = bundle.getString("system_object_not_found_error_message");
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                            mLogger.info(mLocalizer.x("TRS025: {0}",errorMessage));
+                            return null;
+                        }
+                    } catch (ProcessingException ex) {
+                       mLogger.error(mLocalizer.x("TRS005: Failed to submit :{0}",ex.getMessage()),ex);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
+                        return null;
+                    } catch (UserException ex) {
+                        mLogger.error(mLocalizer.x("TRS006: Failed to submit :{0}",ex.getMessage()),ex);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
+                        return null;
+                    }
+                }
+            }
+
+            //Validate all date fields entered by the user
+            if (super.validateDateFields().size() > 0) {
+                Object[] messObjs = super.validateDateFields().toArray();
+                for (int i = 0; i < messObjs.length; i++) {
+                    String obj = (String) messObjs[i];
+                    String[] fieldErrors = obj.split(">>");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
+                    mLogger.info(mLocalizer.x("TRS007: Validation failed :{0}:{1}",fieldErrors[0],fieldErrors[1]));
+                        return null;
+                }
+            }
+            //Validate all time fields entered by the user
+            if (super.validateTimeFields().size() > 0) {
+                Object[] messObjs = super.validateTimeFields().toArray();
+                for (int i = 0; i < messObjs.length; i++) {
+                    String obj = (String) messObjs[i];
+                    String[] fieldErrors = obj.split(">>");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
+                    mLogger.info(mLocalizer.x("TRS008: Validation failed:{0}:{1}",fieldErrors[0],fieldErrors[1]));
+                    return null;
+                }
+            }
+            TransactionSearchObject tso = getTransactionSearchObject();
+            MasterControllerService objMasterControllerService = new MasterControllerService();
+            TransactionIterator iteratorTransaction = objMasterControllerService.lookupTransactionHistory(tso);
+            setSearchSize(0);
+            if (iteratorTransaction != null) {
+                TransactionSummary[] tsArray = iteratorTransaction.first(iteratorTransaction.count());
+                setTransactionsVO(new Transaction[tsArray.length]);
+                for (int i = 0; i < tsArray.length; i++) {
+                    TransactionSummary ts = tsArray[i];
+                    getTransactionsVO()[i] = new Transaction(); //to be safe with malloc
+                    /*String outputValues = "{TransactionNumber:" + "\"" + ts.getTransactionObject().getTransactionNumber() + "\"" +
+                            ", EUID1: " + "\"" + ((ts.getTransactionObject().getEUID() != null) ? ts.getTransactionObject().getEUID() : "") + "\"" +
+                            ", EUID2: " + "\"" + ((ts.getTransactionObject().getEUID2() != null) ? ts.getTransactionObject().getEUID2() : "") + "\"" +
+                            ", LID: " + "\"" + ((ts.getTransactionObject().getLID() != null) ? ts.getTransactionObject().getLID() : "") + "\"" +
+                            ", Function: " + "\"" + ((ts.getTransactionObject().getFunction() != null) ? ts.getTransactionObject().getFunction() : "") + "\"" +
+                            ", SystemCode: " + "\"" + ((ts.getTransactionObject().getSystemCode() != null) ? masterControllerService.getSystemDescription(ts.getTransactionObject().getSystemCode()): "") + "\"" +
+                            ", SystemUser: " + "\"" + ((ts.getTransactionObject().getSystemUser() != null) ? ts.getTransactionObject().getSystemUser() : "") + "\"" +
+                            ", TimeStamp: " + "\"" + ((ts.getTransactionObject().getTimeStamp() != null) ? ts.getTransactionObject().getTimeStamp() : "") + "\"" + "}";
+                     */
+                    //Insert audit log here for Transaction search
+                    masterControllerService.insertAuditLog((String) session.getAttribute("user"), 
+                                                    ts.getTransactionObject().getEUID(), 
+                                                    ts.getTransactionObject().getEUID1(), 
+                                                    "History Search Result", 
+                                                    new Integer(screenObject.getID()).intValue(), 
+                                                    "View History Search Result");
+                    HashMap resultsMap = new HashMap();
+                    resultsMap.put("TransactionNumber", ts.getTransactionObject().getTransactionNumber());
+                    resultsMap.put("EUID1", ts.getTransactionObject().getEUID());
+                    resultsMap.put("EUID2", ts.getTransactionObject().getEUID2());
+                    resultsMap.put("LID", ts.getTransactionObject().getLID());
+                    resultsMap.put("Function", ts.getTransactionObject().getFunction());
+                    resultsMap.put("SystemCode", ts.getTransactionObject().getSystemCode());
+                    resultsMap.put("SystemUser", ts.getTransactionObject().getSystemUser());
+                    resultsMap.put("TimeStamp", ts.getTransactionObject().getTimeStamp());
+
+                    resultsArrayList.add(resultsMap);
+                }
+                setTransactionsVO(transactionsVO);
+                setSearchSize(transactionsVO.length);
+                //request.setAttribute("searchSize", new Integer(transactionsVO.length));
+                //request.setAttribute("resultsArrayList", resultsArrayList);
+                return resultsArrayList;
+            //  request.setAttribute("searchSize",new Integer(transactionsVO.length) );
+            }
+        } catch (ValidationException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.toString()));
+             mLogger.error(mLocalizer.x("TRS009: Failed to submit due to ValidationException:{0}",ex.getMessage()),ex);
+            return null;
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.toString()));
+            mLogger.error(mLocalizer.x("TRS010: Failed to submitdue to UserException :{0}",ex.getMessage()),ex);
+            return null;
+        } catch (PageException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
+             mLogger.error(mLocalizer.x("TRS011: Failed to submit due to PageException:{0}",ex.getMessage()),ex);
+            return null;
+        } catch (RemoteException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
+             mLogger.error(mLocalizer.x("TRS012: Failed to submit due to RemoteException:{0}",ex.getMessage()),ex);
+            return null;
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
+             mLogger.error(mLocalizer.x("TRS013: Failed to submit due to ProcessingException :{0}",ex.getMessage()),ex);
+            return null;
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
+            mLogger.error(mLocalizer.x("TRS014: Failed to submit due to Exception: {0}",ex.getMessage()),ex);
+            return null;
+        }
+        return resultsArrayList;
     }
     
     public String performSubmit() throws HandlerException  {
@@ -133,7 +293,6 @@ public class TransactionHandler extends ScreenConfiguration {
                     String string = fieldNameValues[i];
                     String[] keyValues = string.split("##");
                     if (keyValues.length == 2) {
-                        //System.out.println("Key " + keyValues[0] + "Value ==> : " + keyValues[1]);
                         newFieldValuesMap.put(keyValues[0], keyValues[1]);
                     }
                 }
@@ -144,7 +303,6 @@ public class TransactionHandler extends ScreenConfiguration {
 
             //check one of many condtion here
             if (super.checkOneOfManyCondition()) {
-                //System.out.println("---------------1-------------------" + super.getUpdateableFeildsMap());
                 errorMessage = bundle.getString("ERROR_one_of_many");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                 mLogger.info(mLocalizer.x("TRS001: {0}",errorMessage));
@@ -182,7 +340,6 @@ public class TransactionHandler extends ScreenConfiguration {
                     try {
                         //remove masking for LID field
                         LID = LID.replaceAll("-", "");
-                        ////System.out.println("SystemCode" + SystemCode + "LID" + LID);
                         SystemObject so = masterControllerService.getSystemObject(SystemCode, LID);
                         if (so == null) {
                             errorMessage = bundle.getString("system_object_not_found_error_message");
@@ -210,7 +367,6 @@ public class TransactionHandler extends ScreenConfiguration {
                 for (int i = 0; i < messObjs.length; i++) {
                     String obj = (String) messObjs[i];
                     String[] fieldErrors = obj.split(">>");
-                    ////System.out.println("===> Field" + fieldErrors[0] + "===> Message" + fieldErrors[1]);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
                     mLogger.info(mLocalizer.x("TRS007: Validation failed :{0}:{1}",fieldErrors[0],fieldErrors[1]));
                     return VALIDATION_ERROR;
@@ -224,7 +380,6 @@ public class TransactionHandler extends ScreenConfiguration {
                 for (int i = 0; i < messObjs.length; i++) {
                     String obj = (String) messObjs[i];
                     String[] fieldErrors = obj.split(">>");
-                    ////System.out.println("===> Field" + fieldErrors[0] + "===> Message" + fieldErrors[1]);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
                     mLogger.info(mLocalizer.x("TRS008: Validation failed:{0}:{1}",fieldErrors[0],fieldErrors[1]));
                     return VALIDATION_ERROR;
@@ -329,20 +484,8 @@ public class TransactionHandler extends ScreenConfiguration {
                             if(fieldvalues!=null)
                             {   Object[] obj = fieldvalues.toArray();
                                 
-                                if(obj!=null)
-                                {  ////System.out.println(ePath.getFieldTag()+" ---- "+obj[0]);
-                                  ////System.out.println(" field "+ePath.getFieldTag());
-                                  /*
-                                  if(ePath.getFieldTag().equals("FirstName"))
-                                  {//System.out.println("FirstName : "+obj[0]);
-                                  }else if(ePath.getFieldTag().equals("LastName"))
-                                  {//System.out.println("LastName : "+obj[0]);
-                                  } 
-                                   */ 
-                                }
                             }    
                         }
-                        ////System.out.println("--------------------------------------------------");
                     } 
 
         
@@ -448,7 +591,6 @@ public class TransactionHandler extends ScreenConfiguration {
                     String strEPath = (String) ePathsIterator.next();
                     //if(strEPath.equals("Person.SystemCode"))
                     //       strEPath="Person.LastName";
-                    ////System.out.println("::::  EPath string: " + strEPath);
                     // copy EPath strings to the EPathArrayList
                     arlResultFields.add("Enterprise.SystemObject." + strEPath);
                     //
@@ -528,7 +670,6 @@ public class TransactionHandler extends ScreenConfiguration {
                         }
 
                     }
-                    ////System.out.println("HElllllllllllllllll" + eoArrayList);
                 }
             }
 
@@ -566,7 +707,6 @@ public class TransactionHandler extends ScreenConfiguration {
                 try {
                     //remove masking for LID field
                     LID = LID.replaceAll("-", "");
-                    ////System.out.println("SystemCode" + SystemCode + "LID" + LID);
                     SystemObject so = masterControllerService.getSystemObject(SystemCode, LID);
                     if (so == null) {
                         errorMessage = bundle.getString("system_object_not_found_error_message");
@@ -587,7 +727,6 @@ public class TransactionHandler extends ScreenConfiguration {
         }
 
         //set EUID VALUE IF lid/system code not supplied
-        ////System.out.println("======1======EUID==");
             if (super.getUpdateableFeildsMap().get("EUID") != null && super.getUpdateableFeildsMap().get("EUID").toString().trim().length() > 0) {
                 transactionSearchObject.setEUID((String) super.getUpdateableFeildsMap().get("EUID"));
 //            } else {
@@ -595,14 +734,10 @@ public class TransactionHandler extends ScreenConfiguration {
             }
 
 
-        ////System.out.println("======1=====st=date==");
         //Set StartDate to the amso  
         if (super.getUpdateableFeildsMap().get("StartDate") != null && super.getUpdateableFeildsMap().get("StartDate").toString().trim().length() > 0) {
-            ////System.out.println("======11=====st=date==");
             String startTime = (String) super.getUpdateableFeildsMap().get("StartTime");
-            ////System.out.println("======12=====startTime==" + startTime);
             String searchStartDate = (String) super.getUpdateableFeildsMap().get("StartDate");
-            ////System.out.println("======13=====searchStartDate==" + searchStartDate);
             //append the time aling with date
             if (startTime != null && startTime.trim().length() > 0) {
                 searchStartDate = searchStartDate + " " + startTime;
@@ -610,16 +745,12 @@ public class TransactionHandler extends ScreenConfiguration {
                 searchStartDate = searchStartDate + " 00:00:00";
             }
 
-            ////System.out.println("======14=====st=date==" + searchStartDate);
             Date date = DateUtil.string2Date(searchStartDate);
-            //System.out.println("======15=====st=date==" + date);
             if (date != null) {
                 transactionSearchObject.setStartDate(new Timestamp(date.getTime()));
 
             }
         }
-
-        ////System.out.println("======1=====end=date==");
 
         //EndDate=02/27/2008, StartDate=02/01/2008, Function=null, SystemUser=, EndTime=, StartTime=
         //Set StartDate to the amso  
@@ -633,12 +764,10 @@ public class TransactionHandler extends ScreenConfiguration {
                 searchEndDate = searchEndDate + " 23:59:59";
             }
             Date date = DateUtil.string2Date(searchEndDate);
-            //System.out.println("======15=====END=date==" + date);
             if (date != null) {
                 transactionSearchObject.setEndDate(new Timestamp(date.getTime()));
             }
         }
-        ////System.out.println("======1=====System User==");
         //EndTime=, StartTime=, EndDate=, StartDate=, Function=null, SystemUser=, SystemCode=null, LID=, EUID=
         if (super.getUpdateableFeildsMap().get("SystemUser") != null && super.getUpdateableFeildsMap().get("SystemUser").toString().trim().length() > 0) {
             transactionSearchObject.setSystemUser((String) super.getUpdateableFeildsMap().get("SystemUser"));
@@ -711,7 +840,6 @@ public class TransactionHandler extends ScreenConfiguration {
         ArrayList newArrayList = new ArrayList();
         for (int i = 0; i < pullDownListItems.length; i++) {
             SelectItem selectItem = new SelectItem();
-            ////System.out.println("Adding Select item label" + pullDownListItems[i] + "Value" + pullDownListItems[i]);
             selectItem.setLabel(masterControllerService.getSystemDescription(pullDownListItems[i]));
             selectItem.setValue(pullDownListItems[i]);
             newArrayList.add(selectItem);
@@ -731,7 +859,6 @@ public class TransactionHandler extends ScreenConfiguration {
         try {
              masterControllerService.isEUIDMerge(transactionNumber);
              MergeResult unmerge = masterControllerService.unmerge(transactionNumber);
-             ////System.out.println("helllllllllllllllo"+transactionNumber);
              HttpServletRequest facesRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
              facesRequest.setAttribute("transactionId", transactionNumber);     
              eoArrayList = getTranscationDetails(transactionNumber);
@@ -747,7 +874,6 @@ public class TransactionHandler extends ScreenConfiguration {
                                                         "Unmerge two enterprise objects");
             }
                 
-             ////System.out.println("RETURNING THE CONTROL TO JSP");
         } catch (ProcessingException ex) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,   exceptionMessaage,ex.toString()));
                      mLogger.error(mLocalizer.x("TRS022: Failed to unmerge EnterpriseObject due to ProcessingException : {0}",ex.getMessage()),ex);
@@ -815,6 +941,14 @@ public class TransactionHandler extends ScreenConfiguration {
      */
     public void setLabelsList(ArrayList labelsList) {
         this.labelsList = labelsList;
+    }
+
+    public HashMap getParametersMap() {
+        return parametersMap;
+    }
+
+    public void setParametersMap(HashMap parametersMap) {
+        this.parametersMap = parametersMap;
     }
 
 }

@@ -90,6 +90,10 @@ public class PatientDetailsHandler extends ScreenConfiguration {
     private String mergeEuids = new String();
     private String destnEuid  = new String();
     private String selectedMergeFields = new String();
+    /*
+    * Map to hold the parameters
+    **/
+    private HashMap parametersMap  = new HashMap();
 
     String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
     CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
@@ -104,42 +108,22 @@ public class PatientDetailsHandler extends ScreenConfiguration {
     @throws com.sun.mdm.index.master.ProcessingException 
     @throws com.sun.mdm.index.master.UserException 
      */
-    public String performSubmit() throws ProcessingException, UserException {
+    public ArrayList performSubmit() throws ProcessingException, UserException {
         //get the hidden fields search type from the form usin the facesContext
         // get the array list as per the search
         String errorMessage = null;
         Date date = null;
-
         try {
-            HashMap newFieldValuesMap = new HashMap();
-
-          
-            if (super.getEnteredFieldValues() != null && super.getEnteredFieldValues().length() > 0) {
-                String[] fieldNameValues = super.getEnteredFieldValues().split(">>");
-                for (int i = 0; i < fieldNameValues.length; i++) {
-                    String string = fieldNameValues[i];
-                    String[] keyValues = string.split("##");
-                    if(keyValues.length ==2) {
-                      newFieldValuesMap.put(keyValues[0], keyValues[1]);
-                    }
-                }
-            }
-
-            super.setUpdateableFeildsMap(newFieldValuesMap);
-         
-
+            super.setUpdateableFeildsMap(parametersMap);
             //set the search type as per the user choice
             super.setSearchType(super.getSelectedSearchType());
-            
-            
-            
             //check one of many condtion here
             if (super.checkOneOfManyCondition()) {
                 errorMessage = bundle.getString("ERROR_one_of_many");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                // mLogger.error("Validation failed. Message displayed to the user: " + "One of Many :: " + errorMessage);
                 mLogger.info(mLocalizer.x("PDH001: Failed Get the Screen Object:{0} ", errorMessage));
-                return VALIDATION_ERROR;
+                return null;
             }
 
             //if user enters LID ONLY 
@@ -147,15 +131,14 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 errorMessage = bundle.getString("LID_only");   //"Please Enter System Code";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 mLogger.info(mLocalizer.x("PDH002: {0}",errorMessage));
-                return VALIDATION_ERROR;
-
+                return null;
             }
             //if user enters SYSTEMCODE ONLY 
             if ((super.getUpdateableFeildsMap().get("SystemCode") != null && super.getUpdateableFeildsMap().get("SystemCode").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("LID") == null) {
                 errorMessage = bundle.getString("enter_LID");//"Please Enter LID Value";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                mLogger.info(mLocalizer.x("PDH003: {0}",errorMessage));
-                return VALIDATION_ERROR;
+                return null;
 
             }
             //if user enters LID and SystemCode Validate the LID 
@@ -166,7 +149,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     errorMessage = bundle.getString("enter_LID");// "Please Enter LID Value";
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     mLogger.info(mLocalizer.x("PDH003: {0}",errorMessage));
-                    return VALIDATION_ERROR;
+                    return null;
 
                 }
             }
@@ -185,14 +168,14 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                             errorMessage = bundle.getString("system_object_not_found_error_message");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage, errorMessage));
                              mLogger.info(mLocalizer.x("PDH004: {0} ", errorMessage));
-                            return VALIDATION_ERROR;
+                            return null;
                         }
                     } catch (ProcessingException ex) {
                          mLogger.error(mLocalizer.x("PDH005: Encountered the ProcessingException:{0} ", ex.getMessage()),ex);
-                        return VALIDATION_ERROR;
+                        return null;
                     } catch (UserException ex) {
                         mLogger.error(mLocalizer.x("PDH006: Encountered the UserException:{0} ", ex.getMessage()),ex);
-                        return VALIDATION_ERROR;
+                        return null;
                     }
 
                 }
@@ -207,7 +190,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     String[] fieldErrors = obj.split(">>");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
                     mLogger.info(mLocalizer.x("PDH007: Validation failed :{0}:{1} ", fieldErrors[0],fieldErrors[1]));
-                    return VALIDATION_ERROR;
+                    return null;
                 }
 
             }
@@ -220,7 +203,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     String[] fieldErrors = obj.split(">>");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
                     mLogger.info(mLocalizer.x("PDH008: Validation failed :{0}:{1} ", fieldErrors[0],fieldErrors[1]));
-                    return VALIDATION_ERROR;
+                    return null;
                 }
 
             }
@@ -236,21 +219,23 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             EPathArrayList resultFields = new EPathArrayList();
 
             Iterator srcalIterator = sResultsConfigArrayList.iterator();
-            ArrayList newEoArrayList = new ArrayList();
+            ArrayList results = new ArrayList();
+            //if only euid is entered by the user.
             if (super.getUpdateableFeildsMap().get("EUID") != null) {
                 String euid = (String) super.getUpdateableFeildsMap().get("EUID");
                 EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
                 if (eo != null) {
                     HashMap eoHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
-                    newEoArrayList.add(eoHashMap);
-                    httpRequest.setAttribute("comapreEuidsArrayList", newEoArrayList);
-                    return this.SEARCH_EUID_DETAILS;
+                    results.add(eoHashMap);
+                    httpRequest.setAttribute("comapreEuidsArrayList", results);
+                    return results;
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "EUID: " + euid + " not found", "EUID: " + euid + " not found"));
-                    return this.VALIDATION_ERROR;
+                    return null;
                 }
 
-            } else if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {
+            } else if (super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("SystemCode") != null) {//if only LID/System Code is entered by the user is entered by the user.
+            
                 String lid = (String) super.getUpdateableFeildsMap().get("LID");
                 lid = lid.replaceAll("-", "");
                 String systemCode = (String) super.getUpdateableFeildsMap().get("SystemCode");
@@ -258,9 +243,9 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
                 EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(so);
                 HashMap eoHashMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
-                newEoArrayList.add(eoHashMap);
-                httpRequest.setAttribute("comapreEuidsArrayList", newEoArrayList);
-                return this.SEARCH_EUID_DETAILS;
+                results.add(eoHashMap);
+                httpRequest.setAttribute("comapreEuidsArrayList", results);
+                return results;
 
             } else {
                 // SambaG
@@ -343,7 +328,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     }
 
                 }
-
                 String objRef = objectRef;
                 // following code is from buildObjectNodeFromSearchCriteria()
                 //ObjectNode topNode = SimpleFactory.create(objRef);
@@ -397,14 +381,18 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                                 }
                             }
                         } catch (Exception npe) {
-                        // THIS SHOULD BE FIXED
-                        // npe.printStackTrace();
+		                      npe.printStackTrace();
                         }
                     }
+					String euid = eoSearchResultRecord.getEUID();
+                    EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
                     fieldvalues.put("EUID", eoSearchResultRecord.getEUID());
+                    fieldvalues.put("EOStatus", eo.getStatus());
+
                     resultArrayList.add(fieldvalues);
                 }
-                httpRequest.setAttribute("resultArrayListReq", resultArrayList);
+                //httpRequest.setAttribute("resultArrayListReq", resultArrayList);
+                return resultArrayList;
                 //setResultsSize(getPatientDetailsVO().length);
 
             }
@@ -413,9 +401,8 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
         } catch (Exception ex) {
            mLogger.error(mLocalizer.x("PDH009: Exception has occured  :{0} ", ex.getMessage()),ex);
-            return this.VALIDATION_ERROR;
+            return null;
         }
-        return this.SEARCH_PATIENT_DETAILS;
     }
 
     /**
@@ -1436,8 +1423,9 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         ArrayList euidsMapList = new ArrayList();
         try {
             EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
-            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
-            euidsMapList.add(eoMap);
+            if(eo != null) {
+			HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+			euidsMapList.add(eoMap);
            //String userName, String euid1, String euid2, String function, int screeneID, String detail
            masterControllerService.insertAuditLog((String) session.getAttribute("user"),
                                                eo.getEUID(), 
@@ -1445,15 +1433,55 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                                                "EO View/Edit",
                                                new Integer(screenObject.getID()).intValue(),
                                                "View/Edit detail of enterprise object");
+			} else {
+				String errorMessage = euid +" : ";
+				errorMessage +=	bundle.getString("enterprise_object_not_found_error_message");
+                FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
+			}
     } catch (ProcessingException ex) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
+             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
              mLogger.error(mLocalizer.x("PDH057: Failed to build EUIDs  ", ex.getMessage()),ex);
-        } catch (UserException ex) {
+    } catch (UserException ex) {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
             mLogger.error(mLocalizer.x("PDH058: Failed to build EUIDs ", ex.getMessage()),ex);
-        }
-        return euidsMapList;        
+    }
+    return euidsMapList;        
   }
+
+    public ArrayList buildCompareEuids(String[] euids) {
+        ArrayList euidsMapList = new ArrayList();
+		String message = new String();
+        try {
+            for (int i = 0; i < euids.length; i++) {
+                EnterpriseObject eo = masterControllerService.getEnterpriseObject(euids[i]);
+                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+
+                if ("active".equalsIgnoreCase(eo.getStatus())) {
+                    euidsMapList.add(eoMap);
+                    //String userName, String euid1, String euid2, String function, int screeneID, String detail
+                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                            eo.getEUID(),
+                            "",
+                            "EO View/Edit",
+                            new Integer(screenObject.getID()).intValue(),
+                            "View/Edit detail of enterprise object");
+                } else {  
+					message += eo.getEUID() + " : is" + eo.getStatus();
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
+				}
+            }
+
+            session.setAttribute("eocomparision", "yes");
+
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, exceptionMessaage));
+            mLogger.error(mLocalizer.x("PDH057: Failed to build EUIDs  ", ex.getMessage()), ex);
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, exceptionMessaage));
+            mLogger.error(mLocalizer.x("PDH058: Failed to build EUIDs ", ex.getMessage()), ex);
+        }
+        return euidsMapList;
+    }
 
     public String getPotentialDuplicateId() {
         return potentialDuplicateId;
@@ -1463,10 +1491,19 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         this.potentialDuplicateId = potentialDuplicateId;
     }
 
+    public HashMap getParametersMap() {
+        return parametersMap;
+    }
+
+    public void setParametersMap(HashMap parametersMap) {
+        this.parametersMap = parametersMap;
+    }
+
 }
 
 
    
+
 
 
 

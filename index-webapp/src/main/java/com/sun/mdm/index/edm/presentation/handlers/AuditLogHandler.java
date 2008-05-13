@@ -114,6 +114,11 @@ public class AuditLogHandler extends ScreenConfiguration {
      * Value Object
      */
     ArrayList vOList = new ArrayList();
+    
+    /*
+    * Map to hold the parameters
+    **/
+    private HashMap parametersMap  = new HashMap();
     /**
      * JSF Naviagation String
      */
@@ -126,7 +131,10 @@ public class AuditLogHandler extends ScreenConfiguration {
     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     String errorMessage = null;
     String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
-    //private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.AuditLogHandler");
+    /**
+     * Results to be displayed on the JSP
+     */
+    ArrayList resultsArrayList = new ArrayList();
 
     private ArrayList keysList  = new ArrayList();
     
@@ -164,21 +172,9 @@ public class AuditLogHandler extends ScreenConfiguration {
      * @return AUDIT_LOG_SEARCH_RES the Navigation rule for the JSF framework
      * @throws com.sun.mdm.index.presentation.exception.HandlerException 
      */
-    public String performSubmit() throws HandlerException {
+    public ArrayList auditLogSearch() throws HandlerException {
         try {
-            HashMap newFieldValuesMap = new HashMap();
-            if (super.getEnteredFieldValues() != null && super.getEnteredFieldValues().length() > 0) {
-                String[] fieldNameValues = super.getEnteredFieldValues().split(">>");
-                for (int i = 0; i < fieldNameValues.length; i++) {
-                    String string = fieldNameValues[i];
-                    String[] keyValues = string.split("##");
-                    if(keyValues.length ==2) {
-                      newFieldValuesMap.put(keyValues[0], keyValues[1]);
-                    }
-                }
-            }
-
-            super.setUpdateableFeildsMap(newFieldValuesMap);
+            super.setUpdateableFeildsMap(parametersMap);
 
             //check one of many condtion here
             if (super.checkOneOfManyCondition()) {
@@ -186,7 +182,7 @@ public class AuditLogHandler extends ScreenConfiguration {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                 //mLogger.error("Validation failed. Message displayed to the user: " + "One of Many :: " + errorMessage);
                mLogger.info(mLocalizer.x("AUD009: Validation failed : {0}" , errorMessage));
-                return VALIDATION_ERROR;
+                return null;
             }
 
             //if user enters LID ONLY 
@@ -195,7 +191,7 @@ public class AuditLogHandler extends ScreenConfiguration {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                // mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
                 mLogger.info(mLocalizer.x("AUD010: {0} ",errorMessage ));
-                return VALIDATION_ERROR;
+                return null;
 
             }
             //if user enters LID and SystemCode Validate the LID 
@@ -207,7 +203,7 @@ public class AuditLogHandler extends ScreenConfiguration {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  errorMessage, errorMessage));
                    // mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
                     mLogger.info(mLocalizer.x("AUD011: LID/SystemCode Validation failed : {0}" , errorMessage));
-                    return VALIDATION_ERROR;
+                    return null;
 
                 }
             }
@@ -227,16 +223,16 @@ public class AuditLogHandler extends ScreenConfiguration {
                             String msg = bundle.getString("LID_SYSTEM_CODE");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg + errorMessage, errorMessage));
                             mLogger.info(mLocalizer.x("AUD012: LID Validation failed : {0}", LID, errorMessage));
-                            return VALIDATION_ERROR;
+                            return null;
                         }
                     } catch (ProcessingException ex) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, exceptionMessaage));
                         mLogger.error(mLocalizer.x("AUD015: ProcessingException has encountered : {0}", ex.getMessage()), QwsUtil.getRootCause(ex));
-                        return VALIDATION_ERROR;
+                        return null;
                     } catch (UserException ex) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, exceptionMessaage));
                         mLogger.error(mLocalizer.x("AUD016: UserException has encountered : {0}", ex.getMessage()), QwsUtil.getRootCause(ex));
-                        return VALIDATION_ERROR;
+                        return null;
                     }
 
                 }
@@ -252,7 +248,7 @@ public class AuditLogHandler extends ScreenConfiguration {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
                    // mLogger.error("Validation failed. Message displayed to the user: " + fieldErrors[0] + " : " + fieldErrors[1]);
                     mLogger.info(mLocalizer.x("AUD013: Invalid date format : {0} : {1}" ,fieldErrors[0],fieldErrors[1]));
-                    return VALIDATION_ERROR;
+                    return null;
                 }
 
             }
@@ -266,7 +262,7 @@ public class AuditLogHandler extends ScreenConfiguration {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
                     //mLogger.error("Validation failed. Message displayed to the user: " + fieldErrors[0] + " : " + fieldErrors[1]);
                     mLogger.info(mLocalizer.x("AUD014: Invalid time format : {0} :{1}" ,fieldErrors[0],fieldErrors[1]));
-                    return VALIDATION_ERROR;
+                    return null;
                 }
 
             }
@@ -283,16 +279,15 @@ public class AuditLogHandler extends ScreenConfiguration {
             //Set the size of the VO Array
             setAuditLogVO(new AuditDataObject[alPageIter.count()]);
             
-           ArrayList resultsArrayList = new ArrayList();
            SimpleDateFormat sdf = new SimpleDateFormat(ConfigManager.getDateFormat());
-
+           SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
             //Populate the Value Object to be displayed on the JSF page.
             while (alPageIter.hasNext()) {
                 auditLogVO[i] = new AuditDataObject(); //to be safe with malloc
                 auditLogVO[i] = alPageIter.next();
                 AuditDataObject auditDataObject = auditLogVO[i]; //to be safe with malloc
 
-                String outputValues = "{AuditId:" + "\"" + auditDataObject.getId() +  "\"" + 
+                /*String outputValues = "{AuditId:" + "\"" + auditDataObject.getId() +  "\"" + 
                                       ", EUID1: " + "\"" + ((auditDataObject.getEUID1() != null) ? auditDataObject.getEUID1() : "")  +"\"" +
                                       ", EUID2: " + "\"" + ((auditDataObject.getEUID2() != null) ? auditDataObject.getEUID2() : "") +"\""  +
                                       ", Function: " + "\"" + ((auditDataObject.getFunction()  != null) ? auditDataObject.getFunction()  : "") +"\"" +
@@ -300,47 +295,56 @@ public class AuditLogHandler extends ScreenConfiguration {
                                       ", CreateDate: " + "\"" + ((auditDataObject.getCreateDate()  != null) ? sdf.format(auditDataObject.getCreateDate())  : "") +"\""  +
                                       ", CreateUser: " + "\"" + ((auditDataObject.getCreateUser()  != null) ? auditDataObject.getCreateUser()  : "") +"\""  
                                      +  "}";
-                
-                resultsArrayList.add(outputValues);
+                */
+                HashMap resultsMap = new HashMap();
+                resultsMap.put("AUDITID",auditDataObject.getId());
+                resultsMap.put("EUID1",auditDataObject.getEUID1());
+                resultsMap.put("EUID2",auditDataObject.getEUID2());
+                resultsMap.put("Function",auditDataObject.getFunction());
+                resultsMap.put("Detail",auditDataObject.getDetail());
+                resultsMap.put("PrimaryObjectType",auditDataObject.getPrimaryObjectType());
+                resultsMap.put("CreateDate",simpleDateFormatFields.format(auditDataObject.getCreateDate()));
+                resultsMap.put("CreateUser",auditDataObject.getCreateUser());
+                resultsArrayList.add(resultsMap);
 
                 //Logger.getLogger(AuditLogHandler.class.getName()).log(Level.INFO, null, this.getClass().getName() + "Audit Log Handler EUID is " + this.getEuid());
                 i++;
             }
-            setResultsSize(auditLogVO.length);
-            request.setAttribute("resultsSize", new Integer(auditLogVO.length));
-            request.setAttribute("resultsArrayList", resultsArrayList);
+            //setResultsSize(auditLogVO.length);
+            //request.setAttribute("resultsSize", new Integer(auditLogVO.length));
+            //request.setAttribute("resultsArrayList", resultsArrayList);
         } catch (ValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage,exceptionMessaage));
             mLogger.error(mLocalizer.x("AUD001: ValidationException has encountered : {0}" , ex.getMessage()),QwsUtil.getRootCause(ex));
             //mLogger.error("ValidationException ex : " + ex.toString());
-            return this.VALIDATION_ERROR;
+            return null;
         } catch (ProcessingException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, exceptionMessaage));
            mLogger.error(mLocalizer.x("AUD002: ProcessingException has encountered : {0}" , ex.getMessage()),QwsUtil.getRootCause(ex));
             //mLogger.error("ProcessingException : " + QwsUtil.getRootCause(ex).getMessage());
            // mLogger.error("ProcessingException ex : " + ex.toString());
-            return this.VALIDATION_ERROR;
+            return null;
         } catch (RemoteException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, exceptionMessaage));
             mLogger.error(mLocalizer.x("AUD003: RemoteException has encountered : {0}" , ex.getMessage()),QwsUtil.getRootCause(ex));
             // mLogger.error("RemoteException : " + QwsUtil.getRootCause(ex).getMessage());
            // mLogger.error("RemoteException ex : " + ex.toString());
-            return this.VALIDATION_ERROR;
+            return null;
         } catch (UserException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, exceptionMessaage));
            mLogger.error(mLocalizer.x("AUD004: UserException has encountered : {0}" , ex.getMessage()),QwsUtil.getRootCause(ex));
            // mLogger.error("UserException : " + QwsUtil.getRootCause(ex).getMessage());
            // mLogger.error("UserException ex : " + ex.toString());
-            return this.VALIDATION_ERROR;
+            return null;
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, exceptionMessaage));
             mLogger.error(mLocalizer.x("AUD005: Exception  : {0}" , ex.getMessage()),QwsUtil.getRootCause(ex));
             
             //mLogger.error("Exception : " + QwsUtil.getRootCause(ex).getMessage());
             //mLogger.error("Exception ex : " + ex.toString());
-            return this.VALIDATION_ERROR;
+            return null;
         }
-        return AUDIT_LOG_SEARCH_RES;
+        return resultsArrayList;
     }
 
     /**
@@ -566,6 +570,14 @@ public class AuditLogHandler extends ScreenConfiguration {
 
     public void setLabelsList(ArrayList labelsList) {
         this.labelsList = labelsList;
+    }
+
+    public HashMap getParametersMap() {
+        return parametersMap;
+    }
+
+    public void setParametersMap(HashMap parametersMap) {
+        this.parametersMap = parametersMap;
     }
 
 
