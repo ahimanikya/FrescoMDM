@@ -30,6 +30,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceEditHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 
 
 <%
@@ -45,7 +46,7 @@
 
 %>
 <f:view>
-        <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.Edm" var="msgs" />
+	<f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />
     <html>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
