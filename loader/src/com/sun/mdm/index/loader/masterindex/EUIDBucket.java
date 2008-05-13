@@ -31,7 +31,8 @@ import java.util.ArrayList;
 
 import com.sun.mdm.index.dataobject.DataObject;
 import com.sun.mdm.index.dataobject.DataObjectReader;
-import com.sun.mdm.index.dataobject.DataObjectWriter;
+import com.sun.mdm.index.loader.common.LoaderException;
+import com.sun.mdm.index.dataobject.InvalidRecordFormat;
 
 
 
@@ -62,33 +63,40 @@ public class EUIDBucket {
 	 * @return
 	 * @throws Exception
 	 */
-	 Map load() throws Exception {
-		EUIDMap = new HashMap<String, List<DataObject>>();
-		while (true) {
-			DataObject dataObject = reader.readDataObject();
-			if (dataObject == null) {
-				break;
-			}
+	Map load() throws LoaderException {
+		try {
+			EUIDMap = new HashMap<String, List<DataObject>>();
+			while (true) {
+				DataObject dataObject = reader.readDataObject();
+				if (dataObject == null) {
+					break;
+				}
 
-			String euid = dataObject.getFieldValue(0);
-			List<DataObject> SOlist = EUIDMap.get(euid);
-			if (SOlist == null) {
-				SOlist = new ArrayList<DataObject>();
-				SOlist.add(dataObject);
-				EUIDMap.put(euid, SOlist);
-				numEOs++;
-			} else {
-				SOlist.add(dataObject);
-			}
+				String euid = dataObject.getFieldValue(0);
+				List<DataObject> SOlist = EUIDMap.get(euid);
+				if (SOlist == null) {
+					SOlist = new ArrayList<DataObject>();
+					SOlist.add(dataObject);
+					EUIDMap.put(euid, SOlist);
+					numEOs++;
+				} else {
+					SOlist.add(dataObject);
+				}
 
+			}
+			return EUIDMap;
+		} catch (InvalidRecordFormat ie) {
+			throw new LoaderException (ie);
 		}
-		return EUIDMap;
 	}
 
-	void close() throws Exception {
-
-		if (reader != null) {
-			reader.close();
+	void close() throws LoaderException {
+		try {
+			if (reader != null) {
+				reader.close();
+			}
+		} catch (Exception ie) {
+			throw new LoaderException (ie);
 		}
 	}
 

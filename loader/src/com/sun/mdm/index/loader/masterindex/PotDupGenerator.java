@@ -33,6 +33,7 @@ import com.sun.mdm.index.loader.clustersynchronizer.dao.DAOFactory;
 import com.sun.mdm.index.loader.common.FileManager;
 import com.sun.mdm.index.loader.matcher.MatchEUIDRecordReader;
 import com.sun.mdm.index.loader.matcher.MatchEUIDRecord;
+import com.sun.mdm.index.loader.common.LoaderException;
 
 import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 
@@ -45,67 +46,79 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 public class PotDupGenerator {
 
 	private static String TRANS_PIGGY = ":T:"; // This is a seperator for a Transaction number and EUID that 
-	                                           // combined and saved as one field in EUID Match file.
+	// combined and saved as one field in EUID Match file.
 	private static int TRANS_PIGGY_LENGTH = 3;
 	private static String empty_str = "";
 	private String masterImageDir_;
 	private BufferedWriter bwriter_;
 	private Connection con_;
-	public PotDupGenerator() throws Exception {
-		masterImageDir_ = FileManager.getMasterImageDir();
-		File file = new File(masterImageDir_, POTENTIALDUPLICATES + ".data");
-		FileWriter fwriter = new FileWriter(file);	     
-		bwriter_ = new BufferedWriter(fwriter);    
+	public PotDupGenerator() throws LoaderException {
+		try {
+			masterImageDir_ = FileManager.getMasterImageDir();
+			File file = new File(masterImageDir_, POTENTIALDUPLICATES + ".data");
+			FileWriter fwriter = new FileWriter(file);	     
+			bwriter_ = new BufferedWriter(fwriter);    
+		} catch (java.io.IOException e) {
+			throw new LoaderException (e);
+		}
 	}
 
-	public void generatePotDups() throws Exception {
-		con_ = DAOFactory.getConnection();
-		File matchFile = FileManager.getFinalSBRMatchFile();
-		MatchEUIDRecordReader reader = new MatchEUIDRecordReader(matchFile);
-		while (true) {
-			MatchEUIDRecord record = (MatchEUIDRecord) reader.next();			
-			if (record == null) {
-				break;
-			}
-			String euid1 = record.getEUID1();
-			String euid2 = record.getEUID2();
-			double wt = record.getWeight();
-			String weight = String.valueOf(wt);
-			addPotDupTable(euid1, euid2,
-					weight);
-		}		
-		bwriter_.close();
+	public void generatePotDups() throws LoaderException {
+		try {
+			con_ = DAOFactory.getConnection();
+			File matchFile = FileManager.getFinalSBRMatchFile();
+			MatchEUIDRecordReader reader = new MatchEUIDRecordReader(matchFile);
+			while (true) {
+				MatchEUIDRecord record = (MatchEUIDRecord) reader.next();			
+				if (record == null) {
+					break;
+				}
+				String euid1 = record.getEUID1();
+				String euid2 = record.getEUID2();
+				double wt = record.getWeight();
+				String weight = String.valueOf(wt);
+				addPotDupTable(euid1, euid2,
+						weight);
+			}		
+			bwriter_.close();
+		} catch (Exception e) {
+			throw new LoaderException (e);
+		}
 	}
 
 	private void addPotDupTable(String euid1, String euid2,
-			String weight) throws Exception {
+			String weight) throws LoaderException {
+		try {
 
-		String potdupId = com.sun.mdm.index.idgen.CUIDManager.getNextUID(con_,
-		"POTENTIALDUPLICATE");
+			String potdupId = com.sun.mdm.index.idgen.CUIDManager.getNextUID(con_,
+			"POTENTIALDUPLICATE");
 
-		int index1 = euid1.indexOf(TRANS_PIGGY);
+			int index1 = euid1.indexOf(TRANS_PIGGY);
 
-		String e1 = euid1.substring(0,index1);
-		String e2 = euid2; //.substring(0,index2);
-		String trans = euid1.substring(index1+TRANS_PIGGY_LENGTH);
+			String e1 = euid1.substring(0,index1);
+			String e2 = euid2; //.substring(0,index2);
+			String trans = euid1.substring(index1+TRANS_PIGGY_LENGTH);
 
-		//"POTENTIALDUPLICATEID",
-		//"WEIGHT", "TYPE", "DESCRIPTION", "STATUS", "HIGHMATCHFLAG",
-		//"RESOLVEDUSER", "RESOLVEDDATE", "RESOLVEDCOMMENT", "EUID2",
-		//"TRANSACTIONNUMBER", "EUID1"
-		List<String> list = new ArrayList<String>();
-		list.add(potdupId);
-		list.add(weight);
-		list.add(empty_str);
-		list.add(empty_str);
-		list.add("U");
-		list.add(empty_str);
-		list.add(empty_str);
-		list.add(empty_str);
-		list.add(empty_str);
-		list.add(e2);
-		list.add(trans);
-		list.add(e1);
-		MasterImageWriter.write(bwriter_, list);
-	}			 	 	
+			//"POTENTIALDUPLICATEID",
+			//"WEIGHT", "TYPE", "DESCRIPTION", "STATUS", "HIGHMATCHFLAG",
+			//"RESOLVEDUSER", "RESOLVEDDATE", "RESOLVEDCOMMENT", "EUID2",
+			//"TRANSACTIONNUMBER", "EUID1"
+			List<String> list = new ArrayList<String>();
+			list.add(potdupId);
+			list.add(weight);
+			list.add(empty_str);
+			list.add(empty_str);
+			list.add("U");
+			list.add(empty_str);
+			list.add(empty_str);
+			list.add(empty_str);
+			list.add(empty_str);
+			list.add(e2);
+			list.add(trans);
+			list.add(e1);
+			MasterImageWriter.write(bwriter_, list);
+		} catch (Exception e) {
+			throw new LoaderException (e);
+		}	
+	}
 }

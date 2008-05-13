@@ -35,15 +35,11 @@ import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 import java.sql.Connection;
+import com.sun.mdm.index.loader.common.LoaderException;
 import com.sun.mdm.index.configurator.impl.decision.DecisionMakerConfiguration;
 import com.sun.mdm.index.decision.impl.DefaultDecisionMaker;
 import com.sun.mdm.index.configurator.ConfigurationService;
 
-
-//import com.sun.mdm.index.objects.PersonObject;
-//import com.sun.mdm.index.objects.AddressObject;
-//import com.sun.mdm.index.objects.PhoneObject;
-import com.sun.mdm.index.dataobject.objectdef.DataObjectAdapter;
 import com.sun.mdm.index.dataobject.objectdef.Field;
 import com.sun.mdm.index.dataobject.ChildType;
 
@@ -64,7 +60,8 @@ import com.sun.mdm.index.loader.config.LoaderConfig;
 import com.sun.mdm.index.matching.Standardizer;
 import com.sun.mdm.index.matching.StandardizerFactory;
 import com.sun.mdm.index.loader.matcher.MatcherTask;
-
+import com.sun.mdm.index.idgen.SEQException;
+import com.sun.mdm.index.objects.exception.ObjectException;
 import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 
 /**
@@ -113,20 +110,23 @@ public class MIndexTask implements Runnable {
 	MIndexTask(Map<String, TableData> tableMap, EUIDBucket.EOCursor cursor,
 			ObjectDefinition objDef, Standardizer standardizer,
 			CountDownLatch endGate, Connection con, boolean sameSystemMatch)
-			throws Exception {
+			throws LoaderException {
+		try {
+			tableMap_ = tableMap;
+			mCalculator = new SurvivorCalculator(standardizer);
+			eoCursor_ = cursor;
+			endGate_ = endGate;
 
-		tableMap_ = tableMap;
-		mCalculator = new SurvivorCalculator(standardizer);
-		eoCursor_ = cursor;
-		endGate_ = endGate;
-
-		con_ = con;
-		outdateFormat_ = new SimpleDateFormat(dateFormatString_ + " hh:mm:ss"); // output date format is
-		// written to master index files is - "object def date Format" + "hh:mm:ss"
-		date_ = new Date();
-		sdate_ = sysdateFormat_.format(date_);
-		euidGenerator = config.getEuidGenerator();
-		sameSystemMatch_ = sameSystemMatch;
+			con_ = con;
+			outdateFormat_ = new SimpleDateFormat(dateFormatString_ + " hh:mm:ss"); // output date format is
+			// written to master index files is - "object def date Format" + "hh:mm:ss"
+			date_ = new Date();
+			sdate_ = sysdateFormat_.format(date_);
+			euidGenerator = config.getEuidGenerator();
+			sameSystemMatch_ = sameSystemMatch;
+		} catch (Exception ex) {
+			throw new LoaderException (ex);
+		}
 	}
 
 	public void run() {
@@ -328,7 +328,7 @@ public class MIndexTask implements Runnable {
 
 			if (i == 0) {
 				transnum = com.sun.mdm.index.idgen.CUIDManager.getNextUID(con_,
-						"TRANSACTIONNUMBER");
+				"TRANSACTIONNUMBER");
 				addTransactionNumber(euid, syscode, localid, user, transnum);
 			} else {
 
@@ -475,7 +475,7 @@ public class MIndexTask implements Runnable {
 	}
 
 	private String addTransactionNumber(String euid, String syscode,
-			String localid, String user, String transnum) throws Exception {
+			String localid, String user, String transnum) throws LoaderException {
 
 		List<String> list = new ArrayList<String>();
 		/*
@@ -501,35 +501,43 @@ public class MIndexTask implements Runnable {
 	}
 
 	private void addAssumedMatchTable(String euid, String systemcode,
-			String lid, String weight, String transnum) throws Exception {
+			String lid, String weight, String transnum) throws LoaderException {
 
-		String assumedMatchId = com.sun.mdm.index.idgen.CUIDManager.getNextUID(
-				con_, ASSUMEDMATCHSEQ);
+		try {
+			String assumedMatchId = com.sun.mdm.index.idgen.CUIDManager.getNextUID(
+					con_, ASSUMEDMATCHSEQ);
 
-		//{ "ASSUMEDMATCHID", "EUID",
-		//"SYSTEMCODE", "LID", "WEIGHT", "TRANSACTIONNUMBER" };
-		List<String> list = new ArrayList<String>();
-		list.add(assumedMatchId);
-		list.add(euid);
-		list.add(systemcode);
-		list.add(lid);
-		list.add(weight);
-		list.add(transnum);
-		addData(ASSUMEDMATCH, list);
+			//{ "ASSUMEDMATCHID", "EUID",
+			//"SYSTEMCODE", "LID", "WEIGHT", "TRANSACTIONNUMBER" };
+			List<String> list = new ArrayList<String>();
+			list.add(assumedMatchId);
+			list.add(euid);
+			list.add(systemcode);
+			list.add(lid);
+			list.add(weight);
+			list.add(transnum);
+			addData(ASSUMEDMATCH, list);
+		} catch (SEQException s) {
+			throw new LoaderException (s);
+		}
 	}
 
-	private void addSystemObject(SystemObject so) throws Exception {
-		ObjectNode primaryO = so.getObject();
-		String tag = primaryO.pGetTag();
-		addSystemTable(so, tag);
-		List<String> list = new ArrayList<String>();
-		list.add(so.getSystemCode());
-		list.add(so.getLID());
-		addConfigTableData(objDef_, so.getObject(), list, null, false);
-		//addPrimaryTable(so, list, tag, false);
+	private void addSystemObject(SystemObject so) throws LoaderException {
+		try {
+			ObjectNode primaryO = so.getObject();
+			String tag = primaryO.pGetTag();
+			addSystemTable(so, tag);
+			List<String> list = new ArrayList<String>();
+			list.add(so.getSystemCode());
+			list.add(so.getLID());
+			addConfigTableData(objDef_, so.getObject(), list, null, false);
+			//addPrimaryTable(so, list, tag, false);
+		} catch (ObjectException e) {
+			throw new LoaderException (e);
+		}
 	}
 
-	private void addSBR(String euid, SBR sbr, String transnum) throws Exception {
+	private void addSBR(String euid, SBR sbr, String transnum) throws LoaderException {
 		ObjectNode primaryO = sbr.getObject();
 		String tag = primaryO.pGetTag();
 		addSBRTable(sbr, euid, tag);
@@ -541,7 +549,7 @@ public class MIndexTask implements Runnable {
 	}
 
 	private void writeSBRPot(ObjectNode primarySBR, String euid, String transnum)
-	throws Exception {
+	throws LoaderException {
 		DataObject data = ObjectNodeUtil.fromObjectNode(primarySBR);
 		data.add(0, euid + TRANS_PIGGY + transnum); // add back EUID, that is not in data Object returned
 		addData(POTENTIALDUPLICATES, data);
@@ -568,118 +576,135 @@ public class MIndexTask implements Runnable {
 
 	}
 
-	private void addSystemTable(SystemObject so, String tag) throws Exception {
-		String lid = so.getLID();
-		List<String> list = new ArrayList<String>();
-		//  { "SYSTEMCODE", "LID", "CHILDTYPE",
-		//	"CREATEUSER", "CREATEFUNCTION", "CREATEDATE", "UPDATEUSER",
-		//"UPDATEFUNCTION", "UPDATEDATE", "STATUS" };
-		String syscode = so.getSystemCode();
-		String createuser = so.getCreateUser();
-		Date createDate = so.getCreateDateTime();
-		Date updateDate = so.getUpdateDateTime();
-		String updatefunction = so.getUpdateFunction();
-		String createfunction = so.getCreateFunction();
-		String status = so.getStatus();
-		list.add(syscode);
-		list.add(lid);
-		list.add(tag);
-		list.add(createuser);
-		list.add(createfunction);
-		list.add(sysdateFormat_.format(createDate));
-		list.add(createuser);
-		list.add(updatefunction);
-		list.add(sysdateFormat_.format(updateDate));
-		list.add(status);
-		addData(SYSTEMOBJECT, list);
+	private void addSystemTable(SystemObject so, String tag) throws LoaderException  {
+		try {
+			String lid = so.getLID();
+			List<String> list = new ArrayList<String>();
+			//  { "SYSTEMCODE", "LID", "CHILDTYPE",
+			//	"CREATEUSER", "CREATEFUNCTION", "CREATEDATE", "UPDATEUSER",
+			//"UPDATEFUNCTION", "UPDATEDATE", "STATUS" };
+			String syscode = so.getSystemCode();
+			String createuser = so.getCreateUser();
+			Date createDate = so.getCreateDateTime();
+			Date updateDate = so.getUpdateDateTime();
+			String updatefunction = so.getUpdateFunction();
+			String createfunction = so.getCreateFunction();
+			String status = so.getStatus();
+			list.add(syscode);
+			list.add(lid);
+			list.add(tag);
+			list.add(createuser);
+			list.add(createfunction);
+			list.add(sysdateFormat_.format(createDate));
+			list.add(createuser);
+			list.add(updatefunction);
+			list.add(sysdateFormat_.format(updateDate));
+			list.add(status);
+			addData(SYSTEMOBJECT, list);
+		} catch (ObjectException e) {
+			throw new LoaderException(e);
+		}
 	}
 
-	private void addSBRTable(SBR sbr, String euid, String tag) throws Exception {
-		List<String> list = new ArrayList<String>();
+	private void addSBRTable(SBR sbr, String euid, String tag) throws LoaderException {
+		try {
+			List<String> list = new ArrayList<String>();
 
-		//{ "EUID", "CHILDTYPE", "CREATESYSTEM",
-		//	"CREATEUSER", "CREATEFUNCTION", "CREATEDATE", "UPDATESYSTEM",
-		//"UPDATEUSER", "UPDATEFUNCTION", "UPDATEDATE", "STATUS",
-		//"REVISIONNUMBER" };
-		String createSystem = sbr.getCreateSystem();
-		String createuser = sbr.getCreateUser();
-		Date createDate = sbr.getCreateDateTime();
-		Date updateDate = sbr.getUpdateDateTime();
-		String updatefunction = sbr.getUpdateFunction();
-		String createfunction = sbr.getCreateFunction();
-		String status = sbr.getStatus();
-		list.add(euid);
-		list.add(tag);
-		list.add(createSystem);
-		list.add(createuser);
-		list.add(createfunction);
-		list.add(sysdateFormat_.format(createDate));
-		list.add(sbr.getUpdateSystem());
-		list.add(createuser);
-		list.add(updatefunction);
-		list.add(sysdateFormat_.format(updateDate));
-		list.add(status);
-		list.add("1");
-		addData(SYSTEMSBR, list);
+			//{ "EUID", "CHILDTYPE", "CREATESYSTEM",
+			//	"CREATEUSER", "CREATEFUNCTION", "CREATEDATE", "UPDATESYSTEM",
+			//"UPDATEUSER", "UPDATEFUNCTION", "UPDATEDATE", "STATUS",
+			//"REVISIONNUMBER" };
+			String createSystem = sbr.getCreateSystem();
+			String createuser = sbr.getCreateUser();
+			Date createDate = sbr.getCreateDateTime();
+			Date updateDate = sbr.getUpdateDateTime();
+			String updatefunction = sbr.getUpdateFunction();
+			String createfunction = sbr.getCreateFunction();
+			String status = sbr.getStatus();
+			list.add(euid);
+			list.add(tag);
+			list.add(createSystem);
+			list.add(createuser);
+			list.add(createfunction);
+			list.add(sysdateFormat_.format(createDate));
+			list.add(sbr.getUpdateSystem());
+			list.add(createuser);
+			list.add(updatefunction);
+			list.add(sysdateFormat_.format(updateDate));
+			list.add(status);
+			list.add("1");
+			addData(SYSTEMSBR, list);
+		} catch (ObjectException e) {
+			throw new LoaderException (e);
+		}
 	}
 
 	private void addConfigTableData(ObjectDefinition objectDef, ObjectNode o,
-			List<String> list, String parentid, boolean isSBR) throws Exception {
-		if (list == null) { // so it is child table, else euid or localid and 
-			// systemcode is already populated in the list that is required for primaryTable such as Person
-			list = new ArrayList<String>();
-		}
+			List<String> list, String parentid, boolean isSBR) 
+	throws LoaderException  {
+		try {
+			if (list == null) { // so it is child table, else euid or localid and 
+				// systemcode is already populated in the list that is required for primaryTable such as Person
+				list = new ArrayList<String>();
+			}
 
-		String objname = objectDef.getName();
-		String table = objname;
-		if (isSBR) {
-			table = table + "SBR";
-		}
+			String objname = objectDef.getName();
+			String table = objname;
+			if (isSBR) {
+				table = table + "SBR";
+			}
 
-		if (parentid != null) {
-			list.add(parentid);
-		}
+			if (parentid != null) {
+				list.add(parentid);
+			}
 
-		String id = objname + "id";
-		//String idval = (String) o.getValue(id);
-		String seqName = objname.toUpperCase();
-		if (isSBR) {
-			seqName = seqName + "SBR";
-		}
+			String id = objname + "id";
+			//String idval = (String) o.getValue(id);
+			String seqName = objname.toUpperCase();
+			if (isSBR) {
+				seqName = seqName + "SBR";
+			}
 
-		String idval = com.sun.mdm.index.idgen.CUIDManager.getNextUID(con_,
-				seqName);
-		list.add(idval);
+			String idval = com.sun.mdm.index.idgen.CUIDManager.getNextUID(con_,
+					seqName);
+			list.add(idval);
 
-		// first field is Id like PersonId
-		for (int i = 1; i < objectDef.getFields().size(); i++) {
-			String name = objectDef.getField(i).getName();
-			Object value = o.getValue(name);
-			String val = empty_s;
+			// first field is Id like PersonId
+			for (int i = 1; i < objectDef.getFields().size(); i++) {
+				String name = objectDef.getField(i).getName();
+				Object value = o.getValue(name);
+				String val = empty_s;
 
-			if (value != null) {
-				if (value instanceof Date) {
-					val = outdateFormat_.format(value);
-				} else {
-					val = value.toString();
+				if (value != null) {
+					if (value instanceof Date) {
+						val = outdateFormat_.format(value);
+					} else {
+						val = value.toString();
+					}
+				}
+				list.add(val);
+			}
+			addData(table, list);
+
+			List<ObjectDefinition> odchildren = objectDef.getChildren();
+			for (ObjectDefinition childod : odchildren) {
+				String tag = childod.getName();
+				List children = o.pGetChildren(tag);
+
+				if (children != null) {
+					for (Object c : children) {
+						addConfigTableData(childod, (ObjectNode) c, null, idval,
+								isSBR);
+					}
 				}
 			}
-			list.add(val);
-		}
-		addData(table, list);
 
-		List<ObjectDefinition> odchildren = objectDef.getChildren();
-		for (ObjectDefinition childod : odchildren) {
-			String tag = childod.getName();
-			List children = o.pGetChildren(tag);
-
-			if (children != null) {
-				for (Object c : children) {
-					addConfigTableData(childod, (ObjectNode) c, null, idval,
-							isSBR);
-				}
-			}
+		} catch (ObjectException oe)  {
+			throw new LoaderException (oe);
+		}  catch (SEQException se)  {
+			throw new LoaderException (se);
 		}
+
 	}
 
 
