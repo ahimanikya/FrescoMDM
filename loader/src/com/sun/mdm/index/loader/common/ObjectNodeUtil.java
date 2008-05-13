@@ -38,6 +38,7 @@ import com.sun.mdm.index.dataobject.DataObject;
 import com.sun.mdm.index.dataobject.objectdef.ObjectDefinition;
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.loader.config.LoaderConfig;
+import com.sun.mdm.index.objects.exception.ObjectException;
 
 /**
  *  
@@ -75,21 +76,12 @@ public class ObjectNodeUtil {
 		return dateFormatString_;
 	}
 
-	/*
-	public static void initDateFormat() {
-		ObjectDefinition objDef = config.getObjectDefinition();
-		dateString_ = objDef.getDateFormat();
-		String timeFormat = config.getSystemProperty("TimeFormat");
-		if (timeFormat != null) {
-			dateString = dateString + " " + timeFormat;
-		}
-		dateFormat_ = new SimpleDateFormat(dateString); // + " hh:mm:ss");
-	}
-	 */
+
 
 
 	public static SystemObject getSystemObject(DataObject d, String lid, String systemcode,
-			String updateDateTime, String updateUser) throws Exception {
+			String updateDateTime, String updateUser) throws LoaderException {
+		try {
 		SystemObject so = new SystemObject();
 		so.setSystemCode(systemcode);
 		so.setLID(lid);
@@ -124,15 +116,23 @@ public class ObjectNodeUtil {
 
 
 		return so;
+		} catch (ObjectException e) {
+			throw new LoaderException(e);
+		}  catch (java.text.ParseException e) {
+			throw new LoaderException(e);
+		}
 	}
 
-	public static DataObject fromObjectNode(ObjectNode o)throws Exception {
-
+	public static DataObject fromObjectNode(ObjectNode o)throws LoaderException {
+       try {
 		DataObject data = DataObjectAdapter.fromObjectNode(o);
 		data.remove(0);  // replace ObjectId (such as PersonId) that are not
 		                 // part of DataObject.
 		deleteChildIDs(data);
 		return data;
+       } catch (ObjectException e) {
+    	   throw new LoaderException (e);
+       }
 
 	}
 
