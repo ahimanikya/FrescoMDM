@@ -179,7 +179,9 @@ public class DashboardHandler  {
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
                     session.removeAttribute("enterpriseArrayList");
-                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
+                    
+					String errorMessage = this.getEuid1()+" : ";
+					errorMessage +=	bundle.getString("enterprise_object_not_found_error_message");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
@@ -218,7 +220,8 @@ public class DashboardHandler  {
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
                     session.removeAttribute("enterpriseArrayList");
-                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
+  					String errorMessage = this.getEuid2()+" : ";
+					errorMessage +=	bundle.getString("enterprise_object_not_found_error_message");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
@@ -257,7 +260,8 @@ public class DashboardHandler  {
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
                     session.removeAttribute("enterpriseArrayList");
-                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
+					String errorMessage = this.getEuid3()+" : ";
+					errorMessage +=	bundle.getString("enterprise_object_not_found_error_message");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
@@ -297,7 +301,8 @@ public class DashboardHandler  {
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
                     session.removeAttribute("enterpriseArrayList");
-                    String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
+					String errorMessage = this.getEuid4()+" : ";
+					errorMessage +=	bundle.getString("enterprise_object_not_found_error_message");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
@@ -334,13 +339,13 @@ public class DashboardHandler  {
             ArrayList newArrayList = new ArrayList();
             HashMap eoMap = new HashMap();
 
-            if (this.getEuid1() != null && !"EUID 1".equalsIgnoreCase(this.getEuid1())) {
+            if (this.getEuid1() != null && this.getEuid1().trim().length() >0 &&  !"EUID 1".equalsIgnoreCase(this.getEuid1())) {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid1());
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
                     String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
                     String msg1 = bundle.getString("EUID1");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1 + errorMessage, errorMessage));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, this.getEuid1()+ " : " + errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
 
@@ -356,17 +361,20 @@ public class DashboardHandler  {
                                 "EO View/Edit",
                                 new Integer(screenObject.getID()).intValue(),
                                 "View/Edit detail of enterprise object");
-                    }
+                    } else {
+					  String errorMessage = this.getEuid1() + " Enterprise Object is "+ enterpriseObject.getStatus();
+                      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage, errorMessage));
+					}
                 }
             }
-            if (this.getEuid2() != null && !"EUID 2".equalsIgnoreCase(this.getEuid2())) {
+            if (this.getEuid2() != null && this.getEuid2().trim().length() >0&& !"EUID 2".equalsIgnoreCase(this.getEuid2())) {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid2());
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
 //                    session.removeAttribute("comapreEuidsArrayList");
                     String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
                     String msg2 = bundle.getString("EUID2");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg2 + errorMessage, errorMessage));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, this.getEuid2()+ " : " + errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     //add the EO if it is active only
@@ -379,16 +387,19 @@ public class DashboardHandler  {
                                 "EO View/Edit",
                                 new Integer(screenObject.getID()).intValue(),
                                 "View/Edit detail of enterprise object");
-                    }
+                    } else {
+					  String errorMessage = this.getEuid2() + " Enterprise Object is "+ enterpriseObject.getStatus();
+                      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage, errorMessage));
+					}
                 }
             }
-            if (this.getEuid3() != null && !"EUID 3".equalsIgnoreCase(this.getEuid3())) {
+            if (this.getEuid3() != null && this.getEuid3().trim().length() >0&& !"EUID 3".equalsIgnoreCase(this.getEuid3())) {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid3());
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
                     String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
                      String msg3 = bundle.getString("EUID3");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg3 + errorMessage, errorMessage));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, this.getEuid3()+ " : " + errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     //add the EO if it is active only
@@ -402,16 +413,19 @@ public class DashboardHandler  {
                                 new Integer(screenObject.getID()).intValue(),
                                 "View/Edit detail of enterprise object");
 
-                    }
+                    } else {
+					  String errorMessage = this.getEuid3() + " Enterprise Object is "+ enterpriseObject.getStatus();
+                      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage, errorMessage));
+					}
                 }
             }
-            if (this.getEuid4() != null && this.getEuid4().length() > 0 ) {
+            if (this.getEuid4() != null && this.getEuid4().trim().length() >0 && this.getEuid4().length() > 0 ) {
                 enterpriseObject = masterControllerService.getEnterpriseObject(this.getEuid4());
                 //Throw exception if EO is found null.
                 if (enterpriseObject == null) {
                     String errorMessage = bundle.getString("enterprise_object_not_found_error_message");
                     String msg4 = bundle.getString("EUID4");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg4+ errorMessage, errorMessage));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, this.getEuid4()+ " : "+ errorMessage, errorMessage));
                 } else {
                     eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(enterpriseObject, screenObject);
                     //add the EO if it is active only
@@ -425,7 +439,10 @@ public class DashboardHandler  {
                                 new Integer(screenObject.getID()).intValue(),
                                 "View/Edit detail of enterprise object");
 
-                    }
+                    } else {
+					  String errorMessage = this.getEuid4() + " Enterprise Object is "+ enterpriseObject.getStatus();
+                      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage, errorMessage));
+					}
                 }
             }
             session.setAttribute("eocomparision", "yes");
