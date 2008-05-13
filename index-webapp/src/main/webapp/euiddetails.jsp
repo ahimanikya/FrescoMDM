@@ -125,14 +125,16 @@
   				              </FORM>
 							 </td>
                             </tr>
+                        </table>
+                </div>
+				<table>
 				             <tr>
-                                <td colspan="2">                           
+                                <td>
                                     <h:messages styleClass="errorMessages"  layout="list" />
                                 </td>
                             </tr>
-                        </table>
+				</table>
 
-                </div>
                 <br>       
 				                                            <%
             ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");

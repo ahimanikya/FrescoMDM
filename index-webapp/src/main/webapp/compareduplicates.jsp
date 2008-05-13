@@ -89,7 +89,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2">                           
-                                    <h:messages styleClass="errorMessages"  layout="list" />
+                                           <h:messages  warnClass="warningMessages" infoClass="infoMessages" errorClass="errorMessages"  fatalClass="errorMessages" layout="list" /> 
                                 </td>
                             </tr>
                         </table>
