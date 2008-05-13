@@ -31,6 +31,7 @@ import com.sun.mdm.index.dataobject.DataObject;
 import com.sun.mdm.index.dataobject.DataObjectFileWriter;
 import com.sun.mdm.index.dataobject.DataObjectWriter;
 import com.sun.mdm.index.dataobject.DataObjectFileReader;
+import com.sun.mdm.index.dataobject.InvalidRecordFormat;
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterSynchronizer;
 import com.sun.mdm.index.loader.config.LoaderConfig;
 import java.io.File;
@@ -92,7 +93,7 @@ public class BucketSplitter {
 	 * @throws Exception
 	 */
 
-	public HashMap<Integer, DataObjectWriter> splits() throws Exception {
+	public HashMap<Integer, DataObjectWriter> splits() throws LoaderException {
 		boolean foundsplit = true;
 		initFileNum+= numBucket;
 		numBucket = 11;
@@ -128,7 +129,7 @@ public class BucketSplitter {
 				
 			}
 			if (countNoSplit == maxCountNoSplit) {
-				throw new Exception( "Bucket can't be split. Please increase Bucket Cache");
+				throw new LoaderException( "Bucket can't be split. Please increase Bucket Cache");
 			}
  		}
 		
@@ -189,17 +190,22 @@ public class BucketSplitter {
 	 * 
 	 * @throws IOException
 	 */
-	public void close() throws IOException, Exception {
+	public void close() throws LoaderException {
+		try {
 		for (int i : buckets.keySet()) {
 			buckets.get(i).close();
 		
 		}
-		splits();				
+		splits();
+		} catch (IOException io) {
+			throw new LoaderException (io);
+		}
 	}
 
 
 
-	private boolean split(String dir, String file, int bindex) throws IOException, Exception {
+	private boolean split(String dir, String file, int bindex) throws LoaderException {
+		try {
 		boolean splitFlag = false;
 		String firsteuid = null;
 		File f = new File(dir, file);
@@ -237,7 +243,8 @@ public class BucketSplitter {
 			}
 
 			if (foundTwoEuid == false) {
-				throw new Exception( "Bucket can't be split. Please increase Bucket Cache");
+				throw new LoaderException( "Bucket can't be split. Please increase Bucket Cache or " 
+						+ "change Application configuraiton");
 			}
 			initFileNum+= numBucket;
 			if (numBucket > MIN_BUCKET_SPLIT) {		
@@ -247,5 +254,10 @@ public class BucketSplitter {
 			}
 		}				
 		return splitFlag;
+		} catch (IOException e) {
+			throw new LoaderException (e);
+		}  catch (InvalidRecordFormat ie) {
+			throw new LoaderException (ie);
+		}
 	}
 }
