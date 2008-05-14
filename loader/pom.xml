@@ -125,10 +125,6 @@
                                             <fileset dir="target">
                                                 <include name="loader.jar" />
                                             </fileset>
-                                            <fileset dir=".">
-                                                <include name="clustersyn.sql" />
-                                                <include name="clustersyn-sqlserver.sql" />
-                                            </fileset>
                                         </copy>
                                     </then>
                                 </if>
