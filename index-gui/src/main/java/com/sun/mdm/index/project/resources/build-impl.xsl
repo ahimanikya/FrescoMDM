@@ -244,12 +244,14 @@ is divided into following sections:
                 <mkdir dir="loader-generated/loader/conf" />
                 <mkdir dir="loader-generated/loader/lib" />
                 <!-- mkdir dir="loader-generated/bulkloader"/ -->
-                <copy todir="loader-generated/loader/lib">
-                    
+                <copy todir="loader-generated/loader/lib">                    
                     <fileset dir="lib">
                         <include name="*.jar" />
                     </fileset>
                     <fileset dir="${{module.install.dir}}/ext/mdm/loader">
+                        <include name="*.jar" />
+                    </fileset>
+                    <fileset dir="${{module.install.dir}}/ext/mdm/bulkloader">
                         <include name="*.jar" />
                     </fileset>
                 </copy>
