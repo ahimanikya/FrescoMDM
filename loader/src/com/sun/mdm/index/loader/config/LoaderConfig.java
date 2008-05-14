@@ -145,12 +145,9 @@ public class LoaderConfig {
 			element = (String) xpath.evaluate("//matchThreshold", item,
 					XPathConstants.STRING);
 			matchThreshold = Double.valueOf(element);
-
-		} catch (XPathExpressionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (XPathExpressionException ex) {
+			logger.severe(localizer.x("LDR049: LoaderCofig failed to initialize thresholds : {0}", ex.getMessage()), ex);	
 		}
-
 	}
 
 	/**
@@ -200,10 +197,8 @@ public class LoaderConfig {
 				euidGenerator = new LoaderEuidGenerator();
 			}
 		} catch (Exception ex) {
-		logger.severe(localizer.x("LDR027: LoaderCofig failed to initialize Loader EuidGenerator : {0}", ex.getMessage()), ex);
-			
+			logger.severe(localizer.x("LDR027: LoaderCofig failed to initialize Loader EuidGenerator : {0}", ex.getMessage()), ex);			
 		}
-
 	}
 
 	/**
@@ -246,7 +241,6 @@ public class LoaderConfig {
 	private void initDataObjectReader() {
 
 		try {
-
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory
@@ -350,7 +344,6 @@ public class LoaderConfig {
 				logger.severe(localizer.x("LDR031: LoaderCofig failed to add rules : {0}", ex.getMessage()), ex);												
 			}
 		}
-
 	}
 
 	/**
@@ -470,6 +463,19 @@ public class LoaderConfig {
 	 */
 	public static void initInstance() {
 		instance = null;
+	}
+	
+	/**
+	 * Check if optimizeDuplicates is set.
+	 * @return boolean	true if optimizeDuplicates sets to be true.
+	 */
+	public boolean optimizeDuplicates() {
+		String optimizeDuplicates = getSystemProperty("optimizeDuplicates");
+		if (optimizeDuplicates == null || optimizeDuplicates.equals("true")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	/**
