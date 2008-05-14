@@ -133,6 +133,38 @@
                     </execution>
                 </executions>
             </plugin>
+ 						<plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-install-plugin</artifactId>
+               <executions>
+                   <execution>
+                       <id>install-resources</id>
+                       <phase>process-resources</phase>
+                       <goals><goal>install-file</goal></goals>
+                       <configuration>
+                           <generatePom>true</generatePom>
+                           <packaging>jar</packaging>
+                           <groupId>loader.test</groupId>
+                           <artifactId>resources</artifactId>
+                           <version>${mural.currentVersion}</version>
+                           <file>${basedir}/test/config/resources.jar</file>
+                       </configuration>
+                   </execution>
+                   <execution>
+                       <id>install-master-index-client</id>
+                       <phase>process-resources</phase>
+                       <goals><goal>install-file</goal></goals>
+                       <configuration>
+                           <generatePom>true</generatePom>
+                           <packaging>jar</packaging>
+                           <groupId>loader.test</groupId>
+                           <artifactId>master-index-client</artifactId>
+                           <version>${mural.currentVersion}</version>
+                           <file>${basedir}/test/config/master-index-client.jar</file>
+                       </configuration>
+                   </execution>                   
+               </executions>
+           </plugin>            
         </plugins>
     </build>
     <dependencies>
@@ -191,6 +223,7 @@
             <version>2.4.0</version>
         </dependency>
         <!-- dependency for Junit tests -->
+        <!--
         <dependency>
             <groupId>loader.test</groupId>
             <artifactId>resources</artifactId>
@@ -205,6 +238,7 @@
 					  <scope>system</scope>
       		  <systemPath>${basedir}/test/config/master-index-client.jar</systemPath>            
         </dependency>
+        -->
     	  <dependency>
             <groupId>mural</groupId>
             <artifactId>standardizer-api</artifactId>
