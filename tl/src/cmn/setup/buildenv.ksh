@@ -309,8 +309,12 @@ if [ x$ANT_OPTS = x ]; then
 fi
 
 export MAVEN_HOME M2_HOME
-MAVEN_HOME=$TOOLROOT/java/maven
-M2_HOME=$TOOLROOT/java/maven2
+if [ x$MAVEN_HOME = x ]; then
+    MAVEN_HOME=$TOOLROOT/java/maven
+fi
+if [ x$M2_HOME = x ]; then
+    M2_HOME=$TOOLROOT/java/maven2
+fi
 
 ##### JREGRESS
 export JREGRESS_TIMEOUT RUNBLD_TIMEOUT

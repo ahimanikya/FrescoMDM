@@ -262,8 +262,8 @@ set path = ($JAVA_HOME/bin $path)
 setenv ANT_HOME $TOOLROOT/java/ant
 if !($?ANT_OPTS)    setenv ANT_OPTS -Xmx512m
 
-setenv MAVEN_HOME $TOOLROOT/java/maven
-setenv M2_HOME $TOOLROOT/java/maven2
+if !($?MAVEN_HOME)  setenv MAVEN_HOME $TOOLROOT/java/maven
+if !($?M2_HOME)     setenv M2_HOME $TOOLROOT/java/maven2
 
 ##### TIMEOUTS
 if !($?JREGRESS_TIMEOUT)    setenv JREGRESS_TIMEOUT 650
