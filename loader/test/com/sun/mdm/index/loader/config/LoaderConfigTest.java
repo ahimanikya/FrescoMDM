@@ -78,7 +78,60 @@ public class LoaderConfigTest extends TestCase {
 			assertTrue(true);
 		}		
 	}
-		
+	
+	public void testOptimizeDuplicates1() {
+		try {			
+			assertTrue(config.optimizeDuplicates());
+		} catch(Exception ex) {
+			assertTrue(false);
+		}
+	}
+
+	public void testOptimizeDuplicates2() {
+		try {			
+			config.setSystemProperty("optimizeDuplicates", "true");
+			assertTrue(config.optimizeDuplicates());
+		} catch(Exception ex) {
+			assertTrue(false);
+		}
+	}
+
+	public void testOptimizeDuplicates3() {
+		try {			
+			config.setSystemProperty("optimizeDuplicates", "false");
+			assertTrue(!config.optimizeDuplicates());
+		} catch(Exception ex) {
+			assertTrue(false);
+		}
+	}
+	
+	public void testOptimizeDuplicates4() {
+		try {			
+			config.setSystemProperty("optimizeDuplicates", "True");
+			assertTrue(!config.optimizeDuplicates());
+		} catch(Exception ex) {
+			assertTrue(false);
+		}
+	}
+	
+	public void testOptimizeDuplicates5() {
+		try {			
+			config.setSystemProperty("optimizeDuplicates", "");
+			assertTrue(!config.optimizeDuplicates());
+		} catch(Exception ex) {
+			assertTrue(false);
+		}
+	}
+	
+	public void testOptimizeDuplicates6() {
+		try {			
+			config.setSystemProperty("optimizeDuplicates", null);
+			assertTrue(config.optimizeDuplicates());
+		} catch(Exception ex) {
+			assertTrue(false);
+		}
+	}
+	
 	public void test1() {
 		try {			
 			config.setSystemProperty("numBlockBuckets", "5");
