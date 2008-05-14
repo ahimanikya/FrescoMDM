@@ -21,30 +21,36 @@
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
 package com.sun.mdm.index.loader.matcher;
+
 import java.util.Map;
 import java.util.HashMap;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
+import java.io.File;
+import java.io.IOException;
 
+import com.sun.mdm.index.loader.util.Localizer;
+import net.java.hulp.i18n.Logger;
 import com.sun.mdm.index.dataobject.DataObject;
 import com.sun.mdm.index.dataobject.DataObjectReader;
 import com.sun.mdm.index.dataobject.DataObjectWriter;
-import java.io.File;
 import com.sun.mdm.index.dataobject.ChildType;
 import com.sun.mdm.index.loader.blocker.BlockDistributor;
 import com.sun.mdm.index.loader.common.LoaderException;
+import com.sun.mdm.index.loader.config.LoaderConfig;
 
 
 /**
- * Bucket is a persisted container of many blocks. 
- * It is a unit execution of work and can be loaded in memory by any
- * processor.
- * @author Swaranjit Dua
- *
+ * Bucket is a persisted container of many blocks. It is a unit execution of work 
+ * and can be loaded in memory by any processor.
+ * 
+ * @author Swaranjit Dua, Charles Ye
  */
 public class Bucket {
+
+	private static Logger logger = Logger.getLogger("com.sun.mdm.index.loader.main.BulkMatcherLoader");
+	private static Localizer localizer = Localizer.getInstance();
+	
 	private DataObjectWriter writer;
 	private DataObjectReader reader;
 	private Map<String,Block> blockMap; 
@@ -53,9 +59,8 @@ public class Bucket {
 	private int numBlocks;
 	private int numRecords;
 	private int blockPrintSize;
-	private static Logger logger = Logger.getLogger(Bucket.class
-			.getName());
-
+	private boolean optimizeDuplicates_ = LoaderConfig.getInstance().optimizeDuplicates();
+	
 	public Bucket(DataObjectWriter writer, File f) {
 		this.writer = writer;
 		file = f;
@@ -97,7 +102,6 @@ public class Bucket {
 					break;
 				}
 				numRecords++;
-
 				String blockid = dataObject.getFieldValue(0);
 				Block block = blockMap.get(blockid);
 				if (block == null) {
@@ -108,14 +112,13 @@ public class Bucket {
 				} else {
 					block.add(dataObject);
 				}
-
 			}
-			if (!isSBR_) {
+			
+			if (!isSBR_ && optimizeDuplicates_) {
 				removeDups(blockMap);
 			}
-
 			printMap();
-
+			
 			return blockMap;
 		} catch (Exception ex) {
 			throw new LoaderException (ex);
@@ -144,7 +147,8 @@ public class Bucket {
 	}
 
 	private void printMap() {
-		logger.info("#of blocks:" + getNumBlocks() + ", #of records:" + getNumRecords());
+		logger.info(localizer.x("LDR046: Number of blocks {0}, number of records {1}", 
+								getNumBlocks(), getNumRecords()));
 		if (blockPrintSize <= 0) {
 			return;
 		}
@@ -155,7 +159,8 @@ public class Bucket {
 			if (blockPrintSize > 0 && b.getSize() >= blockPrintSize) {
 				matches = b.getSize();
 				matches = matches*(matches-1)/2;
-				logger.info("blockid:" + blockid + ", size:" + b.getSize() + ", # of matches performed:" + matches);
+				logger.info(localizer.x("LDR047: blockid:, size: {1}, number of matched performed:", 
+										 blockid, b.getSize(), matches));
 			}
 		}
 	}
@@ -191,9 +196,9 @@ public class Bucket {
 				String GID1 = dexist.getFieldValue(1);
 				String GID2 = d.getFieldValue(1);
 				block.addDup(GID1, GID2);
-				combine(dexist, d);
-				//map.put(systemcode+lid, dexist);
-				// b.addDup()
+				combine(dexist, d);	
+				logger.warn(localizer.x("LDR048: Bucket[{0}] record {1} and record {2} are duplicated", 
+										block.getBlockId(), GID1, GID2));
 			}		  
 		}
 		block.clear();
@@ -205,15 +210,16 @@ public class Bucket {
 
 
 	private void combine(DataObject d1, DataObject d2) {
+		
 		List<String> fieldValues = d1.getFieldValues();
+		
 		// copy parent field values from d2 to d1 for which d1 field value is null
-		for (int i = 0; i < fieldValues.size(); i++) {
+	    for (int i = 0; i < fieldValues.size(); i++) {
 			String val = d1.getFieldValue(i);
 			if (val == null || val.equals("") ) {
 				d1.setFieldValue(0, d2.getFieldValue(i));
 			}			
 		}
-
 		List<ChildType>  d1childTypes = d1.getChildTypes();
 		List<ChildType>  d2childTypes = d2.getChildTypes();
 
@@ -237,9 +243,7 @@ public class Bucket {
 			}	        	        
 		}
 
-		/**
-		 * Add childtypes from d2 which are not in d1
-		 */
+		// Add child types from d2 which are not in d1
 		for (int i = d1childTypes.size(); i < d2childTypes.size(); i++) {
 			ChildType ctype = d2childTypes.get(i);
 			d1.addChildType(ctype);
