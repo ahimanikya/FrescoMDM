@@ -39,7 +39,7 @@ $TESTING = 0;
 #what is the release management codeline name?
 #warning - don't read this from the environment, as all
 #values in this file apply to a specific RE codeline.
-$CODELINE = "main";
+$CODELINE = "sierra";
 
 #official name of the product. Same comments as above:
 $PRODUCT = "odmmi";
@@ -57,12 +57,12 @@ $PRODUCT = "odmmi";
 );
 
 %MINOR_VERSION = (
-    'odmmi', '1',
+    'odmmi', '1.1',
 );
 
 #this is the current release number:
 %MILESTONE_VERSION = (
-    'odmmi', 'SM09',
+    'odmmi', 'SM10',
 );
 
 #this is the milestone date this release is based on.
