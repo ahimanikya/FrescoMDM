@@ -166,7 +166,8 @@ parse_args()
             DOTASK_REPORT=0
             DOINSTALL=1
             DOARCHIVEDOC=1
-            DOMAVEN_POP=1
+            #DOMAVEN_POP=1
+            DOMAVEN_POP=0
         else
             DOINTEGREPORT=0
             DORELEASE=0

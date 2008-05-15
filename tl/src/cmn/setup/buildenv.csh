@@ -138,7 +138,7 @@ endif
 if ($?IIS_CODELINE) then
     setenv CODELINE $IIS_CODELINE
 else
-    setenv CODELINE main
+    setenv CODELINE sierra
 endif
 
 #have to unset or set it to zero this if you are building in a release environment
@@ -150,7 +150,7 @@ setenv DEVELOPER_BUILD 1
 if ($?IIS_BRANCH_NAME) then
     setenv JBI_BRANCH_NAME "$IIS_BRANCH_NAME"
 else
-    setenv JBI_BRANCH_NAME main
+    setenv JBI_BRANCH_NAME sierra
 endif
 
 setenv CVS_BRANCH_NAME "$JBI_BRANCH_NAME"
@@ -395,4 +395,4 @@ setenv CVS_CO_ROOT "${SRCROOT}/.."
 setenv CVSIGNORE "Makefile bld target"
 
 #finally, set the current release tag:
-setenv REV "SM09"
+setenv REV "SM10"
