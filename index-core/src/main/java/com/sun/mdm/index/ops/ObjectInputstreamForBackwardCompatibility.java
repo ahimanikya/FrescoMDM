@@ -33,6 +33,7 @@ import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SystemObject;
+import com.sun.mdm.index.objects.SBROverWrite;
 
 /**
  * @author Sujit Biswas
@@ -119,7 +120,10 @@ public class ObjectInputstreamForBackwardCompatibility extends
 			return ObjectStreamClass.lookup(SBR.class);
 		}
 		
-		
+		if (desc.getName().endsWith("SBROverWrite")) {
+			return ObjectStreamClass.lookup(SBROverWrite.class);
+		}
+
 		if (desc.getName().endsWith("SystemObject")) {
 			return ObjectStreamClass.lookup(SystemObject.class);
 		}
@@ -127,8 +131,7 @@ public class ObjectInputstreamForBackwardCompatibility extends
 		if (desc.getName().endsWith("ObjectNode")) {
 			return ObjectStreamClass.lookup(ObjectNode.class);
 		}
-		
-	
+
 		if (desc.getName().endsWith("Object")) {
 			
 			String s= desc.getName().substring(desc.getName().lastIndexOf('.') + 1);

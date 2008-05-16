@@ -329,8 +329,8 @@ public class TransactionPageAdapter implements PageAdapter, java.io.Serializable
                         //  user-defined API.
                         history = new RecreateResult();
                         mLogger.warn(mLocalizer.x("PAG001: Invalid Transaction " 
-                                                  + "Log. Transaction ID: {0}",
-                                                  transNumber));
+                                                  + "Log for Transaction ID {0}: {1}",
+                                                  transNumber, e.getMessage()));
                         // flag this transaction as invalid
                         validTransaction = false;
                     }
