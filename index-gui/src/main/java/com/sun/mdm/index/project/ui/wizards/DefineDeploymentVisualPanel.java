@@ -133,21 +133,33 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
 
         jLabelDatabase.setText(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
                 "LBL_static_Database"));
+        jLabelDatabase.setLabelFor(cbDatabase);
+        cbDatabase.getAccessibleContext().setAccessibleName(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
+                "LBL_static_Database")); // NOI18N
         cbDatabase.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
                 "LBL_static_Database")); // NOI18N
 
         jLabelMatchEngine.setText(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
                 "LBL_static_MatchEngine"));
+        jLabelMatchEngine.setLabelFor(cbMatchEngine);
+        cbMatchEngine.getAccessibleContext().setAccessibleName(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
+                "LBL_static_MatchEngine")); // NOI18N
         cbMatchEngine.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
                 "LBL_static_MatchEngine")); // NOI18N
 
         jLabelDateFormat.setText(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
                 "LBL_static_DateFormat"));
+        jLabelDateFormat.setLabelFor(cbDateFormat);
+        cbDateFormat.getAccessibleContext().setAccessibleName(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
+                "LBL_static_DateFormat")); // NOI18N
         cbDateFormat.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
                 "LBL_static_DateFormat")); // NOI18N
         
         lblTransaction.setText(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
                 "LBL_static_Transaction"));
+        lblTransaction.setLabelFor(cbTransactions);
+        cbTransactions.getAccessibleContext().setAccessibleName(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
+                "LBL_static_Transaction")); // NOI18N
         cbTransactions.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
                 "LBL_static_Transaction")); // NOI18N
 

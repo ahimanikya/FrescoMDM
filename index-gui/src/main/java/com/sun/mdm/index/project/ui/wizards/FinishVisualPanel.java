@@ -193,6 +193,8 @@ public class FinishVisualPanel extends javax.swing.JPanel {
         
         //mAutoGenerateOption.setSelected(true);
         yPos += 30;
+        mAutoGenerateOption.getAccessibleContext().setAccessibleName(NbBundle.getMessage(FinishVisualPanel.class, 
+                "LBL_Auto_Generate_Files")); // NOI18N
         mAutoGenerateOption.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(FinishVisualPanel.class, 
                 "LBL_Auto_Generate_Files")); // NOI18N
 

@@ -141,6 +141,9 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabelName">
       <Properties>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection component="txtName" type="bean"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="MSG_Name" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
@@ -150,6 +153,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelDataType">
       <Properties>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection component="cbDataType" type="bean"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="MSG_DataType" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
@@ -171,6 +177,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelMatchType">
       <Properties>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection component="cbMatchType" type="bean"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="MSG_MatchType" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
@@ -185,6 +194,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelBlocking">
       <Properties>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection component="jComboBoxBlocking" type="bean"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="MSG_Blocking" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
@@ -192,6 +204,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelKeyType">
       <Properties>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection component="jComboBoxKeyType" type="bean"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="MSG_KeyType" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
@@ -199,6 +214,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelUpdateable">
       <Properties>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection component="jComboBoxUpdateable" type="bean"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="MSG_Updateable" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
@@ -206,6 +224,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelRequired">
       <Properties>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection component="jComboBoxRequired" type="bean"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="MSG_Required" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
@@ -213,6 +234,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelFieldSize">
       <Properties>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection component="spFieldSize" type="bean"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="MSG_FieldSize" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
@@ -222,6 +246,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelPattern">
       <Properties>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection component="txtPattern" type="bean"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="MSG_Pattern" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
@@ -231,6 +258,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelCodeModule">
       <Properties>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection component="txtCodeModule" type="bean"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="MSG_CodeModule" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
@@ -243,6 +273,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelUserCode">
       <Properties>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection component="txtUserCode" type="bean"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="MSG_UserCode" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
@@ -252,6 +285,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelConstrainedBy">
       <Properties>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection component="txtConstrainedBy" type="bean"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/sun/mdm/index/project/ui/applicationeditor/Bundle.properties" key="MSG_ConstrainedBy" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>

@@ -6,6 +6,7 @@
 
 package com.sun.mdm.index.project.ui.wizards;
 
+import org.openide.util.NbBundle;
 /**
  *
  */
@@ -15,6 +16,8 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
     public TabEDMPropertiesJPanel(String displayName, String inputMask, String valueMask,
                                     boolean searchScreen, boolean searchResult, 
                                     boolean generateReport, String searchRequired) {
+        this.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(TabEDMPropertiesJPanel.class, 
+                "MSG_EDM")); // NOI18N
         initComponents();
         this.txtDisplayName.setText(displayName);
         this.txtInputMask.setText(inputMask);
@@ -60,20 +63,27 @@ public class TabEDMPropertiesJPanel extends javax.swing.JPanel {
         jComboBoxSearchResult = new javax.swing.JComboBox();
         jComboBoxReport = new javax.swing.JComboBox();
 
+        jLabelDisplayName.setLabelFor(txtDisplayName);
         jLabelDisplayName.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "MSG_DisplayName")); // NOI18N
 
+        jLabelInputMask.setLabelFor(txtInputMask);
         jLabelInputMask.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "MSG_InputMask")); // NOI18N
 
+        jLabelValueMask.setLabelFor(txtValueMask);
         jLabelValueMask.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "MSG_ValueMask")); // NOI18N
 
+        jLabelSearchScreen.setLabelFor(jComboBoxSearchScreen);
         jLabelSearchScreen.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "MSG_SearchScreen")); // NOI18N
         jLabelSearchScreen.setMaximumSize(new java.awt.Dimension(59, 14));
         jLabelSearchScreen.setMinimumSize(new java.awt.Dimension(59, 14));
 
+        jLabelSearchRequired.setLabelFor(jComboBoxSearchRequired);
         jLabelSearchRequired.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "MSG_SearchRequired")); // NOI18N
 
+        jLabelSearchResult.setLabelFor(jComboBoxSearchResult);
         jLabelSearchResult.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "MSG_SearchResult")); // NOI18N
 
+        jLabelGenerateReport.setLabelFor(jComboBoxReport);
         jLabelGenerateReport.setText(org.openide.util.NbBundle.getMessage(TabEDMPropertiesJPanel.class, "MSG_GenerateReport")); // NOI18N
 
         jComboBoxSearchRequired.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "true", "false", "oneof" }));

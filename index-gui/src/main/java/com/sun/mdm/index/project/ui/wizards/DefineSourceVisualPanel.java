@@ -110,6 +110,9 @@ public class DefineSourceVisualPanel extends javax.swing.JPanel {
 
         jLabelSourceName.setText(NbBundle.getMessage(
                 DefineSourceVisualPanel.class, "MSG_static_Name"));
+        jLabelSourceName.setLabelFor(jTextFieldSourceName);
+        jTextFieldSourceName.getAccessibleContext().setAccessibleName(NbBundle.getMessage(DefineSourceVisualPanel.class, 
+                "ACS_MSG_Source_System_Name")); // NOI18N
         jTextFieldSourceName.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineSourceVisualPanel.class, 
                 "ACS_MSG_Source_System_Name")); // NOI18N
 
@@ -141,6 +144,8 @@ public class DefineSourceVisualPanel extends javax.swing.JPanel {
                     onTextSourceNameChanged(evt);
                 }
             });
+        jButtonAdd.getAccessibleContext().setAccessibleName(NbBundle.getMessage(DefineSourceVisualPanel.class, 
+                "ACS_MSG_button_Add_Source_System")); // NOI18N
         jButtonAdd.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineSourceVisualPanel.class, 
                 "ACS_MSG_button_Add_Source_System")); // NOI18N
 
@@ -154,6 +159,8 @@ public class DefineSourceVisualPanel extends javax.swing.JPanel {
                     jButtonRemoveActionPerformed(evt);
                 }
             });
+        jButtonRemove.getAccessibleContext().setAccessibleName(NbBundle.getMessage(DefineSourceVisualPanel.class, 
+                "ACS_MSG_button_Remove_Source_System")); // NOI18N
         jButtonRemove.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineSourceVisualPanel.class, 
                 "ACS_MSG_button_Remove_Source_System")); // NOI18N
 
@@ -168,6 +175,8 @@ public class DefineSourceVisualPanel extends javax.swing.JPanel {
                     onListSourceClicked(evt);
                 }
             });
+        listSource.getAccessibleContext().setAccessibleName(NbBundle.getMessage(DefineSourceVisualPanel.class, 
+                "ACS_MSG_List_Of_Source_Systems")); // NOI18N
         listSource.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineSourceVisualPanel.class, 
                 "ACS_MSG_List_Of_Source_Systems")); // NOI18N
 
@@ -182,6 +191,8 @@ public class DefineSourceVisualPanel extends javax.swing.JPanel {
                     jButtonRemoveAllActionPerformed(evt);
                 }
             });
+        jButtonRemoveAll.getAccessibleContext().setAccessibleName(NbBundle.getMessage(DefineSourceVisualPanel.class, 
+                "ACS_MSG_button_Remove_ALL_Source_Systems")); // NOI18N
         jButtonRemoveAll.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineSourceVisualPanel.class, 
                 "ACS_MSG_button_Remove_ALL_Source_Systems")); // NOI18N
 

@@ -22,6 +22,7 @@
  */
 package com.sun.mdm.index.project.ui.wizards;
 
+import org.openide.util.NbBundle;
 import com.sun.mdm.index.project.ui.wizards.generator.ConfigGenerator;
 import com.sun.mdm.index.project.ui.wizards.generator.MatchType;
 import com.sun.mdm.index.parser.FieldDef;
@@ -33,6 +34,9 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
     
     /** Creates new form TabGeneralPropertiesPanel */
     public TabGeneralPropertiesPanel(EntityNode entityNode) {
+        this.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(TabGeneralPropertiesPanel.class, 
+                "MSG_Properties")); // NOI18N
+
         initComponents();
         mEntityNode = entityNode;
         cbDataType.addItemListener(new java.awt.event.ItemListener() {
@@ -484,27 +488,37 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
 
         setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        jLabelName.setLabelFor(txtName);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/sun/mdm/index/project/ui/applicationeditor/Bundle"); // NOI18N
         jLabelName.setText(bundle.getString("MSG_Name")); // NOI18N
 
+        jLabelDataType.setLabelFor(cbDataType);
         jLabelDataType.setText(bundle.getString("MSG_DataType")); // NOI18N
 
         cbDataType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "string", "char", "date", "int", "float", "boolean" }));
 
+        jLabelMatchType.setLabelFor(cbMatchType);
         jLabelMatchType.setText(bundle.getString("MSG_MatchType")); // NOI18N
 
+        jLabelBlocking.setLabelFor(jComboBoxBlocking);
         jLabelBlocking.setText(bundle.getString("MSG_Blocking")); // NOI18N
 
+        jLabelKeyType.setLabelFor(jComboBoxKeyType);
         jLabelKeyType.setText(bundle.getString("MSG_KeyType")); // NOI18N
 
+        jLabelUpdateable.setLabelFor(jComboBoxUpdateable);
         jLabelUpdateable.setText(bundle.getString("MSG_Updateable")); // NOI18N
 
+        jLabelRequired.setLabelFor(jComboBoxRequired);
         jLabelRequired.setText(bundle.getString("MSG_Required")); // NOI18N
 
+        jLabelFieldSize.setLabelFor(spFieldSize);
         jLabelFieldSize.setText(bundle.getString("MSG_FieldSize")); // NOI18N
 
+        jLabelPattern.setLabelFor(txtPattern);
         jLabelPattern.setText(bundle.getString("MSG_Pattern")); // NOI18N
 
+        jLabelCodeModule.setLabelFor(txtCodeModule);
         jLabelCodeModule.setText(bundle.getString("MSG_CodeModule")); // NOI18N
 
         txtCodeModule.addActionListener(new java.awt.event.ActionListener() {
@@ -513,8 +527,10 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabelUserCode.setLabelFor(txtUserCode);
         jLabelUserCode.setText(bundle.getString("MSG_UserCode")); // NOI18N
 
+        jLabelConstrainedBy.setLabelFor(txtConstrainedBy);
         jLabelConstrainedBy.setText(bundle.getString("MSG_ConstrainedBy")); // NOI18N
 
         jComboBoxBlocking.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "true", "false" }));
