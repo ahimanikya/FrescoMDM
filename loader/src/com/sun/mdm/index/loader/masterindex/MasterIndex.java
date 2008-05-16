@@ -35,7 +35,6 @@ import java.util.TreeMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Logger;
 import java.sql.Connection;
 
 import com.sun.mdm.index.matching.Standardizer;
@@ -51,11 +50,11 @@ import com.sun.mdm.index.decision.impl.DefaultDecisionMaker;
 import com.sun.mdm.index.loader.clustersynchronizer.ClusterSynchronizer;
 import com.sun.mdm.index.loader.common.FileManager;
 import com.sun.mdm.index.loader.config.LoaderConfig;
-import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 import com.sun.mdm.index.loader.clustersynchronizer.dao.DAOFactory;
 import com.sun.mdm.index.matching.StandardizerFactory;
 import com.sun.mdm.index.loader.common.LoaderException;
-import com.sun.mdm.index.configurator.ConfigurationException;
+import com.sun.mdm.index.loader.util.Localizer;
+import net.java.hulp.i18n.Logger;
 
 /**
  * This component generates Master Index Files.
@@ -66,18 +65,16 @@ import com.sun.mdm.index.configurator.ConfigurationException;
  */
 public class MasterIndex {
 
+	private static Logger logger = Logger.getLogger("com.sun.mdm.index.loader.masterindex.MasterIndex");
+	private static Localizer localizer = Localizer.getInstance();
+
 	private int poolSize_ = 1;
 	private ExecutorService executor_;
 	private MasterImageWriter writer;
-
-
-	ClusterSynchronizer clusterSynchronizer_ = ClusterSynchronizer.getInstance();
+	private ClusterSynchronizer clusterSynchronizer_ = ClusterSynchronizer.getInstance();
 	private LoaderConfig config_ =  LoaderConfig.getInstance();
 	private ObjectDefinition objectDef_;
-	private static Logger logger = Logger.getLogger(MasterIndex.class
-			.getName());
 	Connection con_;
-
 
 	public MasterIndex() throws LoaderException {
 		try {
@@ -100,8 +97,6 @@ public class MasterIndex {
 
 	}
 
-
-
 	public void generateMasterIndex() throws LoaderException {
 		try {
 			File bucketFile;
@@ -117,7 +112,6 @@ public class MasterIndex {
 				standardizer[i] = StandardizerFactory.getInstance();	 	 
 			}
 
-
 			while (true) {
 				bucketFile = getBucketFile();
 				if (bucketFile == null) {
@@ -125,18 +119,20 @@ public class MasterIndex {
 				}			    												
 				DataObjectReader reader = new DataObjectFileReader(bucketFile.getAbsolutePath(), true);		
 				EUIDBucket bucket = new EUIDBucket(reader, bucketFile.getName());
-				logger.info("EUID bucket:"+ bucketFile.getName() + " processing");
+				logger.info(localizer.x("LDR054: Loading EUID bucket:{0}", bucketFile.getName()));
+				
 				bucket.load();
 
-				/**
+				/*
 				 * Each Map is for different MIndexTask that is executed on a pooled 
 				 * thread. allTableData stores the Map<String,TableData> for each thread.
 				 */
 				List<Map<String,TableData>> allTableData = new ArrayList<Map<String,TableData>>();
 
 				/*
-		 All MIndexTask would share the same EOCursor that point to same bucket, but different instance of "SO list" 
-		 These compute one EO/SBR and related objects at a time.
+		 		 * All MIndexTask would share the same EOCursor that point to same bucket, 
+		 		 * but different instance of "SO list". These compute one EO/SBR and related 
+		 		 * objects at a time.
 				 */
 				EUIDBucket.EOCursor cursor = bucket.getEOCursor();
 				CountDownLatch endGate = new CountDownLatch(poolSize_);
@@ -148,25 +144,21 @@ public class MasterIndex {
 								sameSystemMatch);
 					executor_.execute(task);		    
 				}
-
-				/**
+				
+				/*
 				 * wait for all MIndexTasks to finish
 				 */
 				endGate.await();
 				writer.write(allTableData);
 				bucket.close();
-
 			} // end while true
-
 			con_.close();
 			writer.close(); 
 			executor_.shutdown();
 		} catch (Exception e) {
 			throw new LoaderException (e);
 		}
-
 	}
-
 
 	private File getBucketFile() throws IOException {
 		String fileName = clusterSynchronizer_.getEUIDBucket();
@@ -175,9 +167,6 @@ public class MasterIndex {
 		}
 		String euidDir = FileManager.getEUIDBucketDir();				
 		File  file = new File(euidDir, fileName);
-
 		return file;
 	}
-
-
 }
