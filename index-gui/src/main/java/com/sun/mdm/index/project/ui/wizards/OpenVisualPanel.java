@@ -58,7 +58,10 @@ public class OpenVisualPanel extends javax.swing.JPanel {
         // Provide a name in the title bar.
         setName(NbBundle.getMessage(OpenVisualPanel.class,
                 "TITLE_DefineViewPanel"));
-
+        this.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(OpenVisualPanel.class, 
+                "TITLE_DefineViewPanel")); // NOI18N
+        this.getAccessibleContext().setAccessibleName(NbBundle.getMessage(OpenVisualPanel.class, 
+                "TITLE_DefineViewPanel")); // NOI18N
         //
         //        
         //mTargetRepository.insertItemAt("localhost", 0);
@@ -90,7 +93,7 @@ public class OpenVisualPanel extends javax.swing.JPanel {
         jLabelApplicationName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelApplicationName.setText(NbBundle.getMessage(OpenVisualPanel.class,
                 "MSG_static_View"));
-
+        
         mNewView = new javax.swing.JTextField();
         mNewView.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyReleased(KeyEvent evt) {
@@ -106,7 +109,12 @@ public class OpenVisualPanel extends javax.swing.JPanel {
                     }
                 }
             });
-            
+        mNewView.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(OpenVisualPanel.class, 
+                "ACS_MSG_Application_Name")); // NOI18N
+        mNewView.getAccessibleContext().setAccessibleName(NbBundle.getMessage(OpenVisualPanel.class, 
+                "ACS_MSG_Application_Name")); // NOI18N
+
+        jLabelApplicationName.setLabelFor(mNewView);
         jLabelApplicationName.setBounds(0, 130, 70, 28);
         mNewView.setBounds(75, 130, 270, 28);
         add(jLabelApplicationName);

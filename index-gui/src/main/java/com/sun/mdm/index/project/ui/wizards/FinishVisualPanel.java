@@ -44,6 +44,8 @@ public class FinishVisualPanel extends javax.swing.JPanel {
      */
     public FinishVisualPanel(FinishPanel panel) {
         this.panel = panel;
+        this.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(FinishVisualPanel.class, 
+                "TITLE_FinishPanel")); // NOI18N
         initComponents();
 
         // Provide a name in the title bar.
@@ -191,6 +193,9 @@ public class FinishVisualPanel extends javax.swing.JPanel {
         
         //mAutoGenerateOption.setSelected(true);
         yPos += 30;
+        mAutoGenerateOption.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(FinishVisualPanel.class, 
+                "LBL_Auto_Generate_Files")); // NOI18N
+
         mAutoGenerateOption.setBounds(0, yPos, 400, 20);
         mAutoGenerateOption.setBorder(null);
         add(mAutoGenerateOption);
