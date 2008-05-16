@@ -43,7 +43,7 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox cbDatabase;
     private javax.swing.JComboBox cbMatchEngine;
     private javax.swing.JComboBox cbDateFormat;
-    private javax.swing.JComboBox jComboBoxTransactions;
+    private javax.swing.JComboBox cbTransactions;
     private javax.swing.JCheckBox jCheckBoxMasterEDM = new javax.swing.JCheckBox(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
                 "LBL_static_MasterIndexDM"));
 
@@ -54,6 +54,9 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
      */
     public DefineDeploymentVisualPanel(DefineDeploymentPanel panel) {
         this.panel = panel;
+        this.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
+                "TITLE_DefineDeploymentEnvironment")); // NOI18N
+
         initComponents();
 
         // Provide a name in the title bar.
@@ -89,13 +92,13 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
         cbDateFormat.insertItemAt("dd/MM/yyyy", 2); // NOI18N
         cbDateFormat.setSelectedIndex(0);
         
-        jComboBoxTransactions.insertItemAt(NbBundle.getMessage(
+        cbTransactions.insertItemAt(NbBundle.getMessage(
                 DefineDeploymentVisualPanel.class, "LBL_Transaction_Container"), 0);
-        jComboBoxTransactions.insertItemAt(NbBundle.getMessage(
+        cbTransactions.insertItemAt(NbBundle.getMessage(
                 DefineDeploymentVisualPanel.class, "LBL_Transaction_Bean"), 1);
-        jComboBoxTransactions.insertItemAt(NbBundle.getMessage(
+        cbTransactions.insertItemAt(NbBundle.getMessage(
                 DefineDeploymentVisualPanel.class, "LBL_Transaction_Local"), 2);
-        jComboBoxTransactions.setSelectedIndex(0);
+        cbTransactions.setSelectedIndex(0);
         
         /*
         // Optional: provide a special description for this pane.
@@ -124,21 +127,41 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
         cbDatabase = new javax.swing.JComboBox();
         cbMatchEngine = new javax.swing.JComboBox();
         cbDateFormat = new javax.swing.JComboBox();
-        jComboBoxTransactions = new javax.swing.JComboBox();
+        cbTransactions = new javax.swing.JComboBox();
                 
         setLayout(null);
 
         jLabelDatabase.setText(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
                 "LBL_static_Database"));
+        jLabelDatabase.setLabelFor(cbDatabase);
+        cbDatabase.getAccessibleContext().setAccessibleName(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
+                "LBL_static_Database")); // NOI18N
+        cbDatabase.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
+                "LBL_static_Database")); // NOI18N
 
         jLabelMatchEngine.setText(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
                 "LBL_static_MatchEngine"));
-        
+        jLabelMatchEngine.setLabelFor(cbMatchEngine);
+        cbMatchEngine.getAccessibleContext().setAccessibleName(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
+                "LBL_static_MatchEngine")); // NOI18N
+        cbMatchEngine.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
+                "LBL_static_MatchEngine")); // NOI18N
+
         jLabelDateFormat.setText(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
                 "LBL_static_DateFormat"));
+        jLabelDateFormat.setLabelFor(cbDateFormat);
+        cbDateFormat.getAccessibleContext().setAccessibleName(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
+                "LBL_static_DateFormat")); // NOI18N
+        cbDateFormat.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
+                "LBL_static_DateFormat")); // NOI18N
         
         lblTransaction.setText(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
                 "LBL_static_Transaction"));
+        lblTransaction.setLabelFor(cbTransactions);
+        cbTransactions.getAccessibleContext().setAccessibleName(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
+                "LBL_static_Transaction")); // NOI18N
+        cbTransactions.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
+                "LBL_static_Transaction")); // NOI18N
 
         add(jLabelDatabase);
         add(jLabelMatchEngine);
@@ -147,7 +170,7 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
         add(cbDatabase);
         add(cbMatchEngine);
         add(cbDateFormat);
-        add(jComboBoxTransactions);
+        add(cbTransactions);
         
         jLabelDatabase.setBounds(0, 30, 100, 30);
         jLabelMatchEngine.setBounds(0, 65, 100, 30);
@@ -157,11 +180,14 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
         cbDatabase.setBounds(110, 30, 250, 30);
         cbMatchEngine.setBounds(110, 65, 250, 30);
         cbDateFormat.setBounds(110, 100, 250, 30);
-        jComboBoxTransactions.setBounds(110, 135, 250, 30);
+        cbTransactions.setBounds(110, 135, 250, 30);
         
         add(jCheckBoxMasterEDM);
-        jCheckBoxMasterEDM.setSelected(false);
+        jCheckBoxMasterEDM.setSelected(true);
         jCheckBoxMasterEDM.setBounds(0, 170, 200, 30);
+        jCheckBoxMasterEDM.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
+                "LBL_static_MasterIndexDM")); // NOI18N
+
     }
 
     // End of variables declaration
@@ -217,7 +243,7 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
      *@return Transaction
      */
     public String getTransaction() {
-        int i = jComboBoxTransactions.getSelectedIndex();
+        int i = cbTransactions.getSelectedIndex();
         String transaction = "CONTAINER"; // NOI18N
         if (i == 1) {
             transaction = "BEAN"; // NOI18N

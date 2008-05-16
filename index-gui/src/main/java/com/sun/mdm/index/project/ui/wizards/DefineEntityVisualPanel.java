@@ -132,6 +132,9 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
      */
     public DefineEntityVisualPanel(DefineEntityPanel panel) {
         this.panel = panel;
+        this.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineEntityVisualPanel.class, 
+                "TITLE_DefineEntity")); // NOI18N
+
         initComponents();
 
         jLabelNoProperties = new javax.swing.JLabel();
@@ -283,6 +286,9 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
                     PRIMARYNODEIMAGEICON,
                     NbBundle.getMessage(DefineEntityVisualPanel.class,
                         "MSG_ToolTip_AddPrimaryEntity")));
+        mButtonAddPrimary.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineEntityVisualPanel.class, 
+                "MSG_ToolTip_AddPrimaryEntity")); // NOI18N
+
         mButtonAddPrimary.setBorder(null);
         mButtonAddPrimary.setMnemonic('P');
         toolBar.add(mButtonAddPrimary);
@@ -292,6 +298,8 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
                     SUBNODEIMAGEICON,
                     NbBundle.getMessage(DefineEntityVisualPanel.class,
                         "MSG_ToolTip_AddSubEntity")));
+        mButtonAddSub.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineEntityVisualPanel.class, 
+                "MSG_ToolTip_AddSubEntity")); // NOI18N
         mButtonAddSub.setBorder(null);
         mButtonAddSub.setMnemonic('S');
         toolBar.add(mButtonAddSub);
@@ -301,6 +309,9 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
                     FIELDNODEIMAGEICON,
                     NbBundle.getMessage(DefineEntityVisualPanel.class,
                         "MSG_ToolTip_AddField")));
+        mButtonAddField.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineEntityVisualPanel.class, 
+                "MSG_ToolTip_AddField")); // NOI18N
+
         mButtonAddField.setBorder(null);
         mButtonAddField.setMnemonic('F');
         toolBar.add(mButtonAddField);
@@ -309,6 +320,9 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         mButtonDelete = new JButton(new DeleteAction(DELETENODEIMAGEICON,
                     NbBundle.getMessage(DefineEntityVisualPanel.class,
                         "MSG_ToolTip_Delete")));
+        mButtonDelete.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineEntityVisualPanel.class, 
+                "MSG_ToolTip_Delete")); // NOI18N
+
         mButtonDelete.setBorder(null);
         mButtonDelete.setMnemonic('D');
         toolBar.add(mButtonDelete);
@@ -342,6 +356,9 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         mButtonTemplates = new JButton(TEMPLATESIMAGEICON);
         mButtonTemplates.setToolTipText(NbBundle.getMessage(DefineEntityVisualPanel.class,
                         "MSG_ToolTip_Templates"));
+        mButtonTemplates.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineEntityVisualPanel.class, 
+                "MSG_ToolTip_Templates")); // NOI18N
+
         mButtonTemplates.addMouseListener(new TemplatePopupListener());
         mButtonTemplates.addFocusListener(new java.awt.event.FocusListener() {
             public void focusGained(java.awt.event.FocusEvent e) {
@@ -535,6 +552,7 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         item.addActionListener(this);
         item.setActionCommand(commandName);
         item.setIcon(defaultIcon);
+        item.getAccessibleContext().setAccessibleDescription(commandName); // NOI18N
 
         return item;
     }
