@@ -22,7 +22,6 @@
  */
 package com.sun.mdm.index.loader.matcher;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +33,6 @@ import java.util.TreeMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Logger;
 
 import com.sun.mdm.index.dataobject.DataObjectFileReader;
 import com.sun.mdm.index.dataobject.DataObjectReader;
@@ -44,20 +42,25 @@ import com.sun.mdm.index.loader.common.FileManager;
 import com.sun.mdm.index.loader.config.LoaderConfig;
 import com.sun.mdm.index.loader.analysis.WeightAnalyzer;
 import com.sun.mdm.index.loader.common.LoaderException;
+import com.sun.mdm.index.loader.util.Localizer;
+import net.java.hulp.i18n.Logger;
 
-
-/** Matches block of records.
+/** 
+ * Matches block of records.
  * 1. each concurrent Matcher in a different server, process one block bucket at a time
  * (via ClusterSynchronizer). 
-   2. Load block bucket in memory. 
-   3. Match records for each block.
-   4. Determine matches and write Match Records to a Match file.
-   5. Merge Match Files into single Match File.
- * @author Swaranjit Dua
- *
+ *  2. Load block bucket in memory. 
+ *  3. Match records for each block.
+ *  4. Determine matches and write Match Records to a Match file.
+ *  5. Merge Match Files into single Match File.
+ *  
+ * @author Swaranjit Dua, Charles Ye
  */
 public class Matcher {
 
+	private static Logger logger = Logger.getLogger("com.sun.mdm.index.loader.matcher.Matcher");
+	private static Localizer localizer = Localizer.getInstance();
+	
 	private double matchThreshold_ = 0;
 	private int poolSize_ = 1;
 	private ExecutorService executor_;
@@ -72,11 +75,11 @@ public class Matcher {
 	private double duplicateThreshold_ = 0;
 	private boolean isSBR_ = false;
 	private File bucketFile_;
-	private static Logger logger = Logger.getLogger(Matcher.class
-			.getName());
 	private int matchFlushSize_ = 0;
 	private String dateFormatString_;
 	private int blockPrintSize_ = 0;
+	private int counter;
+	private Object lock = new Object();
 
 	public Matcher(String[] paths,  String[] matchTypes, Lookup blLk, boolean isSBR, String dateFormat) 
 	{
@@ -113,7 +116,6 @@ public class Matcher {
 		dateFormatString_ = dateFormat;					
 	}
 
-
 	/**
 	 * the core workhorse function.
 	 * Keep reading Block Bucket file, matches and output to Match Files.
@@ -135,18 +137,18 @@ public class Matcher {
 				DataObjectReader reader = new DataObjectFileReader(bucketFile_.getAbsolutePath(), true);		
 				Bucket bucket = new Bucket(reader, bucketFile_, isSBR_);
 				bucket.setBlockPrintSize(blockPrintSize_);
-				logger.info("Block bucket:"+ bucket.getFile().getName() + " processing ");
-
+				logger.info(localizer.x("LDR050: Loading block bucket:{0}", bucket.getFile().getName()));
 				bucket.load();
 
-				/**
+				/*
 				 * Each TreeMap is for different MatcherTask that is executed on a pooled 
 				 * thread. This treeMap stores the MatchResult from each thread.
 				 */
 				TreeMap<MatchRecord, String>[] treeMaps = new TreeMap[poolSize_];		
+				
 				/*
-		 All MatcherTask would share the same MatchCursor and match on
-		 one BlockPosition at a time.
+		 	     * All MatcherTask would share the same MatchCursor and match on
+		 		 * one BlockPosition at a time.
 				 */
 				Bucket.MatchCursor cursor = bucket.getMatchCursor();
 				CountDownLatch endGate = new CountDownLatch(poolSize_);
@@ -201,7 +203,6 @@ public class Matcher {
 		} catch (Exception e) {
 			throw new LoaderException (e);
 		}
-
 	}
 
 	private WeightAnalyzer initAnalyzer(String[] matchEpaths)  {
@@ -242,7 +243,7 @@ public class Matcher {
 					finalMatchStageFileList.add(finalMatchStageFiles[i]);
 				}
 				fileMerger = new MatchFileMerger(isSBR_);
-				logger.info("merging match files");
+				logger.info(localizer.x("LDR051: Merging match files"));
 				fileMerger.merge(finalMatchStageFileList, finalMatch);
 			} else {
 				clusterSynchronizer_.waitMatchingDone();	
@@ -253,11 +254,11 @@ public class Matcher {
 					finalMatchStageFileList.add(finalMatchStageFiles[i]);
 				}		 
 				fileMerger = new MatchFileMerger(isSBR_);
-				logger.info("merging match files");
+				logger.info(localizer.x("LDR051: Merging match files"));
 				fileMerger.merge(finalMatchStageFileList, finalMatch);
 			}
 		}
-		logger.info("merged match files");
+		logger.info(localizer.x("LDR052: Merged match files"));
 	}
 
 
@@ -282,13 +283,10 @@ public class Matcher {
 		}
 		return file;
 	}
-
-
-	private int counter;
-	private Object lock = new Object();
+	
 	void flushMap(TreeMap<MatchRecord,String> map) throws LoaderException {		
 		File matchFile;
-		logger.info("TreeMap size: " + map.size());
+		logger.info(localizer.x("LDR053: TreeMap size:{0}", "" + map.size()));
 		synchronized(lock) {
 			counter++;
 			if (!isSBR_) {
@@ -332,7 +330,6 @@ public class Matcher {
 			throw new LoaderException (e);
 		}
 	}
-
 
 	private Comparator<MatchRecord> getComparator() {
 		Comparator<MatchRecord> comp = new Comparator<MatchRecord>() {
