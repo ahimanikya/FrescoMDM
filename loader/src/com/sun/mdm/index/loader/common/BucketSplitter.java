@@ -46,18 +46,14 @@ import java.io.File;
 public class BucketSplitter {
 
 	private String BUCKET_PREFIX;
-
 	private String bucketDir;
-
 	private int numBucket;
 	private int MAX_BUCKET_SPLIT = 13;
 	private int MIN_BUCKET_SPLIT = 6;
 	private long maxFileSize = 60000000; // 60M
 	private int initFileNum =  0;
-	
 	private HashSet<Integer> removeIds = new HashSet<Integer>();
-	ClusterSynchronizer clusterSynchronizer = ClusterSynchronizer.getInstance();
-
+	private ClusterSynchronizer clusterSynchronizer = ClusterSynchronizer.getInstance();
 	private HashMap<Integer, DataObjectWriter> buckets = new HashMap<Integer, DataObjectWriter>();
 
 	/**
