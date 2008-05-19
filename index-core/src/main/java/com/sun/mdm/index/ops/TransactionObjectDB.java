@@ -184,11 +184,11 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
             throw new OPSException(mLocalizer.t("OPS679: Could not retrieve " + 
                                         "a TransactionObject from the database " + 
                                         "with this SQL statement: {0}: {1}", 
-                                        sql, e));
+                                        sql, e.getMessage()));
         } catch (ObjectException e) {
             throw new OPSException(mLocalizer.t("OPS680: Could not retrieve " + 
                                         "a TransactionObject from the database : {0}"
-                                        , e));
+                                        , e.getMessage()));
         } finally {
             try {
                 if (rSet != null) {
@@ -199,7 +199,8 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 }
             } catch (SQLException e) {
                 throw new OPSException(mLocalizer.t("OPS681: Could not close " + 
-                                        "an SQL statement or result set: {0}", e));
+                                        "an SQL statement or result set: {0}", 
+                                        e.getMessage()));
             }
         }
 
@@ -274,7 +275,8 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 }
             } catch (SQLException e) {
                 throw new OPSException(mLocalizer.t("OPS684: Could not close " + 
-                                        "an SQL statement or result set: {0}", e));
+                                        "an SQL statement or result set: {0}", 
+                                        e.getMessage()));
             }
         }
     
@@ -409,7 +411,8 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 }
             } catch (SQLException e) {
                 throw new OPSException(mLocalizer.t("OPS687: Could not close " + 
-                                        "an SQL statement or result set: {0}", e));
+                                        "an SQL statement or result set: {0}", 
+                                        e.getMessage()));
             }
         }
 
@@ -543,11 +546,11 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
             throw new OPSException(mLocalizer.t("OPS688: Could not retrieve the " + 
                                         "TransactionObjects from the database " + 
                                         "with this SQL statement: {0}: {1}", 
-                                        sql, e));
+                                        sql, e.getMessage()));
         } catch (ObjectException e) {
             throw new OPSException(mLocalizer.t("OPS689: Could not retrieve the " + 
                                         "TransactionObjects from the database : {0}", 
-                                        e));
+                                        e.getMessage()));
         } finally {
             try {
                 if (rSet != null) {
@@ -558,7 +561,8 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 }
             } catch (SQLException e) {
                 throw new OPSException(mLocalizer.t("OPS690: Could not close " + 
-                                        "an SQL statement or result set: {0}", e));
+                                        "an SQL statement or result set: {0}", 
+                                        e.getMessage()));
             }
         }
 
@@ -638,11 +642,11 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
             throw new OPSException(mLocalizer.t("OPS691: Could not retrieve the " + 
                                         "TransactionObjects from the database " + 
                                         "with this SQL statement: {0}: {1}", 
-                                        sql, e));
+                                        sql, e.getMessage()));
         } catch (ObjectException e) {
             throw new OPSException(mLocalizer.t("OPS692: Could not retrieve the " + 
                                         "TransactionObjects from the database : {0}", 
-                                        e));
+                                        e.getMessage()));
         } finally {
             try {
                 if (rSet != null) {
@@ -653,7 +657,8 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 }
             } catch (SQLException e) {
                 throw new OPSException(mLocalizer.t("OPS693: Could not close " + 
-                                        "an SQL statement or result set: {0}", e));
+                                        "an SQL statement or result set: {0}", 
+                                        e.getMessage()));
             }
         }
 
@@ -801,7 +806,7 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
         } catch (Exception e) {
             throw new OPSException(mLocalizer.t("OPS695: Could not retrieve the " + 
                                         "TransactionObjects from the database: {0}", 
-                                        e));
+                                        e.getMessage()));
         } finally {
             try {
                 if (rSet != null) {
@@ -812,7 +817,8 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 }
             } catch (SQLException e) {
                 throw new OPSException(mLocalizer.t("OPS696: Could not close " + 
-                                        "an SQL statement or result set: {0}", e));
+                                        "an SQL statement or result set: {0}", 
+                                        e.getMessage()));
             }
         }
 
@@ -900,11 +906,11 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
             throw new OPSException(mLocalizer.t("OPS697: Could not retrieve the " + 
                                         "TransactionObjects from the database " + 
                                         "with this SQL statement: {0}: {1}", 
-                                        sql, e));
+                                        sql, e.getMessage()));
         } catch (ObjectException e) {
             throw new OPSException(mLocalizer.t("OPS698: Could not retrieve the " + 
                                         "TransactionObjects from the database: {0}", 
-                                        e));
+                                        e.getMessage()));
         } finally {
             try {
                 if (rSet != null) {
@@ -915,7 +921,8 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
                 }
             } catch (SQLException e) {
                 throw new OPSException(mLocalizer.t("OPS699: Could not close " + 
-                                        "an SQL statement or result set: {0}", e));
+                                        "an SQL statement or result set: {0}", 
+                                        e.getMessage()));
             }
         }
         return ret;

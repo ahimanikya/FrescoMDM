@@ -105,6 +105,10 @@ public class ObjectInputStreamForVersion extends ObjectInputStream {
             return ObjectStreamClass.lookup(SBR.class);
         }
         
+        if (desc.getName().endsWith("SBROverWrite")) {
+            return ObjectStreamClass.lookup(SBROverWrite.class);
+        }
+        
         
         if (desc.getName().endsWith("SystemObject")) {
             return ObjectStreamClass.lookup(SystemObject.class);
