@@ -76,7 +76,7 @@ import net.java.hulp.i18n.LocalizationSupport;
 public class SearchDuplicatesHandler extends ScreenConfiguration {
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.SearchDuplicatesHandler");
     private static transient final Localizer mLocalizer = Localizer.get();
-    private HashMap updateableFeildsMap =  new HashMap();    
+    private HashMap parametersMap =  new HashMap();    
     private HashMap actionMap =  new HashMap();    
     private ArrayList nonUpdateableFieldsArray = new ArrayList();      
     String errorMessage = null;   
@@ -103,30 +103,14 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
     private String destnEuid  = new String();
     private String rowCount  = new String();
     private String selectedMergeFields = new String();
-    
+    private PotentialDuplicateSearchObject pdSearchObject;
     /** Creates a new instance of SearchDuplicatesHandler */
     public SearchDuplicatesHandler() {
     }
 
 
-    public String performSubmit() throws ProcessingException, UserException, ValidationException,HandlerException{
-        //get the hidden fields search type from the form usin the facesContext
-        // get the array list as per the search
-        //Start Validation
-            HashMap newFieldValuesMap = new HashMap();
-
-            if (super.getEnteredFieldValues() != null && super.getEnteredFieldValues().length() > 0) {
-                String[] fieldNameValues = super.getEnteredFieldValues().split(">>");
-                for (int i = 0; i < fieldNameValues.length; i++) {
-                    String string = fieldNameValues[i];
-                    String[] keyValues = string.split("##");
-                    if(keyValues.length ==2) {
-                      newFieldValuesMap.put(keyValues[0], keyValues[1]);
-                    }
-                }
-            }
-           
-            super.setUpdateableFeildsMap(newFieldValuesMap);
+    public ArrayList performSubmit() throws ProcessingException, UserException, ValidationException,HandlerException{
+            super.setUpdateableFeildsMap(parametersMap);
 
             //set the search type as per the user choice
             super.setSearchType(super.getSelectedSearchType());
@@ -137,7 +121,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 //mLogger.error("Validation failed. Message displayed to the user: " + "One of Many :: " + errorMessage);
                  mLogger.info(mLocalizer.x("SDP001: Validation failed : {0} ", errorMessage));
-                return VALIDATION_ERROR;
+                return null;
             }
 
             //if user enters LID ONLY 
@@ -146,7 +130,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 //mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
                  mLogger.info(mLocalizer.x("SDP002: {0} ",errorMessage));
-                return VALIDATION_ERROR;
+                return null;
 
             }
             //if user enters SYSTEMCODE ONLY 
@@ -155,7 +139,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 //mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
                 mLogger.info(mLocalizer.x("SDP003:{0}",errorMessage));
-                return VALIDATION_ERROR;
+                return null;
 
             }
             //if user enters LID and SystemCode Validate the LID 
@@ -167,7 +151,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  errorMessage, errorMessage));
                    // mLogger.error("Validation failed. Message displayed to the user: " + "LID/SystemCode Validation :: " + errorMessage);
                     mLogger.info(mLocalizer.x("SDP004: {0}",errorMessage));
-                    return VALIDATION_ERROR;
+                    return null;
 
                 }
             }
@@ -187,14 +171,14 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                            // mLogger.error("Validation failed. Message displayed to the user: " + "LID/SYSTEM CODE :: " + errorMessage);
                             mLogger.info(mLocalizer.x("SDP005: {0} ", errorMessage));
-                            return VALIDATION_ERROR;
+                            return null;
                         }
                     } catch (ProcessingException ex) {
                         mLogger.error(mLocalizer.x("SDP006: Failed  during submit {0} ", ex.getMessage()),ex);
-                        return VALIDATION_ERROR;
+                        return null;
                     } catch (UserException ex) {
                         mLogger.error(mLocalizer.x("SDP007: Failed  during submit {0} ", ex.getMessage()),ex);                       
-                        return VALIDATION_ERROR;
+                        return null;
                     }
 
                 }
@@ -210,7 +194,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
                    // mLogger.error("Validation failed. Message displayed to the user: " + fieldErrors[0] + " : " + fieldErrors[1]);
                     mLogger.error(mLocalizer.x("SDP008: {0}:{1} ", fieldErrors[0] ,fieldErrors[1] ));
-                    return VALIDATION_ERROR;
+                    return null;
                 }
 
             }
@@ -224,7 +208,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fieldErrors[0] + " : " + fieldErrors[1], fieldErrors[1]));
                    // mLogger.error("Validation failed. Message displayed to the user: " + fieldErrors[0] + " : " + fieldErrors[1]);
                      mLogger.error(mLocalizer.x("SDP009: {0}:{1} ", fieldErrors[0] ,fieldErrors[1] ));
-                    return VALIDATION_ERROR;
+                    return null;
                 }
 
             }
@@ -233,8 +217,15 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
         
         
         PotentialDuplicateSearchObject potentialDuplicateSearchObject = getPDSearchObject();
-        PotentialDuplicateSummary mainPotentialDuplicateSummary = null;
+        
+        if(potentialDuplicateSearchObject == null) {
+            return null;
+        }
+        
         CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+       
+        //Build and arraylist of hashmaps for the duplicates before putting in the request
+        ArrayList newFinalArray  = new ArrayList();        
         
         try {
               //EPathArrayList epathList  = compareDuplicateManager.retrieveEpathResultsFields(screenObject.getSearchResultsConfig());
@@ -246,9 +237,11 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             int count = pdPageIterArray.count();
             if(count > 0) {
                 httpRequest.setAttribute("duplicateSearchObject", potentialDuplicateSearchObject);                
+                setPdSearchObject(potentialDuplicateSearchObject);
             }    
             String[][] temp = new String[count][2];
 
+            HashMap duplicatesHashMap = new HashMap();
             if (pdPageIterArray != null & pdPageIterArray.count() > 0) {
                 // add all the potential duplicates to the summary array  
                 while (pdPageIterArray.hasNext()) {
@@ -257,6 +250,9 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                     {   
                         String euid1 = pds[i].getEUID1();
                         String euid2 = pds[i].getEUID2();
+                        //keep the object nodes as well here in the hashmap
+                        duplicatesHashMap.put(euid1, pds[i].getObject1());
+                        duplicatesHashMap.put(euid2, pds[i].getObject2());
 
                         //Insert audit log for the "Matching Review Search Result"
                         masterControllerService.insertAuditLog((String) session.getAttribute("user"),
@@ -339,8 +335,6 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                 }
             }
 
-            //Build and arraylist of hashmaps for the duplicates before putting in the request
-            ArrayList newFinalArray  = new ArrayList();        
             float wt = 0.0f;
             for (int i = 0; i < finalArrayList.size(); i++) {
                 ArrayList newInnerArray = new ArrayList();
@@ -348,17 +342,15 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                 for (int j = 0; j < innerArrayList.size(); j++) {
                     String euids = (String) innerArrayList.get(j);
                     EnterpriseObject eo = masterControllerService.getEnterpriseObject(euids);
-                    HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
-                    //System.out.println(eoMap1);
-                    //HashMap eoMap = new HashMap();
+                    HashMap eoMap = new HashMap();
                     eoMap.put("ENTERPRISE_OBJECT_PREVIEW", getValuesForResultFields(eo, retrieveEPathsResultsFields(screenObject.getSearchResultsConfig())));
                     eoMap.put("EUID", eo.getEUID());
+                    
+                    //eoMap.put("ENTERPRISE_OBJECT_PREVIEW", getValuesForResultFields((ObjectNode) duplicatesHashMap.get(euids), retrieveEPathsResultsFields(screenObject.getSearchResultsConfig())));
+                    //eoMap.put("EUID", euids);
+                    
                     if (j > 0) {
-                        //Add weight to the hashmap 
-                        //eoMap.put("Weight", masterControllerService.getPotentialDuplicateWeight((String) innerArrayList.get(0), euids));
-//                   eoMap.put("PotDupId", masterControllerService.getPotentialDuplicateID((String) innerArrayList.get(0), euids));
-//                   eoMap.put("Status", masterControllerService.getPotentialDuplicateStatus((String) innerArrayList.get(0), euids));
-
+                        //Add weight/PotDupId/Status to the hashmap 
                         eoMap.put("Weight", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids, "WEIGHT"));
                         eoMap.put("PotDupId", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids, "duplicateid"));
                         eoMap.put("Status", masterControllerService.getPotentialDuplicateFromKey((String) innerArrayList.get(0), euids, "status"));
@@ -393,10 +385,48 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                 { //mLogger.error("Exception : " + QwsUtil.getRootCause(ex).getMessage());
                      mLogger.error(mLocalizer.x("SDP015: Unable to perform submit :{0} ", ex.getMessage()),ex);
                 }
+                return null;
         }
-        return this.SEARCH_DUPLICATES;
+        return newFinalArray;
     }
-    
+
+    //This method is used to set the array list of duplicates in the session for the compare duplicates page.
+    public void buildCompareDuplicateEuids(String compareEuids){
+            String[] compareEuidsSplitted = getStringEUIDs(compareEuids);
+            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+            float wt = 0.0f;
+            ArrayList compareEOArrayList = new ArrayList();
+            try {
+            for (int j = 0; j < compareEuidsSplitted.length; j++) {
+                String duplicateEuid = compareEuidsSplitted[j];
+                EnterpriseObject eo = masterControllerService.getEnterpriseObject(duplicateEuid);
+                HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+                //HashMap eoMap = new HashMap();
+                eoMap.put("EUID", eo.getEUID());
+                if (j > 0) {
+                    eoMap.put("Weight", masterControllerService.getPotentialDuplicateFromKey(compareEuidsSplitted[0], duplicateEuid, "WEIGHT"));
+                    eoMap.put("PotDupId", masterControllerService.getPotentialDuplicateFromKey(compareEuidsSplitted[0], duplicateEuid, "duplicateid"));
+                    eoMap.put("Status", masterControllerService.getPotentialDuplicateFromKey(compareEuidsSplitted[0], duplicateEuid, "status"));
+                } else {
+                    eoMap.put("Weight", wt);
+                    eoMap.put("PotDupId", "000");
+                    eoMap.put("Status", "U");
+                }
+                compareEOArrayList.add(eoMap);
+                }
+        } catch (ProcessingException ex) {
+             mLogger.error(mLocalizer.x("SDP015: Unable to perform submit :{0} ", ex.getMessage()),ex);
+        } catch (UserException ex) {
+             mLogger.error(mLocalizer.x("SDP015: Unable to perform submit :{0} ", ex.getMessage()),ex);
+        } catch (RemoteException ex) {
+             mLogger.error(mLocalizer.x("SDP015: Unable to perform submit :{0} ", ex.getMessage()),ex);
+        } catch (Exception ex) {
+             mLogger.error(mLocalizer.x("SDP015: Unable to perform submit :{0} ", ex.getMessage()),ex);
+        }
+            
+        session.setAttribute("comapreEuidsArrayList", compareEOArrayList);
+    }
+
     public HashMap getActionMap() {
         return actionMap;
     }
@@ -428,8 +458,9 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                         if (so == null) {
                             errorMessage = bundle.getString("system_object_not_found_error_message");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                           // mLogger.error("LID/SYSTEM CODE:: " + errorMessage);
-                             mLogger.info(mLocalizer.x("SDP036: LID/SYSTEM CODE: {0} ", errorMessage));
+                           mLogger.info(mLocalizer.x("SDP036: LID/SYSTEM CODE: {0} ", errorMessage));
+                           return null;
+                                                          
                         } else {
                             EnterpriseObject eo = masterControllerService.getEnterpriseObjectForSO(so);
                             //potentialDuplicateSearchObject.setEUID(eo.getEUID());
@@ -444,9 +475,11 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                     } catch (ProcessingException ex) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  exceptionMessaage, ex.toString()));
                         mLogger.error(mLocalizer.x("SDP016: Failed to get PotentialDuplicate search objects: {0} ", ex.getMessage()),ex);
+                        return null;
                     } catch (UserException ex) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage, ex.toString()));
                         mLogger.error(mLocalizer.x("SDP017: Failed to get PotentialDuplicate search objects: {0} ", ex.getMessage()),ex);
+                        return null;
                     }
                 }
             }
@@ -480,9 +513,9 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                         potentialDuplicateSearchObject.setCreateStartDate(new Timestamp(date.getTime()));
                     }
                 } catch (ValidationException ex) {
-                    //java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.SEVERE, null, ex);
-                    mLogger.error(mLocalizer.x("SDP018: Failed to get PotentialDuplicate search objects: {0} ", ex.getMessage()),ex);
-                }
+                     mLogger.error(mLocalizer.x("SDP018: Failed to get PotentialDuplicate search objects: {0} ", ex.getMessage()),ex);
+                     return null;
+               }
             }
 
 
@@ -503,6 +536,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                     }
                 } catch (ValidationException ex) {
                     mLogger.error(mLocalizer.x("SDP050: Failed to set PotentialDuplicate search objects: {0} ", ex.getMessage()),ex);
+                    return null;
                 }
             }
             //EndTime=, StartTime=, EndDate=, StartDate=, Function=null, SystemUser=, SystemCode=null, LID=, EUID=
@@ -529,7 +563,9 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
            
 
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("SDP019: Failed to get PotentialDuplicate search objects: {0} ", ex.getMessage()),ex);
+           mLogger.error(mLocalizer.x("SDP019: Failed to get PotentialDuplicate search objects: {0} ", ex.getMessage()),ex); 
+            return null;
+           
         }
         return potentialDuplicateSearchObject;
     }
@@ -641,7 +677,7 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
             session.setAttribute("comapreEuidsArrayList", euidsMapList);
     }
 
-	public void resolvePotentialDuplicate(ActionEvent event) {
+  public void resolvePotentialDuplicate(ActionEvent event) {
         try {
             ArrayList duplicatesArray = (ArrayList) event.getComponent().getAttributes().get("finalArrayListVE");
         
@@ -956,7 +992,8 @@ public ArrayList resetOutputList(PotentialDuplicateSearchObject potentialDuplica
                 for (int j = 0; j < innerArrayList.size(); j++) {
                     String euids = (String) innerArrayList.get(j);
                     EnterpriseObject eo = masterControllerService.getEnterpriseObject(euids);
-                    HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+                    //HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+                    HashMap eoMap = new HashMap();
                     //set the values for the preview
                     eoMap.put("ENTERPRISE_OBJECT_PREVIEW", getValuesForResultFields(eo, retrieveEPathsResultsFields(screenObject.getSearchResultsConfig())));
                     eoMap.put("EUID", eo.getEUID());
@@ -1141,11 +1178,8 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
     }
 
     private HashMap getValuesForResultFields(EnterpriseObject eo, EPathArrayList retrieveResultsFields) throws ObjectException, EPathException {
-        // System.out.println("<<=== eo " + eo);
-        // System.out.println("<<=== retrieveResultsFields " + retrieveResultsFields);  
         HashMap resultHashMap=new HashMap();
         ArrayList fieldConfigArray = super.getResultsConfigArray();
-        //System.out.println("===================================================");
         SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
         String dateField = new String();
         if(retrieveResultsFields!=null){
@@ -1165,16 +1199,207 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
                     }
                 }
 
-                //System.out.println("epath : " + retrieveResultsFields.get(i));
-                //System.out.println("value : " + value);
                 //resultHashMap.put(epath, value);
             }
         }
         
-        //System.out.println("===================================================" + resultHashMap);
+        return resultHashMap;
+    }
+    private HashMap getValuesForResultFields(ObjectNode objectNode, EPathArrayList retrieveResultsFields) throws ObjectException, EPathException {
+        HashMap resultHashMap=new HashMap();
+        ArrayList fieldConfigArray = super.getResultsConfigArray();
+        SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        String dateField = new String();
+        if(retrieveResultsFields!=null){
+            for (int i = 0; i < retrieveResultsFields.size(); i++) {
+                FieldConfig fieldConfig = (FieldConfig) fieldConfigArray.get(i);
+                String epath = retrieveResultsFields.get(i).toString();
+                Object value = EPathAPI.getFieldValue(epath, objectNode);
+                if (value instanceof java.util.Date) {
+                    dateField = simpleDateFormatFields.format(value);
+                    resultHashMap.put(fieldConfig.getFullFieldName(), dateField);
+                } else {
+                    if ((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) && value != null) {
+                        //value
+                        resultHashMap.put(fieldConfig.getFullFieldName(), ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString()));
+                    } else {
+                        resultHashMap.put(fieldConfig.getFullFieldName(), value);
+                    }
+                }
+
+                //resultHashMap.put(epath, value);
+            }
+        }
         return resultHashMap;
     }
 
+    public HashMap getParametersMap() {
+        return parametersMap;
+    }
+
+    public void setParametersMap(HashMap parametersMap) {
+        this.parametersMap = parametersMap;
+    }
+
+    public PotentialDuplicateSearchObject getPdSearchObject() {
+        return pdSearchObject;
+    }
+
+    public void setPdSearchObject(PotentialDuplicateSearchObject pdSearchObject) {
+        this.pdSearchObject = pdSearchObject;
+    }
+
+
     
+    public void resolvePotentialDuplicate(HashMap resolveDuplicatesMap) {
+        try {
+            String potDupId = (String) resolveDuplicatesMap.get("potentialDuplicateId");
+            String resolveTypeSelected = (String) resolveDuplicatesMap.get("resolveType");
+            //resolve the potential duplicate as per resolve type
+            boolean resolveBoolean = ("AutoResolve".equalsIgnoreCase(resolveTypeSelected)) ? false : true;
+            
+            //flag=false incase of autoresolve
+            //flag = true incase of permanant resolve
+ 
+            masterControllerService.setAsDifferentPerson(potDupId, resolveBoolean);
+          
+        } catch (ProcessingException ex) {
+             mLogger.error(mLocalizer.x("SDP021: Unable to resolve  PotentialDuplicates : {0} ", ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+        } catch (UserException ex) {
+             mLogger.error(mLocalizer.x("SDP022: Unable to resolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+        }
+   
+    }
+
+    public void unresolvePotentialDuplicateAction(HashMap resolveDuplicatesMap) {
+        try {
+            //get potential duplicate ID
+            String potDupId = (String) resolveDuplicatesMap.get("potentialDuplicateId");
+            
+            //un resolve the potential duplicate 
+            masterControllerService.unresolvePotentialDuplicate(potDupId);
+
+            
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+           mLogger.error(mLocalizer.x("SDP023: Unable  to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
+
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("SDP024: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
+        }
+
+    }
+
+    
+  public HashMap previewPostMultiMergedEnterpriseObject(String destnEuidValue,String sourceEuids,String rowCount) {
+        HashMap finalPreviewMap = new HashMap();
+        try {
+            //String destnEuidValue = (String) previewDuplicatesMap.get("destnEuid");
+            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnEuidValue);
+            String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
+            String[] allEUIDs = sourceEuids.split("##");
+            
+            
+            ArrayList srcsList  = new ArrayList();
+            for (int i = 0; i < allEUIDs.length; i++) {
+                if(i !=0 ) {
+                    srcsList.add(allEUIDs[i]);
+                }
+            }    
+            
+            Object[] sourceEUIDObjs =  srcsList.toArray();            
+            String[] sourceEUIDs  = new String[srcsList.size()];            
+            String[] srcRevisionNumbers = new String[sourceEUIDs.length];
+
+            for (int i = 0; i < sourceEUIDObjs.length; i++) {
+                String sourceEuid = (String) sourceEUIDObjs[i];
+                sourceEUIDs[i] = sourceEuid;
+                srcRevisionNumbers[i] = new Integer(masterControllerService.getEnterpriseObject(sourceEuid).getSBR().getRevisionNumber()).toString();
+            }
+
+            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+            EnterpriseObject resulteo = masterControllerService.getPostMergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);
+            HashMap eoMultiMergePreview = new HashMap();//compareDuplicateManager.getEnterpriseObjectAsHashMap(resulteo, screenObject);
+         
+            eoMultiMergePreview.put("ENTERPRISE_OBJECT_PREVIEW", getValuesForResultFields(resulteo, retrieveEPathsResultsFields(screenObject.getSearchResultsConfig())));           
+            eoMultiMergePreview.put("EUID", resulteo.getEUID());
+            finalPreviewMap.put("eoMultiMergePreview" + rowCount, eoMultiMergePreview);
+            //PUT THE DESTINATION AND SOURCE EUIDS for selecting it by default in the preview screen
+            finalPreviewMap.put("destinationEuid" + rowCount, destnEuidValue + rowCount);
+            finalPreviewMap.put("srcsList" + rowCount, srcsList);
+            
+        } catch (ProcessingException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("SDP037: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
+        } catch (UserException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("SDP025: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
+        }catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+            mLogger.error(mLocalizer.x("SDP025: Unable to unResolve PotentialDuplicates : {0} ", ex.getMessage()),ex);
+        }
+           
+         return finalPreviewMap;
+}
+  
+  public void performMultiMergeEnterpriseObject(String destnEuidValue,String sourceEuids,String rowCount) {
+        try {
+
+            //String destnEuidValue = (String) previewDuplicatesMap.get("destnEuid");
+            EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnEuidValue);
+            String destRevisionNumber = new Integer(destinationEO.getSBR().getRevisionNumber()).toString();
+
+            String[] allEUIDs = sourceEuids.split("##");
+                       
+            ArrayList srcsList  = new ArrayList();
+            
+            for (int i = 0; i < allEUIDs.length; i++) {
+                if(i !=0 ) {
+                    srcsList.add(allEUIDs[i]);
+                }
+            }    
+            Object[] sourceEUIDObjs =  srcsList.toArray();            
+            String[] sourceEUIDs  = new String[srcsList.size()];            
+            String[] srcRevisionNumbers = new String[sourceEUIDs.length];            
+            for (int i = 0; i < sourceEUIDObjs.length; i++) {
+                String sourceEuid = (String) sourceEUIDObjs[i];
+                sourceEUIDs[i] = sourceEuid;
+                srcRevisionNumbers[i] = new Integer(masterControllerService.getEnterpriseObject(sourceEuid).getSBR().getRevisionNumber()).toString();
+            }
+            
+            //perform multi merge here
+            masterControllerService.mergeMultipleEnterpriseObjects(sourceEUIDs, destinationEO, srcRevisionNumbers, destRevisionNumber);              
+            
+        } catch (ValidationException ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("SDP026: Unable to perform MultiMergeEnterpriseObject : {0} ", ex.getMessage()),ex);
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+             mLogger.error(mLocalizer.x("SDP027: Unable to perform MultiMergeEnterpriseObject : {0} ", ex.getMessage()),ex);
+        }
+      //Insert Audit logs 
+       try {
+       //String userName, String euid1, String euid2, String function, int screeneID, String detail
+        masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                                               destnEuidValue, 
+                                               "",
+                                               "EUID Multi Merge Confirm",
+                                               new Integer(screenObject.getID()).intValue(),
+                                               "View two selected EUIDs of the merge confirm page");
+        } catch (UserException ex) {   
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,ex.getMessage()));
+           mLogger.error(mLocalizer.x("SDP028: Failed to insert AuditLogs : {0} ", ex.getMessage()),ex);
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),ex.getMessage()));
+           mLogger.error(mLocalizer.x("SDP029: Failed to insert AuditLogs : {0} ", ex.getMessage()),ex);
+        }
+        
+        
+
+}        
+
 }
 
