@@ -53,51 +53,105 @@
             <script type="text/javascript" src="scripts/Validation.js"></script>
             <script type="text/javascript" src="scripts/Control.js"></script>
             <script type="text/javascript" src="scripts/dateparse.js"></script>
-        </head>
+<script>
+//not used in transactions, but since its require in the script we fake it
+var editIndexid = ""; 
+var thisForm;
+var rand = "";
+
+// Fields used for merge 
+var rowCountMerge  ="";
+var destinationEOFinalMerge ="";
+var previewhiddenMergeEuidsFinalMerge ="";
+
+function setRand(thisrand)  {
+	rand = thisrand;
+}
+
+var checkedItems = new Array();
+function getCheckedValues(a,v)   {
+   if (a.checked == true)  {
+      checkedItems.push(v);
+   } else {
+     for(i=0;i<checkedItems.length;i++){
+       if(v == checkedItems[i]) checkedItems.splice(i, 1);
+      } 
+  }
+}
+
+function align(thisevent,divID) {
+	divID.style.visibility= 'visible';
+	divID.style.top = thisevent.clientY-180;
+	divID.style.left= thisevent.clientX;
+}
+</script>
+
+		</head>
         <body>
             <%@include file="./templates/header.jsp"%>
-            <div id="mainContent" style="overflow:hidden">   
-                    <div id="advancedSearch" class="basicSearchDup" style="visibility:visible;display:block">
-                                <table border="0" cellpadding="0" cellspacing="0" align="right">
+
+<% 
+   Integer size = 0; 
+   double rand = java.lang.Math.random();
+   String URI = request.getRequestURI();
+   URI = URI.substring(1, URI.lastIndexOf("/"));
+
+   ArrayList keysList  = new ArrayList();
+   ArrayList labelsList  = new ArrayList();
+   ArrayList fullFieldNamesList  = new ArrayList();
+   StringBuffer myColumnDefs = new StringBuffer();
+%>
+
+<div id="mainContent" style="overflow:hidden">   
+<table><tr><td>
+<div id="advancedSearch" class="duplicaterecords" >
+      <div id="searchType" style="background-color:blue;">
+             <table border="0" cellpadding="0" cellspacing="0" align="right">
                 <h:form id="searchTypeForm" >
                             <tr>
                                 <td>
                                     <h:outputText  rendered="#{SearchDuplicatesHandler.possilbeSearchTypesCount gt 1}"  value="#{msgs.patdet_search_text}"/>&nbsp;
-                                    <h:selectOneMenu id="searchType" rendered="#{SearchDuplicatesHandler.possilbeSearchTypesCount gt 1}" 
-                                                     onchange="submit();" style="width:220px;" 
-                                                     value="#{SearchDuplicatesHandler.searchType}" 
-                                                     valueChangeListener="#{SearchDuplicatesHandler.changeSearchType}" >
+                                    <h:selectOneMenu id="searchType" rendered="#{SearchDuplicatesHandler.possilbeSearchTypesCount gt 1}" onchange="submit();" style="width:220px;" value="#{SearchDuplicatesHandler.searchType}" valueChangeListener="#{SearchDuplicatesHandler.changeSearchType}" >
                                         <f:selectItems  value="#{SearchDuplicatesHandler.possilbeSearchTypes}" />
                                     </h:selectOneMenu>
                                 </td>
                             </tr>
+                             <tr>
+                           <td><div style="padding-top:100px;color:red;" id="messages"></div></td>
+                     </tr>
                 </h:form>
-            </table>
-            <h:form id="advancedformData" >
-                <h:inputHidden id="selectedSearchType" value="#{SearchDuplicatesHandler.selectedSearchType}"/>
-                <table border="0" cellpadding="0" cellspacing="0" >
-		           <tr>
-				     <td align="left" style="padding-left:60px;"><h:outputText  style="font-size:12px;font-weight:bold;color:#0739B6;"  value="#{SearchDuplicatesHandler.instructionLine}" /></td>
-			       </tr>
-
-                    <tr>
-                        <td>
+              </table>
+      </div>            
+     
+  
+             <table border="0" cellpadding="0" cellspacing="0">
+		<tr>
+		 <td align="left"><p><nobr><h:outputText  value="#{SearchDuplicatesHandler.instructionLine}"/></nobr></p></td>
+		</tr>
+               <tr>
+                <td colspan="2">
+              	 <h:form id="advancedformData" >
+                <input type="hidden" id="selectedSearchType" title='selectedSearchType' 
+				value='<h:outputText value="#{SearchDuplicatesHandler.selectedSearchType}"/>' />
                             <input id='lidmask' type='hidden' name='lidmask' value='' />
-							
-                            <h:dataTable headerClass="tablehead"  
+                            <h:dataTable cellpadding="0" cellspacing="0"
                                          id="searchScreenFieldGroupArrayId" 
                                          var="searchScreenFieldGroup" 
                                          value="#{SearchDuplicatesHandler.searchScreenFieldGroupArray}">
-						    <h:column>
-   				            <div style="font-size:12px;font-weight:bold;color:#0739B6;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h:outputText value="#{searchScreenFieldGroup.description}" /></div>
-                            <h:dataTable headerClass="tablehead"  
-                                         id="fieldConfigId" 
+					<h:column>
+   				         <p>
+					   <h:outputText value="#{searchScreenFieldGroup.description}" />
+					</p>
+                                         <h:dataTable headerClass="tablehead"  
+							             cellpadding="0" cellspacing="0"
+                                         id="fieldConfigId" 										 
                                          var="feildConfig" 
                                          value="#{searchScreenFieldGroup.fieldConfigs}">
-	
+
                                 <!--Rendering Non Updateable HTML Text Area-->
+                               <!--Rendering Non Updateable HTML Text Area-->
                                         <h:column>
-									      <nobr>
+                                            <nobr>
                                                 <h:outputText value="*" rendered="#{feildConfig.required}" />
                                                 <h:outputText value="#{feildConfig.displayName}" />
                                             </nobr>
@@ -105,7 +159,7 @@
                                         <!--Rendering HTML Select Menu List-->
                                         <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
                                             <nobr>
-                                                <h:selectOneMenu onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                <h:selectOneMenu title='#{feildConfig.name}'
                                                                  rendered="#{feildConfig.name ne 'SystemCode'}"
 	                                                             value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}">
                                                     <f:selectItem itemLabel="" itemValue="" />
@@ -113,7 +167,7 @@
                                                 </h:selectOneMenu>
                                                 
                                                 <h:selectOneMenu  onchange="javascript:setLidMaskValue(this,'advancedformData')"
-                                                                  onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
+												                  title='#{feildConfig.name}'  
                                                                   id="SystemCode" 
     															  value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
                                                                   rendered="#{feildConfig.name eq 'SystemCode'}">
@@ -126,27 +180,30 @@
                                         <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6 }" >
                                             <nobr>
                                                 <h:inputText   required="#{feildConfig.required}" 
+												               title='#{feildConfig.name}'
                                                                label="#{feildConfig.displayName}" 
                                                                onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
-                                                               onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
                                                                maxlength="#{feildConfig.maxLength}" 
 															   value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
                                                                rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
                                                 
                                                 <h:inputText   required="#{feildConfig.required}" 
 												               id="LID"
-															   readonly="true"
+															   title='#{feildConfig.name}'
                                                                label="#{feildConfig.displayName}" 
-                                                               onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
+															   readonly="true"
+															   onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
-                                                               onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value);javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                               onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
 															   value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
                                                                rendered="#{feildConfig.name eq 'LID'}"/>
                                                                
                                                 <h:inputText   required="#{feildConfig.required}" 
                                                                label="#{feildConfig.displayName}" 
-                                                               onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+															   title='#{feildConfig.name}'
+                                                               onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                               onkeyup="javascript:qws_field_on_key_up(this)"
                                                                maxlength="#{SourceHandler.euidLength}" 
 															   value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
                                                                rendered="#{feildConfig.name eq 'EUID'}"/>
@@ -158,7 +215,8 @@
                                         <!--Rendering Updateable HTML Text Area-->
                                         <h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
                                             <nobr>
-                                                <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"   required="#{feildConfig.required}"/>
+                                                <h:inputTextarea label="#{feildConfig.displayName}"  title='#{feildConfig.name}'
+												id="fieldConfigIdTextArea"   required="#{feildConfig.required}"/>
                                             </nobr>
                                         </h:column>
                                         
@@ -166,584 +224,100 @@
                                           <nobr>
                                             <input type="text" 
                                                    id = "<h:outputText value="#{feildConfig.name}"/>"  
+												   title="<h:outputText value="#{feildConfig.name}"/>"  
                                                    value="<h:outputText value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"/>"
                                                    required="<h:outputText value="#{feildConfig.required}"/>" 
                                                    maxlength="<h:outputText value="#{feildConfig.maxLength}"/>"
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFieldsOnBlur(this,'<h:outputText value="#{feildConfig.name}"/>')">
+                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy')">
                                                   <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
-                                                 </a>
+                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/></a>
                                           </nobr>
                                         </h:column>
+                             
                             </h:dataTable> <!--Field config loop-->
-							</h:column>
+					</h:column>
                             </h:dataTable> <!--Field groups loop-->
-
-                            <table  cellpadding="0" cellspacing="0" style="	border:0px red solid;padding-left:20px">
+                            <table  cellpadding="0" cellspacing="0" style="	border:0px none solid;padding-left:20px">
                                 <tr>
-                                    <td>
-                                        <nobr>
-                                            <h:outputLink  styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
+                                    <td align="left">
+					<nobr>
+					   <h:outputLink  styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
                                                 <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                                             </h:outputLink>
                                         </nobr>
                                         <nobr>
-                                            <h:commandLink  styleClass="button" 
-											                rendered="#{Operations.potDup_SearchView}"  action="#{SearchDuplicatesHandler.performSubmit}" >  
-                                                <span>
-                                                    <h:outputText value="#{msgs.search_button_label}"/>
-                                                </span>
-                                            </h:commandLink>                                     
+                                           <a  class="button" 
+										       href="javascript:void(0)"
+                                               onclick="javascript:getFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
+                                               <span>
+                                                 <h:outputText value="#{msgs.search_button_label}"/>
+                                               </span>
+                                           </a>
                                         </nobr>
                                         
-                                        
                                     </td>
-                                </tr>
+				              </tr>
                             </table>
+                         </h:form>
                         </td>
-                        <td valign="top">
-                            <h:messages styleClass="errorMessages"  layout="list" />
-                        </td>
+                        <td><div id="messages"></div></td>
                     </tr>
                 </table>
-                <h:inputHidden id="enteredFieldValues" value="#{SearchDuplicatesHandler.enteredFieldValues}"/>
-            </h:form>
+    </div>  
+    </td>
+    </tr>
+</table>
+<!--Output div here-->
+<table cellspacing="0" cellpadding="0" border="0" style="color:#837F74;height:100%;width: 1024px;font-size:12px;">
+  <tr><td><div id="outputdiv"></div></td></tr>
+</table>
 
-                   </div>  
-                  <%
-                    ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
-                    CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
-                    SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+</div>  
 
-					ArrayList finalArrayList = (ArrayList) request.getAttribute("finalArrayList");
-                    
-					PotentialDuplicateIterator asPdIter;
-                    PotentialDuplicateSummary mainDuplicateSummary = null;
-                    
-                    PotentialDuplicateSummary associateDuplicateSummary = null;
-                    int countMain = 0;
-                    int totalMainDuplicates = 0;
-                    int totalAssoDuplicates = 0;
-                    String mainDob = null;
-                    String assoDob = null;
-                    
-                    String mainEuidContentDiv = null ;
-                    String assoEuidContentDiv = null ;
-                    String previewEuidContentDiv = null ;
-                    String dupHeading = "<b>Duplicate </b>";
-                    SearchDuplicatesHandler searchDuplicatesHandler = new  SearchDuplicatesHandler(); 
-                    Iterator searchResultFieldsIter = searchDuplicatesHandler.getResultsConfigArray().iterator();
-                    Object[] resultsConfigFeilds  = searchDuplicatesHandler.getResultsConfigArray().toArray();
-                    StringBuffer stringBuffer = new StringBuffer();
-                    StringBuffer mainEUID = new StringBuffer();
-                    StringBuffer dupEUID = new StringBuffer();
-                    ValueExpression finalArrayListVE = null;
-					ValueExpression potDupIdValueExpression = null;
-					ValueExpression duplicateSearchObjectVE = null;
-                    PotentialDuplicateSearchObject potentialDuplicateSearchObject = (PotentialDuplicateSearchObject) request.getAttribute("duplicateSearchObject");                                    
-				     if(potentialDuplicateSearchObject != null) {
-						   duplicateSearchObjectVE  = ExpressionFactory.newInstance().createValueExpression(potentialDuplicateSearchObject, potentialDuplicateSearchObject.getClass());
-					}
-                    %>                
-                <br>   
-                  <%
-                     if(finalArrayList != null && finalArrayList.size() >0 ) {						
-						finalArrayListVE = ExpressionFactory.newInstance().createValueExpression(finalArrayList, finalArrayList.getClass());
-						
+  <!-- Resolve popup div starts here  -->
+    <div id="resolvePopupDiv" class="alert" style="TOP:2250px; LEFT:300px; HEIGHT:195px;WIDTH: 300px;visibility:hidden; ">
+       <h:form id="reportYUISearch">
+         <input type="hidden" id="potentialDuplicateId" name="potentialDuplicateId" title="potentialDuplicateId" />
+         <table width="100%" border="0">
+           <tr><th align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th><th align="right"><a href="javascript:void(0)" rel="resolvepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th></tr>
+           <tr><td colspan="2"> &nbsp;</td></tr>
+           <tr><td colspan="2" align="left"><b><h:outputText value="#{msgs.different_person_dailog_text}"/></b></td></tr>
+           <tr>
+               <td  colspan="2" align="left">
+                 <div class="selectContent">
+                  <h:selectOneMenu id="diffperson" title="resolveType">
+                      <f:selectItem  itemValue="AutoResolve" itemLabel="Resolve Until Recalculation"/>
+                      <f:selectItem  itemValue="Resolve" itemLabel="Resolve Permanently"/>
+                 </h:selectOneMenu> 
+                 </div> 
+                </td>
+          </tr>
+          <tr><td colspan="2"> &nbsp;</td></tr>
+          <tr>
+             <td align="right"  colspan="2">
+               <a  class="button" href="javascript:void(0)" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?resolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
+                           <span><h:outputText value="#{msgs.ok_text_button}" /></span>
+               </a>
+                <h:outputLink  onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'123467')" 
+                               styleClass="button"  
+                               value="javascript:void(0)">
+                      <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
+                </h:outputLink>   
+             </td>
+           </tr>
+         </table>
+       </h:form>
+    </div>                                                
+  <!-- Resolve popup div ends here  -->
+   
+</body>        
 
-                         request.setAttribute("finalArrayList", request.getAttribute("finalArrayList"));
-                 %>                
-                     <div class="printClass">
-                       <table cellpadding="0" cellspacing="0" border="0" align="right">
-                         <tr>
-                             <td>
-                                 <h:outputText value="#{msgs.total_records_text}"/><%=finalArrayList.size()%>&nbsp;&nbsp;
-                             </td>
-                             <td>
-                                  <h:outputLink styleClass="button" 
-                                                rendered="#{Operations.potDup_Print}"  
-                                                value="JavaScript:window.print();">
-                                      <span><h:outputText value="#{msgs.print_text}"/>  </span>
-                                 </h:outputLink>              
-                             </td>
-                         </tr>
-                       </table>
-                    </div>
-                 <%}%>
-                <%
-                    if(finalArrayList != null && finalArrayList.size() >0 ) {
-
-                %>
-                     <div id="dataDiv" class="compareResults" style="overflow:auto;width:1074px;height:1024px;">
-                    <div>
-                        <table>
-                            <tr>
-                            <%
-                            if(finalArrayList != null && finalArrayList.size() >0 ) {
-                                
-                                for(int fac=0;fac<finalArrayList.size();fac++) {
-                                   
-                                %>
-                            <div id="mainEuidDiv<%=countMain%>">
-                                <table border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <td><img src="images/spacer.gif" width="15"></td>
-                                        <%
-                                        HashMap resultArrayMapMain = new HashMap();
-                                        HashMap resultArrayMapCompare = new HashMap();
-                                        String epathValue;
-
-                                        ArrayList arlInner = (ArrayList) finalArrayList.get(fac);
-                                        String subscripts[] = compareDuplicateManager.getSubscript(arlInner.size());
-                                        for (int j = 0; j < arlInner.size(); j++) {
-                                               HashMap eoHashMapValues = (HashMap) arlInner.get(j);
-
-                                               //int weight = ((Float) eoHashMapValues.get("Weight")).intValue();
-                                               String  weight =  eoHashMapValues.get("Weight").toString();
-                                               String potDupStatus = (String) eoHashMapValues.get("Status");
-                                                String potDupId = (String) eoHashMapValues.get("PotDupId");
-
-   						                        potDupIdValueExpression = ExpressionFactory.newInstance().createValueExpression(potDupId, potDupId.getClass());
-                                               //weight = (new BigDecimal(weight)).ROUND_CEILING;
-                                               //float weight = ((Float) eoHashMapValues.get("Weight")).floatValue();
-                                               
-                                               HashMap fieldValuesMapSource = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT_PREVIEW");
-											   fieldValuesMapSource.put("EUID",eoHashMapValues.get("EUID"));
-											   //System.out.println("fieldValuesMapSource EUID ====>" + fieldValuesMapSource.get("EUID"));
-											   //System.out.println("eoHashMapValues EUID ====>" + eoHashMapValues.get("EUID"));
-                                               
-
-                                               // Code to render headers
-                                               if (j>0)
-                                                {    dupHeading = "<b> "+j+"<sup>"+subscripts[j] +"</sup> Duplicate </b>";
-                                                } else if (j==0)
-                                                {    dupHeading = "<b> Main EUID</b>";
-                                                }
-                                               //String strDataArray = (String) arlInner.get(j);
-                                               //EnterpriseObject eoSource = compareDuplicateManager.getEnterpriseObject(strDataArray);
-                                               //HashMap fieldValuesMapSource = compareDuplicateManager.getEOFieldValues(eoSource, objScreenObject) ;
-                                               for (int ifc = 0; ifc < resultsConfigFeilds.length; ifc++) {
-                                                FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc];
-                                                if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
-                                                    epathValue = fieldConfigMap.getFullFieldName();
-                                                } else {
-                                                    epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
-                                                }
-                                                if (j > 0) {
-                                                    resultArrayMapCompare.put(epathValue, fieldValuesMapSource.get(epathValue));
-                                                } else {
-                                                    resultArrayMapMain.put(epathValue, fieldValuesMapSource.get(epathValue));
-                                                }
-                                              }
-                                        
-					                
-                                               
-                                        %>
-                                       <%if(j == 0 ) {%>
-                                        <td valign="top">
-                                            <div id="mainEuidContent">
-                                                <table border="0" cellspacing="0" cellpadding="0" width="100%">
-                                                    <tr>
-                                                        <td valign="top" style="width:100%;height:45px;border-bottom: 1px solid #EFEFEF; ">&nbsp;</td>
-                                                    </tr> 
-                                                </table>
-                                            </div> 
-                                             <div id="mainEuidContentDiv<%=countMain%>" class="dynaw169">
-                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-                                                             
-                                                    %>
-                                                    <tr><td><%=fieldConfigMap.getDisplayName()%></td></tr>
-                                                    <%}%>
-													<tr><td>&nbsp</td></tr>
-													<tr><td>&nbsp</td></tr>
-                                                </table>
-                                            </div>   
-                                        </td>
-                                        <td valign="top">
-                                            <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="yellow">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <tr>
-                                                        <td valign="top" class="menutop">Main EUID</td>
-                                                    </tr> 
-                                                    <tr>
-                                                        <td valign="top" class="dupfirst">
-                                                        <%if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) == null ){%>
-                                                            <a class="dupbtn" href="javascript:accumilateMultiMergeEuidsPreview('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>')">
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </a>
-														<%} else {%>
-                                                            <span class="dupbtn" href="javascript:void(0)">
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </span>
-														<%} %>
-
-                                                        </td>
-                                                    </tr>
-                                                        
-                                                </table>
-												<div id="mainEuidDataDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-														epathValue = fieldConfigMap.getFullFieldName();
-                                                        
-                                                     %>
-                                                    <tr>
-                                                        <td>
-														    <%if (fieldValuesMapSource.get(epathValue) != null) {%>
-
-                                                              <%=fieldValuesMapSource.get(epathValue)%>
-                                                            <%} else {%>
-                                                            &nbsp;
-                                                            <%}%>
-
-                                                        </td>                                                        
-                                                    </tr>
-                                                    <%}%>
-													<tr><td>&nbsp</td></tr>
-    												<tr><td>&nbsp;</td></tr>
-                                              </table>
-											  </div>
-                                            </div>   
-                                        </td>
-                                        <%} else {%> <!--For duplicates here-->  
-
-                                            <%if (j ==1 && arlInner.size() > 3 ) { %>
-                                            <!--Sri-->
-                                            <td>
-                                                 <div style="overflow:auto;width:507px;overflow-y:hidden;">
-                                                     <table>
-                                                         <tr>
-                                            <%}%>
-                                        
-                                           <td valign="top">
-
-                                                <%
-                                                if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
-                                                 %>
-                                                 <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="deactivate" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%} else {%>        
-                                                  <div id="mainEuidContentDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>" class="yellow" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
-                                            <%}%>        
-
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <tr>
-                                                        <td valign="top" class="menutop"><%=dupHeading%> </td>
-                                                    </tr> 
-                                                    <tr>
-                                                      <td valign="top" class="dupfirst">
-   												      <%
-                                                       if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
-		        			                            %>
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-    
-                                                      <%} else {%>        
-                                                        <%if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) == null ){%>
-                                                            <a class="dupbtn" href="javascript:accumilateMultiMergeEuidsPreview('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>')">
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </a>
-
-														<%} else {%>
-                                                            <span class="dupbtn" href="javascript:void(0)">
-                                                                <%=fieldValuesMapSource.get("EUID")%>
-                                                            </span>
-														<%} %>
-
-													  <%} %>        
-
-                                                      </td>
-                                                    </tr>
-                                                </table>
-                                            <%
-                                            String userAgent = request.getHeader("User-Agent");
-                                            boolean isFirefox = (userAgent != null && userAgent.indexOf("Firefox/") != -1);
-                                            response.setHeader("Vary", "User-Agent");
-                                         %>
-                                         <% if (isFirefox) {%>
-                                         <div id = "bar" style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
-                                              border-right: 1px solid #000000;border-top:1px solid #000000;position:relative;right:20px;" >
-                                         <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                            <div id = "bar" style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
-                                                 <%=weight%>
-                                             </div>                                             
-                                         </div>
-                                         
-                                           <% }else{%>
-                                            <div id = "bar" style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
-                                             <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                         </div>                                             
-                                         <div id = "bar" style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
-                                             <%=weight%>
-                                         </div> 
-                                      
-                                         <%}%>
-										 <div id="mainEuidDataDiv<%=fac%><%=j%><%=fieldValuesMapSource.get("EUID")%>">
-                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                    <%
-                                                     for(int ifc=0;ifc<resultsConfigFeilds.length;ifc++) {
-                                                        FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
-                                                        epathValue = fieldConfigMap.getFullFieldName();                                            %>
-                                                    <tr>                                                        
-                                                       <td> 
-                                                                <%if (fieldValuesMapSource.get(epathValue) != null) {%>
-                                                                
-                                                                <%if ((j > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) &&
-            !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {
-
-                                                                %>
-                                                                    
-                                                                    <font class="highlight">
-                                                                        <%=fieldValuesMapSource.get(epathValue)%>
-                                                                    </font>
-                                                                <%} else {
-                                                                %>
-                                                                    <%=fieldValuesMapSource.get(epathValue)%>
-                                                                <%}%>
-                                                                <%} else {%>
-                                                                &nbsp;
-                                                                <%}%>
-                                                                
-
-                                                        </td>        
-                                                    </tr>
-                                                    <%}%>
-                                                    <tr>
-                                                        <td class="align:right;padding-left:150px;" >
-												<%
-                                                if (("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
-					                            %>
-												   <h:form>
-                                                        <h:commandLink  styleClass="diffviewbtn" rendered="#{Operations.potDup_ResolveUntilRecalc}"
-                                                                        actionListener="#{SearchDuplicatesHandler.unresolvePotentialDuplicateAction}">
-                                                             <f:attribute name="potDupId" value="<%=potDupIdValueExpression%>"/>
-                                                             <f:attribute name="finalArrayListVE" value="<%=finalArrayListVE%>"/>
-                                                             <h:outputText value="#{msgs.potential_dup_button}"/>
-                                                        </h:commandLink>  
-												   </h:form>
-												<%}else{%>
-												<%ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());
-                                                String diff_person_heading_text = bundle.getString("diff_person_heading_text");
-												%>
-                                                           <h:outputLink rendered="#{Operations.potDup_ResolveUntilRecalc}"   onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" 
-                                                              value="javascript:void(0)">
-															  <img src="./images/diff.gif" alt="<%=diff_person_heading_text%>" border="0">
-                                                            </h:outputLink>   
-
-												<%}%>
-
-                                                         </td>
-                                                   </tr>
-                                                    <tr><td>&nbsp</td></tr>
-                                                </table>
-                                            </div>   
-                                        </td>
-                                            <%if (arlInner.size() > 3 && j == (arlInner.size()-1 )) { %>
-                                            <!--Raj-->
-                                                       </tr>
-                                                     </table>
-                                                 </div>
-                                                </td>
-                                            <%}%>
-                                        
-                                        <%}%>
-                                        <td class="w7yelbg">&nbsp;</td><!--Separator b/n columns-->
-                                        <%}%>
-                                      <td  valign="top">
-									  <%if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) != null ) {%>
-									    <div id="previewEuidDiv<%=fac%>" class="blue" style="visibility:visible;display:block;">
-									  <%} else {%>
-   									    <div id="previewEuidDiv<%=fac%>" class="yellow" style="visibility:visible;display:block;">
-									  <%}%>
-                                          <table border="0" width="100%" cellspacing="0" cellpadding="0" >
-                                              <tr>
-                                                  <td width="100%" class="menutop1">Preview</td>
-                                              </tr>
-												<%
- 											      HashMap previewHashMap = new HashMap();
-                                                  HashMap eoMapPreview = new HashMap();
-											       if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) != null ) {
-														previewHashMap  = (HashMap) request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString());
-														eoMapPreview = (HashMap) previewHashMap.get("ENTERPRISE_OBJECT_PREVIEW");
-                                                   }%>
-
-                                                 <tr>
-                                                        <td>
-                                                        <%if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) != null ){%>
-                                                          <b><%=previewHashMap.get("EUID")%></b>
-														<%} else {%>
-														  &nbsp;
-														<%}%>														
-														</td>
-                                                </tr>
-                                                <%
-                                                   for (int i = 0; i < resultsConfigFeilds.length; i++) {
-                                                     FieldConfig fieldConfig = (FieldConfig) resultsConfigFeilds[i];
-                                                        epathValue = fieldConfig.getFullFieldName();                                            
-                                                    %>
-
-                                                    <tr>
-                                                        <td>
-														 <%if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) != null ){%>
-														     <%if(eoMapPreview.get(epathValue) != null)  {%>
-   														        <%=eoMapPreview.get(epathValue)%>
-														      <%} else {%>
-														        &nbsp;
-														      <%}%>
-														   <%} else {%>
-														     &nbsp;
-														   <%}%>
-														</td>
-
-                                                    </tr>
-                                                <%}%>
-
-                                                <tr>
-                                                    <td valign="top" align="left">
-													  <nobr>
-                                                        <div id="buttonsDiv<%=fac%>" style="visibility:hidden;display:none;">
-                                                            <h:form id="mergeFinalForm">
-                                                              <h:commandLink rendered="#{Operations.potDup_SearchView}"  styleClass="button"
-                                                                          actionListener="#{SearchDuplicatesHandler.previewPostMultiMergedEnterpriseObject}">
-                                                                   <f:attribute name="finalArrayListVE" value="<%=finalArrayListVE%>"/>
-                                                                   <f:attribute name="duplicateSearchObjectVE"  value="<%=duplicateSearchObjectVE%>"  />
-                                                                    <span>Preview</span>
-                                                              </h:commandLink>
-                                                                <h:commandLink rendered="#{Operations.potDup_SearchView}"  styleClass="button"
-                                                                               actionListener="#{SearchDuplicatesHandler.cancelMultiMergeOperation}">
-                                                                         <f:attribute name="duplicateSearchObjectVE"  value="<%=duplicateSearchObjectVE%>"  />
-                                                                    <span>Cancel</span>
-                                                                </h:commandLink>
-   		                                                     <h:inputHidden id="rowCount" value="#{SearchDuplicatesHandler.rowCount}"/>
-   		                                                     <h:inputHidden id="destinationEO" value="#{SearchDuplicatesHandler.destnEuid}"/>
-                                                 			 <h:inputHidden id="previewhiddenMergeEuids" value="#{SearchDuplicatesHandler.mergeEuids}"/>
-                                                            </h:form>   
-                                                        </div>
-														
-														<%if(request.getAttribute("eoMultiMergePreview" + new Integer(fac).toString() ) != null ) {
-                                                         %>
-                                                            <h:form id="mergeFinal">
-                                                               <h:commandLink rendered="#{Operations.EO_Merge}"  styleClass="button"
-                                                                          actionListener="#{SearchDuplicatesHandler.performMultiMergeEnterpriseObject}">
-                                                                    <f:attribute name="duplicateSearchObjectVE"  value="<%=duplicateSearchObjectVE%>"  />
-                                                                    <span>Merge</span>
-                                                               </h:commandLink>
-                                                                <h:commandLink rendered="#{Operations.EO_Merge}"  styleClass="button"
-                                                                               actionListener="#{SearchDuplicatesHandler.cancelMultiMergeOperation}">
-                                                                    <span>Cancel</span>
-                                                                </h:commandLink>
-   		                                                     <h:inputHidden id="rowCount" value="#{SearchDuplicatesHandler.rowCount}"/>
-   		                                                     <h:inputHidden id="destinationEO" value="#{SearchDuplicatesHandler.destnEuid}"/>
-                                                 			 <h:inputHidden id="previewhiddenMergeEuids" value="#{SearchDuplicatesHandler.mergeEuids}"/>
-                                                            </h:form>   
-														 <%}%>
-
-													  </nobr>
-                                                    </td>
-                                                </tr>
-                                                    
-                                                    <tr>
-                                                        <td valign="top" align="right">
-                                                            <!--Show compare duplicates button-->
-                                                         <%
-                                                            ValueExpression euidVaueExpressionList = ExpressionFactory.newInstance().createValueExpression(arlInner, arlInner.getClass());
-                                                         %>
-                                                                             <h:form>
-                                                                                <h:commandLink styleClass="downlink"  rendered="#{Operations.potDup_SearchView}" 
-                                                                                               action="#{NavigationHandler.toCompareDuplicates}" 
-                                                                                               actionListener="#{SearchDuplicatesHandler.buildCompareDuplicateEuids}">
-                                                                                    <f:attribute name="euidsMap"  value="<%=euidVaueExpressionList%>"  />
-                                                                                </h:commandLink>
-                                                                            </h:form>   
-                                                        </td>
-                                                    </tr>
-                                                        
-
-                                            </table>
-                                      </div>  
-                                    </div>
-                                    
-                           </tr>
-                        </table>
-                    </div> 
-                    <div id="separator"  class="sep"></div>
-                         <%}%> <!--final Array list count loop -->
-                         <%}%> <!-- final Array list  condition in session-->
-               </div> 
-               <%}%>  
-               <%
-                   if (finalArrayList != null && finalArrayList.size() == 0) {
-               %>
-               <div class="printClass">
-                       <table cellpadding="0" cellspacing="0" border="0">
-                         <tr>
-                             <td>
-                                 <h:outputText value="#{msgs.total_records_text}"/><%=finalArrayList.size()%>&nbsp;
-                             </td>
-                         </tr>
-                       </table>
-               </div>
-               <%}%>
-               
-            </div>
-            
-            <%
-                       if(finalArrayList != null && finalArrayList.size() >0 ) {
-                       finalArrayListVE = ExpressionFactory.newInstance().createValueExpression(finalArrayList, finalArrayList.getClass());
-                       
-
-            %>
-                                   <div id="resolvePopupDiv" class="alert" style="TOP:2250px; LEFT:300px; HEIGHT:195px;WIDTH: 300px;visibility:hidden; ">
-                                     
-                                       <h:form id="reportYUISearch">
-                                           <h:inputHidden id="potentialDuplicateId" value="#{SearchDuplicatesHandler.potentialDuplicateId}"/>
-                                           <table width="100%">
-                                               <tr><th align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th><th align="right"><a href="javascript:void(0)" rel="resolvepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th></tr>
-                                               <tr><td colspan="2"> &nbsp;</td></tr>
-                                               <tr><td align="center"><b><h:outputText value="#{msgs.different_person_dailog_text}"/></b></td></tr>
-                                               <tr>
-                                                   <td  colspan="2">
-                                                       <div class="selectContent">
-                                                       <h:selectOneRadio id="diffperson" value="#{SearchDuplicatesHandler.resolveType}" 
-                                                                         layout="pageDirection">
-                                                           <f:selectItem  itemValue="AutoResolve" itemLabel="Resolve Until Recalculation"/>
-                                                           <f:selectItem  itemValue="Resolve" itemLabel="Resolve Permanently"/>
-                                                       </h:selectOneRadio> 
-                                                       </div> 
-                                                 </td>
-                                               </tr>
-                                                <tr><td colspan="2"> &nbsp;</td></tr>
-                                               <tr>
-                                                   <td align="right"  colspan="2">
-                                                       
-                                                        <h:commandLink styleClass="button" 
-                                                                       actionListener="#{SearchDuplicatesHandler.resolvePotentialDuplicate}">
-                                                            <f:attribute name="finalArrayListVE" value="<%=finalArrayListVE%>" />           
-                                                                <span><h:outputText value="#{msgs.ok_text_button}" /></span>
-                                                       </h:commandLink>   
-                                                       <h:outputLink  onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'123467')" 
-                                                                      styleClass="button"  
-                                                                      value="javascript:void(0)">
-                                                         <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
-                                                       </h:outputLink>   
-                                                   </td>
-                                               </tr>
-                                           </table>
-                                           
-                                       </h:form>
-                                   </div>                                                
-              <%}%>
-
-            
-        </body>        
         <%
-          String[][] lidMaskingArray = searchDuplicatesHandler.getAllSystemCodes();
-          
+		 SearchDuplicatesHandler searchDuplicatesHandler = new  SearchDuplicatesHandler(); 
+         String[][] lidMaskingArray = searchDuplicatesHandler.getAllSystemCodes();
+         
         %>
         <script>
             var systemCodes = new Array();
@@ -788,9 +362,9 @@
             formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
          }  
          
-     var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
-     document.getElementById("advancedformData:selectedSearchType").value = selectedSearchValue;
-         if( document.advancedformData.elements[0]!=null) {
+     //var selectedSearchValue = //document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
+     //document.getElementById("advancedformData:selectedSearchType").value = selectedSearchValue;
+      if( document.advancedformData.elements[0]!=null) {
 		var i;
 		var max = document.advancedformData.length;
 		for( i = 0; i < max; i++ ) {
