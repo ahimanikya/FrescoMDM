@@ -4,6 +4,7 @@ var minorObjType = "";
 var minorObjTypeCount = 0;
 var minorArray = new Array();
 var hiddenUnLockFields="";
+var queryStr="";
 
 function showdatadiv() {
     document.getElementById("advSearch").style.visibility = "hidden";
@@ -1127,13 +1128,11 @@ var mainEuid = mainEuidArray[0];
 
 document.getElementById('previewForm:destinationEO').value = mainEuid;
 document.getElementById('mergeFinalForm:destinationEO').value = mainEuid;
-//alert(document.getElementById('mergeFinalForm:destinationEO').value);
 document.getElementById('clickButton' + mainEuid).style.cursor= 'not-allowed';
 
  if(mainEuidArray.length > 2) {
     document.getElementById('previewForm:previewhiddenMergeEuids').value = mergeEuids;
     document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value = mergeEuids; 
-//alert(document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value);
     document.getElementById('mergeEuidsDiv').style.visibility = "visible";
     document.getElementById('mergeEuidsDiv').style.display = "block";
  }
@@ -1211,13 +1210,11 @@ function populateMergeFields(fieldName,value,displayValue,highLightId) {
        //document.getElementById('mergeFinalForm:selectedMergeFields').value = value;
         document.getElementById('mergeFinalForm:selectedMergeFields').value = mergePreEuids;
 
-	   //alert("selectedMergeFields" + document.getElementById('mergeFinalForm:selectedMergeFields').value );
+	   //document.getElementById('highlight'+highLightId).style.visibility = 'hidden';
+	   //document.getElementById('highlight'+highLightId).style.display = 'none';
 
-	   document.getElementById('highlight'+highLightId).style.visibility = 'hidden';
-	   document.getElementById('highlight'+highLightId).style.display = 'none';
-
-	   document.getElementById('unHighlight'+highLightId).style.visibility = 'visible';
-	   document.getElementById('unHighlight'+highLightId).style.display = 'block';
+	  // document.getElementById('unHighlight'+highLightId).style.visibility = 'visible';
+	  // document.getElementById('unHighlight'+highLightId).style.display = 'block';
        
 }
 
@@ -1241,7 +1238,7 @@ function showResolveDivs(divId,thisEvent,potDupId)  {
    document.getElementById(divId).style.visibility = "hidden";
    document.getElementById(divId).style.display = "none";
 }
-document.getElementById('reportYUISearch:potentialDuplicateId').value = potDupId;
+document.getElementById('potentialDuplicateId').value = potDupId;
 
 }
 
@@ -1476,49 +1473,39 @@ function toggleDupDivClass(fac,count,euid) {
 }
 
 var mergeEuidsPreview="";
+
 function accumilateMultiMergeEuidsPreview(fac,count,mergeEuidVar) {
-	    var tab = document.getElementById('mainEuidContentDiv'+fac+count+mergeEuidVar);
-        if (tab.className == 'yellow')   {
-           tab.className = 'blue';
-        } else {
-            tab.className = 'yellow';
+	     var tab = document.getElementById('mainEuidContentDiv'+fac+count+mergeEuidVar);
+         if (tab.className == 'yellow')   {
+            tab.className = 'blue';
+         } else {
+             tab.className = 'yellow';
+         }
+         var mainEuidDataDiv = document.getElementById('mainEuidDataDiv'+fac+count+mergeEuidVar);
+		 var preview  = document.getElementById('previewEuidDiv'+fac);
+         preview.className = 'blue';
+         mergeEuidsPreview+=mergeEuidVar+'##';     
+
+         var mainEuidArray = mergeEuidsPreview.split("##");
+         var mainEuid = mainEuidArray[0];
+
+         document.getElementById('mergeFinalForm:destinationEO').value = mainEuid;
+	     document.getElementById('mergeFinalForm:rowCount').value = fac;
+
+         var query = "";
+
+         if(mainEuidArray.length > 2) {
+            var buttonsDiv = document.getElementById('buttonsDiv'+fac);
+	    	buttonsDiv.style.visibility = 'visible';
+		    buttonsDiv.style.display = 'block';
+
+   	        document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value = mergeEuidsPreview;
+            //query +="&destnEuidValue="+ mainEuid;
+	        //query +="&sourceEuids="+ mergeEuidsPreview;
+	        //query +="&rowcount="+ fac;
         }
-    var mainEuidDataDiv = document.getElementById('mainEuidDataDiv'+fac+count+mergeEuidVar);
-		var preview  = document.getElementById('previewEuidDiv'+fac);
-		//var previewData  = document.getElementById('previewEuidDataDiv'+fac);
-		//var previewDataEmpty  = document.getElementById('previewEuidDataDivEmpty'+fac);
 
-        preview.className = 'blue';
-        //previewData.innerHTML = mainEuidDataDiv.innerHTML;
-        //previewData.style.visibility = 'visibile';
 
-		//previewDataEmpty.innerHTML = "";
-        //previewDataEmpty.style.visibility = 'hidden';
-
-        mergeEuidsPreview+=mergeEuidVar+'##';     
-
-       var mainEuidArray = mergeEuidsPreview.split("##");
-       var mainEuid = mainEuidArray[0];
-
-       document.getElementById('mergeFinalForm:destinationEO').value = mainEuid;
-	   document.getElementById('mergeFinalForm:rowCount').value = fac;
-
-	   //alert(document.getElementById('mergeFinalForm:destinationEO').value);
-    
-     //document.getElementById('clickButton' + mainEuid).style.cursor= 'not-allowed';
-
-     if(mainEuidArray.length > 2) {
-
-        var buttonsDiv = document.getElementById('buttonsDiv'+fac);
-		buttonsDiv.style.visibility = 'visible';
-		buttonsDiv.style.display = 'block';
-
-   	    document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value = mergeEuidsPreview;
-	   //alert( document.getElementById('mergeFinalForm:previewhiddenMergeEuids').value);
-   	    
-      //document.getElementById('mergeEuidsDiv').style.visibility = "visible";
-      //document.getElementById('mergeEuidsDiv').style.display = "block";
-   }
 }
 
 //Functions for view sources/history in euid details pages
@@ -1764,7 +1751,6 @@ function ClearMinorObjectContents(divElement)  {
     return;
 } 
 
-var queryStr="";
 function getFormValues(formName)   {
   var thisFrm = document.getElementById(formName);
   
@@ -1777,9 +1763,122 @@ function getFormValues(formName)   {
     }
 
 	query +="&editThisID="+ editIndexid;
-
-	 
     queryStr  = query;
+}
+
+function getDuplicateFormValues(formName1,formName2)   {
+  var thisFrm1 = document.getElementById(formName1);
+  var thisFrm2 = document.getElementById(formName2);
+  
+
+  var query = "";
+   for(i=0; i< thisFrm1.elements.length; i++)   {      
+			if(thisFrm1.elements[i].title.length != 0 ) {
+				query +="&"+thisFrm1.elements[i].title +"="+  thisFrm1.elements[i].value;
+	    	}
+    }
+
+   for(i=0; i< thisFrm2.elements.length; i++)   {      
+			if(thisFrm2.elements[i].title.length != 0 ) {
+				query +="&"+thisFrm2.elements[i].title +"="+  thisFrm2.elements[i].value;
+	    	}
+    }
+
+	query +="&editThisID="+ editIndexid;
+
+    queryStr  = query;
+}
+
+
+function getFormValuesCancelMerge(formName)   {
+    rowCountMerge = "";
+    destinationEOFinalMerge ="";
+    previewhiddenMergeEuidsFinalMerge ="";
+    mergeEuidsPreview="";
+
+  var thisFrm = document.getElementById(formName);
+  
+
+  var query = "";
+   for(i=0; i< thisFrm.elements.length; i++)   {      
+			if(thisFrm.elements[i].title.length != 0 ) {
+				query +="&"+thisFrm.elements[i].title +"="+  thisFrm.elements[i].value;
+	    	}
+    }
+
+	query +="&editThisID="+ editIndexid;
+    queryStr  = query;
+}
+
+function getFormValuesMerge(formName)   {
+  var thisFrm = document.getElementById(formName);
+  
+
+  var query = "";
+   for(i=0; i< thisFrm.elements.length; i++)   {      
+			if(thisFrm.elements[i].title.length != 0 ) {
+				query +="&"+thisFrm.elements[i].title +"="+  thisFrm.elements[i].value;
+	    	}
+    }
+
+	query +="&editThisID="+ editIndexid;
+    
+	query +="&destnEuidValue="+ destinationEOFinalMerge;
+	query +="&sourceEuids="+ previewhiddenMergeEuidsFinalMerge;
+	query +="&rowcount="+ rowCountMerge;
+    queryStr  = query;
+
+rowCountMerge = "";
+destinationEOFinalMerge ="";
+previewhiddenMergeEuidsFinalMerge="";
+mergeEuidsPreview="";
+
+}
+function accumilateMultiMergeEuidsPreviewDuplicates(fac,count,mergeEuidVar) {
+		var tab = document.getElementById('mainEuidContentDiv'+fac+count+mergeEuidVar);
+        if (tab.className == 'yellow')   {
+           tab.className = 'blue';
+        } else {
+            tab.className = 'yellow';
+        }
+		var mainEuidDataDiv = document.getElementById('mainEuidDataDiv'+fac+count+mergeEuidVar);
+		var preview  = document.getElementById('previewEuidDiv'+fac);
+ 
+        preview.className = 'blue';
+  
+        mergeEuidsPreview+=mergeEuidVar+'##';     
+
+       var mainEuidArray = mergeEuidsPreview.split("##");
+       var mainEuid = mainEuidArray[0];
+
+       if(mainEuidArray.length > 2) {
+         rowCountMerge  = fac;
+         destinationEOFinalMerge = mainEuid;
+         previewhiddenMergeEuidsFinalMerge = mergeEuidsPreview;
+		 //buttonsDiv<%=fac%>
+         document.getElementById('buttonsDiv'+ fac).style.visibility = "visible";
+         document.getElementById('buttonsDiv'+ fac).style.display = "block";
+
+     }
+
+}
+//multiMergeEuidsPreview
+function multiMergeEuidsPreview(formName)   {
+  var thisFrm = document.getElementById(formName);
+  var query = "";
+   for(i=0; i< thisFrm.elements.length; i++)   {      
+			if(thisFrm.elements[i].title.length != 0 ) {
+				query +="&"+thisFrm.elements[i].title +"="+  thisFrm.elements[i].value;
+	    	}
+    }
+
+	query +="&editThisID="+ editIndexid;
+    
+	query +="&destnEuidValue="+ destinationEOFinalMerge;
+	query +="&sourceEuids="+ previewhiddenMergeEuidsFinalMerge;
+	query +="&rowcount="+ rowCountMerge;
+    queryStr  = query;
+
 }
 
 
@@ -1811,3 +1910,23 @@ function showMinorObjectsDiv(divId) {
   function setEOEditIndex(editIndex)   {
 	editEOIndexid = editIndex;
   }
+
+
+function getRecordDetailsFormValues(formName)   {
+  var thisFrm = document.getElementById(formName);
+ 
+  var query = "";
+   for(i=0; i< thisFrm.elements.length; i++)   {      
+		if(thisFrm.elements[i].title.length != 0 ) {
+				query +="&"+thisFrm.elements[i].title +"="+  thisFrm.elements[i].value;
+ 	    }
+    }
+
+	query +="&editThisID="+ editIndexid;
+
+	if(query .indexOf('%') != -1) {
+   		query  = query.replace("%","~~");
+  	 }
+	 
+    queryStr  = query;
+ }
