@@ -20,15 +20,12 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-
-     
 /*
  * ReportHandler.java 
  * Created on November 23, 2007, 4:50 PM
  * Author : Sridhar
  *  
  */
-
 package com.sun.mdm.index.edm.presentation.handlers;
 
 import javax.faces.context.FacesContext;
@@ -53,8 +50,10 @@ import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Iterator;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 //import java.util.logging.Logger;
 import javax.faces.model.SelectItem;
@@ -65,11 +64,12 @@ import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import java.util.ResourceBundle;
 import net.java.hulp.i18n.LocalizationSupport;
+
 public class ReportHandler {
+
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.ReportHandler");
     private static transient final Localizer mLocalizer = Localizer.get();
     String errorMessage = null;
-    
     /**
      * Variable which identifies one of the the report.
      */
@@ -119,51 +119,63 @@ public class ReportHandler {
      */
     private String reportFunction;
     /**
+     * EUID
+     */
+    private String euid;
+    /**
+     * LID
+     */
+    private String lid;
+    /**
+     * System
+     */
+    private String system;
+    /**
      * Search Maximum Reports in DuplicateReports & AssumeMatchReports
      */
     private String reportSize;
-
+    /**
+     * Hashmap to hold the search parameters
+     */
+    private HashMap reportParameters = new HashMap();
     /**
      * Search Maximum page size
      */
     private int pageSize;
-    
     private ArrayList<SelectItem> selectOptions = new ArrayList();
-
     /**
      * Search ActivityReports ViewReports
      */
     private String frequency = "Weekly";
-    
     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     /**
      * Instance of Deactivated Report Handler
      */
-    DeactivatedReportHandler deactivatedReport = new DeactivatedReportHandler();
+    private DeactivatedReportHandler deactivatedReport = new DeactivatedReportHandler();
     /**
      * Instance of Assume Match Report Handler
      */
-    AssumeMatchReportHandler assumeMatchReport = new AssumeMatchReportHandler();
+    private AssumeMatchReportHandler assumeMatchReport = new AssumeMatchReportHandler();
     /**
      * Instance of Duplicate Report Handler
      */
-    DuplicateReportHandler duplicateReport = new DuplicateReportHandler();
+    private DuplicateReportHandler duplicateReport = new DuplicateReportHandler();
     /**
      * Instance of Update Report Handler
      */
-    UpdateReportHandler updateReport = new UpdateReportHandler();
+    private UpdateReportHandler updateReport = new UpdateReportHandler();
     /**
      * Instance of UnMerge Report Handler
      */
-    UnmergedRecordsHandler unmergedRecordsHandler = new UnmergedRecordsHandler();
+    private UnmergedRecordsHandler unmergedRecordsHandler = new UnmergedRecordsHandler();
     /**
      * Instance of Merged Report Handler
      */
-    MergeRecordHandler mergedRecordsHandler = new MergeRecordHandler();
+    private MergeRecordHandler mergedRecordsHandler = new MergeRecordHandler();
     /**
      * Instance of Activity Report Handler
      */
-    ActivityReportHandler activityReport = new ActivityReportHandler();    
+    private ActivityReportHandler activityReport = new ActivityReportHandler();
     /*
      * Value Object to hold the Deactivate Reports
      */
@@ -187,226 +199,313 @@ public class ReportHandler {
     /*
      * Value Object to hold the Assume Match Reports
      */
-    private AssumeMatchesRecords[] assumematchesRecordsVO = null;    
+    private AssumeMatchesRecords[] assumematchesRecordsVO = null;
     /*
      * Value Object to hold the Activity Reports
      */
     private ActivityRecords[] activityRecordsVO = null;
-
     private ArrayList<SelectItem> activityReportTypes = new ArrayList();
-    
-    ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
 
-    public String deactivatedReport() {      
+    //resource bundle definitin
+    ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+
+    //get locale specific texts for report tab names
+    String Merged_Transaction_Report_Label = bundle.getString("Merged_Transaction_Report_Label");
+    String Deactivated_Record_Report_Label = bundle.getString("Deactivated_Record_Report_Label");
+    String Unmerged_Transaction_Report_Label = bundle.getString("Unmerged_Transaction_Report_Label");
+    String Updated_Record_Report_Label = bundle.getString("Updated_Record_Report_Label");
+    String Activity_Report_Label = bundle.getString("Activity_Report_Label");
+    String Potential_Duplicate_Report_Label = bundle.getString("Potential_Duplicate_Report_Label");
+    String Assumed_Matches_Report_Label = bundle.getString("Assumed_Matches_Report_Label");
+
+    //Constructor
+    public ReportHandler() {
+
+    }
+
+    public ArrayList deactivatedReport() {
+        request.setAttribute("reportTabName", Deactivated_Record_Report_Label);
+        ArrayList duplicateRecordsResults = new ArrayList();
         try {
             //Set paramaters for the search
-            deactivatedReport.setCreateStartTime(getCreateStartTime());
-            deactivatedReport.setCreateEndTime(getCreateEndTime());
-            deactivatedReport.setCreateStartDate(getCreateStartDate());
-            deactivatedReport.setCreateEndDate(getCreateEndDate());
+            getDeactivatedReport().setCreateStartTime((String) reportParameters.get("StartTime"));
+            getDeactivatedReport().setCreateEndTime((String) reportParameters.get("EndTime"));
+            getDeactivatedReport().setCreateStartDate((String) reportParameters.get("StartDate"));
+            getDeactivatedReport().setCreateEndDate((String) reportParameters.get("EndDate"));
+            //if results size is supplied by the user
+            if (reportParameters.get("MaxResultSize") != null && ((String) reportParameters.get("MaxResultSize")).trim().length() > 0) {
+                getDeactivatedReport().setMaxResultsSize(new Integer((String) reportParameters.get("MaxResultSize")));
+            } else {
+                getDeactivatedReport().setMaxResultsSize(getMaxReportSize(Deactivated_Record_Report_Label));
+            }
+            getDeactivatedReport().setPageSize(getRecordsPerPage(Deactivated_Record_Report_Label));
             //getSearchResultsScreenConfigArray();
-            setDeactivatedRecordsVO(deactivatedReport.deactivateReport());
-            setResultsSize(getDeactivatedRecordsVO().length);
+            duplicateRecordsResults = getDeactivatedReport().deactivateReport();
+            //setDeactivatedRecordsVO(deactivatedReport.deactivateReport());
+            if (duplicateRecordsResults != null && duplicateRecordsResults.size() > 0) {
+              setResultsSize(duplicateRecordsResults.size());
+            }
+            return duplicateRecordsResults;
         } catch (ValidationException ex) {
             mLogger.error(mLocalizer.x("RPT043: Unable to get deactivated report :{0} ", ex.getMessage()));
-            //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            return "ReportFormError";
+            return null;
         } catch (EPathException ex) {
-                mLogger.error(mLocalizer.x("RPT044: Unable to get deactivated report: {0} ", ex.getMessage()));
-                errorMessage = bundle.getString("Error_Occured");
-                //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("EPathException", new FacesMessage(FacesMessage.SEVERITY_ERROR,   errorMessage,   errorMessage));
-            return ("ProcessingException");
+            mLogger.error(mLocalizer.x("RPT044: Unable to get deactivated report: {0} ", ex.getMessage()));
+            errorMessage = bundle.getString("Error_Occured");
+            FacesContext.getCurrentInstance().addMessage("EPathException", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            return null;
         } catch (Exception ex) {
-                mLogger.error(mLocalizer.x("RPT027: Unable to get deactivated report:{0} ", ex.getMessage()));
-                errorMessage = bundle.getString("Error_Occured");
-                // Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR,  errorMessage, errorMessage));
-            return ("ProcessingException");
+            mLogger.error(mLocalizer.x("RPT027: Unable to get deactivated report:{0} ", ex.getMessage()));
+            errorMessage = bundle.getString("Error_Occured");
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            return null;
         }
-        return "DeactivateReportResults";
     }
 
-    public String mergeReport() {
-        try {            
-            //Set paramaters for the search
-            mergedRecordsHandler.setCreateStartTime(getCreateStartTime());
-            mergedRecordsHandler.setCreateEndTime(getCreateEndTime());
-            mergedRecordsHandler.setCreateStartDate(getCreateStartDate());
-            mergedRecordsHandler.setCreateEndDate(getCreateEndDate());            
-            setMergedRecordsVO(mergedRecordsHandler.mergeReport());
-            setResultsSize(getMergedRecordsVO().length);
-        } catch (ValidationException ex) {     
-            
-              mLogger.error(mLocalizer.x("RPT028: Failed to get Merge report {0} ", ex.getMessage()),ex);          
-            //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            return "ReportFormError";
-        } catch (EPathException ex) {
-                mLogger.error(mLocalizer.x("RPT029: Failed to get Merge report {0} ", ex.getMessage()),ex);
-                errorMessage = bundle.getString("Error_Occured");
-                //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
-            return ("ProcessingException");
-        } catch (Exception ex) {
-                mLogger.error(mLocalizer.x("RPT030: Failed to get Merge report {0} ", ex.getMessage()),ex);
-                errorMessage = bundle.getString("Error_Occured");
-                //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            return ("ProcessingException");
-        }
-        return "Merge Report";
-    }
-    
-    public String activitiesReport()    {
-     try {
-            //Set paramaters for the search
-            activityReport.setCreateStartTime(getCreateStartTime());
-            activityReport.setCreateEndTime(getCreateEndTime());
-            activityReport.setCreateStartDate(getCreateStartDate());
-            activityReport.setCreateEndDate(getCreateEndDate());
-            activityReport.setFrequency(getFrequency());            
-            setActivityRecordsVO(activityReport.activityReport());
-            setResultsSize(getActivityRecordsVO().length);
-        } catch (ValidationException ex) {
-                mLogger.error(mLocalizer.x("RPT031: Unable to get activity report {0} ", ex.getMessage()),ex);
-           // Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            return "ReportFormError";
-        } catch (EPathException ex) {
-                mLogger.error(mLocalizer.x("RPT032: Unable to get activity report {0} ", ex.getMessage()),ex);
-                errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            return ("ProcessingException");
-        } catch (Exception ex) {
-                mLogger.error(mLocalizer.x("RPT033: Unable to get activity report {0} ", ex.getMessage()),ex);
-            errorMessage = bundle.getString("Error_Occured");
-                FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage, errorMessage));
-            return ("ProcessingException");
-        }
-        return "ActivityReportResults";
-    }
-     
-    public String unMergeReport() {
-        try {            
-            //Set paramaters for the search
-            unmergedRecordsHandler.setCreateStartTime(getCreateStartTime());
-            unmergedRecordsHandler.setCreateEndTime(getCreateEndTime());
-            unmergedRecordsHandler.setCreateStartDate(getCreateStartDate());
-            unmergedRecordsHandler.setCreateEndDate(getCreateEndDate());            
-            setUnmergedRecordsVO(unmergedRecordsHandler.unmergeReport());
-            setResultsSize(getUnmergedRecordsVO().length);
-        } catch (ValidationException ex) {            
-            mLogger.error(mLocalizer.x("RPT034: Failed to get unMerge report {0} ", ex.getMessage()),ex);
-            //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            return "ReportFormError";
-        } catch (EPathException ex) {
-            mLogger.error(mLocalizer.x("RPT035: Failed to get unMerge report {0} ", ex.getMessage()),ex);
-           // Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            return ("ProcessingException");
-        } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("RPT036: Failed to get unMerge report  {0} ", ex.getMessage()),ex);
-           // Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            return ("ProcessingException");
-        }
-        return "UnMerge Report";
-    }
-    
-    public String updateReport()    { 
-        try {            
-            //Set paramaters for the search
-            updateReport.setCreateStartTime(getCreateStartTime());
-            updateReport.setCreateEndTime(getCreateEndTime());
-            updateReport.setCreateStartDate(getCreateStartDate());
-            updateReport.setCreateEndDate(getCreateEndDate());            
-            setUpdateRecordsVO(updateReport.updateReport());
-            
-            if(updateRecordsVO != null) { 
-              setResultsSize(updateRecordsVO.length);            
-            } else {
-                setResultsSize(0);            
-            }
-            
-        } catch (ValidationException ex) {
-            mLogger.error(mLocalizer.x("RPT037: Unable to update the report  {0} ", ex.getMessage()),ex);
-            //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            return "ReportFormError";
-        } catch (EPathException ex) {
-            mLogger.error(mLocalizer.x("RPT038: Unable to update the report  {0} ", ex.getMessage()),ex);
-            errorMessage = bundle.getString("Error_Occured");
-            //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            return ("ProcessingException");
-        } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("RPT039: Unable to update the report  {0} ", ex.getMessage()),ex);
-            errorMessage = bundle.getString("Error_Occured");
-           // Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            return ("ProcessingException");
-        }
-        return "Update Report";
-    }
-    
-    public String duplicateReport()   {
-        try {            
-            //Set paramaters for the search
-            duplicateReport.setCreateStartTime(getCreateStartTime());
-            duplicateReport.setCreateEndTime(getCreateEndTime());
-            duplicateReport.setCreateStartDate(getCreateStartDate());
-            duplicateReport.setCreateEndDate(getCreateEndDate());
-            duplicateReport.setReportSize(getReportSize());
-            duplicateReport.setReportFunction(getReportFunction());           
-            setDuplicateRecordsVO(duplicateReport.duplicateReport());
-            setResultsSize(getDuplicateRecordsVO().length);
-        } catch (ValidationException ex) {
-            //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            return "ReportFormError";
-        } catch (EPathException ex) {
-            mLogger.error(mLocalizer.x("RPT054: Unable to duplicate the report  {0} ", ex.getMessage()),ex);
-            errorMessage = bundle.getString("Error_Occured");
-            //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            return ("ProcessingException");
-        } catch (Exception ex) {
-             mLogger.error(mLocalizer.x("RPT055: Unable to duplicate the report {0} ", ex.getMessage()),ex);
-             errorMessage = bundle.getString("Error_Occured");
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            return ("ProcessingException");
-        }
-        return "Duplicate Report";
-    }
-    
-    public String assumeMatchReport()    {
+    public ArrayList mergeReport() {
+        request.setAttribute("reportTabName", Merged_Transaction_Report_Label);
+        ArrayList mergeResults = new ArrayList();
+
         try {
             //Set paramaters for the search
-            assumeMatchReport.setCreateStartTime(getCreateStartTime());
-            assumeMatchReport.setCreateEndTime(getCreateEndTime());
-            assumeMatchReport.setCreateStartDate(getCreateStartDate());
-            assumeMatchReport.setCreateEndDate(getCreateEndDate());
-            assumeMatchReport.setReportSize(getReportSize());            
-            setAssumematchesRecordsVO(assumeMatchReport.assumeMatchReport());            
-            setResultsSize(getAssumematchesRecordsVO().length);
+            getMergedRecordsHandler().setCreateStartTime((String) reportParameters.get("StartTime"));
+            getMergedRecordsHandler().setCreateEndTime((String) reportParameters.get("EndTime"));
+            getMergedRecordsHandler().setCreateStartDate((String) reportParameters.get("StartDate"));
+            getMergedRecordsHandler().setCreateEndDate((String) reportParameters.get("EndDate"));
+             
+            if (reportParameters.get("MaxResultSize") != null && ((String) reportParameters.get("MaxResultSize")).trim().length() > 0) {
+                getMergedRecordsHandler().setMaxResultsSize(new Integer((String) reportParameters.get("MaxResultSize")));
+            } else {
+                getMergedRecordsHandler().setMaxResultsSize(getMaxReportSize(Merged_Transaction_Report_Label));
+            }
+            getMergedRecordsHandler().setPageSize(getRecordsPerPage(Merged_Transaction_Report_Label));
+
+            mergeResults = getMergedRecordsHandler().mergeReport();
+
+            if (mergeResults != null && mergeResults.size() > 0) {
+                setResultsSize(mergeResults.size() / 2);
+            }
         } catch (ValidationException ex) {
-             mLogger.error(mLocalizer.x("RPT040: Unable to get assumeMatch report {0} ", ex.getMessage()),ex);
-           // Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            return "ReportFormError";
+            mLogger.error(mLocalizer.x("RPT028: Failed to get Merge report {0} ", ex.getMessage()), ex);
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured " + ex.getMessage(), ex.getMessage()));
+            return null;
         } catch (EPathException ex) {
-            mLogger.error(mLocalizer.x("RPT041: Unable to get assumeMatch report {0} ", ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("RPT029: Failed to get Merge report {0} ", ex.getMessage()), ex);
             errorMessage = bundle.getString("Error_Occured");
-            //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,errorMessage));
-            return ("ProcessingException");
-        } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("RPT042: Unable to get assumeMatch report {0} ", ex.getMessage()),ex);
-            errorMessage = bundle.getString("Error_Occured");// Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            return ("ProcessingException");
+        } catch (Exception ex) {
+            mLogger.error(mLocalizer.x("RPT030: Failed to get Merge report {0} ", ex.getMessage()), ex);
+            errorMessage = bundle.getString("Error_Occured");
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            return null;
         }
-        return "Assumed Matches";
+        return mergeResults;
     }
-    
+
+    public ArrayList activitiesReport() {
+        request.setAttribute("reportTabName", Activity_Report_Label);
+        try {
+            //Set paramaters for the search
+            getActivityReport().setCreateStartTime((String) reportParameters.get("StartTime"));
+            getActivityReport().setCreateEndTime((String) reportParameters.get("EndTime"));
+            getActivityReport().setCreateStartDate((String) reportParameters.get("StartDate"));
+            getActivityReport().setCreateEndDate((String) reportParameters.get("EndDate"));
+
+            if (reportParameters.get("MaxResultSize") != null && ((String) reportParameters.get("MaxResultSize")).trim().length() > 0) {
+                getActivityReport().setMaxResultsSize(new Integer((String) reportParameters.get("MaxResultSize")));
+            } else {
+                getActivityReport().setMaxResultsSize(getMaxReportSize(Activity_Report_Label));
+            }
+            getActivityReport().setPageSize(getRecordsPerPage(Activity_Report_Label));
+
+            getActivityReport().setFrequency((String) reportParameters.get("activityType"));
+            ArrayList results = getActivityReport().activityReport();
+
+            if(results != null && results.size() > 0) {
+              setResultsSize(results.size());
+            }
+            return results;
+        } catch (ValidationException ex) {
+            mLogger.error(mLocalizer.x("RPT031: Unable to get activity report {0} ", ex.getMessage()), ex);
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured " + ex.getMessage(), ex.getMessage()));
+            return null;
+        } catch (EPathException ex) {
+            mLogger.error(mLocalizer.x("RPT032: Unable to get activity report {0} ", ex.getMessage()), ex);
+            errorMessage = bundle.getString("Error_Occured");
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            return null;
+        } catch (Exception ex) {
+            mLogger.error(mLocalizer.x("RPT033: Unable to get activity report {0} ", ex.getMessage()), ex);
+            errorMessage = bundle.getString("Error_Occured");
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            return null;
+        }
+    }
+
+    public ArrayList unMergeReport() {
+        request.setAttribute("reportTabName", Unmerged_Transaction_Report_Label);
+        ArrayList results = new ArrayList();
+        try {
+            //Set paramaters for the search
+            getUnmergedRecordsHandler().setCreateStartTime((String) reportParameters.get("StartTime"));
+            getUnmergedRecordsHandler().setCreateEndTime((String) reportParameters.get("EndTime"));
+            getUnmergedRecordsHandler().setCreateStartDate((String) reportParameters.get("StartDate"));
+            getUnmergedRecordsHandler().setCreateEndDate((String) reportParameters.get("EndDate"));
+
+            if (reportParameters.get("MaxResultSize") != null && ((String) reportParameters.get("MaxResultSize")).trim().length() > 0) {
+                getUnmergedRecordsHandler().setMaxResultsSize(new Integer((String) reportParameters.get("MaxResultSize")));
+            } else {
+                getUnmergedRecordsHandler().setMaxResultsSize(getMaxReportSize(Unmerged_Transaction_Report_Label));
+            }
+            getUnmergedRecordsHandler().setPageSize(getRecordsPerPage(Unmerged_Transaction_Report_Label));
+
+            results = getUnmergedRecordsHandler().unmergeReport();
+            
+            if(results != null && results.size() > 0) {
+              setResultsSize(results.size());
+            }
+            
+            return results;
+        } catch (ValidationException ex) {
+            mLogger.error(mLocalizer.x("RPT034: Failed to get unMerge report {0} ", ex.getMessage()), ex);
+            return null;
+        } catch (EPathException ex) {
+            mLogger.error(mLocalizer.x("RPT035: Failed to get unMerge report {0} ", ex.getMessage()), ex);
+            errorMessage = bundle.getString("Error_Occured");
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            return null;
+        } catch (Exception ex) {
+            mLogger.error(mLocalizer.x("RPT036: Failed to get unMerge report  {0} ", ex.getMessage()), ex);
+            errorMessage = bundle.getString("Error_Occured");
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            return null;
+        }
+    }
+
+    public ArrayList updateReport() {
+        ArrayList results = new ArrayList();
+        try {
+            //Set paramaters for the search            
+            request.setAttribute("reportTabName", Updated_Record_Report_Label);
+            //Set paramaters for the search
+            getUpdateReport().setCreateStartTime((String) reportParameters.get("StartTime"));
+            getUpdateReport().setCreateEndTime((String) reportParameters.get("EndTime"));
+            getUpdateReport().setCreateStartDate((String) reportParameters.get("StartDate"));
+            getUpdateReport().setCreateEndDate((String) reportParameters.get("EndDate"));
+
+            if (reportParameters.get("MaxResultSize") != null && ((String) reportParameters.get("MaxResultSize")).trim().length() > 0) {
+                getUpdateReport().setMaxResultsSize(new Integer((String) reportParameters.get("MaxResultSize")));
+            } else {
+                getUpdateReport().setMaxResultsSize(getMaxReportSize(Updated_Record_Report_Label));
+            }
+            getUpdateReport().setPageSize(getRecordsPerPage(Updated_Record_Report_Label));
+
+            results = getUpdateReport().updateReport();
+
+            if(results != null && results.size() > 0) {
+              setResultsSize(results.size());
+            }
+            return results;
+
+        } catch (ValidationException ex) {
+            mLogger.error(mLocalizer.x("RPT037: Unable to update the report  {0} ", ex.getMessage()), ex);
+            return null;
+        } catch (EPathException ex) {
+            mLogger.error(mLocalizer.x("RPT038: Unable to update the report  {0} ", ex.getMessage()), ex);
+            errorMessage = bundle.getString("Error_Occured");
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            return null;
+        } catch (Exception ex) {
+            mLogger.error(mLocalizer.x("RPT039: Unable to update the report  {0} ", ex.getMessage()), ex);
+            errorMessage = bundle.getString("Error_Occured");
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            return null;
+        }
+    }
+
+    public ArrayList duplicateReport() {
+        try {
+            request.setAttribute("reportTabName", Potential_Duplicate_Report_Label);
+            //Set paramaters for the search
+            getDuplicateReport().setCreateStartTime((String) reportParameters.get("StartTime"));
+            getDuplicateReport().setCreateEndTime((String) reportParameters.get("EndTime"));
+            getDuplicateReport().setCreateStartDate((String) reportParameters.get("StartDate"));
+            getDuplicateReport().setCreateEndDate((String) reportParameters.get("EndDate"));
+            getDuplicateReport().setDuplicateStatus((String) reportParameters.get("Status"));
+            
+            if (reportParameters.get("MaxResultSize") != null && ((String) reportParameters.get("MaxResultSize")).trim().length() > 0) {
+                getDuplicateReport().setMaxResultsSize(new Integer((String) reportParameters.get("MaxResultSize")));
+            } else {
+                getDuplicateReport().setMaxResultsSize(getMaxReportSize(Potential_Duplicate_Report_Label));
+            }
+            getDuplicateReport().setPageSize(getRecordsPerPage(Potential_Duplicate_Report_Label));
+
+            ArrayList results = getDuplicateReport().duplicateReport();
+            if(results != null && results.size() > 0) {
+              setResultsSize(results.size()/2);
+            }
+            return results;
+        } catch (ValidationException ex) {
+            //Logger.getLogger(ReportHandler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            // Sailaja to add code for this
+            mLogger.error(mLocalizer.x("Error Occured ", ex.getMessage()), ex);
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Occured " + ex.getMessage(), ex.getMessage()));
+            return null;
+        } catch (EPathException ex) {
+            mLogger.error(mLocalizer.x("RPT054: Unable to duplicate the report  {0} ", ex.getMessage()), ex);
+            errorMessage = bundle.getString("Error_Occured");
+            
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            return null;
+        } catch (Exception ex) {
+            mLogger.error(mLocalizer.x("RPT055: Unable to duplicate the report {0} ", ex.getMessage()), ex);
+            errorMessage = bundle.getString("Error_Occured");
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            return null;
+        }
+    }
+
+    public ArrayList assumeMatchReport() {
+        setReportType(Assumed_Matches_Report_Label);
+        request.setAttribute("reportTabName", Assumed_Matches_Report_Label);
+        try {
+
+            //Set paramaters for the search
+            getAssumeMatchReport().setCreateStartTime((String) reportParameters.get("StartTime"));
+            getAssumeMatchReport().setCreateEndTime((String) reportParameters.get("EndTime"));
+            getAssumeMatchReport().setCreateStartDate((String) reportParameters.get("StartDate"));
+            getAssumeMatchReport().setCreateEndDate((String) reportParameters.get("EndDate"));
+
+            if (reportParameters.get("MaxResultSize") != null && ((String) reportParameters.get("MaxResultSize")).trim().length() > 0) {
+                getAssumeMatchReport().setMaxResultsSize(new Integer((String) reportParameters.get("MaxResultSize")));
+            } else {
+                getAssumeMatchReport().setMaxResultsSize(getMaxReportSize(Assumed_Matches_Report_Label));
+            }
+            getAssumeMatchReport().setPageSize(getRecordsPerPage(Assumed_Matches_Report_Label));
+
+            ArrayList results = getAssumeMatchReport().assumeMatchReport();
+            
+            if(results != null && results.size() > 0) {
+              setResultsSize(results.size());
+            }
+            return results;
+
+        } catch (ValidationException ex) {
+            mLogger.error(mLocalizer.x("RPT040: Unable to get assumeMatch report {0} ", ex.getMessage()), ex);
+            return null;
+        } catch (EPathException ex) {
+            mLogger.error(mLocalizer.x("RPT041: Unable to get assumeMatch report {0} ", ex.getMessage()), ex);
+            errorMessage = bundle.getString("Error_Occured");
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            return null;
+        } catch (Exception ex) {
+            mLogger.error(mLocalizer.x("RPT042: Unable to get assumeMatch report {0} ", ex.getMessage()), ex);
+            errorMessage = bundle.getString("Error_Occured");
+            FacesContext.getCurrentInstance().addMessage("Processing Exception", new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+            return null;
+        }
+    }
+
     /**
      * @return createStartDate
      */
@@ -466,11 +565,11 @@ public class ReportHandler {
     public void setCreateEndTime(String createEndTime) {
         this.createEndTime = createEndTime;
     }
+
     /**
      * 
      * @return
      */
-
     public String getReportFunction() {
         return reportFunction;
     }
@@ -483,26 +582,25 @@ public class ReportHandler {
         this.reportFunction = function;
     }
 
-
     /**
      * @return Report Size
      */
     public String getReportSize() {
         return reportSize;
     }
+
     /**
      * Sets the Reports Size parameter for the search
      * @param reportSize 
      */
-
     public void setReportSize(String reportSize) {
         this.reportSize = reportSize;
     }
+
     /**
      * 
      * @return
      */
-
     public String getFrequency() {
         return frequency;
     }
@@ -572,11 +670,11 @@ public class ReportHandler {
     }
 
     public ArrayList getSearchResultsScreenConfigArray() {
-       ArrayList newArrayList = new ArrayList();
+        ArrayList newArrayList = new ArrayList();
         try {
-          HttpSession sessionLocal = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-          ScreenObject screenObjectLocal = (ScreenObject) sessionLocal.getAttribute("ScreenObject");
-            
+            HttpSession sessionLocal = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            ScreenObject screenObjectLocal = (ScreenObject) sessionLocal.getAttribute("ScreenObject");
+
             //Array of Sub screen objects as Screen Objects
             ArrayList resultsSubScreenConfigArray = screenObjectLocal.getSubscreensConfig();
             Object[] subScreenObjects = resultsSubScreenConfigArray.toArray();
@@ -588,7 +686,7 @@ public class ReportHandler {
                     resultsScreenObject = subScreenObject;
                 }
             }
-             ArrayList resultsScreenConfigArraySub = resultsScreenObject.getSearchResultsConfig();
+            ArrayList resultsScreenConfigArraySub = resultsScreenObject.getSearchResultsConfig();
             Iterator iteratorScreenConfig = resultsScreenConfigArraySub.iterator();
             while (iteratorScreenConfig.hasNext()) {
                 SearchResultsConfig objSearchScreenConfig = (SearchResultsConfig) iteratorScreenConfig.next();
@@ -597,17 +695,17 @@ public class ReportHandler {
                     FieldConfigGroup objectFieldConfigGroup = (FieldConfigGroup) fcgList.get(i);
                     ArrayList fcList = objectFieldConfigGroup.getFieldConfigs();
                     for (int j = 0; j < fcList.size(); j++) {
-                        FieldConfig objectFieldConfig = (FieldConfig)fcList.get(j);
+                        FieldConfig objectFieldConfig = (FieldConfig) fcList.get(j);
                         newArrayList.add(objectFieldConfig);
-                  }
+                    }
                 }
-                
+
             }
-            
-            
-            
-            
-            
+
+
+
+
+
 //            Iterator iteratorScreenConfig = resultsScreenObject.getSearchResultsConfig().iterator();
 //
 //            while (iteratorScreenConfig.hasNext()) {
@@ -629,9 +727,9 @@ public class ReportHandler {
 //                }
 //            }
         } catch (Exception e) {
-            mLogger.error(mLocalizer.x("RPT101: Unable to get search result config :{0} ", e.getMessage()),e);
-       }
-       
+            mLogger.error(mLocalizer.x("RPT101: Unable to get search result config :{0} ", e.getMessage()), e);
+        }
+
         this.searchResultsScreenConfigArray = newArrayList;
 
         return searchResultsScreenConfigArray;
@@ -672,14 +770,15 @@ public class ReportHandler {
     public void setMaxResultsSize(int maxResultsSize) {
         this.maxResultsSize = maxResultsSize;
     }
-     public void setReportsTabName(ActionEvent event){
-       String reportTabName = (String) event.getComponent().getAttributes().get("tabName");
-       request.setAttribute("tabName", reportTabName);
-   
-      }
 
-     public ArrayList<SelectItem> getSelectOptions() {
-        MasterControllerService masterControllerService  = new MasterControllerService(); 
+    public void setReportsTabName(ActionEvent event) {
+        String reportTabName = (String) event.getComponent().getAttributes().get("tabName");
+        request.setAttribute("tabName", reportTabName);
+
+    }
+
+    public ArrayList<SelectItem> getSelectOptions() {
+        MasterControllerService masterControllerService = new MasterControllerService();
         String[][] systemCodes = masterControllerService.getSystemCodes();
         String[] pullDownListItems = systemCodes[0];
         ArrayList newArrayList = new ArrayList();
@@ -692,12 +791,13 @@ public class ReportHandler {
         selectOptions = newArrayList;
         return selectOptions;
     }
-  
+
     public void setSelectOptions(ArrayList<SelectItem> selectOptions) {
         this.selectOptions = selectOptions;
     }
+
     public ArrayList getSearchResultsArrayByReportType(String reportTypeVar) {
-       ArrayList newArrayList = new ArrayList();
+        ArrayList newArrayList = new ArrayList();
         try {
             //Array of Sub screen objects as Screen Objects
             ArrayList resultsSubScreenConfigArray = screenObject.getSubscreensConfig();
@@ -710,8 +810,8 @@ public class ReportHandler {
                     resultsScreenObject = subScreenObject;
                 }
             }
-            
-             ArrayList resultsScreenConfigArraySub = resultsScreenObject.getSearchResultsConfig();
+
+            ArrayList resultsScreenConfigArraySub = resultsScreenObject.getSearchResultsConfig();
             Iterator iteratorScreenConfig = resultsScreenConfigArraySub.iterator();
             while (iteratorScreenConfig.hasNext()) {
                 SearchResultsConfig objSearchScreenConfig = (SearchResultsConfig) iteratorScreenConfig.next();
@@ -720,29 +820,28 @@ public class ReportHandler {
                     FieldConfigGroup objectFieldConfigGroup = (FieldConfigGroup) fcgList.get(i);
                     ArrayList fcList = objectFieldConfigGroup.getFieldConfigs();
                     for (int j = 0; j < fcList.size(); j++) {
-                        FieldConfig objectFieldConfig = (FieldConfig)fcList.get(j);
+                        FieldConfig objectFieldConfig = (FieldConfig) fcList.get(j);
                         newArrayList.add(objectFieldConfig);
-                  }
+                    }
                 }
-                
+
             }
         } catch (Exception e) {
-             mLogger.error(mLocalizer.x("RPT102: Unable to get search results : {0} ", e.getMessage()),e);
-       }
-       return newArrayList;
+            mLogger.error(mLocalizer.x("RPT102: Unable to get search results : {0} ", e.getMessage()), e);
+        }
+        return newArrayList;
 
     }
-   
     private ArrayList searchScreenConfigArray;
 
     public ArrayList getSearchScreenConfigArray() {
         ScreenObject screenObjectLocal = (ScreenObject) session.getAttribute("ScreenObject");
-    
+
         //Array of Sub screen objects as Screen Objects
         ArrayList resultsSubScreenConfigArray = screenObjectLocal.getSubscreensConfig();
-        
+
         Object[] subScreenObjects = resultsSubScreenConfigArray.toArray();
-        
+
         ScreenObject resultsScreenObject = null;
 
         for (int i = 0; i < subScreenObjects.length; i++) {
@@ -760,14 +859,13 @@ public class ReportHandler {
         this.searchScreenConfigArray = searchScreenConfigArray;
     }
 
-    
-  public ArrayList<SelectItem> getActivityReportTypes() {
-        setReportType("Activity Report");        
-        ArrayList searchScreenConfigArrayList  = getSearchScreenConfigArray();
+    public ArrayList<SelectItem> getActivityReportTypes() {
+        setReportType(Activity_Report_Label);
+        ArrayList searchScreenConfigArrayList = getSearchScreenConfigArray();
         ArrayList newArrayList = new ArrayList();
 
         for (int i = 0; i < searchScreenConfigArrayList.size(); i++) {
-            SearchScreenConfig searchScreenConfig =  (SearchScreenConfig) searchScreenConfigArrayList.get(i);
+            SearchScreenConfig searchScreenConfig = (SearchScreenConfig) searchScreenConfigArrayList.get(i);
             SelectItem selectItem = new SelectItem();
             selectItem.setLabel(searchScreenConfig.getScreenTitle());
             selectItem.setValue(searchScreenConfig.getScreenTitle());
@@ -776,20 +874,20 @@ public class ReportHandler {
         activityReportTypes = newArrayList;
         return activityReportTypes;
     }
-  
+
     public void setActivityReportTypes(ArrayList<SelectItem> activityReportTypes) {
         this.activityReportTypes = activityReportTypes;
     }
 
     public int getDisplayOrder(String tabName) {
-        int displayOrder = 0;
+        int displayOrder = -1;
         ScreenObject screenObjectLocal = (ScreenObject) session.getAttribute("ScreenObject");
-    
+
         //Array of Sub screen objects as Screen Objects
         ArrayList resultsSubScreenConfigArray = screenObjectLocal.getSubscreensConfig();
-        
+
         Object[] subScreenObjects = resultsSubScreenConfigArray.toArray();
-        
+
         ScreenObject resultsScreenObject = null;
 
         for (int i = 0; i < subScreenObjects.length; i++) {
@@ -798,11 +896,183 @@ public class ReportHandler {
                 displayOrder = subScreenObject.getDisplayOrder();
             }
         }
-        
+
         return displayOrder;
-        
+
     }
 
-    
-    
+    public boolean isTabExists(String tabName) {
+        boolean tabNameExists = false;
+        ScreenObject screenObjectLocal = (ScreenObject) session.getAttribute("ScreenObject");
+
+        //Array of Sub screen objects as Screen Objects
+        ArrayList resultsSubScreenConfigArray = screenObjectLocal.getSubscreensConfig();
+
+        Object[] subScreenObjects = resultsSubScreenConfigArray.toArray();
+
+        for (int i = 0; i < subScreenObjects.length; i++) {
+            subScreenObject = (ScreenObject) subScreenObjects[i];
+            if (subScreenObject.getDisplayTitle().equalsIgnoreCase(tabName)) {
+                tabNameExists = true;
+            }
+        }
+
+        return tabNameExists;
+
+    }
+
+    public HashMap getReportParameters() {
+        return reportParameters;
+    }
+
+    public void setReportParameters(HashMap reportParameters) {
+        this.reportParameters = reportParameters;
+    }
+
+    /**
+     * Instance of Merged Report Handler
+     */
+    public MergeRecordHandler getMergedRecordsHandler() {
+        return mergedRecordsHandler;
+    }
+
+    public void setMergedRecordsHandler(MergeRecordHandler mergedRecordsHandler) {
+        this.mergedRecordsHandler = mergedRecordsHandler;
+    }
+
+    public String getEuid() {
+        return euid;
+    }
+
+    public void setEuid(String euid) {
+        this.euid = euid;
+    }
+
+    public String getLid() {
+        return lid;
+    }
+
+    public void setLid(String lid) {
+        this.lid = lid;
+    }
+
+    public String getSystem() {
+        return system;
+    }
+
+    public void setSystem(String system) {
+        this.system = system;
+    }
+
+    public /**
+             * Instance of Deactivated Report Handler
+             */
+            DeactivatedReportHandler getDeactivatedReport() {
+        return deactivatedReport;
+    }
+
+    public void setDeactivatedReport(DeactivatedReportHandler deactivatedReport) {
+        this.deactivatedReport = deactivatedReport;
+    }
+
+    public /**
+             * Instance of Activity Report Handler
+             */
+            ActivityReportHandler getActivityReport() {
+        return activityReport;
+    }
+
+    public void setActivityReport(ActivityReportHandler activityReport) {
+        this.activityReport = activityReport;
+    }
+
+    public /**
+             * Instance of UnMerge Report Handler
+             */
+            UnmergedRecordsHandler getUnmergedRecordsHandler() {
+        return unmergedRecordsHandler;
+    }
+
+    public void setUnmergedRecordsHandler(UnmergedRecordsHandler unmergedRecordsHandler) {
+        this.unmergedRecordsHandler = unmergedRecordsHandler;
+    }
+
+    public int getMaxReportSize(String tabName) {
+        int maxSize = 0;
+        ScreenObject screenObjectLocal = (ScreenObject) session.getAttribute("ScreenObject");
+
+        //Array of Sub screen objects as Screen Objects
+        ArrayList resultsSubScreenConfigArray = screenObjectLocal.getSubscreensConfig();
+
+        Object[] subScreenObjects = resultsSubScreenConfigArray.toArray();
+
+        ScreenObject resultsScreenObject = null;
+
+        for (int i = 0; i < subScreenObjects.length; i++) {
+            subScreenObject = (ScreenObject) subScreenObjects[i];
+            if (subScreenObject.getDisplayTitle().equalsIgnoreCase(tabName)) {
+                SearchResultsConfig searchResultsConfig = (SearchResultsConfig) subScreenObject.getSearchResultsConfig().toArray()[0];
+                maxSize = searchResultsConfig.getMaxRecords();
+            }
+        }
+
+        return maxSize;
+
+    }
+
+    public int getRecordsPerPage(String tabName) {
+        int recordsPerPage = 0;
+        ScreenObject screenObjectLocal = (ScreenObject) session.getAttribute("ScreenObject");
+
+        //Array of Sub screen objects as Screen Objects
+        ArrayList resultsSubScreenConfigArray = screenObjectLocal.getSubscreensConfig();
+
+        Object[] subScreenObjects = resultsSubScreenConfigArray.toArray();
+
+        ScreenObject resultsScreenObject = null;
+
+        for (int i = 0; i < subScreenObjects.length; i++) {
+            subScreenObject = (ScreenObject) subScreenObjects[i];
+            if (subScreenObject.getDisplayTitle().equalsIgnoreCase(tabName)) {
+                SearchResultsConfig searchResultsConfig = (SearchResultsConfig) subScreenObject.getSearchResultsConfig().toArray()[0];
+                recordsPerPage = searchResultsConfig.getPageSize();
+            }
+        }
+
+        return recordsPerPage;
+
+    }
+
+    public /**
+             * Instance of Update Report Handler
+             */
+            UpdateReportHandler getUpdateReport() {
+        return updateReport;
+    }
+
+    public void setUpdateReport(UpdateReportHandler updateReport) {
+        this.updateReport = updateReport;
+    }
+
+     /**
+     * Instance of Assume Match Report Handler
+     */
+    public AssumeMatchReportHandler getAssumeMatchReport() {
+        return assumeMatchReport;
+    }
+
+    public void setAssumeMatchReport(AssumeMatchReportHandler assumeMatchReport) {
+        this.assumeMatchReport = assumeMatchReport;
+    }
+
+    public /**
+     * Instance of Duplicate Report Handler
+     */
+    DuplicateReportHandler getDuplicateReport() {
+        return duplicateReport;
+    }
+
+    public void setDuplicateReport(DuplicateReportHandler duplicateReport) {
+        this.duplicateReport = duplicateReport;
+    }
 }

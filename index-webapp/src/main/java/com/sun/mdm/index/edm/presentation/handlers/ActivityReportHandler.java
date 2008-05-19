@@ -65,13 +65,10 @@ import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import net.java.hulp.i18n.LocalizationSupport;
 
-
 /** Creates a new instance of ActivityReportHandler*/ 
 public class ActivityReportHandler {
-    
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.ActivityReportHandler");
     private static transient final Localizer mLocalizer = Localizer.get();
-    
     private String reportType;
     /* @param dataRowList1 */
     ArrayList dataRowList1 = null;
@@ -126,32 +123,44 @@ public class ActivityReportHandler {
      * Search ActivityReportHandlers-Yearly
      */
     private static final String REPORT_TYPE_YEARLY_ACTIVITY = "Yearly Activity";
+    /**
+     * Maximum report items to be rendered 
+     */
+    private Integer maxResultsSize;  
+    /**
+     * Page Size for the paging. 
+     */
+    private Integer pageSize;  
 
     
-     
-    
-    public ActivityRecords[] activityReport() throws ValidationException, EPathException, ReportException, PageException, RemoteException, Exception{
-             reportType = getFrequency();
-             request.setAttribute("tabName", "ACTIVITY_REPORT");
-             if (reportType.equalsIgnoreCase(REPORT_TYPE_WEEKLY_ACTIVITY) || reportType.equalsIgnoreCase(REPORT_TYPE_MONTHLY_ACTIVITY) || reportType.equalsIgnoreCase(REPORT_TYPE_YEARLY_ACTIVITY)) {
-                arConfig = getActivitySearchObject();
-                if (reportType.equalsIgnoreCase(REPORT_TYPE_WEEKLY_ACTIVITY)) {
-                    ksRpt = QwsController.getReportGenerator().execWeeklyKeyStatisticsReport(arConfig);
-                } else if (reportType.equalsIgnoreCase(REPORT_TYPE_MONTHLY_ACTIVITY)) {
-                    ksRpt = QwsController.getReportGenerator().execMonthlyKeyStatisticsReport(arConfig);
-                } else if (reportType.equalsIgnoreCase(REPORT_TYPE_YEARLY_ACTIVITY)) {
-                    ksRpt = QwsController.getReportGenerator().execYearlyKeyStatisticsReport(arConfig);
-                }
-                // Methods to fetch data
-                if (reportType.equals(getREPORT_TYPE_WEEKLY_ACTIVITY())) {
-                    ReportDataRow[] rdr = getWKRRows();
-                    return getActivityRecordsVO();                    
-                } else if (reportType.equals(getREPORT_TYPE_MONTHLY_ACTIVITY()) || reportType.equals(getREPORT_TYPE_YEARLY_ACTIVITY())) {
-                    ReportDataRow[] rdr = getMONYRRRows();
-                    return getActivityRecordsVO();
-                }
+    public ArrayList activityReport() throws ValidationException, EPathException, ReportException, PageException, RemoteException, Exception {
+        ArrayList finalOutputList = new ArrayList();
+        reportType = getFrequency();
+        //request.setAttribute("tabName", "ACTIVITY_REPORT");
+        if (reportType.equalsIgnoreCase(REPORT_TYPE_WEEKLY_ACTIVITY) ||
+            reportType.equalsIgnoreCase(REPORT_TYPE_MONTHLY_ACTIVITY) ||
+            reportType.equalsIgnoreCase(REPORT_TYPE_YEARLY_ACTIVITY)) {
+            arConfig = getActivitySearchObject();
+			if (arConfig == null)  {
+				return null;  // Form Validation occured and the messages are accumulated in Faces context
+			}
+            if (reportType.equalsIgnoreCase(REPORT_TYPE_WEEKLY_ACTIVITY)) {
+                ksRpt = QwsController.getReportGenerator().execWeeklyKeyStatisticsReport(arConfig);
+            } else if (reportType.equalsIgnoreCase(REPORT_TYPE_MONTHLY_ACTIVITY)) {
+                ksRpt = QwsController.getReportGenerator().execMonthlyKeyStatisticsReport(arConfig);
+            } else if (reportType.equalsIgnoreCase(REPORT_TYPE_YEARLY_ACTIVITY)) {
+                ksRpt = QwsController.getReportGenerator().execYearlyKeyStatisticsReport(arConfig);
             }
-        return activityRecordsVO;
+            // Methods to fetch data
+            if (reportType.equals(getREPORT_TYPE_WEEKLY_ACTIVITY())) {
+                ReportDataRow[] rdr = getWKRRows();
+                finalOutputList = getActivityRecordsVO();
+            } else if (reportType.equals(getREPORT_TYPE_MONTHLY_ACTIVITY()) || reportType.equals(getREPORT_TYPE_YEARLY_ACTIVITY())) {
+                ReportDataRow[] rdr = getMONYRRRows();
+                finalOutputList = getActivityRecordsVO();
+            }
+        }
+        return finalOutputList;
     }
     /*
      *  getter method to retrieve the data rows of report records.
@@ -341,20 +350,17 @@ public class ActivityReportHandler {
     public KeyStatisticsReportConfig getActivitySearchObject() throws ValidationException, EPathException {
         String errorMessage = null;
         EDMValidation edmValidation = new EDMValidation();
-       ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale()); 
-     
-        String sStartDate = null, sEndDate = null;
-        Date dStartDate = null, dEndDate = null;
+        ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         KeyStatisticsReportConfig arConfig = new KeyStatisticsReportConfig();
+    
         // One of Many validation 
         if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0) &&
-                (this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0) &&
-                (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() == 0) &&
-                (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() == 0)) {
+            (this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0)) {
             errorMessage = bundle.getString("ERROR_one_of_many");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
             //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
             mLogger.info(mLocalizer.x("RPT001: {0}", errorMessage));
+            return null;            
         }
 
         //Form Validation of  Start Time
@@ -365,7 +371,15 @@ public class ActivityReportHandler {
                 String em = bundle.getString("timeFrom");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, em + errorMessage, errorMessage));
                 //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
-             mLogger.info(mLocalizer.x("RPT002: {0}",errorMessage));
+                mLogger.info(mLocalizer.x("RPT002: {0}", errorMessage));
+                return null;            
+            }
+            //if only time fields are entered validate for the date fields 
+            if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_from");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                 mLogger.info(mLocalizer.x("RPT201: {0} ",errorMessage));
+                return null;
             }
         }
 
@@ -376,7 +390,8 @@ public class ActivityReportHandler {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
-                 mLogger.info(mLocalizer.x("RPT003: {0}" ,message));
+                mLogger.info(mLocalizer.x("RPT003: {0}", message));
+                return null;
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
@@ -389,7 +404,8 @@ public class ActivityReportHandler {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
-                     mLogger.error(mLocalizer.x("RPT004: {0}" , errorMessage),validationException);
+                    mLogger.error(mLocalizer.x("RPT004: {0}", errorMessage), validationException);
+                    return null;
                 }
             }
         }
@@ -400,9 +416,18 @@ public class ActivityReportHandler {
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
                 String msg = bundle.getString("timeTo");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg+ errorMessage, errorMessage));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg + errorMessage, errorMessage));
                 //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
-                mLogger.info(mLocalizer.x("RPT005: {0}" , message));
+                mLogger.info(mLocalizer.x("RPT005: {0}", message));
+                return null;
+            }
+
+            //if only time fields are entered validate for the date fields 
+            if ((this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_to");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                 mLogger.info(mLocalizer.x("RPT202: {0} ",errorMessage));
+                return null;
             }
         }
 
@@ -413,7 +438,8 @@ public class ActivityReportHandler {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, message, message);
-                mLogger.info(mLocalizer.x("RPT006: {0}" , message));
+                mLogger.info(mLocalizer.x("RPT006: {0}", message));
+                return null;
             } else {
                 try {
                     //If Time is supplied append it to the date to check if it parses into a valid Date
@@ -423,39 +449,37 @@ public class ActivityReportHandler {
                         arConfig.setEndDate(new Timestamp(date.getTime()));
                     }
                 } catch (ValidationException validationException) {
-                   // Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
+                    
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                     mLogger.error(mLocalizer.x("RPT007: {0}" , validationException.toString()),validationException);
+                    mLogger.error(mLocalizer.x("RPT007: {0}", validationException.toString()), validationException);
+                    return null;
                 }
             }
         }
 
-          if (((this.getCreateStartDate() != null) && (this.getCreateStartDate().trim().length() > 0))&&
-           ((this.getCreateEndDate() != null) && (this.getCreateEndDate().trim().length() > 0))){                
-               Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + (this.getCreateStartTime() != null? " " +this.getCreateStartTime():"00:00:00"));
-               Date todate = DateUtil.string2Date(this.getCreateEndDate()+(this.getCreateEndTime() != null? " " +this.getCreateEndTime():"23:59:59"));
-               long startDate = fromdate.getTime();
-               long endDate = todate.getTime();
-                 if(endDate < startDate){
-                    errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
-                    //Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                   mLogger.info(mLocalizer.x("RPT008: {0}" , errorMessage));
-                 }
+        if (((this.getCreateStartDate() != null) && (this.getCreateStartDate().trim().length() > 0)) &&
+                ((this.getCreateEndDate() != null) && (this.getCreateEndDate().trim().length() > 0))) {
+            Date fromdate = DateUtil.string2Date(this.getCreateStartDate() + (this.getCreateStartTime() != null ? " " + this.getCreateStartTime() : " 00:00:00"));
+            Date todate = DateUtil.string2Date(this.getCreateEndDate() + (this.getCreateEndTime() != null ? " " + this.getCreateEndTime() : " 23:59:59"));
+            long startDate = fromdate.getTime();
+            long endDate = todate.getTime();
+            if (endDate < startDate) {
+                errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                mLogger.info(mLocalizer.x("RPT008: {0}", errorMessage));
+                return null;
+            }
         }
-        
-        //HardCoded for now, has to come from ConfigManager
-        int maxResultSize = 20;
-        // if result size is defined, set result size, otherwise use default in backend
-        if (maxResultSize > 0) {
-            arConfig.setMaxResultSize(new Integer(maxResultSize));
-        } // Set labels, path and other UI attributes here        
-        if (errorMessage != null && errorMessage.length() != 0)  {            
-            throw new ValidationException(mLocalizer.t("RPT501: Encountered the validationException:{0}",errorMessage));
+       //set the max results size and page size here as per midm.xml
+       arConfig.setMaxResultSize(getMaxResultsSize());
+       arConfig.setPageSize(getPageSize());
+
+        if (errorMessage != null && errorMessage.length() != 0) {
+            throw new ValidationException(mLocalizer.t("RPT501: Encountered the validationException:{0}", errorMessage));
         } else {
             return arConfig;
-        }                                 
+        }
     }
     ////////////////////////////////////////End of Activity  Reports////////////////////////////////////////  
     /**
@@ -558,10 +582,12 @@ public class ActivityReportHandler {
      * Return the populated Value object to the presetation layer
      * @return
      */
-    public ActivityRecords[] getActivityRecordsVO() {
+    public ArrayList getActivityRecordsVO() {
         ArrayList outputList = new ArrayList();
         ArrayList keyList = new ArrayList();
-            keyList.add("ActivityDate");
+            if (getFrequency() != null && "Weekly Activity".equalsIgnoreCase(getFrequency()) ){ 
+              keyList.add("ActivityDate");
+            }
             keyList.add("Add");
             keyList.add("EUIDDeactivate");
             keyList.add("EUIDMerge");
@@ -572,7 +598,9 @@ public class ActivityReportHandler {
             keyList.add("ResolvedDuplicate");
             
         ArrayList labelList = new ArrayList();
-            labelList.add("Activity Date");
+            if (getFrequency() != null && "Weekly Activity".equalsIgnoreCase(getFrequency()) ){ 
+              labelList.add("Activity Date");
+            }
             labelList.add("Add");
             labelList.add("EUID Deactivate");
             labelList.add("EUID Merge");
@@ -608,7 +636,7 @@ public class ActivityReportHandler {
            request.setAttribute("size", new Integer(activityRecordsVO.length));                    
         }
         request.setAttribute("frequency", getFrequency());
-        return activityRecordsVO;
+        return outputList;
     }
      /**
      * Sets the valueobject for the Activity Reports search
@@ -616,6 +644,22 @@ public class ActivityReportHandler {
      */
     public void setActivityRecordsVO(ActivityRecords[] activityRecordsVO) {
         this.activityRecordsVO = activityRecordsVO;
+    }
+
+    public Integer getMaxResultsSize() {
+        return maxResultsSize;
+    }
+
+    public void setMaxResultsSize(Integer maxResultsSize) {
+        this.maxResultsSize = maxResultsSize;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
     
 }
