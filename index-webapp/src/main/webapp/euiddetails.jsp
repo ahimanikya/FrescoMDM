@@ -179,6 +179,8 @@
             ArrayList eoHistory = null;
             ValueExpression unMergeEuidVE = null;
 			int countInactive = 0;
+			//variable for max minor objects count
+			int maxMinorObjectsMAX = 0 ; 
 			%>
                         			<%
             if (eoArrayList != null && eoArrayList.size() > 0) {%>
@@ -275,11 +277,12 @@
                                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
                                                                     FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
 
+                                                              maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
+                                                              int  maxMinorObjectsMinorDB =  ((Integer) eoHashMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
                                                                    %>
                                                                     <tr><td><b style="font-size:12px; color:blue;"><%=childObjectNodeConfig.getName()%> Info</b></td></tr>
-                                                                    <tr>
                                                                     <%
-                                                              int maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
+
 												              for (int max = 0; max< maxMinorObjectsMAX; max++) {
                                		 		                   for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
                                                                        FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
@@ -371,12 +374,15 @@
                                                                                 %>
                                                                                 <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=personfieldValuesMapEO.get(epathValue)%>')" >
                                                                                     <font class="highlight">
-                                                                                        <%=personfieldValuesMapEO.get(epathValue)%>
+																				 <%if(fieldConfigMap.isSensitive()){%>                                  <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                 <%}else{%>
+                                                                                   <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                 <%}%>
                                                                                     </font>
                                                                                 </a>  
-                                                                                <%} else {if(fieldConfigMap.isSensitive()){%>                                                                               
-                                                                                <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                                                                                 <%}else{%>
+                                                                                <%} else {%>
+																				  <%if(fieldConfigMap.isSensitive()){%>                                  <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                  <%}else{%>
                                                                                    <%=personfieldValuesMapEO.get(epathValue)%>
                                                                                  <%}%>
                                                                                 <%}%>
@@ -396,7 +402,7 @@
                                                                    for (int i = 0; i < arrObjectNodeConfig.length; i++) {
                                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
 int  maxMinorObjectsMinorDB =  ((Integer) eoHashMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
-int maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
+maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
 int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
 
@@ -422,17 +428,24 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                     %>  
                                                                     <tr>
                                                                         <td>
-                                                                                <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
-										<%if(fieldConfigMap.isKeyType()) {%>
-                                                                                   <b><%=minorObjectHashMap.get(epathValue)%></b>
-										<%}else{if (fieldConfigMap.isSensitive()){%>																				  
-                                                                                <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                                                                                <%}else {%>
-                                                                                <%=minorObjectHashMap.get(epathValue)%>
-										<%}}%>
-                                                                                <%} else {%>
-                                                                                &nbsp;
-                                                                                <%}%>
+                                                                         <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
+										                                     <%if(fieldConfigMap.isKeyType()) {%> <!--if key type-->
+                                                                                <b>
+																		         <%if (fieldConfigMap.isSensitive()){%>								      <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                  <%}else {%>
+                                                                                    <%=minorObjectHashMap.get(epathValue)%>
+																				  <%}%>
+																				</b>
+										                                    <%}else{%> <!--if not key type-->
+																		         <%if (fieldConfigMap.isSensitive()){%>								      <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                  <%}else {%>
+                                                                                    <%=minorObjectHashMap.get(epathValue)%>
+																				  <%}%>
+										                                     <%}%>
+																				
+																		 <%} else {%>
+                                                                           &nbsp;
+                                                                         <%}%>
                                                                         </td>
                                                                     </tr>
                                                                   <%
@@ -534,8 +547,12 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                         <tr>
                                                                             <td>
                                                                                 <%if (soHashMapValues.get(epathValue) != null) {%>
-                                                                                
-                                                                                <%=soHashMapValues.get(epathValue)%>
+                                                                               
+                                                                                 <%if (fieldConfigMap.isSensitive()){%>  <!-- if sensitive fields-->
+                                                                                    <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                 <%}else {%>
+                                                                                    <%=soHashMapValues.get(epathValue)%>
+                                                                                  <%}%>
                                                                                 <%} else {%>
                                                                                 &nbsp;
                                                                                 <%}%>
@@ -555,7 +572,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
 int  maxMinorObjectsMinorDB =  ((Integer) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
 
-int maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
+maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
 
 int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
@@ -564,7 +581,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 																	%>
                                                                     <tr>
 																	   <td>
-																	        <%if(minorObjectMapList.size() == 0) {%>
+ 																		  <%if(minorObjectMapList.size() == 0) {%>
 																			  No <%=childObjectNodeConfig.getName()%>.
 																			<%} else {%>
 																	         &nbsp;
@@ -587,9 +604,19 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                         <td>
                                                                                 <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
                                                                                  <%if(fieldConfigMap.isKeyType()) {%>
-                                                                                   <b><%=minorObjectHashMap.get(epathValue)%></b>
+                                                                                   <b>
+                                                                                     <%if (fieldConfigMap.isSensitive()){%>
+                                                                                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                     <%}else {%>
+                                                                                        <%=minorObjectHashMap.get(epathValue)%>
+                                                                                     <%}%>
+																				   </b>
 																				  <%}else{%>
-																				   <%=minorObjectHashMap.get(epathValue)%>
+                                                                                     <%if (fieldConfigMap.isSensitive()){%>
+                                                                                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                     <%}else {%>
+                                                                                        <%=minorObjectHashMap.get(epathValue)%>
+                                                                                     <%}%>
 																				  <%}%>
 
                                                                                 <%} else {%>
@@ -689,7 +716,11 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                             <td>
                                                                                 <%if (eoValuesMap.get(epathValue) != null) {%>
                                                                                 
-                                                                                <%=eoValuesMap.get(epathValue)%>
+                                                                                     <%if (fieldConfigMap.isSensitive()){%>
+                                                                                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                     <%}else {%>
+                                                                                        <%=eoValuesMap.get(epathValue)%>
+                                                                                     <%}%>
                                                                                 <%} else {%>
                                                                                 &nbsp;
                                                                                 <%}%>
@@ -708,7 +739,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
 int  maxMinorObjectsMinorDB =  ((Integer) objectHistMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
 
-int maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
+maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
 
 int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 
@@ -722,7 +753,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                     
 
                                                                    %>
-                                                                    <tr>
+                                                                     <tr>
 																	   <td>
 																	        <%if(minorObjectMapList.size() == 0) {%>
 																			  No <%=childObjectNodeConfig.getName()%>.
@@ -741,11 +772,21 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                           <td>
                                                                                 <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
                                                                                  <%if(fieldConfigMap.isKeyType()) {%>
-                                                                                   <b><%=minorObjectHashMap.get(epathValue)%></b>
-																				  <%}else{%>
-																				   <%=minorObjectHashMap.get(epathValue)%>
-																				  <%}%>
-                                                                                <%} else {%>
+                                                                                   <b>
+                                                                                    <%if (fieldConfigMap.isSensitive()){%> <!-- if sensitive fields-->
+                                                                                      <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                    <%}else {%>
+                                                                                      <%=minorObjectHashMap.get(epathValue)%>
+                                                                                    <%}%>
+                                                                                   </b>
+                                                                                  <%}else{%>
+                                                                                    <%if (fieldConfigMap.isSensitive()){%>
+                                                                                      <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                    <%}else {%>
+                                                                                      <%=minorObjectHashMap.get(epathValue)%>
+                                                                                    <%}%>
+ 																				  <%}%>                                                           
+																				  <%} else {%>
                                                                                 &nbsp;
                                                                                 <%}%>
                                                                           </td>
@@ -789,104 +830,8 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                               <%                                                
                                                 }
                                               }%>                                            
-                                                <%
-                                                  if (request.getAttribute("mergeEOList"+mainEUID) != null) {
-                                                    ArrayList mergeEOList = (ArrayList) request.getAttribute("mergeEOList"+mainEUID);
-                                                    for (int eomerge = 0; eomerge < mergeEOList.size(); eomerge++) {
-                                                        HashMap objectMergeMap =(HashMap) mergeEOList.get(eomerge);
-                                                        HashMap mergeeoValuesMap = (HashMap) objectMergeMap.get("ENTERPRISE_OBJECT");
-                                                %>
-                                                <td  valign="top">
-                                  <div id="viewMergeHistory<%=countEnt%>">
-                                  <div style="width:170px;overflow:hidden">
-                                    <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="merge">
-                                        <table border="0" cellspacing="0" cellpadding="0">
-                                           <tr>
-                                                <td class="menutopMerge">Merged Record</td>
-                                            </tr> 
-                                            
-                                            <tr>
-                                            <td valign="top">
-                                                    <font style="text-decoration:none;color:#000000;"><b><%=mergeeoValuesMap.get("EUID")%></b></font>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div> 
-                                    <div id="mainEuidContentButtonDiv<%=countEnt%>">
-                                                        <div id="assEuidDataContent<%=countEnt%>" >
-                                                            <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="merge">
-                                                                <table border="0" cellspacing="0" cellpadding="0">
-                                                                    <%
-                                    for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
-                                        FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
-                                        if(!(objScreenObject.getRootObj().getName()+".EUID").equalsIgnoreCase(fieldConfigMap.getFullFieldName())) {
-                                            
-                                        if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
-                                            epathValue = fieldConfigMap.getFullFieldName();
-                                        } else {
-                                            epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
-                                        }
-                                                                    %>  
-                                                                        <tr>
-                                                                            <td>
-                                                                                <%if (mergeeoValuesMap.get(epathValue) != null) {%>
-                                                                                
-                                                                                <%=mergeeoValuesMap.get(epathValue)%>
-                                                                                <%} else {%>
-                                                                                &nbsp;
-                                                                                <%}%>
-                                                                                
-                                                                            </td>
-                                                                        </tr>
-                                                                    <%
-                                        }
-                                        }
-                                                                    %>
 
-                                                                   <%
-                                                                   
-                                                                   for (int io = 0; io < arrObjectNodeConfig.length; io++) {
-                                                                    ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[io];
-                                                                    ArrayList  minorObjectMapList =  (ArrayList) objectMergeMap.get("EO" + childObjectNodeConfig.getName() + "ArrayList");
-                                                                    HashMap minorObjectHashMap = new HashMap();
-                                                                     if(minorObjectMapList.size() >0) {
-                                                                       minorObjectHashMap = (HashMap) minorObjectMapList.get(0);
-                                                                     }  
-                                                                     FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
-                                                                    
-
-                                                                   %>
-                                                                    <tr><td>&nbsp;</td></tr>
-                                                                    <tr>
-                                                                    <%
-                                                                    for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
-                                                                     FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
-                                                                     epathValue = fieldConfigMap.getFullFieldName();
-                                                                    %>  
-                                                                    <tr>
-                                                                        <td>
-                                                                                <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
-                                                                                <%=minorObjectHashMap.get(epathValue)%>
-                                                                                <%} else {%>
-                                                                                &nbsp;
-                                                                                <%}%>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <%
-                                                                      }
-                                                                    }
-                                                                    %>
-
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                </div> <!--Main div for source-->  
-                                </div>
-                            </td> 
-                                            <%}%>
-                                            <%}%> 
-                                      <!--END displaying the History-->
+                                            <!--END displaying the History-->
                                            <%}%>
                                            <td valign="top"><div id="previewPane"></div></td>
                                         </tr>
@@ -943,7 +888,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                         onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=euid%>','ajaxContent','')">
                                                             <span><h:outputText value="#{msgs.edit_euid_button_text}" /> </span>
                                                         </a>  
-<!--  -->
+                                                   <!-- Deactive/Activate button -->
                                                     <h:form>
                                                         <h:commandLink  styleClass="button" rendered="#{Operations.EO_Deactivate}"
                                                                         actionListener="#{PatientDetailsHandler.deactivateEO}">
