@@ -12,14 +12,13 @@
 <%@ page import="java.util.ArrayList"  %>
 <%@ page import="java.util.HashMap"  %>
 
-
 <%
 //Author Sridhar Narsingh
 //sridhar@ligaturesoftware.com
 //http://www.ligaturesoftware.com
 %>
 <f:view>    
-
+<f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.midm" var="msgs" />
 <html>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -44,13 +43,27 @@
             <script type="text/javascript" src="./scripts/yui/connection/connection-min.js"></script>
             <!-- Source files -->
             <script type="text/javascript" src="./scripts/yui/datatable/datatable-beta-min.js"></script>
+<script>
+//not used in transactions, but since its require in the script we fake it
+var editIndexid = ""; 
+var thisForm;
+var rand = "";
+function setRand(thisrand)  {
+	rand = thisrand;
+ }
+</script>
+
        </head>
 
     <body class="yui-skin-sam">
     <%@include file="./templates/header.jsp"%>
-     <div id="mainContent" style="overflow:hidden;">   
+     <div id="mainContent">   
 <%
-        AssumeMatchHandler assumeMatchHandler = new AssumeMatchHandler();
+   double rand = java.lang.Math.random();
+   String URI = request.getRequestURI();
+   URI = URI.substring(1, URI.lastIndexOf("/"));
+
+  AssumeMatchHandler assumeMatchHandler = new AssumeMatchHandler();
 
 %>
     <div id ="assumedmatches " class="basicSearch">
@@ -90,7 +103,7 @@
                                          var="searchScreenFieldGroup" 
                                          value="#{AssumeMatchHandler.searchScreenFieldGroupArray}">
 						    <h:column>
-   				            <div style="font-size:12px;font-weight:bold;color:#0739B6;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h:outputText value="#{searchScreenFieldGroup.description}" /></div>
+   				            <div style="font-size:12px;font-weight:bold;color:#0739B6;"><h:outputText value="#{searchScreenFieldGroup.description}" /></div>
                             <h:dataTable headerClass="tablehead"  
                                          id="fieldConfigId" 
                                          var="feildConfig" 
@@ -106,7 +119,7 @@
                                         <!--Rendering HTML Select Menu List-->
                                         <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
                                             <nobr>
-                                                <h:selectOneMenu onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                <h:selectOneMenu title='#{feildConfig.name}'
                                                                  rendered="#{feildConfig.name ne 'SystemCode'}"
 	                                                             value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}">
                                                     <f:selectItem itemLabel="" itemValue="" />
@@ -114,8 +127,7 @@
                                                 </h:selectOneMenu>
                                                 
                                                 <h:selectOneMenu  onchange="javascript:setLidMaskValue(this,'advancedformData')"
-                                                                  onblur="javascript:accumilateSelectFieldsOnBlur(this,'#{feildConfig.name}')"
-                                                                  id="SystemCode" 
+                                                                  title='#{feildConfig.name}'                                           id="SystemCode" 
     															  value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"
                                                                   rendered="#{feildConfig.name eq 'SystemCode'}">
                                                     <f:selectItem itemLabel="" itemValue="" />
@@ -130,7 +142,7 @@
                                                                label="#{feildConfig.displayName}" 
                                                                onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
-                                                               onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                               title='#{feildConfig.name}'
                                                                maxlength="#{feildConfig.maxLength}" 
 															   value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"
                                                                rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
@@ -138,16 +150,17 @@
                                                 <h:inputText   required="#{feildConfig.required}" 
 												               id="LID"
 															   readonly="true"
+															   title='#{feildConfig.name}'
                                                                label="#{feildConfig.displayName}" 
                                                                onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
-                                                               onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value);javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+                                                               onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
 															   value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"
                                                                rendered="#{feildConfig.name eq 'LID'}"/>
                                                                
                                                 <h:inputText   required="#{feildConfig.required}" 
                                                                label="#{feildConfig.displayName}" 
-                                                               onblur="javascript:accumilateFieldsOnBlur(this,'#{feildConfig.name}')"
+															   title='#{feildConfig.name}'
                                                                maxlength="#{SourceHandler.euidLength}" 
 															   value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"
                                                                rendered="#{feildConfig.name eq 'EUID'}"/>
@@ -167,6 +180,7 @@
                                           <nobr>
                                             <input type="text" 
                                                    id = "<h:outputText value="#{feildConfig.name}"/>"  
+												   title="<h:outputText value="#{feildConfig.name}"/>"
                                                    value="<h:outputText value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"/>"
                                                    required="<h:outputText value="#{feildConfig.required}"/>" 
                                                    maxlength="<h:outputText value="#{feildConfig.maxLength}"/>"
@@ -190,11 +204,10 @@
                                               </h:outputLink>
                                            </nobr>
                                           <nobr>
-                                               <h:commandLink  styleClass="button" rendered="#{Operations.assumedMatch_SearchView}"  action="#{AssumeMatchHandler.performSubmit}" >  
-                                                 <span>
-                                                     <h:outputText value="#{msgs.search_button_label}"/>
-                                                </span>
-                                             </h:commandLink>                                     
+										   <a class="button" id = "deactivateReport" href="javascript:void(0)"
+										   onclick="javascript:getFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/assumematchservice.jsf?random=rand'+'&'+queryStr,'outputdiv','')">
+												 <span><h:outputText value="#{msgs.search_button_label}"/></span>
+											</a>
                                         </nobr>
                                       </td>
                                         </tr>
@@ -207,9 +220,7 @@
 								</h:column>
                             </h:dataTable>
                         </td>
-                        <td valign="top">
-                            <h:messages styleClass="errorMessages"  layout="list" />
-                        </td>
+						<td><div id="messages"> </div></td>
                     </tr>
 					<%if(countFc == 0) {%>
 					<tr>
@@ -221,185 +232,12 @@
                 </table>
                 <h:inputHidden id="enteredFieldValues" value="#{AssumeMatchHandler.enteredFieldValues}"/>
             </h:form>
-    </div>
-      <%
-        ArrayList fcArrayList  = assumeMatchHandler.getResultsConfigArray();
-        ArrayList assumeMatchArrayList = new ArrayList();
-        //ArrayList assumeMatchArrayList = (ArrayList) request.getAttribute("assumeMatchList");
-       
-           if(request.getAttribute("assumeMatchList") != null) {
-             request.setAttribute("assumeMatchList", request.getAttribute("assumeMatchList") );  
-             assumeMatchArrayList = (ArrayList) request.getAttribute("assumeMatchList"); 
-         }
-        
-   %>
-      
-        <%
-        if(request.getAttribute("assumeMatchList") != null) {
-        %>
-        <div class="printClass">
-            <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                    <td>
-                        <h:outputText value="#{msgs.total_records_text}"/>&nbsp;
-                    </td>
-                    <td>    
-                        <%=assumeMatchArrayList.size()%>&nbsp;&nbsp;
-                    </td>
-                    <td><h:outputLink   styleClass="button" rendered="#{Operations.assumedMatch_Print && AssumeMatchHandler.searchSize gt 0}" value="javaScript:window.print();">
-                        <span><h:outputText value="#{msgs.print_text}"/></span>
-                        </h:outputLink> 
-                    </td>
-                </tr>
-            </table>
-        </div>
-    <%}%>
-     <%
-         if (assumeMatchArrayList != null && assumeMatchArrayList.size() > 0) {
-    %>
-             <div class="reportYUISearch" >
-                <div id="outputdiv"></div>
-              </div>  
-      <%}%>
-        <script>
-            var fieldsArray = new Array();
-        </script>
-        <%
-         int pageSize = 10;
-        ArrayList keysList  = new ArrayList();
-        ArrayList labelsList  = new ArrayList();
-        ArrayList fullFieldNamesList  = new ArrayList();
-        
-     
-          for(int i=0;i<fcArrayList.size();i++) {
-            FieldConfig fieldConfig = (FieldConfig)fcArrayList.get(i);
-            keysList.add(fieldConfig.getName());
-            labelsList.add(fieldConfig.getDisplayName());
-            if (fieldConfig.isUpdateable()) {
-               fullFieldNamesList.add(fieldConfig.getFullFieldName());
-            } else {
-                fullFieldNamesList.add(fieldConfig.getName());
-            }
-        }
-         //set EUID values here
-        String[] keys = new String[keysList.size()];
-        String[] labels = new String[labelsList.size()];
-        String[] fullFieldNames = new String[fullFieldNamesList.size()];
-        
-        for(int i=0;i<keysList.size();i++) {
-            keys[i] = (String) keysList.get(i);
-            labels[i] = (String) labelsList.get(i);
-            fullFieldNames[i] = (String) fullFieldNamesList.get(i);
-        }
-
-
-        StringBuffer myColumnDefs = new StringBuffer();
-        myColumnDefs.append("[");
-        String value = new String();
-        for(int i=0;i<keysList.size();i++) {
-            if(keys[i].equalsIgnoreCase("EUID")) {
-              value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ","+
-                       "formatter:function (elCell,oRecord,oColumn,oData) {elCell.innerHTML = '<a href=\"ameuiddetails.jsf?AMID=' + oRecord.getData(\'ID\') + '\">' + oData + '</a>';}" +
-                       ",resizeable:true}";
-            } else {
-              value = "{key:" + "\"" + keys[i]+  "\"" + ", label: " + "\"" + labels[i]+"\"" +  ",resizeable:true}";
-            }  
-            
-          myColumnDefs.append(value);
-          if(i != keys.length -1) myColumnDefs.append(",");
-         }   
-         myColumnDefs.append("]");
-      
-        StringBuffer sbr  = new StringBuffer();
-        if (assumeMatchArrayList != null && assumeMatchArrayList.size() > 0) {
-                sbr.append("[");
-                for (int j = 0; j < assumeMatchArrayList.size(); j++) {
-                 ArrayList valueMapList = (ArrayList) assumeMatchArrayList.get(j);
-                for (int i = 0; i < valueMapList.size(); i++) {
-                        StringBuffer valueBuffer = new StringBuffer();
-                        HashMap valueMap = (HashMap) valueMapList.get(i);
-                        valueBuffer.append("{");
-                        for (int kc = 0; kc < fullFieldNames.length; kc++) {
-                            valueBuffer.append(keys[kc] + ":" + "\"" + ((valueMap.get(fullFieldNames[kc]) != null) ? valueMap.get(fullFieldNames[kc]) : "") + "\"");
-                            if (kc != fullFieldNames.length - 1) {
-                                valueBuffer.append(",");
-                            }
-                        }
-                        valueBuffer.append("}");
-                        sbr.append(valueBuffer.toString() +",");
-                }
-                }
-                sbr.append("]");
-
-            }
- 
-        String finalStringOutput  = sbr.toString();
-        finalStringOutput  = finalStringOutput.replaceAll(",]", "]");
-        
-        for(int i=0;i<keysList.size();i++) {
-        %> 
-        <script>
-            fieldsArray[<%=i%>] = '<%=keys[i]%>';
-        </script>
-        <%}%>
-<script>
-     var dataArray = new Array();
-     dataArray  = <%=finalStringOutput%>;
-</script>
-<script>
-    YAHOO.example.Data = {
-    outputValues: dataArray
- }
-</script>
-<script type="text/javascript">
-YAHOO.util.Event.addListener(window, "load", function() {
-    YAHOO.example.CustomSort = new function() {
-        var myColumnDefs = <%=myColumnDefs.toString()%>;
-        this.myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.outputValues);
-        this.myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-        this.myDataSource.responseSchema = {
-            fields: fieldsArray
-        };
-
-
-var myConfigs = {
-    paginator : new YAHOO.widget.Paginator({
-        rowsPerPage    : <%=pageSize%>, // REQUIRED
-        totalRecords   : dataArray.length // OPTIONAL
-
-        // use an existing container element
-        //containers : 'sort',
-
-        // use a custom layout for pagination controls
-        //template       : "{PageLinks} Show {RowsPerPageDropdown} per page",
-
-        // show all links
-        //pageLinks : YAHOO.widget.Paginator.VALUE_UNLIMITED,
-
-        // use these in the rows-per-page dropdown
-        //rowsPerPageOptions : [25,50,100],
-
-        // use custom page link labels
-        //pageLabelBuilder : function (page,paginator) {
-          //  var recs = paginator.getPageRecords(page);
-           //return (recs[0] + 1) + ' - ' + (recs[1] + 1);
-        //}
-    })
-     
-
-};
-        this.myDataTable = new YAHOO.widget.DataTable("outputdiv", myColumnDefs,
-                this.myDataSource, myConfigs);
-            
-    };
-});
-</script>
-                                                                                                                                       
+<div class="searchresults" id="outputdiv"></div>
+    </div>     
   </div>
 </body>
         <%
-          String[][] lidMaskingArray = assumeMatchHandler.getAllSystemCodes();
-          
+          String[][] lidMaskingArray = assumeMatchHandler.getAllSystemCodes();          
         %>
         <script>
             var systemCodes = new Array();
