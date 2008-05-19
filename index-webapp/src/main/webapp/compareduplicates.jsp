@@ -196,17 +196,17 @@
                                             <td  valign="top" align="left">
                                                 <div id="outerMainContentDivid" style="visibility:visible;display:block;">
                                                     <div style="width:170px;overflow:auto">
-                                                        <div id="mainEuidContent" class="<%=cssMain%>">
+                                                        <div id="mainEuidContent" class="yellow">
                                                             <table border="0" cellspacing="0" cellpadding="0" width="100%">
                                                                 <tr><td><b style="font-size:12px; color:blue;"><%=rootNodeName%> Info </b></td></tr>
                                                             </table>
                                                         </div>
                                                     </div>
-                                                    <div id="mainEuidContentButtonDiv<%=countEnt%>" class="<%=cssMain%>">
+                                                    <div id="mainEuidContentButtonDiv<%=countEnt%>" class="yellow">
                                                         <div id="assEuidDataContent<%=countEnt%>">
                                                             <div id="personassEuidDataContent" >
                                                                 
-                                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
+                                                                <table border="0" cellspacing="0" cellpadding="0">
                                                                     <tr>
                                                                     <%
 
@@ -272,8 +272,12 @@
                                                 if (countEnt > 0 && ("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
                                                  %>
                                                     <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="deactivate" >
-                                            <%} else {%>        
-                                                    <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleClass%>" >
+                                            <%} else {%>    
+													<%if( request.getAttribute("eoMultiMergePreview") != null) {%> <!-- if preview is then display the links-->
+                                                     <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="blue" >
+													<%} else {%>
+                                                      <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="yellow" >
+													<%}%>
                                             <%}%>        
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
@@ -326,7 +330,7 @@
                                          <%}%>
                                                 <%}%>    
 
-                                                 <div id="mainEuidContentButtonDiv<%=countEnt%>" class="<%=cssMain%>">
+                                                 <div id="mainEuidContentButtonDiv<%=countEnt%>" class="yellow">
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                 <%
                                                 if (countEnt > 0 && ("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
@@ -358,48 +362,68 @@
                                             resultArrayMapMain.put(epathValue, personfieldValuesMapEO.get(epathValue));
                                         }
                                                                     %>  
-                                                                        <tr>
-                                                                            <td>
-                                                                                <%if (personfieldValuesMapEO.get(epathValue) != null) {%>
-                                                                                
-                                                                                <%if ((countEnt > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) &&
-            !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {
-        fnameExpression = ExpressionFactory.newInstance().createValueExpression(epathValue, epathValue.getClass());
-        fvalueVaueExpression = ExpressionFactory.newInstance().createValueExpression(personfieldValuesMapEO.get(epathValue), personfieldValuesMapEO.get(epathValue).getClass());
+                        <tr>
+                          <td>
+                              <%if (personfieldValuesMapEO.get(epathValue) != null) {%>
+									<div id="highlight<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>" style="background-color:none;">
+										 <%if( request.getAttribute("eoMultiMergePreview") != null) {%> <!-- if preview is then display the links-->
+	                                      <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>')" >
+                                           <font class="highlight">
+                                  		      <%if(fieldConfigMap.isSensitive()){%>                                                               
+                                                 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                              <%}else{%> 
+											     <%=personfieldValuesMapEO.get(epathValue)%>
+                                               <%}%>
+                                             </a>  
+											 </font>
 
-                                                                                %>
-									     <div id="highlight<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>" style="background-color:none;">							
-                                                                                <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>')" >
-                                                                                    <font class="highlight">
-                                                                                        <%=personfieldValuesMapEO.get(epathValue)%>
-                                                                                    </font>
-                                                                                </a>  
-																				</div>
-									     <div id="unHighlight<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>" style="visibility:hidden;display:none">							
-                                                                                <%=personfieldValuesMapEO.get(epathValue)%>
-																				</div>
+		                                   <%}else {%> <!--if not [preview -->
+                                            <font class="highlight">
+                                  		      <%if(fieldConfigMap.isSensitive()){%>                                                               
+                                                 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                              <%}else{%> 
+											     <%=personfieldValuesMapEO.get(epathValue)%>
+                                               <%}%>
+                                            </font>
+		                                   <%}%>
+									</div>
+									<!--div id="unHighlight<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>" style="visibility:hidden;display:none">							
+                                  		      <%if(fieldConfigMap.isSensitive()){%>                                                               
+                                                 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                              <%}else{%> 
+											     <%=personfieldValuesMapEO.get(epathValue)%>
+                                               <%}%>
+                                 		 </div-->
 
-                                                                                <%} else {if(fieldConfigMap.isSensitive()){%>                                                                               
-                                                                                <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                                                                                 <%}else{%>
-                                                                                   <%=personfieldValuesMapEO.get(epathValue)%>
-                                                                                 <%}%>
-                                                                                <%}%>
-                                                                                <%} else {%>
-                                                                                &nbsp;
-                                                                                <%}%>
-                                                                                
-                                                                            </td>
-                                                                        </tr>
-                                                                    <%
-                                        }
-                                        }
-                                                                    %>
+                       <%} else {%>
+		                     <%if( request.getAttribute("eoMultiMergePreview") != null) {%> <!-- if preview is then display the links-->
+							     <div id="highlight<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>" style="background-color:none;">		
+								 <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>',' ','<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>')" >
+                                              <font class="highlight">
+                                  		      <%if(fieldConfigMap.isSensitive()){%>                                                               
+                                                 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                              <%}else{%> 
+											     <!-- blank image -->
+                                                <img src="./images/calup.gif" border="0" alt="Blank Value"/>
+                                               <%}%>
+                                              </font>
+                                             </a>  
+								</div>
+								<!--div id="unHighlight<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>" style="visibility:hidden;display:none">&nbsp;</div-->                                 
+                             <%}else{%>		
+                                &nbsp;
+                             <%}%>
+                           <%}%>
+                          </td>
+                         </tr>
+                      <%
+                        }
+                       }
+                       %>
 
-                                                                   <%
-                                                                   
-                                                                   for (int i = 0; i < arrObjectNodeConfig.length; i++) {
-                                                                    ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
+                           <%
+                              for (int i = 0; i < arrObjectNodeConfig.length; i++) {
+                               ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
 int  maxMinorObjectsMinorDB =  ((Integer) eoHashMapValues.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
 int maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
 int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
@@ -429,7 +453,13 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                         <td>
                                                                                 <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
 										<%if(fieldConfigMap.isKeyType()) {%>
-                                                                                   <b><%=minorObjectHashMap.get(epathValue)%></b>
+                                                                                   <b>
+                                                                                     <%if (fieldConfigMap.isSensitive()){%>
+                                                                                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                     <%}else {%>
+                                                                                        <%=minorObjectHashMap.get(epathValue)%>
+                                                                                     <%}%>
+																				   </b>
 										<%}else{if (fieldConfigMap.isSensitive()){%>																				  
                                                                                 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                 <%}else {%>
@@ -537,8 +567,11 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                         <tr>
                                                                             <td>
                                                                                 <%if (soHashMapValues.get(epathValue) != null) {%>
-                                                                                
-                                                                                <%=soHashMapValues.get(epathValue)%>
+                                                                                      <%if (fieldConfigMap.isSensitive()){%>
+                                                                                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                     <%}else {%>
+                                                                                        <%=soHashMapValues.get(epathValue)%>
+                                                                                     <%}%>
                                                                                 <%} else {%>
                                                                                 &nbsp;
                                                                                 <%}%>
@@ -590,10 +623,20 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                         <td>
                                                                                 <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
                                                                                  <%if(fieldConfigMap.isKeyType()) {%>
-                                                                                   <b><%=minorObjectHashMap.get(epathValue)%></b>
+                                                                                   <b>
+                                                                                     <%if (fieldConfigMap.isSensitive()){%>
+                                                                                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                     <%}else {%>
+                                                                                        <%=minorObjectHashMap.get(epathValue)%>
+                                                                                     <%}%>
+ 																				   </b>
 																				  <%}else{%>
-																				   <%=minorObjectHashMap.get(epathValue)%>
-																				  <%}%>
+                                                                                     <%if (fieldConfigMap.isSensitive()){%>
+                                                                                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                     <%}else {%>
+                                                                                        <%=minorObjectHashMap.get(epathValue)%>
+                                                                                     <%}%>
+ 																				  <%}%>
 
                                                                                 <%} else {%>
                                                                                 &nbsp;
@@ -689,8 +732,11 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                         <tr>
                                                                             <td>
                                                                                 <%if (eoValuesMap.get(epathValue) != null) {%>
-                                                                                
-                                                                                <%=eoValuesMap.get(epathValue)%>
+                                                                                  <%if (fieldConfigMap.isSensitive()){%>
+                                                                                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                     <%}else {%>
+                                                                                        <%=eoValuesMap.get(epathValue)%>
+                                                                                     <%}%>
                                                                                 <%} else {%>
                                                                                 &nbsp;
                                                                                 <%}%>
@@ -742,10 +788,20 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                           <td>
                                                                                 <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
                                                                                  <%if(fieldConfigMap.isKeyType()) {%>
-                                                                                   <b><%=minorObjectHashMap.get(epathValue)%></b>
+                                                                                   <b>
+                                                                                   <%if (fieldConfigMap.isSensitive()){%>
+                                                                                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                     <%}else {%>
+                                                                                        <%=minorObjectHashMap.get(epathValue)%>
+                                                                                     <%}%>
+																				   </b>
+                                                                                  <%if (fieldConfigMap.isSensitive()){%>
+                                                                                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                     <%}else {%>
+                                                                                        <%=minorObjectHashMap.get(epathValue)%>
+                                                                                     <%}%>
 																				  <%}else{%>
-																				   <%=minorObjectHashMap.get(epathValue)%>
-																				  <%}%>
+ 																				  <%}%>
                                                                                 <%} else {%>
                                                                                 &nbsp;
                                                                                 <%}%>
@@ -849,7 +905,13 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                             %>
                                                                               
                                                                               <%if(mergePersonfieldValuesMapEO.get(epathValue) != null ) {%>
-                                                                               <span id="<%=epathValue%>"><%=mergePersonfieldValuesMapEO.get(epathValue)%></span>
+                                                                               <span id="<%=epathValue%>">
+                                                                                      <%if (fieldConfigMap.isSensitive()){%>
+                                                                                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                     <%}else {%>
+                                                                                        <%=mergePersonfieldValuesMapEO.get(epathValue)%>
+                                                                                     <%}%>
+  																			   </span>
                                                                              <%}else{%>
                                                                                <span id="<%=epathValue%>">&nbsp;</span>
                                                                              <%}%>
@@ -866,22 +928,41 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                   
                                                                    for (int i = 0; i < arrObjectNodeConfig.length; i++) {
                                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
-								    ArrayList  minorObjectMapList =  new ArrayList();
-								  if( request.getAttribute("eoMultiMergePreview") != null  ) {
+int  maxMinorObjectsMinorDB =  (request.getAttribute("eoMultiMergePreview") != null) ?((Integer) eoMultiMergePreviewMap.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue():0;
+
+int maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
+
+int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
+
+FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
+                                                                 
+								                                 ArrayList  minorObjectMapList =  new ArrayList();
+								                                if( request.getAttribute("eoMultiMergePreview") != null  ) {
                                                                       minorObjectMapList =  (ArrayList) eoMultiMergePreviewMap.get("EO" + childObjectNodeConfig.getName() + "ArrayList");
-								 }
+								                                   }
                                                                     HashMap minorObjectHashMap = new HashMap();
-								
+																	%>
+                                                                     <tr>
+																	   <td>
+																	   <%if( request.getAttribute("eoMultiMergePreview") != null  ) {%>
+																	        <%if(minorObjectMapList.size() == 0) {%>
+																			  No <%=childObjectNodeConfig.getName()%>.
+																			<%} else {%>
+																	         &nbsp;
+																			<%}%>
+																		 <%} else  {%>
+																		   &nbsp;
+																		 <%} %>
+																	   </td>
+																	</tr>
+
+                                                                   <%								
                                                                     for(int ar =0;ar<minorObjectMapList.size();ar++) {
-                                                                    // if(minorObjectMapList.size() >0) {
-                                                                       minorObjectHashMap = (HashMap) minorObjectMapList.get(ar);
-                                                                     //}  
-                                                                    //}   
-                                                                      FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
+                                                                        minorObjectHashMap = (HashMap) minorObjectMapList.get(ar);
                                                                     
 
                                                                    %>
-                                                                    <tr><td>&nbsp;</td></tr>
+
                                                                     <tr>
                                                                     <%
                                                                     for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
@@ -891,25 +972,47 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                     %>  
                                                                     <tr>
                                                                         <td>
-										<%if( request.getAttribute("eoMultiMergePreview") != null  ) {%>
+										                                 <%if( request.getAttribute("eoMultiMergePreview") != null  ) {%>
                                                                                 <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
-                                                                                <%=minorObjectHashMap.get(epathValue)%>
+                                                                                     <%if (fieldConfigMap.isSensitive()){%>
+                                                                                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                     <%}else {%>
+                                                                                        <%=minorObjectHashMap.get(epathValue)%>
+                                                                                     <%}%>
+  
                                                                                 <%} else {%>
                                                                                 &nbsp;
                                                                                 <%}%>
-										<%} else {%>
-										&nbsp;
-										<%}%>
+											                                 <%} else {%>
+											                                  &nbsp;
+											                                 <%}%>
                                                                         </td>
                                                                     </tr>
-                                                                    <%
-                                                                      }
-                                                                      }
-																     
-                                                  
-                                                                    }
-                                                                    %>
+                                                                    <%}%> <!-- FILED CONFIG LOOP -->
+                                                                     <tr><td>&nbsp;</td></tr>
 
+                                                                      <%}%> <!-- MINOR OBJECTES LIST LOOP -->
+
+                                                                  <%
+								                                  for (int iex = 0; iex < maxMinorObjectsDiff; iex++) {							
+								                                  %>
+
+								                                  <%
+                                                                    for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
+                                                                     FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
+																	                               
+													                 %>  
+                                                                    <tr><td>&nbsp;</td></tr>
+                                                                    <%                                                                                     }//field config loop
+																	 %>
+                                                                     <tr><td>&nbsp;</td></tr>
+
+																	 <%
+                                                                        }//Extra minor objects loop
+								                                    %>
+
+   
+																	  <%} %> <!-- TOTAL NO OF CHILD OBJECTS  LOOP -->
                                                                 </table>
                                                             </div>
                                                         </div>
@@ -943,6 +1046,8 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                         <% for (countEnt = 0; countEnt < eoArrayListObjects.length; countEnt++) {
                                                 HashMap eoHashMapValues = (HashMap) eoArrayListObjects[countEnt];
                                                 HashMap personfieldValuesMapEO = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT");
+                                                eoSources = (ArrayList) eoHashMapValues.get("ENTERPRISE_OBJECT_SOURCES");
+
                                                 String euid = (String) personfieldValuesMapEO.get("EUID");
                                                 String potDupStatus = (String) eoHashMapValues.get("Status");
                                                 String potDupId = (String) eoHashMapValues.get("PotDupId");
@@ -964,7 +1069,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                         <!--Displaying view sources and view history-->
                                         <td valign="top">
                                             <div id="dynamicMainEuidButtonContent<%=countEnt%>" style="visibility:visible;display:block;">
-                                                <table border="0" cellspacing="0" cellpadding="0" border="1">
+                                                <table border="0" cellspacing="0" cellpadding="0" border="0">
                                                     <h:form>
                                                <% if (session.getAttribute("eocomparision") == null  && countEnt > 0 ) { %>
 											   
