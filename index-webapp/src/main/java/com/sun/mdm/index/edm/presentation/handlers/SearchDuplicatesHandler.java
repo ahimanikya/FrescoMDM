@@ -1178,9 +1178,13 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
     }
 
     private HashMap getValuesForResultFields(EnterpriseObject eo, EPathArrayList retrieveResultsFields) throws ObjectException, EPathException {
+        // System.out.println("<<=== eo " + eo);
+        // System.out.println("<<=== retrieveResultsFields " + retrieveResultsFields);  
         HashMap resultHashMap=new HashMap();
         ArrayList fieldConfigArray = super.getResultsConfigArray();
+        //System.out.println("===================================================");
         SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+        String strVal = new String();
         String dateField = new String();
         if(retrieveResultsFields!=null){
             for (int i = 0; i < retrieveResultsFields.size(); i++) {
@@ -1192,17 +1196,29 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
                     resultHashMap.put(fieldConfig.getFullFieldName(), dateField);
                 } else {
                     if ((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) && value != null) {
+                        
+                        //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                        if (fieldConfig.getUserCode() != null) {
+                            strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                        } else {
+                            strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                        }
+
+                         // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
                         //value
-                        resultHashMap.put(fieldConfig.getFullFieldName(), ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString()));
+                        resultHashMap.put(fieldConfig.getFullFieldName(), strVal);
                     } else {
                         resultHashMap.put(fieldConfig.getFullFieldName(), value);
                     }
                 }
 
+                //System.out.println("epath : " + retrieveResultsFields.get(i));
+                //System.out.println("value : " + value);
                 //resultHashMap.put(epath, value);
             }
         }
         
+        //System.out.println("===================================================" + resultHashMap);
         return resultHashMap;
     }
     private HashMap getValuesForResultFields(ObjectNode objectNode, EPathArrayList retrieveResultsFields) throws ObjectException, EPathException {

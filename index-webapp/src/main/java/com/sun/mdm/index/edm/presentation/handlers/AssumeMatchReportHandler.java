@@ -246,7 +246,14 @@ public class AssumeMatchReportHandler  {
                              Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
                              if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                                  if (value != null) {
-                                     strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                     //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                                     if (fieldConfig.getUserCode() != null) {
+                                         strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                                     } else {
+                                         strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                     }
+
+                                     // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
                                      newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
                                  }
                              } else {
@@ -310,7 +317,14 @@ public class AssumeMatchReportHandler  {
                             Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
                             if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                                 if (value != null) {
-                                    strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                    //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                                    if (fieldConfig.getUserCode() != null) {
+                                        strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                                    } else {
+                                        strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                    }
+
+                                    // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
                                     newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
                                 }
                             } else {
