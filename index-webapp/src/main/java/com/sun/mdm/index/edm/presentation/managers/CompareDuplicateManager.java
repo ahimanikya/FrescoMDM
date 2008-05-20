@@ -356,7 +356,15 @@ public class CompareDuplicateManager {
                 if(fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                     Object value  = editSystemObjectHashMap.get(fieldConfig.getFullFieldName());
                     if(value != null) {
-                       strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
+                        //SET THE VALUES WITH USER CODES AND VALUE LIST
+                        if (fieldConfig.getUserCode() != null) {
+                            strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                        } else {
+                            strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                        }
+
+                        
+                       //strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
                        editSystemObjectHashMap.put(fieldConfig.getFullFieldName(),strVal);
                     }
                     
@@ -406,7 +414,15 @@ public class CompareDuplicateManager {
                         if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                             Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
                             if (value != null) {
-                                strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                //SET THE VALUES WITH USER CODES AND VALUE LIST
+                                if (fieldConfig.getUserCode() != null) {
+                                    strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                                } else {
+                                    strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                }
+
+                                  
+                                //strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                                 minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
                             }
                             
@@ -455,8 +471,15 @@ public class CompareDuplicateManager {
                 if(fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                     Object value  = editEnterpriseObjectHashMap.get(fieldConfig.getFullFieldName());
                     if(value != null) {
-                       strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
-                       editEnterpriseObjectHashMap.put(fieldConfig.getFullFieldName(),strVal);
+                        //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                        if (fieldConfig.getUserCode() != null) {
+                            strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                        } else {
+                            strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                        }
+
+                       // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
+                        editEnterpriseObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
                     }
                     
                 }
@@ -525,7 +548,14 @@ public class CompareDuplicateManager {
                         if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                             Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
                             if (value != null) {
-                                strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                //SET THE VALUES WITH USER CODES AND VALUE LIST
+                                if (fieldConfig.getUserCode() != null) {
+                                    strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                                } else {
+                                    strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                }
+
+                                //strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                                 minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
                             }
                             
@@ -661,7 +691,14 @@ public class CompareDuplicateManager {
                                 if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                                     Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
                                     if (value != null) {
-                                        strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                        //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                                        if (fieldConfig.getUserCode() != null) {
+                                            strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                                        } else {
+                                            strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                        }
+                                        
+                                        //strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                                         minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
                                     }
                                     
@@ -727,7 +764,14 @@ public class CompareDuplicateManager {
                         if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                             Object value = editSystemObjectHashMap.get(fieldConfig.getFullFieldName());
                             if (value != null) {
-                                strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                                if (fieldConfig.getUserCode() != null) {
+                                    strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                                } else {
+                                    strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                }
+                                
+                               //strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                                 editSystemObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
                             }
                         }
@@ -768,7 +812,13 @@ public class CompareDuplicateManager {
                                 Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
                                 minorObjectHashMapEdit.put(fieldConfig.getFullFieldName(), value);
                                 if (value != null) {
+                                //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                                if (fieldConfig.getUserCode() != null) {
+                                    strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                                } else {
                                     strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                }
+                                //strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                                     minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
                                 }
                             }
