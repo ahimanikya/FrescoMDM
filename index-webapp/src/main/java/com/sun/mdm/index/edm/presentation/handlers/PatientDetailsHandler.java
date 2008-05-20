@@ -348,7 +348,6 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 eoSearchResultIterator = masterControllerService.searchEnterpriseObject(eoSearchCriteria, eoSearchOptions);
                 SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
 
-				System.out.println("criteria...."+eoSearchOptions);
                 String dateField = new String();
                 ArrayList resultsConfigArray = super.getResultsConfigArray();
                 String strVal = new String();

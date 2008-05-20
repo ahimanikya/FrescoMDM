@@ -1178,11 +1178,8 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
     }
 
     private HashMap getValuesForResultFields(EnterpriseObject eo, EPathArrayList retrieveResultsFields) throws ObjectException, EPathException {
-        // System.out.println("<<=== eo " + eo);
-        // System.out.println("<<=== retrieveResultsFields " + retrieveResultsFields);  
         HashMap resultHashMap=new HashMap();
         ArrayList fieldConfigArray = super.getResultsConfigArray();
-        //System.out.println("===================================================");
         SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
         String strVal = new String();
         String dateField = new String();
@@ -1212,13 +1209,10 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
                     }
                 }
 
-                //System.out.println("epath : " + retrieveResultsFields.get(i));
-                //System.out.println("value : " + value);
                 //resultHashMap.put(epath, value);
             }
         }
         
-        //System.out.println("===================================================" + resultHashMap);
         return resultHashMap;
     }
     private HashMap getValuesForResultFields(ObjectNode objectNode, EPathArrayList retrieveResultsFields) throws ObjectException, EPathException {
