@@ -8,6 +8,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.services.masterController.MasterControllerService"  %>
 <%@ page import="com.sun.mdm.index.edm.control.QwsController"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ObjectNodeConfig"  %>
