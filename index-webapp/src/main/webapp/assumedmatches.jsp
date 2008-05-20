@@ -9,6 +9,7 @@
 <%@ page import="com.sun.mdm.index.edm.services.configuration.SearchResultsConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfigGroup"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.AssumeMatchHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="java.util.ArrayList"  %>
 <%@ page import="java.util.HashMap"  %>
 
@@ -18,7 +19,7 @@
 //http://www.ligaturesoftware.com
 %>
 <f:view>    
-<f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.midm" var="msgs" />
+<f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />
 <html>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

@@ -20,6 +20,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.ReportHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.AuditLogHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 
 
 <%@ page import="java.util.ArrayList"  %>
@@ -57,7 +58,7 @@ function setRand(thisrand)  {
 %>
 
 <f:view>
-    <f:loadBundle basename="com.sun.mdm.index.edm.presentation.messages.midm" var="msgs" />
+    <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />
     
     <html>
        <head>
