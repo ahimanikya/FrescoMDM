@@ -111,7 +111,9 @@ function align(thisevent,divID) {
 <title><h:outputText value="#{msgs.application_heading}"/></title>  
 <body class="yui-skin-sam">
     <%@include file="./templates/header.jsp"%>
-        
+  <table>
+   <tr>
+    <td>
     <div id="mainContent">
         <div id="advancedSearch" class="duplicaterecords" style="visibility:visible;display:block">
      <div id="searchType">
@@ -302,7 +304,13 @@ function align(thisevent,divID) {
     
 
 </div>
-<div class="searchresults" id="outputdiv"></div>
+</td>
+</tr>
+<tr>
+  <td><div class="searchresults" id="outputdiv"></div>
+  </td>
+</tr>
+</table>
 
 </body>
 <div class="alert" id="ajaxOutputdiv"></div> 

@@ -216,6 +216,7 @@ function setRand(thisrand)  {
                         </table>			
                         <h:inputHidden id="enteredFieldValues" value="#{TransactionHandler.enteredFieldValues}"/>
                     </h:form>
+                    <div class="reportresults" id="outputdiv"> </div>
    				
             </div>           
         </div>
@@ -225,7 +226,6 @@ function setRand(thisrand)  {
         
         
         <div id="InvalidTransaction" class="balloonstyle"><h:outputText  value="#{msgs.invalid_transaction}"/></div>
-   <div class="searchresults" id="outputdiv"></div>
    </body>   
         <%
            TransactionHandler transactionHandler = new TransactionHandler();
