@@ -237,7 +237,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     
                     EnterpriseObject afterEO = amSummary.getAfterEO();
                    
-                    if ((index != 0 && !prevEuid.equalsIgnoreCase(amSummary.getEUID())) || (index + 1 == amIter.count())) {  //Boundary value condition 
+                    if ((index != 0 && !prevEuid.equalsIgnoreCase(amSummary.getEUID()))) {  //Boundary value condition 
                         //populate VO                            
                         amArrayList  = populateVO(summaryList, index);
                         resultsArray.add(amArrayList);   
@@ -252,6 +252,9 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     prevEuid = amSummary.getEUID();
                     index++;                    
                 }// end of while
+                //Catch the last one here!
+                amArrayList  = populateVO(summaryList, index);
+                resultsArray.add(amArrayList);
                 //Accumilate the arrayList here  
                 setSearchSize(counter);
             }
