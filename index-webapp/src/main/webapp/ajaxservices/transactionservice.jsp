@@ -36,6 +36,30 @@
  <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />   
 
 <%
+String URI = request.getRequestURI();URI = URI.substring(1, URI.lastIndexOf("/"));
+//remove the app name 
+URI = URI.replaceAll("/ajaxservices","");
+boolean isSessionActive = true;
+%>
+
+<% if(session!=null && session.isNew()) {
+	isSessionActive = false;
+%>
+ <table>
+   <tr>
+     <td>
+  <script>
+   window.location = '/<%=URI%>/login.jsf';
+  </script>
+     </td>
+	 </tr>
+	</table>
+<%}%>
+
+<%if (isSessionActive)  {%>
+
+
+<%
 ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 TransactionHandler transactionHandler= new TransactionHandler();
 
@@ -229,4 +253,5 @@ if (results != null)   {
 	 </div>
 
 <% } %>
+<%} %>  <!-- Session check -->
 </f:view>

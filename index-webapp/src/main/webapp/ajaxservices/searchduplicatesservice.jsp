@@ -51,6 +51,28 @@
 <f:view>
 <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />
 
+
+<%
+String URI_Session = request.getRequestURI();URI_Session = URI_Session.substring(1, URI_Session.lastIndexOf("/"));
+//remove the app name 
+URI_Session = URI_Session.replaceAll("/ajaxservices","");
+boolean isSessionActive = true;
+%>
+<% if(session!=null && session.isNew()) {
+	isSessionActive = false;
+%>
+ <table>
+   <tr>
+     <td>
+  <script>
+   window.location = '/<%=URI_Session%>/login.jsf';
+  </script>
+     </td>
+	 </tr>
+	</table>
+<%}%>
+<%if (isSessionActive)  {%>
+
 <%
 ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 MasterControllerService masterControllerService = new MasterControllerService();
@@ -3301,5 +3323,5 @@ ArrayList collectedEuidsList = new ArrayList();
 
 <%}%>
 
-
+  <%} %>  <!-- Session check -->
 </f:view>

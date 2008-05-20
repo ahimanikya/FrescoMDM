@@ -42,6 +42,27 @@
 
 
 <%
+String URI_Session = request.getRequestURI();URI_Session = URI_Session.substring(1, URI_Session.lastIndexOf("/"));
+//remove the app name 
+URI_Session = URI_Session.replaceAll("/ajaxservices","");
+boolean isSessionActive = true;
+%>
+<% if(session!=null && session.isNew()) {
+	isSessionActive = false;
+%>
+ <table>
+   <tr>
+     <td>
+  <script>
+   window.location = '/<%=URI_Session%>/login.jsf';
+  </script>
+     </td>
+	 </tr>
+	</table>
+<%}%>
+<%if (isSessionActive)  {%>
+
+<%
  double rand = java.lang.Math.random();
  String URI = request.getRequestURI();
  URI = URI.substring(1, URI.lastIndexOf("/"));
@@ -79,6 +100,10 @@
             <script type="text/javascript" src="/scripts/yui/tabview/tabview.js"></script>
             <script type="text/javascript" src="/scripts/yui4jsf/event/event.js"></script>
            <!--there is no custom header content for this example-->
+           <script type="text/javascript" >
+             var URI_VAL = '<%=URI%>';
+			 var RAND_VAL = '<%=rand%>';
+		  </script>
         </head>
         <%
 		   //Variables for load
@@ -358,27 +383,47 @@
                                             </h:column>
                                             <!--Rendering HTML Select Menu List-->
                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'MenuList'}" >
-                                                <h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}"
-                                                                 style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"
->
+                                                <!-- User code fields here -->
+                                     <!-- user code related changes start here -->
+          						<h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}" 
+ style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"
+								 onchange="getFormValues('#{childNodesName}EOInnerForm');ajaxMinorObjects('/'+URI_VAL+'/ajaxservices/usercodeservices.jsf?'+queryStr+'&MOT=#{childNodesName}&Field=#{childFieldConfigAdd.fullFieldName}&userCode=#{childFieldConfigAdd.userCode}&rand='+RAND_VAL+'&userCodeMasking=true','#{childNodesName}AddNewSODiv',event)"
+								rendered="#{childFieldConfigAdd.userCode ne null}">
+												    <f:selectItem itemLabel="" itemValue="" />
+                                                   <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
+                                                </h:selectOneMenu>    
+						<h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}" style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"rendered="#{childFieldConfigAdd.userCode eq null}">
                                                     <f:selectItem itemLabel="" itemValue="" />
                                                     <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
                                                 </h:selectOneMenu>
                                             </h:column>
+
                                             <!--Rendering Updateable HTML Text boxes-->
                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox' &&  childFieldConfigAdd.valueType ne 6}" >
-                                                        <h:inputText label="#{childFieldConfigAdd.displayName}"  
-                                                                     id="childFieldConfigAdd"   
-																	 title="#{childFieldConfigAdd.fullFieldName}"
-                                                                     maxlength="#{childFieldConfigAdd.maxLength}"
-                                                                     onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
-                                                                     onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')" 
-																	 onkeyup="javascript:qws_field_on_key_up(this)"
-																	 required="#{childFieldConfigAdd.required}"  
-																	 />
+                                           
+                                                            <h:inputText label="#{childFieldConfigAdd.displayName}"  
+                                                                         title="#{childFieldConfigAdd.fullFieldName}"
+                                                                         onkeydown="javascript:qws_field_on_key_down(this, userDefinedInputMask)"
+																		  maxlength="#{childFieldConfigAdd.maxLength}"
+																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                         required="#{childFieldConfigAdd.required}"
+																		 rendered="#{childFieldConfigAdd.constraintBy ne null}"
+																		 />     
+																		 
+																		 <h:inputText label="#{childFieldConfigAdd.displayName}"  
+                                                                         title="#{childFieldConfigAdd.fullFieldName}"
+                                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')"
+																		  maxlength="#{childFieldConfigAdd.maxLength}"
+																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                         required="#{childFieldConfigAdd.required}"
+																		 rendered="#{childFieldConfigAdd.constraintBy eq null}"
+																		 />
 
-                                            </h:column>                     
- 
+
+                                     </h:column>                      
+                                     <!-- user code related changes end here -->
                                      <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox'  &&  childFieldConfigAdd.valueType eq 6}" >
                                           <nobr>
                                             <input type="text" title = "<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>"  
@@ -761,7 +806,7 @@
                                                                 <tr>
                                                                     <td colspan="2">
                                                       
-																	<a value="javascript:void(0)" onclick="javascript:showMinorObjectsDiv('extra<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event)" class="button">
+																	<a href="javascript:void(0)" onclick="javascript:showMinorObjectsDiv('extra<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event)" class="button">
 																	<span>
 																	<img src="./images/down-chevron-button.png" border="0" alt="View <h:outputText value="#{childNodesName}"/>" />
 																	View &nbsp;<h:outputText value="#{childNodesName}"/>&nbsp;
@@ -801,26 +846,45 @@
 
                                             <!--Rendering HTML Select Menu List-->
                                             <h:column rendered="#{soChildFieldConfigAdd.guiType eq 'MenuList'}" >
-                                                <h:selectOneMenu title="#{soChildFieldConfigAdd.fullFieldName}"
-                                                                 style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;">
+                                                <!-- User code fields here -->
+						<h:selectOneMenu title="#{soChildFieldConfigAdd.fullFieldName}" 
+ style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"
+								 onchange="getFormValues('#{childNodesName}#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}SOInnerForm');ajaxMinorObjects('/'+URI_VAL+'/ajaxservices/usercodeservices.jsf?'+queryStr+'&MOT=#{childNodesName}&Field=#{soChildFieldConfigAdd.fullFieldName}&userCode=#{soChildFieldConfigAdd.userCode}&rand='+RAND_VAL+'&userCodeMasking=true','#{childNodesName}#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}SOMinorDiv',event)"
+								rendered="#{soChildFieldConfigAdd.userCode ne null}">
+								
+												    <f:selectItem itemLabel="" itemValue="" />
+                                                   <f:selectItems  value="#{soChildFieldConfigAdd.selectOptions}"  />
+                                                </h:selectOneMenu>    
+						<h:selectOneMenu title="#{soChildFieldConfigAdd.fullFieldName}" style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"rendered="#{soChildFieldConfigAdd.userCode eq null}">
                                                     <f:selectItem itemLabel="" itemValue="" />
                                                     <f:selectItems  value="#{soChildFieldConfigAdd.selectOptions}"  />
                                                 </h:selectOneMenu>
                                             </h:column>
                                             <!--Rendering Updateable HTML Text boxes-->
                                             <h:column rendered="#{soChildFieldConfigAdd.guiType eq 'TextBox' &&  soChildFieldConfigAdd.valueType ne 6}" >
-                                                     <h:inputText label="#{soChildFieldConfigAdd.displayName}" 
- 													              title="#{soChildFieldConfigAdd.fullFieldName}"
-                                                                  id="soChildFieldConfigAdd"   
-                                                                  maxlength="#{soChildFieldConfigAdd.maxLength}"
-                                                                 onblur="javascript:validate_Integer_fields(this,'#{soChildFieldConfigAdd.displayName}','#{soChildFieldConfigAdd.valueType}')"
-                                                                  onkeydown="javascript:qws_field_on_key_down(this, '#{soChildFieldConfigAdd.inputMask}')" 
-																	 onkeyup="javascript:qws_field_on_key_up(this)"
-																	 required="#{soChildFieldConfigAdd.required}"  
-																	 />
+                                           
+                                                            <h:inputText label="#{soChildFieldConfigAdd.displayName}"  
+                                                                         title="#{soChildFieldConfigAdd.fullFieldName}"
+                                                                         onkeydown="javascript:qws_field_on_key_down(this, userDefinedInputMask)"
+																		  maxlength="#{soChildFieldConfigAdd.maxLength}"
+																		 onblur="javascript:validate_Integer_fields(this,'#{soChildFieldConfigAdd.displayName}','#{soChildFieldConfigAdd.valueType}')"
+                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                         required="#{soChildFieldConfigAdd.required}"
+																		 rendered="#{soChildFieldConfigAdd.constraintBy ne null}"
+																		 />     
+																		 
+																		 <h:inputText label="#{soChildFieldConfigAdd.displayName}"  
+                                                                         title="#{soChildFieldConfigAdd.fullFieldName}"
+                                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{soChildFieldConfigAdd.inputMask}')"
+																		  maxlength="#{soChildFieldConfigAdd.maxLength}"
+																		 onblur="javascript:validate_Integer_fields(this,'#{soChildFieldConfigAdd.displayName}','#{soChildFieldConfigAdd.valueType}')"
+                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                         required="#{soChildFieldConfigAdd.required}"
+																		 rendered="#{soChildFieldConfigAdd.constraintBy eq null}"
+																		 />
 
-                                            </h:column>                     
- 
+
+                                            </h:column>                      
                                      <h:column rendered="#{soChildFieldConfigAdd.guiType eq 'TextBox'  &&  soChildFieldConfigAdd.valueType eq 6}" >
                                           <nobr>
                                             <input type="text" title = "<h:outputText value="#{soChildFieldConfigAdd.fullFieldName}"/>"  
@@ -1071,6 +1135,6 @@
         </body>
     </html>
     </f:view>
-    
+    <%} %>  <!-- Session check -->
     
     
