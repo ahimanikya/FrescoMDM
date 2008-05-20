@@ -82,6 +82,7 @@ import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.objects.TransactionObject;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.services.configuration.ValidationService;
 import net.java.hulp.i18n.LocalizationSupport;
 
 public class TransactionHandler extends ScreenConfiguration {
@@ -243,7 +244,7 @@ public class TransactionHandler extends ScreenConfiguration {
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"LID", ts.getTransactionObject().getLID());
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"LID2", ts.getTransactionObject().getLID2());
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"Function", ts.getTransactionObject().getFunction());
-                    resultsMap.put(screenObject.getRootObj().getName()+"."+"SystemCode", ts.getTransactionObject().getSystemCode());
+                    resultsMap.put(screenObject.getRootObj().getName()+"."+"SystemCode", ValidationService.getInstance().getSystemDescription(ts.getTransactionObject().getSystemCode()));
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"SystemUser", ts.getTransactionObject().getSystemUser());
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"TimeStamp", ts.getTransactionObject().getTimeStamp());
 

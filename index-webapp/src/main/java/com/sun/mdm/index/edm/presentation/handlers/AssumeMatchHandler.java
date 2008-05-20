@@ -216,7 +216,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
             AssumedMatchIterator amIter = masterControllerService.lookupAssumedMatches(amso);
             ArrayList amArrayList = new ArrayList();
             if (amIter != null & amIter.count() > 0) {
-                amIter.sortBy("EUID", false);
+                amIter.sortBy("ID", false);
                 assumeMatchesRecordsVO = new AssumeMatchesRecords[amIter.count()];
                 int index = 0;
                 ArrayList summaryList = new ArrayList();
@@ -237,7 +237,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     
                     EnterpriseObject afterEO = amSummary.getAfterEO();
                    
-                    if ((index != 0 && !prevEuid.equalsIgnoreCase(amSummary.getEUID()))) {  //Boundary value condition 
+                    if ((index != 0 && !prevEuid.equalsIgnoreCase(amSummary.getEUID())) || (index + 1 == amIter.count())) {  //Boundary value condition 
                         //populate VO                            
                         amArrayList  = populateVO(summaryList, index);
                         resultsArray.add(amArrayList);   

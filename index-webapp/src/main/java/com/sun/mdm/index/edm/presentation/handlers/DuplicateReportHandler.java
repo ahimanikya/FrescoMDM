@@ -232,8 +232,14 @@ public class DuplicateReportHandler    {
                              Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
                              if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                                  if (value != null) {
-                                     strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
-                                     newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
+                                        //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                                        if (fieldConfig.getUserCode() != null) {
+                                            strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                                        } else {
+                                            strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                        }
+
+                                        // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString());                                      newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
                                  }
                              } else {
                                  newValuesMap.put(fieldConfig.getFullFieldName(), value);
@@ -261,8 +267,14 @@ public class DuplicateReportHandler    {
                             Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
                             if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                                 if (value != null) {
-                                    strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
-                                    newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
+                                        //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                                        if (fieldConfig.getUserCode() != null) {
+                                            strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                                        } else {
+                                            strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                        }
+
+                                        // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString());                                     newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
                                 }
                             } else {
                                 newValuesMap.put(fieldConfig.getFullFieldName(), value);
@@ -346,8 +358,14 @@ public class DuplicateReportHandler    {
                                 Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
                                 if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                                     if (value != null) {
-                                        strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
-                                        newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
+                                        //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                                        if (fieldConfig.getUserCode() != null) {
+                                            strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                                        } else {
+                                            strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                        }
+
+                                        // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString());                                         newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
                                         euid1Map.put(fieldConfig.getFullFieldName(), strVal);
                                     }
                                 } else {
@@ -377,8 +395,14 @@ public class DuplicateReportHandler    {
                                 Object value = EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject());
                                 if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                                     if (value != null) {
-                                        strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
-                                        newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
+                                        //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                                        if (fieldConfig.getUserCode() != null) {
+                                            strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                                        } else {
+                                            strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                        }
+
+                                        // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString());                                         newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
                                         euid2Map.put(fieldConfig.getFullFieldName(), strVal);
                                     }
                                 } else {

@@ -32,6 +32,7 @@
 
 package com.sun.mdm.index.edm.presentation.handlers;
 
+import com.sun.mdm.index.edm.common.PullDownListItem;
 import com.sun.mdm.index.objects.ObjectField;
 import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
@@ -66,6 +67,7 @@ import javax.servlet.http.HttpSession;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.services.configuration.ValidationService;
 import net.java.hulp.i18n.LocalizationSupport;
 
 public class SourceHandler {
@@ -1554,6 +1556,8 @@ public class SourceHandler {
         //loop through all the FieldConfig values 
         for (int k = 0; k < fcRootArray.length; k++) {
             String inputMask = fcRootArray[k].getInputMask();
+            String userCode = fcRootArray[k].getUserCode();
+            String constarintBy = fcRootArray[k].getConstraintBy();          
             //replace all the masked fields here
             if (inputMask != null && inputMask.length() > 0 && fcRootArray[k].getValueType() == ObjectField.OBJECTMETA_STRING_TYPE) {
                 inputMask = inputMask.replace("D", ":");
@@ -1565,9 +1569,27 @@ public class SourceHandler {
                 }
                 if (unMaskedValueEntered != null)  valueEnteredMap.put(fcRootArray[k].getFullFieldName(), unMaskedValueEntered);
                 
+            } else if (constarintBy != null && constarintBy.length() > 0 ) {
+                 int refIndex = getReferenceFields(fcRootArray,constarintBy);
+                 
+                 String userInputMask = ValidationService.getInstance().getUserCodeInputMask(fcRootArray[refIndex].getUserCode(), (String) valueEnteredMap.get(fcRootArray[refIndex].getFullFieldName()));
+              
+                 
+                if(userInputMask!=null){
+                userInputMask = userInputMask.replace("D", ":");
+                userInputMask = userInputMask.replace("L", ":");    
+                
+              
+                 String unMaskedValueEntered = (String) valueEnteredMap.get(fcRootArray[k].getFullFieldName());
+                 
+                String[] maskChars = userInputMask.split(":");
+                for (int i = 0; unMaskedValueEntered != null  && i <  maskChars.length; i++) {                   
+                    unMaskedValueEntered = unMaskedValueEntered.replace(maskChars[i], "");                    
+                }
+                if (unMaskedValueEntered != null)  valueEnteredMap.put(fcRootArray[k].getFullFieldName(), unMaskedValueEntered);
+                }
             }
         }
-
         return valueEnteredMap;
     }
 
@@ -1631,6 +1653,16 @@ public class SourceHandler {
             return false;
         }                
         return true;
+    }
+
+    public int getReferenceFields(FieldConfig[] childFieldConfigs,String refName) {
+        //get the reference value index 
+        for(int i = 0;i<childFieldConfigs.length;i++) {
+            if(refName.equalsIgnoreCase(childFieldConfigs[i].getName()))  {
+                return i;
+            }
+        }    
+        return -1;
     }
     
 }
