@@ -1,0 +1,19 @@
+<project name="solutions" default="install" basedir=".">
+ 
+ <target name="change" depends=""> 
+ 	<move file="${sourceFile}" tofile="${targetDir}/${targetFile}" />
+ </target>
+
+ <target name="install" depends="">   
+ 	<mkdir dir="${targetDir}" />    
+ 	<copyfile src="${sourceFile}" dest="${targetDir}/${targetFile}"/>
+ </target>
+
+ <target name="package" depends=""> 
+  <mkdir dir="${targetDir}" />    
+ 	<zip file="${targetDir}/${targetFile}" >
+ 		<zipfileset dir="${sourceDir}" includes="*.zip" />		
+ 	</zip>
+ </target>
+ 
+</project>
