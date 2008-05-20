@@ -52,6 +52,7 @@ import com.sun.mdm.index.util.LogUtil;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
 import net.java.hulp.i18n.LocalizationSupport;
 /**
  * @author Rajani
@@ -368,20 +369,35 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                             Object value = EPathAPI.getFieldValue(ePath, objectNode);
                             
                            if(value instanceof java.util.Date) {
-                                dateField = simpleDateFormatFields.format(value);
+                               dateField = simpleDateFormatFields.format(value);
                                 
-                                fieldvalues.put(fieldConfig.getFullFieldName(), dateField);
-                           } else {
-                                if((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0 ) && value != null) {
-                                   strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
-                                   //value
-                                   fieldvalues.put(fieldConfig.getFullFieldName(), strVal);
-                                } else {
-                                   fieldvalues.put(fieldConfig.getFullFieldName(), value);
+                               if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                                    fieldvalues.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
+                               } else {
+                                    fieldvalues.put(fieldConfig.getFullFieldName(), dateField);
                                 }
+                                
+                           } else {
+                               if (fieldConfig.isSensitive()) { //if the field is senstive then mask the value accordingly
+                                    fieldvalues.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
+                               } else {
+                                   if ((fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) && value != null) {
+                                       //value for the fields with VALUE LIST
+                                       strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                       fieldvalues.put(fieldConfig.getFullFieldName(), strVal);
+                                   } else if ((fieldConfig.getUserCode() != null && fieldConfig.getUserCode().length() > 0) && value != null) {
+                                       //get the value if the user code is present for the fields
+                                       strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                                       fieldvalues.put(fieldConfig.getFullFieldName(), strVal);
+                                   } else {
+                                       fieldvalues.put(fieldConfig.getFullFieldName(), value);
+                                   }
+                               }
+                                
+                                
                             }
                         } catch (Exception npe) {
-		                      npe.printStackTrace();
+		          npe.printStackTrace();
                         }
                     }
 					String euid = eoSearchResultRecord.getEUID();
@@ -659,22 +675,30 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             EnterpriseObject destinationEO = masterControllerService.getEnterpriseObject(destnEuid);
 
 
-            HashMap eoHashMap = eoHashMap = (HashMap) compareDuplicateManager.getEnterpriseObjectAsHashMap(destinationEO, screenObject).get("ENTERPRISE_OBJECT");
+            HashMap eoHashMap = eoHashMap = (HashMap) compareDuplicateManager.getEnterpriseObjectAsHashMap(destinationEO, screenObject).get("ENTERPRISE_OBJECT_CODES");
       
            
             String[] selectedFieldsValue = this.selectedMergeFields.split(">>");
 
-
+            HashMap updatedEoMap = new HashMap();
+            
             //when user modifies the person fields the only  update the enterprise object
             if (selectedFieldsValue.length > 1) {
+                updatedEoMap.put(MasterControllerService.HASH_MAP_TYPE, eoHashMap.get(MasterControllerService.HASH_MAP_TYPE));
+                updatedEoMap.put(MasterControllerService.MINOR_OBJECT_ID, eoHashMap.get(MasterControllerService.MINOR_OBJECT_ID));
                 //Modify destination EO values with selected values 
                 for (int i = 0; i < selectedFieldsValue.length; i++) {
                     String[] sourceEuidFull = selectedFieldsValue[i].split("##");
-                    eoHashMap.put(sourceEuidFull[0], sourceEuidFull[1]);
-                  
+                    //if blank value is entered overwrite the value with null
+                    if(sourceEuidFull[1] != null && "null".equalsIgnoreCase(sourceEuidFull[1])) {
+                       updatedEoMap.put(sourceEuidFull[0], null);                        
+                    } else {
+                      updatedEoMap.put(sourceEuidFull[0], sourceEuidFull[1]);
+                     }
+                   
                 }
                 //Modify CHANGED sbr values here
-                masterControllerService.modifySBR(destinationEO.getSBR(), eoHashMap);
+                masterControllerService.modifySBR(destinationEO.getSBR(), updatedEoMap);
 
                 masterControllerService.updateEnterpriseObject(destinationEO);
 
