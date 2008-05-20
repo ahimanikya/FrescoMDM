@@ -82,6 +82,9 @@
 				document.getElementById(thisDiv).style.display  = 'none';
                 document.getElementById(minorObject+'buttonspan').innerHTML = 'Save '+ minorObject;
 		      }
+			 var userDefinedInputMask="";
+             var URI_VAL = '<%=URI%>';
+			 var RAND_VAL = '<%=rand%>';
 		</script>
         </head>
         <title><h:outputText value="#{msgs.application_heading}"/></title> 

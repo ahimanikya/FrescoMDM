@@ -789,18 +789,18 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                                 <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
                                                                                  <%if(fieldConfigMap.isKeyType()) {%>
                                                                                    <b>
-                                                                                   <%if (fieldConfigMap.isSensitive()){%>
+                                                                                     <%if (fieldConfigMap.isSensitive()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
                                                                                         <%=minorObjectHashMap.get(epathValue)%>
                                                                                      <%}%>
-																				   </b>
-                                                                                  <%if (fieldConfigMap.isSensitive()){%>
-                                                                                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                                                                                     <%}else {%>
-                                                                                        <%=minorObjectHashMap.get(epathValue)%>
-                                                                                     <%}%>
+ 																				   </b>
 																				  <%}else{%>
+                                                                                     <%if (fieldConfigMap.isSensitive()){%>
+                                                                                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                     <%}else {%>
+                                                                                        <%=minorObjectHashMap.get(epathValue)%>
+                                                                                     <%}%>
  																				  <%}%>
                                                                                 <%} else {%>
                                                                                 &nbsp;

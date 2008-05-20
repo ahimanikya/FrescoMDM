@@ -69,6 +69,9 @@ function setRand(thisrand)  {
         <title><h:outputText value="#{msgs.application_heading}"/></title>  
         <%@include file="./templates/header.jsp"%>
     <body class="yui-skin-sam">
+	  <table>
+	    <tr>
+		  <td>
              <div id="mainContent">     
               <div id ="auditlog " class="basicSearch">
                         <table border="0" cellpadding="0" cellspacing="0" align="right">
@@ -230,7 +233,20 @@ function setRand(thisrand)  {
 					<!--div class="reportresults" id="outputdiv"></div-->
                 </div> 
             </div>  
-   <div class="searchresults" id="outputdiv"></div>
+		  </td>
+		  </tr>
+		  <tr>
+		    <td >
+			<table border="0">
+				<tr>
+					<td>
+						<div class="basicSearch" style="visibility:hidden"" id="outputdiv"></div>
+					</td>
+				</tr>
+            </table>
+		    </td>
+		   </tr>
+		  </table>
    </body>     
     <script>
         function setLidMaskValue(field,formName) {

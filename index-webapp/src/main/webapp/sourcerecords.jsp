@@ -21,6 +21,7 @@
 <%@ page import="com.sun.mdm.index.objects.epath.EPath"%>
 <%@ page import="com.sun.mdm.index.objects.epath.EPathArrayList"%>
 <%@ page import="com.sun.mdm.index.edm.services.masterController.MasterControllerService" %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ValidationService" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
 
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
@@ -79,7 +80,7 @@
             var minorObjTypeLocalCount = 0;
             var minorArrayLocal = new Array();
 			var editIndexid = "-1";
-
+            var userDefinedInputMask="";
 
             function setEditIndex(editIndex)   {
 				editIndexid = editIndex;
@@ -149,6 +150,8 @@
                  
             }
             
+            var URI_VAL = '<%=URI%>';
+			var RAND_VAL = '<%=rand%>';
    </script>
         <!--there is no custom header content for this example-->
         
@@ -340,7 +343,8 @@
                                                                     <h:outputText value="#{childFieldConfig.displayName}"  />
                                                                 </h:column>
                                                                 <h:column>
-                                                                    <h:outputText value="#{childMapArrayList[childFieldConfig.fullFieldName]}"  />
+                                                                    <h:outputText value="#{childMapArrayList[childFieldConfig.fullFieldName]}" rendered="#{!childFieldConfig.sensitive}" />
+                                                                    <h:outputText value="#{msgs.SENSITIVE_FIELD_MASKING}" rendered ="#{childFieldConfig.sensitive}"   />
                                                                 </h:column>
                                                             </h:dataTable>               
                                                         </h:column>
@@ -569,25 +573,50 @@
                                                                                                                 <h:outputText value="*" rendered="#{childFieldConfigAdd.required}" />
                                                                                                             </h:column>
                                                                                                             <!--Rendering HTML Select Menu List-->
-                                                                                                            <h:column rendered="#{childFieldConfigAdd.guiType eq 'MenuList'}" >
-                                                                                                             <h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}" >
-                                                                                                                    <f:selectItem itemLabel="" itemValue="" />
-                                                                                                                    <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
-                                                                                                                </h:selectOneMenu>
-                                                                                                            </h:column>
-                                                                                                            <!--Rendering Updateable HTML Text boxes-->
-                                                                                                            <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox' &&  childFieldConfigAdd.valueType ne 6}" >
-                                                                                                                <input type="text" title = "<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>"  
-                                                                                                                       name = "<h:outputText value="#{childFieldConfigAdd.name}"/>"  
-                                                                                                                       id = "<h:outputText value="#{childFieldConfigAdd.name}"/>"  
-                                                                                                                       required="<h:outputText value="#{childFieldConfigAdd.required}"/>" 
-                                                                                                                       maxlength="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
-																													   onblur="javascript:validate_Integer_fields(this,'<h:outputText value="#{childFieldConfigAdd.displayName}"/>','<h:outputText value="#{childFieldConfigAdd.valueType}"/>')"
-                                                                                                                       onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')" 
-                                                                                                                       onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                                                                            </h:column>                     
-                                                                                                                
-                                                                                                            <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox'  &&  childFieldConfigAdd.valueType eq 6}" >
+                                            <!--Rendering HTML Select Menu List-->
+										  <!--user code related changes starts here-->
+                                            <h:column rendered="#{childFieldConfigAdd.guiType eq 'MenuList'}" >
+                                                <!-- User code fields here -->
+												<h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}" onchange="getFormValues('#{childNodesName}InnerForm');ajaxMinorObjects('/'+URI_VAL+'/ajaxservices/usercodeservices.jsf?'+queryStr+'&MOT=#{childNodesName}&Field=#{childFieldConfigAdd.fullFieldName}&userCode=#{childFieldConfigAdd.userCode}&rand=+RAND_VAL+&userCodeMasking=true','#{childNodesName}AddNewSODiv',event)"
+												rendered="#{childFieldConfigAdd.userCode ne null}">
+												    <f:selectItem itemLabel="" itemValue="" />
+                                                   <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
+                                                </h:selectOneMenu>    
+												
+												<h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}" 
+												                 rendered="#{childFieldConfigAdd.userCode eq null}">
+                                                    <f:selectItem itemLabel="" itemValue="" />
+                                                    <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
+                                                </h:selectOneMenu>
+                                            </h:column>
+
+                                            <!--Rendering Updateable HTML Text boxes-->
+                                            <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox' &&  childFieldConfigAdd.valueType ne 6}" >
+                                           
+                                                            <h:inputText label="#{childFieldConfigAdd.displayName}"  
+                                                                         title="#{childFieldConfigAdd.fullFieldName}"
+                                                                         onkeydown="javascript:qws_field_on_key_down(this, userDefinedInputMask)"
+																		  maxlength="#{childFieldConfigAdd.maxLength}"
+																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                         required="#{childFieldConfigAdd.required}"
+																		 rendered="#{childFieldConfigAdd.constraintBy ne null}"
+																		 />     
+																		 
+																		 <h:inputText label="#{childFieldConfigAdd.displayName}"  
+                                                                         title="#{childFieldConfigAdd.fullFieldName}"
+                                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')"
+																		  maxlength="#{childFieldConfigAdd.maxLength}"
+																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                         required="#{childFieldConfigAdd.required}"
+																		 rendered="#{childFieldConfigAdd.constraintBy eq null}"
+																		 />
+
+                                          </h:column>                     
+										  <!--user code related changes ends here-->
+                                          
+										  <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox'  &&  childFieldConfigAdd.valueType eq 6}" >
                                                                                                                 <nobr>
                                                                                                                     <input type="text" title = "<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>"  
                                                                                                                            id = "<h:outputText value="#{childFieldConfigAdd.name}"/>"  
@@ -606,9 +635,8 @@
                                                                                                             <!--Rendering Updateable HTML Text Area-->
                                                                                                                 
                                                                                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextArea'}" >
-                                                                                                                <h:inputTextarea title="#{fieldConfigAddAddress.fullFieldName}"  
-                                                                                                                                 onblur="javascript:accumilateMinorObjectFieldsOnBlurLocal('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}','#{childFieldConfigAdd.inputMask}','#{childFieldConfigAdd.valueType}')"
-                                                                                                                                 required="#{fieldConfigAddAddress.required}" />
+                                                                                                                <h:inputTextarea title="#{childFieldConfigAdd.fullFieldName}"  
+                                                                                                                                 required="#{childFieldConfigAdd.required}" />
                                                                                                             </h:column>
                                                                                                         </h:dataTable>                                                                                
                                                                                                     </h:column>
@@ -1181,7 +1209,15 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                             </h:column>
                                             <!--Rendering HTML Select Menu List-->
                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'MenuList'}" >
-                                                <h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}" >
+                                                <!-- User code fields here -->
+												<h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}" 
+												onchange="getFormValues('#{childNodesName}AddNewSOInnerForm');ajaxMinorObjects('/'+URI_VAL+'/ajaxservices/usercodeservices.jsf?'+queryStr+'&MOT=#{childNodesName}&Field=#{childFieldConfigAdd.fullFieldName}&userCode=#{childFieldConfigAdd.userCode}&rand='+RAND_VAL+'&userCodeMasking=true','#{childNodesName}AddNewSODiv',event)"
+												rendered="#{childFieldConfigAdd.userCode ne null}">
+												    <f:selectItem itemLabel="" itemValue="" />
+                                                   <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
+                                                </h:selectOneMenu>    
+												
+												<h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}" rendered="#{childFieldConfigAdd.userCode eq null}">
                                                     <f:selectItem itemLabel="" itemValue="" />
                                                     <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
                                                 </h:selectOneMenu>
@@ -1191,11 +1227,23 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                            
                                                             <h:inputText label="#{childFieldConfigAdd.displayName}"  
                                                                          title="#{childFieldConfigAdd.fullFieldName}"
+                                                                         onkeydown="javascript:qws_field_on_key_down(this, userDefinedInputMask)"
+																		  maxlength="#{childFieldConfigAdd.maxLength}"
+																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                         required="#{childFieldConfigAdd.required}"
+																		 rendered="#{childFieldConfigAdd.constraintBy ne null}"
+																		 />     
+																		 
+																		 <h:inputText label="#{childFieldConfigAdd.displayName}"  
+                                                                         title="#{childFieldConfigAdd.fullFieldName}"
                                                                          onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')"
 																		  maxlength="#{childFieldConfigAdd.maxLength}"
 																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
                                                                          onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                         required="#{childFieldConfigAdd.required}"/>
+                                                                         required="#{childFieldConfigAdd.required}"
+																		 rendered="#{childFieldConfigAdd.constraintBy eq null}"
+																		 />
 
 
                                             </h:column>                     
@@ -1219,8 +1267,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                            <!--Rendering Updateable HTML Text Area-->
                                             
                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextArea'}" >
-                                                <h:inputTextarea title="#{fieldConfigAddAddress.fullFieldName}"  
-                                                                 onblur="javascript:accumilateMinorObjectFieldsOnBlurLocal('#{childFieldConfigAdd.objRef}',this,'#{childFieldConfigAdd.fullFieldName}','#{childFieldConfigAdd.inputMask}','#{childFieldConfigAdd.valueType}')"
+                                                <h:inputTextarea title="#{childFieldConfigAdd.fullFieldName}"  
                                                                  required="#{fieldConfigAddAddress.required}" />
                                             </h:column>
                                         </h:dataTable>                                                                                
