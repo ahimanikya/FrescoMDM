@@ -1,0 +1,906 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<midm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/midm.xsd">
+    <node>
+        <name>UKPatient</name>
+        <field>
+            <name>Category</name>
+            <display-name>Category</display-name>
+            <display-order>1</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>CATEGORY</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Gender</name>
+            <display-name>Gender</display-name>
+            <display-order>2</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>GENDER</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>DOB</name>
+            <display-name>Date Of Birth</display-name>
+            <display-order>3</display-order>
+            <max-length>12</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>BirthOrder</name>
+            <display-name>Birth Order</display-name>
+            <display-order>4</display-order>
+            <max-length>3</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>int</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>BirthTime</name>
+            <display-name>Birth Time</display-name>
+            <display-order>5</display-order>
+            <max-length>12</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>MaritalStatus</name>
+            <display-name>Marital Status</display-name>
+            <display-order>6</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>MSTATUS</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>DateOfDeath</name>
+            <display-name>Date of Death</display-name>
+            <display-order>7</display-order>
+            <max-length>12</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>StatusOfDeathNoti</name>
+            <display-name>Status of Death Notification</display-name>
+            <display-order>8</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Language</name>
+            <display-name>Language</display-name>
+            <display-order>9</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>LANGUAGE</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>EthnicCatCode</name>
+            <display-name>Ethnic Category Code</display-name>
+            <display-order>10</display-order>
+            <max-length>1</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>ETHNIC</value-list>
+            <value-type>char</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>CommonContactMeth</name>
+            <display-name>Common Contact Method</display-name>
+            <display-order>11</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>CONMETH</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactPref01STime</name>
+            <display-name>Contact Pref 01 - Start Time</display-name>
+            <display-order>12</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactPref01ETime</name>
+            <display-name>Contact Preference 01 - End Time</display-name>
+            <display-order>13</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactPref02STime</name>
+            <display-name>Contact Pref 02 - Start Time</display-name>
+            <display-order>14</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactPref02ETime</name>
+            <display-name>Contact Pref 02 - End Time</display-name>
+            <display-order>15</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactPref03STime</name>
+            <display-name>Contact Pref 03 - Start Time</display-name>
+            <display-order>16</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactPref03ETime</name>
+            <display-name>Contact Pref 03 - End Time</display-name>
+            <display-order>17</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>CommentTxt</name>
+            <display-name>Comment</display-name>
+            <display-order>18</display-order>
+            <max-length>256</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <node>
+        <name>Name</name>
+        <display-order>1</display-order>
+        <field>
+            <name>FamilyName</name>
+            <display-name>Family Name</display-name>
+            <display-order>1</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>GivenName</name>
+            <display-name>Given Name</display-name>
+            <display-order>2</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>OtherGivenName</name>
+            <display-name>Other Given Name</display-name>
+            <display-order>3</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Title</name>
+            <display-name>Title</display-name>
+            <display-order>4</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>TITLE</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Suffix</name>
+            <display-name>Suffix</display-name>
+            <display-order>5</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>SUFFIX</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <node>
+        <name>Address</name>
+        <display-order>2</display-order>
+        <field>
+            <name>AddressType</name>
+            <display-name>Address Type</display-name>
+            <display-order>1</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>ADDRTYPE</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressLine1</name>
+            <display-name>Address Line 1</display-name>
+            <display-order>2</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressLine2</name>
+            <display-name>Address Line 2</display-name>
+            <display-order>3</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressLine3</name>
+            <display-name>Address Line 3</display-name>
+            <display-order>4</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressLine4</name>
+            <display-name>Address Line 4</display-name>
+            <display-order>5</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressLine5</name>
+            <display-name>Address Line 5</display-name>
+            <display-order>6</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressHouseNo</name>
+            <display-name>Address House No</display-name>
+            <display-order>7</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressPropName</name>
+            <display-name>Address Property Name</display-name>
+            <display-order>8</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressStreet</name>
+            <display-name>Address Street</display-name>
+            <display-order>9</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Postcode</name>
+            <display-name>Postcode</display-name>
+            <display-order>10</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>PafKey</name>
+            <display-name>Paf Key</display-name>
+            <display-order>11</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressDescription</name>
+            <display-name>Address Description</display-name>
+            <display-order>12</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>EffectiveFrom</name>
+            <display-name>Effective From</display-name>
+            <display-order>13</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>EffectiveTo</name>
+            <display-name>Effective To</display-name>
+            <display-order>14</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <node>
+        <name>Telecom</name>
+        <display-order>3</display-order>
+        <field>
+            <name>Type</name>
+            <display-name>Type</display-name>
+            <display-order>1</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>TELETYPE</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Root</name>
+            <display-name>Root</display-name>
+            <display-order>2</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Extension</name>
+            <display-name>Extension</display-name>
+            <display-order>3</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Code</name>
+            <display-name>Code</display-name>
+            <display-order>4</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>EffectiveFrom</name>
+            <display-name>Effective From</display-name>
+            <display-order>5</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>EffectiveTo</name>
+            <display-name>Effective To</display-name>
+            <display-order>6</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <node>
+        <name>Consent</name>
+        <display-order>4</display-order>
+        <field>
+            <name>Type</name>
+            <display-name>Type</display-name>
+            <display-order>1</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Status</name>
+            <display-name>Status</display-name>
+            <display-order>2</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>DateModified</name>
+            <display-name>Date Modified</display-name>
+            <display-order>3</display-order>
+            <max-length>8</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>CommentTxt</name>
+            <display-name>Comment</display-name>
+            <display-order>4</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <node>
+        <name>AltContact</name>
+        <display-order>5</display-order>
+        <field>
+            <name>NI</name>
+            <display-name>National Insurance</display-name>
+            <display-order>1</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Relationship</name>
+            <display-name>Relationship</display-name>
+            <display-order>2</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>RELATION</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Role</name>
+            <display-name>Role</display-name>
+            <display-order>3</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>CONMETH</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>FamilyName</name>
+            <display-name>Family Name</display-name>
+            <display-order>4</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>GivenName</name>
+            <display-name>Given Name</display-name>
+            <display-order>5</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>OtherGivenName</name>
+            <display-name>Other Given Name</display-name>
+            <display-order>6</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Title</name>
+            <display-name>Title</display-name>
+            <display-order>7</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>TITLE</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Suffix</name>
+            <display-name>Suffix</display-name>
+            <display-order>8</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>SUFFIX</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Language</name>
+            <display-name>Language</display-name>
+            <display-order>9</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>LANGUAGE</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Precedence</name>
+            <display-name>Precedence</display-name>
+            <display-order>10</display-order>
+            <max-length>3</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>int</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>EffectiveFrom</name>
+            <display-name>Effective From</display-name>
+            <display-order>11</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>EffectiveTo</name>
+            <display-name>Effective To</display-name>
+            <display-order>12</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>CommonContactMeth</name>
+            <display-name>Common Contact Method</display-name>
+            <display-order>13</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>CONMETH</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactPref01STime</name>
+            <display-name>Contact Pref 01 - Start Time</display-name>
+            <display-order>14</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactPref01ETime</name>
+            <display-name>Contact Pref 01 - End Time</display-name>
+            <display-order>15</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactPref02STime</name>
+            <display-name>Contact Pref 02 - Start Time</display-name>
+            <display-order>16</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactPref02ETime</name>
+            <display-name>Contact Pref 02 - End Time</display-name>
+            <display-order>17</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactPref03STime</name>
+            <display-name>Contact Pref 03 - Start Time</display-name>
+            <display-order>18</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>ContactPref03ETime</name>
+            <display-name>Contact Pref 03 - End Time</display-name>
+            <display-order>19</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressType</name>
+            <display-name>Address Type</display-name>
+            <display-order>20</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>ADDRTYPE</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressLine1</name>
+            <display-name>Address Line 1</display-name>
+            <display-order>21</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressLine2</name>
+            <display-name>Address Line 2</display-name>
+            <display-order>22</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressLine3</name>
+            <display-name>Address Line 3</display-name>
+            <display-order>23</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressLine4</name>
+            <display-name>Address Line 4</display-name>
+            <display-order>24</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressLine5</name>
+            <display-name>Address Line 5</display-name>
+            <display-order>25</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Postcode</name>
+            <display-name>Postcode</display-name>
+            <display-order>26</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>PafKey</name>
+            <display-name>PafKey</display-name>
+            <display-order>27</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressEffectFrom</name>
+            <display-name>Address Effective From</display-name>
+            <display-order>28</display-order>
+            <max-length>8</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AddressEffectiveTo</name>
+            <display-name>Address Effective To</display-name>
+            <display-order>29</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <node>
+        <name>AltConTele</name>
+        <display-order>6</display-order>
+        <field>
+            <name>Type</name>
+            <display-name>Type</display-name>
+            <display-order>1</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>TELETYPE</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Root</name>
+            <display-name>Root</display-name>
+            <display-order>2</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Extension</name>
+            <display-name>Extension</display-name>
+            <display-order>3</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Code</name>
+            <display-name>Code</display-name>
+            <display-order>4</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>EffectiveFrom</name>
+            <display-name>EffectiveFrom</display-name>
+            <display-order>5</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>EffectiveTo</name>
+            <display-name>EffectiveTo</display-name>
+            <display-order>6</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <node>
+        <name>AuxID</name>
+        <display-order>7</display-order>
+        <field>
+            <name>AuxIDDef</name>
+            <display-name>Aux ID Def</display-name>
+            <display-order>1</display-order>
+            <max-length>10</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>AUXIDDEF</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>AuxID</name>
+            <display-name>Aux ID</display-name>
+            <display-order>2</display-order>
+            <max-length>40</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <node>
+        <name>HeightWeight</name>
+        <display-order>8</display-order>
+        <field>
+            <name>DateTaken</name>
+            <display-name>Date Taken</display-name>
+            <display-order>1</display-order>
+            <max-length>8</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>date</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Height</name>
+            <display-name>Height</display-name>
+            <display-order>2</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>float</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>Weight</name>
+            <display-name>Weight </display-name>
+            <display-order>3</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>float</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <node>
+        <name>HealthID</name>
+        <display-order>9</display-order>
+        <field>
+            <name>IdNumType</name>
+            <display-name>ID Number Type</display-name>
+            <display-order>1</display-order>
+            <max-length>32</max-length>
+            <gui-type>MenuList</gui-type>
+            <value-list>IDTYPE</value-list>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+        <field>
+            <name>IdNum</name>
+            <display-name>ID Number </display-name>
+            <display-order>2</display-order>
+            <max-length>32</max-length>
+            <gui-type>TextBox</gui-type>
+            <value-type>string</value-type>
+            <key-type>false</key-type>
+        </field>
+    </node>
+    <relationships>
+        <name>UKPatient</name>
+        <children>Name</children>
+        <children>Address</children>
+        <children>Telecom</children>
+        <children>Consent</children>
+        <children>AltContact</children>
+        <children>AltConTele</children>
+        <children>AuxID</children>
+        <children>HeightWeight</children>
+        <children>HealthID</children>
+    </relationships>
+    <impl-details>        <master-controller-jndi-name>ejb/UKPatientMasterController</master-controller-jndi-name>        <validation-service-jndi-name>ejb/UKPatientCodeLookup</validation-service-jndi-name>        <usercode-jndi-name>ejb/UKPatientUserCodeLookup</usercode-jndi-name>        <reportgenerator-jndi-name>ejb/UKPatientReportGenerator</reportgenerator-jndi-name>        <debug-flag>true</debug-flag>        <debug-dest>console</debug-dest>        <enable-security>false</enable-security>        <object-sensitive-plug-in-class></object-sensitive-plug-in-class>    </impl-details>    <gui-definition>        <page-definition>            <local-id></local-id>            <initial-screen-id>1</initial-screen-id>            <dashboard>                <root-object>UKPatient</root-object>                <tab-name>Dashboard</tab-name>                <screen-id>8</screen-id>                <display-order>0</display-order>                <search-pages/>
+                <search-result-pages/>
+                <subscreen-configurations>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Summary</tab-name>                        <screen-id>0</screen-id>                        <display-order>0</display-order>                        <search-pages/>
+                        <search-result-pages/>
+                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Reports</tab-name>                        <screen-id>1</screen-id>                        <display-order>1</display-order>                        <search-pages/>
+                        <search-result-pages/>
+                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Compare EUIDs</tab-name>                        <screen-id>2</screen-id>                        <display-order>2</display-order>                        <search-pages/>
+                        <search-result-pages/>
+                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Lookup EUID</tab-name>                        <screen-id>3</screen-id>                        <display-order>3</display-order>                        <search-pages/>
+                        <search-result-pages/>
+                    </subscreen>                </subscreen-configurations>            </dashboard>            <record-details>                <root-object>UKPatient</root-object>                <tab-name>Record Details</tab-name>                <screen-id>1</screen-id>                <display-order>2</display-order>                <search-pages>                    <simple-search-page>                        <screen-title>UKPatient Search (Phonetic Search)</screen-title>                        <search-result-id>1</search-result-id>                        <search-screen-order>0</search-screen-order>                        <field-group>                            <description>UKPatient</description>                        </field-group>                        <field-group>                            <description>Name</description>                            <field-ref>UKPatient.Name.FamilyName</field-ref>                            <field-ref>UKPatient.Name.GivenName</field-ref>                        </field-group>                        <field-group>                            <description>Address</description>                            <field-ref>UKPatient.Address.AddressLine1</field-ref>                            <field-ref>UKPatient.Address.PafKey</field-ref>                        </field-group>                        <field-group>                            <description>AuxID</description>                            <field-ref>UKPatient.AuxID.AuxID</field-ref>                        </field-group>                        <search-option>                            <display-name>Phonetic Search</display-name>                            <query-builder>PHONETIC-SEARCH</query-builder>                            <weighted>true</weighted>                            <parameter>                                <name>UseWildCard</name>                                <value>false</value>                            </parameter>                        </search-option>                    </simple-search-page>                    <simple-search-page>                        <screen-title>UKPatient Search (Alpha Search)</screen-title>                        <search-result-id>1</search-result-id>                        <search-screen-order>1</search-screen-order>                        <field-group>                            <description>UKPatient</description>                        </field-group>                        <field-group>                            <description>Name</description>                            <field-ref>UKPatient.Name.FamilyName</field-ref>                            <field-ref>UKPatient.Name.GivenName</field-ref>                        </field-group>                        <field-group>                            <description>Address</description>                            <field-ref>UKPatient.Address.AddressLine1</field-ref>                            <field-ref>UKPatient.Address.PafKey</field-ref>                        </field-group>                        <field-group>                            <description>AuxID</description>                            <field-ref>UKPatient.AuxID.AuxID</field-ref>                        </field-group>                        <search-option>                            <display-name>Alpha Search</display-name>                            <query-builder>ALPHA-SEARCH</query-builder>                            <weighted>false</weighted>                            <parameter>                                <name>UseWildCard</name>                                <value>true</value>                            </parameter>                        </search-option>                    </simple-search-page>                    <simple-search-page>                        <screen-title>UKPatient Search (Blocker Search)</screen-title>                        <search-result-id>1</search-result-id>                        <search-screen-order>2</search-screen-order>                        <field-group>                            <description>UKPatient</description>                        </field-group>                        <field-group>                            <description>Name</description>                            <field-ref>UKPatient.Name.FamilyName</field-ref>                            <field-ref>UKPatient.Name.GivenName</field-ref>                        </field-group>                        <field-group>                            <description>Address</description>                            <field-ref>UKPatient.Address.AddressLine1</field-ref>                            <field-ref>UKPatient.Address.PafKey</field-ref>                        </field-group>                        <field-group>                            <description>AuxID</description>                            <field-ref>UKPatient.AuxID.AuxID</field-ref>                        </field-group>                        <search-option>                            <display-name>Blocker Search</display-name>                            <query-builder>BLOCKER-SEARCH</query-builder>                            <weighted>true</weighted>                            <parameter>                                <name>UseWildCard</name>                                <value>false</value>                            </parameter>                        </search-option>                    </simple-search-page>                    <simple-search-page>                        <screen-title>UKPatient Lookup</screen-title>                        <search-result-id>1</search-result-id>                        <search-screen-order>1</search-screen-order>                        <show-euid>true</show-euid>                        <show-lid>true</show-lid>                        <search-option>                            <display-name>Alpha Search</display-name>                            <query-builder>ALPHA-SEARCH</query-builder>                            <weighted>false</weighted>                            <parameter>                                <name>UseWildCard</name>                                <value>true</value>                            </parameter>                        </search-option>                    </simple-search-page>                </search-pages>                <search-result-pages>                    <search-result-list-page>                        <search-result-id>0</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Gender</field-ref>                            <field-ref>UKPatient.DOB</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Name.FamilyName</field-ref>                            <field-ref>UKPatient.Name.GivenName</field-ref>                            <field-ref>UKPatient.Name.OtherGivenName</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Address.AddressLine1</field-ref>                            <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                            <field-ref>UKPatient.Address.AddressStreet</field-ref>                            <field-ref>UKPatient.Address.Postcode</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Telecom.Root</field-ref>                            <field-ref>UKPatient.Telecom.Extension</field-ref>                            <field-ref>UKPatient.Telecom.Code</field-ref>                        </field-group>                    </search-result-list-page>                </search-result-pages>            </record-details>            <transactions>                <root-object>UKPatient</root-object>                <tab-name>Transactions</tab-name>                <screen-id>2</screen-id>                <display-order>4</display-order>                <search-pages>                    <simple-search-page>                        <show-euid>true</show-euid>                        <show-lid>true</show-lid>                    </simple-search-page>                </search-pages>                <search-result-pages>                    <search-result-list-page>                        <search-result-id>0</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                    </search-result-list-page>                </search-result-pages>            </transactions>            <duplicate-records>                <root-object>UKPatient</root-object>                <tab-name>Duplicate Records</tab-name>                <screen-id>3</screen-id>                <display-order>1</display-order>                <search-pages>                    <simple-search-page>                        <screen-title>Basic Search</screen-title>                        <search-result-id>0</search-result-id>                        <search-screen-order>0</search-screen-order>                        <show-euid>false</show-euid>                        <show-lid>false</show-lid>                        <show-status>false</show-status>                        <show-create-date>true</show-create-date>                        <show-create-time>false</show-create-time>                    </simple-search-page>                    <simple-search-page>                        <screen-title>Advanced Search</screen-title>                        <search-result-id>0</search-result-id>                        <search-screen-order>1</search-screen-order>                        <show-euid>true</show-euid>                        <show-lid>true</show-lid>                        <show-status>true</show-status>                        <show-create-date>true</show-create-date>                        <show-create-time>true</show-create-time>                    </simple-search-page>                </search-pages>                <search-result-pages>                    <search-result-list-page>                        <search-result-id>0</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Gender</field-ref>                            <field-ref>UKPatient.DOB</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Name.FamilyName</field-ref>                            <field-ref>UKPatient.Name.GivenName</field-ref>                            <field-ref>UKPatient.Name.OtherGivenName</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Address.AddressLine1</field-ref>                            <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                            <field-ref>UKPatient.Address.AddressStreet</field-ref>                            <field-ref>UKPatient.Address.Postcode</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Telecom.Root</field-ref>                            <field-ref>UKPatient.Telecom.Extension</field-ref>                            <field-ref>UKPatient.Telecom.Code</field-ref>                        </field-group>                    </search-result-list-page>                </search-result-pages>            </duplicate-records>            <assumed-matches>                <root-object>UKPatient</root-object>                <tab-name>Assumed Matches</tab-name>                <screen-id>4</screen-id>                <display-order>3</display-order>                <search-pages/>
+                <search-result-pages>                    <search-result-list-page>                        <search-result-id>0</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Gender</field-ref>                            <field-ref>UKPatient.DOB</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Name.FamilyName</field-ref>                            <field-ref>UKPatient.Name.GivenName</field-ref>                            <field-ref>UKPatient.Name.OtherGivenName</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Address.AddressLine1</field-ref>                            <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                            <field-ref>UKPatient.Address.AddressStreet</field-ref>                            <field-ref>UKPatient.Address.Postcode</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Telecom.Root</field-ref>                            <field-ref>UKPatient.Telecom.Extension</field-ref>                            <field-ref>UKPatient.Telecom.Code</field-ref>                        </field-group>                    </search-result-list-page>                </search-result-pages>            </assumed-matches>            <source-record>                <root-object>UKPatient</root-object>                <tab-name>Source Record</tab-name>                <screen-id>5</screen-id>                <display-order>6</display-order>                <search-pages/>
+                <search-result-pages/>
+                <subscreen-configurations>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>View/Edit</tab-name>                        <screen-id>0</screen-id>                        <display-order>0</display-order>                        <search-pages>                            <simple-search-page>                                <screen-title>Basic Search</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>0</search-screen-order>                                <show-euid>false</show-euid>                                <show-lid>true</show-lid>                                <show-status>false</show-status>                                <show-create-date>false</show-create-date>                                <show-create-time>false</show-create-time>                            </simple-search-page>                        </search-pages>                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <show-euid>true</show-euid>                                <show-lid>true</show-lid>                                <show-status>false</show-status>                                <show-create-date>false</show-create-date>                                <show-create-time>false</show-create-time>                                <show-timestamp>true</show-timestamp>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Gender</field-ref>                                    <field-ref>UKPatient.DOB</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Name.FamilyName</field-ref>                                    <field-ref>UKPatient.Name.GivenName</field-ref>                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>                                    <field-ref>UKPatient.Address.Postcode</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Telecom.Root</field-ref>                                    <field-ref>UKPatient.Telecom.Extension</field-ref>                                    <field-ref>UKPatient.Telecom.Code</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Add</tab-name>                        <screen-id>1</screen-id>                        <display-order>1</display-order>                        <search-pages>                            <simple-search-page>                                <screen-title>Basic Search</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>0</search-screen-order>                                <show-euid>false</show-euid>                                <show-lid>true</show-lid>                                <show-status>false</show-status>                                <show-create-date>false</show-create-date>                                <show-create-time>false</show-create-time>                            </simple-search-page>                        </search-pages>                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Merge</tab-name>                        <screen-id>2</screen-id>                        <display-order>2</display-order>                        <search-pages>                            <simple-search-page>                                <screen-title>LID Search</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>0</search-screen-order>                                <show-euid>false</show-euid>                                <show-lid>true</show-lid>                                <show-status>false</show-status>                                <show-create-date>false</show-create-date>                                <show-create-time>false</show-create-time>                            </simple-search-page>                        </search-pages>                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                </subscreen-configurations>            </source-record>            <reports>                <root-object>UKPatient</root-object>                <tab-name>Reports</tab-name>                <screen-id>6</screen-id>                <display-order>5</display-order>                <search-pages/>
+                <search-result-pages/>
+                <subscreen-configurations>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Assumed Match Report</tab-name>                        <report-name>Assumed Match</report-name>                        <screen-id>0</screen-id>                        <display-order>1</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Gender</field-ref>                                    <field-ref>UKPatient.DOB</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Name.FamilyName</field-ref>                                    <field-ref>UKPatient.Name.GivenName</field-ref>                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>                                    <field-ref>UKPatient.Address.Postcode</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Telecom.Root</field-ref>                                    <field-ref>UKPatient.Telecom.Extension</field-ref>                                    <field-ref>UKPatient.Telecom.Code</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Potential Duplicate Report</tab-name>                        <report-name>Potential Duplicate</report-name>                        <screen-id>1</screen-id>                        <display-order>2</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Gender</field-ref>                                    <field-ref>UKPatient.DOB</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Name.FamilyName</field-ref>                                    <field-ref>UKPatient.Name.GivenName</field-ref>                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>                                    <field-ref>UKPatient.Address.Postcode</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Telecom.Root</field-ref>                                    <field-ref>UKPatient.Telecom.Extension</field-ref>                                    <field-ref>UKPatient.Telecom.Code</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Deactivated Record Report</tab-name>                        <report-name>Deactivated</report-name>                        <screen-id>2</screen-id>                        <display-order>3</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Gender</field-ref>                                    <field-ref>UKPatient.DOB</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Name.FamilyName</field-ref>                                    <field-ref>UKPatient.Name.GivenName</field-ref>                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>                                    <field-ref>UKPatient.Address.Postcode</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Telecom.Root</field-ref>                                    <field-ref>UKPatient.Telecom.Extension</field-ref>                                    <field-ref>UKPatient.Telecom.Code</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Merged Transaction Report</tab-name>                        <report-name>Merged</report-name>                        <screen-id>3</screen-id>                        <display-order>4</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Gender</field-ref>                                    <field-ref>UKPatient.DOB</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Name.FamilyName</field-ref>                                    <field-ref>UKPatient.Name.GivenName</field-ref>                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>                                    <field-ref>UKPatient.Address.Postcode</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Telecom.Root</field-ref>                                    <field-ref>UKPatient.Telecom.Extension</field-ref>                                    <field-ref>UKPatient.Telecom.Code</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Unmerged Transaction Report</tab-name>                        <report-name>Unmerged</report-name>                        <screen-id>4</screen-id>                        <display-order>5</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Gender</field-ref>                                    <field-ref>UKPatient.DOB</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Name.FamilyName</field-ref>                                    <field-ref>UKPatient.Name.GivenName</field-ref>                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>                                    <field-ref>UKPatient.Address.Postcode</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Telecom.Root</field-ref>                                    <field-ref>UKPatient.Telecom.Extension</field-ref>                                    <field-ref>UKPatient.Telecom.Code</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Updated Record Report</tab-name>                        <report-name>Update</report-name>                        <screen-id>5</screen-id>                        <display-order>6</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Gender</field-ref>                                    <field-ref>UKPatient.DOB</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Name.FamilyName</field-ref>                                    <field-ref>UKPatient.Name.GivenName</field-ref>                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>                                    <field-ref>UKPatient.Address.Postcode</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Telecom.Root</field-ref>                                    <field-ref>UKPatient.Telecom.Extension</field-ref>                                    <field-ref>UKPatient.Telecom.Code</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Transaction Audit Report</tab-name>                        <report-name>Weekly Activity</report-name>                        <screen-id>6</screen-id>                        <display-order>7</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Transaction Summary Report</tab-name>                        <report-name>Monthly Activity</report-name>                        <screen-id>7</screen-id>                        <display-order>8</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Transaction Summary Report</tab-name>                        <report-name>Yearly Activity</report-name>                        <screen-id>8</screen-id>                        <display-order>9</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Activity Report</tab-name>                        <report-name>Transaction Summary Report</report-name>                        <screen-id>10</screen-id>                        <display-order>11</display-order>                        <search-pages>                            <simple-search-page>                                <screen-title>Daily Activity</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>0</search-screen-order>                                <field-group/>
+                            </simple-search-page>                            <simple-search-page>                                <screen-title>Weekly Activity</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>1</search-screen-order>                                <field-group/>
+                            </simple-search-page>                            <simple-search-page>                                <screen-title>Monthly Activity</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>2</search-screen-order>                                <field-group/>
+                            </simple-search-page>                            <simple-search-page>                                <screen-title>Yearly Activity</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>3</search-screen-order>                                <field-group/>
+                            </simple-search-page>                        </search-pages>                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>2000</max-result-size>                                <field-group/>
+                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                </subscreen-configurations>            </reports>            <audit-log>                <allow-insert>false</allow-insert>                <root-object>UKPatient</root-object>                <tab-name>Audit Log</tab-name>                <screen-id>7</screen-id>                <display-order>7</display-order>                <search-pages/>
+                <search-result-pages/>
+            </audit-log>        </page-definition>    </gui-definition></midm>
