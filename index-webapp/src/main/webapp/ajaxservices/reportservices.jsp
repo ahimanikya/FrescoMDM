@@ -112,7 +112,6 @@ ArrayList fcArrayList  = new ArrayList();
    while(parameterNames.hasMoreElements())   { 
     String attributeName = (String) parameterNames.nextElement();
     String attributeValue = (String) request.getParameter(attributeName);
-   	   //System.out.println(attributeName + "->" + attributeValue);
        if ( !("tabName".equalsIgnoreCase(attributeName)) && 
 		    !("editThisID".equalsIgnoreCase(attributeName)) && 
 			!("random".equalsIgnoreCase(attributeName)) && 
@@ -121,47 +120,36 @@ ArrayList fcArrayList  = new ArrayList();
       }
    } 
 %>
-<%
-//System.out.println("reportHandler.getReportParameters() --> " + reportHandler.getReportParameters());
-%>
-
 
  <%
 	 if (mergeText.equalsIgnoreCase(reportName))    { 
         /**********************Merge Report************************/
 		 results = reportHandler.mergeReport();
 		 fcArrayList  = reportHandler.getMergedRecordsHandler().getResultsConfigArrayList();
-		 //System.out.println("Merge Report --> " + results);
      } else if (deactiveText.equalsIgnoreCase(reportName))  {
       /**********************Deactivated Report************************/
 		 results = reportHandler.deactivatedReport();
 		 fcArrayList  = reportHandler.getDeactivatedReport().getResultsConfigArrayList();
-		 //System.out.println("Deactivated Report --> " + results);
 	 } else if (updateText.equalsIgnoreCase(reportName))  {
       /**********************Update Report************************/
 		 results = reportHandler.updateReport();
 		 fcArrayList  = reportHandler.getUpdateReport().getResultsConfigArrayList();
-		// System.out.println("Update Report --> " + results);
 	 } else if (unmergeText.equalsIgnoreCase(reportName))  {
       /**********************UnMerge Report************************/
 		 results = reportHandler.unMergeReport();
 		 fcArrayList  = reportHandler.getUnmergedRecordsHandler().getResultsConfigArrayList();
-		// System.out.println("UnMerge Report --> " + results);
 	 } else if (activityText.equalsIgnoreCase(reportName))  {
       /**********************Activity Report************************/
 		 results = reportHandler.activitiesReport();
-		// System.out.println("activity Report --> " + results);
 	 } else if (assumedText.equalsIgnoreCase(reportName))  {
       /**********************Assume Match Report************************/
 		 results = reportHandler.assumeMatchReport();
 		 fcArrayList  = reportHandler.getAssumeMatchReport().getResultsConfigArrayList();
-		// System.out.println("assumeMatchReport--> " + results);
 	 } else if (potDupText.equalsIgnoreCase(reportName))  {
       /**********************Potential Dupllicates Report************************/
 		 results = reportHandler.duplicateReport();
 		 fcArrayList  = reportHandler.getDuplicateReport().getResultsConfigArrayList();
 
-		// System.out.println("Potential Duplicate Report --> " + results);
 	 }
 %> 
 
@@ -222,9 +210,6 @@ ArrayList fcArrayList  = new ArrayList();
          
 
 
-<%
-//System.out.println("myColumnDefs " + myColumnDefs);
-%>
 <table>
 <%if(results != null) {%>
 <tr>
@@ -249,7 +234,7 @@ ArrayList fcArrayList  = new ArrayList();
 <%}%>
 <tr>
 <td colspan="2">
-<% //System.out.println("-------------before printing-----------");  
+<% 
  if(results != null && results.size() > 0 ) {%>
 
 <div id="myMarkedUpContainer<%=divId%>">
@@ -266,7 +251,7 @@ ArrayList fcArrayList  = new ArrayList();
               <tr>
                 <%HashMap valueMap = (HashMap) results.get(i3);
                     for (int kc = 0; kc < fullFieldNamesList.size(); kc++) {
-                      //System.out.println("-------------xcvxxcv------------------------" + valueMap.get(fullFieldNamesList.toArray()[kc]));
+
 				%>
                    <td>
                       <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
