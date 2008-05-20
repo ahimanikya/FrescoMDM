@@ -259,7 +259,7 @@ function align(thisevent,divID) {
                                             </h:outputLink>
                                         </nobr>
                                         <nobr>
-                                           <a  class="button" href="javascript:void(0)" onclick="javascript:getFormValues('advancedformData');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
+                                           <a  class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
                                                <span>
                                                  <h:outputText value="#{msgs.search_button_label}"/>
                                                </span>
