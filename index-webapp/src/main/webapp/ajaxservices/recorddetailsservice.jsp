@@ -89,16 +89,20 @@ ArrayList collectedEuidsList = new ArrayList();
 
 %>
 
-<% //Build the request Map 
+<% 
+   //Build the request Map 
    while(parameterNames.hasMoreElements())   { 
     String attributeName = (String) parameterNames.nextElement();
     String attributeValue = (String) request.getParameter(attributeName);
+	 attributeValue = attributeValue.replaceAll("~~","%");
+ 
        if ( !("editThisID".equalsIgnoreCase(attributeName)) && 
 		    !("selectedSearchType".equalsIgnoreCase(attributeName)) && 
 			!("random".equalsIgnoreCase(attributeName)) ) {
 		     patientDetailsHandler.getParametersMap().put(attributeName,attributeValue);			
       }
    } 
+   
 %>
 
 
@@ -293,9 +297,7 @@ if (results != null)   {
 				              %>
                                    <td>
 								      <%if(keyValue.equalsIgnoreCase("EUID")) {%>
-									  <!--input type="checkbox" onclick="
-										   javascript:ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?collecteuid=<%=valueMap.get("EUID")%>&collectEuids=true','messages','')"/-->
-									  <%if("active".equalsIgnoreCase( (String)valueMap.get("EOStatus") ) ) {%>
+ 									  <%if("active".equalsIgnoreCase( (String)valueMap.get("EOStatus") ) ) {%>
                                         <input type="checkbox" onclick="javascript:getCheckedValues(this,'<%=valueMap.get(fullFieldNamesList.toArray()[kc])%>')"/>&nbsp;
 									  <%} else {%>
                                         <input type="checkbox" title="<%=valueMap.get("EOStatus")%> EO " readonly="true" disabled="true" />&nbsp;
