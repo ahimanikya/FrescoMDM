@@ -18,9 +18,8 @@
            Each of these pom files should be similiar -->
       <module>usa-patient</module>
       <module>aus-patient</module>
-      <module>uk-patient</module>      
-      <!--
-      <module>packages</module>            
-      -->
-    </modules>            
+      <module>uk-patient</module>
+      <module>packages</module>   
+    </modules>     
+    
 </project>
