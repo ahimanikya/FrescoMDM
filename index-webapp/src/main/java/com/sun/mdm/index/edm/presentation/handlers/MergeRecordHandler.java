@@ -79,7 +79,6 @@ public class MergeRecordHandler    {
     
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.MergeRecordHandler");
     private static transient final Localizer mLocalizer = Localizer.get();
-    
     private String reportType;
     ArrayList dataRowList1 = null;
     private ArrayList vOList = new ArrayList();
@@ -88,6 +87,10 @@ public class MergeRecordHandler    {
     private String createEndDate = new String();    
     private String createStartTime = new String();
     private String createEndTime = new String();  
+    private Integer maxResultsSize;  
+    private Integer pageSize;  
+    
+    ArrayList resultArrayList = new ArrayList();
     //private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.MergeRecordHandler");    
     /*
      *  Request Object Handle
@@ -106,6 +109,10 @@ public class MergeRecordHandler    {
     private ArrayList resultsConfigArrayList  = new ArrayList();
   
     /**
+     *Resource bundle
+     */
+        ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm",FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+    /**
      * This method populates the DeactivatedReports using the Service Layer call
           * @TODO
      * @return
@@ -113,18 +120,21 @@ public class MergeRecordHandler    {
      * @throws com.sun.mdm.index.objects.epath.EPathException
      * @throws java.lang.Exception
      */    
-     public MergedRecords[] mergeReport() throws ValidationException, EPathException, ReportException, Exception    {
+     public ArrayList mergeReport() throws ValidationException, EPathException, ReportException, Exception    {
          reportType = "Merge Reports";
          MergeReportConfig  mrConfig = getMergeReportSearchObject();
-         MergeReport mRpt = QwsController.getReportGenerator().execMergeReport(mrConfig);
-         ReportDataRow[] rdr = getMRRows(mrConfig,mRpt);
-         return getMergedRecordsVO();
+         if(mrConfig != null) {
+           MergeReport mRpt = QwsController.getReportGenerator().execMergeReport(mrConfig);
+           ReportDataRow[] rdr = getMRRows(mrConfig,mRpt);
+           return resultArrayList;
+         } else { //if validation occurs return null value
+           return null;             
+         }
     }
      
     //getter method to retrieve the data rows of report records.
     private ReportDataRow[] getMRRows(MergeReportConfig  mrConfig,MergeReport  mRpt) throws Exception {
-        ArrayList dataRowList = new ArrayList();
-        ArrayList resultArrayList = new ArrayList();
+        ArrayList dataRowList = new ArrayList();        
         while (mRpt.hasNext()) {
             MergeReportRow reportRow = mRpt.getNextReportRow();
             ReportDataRow[] dataRows = writeRow(mrConfig, reportRow);
@@ -133,9 +143,7 @@ public class MergeRecordHandler    {
             //}
             resultArrayList.add(getOutPutValuesMap(mrConfig, reportRow,"EUID1"));
             resultArrayList.add(getOutPutValuesMap(mrConfig, reportRow,"EUID2"));
-        }
-        request.setAttribute("mergeReportList", resultArrayList);
-   
+        }   
         return dataRowList2Array(dataRowList);
        
      }
@@ -171,9 +179,6 @@ public class MergeRecordHandler    {
             while (i.hasNext()) {               
                 String field = (String) i.next();
                 String val = reportRow.getValue(field).toString();
-                
-                
-                mLogger.info("field  "+field+"  val  "+val);
                 
                 if (field.equalsIgnoreCase("EUID1") ) {
                      mergedRecords.getEuid().add(val);
@@ -268,7 +273,7 @@ public class MergeRecordHandler    {
     public MergeReportConfig getMergeReportSearchObject() throws ValidationException, EPathException {
          String errorMessage = null;
          EDMValidation edmValidation = new EDMValidation();         
-         ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+         ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());        
          MergeReportConfig mrConfig = new MergeReportConfig();
         // One of Many validation 
         if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0) &&
@@ -279,7 +284,7 @@ public class MergeRecordHandler    {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                 //mLogger.error(errorMessage);
                 mLogger.info(mLocalizer.x("MRG001: {0} ",errorMessage));
-                
+                return null;
            }
 
         //Form Validation of  Start Time
@@ -291,8 +296,17 @@ public class MergeRecordHandler    {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,msg1 + errorMessage, errorMessage));
                 //mLogger.error(errorMessage);
                  mLogger.info(mLocalizer.x("MRG002: {0} ",errorMessage));
-                
+                 return null;
             }            
+            
+            //if only time fields are entered validate for the date fields 
+            if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_from");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                 mLogger.info(mLocalizer.x("MRG201: {0} ",errorMessage));
+                return null;
+            }
+
         }
 
         //Form Validation of  Start Date        
@@ -303,6 +317,7 @@ public class MergeRecordHandler    {
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 // mLogger.error(errorMessage);
                  mLogger.info(mLocalizer.x("MRG003: {0} ",errorMessage));
+                 return null;
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
@@ -316,6 +331,7 @@ public class MergeRecordHandler    {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //mLogger.error(errorMessage);
                     mLogger.error(mLocalizer.x("MRG004: {0}:{1} ",errorMessage,validationException.getMessage()),validationException);
+                    return null;
                 }
             }
         }
@@ -326,10 +342,19 @@ public class MergeRecordHandler    {
             if (!"success".equalsIgnoreCase(message)) {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                  String msg2 = bundle.getString("timeTo");
+                 
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg2 + errorMessage, errorMessage));
                 //mLogger.error(errorMessage);
                 mLogger.info(mLocalizer.x("MRG005: {0} ",errorMessage));
+                return null;
             } 
+            //if only time fields are entered validate for the date fields 
+            if ((this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_to");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                 mLogger.info(mLocalizer.x("MRG202: {0} ",errorMessage));
+                return null;
+            }
        }    
          
         //Form Validation of  End Date        
@@ -340,11 +365,9 @@ public class MergeRecordHandler    {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 //mLogger.error(errorMessage);
                 mLogger.info(mLocalizer.x("MRG006: {0} ",errorMessage));
+                return null;
             } else {
                 try {
-//                    if (getCreateEndTime().trim().length() == 0) {
-//                        createEndTime = "23:59:59";
-//                    }
                     //If Time is supplied append it to the date to check if it parses into a valid Date
                     String searchEndDate = this.getCreateEndDate() + ((this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0)? " " + this.getCreateEndTime() : " 23:59:59");
                     Date date = DateUtil.string2Date(searchEndDate);
@@ -357,6 +380,7 @@ public class MergeRecordHandler    {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //mLogger.error(errorMessage);
                     mLogger.error(mLocalizer.x("MRG007: {0}:{1} ",errorMessage,validationException.getMessage()),validationException);
+                    return null;
                 }
             }           
         }
@@ -372,6 +396,7 @@ public class MergeRecordHandler    {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //mLogger.error(errorMessage);
                     mLogger.info(mLocalizer.x("MRG008: {0} ",errorMessage));
+                    return null;
                    }
         }   
         
@@ -381,9 +406,11 @@ public class MergeRecordHandler    {
         mrConfig.addTransactionField(MergeReport.TIMESTAMP, MergeReport.TIMESTAMP, 20);
         mrConfig.addTransactionField(MergeReport.SYSTEM_USER, MergeReport.SYSTEM_USER, 20);
         mrConfig.addTransactionField(MergeReport.TRANSACTION_NUMBER, MergeReport.TRANSACTION_NUMBER, 20);
-        mrConfig.setMaxResultSize(new Integer("20"));
-//        mrConfig.addTransactionFieldVisibleLine1(MergeReport.EUID1,"EUID", 20);
-//        mrConfig.addTransactionFieldVisibleLine1(MergeReport.EUID2,MergeReport.EUID2, 20);
+
+        
+        //set the max results size and page size here as per midm.xml
+        mrConfig.setMaxResultSize(getMaxResultsSize());
+        mrConfig.setPageSize(getPageSize());
      
         return mrConfig;
     }  
@@ -471,15 +498,33 @@ public class MergeRecordHandler    {
         this.mergedRecordsVO = mergedRecordsVO;
     }
 
-    public ArrayList getResultsConfigArrayList() {
-        ReportHandler reportHandler = new ReportHandler();
-        reportHandler.setReportType("Merged Transaction Report");        
+    public ArrayList getResultsConfigArrayList() {        
+        ReportHandler reportHandler = new ReportHandler();        
+        String REPORT_LABEL = bundle.getString("Merged_Transaction_Report_Label");
+        reportHandler.setReportType(REPORT_LABEL);                
+        
         ArrayList fcArrayList  = reportHandler.getSearchResultsScreenConfigArray();
         return fcArrayList;
     }
 
     public void setResultsConfigArrayList(ArrayList resultsConfigArrayList) {
         this.resultsConfigArrayList = resultsConfigArrayList;
+    }
+
+    public Integer getMaxResultsSize() {
+        return maxResultsSize;
+    }
+
+    public void setMaxResultsSize(Integer maxResultsSize) {
+        this.maxResultsSize = maxResultsSize;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
     
 }

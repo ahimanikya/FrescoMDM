@@ -126,9 +126,16 @@ public class DeactivatedReportHandler    {
      *get Screen Object from the session
      */
     ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
+
+    //resource bundle definitin
+    ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
     
     private ArrayList resultsConfigArrayList  = new ArrayList();
   
+    private ArrayList resultArrayList = new ArrayList();
+
+    private Integer maxResultsSize;  
+    private Integer pageSize;  
     
     /**
      * @return the value object for display
@@ -137,19 +144,22 @@ public class DeactivatedReportHandler    {
      * @throws com.sun.mdm.index.report.ReportException 
      * @throws java.lang.Exception
      */
-    public DeactivatedRecords[] deactivateReport() throws ValidationException, EPathException, ReportException, Exception    {
-        request.setAttribute("tabName", "DEACTIVATED_REPORT");        
+    public ArrayList deactivateReport() throws ValidationException, EPathException, ReportException, Exception {
         drConfig = getDeactivateReportSearchObject();
-        dr = QwsController.getReportGenerator().execDeactivateReport(drConfig);
-        // Code to retrieve the data rows of report records.
-        ReportDataRow[] rdr = getDRRows();
-        return getDeactivatedRecordsVO();
+        if (drConfig != null) {
+            dr = QwsController.getReportGenerator().execDeactivateReport(drConfig);
+            // Code to retrieve the data rows of report records.
+            ReportDataRow[] rdr = getDRRows();
+            //return getDeactivatedRecordsVO();
+            return resultArrayList;
+        } else {
+            return null;
+        }
     }
 
     //method to retrieve the data rows of report records.
     private ReportDataRow[] getDRRows() throws Exception {
         ArrayList dataRowList = new ArrayList();
-        ArrayList resultArrayList = new ArrayList();
         while (dr.hasNext()) {
             DeactivateReportRow reportRow = dr.getNextReportRow();
             ReportDataRow[] dataRows = writeRow(drConfig, reportRow);
@@ -238,13 +248,12 @@ public class DeactivatedReportHandler    {
                              epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
                          }
 
-                         if (fieldConfig.isUpdateable()) {
-                             if (fieldConfig.getValueType() == 6 ) {
+                         if (fieldConfig.getValueType() == 6 ) {
                                  newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
-                             } else {
+                         } else {
                                  newValuesMap.put(fieldConfig.getFullFieldName(), EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject()));
-                             }
                          }
+                         
                      }
                 }  
                 resultArrayList.add(newValuesMap);
@@ -322,7 +331,7 @@ public class DeactivatedReportHandler    {
     public DeactivateReportConfig getDeactivateReportSearchObject() throws ValidationException, EPathException {
          String errorMessage = null;
          EDMValidation edmValidation = new EDMValidation();         
-         ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+         ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());        
          DeactivateReportConfig drc = new DeactivateReportConfig();
 
          
@@ -333,8 +342,8 @@ public class DeactivatedReportHandler    {
                 (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() == 0)){
                 errorMessage = bundle.getString("ERROR_one_of_many");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
-               // Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                 mLogger.info(mLocalizer.x("RPT009: {0}",errorMessage));
+                mLogger.info(mLocalizer.x("RPT009: {0}",errorMessage));
+                return null;
            }
 
         //Form Validation of  Start Time
@@ -344,9 +353,16 @@ public class DeactivatedReportHandler    {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?errorMessage:message);
                 String msg2 = bundle.getString("timeFrom"); 
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
                 mLogger.info(mLocalizer.x("RPT010: {0}",errorMessage));
+                return null;
             }            
+            //if only time fields are entered validate for the date fields 
+            if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_from");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                 mLogger.info(mLocalizer.x("RPT201: {0} ",errorMessage));
+                return null;
+            }
         }
 
         //Form Validation of  Start Date        
@@ -355,25 +371,22 @@ public class DeactivatedReportHandler    {
             if (!"success".equalsIgnoreCase(message)) {
                  errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                 //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
                  mLogger.info(mLocalizer.x("RPT011: {0}",errorMessage));
+                return null;
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
-//                    if (getCreateStartTime().trim().length() == 0) {
-//                        createStartTime = "00:00:00";
-//                    }
                     String searchStartDate = this.getCreateStartDate() + ((this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0) ? " " + this.getCreateStartTime() : " 00:00:00");
                     Date date = DateUtil.string2Date(searchStartDate);
                     if (date != null) {
                         drc.setStartDate(new Timestamp(date.getTime()));
+                        
                     }   
-//                    createStartTime = "";
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                    //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
                     mLogger.error(mLocalizer.x("RPT012: {0}",errorMessage),validationException);
+                    return null;
                 }
             }
         }
@@ -385,9 +398,16 @@ public class DeactivatedReportHandler    {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                  
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage, errorMessage));
-               // Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
                 mLogger.info(mLocalizer.x("RPT013: {0}",errorMessage));
+                return null;
             } 
+            //if only time fields are entered validate for the date fields 
+            if ((this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_to");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                 mLogger.info(mLocalizer.x("RPT202: {0} ",errorMessage));
+                return null;
+            }
        }    
          
         //Form Validation of  End Date        
@@ -398,6 +418,7 @@ public class DeactivatedReportHandler    {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                 //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, message, message);
                 mLogger.info(mLocalizer.x("RPT014: {0}",errorMessage));
+                return null;
             } else {
                 try {
                     if (getCreateEndTime().trim().length() == 0) {
@@ -411,10 +432,10 @@ public class DeactivatedReportHandler    {
                     }
                     createEndTime = "";
                 } catch (ValidationException validationException) {
-                    //Logger.getLogger(DeactivatedReportHandler.class.getName()).log(Level.WARNING, validationException.toString(), validationException);
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     mLogger.error(mLocalizer.x("RPT015: {0}",errorMessage),validationException);
+                    return null;
                 }
             }           
         }
@@ -428,8 +449,8 @@ public class DeactivatedReportHandler    {
                  if(endDate < startDate){
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
-                    //Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
                     mLogger.info(mLocalizer.x("RPT016: {0}",errorMessage));
+                    return null;
                    }
         }
           
@@ -439,6 +460,10 @@ public class DeactivatedReportHandler    {
         drc.addTransactionField(DeactivateReport.SYSTEM_USER, "SystemUser", 20);
         drc.addTransactionField(DeactivateReport.TRANSACTION_NUMBER, "TransactionNumber", 20);
         drc.addTransactionField(DeactivateReport.TIMESTAMP, "Timestamp", 20);        
+
+        //set the max results size and page size here as per midm.xml
+        drc.setMaxResultSize(getMaxResultsSize());
+        drc.setPageSize(getPageSize());
         
         if (errorMessage != null && errorMessage.length() != 0)  {            
             throw new ValidationException(mLocalizer.t("RPT502: {0}",errorMessage));
@@ -532,14 +557,32 @@ public class DeactivatedReportHandler    {
     public void setDeactivatedRecordsVO(DeactivatedRecords[] deactivatedRecordsVO) {
         this.deactivatedRecordsVO = deactivatedRecordsVO;
     }
-     public ArrayList getResultsConfigArrayList() {
+     public ArrayList getResultsConfigArrayList() {         
         ReportHandler reportHandler = new ReportHandler();
-        reportHandler.setReportType("Deactivated Record Report");        
+        String REPORT_LABEL = bundle.getString("Deactivated_Record_Report_Label");
+        reportHandler.setReportType(REPORT_LABEL);                
+
         ArrayList fcArrayList  = reportHandler.getSearchResultsScreenConfigArray();
         return fcArrayList;
     }
 
     public void setResultsConfigArrayList(ArrayList resultsConfigArrayList) {
         this.resultsConfigArrayList = resultsConfigArrayList;
+    }
+
+    public Integer getMaxResultsSize() {
+        return maxResultsSize;
+    }
+
+    public void setMaxResultsSize(Integer maxResultsSize) {
+        this.maxResultsSize = maxResultsSize;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 }

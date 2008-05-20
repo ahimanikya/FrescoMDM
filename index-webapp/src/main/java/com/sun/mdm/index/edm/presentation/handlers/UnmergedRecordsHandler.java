@@ -74,13 +74,11 @@ import javax.servlet.http.HttpSession;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import net.java.hulp.i18n.LocalizationSupport;
-
  
 public class UnmergedRecordsHandler    {
     
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.UnmergedRecordsHandler");
     private static transient final Localizer mLocalizer = Localizer.get();
-    
     private String reportType;
     private ArrayList dataRowList1 = null;
     private TransactionIterator updateIterator = null;
@@ -90,7 +88,9 @@ public class UnmergedRecordsHandler    {
     private String createEndDate = new String();    
     private String createStartTime = new String();
     private String createEndTime = new String();    
-    //private static final Logger mLogger = LogUtil.getLogger("com.sun.mdm.index.edm.presentation.handlers.UnmergedRecordsHandler");    
+    private Integer maxResultsSize;  
+    private Integer pageSize;  
+    
     /*
      *  Request Object Handle
      */  
@@ -108,32 +108,37 @@ public class UnmergedRecordsHandler    {
     private ArrayList resultsConfigArrayList  = new ArrayList();
    
     /**
+     *Resource bundle
+     */
+    ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm",FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+    
+    ArrayList resultArrayList = new ArrayList();
+            
+    /**
      * This method populates the UnmergedRecords 
      * @return UnmergedRecords[]
      * @throws com.sun.mdm.index.objects.validation.exception.ValidationException
      * @throws com.sun.mdm.index.objects.epath.EPathException
      * @throws ValidationException, EPathException, ReportException, Exception
      */
-     public UnmergedRecords[] unmergeReport() throws ValidationException, EPathException, ReportException, Exception    {
-       reportType = "Unmerge Reports";
-       UnmergeReportConfig umrConfig = getUnmergeReportSearchObject();
-       UnmergeReport  umRpt = QwsController.getReportGenerator().execUnmergeReport(umrConfig);
+    public ArrayList unmergeReport() throws ValidationException, EPathException, ReportException, Exception {
+        reportType = "Unmerge Reports";
+        UnmergeReportConfig umrConfig = getUnmergeReportSearchObject();
+        
+        if (umrConfig != null) {
+            UnmergeReport umRpt = QwsController.getReportGenerator().execUnmergeReport(umrConfig);
+            ReportDataRow[] rdr = getUMRRows(umrConfig, umRpt);
+            setUnmergedRecordsVO(new UnmergedRecords[rdr.length]);
+            return resultArrayList;
+        } else {
+            return null;
+        }
 
-       ReportDataRow[] rdr = getUMRRows(umrConfig,umRpt);
-       setUnmergedRecordsVO(new UnmergedRecords[rdr.length]);
-/*       for (int i = 0; i < rdr.length; i++) {
-           ReportDataRow reportDataRow = rdr[i];
-           getUnmergedRecordsVO()[i] = new UnmergedRecords(); //Be safe with malloc
-           getUnmergedRecordsVO()[i].setEuid(rdr[i].getFields()[i].getValue());
-       }
- */
-       return getUnmergedRecordsVO();
     }
 
    //getter method to retrieve the data rows of report records.
   private ReportDataRow[] getUMRRows(UnmergeReportConfig umrConfig,UnmergeReport  umRpt) throws Exception {
         ArrayList dataRowList = new ArrayList();
-        ArrayList resultArrayList = new ArrayList();
         while (umRpt.hasNext()) {
             UnmergeReportRow reportRow = umRpt.getNextReportRow();
             ReportDataRow[] dataRows = writeRow(umrConfig, reportRow);
@@ -143,7 +148,6 @@ public class UnmergedRecordsHandler    {
             resultArrayList.add(getOutPutValuesMap(umrConfig, reportRow,"EUID1"));
             resultArrayList.add(getOutPutValuesMap(umrConfig, reportRow,"EUID2"));
         }
-        request.setAttribute("unmergeReportList", resultArrayList);
         return dataRowList2Array(dataRowList);
      }
   
@@ -181,7 +185,6 @@ public class UnmergedRecordsHandler    {
             while (i.hasNext()) {
                 String field = (String) i.next();
                 String val = reportRow.getValue(field).toString();
-                 mLogger.info("field  "+field+"  val  "+val);
                  
                  if (field.equalsIgnoreCase("EUID1"))  {
                     newValuesMap.put("EUID",val);
@@ -281,7 +284,7 @@ public class UnmergedRecordsHandler    {
   public UnmergeReportConfig getUnmergeReportSearchObject() throws ValidationException, EPathException {
          String errorMessage = null;
          EDMValidation edmValidation = new EDMValidation();         
-         ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+         ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());        
          UnmergeReportConfig umrConfig = new UnmergeReportConfig();
         // One of Many validation 
         if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0) &&
@@ -290,8 +293,9 @@ public class UnmergedRecordsHandler    {
                 (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() == 0)){
                 errorMessage = bundle.getString("ERROR_one_of_many");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-               mLogger.info(mLocalizer.x("UMG001: {0}",errorMessage));
-           }
+                mLogger.info(mLocalizer.x("UMG001: {0}",errorMessage));
+                return null;
+         }
 
         //Form Validation of  Start Time
         if (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)    {
@@ -301,7 +305,15 @@ public class UnmergedRecordsHandler    {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?errorMessage:message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg + errorMessage, errorMessage));
                 mLogger.info(mLocalizer.x("UMG002: {0}",errorMessage));
+                return null;
             }            
+            //if only time fields are entered validate for the date fields 
+            if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_from");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                 mLogger.info(mLocalizer.x("UMG201: {0} ",errorMessage));
+                return null;
+            }
         }
 
         //Form Validation of  Start Date        
@@ -311,22 +323,20 @@ public class UnmergedRecordsHandler    {
                  errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                  mLogger.info(mLocalizer.x("UMG003: {0}",errorMessage));
+                return null;
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
-//                    if (getCreateStartTime().trim().length() == 0) {
-//                        createStartTime = "00:00:00";
-//                    }
                     String searchStartDate = this.getCreateStartDate() + ((this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)? " " + this.getCreateStartTime() : " 00:00:00");
                     Date date = DateUtil.string2Date(searchStartDate);
                     if (date != null) {
                         umrConfig.setStartDate(new Timestamp(date.getTime()));
                     }        
-//                   createStartTime="";
                 } catch (ValidationException validationException) {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_start_date") : bundle.getString("ERROR_start_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                     mLogger.info(mLocalizer.x("UMG004: Failed to unmerge the search object reports  :{0}",validationException.getMessage()));
+                    mLogger.info(mLocalizer.x("UMG004: Failed to unmerge the search object reports  :{0}",validationException.getMessage()));
+                    return null;
                 }
             }
         }
@@ -339,7 +349,15 @@ public class UnmergedRecordsHandler    {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1 + errorMessage, errorMessage));
                 mLogger.info(mLocalizer.x("UMG005: {0}",errorMessage));
+                return null;
             } 
+            //if only time fields are entered validate for the date fields 
+            if ((this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_to");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                 mLogger.info(mLocalizer.x("UMG202: {0} ",errorMessage));
+                return null;
+            }
        }    
          
         //Form Validation of  End Date        
@@ -349,6 +367,7 @@ public class UnmergedRecordsHandler    {
                 errorMessage = (errorMessage != null && errorMessage.length() > 0? message:message);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                 mLogger.info(mLocalizer.x("UMG006: {0}",errorMessage));
+                return null;
             } else {
                 try {
                      if (getCreateEndTime().trim().length() == 0) {
@@ -365,6 +384,7 @@ public class UnmergedRecordsHandler    {
                      mLogger.error(mLocalizer.x("UMG007: Failed to unmerge the search object reports  :{0}",validationException.getMessage()));
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    return null;
                 }
             }           
         }
@@ -379,6 +399,7 @@ public class UnmergedRecordsHandler    {
                     errorMessage = bundle.getString("ERROR_INVALID_FROMDATE_RANGE");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                      mLogger.info(mLocalizer.x("UMG008: {0}",errorMessage));
+                    return null;
                    }
         }  
    
@@ -387,8 +408,12 @@ public class UnmergedRecordsHandler    {
        umrConfig.addTransactionField(UnmergeReport.TIMESTAMP, UnmergeReport.TIMESTAMP, 20);
        umrConfig.addTransactionField(UnmergeReport.SYSTEM_USER, UnmergeReport.SYSTEM_USER, 20);
        umrConfig.addTransactionField(UnmergeReport.TRANSACTION_NUMBER, UnmergeReport.TRANSACTION_NUMBER, 20);
-       umrConfig.setMaxResultSize(new Integer("20"));
-        return umrConfig;
+
+
+       //set the max results size and page size here as per midm.xml
+       umrConfig.setMaxResultSize(getMaxResultsSize());
+       umrConfig.setPageSize(getPageSize());
+       return umrConfig;
     }    
 
   
@@ -481,13 +506,30 @@ public class UnmergedRecordsHandler    {
     }
 
     public ArrayList getResultsConfigArrayList() {
+        String REPORT_LABEL = bundle.getString("Unmerged_Transaction_Report_Label");
         ReportHandler reportHandler = new ReportHandler();
-        reportHandler.setReportType("Unmerged Transaction Report");        
+        reportHandler.setReportType(REPORT_LABEL);                
         ArrayList fcArrayList  = reportHandler.getSearchResultsScreenConfigArray();
         return fcArrayList;
     }
 
     public void setResultsConfigArrayList(ArrayList resultsConfigArrayList) {
         this.resultsConfigArrayList = resultsConfigArrayList;
+    }
+
+    public Integer getMaxResultsSize() {
+        return maxResultsSize;
+    }
+
+    public void setMaxResultsSize(Integer maxResultsSize) {
+        this.maxResultsSize = maxResultsSize;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
  }

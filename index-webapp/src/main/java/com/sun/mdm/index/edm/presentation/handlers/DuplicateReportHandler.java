@@ -78,13 +78,11 @@ import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import net.java.hulp.i18n.LocalizationSupport;
 
-
 public class DuplicateReportHandler    {
     /* @param reportType the report type*/
     /* @param dataRowList1 */
      private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.DuplicateReportHandler");
     private static transient final Localizer mLocalizer = Localizer.get();
-    
     ArrayList dataRowList1 = null;
     TransactionIterator updateIterator = null;
     PotentialDuplicateIterator pdIter = null;
@@ -92,6 +90,9 @@ public class DuplicateReportHandler    {
     private PotentialDuplicateReport    pdRpt = null;
     Hashtable duplicateRecordsResultsHash = new Hashtable();
     ArrayList vOList = new ArrayList();
+    private Integer maxResultsSize;  
+    private Integer pageSize;  
+    
      /**
      * Data Object that holds the search results 
      */
@@ -117,7 +118,7 @@ public class DuplicateReportHandler    {
      /**
      * Search DuplicateReports Function
      */ 
-    private String reportFunction;
+    private String duplicateStatus;
     /**
      * Search Maximum Reports in DuplicateReports 
      */ 
@@ -132,7 +133,11 @@ public class DuplicateReportHandler    {
      */
     HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
     
-    
+    /**
+     *Resource bundle
+     */
+        ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm",FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+        
     /**
      *get Screen Object from the session
      */
@@ -140,26 +145,35 @@ public class DuplicateReportHandler    {
     
     private ArrayList resultsConfigArrayList  = new ArrayList();
     
-   public DuplicateRecords[] duplicateReport() throws ValidationException, EPathException, ReportException, Exception{
-       pdrConfig = getPotentialDuplicateSearchObject();
-       pdIter = QwsController.getReportGenerator().execPotentialDuplicateReportIterator(pdrConfig);
-       // Code to retrieve the data rows of report records.
-       ReportDataRow[] rdr = getPDRRows();
-       setDuplicateRecordsVO(new DuplicateRecords[rdr.length]);
-       return getDuplicateRecordsVO();
+    private ArrayList resultArrayList = new ArrayList();
+            
+    public ArrayList duplicateReport() throws ValidationException, EPathException, ReportException, Exception {
+        pdrConfig = getPotentialDuplicateSearchObject();
+        if (pdrConfig != null) {
+            pdIter = QwsController.getReportGenerator().execPotentialDuplicateReportIterator(pdrConfig);
+            // Code to retrieve the data rows of report records.
+            ReportDataRow[] rdr = getPDRRows();
+            setDuplicateRecordsVO(new DuplicateRecords[rdr.length]);
+            return resultArrayList;
+        } else {
+            return null;
+        }
     }
    
    //getter method to retrieve the data rows of report records.
    private ReportDataRow[] getPDRRows() throws Exception {
         ArrayList dataRowList = new ArrayList();
-        ArrayList resultArrayList = new ArrayList();
         while (pdIter.hasNext()) {
             PotentialDuplicateReportRow reportRow = new PotentialDuplicateReportRow(pdIter.next(), pdrConfig);
             ReportDataRow[] dataRows = writeRow(pdrConfig, reportRow);
             for (int i = 0; i < dataRows.length; i++) {
                 dataRowList.add(dataRows[i]);
             }
-            resultArrayList.add(getOutPutValuesMap(pdrConfig, reportRow));
+            ArrayList newArrayList = getOutPutValuesMap(pdrConfig, reportRow);
+            for (int i = 0; i < newArrayList.size(); i++) {
+                HashMap object = (HashMap) newArrayList.get(i);
+                resultArrayList.add(object);
+            }
         }            
         request.setAttribute("duplicateReportList", resultArrayList);
         return dataRowList2Array(dataRowList);
@@ -386,21 +400,21 @@ public class DuplicateReportHandler    {
          request.setAttribute("tabName", "DUPLICATE_REPORT");        
          String errorMessage = null;
          EDMValidation edmValidation = new EDMValidation();         
-         ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+         ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());        
          PotentialDuplicateReportConfig pdrConfig = new PotentialDuplicateReportConfig();
         // One of Many validation 
         if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0) &&
                 (this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0) &&
                 (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() == 0) &&
                 (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() == 0) &&
-                (this.getReportFunction() == null)&&
-                (this.getReportSize() != null && this.getReportSize().trim().length() == 0)
+                (this.getDuplicateStatus() != null && this.getDuplicateStatus().trim().length() == 0)
             ){
                 errorMessage = bundle.getString("ERROR_one_of_many");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                 //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
                 mLogger.error(mLocalizer.x("RPT017: {0}",errorMessage));
-           }
+                return null;
+       }
 
         //Form Validation of  Start Time
         if (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)    {
@@ -411,7 +425,16 @@ public class DuplicateReportHandler    {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1 + errorMessage, errorMessage));
                 //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
                  mLogger.info(mLocalizer.x("RPT018: {0}",errorMessage));
+                return null;
             }            
+            
+            //if only time fields are entered validate for the date fields 
+            if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_from");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                 mLogger.info(mLocalizer.x("RPT201: {0} ",errorMessage));
+                return null;
+            }
         }
 
         //Form Validation of  Start Date        
@@ -422,6 +445,7 @@ public class DuplicateReportHandler    {
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                 // Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
                   mLogger.info(mLocalizer.x("RPT025: {0}",message));
+                return null;
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
@@ -435,6 +459,7 @@ public class DuplicateReportHandler    {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
                      mLogger.error(mLocalizer.x("RPT019: {0}",errorMessage),validationException);
+                     return null;
                 }
             }
         }
@@ -448,7 +473,16 @@ public class DuplicateReportHandler    {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  errorMessage, errorMessage));
                 //Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
                  mLogger.info(mLocalizer.x("RPT020: {0}",message));
+                return null;
             } 
+
+            //if only time fields are entered validate for the date fields 
+            if ((this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_to");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                 mLogger.info(mLocalizer.x("RPT202: {0} ",errorMessage));
+                return null;
+            }
        }    
          
         //Form Validation of  End Date        
@@ -459,6 +493,7 @@ public class DuplicateReportHandler    {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                // Logger.getLogger(DuplicateReportHandler.class.getName()).log(Level.WARNING, message, message);
                 mLogger.error(mLocalizer.x("RPT021: {0}",message));
+                return null;
             } else {
                 try {
                     //If Time is supplied append it to the date to check if it parses into a valid Date
@@ -472,6 +507,7 @@ public class DuplicateReportHandler    {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     mLogger.error(mLocalizer.x("RPT022: {0}",errorMessage), validationException);
+                    return null;
                 }
             }           
         }
@@ -486,10 +522,11 @@ public class DuplicateReportHandler    {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
                     mLogger.info(mLocalizer.x("RPT023: {0}",errorMessage));
+                    return null;
                    }
         }
-         if (getReportFunction() != null && getReportFunction().length() > 0)    {
-             pdrConfig.setSystemCode(getReportFunction());
+         if (getDuplicateStatus() != null && getDuplicateStatus().length() > 0)    {
+             pdrConfig.setStatus(getDuplicateStatus());
          }
          
          if (this.getReportSize() != null && this.getReportSize().length() > 0)    {
@@ -501,7 +538,7 @@ public class DuplicateReportHandler    {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg3 + errorMessage, errorMessage));
                 //java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
                 mLogger.info(mLocalizer.x("RPT024: {0}",message));
-                
+                return null;
             }
         } 
                
@@ -509,6 +546,11 @@ public class DuplicateReportHandler    {
         pdrConfig.addTransactionField(PotentialDuplicateReport.EUID1, "EUID1", 20);
         pdrConfig.addTransactionField(PotentialDuplicateReport.EUID2, "EUID2", 20);        
         pdrConfig.addTransactionField(PotentialDuplicateReport.ID, "ID", 20);
+
+    
+        pdrConfig.setMaxResultSize(getMaxResultsSize());
+        pdrConfig.setPageSize(getPageSize());
+        
         //pdrConfig.addTransactionField(PotentialDuplicateReport.SYSTEM_CODE, "SystemCode", 10);        
         //pdrConfig.addTransactionField(PotentialDuplicateReport.WEIGHT, "Weight", 20);        
         //pdrConfig.addTransactionField(PotentialDuplicateReport.REASON, "Reason", 20);        
@@ -593,16 +635,16 @@ public class DuplicateReportHandler    {
      * 
      * @return
      */
-    public String getReportFunction() {
-        return reportFunction;
+    public String getDuplicateStatus() {
+        return duplicateStatus;
     }
 
     /**
      * set Report Frequncy 
      * @param function
      */
-    public void setReportFunction(String function) {
-        this.reportFunction = function;
+    public void setDuplicateStatus(String function) {
+        this.duplicateStatus = function;
     }
     
 
@@ -644,15 +686,32 @@ public class DuplicateReportHandler    {
         this.duplicateRecordsVO = duplicateRecordsVO;
     }
 
-    public ArrayList getResultsConfigArrayList() {
+    public ArrayList getResultsConfigArrayList() {            
+        String REPORT_LABEL = bundle.getString("Potential_Duplicate_Report_Label");
         ReportHandler reportHandler = new ReportHandler();
-        reportHandler.setReportType("Potential Duplicate Report");        
+        reportHandler.setReportType(REPORT_LABEL);                
         ArrayList fcArrayList  = reportHandler.getSearchResultsScreenConfigArray();
         return fcArrayList;
     }
 
     public void setResultsConfigArrayList(ArrayList resultsConfigArrayList) {
         this.resultsConfigArrayList = resultsConfigArrayList;
+    }
+
+    public Integer getMaxResultsSize() {
+        return maxResultsSize;
+    }
+
+    public void setMaxResultsSize(Integer maxResultsSize) {
+        this.maxResultsSize = maxResultsSize;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 
     

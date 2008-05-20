@@ -80,8 +80,6 @@ import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import net.java.hulp.i18n.LocalizationSupport;
 
-
-
 public class AssumeMatchReportHandler  {
     
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.AssumeMatchReportHandler");
@@ -98,6 +96,10 @@ public class AssumeMatchReportHandler  {
     private AssumedMatchReport  amRpt = null;
     
     Hashtable assumematchRecordsResultsHash = new Hashtable();
+    
+    //resource bundle definitin
+    ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm",FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        
     ArrayList vOList = new ArrayList();
      /**
      * Data Object that holds the search results 
@@ -143,22 +145,21 @@ public class AssumeMatchReportHandler  {
     
     private ArrayList resultsConfigArrayList  = new ArrayList();
     private ArrayList resultsArrayList  = new ArrayList();
+    private Integer maxResultsSize;  
+    private Integer pageSize;  
    
     /* This method populates the Assume Match Reports using the Service Layer call and handles exceptions*/
-   public AssumeMatchesRecords[] assumeMatchReport() throws ValidationException, EPathException, ReportException, PageException, RemoteException, Exception    {
-       request.setAttribute("tabName", "ASSUME_MATCH");        
-       amrConfig = getAssumedMatchReportSearchObject();
-       amri = QwsController.getReportGenerator().execAssumedMatchReportIterator(amrConfig);
-       // Code to retrieve the data rows of report records.
-       ReportDataRow[] rdr = getAMRRows();
-/*  
-       for (int i = 0; i < rdr.length; i++) {
-           ReportDataRow reportDataRow = rdr[i];
-           getAssumematchesRecordsVO()[i] = new AssumeMatchesRecords(); //Be safe with malloc
-           getAssumematchesRecordsVO()[i].setEuid(rdr[i].getFields()[i].getValue());
-       }
- */
-       return getAssumematchesRecordsVO();
+    public ArrayList assumeMatchReport() throws ValidationException, EPathException, ReportException, PageException, RemoteException, Exception {
+        request.setAttribute("tabName", "ASSUME_MATCH");
+        amrConfig = getAssumedMatchReportSearchObject();
+        if (amrConfig != null) {
+            amri = QwsController.getReportGenerator().execAssumedMatchReportIterator(amrConfig);
+            // Code to retrieve the data rows of report records.
+            ReportDataRow[] rdr = getAMRRows();
+            return resultsArrayList;
+        } else {
+            return null;
+        }
     }
    
    //getter method to retrieve the data rows of report records.
@@ -183,7 +184,6 @@ public class AssumeMatchReportHandler  {
             //resultArrayList.add(getOutPutValuesMap(amrConfig, reportRow));
         }
         populateVO();
-        request.setAttribute("assumeMatchReportList", resultsArrayList);
         return dataRowList2Array(dataRowList);
     }
    
@@ -231,7 +231,7 @@ public class AssumeMatchReportHandler  {
                     newValuesMap.put("EUID", val);
                     eo = masterControllerService.getEnterpriseObject(val.toString());
 
-					for (int i = 0; i < fcArrayList.size(); i++) {
+                    for (int i = 0; i < fcArrayList.size(); i++) {
                         FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
                         if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
                             epathValue = fieldConfig.getFullFieldName();
@@ -336,19 +336,19 @@ public class AssumeMatchReportHandler  {
    public AssumedMatchReportConfig getAssumedMatchReportSearchObject()  throws ValidationException, EPathException {
          String errorMessage = null;
          EDMValidation edmValidation = new EDMValidation();         
-         ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());        
+         ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());        
          AssumedMatchReportConfig amrc = new AssumedMatchReportConfig(); 
         // One of Many validation 
         if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0) &&
-                (this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0) &&
-                (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() == 0) &&
-                (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() == 0)&&
-                (this.getReportSize() != null && this.getReportSize().trim().length() == 0)){
+            (this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0) &&
+            (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() == 0) &&
+            (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() == 0)){
                 errorMessage = bundle.getString("ERROR_one_of_many");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                 //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
                 mLogger.info(mLocalizer.x("ASM027: {0} ",errorMessage));
-           }
+               return null;
+            }
 
         //Form Validation of  Start Time
         if (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)    {
@@ -359,8 +359,16 @@ public class AssumeMatchReportHandler  {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1+ errorMessage, errorMessage));
                 //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, message, message);
                 mLogger.info(mLocalizer.x("ASM028: Start time validation failed: {0}",message));
+                return null;
             }            
-        }
+                //if only time fields are entered validate for the date fields 
+            if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_from");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                 mLogger.info(mLocalizer.x("ASM202: {0} ",errorMessage));
+                return null;
+            }
+    }
 
         //Form Validation of  Start Date        
         if (this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() > 0)    {
@@ -370,6 +378,7 @@ public class AssumeMatchReportHandler  {
                  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                  //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, message, message);
                  mLogger.info(mLocalizer.x("ASM029: Start Date validation failed :{0} :{1}",message,errorMessage));
+                return null;
             } else {
                 //If Time is supplied append it to the date and check if it parses as a valid date
                 try {
@@ -387,6 +396,7 @@ public class AssumeMatchReportHandler  {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, errorMessage, validationException);
                     mLogger.error(mLocalizer.x("ASM030: Validation failed :{0}",errorMessage),validationException);
+                    return null;
                 }
             }
         }
@@ -400,7 +410,15 @@ public class AssumeMatchReportHandler  {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg2 + errorMessage, errorMessage));
                 //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, message, message);
                  mLogger.info(mLocalizer.x("ASM031: Validation failed :{0}",msg2+errorMessage));
+                return null;
             } 
+            //if only time fields are entered validate for the date fields 
+            if ((this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_to");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                 mLogger.info(mLocalizer.x("ASM201: {0} ",errorMessage));
+                return null;
+            }
        }    
          
         //Form Validation of  End Date        
@@ -412,6 +430,7 @@ public class AssumeMatchReportHandler  {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                 //Logger.getLogger(AssumeMatchReportHandler.class.getName()).log(Level.WARNING, message, message);
                  mLogger.info(mLocalizer.x("ASM032: Validation failed :{0}",errorMessage));
+                return null;
             } else {
                 try {
                     if (getCreateEndTime().trim().length() == 0) {
@@ -429,6 +448,7 @@ public class AssumeMatchReportHandler  {
                     errorMessage = (errorMessage != null && errorMessage.length() > 0 ? bundle.getString("ERROR_end_date") : bundle.getString("ERROR_end_date"));
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
                     mLogger.error(mLocalizer.x("ASM033: Validation failed :{0}",errorMessage),validationException);
+                    return null;
                 }
             }           
         }
@@ -443,6 +463,7 @@ public class AssumeMatchReportHandler  {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
                    // Logger.getLogger(AuditLogHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
                    mLogger.info(mLocalizer.x("ASM034: Validation failed :{0}",errorMessage));
+                   return null;
                    }
         }
           if (this.getReportSize() != null && this.getReportSize().length() > 0)    {
@@ -454,6 +475,7 @@ public class AssumeMatchReportHandler  {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg4+errorMessage, errorMessage));
                 //java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
                 mLogger.info(mLocalizer.x("ASM035: Validation failed :{0}",errorMessage));
+                return null;
             }
         }    
                
@@ -461,8 +483,11 @@ public class AssumeMatchReportHandler  {
         amrc.addTransactionField("LID", "Local Id", 20);
         amrc.addTransactionField("Weight", "Weight", 10);
         amrc.addTransactionField("EUID", "EUID", 20);
-        // Set labels, path and other UI attributes here        
 
+     
+        amrc.setMaxResultSize(getMaxResultsSize());
+        amrc.setPageSize(getPageSize());
+        
         if (errorMessage != null && errorMessage.length() != 0)  {            
             throw new ValidationException(mLocalizer.t("ASM501: {0}",errorMessage));
         } else {
@@ -563,9 +588,10 @@ public class AssumeMatchReportHandler  {
         this.assumematchesRecordsVO = assumematchesRecordsVO;
     }
 
-    public ArrayList getResultsConfigArrayList() {
+    public ArrayList getResultsConfigArrayList() {        
+        String REPORT_LABEL = bundle.getString("Assumed_Matches_Report_Label");
         ReportHandler reportHandler = new ReportHandler();
-        reportHandler.setReportType("Assume Match Report");        
+        reportHandler.setReportType(REPORT_LABEL);                
         ArrayList fcArrayList  = reportHandler.getSearchResultsScreenConfigArray();
         return fcArrayList;
     }
@@ -581,6 +607,22 @@ public class AssumeMatchReportHandler  {
 
     public void setResultsArrayList(ArrayList resultsArrayList) {
         this.resultsArrayList = resultsArrayList;
+    }
+
+    public Integer getMaxResultsSize() {
+        return maxResultsSize;
+    }
+
+    public void setMaxResultsSize(Integer maxResultsSize) {
+        this.maxResultsSize = maxResultsSize;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
     
 }
