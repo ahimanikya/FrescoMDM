@@ -18,6 +18,7 @@
         <module>index-services</module>
         <module>index-webapp</module>
         <module>index-gui</module>        
+        <module>solutions</module>        
     </modules>
     <build>
         <plugins>
