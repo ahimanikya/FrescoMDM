@@ -3,9 +3,9 @@ AUSPatient Solution
 
 Purpose of the Solution
 ----------------------
-The purpose of this solution is to demonstate how a United States of America Patient model might be 
-implemented in the Master Data Management (MDM) product suite.  Additionally the solution 
-demonstrates the capabilities of the MDM suite.
+The purpose of this solution is to demonstate how an Australian Patient model might be 
+implemented in the Master Data Management (MDM) product suite. Specifically the solution 
+demonstrates the capabilities of the Master Index portion of the suite.
 
 
 This solution uses a patient definition geared towards Australia.  Since this is an
@@ -27,19 +27,6 @@ How to use the solution.
 		AUSPatient
 		AUSPatient-ejb
 		AUSPatient-war
-		
-           NOTE: When you open the solution you may see the following errors.  These can both be ignored.
-           
-             o Deployment descriptor directory can not be found. It may have been removed or renamed.
-           
-             o Reference Problems 
-             
-               One or more project resources could not be found.
-               Right-click the project in the Project window and choose
-               Resolve Reference Problems to find the missing resources.
-           
-           Additionally the -ejb sub-project may be colored red. This is also to be expected and
-           can be ignored.
            
 
         3. Create the database.
@@ -68,6 +55,10 @@ How to use the solution.
 		   "Build".
 		b) Right click on the AUSPatient project and select
 		   "Undeploy and Deploy".
+                   
+                    This will bring up the "Warning - Select Server" dialog.
+                    Select "GlassFish V2" as the target server.  
+     
 
 	7. Using the GlassFish Admin Console define the following:
 	    Resources

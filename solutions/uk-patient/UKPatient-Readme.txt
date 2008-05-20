@@ -4,15 +4,16 @@ UKPatient Solution
 Purpose of the UKPatient Solution
 ---------------------------------
 The purpose of this solution is to demonstate how a United Kingdom Patient model might be 
-implemented in the Master Data Management (MDM) product suite.  Additionally the solution 
-demonstrates the capabilities of the MDM suite.
+implemented in the Master Data Management (MDM) product suite.  Specificaly the Master Index portion 
+of MDM.
+
  
 This solution uses a patient definition geared towards the United Kingdom.  Since this is a
 UK Patient, fields such as the HealthID's IdNum and HealthID's IdNumType are used 
 for both block-search definitions and matches.
 
 Loading and examining the various files provided with this solution will give a good
-basis for understanding the MDM product suite.
+basis for understanding Master Index.
  
 
 How to use the solution.
@@ -26,19 +27,6 @@ How to use the solution.
 		UKPatient
 		UKPatient-ejb
 		UKPatient-war
-		
-	   NOTE: When you open the solution you may see the following errors.  These can both be ignored.
-           
-             o Deployment descriptor directory can not be found. It may have been removed or renamed.
-           
-             o Reference Problems 
-             
-               One or more project resources could not be found.
-               Right-click the project in the Project window and choose
-               Resolve Reference Problems to find the missing resources.
-           
-           Additionally the -ejb sub-project may be colored red. This is also to be expected and can 
-           be ignored. 	
 
         3. Create the database.
 	 	The solution creates a user called 'uk'. To create a different user,
@@ -66,6 +54,10 @@ How to use the solution.
 		   "Build".
 		b) Right click on the UKPatient project and select
 		   "Undeploy and Deploy".
+
+                    This will bring up the "Warning - Select Server" dialog.
+                    Select "GlassFish V2" as the target server.  
+
 
 	7. Using the GlassFish Admin Console define the following:
 	    Resources
