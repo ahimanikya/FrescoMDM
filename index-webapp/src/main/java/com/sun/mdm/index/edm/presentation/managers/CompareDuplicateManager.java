@@ -798,24 +798,73 @@ public class CompareDuplicateManager {
         return newArrayList;
     }
 
-    public int getMinorObjectsMaxSize(ArrayList valuesObjectHashMapList, ScreenObject screenObject, String childObjectName) {
-        int countMinorObjectsMax = 0;
+    public int getMinorObjectsMaxSize(ArrayList enterpriseObjectHashMapList, ScreenObject screenObject, String childObjectName) {
+
         ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
-        int[] countsArray = new int[valuesObjectHashMapList.size()];
-   
-        //Build and array of minor object values from the screen object child object nodes
-        for (int j = 0; j < valuesObjectHashMapList.size(); j++) {
-            HashMap valuesObjectHashMap = (HashMap) valuesObjectHashMapList.get(j);
+        
+        ArrayList maxMinorObjectsCount  = new ArrayList();
+        
+        for (int j = 0; j < enterpriseObjectHashMapList.size(); j++) {
+            
+           //Build and array of minor object values from the screen object child object nodes for the EO
+            HashMap valuesObjectHashMap = (HashMap) enterpriseObjectHashMapList.get(j);
             for (int i = 0; i < childNodeConfigs.length; i++) {
                 //get the child object node configs
                 ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
                 if (childObjectName.equalsIgnoreCase(objectNodeConfig.getName())) {
-                    countsArray[j] = ((Integer) valuesObjectHashMap.get("EO" + childObjectName + "ArrayListSize")).intValue();
+                    //add minor objects count for the Enterprise objects here
+                    maxMinorObjectsCount.add((Integer) valuesObjectHashMap.get("EO" + childObjectName + "ArrayListSize")) ;
                 }
             }
+            
+//            enterpriseObjectHashMap.put("ENTERPRISE_OBJECT_SOURCES", getEoSources(enterpriseObject, screenObject));
+            //Build and array of minor object values from the screen object child object nodes for the EO
+            ArrayList soMinorObjectsList  = (ArrayList) valuesObjectHashMap.get("ENTERPRISE_OBJECT_SOURCES");
+            for (int so = 0; so < soMinorObjectsList.size(); so++) {
+                HashMap soHashMap = (HashMap) soMinorObjectsList.get(so);
+
+                for (int i = 0; i < childNodeConfigs.length; i++) {
+                    //get the child object node configs
+                    ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
+                    if (childObjectName.equalsIgnoreCase(objectNodeConfig.getName())) {
+                        //add minor objects count for the Enterprise objects here
+                        maxMinorObjectsCount.add((Integer) soHashMap.get("SO" + childObjectName + "ArrayListSize"));
+                    }
+                }
+            }
+           
+            //Build and array of minor object values from the screen object child object nodes for the EO
+//            enterpriseObjectHashMap.put("", getEoHistory(enterpriseObject.getEUID(), screenObject));
+
+            
+            ArrayList historyMinorObjectsList  = (ArrayList) valuesObjectHashMap.get("ENTERPRISE_OBJECT_HISTORY");
+            for (int hi = 0; hi < soMinorObjectsList.size(); hi++) {
+                HashMap historyHashMap = (HashMap) historyMinorObjectsList.get(hi);
+
+                for (int i = 0; i < childNodeConfigs.length; i++) {
+                    //get the child object node configs
+                    ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
+                    if (childObjectName.equalsIgnoreCase(objectNodeConfig.getName())) {
+                        //add minor objects count for the Enterprise objects here
+                        maxMinorObjectsCount.add((Integer) historyHashMap.get("EO" + childObjectName + "ArrayListSize"));
+                    }
+                }
+            }
+           
         }
-        Arrays.sort(countsArray);
-        return countsArray[countsArray.length-1];
+   
+        //build and array of integers for sorting
+        int[] countsFinalArray = new int[maxMinorObjectsCount.size()];
+
+        //filter the array list for the array list of max minor object sizes
+        for (int j = 0; j < maxMinorObjectsCount.size(); j++) {
+            countsFinalArray[j] = ((Integer)  maxMinorObjectsCount.get(j) != null)?((Integer)  maxMinorObjectsCount.get(j)).intValue():0;
+        }
+   
+        //Sort the final array to get the max value out of all values
+        Arrays.sort(countsFinalArray);
+       
+        return countsFinalArray[countsFinalArray.length-1];
     }
 
     public int getSOMinorObjectsMaxSize(ArrayList valuesObjectHashMapList, ScreenObject screenObject, String childObjectName) {
