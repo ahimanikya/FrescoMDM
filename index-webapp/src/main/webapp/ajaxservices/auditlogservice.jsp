@@ -32,6 +32,38 @@
  <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />   
 
 <%
+String URI = request.getRequestURI();URI = URI.substring(1, URI.lastIndexOf("/"));
+//remove the app name 
+URI = URI.replaceAll("/ajaxservices","");
+boolean isSessionActive = true;
+%>
+
+<% if(session!=null && session.isNew()) {
+	isSessionActive = false;
+%>
+ <table>
+   <tr>
+     <td>
+  <script>
+   window.location = '/<%=URI%>/login.jsf';
+  </script>
+     </td>
+	 </tr>
+	</table>
+<%}%>
+
+<%if (isSessionActive)  {%>
+
+
+
+
+
+
+
+
+
+
+<%
 AuditLogHandler auditLogHandler = new AuditLogHandler();
 
 Enumeration parameterNames = request.getParameterNames();
@@ -113,9 +145,9 @@ if (results != null)   {
 
 %>
 
-     <table border="0" cellpadding="0" cellspacing="0"> 
+     <table border="0" cellpadding="0" cellspacing="0" style="border-left:1px solid #6B757B;border-right:1px solid #6B757B;border-top: 1px solid #182442;border-bottom: 1px solid #6B757B;background-color:#f9f7de"> 
          <tr>
-            <td style="width:93%;text-align:right">
+            <td style="width:83%;text-align:right">
                          <h:outputText value="#{msgs.total_records_text}"/>&nbsp;<%=results.size()%>&nbsp;
 			</td>
 			<td>
@@ -191,6 +223,8 @@ if (results != null)   {
 		 var messages = document.getElementById("messages");
 	     messages.innerHTML= "";
 		 messages.style.visibility="hidden";
+		 var resultsdiv = document.getElementById("resultsdiv");
+		 resultsdiv.style.visibility="visible";
 	 </script>
 
 <% } else { %> <!-- End results!= null -->
@@ -221,4 +255,6 @@ if (results != null)   {
 	 </div>
 
 <% } %>
+
+<%} %>  <!-- Session check -->
 </f:view>

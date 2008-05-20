@@ -71,6 +71,31 @@
 
      </head>
 <%
+String URI = request.getRequestURI();URI = URI.substring(1, URI.lastIndexOf("/"));
+//remove the app name 
+URI = URI.replaceAll("/ajaxservices","");
+boolean isSessionActive = true;
+%>
+
+<% if(session!=null && session.isNew()) {
+	isSessionActive = false;
+%>
+ <table>
+   <tr>
+     <td>
+  <script>
+   window.location = '/<%=URI%>/login.jsf';
+  </script>
+     </td>
+	 </tr>
+	</table>
+<%}%>
+
+<%if (isSessionActive)  {%>
+
+
+
+<%
 double rand = java.lang.Math.random();
 Enumeration parameterNames = request.getParameterNames();
 /*if(parameterNames != null)   {
@@ -93,10 +118,10 @@ String rootNodeName = objScreenObject.getRootObj().getName();
 //get Field Config for the root node
 FieldConfig[] fcRootArray = (FieldConfig[]) allNodeFieldConfigsMap.get(rootNodeName);
 MasterControllerService masterControllerService = new MasterControllerService();
-String URI = request.getRequestURI();
-URI = URI.substring(1, URI.lastIndexOf("/"));
+//String URI = request.getRequestURI();
+//URI = URI.substring(1, URI.lastIndexOf("/"));
 //remove the app name 
-URI = URI.replaceAll("/ajaxservices","");
+//URI = URI.replaceAll("/ajaxservices","");
 
 //Variables for load
 String isLoadStr = request.getParameter("load");
@@ -365,7 +390,20 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 						            if(fcArray[k].isRequired()) {
                                %>
 								   <td>
-										 <%=(minorObjectMap.get(fcArray[k].getFullFieldName())==null?"&nbsp;":(fcArray[k].getValueList() != null)?ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName())):minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+								      <%if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>  <!--if has value-->
+                                           <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
+ 										      <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
+										         <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+										      <%}else{%>
+                                                <%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+										     <%}%>
+										   <%} else {%> <!-- In other cases-->
+                                             <%=minorObjectMap.get(fcArray[k].getFullFieldName())%>
+										   <%}%>
+									  <%} else {%> <!-- else print &nbsp-->
+									    &nbsp;
+									  <%}%>
+										 
 										 <input type="hidden" name="<%=fcArray[k].getFullFieldName()%>" value=<%=minorObjectMap.get(fcArray[k].getFullFieldName())%> />
 										 
 								   </td>
@@ -473,8 +511,21 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 							  <% for(int k=0;k<fcArray.length;k++) {
 						            if(fcArray[k].isRequired()) {
                                %>
-								   <td>
-										 <%=(minorObjectMap.get(fcArray[k].getFullFieldName())==null?"&nbsp;":(fcArray[k].getValueList() != null)?ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName())):minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+								 <td>
+								      <%if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>  <!--if has value-->
+                                           <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
+ 										      <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
+										         <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+										      <%}else{%>
+                                                <%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+										     <%}%>
+										   <%} else {%> <!-- In other cases-->
+                                             <%=minorObjectMap.get(fcArray[k].getFullFieldName())%>
+										   <%}%>
+									  <%} else {%> <!-- else print &nbsp-->
+									    &nbsp;
+									  <%}%>
+										 
 										 <input type="hidden" name="<%=fcArray[k].getFullFieldName()%>" value=<%=minorObjectMap.get(fcArray[k].getFullFieldName())%> />
 										 
 								   </td>
@@ -605,8 +656,15 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 				  String originalValue = (String) moHashMap.get(fcArrayLocal[k].getFullFieldName());
                   if(tempValue.equalsIgnoreCase(originalValue)) {
                    checkKeyTypes = true;
-				   keyTypeValues = ValidationService.getInstance().getDescription(fcArrayLocal[k].getValueList(), originalValue);
-				   keyType = fcArrayLocal[k].getDisplayName();
+                     //CHECK FOR THE KEY TYPE VALUES WITH USER CODES AND VALUE LIST
+				     if (fcArrayLocal[k].getValueList() != null){  
+				       if (fcArrayLocal[k].getUserCode() != null) {  
+						 keyTypeValues = ValidationService.getInstance().getUserCodeDescription(fcArrayLocal[k].getUserCode(),originalValue);
+					   } else{
+                          keyTypeValues  = ValidationService.getInstance().getDescription(fcArrayLocal[k].getValueList(), originalValue);
+					  }
+					}
+					keyType = fcArrayLocal[k].getDisplayName();
 				  }
 			    }
 	           } 
@@ -704,8 +762,21 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 							  <% for(int k=0;k<fcArray.length;k++) {
 								   if(fcArray[k].isRequired()) {%>
-								   <td>
-										 <%=(minorObjectMap.get(fcArray[k].getFullFieldName())==null?"&nbsp;":(fcArray[k].getValueList() != null)?ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName())):minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+								    <td>
+								      <%if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>  <!--if has value-->
+                                           <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
+ 										      <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
+										         <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+										      <%}else{%>
+                                                <%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+										     <%}%>
+										   <%} else {%> <!-- In other cases-->
+                                             <%=minorObjectMap.get(fcArray[k].getFullFieldName())%>
+										   <%}%>
+									  <%} else {%> <!-- else print &nbsp-->
+									    &nbsp;
+									  <%}%>
+										 
 										 <input type="hidden" name="<%=fcArray[k].getFullFieldName()%>" value=<%=minorObjectMap.get(fcArray[k].getFullFieldName())%> />
 										 
 								   </td>
@@ -767,8 +838,15 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 				  String originalValue = (String) moHashMap.get(fcArrayLocal[k].getFullFieldName());
                   if(tempValue.equalsIgnoreCase(originalValue)) {
                    checkKeyTypes = true;
-				   keyTypeValues = ValidationService.getInstance().getDescription(fcArrayLocal[k].getValueList(), originalValue);
-				   keyType = fcArrayLocal[k].getDisplayName();
+                     //CHECK FOR THE KEY TYPE VALUES WITH USER CODES AND VALUE LIST
+				     if (fcArrayLocal[k].getValueList() != null){  
+				       if (fcArrayLocal[k].getUserCode() != null) {  
+						 keyTypeValues = ValidationService.getInstance().getUserCodeDescription(fcArrayLocal[k].getUserCode(),originalValue);
+					   } else{
+                          keyTypeValues  = ValidationService.getInstance().getDescription(fcArrayLocal[k].getValueList(), originalValue);
+					  }
+					}
+					keyType = fcArrayLocal[k].getDisplayName();
 				  }
 			    }
 	           } 
@@ -866,12 +944,24 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 							  <% for(int k=0;k<fcArray.length;k++) {
 								   if(fcArray[k].isRequired()) {%>
-								   <td>
-										 <%=(minorObjectMap.get(fcArray[k].getFullFieldName())==null?"&nbsp;":(fcArray[k].getValueList() != null)?ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName())):minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+								 <td>
+								      <%if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {%>  <!--if has value-->
+                                           <%if(fcArray[k].getValueList() != null) {%> <!-- if the field config has value list-->
+ 										      <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
+										         <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+										      <%}else{%>
+                                                <%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+										     <%}%>
+										   <%} else {%> <!-- In other cases-->
+                                             <%=minorObjectMap.get(fcArray[k].getFullFieldName())%>
+										   <%}%>
+									  <%} else {%> <!-- else print &nbsp-->
+									    &nbsp;
+									  <%}%>
+										 
 										 <input type="hidden" name="<%=fcArray[k].getFullFieldName()%>" value=<%=minorObjectMap.get(fcArray[k].getFullFieldName())%> />
 										 
-								   </td>
-							     <% } %>
+								   </td>  <% } %>
 							   <% } %>
 						   </tr>			   
             <% }  %>   <!-- end if mark for delete condition -->
@@ -905,7 +995,23 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 			   int intEditIndex = new Integer(editIndex).intValue();
 			 %>
 			 <%HashMap minorObjectMap  = (HashMap) thisMinorObjectList.get(intEditIndex);%>
-               <!-- Generate the script to populate the form -->
+               <!-- Generate the script to populate the user code maskings -->
+			       <% for(int k=0;k<fcArray.length;k++) {	
+				        String constarintBy = fcArray[k].getConstraintBy();
+						if(constarintBy != null && constarintBy.length() > 0) {
+				        int refIndex = sourceHandler.getReferenceFields(fcArray,constarintBy);
+                       
+                        String userInputMask = ValidationService.getInstance().getUserCodeInputMask(fcArray[refIndex].getUserCode(), (String)   minorObjectMap.get(fcArray[refIndex].getFullFieldName()));
+                       
+			        
+				     %>
+						<script>
+                         userDefinedInputMask = '<%=userInputMask%>';
+				         
+						</script>
+				      <%}%> 
+				   <%}%> 
+			   <!-- Generate the script to populate the form -->
 			   <script>
 			       <% for(int k=0;k<fcArray.length;k++) {					     
 				   %>
@@ -982,4 +1088,5 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
  </body>
 </f:view>
+<%} %>  <!-- Session check -->
 </html>

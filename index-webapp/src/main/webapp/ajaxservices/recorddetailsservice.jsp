@@ -34,14 +34,32 @@
  <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />   
 
 <%
+String URI = request.getRequestURI();URI = URI.substring(1, URI.lastIndexOf("/"));
+//remove the app name 
+URI = URI.replaceAll("/ajaxservices","");
+boolean isSessionActive = true;
+%>
+
+<% if(session!=null && session.isNew()) {
+	isSessionActive = false;
+%>
+ <table>
+   <tr>
+     <td>
+  <script>
+   window.location = '/<%=URI%>/login.jsf';
+  </script>
+     </td>
+	 </tr>
+	</table>
+<%}%>
+
+<%if (isSessionActive)  {%>
+<%
 SourceHandler sourceHandler = new SourceHandler();
 ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 MasterControllerService masterControllerService = new MasterControllerService();
 
-String URI = request.getRequestURI();
-URI = URI.substring(1, URI.lastIndexOf("/"));
-//remove the app name 
-URI = URI.replaceAll("/ajaxservices","");
 PatientDetailsHandler patientDetailsHandler = new PatientDetailsHandler();
 
 Enumeration parameterNames = request.getParameterNames();
@@ -89,20 +107,17 @@ ArrayList collectedEuidsList = new ArrayList();
 
 %>
 
-<% 
-   //Build the request Map 
+<% //Build the request Map 
    while(parameterNames.hasMoreElements())   { 
     String attributeName = (String) parameterNames.nextElement();
     String attributeValue = (String) request.getParameter(attributeName);
 	 attributeValue = attributeValue.replaceAll("~~","%");
- 
        if ( !("editThisID".equalsIgnoreCase(attributeName)) && 
 		    !("selectedSearchType".equalsIgnoreCase(attributeName)) && 
 			!("random".equalsIgnoreCase(attributeName)) ) {
 		     patientDetailsHandler.getParametersMap().put(attributeName,attributeValue);			
       }
    } 
-   
 %>
 
 
@@ -236,7 +251,11 @@ if (results != null)   {
 	myColumnDefs.append("[");
     String value = new String();
 	for(int ji=0;ji<keys.size();ji++) {
+	    if ("EUID".equalsIgnoreCase((String)keys.toArray()[ji]))  {
+	      value = "{key:" + "\"" + keys.toArray()[ji]+  "\"" + ", label: " + "\"" + labelsList.toArray()[ji]+"\"" +  ",width:150,sortable:true,resizeable:true}";
+	    }  else {
 	      value = "{key:" + "\"" + keys.toArray()[ji]+  "\"" + ", label: " + "\"" + labelsList.toArray()[ji]+"\"" +  ",sortable:true,resizeable:true}";
+	    }
        myColumnDefs.append(value);
        if(ji != keys.size()-1) myColumnDefs.append(",");
 	}
@@ -297,7 +316,7 @@ if (results != null)   {
 				              %>
                                    <td>
 								      <%if(keyValue.equalsIgnoreCase("EUID")) {%>
- 									  <%if("active".equalsIgnoreCase( (String)valueMap.get("EOStatus") ) ) {%>
+									  <%if("active".equalsIgnoreCase( (String)valueMap.get("EOStatus") ) ) {%>
                                         <input type="checkbox" onclick="javascript:getCheckedValues(this,'<%=valueMap.get(fullFieldNamesList.toArray()[kc])%>')"/>&nbsp;
 									  <%} else {%>
                                         <input type="checkbox" title="<%=valueMap.get("EOStatus")%> EO " readonly="true" disabled="true" />&nbsp;
@@ -391,4 +410,6 @@ if (results != null)   {
 <% } %>
 
 <%}%> <!-- if not euid or systemcode/lid values entered -->
+
+<%} %>  <!-- Session check -->
 </f:view>

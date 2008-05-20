@@ -37,6 +37,28 @@
             <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
      </head>
 <%
+String URI = request.getRequestURI();URI = URI.substring(1, URI.lastIndexOf("/"));
+//remove the app name 
+URI = URI.replaceAll("/ajaxservices","");
+boolean isSessionActive = true;
+%>
+<% if(session!=null && session.isNew()) {
+	isSessionActive = false;
+%>
+ <table>
+   <tr>
+     <td>
+  <script>
+   window.location = '/<%=URI%>/login.jsf';
+  </script>
+     </td>
+	 </tr>
+	</table>
+<%}%>
+
+<%if (isSessionActive)  {%>
+
+<%
 double rand = java.lang.Math.random();
 Enumeration parameterNames = request.getParameterNames();
 ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
@@ -48,10 +70,10 @@ SourceHandler  sourceHandler   = new SourceHandler();
 HashMap allNodeFieldConfigsMap = sourceHandler.getAllNodeFieldConfigs();
 
 
-String URI = request.getRequestURI();
-URI = URI.substring(1, URI.lastIndexOf("/"));
+//String URI = request.getRequestURI();
+//URI = URI.substring(1, URI.lastIndexOf("/"));
 //replace ajaxservices folder name 
-URI = URI.replaceAll("/ajaxservices","");
+//URI = URI.replaceAll("/ajaxservices","");
 
 //Variables required for Delete
 String euid = request.getParameter("euid");
@@ -122,4 +144,5 @@ FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getPa
 
  </body>
 </f:view>
+<%} %>  <!-- Session check -->
 </html>

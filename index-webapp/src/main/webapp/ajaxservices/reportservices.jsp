@@ -28,7 +28,31 @@
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="java.util.ArrayList"  %>
 <f:view>
-	<f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />   
+	<f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />  
+<%
+String URI = request.getRequestURI();URI = URI.substring(1, URI.lastIndexOf("/"));
+//remove the app name 
+URI = URI.replaceAll("/ajaxservices","");
+boolean isSessionActive = true;
+%>
+<% if(session!=null && session.isNew()) {
+	isSessionActive = false;
+%>
+ <table>
+   <tr>
+     <td>
+  <script>
+   window.location = '/<%=URI%>/login.jsf';
+  </script>
+     </td>
+	 </tr>
+	</table>
+<%}%>
+
+<%if (isSessionActive)  {%>
+	
+
+
 <%
 ReportHandler reportHandler = new ReportHandler();
 
@@ -297,4 +321,5 @@ var myColumnDefs = <%=myColumnDefs.toString().length() == 0?"\""+ "\"":myColumnD
 
 var myDataTable = new YAHOO.widget.DataTable("myMarkedUpContainer<%=divId%>", myColumnDefs, myDataSource,myConfigs);
 </script>
+  <%} %>  <!-- Session check -->
 </f:view>

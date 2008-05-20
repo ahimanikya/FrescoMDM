@@ -34,6 +34,30 @@
 
 
 <%
+String URI_Session = request.getRequestURI();URI_Session = URI_Session.substring(1, URI_Session.lastIndexOf("/"));
+//remove the app name 
+URI_Session = URI_Session.replaceAll("/ajaxservices","");
+boolean isSessionActive = true;
+%>
+
+<% if(session!=null && session.isNew()) {
+	isSessionActive = false;
+%>
+ <table>
+   <tr>
+     <td>
+  <script>
+   window.location = '/<%=URI_Session%>/login.jsf';
+  </script>
+     </td>
+	 </tr>
+	</table>
+<%}%>
+<%if (isSessionActive)  {%>
+
+
+
+<%
             double rand = java.lang.Math.random();
             ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
             String URI = request.getRequestURI();
@@ -239,24 +263,51 @@
 			</nobr>
          </h:column>                                                        
                                                         <!--Rendering HTML Select Menu List-->
-                                                        <h:column rendered="#{childFieldConfigAdd.guiType eq 'MenuList'}" >
-                                                            <h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}" >
-                                                                <f:selectItem itemLabel="" itemValue="" />
-                                                                <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
-                                                            </h:selectOneMenu>
-                                                        </h:column>
-                                                        <!--Rendering Updateable HTML Text boxes-->
-                                                        <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox' &&  childFieldConfigAdd.valueType ne 6}" >
-                                                            <input type="text" title = "<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>"  
-                                                                   name = "<h:outputText value="#{childFieldConfigAdd.name}"/>"  
-                                                                   id = "<h:outputText value="#{childFieldConfigAdd.name}"/>"  
-                                                                   required="<h:outputText value="#{childFieldConfigAdd.required}"/>" 
-																    onblur="javascript:validate_Integer_fields(this,'<h:outputText value="#{childFieldConfigAdd.displayName}"/>','<h:outputText value="#{childFieldConfigAdd.valueType}"/>')"
-                                                                   maxlength="<h:outputText value="#{childFieldConfigAdd.maxLength}"/>"
-                                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')" 
-                                                                   onkeyup="javascript:qws_field_on_key_up(this)" />
-                                                        </h:column>                     
-                                                        
+                  
+
+									      <!--user code related changes starts here-->
+                                            <h:column rendered="#{childFieldConfigAdd.guiType eq 'MenuList'}" >
+                                                <!-- User code fields here -->
+												<h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}" onchange="getFormValues('#{childNodesName}AddNewSOInnerForm');ajaxMinorObjects('/'+URI_VAL+'/ajaxservices/usercodeservices.jsf?'+queryStr+'&MOT=#{childNodesName}&Field=#{childFieldConfigAdd.fullFieldName}&userCode=#{childFieldConfigAdd.userCode}&rand=+RAND_VAL+&userCodeMasking=true','#{childNodesName}AddNewSODiv',event)"
+												rendered="#{childFieldConfigAdd.userCode ne null}">
+												    <f:selectItem itemLabel="" itemValue="" />
+                                                   <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
+                                                </h:selectOneMenu>    
+												
+												<h:selectOneMenu title="#{childFieldConfigAdd.fullFieldName}" 
+												                 rendered="#{childFieldConfigAdd.userCode eq null}">
+                                                    <f:selectItem itemLabel="" itemValue="" />
+                                                    <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
+                                                </h:selectOneMenu>
+                                            </h:column>
+
+                                            <!--Rendering Updateable HTML Text boxes-->
+                                            <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox' &&  childFieldConfigAdd.valueType ne 6}" >
+                                           
+                                                            <h:inputText label="#{childFieldConfigAdd.displayName}"  
+                                                                         title="#{childFieldConfigAdd.fullFieldName}"
+                                                                         onkeydown="javascript:qws_field_on_key_down(this, userDefinedInputMask)"
+																		  maxlength="#{childFieldConfigAdd.maxLength}"
+																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                         required="#{childFieldConfigAdd.required}"
+																		 rendered="#{childFieldConfigAdd.constraintBy ne null}"
+																		 />     
+																		 
+																		 <h:inputText label="#{childFieldConfigAdd.displayName}"  
+                                                                         title="#{childFieldConfigAdd.fullFieldName}"
+                                                                         onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')"
+																		  maxlength="#{childFieldConfigAdd.maxLength}"
+																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                         required="#{childFieldConfigAdd.required}"
+																		 rendered="#{childFieldConfigAdd.constraintBy eq null}"
+																		 />
+
+                                          </h:column>                     
+										  <!--user code related changes ends here-->
+
+
                                                         <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox'  &&  childFieldConfigAdd.valueType eq 6}" >
                                                             <nobr>
                                                                 <input type="text" title = "<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>"  
@@ -349,4 +400,5 @@
 </body>
 </html>
 </f:view>
+<%} %>  <!-- Session check -->
 <!--End Add source record form-->
