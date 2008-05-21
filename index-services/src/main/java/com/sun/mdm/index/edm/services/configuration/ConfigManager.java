@@ -624,6 +624,12 @@ public class ConfigManager implements java.io.Serializable {
             throws Exception {
                 
         String rootObjName = NodeUtil.getChildNodeText(element, ROOT_OBJ);
+        if (rootObjName == null){
+           throw new Exception(
+                   mLocalizer.t(
+                   "SRC535: <root-object> not defined for configType: {0} element: {1}", 
+                      configType, element.toString()));
+        }
         ObjectNodeConfig objNodeConfig = (ObjectNodeConfig) objNodeConfigMap.get(rootObjName);
         String title = NodeUtil.getChildNodeText(element, TAB_NAME);
         Integer screenID = Integer.valueOf(NodeUtil.getChildNodeText(element, SCREEN_ID));

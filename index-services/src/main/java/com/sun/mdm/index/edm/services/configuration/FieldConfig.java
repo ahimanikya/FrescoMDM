@@ -452,8 +452,10 @@ public class FieldConfig implements java.io.Serializable, Comparable {
     {
         PullDownListItem[] ret;
         String lookup = getUserCode();
+        boolean isUserCode = false;
         if (lookup != null) {
             ret =  ValidationService.getInstance().getUserCodeValueItems(lookup);
+            isUserCode = true;
            
         } else {
             // AJK - saved for error handling
@@ -471,11 +473,16 @@ public class FieldConfig implements java.io.Serializable, Comparable {
         if (ret != null) {
             Arrays.sort((Object[]) ret);
 	} else {
+            String tag = isUserCode? "<user-code>" : "<code-module>";
             throw new Exception(mLocalizer.t(
-                    "SRC534: Could not find values for {0}.  Make sure" +
-                    " this value is defined in the sbyn_common_header and" +
-                    " the sbyn_common_detail tables by updating the codelist.sql " + 
-                    " or in the sbyn_user_code table.", lookup));
+                    "SRC534: Could not find definition for tag {0} value {1}.  " +
+                    "The definition for <code-module> must be specified in the " +
+                    "sbyn_common_header table and sbyn_common_detail table. " +
+                    "The definition for <user-code> must be specified in the " +
+                    "sbyn_user_code table. " + 
+                    "Note: The <code-module> is typically defined in the "+
+                    "codelist.sql file.", 
+                     tag, lookup));
             
         }
         return ret;
