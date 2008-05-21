@@ -44,8 +44,6 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox cbMatchEngine;
     private javax.swing.JComboBox cbDateFormat;
     private javax.swing.JComboBox cbTransactions;
-    private javax.swing.JCheckBox jCheckBoxMasterEDM = new javax.swing.JCheckBox(NbBundle.getMessage(DefineDeploymentVisualPanel.class,
-                "LBL_static_MasterIndexDM"));
 
     /**
      * Create the wizard panel and set up some basic properties.
@@ -181,13 +179,6 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
         cbMatchEngine.setBounds(110, 65, 250, 30);
         cbDateFormat.setBounds(110, 100, 250, 30);
         cbTransactions.setBounds(110, 135, 250, 30);
-        
-        add(jCheckBoxMasterEDM);
-        jCheckBoxMasterEDM.setSelected(true);
-        jCheckBoxMasterEDM.setBounds(0, 170, 200, 30);
-        jCheckBoxMasterEDM.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(DefineDeploymentVisualPanel.class, 
-                "LBL_static_MasterIndexDM")); // NOI18N
-
     }
 
     // End of variables declaration
@@ -263,7 +254,7 @@ public class DefineDeploymentVisualPanel extends javax.swing.JPanel {
     
     
     public String getMasterIndexEDM() {
-        return this.jCheckBoxMasterEDM.isSelected() ? "Yes" : "No";
+        return "Yes";
     }
 
 }
