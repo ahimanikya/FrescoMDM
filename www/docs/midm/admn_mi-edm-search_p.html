@@ -1,0 +1,432 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <title>Working With the Master Index Data Manager</title>
+
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Working With the Master Index Data Manager provides instructions and background information for using the Master Index Data Manager (MIDM) to monitor and maintain data in your master index applications. It includes instructions for searching for object profiles, viewing and editing object profiles, handling potential duplicate profiles, viewing and reversing automatic matches, merging and unmerging profiles, and running reports.">
+   <meta name="date" content="2008-05-01">
+   <meta name="author" content="Carol Thom">
+   
+   <link rel="stylesheet" type="text/css" href="http://www.netbeans.org/netbeans.css" media="screen">
+   <link rel="stylesheet" type="text/css" href="css/mural.css">
+</head>
+ 
+<body>
+   
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
+   
+   <a name="top"></a>
+   <h1>Working With the Master Index Data Manager</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: May 2008</div>
+
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="admin_mi-edm-search_c.html">Previous</a></span>
+         <span class="tocpageright"><a href="admn_mi-edm-view_c.html">Next</a></span></h5>
+     
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="wedmevsm.html">Working With the Master Index Data Manager</a></p>
+<p class="toc level2"><a href="admn_mi-taskoverview_c.html">About the Master Index Data Manager</a></p>
+<p class="toc level2"><a href="admn_mi-aboutsmi_c.html">About Master Index Studio</a></p>
+<p class="toc level3"><a href="admn_mi-aboutsmi_c.html#admn_mi-about_c">About Master Index Applications</a></p>
+<p class="toc level3"><a href="admn_mi-aboutsmi_c.html#admn_mi-features_c">Features of Master Index Applications</a></p>
+<p class="toc level3"><a href="admn_mi-aboutsmi_c.html#admn_mi-functions_c">Functions of the Master Index Data Manager</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-profiles_c.html">Learning about MIDM Object Profiles</a></p>
+<p class="toc level3"><a href="admn_mi-profiles_c.html#admn_mi-profile-parts_c">MIDM Object Profile Components</a></p>
+<p class="toc level4"><a href="admn_mi-profiles_c.html#ahoaz">Source Records</a></p>
+<p class="toc level4"><a href="admn_mi-profiles_c.html#ahoba">Single Best Record</a></p>
+<p class="toc level4"><a href="admn_mi-profiles_c.html#ahobb">Survivor Calculator</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-profiles_c.html#admn_mi-so-sbr_c">Source Record and SBR Components in a Master Index</a></p>
+<p class="toc level3"><a href="admn_mi-profiles_c.html#admn_mi-profile-ids_c">Identification Numbers for each Entity in the Master Index</a></p>
+<p class="toc level4"><a href="admn_mi-profiles_c.html#ahobg">EUID</a></p>
+<p class="toc level4"><a href="admn_mi-profiles_c.html#ahobh">Local ID</a></p>
+<p class="toc level4"><a href="admn_mi-profiles_c.html#ahsbn">Auxiliary ID</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-using_c.html">Working with the Master Index Data Manager</a></p>
+<p class="toc level3"><a href="admn_mi-edm-using_c.html#ggtcp">Requirements</a></p>
+<p class="toc level3"><a href="admn_mi-edm-using_c.html#admn_mi-edm-logon_t">Logging on to the Master Index Data Manager</a></p>
+<p class="toc level5"><a href="admn_mi-edm-using_c.html#gentextid-383">To Log in to the MIDM</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-using_c.html#admn_mi-edm-security_c">Master Index Data Manager Security Permissions</a></p>
+<p class="toc level3"><a href="admn_mi-edm-using_c.html#admn_mi-edm-navigation_c">Master Index Data Manager Navigation Tips</a></p>
+<p class="toc level4"><a href="admn_mi-edm-using_c.html#ahobn">Navigating the MIDM Functions</a></p>
+<p class="toc level4"><a href="admn_mi-edm-using_c.html#ahobs">Navigating the MIDM Detail Pages</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-using_c.html#admn_mi-edm-logoff_t">Logging Off the MIDM</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-dashboard_p.html">Using the MIDM Dashboard</a></p>
+<p class="toc level3"><a href="admn_mi-dashboard_p.html#admn_mi-edm-summary_t">Viewing Summary Information From the Dashboard</a></p>
+<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-495">To View Summary Information</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-dashboard_p.html#admn_mi-edm-reports_t">Accessing Reports From the Dashboard</a></p>
+<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-516">To Access Reports From the Dashboard</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-dashboard_p.html#admn_mi-edm-quick_t">Performing a Quick Search (EUID Lookup)</a></p>
+<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-543">To Perform Quick Search</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-dashboard_p.html#admn_mi-edm-search-dash_t">Performing an EUID Comparison Lookup</a></p>
+<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-565">To Perform an EUID Comparison Lookup</a></p>
+<p class="toc level2 tocsp"><a href="admin_mi-edm-search_c.html">Learning About Object Queries on the MIDM</a></p>
+<p class="toc level3"><a href="admin_mi-edm-search_c.html#admin_mi-edm-search-about_c">About the MIDM Search Function</a></p>
+<p class="toc level4"><a href="admin_mi-edm-search_c.html#ahobz">Simple Lookup</a></p>
+<p class="toc level4"><a href="admin_mi-edm-search_c.html#ahoca">Advanced Alphanumeric Lookup</a></p>
+<p class="toc level4"><a href="admin_mi-edm-search_c.html#ggsor">Advanced Phonetic Lookup</a></p>
+<p class="toc level4"><a href="admin_mi-edm-search_c.html#ahocb">EUID Comparison Lookup</a></p>
+<p class="toc level4"><a href="admin_mi-edm-search_c.html#ahocc">The Search Results List</a></p>
+<p class="toc level3 tocsp"><a href="admin_mi-edm-search_c.html#admn_mi-edm-search-range_c">Searching by Ranges on the MIDM</a></p>
+<p class="toc level3"><a href="admin_mi-edm-search_c.html#admn_mi-edm-search-smbl_c">Required Fields on the MIDM</a></p>
+<div class="onpage">
+<p class="toc level2 tocsp"><a href="">Searching for Object Profiles on the MIDM</a></p>
+<p class="toc level3"><a href="#admn_mi-edm-search-euid_t">Performing an EUID Lookup</a></p>
+<p class="toc level5"><a href="#gentextid-685">To Perform an EUID Lookup</a></p>
+<p class="toc level3 tocsp"><a href="#admn_mi-edm-search-lid_t">Performing a Local ID Lookup</a></p>
+<p class="toc level5"><a href="#gentextid-709">To Perform a Local ID Lookup</a></p>
+<p class="toc level3 tocsp"><a href="#admn_mi-edm-search-alpha_t">Performing an Alphanumeric Search</a></p>
+<p class="toc level5"><a href="#gfyku">To Perform an Alphanumeric Search</a></p>
+<p class="toc level3 tocsp"><a href="#admn_mi-edm-search-phon_t">Performing a Phonetic Search</a></p>
+<p class="toc level5"><a href="#gfyke">To Perform a Phonetic Search</a></p>
+<p class="toc level3 tocsp"><a href="#admn_mi-edm-search-comp_t">Performing an EUID Comparison Lookup </a></p>
+<p class="toc level5"><a href="#gentextid-789">To Perform an EUID Comparison Lookup</a></p>
+<p class="toc level3 tocsp"><a href="#admn_mi-edm-search-rslt_t">Working with Search Results on the MIDM</a></p>
+<p class="toc level4"><a href="#ahodb">Viewing the Results of a Search</a></p>
+<p class="toc level4"><a href="#ahodf">Sorting the Results of Your Search</a></p>
+</div>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-view_c.html">Learning About Object Profile Views on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_c.html#admn_mi-edm-view-prfl_c">Object Profile Details on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_c.html#ggspb">Source Record Details on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_c.html#admn_mi-edm-view-comp_c">Object Profile and Source Record Comparisons</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_c.html#admn_mi-edm-view-xhist_c">Object Profile Transaction Histories</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_c.html#admn_mi-edm-view-mrghist_c">Object Profile Merge Histories on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_c.html#admn_mi-edm-view-audit_c">The Master Index Audit Log</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-view_p.html">Viewing Object Information on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-view-prof_t">Viewing Object Profiles on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-963">To View an Object Profile</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#ggsvw">Viewing a Source Record on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-1016">To View a Source Record</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#admn_mi-edm-view-comp_t">Comparing Object Information on the MIDM</a></p>
+<p class="toc level4"><a href="admn_mi-edm-view_p.html#ahoek">Comparing Two or More Object Profiles</a></p>
+<p class="toc level4"><a href="admn_mi-edm-view_p.html#ahoen">Comparing Source Records in one Object Profile</a></p>
+<p class="toc level4"><a href="admn_mi-edm-view_p.html#ahoen2">Comparing Source Records From the Same or Different Object Profiles</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#admn_mi-edm-view-hist_t">Viewing Transaction Histories on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-1138">To View a Complete Transaction History For an Object Profile</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-1158">To View Transaction History Records from the Transactions Page</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#admn_mi-edm-xhist-fields_r">About Transaction History Search Fields on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-xhist-result_r">About Transaction History Results Fields on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-xhist-types_r">Transaction History Transaction Types on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-view-mrg-hist_t">Viewing a Profile's Merge History on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gfyfy">To View an Object's Merge History</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#admn_mi-edm-view-audit_t">Viewing the MIDM Audit Log</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-1436">To View the Audit Log</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#admn_mi-edm-audit-fields_r">About Audit Log Search Fields on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-audit-result_r">About Audit Log Results Fields on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-audit-types_r">Audit Log Functions on the MIDM</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-add_p.html">Adding an Object Profile on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st1_t">Step 1: Obtain Information about the Object</a></p>
+<p class="toc level3"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st2_t">Step 2: Specify a System and Local ID</a></p>
+<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1800">To Specify a System and Local ID</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st3_t">Step 3: Specify Parent Object Information</a></p>
+<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1829">To Specify Parent Object Information</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st4_t">Step 4: Specify Child Object Information</a></p>
+<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1848">To Specify Child Object Information</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st5_t">Step 5: Save the Object Profile</a></p>
+<p class="toc level5"><a href="admn_mi-edm-add_p.html#gfyhl">To Save the Object Profile</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-add_c.html">Learning About MIDM Maintenance Tasks</a></p>
+<p class="toc level3"><a href="admn_mi-edm-add_c.html#admn_mi-edm-add-wgts_c">Matching Probability Weights</a></p>
+<p class="toc level3"><a href="admn_mi-edm-add_c.html#admn_mi-edm-add-mrg_c">Merging Profiles on the MIDM</a></p>
+<p class="toc level4"><a href="admn_mi-edm-add_c.html#ahofi">Surviving and Non-Surviving Profiles</a></p>
+<p class="toc level4"><a href="admn_mi-edm-add_c.html#ahofj">Source Record Merges</a></p>
+<p class="toc level4"><a href="admn_mi-edm-add_c.html#ahofk">Undoing a Merge</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-add_c.html#admn_mi-edm-add-match_c">Assumed Matches</a></p>
+<p class="toc level3"><a href="admn_mi-edm-add_c.html#admn_mi-edm-add-pd_c">Potential Duplicates</a></p>
+<p class="toc level3"><a href="admn_mi-edm-add_c.html#admn_mi-edm-add-pd-fix_c">Handling Potential Duplicates on the MIDM</a></p>
+<p class="toc level4"><a href="admn_mi-edm-add_c.html#ahofo">Merge</a></p>
+<p class="toc level4"><a href="admn_mi-edm-add_c.html#ahofp">Resolve</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-add_c.html#admn_mi-edm-add-update_c">Survivor Calculator Overrides</a></p>
+<p class="toc level4"><a href="admn_mi-edm-add_c.html#ggstd">Linking Source Record Fields to the SBR</a></p>
+<p class="toc level4"><a href="admn_mi-edm-add_c.html#ahofs">Locking Field Values in the SBR</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-add_c.html#ahofr">Concurrent Users on the MIDM</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-mod_p.html">Modifying Profile Information on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-mod-par_t">Modifying Information in an Object Profile</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#mi-modify-parent">Modifying Parent Object Information in a Profile</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-add-child_t">Adding a Child Object to an Object Profile</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-mod-child_t">Modifying a Child Object in a Profile</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-del-child_t">Deleting a Child Object From a Profile</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-mod_p.html#ggsua">Modifying Information Directly in a Source Record</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#mi-parent-source">Modifying the Parent Object in a Source Record</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ggsrq">Adding a Child Object to a Source Record</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ggsto">Modifying a Child Object in a Source Record</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ggsuh">Deleting a Child Object From a Source Record</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-mod-sbr_t">Overwriting SBR Field Values</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogplock">Locking an SBR Field</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogrun">Unlocking an SBR Field</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-sbrlink_t">Overriding the Survivor Calculator's SBR</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogp">Linking an SBR Field to a Specific Source Record</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogr">Unlinking an SBR Field From a Source Record</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-mod-sys_t">Adding a Source Record to an Object Profile</a></p>
+<p class="toc level5"><a href="admn_mi-edm-mod_p.html#gentextid-2443">To Add a Source Record to an Object Profile</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-deact_t">Deactivating a Profile or Source Record</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahoha">Deactivating an Object Profile</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogw">Deactivating a Source Record</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-activate_t">Reactivating a Profile or Source Record</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahohb">Reactivating an Object Profile</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogx">Reactivating a Source Record</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-pd_p.html">Working with Potential Duplicate Profiles on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd_find_t">Finding Potential Duplicate Profiles on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2618">To Find Potential Duplicates</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd_search_r">About Duplicate Records Search Fields on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-result_r">About Duplicate Records Results Fields</a></p>
+<p class="toc level3"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-mrg_t">Merging Potential Duplicate Profiles</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2799">To Combine Potential Duplicate Profiles From the Results List</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2829">To Combine Duplicate Profiles From the Comparison Page</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-res_t">Resolving Potential Duplicate Profiles on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2885">To Resolve Potential Duplicate Profiles From the Results List</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2919">To Resolve Potential Duplicate Profiles From the Comparison Page</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-asmatch_p.html">Working with Assumed Matches on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-am-find_t">Finding Assumed Matches on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-asmatch_p.html#gentextid-2962">To Find Assumed Matches</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-am_search_r">About Assumed Matches Search Fields</a></p>
+<p class="toc level3"><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-asmatch_r">About Assumed Match Results Fields on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-am-rev_t">Reversing an Assumed Match on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-asmatch_p.html#gentextid-3120">To Reverse an Assumed Match</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-merge_p.html">Combining Object Information on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-merge_p.html#admn_mi-edm-mrg-eo_t">Merging Object Profiles on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-merge_p.html#gentextid-3151">To Merge Object Profiles</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-merge_p.html#admn_mi-edm-mrg-so_t">Merging Source Records on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-merge_p.html#gentextid-3203">To Merge Source Records</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-unmerge_p.html">Unmerging Object Information on the MIDM</a></p>
+<p class="toc level4"><a href="admn_mi-edm-unmerge_p.html#gentextid-3251">To Unmerge Object Profiles</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-reports_c.html">Learning About MIDM Reports</a></p>
+<p class="toc level3"><a href="admn_mi-edm-reports_c.html#admn_mi-edm-prod-reports_c">MIDM Production Reports</a></p>
+<p class="toc level3"><a href="admn_mi-edm-reports_c.html#admn_mi-edm-report-act_c">MIDM Activity Reports</a></p>
+<p class="toc level3"><a href="admn_mi-edm-reports_c.html#admn_mi-edm-reports-conf_c">Configuring MIDM Reports</a></p>
+<p class="toc level3"><a href="admn_mi-edm-reports_c.html#admn_mi-edm-reports-mask_c">Masked Data and MIDM Reports</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-reports_p.html">Running MIDM Reports</a></p>
+<p class="toc level4"><a href="admn_mi-edm-reports_p.html#gentextid-3383">To Run Reports From the MIDM</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-reports_p.html#admn_mi-edm-reports_r">About Report Search Fields on the MIDM</a></p>
+
+     </div>
+   </div>
+
+
+   <div class="maincontent">
+      
+
+<a name="admn_mi-edm-search_p"></a>
+
+<h2>Searching for Object Profiles on the MIDM</h2>
+<p>The following topics provide step-by-step instructions to help you perform the various types
+of searches for object profiles available on the MIDM. To move from one
+field to another on the search pages without using the mouse, press the
+Tab key.</p>
+<ul><li><p><a href="#admn_mi-edm-search-euid_t">Performing an EUID Lookup</a></p></li>
+<li><p><a href="#admn_mi-edm-search-lid_t">Performing a Local ID Lookup</a></p></li>
+<li><p><a href="#admn_mi-edm-search-alpha_t">Performing an Alphanumeric Search</a></p></li>
+<li><p><a href="#admn_mi-edm-search-phon_t">Performing a Phonetic Search</a></p></li>
+<li><p><a href="#admn_mi-edm-search-comp_t">Performing an EUID Comparison Lookup </a></p></li>
+<li><p><a href="#admn_mi-edm-search-rslt_t">Working with Search Results on the MIDM</a></p></li></ul>
+
+
+<div class="indent"><a name="admn_mi-edm-search-euid_t"></a><h3>Performing an EUID Lookup</h3>
+<p><a name="indexterm-78"></a><a name="indexterm-79"></a><a name="indexterm-80"></a>To search for an object profile using only an object&rsquo;s EUID, you need
+to enter the EUID number in the EUID Search section, either on the
+Dashboard or on the Record Details page. This type of search should result
+in only one matching profile.</p>
+<hr><p><b>Note - </b>The following procedure is for performing the lookup from the Record Details page.
+For instructions on performing the lookup from the Dashboard, see <a href="admn_mi-dashboard_p.html#admn_mi-edm-quick_t">Performing a Quick Search (EUID Lookup)</a>.</p>
+<hr>
+<a name="ahocm2"></a><h6>Figure&nbsp;8 Simple Lookup Page</h6><img src="figures/LookupPage.gif" alt="Figure shows the Simple Lookup page." width="521" height="180"></img>
+
+<a name="gentextid-685"></a><h5>To Perform an EUID Lookup</h5>
+<ol>
+<li><b>On the Record Details page, select  Basic <i>app_name</i> Lookup from the Search
+Types drop-down list (where <i>app_name</i> is the name of the master index application)
+.</b></li>
+<li><b>In the EUID section, enter the object&rsquo;s EUID.</b></li>
+<li><b>Click Search to initiate the search.</b><p>The Record Details page appears in view mode, displaying detailed information about the
+object whose EUID you entered.</p></li></ol></div>
+
+
+<div class="indent"><a name="admn_mi-edm-search-lid_t"></a><h3>Performing a Local ID Lookup</h3>
+<p><a name="indexterm-81"></a><a name="indexterm-82"></a>To search for an object profile by its local ID in a
+specific system, you need to enter search criteria in the Local ID section
+of the Lookup page. This type of search should result in only one
+matching profile. If the Local ID field contains alphabetic characters, the criterion is
+case-sensitive.</p>
+<hr><p><b>Note - </b>The name of this section might have been modified for your implementation. See
+your system administrator for more information.</p>
+<hr>
+<a name="ggspi"></a><h6>Figure&nbsp;9 Simple Lookup Page</h6><img src="figures/LookupPage.gif" alt="Figure shows the Simple Lookup page on the Record Details page." width="521" height="180"></img>
+
+<a name="gentextid-709"></a><h5>To Perform a Local ID Lookup</h5>
+<ol>
+<li><b>On the Record Details page, select  Basic <i>app_name</i> Lookup from the Search
+Types drop-down list (where <i>app_name</i> is the name of the master index application).</b></li>
+<li><b>In the System field, select the source system, such as a registration system,
+for which the object&rsquo;s local ID is known.</b></li>
+<li><b>In the Local ID field, enter the object&rsquo;s unique identification code for the
+specified system.</b>
+<hr><p><b>Note - </b>If alphabetic characters are entered in this field, the search is case-sensitive. This
+field name might have been modified for your implementation.</p>
+<hr>
+</li>
+<li><b>Click Search to initiate the search.</b><p>The Search Result page is bypassed, and the Record Details page appears in
+view mode.</p></li></ol></div>
+
+
+<div class="indent"><a name="admn_mi-edm-search-alpha_t"></a><h3>Performing an Alphanumeric Search</h3>
+<p><a name="indexterm-83"></a><a name="indexterm-84"></a>To perform an alphanumeric search for an object profile, you need to specify identifying
+information for the object on the Alphanumeric Search page. This type of search
+might result in several matching profiles.</p>
+<hr><p><b>Note - </b>Make your search as specific as possible. This type of search does allow
+wildcard characters; use a percent sign (%) to indicate unknown characters. Any required
+fields are marked with an asterisk (*). If at least one field in
+group of fields is required, the fields in that group are marked with
+a dagger (&dagger;). In addition, range searching is supported for any field type
+that has two fields, one with &ldquo;From&rdquo; appended to the name and one
+with &ldquo;To&rdquo; appended to the name (for example, &ldquo;DOB From&rdquo; and &ldquo;DOB To&rdquo;).
+If your MIDM is set up for range searching, see the system administrator
+for more information about how it is configured.</p>
+<hr>
+<a name="ahocr"></a><h6>Figure&nbsp;10 Alphanumeric Search Page</h6><img src="figures/SearchAlphaPage.gif" alt="Figure shows a sample alphanumeric search." width="512" height="342"></img>
+
+<a name="gfyku"></a><h5>To Perform an Alphanumeric Search</h5>
+<ol>
+<li><b>On the Record Details page, select Advanced <i>app_name</i> Lookup (Alpha) from the Search
+Type drop-down list (where <i>app_name</i> is the name of the master index application).</b></li>
+<li><b>Enter the search criteria for the object you want to find.</b></li>
+<li><b>Click Search to initiate the search.</b><p>The search results list appears with a list of matching profiles. If only
+one matching profile is returned, the Record Details page appears in view mode.</p>
+<hr><p><b>Note - </b><a name="indexterm-85"></a><a name="indexterm-86"></a>The system administrator can choose whether to display certain transaction&ndash;based fields on this
+page, such as the EUID field, the local ID and system fields, or
+the create date field. Any values entered into these optional fields take precedence
+over information entered into other search fields. For example, if an invalid EUID
+is entered but valid first and last names are entered, no results are
+returned due to the invalid EUID. The EUID field takes precedence over the
+local ID and system fields. </p>
+<hr>
+</li></ol></div>
+
+
+<div class="indent"><a name="admn_mi-edm-search-phon_t"></a><h3>Performing a Phonetic Search</h3>
+<p><a name="indexterm-87"></a><a name="indexterm-88"></a>To perform a phonetic search for an object profile, you need to specify
+identifying information for the object in the phonetic search fields. Only specific combinations of
+fields are used for queries. This search might return several profiles.</p><a name="ahocu"></a><h6>Figure&nbsp;11 Phonetic Search</h6><img src="figures/SearchPhonPage.gif" alt="Figure shows a sample phonetic search." width="521" height="259"></img>
+
+<a name="gfyke"></a><h5>To Perform a Phonetic Search</h5>
+<ol>
+<li><b>On the Record Details page, select Advanced <i>app_name</i> Lookup (Phonetic) from the Search
+Type drop-down list (where <i>app_name</i> is the name of the master index application).</b></li>
+<li><b>Enter the search criteria for the object you want to find.</b>
+<hr><p><b>Note - </b>Certain combinations of data might be required to perform a phonetic search. See
+your system administrator for more information. For more information about phonetic searches, see
+<a href="admin_mi-edm-search_c.html#ggsor">Advanced Phonetic Lookup</a>.</p>
+<hr>
+</li>
+<li><b>Click Search to initiate the search.</b><p>The search results list appears with a list of matching profiles. If only
+one matching profile is found, the results list is bypassed and the Record
+Details page appears in view mode.</p>
+<hr><p><b>Note - </b><a name="indexterm-89"></a>The system administrator can choose whether to display the EUID field or the
+local ID and system fields on this page. Any values entered into these
+optional fields take precedence over information entered into other search fields. For example,
+if an invalid EUID is entered but valid first and last names are
+entered, no results are returned due to the invalid EUID. The EUID field
+takes precedence over the local ID and system fields.</p>
+<hr>
+</li></ol></div>
+
+
+<div class="indent"><a name="admn_mi-edm-search-comp_t"></a><h3>Performing an EUID Comparison Lookup </h3>
+<p><a name="indexterm-90"></a><a name="indexterm-91"></a>You can perform a search by EUID for multiple profiles from the Dashboard.
+You can enter from one to four EUIDs in the Compare EUIDs
+section. The resulting profiles appear in a side-by-side display on the Record Details and
+you can compare record information.</p><a name="ahocz2"></a><h6>Figure&nbsp;12 EUID Comparison Lookup</h6><img src="figures/ComparisonLookup.gif" alt="Figure shows the comparison lookup page, where you can enter multiple EUIDs for a search." width="346" height="164"></img>
+
+<a name="gentextid-789"></a><h5>To Perform an EUID Comparison Lookup</h5>
+<ol>
+<li><b>In the tabbed headings, click Dashboard.</b></li>
+<li><b>In the Compare EUIDs box, enter at least two, and up to
+four, EUIDs.</b></li>
+<li><b>Do one of the following:</b><ol style="list-style-type: lower-alpha">
+				 
+<li><b>To view information about one of the EUIDs, click Lookup next to that
+EUID.</b><p>The Record Details page shows with the matching profile displayed.</p></li>
+<li><b>To compare all entered EUIDs, click Compare.</b><p>The Record Details page appears with each matching profile displayed side-by-side.</p></li></ol></li></ol></div>
+
+
+<div class="indent"><a name="admn_mi-edm-search-rslt_t"></a><h3>Working with Search Results on the MIDM</h3>
+<p><a name="indexterm-92"></a>The following topics describe the search results list for searches performed from most
+MIDM pages, how to sort and select the profiles that match the searches
+you perform, and how to print a search result report. The results list
+appears below the search criteria, and the number of records returned for the
+search appear above the results list.</p>
+<ul><li><p><a href="#ahodb">Viewing the Results of a Search</a></p></li>
+<li><p><a href="#ahodf">Sorting the Results of Your Search</a></p></li></ul>
+
+
+<div class="indent"><a name="ahodb"></a><h3>Viewing the Results of a Search</h3>
+<p><a name="indexterm-93"></a>The matching profiles that result from an object search appear in table format
+below the search criteria. The table displays a limited number of fields contained
+in the SBR of the object profile.</p><a name="ahodc"></a><h6>Figure&nbsp;13 Search Results List</h6><img src="figures/SearchResultsList.gif" alt="Figure shows a search results list." width="522" height="182"></img>
+
+<a name="gentextid-824"></a><h5>To View the Results of a Search</h5>
+<ol>
+<li><b>Using one of the searches described in <a href="">Searching for Object Profiles on the MIDM</a>, perform a search for the
+object whose profile you want to access.</b><p>If more than one record matches the criteria, the search results list appears
+below the criteria.</p></li>
+<li><b>In the results list, view the information presented for each returned profile to
+determine which profile you want to view.</b></li>
+<li><b><a name="indexterm-94"></a><a name="indexterm-95"></a>You can click the ellipsis to view additional address or telephone information for
+a profile, as shown in the following figures.</b><a name="ahodd"></a><h6>Figure&nbsp;14 Address Information Popup</h6><img src="figures/AddressPopup.gif" alt="Figure shows the popup window that displays complete address information for a resulting profile from a search." width="264" height="154"></img><a name="ahode"></a><h6>Figure&nbsp;15 Telephone Information Popup</h6><img src="figures/PhonePopup.gif" alt="Figure shows the popup window that displays complete telephone information for a resulting profile from a search." width="264" height="153"></img></li>
+<li><b>When you are finished viewing the additional address or telephone information, click Close.</b></li>
+<li><b>To navigate through the results list pages, do any of the following:</b><ul>
+<li><b>To view the following page of search results, click next>.</b></li>
+<li><b>To return to the previous page of results, click &lt;prev.</b></li>
+<li><b>To view the first page of search results, click &lt;&lt;first.</b></li>
+<li><b>To view the last page of search results, click last>>.</b></li></ul></li>
+<li><b>To select a profile to display on the Record Details page in
+view mode, click the EUID of that profile or select the check box
+next to the EUID and click Compare.</b></li>
+<li><b>To select multiple profiles to compare on the Record Details page, select the
+check boxes next to the EUIDs you want to compare, and then
+click Compare.</b>
+<hr><p><b>Note - </b>You can select from one to four EUIDs to view on the
+Records Details page.</p>
+<hr>
+</li>
+<li><b>To perform a new search, click <b>Clear </b> in the search criteria section of
+the page.</b></li>
+<li><b>To print the results in a report, click Print.</b></li></ol></div>
+
+
+<div class="indent"><a name="ahodf"></a><h3>Sorting the Results of Your Search</h3>
+<p><a name="indexterm-96"></a>By default, the results of a search are sorted by EUID, but
+you can sort the results by any column in the search results list
+table.</p>
+
+<a name="gentextid-876"></a><h5>To Sort the Profiles on the Search Result Page</h5>
+<ol>
+<li><b>Using one of the searches described in <a href="">Searching for Object Profiles on the MIDM</a>, perform a search for the
+object whose profile you want to access.</b></li>
+<li><b>In the results list that appears, click the column heading of the column
+by which you want to sort the results.</b>
+<hr><p><b>Note - </b>Clicking a heading once sorts the profiles in ascending order; clicking the heading
+a second time sorts the profiles in descending order.</p>
+<hr>
+</li></ol></div>
+</div>
+
+   </div>
+
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="admin_mi-edm-search_c.html">Previous</a>
+            </td>
+            <td class="pageright">
+               <a href="admn_mi-edm-view_c.html">Next</a>
+            </td>
+         </tr>
+      </table>
+      
+   </div>
+
+</body>
+</html>

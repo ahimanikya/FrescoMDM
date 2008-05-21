@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <title>Working With the Master Index Data Manager</title>
+
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Working With the Master Index Data Manager provides instructions and background information for using the Master Index Data Manager (MIDM) to monitor and maintain data in your master index applications. It includes instructions for searching for object profiles, viewing and editing object profiles, handling potential duplicate profiles, viewing and reversing automatic matches, merging and unmerging profiles, and running reports.">
+   <meta name="date" content="2008-05-01">
+   <meta name="author" content="Carol Thom">
+   
+   <link rel="stylesheet" type="text/css" href="http://www.netbeans.org/netbeans.css" media="screen">
+   <link rel="stylesheet" type="text/css" href="css/mural.css">
+</head>
+ 
+<body>
+   
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
+   
+   <a name="top"></a>
+   <h1>Working With the Master Index Data Manager</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: May 2008</div>
+
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"></span>
+         <span class="tocpageright"><a href="admn_mi-taskoverview_c.html">Next</a></span></h5>
+     
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <div class="onpage">
+<p class="toc level1"><a href="">Working With the Master Index Data Manager</a></p>
+</div>
+
+     </div>
+   </div>
+
+
+   <div class="maincontent">
+      <a name="wedmevsm"></a><h3>Working With the Master Index Data Manager</h3><p>The topics listed here provide procedures, conceptual information, and reference information for using
+the Master Index Data Manager (MIDM) to monitor and maintain the data in
+Sun master index applications.</p><p><a name="whatyouneed"></a><b>What You Need to Know</b></p><p>These topics provide information you should to know before you start to work
+with the MIDM. </p>
+<ul><li><p><a href="admn_mi-taskoverview_c.html">About the Master Index Data Manager</a></p></li>
+<li><p><a href="admn_mi-profiles_c.html">Learning about MIDM Object Profiles</a></p></li>
+<li><p><a href="admn_mi-profiles_c.html#admn_mi-so-sbr_c">Source Record and SBR Components in a Master Index</a></p></li>
+<li><p><a href="admn_mi-profiles_c.html#admn_mi-profile-ids_c">Identification Numbers for each Entity in the Master Index</a></p></li>
+<li><p><a href="admn_mi-edm-using_c.html#admn_mi-edm-security_c">Master Index Data Manager Security Permissions</a></p></li>
+<li><p><a href="admn_mi-edm-using_c.html#admn_mi-edm-navigation_c">Master Index Data Manager Navigation Tips</a></p></li>
+<li><p><a href="admin_mi-edm-search_c.html">Learning About Object Queries on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-view_c.html">Learning About Object Profile Views on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-add_c.html">Learning About MIDM Maintenance Tasks</a></p></li>
+<li><p><a href="admn_mi-edm-reports_c.html">Learning About MIDM Reports</a></p></li></ul>
+<p><b>What You Need to Do</b></p><p>These topics provide instructions on how to use the MIDM to monitor and
+maintain data in master index applications.</p>
+<ul><li><p><a href="admn_mi-edm-using_c.html#admn_mi-edm-logon_t">Logging on to the Master Index Data Manager</a></p></li>
+<li><p><a href="admn_mi-edm-using_c.html#admn_mi-edm-logoff_t">Logging Off the MIDM</a></p></li>
+<li><p><a href="admn_mi-dashboard_p.html">Using the MIDM Dashboard</a></p></li>
+<li><p><a href="admn_mi-edm-search_p.html">Searching for Object Profiles on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-view_p.html">Viewing Object Information on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-add_p.html">Adding an Object Profile on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-mod_p.html">Modifying Profile Information on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-pd_p.html">Working with Potential Duplicate Profiles on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-asmatch_p.html">Working with Assumed Matches on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-merge_p.html">Combining Object Information on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-unmerge_p.html">Unmerging Object Information on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-reports_p.html">Running MIDM Reports</a></p></li></ul>
+<p><b>More Information</b></p><p>These topics provide additional information you should know when using the MIDM:</p>
+<ul><li><p><a href="admn_mi-edm-view_p.html#admn_mi-edm-xhist-fields_r">About Transaction History Search Fields on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-view_p.html#admn_mi-edm-xhist-result_r">About Transaction History Results Fields on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-view_p.html#admn_mi-edm-xhist-types_r">Transaction History Transaction Types on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-view_p.html#admn_mi-edm-audit-fields_r">About Audit Log Search Fields on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-view_p.html#admn_mi-edm-audit-result_r">About Audit Log Results Fields on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-view_p.html#admn_mi-edm-audit-types_r">Audit Log Functions on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd_search_r">About Duplicate Records Search Fields on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-result_r">About Duplicate Records Results Fields</a></p></li>
+<li><p> <a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-am_search_r">About Assumed Matches Search Fields</a></p></li>
+<li><p><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-asmatch_r">About Assumed Match Results Fields on the MIDM</a></p></li>
+<li><p><a href="admn_mi-edm-reports_p.html#admn_mi-edm-reports_r">About Report Search Fields on the MIDM</a></p></li></ul>
+
+   </div>
+
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               
+            </td>
+            <td class="pageright">
+               <a href="admn_mi-taskoverview_c.html">Next</a>
+            </td>
+         </tr>
+      </table>
+      
+   </div>
+
+</body>
+</html>

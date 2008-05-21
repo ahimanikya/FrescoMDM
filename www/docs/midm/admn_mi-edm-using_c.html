@@ -1,0 +1,343 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <title>Working With the Master Index Data Manager</title>
+
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Working With the Master Index Data Manager provides instructions and background information for using the Master Index Data Manager (MIDM) to monitor and maintain data in your master index applications. It includes instructions for searching for object profiles, viewing and editing object profiles, handling potential duplicate profiles, viewing and reversing automatic matches, merging and unmerging profiles, and running reports.">
+   <meta name="date" content="2008-05-01">
+   <meta name="author" content="Carol Thom">
+   
+   <link rel="stylesheet" type="text/css" href="http://www.netbeans.org/netbeans.css" media="screen">
+   <link rel="stylesheet" type="text/css" href="css/mural.css">
+</head>
+ 
+<body>
+   
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
+   
+   <a name="top"></a>
+   <h1>Working With the Master Index Data Manager</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: May 2008</div>
+
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="admn_mi-profiles_c.html">Previous</a></span>
+         <span class="tocpageright"><a href="admn_mi-dashboard_p.html">Next</a></span></h5>
+     
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="wedmevsm.html">Working With the Master Index Data Manager</a></p>
+<p class="toc level2"><a href="admn_mi-taskoverview_c.html">About the Master Index Data Manager</a></p>
+<p class="toc level2"><a href="admn_mi-aboutsmi_c.html">About Master Index Studio</a></p>
+<p class="toc level3"><a href="admn_mi-aboutsmi_c.html#admn_mi-about_c">About Master Index Applications</a></p>
+<p class="toc level3"><a href="admn_mi-aboutsmi_c.html#admn_mi-features_c">Features of Master Index Applications</a></p>
+<p class="toc level3"><a href="admn_mi-aboutsmi_c.html#admn_mi-functions_c">Functions of the Master Index Data Manager</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-profiles_c.html">Learning about MIDM Object Profiles</a></p>
+<p class="toc level3"><a href="admn_mi-profiles_c.html#admn_mi-profile-parts_c">MIDM Object Profile Components</a></p>
+<p class="toc level4"><a href="admn_mi-profiles_c.html#ahoaz">Source Records</a></p>
+<p class="toc level4"><a href="admn_mi-profiles_c.html#ahoba">Single Best Record</a></p>
+<p class="toc level4"><a href="admn_mi-profiles_c.html#ahobb">Survivor Calculator</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-profiles_c.html#admn_mi-so-sbr_c">Source Record and SBR Components in a Master Index</a></p>
+<p class="toc level3"><a href="admn_mi-profiles_c.html#admn_mi-profile-ids_c">Identification Numbers for each Entity in the Master Index</a></p>
+<p class="toc level4"><a href="admn_mi-profiles_c.html#ahobg">EUID</a></p>
+<p class="toc level4"><a href="admn_mi-profiles_c.html#ahobh">Local ID</a></p>
+<p class="toc level4"><a href="admn_mi-profiles_c.html#ahsbn">Auxiliary ID</a></p>
+<div class="onpage">
+<p class="toc level2 tocsp"><a href="">Working with the Master Index Data Manager</a></p>
+<p class="toc level3"><a href="#ggtcp">Requirements</a></p>
+<p class="toc level3"><a href="#admn_mi-edm-logon_t">Logging on to the Master Index Data Manager</a></p>
+<p class="toc level5"><a href="#gentextid-383">To Log in to the MIDM</a></p>
+<p class="toc level3 tocsp"><a href="#admn_mi-edm-security_c">Master Index Data Manager Security Permissions</a></p>
+<p class="toc level3"><a href="#admn_mi-edm-navigation_c">Master Index Data Manager Navigation Tips</a></p>
+<p class="toc level4"><a href="#ahobn">Navigating the MIDM Functions</a></p>
+<p class="toc level4"><a href="#ahobs">Navigating the MIDM Detail Pages</a></p>
+<p class="toc level3 tocsp"><a href="#admn_mi-edm-logoff_t">Logging Off the MIDM</a></p>
+</div>
+<p class="toc level2 tocsp"><a href="admn_mi-dashboard_p.html">Using the MIDM Dashboard</a></p>
+<p class="toc level3"><a href="admn_mi-dashboard_p.html#admn_mi-edm-summary_t">Viewing Summary Information From the Dashboard</a></p>
+<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-495">To View Summary Information</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-dashboard_p.html#admn_mi-edm-reports_t">Accessing Reports From the Dashboard</a></p>
+<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-516">To Access Reports From the Dashboard</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-dashboard_p.html#admn_mi-edm-quick_t">Performing a Quick Search (EUID Lookup)</a></p>
+<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-543">To Perform Quick Search</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-dashboard_p.html#admn_mi-edm-search-dash_t">Performing an EUID Comparison Lookup</a></p>
+<p class="toc level5"><a href="admn_mi-dashboard_p.html#gentextid-565">To Perform an EUID Comparison Lookup</a></p>
+<p class="toc level2 tocsp"><a href="admin_mi-edm-search_c.html">Learning About Object Queries on the MIDM</a></p>
+<p class="toc level3"><a href="admin_mi-edm-search_c.html#admin_mi-edm-search-about_c">About the MIDM Search Function</a></p>
+<p class="toc level4"><a href="admin_mi-edm-search_c.html#ahobz">Simple Lookup</a></p>
+<p class="toc level4"><a href="admin_mi-edm-search_c.html#ahoca">Advanced Alphanumeric Lookup</a></p>
+<p class="toc level4"><a href="admin_mi-edm-search_c.html#ggsor">Advanced Phonetic Lookup</a></p>
+<p class="toc level4"><a href="admin_mi-edm-search_c.html#ahocb">EUID Comparison Lookup</a></p>
+<p class="toc level4"><a href="admin_mi-edm-search_c.html#ahocc">The Search Results List</a></p>
+<p class="toc level3 tocsp"><a href="admin_mi-edm-search_c.html#admn_mi-edm-search-range_c">Searching by Ranges on the MIDM</a></p>
+<p class="toc level3"><a href="admin_mi-edm-search_c.html#admn_mi-edm-search-smbl_c">Required Fields on the MIDM</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-search_p.html">Searching for Object Profiles on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-euid_t">Performing an EUID Lookup</a></p>
+<p class="toc level5"><a href="admn_mi-edm-search_p.html#gentextid-685">To Perform an EUID Lookup</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-lid_t">Performing a Local ID Lookup</a></p>
+<p class="toc level5"><a href="admn_mi-edm-search_p.html#gentextid-709">To Perform a Local ID Lookup</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-alpha_t">Performing an Alphanumeric Search</a></p>
+<p class="toc level5"><a href="admn_mi-edm-search_p.html#gfyku">To Perform an Alphanumeric Search</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-phon_t">Performing a Phonetic Search</a></p>
+<p class="toc level5"><a href="admn_mi-edm-search_p.html#gfyke">To Perform a Phonetic Search</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-comp_t">Performing an EUID Comparison Lookup </a></p>
+<p class="toc level5"><a href="admn_mi-edm-search_p.html#gentextid-789">To Perform an EUID Comparison Lookup</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-search_p.html#admn_mi-edm-search-rslt_t">Working with Search Results on the MIDM</a></p>
+<p class="toc level4"><a href="admn_mi-edm-search_p.html#ahodb">Viewing the Results of a Search</a></p>
+<p class="toc level4"><a href="admn_mi-edm-search_p.html#ahodf">Sorting the Results of Your Search</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-view_c.html">Learning About Object Profile Views on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_c.html#admn_mi-edm-view-prfl_c">Object Profile Details on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_c.html#ggspb">Source Record Details on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_c.html#admn_mi-edm-view-comp_c">Object Profile and Source Record Comparisons</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_c.html#admn_mi-edm-view-xhist_c">Object Profile Transaction Histories</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_c.html#admn_mi-edm-view-mrghist_c">Object Profile Merge Histories on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_c.html#admn_mi-edm-view-audit_c">The Master Index Audit Log</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-view_p.html">Viewing Object Information on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-view-prof_t">Viewing Object Profiles on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-963">To View an Object Profile</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#ggsvw">Viewing a Source Record on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-1016">To View a Source Record</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#admn_mi-edm-view-comp_t">Comparing Object Information on the MIDM</a></p>
+<p class="toc level4"><a href="admn_mi-edm-view_p.html#ahoek">Comparing Two or More Object Profiles</a></p>
+<p class="toc level4"><a href="admn_mi-edm-view_p.html#ahoen">Comparing Source Records in one Object Profile</a></p>
+<p class="toc level4"><a href="admn_mi-edm-view_p.html#ahoen2">Comparing Source Records From the Same or Different Object Profiles</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#admn_mi-edm-view-hist_t">Viewing Transaction Histories on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-1138">To View a Complete Transaction History For an Object Profile</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-1158">To View Transaction History Records from the Transactions Page</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#admn_mi-edm-xhist-fields_r">About Transaction History Search Fields on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-xhist-result_r">About Transaction History Results Fields on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-xhist-types_r">Transaction History Transaction Types on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-view-mrg-hist_t">Viewing a Profile's Merge History on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gfyfy">To View an Object's Merge History</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#admn_mi-edm-view-audit_t">Viewing the MIDM Audit Log</a></p>
+<p class="toc level5"><a href="admn_mi-edm-view_p.html#gentextid-1436">To View the Audit Log</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-view_p.html#admn_mi-edm-audit-fields_r">About Audit Log Search Fields on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-audit-result_r">About Audit Log Results Fields on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-view_p.html#admn_mi-edm-audit-types_r">Audit Log Functions on the MIDM</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-add_p.html">Adding an Object Profile on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st1_t">Step 1: Obtain Information about the Object</a></p>
+<p class="toc level3"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st2_t">Step 2: Specify a System and Local ID</a></p>
+<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1800">To Specify a System and Local ID</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st3_t">Step 3: Specify Parent Object Information</a></p>
+<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1829">To Specify Parent Object Information</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st4_t">Step 4: Specify Child Object Information</a></p>
+<p class="toc level5"><a href="admn_mi-edm-add_p.html#gentextid-1848">To Specify Child Object Information</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-add_p.html#admn_mi-edm-add-st5_t">Step 5: Save the Object Profile</a></p>
+<p class="toc level5"><a href="admn_mi-edm-add_p.html#gfyhl">To Save the Object Profile</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-add_c.html">Learning About MIDM Maintenance Tasks</a></p>
+<p class="toc level3"><a href="admn_mi-edm-add_c.html#admn_mi-edm-add-wgts_c">Matching Probability Weights</a></p>
+<p class="toc level3"><a href="admn_mi-edm-add_c.html#admn_mi-edm-add-mrg_c">Merging Profiles on the MIDM</a></p>
+<p class="toc level4"><a href="admn_mi-edm-add_c.html#ahofi">Surviving and Non-Surviving Profiles</a></p>
+<p class="toc level4"><a href="admn_mi-edm-add_c.html#ahofj">Source Record Merges</a></p>
+<p class="toc level4"><a href="admn_mi-edm-add_c.html#ahofk">Undoing a Merge</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-add_c.html#admn_mi-edm-add-match_c">Assumed Matches</a></p>
+<p class="toc level3"><a href="admn_mi-edm-add_c.html#admn_mi-edm-add-pd_c">Potential Duplicates</a></p>
+<p class="toc level3"><a href="admn_mi-edm-add_c.html#admn_mi-edm-add-pd-fix_c">Handling Potential Duplicates on the MIDM</a></p>
+<p class="toc level4"><a href="admn_mi-edm-add_c.html#ahofo">Merge</a></p>
+<p class="toc level4"><a href="admn_mi-edm-add_c.html#ahofp">Resolve</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-add_c.html#admn_mi-edm-add-update_c">Survivor Calculator Overrides</a></p>
+<p class="toc level4"><a href="admn_mi-edm-add_c.html#ggstd">Linking Source Record Fields to the SBR</a></p>
+<p class="toc level4"><a href="admn_mi-edm-add_c.html#ahofs">Locking Field Values in the SBR</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-add_c.html#ahofr">Concurrent Users on the MIDM</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-mod_p.html">Modifying Profile Information on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-mod-par_t">Modifying Information in an Object Profile</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#mi-modify-parent">Modifying Parent Object Information in a Profile</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-add-child_t">Adding a Child Object to an Object Profile</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-mod-child_t">Modifying a Child Object in a Profile</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-del-child_t">Deleting a Child Object From a Profile</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-mod_p.html#ggsua">Modifying Information Directly in a Source Record</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#mi-parent-source">Modifying the Parent Object in a Source Record</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ggsrq">Adding a Child Object to a Source Record</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ggsto">Modifying a Child Object in a Source Record</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ggsuh">Deleting a Child Object From a Source Record</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-mod-sbr_t">Overwriting SBR Field Values</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogplock">Locking an SBR Field</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogrun">Unlocking an SBR Field</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-sbrlink_t">Overriding the Survivor Calculator's SBR</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogp">Linking an SBR Field to a Specific Source Record</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogr">Unlinking an SBR Field From a Source Record</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-mod-sys_t">Adding a Source Record to an Object Profile</a></p>
+<p class="toc level5"><a href="admn_mi-edm-mod_p.html#gentextid-2443">To Add a Source Record to an Object Profile</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-deact_t">Deactivating a Profile or Source Record</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahoha">Deactivating an Object Profile</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogw">Deactivating a Source Record</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-mod_p.html#admn_mi-edm-activate_t">Reactivating a Profile or Source Record</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahohb">Reactivating an Object Profile</a></p>
+<p class="toc level4"><a href="admn_mi-edm-mod_p.html#ahogx">Reactivating a Source Record</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-pd_p.html">Working with Potential Duplicate Profiles on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd_find_t">Finding Potential Duplicate Profiles on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2618">To Find Potential Duplicates</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd_search_r">About Duplicate Records Search Fields on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-result_r">About Duplicate Records Results Fields</a></p>
+<p class="toc level3"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-mrg_t">Merging Potential Duplicate Profiles</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2799">To Combine Potential Duplicate Profiles From the Results List</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2829">To Combine Duplicate Profiles From the Comparison Page</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-pd_p.html#admn_mi-edm-pd-res_t">Resolving Potential Duplicate Profiles on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2885">To Resolve Potential Duplicate Profiles From the Results List</a></p>
+<p class="toc level5"><a href="admn_mi-edm-pd_p.html#gentextid-2919">To Resolve Potential Duplicate Profiles From the Comparison Page</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-asmatch_p.html">Working with Assumed Matches on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-am-find_t">Finding Assumed Matches on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-asmatch_p.html#gentextid-2962">To Find Assumed Matches</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-am_search_r">About Assumed Matches Search Fields</a></p>
+<p class="toc level3"><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-asmatch_r">About Assumed Match Results Fields on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-asmatch_p.html#admn_mi-edm-am-rev_t">Reversing an Assumed Match on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-asmatch_p.html#gentextid-3120">To Reverse an Assumed Match</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-merge_p.html">Combining Object Information on the MIDM</a></p>
+<p class="toc level3"><a href="admn_mi-edm-merge_p.html#admn_mi-edm-mrg-eo_t">Merging Object Profiles on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-merge_p.html#gentextid-3151">To Merge Object Profiles</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-merge_p.html#admn_mi-edm-mrg-so_t">Merging Source Records on the MIDM</a></p>
+<p class="toc level5"><a href="admn_mi-edm-merge_p.html#gentextid-3203">To Merge Source Records</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-unmerge_p.html">Unmerging Object Information on the MIDM</a></p>
+<p class="toc level4"><a href="admn_mi-edm-unmerge_p.html#gentextid-3251">To Unmerge Object Profiles</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-reports_c.html">Learning About MIDM Reports</a></p>
+<p class="toc level3"><a href="admn_mi-edm-reports_c.html#admn_mi-edm-prod-reports_c">MIDM Production Reports</a></p>
+<p class="toc level3"><a href="admn_mi-edm-reports_c.html#admn_mi-edm-report-act_c">MIDM Activity Reports</a></p>
+<p class="toc level3"><a href="admn_mi-edm-reports_c.html#admn_mi-edm-reports-conf_c">Configuring MIDM Reports</a></p>
+<p class="toc level3"><a href="admn_mi-edm-reports_c.html#admn_mi-edm-reports-mask_c">Masked Data and MIDM Reports</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-edm-reports_p.html">Running MIDM Reports</a></p>
+<p class="toc level4"><a href="admn_mi-edm-reports_p.html#gentextid-3383">To Run Reports From the MIDM</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-edm-reports_p.html#admn_mi-edm-reports_r">About Report Search Fields on the MIDM</a></p>
+
+     </div>
+   </div>
+
+
+   <div class="maincontent">
+      
+
+<a name="admn_mi-edm-using_c"></a>
+
+<h2>Working with the Master Index Data Manager</h2>
+<p>The MIDM is a web-based application, which means you access the application through
+an internet browser. The MIDM uses standard web-based features, such as hyperlinks, data
+fields, and action buttons, to help you enter information and navigate through the
+different pages. </p><p>The following topics provide basic information about the design of the MIDM
+and logging on and off the application:</p>
+<ul><li><p><a href="#ggtcp">Requirements</a></p></li>
+<li><p><a href="#admn_mi-edm-logon_t">Logging on to the Master Index Data Manager</a></p></li>
+<li><p><a href="#admn_mi-edm-security_c">Master Index Data Manager Security Permissions</a></p></li>
+<li><p><a href="#admn_mi-edm-navigation_c">Master Index Data Manager Navigation Tips</a></p></li>
+<li><p><a href="#admn_mi-edm-logoff_t">Logging Off the MIDM</a></p></li></ul>
+
+
+<div class="indent"><a name="ggtcp"></a><h3>Requirements</h3>
+<p>The MIDM is supported on both Mozilla Firefox and Internet Explorer. For either
+browser, make sure that pop-up windows are allowed for the MIDM URL and
+the JavaScript is enabled. Additionally, if you are working with sensitive data, you
+might also want to disable the feature that automatically fills in field values
+as you type. These options are configured on the Options (Firefox) or Internet
+Options (Internet Explorer) window accessed from the Tools menu.</p></div>
+
+
+<div class="indent"><a name="admn_mi-edm-logon_t"></a><h3>Logging on to the Master Index Data Manager</h3>
+<p><a name="indexterm-41"></a>Before you can use the MIDM, you must first log in to the
+application by entering the correct URL in your web browser and then specifying
+your login ID and password. Make sure you have a user ID and
+password for the master index application before logging in. The application server running
+the master index application must be started before you can log in to
+the MIDM.</p><p>The URL for the MIDM is:</p><pre>http://<tt><b>host</b></tt>:<tt><b>http_port</b></tt>/<tt><b>app_name</b></tt>MIDM</pre><p>where</p>
+<ul><li><p><tt><b>host</b></tt> is the name of the server machine.</p></li>
+<li><p><tt><b>http_port</b></tt> is the HTTP port number of the application server.</p></li>
+<li><p><tt><b>app_name</b></tt> is the name of the master index application.</p></li></ul>
+
+<hr><p><b>Note - </b>The &ldquo;MIDM&rdquo; at the end of the URL is case-sensitive and must be
+entered in all capital letters.</p>
+<hr>
+<p>The HTTP port number for the Sun Java System Application Server is
+listed in the <tt>domain.xml</tt> file in the <i>http-listener</i> element (8080 by default). The <tt>domain.xml</tt>
+file is located in <tt></tt><i>app_server_home</i><tt>\domains\</tt><i>domain_name</i><tt>\config</tt>. The port number is also listed on
+the Client and Server page of the HTTP Monitor of the NetBeans IDE.</p>
+
+<a name="gentextid-383"></a><h5>To Log in to the MIDM</h5>
+<ol>
+<li><b>Launch a web browser.</b></li>
+<li><b><a name="indexterm-42"></a>In the Address field, enter the appropriate URL.</b><p>The login page appears.</p><a name="ahobk"></a><h6>Figure&nbsp;1 MIDM Login Page</h6><img src="figures/logon_window.gif" alt="Figure shows the login page of the MIDM." width="236" height="270"></img></li>
+<li><b>In the upper right portion of the page, select the language for the
+MIDM display.</b></li>
+<li><b>Enter your user ID and password in the appropriate fields.</b></li>
+<li><b>Click Login.</b><p>The initial page appears. (By default, the initial page is the Record Details
+page, but this is configurable.)</p>
+<hr><p><b>Note - </b>After a certain period of inactivity, the MIDM automatically logs off and returns
+you to the Login page when you try to perform an activity on
+the MIDM. Simply reenter your user name and password to access the MIDM
+again. The system administrator can set the inactivity period at the server level
+in the  <i>session-timeout</i> element of  <tt>default-web.xml</tt> (in <tt></tt><i>appserver_home</i><tt>\domains\</tt><i>domain_name</i><tt>\config</tt>) or at the application
+level in  <tt>web.xml</tt> in the master index application <tt>.war</tt> file (located in
+the deployment <tt>.ear</tt> file) or in the deployment folder itself. The application level
+overrides any values set at the server level. The default inactivity period is
+30 minutes.</p>
+<hr>
+</li></ol></div>
+
+
+<div class="indent"><a name="admn_mi-edm-security_c"></a><h3>Master Index Data Manager Security Permissions</h3>
+<p>Security for the MIDM is defined at the function level. You might not
+be able to perform all the functions described in this guide depending on
+the security permissions you are assigned. For more information about functions you can
+perform, see your system administrator. Security for the MIDM is defined in the
+application server. For information about defining security for the MIDM, see <a href="https://open-dm-mi.dev.java.net/docs/maintain/admn_mi-maint-security_t">Defining Master Index Security</a></p></div>
+
+
+<div class="indent"><a name="admn_mi-edm-navigation_c"></a><h3>Master Index Data Manager Navigation Tips</h3>
+<p>The MIDM provides hyperlinks and command buttons to help you access and move
+through the MIDM pages. When you place the cursor over links and images
+on the MIDM pages, tooltips appear to provide additional information. Information is also
+provided to facilitate the use of screen readers and other assistive technology.</p>
+
+<div class="indent"><a name="ahobn"></a><h3>Navigating the MIDM Functions</h3>
+<p>The actions you can perform on the MIDM are grouped into these primary
+functions: Dashboard, Duplicate Records, Record Details, Assumed Matched, Transactions (history), Source Record, Reports,
+and Audit Log. The main menu on all MIDM pages provides hyperlinks to
+each of these functions, as shown in the following figure. The first page
+to appear for each function except the Source Record function is a search
+page. The names of these headings can be modified for your application.</p><a name="ahobo"></a><h6>Figure&nbsp;2 Main Menu Navigation Tools</h6><img src="figures/NavagateFunctions.gif" alt="Figure shows the main menu of the MIDM." width="518" height="56"></img>
+<ul><li><p><b>Dashboard</b> &ndash; The Dashboard provides a summary of recent transactions, quick links to commonly used functions, and quick lookup functions. The information, links, and lookup functions on this page can be configured by the system administrator.</p></li>
+<li><p><a name="indexterm-43"></a><b>Duplicate Records</b> &ndash; The Potential Duplicate function allows you to perform a search for potential duplicate profiles. Potential duplicate profiles are profiles whose matching probability weight indicates they might match but is not high enough to automatically match the two profiles. From the associated pages, you can compare, merge, or resolve potential duplicate profiles.</p></li>
+<li><p><a name="indexterm-44"></a><b>Record Details</b> &ndash; The Record Details function allows you to perform a search for an object profile or set of object profiles in the master index application. From the associated pages, you can compare two object profiles, compare records in one object profile, view all information for one object profile, update an object profile or source record, view a transaction history of an object profile, view an object&rsquo;s potential duplicates, and merge object profiles or source records.</p></li>
+<li><p><a name="indexterm-45"></a><b>Assumed Matches</b> &ndash; The Assumed Matches function allows you to perform a search for any profiles that were updated by an assumed match transaction. An assumed match occurs when either the system and local ID of an incoming record match the system and local ID of a record in the master index database or when the matching probability weight is high enough to indicate that two records represent the same object. From the associated pages, you can view and reverse assumed match transactions.</p></li>
+<li><p><a name="indexterm-46"></a><b>Transactions</b> &ndash; The Transactions function allows you to perform a search for transaction histories. From the Transaction History pages, you can compare information about an object before and after a transaction occurred, select object profiles to unmerge, and view a merge history for an object profile. From associated Transaction History pages, you can unmerge object profiles.</p></li>
+<li><p><a name="indexterm-47"></a><b>Reports</b> &ndash; The Reports function allows you to display and print reports about certain transactions performed both from the MIDM and from messages sent in from external systems. You can run reports from either the MIDM or from a command line.</p></li>
+<li><p><a name="indexterm-48"></a><b>Source Record</b> &ndash; The Create Source Record function allows you to create new object profiles by creating a source record. When you save the information in the source record, the master index application automatically generates the SBR using the survivor calculator. You can also edit and merge source records from the Source Record page.</p></li>
+<li><p><a name="indexterm-49"></a><b>Audit Log</b> &ndash; The Audit Log function allows you to perform a search for audit log entries. From the Audit Log pages you can view information about transactions in which data about an object was accessed through the MIDM. This helps enforce HIPAA privacy rules for healthcare master indexes.</p></li></ul>
+</div>
+
+
+<div class="indent"><a name="ahobs"></a><h3>Navigating the MIDM Detail Pages</h3>
+<p>The detail pages display the SBR of the object profile on the
+left and you can expand the pages to view source records on the
+right. Child objects appear below the parent object, and you can expand and
+collapse the information for each type of object. If you are viewing a
+comparison of object profiles, you can expand the source records of one object
+profile at a time. The following figure illustrates a sample of the Record
+Details page and shows the SBR to the left of three source records.
+Each detail page includes scrollbar navigation within the larger browser window so you
+can control the display of data. </p><a name="ahobt"></a><h6>Figure&nbsp;3 Sample Record Details Page</h6><img src="figures/ViewSOs.gif" alt="Figure shows the Record Details window where you can view profile details." width="498" height="339"></img></div>
+</div>
+
+
+<div class="indent"><a name="admn_mi-edm-logoff_t"></a><h3>Logging Off the MIDM</h3>
+<p><a name="indexterm-50"></a><a name="indexterm-51"></a>Before you exit the MIDM, make sure you have saved any changes. To
+exit the MIDM, click Sign Out in the upper right corner of the
+page. The Login page reappears.</p></div>
+
+   </div>
+
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="admn_mi-profiles_c.html">Previous</a>
+            </td>
+            <td class="pageright">
+               <a href="admn_mi-dashboard_p.html">Next</a>
+            </td>
+         </tr>
+      </table>
+      
+   </div>
+
+</body>
+</html>
