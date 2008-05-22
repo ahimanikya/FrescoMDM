@@ -81,7 +81,7 @@ String requestPage = uri.substring(uri.lastIndexOf("/")+1,uri.length());
                  <td align="right">
                      <% if (session.getAttribute("user") != null) {%>
                      <span class="greetingsmall"><nobr><%=session.getAttribute("user")%>&nbsp;</span>
-                     <h:commandLink action="#{LoginHandler.signOutUser}" styleClass="greetingsmall">
+                     <h:commandLink title="#{msgs.header_logout_prompt}" action="#{LoginHandler.signOutUser}" styleClass="greetingsmall">
                          <h:outputText  value="#{msgs.header_logout_prompt}" />
                      </h:commandLink>
                      
@@ -154,18 +154,19 @@ String requestPage = uri.substring(uri.lastIndexOf("/")+1,uri.length());
                                   
                                   if (allScreensArrayOrdered[i]!=null){
                                     ValueExpression screenID = ExpressionFactory.newInstance().createValueExpression(allScreensArrayOrdered[i].getID(), allScreensArrayOrdered[i].getID().getClass());
+                                    ValueExpression displayTitleVE = ExpressionFactory.newInstance().createValueExpression(allScreensArrayOrdered[i].getDisplayTitle(), allScreensArrayOrdered[i].getDisplayTitle().getClass());
                                     
                                   %>
 
                                   <h:form>
 								  <%if(screenObject.getDisplayTitle().equalsIgnoreCase(allScreensArrayOrdered[i].getDisplayTitle())) {%>
-                                       <h:commandLink  styleClass ="navbuttonselected" 
+                                       <h:commandLink title="<%=displayTitleVE%>" styleClass ="navbuttonselected" 
                                                   actionListener="#{NavigationHandler.setHeaderByTabName}" > 
                                           <f:attribute name="screenId" value="<%=screenID%>"/>
                                           <span><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
                                       </h:commandLink>
 								 <%} else {%>
-                                       <h:commandLink  styleClass ="navbutton" 
+                                       <h:commandLink title="<%=displayTitleVE%>" styleClass ="navbutton" 
                                                   actionListener="#{NavigationHandler.setHeaderByTabName}" > 
                                           <f:attribute name="screenId" value="<%=screenID%>"/>
                                           <span><%=allScreensArrayOrdered[i].getDisplayTitle()%></span>
