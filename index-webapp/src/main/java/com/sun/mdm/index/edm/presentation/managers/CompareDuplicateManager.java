@@ -663,8 +663,9 @@ public class CompareDuplicateManager {
                     }
 
                     //add SystemCode and LID value to the new Hash Map  
-                    histEOMap.put("EUID", eoHist.getEUID()); // set LID here
-                    histEOMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE); //SBR_UPDATE HASH MAP type here
+                    histEOMap.put("EUID", eoHist.getEUID()); // set EUID 
+                    histEOMap.put("EO_STATUS", eoHist.getStatus()); // set Status of EO here
+                     histEOMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE); //SBR_UPDATE HASH MAP type here
 
                     histEOMap.put("ENTERPRISE_OBJECT", editEnterpriseObjectHashMap); // Set the edit EnterpriseObject here
 
@@ -935,4 +936,22 @@ public class CompareDuplicateManager {
         Arrays.sort(countsArray);
         return countsArray[countsArray.length-1];
     }
+    
+    public String getStatus(String strStatus) {
+        String name = "";
+
+        if (strStatus != null) {
+
+            strStatus = strStatus.trim();
+
+            name = String.valueOf(strStatus.charAt(0)).toUpperCase() + strStatus.substring(1);
+
+            System.out.println("Name " + name);
+
+        }
+
+        return name;
+
+    }
+
 }
