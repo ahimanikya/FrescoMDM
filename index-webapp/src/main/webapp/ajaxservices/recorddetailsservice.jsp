@@ -268,7 +268,7 @@ if (results != null)   {
          <tr>
              <td width="30%">
 			   <% if (results.size() > 1)   {%>
- 					  <a class="button" 
+ 					  <a class="button" title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>"
 					     href="javascript:ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?collectEuids=true','messages','')" >
                          <span>
                               <h:outputText value="#{msgs.dashboard_compare_tab_button}"/>
@@ -281,7 +281,7 @@ if (results != null)   {
 			</td>
 			<td width="10%">
 				<% if (results.size() > 0)   {%>
-                         <h:outputLink styleClass="button" 
+                         <h:outputLink styleClass="button" title="#{msgs.print_text}"
                                        rendered="#{Operations.transLog_Print}"  
                                        value="JavaScript:window.print();">
                              <span><h:outputText value="#{msgs.print_text}"/>  </span>

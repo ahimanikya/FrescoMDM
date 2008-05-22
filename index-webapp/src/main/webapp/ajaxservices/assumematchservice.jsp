@@ -156,7 +156,7 @@ if (results != null)   {
 			</td>
 			<td>
 				<% if (results.size() > 0)   {%>
-                         <h:outputLink styleClass="button" 
+                         <h:outputLink styleClass="button" title="#{msgs.print_text}"
                                        rendered="#{Operations.transLog_Print}"  
                                        value="JavaScript:window.print();">
                              <span><h:outputText value="#{msgs.print_text}"/>  </span>

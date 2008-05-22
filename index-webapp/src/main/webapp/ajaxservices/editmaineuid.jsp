@@ -138,7 +138,7 @@ boolean isSessionActive = true;
                                 </tr>
                                 <tr>
                                     <td align="left" colspan="2">
-					                 <a class="button" href="javascript:void()" onclick="history.go(-1)">
+					                 <a title="<h:outputText  value="#{msgs.back_button_text}"/>" class="button" href="javascript:void()" onclick="history.go(-1)">
 						               <span><h:outputText  value="#{msgs.back_button_text}"/></span>
 					                 </a>
                                     </td>
@@ -268,8 +268,8 @@ boolean isSessionActive = true;
 																   readonly="<h:outputText value="#{!fieldConfigPer.updateable}"/>"
                                                                    value = "<h:outputText value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
                                                                    />
-                                                            <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{fieldConfigPer.name}"/>')" > 
-                                                            <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                            <a title="<h:outputText value="#{fieldConfigPer.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{fieldConfigPer.name}"/>')" > 
+                                                            <h:graphicImage  id="calImgDateFrom"  alt="#{fieldConfigPer.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                             </a>
                                                         </nobr>
                                                         </div>            
@@ -286,7 +286,7 @@ boolean isSessionActive = true;
 																   readonly="<h:outputText value="#{!fieldConfigPer.updateable}"/>"
                                                                    />
                                                                        
-                                                            <h:graphicImage  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                            <h:graphicImage  alt="#{fieldConfigPer.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                                 
                                                         </nobr>
                                                         </div>            
@@ -311,10 +311,10 @@ boolean isSessionActive = true;
 											</tr>
                     <tr>
 					  <td><nobr>
-                          <a href="javascript:void(0);" class="button" onclick="javascript:getFormValues('EORootNodeForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&saveSbr=save','EUIDRootDiv','Updating SBR...please wait')">
-                               <span id="EObuttonspan">Update <%=rootNodeName%></span>
+                          <a title="<h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('EORootNodeForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&saveSbr=save','EUIDRootDiv','Updating SBR...please wait')">
+                               <span id="EObuttonspan"><h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%></span>
                            </a>    
-                           <a class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('EORootNodeForm');setEOEditIndex('-1')">
+                           <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('EORootNodeForm');setEOEditIndex('-1')">
                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
 						   </a>
 						  </nobr>
@@ -350,9 +350,11 @@ boolean isSessionActive = true;
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="2">
-																	<a href="javascript:void(0)" onclick="javascript:showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>EOMinorDiv');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/>EOMinorDiv',event)" class="button">
+																	<a title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/>" href="javascript:void(0)" onclick="javascript:showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>EOMinorDiv');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/>EOMinorDiv',event)" class="button">
 																	<span>
-							                                            <img src="./images/down-chevron-button.png" border="0" alt="Add <h:outputText value="#{childNodesName}"/>"/>View &nbsp;<h:outputText value="#{childNodesName}"/>&nbsp;<img src="./images/down-chevron-button.png" border="0" alt="Add <h:outputText value="#{childNodesName}"/>"/>
+							                                            <img src="./images/down-chevron-button.png" border="0" alt="<h:outputText value="#{msgs.source_rec_view}"/> <h:outputText value="#{childNodesName}"/>"/>
+
+																		<h:outputText value="#{msgs.source_rec_view}"/> &nbsp;<h:outputText value="#{childNodesName}"/>&nbsp;<img src="./images/down-chevron-button.png" border="0" alt="<h:outputText value="#{msgs.source_rec_view}"/> <h:outputText value="#{childNodesName}"/>"/>
 																	</span>
 
                                                                     </td>
@@ -433,8 +435,8 @@ boolean isSessionActive = true;
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');">
-                                                  <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childFieldConfigAdd.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                  <a title="<h:outputText value="#{childFieldConfigAdd.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childFieldConfigAdd.name}"/>')" > 
+                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{childFieldConfigAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                  </a>
                                           </nobr>
                                      </h:column>                     
@@ -453,15 +455,15 @@ boolean isSessionActive = true;
 					</tr>
                     <tr>
 					  <td><nobr>
-                          <a href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>EOInnerForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>EOMinorDiv',event)">
-                             <span id="EO<h:outputText value='#{childNodesName}'/>buttonspan">Save <h:outputText value='#{childNodesName}'/> </span>
+                          <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value="#{childNodesName}"/>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>EOInnerForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>EOMinorDiv',event)">
+                             <span id="EO<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/> </span>
                           </a>
-                           <a class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText value="#{childNodesName}"/>EOInnerForm');setEOEditIndex('-1')">
+                           <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText value="#{childNodesName}"/>EOInnerForm');setEOEditIndex('-1')">
                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                           </a>
                          <div style="visibility:hidden;display:none;" id="EO<h:outputText value='#{childNodesName}'/>cancelEdit">
-                                         <a href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>EOInnerForm', '<h:outputText value='#{childNodesName}'/>cancelEdit', '<h:outputText value='#{childNodesName}'/>')">
-                                          <span>Cancel <h:outputText value='#{childNodesName}'/></span>
+                                         <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>EOInnerForm', '<h:outputText value='#{childNodesName}'/>cancelEdit', '<h:outputText value='#{childNodesName}'/>')">
+                                          <span><h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/></span>
                                          </a>     
                          </div>
 
@@ -499,9 +501,9 @@ boolean isSessionActive = true;
                                             <table style="background-color:#efefef" width="100%">
                                                 <tr>
                                                     <td>
-                                                  <a href="euiddetails.jsf?euid=<%=editEuid%>" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&deactiveEO=true','euidFinalErrorMessages',event)">
+                                                  <a title="<h:outputText value="#{msgs.source_rec_deactivate_but}"/>" href="euiddetails.jsf?euid=<%=editEuid%>" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&deactiveEO=true','euidFinalErrorMessages',event)">
 
-                                                            <span><h:outputText value="Deactivate" /></span>
+                                                            <span><h:outputText value="#{msgs.source_rec_deactivate_but}" /></span>
                                                         </a> 
                                                     </td>
                                                 </tr>
@@ -637,7 +639,7 @@ boolean isSessionActive = true;
                                                                         <h:column rendered="#{!fieldConfigPer.updateable && fieldConfigPer.guiType eq 'TextBox' && fieldConfigPer.valueType eq 6}">
 																		    <nobr>
                                                                             <input type="text" 
-																			       title="<h:outputText value="#{fieldConfigPer.fullFieldName}"/>"
+																			       title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
 																				   readonly="true"
 																				   disabled="true"
                                                                                    id = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>"  
@@ -663,8 +665,8 @@ boolean isSessionActive = true;
                                                                                    value = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
                                                                                    />
                                                                                        
-                                                                            <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>')" > 
-                                                                                <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                                            <a title="<h:outputText value="#{fieldConfigPer.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>')" > 
+                                                                                <h:graphicImage  id="calImgDateFrom"  alt="#{fieldConfigPer.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                                             </a>
 																		   </nobr>
                                                                        </h:column>
@@ -737,7 +739,7 @@ boolean isSessionActive = true;
                                                                         <h:column rendered="#{fieldConfigPer.guiType eq 'TextBox' && fieldConfigPer.valueType eq 6 }">
 																		    <nobr>
                                                                             <input type="text" 
-																			       title="<h:outputText value="#{fieldConfigPer.fullFieldName}"/>"
+																			       title="<h:outputText value="#{fieldConfigPer.displayName}"/>"
 																				   readonly="true"
 																				   disabled="true"
                                                                                    id = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>"  
@@ -747,7 +749,7 @@ boolean isSessionActive = true;
                                                                                    value = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
                                                                                    />
                                                                                        
-                                                                                <h:graphicImage   alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                                                <h:graphicImage   alt="#{fieldConfigPer.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
 																		   </nobr>
                                                                        </h:column>
                                                                         <!--Rendering Updateable HTML Text Area-->
@@ -767,15 +769,16 @@ boolean isSessionActive = true;
                     <tr>
 					  <td><nobr>
                        <%if("active".equalsIgnoreCase(soStatus)) {%>
-                          <a href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SORootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&save=save','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>RootEditMessages',event)">
+                          <a title="<h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SORootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&save=save','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>RootEditMessages',event)">
 
-                               <span id="EObuttonspan">Update <%=rootNodeName%></span>
+                          
+                               <span id="EObuttonspan"><h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%></span>
                            </a>
-                           <a class="button"  href="javascript:void(0)" onclick="javascript:ClearContents(<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SORootNodeInnerForm);setEOEditIndex('-1')">
+                           <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents(<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SORootNodeInnerForm);setEOEditIndex('-1')">
                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
 						   </a>
 						 <%}else{%>
-						    <input type="button" value="Update <%=rootNodeName%>" readonly="true" disabled="true"/>
+						    <input title="<h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%>" type="button" value="<h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%>" readonly="true" disabled="true"/>
 						    <input type="button" value="Clear" readonly="true" disabled="true"/>
 						 <%}%>
 						</nobr>
@@ -806,9 +809,9 @@ boolean isSessionActive = true;
                                                                 <tr>
                                                                     <td colspan="2">
                                                       
-																	<a href="javascript:void(0)" onclick="javascript:showMinorObjectsDiv('extra<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event)" class="button">
+																	<a href="javascript:void(0)" title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"  onclick="javascript:showMinorObjectsDiv('extra<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event)" class="button">
 																	<span>
-																	<img src="./images/down-chevron-button.png" border="0" alt="View <h:outputText value="#{childNodesName}"/>" />
+																	<img src="./images/down-chevron-button.png" border="0" alt="title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/>" />
 																	View &nbsp;<h:outputText value="#{childNodesName}"/>&nbsp;
 																	<img src="./images/down-chevron-button.png" border="0" alt="Add <h:outputText value="#{childNodesName}"/>" />
 																	</span>
@@ -895,8 +898,8 @@ boolean isSessionActive = true;
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{soChildFieldConfigAdd.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');">
-                                                  <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/><h:outputText value="#{soChildFieldConfigAdd.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                  <a title="<h:outputText value="#{soChildFieldConfigAdd.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/><h:outputText value="#{soChildFieldConfigAdd.name}"/>')" > 
+                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{soChildFieldConfigAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                  </a>
                                           </nobr>
                                      </h:column>                     
@@ -946,7 +949,7 @@ boolean isSessionActive = true;
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{soChildFieldConfigAdd.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');">
-                                                  <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{soChildFieldConfigAdd.name}"/>')" > 
+                                                  <a title="<h:outputText value="#{soChildFieldConfigAdd.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{soChildFieldConfigAdd.name}"/>')" > 
                                                      <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                  </a>
                                           </nobr>
@@ -970,21 +973,21 @@ boolean isSessionActive = true;
                     <tr>
 					  <td>
 					  <nobr>
-					  <%if("active".equalsIgnoreCase(soStatus)) {%>
-					      <a href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText  value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event)">
+					  <%if("active".equalsIgnoreCase(soStatus)) {%> 
+					      <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"  href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText  value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event)">
                                <span id="<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>buttonspan">Save <h:outputText value='#{childNodesName}'/> </span>
                             </a>
-						    <a class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm');setEOEditIndex('-1')">
+						    <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm');setEOEditIndex('-1')">
                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                           </a>
                         <%}else{%>
-                            <input type="button" value="Save <h:outputText value="#{childNodesName}"/>" readonly="true" disabled="true"/>
-                            <input type="button" value="Clear" readonly="true" disabled="true"/>
+                            <input title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"  type="button" value="Save <h:outputText value="#{childNodesName}"/>" readonly="true" disabled="true"/>
+                            <input type="button" value="<h:outputText value="#{msgs.clear_button_label}"/>" readonly="true" disabled="true"/>
                       	<%}%>
 						</nobr>
                          <div style="visibility:hidden;display:none;" id="<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>cancelEdit">
-                                         <a href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm', 'EO<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>cancelEdit', '<h:outputText value='#{childNodesName}'/>')">
-                                          <span>Cancel <h:outputText value='#{childNodesName}'/></span>
+                                         <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm', 'EO<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>cancelEdit', '<h:outputText value='#{childNodesName}'/>')">
+                                          <span><h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/></span>
                                          </a>     
                          </div>
 					  </td>
@@ -1017,12 +1020,12 @@ boolean isSessionActive = true;
 		  	  <tr>
 				 <td colspan="2">
 				        <%if("active".equalsIgnoreCase(soStatus)) {%>
-					      <a href="javascript:void(0);" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&deactivateSO=true','<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMessageDiv',event)">
-                               <span>Deactivate</span>
+					      <a title="<h:outputText value="#{msgs.source_rec_deactivate_but}"/>" href="javascript:void(0);" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&deactivateSO=true','<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMessageDiv',event)">
+                               <span><h:outputText value="#{msgs.source_rec_deactivate_but}"/></span>
                             </a>
 						<%} else if("inactive".equalsIgnoreCase(soStatus)){%>
-							<a href="javascript:void(0);" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&activateSO=true','<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMessageDiv',event)">
-                               <span>Activate</span>
+							<a title="<h:outputText value="#{msgs.source_rec_activate_but}"/>" href="javascript:void(0);" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&activateSO=true','<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMessageDiv',event)">
+                               <span><h:outputText value="#{msgs.source_rec_activate_but}"/></span>
                             </a>
 
 						<%}%>
@@ -1056,14 +1059,14 @@ boolean isSessionActive = true;
 							<tr style="background-color:#efefef">
                                 <td>
 								 <nobr>
-                                 <a href="javascript:void(0);" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&save=save','euidFinalErrorMessages',event)">
-                                       <span><h:outputText value="Save" /></span>
+                                 <a title="<h:outputText value="#{msgs.source_rec_save_but}" />" href="javascript:void(0);" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&save=save','euidFinalErrorMessages',event)">
+                                       <span><h:outputText value="#{msgs.source_rec_save_but}" /></span>
                                     </a>
-                                    <a href="euiddetails.jsf?euid=<%=editEuid%>" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&canceleoedit=true','euidFinalErrorMessages',event)">
+                                    <a title="<h:outputText value="#{msgs.cancel_but_text}"/>"  href="euiddetails.jsf?euid=<%=editEuid%>" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&canceleoedit=true','euidFinalErrorMessages',event)">
                                        <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
-                                   </a> 
-									 <a href="javascript:void(0);" class="button" onclick="ajaxMinorObjects('/<%=URI%>/maineuidAddSO.jsf?&rand=<%=rand%>&addSO=addSO','AddSO','')">	
-											<span id="<h:outputText value='#{childNodesName}'/>buttonspan">Add SO</span>
+                                   </a>  
+									 <a title="<h:outputText value="#{msgs.edit_euid_add_so}"/>" href="javascript:void(0);" class="button" onclick="ajaxMinorObjects('/<%=URI%>/maineuidAddSO.jsf?&rand=<%=rand%>&addSO=addSO','AddSO','')">	
+											<span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.edit_euid_add_so}"/></span>
 
 									 </a>     
 									 </nobr>
