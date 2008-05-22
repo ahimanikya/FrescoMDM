@@ -143,11 +143,11 @@ function setRand(thisrand)  {
 										//tabName = tabName.replaceAll("Report","");
                                         if (reportTabName.equalsIgnoreCase(tabName)) { %>
                                             <li class="selected" >
-										        <a href="#tab<%=i+1%>"> <em><%=tabName%></em></a>
+										        <a title="<%=tabName%>" href="#tab<%=i+1%>"> <em><%=tabName%></em></a>
 										    </li>             
                                         <%} else {%>
                                             <li>
-										        <a href="#tab<%=i+1%>"> <em><%=tabName%></em></a>
+										        <a title="<%=tabName%>" href="#tab<%=i+1%>"> <em><%=tabName%></em></a>
 										    </li>             
                                         <%}	%>
                                  <%}%>
@@ -273,8 +273,8 @@ function setRand(thisrand)  {
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                    onblur="javascript:validate_date(this,'MM/dd/yyyy')">
-                                                  <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'form<%=i%><h:outputText value="#{feildConfig.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/></a>
+                                                  <a HREF="javascript:void(0);"title="<h:outputText value="#{feildConfig.displayName}"/>"  onclick="g_Calendar.show(event,'form<%=i%><h:outputText value="#{feildConfig.name}"/>')" > 
+                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{feildConfig.displayName}"  styleClass="imgClass" url="./images/cal.gif"/></a>
 
 
 																				  </nobr>
@@ -289,7 +289,7 @@ function setRand(thisrand)  {
 													 <tr>
 													  <td>
 													   <nobr>
-														  <a class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')" >
+														  <a class="button"  title="<h:outputText value="#{msgs.clear_button_label}"/>" href="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')" >
 															<span><h:outputText value="#{msgs.clear_button_label}"/> </span>
 														  </a>
 													   </nobr>
@@ -297,34 +297,34 @@ function setRand(thisrand)  {
 													   <td>
 													  <nobr>
 													  <% if (operations.isReports_Duplicates() && potDupText.equalsIgnoreCase(orderdedScreens[i].getDisplayTitle())) { %>   <!--  Potential  Duplicate Report -->										 
-														   <a class="button" href="javascript:void(0)" id = "deactivateReport" onclick="javascript:getFormValues('form<%=i%>');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/reportservices.jsf?random=rand'+'&'+queryStr,'results<%=i%>','<%=orderdedScreens[i].getDisplayTitle()%>')">
+														   <a class="button" title="<h:outputText value="#{msgs.search_button_label}"/>"  href="javascript:void(0)" id = "deactivateReport" onclick="javascript:getFormValues('form<%=i%>');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/reportservices.jsf?random=rand'+'&'+queryStr,'results<%=i%>','<%=orderdedScreens[i].getDisplayTitle()%>')">
 															 <span><h:outputText value="#{msgs.search_button_label}"/></span>
 														   </a>
 												
 													 
 													 <% } else if (operations.isReports_DeactivatedEUIDs() && deactiveText.equalsIgnoreCase(orderdedScreens[i].getDisplayTitle())) { %> <!--  Deactivated Report -->
-														   <a class="button" id = "deactivateReport" href="javascript:void(0)" onclick="javascript:getFormValues('form<%=i%>');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/reportservices.jsf?random=rand'+'&'+queryStr,'results<%=i%>','<%=orderdedScreens[i].getDisplayTitle()%>')">
+														   <a class="button" title="<h:outputText value="#{msgs.search_button_label}"/>" id = "deactivateReport" href="javascript:void(0)" onclick="javascript:getFormValues('form<%=i%>');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/reportservices.jsf?random=rand'+'&'+queryStr,'results<%=i%>','<%=orderdedScreens[i].getDisplayTitle()%>')">
 															 <span><h:outputText value="#{msgs.search_button_label}"/></span>
 														   </a>
 													 <% } else if (operations.isReports_MergedRecords() && mergeText.equalsIgnoreCase(orderdedScreens[i].getDisplayTitle())) { %>  <!--  Merged Report -->
-														   <a class="button" id = "mergeText" href="javascript:void(0)" onclick="javascript:getFormValues('form<%=i%>');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/reportservices.jsf?random=rand'+'&'+queryStr,'results<%=i%>','')">
+														   <a class="button" title="<h:outputText value="#{msgs.search_button_label}"/>" id = "mergeText" href="javascript:void(0)" onclick="javascript:getFormValues('form<%=i%>');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/reportservices.jsf?random=rand'+'&'+queryStr,'results<%=i%>','')">
 															 <span><h:outputText value="#{msgs.search_button_label}"/></span>
 														   </a>
 
 													 <% } else if (operations.isReports_UnmergedRecords() && unmergeText.equalsIgnoreCase(orderdedScreens[i].getDisplayTitle())) { %> <!--  UnMerge Report -->
-														   <a class="button" id = "deactivateReport" href="javascript:void(0)" onclick="javascript:getFormValues('form<%=i%>');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/reportservices.jsf?random=rand'+'&'+queryStr,'results<%=i%>','<%=orderdedScreens[i].getDisplayTitle()%>')">
+														   <a class="button" title="<h:outputText value="#{msgs.search_button_label}"/>" id = "deactivateReport" href="javascript:void(0)" onclick="javascript:getFormValues('form<%=i%>');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/reportservices.jsf?random=rand'+'&'+queryStr,'results<%=i%>','<%=orderdedScreens[i].getDisplayTitle()%>')">
 															 <span><h:outputText value="#{msgs.search_button_label}"/></span>
 														   </a>
 													 <% } else if (operations.isReports_Updates() && updateText.equalsIgnoreCase(orderdedScreens[i].getDisplayTitle())) { %> <!--  Update Report -->
-														   <a class="button" id = "deactivateReport" href="javascript:void(0)" onclick="javascript:getFormValues('form<%=i%>');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/reportservices.jsf?random=rand'+'&'+queryStr,'results<%=i%>','<%=orderdedScreens[i].getDisplayTitle()%>')">
+														   <a class="button" title="<h:outputText value="#{msgs.search_button_label}"/>" id = "deactivateReport" href="javascript:void(0)" onclick="javascript:getFormValues('form<%=i%>');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/reportservices.jsf?random=rand'+'&'+queryStr,'results<%=i%>','<%=orderdedScreens[i].getDisplayTitle()%>')">
 															 <span><h:outputText value="#{msgs.search_button_label}"/></span>
 														   </a>
 													 <% } else if (operations.isReports_Activity() && activityText.equalsIgnoreCase(orderdedScreens[i].getDisplayTitle())) { %> <!--  Activity Report -->
-														   <a class="button" id = "deactivateReport" href="javascript:void(0)" onclick="javascript:getFormValues('form<%=i%>');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/reportservices.jsf?random=rand'+'&'+queryStr,'results<%=i%>','<%=orderdedScreens[i].getDisplayTitle()%>')">
+														   <a class="button" title="<h:outputText value="#{msgs.search_button_label}"/>" id = "deactivateReport" href="javascript:void(0)" onclick="javascript:getFormValues('form<%=i%>');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/reportservices.jsf?random=rand'+'&'+queryStr,'results<%=i%>','<%=orderdedScreens[i].getDisplayTitle()%>')">
 															 <span><h:outputText value="#{msgs.search_button_label}"/></span>
 														   </a>
 													 <% } else if (operations.isReports_AssumedMatches() && assumedText.equalsIgnoreCase(orderdedScreens[i].getDisplayTitle())) { %>  <!--  Assumed Match Report -->
-														   <a class="button" id = "deactivateReport" href="javascript:void(0)" onclick="javascript:getFormValues('form<%=i%>');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/reportservices.jsf?random=rand'+'&'+queryStr,'results<%=i%>','<%=orderdedScreens[i].getDisplayTitle()%>')">
+														   <a class="button" title="<h:outputText value="#{msgs.search_button_label}"/>" id = "deactivateReport" href="javascript:void(0)" onclick="javascript:getFormValues('form<%=i%>');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/reportservices.jsf?random=rand'+'&'+queryStr,'results<%=i%>','<%=orderdedScreens[i].getDisplayTitle()%>')">
 															 <span><h:outputText value="#{msgs.search_button_label}"/></span>
 														   </a>
 													 <% } %>

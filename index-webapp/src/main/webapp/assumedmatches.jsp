@@ -188,8 +188,8 @@ function setRand(thisrand)  {
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                    onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFieldsOnBlur(this,'<h:outputText value="#{feildConfig.name}"/>')">
-                                                  <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                  <a title="<h:outputText value="#{feildConfig.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.name}"/>')" > 
+                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{feildConfig.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                  </a>
                                           </nobr>
                                         </h:column>
@@ -200,12 +200,12 @@ function setRand(thisrand)  {
                                          <tr>
                                           <td>
                                            <nobr>
-                                              <h:outputLink  styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')" >
+                                              <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')" >
                                                 <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                                               </h:outputLink>
                                            </nobr>
                                           <nobr>
-										   <a class="button" id = "deactivateReport" href="javascript:void(0)"
+										   <a class="button" title="<h:outputText value="#{msgs.search_button_label}"/>"  id = "deactivateReport" href="javascript:void(0)"
 										   onclick="javascript:getFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/assumematchservice.jsf?random=rand'+'&'+queryStr,'outputdiv','')">
 												 <span><h:outputText value="#{msgs.search_button_label}"/></span>
 											</a>

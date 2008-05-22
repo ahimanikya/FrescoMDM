@@ -122,7 +122,7 @@ function align(thisevent,divID) {
                             <tr>
                                 <td>
                                     <h:outputText  rendered="#{PatientDetailsHandler.possilbeSearchTypesCount gt 1}"  value="#{msgs.patdet_search_text}"/>&nbsp;
-                                    <h:selectOneMenu id="searchType" rendered="#{PatientDetailsHandler.possilbeSearchTypesCount gt 1}" onchange="submit();" style="width:220px;" value="#{PatientDetailsHandler.searchType}" valueChangeListener="#{PatientDetailsHandler.changeSearchType}" >
+                                    <h:selectOneMenu id="searchType" title="#{msgs.search_Type}" rendered="#{PatientDetailsHandler.possilbeSearchTypesCount gt 1}" onchange="submit();" style="width:220px;" value="#{PatientDetailsHandler.searchType}" valueChangeListener="#{PatientDetailsHandler.changeSearchType}" >
                                         <f:selectItems  value="#{PatientDetailsHandler.possilbeSearchTypes}" />
                                     </h:selectOneMenu>
                                 </td>
@@ -243,8 +243,8 @@ function align(thisevent,divID) {
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                    onblur="javascript:validate_date(this,'MM/dd/yyyy')">
-                                                  <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                  <a title="<h:outputText value="#{feildConfig.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.name}"/>')" > 
+                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{feildConfig.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                  </a>
                                           </nobr>
                                         </h:column>
@@ -256,12 +256,12 @@ function align(thisevent,divID) {
                                 <tr>
                                     <td align="left">
 									    <nobr>
-										    <h:outputLink  styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
+										    <h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
                                                 <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                                             </h:outputLink>
                                         </nobr>
                                         <nobr>
-                                           <a  class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
+                                           <a  title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
                                                <span>
                                                  <h:outputText value="#{msgs.search_button_label}"/>
                                                </span>
@@ -389,5 +389,7 @@ function align(thisevent,divID) {
      
 </html>
 </f:view>
+
+
 
 

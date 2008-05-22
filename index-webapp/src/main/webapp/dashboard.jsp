@@ -50,8 +50,8 @@
             <table border="0" cellspacing="10" cellpadding="4">
                 <!--Caption included-->                
                 <!--caption class="euidHeadMessage">Summary</caption-->
-                <tr><td> <h:commandLink  action="#{NavigationHandler.toDuplicateRecords}"> <h:outputText value="#{msgs.dashboard_summary_table_link1}"/></h:commandLink> : <b><h:commandLink  action="#{NavigationHandler.toDuplicateRecords}"><h:outputText value="#{DashboardHandler.countPotentialDuplicates} " /> </h:commandLink> </b></td></tr>
-                <tr><td> <h:commandLink  action="#{NavigationHandler.toAssumedMatches}"> <h:outputText value="#{msgs.dashboard_summary_table_link4}"/></h:commandLink> : <b><h:commandLink  action="#{NavigationHandler.toAssumedMatches}"> <h:outputText value="#{DashboardHandler.countAssumedMatches} " /> </h:commandLink></b></td></tr>
+                <tr><td> <h:commandLink  title="#{msgs.dashboard_summary_table_link1}" action="#{NavigationHandler.toDuplicateRecords}"> <h:outputText value="#{msgs.dashboard_summary_table_link1}"/></h:commandLink> : <b><h:commandLink  title="#{DashboardHandler.countPotentialDuplicates}" action="#{NavigationHandler.toDuplicateRecords}"><h:outputText value="#{DashboardHandler.countPotentialDuplicates} " /> </h:commandLink> </b></td></tr>
+                <tr><td> <h:commandLink  title="#{msgs.dashboard_summary_table_link4}" action="#{NavigationHandler.toAssumedMatches}"> <h:outputText value="#{msgs.dashboard_summary_table_link4}"/></h:commandLink> : <b><h:commandLink  title="#{DashboardHandler.countAssumedMatches}" action="#{NavigationHandler.toAssumedMatches}"> <h:outputText value="#{DashboardHandler.countAssumedMatches} " /> </h:commandLink></b></td></tr>
             </table>
           </h:form>
          </div>
@@ -89,12 +89,13 @@
 
                 <tr>
                       <td>
-                          <h:commandLink  action="#{DashboardHandler.lookupEuid1}">
+                          <h:commandLink title="#{msgs.dashboard_search_but_text}" action="#{DashboardHandler.lookupEuid1}">
                               <h:outputText value="#{msgs.dashboard_search_but_text}" />
                           </h:commandLink> 
                       </td>
                       <td align="right">
                        <h:commandLink  id="patlink" 
+					                   title="#{msgs.dashboard_advsearch_but_text}"
                                        rendered="#{Operations.EO_SearchViewSBR}"  
                                        action="#{NavigationHandler.toPatientDetails}">
                              <h:outputText value="#{msgs.dashboard_advsearch_but_text}" />
@@ -138,7 +139,7 @@
                      String mergeTab = "MERGE_RECORDS";
                      ValueExpression mergeValueExpression = ExpressionFactory.newInstance().createValueExpression(mergeTab, mergeTab.getClass());
                    %>
-                 <h:commandLink  action="#{NavigationHandler.toReports}"
+                 <h:commandLink title="#{msgs.dashboard_reports_table_link1}" action="#{NavigationHandler.toReports}"
                             actionListener="#{ReportHandler.setReportsTabName}" > 
                             
                    <f:attribute name="tabName" value="<%=mergeValueExpression%>"/>
@@ -152,7 +153,7 @@
                     %>
               <tr>
                   <td>
-                      <h:commandLink   action="#{NavigationHandler.toReports}"
+                      <h:commandLink   title="#{msgs.dashboard_reports_table_link2}" action="#{NavigationHandler.toReports}"
                                     actionListener="#{ReportHandler.setReportsTabName}" >  
                         <f:attribute name="tabName" value="<%=deactValueExpression%>"/>
                         <h:outputText value="#{msgs.dashboard_reports_table_link2}"/>
@@ -166,7 +167,7 @@
                 
                 <tr>
                     <td>
-                    <h:commandLink  
+                    <h:commandLink title="#{msgs.dashboard_reports_table_link3}" 
                            action="#{NavigationHandler.toReports}"
                            actionListener="#{ReportHandler.setReportsTabName}" >  
                           <f:attribute name="tabName" value="<%=unmergedValueExpression%>"/>
@@ -174,7 +175,7 @@
                     </h:commandLink>
                     </td>
                 </tr>
-            <tr><td><h:commandLink  action="#{NavigationHandler.toAuditLog}"><h:outputText value="#{msgs.dashboard_reports_table_link4}"/></h:commandLink></td></tr>
+            <tr><td><h:commandLink  title="#{msgs.dashboard_reports_table_link4}" action="#{NavigationHandler.toAuditLog}"><h:outputText value="#{msgs.dashboard_reports_table_link4}"/></h:commandLink></td></tr>
             </table>
            </h:form>
         </div>
@@ -204,7 +205,7 @@
                     <td><h:inputText  id="euid1Field" value="#{DashboardHandler.euid1}" maxlength="#{SourceHandler.euidLength}" /></td>
                     <td>
                         <nobr>
-                            <h:commandLink  action="#{DashboardHandler.lookupEuid1}">  
+                            <h:commandLink title="#{msgs.dashboard_lookup_euid1}" action="#{DashboardHandler.lookupEuid1}">  
                                  <h:outputText value="#{msgs.dashboard_lookup_euid1}"/> 
                             </h:commandLink>                        
                         </nobr>
@@ -213,7 +214,7 @@
                 <tr><td><h:inputText  id="euid2Field" value="#{DashboardHandler.euid2}" maxlength="#{SourceHandler.euidLength}" />
                     <td>
                         <nobr>
-                            <h:commandLink   action="#{DashboardHandler.lookupEuid2}">  
+                            <h:commandLink  title="#{msgs.dashboard_lookup_euid2}" action="#{DashboardHandler.lookupEuid2}">  
                                 <h:outputText value="#{msgs.dashboard_lookup_euid2}"/> 
                             </h:commandLink>                        
                         </nobr>
@@ -222,7 +223,7 @@
                 <tr><td><h:inputText  id="euid3Field" value="#{DashboardHandler.euid3}" maxlength="#{SourceHandler.euidLength}" /></td>
                     <td>
                         <nobr>
-                            <h:commandLink  action="#{DashboardHandler.lookupEuid3}">  
+                            <h:commandLink  title="#{msgs.dashboard_lookup_euid3}" action="#{DashboardHandler.lookupEuid3}">  
                                  <h:outputText value="#{msgs.dashboard_lookup_euid3}"/> 
                             </h:commandLink>                        
                         </nobr>
@@ -232,14 +233,14 @@
                     <td><h:inputText  id="euid4Field" value="#{DashboardHandler.euid4}" maxlength="#{SourceHandler.euidLength}" /></td>
                     <td align="right" width="66px">
                         <nobr>
-                            <h:commandLink  action="#{DashboardHandler.lookupEuid4}">  
+                            <h:commandLink title="#{msgs.dashboard_lookup_euid4}" action="#{DashboardHandler.lookupEuid4}">  
                                   <h:outputText value="#{msgs.dashboard_lookup_euid4}"/> 
                             </h:commandLink>
                         </nobr>
                     </td>
                     <td align="right" width="70px">
                         <nobr>
-                            <h:commandLink  action="#{DashboardHandler.compareEuidSearch}">  
+                            <h:commandLink  title="#{msgs.dashboard_compare_but_text}" action="#{DashboardHandler.compareEuidSearch}">  
                                 <h:outputText value="#{msgs.dashboard_compare_but_text}"/>
                            </h:commandLink>
                         </nobr>
