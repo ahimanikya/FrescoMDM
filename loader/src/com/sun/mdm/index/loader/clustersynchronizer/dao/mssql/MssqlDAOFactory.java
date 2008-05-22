@@ -25,6 +25,7 @@ package com.sun.mdm.index.loader.clustersynchronizer.dao.mssql;
 import com.sun.mdm.index.loader.clustersynchronizer.dao.BucketDAO;
 import com.sun.mdm.index.loader.clustersynchronizer.dao.DAOFactory;
 import com.sun.mdm.index.loader.clustersynchronizer.dao.LoaderDAO;
+import com.sun.mdm.index.loader.config.LoaderConfig;
 
 /**
  * @author Sujit Biswas
@@ -34,14 +35,14 @@ public class MssqlDAOFactory extends DAOFactory {
 
 	@Override
 	public BucketDAO getBucketDAO() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return  new MssqlBucketDAO();
 	}
 
 	@Override
 	public LoaderDAO getLoaderDAO() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return new MssqlLoaderDAO(LoaderConfig.getInstance());
 	}
 
 }
