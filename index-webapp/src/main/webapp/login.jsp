@@ -96,7 +96,7 @@ if (request.getAttribute("Logout") == null && request.getRemoteUser() != null &&
                                     </tr>
                                     <tr>
                                         <td colspan="2">                                          
-                                            <a href="javascript:submitAction();" class="button"><span><h:outputText value="#{msgs.header_login_prompt}"/></span></a>
+                                            <a title="<h:outputText value="#{msgs.header_login_prompt}"/>" href="javascript:submitAction();" class="button"><span><h:outputText value="#{msgs.header_login_prompt}"/></span></a>
                                         </td>
                                     </tr>
                                     <tr>

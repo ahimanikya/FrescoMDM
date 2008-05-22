@@ -68,7 +68,7 @@
                         <tr>
                             <td>
 							<FORM>
-							 <a class="button" href="javascript:void()" onclick="history.go(-1)"><span><h:outputText value="#{msgs.view_list_but_text}"/></span></a>
+							 <a class="button" title="<h:outputText value="#{msgs.view_list_but_text}"/>" href="javascript:void()" onclick="history.go(-1)"><span><h:outputText value="#{msgs.view_list_but_text}"/></span></a>
 							</FORM>
                            </td>
                         </tr>
@@ -148,6 +148,8 @@
 
                                                 HashMap eoHashMapValues = (HashMap) eoArrayListObjects[countEnt];
                                                 HashMap personfieldValuesMapEO = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT");
+                                                String eoStatus = (String) eoHashMapValues.get("EO_STATUS");
+
                                                 if ("Add".equalsIgnoreCase(function)) {
                                                         dupHeading = "<b>" + function + "</b>";
                                                 } else if ("euidMerge".equalsIgnoreCase(function)){
@@ -191,7 +193,8 @@
                                                             <div id="personassEuidDataContent" style="visibility:visible;display:block;">
                                                                 
                                                                 <table border="0" cellspacing="0" cellpadding="0" class="w169">
-                                                                    <tr>
+																<tr><td>EUID</td></tr>
+																<tr><td><h:outputText value="#{msgs.source_rec_status_but}"/></td></tr>
                                                                     <%
 
                                                                 String mainDOB;
@@ -201,6 +204,8 @@
 
                                                               for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
                                                                  FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
+                                                                   if(!"EUID".equalsIgnoreCase(fieldConfigMap.getDisplayName())) {
+
                                                                     %>  
                                                                     <tr>
                                                                         <td>
@@ -208,9 +213,10 @@
                                                                         </td>
                                                                     </tr>
                                                                     <%
-                                                                     }
+                                                                       }
+                                                                      }
                                                                     %>
-                                                                                                     <%
+                                                                    <%
                                                                    
                                                                    for (int i = 0; i < arrObjectNodeConfig.length; i++) {
                                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
@@ -277,6 +283,8 @@
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="yellow">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
+																<tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(eoStatus)%>
+																</font></td></tr>
                                                                     <%
 
                                     String mainDOB;
@@ -463,7 +471,10 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleClass%>">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-                                                                    <%
+																<tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(soStatus)%>
+																</font></td></tr>
+
+																	<%
                                     for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
                                         FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
                                         if(!(objScreenObject.getRootObj().getName()+".EUID").equalsIgnoreCase(fieldConfigMap.getFullFieldName())) {
@@ -630,7 +641,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                     <h:form>
                                                         <tr> 
                                                          <td valign="top">
-                                                             <a href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','0')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
+                                                             <a title="<h:outputText value="#{msgs.view_sources_text}"/>"  href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','0')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
                                                          </td>                                              
                                                         </tr>
                                                         <%
@@ -639,7 +650,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                         %>                 
                                                         <tr>
                                                             <td valign="top" colspan="2">
-                                                                <h:outputLink styleClass="viewbtn"
+                                                                <h:outputLink styleClass="viewbtn" title="#{msgs.Unmerge_but_text}"
                                                                               onclick="Javascript:showExtraDivs('unmergePopupDiv',event)" 
                                                                               value="Javascript:void(0)">
                                                                     <h:outputText  value="#{msgs.Unmerge_but_text}"/>                                                          
@@ -674,14 +685,14 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                     <tr><td colspan="2"> &nbsp;</td></tr>
                                     <tr><td colspan="2"> &nbsp;</td></tr>
                                     <tr><td align="center">
-                                            <h:commandLink styleClass="button" 
+                                            <h:commandLink styleClass="button" title="#{msgs.ok_text_button}"
                                                            action="#{NavigationHandler.toTransactions}"
                                                            actionListener="#{TransactionHandler.unmergeEnterpriseObject}">
                                                 <f:attribute name="tranNoValueExpressionviewunmerge" value="<%=tranNoValueExpressionviewunmerge%>"/>                   
                                                 <span><h:outputText value="#{msgs.ok_text_button}" /></span>
                                             </h:commandLink>   
                                             <h:outputLink  onclick="javascript:showExtraDivs('unmergePopupDiv',event)" 
-                                                           styleClass="button"          
+                                                           styleClass="button"    title="#{msgs.cancel_but_text}"      
                                                            value="javascript:void(0)">
                                                 <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
                                             </h:outputLink>   

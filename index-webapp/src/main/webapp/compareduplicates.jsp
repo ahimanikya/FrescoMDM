@@ -11,6 +11,8 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.services.masterController.MasterControllerService"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ValidationService"  %>
+
 <%@ page import="com.sun.mdm.index.edm.control.QwsController"  %>
 
 <%@ page import="com.sun.mdm.index.objects.EnterpriseObject"%>
@@ -71,18 +73,19 @@
                                    <td align="left">
                                     <h:inputText   
                                         id="euidField"
+                                        title="euidField"
                                         value="#{PatientDetailsHandler.singleEUID}" 
                                         maxlength="10"/>
                                 </td>
                                 <td>                                    
-                                    <h:commandLink  styleClass="button" action="#{PatientDetailsHandler.singleEuidSearch}">  
+                                    <h:commandLink title="#{msgs.search_button_label}" styleClass="button" action="#{PatientDetailsHandler.singleEuidSearch}">  
                                         <span><h:outputText  value="#{msgs.search_button_label}"/> </span>
                                     </h:commandLink>                                     
-                                    <h:commandLink  styleClass="button" action="#{NavigationHandler.toDuplicateRecords}">  
+                                    <h:commandLink  title="#{msgs.Advanced_search_text}"  styleClass="button" action="#{NavigationHandler.toDuplicateRecords}">  
                                         <span>
-                                            <img src="./images/down-chevron-button.png" border="0" alt="Advanced search"/>
+                                            <img src="./images/down-chevron-button.png" border="0" alt="<h:outputText  value="#{msgs.Advanced_search_text}"/>"/>
                                             <h:outputText  value="#{msgs.Advanced_search_text}"/>
-                                            <img src="./images/down-chevron-button.png" border="0" alt="Advanced search"/>
+                                            <img src="./images/down-chevron-button.png" border="0" alt="<h:outputText  value="#{msgs.Advanced_search_text}"/>"/>
                                        </span>
                                     </h:commandLink>                                     
                                 </td>
@@ -168,6 +171,9 @@
                                                 String  weight =  (eoHashMapValues.get("Weight") !=null)?eoHashMapValues.get("Weight").toString():"0";
 
                                                 String potDupStatus = (String) eoHashMapValues.get("Status");
+												String potDupStatusText = (potDupStatus != null) ? ValidationService.getInstance().getDescription("RESOLVETYPE", potDupStatus):"";
+                              
+											    String eoStatus  = (String) eoHashMapValues.get("EO_STATUS");
                                                 String potDupId = (String) eoHashMapValues.get("PotDupId");
                                                 if (countEnt > 0) {
 													if (session.getAttribute("eocomparision") != null ) {
@@ -207,7 +213,8 @@
                                                             <div id="personassEuidDataContent" >
                                                                 
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-                                                                    <tr>
+																<tr><td>EUID</td></tr>
+																<tr><td><h:outputText value="#{msgs.source_rec_status_but}"/></td></tr>
                                                                     <%
 
                                                                 String mainDOB;
@@ -217,6 +224,7 @@
 
                                                                 for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
                                                                   FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
+																    if(!"EUID".equalsIgnoreCase(fieldConfigMap.getDisplayName())) {
                                                                     %>  
                                                                     <tr>
                                                                         <td>
@@ -225,6 +233,8 @@
                                                                     </tr>
                                                                     <%
                                                                      }
+																	}
+
                                                                     %>
                                                                    <%
                                                                    
@@ -291,7 +301,7 @@
                                                                       %>
                                                                           <%=personfieldValuesMapEO.get("EUID")%>
                                                                      <%}else{%>                       
-                                                                        <a class="dupbtn" 
+                                                                        <a class="dupbtn"  title="<%=personfieldValuesMapEO.get("EUID")%>"
                                                                            id="clickButton<%=personfieldValuesMapEO.get("EUID")%>" 
                                                                            href="javascript:void(0)" 
                                                                            onclick="javascript:accumilateMultiMergeEuids('<%=personfieldValuesMapEO.get("EUID")%>')">
@@ -304,14 +314,14 @@
                                                         </table>
                                                     </div>
                                                 </div>
-                                                <% if (session.getAttribute("eocomparision") == null && countEnt > 0) {%>
+                                      <% if (session.getAttribute("eocomparision") == null && countEnt > 0) {%>
                                          <%
                                             String userAgent = request.getHeader("User-Agent");
                                             boolean isFirefox = (userAgent != null && userAgent.indexOf("Firefox/") != -1);
                                             response.setHeader("Vary", "User-Agent");
                                          %>
                                          <% if (isFirefox) {%>
-                                         <div id = "bar" style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
+                                         <div id = "bar" title="<%=weight%>" style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
                                               border-right: 1px solid #000000;border-top:1px solid #000000;position:relative;right:20px;" >
                                          <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
                                             <div id = "bar" style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
@@ -320,7 +330,7 @@
                                          </div>
                                          
                                            <% }else{%>
-                                            <div id = "bar" style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
+                                            <div id = "bar" title="<%=weight%>" style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
                                              <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
                                          </div>                                             
                                          <div id = "bar" style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
@@ -341,7 +351,17 @@
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleClass%>">
                                                   <%}%>          
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-                                                                    <%
+									  <% if (session.getAttribute("eocomparision") != null) {
+													 %>
+                                              <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(eoStatus)%> </font></td></tr>
+										 <%}else {%>
+										    <%if(countEnt > 0) {%>
+                                                <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(potDupStatusText)%> </font></td></tr>
+											  <%} else {%>
+                                                <tr><td>&nbsp;</td></tr>
+											  <%}%>
+										 <%}%>
+                                     <%
 
                                     String mainDOB;
                                     ValueExpression fnameExpression;
@@ -553,6 +573,8 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                             <div id="personEuidDataContent" class="source">
 
                                                                 <table border="0" cellspacing="0" cellpadding="0">
+                                              <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(soStatus)%> </font></td></tr>
+
                                                                     <%
                                     for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
                                         FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
@@ -694,6 +716,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                     String keyTitle = key.substring(0, key.indexOf(":"));
                                                     HashMap objectHistMapValues = (HashMap) objectHistMap.get(key);
                                                     HashMap eoValuesMap = (HashMap) objectHistMapValues.get("ENTERPRISE_OBJECT");
+													String eoHistStatus = (String) objectHistMapValues.get("EO_STATUS");
                                             %>
                                                <td  valign="top">
                                                 <div id="mainDupHistory<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
@@ -718,7 +741,9 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent" class="history">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-                                                                    <%
+                                                                 <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(eoHistStatus)%> </font></td></tr>
+
+																	<%
                                     for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
                                         FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
                                         if(!(objScreenObject.getRootObj().getName()+".EUID").equalsIgnoreCase(fieldConfigMap.getFullFieldName())) {
@@ -888,7 +913,18 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                              <%}%>       
                                                                         </td>
                                                                     </tr>
-  
+                                                                    <tr>
+                                                                        <td>
+                                                                          <%
+                                                                            if( request.getAttribute("eoMultiMergePreview") != null  ) {
+                                                                            %>
+                                                                                <b>&nbsp;</b>
+                                                                             <%} else {%>       
+                                                                                 &nbsp;
+                                                                             <%}%>       
+                                                                        </td>
+                                                                    </tr>
+                                                           
                                                                     <%
                                                                      for (int ifc = 0; ifc < personConfigFeilds.length; ifc++) {
                                                                       FieldConfig fieldConfigMap = (FieldConfig) personConfigFeilds[ifc];
@@ -1100,14 +1136,14 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                       
                                                   <tr> 
                                                       <td valign="top">
-                                                          <a class="viewbtn"   href="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoSources.size()%>')" >  
+                                                          <a class="viewbtn"   title="<h:outputText value="#{msgs.view_history_text}"/>" href="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoSources.size()%>')" >  
                                                               <h:outputText value="#{msgs.view_history_text}"/>
                                                           </a>
                                                       </td>    
                                                   </tr> 
                                                   <tr> 
                                                       <td valign="top">
-                                                          <a href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoHistory.size()%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
+                                                          <a title="<h:outputText value="#{msgs.view_sources_text}"/>" href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoHistory.size()%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
                                                       </td>                                              
                                                   </tr>
                                                      <tr><td>&nbsp;</td></tr>

@@ -105,14 +105,15 @@
                                    <td align="left">
                                          <h:inputText    id="euidField"
                                                          label="EUID"  
+														 title="EUID"
 												         maxlength="#{SourceHandler.euidLength}" 
                                                          value="#{PatientDetailsHandler.singleEUID}" />
                                 </td>
                                 <td>                                    
-                                    <h:commandLink  styleClass="button" action="#{PatientDetailsHandler.singleEuidSearch}">  
+                                    <h:commandLink title="#{msgs.search_button_label}" styleClass="button" action="#{PatientDetailsHandler.singleEuidSearch}">  
                                         <span><h:outputText  value="#{msgs.search_button_label}"/> </span>
                                     </h:commandLink>                                     
-                                    <h:commandLink  styleClass="button" action="#{NavigationHandler.toPatientDetails}">  
+                                    <h:commandLink  title="#{msgs.Advanced_search_text}" styleClass="button" action="#{NavigationHandler.toPatientDetails}">  
                                         <span>
                                             <img src="./images/down-chevron-button.png" border="0" alt="Advanced search"/>
                                             <h:outputText  value="#{msgs.Advanced_search_text}"/>
@@ -123,7 +124,7 @@
                              </h:form>
 							 <td>	
                                 <FORM>
-			               		<a class="button" href="javascript:void(0)" onclick="history.go(-1)">
+			               		<a class="button" title="<h:outputText  value="#{msgs.back_button_text}"/>" href="javascript:void(0)" onclick="history.go(-1)">
 						          <span><h:outputText  value="#{msgs.back_button_text}"/></span>
 					            </a>
   				              </FORM>
@@ -256,7 +257,8 @@
                                                             <div id="personassEuidDataContent" style="visibility:visible;display:block;" class="yellow">
                                                                 
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-                                                                    <tr>
+																<tr><td>EUID</td></tr>
+																<tr><td><h:outputText value="#{msgs.source_rec_status_but}"/></td></tr>
                                                                     <%
 
                                                                 String mainDOB;
@@ -266,14 +268,17 @@
 
                                                               for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
                                                                  FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
+																    if(!"EUID".equalsIgnoreCase(fieldConfigMap.getDisplayName())) {
                                                                     %>  
+
                                                                     <tr>
                                                                         <td>
                                                                             <%=fieldConfigMap.getDisplayName()%>
                                                                         </td>
                                                                     </tr>
                                                                     <%
-                                                                     }
+                                                                       } // If not EUID 
+															         } 
                                                                     %>
                                                                    <%
                                                                    
@@ -345,6 +350,8 @@
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleClass%>">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
+																<tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(eoStatus)%>
+																</font></td></tr>
                                                                     <%
 
                                     String mainDOB;
@@ -537,7 +544,11 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="source">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-                                                                    <%
+                                                                <tr><td>
+ 																<font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(soStatus)%>
+ 																</font></td></tr>
+
+                                                                     <%
                                     for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
                                         FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
                                         if(!(objScreenObject.getRootObj().getName()+".EUID").equalsIgnoreCase(fieldConfigMap.getFullFieldName())) {
@@ -681,6 +692,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                     tranNo = key.substring(ind+1, key.length()); 
                                                     HashMap objectHistMapValues = (HashMap) objectHistMap.get(key);
                                                     HashMap eoValuesMap = (HashMap) objectHistMapValues.get("ENTERPRISE_OBJECT");
+													String eoHistStatus = (String) objectHistMapValues.get("EO_STATUS");
                                             %>
                                                <td  valign="top">
                                                 <div id="mainDupHistory<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
@@ -705,7 +717,8 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="history">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-                                                                    <%
+                                                                <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(eoHistStatus)%></font></td></tr>
+                                                                     <%
                                     for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
                                         FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
                                         if(!(objScreenObject.getRootObj().getName()+".EUID").equalsIgnoreCase(fieldConfigMap.getFullFieldName())) {
@@ -888,13 +901,13 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                         <%if ("active".equalsIgnoreCase(eoStatus)) {%>
                                                 <tr> 
                                                     <td valign="top" width="125px">
-                                                        <a  class="button" href="javascript:void(0)"
+                                                        <a  title="<h:outputText value="#{msgs.edit_euid_button_text}" />" class="button" href="javascript:void(0)"
                                                                         onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=euid%>','ajaxContent','')">
                                                             <span><h:outputText value="#{msgs.edit_euid_button_text}" /> </span>
                                                         </a>  
                                                    <!-- Deactive/Activate button -->
                                                     <h:form>
-                                                        <h:commandLink  styleClass="button" rendered="#{Operations.EO_Deactivate}"
+                                                        <h:commandLink title="#{msgs.source_rec_deactivate_but}" styleClass="button" rendered="#{Operations.EO_Deactivate}"
                                                                         actionListener="#{PatientDetailsHandler.deactivateEO}">
 
                                                              <f:attribute name="eoValueExpression" value="<%=euidValueExpression%>"/>
@@ -908,7 +921,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                     <tr>
                                                          <td valign="top" width="125px">
                                                     <h:form>
-                                                        <h:commandLink  styleClass="button" rendered="#{Operations.EO_Activate}"
+                                                        <h:commandLink title="#{msgs.source_rec_activate_but}" styleClass="button" rendered="#{Operations.EO_Activate}"
                                                                         actionListener="#{PatientDetailsHandler.activateEO}">
                                                              <f:attribute name="eoValueExpression" value="<%=euidValueExpression%>"/>
                                                             <span><h:outputText value="#{msgs.source_rec_activate_but}" /></span>
@@ -918,21 +931,21 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <h:outputText style="color:red" value="This record has been deactivated "/>
+                                                            <h:outputText style="color:red" value="#{msgs.euid_deactive_text}"/>
                                                          </td>
                                                       </tr>
                                                         <%}%>            
 
                                                   <tr> 
                                                       <td valign="top">
-                                                          <a class="viewbtn"   href="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoSources.size()%>')" >  
+                                                          <a class="viewbtn"   title="<h:outputText value="#{msgs.view_history_text}"/>" href="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoSources.size()%>')" >  
                                                               <h:outputText value="#{msgs.view_history_text}"/>
                                                           </a>
                                                       </td>    
                                                   </tr> 
                                                   <tr> 
                                                       <td valign="top">
-                                                          <a href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoHistory.size()%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
+                                                          <a  title="<h:outputText value="#{msgs.view_sources_text}"/>"  href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoHistory.size()%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
                                                       </td>                                              
                                                   </tr>
 
@@ -1015,12 +1028,12 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                 <tr><td colspan="2"> &nbsp;</td></tr>
                                                                 <tr><td colspan="2"> &nbsp;</td></tr>
                                                                 <tr><td>
-                                                                        <h:commandLink styleClass="button" 
+                                                                        <h:commandLink styleClass="button" title="#{msgs.ok_text_button}" 
                                                                                        actionListener="#{PatientDetailsHandler.unmergeEnterpriseObject}">
                                                                             <f:attribute name="unMergeEuidVE" value="<%=unMergeEuidVE%>"/>                   
                                                                             <span><h:outputText value="#{msgs.ok_text_button}" /></span>
                                                                         </h:commandLink>   
-                                                                        <h:outputLink  onclick="javascript:showConfirm('unmergePopupDiv',event)" 
+                                                                        <h:outputLink  title="#{msgs.cancel_but_text}"  onclick="javascript:showConfirm('unmergePopupDiv',event)" 
                                                                                        styleClass="button"          
                                                                                        value="javascript:void(0)">
                                                                             <span><h:outputText value="#{msgs.cancel_but_text}" /></span>

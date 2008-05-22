@@ -33,6 +33,8 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+<%@ page import="java.util.ResourceBundle"  %>
+
 <%
  double rand = java.lang.Math.random();
  String URI = request.getRequestURI();
@@ -177,50 +179,50 @@
                                 <% if ("View/Edit".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
                                 <% if(operations.isSO_SearchView()){%>
                                 <li class="selected">
-                                    <a href="#viewEditTab"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
+                                    <a title="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
                                 </li>
                                 <%}%>
                                 <% if(operations.isSO_Add()){%>
-                                <li><a href="#addTab"><em>${msgs.source_submenu_add}</em></a></li>
+                                <li><a title="<h:outputText value="#{msgs.source_submenu_add}"/>" href="#addTab"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
                                 <%}%>
                                 <% if(operations.isSO_Merge()){%>
-                                <li><a href="#mergeTab"><em>${msgs.source_submenu_merge}</em></a></li>
+                                <li><a title="<h:outputText value="#{msgs.source_submenu_merge}"/>" href="#mergeTab"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
                                 <%}%>
                                 <%} else if ("Add".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
                                 <% if(operations.isSO_SearchView()){%>
                                 <li>
-                                    <a href="#viewEditTab"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
+                                    <a title ="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
                                 </li>
                                 <%}%>
                                 <% if(operations.isSO_Add()){%>
-                                <li class="selected"><a href="#addTab"><em>${msgs.source_submenu_add}</em></a></li>
+                                <li class="selected"><a title="<h:outputText value="#{msgs.source_submenu_add}"/>" href="#addTab"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
                                 <%}%>
                                 <% if(operations.isSO_Merge()){%>
-                                <li><a href="#mergeTab"><em>${msgs.source_submenu_merge}</em></a></li>
+                                <li><a title="<h:outputText value="#{msgs.source_submenu_merge}"/>"  href="#mergeTab"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
                                 <%}%>
                                 <%} else if ("Merge".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
                                 <% if(operations.isSO_SearchView()){%>
                                 <li>
-                                    <a href="#viewEditTab"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
+                                    <a title="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
                                 </li>
                                 <%}%>
                                 <% if(operations.isSO_Add()){%>
-                                <li><a href="#addTab"><em>${msgs.source_submenu_add}</em></a></li>
+                                <li><a title="<h:outputText value="#{msgs.source_submenu_add}"/>" href="#addTab"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
                                 <%}%>
                                 <% if(operations.isSO_Merge()){%>
-                                <li class="selected"><a href="#mergeTab"><em>${msgs.source_submenu_merge}</em></a></li>
+                                <li class="selected"><a  title ="<h:outputText value="#{msgs.source_submenu_merge}"/>" href="#mergeTab"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
                                 <%}%>
                                 <%} else {%>
                                 <% if(operations.isSO_SearchView()){%>
                                 <li class="selected">
-                                    <a href="#viewEditTab"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
+                                    <a title="<h:outputText value="#{msgs.source_submenu_viewedit}"/>" href="#viewEditTab"><em><h:outputText value="#{msgs.source_submenu_viewedit}"/></em></a>
                                 </li>
                                 <%}%>
                                 <% if(operations.isSO_Add()){%>
-                                <li><a href="#addTab"><em>${msgs.source_submenu_add}</em></a></li>
+                                <li><a title="<h:outputText value="#{msgs.source_submenu_add}"/>" href="#addTab"><em><h:outputText value="#{msgs.source_submenu_add}"/></em></a></li>
                                 <%}%>
                                 <% if(operations.isSO_Merge()){%>
-                                <li><a href="#mergeTab"><em>${msgs.source_submenu_merge}</em></a></li>
+                                <li><a title="<h:outputText value="#{msgs.source_submenu_merge}"/>" href="#mergeTab"><em><h:outputText value="#{msgs.source_submenu_merge}"/></em></a></li>
                                 <%}%>
                                 <%}%>  
                             </ul>  
@@ -233,7 +235,7 @@
                                         ValueExpression LIDVaueExpression = null;
                                         ValueExpression sourceSystemVaueExpression = null;
                                         //ConfigManager.init();
-
+                                         ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
                                         String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
 
                                         EPathArrayList ePathArrayList = new EPathArrayList();
@@ -274,7 +276,7 @@
                                             <table border="0" width="100%">
                                                     <tr>
                                                         <td>
-                                                            <h:commandLink  styleClass="button" rendered="#{Operations.SO_SearchView}"
+                                                            <h:commandLink title="#{msgs.source_rec_viewrecordslist_but}"  styleClass="button" rendered="#{Operations.SO_SearchView}"
                                                                             action="#{NavigationHandler.toSourceRecords}" 
                                                                             actionListener="#{SourceHandler.removeSingleLID}" >  
                                                                 <span><h:outputText value="#{msgs.source_rec_viewrecordslist_but}"/></span>
@@ -366,7 +368,7 @@
                                                     
                                                     <td>
 													    <!--Display edit link only when the system object-->
-                                                        <h:commandLink  styleClass="button" 
+                                                        <h:commandLink  title= "#{msgs.source_rec_edit_but}" styleClass="button" 
                                                                         action="#{NavigationHandler.toSourceRecords}" 
                                                                         rendered="#{Operations.SO_Edit}"
                                                                         actionListener="#{SourceAddHandler.editLID}" >
@@ -375,7 +377,7 @@
                                                         </h:commandLink>   
                                                     </td>
                                                     <td>
-                                                        <h:commandLink  styleClass="button" 
+                                                        <h:commandLink title="#{msgs.source_rec_vieweuid_but}"  styleClass="button" 
                                                                         rendered="#{Operations.SO_SearchView}"
                                                                         action="#{NavigationHandler.toEuidDetails}" 
                                                                         actionListener="#{SourceHandler.viewEUID}" >  
@@ -405,7 +407,7 @@
                                                                 <tr>
                                                                     <td colspan="2">
                                                                         <nobr>
-                                                                            <h:commandLink  styleClass="button" 
+                                                                            <h:commandLink title="#{msgs.source_rec_viewrecordslist_but}" styleClass="button" 
                                                                                             action="#{NavigationHandler.toSourceRecords}" 
                                                                                             actionListener="#{SourceHandler.removeSingleLID}" >  
                                                                                 <span><h:outputText value="#{msgs.source_rec_viewrecordslist_but}"/></span>
@@ -500,8 +502,8 @@
                                                                                onblur="javascript:validate_date(this,'MM/dd/yyyy');"
                                                                                onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPerAdd.inputMask}"/>')"
                                                                                onkeyup="javascript:qws_field_on_key_up(this)" >
-                                                                        <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{fieldConfigPerAdd.name}"/>')" > 
-                                                                            <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                                        <a title="<h:outputText value="#{fieldConfigPerAdd.displayName}"/>"  HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{fieldConfigPerAdd.name}"/>')" > 
+                                                                            <h:graphicImage  id="calImgDateFrom"  alt="#{fieldConfigPerAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                                         </a>
                                                                     </nobr>
                                                                         
@@ -543,9 +545,9 @@
                                                                         
                                                                     <tr>
                                                                         <td colspan="2">
-                                                                            <a href="javascript:void(0)" onclick="javascript:showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>AddDiv');ajaxMinorObjects('/<%=URI%>/ajaxservices/editminorobjects.jsf?&MOT=<h:outputText value="#{childNodesName}"/>&load=load&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>NewDiv','')" class="button">
+                                                                            <a title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/> " href="javascript:void(0)" onclick="javascript:showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>AddDiv');ajaxMinorObjects('/<%=URI%>/ajaxservices/editminorobjects.jsf?&MOT=<h:outputText value="#{childNodesName}"/>&load=load&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>NewDiv','')" class="button">
                                                                             <span>
-                                                                                <img src="./images/down-chevron-button.png" border="0" alt="Add <h:outputText value="#{childNodesName}"/>"/>&nbsp;View <h:outputText value="#{childNodesName}"/>&nbsp;<img src="./images/down-chevron-button.png" border="0" alt="Add <h:outputText value="#{childNodesName}"/>"/>
+                                                                                <img src="./images/down-chevron-button.png" border="0" alt="Add <h:outputText value="#{childNodesName}"/>"/>&nbsp;View <h:outputText value="#{childNodesName}"/>&nbsp;<img src="./images/down-chevron-button.png" border="0" alt="<h:outputText value="#{msgs.source_submenu_add}"/>  <h:outputText value="#{childNodesName}"/>"/>
                                                                             </span>
                                                                                 
                                                                         </td>
@@ -625,8 +627,8 @@
                                                                                                                            onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')"
                                                                                                                            onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                                                                            onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateMinorObjectFieldsOnBlurLocal('<h:outputText value="#{childFieldConfigAdd.objRef}"/>',this,'<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>','<h:outputText value="#{childFieldConfigAdd.inputMask}"/>','<h:outputText value="#{childFieldConfigAdd.valueType}"/>')">
-                                                                                                                    <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childFieldConfigAdd.name}"/>')" > 
-                                                                                                                        <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                                                                                    <a  title ="<h:outputText value="#{childFieldConfigAdd.displayName}"/> HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childFieldConfigAdd.name}"/>')" > 
+                                                                                                                        <h:graphicImage  id="calImgDateFrom"  alt="#{childFieldConfigAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                                                                                     </a>
                                                                                                                 </nobr>
                                                                                                             </h:column>                     
@@ -649,14 +651,14 @@
                                                                                     <tr>                                                                                                                
 																					  <td colspan="2">
                                                                                            <nobr>
-                                                                                                <a href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>InnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/editminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<%=singleSystemObjectLID.getLID()%>&SYS=<%=singleSystemObjectLID.getSystemCode()%>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>NewDiv',event)">
+                                                                                                <a title=" <h:outputText value="#{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/>"  href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>InnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/editminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<%=singleSystemObjectLID.getLID()%>&SYS=<%=singleSystemObjectLID.getSystemCode()%>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>NewDiv',event)">
                                                                                                      <span id="<h:outputText value='#{childNodesName}'/>buttonspan">Save <h:outputText value='#{childNodesName}'/> </span>
                                                                                                  </a>     
-                                                                                                  <h:outputLink  styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('#{childNodesName}InnerForm');setEditIndex('-1')">
+                                                                                                  <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('#{childNodesName}InnerForm');setEditIndex('-1')">
                                                                                                        <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                                                                                                    </h:outputLink> 
                                                                                                    <div style="visibility:hidden;display:none;" id="<h:outputText value='#{childNodesName}'/>cancelEdit">
-                                                                                                      <a href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>InnerForm', '<h:outputText value='#{childNodesName}'/>cancelEdit', '<h:outputText value='#{childNodesName}'/>')">
+                                                                                                      <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/>  <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>InnerForm', '<h:outputText value='#{childNodesName}'/>cancelEdit', '<h:outputText value='#{childNodesName}'/>')">
                                                                                                           <span>Cancel <h:outputText value='#{childNodesName}'/></span>
                                                                                                        </a>     
                                                                                                     </div>
@@ -730,7 +732,7 @@
                                                                 <!--Rendering Updateable HTML Text boxes date fields-->
                                                                 <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6}">
                                                                     
-                                                                    <nobr><!--Sridhar -->
+                                                                    <nobr><!--Sridhar -->ss
                                                                         <input type="text" 
 																		       readonly="true" disabled="true"
                                                                                title="<h:outputText value="#{fieldConfigPerAdd.fullFieldName}"/>"
@@ -811,7 +813,7 @@
 										 value="#{minorojectsMapArrayList[childFieldConfigAdd.fullFieldName]}"  
                                                                                  id="date" />
                                                                                  <h:graphicImage  id="calImgStartDate" 
-                                                                                         alt="calendar Image" styleClass="imgClass"
+                                                                                         alt="#{childFieldConfigAdd.displayName}" styleClass="imgClass"
                                                                                          url="./images/cal.gif"/>               
                                                                     </a>
                                                                 </h:column>
@@ -839,7 +841,7 @@
                                                                     
                                                                 <td>
                                                                     <!-- Edit Submit button-->
-                                                                    <a class="button" 
+                                                                    <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>"  class="button" 
                                                                        href="javascript:void(0);"
                                                                        onclick="javascript:getFormValues('BasicSearchFieldsForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/editminorobjects.jsf?'+queryStr+'&save=true&rand=<%=rand%>','editFormValidate','');" >  
                                                                         <span><h:outputText value="#{msgs.source_rec_save_but}"/></span>
@@ -849,14 +851,14 @@
                                                                 </td>                                                                
                                                                 <td>
                                                                     <!-- Edit CANCEL button-->
-                                                                    <h:commandLink  styleClass="button" 
+                                                                    <h:commandLink title="#{msgs.cancel_but_text}"  styleClass="button" 
                                                                                     action="#{SourceHandler.cancelEditLID}" >  
                                                                         <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                                                     </h:commandLink>                                                                      
                                                                 </td>
                                                                 <%}%>                                                                         
                                                                 <td>                                                                   
-                                                                    <h:commandLink  styleClass="button" rendered="#{Operations.EO_SearchViewSBR}" 
+                                                                    <h:commandLink title="#{msgs.source_rec_vieweuid_but}"  styleClass="button" rendered="#{Operations.EO_SearchViewSBR}" 
                                                                                     action="#{NavigationHandler.toEuidDetails}" 
                                                                                     actionListener="#{SourceHandler.viewEUID}" >  
                                                                         <f:attribute name="soValueExpression" value="<%=soValueExpression%>"/>
@@ -865,7 +867,7 @@
                                                                 </td>
                                                                 <td>
                                                                     <%if ("active".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>
-                                                                    <h:commandLink  styleClass="button" rendered="#{Operations.SO_Deactivate}"
+                                                                    <h:commandLink title="#{msgs.source_rec_deactivate_but}"  styleClass="button" rendered="#{Operations.SO_Deactivate}"
                                                                                     action="#{NavigationHandler.toSourceRecords}" 
                                                                                     actionListener="#{SourceHandler.deactivateSO}">
                                                                         <f:attribute name="soValueExpression" value="<%=soValueExpression%>"/>
@@ -873,7 +875,7 @@
                                                                     </h:commandLink>                         
                                                                     <%}%>            
                                                                     <%if ("inactive".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>
-                                                                    <h:commandLink  styleClass="button" rendered="#{Operations.SO_Activate}"
+                                                                    <h:commandLink title="#{msgs.source_rec_activate_but}"  styleClass="button" rendered="#{Operations.SO_Activate}"
                                                                                     action="#{NavigationHandler.toSourceRecords}" 
                                                                                     actionListener="#{SourceHandler.activateSO}">
                                                                         <f:attribute name="soValueExpression" value="<%=soValueExpression%>"/>
@@ -968,7 +970,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                             </h:column>
                                                                 
                                                             <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6}" >
-                                                                <nobr>
+                                                                <nobr>sss
                                                                     <input type="text" 
                                                                            id = "<h:outputText value="#{feildConfig.name}"/>"  
                                                                            value="<h:outputText value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"/>"
@@ -977,18 +979,18 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                            onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
                                                                            onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                            onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFormFieldsOnBlur('basicViewformData',this,'<h:outputText value="#{feildConfig.name}"/>')">
-                                                                    <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.name}"/>')" > 
-                                                                        <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                                    <a title="<h:outputText value="#{feildConfig.displayName}"/> HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.name}"/>')" > 
+                                                                        <h:graphicImage  id="calImgDateFrom"  alt="#{feildConfig.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                                     </a>
                                                                 </nobr>
                                                             </h:column>
                                                                 
                                                             <f:facet name="footer">
                                                                 <h:column>
-                                                                    <a class="button" href="javascript:ClearContents('basicViewformData')">
+                                                                    <a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>"  class="button" href="javascript:ClearContents('basicViewformData')">
                                                                         <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
                                                                     </a>
-                                                                    <h:commandLink  styleClass="button" action="#{SourceHandler.performSubmit}" >  
+                                                                    <h:commandLink title="#{msgs.patdetails_search_button2}" styleClass="button" action="#{SourceHandler.performSubmit}" >  
                                                                         <span><h:outputText value="#{msgs.patdetails_search_button2}"/></span>
                                                                     </h:commandLink>                                     
                                                                 </h:column>
@@ -1137,8 +1139,8 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 												   onblur="javascript:validate_date(this,'MM/dd/yyyy');"
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPerAdd.inputMask}"/>')"
                                                   onkeyup="javascript:qws_field_on_key_up(this)" >
-                                                  <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{fieldConfigPerAdd.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                  <a title ="<h:outputText value="#{fieldConfigPerAdd.displayName}"/>"  HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{fieldConfigPerAdd.name}"/>')" > 
+                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{fieldConfigPerAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                  </a>
                                           </nobr>
 
@@ -1176,7 +1178,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 																
                                                                 <tr>
                                                                     <td colspan="2">
-																	<a href="javascript:void(0)" onclick="javascript:showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>AddNewDiv')" class="button">
+																	<a title="<h:outputText value="#{msgs.source_submenu_add}"/>&nbsp; <h:outputText value="#{childNodesName}"/>" href="javascript:void(0)" onclick="javascript:showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>AddNewDiv')" class="button">
 																	<span>
 							                                            <img src="./images/down-chevron-button.png" border="0" alt="Add <h:outputText value="#{childNodesName}"/>"/>&nbsp;Add <h:outputText value="#{childNodesName}"/>&nbsp;<img src="./images/down-chevron-button.png" border="0" alt="Add <h:outputText value="#{childNodesName}"/>"/>
 																	</span>
@@ -1257,8 +1259,8 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{childFieldConfigAdd.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateMinorObjectFieldsOnBlurLocal('<h:outputText value="#{childFieldConfigAdd.objRef}"/>',this,'<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>','<h:outputText value="#{childFieldConfigAdd.inputMask}"/>','<h:outputText value="#{childFieldConfigAdd.valueType}"/>')">
-                                                  <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childFieldConfigAdd.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                  <a title="<h:outputText value="#{childFieldConfigAdd.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{childFieldConfigAdd.name}"/>')" > 
+                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{childFieldConfigAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                  </a>
                                           </nobr>
                                      </h:column>                     
@@ -1281,15 +1283,15 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 					<tr>
 					  <td>
                             <nobr>
-                                <a href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
+                                <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp; <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
                                         <span id="<h:outputText value='#{childNodesName}'/>buttonspan">Save <h:outputText value='#{childNodesName}'/> </span>
                                  </a>     
-                                  <h:outputLink  styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('#{childNodesName}AddNewSOInnerForm');setEditIndex('-1')">
+                                  <h:outputLink  title ="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('#{childNodesName}AddNewSOInnerForm');setEditIndex('-1')">
                                           <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                                    </h:outputLink>
 
                                     <div style="visibility:hidden;display:none;" id="<h:outputText value='#{childNodesName}'/>cancelSOEdit">
-                                         <a href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm', '<h:outputText value='#{childNodesName}'/>cancelSOEdit', '<h:outputText value='#{childNodesName}'/>')">
+                                         <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp; <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm', '<h:outputText value='#{childNodesName}'/>cancelSOEdit', '<h:outputText value='#{childNodesName}'/>')">
                                           <span>Cancel <h:outputText value='#{childNodesName}'/></span>
                                          </a>     
                                    </div>
@@ -1331,14 +1333,14 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                     <table>
                                                         <tr>
                                                             <td>
-                                                                <a class="button" href="javascript:ClearContents('basicValidateAddformData');">
+                                                                <a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>" class="button" href="javascript:ClearContents('basicValidateAddformData');">
                                                                     <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
                                                                 </a>
                                                             </td>
                                                             <td>
                                                                 </nobr>
                                                                 <nobr>
-                                                                    <a class="button" 
+                                                                    <a title ="<h:outputText value="#{msgs.validate_button_text}"/>" class="button" 
 																	   href="javascript:void(0);"													
 																	   onclick="javascript:getFormValues('basicValidateAddformData');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&validate=true&rand=<%=rand%>','addFormValidate','');" >  
 <!--- Validate Button -->
@@ -1353,7 +1355,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                     <table>
                                                         <tr>
                                                             <td>
-                                                                <a class="button" 
+                                                                <a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>" class="button" 
 																   href="javascript:void(0);"
 																   onclick="javascript:ClearContents('<%=objScreenObject.getRootObj().getName()%>AddNewSOInnerForm');setEditIndex('-1')">
                                                                     <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
@@ -1361,7 +1363,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                             </td>
                                                             <td>
                                                                 <nobr>
-                                                                    <a class="button" 
+                                                                    <a title = "<h:outputText value="#{msgs.submit_button_text}"/>" class="button" 
 																	   href="javascript:void(0);"
 																	   onclick="javascript:getFormValues('<%=objScreenObject.getRootObj().getName()%>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&save=true&rand=<%=rand%>','addFormValidate','');" >  
                                                                         <span><h:outputText value="#{msgs.submit_button_text}"/></span>
@@ -1371,7 +1373,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 															<td>
                                                                 <h:form>
 																 <!-- Edit CANCEL button-->
-                                                                    <h:commandLink  styleClass="button" 
+                                                                    <h:commandLink title="#{msgs.cancel_but_text}" styleClass="button" 
                                                                                     action="#{SourceHandler.cancelSaveLID}" >  
                                                                         <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                                                     </h:commandLink>                                                                      
@@ -1418,38 +1420,40 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                </td>
                                                                <input id='lidmask' type='hidden' name='lidmask' value='DDD-DDD-DDDD' />           
                                                                <td>
-                                                               <h:outputText style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
-                                                                   value="#{msgs.source_merge_head1}"/>
+                                                               <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   > <%=localIdDesignation%> 1  </font>
                                                                <h:inputText value="#{SourceMergeHandler.lid1}" id="LID1"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                     onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                     onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                <td>
-                                                                   <h:outputText 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
-                                                                   value="#{msgs.source_merge_head2}"/>
+                                                                
+																   <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   > <%=localIdDesignation%> 2  </font>
                                                                    <h:inputText value="#{SourceMergeHandler.lid2}" id="LID2"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                    onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                    onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
                                                                <td>
-                                                                   <h:outputText 																    style="font-family: Arial, Helvetica,  sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
-                                                                   value="#{msgs.source_merge_head3}"/>
+ 
+																   <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   > <%=localIdDesignation%>3  </font>
                                                                    <h:inputText value="#{SourceMergeHandler.lid3}" id="LID3"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                                 onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
                                                                <td>
-                                                                   <h:outputText 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
-                                                                   value="#{msgs.source_merge_head4}"/>
+																   <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                                   > <%=localIdDesignation%> 4  </font>
                                                                    <h:inputText value="#{SourceMergeHandler.lid4}" id="LID4"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                                 onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
                                                                <td><nobr>
-                                                                       <h:commandLink  styleClass="button" rendered="#{Operations.SO_SearchView}"
+                                                                       <h:commandLink title="#{msgs.source_merge_button}" styleClass="button" rendered="#{Operations.SO_SearchView}"
                                                                                        action="#{SourceMergeHandler.performLidMergeSearch}">
                                                                            <span><h:outputText value="#{msgs.source_merge_button}"/></span>
                                                                        </h:commandLink>                                     
@@ -1565,7 +1569,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                     <tr>
                                                                         <script> alllidsArray.push('<%=soHashMap.get("LID")%>')</script>
                                                                             <td valign="top" name="sri" id="curve<%=soHashMap.get("LID")%>">
-                                                                            <a class="dupbtn" id="button<%=soHashMap.get("LID")%>" href="javascript:void(0)" onclick="javascript:collectLid('<%=soHashMap.get("LID")%>')">
+                                                                            <a title ="<%=soHashMap.get("LID")%>" class="dupbtn" id="button<%=soHashMap.get("LID")%>" href="javascript:void(0)" onclick="javascript:collectLid('<%=soHashMap.get("LID")%>')">
                                                                                 <%=soHashMap.get("LID")%>
                                                                             </a> 
                                                                             </td>
@@ -1602,7 +1606,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
         fvalueVaueExpression = ExpressionFactory.newInstance().createValueExpression(personfieldValuesMapEO.get(epathValue), personfieldValuesMapEO.get(epathValue).getClass());
                                                                 %>
 																     <div id="highlight<%=soHashMap.get("LID")%><%=soHashMap.get("SYSTEM_CODE")%>:<%=epathValue%>">
-																            <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=soHashMap.get("LID")%><%=soHashMap.get("SYSTEM_CODE")%>:<%=epathValue%>')" >
+																            <a title="<%=personfieldValuesMapEO.get(epathValue)%>" href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=soHashMap.get("LID")%><%=soHashMap.get("SYSTEM_CODE")%>:<%=epathValue%>')" >
                                                                                             <font class="highlight"><%=personfieldValuesMapEO.get(epathValue)%></font>
 																							</a>
                                                                                        </div>
@@ -1867,7 +1871,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                         <h:form>
                                                                             <tr> 
                                                                                 <td valign="top">
-                                                                                    <h:commandLink  styleClass="button" rendered="#{Operations.EO_SearchViewSBR}"
+                                                                                    <h:commandLink title="#{msgs.source_rec_vieweuid_but}"  styleClass="button" rendered="#{Operations.EO_SearchViewSBR}"
                                                                                                     actionListener="#{SourceMergeHandler.viewEUID}"  
                                                                                                     action="#{NavigationHandler.toEuidDetails}" >  
                                                                                         <f:attribute name="soValueExpressionMerge" value="<%=soValueExpressionMerge%>"/>
@@ -1881,15 +1885,20 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                     </table>
                                                             </div> 
                                                      </td>
-                                               <% if (countEnt + 1 == soHashMapArrayListObjects.length) { %>
+                                               <% if (countEnt + 1 == soHashMapArrayListObjects.length) { 
+																			String keepLid1 = bundle.getString("source_keep_btn") + " " + localIdDesignation + " 1" ;
+																			 ValueExpression keepLid1ValueExpression = ExpressionFactory.newInstance().createValueExpression(keepLid1, keepLid1.getClass());
+																			String keepLid2 = bundle.getString("source_keep_btn") + " " + localIdDesignation + " 2" ;
+ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().createValueExpression(keepLid2, keepLid2.getClass());
+																			%>
                                                      <td>                                                                <!--Displaying view sources and view history-->
                                                          <div id="previewActionButton">
                                                                     <table>
                                                                         <tr>
                                                                             <td>
                                                                                 <h:form  id="previewlid1Form">
-                                                                                    <h:commandLink styleClass="button" rendered="#{Operations.SO_Merge}" action="#{SourceMergeHandler.performPreviewLID}">
-                                                                                        <span id="LID1"><h:outputText value="Keep LID1"/></span>
+                                                                                    <h:commandLink title="<%=keepLid1ValueExpression%>" styleClass="button" rendered="#{Operations.SO_Merge}" action="#{SourceMergeHandler.performPreviewLID}">
+                                                                                        <span id="LID1"> <%=keepLid1%>  </span>
                                                                                     </h:commandLink>
                                                                                     <h:inputHidden id="previewhiddenLid1" value="#{SourceMergeHandler.formlids}" />
                                                                                     <h:inputHidden id="previewhiddenLid1source" value="#{SourceMergeHandler.lidsource}" />
@@ -1899,8 +1908,8 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                         <tr>
                                                                             <td>
                                                                                 <h:form id="previewlid2Form">
-                                                                                    <h:commandLink styleClass="button" rendered="#{Operations.SO_Merge}" action="#{SourceMergeHandler.performPreviewLID}">
-                                                                                        <span id="LID2"><h:outputText value="Keep LID2"/></span>
+                                                                                    <h:commandLink  title="<%=keepLid2ValueExpression%>" styleClass="button" rendered="#{Operations.SO_Merge}" action="#{SourceMergeHandler.performPreviewLID}">
+                                                                                        <span id="LID2"><%=keepLid2%></span>
                                                                                         <h:inputHidden id="previewhiddenLid2" value="#{SourceMergeHandler.formlids}" />
                                                                                         <h:inputHidden id="previewhiddenLid2source" value="#{SourceMergeHandler.lidsource}" />
                                                                                     </h:commandLink>
@@ -1913,13 +1922,13 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                     <table>
                                                                         <tr>
                                                                             <td>
-                                                                                <a class="button" href="javascript:void(0)" onclick="javascript:showLIDDiv('mergeDiv',event)" > 
+                                                                                <a title='<h:outputText value="#{msgs.ok_text_button}" />' class="button" href="javascript:void(0)" onclick="javascript:showLIDDiv('mergeDiv',event)" > 
                                                                                    <span id="confirmok"><h:outputText value="#{msgs.ok_text_button}" /></span>
                                                                                 </a>
                                                                             </td>
                                                                             <td>
                                                                                <h:form>
-                                                                                    <h:commandLink  styleClass="button"   rendered="#{Operations.SO_Merge}"
+                                                                                    <h:commandLink  title ="#{msgs.cancel_but_text}" styleClass="button"   rendered="#{Operations.SO_Merge}"
                                                                                     action="#{SourceMergeHandler.cancelMergeOperation}" >  
                                                                                    <span id="confirmcancel"><h:outputText value="#{msgs.cancel_but_text}" /></span>
                                                                                     </h:commandLink>                                                 
@@ -1955,7 +1964,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
              <h:form id="mergeFinalForm">
                  <table cellspacing="0" cellpadding="0" border="0">
                      <tr><th align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th>
-                     <th align="right"><a href="javascript:void(0)" rel="mergepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th></tr>
+                     <th align="right"><a title ="<h:outputText value="#{msgs.help_link_text}"/> " href="javascript:void(0)" rel="mergepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th></tr>
                      <tr><td colspan="2"> &nbsp;</td></tr>
                      <tr><td colspan="2"> &nbsp;</td></tr>
                       <tr>
@@ -1965,11 +1974,11 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                      <tr><td colspan="2"> &nbsp;</td></tr>
                     <tr>
                          <td colspan=2  align="center" valign="top">
-                             <h:commandLink styleClass="button" 
+                             <h:commandLink title ="#{msgs.ok_text_button}"  styleClass="button" 
                                             action="#{SourceMergeHandler.mergePreviewSystemObject}">
                                  <span><h:outputText value="#{msgs.ok_text_button}" /></span>
                              </h:commandLink>   
-                             <h:outputLink  onclick="javascript:showExtraDivs('mergeDiv',event)" 
+                             <h:outputLink title="#{msgs.cancel_but_text}"  onclick="javascript:showExtraDivs('mergeDiv',event)" 
                                             styleClass="button"          
                                             value="javascript:void(0)">
                                  <span><h:outputText value="#{msgs.cancel_but_text}" /></span>

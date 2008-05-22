@@ -160,6 +160,8 @@
 
                                                                 HashMap eoHashMapValues = (HashMap) eoArrayListObjects[countEnt];
                                                                 HashMap personfieldValuesMapEO = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT");
+																String eoStatus = (String) eoHashMapValues.get("EO_STATUS");
+
                                                                 if (countEnt > 0) {
                                                                     dupHeading = "<b> " + countEnt + "<sup>" + subscripts[countEnt] + "</sup> Duplicate</b>";
                                                                 } else if (countEnt == 0) {
@@ -179,27 +181,29 @@
                                             <td  valign="top">
                                                 <div id="outerMainContentDivid<%=countEnt%>" style="visibility:visible;display:block">
                                                     <div style="width:170px;overflow:auto">
-                                                        <div id="mainEuidContent" class="<%=cssMain%>">
+                                                        <div id="mainEuidContent" class="yellow">
                                                             <table border="0" cellspacing="0" cellpadding="0" width="100%">
                                                                 <tr><td><b style="font-size:12px; color:blue;"><%=rootNodeName%> Details</b></td></tr>
                                                             </table>
                                                         </div>
                                                     </div>
-                                                    <div id="mainEuidContentButtonDiv<%=countEnt%>" class="<%=cssMain%>">
+                                                    <div id="mainEuidContentButtonDiv<%=countEnt%>" >
                                                         <div id="assEuidDataContent<%=countEnt%>" style="visibility:visible;display:block;">
-                                                            <div id="personassEuidDataContent" style="visibility:visible;display:block;">
+                                                            <div id="personassEuidDataContent" class="yellow">
                                                                 
-                                                                <table border="0" cellspacing="0" cellpadding="0" class="w169">
-                                                                    <tr>
+                                                                <table border="0" cellspacing="0" cellpadding="0" >
+																<tr><td>EUID</td></tr>
+																<tr><td><h:outputText value="#{msgs.source_rec_status_but}"/></td></tr>
                                                                     <%
 
-    String mainDOB;
-    ValueExpression fnameExpression;
-    ValueExpression fvalueVaueExpression;
-    String epathValue;
+                                                                       String mainDOB;
+                                                                       ValueExpression fnameExpression;
+                                                                       ValueExpression fvalueVaueExpression;
+                                                                       String epathValue;
 
-    for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
-        FieldConfig fieldConfigMap = rootFieldConfigArray[ifc];
+                                                                       for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
+                                                                           FieldConfig fieldConfigMap = rootFieldConfigArray[ifc];
+																		   if(!"EUID".equalsIgnoreCase(fieldConfigMap.getDisplayName())) {
                                                                     %>  
                                                                     <tr>
                                                                         <td>
@@ -207,7 +211,8 @@
                                                                         </td>
                                                                     </tr>
                                                                     <%
-    }
+                                                                       }
+																	  }
                                                                     %>
                                                                     <%
 
@@ -277,6 +282,8 @@
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleClass%>">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
+                                                                  <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(eoStatus)%></font></td></tr>
+
                                                                     <%
 
                                                 String mainDOB;
@@ -431,6 +438,7 @@
                                                     for (int i = 0; i < eoSources.size(); i++) {
                                                         soHashMap = (HashMap) eoSources.get(i);
                                                         HashMap soHashMapValues = (HashMap) soHashMap.get("SYSTEM_OBJECT");
+														String soStatus = (String) soHashMap.get("Status");
 
                                                         String soSource = (String) soHashMapValues.get("SYSTEM_CODE");
                                                         String soLID = (String) soHashMapValues.get("LID");
@@ -443,7 +451,14 @@
                                             <td  valign="top">
                                                 <div id="mainDupSources<%=countEnt%><%=i%>">
                                                     <div style="width:170px;overflow:hidden;">
-                                                        <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="source" >
+ 											   <%if("inactive".equalsIgnoreCase(soStatus)) {%>
+                                                   <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="deactivate">
+												<%} else if("merged".equalsIgnoreCase(soStatus)) {%>
+												   <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="transaction">
+												<%} else {%>
+												<div id="mainEuidContent<%=soHashMap.get("LID")%>" class="source">
+												<%}%>
+
                                                             <table border="0" cellspacing="0" cellpadding="0" >
                                                                 <tr>
                                                                     <td class="<%=menuClass%>"><%=soHashMap.get("SYSTEM_CODE")%></td>
@@ -463,7 +478,9 @@
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleClass%>">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-                                                                    <%
+                                                                  <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(soStatus)%></font></td></tr>
+
+																	<%
     for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
         FieldConfig fieldConfigMap = rootFieldConfigArray[ifc];
         if (!(objScreenObject.getRootObj().getName() + ".EUID").equalsIgnoreCase(fieldConfigMap.getFullFieldName())) {
@@ -606,6 +623,7 @@
                                                         String keyTitle = key.substring(0, key.indexOf(":"));
                                                         HashMap objectHistMapValues = (HashMap) objectHistMap.get(key);
                                                         HashMap eoValuesMap = (HashMap) objectHistMapValues.get("ENTERPRISE_OBJECT");
+													    String eoHistStatus = (String) objectHistMapValues.get("EO_STATUS");
                                             %>
                                             <td  valign="top">
                                                 <div id="mainDupHistory<%=countEnt%><%=i%>" style="visibility:hidden;display:none">
@@ -630,6 +648,7 @@
                                                         <div id="assEuidDataContent<%=countEnt%>" >
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="history">
                                                                 <table border="0" cellspacing="0" cellpadding="0">
+                                                                  <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(eoHistStatus)%></font></td></tr>
                                                                     <%
                                                     for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
                                                         FieldConfig fieldConfigMap = rootFieldConfigArray[ifc];
@@ -770,8 +789,7 @@
                                                                 <td width="100%" class="menutop"><h:outputText value="#{msgs.preview_column_text}" /></td>
                                                             </tr>
                                                         </table>
-                                                                <table border="0" cellspacing="0" cellpadding="0" >
-                                                                    <%
+                                                                     <%
      HashMap eoAssumeMatchPreviewMap = new HashMap();
      HashMap mergePersonfieldValuesMapEO = new HashMap();
      if (request.getAttribute("previewAMEO") != null) {
@@ -780,17 +798,8 @@
          mergePersonfieldValuesMapEO = (HashMap) eoAssumeMatchPreviewMap.get("ENTERPRISE_OBJECT");
      }
                                                                     %>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <%
-     if (request.getAttribute("previewAMEO") != null) {
-                                                                            %>
-                                                                            <b></b>
-                                                                            <%} else {%>       
-                                                                            &nbsp;
-                                                                            <%}%>       
-                                                                        </td>
-                                                                    </tr>
+
+                                                                <table border="0" cellspacing="0" cellpadding="0" >
                                                                     
                                                                     <%
      for (int ifc = 0; ifc < personConfigFeilds.length; ifc++) {
@@ -801,6 +810,10 @@
              epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
          }
                                                                     %>  
+																	<% if(ifc == 0) {%>
+                                                                      <tr><td>&nbsp;</td></tr>
+                                                                      <tr><td>&nbsp;</td></tr>
+																	<%}%>
                                                                     <tr>
                                                                         <td>
                                                                             <%
@@ -962,7 +975,7 @@
                                                     <table border="0" cellspacing="0" cellpadding="0" border="0">
                                                         <tr> 
                                                             <td valign="top">
-                                                                <a class="viewbtn"   href="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','0')" ><h:outputText value="#{msgs.view_history_text}"/></a>
+                                                                <a class="viewbtn"   title="<h:outputText value="#{msgs.view_history_text}"/>" href="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','0')" ><h:outputText value="#{msgs.view_history_text}"/></a>
                                                             </td>    
                                                         </tr>
                                                     </table>
@@ -998,7 +1011,7 @@
                                                                                         ValueExpression amPreviewIdValueExpression = ExpressionFactory.newInstance().createValueExpression(amSourcesID, amSourcesID.getClass());
                                                                                         ValueExpression eoArrayListValueExpression = ExpressionFactory.newInstance().createValueExpression(eoArrayList, eoArrayList.getClass());
                                                             %>
-                                                                <h:commandLink styleClass="button" rendered="#{Operations.assumedMatch_Undo}" actionListener="#{AssumeMatchHandler.previewUndoAssumedMatch}">
+                                                                <h:commandLink styleClass="button" title="#{msgs.undo_match_button_text}" rendered="#{Operations.assumedMatch_Undo}" actionListener="#{AssumeMatchHandler.previewUndoAssumedMatch}">
                                                                     <f:attribute name="previewamIdValueExpression" value="<%=amPreviewIdValueExpression%>"/>
                                                                     <f:attribute name="eoArrayList" value="<%=eoArrayListValueExpression%>"/>
                                                                     <span><h:outputText value="#{msgs.undo_match_button_text}" /></span>
@@ -1022,14 +1035,14 @@
 											    <table>
 												  <tr>
 												    <td>
-                                                                 <h:commandLink styleClass="button" rendered="#{Operations.assumedMatch_Undo}"
+                                                                 <h:commandLink styleClass="button" rendered="#{Operations.assumedMatch_Undo}" title="#{msgs.ok_text_button}"
                                                                                actionListener="#{AssumeMatchHandler.undoMatch}">
                                                                     <f:attribute name="previewamIdValueExpression" value="<%=amPreviewIdVaueExpression%>"/>
                                                                     <span> <h:outputText value="#{msgs.ok_text_button}" /> </span>
                                                                 </h:commandLink>
                                                    </td>
                                                   <td>
-                                                                <h:commandLink styleClass="button" 
+                                                                <h:commandLink styleClass="button" title="#{msgs.cancel_but_text}"
                                                                                action="#{NavigationHandler.toAssumedMatches}">
                                                                     <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                                                 </h:commandLink>
@@ -1058,4 +1071,6 @@
         </body>
     </html>
 </f:view>
+
+
 

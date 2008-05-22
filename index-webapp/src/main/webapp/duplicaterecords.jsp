@@ -111,7 +111,7 @@ function align(thisevent,divID) {
                             <tr>
                                 <td>
                                     <h:outputText  rendered="#{SearchDuplicatesHandler.possilbeSearchTypesCount gt 1}"  value="#{msgs.patdet_search_text}"/>&nbsp;
-                                    <h:selectOneMenu id="searchType" rendered="#{SearchDuplicatesHandler.possilbeSearchTypesCount gt 1}" onchange="submit();" style="width:220px;" value="#{SearchDuplicatesHandler.searchType}" valueChangeListener="#{SearchDuplicatesHandler.changeSearchType}" >
+                                    <h:selectOneMenu id="searchType" title="#{msgs.search_Type}" rendered="#{SearchDuplicatesHandler.possilbeSearchTypesCount gt 1}" onchange="submit();" style="width:220px;" value="#{SearchDuplicatesHandler.searchType}" valueChangeListener="#{SearchDuplicatesHandler.changeSearchType}" >
                                         <f:selectItems  value="#{SearchDuplicatesHandler.possilbeSearchTypes}" />
                                     </h:selectOneMenu>
                                 </td>
@@ -231,8 +231,8 @@ function align(thisevent,divID) {
                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                    onblur="javascript:validate_date(this,'MM/dd/yyyy')">
-                                                  <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/></a>
+                                                  <a title="<h:outputText value="#{feildConfig.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.name}"/>')" > 
+                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{feildConfig.displayName}"  styleClass="imgClass" url="./images/cal.gif"/></a>
                                           </nobr>
                                         </h:column>
                              
@@ -243,12 +243,12 @@ function align(thisevent,divID) {
                                 <tr>
                                     <td align="left">
 					<nobr>
-					   <h:outputLink  styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
+					   <h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
                                                 <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                                             </h:outputLink>
                                         </nobr>
                                         <nobr>
-                                           <a  class="button" 
+                                           <a  class="button" title="<h:outputText value="#{msgs.search_button_label}"/>"
 										       href="javascript:void(0)"
                                                onclick="javascript:getFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
                                                <span>
@@ -297,10 +297,10 @@ function align(thisevent,divID) {
           <tr><td colspan="2"> &nbsp;</td></tr>
           <tr>
              <td align="right"  colspan="2">
-               <a  class="button" href="javascript:void(0)" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?resolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
+               <a  title="<h:outputText value="#{msgs.ok_text_button}" />" class="button" href="javascript:void(0)" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?resolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
                            <span><h:outputText value="#{msgs.ok_text_button}" /></span>
                </a>
-                <h:outputLink  onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'123467')" 
+                <h:outputLink title="#{msgs.cancel_but_text}" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'123467')" 
                                styleClass="button"  
                                value="javascript:void(0)">
                       <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
