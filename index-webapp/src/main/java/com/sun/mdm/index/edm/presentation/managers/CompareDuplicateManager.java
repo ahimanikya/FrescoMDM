@@ -937,21 +937,14 @@ public class CompareDuplicateManager {
         return countsArray[countsArray.length-1];
     }
     
+	// Method Added for initcap function
     public String getStatus(String strStatus) {
         String name = "";
-
         if (strStatus != null) {
-
             strStatus = strStatus.trim();
-
             name = String.valueOf(strStatus.charAt(0)).toUpperCase() + strStatus.substring(1);
-
-            System.out.println("Name " + name);
-
         }
-
         return name;
-
     }
 
 }
