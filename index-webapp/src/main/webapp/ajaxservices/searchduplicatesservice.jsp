@@ -236,7 +236,7 @@ ArrayList collectedEuidsList = new ArrayList();
             </td>
             <td colspan="2" style="align:left;width:50%">
 				<% if (finalArrayList != null && finalArrayList.size() > 0)   {%>
-                         <h:outputLink styleClass="button" 
+                         <h:outputLink styleClass="button" title="#{msgs.print_text}" 
                                        rendered="#{Operations.potDup_Print}"  
                                        value="JavaScript:window.print();">
                              <span><h:outputText value="#{msgs.print_text}"/>  </span>
@@ -379,7 +379,7 @@ ArrayList collectedEuidsList = new ArrayList();
 														if(eoMultiMergePreviewHashMap.get(keyParam) == null ){
 							
 							                %>
-                                                          <a  class="dupbtn" href="javascript:void(0)" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
+                                                          <a title="<%=fieldValuesMapSource.get("EUID")%>" class="dupbtn" href="javascript:void(0)" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
                                                                 <%=fieldValuesMapSource.get("EUID")%>
                                                             </a>
 														<%} else {%>
@@ -455,7 +455,7 @@ ArrayList collectedEuidsList = new ArrayList();
                                                         <%
 													      keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
 														  if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                           <a  class="dupbtn" href="javascript:void(0)" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
+                                                           <a title="<%=fieldValuesMapSource.get("EUID")%>" class="dupbtn" href="javascript:void(0)" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
 
                                                                 <%=fieldValuesMapSource.get("EUID")%>
                                                             </a>
@@ -477,19 +477,19 @@ ArrayList collectedEuidsList = new ArrayList();
                                             response.setHeader("Vary", "User-Agent");
                                          %>
                                          <% if (isFirefox) {%>
-                                         <div id = "bar" style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
+                                         <div id = "bar"  title="<%=weight%>"   style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
                                               border-right: 1px solid #000000;border-top:1px solid #000000;position:relative;right:20px;" >
                                          <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                            <div id = "bar" style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
+                                            <div id = "bar"  title="<%=weight%>"   style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
                                                  <%=weight%>
                                              </div>                                             
                                          </div>
                                          
                                            <% }else{%>
-                                            <div id = "bar" style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
+                                            <div id = "bar"  title="<%=weight%>"   style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
                                              <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
                                          </div>                                             
-                                         <div id = "bar" style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
+                                         <div id = "bar"  title="<%=weight%>"   style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
                                              <%=weight%>
                                          </div> 
                                       
@@ -532,7 +532,7 @@ ArrayList collectedEuidsList = new ArrayList();
 												
                                                  	<%if(operations.isPotDup_ResolveUntilRecalc() || operations.isPotDup_ResolvePermanently()) {%>
 
-												        <a  class="diffviewbtn" href="javascript:void(0)" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
+												        <a title="<h:outputText value="#{msgs.potential_dup_button}"/>" class="diffviewbtn" href="javascript:void(0)" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
                                                          <h:outputText value="#{msgs.potential_dup_button}"/>
                                                         </a>  
 														<%}%>
@@ -543,7 +543,7 @@ ArrayList collectedEuidsList = new ArrayList();
 												%>
 												    	<%if(operations.isPotDup_Unresolve()) {%>
 
-                                                           <a href="javascript:void(0)" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
+                                                           <a href="javascript:void(0)" title="<%=diff_person_heading_text%>" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
 															 <img src="./images/diff.gif" alt="<%=diff_person_heading_text%>" border="0">
                                                             </a>   
 															<%}%>
@@ -631,10 +631,10 @@ ArrayList collectedEuidsList = new ArrayList();
 													  <nobr>
                                                         <!--div id="buttonsDiv<%=fac%>" style="visibility:hidden;display:none;">
                                                                <a  class="dupbtn" href="javascript:void(0)" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
-                                                                 <span>Preview</span>
+                                                                 <span><h:outputText value="#{msgs.preview_column_text}"/></span>
                                                                </a>
                                                               <a  class="button" href="javascript:void(0)" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
-                                                                  <span>Cancel</span>
+                                                                  <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                                        	       </a>
                                                            </div-->
 
@@ -643,11 +643,12 @@ ArrayList collectedEuidsList = new ArrayList();
 															  if(eoMultiMergePreviewHashMap.get(keyParam)  != null ) {
                                                             %>
                                                        	     <%if(operations.isEO_Merge()) {%>
-                                                               <a  class="button" href="javascript:void(0)" onclick="javascript:getFormValuesMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?multiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
-                                                       	         <span>Merge</span>
+                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.source_submenu_merge}"/>"
+															   onclick="javascript:getFormValuesMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?multiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
+                                                       	         <span><h:outputText value="#{msgs.source_submenu_merge}"/></span>
                                                        	       </a>
-                                                               <a  class="button" href="javascript:void(0)" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
-                                                                  <span>Cancel</span>
+                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}"/>" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
+                                                        	     <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                                        	       </a>
                                                        	     <%}%>
 
@@ -666,7 +667,7 @@ ArrayList collectedEuidsList = new ArrayList();
 														    String finalEuidsString = arlInnerEuids.toString();
                                                             finalEuidsString = finalEuidsString.substring(0,finalEuidsString.length()-1);
                                                          %>
-                                                              <a href="javascript:void(0)" class="downlink" onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
+                                                              <a href="javascript:void(0)" class="downlink" title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>" onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
 															  </a>
 
 														</td>
@@ -770,7 +771,7 @@ ArrayList collectedEuidsList = new ArrayList();
             </td>
             <td colspan="2" style="align:left;width:50%">
 				<% if (finalArrayList != null && finalArrayList.size() > 0)   {%>
-                         <h:outputLink styleClass="button" 
+                         <h:outputLink styleClass="button" title="#{msgs.print_text}" 
                                        rendered="#{Operations.potDup_Print}"  
                                        value="JavaScript:window.print();">
                              <span><h:outputText value="#{msgs.print_text}"/>  </span>
@@ -911,7 +912,7 @@ ArrayList collectedEuidsList = new ArrayList();
                                                         <%
 														keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
 														if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
+                                                          <a  class="dupbtn" href="javascript:void(0)"  title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
                                                                 <%=fieldValuesMapSource.get("EUID")%>
                                                             </a>
 														<%} else {%>
@@ -986,7 +987,7 @@ ArrayList collectedEuidsList = new ArrayList();
                                                       <%} else {%>        
                                                         <%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
 														  if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
+                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
                                                                 <%=fieldValuesMapSource.get("EUID")%>
                                                             </a>
 
@@ -1007,19 +1008,19 @@ ArrayList collectedEuidsList = new ArrayList();
                                             response.setHeader("Vary", "User-Agent");
                                          %>
                                          <% if (isFirefox) {%>
-                                         <div id = "bar" style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
+                                         <div id = "bar"  title="<%=weight%>"   style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
                                               border-right: 1px solid #000000;border-top:1px solid #000000;position:relative;right:20px;" >
                                          <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                            <div id = "bar" style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
+                                            <div id = "bar"  title="<%=weight%>"   style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
                                                  <%=weight%>
                                              </div>                                             
                                          </div>
                                          
                                            <% }else{%>
-                                            <div id = "bar" style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
+                                            <div id = "bar"  title="<%=weight%>"   style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
                                              <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
                                          </div>                                             
-                                         <div id = "bar" style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
+                                         <div id = "bar"  title="<%=weight%>"   style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
                                              <%=weight%>
                                          </div> 
                                       
@@ -1061,7 +1062,7 @@ ArrayList collectedEuidsList = new ArrayList();
 					                            %>
 												  <%if(operations.isPotDup_ResolveUntilRecalc() || operations.isPotDup_ResolvePermanently()) {%>
 
-                                                 <a  class="diffviewbtn" href="javascript:void(0)" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
+                                                 <a  class="diffviewbtn" href="javascript:void(0)" title="<h:outputText value="#{msgs.potential_dup_button}"/>" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
                                                              <h:outputText value="#{msgs.potential_dup_button}"/>
                                                         </a>  
 												  <%}%>
@@ -1071,7 +1072,7 @@ ArrayList collectedEuidsList = new ArrayList();
 												%>
 												    	<%if(operations.isPotDup_Unresolve()) {%>
 
-                                                           <a href="javascript:void(0)" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
+                                                           <a href="javascript:void(0)" title="<%=diff_person_heading_text%>" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
 															 <img src="./images/diff.gif" alt="<%=diff_person_heading_text%>" border="0">
                                                             </a>   
 															<%}%>
@@ -1152,11 +1153,12 @@ ArrayList collectedEuidsList = new ArrayList();
 													    <div id="buttonsDiv<%=fac%>" style="visibility:hidden;display:none;">
 														    <%if(operations.isEO_Merge()) {%>
 
-                                                               <a  class="button" href="javascript:void(0)" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
-                                                                 <span>Preview</span>
+                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.preview_column_text}"/>" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
+                                                                 <span><h:outputText value="#{msgs.preview_column_text}"/></span>
                                                                </a>
-                                                              <a  class="button" href="javascript:void(0)" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
-                                                                  <span>Cancel</span>
+                                                              <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}"/>" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
+                                                                  <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
+																  
                                                        	       </a>
 														 <%}%>
                                                         </div>
@@ -1173,7 +1175,7 @@ ArrayList collectedEuidsList = new ArrayList();
 														    String finalEuidsString = arlInnerEuids.toString();
                                                             finalEuidsString = finalEuidsString.substring(0,finalEuidsString.length()-1);
                                                          %>
-                                                              <a href="javascript:void(0)" class="downlink" onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
+                                                              <a href="javascript:void(0)" class="downlink" title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>"  onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
 															  </a>
 
 														</td>
@@ -1292,7 +1294,7 @@ ArrayList collectedEuidsList = new ArrayList();
             </td>
             <td colspan="2" style="align:left;width:50%">
 				<% if (finalArrayList != null && finalArrayList.size() > 0)   {%>
-                         <h:outputLink styleClass="button" 
+                         <h:outputLink styleClass="button" title="#{msgs.print_text}" 
                                        rendered="#{Operations.potDup_Print}"  
                                        value="JavaScript:window.print();">
                              <span><h:outputText value="#{msgs.print_text}"/>  </span>
@@ -1433,7 +1435,7 @@ ArrayList collectedEuidsList = new ArrayList();
                                                         <%
 														keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
 														if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
+                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
                                                                 <%=fieldValuesMapSource.get("EUID")%>
                                                             </a>
 														<%} else {%>
@@ -1508,7 +1510,7 @@ ArrayList collectedEuidsList = new ArrayList();
                                                       <%} else {%>        
                                                         <%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
 														  if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
+                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
                                                                 <%=fieldValuesMapSource.get("EUID")%>
                                                             </a>
 
@@ -1529,19 +1531,19 @@ ArrayList collectedEuidsList = new ArrayList();
                                             response.setHeader("Vary", "User-Agent");
                                          %>
                                          <% if (isFirefox) {%>
-                                         <div id = "bar" style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
+                                         <div id = "bar"  title="<%=weight%>"   style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
                                               border-right: 1px solid #000000;border-top:1px solid #000000;position:relative;right:20px;" >
                                          <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                            <div id = "bar" style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
+                                            <div id = "bar"  title="<%=weight%>"   style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
                                                  <%=weight%>
                                              </div>                                             
                                          </div>
                                          
                                            <% }else{%>
-                                            <div id = "bar" style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
+                                            <div id = "bar"  title="<%=weight%>"   style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
                                              <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
                                          </div>                                             
-                                         <div id = "bar" style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
+                                         <div id = "bar"  title="<%=weight%>"   style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
                                              <%=weight%>
                                          </div> 
                                       
@@ -1583,7 +1585,7 @@ ArrayList collectedEuidsList = new ArrayList();
 					                            %>
 												  <%if(operations.isPotDup_ResolveUntilRecalc() || operations.isPotDup_ResolvePermanently()) {%>
 
-                                                 <a  class="diffviewbtn" href="javascript:void(0)" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
+                                                 <a  class="diffviewbtn" href="javascript:void(0)" title="<h:outputText value="#{msgs.potential_dup_button}"/>" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
                                                              <h:outputText value="#{msgs.potential_dup_button}"/>
                                                         </a>  
 												  <%}%>
@@ -1593,7 +1595,7 @@ ArrayList collectedEuidsList = new ArrayList();
 												%>
 												    	<%if(operations.isPotDup_Unresolve()) {%>
 
-                                                           <a href="javascript:void(0)" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
+                                                           <a href="javascript:void(0)" title="<%=diff_person_heading_text%>" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
 															 <img src="./images/diff.gif" alt="<%=diff_person_heading_text%>" border="0">
                                                             </a>   
 															<%}%>
@@ -1674,11 +1676,11 @@ ArrayList collectedEuidsList = new ArrayList();
 													    <div id="buttonsDiv<%=fac%>" style="visibility:hidden;display:none;">
 														    <%if(operations.isEO_Merge()) {%>
 
-                                                               <a  class="button" href="javascript:void(0)" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
-                                                                 <span>Preview</span>
+                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.preview_column_text}"/>" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
+                                                                 <span><h:outputText value="#{msgs.preview_column_text}"/></span>
                                                                </a>
-                                                              <a  class="button" href="javascript:void(0)" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
-                                                                  <span>Cancel</span>
+                                                              <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}"/>" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
+                                                                  <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                                        	       </a>
 														 <%}%>                       
 														 </div>
@@ -1695,7 +1697,7 @@ ArrayList collectedEuidsList = new ArrayList();
 														    String finalEuidsString = arlInnerEuids.toString();
                                                             finalEuidsString = finalEuidsString.substring(0,finalEuidsString.length()-1);
                                                          %>
-                                                              <a href="javascript:void(0)" class="downlink" onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
+                                                              <a href="javascript:void(0)" class="downlink" title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>"  onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
 															  </a>
 
 														</td>
@@ -1809,7 +1811,7 @@ ArrayList collectedEuidsList = new ArrayList();
             </td>
             <td colspan="2" style="align:left;width:50%">
 				<% if (finalArrayList != null && finalArrayList.size() > 0)   {%>
-                         <h:outputLink styleClass="button" 
+                         <h:outputLink styleClass="button" title="#{msgs.print_text}" 
                                        rendered="#{Operations.potDup_Print}"  
                                        value="JavaScript:window.print();">
                              <span><h:outputText value="#{msgs.print_text}"/>  </span>
@@ -1950,7 +1952,7 @@ ArrayList collectedEuidsList = new ArrayList();
                                                         <%
 														keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
 														if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                        <a  class="dupbtn" href="javascript:void(0)" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
+                                                        <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
                                                             <%=fieldValuesMapSource.get("EUID")%>
                                                             </a>
 														<%} else {%>
@@ -2025,7 +2027,7 @@ ArrayList collectedEuidsList = new ArrayList();
                                                       <%} else {%>        
                                                         <%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
 														  if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
+                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
                                                                 <%=fieldValuesMapSource.get("EUID")%>
                                                             </a>
 
@@ -2046,19 +2048,19 @@ ArrayList collectedEuidsList = new ArrayList();
                                             response.setHeader("Vary", "User-Agent");
                                          %>
                                          <% if (isFirefox) {%>
-                                         <div id = "bar" style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
+                                         <div id = "bar"  title="<%=weight%>"   style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
                                               border-right: 1px solid #000000;border-top:1px solid #000000;position:relative;right:20px;" >
                                          <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                            <div id = "bar" style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
+                                            <div id = "bar"  title="<%=weight%>"   style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
                                                  <%=weight%>
                                              </div>                                             
                                          </div>
                                          
                                            <% }else{%>
-                                            <div id = "bar" style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
+                                            <div id = "bar"  title="<%=weight%>"   style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
                                              <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
                                          </div>                                             
-                                         <div id = "bar" style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
+                                         <div id = "bar"  title="<%=weight%>"   style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
                                              <%=weight%>
                                          </div> 
                                       
@@ -2100,7 +2102,7 @@ ArrayList collectedEuidsList = new ArrayList();
 					                            %>
 												  <%if(operations.isPotDup_ResolveUntilRecalc() || operations.isPotDup_ResolvePermanently()) {%>
 
-                                                 <a  class="diffviewbtn" href="javascript:void(0)" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
+                                                 <a  class="diffviewbtn" href="javascript:void(0)" title="<h:outputText value="#{msgs.potential_dup_button}"/>" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
                                                              <h:outputText value="#{msgs.potential_dup_button}"/>
                                                         </a>  
 												  <%}%>
@@ -2110,7 +2112,7 @@ ArrayList collectedEuidsList = new ArrayList();
 												%>
 												    	<%if(operations.isPotDup_Unresolve()) {%>
 
-                                                           <a href="javascript:void(0)" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
+                                                           <a href="javascript:void(0)" title="<%=diff_person_heading_text%>" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
 															 <img src="./images/diff.gif" alt="<%=diff_person_heading_text%>" border="0">
                                                             </a>   
 															<%}%>
@@ -2191,11 +2193,11 @@ ArrayList collectedEuidsList = new ArrayList();
                                                         <div id="buttonsDiv<%=fac%>" style="visibility:hidden;display:none;">
 														    <%if(operations.isEO_Merge()) {%>
 
-                                                               <a  class="button" href="javascript:void(0)" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
-                                                                 <span>Preview</span>
+                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.preview_column_text}"/>" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
+                                                                 <span><h:outputText value="#{msgs.preview_column_text}"/></span>
                                                                </a>
-                                                              <a  class="button" href="javascript:void(0)" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
-                                                                  <span>Cancel</span>
+                                                              <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}"/>" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
+                                                                  <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                                        	       </a>
 														 <%}%>                       
 														 </div>
@@ -2212,7 +2214,7 @@ ArrayList collectedEuidsList = new ArrayList();
 														    String finalEuidsString = arlInnerEuids.toString();
                                                             finalEuidsString = finalEuidsString.substring(0,finalEuidsString.length()-1);
                                                          %>
-                                                              <a href="javascript:void(0)" class="downlink" onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
+                                                              <a href="javascript:void(0)" class="downlink" title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>"  onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
 															  </a>
 
 														</td>
@@ -2331,7 +2333,7 @@ ArrayList collectedEuidsList = new ArrayList();
             </td>
             <td colspan="2" style="align:left;width:50%">
 				<% if (finalArrayList != null && finalArrayList.size() > 0)   {%>
-                         <h:outputLink styleClass="button" 
+                         <h:outputLink styleClass="button" title="#{msgs.print_text}" 
                                        rendered="#{Operations.potDup_Print}"  
                                        value="JavaScript:window.print();">
                              <span><h:outputText value="#{msgs.print_text}"/>  </span>
@@ -2473,7 +2475,7 @@ ArrayList collectedEuidsList = new ArrayList();
                                                         keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
 
 														if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
+                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
                                                                 <%=fieldValuesMapSource.get("EUID")%>
                                                             </a>
 														<%} else {%>
@@ -2548,7 +2550,7 @@ ArrayList collectedEuidsList = new ArrayList();
                                                       <%} else {%>        
                                                         <%keyParam = "eoMultiMergePreview" + new Integer(fac).toString();
 														  if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
+                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
                                                                 <%=fieldValuesMapSource.get("EUID")%>
                                                             </a>
 
@@ -2569,19 +2571,19 @@ ArrayList collectedEuidsList = new ArrayList();
                                             response.setHeader("Vary", "User-Agent");
                                          %>
                                          <% if (isFirefox) {%>
-                                         <div id = "bar" style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
+                                         <div id = "bar"  title="<%=weight%>"   style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
                                               border-right: 1px solid #000000;border-top:1px solid #000000;position:relative;right:20px;" >
                                          <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                            <div id = "bar" style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
+                                            <div id = "bar"  title="<%=weight%>"   style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
                                                  <%=weight%>
                                              </div>                                             
                                          </div>
                                          
                                            <% }else{%>
-                                            <div id = "bar" style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
+                                            <div id = "bar"  title="<%=weight%>"   style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
                                              <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
                                          </div>                                             
-                                         <div id = "bar" style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
+                                         <div id = "bar"  title="<%=weight%>"   style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
                                              <%=weight%>
                                          </div> 
                                       
@@ -2623,7 +2625,7 @@ ArrayList collectedEuidsList = new ArrayList();
 					                            %>
                                                    <%if(operations.isPotDup_ResolveUntilRecalc() || operations.isPotDup_ResolvePermanently()) {%>
 
-												        <a  class="diffviewbtn" href="javascript:void(0)" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
+												        <a  class="diffviewbtn" href="javascript:void(0)" title="<h:outputText value="#{msgs.potential_dup_button}"/>" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
                                                              <h:outputText value="#{msgs.potential_dup_button}"/>
                                                         </a>  
 														<%}%>
@@ -2633,7 +2635,7 @@ ArrayList collectedEuidsList = new ArrayList();
 												%>
 												    	<%if(operations.isPotDup_Unresolve()) {%>
 
-                                                           <a href="javascript:void(0)" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
+                                                           <a href="javascript:void(0)" title="<%=diff_person_heading_text%>" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
 															 <img src="./images/diff.gif" alt="<%=diff_person_heading_text%>" border="0">
                                                             </a>   
 															<%}%>
@@ -2713,11 +2715,11 @@ ArrayList collectedEuidsList = new ArrayList();
 													      <div id="buttonsDiv<%=fac%>" style="visibility:hidden;display:none;">
 														    <%if(operations.isEO_Merge()) {%>
 
-                                                               <a  class="button" href="javascript:void(0)" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
-                                                                 <span>Preview</span>
+                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.preview_column_text}"/>" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
+                                                                 <span><h:outputText value="#{msgs.preview_column_text}"/></span>
                                                                </a>
-                                                              <a  class="button" href="javascript:void(0)" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
-                                                                  <span>Cancel</span>
+                                                              <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}"/>" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
+                                                                  <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                                        	       </a>
 														 <%}%>                       
 														 </div>
@@ -2734,7 +2736,7 @@ ArrayList collectedEuidsList = new ArrayList();
 														    String finalEuidsString = arlInnerEuids.toString();
                                                             finalEuidsString = finalEuidsString.substring(0,finalEuidsString.length()-1);
                                                          %>
-                                                              <a href="javascript:void(0)" class="downlink" onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
+                                                              <a href="javascript:void(0)" class="downlink" title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>"  onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
 															  </a>
 
 														</td>
@@ -2857,7 +2859,7 @@ ArrayList collectedEuidsList = new ArrayList();
             </td>
             <td colspan="2" style="align:left;width:50%">
 				<% if (finalArrayList != null && finalArrayList.size() > 0)   {%>
-                         <h:outputLink styleClass="button" 
+                         <h:outputLink styleClass="button" title="#{msgs.print_text}" 
                                        rendered="#{Operations.potDup_Print}"  
                                        value="JavaScript:window.print();">
                              <span><h:outputText value="#{msgs.print_text}"/>  </span>
@@ -2995,7 +2997,7 @@ ArrayList collectedEuidsList = new ArrayList();
                                                     <tr>
                                                         <td valign="top" class="dupfirst">
                                                         <%if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
+                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
                                                                 <%=fieldValuesMapSource.get("EUID")%>
                                                             </a>
 														<%} else {%>
@@ -3069,7 +3071,8 @@ ArrayList collectedEuidsList = new ArrayList();
     
                                                       <%} else {%>        
                                                         <%if(eoMultiMergePreviewHashMap.get(keyParam) == null ){%>
-                                                          <a  class="dupbtn" href="javascript:void(0)" onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
+                                                          <a  class="dupbtn" href="javascript:void(0)" title="<%=fieldValuesMapSource.get("EUID")%>"
+														  onclick="javascript:accumilateMultiMergeEuidsPreviewDuplicates('<%=fac%>','<%=j%>','<%=fieldValuesMapSource.get("EUID")%>');"> 
                                                                 <%=fieldValuesMapSource.get("EUID")%>
                                                             </a>
 
@@ -3090,19 +3093,19 @@ ArrayList collectedEuidsList = new ArrayList();
                                             response.setHeader("Vary", "User-Agent");
                                          %>
                                          <% if (isFirefox) {%>
-                                         <div id = "bar" style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
+                                         <div id = "bar"  title="<%=weight%>"   style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
                                               border-right: 1px solid #000000;border-top:1px solid #000000;position:relative;right:20px;" >
                                          <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
-                                            <div id = "bar" style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
+                                            <div id = "bar"  title="<%=weight%>"   style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
                                                  <%=weight%>
                                              </div>                                             
                                          </div>
                                          
                                            <% }else{%>
-                                            <div id = "bar" style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
+                                            <div id = "bar"  title="<%=weight%>"   style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
                                              <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
                                          </div>                                             
-                                         <div id = "bar" style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
+                                         <div id = "bar"  title="<%=weight%>"   style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
                                              <%=weight%>
                                          </div> 
                                       
@@ -3144,7 +3147,7 @@ ArrayList collectedEuidsList = new ArrayList();
 					                            %>
                                                   <%if(operations.isPotDup_ResolveUntilRecalc() || operations.isPotDup_ResolvePermanently()) {%>
 
-												        <a  class="diffviewbtn" href="javascript:void(0)" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
+												        <a  class="diffviewbtn" href="javascript:void(0)" title="<h:outputText value="#{msgs.potential_dup_button}"/>" onclick="javascript:getDuplicateFormValues('reportYUISearch','advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?potentialDuplicateId=<%=potDupId%>&unresolveDuplicate=true&random='+rand+'&'+queryStr,'outputdiv','');document.getElementById('resolvePopupDiv').style.visibility = 'hidden';document.getElementById('resolvePopupDiv').style.display = 'none';">  
                                                          <h:outputText value="#{msgs.potential_dup_button}"/>
                                                         </a>  
 												   <%}%>
@@ -3155,7 +3158,7 @@ ArrayList collectedEuidsList = new ArrayList();
 												%>
 												    	<%if(operations.isPotDup_Unresolve()) {%>
 
-                                                           <a href="javascript:void(0)" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
+                                                           <a href="javascript:void(0)" title="<%=diff_person_heading_text%>" onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
 															 <img src="./images/diff.gif" alt="<%=diff_person_heading_text%>" border="0">
                                                             </a>   
 															<%}%>
@@ -3234,11 +3237,11 @@ ArrayList collectedEuidsList = new ArrayList();
 													     <div id="buttonsDiv<%=fac%>" style="visibility:hidden;display:none;">
 														    <%if(operations.isEO_Merge()) {%>
 
-                                                               <a  class="button" href="javascript:void(0)" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
-                                                                 <span>Preview</span>
+                                                               <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.preview_column_text}"/>" onclick="javascript:multiMergeEuidsPreview('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?previewMerge=true&random='+rand+'&'+queryStr,'outputdiv','');"> 
+                                                                 <span><h:outputText value="#{msgs.preview_column_text}"/></span>
                                                                </a>
-                                                              <a  class="button" href="javascript:void(0)" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
-                                                                  <span>Cancel</span>
+                                                              <a  class="button" href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}"/>" onclick="javascript:getFormValuesCancelMerge('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?cancelMultiMergeEOs=true&random='+rand+'&'+queryStr,'outputdiv','');">
+                                                                  <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                                        	       </a>
 														 <%}%>
 														 </div>
@@ -3255,7 +3258,7 @@ ArrayList collectedEuidsList = new ArrayList();
 														    String finalEuidsString = arlInnerEuids.toString();
                                                             finalEuidsString = finalEuidsString.substring(0,finalEuidsString.length()-1);
                                                          %>
-                                                              <a href="javascript:void(0)" class="downlink" onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
+                                                              <a href="javascript:void(0)" class="downlink" title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>"  onclick="setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&collecteuid=<%=finalEuidsString%>&random='+rand+'&'+queryStr,'messages','')">  
 															  </a>
 
 														</td>

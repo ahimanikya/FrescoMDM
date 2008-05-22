@@ -23,6 +23,8 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.EditMainEuidHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 <%@ page import="com.sun.mdm.index.objects.SystemObject"%>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+<%@ page import="java.util.ResourceBundle"  %>
 
 
  
@@ -103,6 +105,10 @@ ArrayList minorObjectsAddList = (ArrayList)session1.getAttribute("minorObjectsAd
 HashMap thisMinorObject = new HashMap();
 EditMainEuidHandler  editMainEuidHandler   = (EditMainEuidHandler) session1.getAttribute("EditMainEuidHandler");
 SourceHandler  sourceHandler   = (SourceHandler)session1.getAttribute("SourceHandler");
+
+ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+String editTitle = bundle.getString("source_rec_edit_but");
+String deleteTitle = bundle.getString("source_rec_delete_but");
 
 ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
 HashMap allNodeFieldConfigsMap = sourceHandler.getAllNodeFieldConfigs();
@@ -485,13 +491,13 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
 
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)" title="<%=editTitle%>" 
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
 							   <td valign="center" width="14px">							   
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)" title="<%=deleteTitle%>"
 											 onclick='javascript:ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EOMinorDiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
@@ -597,13 +603,13 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
 
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)" title="<%=editTitle%>" 
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
 							   <td valign="center" width="14px">							   
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)" title="<%=deleteTitle%>"
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EOMinorDiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
@@ -826,13 +832,13 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
 
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
 												 <nobr>Edit&nbsp;<img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
 							   <td valign="center" width="14px">							   
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
 											 onclick='javascript:ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EOMinorDiv","")'> 
 												 <nobr>Delete&nbsp;<img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
@@ -997,13 +1003,13 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
 
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
 							   <td valign="center" width="14px">							   
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
 											 onclick='javascript:ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EOMinorDiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>

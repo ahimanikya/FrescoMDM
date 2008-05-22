@@ -223,7 +223,7 @@ ArrayList fcArrayList  = new ArrayList();
 
 				     </td>
 					 <td>
-                         <h:outputLink styleClass="button" 
+                         <h:outputLink styleClass="button" title="#{msgs.print_text}"
                                        rendered="#{Operations.EO_PrintSBR }"  
                                        value="JavaScript:window.print();">
                              <span><h:outputText value="#{msgs.print_text}"/>  </span>

@@ -131,7 +131,7 @@ boolean isSessionActive = true;
                              onkeyup="javascript:qws_field_on_key_up(this)"/>
          </td>
    	    <td align="left">
-	       <a class="button"  href="javascript:void(0)" onclick="javascript:getFormValues('RootNodeInnerForm');javascript:ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&validateLID=true','validateMessages','');">
+	       <a class="button" title="<h:outputText value="#{msgs.validate_button_text}"/>" href="javascript:void(0)" onclick="javascript:getFormValues('RootNodeInnerForm');javascript:ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&validateLID=true','validateMessages','');">
            <span><h:outputText value="#{msgs.validate_button_text}"/></span></a>
          </td>
 	</tr>
@@ -185,7 +185,7 @@ boolean isSessionActive = true;
                            onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPerAdd.inputMask}"/>')"
                            onkeyup="javascript:qws_field_on_key_up(this)" >
                     <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{fieldConfigPerAdd.fullFieldName}"/>')" > 
-                        <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                        <h:graphicImage  id="calImgDateFrom"  alt="#{fieldConfigPerAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                     </a>
                 </nobr>
                 
@@ -232,9 +232,9 @@ boolean isSessionActive = true;
                 
                 <tr>
                     <td colspan="2">
-                        <a href="javascript:void(0)" onclick="javascript:showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>AddNewDiv')" class="button">
+                        <a title="<h:outputText value="#{msgs.source_submenu_add}"/>&nbsp;<h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" href="javascript:void(0)" onclick="javascript:showMinorObjectsDiv('extra<h:outputText value='#{childNodesName}'/>AddNewDiv')" class="button">
                         <span>
-                            <img src="./images/down-chevron-button.png" border="0" alt="Add <h:outputText value="#{childNodesName}"/>"/>&nbsp;Add <h:outputText value="#{childNodesName}"/>&nbsp;<img src="./images/down-chevron-button.png" border="0" alt="Add <h:outputText value="#{childNodesName}"/>"/>
+                            <img src="./images/down-chevron-button.png" border="0" alt="<h:outputText value="#{msgs.source_submenu_add}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"/>&nbsp;<h:outputText value="#{msgs.source_submenu_add}"/> &nbsp;<h:outputText value="#{childNodesName}"/>&nbsp;<img src="./images/down-chevron-button.png" border="0" alt="<h:outputText value="#{msgs.source_submenu_add}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"/>
                         </span>
                     </td>
                 </tr>
@@ -318,7 +318,7 @@ boolean isSessionActive = true;
                                                                        onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                        onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateMinorObjectFieldsOnBlurLocal('<h:outputText value="#{childFieldConfigAdd.objRef}"/>',this,'<h:outputText value="#{childFieldConfigAdd.fullFieldName}"/>','<h:outputText value="#{childFieldConfigAdd.inputMask}"/>','<h:outputText value="#{childFieldConfigAdd.valueType}"/>')">
                                                                 <a HREF="javascript:void(0);" onclick="g_Calendar.show(event,'New<h:outputText value="#{childFieldConfigAdd.name}"/>')" > 
-                                                                    <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                                    <h:graphicImage  id="calImgDateFrom"  alt="#{childFieldConfigAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                                 </a>
                                                             </nobr>
                                                         </h:column>                     
@@ -340,10 +340,10 @@ boolean isSessionActive = true;
                                 </tr>
 								<tr>
 					             <td>
-                 					<a href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
-								   <span id="<h:outputText value='#{childNodesName}'/>buttonspan">Save&nbsp;<h:outputText value='#{childNodesName}'/> </span>
+                 					<a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
+								   <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value='#{childNodesName}'/> </span>
                                  </a>     
-                                 <h:outputLink  styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('#{childNodesName}AddNewSOInnerForm')">
+                                 <h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('#{childNodesName}AddNewSOInnerForm')">
                                         <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                                  </h:outputLink>
 								 </td>
@@ -380,13 +380,13 @@ boolean isSessionActive = true;
 <tr>
    <td>
    <nobr>
-    <a href="javascript:void(0);" class="button" onclick="javascript:getFormValues('RootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&save=save','AddNewSODivMessages',event)">
-	  <span id="buttonspan">Save&nbsp;</span>
+    <a href="javascript:void(0);" title="<h:outputText value="#{msgs.source_submenu_add}"/>" class="button" onclick="javascript:getFormValues('RootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&save=save','AddNewSODivMessages',event)">
+	  <span id="buttonspan"><h:outputText value="#{msgs.source_submenu_add}"/>&nbsp;</span>
     </a>     
-     <h:outputLink  styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('RootNodeInnerForm')">
+     <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('RootNodeInnerForm')">
         <span><h:outputText value="#{msgs.clear_button_label}"/></span>
      </h:outputLink>    
-	 <a class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('RootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&cancel=cancel','AddNewSODivMessages',event);">
+	 <a class="button" title="<h:outputText value="#{msgs.cancel_but_text}"/>"  href="javascript:void(0)" onclick="javascript:ClearContents('RootNodeInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/euidSOAddminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&cancel=cancel','AddNewSODivMessages',event);">
         <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
      </a>    
 	 </nobr>

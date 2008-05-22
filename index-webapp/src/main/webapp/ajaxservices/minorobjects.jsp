@@ -20,6 +20,8 @@
 
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+<%@ page import="java.util.ResourceBundle"  %>
 
 
  
@@ -73,6 +75,8 @@ Enumeration parameterNames = request.getParameterNames();
 
 HttpSession session1 = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 ArrayList minorObjectsAddList = (ArrayList)session1.getAttribute("minorObjectsAddList");
+
+ ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
 
 HashMap thisMinorObject = new HashMap();
 SourceAddHandler  sourceAddHandler   = (SourceAddHandler)session1.getAttribute("SourceAddHandler");
@@ -424,15 +428,20 @@ if(isSave) {
 								  <% 
 									  String thisIndex = ((Integer)minorObjectMap.get("listIndex")).toString();
 									  String minorObjType = request.getParameter("MOT");
+									 
+
+									  String editTitle = bundle.getString("source_rec_edit_but");
+									  String deleteTitle = bundle.getString("source_rec_delete_but");
+
 								  %>						  
 
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)" title="%<%=editTitle%>"
 											 onclick='javascript:setEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
 							   <td valign="center" width="14px">							   
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)"  title="%<%=deleteTitle%>"
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&deleteIndex=<%=thisIndex%>&MOT=<%=minorObjType%>","<%=minorObjType%>AddNewSODiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
@@ -663,15 +672,20 @@ if(isSave) {
 								  <% 
 									  String thisIndex = ((Integer)minorObjectMap.get("listIndex")).toString();
 									  String minorObjType = request.getParameter("MOT");
+									  
+
+									  String editTitle = bundle.getString("source_rec_edit_but");
+									  String deleteTitle = bundle.getString("source_rec_delete_but");
+
 								  %>						  
 
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)" title="<%=editTitle%>" 
 											 onclick='javascript:setEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
 							   <td valign="center" width="14px">							   
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&deleteIndex=<%=thisIndex%>&MOT=<%=minorObjType%>","<%=minorObjType%>AddNewSODiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
@@ -827,19 +841,22 @@ if(isSave) {
 			              </tr>
                     <% } %>
 			              <tr class="<%=styleClass%>">
-			                    <td valign="center" width="14px">
+			                    <td valign="center" width="14px"> 
 								  <% 
 									  String thisIndex = ((Integer)minorObjectMap.get("listIndex")).toString();
 									  String minorObjType = request.getParameter("MOT");
+									  String editTitle = bundle.getString("source_rec_edit_but");
+									  String deleteTitle = bundle.getString("source_rec_delete_but");
+
 								  %>						  
 
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:setEditIndex(<%=thisIndex%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&editIndex=<%=thisIndex%>&&MOT=<%=minorObjType%>","<%=minorObjType%>EditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
 							   <td valign="center" width="14px">
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)" title="<%=deleteTitle%>"
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/minorobjects.jsf?&deleteIndex=<%=thisIndex%>&MOT=<%=minorObjType%>","<%=minorObjType%>AddNewSODiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>

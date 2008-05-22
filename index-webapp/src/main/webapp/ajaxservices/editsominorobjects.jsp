@@ -27,7 +27,8 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.EditMainEuidHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 <%@ page import="com.sun.mdm.index.objects.SystemObject"%>
-
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+<%@ page import="java.util.ResourceBundle"  %>
 
  
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.ViewMergeTreeHandler"%>
@@ -111,6 +112,10 @@ ArrayList minorObjectsAddList = (ArrayList)session1.getAttribute("minorObjectsAd
 HashMap thisMinorObject = new HashMap();
 EditMainEuidHandler  editMainEuidHandler   = (EditMainEuidHandler) session1.getAttribute("EditMainEuidHandler");
 SourceHandler  sourceHandler   = (SourceHandler)session1.getAttribute("SourceHandler");
+
+ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+String editTitle = bundle.getString("source_rec_edit_but");
+String deleteTitle = bundle.getString("source_rec_delete_but");
 
 ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
 HashMap allNodeFieldConfigsMap = sourceHandler.getAllNodeFieldConfigs();
@@ -367,7 +372,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								  %>						  
 
                                     <%if("active".equalsIgnoreCase(soStatus)) {%>
-					                   <a href="javascript:void(0)" 
+					                   <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
@@ -377,7 +382,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								</td>
 							   <td valign="center" width="14px">							   
                                     <%if("active".equalsIgnoreCase(soStatus)) {%>
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
@@ -488,7 +493,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
                                   <%if("active".equalsIgnoreCase(soStatus)) {%>
 					                
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
@@ -498,7 +503,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								</td>
 							   <td valign="center" width="14px">							   
 							     <%if("active".equalsIgnoreCase(soStatus)) {%>
-					             	  <a href="javascript:void(0)" 
+					             	  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
@@ -741,7 +746,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 							     <%if("active".equalsIgnoreCase(soStatus)) {%>
 
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
@@ -751,7 +756,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								</td>
 							   <td valign="center" width="14px">							   
 							     <%if("active".equalsIgnoreCase(soStatus)) {%>
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
@@ -922,7 +927,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 							     <%if("active".equalsIgnoreCase(soStatus)) {%>
 
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)" title="<%=editTitle%>" 
 											 onclick='javascript:setEOEditIndex(<%=i%>);ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&editIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOEditMessages","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
@@ -932,7 +937,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								</td>
 							   <td valign="center" width="14px">							   
 							     <%if("active".equalsIgnoreCase(soStatus)) {%>
-									  <a href="javascript:void(0)" 
+									  <a href="javascript:void(0)" title="<%=deleteTitle%>"
 											 onclick='ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
