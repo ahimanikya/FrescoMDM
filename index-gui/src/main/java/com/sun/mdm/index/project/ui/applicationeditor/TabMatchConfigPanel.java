@@ -464,7 +464,23 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
 
         jScrollPaneFieldsMatchTypeSelected.setViewportView(mTableFieldsMatchTypeSelected);
         mTableFieldsMatchTypeSelected.setEnabled(bCheckedOut);
-
+        mTableFieldsMatchTypeSelected.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    TableModelFieldsMatchTypeSelected model = (TableModelFieldsMatchTypeSelected) mTableFieldsMatchTypeSelected.getModel();
+                    int iSelectedRow = mTableFieldsMatchTypeSelected.getSelectedRow();
+                    String matchType = (String) model.getValueAt(iSelectedRow, model.iColMatchType);
+                    if (matchType != null) {
+                        iSelectedRow = ((TableModelMatchRules) mTableMatchingRules.getModel()).findRowByMatchType(matchType);
+                        mTableMatchingRules.clearSelection();
+                        if (iSelectedRow >=0) {
+                            mTableMatchingRules.addRowSelectionInterval(iSelectedRow, iSelectedRow);           
+                            mTableMatchingRules.setEditingRow(iSelectedRow);
+                            mTableMatchingRules.setEditingColumn(0);
+                            jButtonAdvanced.setEnabled(bCheckedOut);
+                        }
+                    }
+                }
+            });
     }
     // Table model for Rule Definitions
     class TableModelFieldsMatchTypeSelected extends AbstractTableModel {
@@ -662,6 +678,20 @@ public class TabMatchConfigPanel extends javax.swing.JPanel {
                         jButtonRemove.setEnabled(bCheckedOut);
                         jButtonAdvanced.setEnabled(bCheckedOut);
                     }
+                    //Find it in mTableFieldsMatchTypeSelected
+                    int iSelectedRow = mTableMatchingRules.getSelectedRow();
+                    TableModelMatchRules model = (TableModelMatchRules) mTableMatchingRules.getModel();
+                    String matchType = (String) model.getValueAt(iSelectedRow, model.iColMatchType);
+                    if (matchType != null) {    
+                        iSelectedRow = ((TableModelFieldsMatchTypeSelected) mTableFieldsMatchTypeSelected.getModel()).findRowByMatchType(matchType);
+                        mTableFieldsMatchTypeSelected.clearSelection();
+                        if (iSelectedRow >=0) {
+                            mTableFieldsMatchTypeSelected.addRowSelectionInterval(iSelectedRow, iSelectedRow);           
+                            mTableFieldsMatchTypeSelected.setEditingRow(iSelectedRow);
+                            mTableFieldsMatchTypeSelected.setEditingColumn(0);
+                        }
+                    }
+
                 }
             });
        
