@@ -48,6 +48,8 @@ import static com.sun.mdm.index.loader.masterindex.MIConstants.*;
 
 /**
  * Writes Mater image files to master index directory
+ * The image files include "Fixed tables like SBYN_Enterprise etc. and object definition generated tables like
+ * SBYN_PERSON etc.
  * @author Swaranjit Dua
  *
  */
@@ -153,12 +155,12 @@ public class MasterImageWriter {
 			ObjectDefinition objectDef = config.getObjectDefinition();
 			String name = objectDef.getName();
 			String table = name;
-			File file = new File(masterImageDir_, SBYN + table  + DATA);
+			File file = new File(masterImageDir_, SBYN + table.toUpperCase() + DATA);
 			FileWriter fwriter = new FileWriter(file);	     
 			BufferedWriter  bwriter = new BufferedWriter(fwriter);
 			writerMap.put(table, bwriter); 
 			table = table + "SBR";
-			file = new File(masterImageDir_, SBYN + table + DATA);
+			file = new File(masterImageDir_, SBYN + table.toUpperCase() + DATA);
 			fwriter = new FileWriter(file);	     
 			bwriter = new BufferedWriter(fwriter);
 			writerMap.put(table, bwriter);
@@ -167,12 +169,12 @@ public class MasterImageWriter {
 			for (ObjectDefinition child: children) {
 				String childName = child.getName();
 				table =  childName;
-				file = new File(masterImageDir_, SBYN + table  + DATA);
+				file = new File(masterImageDir_, SBYN + table.toUpperCase() + DATA);
 				fwriter = new FileWriter(file);	     
 				bwriter = new BufferedWriter(fwriter);
 				writerMap.put(table, bwriter); 
 				table = table + "SBR";
-				file = new File(masterImageDir_, SBYN + table + DATA);
+				file = new File(masterImageDir_, SBYN + table.toUpperCase() + DATA);
 				fwriter = new FileWriter(file);	     
 				bwriter = new BufferedWriter(fwriter);
 				writerMap.put(table, bwriter); 
@@ -198,7 +200,7 @@ public class MasterImageWriter {
 						if (name.equals(POTENTIALDUPLICATES)) {
 							write(dwriter_, data);
 						} else {
-							File file = new File(masterImageDir_, SBYN + name +DATA);
+							File file = new File(masterImageDir_, SBYN + name.toUpperCase() +DATA);
 							FileWriter fw = new FileWriter(file);	     
 							writer = new BufferedWriter(fw);
 							writerMap.put(name, writer);
