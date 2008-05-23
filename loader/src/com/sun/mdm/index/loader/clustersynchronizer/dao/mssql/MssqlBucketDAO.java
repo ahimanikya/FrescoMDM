@@ -38,7 +38,7 @@ import com.sun.mdm.index.loader.clustersynchronizer.dao.BaseBucketDAO;
  */
 public class MssqlBucketDAO extends BaseBucketDAO {
 
-	protected static String bucket_insert = "insert into cluster_bucket (id , bucketName, loaderName, type,state,versionno) values (?,?,?,?,?,?)";
+	protected static String bucket_insert = "insert into cluster_bucket ( bucketName, loaderName, type,state,versionno) values (?,?,?,?,?)";
 
 	protected static String bucket_select = "select top 5 id, bucketName, loaderName, type,state,versionno from cluster_bucket where state=? AND type=? ";
 
@@ -62,13 +62,13 @@ public class MssqlBucketDAO extends BaseBucketDAO {
 			ps = ps1;
 
 			
-			ps.setInt(1, sequence());
-			ps.setString(2, bucketName);
-			ps.setString(3, "");
+			//ps.setInt(1, sequence());
+			ps.setString(1, bucketName);
+			ps.setString(2, "");
 
-			ps.setInt(4, type);
-			ps.setInt(5, NEW);
-			ps.setInt(6, 0);
+			ps.setInt(3, type);
+			ps.setInt(4, NEW);
+			ps.setInt(5, 0);
 
 			int status = ps.executeUpdate();
 
