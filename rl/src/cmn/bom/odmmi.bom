@@ -16,3 +16,6 @@ index-webapp.war|0444|bin|<SRC_DIR>|index-webapp.war|<DST_DIR>
 
 set SRC_DIR <SRCROOT>/solutions/packages/target
 MDM_Solutions.zip|0444|bin|<SRC_DIR>|MDM_Solutions.zip|<DST_DIR>
+
+set SRC_DIR <SRCROOT>/index-gui/target
+open-dm-mi.nbm|0444|bin|<SRC_DIR>|open-dm-mi.nbm|<DST_DIR>
