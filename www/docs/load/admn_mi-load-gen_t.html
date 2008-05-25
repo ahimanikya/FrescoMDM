@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <title>Loading the Initial Data Set for a Master Index Application</title>
+
+   <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="content-language" content="en-US">
+   <meta name="keywords" content="">
+   <meta name="description" content="Loading the Initial Data Set for a Master Index Application provides information and instructions for analyzing match logic, matching bulk data, and loading and initial set of data into a master index database. ">
+   <meta name="date" content="2008-05-01">
+   <meta name="author" content="Carol Thom">
+
+   <link rel="stylesheet" type="text/css" href="http://www.netbeans.org/netbeans.css" media="screen">
+   <link rel="stylesheet" type="text/css" href="css/mural.css">
+</head>
+
+<body>
+
+   <!-- Copyright (c) 2008 Sun Microsystems, Inc. All rights reserved. -->
+   <!-- Use is subject to license terms. -->
+
+   <a name="top"></a>
+   <h1>Loading the Initial Data Set for a Master Index Application</h1>
+   <h1>DRAFT VERSION</h1>
+   <div class="articledate" style="margin-left: 0px;">Last Updated: May 2008</div>
+
+   <div class="embeddedtocpane">
+     <h5><span class="tocpageleft"><a href="admn_mi-load-overview_c.html">Previous</a></span>
+         <span class="tocpageright"><a href="admn_mi-load-envvar_t.html">Next</a></span></h5>
+
+     <h5><span class="toctitle">Contents</span></h5>
+     <div class="embeddedtoc">
+       <p class="toc level1"><a href="lidsevseispv.html">Loading the Initial Data Set for a Master Index Application</a></p>
+<p class="toc level2"><a href="admn_mi-load-overview_c.html">Initial Bulk Match and Load Overview</a></p>
+<p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-process_c">Initial Bulk Match and Load Process Overview</a></p>
+<p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-procedure_c">Data Cleansing, Matching, and Loading Procedure Overview</a></p>
+<p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-dist_c">Distributed Processing</a></p>
+<p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-match_c">About the Bulk Match Process</a></p>
+<p class="toc level4"><a href="admn_mi-load-overview_c.html#gglab">Block Distribution</a></p>
+<p class="toc level4"><a href="admn_mi-load-overview_c.html#gglcg">Matching Records</a></p>
+<p class="toc level4"><a href="admn_mi-load-overview_c.html#gglbz">EUID Assignment</a></p>
+<p class="toc level4"><a href="admn_mi-load-overview_c.html#gglaz">Master Index Image Creation</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-load-overview_c.html#admn_mi-load-load_c">About the Bulk Load Process</a></p>
+<p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-cluster_c">About the Cluster Synchronizer</a></p>
+<p class="toc level3"><a href="admn_mi-load-overview_c.html#admn_mi-load-files_c">Required Format for Flat Data Files</a></p>
+<div class="onpage">
+<p class="toc level2 tocsp"><a href="">Generating the Initial Bulk Match and Load Tool</a></p>
+<p class="toc level4"><a href="#gentextid-225">To Generate the Initial Bulk Match and Load Tool</a></p>
+</div>
+<p class="toc level2 tocsp"><a href="admn_mi-load-envvar_t.html">Configuring the Environment</a></p>
+<p class="toc level4"><a href="admn_mi-load-envvar_t.html#gglre">To Configure the Environment</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-load-database_t.html">Creating the Cluster Synchronizer Database</a></p>
+<p class="toc level4"><a href="admn_mi-load-database_t.html#ggjoo">To Create the Cluster Synchronization Tables</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-load-config_p.html">Configuring the Initial Bulk Match and Load Tool</a></p>
+<p class="toc level3"><a href="admn_mi-load-config_p.html#admn_mi-load-proc-cfg_t">Configuring the Initial Bulk Match and Load Tool Processing</a></p>
+<p class="toc level5"><a href="admn_mi-load-config_p.html#ggjmc">To Configure the IBML Tool</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-load-config_p.html#admn_mi-load-log-cfg_t">Configuring Initial Bulk Match and Load Tool Logging</a></p>
+<p class="toc level5"><a href="admn_mi-load-config_p.html#gglfe">To Configure IBML Tool Logging</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-load-config_p.html#admn_mi-load-config_r">Initial Bulk Match and Load Tool Configuration Properties</a></p>
+<p class="toc level4"><a href="admn_mi-load-config_p.html#ggjps">Initial Bulk Match and Load Tool Blocking Query Configuration</a></p>
+<p class="toc level4"><a href="admn_mi-load-config_p.html#ggjqc">Initial Bulk Match and Load Tool Match String Configuration</a></p>
+<p class="toc level4"><a href="admn_mi-load-config_p.html#ggjqd">Initial Bulk Match and Load Tool Processing Configuration</a></p>
+<p class="toc level4"><a href="admn_mi-load-config_p.html#ggtoa">FTP Server Configuration</a></p>
+<p class="toc level4"><a href="admn_mi-load-config_p.html#ggjpm">Cluster Synchronizer Database Configuration</a></p>
+<p class="toc level4"><a href="admn_mi-load-config_p.html#ggjpn">SQL*Loader Configuration</a></p>
+<p class="toc level4"><a href="admn_mi-load-config_p.html#ggjpu">Data Reader Configuration</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-load-config_p.html#admn_mi-load-log_r">Initial Bulk Match and Load Tool Logging Properties</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-load-analysis_p.html">Performing a Match Analysis</a></p>
+<p class="toc level3"><a href="admn_mi-load-analysis_p.html#admn_mi-load-analysis_t">Running the Bulk Matcher in Analysis Mode</a></p>
+<p class="toc level5"><a href="admn_mi-load-analysis_p.html#gglda">To Run the Bulk Matcher in Analysis Mode</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-load-analysis_p.html#admn_mi-load-review_t">Reviewing the Match Analysis Results</a></p>
+<p class="toc level3"><a href="admn_mi-load-analysis_p.html#admn_mi-load-match_t">Reconfiguring the Matching Logic</a></p>
+<p class="toc level5"><a href="admn_mi-load-analysis_p.html#ggtdc">To Reconfigure the Matching Logic</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-load-run_t.html">Performing the Bulk Match</a></p>
+<p class="toc level4"><a href="admn_mi-load-run_t.html#ggtcb">To Perform the Bulk Match</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-loadnmatch_t.html">Running the Bulk Match and Bulk Load in One Step (SQL*Loader Only)</a></p>
+<p class="toc level4"><a href="admn_mi-loadnmatch_t.html#ggtcbulk">To Run the Bulk Match and Bulk Load in One Step</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-load-gensql_p.html">Loading Data Using SQL*Loader</a></p>
+<p class="toc level4"><a href="admn_mi-load-gensql_p.html#ggtbq">To Load the Data Using SQL*Loader</a></p>
+<p class="toc level2 tocsp"><a href="admn_mi-load-etlbulk_p.html">Loading Data Using the Data Integrator Bulk Loader</a></p>
+<p class="toc level4"><a href="admn_mi-load-etlbulk_p.html#ggtby">To Load the Data Using the Data Integrator Bulk Loader</a></p>
+<p class="toc level3 tocsp"><a href="admn_mi-load-etlbulk_p.html#admn_mi-load-cnfg_r">Data Integrator Bulk Loader Properties</a></p>
+
+     </div>
+   </div>
+
+
+   <div class="maincontent">
+
+
+<a name="admn_mi-load-gen_t"></a>
+
+<h2>Generating the Initial Bulk Match and Load Tool</h2>
+<p>In order to use the IBML Tool, you need to generate the
+tool from the master index application for which it will be used. You
+generate the tool from the master index project in NetBeans. The tool is
+generated based on the information you specified in the wizard and any changes
+you made to the configuration files before generating.</p>
+
+<a name="gentextid-225"></a><h4>To Generate the Initial Bulk Match and Load Tool</h4><h6>Before You Begin</h6><p>Make sure the master index application and database are created and configured. The
+configuration for the object structure, blocking query, match string, and matching rules should
+be as close to final as possible. You can use the Bulk Matcher
+to perform the final tuning on the blocking query and matching rules.</p><ol>
+<li><b>In the NetBeans project window, right-click the main project of the master index
+application and then select Generate Loader Zip.</b><p>The file is generated and downloaded to <tt></tt><i>NetBeans_Projects</i><tt>\</tt><i>Project_Name</i><tt>\loader-generated</tt>.</p></li>
+<li><b>On your computer, navigate to <tt></tt><i>NetBeans_Projects</i><tt>\</tt><i>Project_Name</i><tt>\loader-generated</tt> and extract the contents of <tt>loader.zip</tt>.</b></li>
+<li><b>If you are distributing the match and load processes across multiple processors, extract
+the contents of <tt>loader.zip</tt> to each machine processing the data.</b></li>
+<li><b>If the IBML Tools are running on UNIX, make sure the <tt>run-loader.sh</tt>
+and <tt>generate-sql-loader.sh</tt> files have execute permission. Use <tt>chmod</tt> to grant permission if necessary.</b></li>
+<li><b>Continue to <a href="admn_mi-load-envvar_t.html">Configuring the Environment</a>.</b></li></ol>
+   </div>
+
+   <div class="BottomPageControlPane">
+      <table class="pagecontrol">
+         <tr>
+            <td class="pageleft">
+               <a href="admn_mi-load-overview_c.html">Previous</a>
+            </td>
+            <td class="pageright">
+               <a href="admn_mi-load-envvar_t.html">Next</a>
+            </td>
+         </tr>
+      </table>
+
+   </div>
+
+</body>
+</html>
