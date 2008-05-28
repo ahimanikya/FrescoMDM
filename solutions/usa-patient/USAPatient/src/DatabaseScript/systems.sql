@@ -10,5 +10,8 @@ begin
     insert into sbyn_systems (systemcode, description, status, id_length, format, input_mask, value_mask, create_date, create_userid) 
     values ('SUN', 'SUN', 'A', 10, '[0-9]{10}', 'DDD-DDD-DDDD', 'DDD^DDD^DDDD', TO_DATE(v_date, 'MM/DD/YYYY'), v_user);
 
+    insert into sbyn_systems (systemcode, description, status, id_length, format, input_mask, value_mask, create_date, create_userid) 
+    values ('MYSQL', 'MYSQL', 'A', 10, '[0-9]{10}', 'DDD-DDD-DDDD', 'DDD^DDD^DDDD', TO_DATE(v_date, 'MM/DD/YYYY'), v_user);
+
 end;
 /
