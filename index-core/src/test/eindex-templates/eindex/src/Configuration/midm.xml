@@ -999,7 +999,7 @@
                         <root-object>Person</root-object>
                         <tab-name>Activity Report</tab-name>
                         <report-name>Transaction Summary Report</report-name>
-                        <screen-id>4</screen-id>
+                        <screen-id>5</screen-id>
                         <display-order>3</display-order> 
                         <search-pages>
                             <simple-search-page>
@@ -1040,6 +1040,32 @@
                             </search-result-list-page>
                         </search-result-pages>
                     </subscreen>
+                      <subscreen>
+                        <enable>true</enable>
+                        <root-object>Person</root-object>
+                        <tab-name>Assumed Matches Report</tab-name>
+                        <report-name>Assumed Matches</report-name>
+                        <screen-id>6</screen-id>
+                        <display-order>6</display-order> 
+                        <search-pages/>
+                        <search-result-pages>
+                          <search-result-list-page>
+                            <search-result-id>0</search-result-id>
+                            <item-per-page>10</item-per-page>
+                            <max-result-size>2000</max-result-size>
+                            <field-group>
+                              <description/>
+                              <field-ref>Person.FirstName</field-ref>
+                              <field-ref>Person.LastName</field-ref>
+                              <field-ref>Person.SSN</field-ref>
+                              <field-ref>Person.DOB</field-ref>
+                              <field-ref>Person.Address.AddressLine1</field-ref>
+                              <field-ref>Person.Address.AddressLine2</field-ref>
+                              <field-ref>Person.Phone.Phone</field-ref>
+                            </field-group>
+                          </search-result-list-page>
+                        </search-result-pages>
+                      </subscreen>
                 </subscreen-configurations>
             </reports>
             <audit-log>
