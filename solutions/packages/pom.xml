@@ -22,9 +22,9 @@
 							<tasks>
 						  	<property name="targetDir" value="${basedir}/target" />
 						    <property name="targetFile" value="MDM_Solutions.zip" />
-						  	<property name="sourceFile1" value="${basedir}/../aus-patient/target/AUSPatient.zip" />
-						  	<property name="sourceFile2" value="${basedir}/../uk-patient/target/UKPatient.zip" />
-						  	<property name="sourceFile3" value="${basedir}/../usa-patient/target/USAPatient.zip" />
+						  	<property name="sourceFile1" value="${basedir}/../aus-patient/target/MDM-Solution-AUSPatient.zip" />
+						  	<property name="sourceFile2" value="${basedir}/../uk-patient/target/MDM-Solution-UKPatient.zip" />
+						  	<property name="sourceFile3" value="${basedir}/../usa-patient/target/MDM-Solution-USAPatient.zip" />
 								<ant antfile="${basedir}/../build.xml" inheritRefs="true" inheritAll="true" >						      				
 									<target name="package" />
 								</ant>															

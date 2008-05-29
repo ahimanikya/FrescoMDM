@@ -37,7 +37,7 @@
 						      			<configuration>
 						      				<tasks>
 						      				  <property name="sourceFile" value="${basedir}/target/${artifactId}-${mural.currentVersion}-${artifactId}.zip"/>
-						      				  <property name="targetFile" value="${artifactId}.zip"/>
+						      				  <property name="targetFile" value="MDM-Solution-${artifactId}.zip"/>
 						      				  <property name="targetDir" value="${basedir}/target"/>
 														<ant antfile="${basedir}/../build.xml" inheritRefs="true" inheritAll="true" >						      				
 															<target name="change" />
