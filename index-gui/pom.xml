@@ -12,7 +12,7 @@
     <packaging>nbm</packaging>
     <url>http://maven.apache.org</url>
     <build>
-        <finalName>open-dm-mi-${pom.version}</finalName>
+        <finalName>open-dm-mi</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -196,10 +196,11 @@
                                         <delete file="${install.dir}/${netbeans.cluster}/config/Modules/com-sun-mdm-index-project.xml"></delete>
                                         <delete file="${install.dir}/${netbeans.cluster}/modules/com-sun-mdm-index-project.jar"></delete>
                                         <delete>
-                                            <fileset dir="${install.dir}/${netbeans.cluster}/modules/ext/mdm/loader"/>
-                                            <fileset dir="${install.dir}/${netbeans.cluster}/modules/ext/mdm/repository"/>
-                                            <fileset dir="${install.dir}/${netbeans.cluster}/modules/ext/mdm/standardizer"/>
-                                            <fileset dir="${install.dir}/${netbeans.cluster}/modules/ext/mdm" includes="*.*"/>
+                                            <fileset dir="${install.dir}/${netbeans.cluster}/modules/ext/mdm">
+                                                <include name="**/*"/>
+                                                <exclude name="bulkloader"/>
+                                                <exclude name="dataanalysis"/>
+                                            </fileset>
                                         </delete>
                                         <copy todir="${install.dir}">
                                             <fileset dir="${project.build.directory}/nbm/netbeans">
