@@ -325,9 +325,6 @@ public class ConfigManagerTest extends TestCase {
         
         // Retrieve the search criteria fields
         
-        ArrayList searchValues = new ArrayList();   // Contains the user-supplied values for the
-                                                    // search criteria.  
-        
         ArrayList sResultsConfigArrayList = scrObj.getSearchResultsConfig();
         assertTrue(sResultsConfigArrayList.size() == 1);    // should be only one search result config object
         Iterator srcalIterator = sResultsConfigArrayList.iterator();
@@ -338,7 +335,95 @@ public class ConfigManagerTest extends TestCase {
         assertTrue(ePathCount == 9);
     }
 
-    
+    public void testReportsSubscreen() throws Exception {
+        
+        ConfigManager configManager = ConfigManager.getInstance();
+        
+        // reports screen
+        
+        ScreenObject scrObj = configManager.getScreen(REPORTS_SCREEN_ID);
+        Integer screenID = scrObj.getID();
+
+        // retrieve the subscreens        
+        ArrayList subscreensConfig = scrObj.getSubscreensConfig();
+        assertTrue(subscreensConfig.size() == 7);
+        
+        boolean ret = true;
+        Iterator subscreensIter = subscreensConfig.iterator();
+        while (subscreensIter.hasNext()) {
+            ScreenObject subScrObj = (ScreenObject) subscreensIter.next();
+            int scrID = subScrObj.getID().intValue();
+            ArrayList srcConfigList = subScrObj.getSearchResultsConfig();
+            assert(srcConfigList.size() == 1);
+            SearchResultsConfig srcObj = (SearchResultsConfig) srcConfigList.get(0);
+            ArrayList fieldConfigs = srcObj.getFieldConfigs();
+            int fieldConfigsSize = fieldConfigs.size();
+            // TODO:  Add checks for individual field group elements
+            switch(scrID) {
+                case 0:     // Potential Duplicate Report
+                    if (fieldConfigsSize != 2) {
+                        System.out.println("Error: Potential Duplicate report " +
+                                           "expected 2 field groups in fieldConfigs " +
+                                           "but retrieved " + fieldConfigsSize);
+                        ret = false;
+                    }
+                    break;
+                case 1:     // Deactivated Report
+                    if (fieldConfigsSize != 0) {
+                        System.out.println("Error: Deactivated report " +
+                                           "expected 0 field groups in fieldConfigs " +
+                                           "but retrieved " + fieldConfigsSize);
+                        ret = false;
+                    }
+                    break;
+                case 2:     // Merge Report
+                    if (fieldConfigsSize != 2) {
+                        System.out.println("Error: Merge report " +
+                                           "expected 2 field groups in fieldConfigs " +
+                                           "but retrieved " + fieldConfigsSize);
+                        ret = false;
+                    }
+                    break;
+                case 3:     // Unmerge Report
+                    if (fieldConfigsSize != 0) {
+                        System.out.println("Error: Unmerge report " +
+                                           "expected 0 field groups in fieldConfigs " +
+                                           "but retrieved " + fieldConfigsSize);
+                        ret = false;
+                    }
+                    break;
+                case 4:     // Update Report
+                    if (fieldConfigsSize != 2) {
+                        System.out.println("Error: Update report " +
+                                           "expected 2 field groups in fieldConfigs " +
+                                           "but retrieved " + fieldConfigsSize);
+                        ret = false;
+                    }
+                    break;
+                case 5:     // Activity Report
+                    if (fieldConfigsSize != 0) {
+                        System.out.println("Error: Activity report " +
+                                           "expected 0 field groups in fieldConfigs " +
+                                           "but retrieved " + fieldConfigsSize);
+                        ret = false;
+                    }
+                    break;
+                case 6:     // Assumed Matches Report
+                    if (fieldConfigsSize != 1) {
+                        System.out.println("Error: Assumed Matches report " +
+                                           "expected 1 field group in fieldConfigs " +
+                                           "but retrieved " + fieldConfigsSize);
+                        ret = false;
+                    }
+                    break;
+                default:
+                    System.out.println("Error: unrecognized screen ID: " + scrID);
+                    ret = false;
+            }
+        }
+        assertTrue(ret);      
+    }
+        
     /** Main entry point
      * @param args args
      */
