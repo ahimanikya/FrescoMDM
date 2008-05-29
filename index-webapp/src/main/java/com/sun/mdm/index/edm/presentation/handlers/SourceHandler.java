@@ -1550,7 +1550,7 @@ public class SourceHandler {
     }
 
 
-    public HashMap removeFieldInputMasking(HashMap valueEnteredMap, String objectType) {
+    public HashMap removeFieldInputMasking(HashMap valueEnteredMap, String objectType) { 
         //get Field Config for the root 
         FieldConfig[] fcRootArray = (FieldConfig[]) getAllNodeFieldConfigs().get(objectType);
         //loop through all the FieldConfig values 
@@ -1562,6 +1562,7 @@ public class SourceHandler {
             if (inputMask != null && inputMask.length() > 0 && fcRootArray[k].getValueType() == ObjectField.OBJECTMETA_STRING_TYPE) {
                 inputMask = inputMask.replace("D", ":");
                 inputMask = inputMask.replace("L", ":");
+                inputMask = inputMask.replace("A", ":");
                 String unMaskedValueEntered = (String) valueEnteredMap.get(fcRootArray[k].getFullFieldName());
                 String[] maskChars = inputMask.split(":");
                 for (int i = 0; unMaskedValueEntered != null  && i <  maskChars.length; i++) {
@@ -1578,6 +1579,7 @@ public class SourceHandler {
                 if(userInputMask!=null){
                 userInputMask = userInputMask.replace("D", ":");
                 userInputMask = userInputMask.replace("L", ":");    
+                userInputMask = userInputMask.replace("A", ":");   
                 
               
                  String unMaskedValueEntered = (String) valueEnteredMap.get(fcRootArray[k].getFullFieldName());
