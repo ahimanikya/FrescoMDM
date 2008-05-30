@@ -30,6 +30,8 @@
 <%@ page import="java.util.Iterator"  %>
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
+
+<%@ page import="java.util.ResourceBundle"  %>
 <f:view>
   
     <html>
@@ -79,6 +81,8 @@
                                         <tr>
                                             
                                             <%
+			ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+
             ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
             CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
             TransactionHandler transactionHandler = new TransactionHandler();
@@ -153,10 +157,20 @@
                                                 if ("Add".equalsIgnoreCase(function)) {
                                                         dupHeading = "<b>" + function + "</b>";
                                                 } else if ("euidMerge".equalsIgnoreCase(function)){
-                                                    if (countEnt > 0) {
-                                                        dupHeading = "<b>Merged EUID</b>";
-                                                    } else if (countEnt == 0) {
-                                                        dupHeading = "<b>Main EUID</b>";
+                                                    if (countEnt == 1) {
+														String mergedLabel = bundle.getString("merged_euid_label");
+														dupHeading ="<b>"+mergedLabel+"</b>";
+
+                                                        //dupHeading = "<b>Merged EUID</b>";
+                                                    } else  if (countEnt >= 2) {
+														String afterMergedLabel = bundle.getString("after_merged_euid_label");
+                                                       // dupHeading = "<b>After Merged MAIN EUID</b>";
+													   dupHeading = "<b>"+afterMergedLabel+"</b>";
+                                                    } else 
+                                                        if (countEnt == 0) {
+														String beforeMergedLabel = bundle.getString("before_merged_euid_label");
+                                                        //dupHeading = "<b>Before Merged MAIN  EUID</b>";
+														dupHeading = "<b>"+beforeMergedLabel+"</b>";
                                                         mainEUID = (String) personfieldValuesMapEO.get("EUID");
                                                     }
                                                 } else {
