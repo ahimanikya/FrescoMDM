@@ -1574,15 +1574,21 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                     <tr>
                                                                         <td class="menutop"><b> LID&nbsp;<%=countEnt + 1%></b> </td>
                                                                     </tr> 
-                                                                    <tr>
-                                                                        <script> alllidsArray.push('<%=soHashMap.get("LID")%>')</script>
-                                                                            <td valign="top" name="sri" id="curve<%=soHashMap.get("LID")%>">
-                                                                            <a title ="<%=soHashMap.get("LID")%>" class="dupbtn" id="button<%=soHashMap.get("LID")%>" href="javascript:void(0)" onclick="javascript:collectLid('<%=soHashMap.get("LID")%>')">
-                                                                                <%=soHashMap.get("LID")%>
-                                                                            </a> 
-                                                                            </td>
-                                                                           <script> var thisText = document.getElementById('curve<%=soHashMap.get("LID")%>').innerHTML; alllidsactionText.push(thisText);</script> 
-                                                                        </tr>
+                                                                     <tr>
+                                                                    <script> alllidsArray.push('<%=soHashMap.get("LID")%>')</script>
+                                                                    <td valign="top" name="sri" id="curve<%=soHashMap.get("LID")%>">
+                                                                   <% if(request.getAttribute("mergedSOMap") != null ) { %>
+                                                                     <span title ="<%=soHashMap.get("LID")%>" class="dupbtn" >
+                                                                     <%=soHashMap.get("LID")%>
+                                                                     </span>
+                                                                     <%} else {%>
+                                                                     <a title ="<%=soHashMap.get("LID")%>" class="dupbtn" id="button<%=soHashMap.get("LID")%>" href="javascript:void(0)" onclick="javascript:collectLid('<%=soHashMap.get("LID")%>','<%=bundle.getString("source_keep_btn") + " " + localIdDesignation%>')">
+                                                                     <%=soHashMap.get("LID")%>
+                                                                     <script> var thisText = document.getElementById('curve<%=soHashMap.get("LID")%>').innerHTML; alllidsactionText.push(thisText);</script>
+                                                                      </a>
+                                                                  <%}%>
+                                                                 </td>
+                                                                 </tr>
                                                                 </table>
                                                             </div>
                                                                 <div id="personEuidDataContent<%=soHashMap.get("LID")%>" class="yellow">
