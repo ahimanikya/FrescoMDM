@@ -10,6 +10,8 @@
 
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 <%@ page import="com.sun.mdm.index.edm.services.masterController.MasterControllerService" %>
+<%@ page import="com.sun.mdm.index.edm.services.masterController.MasterControllerService" %>
+
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
@@ -177,6 +179,12 @@ if (results != null)   {
                                         <a href="transeuiddetails.jsf?transactionId=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"TransactionNumber"))%>&function=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"Function"))%>" >										
 										<%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
 										</a>
+
+								   <%  }  else if ((screenObject.getRootObj().getName()+"."+"Function").equalsIgnoreCase((String)fullFieldNamesList.toArray()[kc])) { 
+									 
+									   %>
+                                        <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":ValidationService.getInstance().getDescription(ValidationService.CONFIG_MODULE_FUNCTION,(String)  valueMap.get(fullFieldNamesList.toArray()[kc])))  %> 
+										
 								   <%  }  else { %>
                                         <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
 								   <% } %>
