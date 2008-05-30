@@ -25,6 +25,7 @@
 <%@ page import="com.sun.mdm.index.objects.SystemObject"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="java.util.ResourceBundle"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"%>
 
 
  
@@ -118,6 +119,8 @@ FieldConfig[] fcRootArray = (FieldConfig[]) allNodeFieldConfigsMap.get(rootNodeN
 MasterControllerService masterControllerService = new MasterControllerService();
 SystemObject singleSystemObjectLID = (SystemObject) session.getAttribute("singleSystemObjectLID");
 
+CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+
 //String URI = request.getRequestURI();
 //URI = URI.substring(1, URI.lastIndexOf("/"));
 //remove the app name 
@@ -184,6 +187,7 @@ String saveSbrString = request.getParameter("saveSbr");
 boolean isSaveSbr= (null == saveSbrString?false:true);
 
 
+boolean checkOverWrites  = false ;
 //Save Edited Values
 //Variables for adding new source fields
 String saveEditedValues= request.getParameter("editThisID");
@@ -463,6 +467,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		  for (int i =0 ; i <thisMinorObjectListCodes.size();i++)  { 
 			    String styleClass = ((i%2==0)?"even":"odd");
 			    HashMap minorObjectMap  = (HashMap) thisMinorObjectListCodes.get(i); 
+				 checkOverWrites =compareDuplicateManager.checkOverWrites(editEuid, minorObjectMap);
 			  	FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getParameter("MOT"));
 				%>
 	    					
@@ -497,12 +502,17 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 									  </a>
 								</td>
 							   <td valign="center" width="14px">							   
+								<% if (checkOverWrites){ %>
+																   
 									  <a href="javascript:void(0)" title="<%=deleteTitle%>"
 											 onclick='javascript:ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EOMinorDiv","")'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
-							   </td>
+									
+								
+                                                                 <% } %>
 
+                                                                </td>
 							  <% for(int k=0;k<fcArray.length;k++) {
 						            if(fcArray[k].isRequired()) {
                                %>
@@ -837,12 +847,20 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 												 <nobr>Edit&nbsp;<img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
 								</td>
-							   <td valign="center" width="14px">							   
-									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
+							   
+                                                           
+                                                           <td valign="center" width="14px">
+								<% if (checkOverWrites){ %>
+																   
+									  <a href="javascript:void(0)" title="<%=deleteTitle%>"
 											 onclick='javascript:ajaxMinorObjects("/<%=URI%>/ajaxservices/editeuidminorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>","<%=minorObjType%>EOMinorDiv","")'> 
-												 <nobr>Delete&nbsp;<img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
+												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
-							   </td>
+									
+								
+                                                                 <% } %>
+
+                                                                </td>
 
 							  <% for(int k=0;k<fcArray.length;k++) {
 								   if(fcArray[k].isRequired()) {%>
