@@ -112,7 +112,7 @@ public class UserCodeValidator implements FieldValidator {
             try {
                 if (!value.matches(format)) {
                     throw new PatternMismatchedException(mLocalizer.t("OBJ735: Value \"{0}\" " + 
-                                        "does not match the pattern \"{0}\"", value, format));
+                                        "does not match the pattern \"{1}\"", value, format));
                 }
             } catch (PatternSyntaxException e) {
                     throw new ValidationException(mLocalizer.t("OBJ736: Incorrect format \"{0}\"", 
