@@ -174,10 +174,20 @@
                                                         mainEUID = (String) personfieldValuesMapEO.get("EUID");
                                                     }
                                                 } else {
-                                                    if (countEnt > 0) {
-                                                        dupHeading = "<b>After " + function + "</b>";
-                                                    } else if (countEnt == 0) {
-                                                        dupHeading = "<b>Before " + function + "</b>";
+                                                    if (countEnt == 1) {
+														String afterUnmergedLabel = bundle.getString("after_unmerged_euid_label");
+														dupHeading = "<b>"+afterUnmergedLabel +"</b>";
+                                                        //dupHeading = "<b>After UnMerge MAIN EO </b>";
+                                                    } else if (countEnt >=2) {
+														String unmergedLabel = bundle.getString("unmerged_euid_label");
+														dupHeading ="<b>"+unmergedLabel+"</b>";
+                                                        //dupHeading = "<b> UnMerged EO  </b>";
+                                                    }
+													else if (countEnt == 0) {
+														String beforeUnmergedLabel = bundle.getString("before_unmerged_euid_label");                                                        
+														dupHeading = "<b>"+beforeUnmergedLabel+"</b>";
+
+                                                       // dupHeading = "<b>Before UnMerge MAIN EO</b>";
                                                         mainEUID = (String) personfieldValuesMapEO.get("EUID");
                                                     }
                                                 }
