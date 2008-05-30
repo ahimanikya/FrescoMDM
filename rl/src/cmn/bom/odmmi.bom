@@ -19,3 +19,15 @@ MDM_Solutions.zip|0444|bin|<SRC_DIR>|MDM_Solutions.zip|<DST_DIR>
 
 set SRC_DIR <SRCROOT>/index-gui/target
 open-dm-mi.nbm|0444|bin|<SRC_DIR>|open-dm-mi.nbm|<DST_DIR>
+
+
+set DST_DIR solutions
+
+set SRC_DIR <SRCROOT>/solutions/usa-patient/target
+MDM-Solution-USAPatient.zip|0444|bin|<SRC_DIR>|MDM-Solution-USAPatient.zip|<DST_DIR>
+
+set SRC_DIR <SRCROOT>/solutions/uk-patient/target
+MDM-Solution-UKPatient.zip|0444|bin|<SRC_DIR>|MDM-Solution-UKPatient.zip|<DST_DIR>
+
+set SRC_DIR <SRCROOT>/solutions/aus-patient/target
+MDM-Solution-AUSPatient.zip|0444|bin|<SRC_DIR>|MDM-Solution-AUSPatient.zip|<DST_DIR>
