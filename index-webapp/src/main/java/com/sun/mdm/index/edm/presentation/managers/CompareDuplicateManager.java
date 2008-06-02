@@ -67,6 +67,7 @@ import java.util.Set;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.master.search.merge.MergeHistoryNode;
 import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SBROverWrite;
 import net.java.hulp.i18n.LocalizationSupport;
@@ -974,5 +975,22 @@ public class CompareDuplicateManager {
             }
         }
         return ovwerWriteFound;
+    }
+    
+    // Method added by Anil to get Merged euid.
+    public String getMergedEuid(String euid) throws ProcessingException, UserException {
+
+        String mergedEuid = null;
+        EnterpriseObject enterpriseObject = null;
+
+        enterpriseObject = masterControllerService.getEnterpriseObject(euid);
+
+        if (enterpriseObject != null) {
+            mergedEuid = null;
+        } else {
+            MergeHistoryNode mhn = masterControllerService.getMergeHistory(euid);
+            mergedEuid = mhn.getEUID();
+        }
+        return mergedEuid;
     }
 }
