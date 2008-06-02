@@ -173,7 +173,7 @@
 														dupHeading = "<b>"+beforeMergedLabel+"</b>";
                                                         mainEUID = (String) personfieldValuesMapEO.get("EUID");
                                                     }
-                                                } else {
+                                                } else if ("euidUnMerge".equalsIgnoreCase(function)) {
                                                     if (countEnt == 1) {
 														String afterUnmergedLabel = bundle.getString("after_unmerged_euid_label");
 														dupHeading = "<b>"+afterUnmergedLabel +"</b>";
@@ -191,7 +191,19 @@
                                                         mainEUID = (String) personfieldValuesMapEO.get("EUID");
                                                     }
                                                 }
-                                                
+                                                else {
+                                                    if (countEnt > 0) {
+                                                        String afterLabel = bundle.getString("after_label");    
+                                                        dupHeading = "<b> " + afterLabel + "  "+function+ "</b>";                                                                                                           
+                                                        //dupHeading = "<b>After " + function + "</b>";
+                                                    } else if (countEnt == 0) {
+                                                        String beforeLabel = bundle.getString("before_label");  
+                                                       // dupHeading = "<b>Before " + function + "</b>";
+                                                        
+                                                        dupHeading = "<b> " +beforeLabel+" "+ function + "</b>";
+                                                        mainEUID = (String) personfieldValuesMapEO.get("EUID");
+                                                    }
+                                                }
                                                
 
                                                 HashMap allNodefieldsMap = sourceHandler.getAllNodeFieldConfigs();
