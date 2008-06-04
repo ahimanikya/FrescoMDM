@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Solutions Template</title><style type="text/css"></style><link rel="stylesheet" href="../../css/mural.css" type="text/css"><link rel="stylesheet" href="css/solutions.css" type="text/css"></head>
+<body>
+<table style="font-weight: bold; width: 100%; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="text-align: center; vertical-align: middle;"><big><big><big>&nbsp;Solution</big></big></big></td>
+</tr>
+</tbody>
+</table>
+<br>
+<span style="font-weight: bold;"></span>
+<table style="text-align: left; width: 247px; height: 72px;" border="0" cellpadding="0" cellspacing="2">
+<tbody>
+<tr>
+<td><span style="font-weight: bold;">Maintained
+by:</span></td>
+<td align="undefined" valign="undefined">Andrea
+Kendall<span style="font-family: Arial;"></span><span style="font-size: 6pt; font-family: Arial;"><br><a href="mailto:Andrea.Kendall@Sun.COM">Andrea.Kendall@Sun.COM</a></span><br>
+<a href="mailto:Andrea.Kendal@sun.com">
+</a></td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined"><span style="font-weight: bold;">Last Updated:</span></td>
+<td align="undefined" valign="undefined">June
+3rd, 2008</td>
+</tr>
+</tbody>
+</table>
+<span style="font-weight: bold;"></span><br>
+<h1>Description</h1>
+<p><i><span style="font-style: italic;"></span></i><i><span style="font-style: italic;"></span></i>The
+purpose of this solution is to demonstate how a United States of
+America Patient model might be implemented in the Master Data
+Management (MDM) product suite. Specificaly the Master Index portion of
+MDM. <br><br>This example uses a patient definition geared towards the
+United States of America.&nbsp; Since this is an USA Patient, fields
+such as the Social Security Number (SSN) are used for both block-search
+definitions and matches.</p>
+<h1>Data Model Overview</h1>
+<p>O<span style="font-style: italic;">verview
+diagram of
+the model. Show the overall structure without all the details.
+Highlight the fields used for matching and searches.</span></p>
+<h1>Data Model</h1>
+<p><i>Full
+data model.
+Using the UML or any other way to show this..</i></p>
+<h1>Master Index Properties</h1>
+<p><i>Fields of the
+model used for property definitions.</i></p>
+<h2>Matching</h2>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Field
+Name</td>
+<td align="undefined" valign="undefined">Match
+Type</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">
+<i>e.g.: First
+Name</i>
+</td>
+<td align="undefined" valign="undefined"><span style="font-style: italic;">e.g. First Name phonetic</span></td>
+</tr>
+</tbody>
+</table>
+<h2>Required Fields</h2>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Field
+Name</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">
+<i>e.g.: First
+Name</i>
+</td>
+</tr>
+</tbody>
+</table>
+<h2> Query - BLOCKER-SEARCH Rules</h2>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Block
+Name</td>
+<td align="undefined" valign="undefined">Queries</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined"><span style="font-style: italic;">e.g. NameFilter</span></td>
+<td align="undefined" valign="undefined"><span style="font-style: italic;">e.g. (FirstName == First Name)
+and (Last Name == Last Name) and (Date Of Birth == Date of Birth)</span></td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined"><span style="font-style: italic;">e.g. SSNFilter</span></td>
+<td style="font-style: italic;" align="undefined" valign="undefined">e.g. (SSN = SSN)</td>
+</tr>
+</tbody>
+</table>
+<h2>Standardization</h2>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Standardization
+Type</td>
+<td align="undefined" valign="undefined">Source
+Fields<br>
+</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined"><span style="font-style: italic;"><br>
+</span></td>
+<td align="undefined" valign="undefined"><span style="font-style: italic;"><br>
+</span></td>
+</tr>
+</tbody>
+</table>
+<br>
+<h2>Normalization</h2>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Type</td>
+<td align="undefined" valign="undefined">Unnormalized
+Source</td>
+<td align="undefined" valign="undefined">Normalized
+Destination</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined"></td>
+<td align="undefined" valign="undefined"></td>
+<td align="undefined" valign="undefined"></td>
+</tr>
+</tbody>
+</table>
+<h1>Enumerations</h1><h2>Code Modules</h2><h2>User Codes</h2></body></html>
