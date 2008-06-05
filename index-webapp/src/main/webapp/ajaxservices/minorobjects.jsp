@@ -1016,6 +1016,7 @@ if(isSave) {
 				boolean validated =  sourceAddHandler.validateSystemCodeLID(validateLID,validateSystemCode); 
 				 if(validated)  {	%>
 				  <script>
+                       var rootFormNameValue = document.forms['<%=objScreenObject.getRootObj().getName() + "AddNewSOInnerForm"%>'];
                        var formNameValue = document.forms['basicValidateAddformData'];
                        var lidField =  getDateFieldName(formNameValue.name,'LID');
                        var systemField =  getDateFieldName(formNameValue.name,'SystemCode');
@@ -1034,7 +1035,9 @@ if(isSave) {
 
 					   document.getElementById('addFormFields').style.visibility = 'visible';
 					   document.getElementById('addFormFields').style.display = 'block';
-
+					   if( rootFormNameValue.elements[0]!=null) {
+ 					       rootFormNameValue.elements[0].focus();
+ 					   }
 					   document.getElementById('validateButtons').style.visibility = 'hidden';
 					   document.getElementById('validateButtons').style.display = 'none';
 				  </script>
