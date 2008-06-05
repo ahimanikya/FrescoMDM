@@ -9,6 +9,7 @@
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.services.masterController.MasterControllerService"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ValidationService"  %>
@@ -23,7 +24,9 @@
 <%@ page import="com.sun.mdm.index.objects.epath.EPath"%>
 <%@ page import="com.sun.mdm.index.objects.epath.EPathArrayList"%>
 
+
 <%@ page import="java.text.SimpleDateFormat"  %>
+<%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="java.util.Date"  %>
 <%@ page import="java.util.HashMap"  %>
 <%@ page import="java.util.Set"  %>
@@ -122,6 +125,9 @@
             
             int countEnt = 0;
 
+            Operations operations = new Operations();
+            ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+
            ArrayList eoArrayList = (ArrayList) session.getAttribute("comapreEuidsArrayList");
 
 			if (request.getParameter("euids") != null) {
@@ -197,7 +203,21 @@
                                                 FieldConfig[] rootFieldConfigArray = (FieldConfig[]) sourceHandler.getAllNodeFieldConfigs().get(rootNodeName);
                                                 ObjectNodeConfig[] arrObjectNodeConfig = screenObject.getRootObj().getChildConfigs();
                    %>
-
+                   <%
+                                        HashMap eoMultiMergePreviewMap = new HashMap();
+                                        HashMap mergePersonfieldValuesMapEO = new HashMap();
+										String previewEuidValue = new String();
+									    HashMap previewEuidsHashMap = new HashMap();
+										String checkEuidValue = new String();
+										//If it is preview
+                                        if( request.getAttribute("eoMultiMergePreview") != null  ) {
+                                          eoMultiMergePreviewMap =(HashMap) request.getAttribute("eoMultiMergePreview");
+                                          mergePersonfieldValuesMapEO = (HashMap) eoMultiMergePreviewMap.get("ENTERPRISE_OBJECT");
+                                          previewEuidValue = (String) mergePersonfieldValuesMapEO.get("EUID");
+									      checkEuidValue =  (String) personfieldValuesMapEO.get("EUID");
+                                       }    
+                    %>
+ 
                                           <%if (countEnt == 0) {%>
                                             <td  valign="top" align="left">
                                                 <div id="outerMainContentDivid" style="visibility:visible;display:block;">
@@ -278,40 +298,44 @@
                                             <td  valign="top">
                                                 <div id="outerMainContentDivid<%=countEnt%>">
                                                 <div style="width:170px;overflow:hidden">
-                                                <%
-                                                if (countEnt > 0 && ("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
-                                                 %>
+                                                <% if (countEnt > 0 &&  "R".equalsIgnoreCase(potDupStatus) ) {  %>
                                                     <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="deactivate" >
-                                            <%} else {%>    
-													<%if( request.getAttribute("eoMultiMergePreview") != null) {%> <!-- if preview is then display the links-->
+                                                <%} else if (countEnt > 0 && "A".equalsIgnoreCase(potDupStatus) ){%>        
+                                                    <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="source" >
+                                                <%} else {%>    
+                                                   <% if (eoArrayListObjects.length == 1) {  %>
                                                      <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="blue" >
-													<%} else {%>
-                                                      <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="yellow" >
-													<%}%>
-                                            <%}%>        
+												    <%} else {%>
+													<div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="yellow" >
+												   <%}%>
+                                                <%}%>        
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
                                                                 <td class="<%=menuClass%>"><%=dupHeading%></td>
                                                             </tr> 
-                                                            <h:form>
-                                                                <tr>
-                                                                     <td valign="top" align="left" class="dupfirst">
+                                                            <tr>
+                                                                <td valign="top" align="left" class="dupfirst">
                                                                       <%
                                                                        if (countEnt > 0 && ("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
                                                                       %>
                                                                           <%=personfieldValuesMapEO.get("EUID")%>
-                                                                     <%}else{%>                       
+                                                                     <%}else{%>  
+                                                                       <%if( request.getAttribute("eoMultiMergePreview") != null || eoArrayListObjects.length == 1) { %> 
+                                                                          <span class="dupbtn"  title="<%=personfieldValuesMapEO.get("EUID")%>" >
+                                                                            <%=personfieldValuesMapEO.get("EUID")%>
+                                                                          </span>
+																		<%} else {%> <!-- if NOT preview is then display the links-->
                                                                         <a class="dupbtn"  title="<%=personfieldValuesMapEO.get("EUID")%>"
                                                                            id="clickButton<%=personfieldValuesMapEO.get("EUID")%>" 
                                                                            href="javascript:void(0)" 
                                                                            onclick="javascript:accumilateMultiMergeEuids('<%=personfieldValuesMapEO.get("EUID")%>')">
                                                                             <%=personfieldValuesMapEO.get("EUID")%>
                                                                         </a>
+																		<%}%>
                                                                      <%}%>                       
-                                                                    </td>
-                                                                </tr>
-                                                            </h:form>
-                                                        </table>
+                                                               </td>
+                                                            </tr>
+                                                         </table>
                                                     </div>
                                                 </div>
                                       <% if (session.getAttribute("eocomparision") == null && countEnt > 0) {%>
@@ -342,11 +366,10 @@
 
                                                  <div id="mainEuidContentButtonDiv<%=countEnt%>" class="yellow">
                                                         <div id="assEuidDataContent<%=countEnt%>" >
-                                                <%
-                                                if (countEnt > 0 && ("A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) ) {       
-                                                                                                                                                     
-                                                 %>
-                                                         <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="deactivate">
+                                                <% if (countEnt > 0 && "R".equalsIgnoreCase(potDupStatus) ) {%>
+                                                     <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="deactivate">
+                                                  <%} else if (countEnt > 0 && "A".equalsIgnoreCase(potDupStatus)  ){%>            
+                                                    <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="source">
                                                   <%} else {%>            
                                                             <div id="personEuidDataContent<%=personfieldValuesMapEO.get("EUID")%>" class="<%=styleClass%>">
                                                   <%}%>          
@@ -376,28 +399,61 @@
                                         } else {
                                             epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
                                         }
-                                        if (countEnt > 0) {
-                                            resultArrayMapCompare.put(epathValue, personfieldValuesMapEO.get(epathValue));
-                                        } else {
-                                            resultArrayMapMain.put(epathValue, personfieldValuesMapEO.get(epathValue));
-                                        }
+                                        
+										//Compare the surviving EUID if it is previewed
+                                        if( request.getAttribute("eoMultiMergePreview") != null) {         
+                                           resultArrayMapCompare.put(epathValue, personfieldValuesMapEO.get(epathValue)); //Compare with other values 
+										   resultArrayMapMain.put(epathValue, mergePersonfieldValuesMapEO.get(epathValue));//keep the surviving EO values to compare 
+										   
+										} else { //Compare with the main EUID only
+                                           if (countEnt > 0) { 
+                                             resultArrayMapCompare.put(epathValue, personfieldValuesMapEO.get(epathValue));
+                                           } else {
+                                             resultArrayMapMain.put(epathValue, personfieldValuesMapEO.get(epathValue));
+                                           }
+										}
+
                                                                     %>  
                         <tr>
                           <td>
-                              <%if (personfieldValuesMapEO.get(epathValue) != null) {%>
+						       <%if (personfieldValuesMapEO.get(epathValue) != null) { %>
+							  
 									<div id="highlight<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>" style="background-color:none;">
-										 <%if( request.getAttribute("eoMultiMergePreview") != null) {%> <!-- if preview is then display the links-->
-	                                      <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>')" >
+										 <%if( request.getAttribute("eoMultiMergePreview") != null) {
+                                              String destnEuid  = (String) request.getAttribute("destnEuid");
+                                              String[] srcs  = (String[]) request.getAttribute("sourceEUIDs");
+                                              //destnEuid
+											  previewEuidsHashMap.put(destnEuid,destnEuid);
+
+											  for(int s = 0  ; s < srcs.length;s++) {
+                                                 //destnEuid
+											     previewEuidsHashMap.put(srcs[s],srcs[s]);
+                                              }
+                    
+
+										  %> <!-- if preview is then display the links-->
+										       <%if ((previewEuidsHashMap.get((String) personfieldValuesMapEO.get("EUID")) != null  && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) && !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {%>
+ 	                                      <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get(epathValue)%>','<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>')" >
                                            <font class="highlight">
                                   		      <%if(fieldConfigMap.isSensitive()){%>                                                               
                                                  <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                               <%}else{%> 
 											     <%=personfieldValuesMapEO.get(epathValue)%>
                                                <%}%>
-                                             </a>  
-											 </font>
+ 											 </font>
+                                           </a>  
+											<%} else {%>
+                                  		      <%if(fieldConfigMap.isSensitive()){%>                                                               
+                                                 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                              <%}else{%> 
+											     <%=personfieldValuesMapEO.get(epathValue)%>
+                                               <%}%>
+											<%}%>
 
 		                                   <%}else {%> <!--if not [preview -->
+ 										       <%if ((countEnt > 0  &&
+                                                resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) && !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {%>
+
                                             <font class="highlight">
                                   		      <%if(fieldConfigMap.isSensitive()){%>                                                               
                                                  <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
@@ -405,20 +461,23 @@
 											     <%=personfieldValuesMapEO.get(epathValue)%>
                                                <%}%>
                                             </font>
-		                                   <%}%>
-									</div>
-									<!--div id="unHighlight<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>" style="visibility:hidden;display:none">							
+											<%} else {%>
                                   		      <%if(fieldConfigMap.isSensitive()){%>                                                               
                                                  <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                               <%}else{%> 
 											     <%=personfieldValuesMapEO.get(epathValue)%>
                                                <%}%>
-                                 		 </div-->
+											<%}%>
 
+		                                   <%}%>
+
+									</div>
+ 
                        <%} else {%>
 		                     <%if( request.getAttribute("eoMultiMergePreview") != null) {%> <!-- if preview is then display the links-->
+							 	<%if(previewEuidsHashMap.get((String) personfieldValuesMapEO.get("EUID")) != null ) { %>
 							     <div id="highlight<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>" style="background-color:none;">		
-								 <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>',' ','<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>')" >
+ 								 <a href="javascript:void(0)" onclick="javascript:populateMergeFields('<%=epathValue%>','<%=codesValuesMapEO.get(epathValue)%>',' ','<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>')" >
                                               <font class="highlight">
                                   		      <%if(fieldConfigMap.isSensitive()){%>                                                               
                                                  <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
@@ -428,8 +487,10 @@
                                                <%}%>
                                               </font>
                                              </a>  
-								</div>
-								<!--div id="unHighlight<%=personfieldValuesMapEO.get("EUID")%>:<%=epathValue%>" style="visibility:hidden;display:none">&nbsp;</div-->                                 
+ 								</div>
+								<%} else {%>
+								   &nbsp;
+								<%}%>
                              <%}else{%>		
                                 &nbsp;
                              <%}%>
@@ -458,10 +519,12 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 																	        <%if(minorObjectMapList.size() == 0) {%>
 																			  No <%=childObjectNodeConfig.getName()%>.
 																			<%} else {%>
-																	         &nbsp;
+																	         &nbsp; 
 																			<%}%>
 																	   </td>
 																	</tr>
+<h:form>
+
                                                                     <%
                                                                     for (int ii = 0; ii < minorObjectMapList.size(); ii++) {
 																	  minorObjectHashMap = (HashMap) minorObjectMapList.get(ii);
@@ -477,7 +540,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                                      <%if (fieldConfigMap.isSensitive()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
-                                                                                        <%=minorObjectHashMap.get(epathValue)%>
+     																					<%=minorObjectHashMap.get(epathValue)%>
                                                                                      <%}%>
 																				   </b>
 										<%}else{if (fieldConfigMap.isSensitive()){%>																				  
@@ -498,6 +561,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                   <%  } // TOTAL MINOR OBJECTS LOOP
 																  %>
 
+</h:form>
                                                                   <%
 								                                  for (int iex = 0; iex < maxMinorObjectsDiff; iex++) {							
 								                                  %>
@@ -879,7 +943,11 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                     }
                                                 %>
                                             <td  valign="top">
-                                                <div id="previewPane" style="visibility:visible;display:block">
+											    <%if(eoArrayListObjects.length == 1) { %> 
+                                                  <div id="previewPane" style="visibility:hidden;display:none">
+												<%} else {%>
+                                                  <div id="previewPane" style="visibility:visible;display:block">
+												<%}%>
                                                     <div style="width:170px;overflow:auto">
                                                         <div id="mainEuidContent" class="<%=styleClass%>">
                                                             <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -889,19 +957,10 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                             </table>
                                                         </div>
                                                     </div>
-                                                    <div id="mainEuidContentButtonDiv<%=countEnt%>" class="<%=cssMain%>">
+                                                    <div id="mainEuidContentButtonDiv<%=countEnt%>" >
                                                         <div id="assEuidDataContent<%=countEnt%>" style="visibility:visible;display:block;">
                                                             <div id="personassEuidDataContent" class="<%=styleClass%>">
                                                                 <table border="0" cellspacing="0" cellpadding="0" >
-                                                                    <%
-                                                                    HashMap eoMultiMergePreviewMap = new HashMap();
-                                                                    HashMap mergePersonfieldValuesMapEO = new HashMap();
-                                                                    if( request.getAttribute("eoMultiMergePreview") != null  ) {
-                                                                        //request.setAttribute("eoMultiMergePreview",request.getAttribute("eoMultiMergePreview"));
-                                                                        eoMultiMergePreviewMap =(HashMap) request.getAttribute("eoMultiMergePreview");
-                                                                        mergePersonfieldValuesMapEO = (HashMap) eoMultiMergePreviewMap.get("ENTERPRISE_OBJECT");
-                                                                    }    
-                                                                    %>
                                                                     <tr>
                                                                         <td>
                                                                           <%
@@ -948,7 +1007,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                                         <%=mergePersonfieldValuesMapEO.get(epathValue)%>
                                                                                      <%}%>
   																			   </span>
-                                                                             <%}else{%>
+                                                                              <%}else{%>
                                                                                <span id="<%=epathValue%>">&nbsp;</span>
                                                                              <%}%>
                                                                              
@@ -1078,11 +1137,13 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                         <tr>
                             <td>
                                 <div id="actionmainEuidContent" class="actionbuton">
-                                    <table cellpadding="0" cellspacing="0">
-                                        <% for (countEnt = 0; countEnt < eoArrayListObjects.length; countEnt++) {
+                                    <table cellpadding="0" cellspacing="0" border="0">
+									  <tr>
+									       <% for (countEnt = 0; countEnt < eoArrayListObjects.length; countEnt++) {
                                                 HashMap eoHashMapValues = (HashMap) eoArrayListObjects[countEnt];
                                                 HashMap personfieldValuesMapEO = (HashMap) eoHashMapValues.get("ENTERPRISE_OBJECT");
                                                 eoSources = (ArrayList) eoHashMapValues.get("ENTERPRISE_OBJECT_SOURCES");
+                                                eoHistory = (ArrayList) eoHashMapValues.get("ENTERPRISE_OBJECT_HISTORY");
 
                                                 String euid = (String) personfieldValuesMapEO.get("EUID");
                                                 String potDupStatus = (String) eoHashMapValues.get("Status");
@@ -1099,59 +1160,62 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
 
                                                                                                                                                  
                                             %>
-                                        <% if (countEnt == 0) {%>
-                                        <td><img src="images/spacer.gif" width="169px" height="1px" border="0"></td>
-                                        <% }%>
-                                        <!--Displaying view sources and view history-->
-                                        <td valign="top">
-                                            <div id="dynamicMainEuidButtonContent<%=countEnt%>" style="visibility:visible;display:block;">
-                                                <table border="0" cellspacing="0" cellpadding="0" border="0">
-                                                    <h:form>
+
+                                            <% if (countEnt == 0) {%>
+                                              <td><img src="images/spacer.gif" width="169px" height="1px" border="0"></td>
+                                            <%}%>										 
+                                            <td align="left">
+											<div id="dynamicMainEuidButtonContent<%=countEnt%>" style="visibility:visible;display:block;">
+                                              <table border="0" cellspacing="0" cellpadding="0" border="0">
                                                <% if (session.getAttribute("eocomparision") == null  && countEnt > 0 ) { %>
-											   
-                                               <tr> 
-                                                    <td valign="top">
-                                                      <% if (countEnt > 0 && "A".equalsIgnoreCase(potDupStatus) || "R".equalsIgnoreCase(potDupStatus)) { %>
+                                                <tr> 
+												   <td align="left">
+
+                                                      <% if (countEnt > 0 && "A".equalsIgnoreCase(potDupStatus) ||
+                                                              "R".equalsIgnoreCase(potDupStatus)) { %>
+					                                   <h:form>
                                                         <h:commandLink  styleClass="diffviewbtn" rendered="#{Operations.potDup_ResolveUntilRecalc}"
                                                                         actionListener="#{PatientDetailsHandler.unresolvePotentialDuplicateAction}">
                                                              <f:attribute name="potDupId" value="<%=potDupIdValueExpression%>"/>
                                                              <f:attribute name="eoArrayList" value="<%=eoArrayListValueExpression%>"/>
                                                              <h:outputText value="#{msgs.potential_dup_button}"/>
                                                         </h:commandLink>  
+					                                   </h:form>
                                                       <%} else  {%> 
-
-                                                      <h:outputLink 
-													  rendered="#{Operations.potDup_ResolveUntilRecalc}" 
-													  title="#{msgs.diff_person_heading_text}"
-													  onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" 
-                                                          styleClass="diffviewbtn"  
-                                                          value="javascript:void(0)">
-                                                          <h:outputText value="#{msgs.diff_person_heading_text}"/>
-                                                       </h:outputLink>   
-                                                      <%}%> 
-                                                </tr>
-                                                <%} else {%> 
-                                               <tr><td valign="top">&nbsp;</td></tr>
-                                                <%}%> 
-                                      
-                                                  <tr> 
+												        <%
+                                                         String diff_person_heading_text = bundle.getString("diff_person_heading_text");
+												         %>
+							                               <%if(operations.isPotDup_Unresolve()) {%>
+                                                           <a href="javascript:void(0)" class="diffviewbtn" 
+                                                              title="<%=diff_person_heading_text%>" 
+                                                              onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'<%=potDupId%>')" >
+															  <%=diff_person_heading_text%>
+                                                            </a>   
+							                             <%}%>
+													<%}%>
+											    </td>
+										  	 </tr>
+											<%}%>
+                                             <tr> 
                                                       <td valign="top">
-                                                          <a class="viewbtn"   title="<h:outputText value="#{msgs.view_history_text}"/>" href="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoSources.size()%>')" >  
-                                                              <h:outputText value="#{msgs.view_history_text}"/>
+                                                          <a class="viewbtn"   title="<h:outputText value="#{msgs.view_history_text}"/>" href="javascript:void(0)" onclick="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoSources.size()%>')" >  
+ 															  <%=bundle.getString("view_history_text")%>
                                                           </a>
                                                       </td>    
-                                                  </tr> 
-                                                  <tr> 
+                                              </tr> 
+                                              <tr> 
                                                       <td valign="top">
-                                                          <a title="<h:outputText value="#{msgs.view_sources_text}"/>" href="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoHistory.size()%>')" class="viewbtn"><h:outputText value="#{msgs.view_sources_text}"/></a> 
+                                                        <a title="<h:outputText value="#{msgs.view_sources_text}"/>" href="javascript:void(0)" onclick="javascript:showViewSources('mainDupSources','<%=eoSources.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoHistory.size()%>')" class="viewbtn">
+ 														  <%=bundle.getString("view_sources_text")%>
+														</a> 
                                                       </td>                                              
-                                                  </tr>
-                                                     <tr><td>&nbsp;</td></tr>
-                                                        
-                                                    </h:form>
-                                                </table>
-                                            </div> 
-                                        </td>
+                                              </tr>
+											  <tr><td>&nbsp;</td></tr>
+
+											</table>
+											</div>
+											</td> <!-- outer TD-->
+
                                         <% if (countEnt + 1 == eoArrayListObjects.length) {%>
                                         <td> <!--Displaying view sources and view history-->
                                             <div id="mergeEuidsDiv"  style="visibility:hidden;display:none;">
@@ -1159,10 +1223,10 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                                     <tr>
                                                         <td>
                                                             <h:form  id="previewForm">
-                                                                <h:commandLink styleClass="button" rendered="#{Operations.EO_Merge}"
+                                                                <h:commandLink styleClass="button" rendered="#{Operations.EO_Merge}" title="#{msgs.preview_column_text}"
                                                                                action="#{PatientDetailsHandler.previewPostMultiMergedEnterpriseObject}">
-                                                                    <span><h:outputText value="Preview "/></span>
-                                                                </h:commandLink>
+                                                                    <span><h:outputText value="#{msgs.preview_column_text}"/></span>
+                                                                </h:commandLink>	
                                                                 <h:inputHidden id="previewhiddenMergeEuids" value="#{PatientDetailsHandler.mergeEuids}" />
                                                                 <h:inputHidden id="destinationEO" value="#{PatientDetailsHandler.destnEuid}" />
                                                              </h:form>
@@ -1177,7 +1241,7 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                                 <table>
                                                     <tr>
                                                         <td>
-                                                            <h:outputLink styleClass="button"  rendered="#{Operations.EO_Merge}"
+                                                            <h:outputLink styleClass="button"  rendered="#{Operations.EO_Merge}" title="#{msgs.source_submenu_merge}"
                                                                           value="javascript:void(0)" 
                                                                           onclick="javascript:finalMultiMergeEuids('mergeDiv',event)" >
                                                                     <span><h:outputText value="#{msgs.source_submenu_merge}" /></span>
@@ -1187,7 +1251,7 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                                     <tr>
                                                         <td>
                                                             <h:form  id="previewCancelForm">
-                                                                <h:commandLink styleClass="button" 
+                                                                <h:commandLink styleClass="button" title="#{msgs.cancel_but_text}"
                                                                                actionListener="#{PatientDetailsHandler.undoMultiMerge}">
                                                                     <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                                                 </h:commandLink>
@@ -1201,12 +1265,15 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                         
                                         <%}%>
 
-                                        <%}%>
-                                        </table>
+										 <%}%>
+
+  									  </tr>
+                                    </table>
                                 </div>
                             </td>
-                        </tr>
-                        <!--AFTER-->
+
+						</tr>
+                     <!--AFTER-->
                    <%}%>
                         
                     </table>
@@ -1225,14 +1292,14 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                     <tr>
                                         <td>
                                             <h:form  id="mergeFinalForm">
-                                                <h:commandLink styleClass="button" 
+                                                <h:commandLink styleClass="button" title="#{msgs.ok_text_button}"
                                                                action="#{PatientDetailsHandler.performMultiMergedEnterpriseObject}">
                                                     <span><h:outputText value="#{msgs.ok_text_button}" /></span>
                                                 </h:commandLink>
                                                 <h:inputHidden id="previewhiddenMergeEuids" value="#{PatientDetailsHandler.mergeEuids}" />
                                                 <h:inputHidden id="destinationEO" value="#{PatientDetailsHandler.destnEuid}" />
                                                 <h:inputHidden id="selectedMergeFields" value="#{PatientDetailsHandler.selectedMergeFields}" />
-                                            <h:outputLink styleClass="button"  
+                                            <h:outputLink styleClass="button"  title="#{msgs.cancel_but_text}"
                                                           value="javascript:void(0)" 
                                                           onclick="javascript:showExtraDivs('mergeDiv',event)" >
                                                 <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
@@ -1265,11 +1332,11 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                                <tr>
                                                    <td align="right"  colspan="2">
                                                        
-                                                        <h:commandLink styleClass="button" 
+                                                        <h:commandLink styleClass="button" title="#{msgs.ok_text_button}"
                                                                        action="#{PatientDetailsHandler.makeDifferentPersonAction}">
                                                                 <span><h:outputText value="#{msgs.ok_text_button}" /></span>
                                                        </h:commandLink>   
-                                                       <h:outputLink  onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'123467')" 
+                                                       <h:outputLink  onclick="Javascript:showResolveDivs('resolvePopupDiv',event,'123467')" title="#{msgs.cancel_but_text}"
                                                                       styleClass="button"  
                                                                       value="javascript:void(0)">
                                                          <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
@@ -1288,24 +1355,20 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
         <%
         if( request.getAttribute("eoMultiMergePreview") != null) {
             String destnEuid  = (String) request.getAttribute("destnEuid");
-            
-            
-        String[] srcs  = (String[]) request.getAttribute("sourceEUIDs");
+            String[] srcs  = (String[]) request.getAttribute("sourceEUIDs");
+		%>
+		<script>
+			document.getElementById('mainEuidContent<%=destnEuid%>').className = "blue";
+            document.getElementById('personEuidDataContent<%=destnEuid%>').className = "blue";
+		</script>
+		<%
         for(int i=0;i<srcs.length;i++) {
         %>    
             
         <script>
-            document.getElementById('mainEuidContent<%=destnEuid%>').className = "blue";
-            document.getElementById('personEuidDataContent<%=destnEuid%>').className = "blue";
-
-
-            document.getElementById('mainEuidContent<%=srcs[i]%>').className = "yellow";
-            document.getElementById('personEuidDataContent<%=srcs[i]%>').className = "yellow";
-            
-            document.getElementById('clickButton<%=srcs[i]%>').style.cursor= 'not-allowed';
-            document.getElementById('clickButton<%=destnEuid%>').style.cursor= 'not-allowed';
-                
-        </script>
+			document.getElementById('mainEuidContent<%=srcs[i]%>').className = "blue";
+            document.getElementById('personEuidDataContent<%=srcs[i]%>').className = "blue";
+         </script>
         <%}%>
         <%}%>
 
