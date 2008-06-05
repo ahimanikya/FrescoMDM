@@ -266,11 +266,15 @@ public class SourceFieldsDialog extends javax.swing.JDialog implements TreeSelec
     
     public void valueChanged(TreeSelectionEvent e) {
         EntityNode selectedNode = (EntityNode) e.getPath().getLastPathComponent();
-
+        
         if (selectedNode != null && selectedNode.isField() && (isGeneratedFieldAllowed || !selectedNode.isGeneratedField())) {
             if (this.btnAddFieldID != null) {
                 this.btnAddFieldID.setEnabled(true);
-            }
+            } 
+        } else {
+             if (this.btnAddFieldID != null) {
+                this.btnAddFieldID.setEnabled(false);
+            }            
         }
     }
     
