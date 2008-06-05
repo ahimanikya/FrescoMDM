@@ -4,7 +4,7 @@
 <table style="font-weight: bold; width: 100%; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="0" cellspacing="0">
 <tbody>
 <tr>
-<td style="text-align: center; vertical-align: middle;"><big><big><big>&nbsp;Solution</big></big></big></td>
+<td style="text-align: center; vertical-align: middle;"><big><big><big>&lt;Model&gt; Solution</big></big></big></td>
 </tr>
 </tbody>
 </table>
@@ -27,7 +27,7 @@ Kendall<span style="font-family: Arial;"></span><span style="font-size: 6pt; fon
 </tr>
 </tbody>
 </table>
-<span style="font-weight: bold;"></span><br>
+<span style="font-weight: bold;"></span><br><hr style="width: 100%; height: 2px;">
 <h1>Description</h1>
 <p><i>How
 is the model
@@ -42,8 +42,13 @@ Highlight the fields used for matching and searches.</span></p>
 data model.
 Using the UML or any other way to show this..</i></p>
 <h1>Master Index Properties</h1>
-<p><i>Fields of the
-model used for property definitions.</i></p>
+<p>The following tables highlight fields that are used in the
+<span style="font-style: italic;">&lt;model&gt;</span> for matching and blocking opertions. &nbsp;Additionally
+the
+tables capture the required fields, fields that are standardized and
+fields that are Normilized. &nbsp; Finally it shows the complete
+database definitions that are used with the solution.<i><br>
+</i></p>
 <h2>Matching</h2>
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
 <tbody>
@@ -78,6 +83,12 @@ Name</i>
 </tbody>
 </table>
 <h2> Query - BLOCKER-SEARCH Rules</h2>
+A summary of the fields used for the blocker-search rules.<br>
+<br>
+<span style="font-style: italic;">Notes:</span> <br>
+<ul><li>_Phon indicates a phonetized field.</li><li>Compare is between Enterprise SystemSBR (Single Best
+Record) and the actual data. So (a == a) is actually
+&nbsp;(Enterprise.SystemSBR.a == a).U</li></ul>
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
 <tbody>
 <tr class="soltableheader">
@@ -132,4 +143,25 @@ Destination</td>
 </tr>
 </tbody>
 </table>
-<h1>Enumerations</h1><h2>Code Modules</h2><h2>User Codes</h2></body></html>
+<h2>Phonticized Fields</h2><table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Unphoneticized Source</td>
+<td align="undefined" valign="undefined">Phonetized Target<br></td>
+<td align="undefined" valign="undefined">Encoder<br></td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined"></td>
+<td align="undefined" valign="undefined"></td>
+<td align="undefined" valign="undefined"></td>
+</tr>
+</tbody>
+</table><h1>Enumerations</h1><h2>Code Modules</h2><pre>tCode(type,code,description)<br><br>'L' entries go into the sbyn_common_header table.<br>'V' entries go into the sbyn_common_detail table.</pre><h2>User Codes</h2>When the decr is selected in the MIDM GUI then the coresponding format,
+input_mask and value_mask are used. &nbsp;The input_mask shows the
+characters that can &nbsp;be typed.<br><br>For the input_mask and value_mask:<br><div style="margin-left: 40px;">A = an alphanumeric character  [A-Za-z0-9]<br>D = a decimal number [0-9]<br>L = an alphabetic character [A-Za-z]<br></div><br>For the value_mask:<br><div style="margin-left: 40px;">^ = remove the corresponding character from the input string when storing in the data.<br></div><br><br>Example:
+&nbsp;The AUXIDDEF shows three values in the MIDM GUI, "CREDIT CARD ID",
+"Medical License ID" and "Household ID". &nbsp;If the user selects the
+Household ID they can type in four deciimal numbers, a space,&nbsp;four
+deciimal numbers, a space and then&nbsp;four deciimal numbers (example: 1111
+2222 3333 4444). This will be converted to&nbsp;1111222233334444 and stored
+in the database.</body></html>

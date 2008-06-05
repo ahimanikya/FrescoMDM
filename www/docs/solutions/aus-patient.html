@@ -4,7 +4,7 @@
 <table style="font-weight: bold; width: 100%; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="0" cellspacing="0">
 <tbody>
 <tr>
-<td style="text-align: center; vertical-align: middle;"><big><big><big>&nbsp;Solution</big></big></big></td>
+<td style="text-align: center; vertical-align: middle;"><big><big><big>Austrlian Patient Solution</big></big></big></td>
 </tr>
 </tbody>
 </table>
@@ -26,43 +26,42 @@ Kendall<span style="font-family: Arial;"></span><span style="font-size: 6pt; fon
 3rd, 2008</td>
 </tr>
 </tbody>
-</table>
+</table><hr style="width: 100%; height: 2px;">
 <span style="font-weight: bold;"></span><br>
 <h1>Description</h1>
 <p><i>How
 is the model
 used.</i></p>
 <h1>Data Model Overview</h1>
-<p>O<span style="font-style: italic;">verview
-diagram of
-the model. Show the overall structure without all the details.
-Highlight the fields used for matching and searches.</span></p>
+<p>This
+&nbsp;overview of the data model shows each Sub Object Node of the
+AUSPatient. &nbsp;It highlights the main sections of the Austrlian
+Patient model. &nbsp;Additionally, it shows the required
+fields of the model.<span style="font-style: italic;"></span></p>
 <h1>Data Model</h1>
-<p><i>Full
-data model.
-Using the UML or any other way to show this..</i></p>
+<p>
+This is the UML model used to create the Austrilian Patient. &nbsp; You will
+notice that the model shows inheritance since the Austrilian Patient&nbsp; and the<a href="file:///C:/Mural/open-dm-mi/www/docs/solutions/aus-patient.html"> </a><a href="usa-patient.html">USA Patient</a>&nbsp;
+models are very similiar. The main difference being the use of a  Tax File Number (TFN) in Austrlia and
+the as an unique identifier&nbsp;Social
+Security Number (SSN) in the United States as an unique identifier </p>
 <h1>Master Index Properties</h1>
 <p><i>Fields of the
 model used for property definitions.</i></p>
-<h2>Matching</h2>
-<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<h2>Matching</h2><br><table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
 <tbody>
 <tr class="soltableheader">
-<td align="undefined" valign="undefined">Field
+<td style="width: 60%;">Field
 Name</td>
 <td align="undefined" valign="undefined">Match
 Type</td>
 </tr>
 <tr>
-<td align="undefined" valign="undefined">
-<i>e.g.: First
-Name</i>
-</td>
-<td align="undefined" valign="undefined"><span style="font-style: italic;">e.g. First Name phonetic</span></td>
+<td align="undefined" valign="undefined">USAPatient.FirstName_Std</td>
+<td align="undefined" valign="undefined">FirstName</td>
 </tr>
-</tbody>
-</table>
-<h2>Required Fields</h2>
+<tr><td align="undefined" valign="undefined">AUSPatient.LastName_Std</td><td align="undefined" valign="undefined">LastName</td></tr><tr><td align="undefined" valign="undefined">AUSPatient.SSN</td><td align="undefined" valign="undefined">SSN</td></tr><tr><td align="undefined" valign="undefined">AUSPatient.DOB</td><td align="undefined" valign="undefined">Date</td></tr><tr><td align="undefined" valign="undefined">AUSPatient.Gender</td><td align="undefined" valign="undefined">Gender</td></tr></tbody>
+</table><h2>Required Fields</h2>
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
 <tbody>
 <tr class="soltableheader">
