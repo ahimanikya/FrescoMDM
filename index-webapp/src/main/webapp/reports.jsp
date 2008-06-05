@@ -289,7 +289,7 @@ function setRand(thisrand)  {
 													 <tr>
 													  <td>
 													   <nobr>
-														  <a class="button"  title="<h:outputText value="#{msgs.clear_button_label}"/>" href="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')" >
+														  <a class="button"  title="<h:outputText value="#{msgs.clear_button_label}"/>" href="javascript:void(0)" onclick="javascript:ClearContents('form<%=i%>')" >
 															<span><h:outputText value="#{msgs.clear_button_label}"/> </span>
 														  </a>
 													   </nobr>
