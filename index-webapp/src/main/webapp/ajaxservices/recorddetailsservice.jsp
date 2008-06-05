@@ -118,6 +118,9 @@ ArrayList collectedEuidsList = new ArrayList();
 		     patientDetailsHandler.getParametersMap().put(attributeName,attributeValue);			
       }
    } 
+  //set the selected search type here....
+ patientDetailsHandler.setSelectedSearchType(request.getParameter("selectedSearchType"));
+
 %>
 
 
