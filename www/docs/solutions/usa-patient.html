@@ -4,8 +4,7 @@
 
 <style type="text/css"></style>
 <link rel="stylesheet" href="../../css/mural.css" type="text/css">
-<link rel="stylesheet" href="css/solutions.css" type="text/css">
-</head>
+<link rel="stylesheet" href="css/solutions.css" type="text/css"></head>
 <body>
 <table style="font-weight: bold; width: 100%; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="0" cellspacing="0">
 <tbody>
@@ -50,7 +49,7 @@ fields
 such as the First Name, Last Name, Date of Birth and Social Security
 Number (SSN) are used for both block-search definitions and matches.</p>
 <h1>Data Model Overview<span style="font-style: italic;">.</span></h1>
-<br>
+
 This
 &nbsp;overview of the data model shows each Sub Object Node of the
 USAPatient. &nbsp;It highlights the main sections of the United
@@ -64,12 +63,16 @@ will
 notice that the model shows inheritance since the USA Patient and the<a href="aus-patient.html"> Austrial Patient</a>
 models are very similiar. The main difference being the use of a Social
 Security Number (SSN) in the United States as an unique identifier and
-the Tax File Number (TFN) in Austrial as an unique identifier.<br>
+the Tax File Number (TFN) in Austrial as an unique identifier.
+Additionaly, this model represents differences in the health care
+system
+reflected by the <span style="font-weight: bold;">Insurance</span> Sub Object Node of the Austriallian Patient.
+<br>
 <br>
 <img style="width: 800px; height: 2608px;" alt="Full USA Patient UML" src="images/USAPatient-UML-small.png"><br>
 <h1>Master Index Properties</h1>
 <p>The following tables highlight fields that are used in the
-USAPatient for matching and blocking opertions. &nbsp;Additionally
+USAPatient for matching and blocking opertions. &nbsp;Additionally,
 the
 tables capture the required fields, fields that are standardized and
 fields that are Normilized. &nbsp; Finally it shows the complete
