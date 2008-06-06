@@ -101,7 +101,7 @@ public class AssumedMatchPageAdapter implements PageAdapter, java.io.Serializabl
             mNumElements = mObjArray.length;
         } catch (Exception e) {
             throw new PageException(mLocalizer.t("PAG502: AssumedMatchPageAdapter " +
-                                        "could not be initialized: {0}", e));
+                                        "could not be initialized: {0}", e.getMessage()));
         }
     }
 
@@ -238,7 +238,7 @@ public class AssumedMatchPageAdapter implements PageAdapter, java.io.Serializabl
             con = ConnectionUtil.getConnection();
         } catch (Exception e) {
             throw new PageException(mLocalizer.t("PAG506: AssumedMatchPageAdapter " +
-                                        "could not obtain a database connection: {0}", e));
+                                        "could not obtain a database connection: {0}", e.getMessage()));
         }
         return con;
     }
@@ -306,13 +306,13 @@ public class AssumedMatchPageAdapter implements PageAdapter, java.io.Serializabl
                     EnterpriseObject afterEO = history.getAfterEO();
                     ams.setBeforeEO(beforeEO);
                     SystemObject so = afterEO.getSystemObject(ams.getSystemCode(), 
-                        ams.getLID());
+                                                              ams.getLID());
                     ams.setAfterEO(afterEO);
                     ams.setNewSO(so);
                 }
             } catch (Exception e) {
                 throw new PageException(mLocalizer.t("PAG508: Could not load " +
-                                        "Assumed Match Summary records: {0}", e));
+                                        "Assumed Match Summary records: {0}", e.getMessage()));
             } finally {
                 if (con != null) {
                     releaseConnection(con);
@@ -332,7 +332,7 @@ public class AssumedMatchPageAdapter implements PageAdapter, java.io.Serializabl
             con.close();
         } catch (SQLException e) {
             throw new PageException(mLocalizer.t("PAG509: AssumedMatchPageAdapter " +
-                                        "could not close the database connection: {0}", e));
+                                        "could not close the database connection: {0}", e.getMessage()));
         }
     }
  

@@ -292,7 +292,7 @@ public class AssumedMatchManager {
         } catch (Exception e) {
             throw new AssumedMatchException(mLocalizer.t("ASM506: Could not lookup " + 
                                                          "Assumed Match records due " + 
-                                                         "to a general error: {0}", e));
+                                                         "to a general error: {0}", e.getMessage()));
         }
     }    
     
