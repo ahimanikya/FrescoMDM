@@ -229,13 +229,6 @@ declare
         tCode('V', 'OTHER', 'OTHER'),
         tCode('V', 'UNKNOWN', 'UNKNOWN'),
 
-        -- ****     POLICYTYPE   ****
-        tCode('L', 'POLYTYPE', 'Policy Type'),
-        tCode('V', 'HMO', 'HMO'),
-        tCode('V', 'PPO', 'PPO'),
-        tCode('V', 'OTHER', 'OTHER'),
-        tCode('V', 'UNKNOWN', 'UNKNOWN'),
-
         -- ****    STATE   ****
         tCode('L', 'STATE', 'State'),
         tCode('V', 'ACT', 'Australian Capital Territory'),
