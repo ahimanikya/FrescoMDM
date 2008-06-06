@@ -80,12 +80,12 @@ public class AssumedMatchesUtil extends ScreenUtil  {
         addSearchField(nodeConfigObj.getName(), FIELD_NAME_CREATE_START_DATE,
             "Create Date From", FieldConfig.GUI_TYPE_TEXTBOX, "", DEFAULT_FIELD_LENGTH, ConfigManager.getDateInputMask(),
             ObjectField.OBJECTMETA_DATE_TYPE, false, searchFieldList);
-        addSearchField(nodeConfigObj.getName(), FIELD_NAME_CREATE_START_TIME,
-            "Create Time From", FieldConfig.GUI_TYPE_TEXTBOX, "", DEFAULT_FIELD_LENGTH, "DD:DD:DD",
-            ObjectField.OBJECTMETA_TIMESTAMP_TYPE, false, searchFieldList);
         addSearchField(nodeConfigObj.getName(), FIELD_NAME_CREATE_END_DATE,
             "To Create Date", FieldConfig.GUI_TYPE_TEXTBOX, "", DEFAULT_FIELD_LENGTH, ConfigManager.getDateInputMask(),
             ObjectField.OBJECTMETA_DATE_TYPE, false, searchFieldList);
+        addSearchField(nodeConfigObj.getName(), FIELD_NAME_CREATE_START_TIME,
+            "Create Time From", FieldConfig.GUI_TYPE_TEXTBOX, "", DEFAULT_FIELD_LENGTH, "DD:DD:DD",
+            ObjectField.OBJECTMETA_TIMESTAMP_TYPE, false, searchFieldList);
         addSearchField(nodeConfigObj.getName(), FIELD_NAME_CREATE_END_TIME,
             "To Create Time", FieldConfig.GUI_TYPE_TEXTBOX, "", DEFAULT_FIELD_LENGTH, "DD:DD:DD",
             ObjectField.OBJECTMETA_TIMESTAMP_TYPE, false, searchFieldList);
