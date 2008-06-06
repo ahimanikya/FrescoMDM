@@ -465,8 +465,11 @@ public class MasterControllerService {
      */
     public void insertAuditLog(String userName, String euid1, String euid2, String function, int screeneID, String detail)
             throws ProcessingException, UserException, ObjectException {
+        ConfigManager configManager = ConfigManager.getInstance();
+        if (configManager.getAuditLogConfig() == false) {
+            return;
+        }
         if (userName != null && euid1 != null && function != null && detail != null) {
-            ConfigManager configManager = ConfigManager.getInstance();
             String[] primaryObjType = configManager.getRootNodeNames();
             AuditDataObject ado = new AuditDataObject("", primaryObjType[0], euid1, euid2, function, detail, new Date(), userName);
             if (configManager.getAuditLogConfig()) {
