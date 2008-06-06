@@ -147,7 +147,7 @@ Destination</td>
 <tbody>
 <tr class="soltableheader">
 <td align="undefined" valign="undefined">Unphoneticized Source</td>
-<td align="undefined" valign="undefined">Phonetized Target<br></td>
+<td align="undefined" valign="undefined">Phoneticized Target<br></td>
 <td align="undefined" valign="undefined">Encoder<br></td>
 </tr>
 <tr>
@@ -156,7 +156,7 @@ Destination</td>
 <td align="undefined" valign="undefined"></td>
 </tr>
 </tbody>
-</table><h1>Enumerations</h1><h2>Code Modules</h2><pre>tCode(type,code,description)<br><br>'L' entries go into the sbyn_common_header table.<br>'V' entries go into the sbyn_common_detail table.</pre><h2>User Codes</h2>When the decr is selected in the MIDM GUI then the coresponding format,
+</table><h1>Enumerations</h1><h2>Code Modules</h2><pre>tCode(type,code,description)<br><br>'L' entries go into the sbyn_common_header table.<br>'V' entries go into the sbyn_common_detail table.</pre><h2>User Codes</h2>When the user-code&nbsp; is selected in the MIDM GUI then the coresponding format,
 input_mask and value_mask are used. &nbsp;The input_mask shows the
 characters that can &nbsp;be typed.<br><br>For the input_mask and value_mask:<br><div style="margin-left: 40px;">A = an alphanumeric character  [A-Za-z0-9]<br>D = a decimal number [0-9]<br>L = an alphabetic character [A-Za-z]<br></div><br>For the value_mask:<br><div style="margin-left: 40px;">^ = remove the corresponding character from the input string when storing in the data.<br></div><br><br>Example:
 &nbsp;The AUXIDDEF shows three values in the MIDM GUI, "CREDIT CARD ID",
@@ -164,4 +164,10 @@ characters that can &nbsp;be typed.<br><br>For the input_mask and value_mask:<br
 Household ID they can type in four deciimal numbers, a space,&nbsp;four
 deciimal numbers, a space and then&nbsp;four deciimal numbers (example: 1111
 2222 3333 4444). This will be converted to&nbsp;1111222233334444 and stored
-in the database.</body></html>
+in the database.<br><br>Example:
+&nbsp;The AUXIDDEF shows three values in the MIDM GUI, "CREDIT CARD
+ID", "Medical License ID" and "Household ID". &nbsp;If the user selects
+the Household ID they can type in four deciimal numbers, a
+space,&nbsp;four deciimal numbers, a space and then&nbsp;four deciimal
+numbers (example: 1111 2222 3333 4444). This will be converted
+to&nbsp;1111222233334444 and stored in the database. <span style="font-family: monospace;"></span><pre style="margin-left: 40px;">insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br>   values ('AUXIDDEF', 'CCID', 'CREDIT CARD ID', '[0-9]{16}', 'DDDD DDDD DDDD DDDD', 'DDDD^DDDD^DDDD^DDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br>   values ('AUXIDDEF', 'MEDID', 'Medical License ID', '[A-Za-z]{3}[0-9]{6}', 'LLL-DDDDDD', 'LLL^DDDDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br>   values ('AUXIDDEF', 'HHID', 'Household ID', '[A-Za-z0-9]{3}[0-9]{4}', 'AAADDDD', 'AAADDDD');</pre></body></html>
