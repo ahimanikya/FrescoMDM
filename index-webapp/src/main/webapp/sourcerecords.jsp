@@ -252,6 +252,7 @@
 									HttpSession sessionFaces = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                              		SourceAddHandler  sourceAddHandlerFaces   = (SourceAddHandler)sessionFaces.getAttribute("SourceAddHandler");
 
+									 CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
                                         int addressSize;
                                         int phoneSize;
                                         int aliasSize;
@@ -264,13 +265,15 @@
                                                         ValueExpression fvalueVaueExpression;
                                                 ObjectNodeConfig[] arrObjectNodeConfig = screenObject.getRootObj().getChildConfigs();
                                                 HashMap allNodefieldsMap = sourceHandler.getAllNodeFieldConfigs();
+										String eoStatus= new String();
  									ValueExpression localIdDesignationVE = ExpressionFactory.newInstance().createValueExpression( localIdDesignation  ,  localIdDesignation.getClass()); 	
 									%>
                             <div class="yui-content">
                               <% if(operations.isSO_SearchView()){%> 
                                 <div id=viewEditTab">
                             
-                                    <%if (singleSystemObjectLID != null) {%>
+                                    <%if (singleSystemObjectLID != null) {
+										eoStatus= compareDuplicateManager.getEnterpriseObjectStatusForSO(singleSystemObjectLID);%>
                                     <%if ("viewSO".equalsIgnoreCase(keyFunction)) {%>
                                     <h:form>
                                         <div  id="sourceViewBasicSearch">                                            
@@ -368,6 +371,7 @@
                                                     %>
                                                     
                                                     <td>
+                                                    <%if(eoStatus.equalsIgnoreCase("active")){ %>
 													    <!--Display edit link only when the system object-->
                                                         <h:commandLink  title= "#{msgs.source_rec_edit_but}" styleClass="button" 
                                                                         action="#{NavigationHandler.toSourceRecords}" 
@@ -376,7 +380,14 @@
                                                             <f:attribute name="soValueExpression" value="<%=soValueExpression%>"/>                
                                                             <span><h:outputText value="#{msgs.source_rec_edit_but}"/></span>
                                                         </h:commandLink>   
+													 <% } else {%>
+													        <input type="button" title="<h:outputText value="#{msgs.source_rec_edit_but}"/>"  disabled="true" readonly="true"  value="<h:outputText value="#{msgs.source_rec_edit_but}"/>"
+                                                                             />
+                                             
+                                                
+													 <%}%>
                                                     </td>
+													
                                                     <td>
                                                         <h:commandLink title="#{msgs.source_rec_vieweuid_but}"  styleClass="button" 
                                                                         rendered="#{Operations.SO_SearchView}"
@@ -1076,7 +1087,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                     <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6 && feildConfig.name eq 'LID'}" >
                                                                         <nobr>
                                                                             <h:inputText   id="LID"
-																			               title="<%=localIdDesignationVE%>"
+																			               title="LID"
                                                                                            required="true" 
 																						   readonly="true"
 																						   label="#{feildConfig.displayName}" 
@@ -1497,7 +1508,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                           <tr>
                                                               
                                                                <%
-																   CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
+																  
                                                     Object[] soHashMapArrayListObjects = newSoArrayList.toArray();
                                                     String cssClass = "dynaw169";
                                                     String cssMain = "maineuidpreview";
