@@ -855,7 +855,7 @@ function submitFormData(form, thisInnerHtmlDivName) {
     var lidArray = [];
     var alllidsArray = [];
     var alllidsactionText = [];
-    function collectLid(euid) {
+    function collectLid(euid,localIdDesignation) {
         var found = "";
         var allLIds = [];
         var allLIdsCheck = [];
@@ -902,16 +902,21 @@ function submitFormData(form, thisInnerHtmlDivName) {
             var two;
             for (var i=0; i<allLIdsCheck.length; i++) {            
                 if (allLIdsCheck[i] == lidArray[0])   {
-                    one = "Keep LID "+ (i+1);
+                    one = localIdDesignation + " " + (i+1);
                 }
                 if (allLIdsCheck[i] == lidArray[1])   {
-                    two = "Keep LID "+ (i+1);
+                    two = localIdDesignation + " " + (i+1);
                 }
             }
             var system = document.getElementById("basicMergeformData:sourceOption").options[document.getElementById("basicMergeformData:sourceOption").selectedIndex].value;
 
             document.getElementById("LID1").innerHTML = one;
             document.getElementById("LID2").innerHTML = two;           
+            
+			//Set the title for the links here
+            document.getElementById("previewlid1Form:lid1Link").title = one;
+			document.getElementById("previewlid2Form:lid2Link").title = two;           
+
             document.getElementById("previewlid1Form:previewhiddenLid1").value = lidArray[1] + ':' + lidArray[0];
             document.getElementById("previewlid2Form:previewhiddenLid2").value = lidArray[0] + ':'+ lidArray[1];
             //Set System
@@ -1238,7 +1243,14 @@ function showResolveDivs(divId,thisEvent,potDupId)  {
    document.getElementById(divId).style.visibility = "hidden";
    document.getElementById(divId).style.display = "none";
 }
-document.getElementById('potentialDuplicateId').value = potDupId;
+   //For duplicate preview screen
+   if(document.getElementById('potentialDuplicateId') != null ) {
+       document.getElementById('potentialDuplicateId').value = potDupId;
+   }
+   //For compare duplicate screen
+   if(document.getElementById('reportYUISearch:potentialDuplicateId') != null ) {
+     document.getElementById('reportYUISearch:potentialDuplicateId').value = potDupId;
+   }
 
 }
 
