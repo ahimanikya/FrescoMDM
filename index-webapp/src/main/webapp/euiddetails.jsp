@@ -871,7 +871,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                         <tr>
                             <td>
                                 <div id="actionmainEuidContent" class="actionbuton">
-                                <table width="100%" cellpadding="0" cellspacing="0">
+                                <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                     <tr>
                                         <% 
 
@@ -897,7 +897,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                         <td>
                                         <td valign="top">
                                             <div id="dynamicMainEuidButtonContent<%=countEnt%>">
-                                                <table border="0" cellspacing="0" cellpadding="0" border="0">
+                                                <table border="0" cellspacing="0" cellpadding="0" >
                                                         <%if ("active".equalsIgnoreCase(eoStatus)) {%>
                                                 <tr> 
                                                     <td valign="top" width="125px">
@@ -964,17 +964,25 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                       %>  
                                                           <tr>
                                                             <td valign="top">
-                                                                <h:outputLink styleClass="viewbtn" rendered="#{Operations.EO_Unmerge}"
+                                                                <h:outputLink styleClass="viewbtn" rendered="#{Operations.EO_Unmerge}" title="#{msgs.Unmerge_but_text}"
                                                                               onclick="Javascript:showConfirm('unmergePopupDiv',event)" 
                                                                               value="Javascript:void(0)">
                                                                     <h:outputText  value="#{msgs.Unmerge_but_text}"/>                                                          
                                                                 </h:outputLink>
                                                             </td> 
                                                         </tr>
+
+                                                    <tr>
+                                                      <td valign="top">
+                                                         <a href="javascript:void(0);" class="viewbtn" title="<h:outputText  value="#{msgs.View_MergeTree_but_text}"/>"									 onclick="javascript:ajaxURL('/<%=URI%>/viewmergetree.jsf?euid=<%=personfieldValuesMapEO.get("EUID")%>&rand=<%=rand%>','tree',event)">
+                                                          <h:outputText  value="#{msgs.View_MergeTree_but_text}"/>
+                                                         </a>
+                                                      </td>
+                                                  </tr>
                                                         <tr>
                                                             <td valign="top">
                                                                 <h:form>
-                                                                    <h:commandLink styleClass="activeviewbtn" rendered="#{Operations.EO_Merge}"
+                                                                    <h:commandLink styleClass="activeviewbtn" rendered="#{Operations.EO_Merge}" title="#{msgs.View_Merge_Records_but_text}"
                                                                                    actionListener="#{PatientDetailsHandler.viewMergedRecords}">
                                                                         <f:attribute name="eoArrayList" value="<%=eoArrayListVE%>"/>        
                                                                         <f:attribute name="euidValueExpression" value="<%=euidValueExpression%>"/>
@@ -984,13 +992,6 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                 </h:form>
                                                             </td> 
                                                         </tr>
-                                                    <tr>
-                                                      <td valign="top">
-                                                         <a href="javascript:void(0);" class="viewbtn" onclick="javascript:ajaxURL('/<%=URI%>/viewmergetree.jsf?euid=<%=personfieldValuesMapEO.get("EUID")%>&rand=<%=rand%>','tree',event)">
-                                                          <h:outputText  value="#{msgs.View_MergeTree_but_text}"/>
-                                                         </a>
-                                                      </td>
-                                                  </tr>
                                                    <%}%>
 										<%
                                         unMergeEuidVE = ExpressionFactory.newInstance().createValueExpression(euid, euid.getClass());
@@ -999,8 +1000,8 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                           <%}%> 
 
 
-  											   </div>
                                                </table>                                               
+  											   </div>
                                         </td>   
 										<%}%>
                                     </tr>

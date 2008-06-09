@@ -264,7 +264,8 @@
                                                         ValueExpression fvalueVaueExpression;
                                                 ObjectNodeConfig[] arrObjectNodeConfig = screenObject.getRootObj().getChildConfigs();
                                                 HashMap allNodefieldsMap = sourceHandler.getAllNodeFieldConfigs();
-                                    %>
+ 									ValueExpression localIdDesignationVE = ExpressionFactory.newInstance().createValueExpression( localIdDesignation  ,  localIdDesignation.getClass()); 	
+									%>
                             <div class="yui-content">
                               <% if(operations.isSO_SearchView()){%> 
                                 <div id=viewEditTab">
@@ -896,6 +897,7 @@
                                     <%}%>
                                     <%} else {%>
                                     <!--START SEARCH CRITERIA-->
+
                                     <div id="sourceViewBasicSearch">
                                         <h:form id="basicViewformData">
                                             <h:inputHidden id="enteredFieldValues" value="#{SourceHandler.enteredFieldValues}"/>
@@ -914,7 +916,7 @@
                                                                 
                                                             <!--Rendering HTML Select Menu List-->
                                                             <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
-                                                                <h:selectOneMenu rendered="#{feildConfig.name eq 'SystemCode'}"
+                                                                <h:selectOneMenu title="SystemCode" rendered="#{feildConfig.name eq 'SystemCode'}"
 onblur="javascript:accumilateFormSelectFieldsOnBlur('basicViewformData',this,'#{feildConfig.name}')"
 onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                     <f:selectItem itemLabel="" itemValue="" />
@@ -942,8 +944,9 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                                    rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
                                                                                        
                                                                     <h:inputText   required="#{feildConfig.required}" 
-                                                                                   id="LID"
+                                                                                   id="LID" 
                                                                                    label="#{feildConfig.displayName}" 
+																				   title="<%=localIdDesignationVE%>"
                                                                                    readonly="true"
                                                                                    onkeydown="javascript:qws_field_on_key_down(this, document.basicViewformData.lidmask.value)"
                                                                                    onkeyup="javascript:qws_field_on_key_up(this)"
@@ -1073,7 +1076,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                     <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6 && feildConfig.name eq 'LID'}" >
                                                                         <nobr>
                                                                             <h:inputText   id="LID"
-																			               title="LID"
+																			               title="<%=localIdDesignationVE%>"
                                                                                            required="true" 
 																						   readonly="true"
 																						   label="#{feildConfig.displayName}" 
@@ -1419,7 +1422,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                    for="#{msgs.transaction_source}" value="#{msgs.transaction_source}"/>
                                                                 </td>
                                                                <td>
-                                                                   <h:selectOneMenu  onchange="javascript:setLidMaskMergeValue(this,'basicMergeformData')"
+                                                                   <h:selectOneMenu title="#{msgs.transaction_source}" onchange="javascript:setLidMaskMergeValue(this,'basicMergeformData')"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"id="sourceOption" 
                                                                    value="#{SourceMergeHandler.source}" >
 																	   <f:selectItem itemLabel="" itemValue="" />
@@ -1430,7 +1433,10 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                <td>
                                                                <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                    > <%=localIdDesignation%> 1  </font>
-                                                               <h:inputText value="#{SourceMergeHandler.lid1}" id="LID1"
+																   <%
+																	ValueExpression mergeLIDVaueExpression = ExpressionFactory.newInstance().createValueExpression( localIdDesignation+ " 1" ,  localIdDesignation.getClass());   
+																   %>
+                                                               <h:inputText value="#{SourceMergeHandler.lid1}" id="LID1" title="<%=mergeLIDVaueExpression%>"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                     onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                     onkeyup="javascript:qws_field_on_key_up(this)"/>  
@@ -1438,24 +1444,29 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                 
 																   <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                    > <%=localIdDesignation%> 2  </font>
-                                                                   <h:inputText value="#{SourceMergeHandler.lid2}" id="LID2"
+                                                                   <h:inputText value="#{SourceMergeHandler.lid2}" id="LID2" title="<%=mergeLIDVaueExpression%>"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                    onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                    onkeyup="javascript:qws_field_on_key_up(this)"/>  
-                                                               </td>
+                                                               </td>																   <%
+																	 mergeLIDVaueExpression = ExpressionFactory.newInstance().createValueExpression( localIdDesignation+ " 3" ,  localIdDesignation.getClass());   
+																   %>
                                                                <td>
  
 																   <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                    > <%=localIdDesignation%>3  </font>
-                                                                   <h:inputText value="#{SourceMergeHandler.lid3}" id="LID3"
+                                                                   <h:inputText value="#{SourceMergeHandler.lid3}" id="LID3" title="<%=mergeLIDVaueExpression%>"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                                 onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
+                                                                   <%
+																	 mergeLIDVaueExpression = ExpressionFactory.newInstance().createValueExpression( localIdDesignation+ " 4" ,  localIdDesignation.getClass());   
+																   %>
                                                                <td>
 																   <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                    > <%=localIdDesignation%> 4  </font>
-                                                                   <h:inputText value="#{SourceMergeHandler.lid4}" id="LID4"
+                                                                   <h:inputText value="#{SourceMergeHandler.lid4}" id="LID4" title="<%=mergeLIDVaueExpression%>"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                                 onkeyup="javascript:qws_field_on_key_up(this)"/>  
@@ -1572,7 +1583,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                             <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="yellow">
                                                                 <table border="0" cellspacing="0" cellpadding="0" id="<%=soHashMap.get("LID")%>">
                                                                     <tr>
-                                                                        <td class="menutop"><b> LID&nbsp;<%=countEnt + 1%></b> </td>
+                                                                        <td class="menutop"><b> <%=localIdDesignation%>&nbsp;<%=countEnt + 1%></b> </td>
                                                                     </tr> 
                                                                      <tr>
                                                                     <script> alllidsArray.push('<%=soHashMap.get("LID")%>')</script>
@@ -1911,7 +1922,7 @@ ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().create
                                                                         <tr>
                                                                             <td>
                                                                                 <h:form  id="previewlid1Form">
-                                                                                    <h:commandLink title="<%=keepLid1ValueExpression%>" styleClass="button" rendered="#{Operations.SO_Merge}" action="#{SourceMergeHandler.performPreviewLID}">
+                                                                                    <h:commandLink id="lid1Link" title="<%=keepLid1ValueExpression%>" styleClass="button" rendered="#{Operations.SO_Merge}" action="#{SourceMergeHandler.performPreviewLID}">
                                                                                         <span id="LID1"> <%=keepLid1%>  </span>
                                                                                     </h:commandLink>
                                                                                     <h:inputHidden id="previewhiddenLid1" value="#{SourceMergeHandler.formlids}" />
@@ -1922,7 +1933,7 @@ ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().create
                                                                         <tr>
                                                                             <td>
                                                                                 <h:form id="previewlid2Form">
-                                                                                    <h:commandLink  title="<%=keepLid2ValueExpression%>" styleClass="button" rendered="#{Operations.SO_Merge}" action="#{SourceMergeHandler.performPreviewLID}">
+                                                                                    <h:commandLink id="lid2Link" title="<%=keepLid2ValueExpression%>" styleClass="button" rendered="#{Operations.SO_Merge}" action="#{SourceMergeHandler.performPreviewLID}">
                                                                                         <span id="LID2"><%=keepLid2%></span>
                                                                                         <h:inputHidden id="previewhiddenLid2" value="#{SourceMergeHandler.formlids}" />
                                                                                         <h:inputHidden id="previewhiddenLid2source" value="#{SourceMergeHandler.lidsource}" />
@@ -1978,7 +1989,7 @@ ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().create
              <h:form id="mergeFinalForm">
                  <table cellspacing="0" cellpadding="0" border="0">
                      <tr><th align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th>
-                     <th align="right"><a title ="<h:outputText value="#{msgs.help_link_text}"/> " href="javascript:void(0)" rel="mergepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th></tr>
+                    </tr>
                      <tr><td colspan="2"> &nbsp;</td></tr>
                      <tr><td colspan="2"> &nbsp;</td></tr>
                       <tr>

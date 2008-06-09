@@ -345,7 +345,7 @@
                                             response.setHeader("Vary", "User-Agent");
                                          %>
                                          <% if (isFirefox) {%>
-                                         <div id = "bar" title="<%=weight%>" style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
+                                         <div id = "bar" title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />" style = "float:right;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;
                                               border-right: 1px solid #000000;border-top:1px solid #000000;position:relative;right:20px;" >
                                          <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
                                             <div id = "bar" style = "width:5px;padding-top:35px;position:relative;font-size:10px;" >
@@ -354,7 +354,7 @@
                                          </div>
                                          
                                            <% }else{%>
-                                            <div id = "bar" title="<%=weight%>" style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
+                                            <div id = "bar" title="<h:outputText value="#{msgs.potential_dup_table_weight_column}" />" style = "margin-left:140px;height:100px;width:5px;background-color:green;border-left: 1px solid #000000;border-right: 1px solid #000000;border-top:1px solid #000000;position:absolute;" >
                                              <div style= "height:<%=100 - new Float(weight).floatValue() %>px;width:5px;align:bottom;background-color:#ededed;" ></div> 
                                          </div>                                             
                                          <div id = "bar" style = "margin-left:135px;padding-top:100px;width:5px;position:absolute;font-size:10px;" >
@@ -1284,7 +1284,7 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                             
                                 <table cellspacing="0" cellpadding="0" border="0">
                                     <tr>
-                                    <tr><th align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th><th align="right"><a href="javascript:void(0)" rel="mergepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th></tr>
+                                    <tr><th align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th></tr>
                                     <tr><td colspan="2"> &nbsp;</td></tr>
                                     <tr><td align="center"><nobr><h:outputText value="#{msgs.mergediv_popup_text}"/><b> <h:outputText value="#{PatientDetailsHandler.destnEuid}" /> </b>?</nobr></td></tr>
                                     <tr><td colspan="2"> &nbsp;</td></tr>
@@ -1315,7 +1315,7 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                        <h:form id="reportYUISearch">
                                            <h:inputHidden id="potentialDuplicateId" value="#{PatientDetailsHandler.potentialDuplicateId}"/>
                                            <table width="100%">
-                                               <tr><th align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th><th align="right"><a href="javascript:void(0)" rel="resolvepopuphelp"><h:outputText value="#{msgs.help_link_text}"/> </a></th></tr>
+                                               <tr><th align="left"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th></tr>
                                                <tr><td colspan="2"> &nbsp;</td></tr>
                                                <tr><td align="center"><b><h:outputText value="#{msgs.different_person_dailog_text}"/></b></td></tr>
                                                <tr>

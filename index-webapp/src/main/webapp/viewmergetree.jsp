@@ -22,12 +22,13 @@
 	<link type="text/css" rel="stylesheet" href="css/yui/treeview/assets/skins/sam/treeview-skin.css"> 
        </head>
 <f:view>
+ <f:loadBundle basename="#{NavigationHandler.MIDM_PROP_JSP}" var="msgs" />       
 <body>	
      <table  width="100%">
          <tr>
              <td align="left"><font style="font-size:14px;font-style:bold;">Merge Tree</font></td>
              <td align="right">
-                 <a href="javascript:void(0);" onclick="javascript:closeTree();">Close</a>
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:closeTree();"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
                  <a href="javascript:void(0);" onclick="javascript:closeTree();"><img src="images/close.gif" width="12" height="12" border="0" alt="close"/></a>
              </td>
          </tr>
