@@ -750,6 +750,9 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
     
     private void loadSupportedVariants(String dataType) {
         try {
+            if (dataType == null) {
+                return;
+            }
             StandardizationIntrospector introspector = mEviewApplication.getStandardizationIntrospector();
             DataTypeDescriptor dataTypeDescriptor = introspector.getDataType(dataType);
             VariantDescriptor[] variantDescriptors = dataTypeDescriptor.getVariants();
@@ -757,11 +760,6 @@ public class StandardizationTypeAddDialog extends javax.swing.JDialog {
                 mAlSupportedVariants.add(variantDescriptor.getName());
             }
         } catch (Exception ex) {
-            // ToDo: Kevin/Ricardo/Shant Need to remove this when all data types are supported
-            mAlSupportedVariants.add("AU");
-            mAlSupportedVariants.add("FR");
-            mAlSupportedVariants.add("UK");
-            mAlSupportedVariants.add("US");
             mLog.severe(ex.getMessage());
         }
     }
