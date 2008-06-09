@@ -893,7 +893,7 @@ public class CompareDuplicateManager {
 
             
             ArrayList historyMinorObjectsList  = (ArrayList) valuesObjectHashMap.get("ENTERPRISE_OBJECT_HISTORY");
-            for (int hi = 0; hi < soMinorObjectsList.size(); hi++) {
+            for (int hi = 0; hi < historyMinorObjectsList.size(); hi++) {
                 HashMap historyHashMap = (HashMap) historyMinorObjectsList.get(hi);
 
                 for (int i = 0; i < childNodeConfigs.length; i++) {
