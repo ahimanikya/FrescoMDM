@@ -173,7 +173,7 @@ public class SourceMergeHandler {
             String  sysCode  = (String)it.next();
             String sysDesc = masterControllerService.getSystemDescription(sysCode);
             SystemCodeDesc.put(sysCode, sysDesc);
-            System.out.println("Adding Select item label" + sysDesc + "Value" + sysCode);
+             
             selectItem.setLabel(sysDesc);
             selectItem.setValue(sysCode);
             newArrayList.add(selectItem);
@@ -273,6 +273,7 @@ public class SourceMergeHandler {
      public String performLidMergeSearch () {
         session.removeAttribute("soHashMapArrayList");
         session.setAttribute("tabName","Merge");
+        String eoStatus = new String();
         try {
             String errorMessage = bundle.getString("system_object_not_found_error_message");					  
             errorMessage += this.source ; 
@@ -294,9 +295,17 @@ public class SourceMergeHandler {
                         FacesContext.getCurrentInstance().addMessage(null,
                                 new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid1() + " is " + systemObjectLID.getStatus(), this.getLid4() + "/" + this.getLid4() + " is " + systemObjectLID.getStatus()));
                     }
+                    //get the status if the EO
+                    eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
                     
+                    if("inactive".equalsIgnoreCase(eoStatus) ) {
+                           FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid1() + " is " + eoStatus, "Enterprise Object for " + this.getLid4() + "/" + this.getLid4() + " is " + eoStatus));
+                    } 
                     //Add only active system objects to the array list
-                    if("active".equalsIgnoreCase(systemObjectLID.getStatus())) newArrayList.add(systemObjectLID);
+                    if("active".equalsIgnoreCase(eoStatus) && "active".equalsIgnoreCase(systemObjectLID.getStatus())) { 
+                        newArrayList.add(systemObjectLID);
+                    }
                 }
             }
             if (this.getLid2() != null && this.getLid2().trim().length()>0) {
@@ -312,8 +321,16 @@ public class SourceMergeHandler {
                         FacesContext.getCurrentInstance().addMessage(null,
                                 new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + systemObjectLID.getStatus(), this.getLid4() + "/" + this.getLid4() + " is " + systemObjectLID.getStatus()));
                     }
+                    //get the status of the EO
+                    eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
+                    if("inactive".equalsIgnoreCase(eoStatus) ) {
+                           FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + eoStatus, "Enterprise Object for " + this.getLid2() + "/" + this.getLid2() + " is " + eoStatus));
+                    }
                     //Add only active system objects to the array list
-                    if("active".equalsIgnoreCase(systemObjectLID.getStatus())) newArrayList.add(systemObjectLID);
+                    if("active".equalsIgnoreCase(eoStatus) && "active".equalsIgnoreCase(systemObjectLID.getStatus())) {
+                         newArrayList.add(systemObjectLID);
+                    }
                 }
             }
             if (this.getLid3() != null && this.getLid3().trim().length()>0) {
@@ -327,10 +344,17 @@ public class SourceMergeHandler {
                     //display the message if the user is searching for either inactive/merged system objects
                     if ("merged".equalsIgnoreCase(systemObjectLID.getStatus()) || "inactive".equalsIgnoreCase(systemObjectLID.getStatus())) {
                         FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid3() + " is " + systemObjectLID.getStatus(), this.getLid4() + "/" + this.getLid4() + " is " + systemObjectLID.getStatus()));
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid3() + " is " + systemObjectLID.getStatus(), this.getLid3() + "/" + this.getLid3() + " is " + systemObjectLID.getStatus()));
+                    }
+                     //get the status of the EO
+                    if("inactive".equalsIgnoreCase(eoStatus) ) {
+                           FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid3() + " is " + eoStatus, "Enterprise Object for " + this.getLid3() + "/" + this.getLid3() + " is " + eoStatus));
                     }
                     //Add only active system objects to the array list
-                    if("active".equalsIgnoreCase(systemObjectLID.getStatus())) newArrayList.add(systemObjectLID);
+                    if("active".equalsIgnoreCase(eoStatus) && "active".equalsIgnoreCase(systemObjectLID.getStatus())) {
+                            newArrayList.add(systemObjectLID);
+                    }
                 }
             }
             if (this.getLid4() != null && this.getLid4().trim().length()>0) {
@@ -346,8 +370,15 @@ public class SourceMergeHandler {
                         FacesContext.getCurrentInstance().addMessage(null,
                                 new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid4() + " is " + systemObjectLID.getStatus(), this.getLid4() + "/" + this.getLid4() + " is " + systemObjectLID.getStatus()));
                     }
+                    //get the status of the EO
+                    if("inactive".equalsIgnoreCase(eoStatus) ) {
+                           FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid1() + " is " + eoStatus, "Enterprise Object for " + this.getLid4() + "/" + this.getLid4() + " is " + eoStatus));
+                    }
                     //Add only active system objects to the array list
-                    if("active".equalsIgnoreCase(systemObjectLID.getStatus())) newArrayList.add(systemObjectLID);
+                    if("active".equalsIgnoreCase(eoStatus) && "active".equalsIgnoreCase(systemObjectLID.getStatus())) {
+                            newArrayList.add(systemObjectLID);
+                    }
                 }
             }
             if(validateSystemCode) {

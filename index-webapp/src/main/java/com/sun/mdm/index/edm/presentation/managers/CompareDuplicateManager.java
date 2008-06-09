@@ -30,6 +30,7 @@
  */
 
 package com.sun.mdm.index.edm.presentation.managers;
+import com.sun.mdm.index.edm.control.QwsController;
 import com.sun.mdm.index.edm.presentation.handlers.SourceHandler;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.ObjectNodeConfig;
@@ -70,6 +71,7 @@ import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.master.search.merge.MergeHistoryNode;
 import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SBROverWrite;
+import com.sun.mdm.index.objects.SystemObjectPK;
 import net.java.hulp.i18n.LocalizationSupport;
 
 public class CompareDuplicateManager {
@@ -993,4 +995,21 @@ public class CompareDuplicateManager {
         }
         return mergedEuid;
     }
+      public String  getEnterpriseObjectStatusForSO(SystemObject so) {
+        String eoStatus = null;
+        EnterpriseObject enterpriseObject = null;
+        try {
+            SystemObjectPK systemObjectPK = new SystemObjectPK();
+            systemObjectPK.lID = so.getLID();
+            systemObjectPK.systemCode = so.getSystemCode();
+            enterpriseObject = QwsController.getMasterController().getEnterpriseObject(systemObjectPK);
+            eoStatus=enterpriseObject.getStatus();
+        } catch (ProcessingException ex) {
+            mLogger.severe(mLocalizer.x("CPD020: Could not retrieve an EnterpriseObject: {0}", ex.getMessage()));
+        } catch (UserException ex) {
+            mLogger.severe(mLocalizer.x("CPD021: Could not retrieve an EnterpriseObject: {0}", ex.getMessage()));
+        }
+        return eoStatus;
+
+    } 
 }
