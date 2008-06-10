@@ -14,11 +14,23 @@ definitions and matches.
 
 Loading and examining the various files provided with this solution will give a good
 basis for understanding the MDM product suite.
+
+What is included with this Solution
+------------------------------------
+o This readme.
+o https://open-dm-mi.dev.java.net/Solutions.html 
+  which provides an overview of all Solutions currently available.
+o https://open-dm-mi.dev.java.net/docs/solutions/aus-patient.html
+  which provides technical details about the Australian Patient solution.
+o MDM-Solutions-AUSPatient.zip
+  - The Netbeans Master Index project
+
+
  
 
 How to use the solution.
 -----------------------
-	1. Unzip AUSPatient.zip.
+	1. Unzip  MDM-Solutions-AUSPatient.zip.
 
 	2. Open the following projects in Netbeans 6.1.
 	
