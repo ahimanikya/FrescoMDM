@@ -14,11 +14,20 @@ for both block-search definitions and matches.
 
 Loading and examining the various files provided with this solution will give a good
 basis for understanding Master Index.
- 
+
+What is included with this Solution
+------------------------------------
+o This readme.
+o https://open-dm-mi.dev.java.net/Solutions.html 
+  which provides an overview of all Solutions currently available.
+o https://open-dm-mi.dev.java.net/docs/solutions/uk-patient.html
+  which provides technical details about the United Kingdom Patient solution.
+o MDM-Solutions-UKPatient.zip 
+  - The Netbeans Master Index project 
 
 How to use the solution.
 -----------------------
-	1. Unzip UKPatient.zip.
+	1. Unzip  MDM-Solutions-UKPatient.zip.
 
 	2. Open the following projects in Netbeans 6.1.
 	

@@ -352,7 +352,7 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>AddressPropName</field-name>
+            <field-name>PropName</field-name>
             <field-type>string</field-type>
             <size>32</size>
             <updateable>true</updateable>
@@ -362,7 +362,7 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>AddressPropName_HouseNo</field-name>
+            <field-name>PropName_HouseNo</field-name>
             <field-type>string</field-type>
             <size>10</size>
             <updateable>true</updateable>
@@ -372,7 +372,7 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>AddressPropName_StDir</field-name>
+            <field-name>PropName_StDir</field-name>
             <field-type>string</field-type>
             <size>5</size>
             <updateable>true</updateable>
@@ -382,7 +382,7 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>AddressPropName_StName</field-name>
+            <field-name>PropName_StName</field-name>
             <field-type>string</field-type>
             <size>40</size>
             <updateable>true</updateable>
@@ -392,7 +392,7 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>AddressPropName_StPhon</field-name>
+            <field-name>PropName_StPhon</field-name>
             <field-type>string</field-type>
             <size>8</size>
             <updateable>true</updateable>
@@ -402,7 +402,7 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>AddressPropName_StType</field-name>
+            <field-name>PropName_StType</field-name>
             <field-type>string</field-type>
             <size>5</size>
             <updateable>true</updateable>
@@ -412,7 +412,7 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>AddressStreet</field-name>
+            <field-name>Street</field-name>
             <field-type>string</field-type>
             <size>32</size>
             <updateable>true</updateable>
@@ -422,7 +422,7 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>AddressStreet_HouseNo</field-name>
+            <field-name>Street_HouseNo</field-name>
             <field-type>string</field-type>
             <size>10</size>
             <updateable>true</updateable>
@@ -432,7 +432,7 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>AddressStreet_StDir</field-name>
+            <field-name>Street_StDir</field-name>
             <field-type>string</field-type>
             <size>5</size>
             <updateable>true</updateable>
@@ -442,7 +442,7 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>AddressStreet_StName</field-name>
+            <field-name>Street_StName</field-name>
             <field-type>string</field-type>
             <size>40</size>
             <updateable>true</updateable>
@@ -452,7 +452,7 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>AddressStreet_StPhon</field-name>
+            <field-name>Street_StPhon</field-name>
             <field-type>string</field-type>
             <size>8</size>
             <updateable>true</updateable>
@@ -462,7 +462,7 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>AddressStreet_StType</field-name>
+            <field-name>Street_StType</field-name>
             <field-type>string</field-type>
             <size>5</size>
             <updateable>true</updateable>
@@ -504,7 +504,7 @@
         <fields>
             <field-name>EffectiveFrom</field-name>
             <field-type>date</field-type>
-            <size>32</size>
+            <size>12</size>
             <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
@@ -514,7 +514,7 @@
         <fields>
             <field-name>EffectiveTo</field-name>
             <field-type>date</field-type>
-            <size>32</size>
+            <size>12</size>
             <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
@@ -567,7 +567,7 @@
         <fields>
             <field-name>EffectiveFrom</field-name>
             <field-type>date</field-type>
-            <size>32</size>
+            <size>12</size>
             <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
@@ -577,7 +577,7 @@
         <fields>
             <field-name>EffectiveTo</field-name>
             <field-type>date</field-type>
-            <size>32</size>
+            <size>12</size>
             <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
@@ -610,7 +610,7 @@
         <fields>
             <field-name>DateModified</field-name>
             <field-type>date</field-type>
-            <size>8</size>
+            <size>12</size>
             <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
@@ -773,7 +773,7 @@
         <fields>
             <field-name>EffectiveFrom</field-name>
             <field-type>date</field-type>
-            <size>32</size>
+            <size>12</size>
             <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
@@ -783,7 +783,7 @@
         <fields>
             <field-name>EffectiveTo</field-name>
             <field-type>string</field-type>
-            <size>32</size>
+            <size>12</size>
             <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
@@ -1006,7 +1006,7 @@
         <fields>
             <field-name>EffectiveFrom</field-name>
             <field-type>date</field-type>
-            <size>32</size>
+            <size>12</size>
             <updateable>false</updateable>
             <required>false</required>
             <code-module></code-module>
@@ -1016,7 +1016,7 @@
         <fields>
             <field-name>EffectiveTo</field-name>
             <field-type>date</field-type>
-            <size>32</size>
+            <size>12</size>
             <updateable>false</updateable>
             <required>false</required>
             <code-module></code-module>
@@ -1054,7 +1054,7 @@
         <fields>
             <field-name>DateTaken</field-name>
             <field-type>date</field-type>
-            <size>8</size>
+            <size>12</size>
             <updateable>true</updateable>
             <required>true</required>
             <code-module></code-module>
