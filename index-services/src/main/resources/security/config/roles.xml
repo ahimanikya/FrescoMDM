@@ -64,7 +64,7 @@
                 <name>EO_PrintSBR</name>
                 <name>EO_PrintComparison</name>
                 <name>EO_ViewMergeTree</name>
-                <name>TransLog_All</name>
+                <name>TransLog_SearchView</name>
                 <name>SO_SearchView</name>
                 <name>SO_Print</name>
                 <name>PotDup_SearchView</name>
@@ -77,7 +77,7 @@
                 <inherits-from>Clerk</inherits-from>
                 <excluded-operations>
                     <name>EO_ViewMergeTree</name>
-                    <name>TransLog_All</name>
+                    <name>TransLog_SearchView</name>
                 </excluded-operations>
             </inheritance>
             <operations>
@@ -91,7 +91,7 @@
                 <inherits-from>Clerk</inherits-from>
                 <excluded-operations>
                     <name>EO_ViewMergeTree</name>
-                    <name>TransLog_All</name>
+                    <name>TransLog_SearchView</name>
                 </excluded-operations>
             </inheritance>
             <inheritance>
