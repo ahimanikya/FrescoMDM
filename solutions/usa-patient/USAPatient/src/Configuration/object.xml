@@ -701,7 +701,7 @@
             <field-name>Medicine02Id</field-name>
             <field-type>string</field-type>
             <size>8</size>
-            <updateable>false</updateable>
+            <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
@@ -711,7 +711,7 @@
             <field-name>Medicine03Name</field-name>
             <field-type>string</field-type>
             <size>32</size>
-            <updateable>false</updateable>
+            <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
