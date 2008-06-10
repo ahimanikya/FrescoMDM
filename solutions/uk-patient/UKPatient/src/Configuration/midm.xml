@@ -565,7 +565,7 @@
             <display-order>12</display-order>
             <max-length>12</max-length>
             <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
+            <value-type>date</value-type>
             <key-type>false</key-type>
         </field>
         <field>
@@ -709,7 +709,7 @@
             <name>AddressEffectFrom</name>
             <display-name>Address Effective From</display-name>
             <display-order>28</display-order>
-            <max-length>8</max-length>
+            <max-length>12</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>date</value-type>
             <key-type>false</key-type>
@@ -718,7 +718,7 @@
             <name>AddressEffectiveTo</name>
             <display-name>Address Effective To</display-name>
             <display-order>29</display-order>
-            <max-length>32</max-length>
+            <max-length>12</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>date</value-type>
             <key-type>false</key-type>

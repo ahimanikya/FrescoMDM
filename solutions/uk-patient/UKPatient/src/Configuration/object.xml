@@ -9,7 +9,7 @@
             <field-name>Category</field-name>
             <field-type>string</field-type>
             <size>32</size>
-            <updateable>false</updateable>
+            <updateable>true</updateable>
             <required>true</required>
             <code-module>CATEGORY</code-module>
             <pattern></pattern>
@@ -782,7 +782,7 @@
         </fields>
         <fields>
             <field-name>EffectiveTo</field-name>
-            <field-type>string</field-type>
+            <field-type>date</field-type>
             <size>12</size>
             <updateable>true</updateable>
             <required>false</required>
@@ -943,7 +943,7 @@
         <fields>
             <field-name>AddressEffectFrom</field-name>
             <field-type>date</field-type>
-            <size>8</size>
+            <size>12</size>
             <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
@@ -953,7 +953,7 @@
         <fields>
             <field-name>AddressEffectiveTo</field-name>
             <field-type>date</field-type>
-            <size>32</size>
+            <size>12</size>
             <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
@@ -977,7 +977,7 @@
             <field-name>Root</field-name>
             <field-type>string</field-type>
             <size>32</size>
-            <updateable>false</updateable>
+            <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
@@ -987,7 +987,7 @@
             <field-name>Extension</field-name>
             <field-type>string</field-type>
             <size>32</size>
-            <updateable>false</updateable>
+            <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
@@ -997,7 +997,7 @@
             <field-name>Code</field-name>
             <field-type>string</field-type>
             <size>32</size>
-            <updateable>false</updateable>
+            <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
@@ -1007,7 +1007,7 @@
             <field-name>EffectiveFrom</field-name>
             <field-type>date</field-type>
             <size>12</size>
-            <updateable>false</updateable>
+            <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
@@ -1017,7 +1017,7 @@
             <field-name>EffectiveTo</field-name>
             <field-type>date</field-type>
             <size>12</size>
-            <updateable>false</updateable>
+            <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
             <pattern></pattern>
