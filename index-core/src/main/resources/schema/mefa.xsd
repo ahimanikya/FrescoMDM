@@ -311,18 +311,13 @@
 	</xs:element>
 	<xs:element name="locale">
 		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:enumeration value="US"/>
-				<xs:enumeration value="UK"/>
-				<xs:enumeration value="AU"/>
-				<xs:enumeration value="FR"/>
-			</xs:restriction>
+			<xs:restriction base="xs:string"/>
 		</xs:simpleType>
 	</xs:element>
 	<xs:element name="locale-maps">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="locale-codes" minOccurs="1" maxOccurs="unbounded"/>
+				<xs:element ref="locale-codes" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
