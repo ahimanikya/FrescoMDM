@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Solutions Template</title>
+
+<style type="text/css"></style>
+<link rel="stylesheet" href="../../css/mural.css" type="text/css">
+<link rel="stylesheet" href="css/solutions.css" type="text/css"></head>
+<body>
+<table style="font-weight: bold; width: 100%; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="text-align: center; vertical-align: middle;"><big><big><big>United Kingdom Patient Solution</big></big></big></td>
+</tr>
+</tbody>
+</table>
+<br>
+<span style="font-weight: bold;"></span>
+<table style="text-align: left; width: 247px; height: 72px;" border="0" cellpadding="0" cellspacing="2">
+<tbody>
+<tr>
+<td><span style="font-weight: bold;">Maintained
+by:</span></td>
+<td align="undefined" valign="undefined">Andrea
+Kendall<span style="font-family: Arial;"></span><span style="font-size: 6pt; font-family: Arial;"><br>
+<a href="mailto:Andrea.Kendall@Sun.COM">Andrea.Kendall@Sun.COM</a></span><br>
+<a href="mailto:Andrea.Kendal@sun.com">
+</a></td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined"><span style="font-weight: bold;">Last Updated:</span></td>
+<td align="undefined" valign="undefined">June 9th, 2008</td>
+</tr>
+</tbody>
+</table>
+<span style="font-weight: bold;"></span><br>
+<hr style="width: 100%; height: 2px;">
+<h1>Description</h1>
+<p><i>Coming really soon.</i></p>
+<h1>Data Model Overview</h1>
+<p>O<span style="font-style: italic;">verview
+diagram of
+the model. Show the overall structure without all the details.
+Highlight the fields used for matching and searches.</span></p>
+<h1>Data Model</h1>
+<p><i>Full
+data model.
+Using the UML or any other way to show this..</i></p>
+<h1>Master Index Properties</h1>
+<p>The following tables highlight fields that are used in the
+<span style="font-style: italic;">&lt;model&gt;</span>
+for matching and blocking opertions. Additionally
+the
+tables capture the required fields, fields that are standardized and
+fields that are Normilized. Finally it shows the complete
+database definitions that are used with the solution.</p>
+<h2>Matching</h2>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Field
+Name</td>
+<td align="undefined" valign="undefined">Match
+Type</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">
+<i>e.g.: First
+Name</i>
+</td>
+<td align="undefined" valign="undefined"><span style="font-style: italic;">e.g. First Name phonetic</span></td>
+</tr>
+</tbody>
+</table>
+<h2>Required Fields</h2>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Field
+Name</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">
+<i>e.g.: First
+Name</i>
+</td>
+</tr>
+</tbody>
+</table>
+<h2> Query - BLOCKER-SEARCH Rules</h2>
+A summary of the fields used for the blocker-search rules.<br>
+<br>
+<span style="font-style: italic;">Notes:</span> <br>
+<ul>
+<li>_Phon indicates a phonetized field.</li>
+<li>Compare is between Enterprise SystemSBR (Single Best
+Record) and the actual data. So (a == a) is actually
+(Enterprise.SystemSBR.a == a).U</li>
+</ul>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Block
+Name</td>
+<td align="undefined" valign="undefined">Queries</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined"><span style="font-style: italic;">e.g. NameFilter</span></td>
+<td align="undefined" valign="undefined"><span style="font-style: italic;">e.g. (FirstName == First Name)
+and (Last Name == Last Name) and (Date Of Birth == Date of Birth)</span></td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined"><span style="font-style: italic;">e.g. SSNFilter</span></td>
+<td style="font-style: italic;" align="undefined" valign="undefined">e.g. (SSN = SSN)</td>
+</tr>
+</tbody>
+</table>
+<h2>Standardization</h2>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Standardization
+Type</td>
+<td align="undefined" valign="undefined">Source
+Fields<br>
+</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined"><span style="font-style: italic;"><br>
+</span></td>
+<td align="undefined" valign="undefined"><span style="font-style: italic;"><br>
+</span></td>
+</tr>
+</tbody>
+</table>
+<br>
+<h2>Normalization</h2>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Type</td>
+<td align="undefined" valign="undefined">Unnormalized
+Source</td>
+<td align="undefined" valign="undefined">Normalized
+Destination</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined"></td>
+<td align="undefined" valign="undefined"></td>
+<td align="undefined" valign="undefined"></td>
+</tr>
+</tbody>
+</table>
+<h2>Phonticized Fields</h2>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="soltableheader">
+<td align="undefined" valign="undefined">Unphoneticized
+Source</td>
+<td align="undefined" valign="undefined">Phoneticized
+Target<br>
+</td>
+<td align="undefined" valign="undefined">Encoder<br>
+</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined"></td>
+<td align="undefined" valign="undefined"></td>
+<td align="undefined" valign="undefined"></td>
+</tr>
+</tbody>
+</table>
+<h1>Enumerations</h1>
+<h2>Code Modules</h2>
+<pre>tCode(type,code,description)<br><br>'L' entries go into the sbyn_common_header table.<br>'V' entries go into the sbyn_common_detail table.</pre>
+<h2>User Codes</h2>
+When the user-code is selected in the MIDM GUI then the
+coresponding format,
+input_mask and value_mask are used. The input_mask shows the
+characters that can be typed.<br>
+<br>
+For the input_mask and value_mask:<br>
+<div style="margin-left: 40px;">A = an alphanumeric
+character [A-Za-z0-9]<br>
+D = a decimal number [0-9]<br>
+L = an alphabetic character [A-Za-z]<br>
+</div>
+<br>
+For the value_mask:<br>
+<div style="margin-left: 40px;">^ = remove the
+corresponding character from the input string when storing in the data.<br>
+</div>
+<br>
+<br>
+Example:
+The AUXIDDEF shows three values in the MIDM GUI, "CREDIT CARD
+ID",
+"Medical License ID" and "Household ID". If the user selects
+the
+Household ID they can type in four deciimal numbers, a
+space, four
+deciimal numbers, a space and then four deciimal numbers
+(example: 1111
+2222 3333 4444). This will be converted to 1111222233334444
+and stored
+in the database.<br>
+<br>
+Example:
+The AUXIDDEF shows three values in the MIDM GUI, "CREDIT CARD
+ID", "Medical License ID" and "Household ID". If the user
+selects
+the Household ID they can type in four deciimal numbers, a
+space, four deciimal numbers, a space and then four
+deciimal
+numbers (example: 1111 2222 3333 4444). This will be converted
+to 1111222233334444 and stored in the database. <span style="font-family: monospace;"></span>
+<pre style="margin-left: 40px;">insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'CCID', 'CREDIT CARD ID', '[0-9]{16}', 'DDDD DDDD DDDD DDDD', 'DDDD^DDDD^DDDD^DDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'MEDID', 'Medical License ID', '[A-Za-z]{3}[0-9]{6}', 'LLL-DDDDDD', 'LLL^DDDDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'HHID', 'Household ID', '[A-Za-z0-9]{3}[0-9]{4}', 'AAADDDD', 'AAADDDD');</pre>
+</body></html>
