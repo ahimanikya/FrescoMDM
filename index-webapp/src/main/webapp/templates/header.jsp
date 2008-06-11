@@ -136,6 +136,19 @@ String requestPage = uri.substring(uri.lastIndexOf("/")+1,uri.length());
                              
                          }
                      }
+					 if (screenName.equalsIgnoreCase("reports")){
+                         if(!ops.isReports_MergedRecords()&& !ops.isReports_DeactivatedEUIDs() &&
+							 !ops.isReports_UnmergedRecords() && !ops.isReports_Updates() && !ops.isReports_Activity() && !ops.isReports_Duplicates()&& !ops.isReports_AssumedMatches()){
+                             screenObjectLocal = null;
+                             
+                         }
+                     }
+					 if (screenName.equalsIgnoreCase("source-record")){
+                         if(!ops.isSO_SearchView() && !ops.isSO_Add() && !ops.isSO_Merge()){
+                             screenObjectLocal = null;
+                             
+                         }
+                     }
                     }
                 
                 if (screenObjectLocal!=null){
