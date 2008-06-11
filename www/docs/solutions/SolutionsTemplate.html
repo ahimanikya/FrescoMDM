@@ -20,9 +20,9 @@ Solution</big></big></big></td>
 <table style="text-align: left; width: 247px; height: 72px;" border="0" cellpadding="0" cellspacing="2">
 <tbody>
 <tr>
-<td><span style="font-weight: bold;">Maintained
+<td style="vertical-align: top;"><span style="font-weight: bold;">Maintained
 by:</span></td>
-<td align="undefined" valign="undefined">Andrea
+<td style="vertical-align: top;">Andrea
 Kendall<span style="font-family: Arial;"></span><span style="font-size: 6pt; font-family: Arial;"><br>
 <a href="mailto:Andrea.Kendall@Sun.COM">Andrea.Kendall@Sun.COM</a></span><br>
 <a href="mailto:Andrea.Kendal@sun.com">
@@ -99,7 +99,7 @@ A summary of the fields used for the blocker-search rules.<br>
 <li>_Phon indicates a phonetized field.</li>
 <li>Compare is between Enterprise SystemSBR (Single Best
 Record) and the actual data. So (a == a) is actually
-(Enterprise.SystemSBR.a == a).U</li>
+(Enterprise.SystemSBR.a == a).</li>
 </ul>
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
 <tbody>
@@ -218,5 +218,5 @@ space, four deciimal numbers, a space and then four
 deciimal
 numbers (example: 1111 2222 3333 4444). This will be converted
 to 1111222233334444 and stored in the database. <span style="font-family: monospace;"></span>
-<pre style="margin-left: 40px;">insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'CCID', 'CREDIT CARD ID', '[0-9]{16}', 'DDDD DDDD DDDD DDDD', 'DDDD^DDDD^DDDD^DDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'MEDID', 'Medical License ID', '[A-Za-z]{3}[0-9]{6}', 'LLL-DDDDDD', 'LLL^DDDDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'HHID', 'Household ID', '[A-Za-z0-9]{3}[0-9]{4}', 'AAADDDD', 'AAADDDD');</pre>
+<pre style="margin-left: 40px; overflow: scroll;">insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'CCID', 'CREDIT CARD ID', '[0-9]{16}', 'DDDD DDDD DDDD DDDD', 'DDDD^DDDD^DDDD^DDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'MEDID', 'Medical License ID', '[A-Za-z]{3}[0-9]{6}', 'LLL-DDDDDD', 'LLL^DDDDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'HHID', 'Household ID', '[A-Za-z0-9]{3}[0-9]{4}', 'AAADDDD', 'AAADDDD');</pre>
 </body></html>

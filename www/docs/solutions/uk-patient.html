@@ -4,12 +4,14 @@
 
 <style type="text/css"></style>
 <link rel="stylesheet" href="../../css/mural.css" type="text/css">
-<link rel="stylesheet" href="css/solutions.css" type="text/css"></head>
+<link rel="stylesheet" href="css/solutions.css" type="text/css">
+</head>
 <body>
 <table style="font-weight: bold; width: 100%; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="0" cellspacing="0">
 <tbody>
 <tr>
-<td style="text-align: center; vertical-align: middle;"><big><big><big>United Kingdom Patient Solution</big></big></big></td>
+<td style="text-align: center; vertical-align: middle;"><big><big><big>United
+Kingdom Patient Solution</big></big></big></td>
 </tr>
 </tbody>
 </table>
@@ -18,9 +20,9 @@
 <table style="text-align: left; width: 247px; height: 72px;" border="0" cellpadding="0" cellspacing="2">
 <tbody>
 <tr>
-<td><span style="font-weight: bold;">Maintained
+<td style="vertical-align: top;"><span style="font-weight: bold;">Maintained
 by:</span></td>
-<td align="undefined" valign="undefined">Andrea
+<td style="vertical-align: top;">Andrea
 Kendall<span style="font-family: Arial;"></span><span style="font-size: 6pt; font-family: Arial;"><br>
 <a href="mailto:Andrea.Kendall@Sun.COM">Andrea.Kendall@Sun.COM</a></span><br>
 <a href="mailto:Andrea.Kendal@sun.com">
@@ -28,26 +30,66 @@ Kendall<span style="font-family: Arial;"></span><span style="font-size: 6pt; fon
 </tr>
 <tr>
 <td align="undefined" valign="undefined"><span style="font-weight: bold;">Last Updated:</span></td>
-<td align="undefined" valign="undefined">June 9th, 2008</td>
+<td align="undefined" valign="undefined">June
+10th, 2008</td>
 </tr>
 </tbody>
 </table>
 <span style="font-weight: bold;"></span><br>
 <hr style="width: 100%; height: 2px;">
 <h1>Description</h1>
-<p><i>Coming really soon.</i></p>
+<p>The purpose of this solution is to demonstate how a United
+Kingdom
+Patient model might be&nbsp; implemented in the Master Data
+Management (MDM)
+product suite.&nbsp; Specificaly the Master Index portion of MDM.</p>
+<p>This solution uses a patient definition geared towards the
+United Kingdom.&nbsp; Since this is an UKPatient, fields such as
+the HealthID's IdNum and HealthID's IdNumType are used&nbsp; for
+both block-search definitions and matches.</p>
 <h1>Data Model Overview</h1>
-<p>O<span style="font-style: italic;">verview
-diagram of
-the model. Show the overall structure without all the details.
-Highlight the fields used for matching and searches.</span></p>
+This
+overview of the data model shows each Sub Object Node of the UKPatient.
+It highlights the main sections of the United Kingdom Patient model.
+Additionally, it shows the required
+fields of the model.<br>
+<br>
+<img style="width: 640px; height: 560px;" alt="United Kingdom Patient overvier" title="Overview" src="images/UKPatient-Overview-small.png">
 <h1>Data Model</h1>
-<p><i>Full
-data model.
-Using the UML or any other way to show this..</i></p>
+<p>
+This is the UML model used to create the United Kingdom Patient.
+&nbsp; Notice that in the model the&nbsp;</p>
+<p>Abbreviations used in the model are as follows:</p>
+<table style="text-align: left; width: 409px; height: 60px;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td align="undefined" valign="undefined"><span style="font-weight: bold; text-decoration: underline;">Abbreviation</span></td>
+<td align="undefined" valign="undefined"><span style="font-weight: bold; text-decoration: underline;">Meaning</span></td>
+</tr>
+<tr>
+<td style="width: 30%;">Notifi</td>
+<td align="undefined" valign="undefined">Notification</td>
+</tr>
+<tr>
+<td style="width: 30%;">Cat</td>
+<td align="undefined" valign="undefined">Catalog</td>
+</tr>
+<tr>
+<td style="width: 30%;">Pref<span style="font-style: italic;">&lt;Num&gt;</span>S</td>
+<td align="undefined" valign="undefined">
+Preference&lt;Num&gt;Start</td>
+</tr>
+<tr>
+<td style="width: 30%;">Pref<span style="font-style: italic;">&lt;Num&gt;</span>E
+</td>
+<td align="undefined" valign="undefined">
+Preference&lt;Num&gt;End</td>
+</tr>
+</tbody>
+</table>
+<p><img style="width: 800px; height: 1958px;" alt="UML model used for the United Kingdom Patient solution" title="The UML model" src="images/UKPatient-UML-small.png"></p>
 <h1>Master Index Properties</h1>
-<p>The following tables highlight fields that are used in the
-<span style="font-style: italic;">&lt;model&gt;</span>
+<p>The following tables highlight fields that are used in the<span style="font-style: italic;"> </span>UKPatient&nbsp;
 for matching and blocking opertions. Additionally
 the
 tables capture the required fields, fields that are standardized and
@@ -64,10 +106,29 @@ Type</td>
 </tr>
 <tr>
 <td align="undefined" valign="undefined">
-<i>e.g.: First
-Name</i>
-</td>
-<td align="undefined" valign="undefined"><span style="font-style: italic;">e.g. First Name phonetic</span></td>
+UKPatient.DOB<i><br>
+</i></td>
+<td align="undefined" valign="undefined">Date</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.Name[*].FamilyName_Std</td>
+<td align="undefined" valign="undefined">LastName</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.Name[*].GivenName_Std</td>
+<td align="undefined" valign="undefined">FirstName</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.Gender</td>
+<td align="undefined" valign="undefined">Gender</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.HealthID[*].IdNumType</td>
+<td align="undefined" valign="undefined">String</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">HealthID[*].IdNum</td>
+<td align="undefined" valign="undefined">String</td>
 </tr>
 </tbody>
 </table>
@@ -80,9 +141,58 @@ Name</td>
 </tr>
 <tr>
 <td align="undefined" valign="undefined">
-<i>e.g.: First
-Name</i>
-</td>
+UKPatient.Category</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.Gender</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.DOB</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.Name.FamilyName</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.Name.GivenName</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.Address.AddressType</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.Address.AddressLine1</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.Telecom.Type</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.Telecom.Root</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.Telecom.Code</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.Consent.Type</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.AltContact.Relationship</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.AltContact.Role</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.AltContact.FamilyName</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.AltContact.GivenName</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.HeightWeight.DateTaken</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.HealthID.IdNumType</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.HealthID.IdNum</td>
 </tr>
 </tbody>
 </table>
@@ -94,7 +204,7 @@ A summary of the fields used for the blocker-search rules.<br>
 <li>_Phon indicates a phonetized field.</li>
 <li>Compare is between Enterprise SystemSBR (Single Best
 Record) and the actual data. So (a == a) is actually
-(Enterprise.SystemSBR.a == a).U</li>
+(Enterprise.SystemSBR.a == a).</li>
 </ul>
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
 <tbody>
@@ -104,13 +214,33 @@ Name</td>
 <td align="undefined" valign="undefined">Queries</td>
 </tr>
 <tr>
-<td align="undefined" valign="undefined"><span style="font-style: italic;">e.g. NameFilter</span></td>
-<td align="undefined" valign="undefined"><span style="font-style: italic;">e.g. (FirstName == First Name)
-and (Last Name == Last Name) and (Date Of Birth == Date of Birth)</span></td>
+<td align="undefined" valign="undefined">FamilyNameGivenNameDOB<span style="font-style: italic;"><br>
+</span></td>
+<td align="undefined" valign="undefined">(UKPatient.Name.FamilyName_Phon
+== UKPatient.Name.FamilyName_Phon) and <br>
+(UKPatient.Name.GivenName_Phon == UKPatient.Name.GivenName_Phon) and <br>
+(UKPatient.DOB == UKPatient.DOB)<br>
+</td>
 </tr>
 <tr>
-<td align="undefined" valign="undefined"><span style="font-style: italic;">e.g. SSNFilter</span></td>
-<td style="font-style: italic;" align="undefined" valign="undefined">e.g. (SSN = SSN)</td>
+<td align="undefined" valign="undefined">GivenNameDOBGender</td>
+<td align="undefined" valign="undefined">(UKPatient.Name.GivenName_Phon
+== KPatient.Name.GivenName_Phon) and <br>
+(UKPatient.DOB == UKPatient.DOB) and<br>
+(UKPatient.Gender == UKPatient.Gender)&nbsp;<br>
+</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">DOBPostcode</td>
+<td align="undefined" valign="undefined">(UKPatient.DOB
+== UKPatient.DOB) and<br>
+(Address.Postcode == Address.Postcode)</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">HealthID</td>
+<td align="undefined" valign="undefined">(HealthID.IdNumType
+== HealthID.IdNumType) and <br>
+(HealthID.IdNum == HealthID.IdNum)</td>
 </tr>
 </tbody>
 </table>
@@ -125,10 +255,14 @@ Fields<br>
 </td>
 </tr>
 <tr>
-<td align="undefined" valign="undefined"><span style="font-style: italic;"><br>
+<td align="undefined" valign="undefined">Address<span style="font-style: italic;"><br>
 </span></td>
-<td align="undefined" valign="undefined"><span style="font-style: italic;"><br>
+<td align="undefined" valign="undefined">UKPatient.Address[*].PropName<span style="font-style: italic;"><br>
 </span></td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">Address</td>
+<td align="undefined" valign="undefined">UKPatient.Address[*].Street</td>
 </tr>
 </tbody>
 </table>
@@ -144,9 +278,24 @@ Source</td>
 Destination</td>
 </tr>
 <tr>
-<td align="undefined" valign="undefined"></td>
-<td align="undefined" valign="undefined"></td>
-<td align="undefined" valign="undefined"></td>
+<td align="undefined" valign="undefined">PersonName</td>
+<td align="undefined" valign="undefined">UKPatient.Name[*].FamilyName</td>
+<td align="undefined" valign="undefined">UKPatient.Name[*].FamilyName_Std</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">PersonName</td>
+<td align="undefined" valign="undefined">UKPatient.Name[*].GivenName</td>
+<td align="undefined" valign="undefined">UKPatient.Name[*].GivenName_Std</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">PersonName</td>
+<td align="undefined" valign="undefined">UKPatient.AltContact[*].FamilyName</td>
+<td align="undefined" valign="undefined">UKPatient.AltContact[*].FamilyName_Std</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">PersonName</td>
+<td align="undefined" valign="undefined">UKPatient.AltContact[*].GivenName</td>
+<td align="undefined" valign="undefined">UKPatient.AltContact[*].GivenName_Std</td>
 </tr>
 </tbody>
 </table>
@@ -163,15 +312,40 @@ Target<br>
 </td>
 </tr>
 <tr>
-<td align="undefined" valign="undefined"></td>
-<td align="undefined" valign="undefined"></td>
-<td align="undefined" valign="undefined"></td>
+<td align="undefined" valign="undefined">UKPatient.Name[*].FamilyName_Std</td>
+<td align="undefined" valign="undefined">UKPatient.Name[*].FamilyName_Phon</td>
+<td align="undefined" valign="undefined">NYSIIS</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.Name[*].GivenName_Std</td>
+<td align="undefined" valign="undefined">UKPatient.Name[*].GivenName_Phon</td>
+<td align="undefined" valign="undefined">Soundex</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.Address[*].PropName_StName</td>
+<td align="undefined" valign="undefined">UKPatient.Address[*].PropName_StPhon</td>
+<td align="undefined" valign="undefined">NYSIIS</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.Address[*].Street_StName</td>
+<td align="undefined" valign="undefined">UKPatient.Address[*].Street_StPhon</td>
+<td align="undefined" valign="undefined">NYSIIS</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.AltContact[*].FamilyName_Std</td>
+<td align="undefined" valign="undefined">UKPatient.AltContact[*].FamilyName_Phon</td>
+<td align="undefined" valign="undefined">NYSIIS</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">UKPatient.AltContact[*].GivenName_Std</td>
+<td align="undefined" valign="undefined">UKPatient.AltContact[*].GivenName_Phon</td>
+<td align="undefined" valign="undefined">Soundex</td>
 </tr>
 </tbody>
 </table>
 <h1>Enumerations</h1>
 <h2>Code Modules</h2>
-<pre>tCode(type,code,description)<br><br>'L' entries go into the sbyn_common_header table.<br>'V' entries go into the sbyn_common_detail table.</pre>
+<pre>tCode(type,code,description)<br><br>'L' entries go into the sbyn_common_header table.<br>'V' entries go into the sbyn_common_detail table.<br></pre><pre>-- ****     CATEGORY   ****<br>tCode('L', 'CATEGORY', 'Category'),<br>tCode('V', 'PERSON', 'PERSON'),<br><br>-- ****     SUFFIX   ****<br>tCode('L', 'SUFFIX', 'Suffix'),<br>tCode('V', '2ND', '2ND'),<br>tCode('V', '3RD', '3RD'),<br>tCode('V', 'DDS', 'DDS'),<br>tCode('V', 'ESQ', 'ESQ'),<br>tCode('V', 'II', 'II'),<br>tCode('V', 'III', 'III'),<br>tCode('V', 'IV', 'IV'),<br>tCode('V', 'JR', 'JR'),<br>tCode('V', 'MD', 'MD'),<br>tCode('V', 'RN', 'RN'),<br>tCode('V', 'SR', 'SR'),<br>tCode('V', 'PHD', 'PHD'),<br>tCode('V', 'MA', 'MA'),<br><br>-- ****     TITLE   ****<br>tCode('L', 'TITLE', 'Title'),<br>tCode('V', 'MD', 'MEDICAL DOCTOR'),<br>tCode('V', 'PHD', 'DOCTOR'),<br>tCode('V', 'RN', 'REGISTERED NURSE'),<br>tCode('V', 'CNA', 'CERTIFIED NURSES AID'),<br>tCode('V', 'LVN', 'LICENSED VOCATIONAL NURSE'),<br>tCode('V', 'REV', 'REVERAND'),<br><br>-- ****     GENDER   ****<br>tCode('L', 'GENDER', 'Gender'),<br>tCode('V', 'M', 'MALE'),<br>tCode('V', 'F', 'FEMALE'),<br>tCode('V', 'O', 'OTHER'),<br>tCode('V', 'U', 'UNKNOWN'),<br><br><br>-- ****     MSTATUS   ****<br>tCode('L', 'MSTATUS', 'Marital Status'),<br>tCode('V', 'D', 'DIVORCED'),<br>tCode('V', 'L', 'LEGALLY SEPARATED'),<br>tCode('V', 'M', 'MARRIED'),<br>tCode('V', 'P', 'PARTNER'),<br>tCode('V', 'S', 'SINGLE'),<br>tCode('V', 'U', 'UNKNOWN'),<br>tCode('V', 'W', 'WIDOWED'),<br><br>-- ****     RACE   ****<br>tCode('L', 'RACE', 'Race'),<br>tCode('V', 'I', 'AMERICAN INDIAN'),<br>tCode('V', 'A', 'ASIAN'),<br>tCode('V', 'B', 'BLACK'),<br>tCode('V', 'H', 'HISPANIC'),<br>tCode('V', 'O', 'OTHER'),<br>tCode('V', 'R', 'REFUSED'),<br>tCode('V', 'U', 'UNKNOWN'),<br>tCode('V', 'W', 'WHITE'),<br><br>-- ****     ETHNIC   ****<br>tCode('L', 'ETHNIC', 'Ethnicity'),<br>tCode('V', '1', 'PUERTO RICAN'),<br>tCode('V', '10', 'FILIPINO'),<br>tCode('V', '11', 'KOREAN'),<br>tCode('V', '12', 'VIETNAMESE'),<br>tCode('V', '13', 'CAMBODIAN'),<br>tCode('V', '14', 'LAOTIAN'),<br>tCode('V', '15', 'THAI'),<br>tCode('V', '16', 'HAWAIIAN'),<br>tCode('V', '17', 'OTHER ASIAN/PACIFIC'),<br>tCode('V', '19', 'PAKISTANI'),<br>tCode('V', '2', 'CUBAN'),<br>tCode('V', '22', 'HAITIAN'),<br>tCode('V', '23', 'JAMAICAN'),<br>tCode('V', '24', 'BARBADIAN'),<br>tCode('V', '25', 'WEST INDIAN'),<br>tCode('V', '26', 'ARMENIAN'),<br>tCode('V', '27', 'AUSTRIAN'),<br>tCode('V', '28', 'ENGLISH'),<br>tCode('V', '29', 'EGYPTIAN'),<br>tCode('V', '3', 'DOMINICAN'),<br>tCode('V', '30', 'FRENCH'),<br>tCode('V', '31', 'CANADIAN'),<br>tCode('V', '32', 'GERMAN'),<br>tCode('V', '33', 'GREEK'),<br>tCode('V', '34', 'IRANIAN'),<br>tCode('V', '35', 'IRISH'),<br>tCode('V', '36', 'LEBANESE'),<br>tCode('V', '37', 'LITHUANIAN'),<br>tCode('V', '38', 'POLISH'),<br>tCode('V', '39', 'RUSSIAN'),<br>tCode('V', '4',  'MEXICAN'),<br>tCode('V', '40', 'SCOTTISH'),<br>tCode('V', '42', 'OTHER'),<br>tCode('V', '43', 'EUROPEAN'),<br>tCode('V', '44', 'COLOMBIAN'),<br>tCode('V', '45', 'SALVADORAN'),<br>tCode('V', '46', 'AFRICAN AMERICAN'),<br>tCode('V', '47', 'NIGERIAN'),<br>tCode('V', '48', 'OTHER AFRICAN'),<br>tCode('V', '50', 'ISRAELI'),<br>tCode('V', '51', 'OTHER MIDDLE EASTERN'),<br>tCode('V', '52', 'NATIVE AMERICAN'),<br>tCode('V', '6', 'OTHER HISPANIC'),<br>tCode('V', '7', 'AUSTRALIAN'),<br>tCode('V', '8', 'JAPANESE'),<br>tCode('V', '9', 'CHINESE'),<br><br>-- ****     RELIGION   ****<br>tCode('L', 'RELIGION', 'Religion'),<br>tCode('V', 'AG', 'AGNOSTIC'),<br>tCode('V', 'AN', 'ANGLICAN'),<br>tCode('V', 'AT', 'ATHEIST'),<br>tCode('V', 'BP', 'BAPTIST'),<br>tCode('V', 'BU', 'BUDHIST'),<br>tCode('V', 'CH', 'CHRISTIAN'),<br>tCode('V', 'CO', 'CONGREGATIONAL'),<br>tCode('V', 'CS', 'CHRISTIAN SCIENTIST'),<br>tCode('V', 'DE', 'DEFERRED'),<br>tCode('V', 'EP', 'EPISCOPAL'),<br>tCode('V', 'GO', 'GREEK ORTHODOX'),<br>tCode('V', 'HI', 'HINDU'),<br>tCode('V', 'JW', 'JEHOVAHS WITNESS'),<br>tCode('V', 'JH', 'JEWISH'),<br>tCode('V', 'LU', 'LUTHERAN'),<br>tCode('V', 'ME', 'METHODIST'),<br>tCode('V', 'MO', 'MORMON'),<br>tCode('V', 'MU', 'MUSLIM'),<br>tCode('V', 'NO', 'NONE'),<br>tCode('V', 'OR', 'ORTHODOX'),<br>tCode('V', 'OT', 'OTHER'),<br>tCode('V', 'PS', 'PRESBYTERIAN'),<br>tCode('V', 'QU', 'QUAKER'),<br>tCode('V', 'RC', 'ROMAN CATHOLIC'),<br>tCode('V', 'SD', 'SEVENTH DAY ADVENTI'),<br>tCode('V', 'UA', 'UNAFFILIATED'),<br>tCode('V', 'UN', 'UNKNOWN'),<br>tCode('V', 'UU', 'UNITARIAN'),<br><br>-- ****     LANGUAGE   ****<br>tCode('L', 'LANGUAGE', 'Language'),<br>tCode('V', 'ARAB', 'ARABIC'),<br>tCode('V', 'CHIN', 'CHINESE'),<br>tCode('V', 'CZEK', 'CZECH'),<br>tCode('V', 'CREO', 'CREOLE FRENCH'),<br>tCode('V', 'DANE', 'DANISH'),<br>tCode('V', 'ENGL', 'ENGLISH'),<br>tCode('V', 'FRN', 'FRENCH'),<br>tCode('V', 'GERM', 'GERMAN'),<br>tCode('V', 'GREK', 'GREEK'),<br>tCode('V', 'HATI', 'HATIAN'),<br>tCode('V', 'HEBR', 'HEBREW'),<br>tCode('V', 'HNDI', 'HINDI'),<br>tCode('V', 'ITAL', 'ITALIAN'),<br>tCode('V', 'JAPA', 'JAPANESE'),<br>tCode('V', 'KORE', 'KOREAN'),<br>tCode('V', 'OTHE', 'OTHER'),<br>tCode('V', 'PORT', 'PORTUGUESE'),<br>tCode('V', 'PRCI', 'PERSIAN/FARSI'),<br>tCode('V', 'RUSS', 'RUSSIAN'),<br>tCode('V', 'SIGN', 'SIGN LANGUAGE'),<br>tCode('V', 'SPAN', 'SPANISH'),<br>tCode('V', 'SWED', 'SWEDISH'),<br>tCode('V', 'THAI', 'THAI'),<br>tCode('V', 'TURK', 'TURKISH'),<br>tCode('V', 'UNKN', 'UNKNOWN'),<br>tCode('V', 'YDSH', 'YIDDISH'),<br><br><br>-- ****     NATIONAL   ****<br>tCode('L', 'NATIONAL', 'Nationality'),<br>tCode('V', 'USA', 'AMERICAN'),<br>tCode('V', 'CAN', 'CANADIAN'),<br>tCode('V', 'MEX', 'MEXICAN'),<br><br><br>-- ****     CITIZEN   ****<br>tCode('L', 'CITIZEN', 'Citizenship'),<br>tCode('V', 'USA', 'UNITED STATES'),<br>tCode('V', 'CAN', 'CANADA'),<br>tCode('V', 'MEX', 'MEXICO'),<br><br>-- ****     ADDRTYPE   ****<br>tCode('L', 'ADDRTYPE', 'Address Type'),<br>tCode('V', 'O', 'OFFICE'),<br>tCode('V', 'H', 'HOME'),<br>tCode('V', 'V', 'VACATION'),<br>tCode('V', 'H2','HOME 2'),<br>tCode('V', 'M', 'MAILING'),<br>tCode('V', 'W', 'WORK'),<br>tCode('V', 'W2', 'WORK 2'),<br>tCode('V', 'T', 'TEMPORARY'),<br><br>-- ****     PHONTYPE   ****<br>tCode('L', 'PHONTYPE', 'Phone Type'),<br>tCode('V', 'CH', 'HOME'),<br>tCode('V', 'CO', 'OFFICE'),<br>tCode('V', 'CF', 'FAX'),<br>tCode('V', 'CB', 'BUSINESS'),<br>tCode('V', 'CBD', 'BUSINESS DIRECT'),<br>tCode('V', 'CBA', 'BUSINESS ALTERNATE'),<br>tCode('V', 'CP', 'PAGER'),<br>tCode('V', 'CC', 'CELLULAR'),<br><br>-- ****     RELATIONSHIP   ****<br>tCode('L', 'RELATION', 'Relationship'),<br>tCode('V', 'PARENT', 'PARENT'),<br>tCode('V', 'CHILD', 'CHILD'),<br>tCode('V', 'SPOUSE', 'SPOUSE'),<br>tCode('V', 'FAMILY_MEMBER', 'FAMILY_MEMBER'),<br>tCode('V', 'OTHER', 'OTHER'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>-- ****     POLICYTYPE   ****<br>tCode('L', 'POLTYPE', 'Policy Type'),<br>tCode('V', 'HMO', 'HMO'),<br>tCode('V', 'PPO', 'PPO'),<br>tCode('V', 'OTHER', 'OTHER'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>-- ****     STATE   ****<br>tCode('L', 'STATE', 'State'),<br>tCode('V', 'AL', 'ALABAMA'),<br>tCode('V', 'AK', 'ALASKA'),<br>tCode('V', 'AZ', 'ARIZONA'),<br>tCode('V', 'AR', 'ARKANSAS'),<br>tCode('V', 'CA', 'CALIFORNIA'),<br>tCode('V', 'CO', 'COLORADO'),<br>tCode('V', 'CT', 'CONNECTICUT'),<br>tCode('V', 'DE', 'DELAWARE'),<br>tCode('V', 'DC', 'DISTRICT OF COLUMBIA'),<br>tCode('V', 'FL', 'FLORIDA'),<br>tCode('V', 'GA', 'GEORGIA'),<br>tCode('V', 'HI', 'HAWAII'),<br>tCode('V', 'ID', 'IDAHO'),<br>tCode('V', 'IL', 'ILLINOIS'),<br>tCode('V', 'IN', 'INDIANA'),<br>tCode('V', 'IA', 'IOWA'),<br>tCode('V', 'KS', 'KANSAS'),<br>tCode('V', 'KY', 'KENTUCKY'),<br>tCode('V', 'LA', 'LOUISIANA'),<br>tCode('V', 'ME', 'MAINE'),<br>tCode('V', 'MD', 'MARYLAND'),<br>tCode('V', 'MA', 'MASSACHUSETTS'),<br>tCode('V', 'MI', 'MICHIGAN'),<br>tCode('V', 'MN', 'MINNESOTA'),<br>tCode('V', 'MS', 'MISSISSIPPI'),<br>tCode('V', 'MO', 'MISSOURI'),<br>tCode('V', 'MT', 'MONTANA'),<br>tCode('V', 'NE', 'NEBRASKA'),<br>tCode('V', 'NV', 'NEVADA'),<br>tCode('V', 'NH', 'NEW HAMPSHIRE'),<br>tCode('V', 'NJ', 'NEW JERSEY'),<br>tCode('V', 'NM', 'NEW MEXICO'),<br>tCode('V', 'NY', 'NEW YORK'),<br>tCode('V', 'NC', 'NORTH CAROLINA'),<br>tCode('V', 'ND', 'NORTH DAKOTA'),<br>tCode('V', 'OH', 'OHIA'),<br>tCode('V', 'OK', 'OKLAHOMA'),<br>tCode('V', 'OR', 'OREGON'),<br>tCode('V', 'PA', 'PENNSYLVANIA'),<br>tCode('V', 'PR', 'PUERTO RICO'),<br>tCode('V', 'RI', 'RHODE ISLAND'),<br>tCode('V', 'SC', 'SOUTH CAROLINA'),<br>tCode('V', 'SD', 'SOUTH DAKOTA'),<br>tCode('V', 'TN', 'TENNESSEE'),<br>tCode('V', 'TX', 'TEXAS'),<br>tCode('V', 'UT', 'UTAH'),<br>tCode('V', 'VT', 'VERMONT'),<br>tCode('V', 'VI', 'VIRGIN ISLANDS'),<br>tCode('V', 'VA', 'VIRGINIA'),<br>tCode('V', 'WA', 'WASHINGTON'),<br>tCode('V', 'WI', 'WISCONSIN'),<br>tCode('V', 'WV', 'WEST VIRGINIA'),<br>tCode('V', 'WY', 'WYOMING'),<br><br>-- ****     COUNTRY   ****<br>tCode('L', 'COUNTRY', 'Country'),<br>tCode('V', 'AUST', 'AUSTRALIA'),<br>tCode('V', 'BAHA', 'BAHAMAS'),<br>tCode('V', 'BERM', 'BERMUDA'),<br>tCode('V', 'CANA', 'CANADA'),<br>tCode('V', 'ENGL', 'ENGLAND'),<br>tCode('V', 'FRAN', 'FRANCE'),<br>tCode('V', 'GRBR', 'GREAT BRITAIN'),<br>tCode('V', 'IREL', 'IRELAND'),<br>tCode('V', 'MEXI', 'MEXICO'),<br>tCode('V', 'UNST', 'UNITED STATES'),<br>tCode('V', 'VIRU', 'US VIRGIN ISLANDS'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>-- ****     CONTACTROLE  ****<br>tCode('L', 'CONTROLE', 'Contact Role'),<br>tCode('V', 'EMERGENCY', 'EMERGENCY'),<br>tCode('V', 'GUARANTOR', 'GUARANTOR'),<br>tCode('V', 'NEXT_OF_KIN', 'NEXT OF KIN'),<br>tCode('V', 'OTHER', 'OTHER'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br><br>-- ****     INSURANCERELATIONSHIP   ****<br>tCode('L', 'INSREL', 'Insurance Relationship'),<br>tCode('V', 'SELF', 'SELF'),<br>tCode('V', 'SPOUSE', 'SPOUSE'),<br>tCode('V', 'CHILD', 'CHILD'),<br>tCode('V', 'FAMILY_MEMBER', 'FAMILY_MEMBER'),<br>tCode('V', 'DOMESTIC_PARTNER', 'DOMESTIC PARTNER'),<br>tCode('V', 'GUARDIAN', 'GUARDIAN'),<br>tCode('V', 'OTHER', 'OTHER'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN')<br></pre>
 <h2>User Codes</h2>
 When the user-code is selected in the MIDM GUI then the
 coresponding format,
@@ -179,14 +353,16 @@ input_mask and value_mask are used. The input_mask shows the
 characters that can be typed.<br>
 <br>
 For the input_mask and value_mask:<br>
-<div style="margin-left: 40px;">A = an alphanumeric
+<div style="margin-left: 40px;" class="overflow: scroll">A
+= an alphanumeric
 character [A-Za-z0-9]<br>
 D = a decimal number [0-9]<br>
 L = an alphabetic character [A-Za-z]<br>
 </div>
 <br>
 For the value_mask:<br>
-<div style="margin-left: 40px;">^ = remove the
+<div style="margin-left: 40px;" class="overflow: scroll">^
+= remove the
 corresponding character from the input string when storing in the data.<br>
 </div>
 <br>
@@ -213,5 +389,5 @@ space, four deciimal numbers, a space and then four
 deciimal
 numbers (example: 1111 2222 3333 4444). This will be converted
 to 1111222233334444 and stored in the database. <span style="font-family: monospace;"></span>
-<pre style="margin-left: 40px;">insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'CCID', 'CREDIT CARD ID', '[0-9]{16}', 'DDDD DDDD DDDD DDDD', 'DDDD^DDDD^DDDD^DDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'MEDID', 'Medical License ID', '[A-Za-z]{3}[0-9]{6}', 'LLL-DDDDDD', 'LLL^DDDDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'HHID', 'Household ID', '[A-Za-z0-9]{3}[0-9]{4}', 'AAADDDD', 'AAADDDD');</pre>
+<pre style="margin-left: 40px; overflow: scroll;">insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'CCID', 'CREDIT CARD ID', '[0-9]{16}', 'DDDD DDDD DDDD DDDD', 'DDDD^DDDD^DDDD^DDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'MEDID', 'Medical License ID', '[A-Za-z]{3}[0-9]{6}', 'LLL-DDDDDD', 'LLL^DDDDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'HHID', 'Household ID', '[A-Za-z0-9]{3}[0-9]{4}', 'AAADDDD', 'AAADDDD');</pre>
 </body></html>
