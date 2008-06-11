@@ -946,11 +946,16 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                         <%}%>            
 
                                                   <tr> 
+												  <%  
+													  Operations ops = new Operations();
+												     if(ops.isTransLog_SearchView()){
+												  %>
                                                       <td valign="top">
                                                           <a class="viewbtn"   title="<h:outputText value="#{msgs.view_history_text}"/>" href="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoSources.size()%>')" >  
                                                               <h:outputText value="#{msgs.view_history_text}"/>
                                                           </a>
                                                       </td>    
+												  <% } %>	  
                                                   </tr> 
                                                   <tr> 
                                                       <td valign="top">

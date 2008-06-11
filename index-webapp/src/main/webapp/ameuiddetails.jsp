@@ -20,6 +20,7 @@
 <%@ page import="com.sun.mdm.index.objects.TransactionObject"%>
 <%@ page import="com.sun.mdm.index.objects.epath.EPath"%>
 <%@ page import="com.sun.mdm.index.objects.epath.EPathArrayList"%>
+<%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"  %>
 
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
@@ -974,9 +975,15 @@
                                                 <div id="dynamicMainEuidButtonContent<%=countEnt%>">
                                                     <table border="0" cellspacing="0" cellpadding="0" border="0">
                                                         <tr> 
+														 <%  
+													    Operations ops = new Operations();
+												        if(ops.isTransLog_SearchView()){
+
+												         %>
                                                             <td valign="top">
                                                                 <a class="viewbtn"   title="<h:outputText value="#{msgs.view_history_text}"/>" href="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','0')" ><h:outputText value="#{msgs.view_history_text}"/></a>
                                                             </td>    
+														 <% } %>	 
                                                         </tr>
                                                     </table>
                                                 </div>

@@ -38,6 +38,7 @@
 <%@ page import="java.util.Iterator"  %>
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
+<%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 
 <f:view>
 <html>
@@ -106,6 +107,7 @@ function align(thisevent,divID) {
    ArrayList labelsList  = new ArrayList();
    ArrayList fullFieldNamesList  = new ArrayList();
    StringBuffer myColumnDefs = new StringBuffer();
+   Operations operations=new Operations();
 %>
 
 <title><h:outputText value="#{msgs.application_heading}"/></title>  
@@ -266,12 +268,13 @@ function align(thisevent,divID) {
                                             </h:outputLink>
                                         </nobr>
                                         <nobr>
+										<% if(operations.isEO_SearchViewSBR()){%>	
                                            <a  title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
                                                <span>
                                                  <h:outputText value="#{msgs.search_button_label}"/>
                                                </span>
                                            </a>
-
+										 <%}%>
                                         </nobr>
                                         
                                     </td>

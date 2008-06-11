@@ -23,7 +23,7 @@
 <%@ page import="com.sun.mdm.index.objects.TransactionObject"%>
 <%@ page import="com.sun.mdm.index.objects.epath.EPath"%>
 <%@ page import="com.sun.mdm.index.objects.epath.EPathArrayList"%>
-
+<%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"  %>
 
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.ResourceBundle"  %>
@@ -1197,11 +1197,17 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
 										  	 </tr>
 											<%}%>
                                              <tr> 
+											         <%  
+													    Operations ops = new Operations();
+												        if(ops.isTransLog_SearchView()){
+
+												         %>
                                                       <td valign="top">
                                                           <a class="viewbtn"   title="<h:outputText value="#{msgs.view_history_text}"/>" href="javascript:void(0)" onclick="javascript:showViewHistory('mainDupHistory','<%=eoHistory.size()%>','<%=countEnt%>','<%=eoArrayListObjects.length%>','<%=eoSources.size()%>')" >  
  															  <%=bundle.getString("view_history_text")%>
                                                           </a>
                                                       </td>    
+													   <% } %>	 
                                               </tr> 
                                               <tr> 
                                                       <td valign="top">
