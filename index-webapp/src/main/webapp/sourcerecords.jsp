@@ -745,7 +745,7 @@
                                                                 <!--Rendering Updateable HTML Text boxes date fields-->
                                                                 <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6}">
                                                                     
-                                                                    <nobr><!--Sridhar -->ss
+                                                                    <nobr><!--Sridhar -->
                                                                         <input type="text" 
 																		       readonly="true" disabled="true"
                                                                                title="<h:outputText value="#{fieldConfigPerAdd.fullFieldName}"/>"
