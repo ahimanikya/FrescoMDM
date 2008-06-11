@@ -114,6 +114,7 @@ function setRand(thisrand)  {
                     <tr> 
                         <!--td><%=(String)request.getAttribute("tabName")%></td-->
                               <%
+
                                 ScreenObject subScreenObj = null;
                                 ScreenObject screenObjectObj = (ScreenObject) session.getAttribute("ScreenObject");
 
@@ -125,7 +126,7 @@ function setRand(thisrand)  {
                                     ScreenObject screenObj = (ScreenObject) subTabsLabelsListObj[i];
 									orderdedScreens[screenObj.getDisplayOrder()] = screenObj;
 							    }
-								//AuditLogHandler auditLogHandler = new AuditLogHandler();
+								ReportHandler reportHandler = new ReportHandler();
  
                                 String reportTabName = (request.getAttribute("reportTabName") != null)?(String) request.getAttribute("reportTabName"):orderdedScreens[0].getDisplayTitle();
 								String tabName = "";
@@ -150,7 +151,9 @@ function setRand(thisrand)  {
 										        <a title="<%=tabName%>" href="#tab<%=i+1%>"> <em><%=tabName%></em></a>
 										    </li>             
                                         <%}	%>
-                                 <%}%>
+                                 <%
+
+											}%>
                                 </ul>            
                                 
                            <div class="yui-content">
@@ -165,7 +168,6 @@ function setRand(thisrand)  {
                                            ValueExpression isActivityReportValueExpression = ExpressionFactory.newInstance().createValueExpression(isActivityReport, isActivityReport.getClass());
                                            Integer integerValue = new Integer(i+1);
 										   ValueExpression loopIndexVE = ExpressionFactory.newInstance().createValueExpression(integerValue, integerValue.getClass());
-
 									 %>
 									     <div id="tab<%=i+1%>">
 										   <form id="form<%=i%>">
@@ -192,11 +194,15 @@ function setRand(thisrand)  {
 																				 value="#{searchScreenFieldGroup.fieldConfigs}">
 																		<!--Rendering Non Updateable HTML Text Area-->
 																		 <h:column>
-																					<nobr>
-																					  <h:outputText value="*" 
-																						rendered="#{feildConfig.required}" />
-																						<h:outputText value="#{feildConfig.displayName}" />
-																					</nobr>
+                                                                          <nobr>
+                                                                               <h:outputText rendered="#{feildConfig.oneOfTheseRequired}" >
+												                                 <span style="font-size:9px;color:blue;verticle-align:top">&dagger;&nbsp;</span>
+ 												                               </h:outputText>
+                                                                              <h:outputText rendered="#{feildConfig.required}">
+												                                 <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
+ 												                               </h:outputText>
+                                                                             <h:outputText value="#{feildConfig.displayName}" />
+                                                                         </nobr>
 																				</h:column>
 																				<!--Rendering HTML Select Menu List-->
 																				<h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
@@ -331,7 +337,39 @@ function setRand(thisrand)  {
 													</nobr>
 												  </td>
 													</tr>
+													<tr>
+													  <td>&nbsp;
+													  </td>
+													</tr>
+													<tr>
+													   <td colspan="2" align="center"><div class="ajaxalert" id="messages"> </div></td>									
+													</tr>
+
+				  <% if (reportHandler.isOneOfGroupExists(orderdedScreens[i].getDisplayTitle()) ) {%>
+					<tr> <!-- inline style required to override the class defined in CSS -->
+						<td style="font-size:10px;" colspan="2">
+						   <hr/>
+							<nobr>
+								 <span style="font-size:9px;color:blue;verticle-align:top;">&dagger;&nbsp;</span><h:outputText value="#{msgs.GROUP_FIELDS}"/>
+							</nobr>
+						</td>
+				    </tr>
+					<%}%>
+
+					<% if (reportHandler.isRequiredExists(orderdedScreens[i].getDisplayTitle()) ) {%>			
+					<tr>
+						<td style="font-size:10px;" colspan="2">
+							<nobr>
+								 <span style="font-size:9px;color:red;verticle-align:top; FONT-WEIGHT: normal; FONT-FAMILY: Arial, Helvetica,sans-serif">*&nbsp;</span><h:outputText value="#{msgs.REQUIRED_FIELDS}"/>
+							</nobr>
+						</td>
+				    </tr>
+					<%}%>
+
 												  </table>
+			    <table>
+				</table>
+
 												  <input type="hidden" value="<%=i%>" title="layer" />
 <!-- End Action Buttons -->
 										  </form>

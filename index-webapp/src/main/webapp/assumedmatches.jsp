@@ -113,7 +113,13 @@ function setRand(thisrand)  {
                                 <!--Rendering Non Updateable HTML Text Area-->
                                    <h:column>
                                             <nobr>
-                                                <h:outputText value="*" rendered="#{feildConfig.required}" />
+                                                <h:outputText rendered="#{feildConfig.oneOfTheseRequired}" >
+												     <span style="font-size:9px;color:blue;verticle-align:top">&dagger;&nbsp;</span>
+ 												</h:outputText>
+                                                <h:outputText rendered="#{feildConfig.required}">
+												     <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
+ 												</h:outputText>
+
                                                 <h:outputText value="#{feildConfig.displayName}" />
                                             </nobr>
                                         </h:column>
@@ -189,10 +195,11 @@ function setRand(thisrand)  {
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                    onblur="javascript:validate_date(this,'MM/dd/yyyy');javascript:accumilateFieldsOnBlur(this,'<h:outputText value="#{feildConfig.name}"/>')">
                                                   <a title="<h:outputText value="#{feildConfig.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{feildConfig.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
-                                                 </a>
+                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{feildConfig.displayName}"  styleClass="imgClass" url="./images/cal.gif"/></a>
                                           </nobr>
                                         </h:column>
+                            </h:dataTable>
+								</h:column>
 							  <f:facet name="footer">
                                      <h:column>
                                        <div>
@@ -216,12 +223,9 @@ function setRand(thisrand)  {
 									   </div>
                                      </h:column>
                                </f:facet>
-
-                            </h:dataTable>
-								</h:column>
                             </h:dataTable>
                         </td>
-						<td><div id="messages"> </div></td>
+						<td><div id="messages" class="ajaxalert"> </div></td>
                     </tr>
 					<%if(countFc == 0) {%>
 					<tr>
@@ -233,7 +237,29 @@ function setRand(thisrand)  {
                 </table>
                 <h:inputHidden id="enteredFieldValues" value="#{AssumeMatchHandler.enteredFieldValues}"/>
             </h:form>
-<div class="searchresults" id="outputdiv"></div>
+			<h:panelGrid>
+               <h:panelGroup rendered="#{AssumeMatchHandler.oneOfGroupExists}">
+					<tr> <!-- inline style required to override the class defined in CSS -->
+						<td style="font-size:10px;">
+						   <hr/>
+							<nobr>
+								 <span style="font-size:9px;color:blue;verticle-align:top;">&dagger;&nbsp;</span><h:outputText value="#{msgs.GROUP_FIELDS}"/>
+							</nobr>
+						</td>
+				    </tr>
+ 			   </h:panelGroup>
+			   <h:panelGroup rendered="#{AssumeMatchHandler.requiredExists}">
+					<tr>
+						<td style="font-size:10px;">
+							<nobr>
+								 <span style="font-size:9px;color:red;verticle-align:top; FONT-WEIGHT: normal; FONT-FAMILY: Arial, Helvetica,sans-serif">*&nbsp;</span><h:outputText value="#{msgs.REQUIRED_FIELDS}"/>
+							</nobr>
+						</td>
+				    </tr>
+ 			   </h:panelGroup>
+			</h:panelGrid>
+
+<div class="reportresults" id="outputdiv"></div>
     </div>     
   </div>
 </body>

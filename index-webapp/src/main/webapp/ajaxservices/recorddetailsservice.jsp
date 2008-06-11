@@ -279,10 +279,10 @@ if (results != null)   {
                        </a>                                     
 				 <% } %>
    		       </td>
-			<td width="50%" align="right">
+			<td align="right">
 			   <h:outputText value="#{msgs.total_records_text}"/>&nbsp;<%=results.size()%>
 			</td>
-			<td width="10%">
+			<td >
 				<% if (results.size() > 0)   {%>
                          <h:outputLink styleClass="button" title="#{msgs.print_text}"
                                        rendered="#{Operations.transLog_Print}"  

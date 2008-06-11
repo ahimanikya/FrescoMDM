@@ -606,6 +606,7 @@ function getDateFieldName(formName,idName)  {
 } 
 
 
+/*
 function ClearContents(thisForm)  { 
 	thisFrm = document.forms[thisForm];
 	for(i=0; i< thisFrm.elements.length; i++)   {      		
@@ -620,6 +621,22 @@ function ClearContents(thisForm)  {
     }
     return;
 } 
+*/
+function ClearContents(thisForm)  { 
+ thisFrm = document.forms[thisForm];
+ for(i=0; i< thisFrm.elements.length; i++)   {        
+    var fieldName = thisFrm.elements[i].name;
+    if(thisFrm.elements[i].name != 'lidmask') {
+        if(thisFrm.elements[i].name !=  'javax.faces.ViewState' && thisFrm.elements[i].id !=  'selectedSearchType')   {
+          thisFrm.elements[i].value = "";
+        }
+    }
+ }
+ return;
+}
+
+
+
 
 function  confirmResolve(countDupId){
     

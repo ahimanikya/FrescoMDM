@@ -1256,7 +1256,13 @@
         <managed-bean-class>com.sun.mdm.index.edm.presentation.handlers.DashboardHandler</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+   <managed-bean>
+        <managed-bean-name>ScreenConfiguration</managed-bean-name>
+        <managed-bean-class>com.sun.mdm.index.edm.presentation.handlers.DashboardHandler</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 </faces-config>
+
 
 
 

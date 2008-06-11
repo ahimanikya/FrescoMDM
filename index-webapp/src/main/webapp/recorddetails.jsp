@@ -163,8 +163,13 @@ function align(thisevent,divID) {
                                 <!--Rendering Non Updateable HTML Text Area-->
                                <!--Rendering Non Updateable HTML Text Area-->
                                         <h:column>
-                                            <nobr>
-                                                <h:outputText value="*" rendered="#{feildConfig.required}" />
+                                            <nobr>											
+                                                <h:outputText rendered="#{feildConfig.oneOfTheseRequired}" >
+												     <span style="font-size:9px;color:blue;verticle-align:top">&dagger;&nbsp;</span>
+ 												</h:outputText>
+                                                <h:outputText rendered="#{feildConfig.required}">
+												     <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
+ 												</h:outputText>
                                                 <h:outputText value="#{feildConfig.displayName}" />
                                             </nobr>
                                         </h:column>
@@ -276,38 +281,39 @@ function align(thisevent,divID) {
                     </tr>
                 </table>
             </h:form>
+			<h:panelGrid>
+               <h:panelGroup rendered="#{PatientDetailsHandler.oneOfGroupExists}">
+					<tr> <!-- inline style required to override the class defined in CSS -->
+						<td style="font-size:10px;">
+						   <hr/>
+							<nobr>
+								 <span style="font-size:9px;color:blue;verticle-align:top;">&dagger;&nbsp;</span><h:outputText value="#{msgs.GROUP_FIELDS}"/>
+							</nobr>
+						</td>
+				    </tr>
+ 			   </h:panelGroup>
+
+			   <h:panelGroup rendered="#{PatientDetailsHandler.requiredExists}">
+					<tr>
+						<td style="font-size:10px;">
+							<nobr>
+								 <span style="font-size:9px;color:red;verticle-align:top; FONT-WEIGHT: normal; FONT-FAMILY: Arial, Helvetica,sans-serif">*&nbsp;</span><h:outputText value="#{msgs.REQUIRED_FIELDS}"/>
+							</nobr>
+						</td>
+				    </tr>
+ 			   </h:panelGroup>
+
+			</h:panelGrid>
 			<form id="collectEuidsForm">
 			      <input type="hidden" id="collectEuids" title='collectEuids' />   
             </form>
-     		
-        </div>  
-
-        <%
-            ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
-            CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
-            ArrayList arlResultsConfig = objScreenObject.getSearchResultsConfig();
-            SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
-
-        %>    
-          
-    <%
-
-          ArrayList resultArrayList  = new ArrayList();
-          if(request.getAttribute("resultArrayListReq") != null) {
-             request.setAttribute("resultArrayListReq", request.getAttribute("resultArrayListReq") );  
-             resultArrayList = (ArrayList) request.getAttribute("resultArrayListReq"); 
-             if (resultArrayList != null && resultArrayList.size() > 0) {
-         %>                
-         <%}%>
-                
-<%}%>
-    
-
+<div class="reportresults" id="outputdiv"></div>     		
+        </div>      
 </div>
 </td>
 </tr>
 <tr>
-  <td><div class="searchresults" id="outputdiv"></div>
+  <td>
   </td>
 </tr>
 </table>
@@ -389,6 +395,7 @@ function align(thisevent,divID) {
      
 </html>
 </f:view>
+
 
 
 

@@ -152,7 +152,12 @@ function align(thisevent,divID) {
                                <!--Rendering Non Updateable HTML Text Area-->
                                         <h:column>
                                             <nobr>
-                                                <h:outputText value="*" rendered="#{feildConfig.required}" />
+                                                <h:outputText rendered="#{feildConfig.oneOfTheseRequired}" >
+												     <span style="font-size:9px;color:blue;verticle-align:top">&dagger;&nbsp;</span>
+ 												</h:outputText>
+                                                <h:outputText rendered="#{feildConfig.required}">
+												     <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
+ 												</h:outputText>
                                                 <h:outputText value="#{feildConfig.displayName}" />
                                             </nobr>
                                         </h:column>
@@ -265,13 +270,39 @@ function align(thisevent,divID) {
                         <td><div id="messages"></div></td>
                     </tr>
                 </table>
+
+			<h:panelGrid>
+               <h:panelGroup rendered="#{SearchDuplicatesHandler.oneOfGroupExists}">
+					<tr> <!-- inline style required to override the class defined in CSS -->
+						<td style="font-size:10px;">
+						   <hr/>
+							<nobr>
+								 <span style="font-size:9px;color:blue;verticle-align:top;">&dagger;&nbsp;</span><h:outputText value="#{msgs.GROUP_FIELDS}"/>
+							</nobr>
+						</td>
+				    </tr>
+ 			   </h:panelGroup>
+
+			   <h:panelGroup rendered="#{SearchDuplicatesHandler.requiredExists}">
+					<tr>
+						<td style="font-size:10px;">
+							<nobr>
+								 <span style="font-size:9px;color:red;verticle-align:top; FONT-WEIGHT: normal; FONT-FAMILY: Arial, Helvetica,sans-serif">*&nbsp;</span><h:outputText value="#{msgs.REQUIRED_FIELDS}"/>
+							</nobr>
+						</td>
+				    </tr>
+ 			   </h:panelGroup>
+
+			</h:panelGrid>
+
     </div>  
     </td>
     </tr>
 </table>
+
 <!--Output div here-->
 <table cellspacing="0" cellpadding="0" border="0" style="color:#837F74;height:100%;width: 1024px;font-size:12px;">
-  <tr><td><div id="outputdiv"></div></td></tr>
+  <tr><td><div class="duplicateresults" id="outputdiv"></div></td></tr>
 </table>
 
 </div>  
@@ -309,6 +340,7 @@ function align(thisevent,divID) {
            </tr>
          </table>
        </h:form>
+
     </div>                                                
   <!-- Resolve popup div ends here  -->
    

@@ -104,16 +104,21 @@ function setRand(thisrand)  {
                                          id="searchScreenFieldGroupArrayId" 
                                          var="searchScreenFieldGroup" 
                                          value="#{AuditLogHandler.searchScreenFieldGroupArray}">
-						    <h:column>
+						    <h:column>                             
    				            <div style="font-size:12px;font-weight:bold;color:#0739B6;" ><h:outputText value="#{searchScreenFieldGroup.description}" /></div>
                             <h:dataTable headerClass="tablehead"  
                                          id="fieldConfigId" 
                                          var="feildConfig" 
-                                         value="#{searchScreenFieldGroup.fieldConfigs}">
+                                          value="#{searchScreenFieldGroup.fieldConfigs}">
                                         <!--Rendering Non Updateable HTML Text Area-->
                                         <h:column>
                                             <nobr>
-                                                <h:outputText value="*" rendered="#{feildConfig.required}" />
+                                                <h:outputText rendered="#{feildConfig.oneOfTheseRequired}" >
+												     <span style="font-size:9px;color:blue;verticle-align:top">&dagger;&nbsp;</span>
+ 												</h:outputText>
+                                                <h:outputText rendered="#{feildConfig.required}">
+												     <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
+ 												</h:outputText>
                                                 <h:outputText value="#{feildConfig.displayName}" />
                                             </nobr>
                                         </h:column>
@@ -223,7 +228,7 @@ function setRand(thisrand)  {
                                     </table>
                                 </td>
                                 <td valign="top">
-								   <div id="messages">                                   
+								   <div id="messages" class="ajaxalert">                                   
 								   </div>
                                 </td>
                             </tr>
@@ -231,21 +236,33 @@ function setRand(thisrand)  {
                         <h:inputHidden id="enteredFieldValues" value="#{AuditLogHandler.enteredFieldValues}"/>
                     </h:form>
 					<!--div class="reportresults" id="outputdiv"></div-->
+			<h:panelGrid>
+               <h:panelGroup rendered="#{AuditLogHandler.oneOfGroupExists}">
+					<tr> <!-- inline style required to override the class defined in CSS -->
+						<td style="font-size:10px;">
+						   <hr/>
+							<nobr>
+								 <span style="font-size:9px;color:blue;verticle-align:top;">&dagger;&nbsp;</span><h:outputText value="#{msgs.GROUP_FIELDS}"/>
+							</nobr>
+						</td>
+				    </tr>
+ 			   </h:panelGroup>
+			   <h:panelGroup rendered="#{AuditLogHandler.requiredExists}">
+					<tr>
+						<td style="font-size:10px;">
+							<nobr>
+								 <span style="font-size:9px;color:red;verticle-align:top; FONT-WEIGHT: normal; FONT-FAMILY: Arial, Helvetica,sans-serif">*&nbsp;</span><h:outputText value="#{msgs.REQUIRED_FIELDS}"/>
+							</nobr>
+						</td>
+				    </tr>
+ 			   </h:panelGroup>
+			</h:panelGrid>
+<div class="reportresults" style="visibility:hidden"" id="outputdiv"></div>
+
                 </div> 
             </div>  
 		  </td>
 		  </tr>
-		  <tr>
-		    <td >
-			<table border="0">
-				<tr>
-					<td>
-						<div class="basicSearch" style="visibility:hidden"" id="outputdiv"></div>
-					</td>
-				</tr>
-            </table>
-		    </td>
-		   </tr>
 		  </table>
    </body>     
     <script>
@@ -272,6 +289,7 @@ function setRand(thisrand)  {
     </script>
     </html>
 </f:view>
+
 
 
 
