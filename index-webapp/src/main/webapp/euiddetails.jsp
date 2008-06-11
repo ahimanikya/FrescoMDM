@@ -30,6 +30,7 @@
 <%@ page import="java.util.Iterator"  %>
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
+<%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 <%
  double rand = java.lang.Math.random();
  String URI = request.getRequestURI();
@@ -147,6 +148,10 @@
 
             //EPathArrayList ePathArrayList = compareDuplicateManager.retrieveEPathArrayList(objScreenObject);
             ArrayList objScreenObjectList = objScreenObject.getSearchResultsConfig();
+			
+
+			// Added by Anil, fix for  CR 6709864
+			Operations operations=new Operations();
 
             EPath ePath = null;
             PatientDetailsHandler patientDetailsHandler = new PatientDetailsHandler();
@@ -901,10 +906,14 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                         <%if ("active".equalsIgnoreCase(eoStatus)) {%>
                                                 <tr> 
                                                     <td valign="top" width="125px">
+													<!-- Start Added by Anil, fix for  CR 6709864-->
+													 <% if(operations.isEO_Edit()){%>
                                                         <a  title="<h:outputText value="#{msgs.edit_euid_button_text}" />" class="button" href="javascript:void(0)"
                                                                         onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/editmaineuid.jsf?'+'&rand=<%=rand%>&euid=<%=euid%>','ajaxContent','')">
                                                             <span><h:outputText value="#{msgs.edit_euid_button_text}" /> </span>
                                                         </a>  
+													 <%}%>
+													 <!-- End  fix for  CR 6709864-->
                                                    <!-- Deactive/Activate button -->
                                                     <h:form>
                                                         <h:commandLink title="#{msgs.source_rec_deactivate_but}" styleClass="button" rendered="#{Operations.EO_Deactivate}"

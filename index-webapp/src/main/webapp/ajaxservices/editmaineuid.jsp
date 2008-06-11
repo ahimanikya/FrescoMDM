@@ -39,6 +39,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.EditMainEuidHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 
 
 <%
@@ -124,6 +125,8 @@ boolean isSessionActive = true;
 
             String editEuid = (String) session.getAttribute("editEuid");
             ValueExpression eoValueExpression = ExpressionFactory.newInstance().createValueExpression(editEuid, editEuid.getClass());
+			// Added by Anil, fix for  CR 6709864
+			Operations operations=new Operations();
         %>
         <body>
             <div> 
@@ -1067,10 +1070,14 @@ boolean isSessionActive = true;
                                     <a title="<h:outputText value="#{msgs.cancel_but_text}"/>"  href="euiddetails.jsf?euid=<%=editEuid%>" class="button" onclick="ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&canceleoedit=true','euidFinalErrorMessages',event)">
                                        <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                                    </a>  
+								   <!-- Start Added by Anil, fix for  CR 6709864 -->
+								   <% if(operations.isSO_Add()){%>
 									 <a title="<h:outputText value="#{msgs.edit_euid_add_so}"/>" href="javascript:void(0);" class="button" onclick="ajaxMinorObjects('/<%=URI%>/maineuidAddSO.jsf?&rand=<%=rand%>&addSO=addSO','AddSO','')">	
 											<span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.edit_euid_add_so}"/></span>
-
 									 </a>     
+									  <%}%>
+
+								  <!-- End . fix for  CR 6709864 -->
 									 </nobr>
                                  </td>
                              </tr>
