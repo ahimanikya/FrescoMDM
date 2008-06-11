@@ -123,6 +123,34 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                  mLogger.info(mLocalizer.x("SDP001: Validation failed : {0} ", errorMessage));
                 return null;
             }
+            
+            //Check if all the required values in the group are entered by the user
+            HashMap oneOfErrors = super.checkOneOfGroupCondition();
+            if (oneOfErrors.size() > 0 ) {
+                Iterator iter = oneOfErrors.keySet().iterator();
+                while (iter.hasNext())   {
+                    String key = (String)iter.next();
+                    String message = bundle.getString("ERROR_ONE_OF_GROUP_TEXT1") + (key == null? " ":" "+key+" ") + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message , message));
+                    ArrayList fieldsInGroup = (ArrayList)oneOfErrors.get(key);
+                    for (int i = 0; i < fieldsInGroup.size(); i++) {
+                        String fields = (String) fieldsInGroup.get(i);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                    }
+                }                
+              return null;
+            }
+            
+            //Check if all required values are entered by the user
+            ArrayList requiredErrorsList = super.isRequiredCondition();
+            if (requiredErrorsList.size() > 0 ) {                                
+                for (int i = 0; i < requiredErrorsList.size(); i++) {
+                     String fields = (String) requiredErrorsList.get(i);
+                     fields += " " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                }
+                return null;
+            }
 
             //if user enters LID ONLY 
             if ((super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("SystemCode") == null) {
@@ -217,7 +245,6 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
         
         
         PotentialDuplicateSearchObject potentialDuplicateSearchObject = getPDSearchObject();
-        
         if(potentialDuplicateSearchObject == null) {
             return null;
         }
@@ -495,12 +522,23 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                     potentialDuplicateSearchObject.setEUIDs(null);
                 }
             }
+            
+            String startTime = (String) super.getUpdateableFeildsMap().get("create_start_time");
+            String searchStartDate = (String) super.getUpdateableFeildsMap().get("create_start_date");
+
+            if (startTime != null && startTime.trim().length() > 0) {
+                //if only time fields are entered validate for the date fields 
+                if ((searchStartDate != null && searchStartDate.trim().length() == 0)) {
+                    errorMessage = bundle.getString("enter_date_from");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    return null;
+                }
+            }
+
 
             //Set StartDate to the potentialDuplicateSearchObject
             if (super.getUpdateableFeildsMap().get("create_start_date") != null && super.getUpdateableFeildsMap().get("create_start_date").toString().trim().length() > 0) {
                 try {
-                    String startTime = (String) super.getUpdateableFeildsMap().get("create_start_time");
-                    String searchStartDate = (String) super.getUpdateableFeildsMap().get("create_start_date");
                     //append the time aling with date
                     if (startTime != null && startTime.trim().length() > 0) {
                         searchStartDate = searchStartDate + " " + startTime;
@@ -518,12 +556,21 @@ public class SearchDuplicatesHandler extends ScreenConfiguration {
                }
             }
 
+            String endTime = (String) super.getUpdateableFeildsMap().get("create_end_time");
+            String searchEndDate = (String) super.getUpdateableFeildsMap().get("create_end_date");
+            if (endTime != null && endTime.trim().length() > 0) {
+                //if only time fields are entered validate for the date fields 
+                if ((searchEndDate != null && searchEndDate.trim().length() == 0)) {
+                    errorMessage = bundle.getString("enter_date_to");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    return null;
+                }
+            }
+
 
             //Set StartDate to the potentialDuplicateSearchObject
             if (super.getUpdateableFeildsMap().get("create_end_date") != null && super.getUpdateableFeildsMap().get("create_end_date").toString().trim().length() > 0) {
                 try {
-                    String endTime = (String) super.getUpdateableFeildsMap().get("create_end_time");
-                    String searchEndDate = (String) super.getUpdateableFeildsMap().get("create_end_date");
                     //append the time aling with date
                     if (endTime != null && endTime.trim().length() > 0) {
                         searchEndDate = searchEndDate + " " + endTime;
@@ -1412,4 +1459,5 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
 }        
 
 }
+
 

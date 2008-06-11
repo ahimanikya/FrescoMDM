@@ -121,9 +121,36 @@ public class PatientDetailsHandler extends ScreenConfiguration {
             //check one of many condtion here
             if (super.checkOneOfManyCondition()) {
                 errorMessage = bundle.getString("ERROR_one_of_many");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-               // mLogger.error("Validation failed. Message displayed to the user: " + "One of Many :: " + errorMessage);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));                
                 mLogger.info(mLocalizer.x("PDH001: Failed Get the Screen Object:{0} ", errorMessage));
+                return null;
+            }
+            
+            //Check if all the required values in the group are entered by the user
+            HashMap oneOfErrors = super.checkOneOfGroupCondition();
+            if (oneOfErrors.size() > 0 ) {
+                Iterator iter = oneOfErrors.keySet().iterator();
+                while (iter.hasNext())   {
+                    String key = (String)iter.next();
+                    String message = bundle.getString("ERROR_ONE_OF_GROUP_TEXT1") + (key == null? " ":" "+key+" ") + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message , message));
+                    ArrayList fieldsInGroup = (ArrayList)oneOfErrors.get(key);
+                    for (int i = 0; i < fieldsInGroup.size(); i++) {
+                        String fields = (String) fieldsInGroup.get(i);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                    }
+                }                
+              return null;
+            }
+            
+            //Check if all required values are entered by the user
+            ArrayList requiredErrorsList = super.isRequiredCondition();
+            if (requiredErrorsList.size() > 0 ) {                                
+                for (int i = 0; i < requiredErrorsList.size(); i++) {
+                     String fields = (String) requiredErrorsList.get(i);
+                     fields += " " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                }
                 return null;
             }
 
@@ -1528,6 +1555,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
 
    
+
 
 
 

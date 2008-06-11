@@ -210,6 +210,8 @@ public class ReportHandler {
     private ActivityRecords[] activityRecordsVO = null;
     private ArrayList<SelectItem> activityReportTypes = new ArrayList();
 
+    private ArrayList searchScreenConfigArray;
+
     //resource bundle definitin
     ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 
@@ -227,15 +229,48 @@ public class ReportHandler {
 
     }
 
-    public ArrayList deactivatedReport() {
+    public ArrayList deactivatedReport() {        
         request.setAttribute("reportTabName", Deactivated_Record_Report_Label);
         ArrayList duplicateRecordsResults = new ArrayList();
         try {
+             
+            //check one of many condition here
+            if(!checkOneOfManyCondition()) return null;
+             
+            //Check if all the required values in the group are entered by the user
+            HashMap oneOfErrors = checkOneOfGroupCondition(Deactivated_Record_Report_Label);
+            if (oneOfErrors.size() > 0 ) {
+                Iterator iter = oneOfErrors.keySet().iterator();
+                while (iter.hasNext())   {
+                    String key = (String)iter.next();
+                    String message = bundle.getString("ERROR_ONE_OF_GROUP_TEXT1") + (key == null? " ":" "+key+" ") + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message , message));
+                    ArrayList fieldsInGroup = (ArrayList)oneOfErrors.get(key);
+                    for (int i = 0; i < fieldsInGroup.size(); i++) {
+                        String fields = (String) fieldsInGroup.get(i);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                    }
+                }                
+              return null;
+            }
+            
+            //Check if all required values are entered by the user
+            ArrayList requiredErrorsList = isRequiredCondition(Deactivated_Record_Report_Label);
+            if (requiredErrorsList.size() > 0 ) {                                
+                for (int i = 0; i < requiredErrorsList.size(); i++) {
+                     String fields = (String) requiredErrorsList.get(i);
+                     fields += " " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                }
+                return null;
+            }
+
             //Set paramaters for the search
             getDeactivatedReport().setCreateStartTime((String) reportParameters.get("StartTime"));
             getDeactivatedReport().setCreateEndTime((String) reportParameters.get("EndTime"));
             getDeactivatedReport().setCreateStartDate((String) reportParameters.get("StartDate"));
             getDeactivatedReport().setCreateEndDate((String) reportParameters.get("EndDate"));
+
             //if results size is supplied by the user
             if (reportParameters.get("MaxResultSize") != null && ((String) reportParameters.get("MaxResultSize")).trim().length() > 0) {
                 getDeactivatedReport().setMaxResultsSize(new Integer((String) reportParameters.get("MaxResultSize")));
@@ -243,7 +278,8 @@ public class ReportHandler {
                 getDeactivatedReport().setMaxResultsSize(getMaxReportSize(Deactivated_Record_Report_Label));
             }
             getDeactivatedReport().setPageSize(getRecordsPerPage(Deactivated_Record_Report_Label));
-            //getSearchResultsScreenConfigArray();
+            
+            
             duplicateRecordsResults = getDeactivatedReport().deactivateReport();
             //setDeactivatedRecordsVO(deactivatedReport.deactivateReport());
             if (duplicateRecordsResults != null && duplicateRecordsResults.size() > 0) {
@@ -271,6 +307,37 @@ public class ReportHandler {
         ArrayList mergeResults = new ArrayList();
 
         try {
+            //check one of many condition here
+            if(!checkOneOfManyCondition()) return null;
+
+            //Check if all the required values in the group are entered by the user
+            HashMap oneOfErrors = checkOneOfGroupCondition(Merged_Transaction_Report_Label);
+            if (oneOfErrors.size() > 0 ) {
+                Iterator iter = oneOfErrors.keySet().iterator();
+                while (iter.hasNext())   {
+                    String key = (String)iter.next();
+                    String message = bundle.getString("ERROR_ONE_OF_GROUP_TEXT1") + (key == null? " ":" "+key+" ") + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message , message));
+                    ArrayList fieldsInGroup = (ArrayList)oneOfErrors.get(key);
+                    for (int i = 0; i < fieldsInGroup.size(); i++) {
+                        String fields = (String) fieldsInGroup.get(i);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                    }
+                }                
+              return null;
+            }
+            
+            //Check if all required values are entered by the user
+            ArrayList requiredErrorsList = isRequiredCondition(Merged_Transaction_Report_Label);
+            if (requiredErrorsList.size() > 0 ) {
+                for (int i = 0; i < requiredErrorsList.size(); i++) {
+                     String fields = (String) requiredErrorsList.get(i);
+                     fields += " " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                }
+                return null;
+            }
+
             //Set paramaters for the search
             getMergedRecordsHandler().setCreateStartTime((String) reportParameters.get("StartTime"));
             getMergedRecordsHandler().setCreateEndTime((String) reportParameters.get("EndTime"));
@@ -323,6 +390,38 @@ public class ReportHandler {
             getActivityReport().setPageSize(getRecordsPerPage(Activity_Report_Label));
 
             getActivityReport().setFrequency((String) reportParameters.get("activityType"));
+            
+            //check one of many condition here
+            if(!checkOneOfManyCondition()) return null;
+
+            //Check if all the required values in the group are entered by the user
+            HashMap oneOfErrors = checkOneOfGroupCondition(Activity_Report_Label);
+            if (oneOfErrors.size() > 0 ) {
+                Iterator iter = oneOfErrors.keySet().iterator();
+                while (iter.hasNext())   {
+                    String key = (String)iter.next();
+                    String message = bundle.getString("ERROR_ONE_OF_GROUP_TEXT1") + (key == null? " ":" "+key+" ") + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message , message));
+                    ArrayList fieldsInGroup = (ArrayList)oneOfErrors.get(key);
+                    for (int i = 0; i < fieldsInGroup.size(); i++) {
+                        String fields = (String) fieldsInGroup.get(i);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                    }
+                }                
+              return null;
+            }
+            
+            //Check if all required values are entered by the user
+            ArrayList requiredErrorsList = isRequiredCondition(Activity_Report_Label);
+            if (requiredErrorsList.size() > 0 ) {                                
+                for (int i = 0; i < requiredErrorsList.size(); i++) {
+                     String fields = (String) requiredErrorsList.get(i);
+                     fields += " " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                }
+                return null;
+            }
+            
             ArrayList results = getActivityReport().activityReport();
 
             if(results != null && results.size() > 0) {
@@ -363,6 +462,37 @@ public class ReportHandler {
             }
             getUnmergedRecordsHandler().setPageSize(getRecordsPerPage(Unmerged_Transaction_Report_Label));
 
+            //check one of many condition here
+            if(!checkOneOfManyCondition()) return null;
+            
+            //Check if all the required values in the group are entered by the user
+            HashMap oneOfErrors = checkOneOfGroupCondition(Unmerged_Transaction_Report_Label);
+            if (oneOfErrors.size() > 0 ) {
+                Iterator iter = oneOfErrors.keySet().iterator();
+                while (iter.hasNext())   {
+                    String key = (String)iter.next();
+                    String message = bundle.getString("ERROR_ONE_OF_GROUP_TEXT1") + (key == null? " ":" "+key+" ") + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message , message));
+                    ArrayList fieldsInGroup = (ArrayList)oneOfErrors.get(key);
+                    for (int i = 0; i < fieldsInGroup.size(); i++) {
+                        String fields = (String) fieldsInGroup.get(i);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                    }
+                }                
+              return null;
+            }
+            
+            //Check if all required values are entered by the user
+            ArrayList requiredErrorsList = isRequiredCondition(Unmerged_Transaction_Report_Label);
+            if (requiredErrorsList.size() > 0 ) {                                
+                for (int i = 0; i < requiredErrorsList.size(); i++) {
+                     String fields = (String) requiredErrorsList.get(i);
+                     fields += " " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                }
+                return null;
+            }
+            
             results = getUnmergedRecordsHandler().unmergeReport();
             
             if(results != null && results.size() > 0) {
@@ -403,6 +533,37 @@ public class ReportHandler {
                 getUpdateReport().setMaxResultsSize(getMaxReportSize(Updated_Record_Report_Label));
             }
             getUpdateReport().setPageSize(getRecordsPerPage(Updated_Record_Report_Label));
+            
+            //check one of many condition here
+            if(!checkOneOfManyCondition()) return null;
+            
+            //Check if all the required values in the group are entered by the user
+            HashMap oneOfErrors = checkOneOfGroupCondition(Updated_Record_Report_Label);
+            if (oneOfErrors.size() > 0 ) {
+                Iterator iter = oneOfErrors.keySet().iterator();
+                while (iter.hasNext())   {
+                    String key = (String)iter.next();
+                    String message = bundle.getString("ERROR_ONE_OF_GROUP_TEXT1") + (key == null? " ":" "+key+" ") + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message , message));
+                    ArrayList fieldsInGroup = (ArrayList)oneOfErrors.get(key);
+                    for (int i = 0; i < fieldsInGroup.size(); i++) {
+                        String fields = (String) fieldsInGroup.get(i);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                    }
+                }                
+              return null;
+            }
+            
+            //Check if all required values are entered by the user
+            ArrayList requiredErrorsList = isRequiredCondition(Updated_Record_Report_Label);
+            if (requiredErrorsList.size() > 0 ) {                                
+                for (int i = 0; i < requiredErrorsList.size(); i++) {
+                     String fields = (String) requiredErrorsList.get(i);
+                     fields += " " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                }
+                return null;
+            }
 
             results = getUpdateReport().updateReport();
 
@@ -443,7 +604,38 @@ public class ReportHandler {
                 getDuplicateReport().setMaxResultsSize(getMaxReportSize(Potential_Duplicate_Report_Label));
             }
             getDuplicateReport().setPageSize(getRecordsPerPage(Potential_Duplicate_Report_Label));
+            
+            //check one of many condition here
+            if(!checkOneOfManyCondition()) return null;
 
+            //Check if all the required values in the group are entered by the user
+            HashMap oneOfErrors = checkOneOfGroupCondition(Potential_Duplicate_Report_Label);
+            if (oneOfErrors.size() > 0 ) {
+                Iterator iter = oneOfErrors.keySet().iterator();
+                while (iter.hasNext())   {
+                    String key = (String)iter.next();
+                    String message = bundle.getString("ERROR_ONE_OF_GROUP_TEXT1") + (key == null? " ":" "+key+" ") + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message , message));
+                    ArrayList fieldsInGroup = (ArrayList)oneOfErrors.get(key);
+                    for (int i = 0; i < fieldsInGroup.size(); i++) {
+                        String fields = (String) fieldsInGroup.get(i);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                    }
+                }                
+              return null;
+            }
+            
+            //Check if all required values are entered by the user
+            ArrayList requiredErrorsList = isRequiredCondition(Potential_Duplicate_Report_Label);
+            if (requiredErrorsList.size() > 0 ) {                                
+                for (int i = 0; i < requiredErrorsList.size(); i++) {
+                     String fields = (String) requiredErrorsList.get(i);
+                     fields += " " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                }
+                return null;
+            }
+            
             ArrayList results = getDuplicateReport().duplicateReport();
             if(results != null && results.size() > 0) {
               setResultsSize(results.size()/2);
@@ -486,6 +678,37 @@ public class ReportHandler {
                 getAssumeMatchReport().setMaxResultsSize(getMaxReportSize(Assumed_Matches_Report_Label));
             }
             getAssumeMatchReport().setPageSize(getRecordsPerPage(Assumed_Matches_Report_Label));
+            
+            //check one of many condition here
+            if(!checkOneOfManyCondition()) return null;
+            
+            //Check if all the required values in the group are entered by the user
+            HashMap oneOfErrors = checkOneOfGroupCondition(Assumed_Matches_Report_Label);
+            if (oneOfErrors.size() > 0 ) {
+                Iterator iter = oneOfErrors.keySet().iterator();
+                while (iter.hasNext())   {
+                    String key = (String)iter.next();
+                    String message = bundle.getString("ERROR_ONE_OF_GROUP_TEXT1") + (key == null? " ":" "+key+" ") + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message , message));
+                    ArrayList fieldsInGroup = (ArrayList)oneOfErrors.get(key);
+                    for (int i = 0; i < fieldsInGroup.size(); i++) {
+                        String fields = (String) fieldsInGroup.get(i);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                    }
+                }                
+              return null;
+            }
+            
+            //Check if all required values are entered by the user
+            ArrayList requiredErrorsList = isRequiredCondition(Assumed_Matches_Report_Label);
+            if (requiredErrorsList.size() > 0 ) {                                
+                for (int i = 0; i < requiredErrorsList.size(); i++) {
+                     String fields = (String) requiredErrorsList.get(i);
+                     fields += " " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                }
+                return null;
+            }
 
             ArrayList results = getAssumeMatchReport().assumeMatchReport();
             
@@ -705,31 +928,7 @@ public class ReportHandler {
                 }
 
             }
-
-
-
-
-
-//            Iterator iteratorScreenConfig = resultsScreenObject.getSearchResultsConfig().iterator();
-//
-//            while (iteratorScreenConfig.hasNext()) {
-//                SearchResultsConfig objSearchScreenConfig = (SearchResultsConfig) iteratorScreenConfig.next();
-//                //Set Max Results
-//                setMaxResultsSize(objSearchScreenConfig.getMaxRecords());
-//                //Set the page size
-//                setPageSize(objSearchScreenConfig.getPageSize());
-//                // Get an array list of field config groups
-//                basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
-//                Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
-//                //Iterate the the FieldConfigGroup array list
-//                while (basicSearchFieldConfigsIterator.hasNext()) {
-//                    //Build array of field config groups 
-//                    FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
-//                    //Build array of field configs from 
-//                    Object[] fieldConfigArrayList = basicSearchFieldGroup.getFieldConfigs().toArray();
-//                    searchResultsScreenConfigArray = basicSearchFieldGroup.getFieldConfigs();
-//                }
-//            }
+ 
         } catch (Exception e) {
             mLogger.error(mLocalizer.x("RPT101: Unable to get search result config :{0} ", e.getMessage()), e);
         }
@@ -780,22 +979,6 @@ public class ReportHandler {
         request.setAttribute("tabName", reportTabName);
 
     }
-
-/*    public ArrayList<SelectItem> getSelectOptions() {
-        MasterControllerService masterControllerService = new MasterControllerService();
-        String[][] systemCodes = masterControllerService.getSystemCodes();
-        String[] pullDownListItems = systemCodes[0];
-        ArrayList newArrayList = new ArrayList();
-        for (int i = 0; i < pullDownListItems.length; i++) {
-            SelectItem selectItem = new SelectItem();
-            selectItem.setLabel(masterControllerService.getSystemDescription(pullDownListItems[i]));
-            selectItem.setValue(pullDownListItems[i]);
-            newArrayList.add(selectItem);
-        }
-        selectOptions = newArrayList;
-        return selectOptions;
-    }
-*/
     public void setSelectOptions(ArrayList<SelectItem> selectOptions) {
         this.selectOptions = selectOptions;
     }
@@ -836,7 +1019,6 @@ public class ReportHandler {
         return newArrayList;
 
     }
-    private ArrayList searchScreenConfigArray;
 
     public ArrayList getSearchScreenConfigArray() {
         ScreenObject screenObjectLocal = (ScreenObject) session.getAttribute("ScreenObject");
@@ -859,6 +1041,7 @@ public class ReportHandler {
         return screenConfigArraySub;
     }
 
+     
     public void setSearchScreenConfigArray(ArrayList searchScreenConfigArray) {
         this.searchScreenConfigArray = searchScreenConfigArray;
     }
@@ -1126,7 +1309,202 @@ public class ReportHandler {
 		return map;
 	}
 
+    /**
+ * Added by Sridhar Narsingh
+ * sridhar@ligaturesoftware.com
+ * Checks if the user has entered at least on of the the required fields in the group as
+ * defined in the midm configuration file 
+ * Modified Date:05/27/2008
+ * @see isRequiredCondition
+ * @return HashMap - List of all Groups along with the fields names in the group 
+ */    
+    public HashMap checkOneOfGroupCondition(String reportTypeArg) {
+        setReportType(reportTypeArg);
+        //get the field config groups here
+        ArrayList fgGroups = getSearchScreenFieldGroupArray(getSearchScreenConfigArray());
+        
+        HashMap errorMap = new HashMap();
+        boolean oneOfGroupValuesChecked = false;                
+        for (int fg = 0; fg < fgGroups.size(); fg++) {
+            FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) fgGroups.get(fg);
+            ArrayList fieldConfigs = basicSearchFieldGroup.getFieldConfigs();
+            boolean oneOfGroupValuesEntered = false;    
+            ArrayList errorsMapList = new ArrayList();
+            for (int fc = 0; fc < fieldConfigs.size(); fc++) {
+                FieldConfig basicFieldConfig = (FieldConfig) fieldConfigs.get(fc);
+                //if one of these is required
+                if (basicFieldConfig.isOneOfTheseRequired()) {
 
+                            errorsMapList.add(basicFieldConfig.getDisplayName());
+                      if (getReportParameters().get(basicFieldConfig.getName()) != null) {
+                        String value = ((String) getReportParameters().get(basicFieldConfig.getName())).trim();                        
+                        oneOfGroupValuesChecked = true;
+                        if (value.length() > 0) { //Value found for this key
+                          
+                            oneOfGroupValuesEntered = true;
+                        }
+                    }
+                } //one of required condition
+            } // Field config loop
+           
+            if (!oneOfGroupValuesEntered && oneOfGroupValuesChecked)   {
+                errorMap.put(basicSearchFieldGroup.getDescription(), errorsMapList);
+                oneOfGroupValuesChecked = false;
+            }
+         } // Field group loop
+       
+        return errorMap;
+    }
 
+/**
+ * Added by Sridhar Narsingh
+ * sridhar@ligaturesoftware.com
+ * Checks if the user has entered the values for all the required fields as
+ * defined in the midm configuration file 
+ * Modified Date:05/28/2008
+ * @see checkOneOfGroupCondition
+ * @see isRequiredCondition
+ * @return ArrayList - List of all fields for which the user did not enter the values
+ */    
+    public ArrayList isRequiredCondition(String reportTypeArg) {
+        ArrayList errorsMapList = new ArrayList();
+        setReportType(reportTypeArg);
+        //get the field config groups here
+        ArrayList fgGroups = getSearchScreenFieldGroupArray(getSearchScreenConfigArray());
+        for (int fg = 0; fg < fgGroups.size(); fg++) {
+            FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) fgGroups.get(fg);
+            ArrayList fieldConfigs = basicSearchFieldGroup.getFieldConfigs();
+            for (int fc = 0; fc < fieldConfigs.size(); fc++) {
+                FieldConfig basicFieldConfig = (FieldConfig) fieldConfigs.get(fc);
+                String s = ((String) getReportParameters().get(basicFieldConfig.getName())).trim();
+                //if one of these is required
+                if (basicFieldConfig.isRequired()) {
+                      if (getReportParameters().get(basicFieldConfig.getName()) != null) {
+                        String value = ((String) getReportParameters().get(basicFieldConfig.getName())).trim();
+                        if (value.length() == 0) { //Value found for this key
+                            
+                            errorsMapList.add(basicFieldConfig.getDisplayName());                            
+                        }
+                        
+                    }
+                } //isrequired condition
+            } // Field config loop
+         } // Field group loop
+        return errorsMapList;
+    }
 
+    public ArrayList getSearchScreenFieldGroupArray(ArrayList screenConfigList) {
+        ArrayList searchScreenFieldGroupArray = new ArrayList();
+
+        ArrayList basicSearchFieldConfigs;
+        try {
+
+            //ArrayList screenConfigList = screenObject.getSearchScreensConfig();
+
+            Iterator iteratorScreenConfig = screenConfigList.iterator();
+            while (iteratorScreenConfig.hasNext()) {
+                SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
+                // Get an array list of field config groups
+                basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
+                Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
+                //Iterate the the FieldConfigGroup array list
+                while (basicSearchFieldConfigsIterator.hasNext()) {
+                    //Build array of field config groups 
+                    FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
+                    searchScreenFieldGroupArray.add(basicSearchFieldGroup);
+                }
+            }
+
+        } catch (Exception e) {
+            mLogger.error(mLocalizer.x("SNC004: Failed to get SearchScreenField GroupArray:{0}", e.getMessage()));
+        }
+
+        return searchScreenFieldGroupArray;
+    }
+
+ /**
+ * @author Sridhar Narsingh
+ * modified date:05/28/2008
+ * This method checks if the screen has any One of Group condition
+ * @return true if the oneOfGroup exists in the screen configuration
+ */
+    public boolean isOneOfGroupExists(String reportTypeArg) {
+        boolean oneOfGroupExists = false;
+        setReportType(reportTypeArg);
+        //get the field config groups here
+        ArrayList fgGroups = getSearchScreenFieldGroupArray(getSearchScreenConfigArray());
+        for (int fg = 0; fg < fgGroups.size(); fg++) {
+            FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) fgGroups.get(fg);
+             ArrayList fieldConfigs = basicSearchFieldGroup.getFieldConfigs();
+             for (int fc = 0; fc < fieldConfigs.size(); fc++) {
+                FieldConfig basicFieldConfig = (FieldConfig) fieldConfigs.get(fc);
+                 //if one of these is required
+                if (basicFieldConfig.isOneOfTheseRequired()) {
+                    return true;
+                } //one of required condition
+                 
+            } // Field config loop
+          } // Field group loop
+
+        return oneOfGroupExists;
+    }
+    
+    
+/**
+ * @author Sridhar Narsingh
+ * modified date:05/28/2008
+ * This method checks if the screen has required fields
+ * @return true if the oneOfGroup exists in the screen configuration
+ */
+    public boolean isRequiredExists(String reportTypeArg) {
+         boolean requiredExists = false;
+        //get the field config groups here
+        ArrayList fgGroups = getSearchScreenFieldGroupArray(getSearchScreenConfigArray());
+        for (int fg = 0; fg < fgGroups.size(); fg++) {
+            FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) fgGroups.get(fg);
+             ArrayList fieldConfigs = basicSearchFieldGroup.getFieldConfigs();
+             for (int fc = 0; fc < fieldConfigs.size(); fc++) {
+                FieldConfig basicFieldConfig = (FieldConfig) fieldConfigs.get(fc);
+                 //if required fields are present
+                if (basicFieldConfig.isRequired()) {
+                    return true;
+                } //one of required condition
+                 
+            } // Field config loop
+          } // Field group loop
+        return requiredExists;
+    }
+/**
+ * @author Sridhar Narsingh
+ * modified date:05/28/2008
+ * This method checks if the screen has required fields
+ * @return true if the oneOfGroup exists in the screen configuration
+ */
+  public boolean checkOneOfManyCondition() {
+        Object[] keySet = getReportParameters().keySet().toArray();
+       
+        int count = 0;
+        for (int i = 0; i < keySet.length; i++) {
+            String key = (String) keySet[i];
+            if (getReportParameters().get(key) == null) {
+                count++;
+            } else if (getReportParameters().get(key) != null) {
+                String value = ((String) getReportParameters().get(key)).trim();
+                if (value.length() == 0) {
+                    count++;
+                }
+            }
+        }
+       
+        if (count == keySet.length) {
+            String errorMessage = bundle.getString("ERROR_one_of_many");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
+            //mLogger.error("Validation failed. Message displayed to the user: " + "One of Many :: " + errorMessage);
+            mLogger.info(mLocalizer.x("AUD009: Validation failed : {0}" , errorMessage));            
+            return false;            
+        } else {
+            return true;
+        }
+
+    }
 }

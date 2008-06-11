@@ -61,6 +61,7 @@ import java.util.HashMap;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import java.util.Iterator;
 import net.java.hulp.i18n.LocalizationSupport;
 
 //import net.java.hulp.i18n.Logger;
@@ -185,6 +186,34 @@ public class AuditLogHandler extends ScreenConfiguration {
                 return null;
             }
 
+            //Check if all the required values in the group are entered by the user
+            HashMap oneOfErrors = super.checkOneOfGroupCondition();
+            if (oneOfErrors.size() > 0 ) {
+                Iterator iter = oneOfErrors.keySet().iterator();
+                while (iter.hasNext())   {
+                    String key = (String)iter.next();
+                    String message = bundle.getString("ERROR_ONE_OF_GROUP_TEXT1") + (key == null? " ":" "+key+" ") + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message , message));
+                    ArrayList fieldsInGroup = (ArrayList)oneOfErrors.get(key);
+                    for (int i = 0; i < fieldsInGroup.size(); i++) {
+                        String fields = (String) fieldsInGroup.get(i);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                    }
+                }                
+              return null;
+            }
+            
+            //Check if all required values are entered by the user
+            ArrayList requiredErrorsList = super.isRequiredCondition();
+            if (requiredErrorsList.size() > 0 ) {                                
+                for (int i = 0; i < requiredErrorsList.size(); i++) {
+                     String fields = (String) requiredErrorsList.get(i);
+                     fields += " " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                }
+                return null;
+            }
+            
             //if user enters LID ONLY 
             if ((super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("SystemCode") == null) {
                 errorMessage = bundle.getString("LID_only");
@@ -267,8 +296,8 @@ public class AuditLogHandler extends ScreenConfiguration {
 
             }
             
-            
             AuditSearchObject aso = this.getAuditSearchObject();
+            if (aso == null) return null;
             
             // Lookup Audit log Controller
             AuditIterator alPageIter = masterControllerService.lookupAuditLog(aso);
@@ -401,11 +430,19 @@ public class AuditLogHandler extends ScreenConfiguration {
           }
         
 
+        String startTime = (String) super.getUpdateableFeildsMap().get("StartTime");
+        String searchStartDate = (String) super.getUpdateableFeildsMap().get("StartDate");
+        if (startTime != null && startTime.trim().length() > 0) {
+            //if only time fields are entered validate for the date fields 
+            if ((searchStartDate != null && searchStartDate.trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_from");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                return null;
+            }
+        }
 
         //Set StartDate to the AuditSearchObject  
-        if (super.getUpdateableFeildsMap().get("StartDate") != null && super.getUpdateableFeildsMap().get("StartDate").toString().trim().length() > 0) {
-            String startTime = (String) super.getUpdateableFeildsMap().get("StartTime");
-            String searchStartDate = (String) super.getUpdateableFeildsMap().get("StartDate");
+        if (super.getUpdateableFeildsMap().get("StartDate") != null && super.getUpdateableFeildsMap().get("StartDate").toString().trim().length() > 0) {            
             //append the time aling with date
             if (startTime != null && startTime.trim().length() > 0) {
                 searchStartDate = searchStartDate + " " + startTime;
@@ -416,14 +453,22 @@ public class AuditLogHandler extends ScreenConfiguration {
             Date date = DateUtil.string2Date(searchStartDate);
             if (date != null) {
                 auditSearchObject.setCreateStartDate(new Timestamp(date.getTime()));
+            }            
+        }
+
+        String endTime = (String) super.getUpdateableFeildsMap().get("EndTime");
+        String searchEndDate = (String) super.getUpdateableFeildsMap().get("EndDate");
+        if (endTime != null && endTime.trim().length() > 0) {
+            //if only time fields are entered validate for the date fields 
+            if ((searchEndDate != null && searchEndDate.trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_to");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                return null;
             }
         }
 
-
         //Set StartDate to the AuditSearchObject  
         if (super.getUpdateableFeildsMap().get("EndDate") != null && super.getUpdateableFeildsMap().get("EndDate").toString().trim().length() > 0) {
-            String endTime = (String) super.getUpdateableFeildsMap().get("EndTime");
-            String searchEndDate = (String) super.getUpdateableFeildsMap().get("EndDate");
             //append the time aling with date
             if (endTime != null && endTime.trim().length() > 0) {
                 searchEndDate = searchEndDate + " " + endTime;

@@ -140,6 +140,34 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                 mLogger.info(mLocalizer.x("ASM002: {0}" ,errorMessage));
                 return null;
             }
+            //Check if all the required values in the group are entered by the user
+            HashMap oneOfErrors = super.checkOneOfGroupCondition();
+            if (oneOfErrors.size() > 0 ) {
+                Iterator iter = oneOfErrors.keySet().iterator();
+                while (iter.hasNext())   {
+                    String key = (String)iter.next();
+                    String message = bundle.getString("ERROR_ONE_OF_GROUP_TEXT1") + (key == null? " ":" "+key+" ") + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message , message));
+                    ArrayList fieldsInGroup = (ArrayList)oneOfErrors.get(key);
+                    for (int i = 0; i < fieldsInGroup.size(); i++) {
+                        String fields = (String) fieldsInGroup.get(i);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                    }
+                }                
+              return null;
+            }
+            
+            //Check if all required values are entered by the user
+            ArrayList requiredErrorsList = super.isRequiredCondition();
+            if (requiredErrorsList.size() > 0 ) {                                
+                for (int i = 0; i < requiredErrorsList.size(); i++) {
+                     String fields = (String) requiredErrorsList.get(i);
+                     fields += " " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                }
+                return null;
+            }
+            
             //if user enters LID ONLY 
             if ((super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("SystemCode") == null) {
                 errorMessage = bundle.getString ("enter_LID");
@@ -209,9 +237,10 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                     return null;
                 }
             }
+            
             //get the AssumedMatchSearchObject             
             AssumedMatchSearchObject amso = getAMSearchObject();
-            
+            if (amso == null ) return null;
             // Lookup Assumed Matches
             AssumedMatchIterator amIter = masterControllerService.lookupAssumedMatches(amso);
             ArrayList amArrayList = new ArrayList();
@@ -368,12 +397,20 @@ public class AssumeMatchHandler extends ScreenConfiguration {
             }
           }
 
+        String startTime = (String) super.getUpdateableFeildsMap().get("create_start_time");
+        String searchStartDate = (String) super.getUpdateableFeildsMap().get("create_start_date");
+        if (startTime != null && startTime.trim().length() > 0) {
+            //if only time fields are entered validate for the date fields 
+            if ((searchStartDate != null && searchStartDate.trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_from");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                return null;
+            }
+        }
 
 
         //Set StartDate to the amso  
         if (super.getUpdateableFeildsMap().get("create_start_date") != null && super.getUpdateableFeildsMap().get("create_start_date").toString().trim().length() > 0) {
-            String startTime = (String) super.getUpdateableFeildsMap().get("create_start_time");
-            String searchStartDate = (String) super.getUpdateableFeildsMap().get("create_start_date");
             //append the time aling with date
             if (startTime != null && startTime.trim().length() > 0) {
                 searchStartDate = searchStartDate + " " + startTime;
@@ -387,12 +424,21 @@ public class AssumeMatchHandler extends ScreenConfiguration {
             }
         }
 
+        String endTime = (String) super.getUpdateableFeildsMap().get("create_end_time");
+        String searchEndDate = (String) super.getUpdateableFeildsMap().get("create_end_date");
+        if (endTime != null && endTime.trim().length() > 0) {
+            //if only time fields are entered validate for the date fields 
+            if ((searchEndDate != null && searchEndDate.trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_to");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                return null;
+            }
+        }
+
 
         //create_start_time=, create_start_date=02/01/2008, EUID=, Status=null, create_end_time=, create_end_date=02/29/2008, SystemCode=null, LID=
         //Set StartDate to the amso  
         if (super.getUpdateableFeildsMap().get("create_end_date") != null && super.getUpdateableFeildsMap().get("create_end_date").toString().trim().length() > 0) {
-            String endTime = (String) super.getUpdateableFeildsMap().get("create_end_time");
-            String searchEndDate = (String) super.getUpdateableFeildsMap().get("create_end_date");
             //append the time aling with date
             if (endTime != null && endTime.trim().length() > 0) {
                 searchEndDate = searchEndDate + " " + endTime;

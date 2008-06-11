@@ -139,6 +139,34 @@ public class TransactionHandler extends ScreenConfiguration {
                 mLogger.info(mLocalizer.x("TRS001: {0}",errorMessage));
                 return null;
             }
+            //Check if all the required values in the group are entered by the user
+            HashMap oneOfErrors = super.checkOneOfGroupCondition();
+            if (oneOfErrors.size() > 0 ) {
+                Iterator iter = oneOfErrors.keySet().iterator();
+                while (iter.hasNext())   {
+                    String key = (String)iter.next();
+                    String message = bundle.getString("ERROR_ONE_OF_GROUP_TEXT1") + (key == null? " ":" "+key+" ") + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message , message));
+                    ArrayList fieldsInGroup = (ArrayList)oneOfErrors.get(key);
+                    for (int i = 0; i < fieldsInGroup.size(); i++) {
+                        String fields = (String) fieldsInGroup.get(i);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                    }
+                }                
+              return null;
+            }
+            
+            //Check if all required values are entered by the user
+            ArrayList requiredErrorsList = super.isRequiredCondition();
+            if (requiredErrorsList.size() > 0 ) {                                
+                for (int i = 0; i < requiredErrorsList.size(); i++) {
+                     String fields = (String) requiredErrorsList.get(i);
+                     fields += " " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                }
+                return null;
+            }
+            
 
             //if user enters LID ONLY 
             if ((super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("SystemCode") == null) {
@@ -212,6 +240,8 @@ public class TransactionHandler extends ScreenConfiguration {
                 }
             }
             TransactionSearchObject tso = getTransactionSearchObject();
+            if (tso == null) return null;
+            
             MasterControllerService objMasterControllerService = new MasterControllerService();
             TransactionIterator iteratorTransaction = objMasterControllerService.lookupTransactionHistory(tso);
             setSearchSize(0);
@@ -311,6 +341,34 @@ public class TransactionHandler extends ScreenConfiguration {
                 return VALIDATION_ERROR;
             }
 
+            //Check if all the required values in the group are entered by the user
+            HashMap oneOfErrors = super.checkOneOfGroupCondition();
+            if (oneOfErrors.size() > 0 ) {
+                Iterator iter = oneOfErrors.keySet().iterator();
+                while (iter.hasNext())   {
+                    String key = (String)iter.next();
+                    String message = bundle.getString("ERROR_ONE_OF_GROUP_TEXT1") + (key == null? " ":" "+key+" ") + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message , message));
+                    ArrayList fieldsInGroup = (ArrayList)oneOfErrors.get(key);
+                    for (int i = 0; i < fieldsInGroup.size(); i++) {
+                        String fields = (String) fieldsInGroup.get(i);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                    }
+                }                
+              return null;
+            }
+            
+            //Check if all required values are entered by the user
+            ArrayList requiredErrorsList = super.isRequiredCondition();
+            if (requiredErrorsList.size() > 0 ) {                                
+                for (int i = 0; i < requiredErrorsList.size(); i++) {
+                     String fields = (String) requiredErrorsList.get(i);
+                     fields += " " + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, fields, fields));
+                }
+                return null;
+            }
+            
             //if user enters LID ONLY 
             if ((super.getUpdateableFeildsMap().get("LID") != null && super.getUpdateableFeildsMap().get("LID").toString().trim().length() > 0) && super.getUpdateableFeildsMap().get("SystemCode") == null) {
                  //errorMessage = "Please Enter System Code";
@@ -740,11 +798,19 @@ public class TransactionHandler extends ScreenConfiguration {
 //                transactionSearchObject.setEUID(null);
             }
 
+        String startTime = (String) super.getUpdateableFeildsMap().get("StartTime");
+        String searchStartDate = (String) super.getUpdateableFeildsMap().get("StartDate");
+        if (startTime != null && startTime.trim().length() > 0) {
+            //if only time fields are entered validate for the date fields 
+            if ((searchStartDate != null && searchStartDate.trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_from");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                return null;
+            }
+        }
 
         //Set StartDate to the amso  
         if (super.getUpdateableFeildsMap().get("StartDate") != null && super.getUpdateableFeildsMap().get("StartDate").toString().trim().length() > 0) {
-            String startTime = (String) super.getUpdateableFeildsMap().get("StartTime");
-            String searchStartDate = (String) super.getUpdateableFeildsMap().get("StartDate");
             //append the time aling with date
             if (startTime != null && startTime.trim().length() > 0) {
                 searchStartDate = searchStartDate + " " + startTime;
@@ -759,11 +825,21 @@ public class TransactionHandler extends ScreenConfiguration {
             }
         }
 
+
+        String endTime = (String) super.getUpdateableFeildsMap().get("EndTime");
+        String searchEndDate = (String) super.getUpdateableFeildsMap().get("EndDate");
+        if (endTime != null && endTime.trim().length() > 0) {
+            //if only time fields are entered validate for the date fields 
+            if ((searchEndDate != null && searchEndDate.trim().length() == 0)) {
+                errorMessage = bundle.getString("enter_date_to");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                return null;
+            }
+        }
+        
         //EndDate=02/27/2008, StartDate=02/01/2008, Function=null, SystemUser=, EndTime=, StartTime=
         //Set StartDate to the amso  
         if (super.getUpdateableFeildsMap().get("EndDate") != null && super.getUpdateableFeildsMap().get("EndDate").toString().trim().length() > 0) {
-            String endTime = (String) super.getUpdateableFeildsMap().get("EndTime");
-            String searchEndDate = (String) super.getUpdateableFeildsMap().get("EndDate");
             //append the time aling with date
             if (endTime != null && endTime.trim().length() > 0) {
                 searchEndDate = searchEndDate + " " + endTime;

@@ -353,16 +353,6 @@ public class ActivityReportHandler {
         ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         KeyStatisticsReportConfig arConfig = new KeyStatisticsReportConfig();
     
-        // One of Many validation 
-        if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0) &&
-            (this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0)) {
-            errorMessage = bundle.getString("ERROR_one_of_many");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-            //Logger.getLogger(ActivityReportHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-            mLogger.info(mLocalizer.x("RPT001: {0}", errorMessage));
-            return null;            
-        }
-
         //Form Validation of  Start Time
         if (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0) {
             String message = edmValidation.validateTime(this.getCreateStartTime());

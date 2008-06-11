@@ -355,19 +355,7 @@ public class DeactivatedReportHandler    {
          EDMValidation edmValidation = new EDMValidation();         
          ResourceBundle bundle = ResourceBundle.getBundle("com.sun.mdm.index.edm.presentation.messages.midm", FacesContext.getCurrentInstance().getViewRoot().getLocale());        
          DeactivateReportConfig drc = new DeactivateReportConfig();
-
-         
-        // One of Many validation 
-        if ((this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() == 0) &&
-                (this.getCreateEndDate() != null && this.getCreateEndDate().trim().length() == 0) &&
-                (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() == 0) &&
-                (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() == 0)){
-                errorMessage = bundle.getString("ERROR_one_of_many");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
-                mLogger.info(mLocalizer.x("RPT009: {0}",errorMessage));
-                return null;
-           }
-
+                  
         //Form Validation of  Start Time
         if (this.getCreateStartTime() != null && this.getCreateStartTime().trim().length() > 0)    {
             String message = edmValidation.validateTime(this.getCreateStartTime());

@@ -159,6 +159,16 @@ public class ScreenConfiguration {
       private String selectedSearchType = new String("");
     
       private String instructionLine  = new String("");
+
+    /**
+     * One of Group condition exists in the screen
+     */
+    private boolean oneOfGroupExists = false;
+      
+    /**
+     * is Required condition exists in the screen
+     */
+    private boolean requiredExists = false;
     
     /** Creates a new instance of ScreenConfiguration */
     public ScreenConfiguration() {
@@ -369,7 +379,88 @@ public class ScreenConfiguration {
         }
 
     }
+    
+/**
+ * Added by Sridhar Narsingh
+ * sridhar@ligaturesoftware.com
+ * Checks if the user has entered at least on of the the required fields in the group as
+ * defined in the midm configuration file 
+ * Modified Date:05/27/2008
+ * @see isRequiredCondition
+ * @return HashMap - List of all Groups along with the fields names in the group 
+ */    
+    public HashMap checkOneOfGroupCondition() {
+        ArrayList fgGroups = getSearchScreenFieldGroupArray();
+        
+        HashMap errorMap = new HashMap();
+        for (int fg = 0; fg < fgGroups.size(); fg++) {
+            FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) fgGroups.get(fg);
+            ArrayList fieldConfigs = basicSearchFieldGroup.getFieldConfigs();
+            boolean oneOfGroupValuesEntered = false;    
+            String fieldGroup = "";
+            boolean oneOfGroupValuesChecked = false;                
+            ArrayList errorsMapList = new ArrayList();
+            for (int fc = 0; fc < fieldConfigs.size(); fc++) {
+                FieldConfig basicFieldConfig = (FieldConfig) fieldConfigs.get(fc);
+                //if one of these is required
+                if (basicFieldConfig.isOneOfTheseRequired()) {
+                      fieldGroup = basicSearchFieldGroup.getDescription();
+                     
+                            errorsMapList.add(basicFieldConfig.getDisplayName());
+                      if (getUpdateableFeildsMap().get(basicFieldConfig.getName()) != null) {
+                        String value = ((String) getUpdateableFeildsMap().get(basicFieldConfig.getName())).trim();                        
+                        oneOfGroupValuesChecked = true;
+                        if (value.length() > 0) { //Value found for this key
+                            
+                            oneOfGroupValuesEntered = true;
+                        }
+                    }
+                } //one of required condition
+            } // Field config loop
+            
+            if (!oneOfGroupValuesEntered && oneOfGroupValuesChecked)   {
+                errorMap.put(fieldGroup, errorsMapList);
+                oneOfGroupValuesChecked = false;
+            }
+         } // Field group loop
+      
+        return errorMap;
+    }
 
+/**
+ * Added by Sridhar Narsingh
+ * sridhar@ligaturesoftware.com
+ * Checks if the user has entered the values for all the required fields as
+ * defined in the midm configuration file 
+ * Modified Date:05/28/2008
+ * @see checkOneOfGroupCondition
+ * @see isRequiredCondition
+ * @return ArrayList - List of all fields for which the user did not enter the values
+ */    
+    public ArrayList isRequiredCondition() {
+        ArrayList errorsMapList = new ArrayList();
+        ArrayList fgGroups = getSearchScreenFieldGroupArray();
+        for (int fg = 0; fg < fgGroups.size(); fg++) {
+            FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) fgGroups.get(fg);
+            ArrayList fieldConfigs = basicSearchFieldGroup.getFieldConfigs();
+            for (int fc = 0; fc < fieldConfigs.size(); fc++) {
+                FieldConfig basicFieldConfig = (FieldConfig) fieldConfigs.get(fc);
+                //if one of these is required
+                if (basicFieldConfig.isRequired()) {
+                      if (getUpdateableFeildsMap().get(basicFieldConfig.getName()) != null) {
+                        String value = ((String) getUpdateableFeildsMap().get(basicFieldConfig.getName())).trim();
+                        if (value.length() == 0) { //Value found for this key
+                            
+                            errorsMapList.add(basicFieldConfig.getDisplayName());                            
+                        }
+                        
+                    }
+                } //isrequired condition
+            } // Field config loop
+         } // Field group loop
+        return errorsMapList;
+    }
+    
     public String checkFromToDateRange() {
         String message = "success";
         Date todate = null;
@@ -429,12 +520,12 @@ public class ScreenConfiguration {
                 } else {
                     startDateValue = (String) getUpdateableFeildsMap().get(objectFieldConfig.getName());
                 }
-                //System.out.println("startDateValue ===> : " + startDateValue + objectFieldConfig.getDisplayName() + objectFieldConfig.isRange());
+               
                 if (startDateValue != null) {
                     if (startDateValue.trim().length() > 0) {
                         if (!"success".equalsIgnoreCase(edmValidation.validateDate(startDateValue))) {
                             messages.add(objectFieldConfig.getDisplayName() + ">>" + edmValidation.validateDate(startDateValue));
-                            //System.out.println("Adding fields and message" + messages);
+                           
                         }
                     }
                 }
@@ -463,12 +554,12 @@ public class ScreenConfiguration {
                 } else {
                     timeValue = (String) getUpdateableFeildsMap().get(objectFieldConfig.getName());
                 }
-                //System.out.println("startDateValue ===> : " + startDateValue + objectFieldConfig.getDisplayName() + objectFieldConfig.isRange());
+               
                 if (timeValue != null) {
                     if (timeValue.trim().length() > 0) {
                         if (!"success".equalsIgnoreCase(edmValidation.validateTime(timeValue))) {
                             messages.add(objectFieldConfig.getDisplayName() + ">>" + edmValidation.validateTime(timeValue));
-                            //System.out.println("Adding fields and message" + messages);
+                            
                         }
                     }
                 }
@@ -887,5 +978,61 @@ public class ScreenConfiguration {
     public void setSearchScreenFieldGroupArray(ArrayList searchScreenFieldGroupArray) {
         this.searchScreenFieldGroupArray = searchScreenFieldGroupArray;
     }
+    
+/**
+ * @author Sridhar Narsingh
+ * modified date:05/28/2008
+ * This method checks if the screen has any One of Group condition
+ * @return true if the oneOfGroup exists in the screen configuration
+ */
+    public boolean isOneOfGroupExists() {
+         
+        ArrayList fgGroups = getSearchScreenFieldGroupArray();
+        for (int fg = 0; fg < fgGroups.size(); fg++) {
+            FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) fgGroups.get(fg);
+             ArrayList fieldConfigs = basicSearchFieldGroup.getFieldConfigs();
+             for (int fc = 0; fc < fieldConfigs.size(); fc++) {
+                FieldConfig basicFieldConfig = (FieldConfig) fieldConfigs.get(fc);
+                 //if one of these is required
+                if (basicFieldConfig.isOneOfTheseRequired()) {
+                    return true;
+                } //one of required condition
+                 
+            } // Field config loop
+          } // Field group loop
 
+        return oneOfGroupExists;
+    }
+
+    public void setOneOfGroupExists(boolean oneOfGroupExists) {
+        this.oneOfGroupExists = oneOfGroupExists;
+    }
+
+/**
+ * @author Sridhar Narsingh
+ * modified date:05/28/2008
+ * This method checks if the screen has required fields
+ * @return true if the oneOfGroup exists in the screen configuration
+ */
+    public boolean isRequiredExists() {
+        ArrayList fgGroups = getSearchScreenFieldGroupArray();
+        for (int fg = 0; fg < fgGroups.size(); fg++) {
+            FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) fgGroups.get(fg);
+             ArrayList fieldConfigs = basicSearchFieldGroup.getFieldConfigs();
+             for (int fc = 0; fc < fieldConfigs.size(); fc++) {
+                FieldConfig basicFieldConfig = (FieldConfig) fieldConfigs.get(fc);
+                 //if required fields are present
+                if (basicFieldConfig.isRequired()) {
+                    return true;
+                } //one of required condition
+                 
+            } // Field config loop
+          } // Field group loop
+        return requiredExists;
+    }
+
+    public void setRequiredExists(boolean requiredExists) {
+        this.requiredExists = requiredExists;
+    }
+ 
 }
