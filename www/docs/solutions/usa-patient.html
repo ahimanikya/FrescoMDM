@@ -4,8 +4,7 @@
 
 <style type="text/css"></style>
 <link rel="stylesheet" href="../../css/mural.css" type="text/css">
-<link rel="stylesheet" href="css/solutions.css" type="text/css">
-</head>
+<link rel="stylesheet" href="css/solutions.css" type="text/css"></head>
 <body>
 <table style="font-weight: bold; width: 100%; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="0" cellspacing="0">
 <tbody>
@@ -41,14 +40,14 @@ Kendall<span style="font-family: Arial;"></span><span style="font-size: 6pt; fon
 <p><i><span style="font-style: italic;"></span></i><i><span style="font-style: italic;"></span></i>The
 purpose of this solution is to demonstate how a United States of
 America Patient model might be implemented in the Master Data
-Management (MDM) product suite. Specificaly the Master Index portion of
+Management (MDM) product suite. Specificaly the solution focuses on the&nbsp; Master Index portion of
 MDM. <br>
 <br>
 This solution uses a patient definition geared towards the
 United States of America. Since this is a USAPatient,
 fields
 such as the First Name, Last Name, Date of Birth and Social Security
-Number (SSN) are used for both block-search definitions and matches.</p>
+Number (SSN) are used for both blocker-search definitions and matches.</p>
 <h1>Data Model Overview<span style="font-style: italic;">.</span></h1>
 This
 overview of the data model shows each Sub Object Node of the
@@ -58,13 +57,14 @@ of America Patient model.&nbsp;<br>
 <br>
 <img style="height: 645px; width: 800px;" alt="United States of America Patient overview" title="Overview" src="images/USAPatient-Overview-small.png"><br>
 <h1>Data Model</h1>
-This is the UML model used to create the USAPatient. You
+This is the&nbsp;Unified Modeling Language<font face="Times New Roman">&#8482;</font> (UML) model used to create the USAPatient. You
 will
 notice that the model shows inheritance since the USAPatient and the<a href="aus-patient.html"> Australian Patient</a>
 models are very similiar. The main difference being the use of a Social
 Security Number (SSN) in the United States as a unique identifier and
 the Tax File Number (TFN) in Australia as a unique identifier.
-Additionaly, this model represents differences in the health care
+AdditionalyComparison Comparison Comparison Comparison Comparison
+Comparison&nbsp; this model represents differences in the healthcare
 system
 reflected by the <span style="font-weight: bold;">Insurance</span>
 Sub Object Node of the Australian Patient.
@@ -202,7 +202,7 @@ A summary of the fields used for the blocker-search rules.<br>
 <span style="font-style: italic;">Notes:</span> <br>
 <ul>
 <li>_Phon indicates a phoneticized field.</li>
-<li>Compare is between Enterprise SystemSBR (Single Best
+<li>Comparison is between Enterprise SystemSBR (Single Best
 Record) and the actual data. So (a == a) is actually
 (Enterprise.SystemSBR.a == a).</li>
 </ul>
@@ -312,14 +312,13 @@ Target<br>
 <br>
 <pre> -- **** CATEGORY ****<br> tCode('L', 'CATEGORY', 'Category'),<br> tCode('V', 'PERSON', 'PERSON'),<br><br> -- **** SUFFIX ****<br> tCode('L', 'SUFFIX', 'Suffix'),<br> tCode('V', '2ND', '2ND'),<br> tCode('V', '3RD', '3RD'),<br> tCode('V', 'DDS', 'DDS'),<br> tCode('V', 'ESQ', 'ESQ'),<br> tCode('V', 'II', 'II'),<br> tCode('V', 'III', 'III'),<br> tCode('V', 'IV', 'IV'),<br> tCode('V', 'JR', 'JR'),<br> tCode('V', 'MD', 'MD'),<br> tCode('V', 'RN', 'RN'),<br> tCode('V', 'SR', 'SR'),<br> tCode('V', 'PHD', 'PHD'),<br> tCode('V', 'MA', 'MA'),<br><br> -- **** TITLE ****<br> tCode('L', 'TITLE', 'Title'),<br> tCode('V', 'MD', 'MEDICAL DOCTOR'),<br> tCode('V', 'PHD', 'DOCTOR'),<br> tCode('V', 'RN', 'REGISTERED NURSE'),<br> tCode('V', 'CNA', 'CERTIFIED NURSES AID'),<br> tCode('V', 'LVN', 'LICENSED VOCATIONAL NURSE'),<br> tCode('V', 'REV', 'REVERAND'),<br><br> -- **** GENDER ****<br> tCode('L', 'GENDER', 'Gender'),<br> tCode('V', 'M', 'MALE'),<br> tCode('V', 'F', 'FEMALE'),<br> tCode('V', 'O', 'OTHER'),<br> tCode('V', 'U', 'UNKNOWN'),<br><br><br> -- **** MSTATUS ****<br> tCode('L', 'MSTATUS', 'Marital Status'),<br> tCode('V', 'D', 'DIVORCED'),<br> tCode('V', 'L', 'LEGALLY SEPARATED'),<br> tCode('V', 'M', 'MARRIED'),<br> tCode('V', 'P', 'PARTNER'),<br> tCode('V', 'S', 'SINGLE'),<br> tCode('V', 'U', 'UNKNOWN'),<br> tCode('V', 'W', 'WIDOWED'),<br><br> -- **** RACE ****<br> tCode('L', 'RACE', 'Race'),<br> tCode('V', 'I', 'AMERICAN INDIAN'),<br> tCode('V', 'A', 'ASIAN'),<br> tCode('V', 'B', 'BLACK'),<br> tCode('V', 'H', 'HISPANIC'),<br> tCode('V', 'O', 'OTHER'),<br> tCode('V', 'R', 'REFUSED'),<br> tCode('V', 'U', 'UNKNOWN'),<br> tCode('V', 'W', 'WHITE'),<br><br> -- **** ETHNIC ****<br> tCode('L', 'ETHNIC', 'Ethnicity'),<br> tCode('V', '1', 'PUERTO RICAN'),<br> tCode('V', '10', 'FILIPINO'),<br> tCode('V', '11', 'KOREAN'),<br> tCode('V', '12', 'VIETNAMESE'),<br> tCode('V', '13', 'CAMBODIAN'),<br> tCode('V', '14', 'LAOTIAN'),<br> tCode('V', '15', 'THAI'),<br> tCode('V', '16', 'HAWAIIAN'),<br> tCode('V', '17', 'OTHER ASIAN/PACIFIC'),<br> tCode('V', '19', 'PAKISTANI'),<br> tCode('V', '2', 'CUBAN'),<br> tCode('V', '22', 'HAITIAN'),<br> tCode('V', '23', 'JAMAICAN'),<br> tCode('V', '24', 'BARBADIAN'),<br> tCode('V', '25', 'WEST INDIAN'),<br> tCode('V', '26', 'ARMENIAN'),<br> tCode('V', '27', 'AUSTRIAN'),<br> tCode('V', '28', 'ENGLISH'),<br> tCode('V', '29', 'EGYPTIAN'),<br> tCode('V', '3', 'DOMINICAN'),<br> tCode('V', '30', 'FRENCH'),<br> tCode('V', '31', 'CANADIAN'),<br> tCode('V', '32', 'GERMAN'),<br> tCode('V', '33', 'GREEK'),<br> tCode('V', '34', 'IRANIAN'),<br> tCode('V', '35', 'IRISH'),<br> tCode('V', '36', 'LEBANESE'),<br> tCode('V', '37', 'LITHUANIAN'),<br> tCode('V', '38', 'POLISH'),<br> tCode('V', '39', 'RUSSIAN'),<br> tCode('V', '4', 'MEXICAN'),<br> tCode('V', '40', 'SCOTTISH'),<br> tCode('V', '42', 'OTHER'),<br> tCode('V', '43', 'EUROPEAN'),<br> tCode('V', '44', 'COLOMBIAN'),<br> tCode('V', '45', 'SALVADORAN'),<br> tCode('V', '46', 'AFRICAN AMERICAN'),<br> tCode('V', '47', 'NIGERIAN'),<br> tCode('V', '48', 'OTHER AFRICAN'),<br> tCode('V', '50', 'ISRAELI'),<br> tCode('V', '51', 'OTHER MIDDLE EASTERN'),<br> tCode('V', '52', 'NATIVE AMERICAN'),<br> tCode('V', '6', 'OTHER HISPANIC'),<br> tCode('V', '7', 'AUSTRALIAN'),<br> tCode('V', '8', 'JAPANESE'),<br> tCode('V', '9', 'CHINESE'),<br><br> -- **** RELIGION ****<br> tCode('L', 'RELIGION', 'Religion'),<br> tCode('V', 'AG', 'AGNOSTIC'),<br> tCode('V', 'AN', 'ANGLICAN'),<br> tCode('V', 'AT', 'ATHEIST'),<br> tCode('V', 'BP', 'BAPTIST'),<br> tCode('V', 'BU', 'BUDHIST'),<br> tCode('V', 'CH', 'CHRISTIAN'),<br> tCode('V', 'CO', 'CONGREGATIONAL'),<br> tCode('V', 'CS', 'CHRISTIAN SCIENTIST'),<br> tCode('V', 'DE', 'DEFERRED'),<br> tCode('V', 'EP', 'EPISCOPAL'),<br> tCode('V', 'GO', 'GREEK ORTHODOX'),<br> tCode('V', 'HI', 'HINDU'),<br> tCode('V', 'JW', 'JEHOVAHS WITNESS'),<br> tCode('V', 'JH', 'JEWISH'),<br> tCode('V', 'LU', 'LUTHERAN'),<br> tCode('V', 'ME', 'METHODIST'),<br> tCode('V', 'MO', 'MORMON'),<br> tCode('V', 'MU', 'MUSLIM'),<br> tCode('V', 'NO', 'NONE'),<br> tCode('V', 'OR', 'ORTHODOX'),<br> tCode('V', 'OT', 'OTHER'),<br> tCode('V', 'PS', 'PRESBYTERIAN'),<br> tCode('V', 'QU', 'QUAKER'),<br> tCode('V', 'RC', 'ROMAN CATHOLIC'),<br> tCode('V', 'SD', 'SEVENTH DAY ADVENTI'),<br> tCode('V', 'UA', 'UNAFFILIATED'),<br> tCode('V', 'UN', 'UNKNOWN'),<br> tCode('V', 'UU', 'UNITARIAN'),<br><br> -- **** LANGUAGE ****<br> tCode('L', 'LANGUAGE', 'Language'),<br> tCode('V', 'ARAB', 'ARABIC'),<br> tCode('V', 'CHIN', 'CHINESE'),<br> tCode('V', 'CZEK', 'CZECH'),<br> tCode('V', 'CREO', 'CREOLE FRENCH'),<br> tCode('V', 'DANE', 'DANISH'),<br> tCode('V', 'ENGL', 'ENGLISH'),<br> tCode('V', 'FRN', 'FRENCH'),<br> tCode('V', 'GERM', 'GERMAN'),<br> tCode('V', 'GREK', 'GREEK'),<br> tCode('V', 'HATI', 'HATIAN'),<br> tCode('V', 'HEBR', 'HEBREW'),<br> tCode('V', 'HNDI', 'HINDI'),<br> tCode('V', 'ITAL', 'ITALIAN'),<br> tCode('V', 'JAPA', 'JAPANESE'),<br> tCode('V', 'KORE', 'KOREAN'),<br> tCode('V', 'OTHE', 'OTHER'),<br> tCode('V', 'PORT', 'PORTUGUESE'),<br> tCode('V', 'PRCI', 'PERSIAN/FARSI'),<br> tCode('V', 'RUSS', 'RUSSIAN'),<br> tCode('V', 'SIGN', 'SIGN LANGUAGE'),<br> tCode('V', 'SPAN', 'SPANISH'),<br> tCode('V', 'SWED', 'SWEDISH'),<br> tCode('V', 'THAI', 'THAI'),<br> tCode('V', 'TURK', 'TURKISH'),<br> tCode('V', 'UNKN', 'UNKNOWN'),<br> tCode('V', 'YDSH', 'YIDDISH'),<br><br><br> -- **** NATIONAL ****<br> tCode('L', 'NATIONAL', 'Nationality'),<br> tCode('V', 'USA', 'AMERICAN'),<br> tCode('V', 'CAN', 'CANADIAN'),<br> tCode('V', 'MEX', 'MEXICAN'),<br><br><br> -- **** CITIZEN ****<br> tCode('L', 'CITIZEN', 'Citizenship'),<br> tCode('V', 'USA', 'UNITED STATES'),<br> tCode('V', 'CAN', 'CANADA'),<br> tCode('V', 'MEX', 'MEXICO'),<br><br> -- **** ADDRTYPE ****<br> tCode('L', 'ADDRTYPE', 'Address Type'),<br> tCode('V', 'O', 'OFFICE'),<br> tCode('V', 'H', 'HOME'),<br> tCode('V', 'V', 'VACATION'),<br> tCode('V', 'H2','HOME 2'),<br> tCode('V', 'M', 'MAILING'),<br> tCode('V', 'W', 'WORK'),<br> tCode('V', 'W2', 'WORK 2'),<br> tCode('V', 'T', 'TEMPORARY'),<br><br> -- **** PHONTYPE ****<br> tCode('L', 'PHONTYPE', 'Phone Type'),<br> tCode('V', 'CH', 'HOME'),<br> tCode('V', 'CO', 'OFFICE'),<br> tCode('V', 'CF', 'FAX'),<br> tCode('V', 'CB', 'BUSINESS'),<br> tCode('V', 'CBD', 'BUSINESS DIRECT'),<br> tCode('V', 'CBA', 'BUSINESS ALTERNATE'),<br> tCode('V', 'CP', 'PAGER'),<br> tCode('V', 'CC', 'CELLULAR'),<br><br> -- **** RELATIONSHIP ****<br> tCode('L', 'RELATION', 'Relationship'),<br> tCode('V', 'PARENT', 'PARENT'),<br> tCode('V', 'CHILD', 'CHILD'),<br> tCode('V', 'SPOUSE', 'SPOUSE'),<br> tCode('V', 'FAMILY_MEMBER', 'FAMILY_MEMBER'),<br> tCode('V', 'OTHER', 'OTHER'),<br> tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br> -- **** POLICYTYPE ****<br> tCode('L', 'POLTYPE', 'Policy Type'),<br> tCode('V', 'HMO', 'HMO'),<br> tCode('V', 'PPO', 'PPO'),<br> tCode('V', 'OTHER', 'OTHER'),<br> tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br> -- **** STATE ****<br> tCode('L', 'STATE', 'State'),<br> tCode('V', 'AL', 'ALABAMA'),<br> tCode('V', 'AK', 'ALASKA'),<br> tCode('V', 'AZ', 'ARIZONA'),<br> tCode('V', 'AR', 'ARKANSAS'),<br> tCode('V', 'CA', 'CALIFORNIA'),<br> tCode('V', 'CO', 'COLORADO'),<br> tCode('V', 'CT', 'CONNECTICUT'),<br> tCode('V', 'DE', 'DELAWARE'),<br> tCode('V', 'DC', 'DISTRICT OF COLUMBIA'),<br> tCode('V', 'FL', 'FLORIDA'),<br> tCode('V', 'GA', 'GEORGIA'),<br> tCode('V', 'HI', 'HAWAII'),<br> tCode('V', 'ID', 'IDAHO'),<br> tCode('V', 'IL', 'ILLINOIS'),<br> tCode('V', 'IN', 'INDIANA'),<br> tCode('V', 'IA', 'IOWA'),<br> tCode('V', 'KS', 'KANSAS'),<br> tCode('V', 'KY', 'KENTUCKY'),<br> tCode('V', 'LA', 'LOUISIANA'),<br> tCode('V', 'ME', 'MAINE'),<br> tCode('V', 'MD', 'MARYLAND'),<br> tCode('V', 'MA', 'MASSACHUSETTS'),<br> tCode('V', 'MI', 'MICHIGAN'),<br> tCode('V', 'MN', 'MINNESOTA'),<br> tCode('V', 'MS', 'MISSISSIPPI'),<br> tCode('V', 'MO', 'MISSOURI'),<br> tCode('V', 'MT', 'MONTANA'),<br> tCode('V', 'NE', 'NEBRASKA'),<br> tCode('V', 'NV', 'NEVADA'),<br> tCode('V', 'NH', 'NEW HAMPSHIRE'),<br> tCode('V', 'NJ', 'NEW JERSEY'),<br> tCode('V', 'NM', 'NEW MEXICO'),<br> tCode('V', 'NY', 'NEW YORK'),<br> tCode('V', 'NC', 'NORTH CAROLINA'),<br> tCode('V', 'ND', 'NORTH DAKOTA'),<br> tCode('V', 'OH', 'OHIA'),<br> tCode('V', 'OK', 'OKLAHOMA'),<br> tCode('V', 'OR', 'OREGON'),<br> tCode('V', 'PA', 'PENNSYLVANIA'),<br> tCode('V', 'PR', 'PUERTO RICO'),<br> tCode('V', 'RI', 'RHODE ISLAND'),<br> tCode('V', 'SC', 'SOUTH CAROLINA'),<br> tCode('V', 'SD', 'SOUTH DAKOTA'),<br> tCode('V', 'TN', 'TENNESSEE'),<br> tCode('V', 'TX', 'TEXAS'),<br> tCode('V', 'UT', 'UTAH'),<br> tCode('V', 'VT', 'VERMONT'),<br> tCode('V', 'VI', 'VIRGIN ISLANDS'),<br> tCode('V', 'VA', 'VIRGINIA'),<br> tCode('V', 'WA', 'WASHINGTON'),<br> tCode('V', 'WI', 'WISCONSIN'),<br> tCode('V', 'WV', 'WEST VIRGINIA'),<br> tCode('V', 'WY', 'WYOMING'),<br><br> -- **** COUNTRY ****<br> tCode('L', 'COUNTRY', 'Country'),<br> tCode('V', 'AUST', 'AUSTRALIA'),<br> tCode('V', 'BAHA', 'BAHAMAS'),<br> tCode('V', 'BERM', 'BERMUDA'),<br> tCode('V', 'CANA', 'CANADA'),<br> tCode('V', 'ENGL', 'ENGLAND'),<br> tCode('V', 'FRAN', 'FRANCE'),<br> tCode('V', 'GRBR', 'GREAT BRITAIN'),<br> tCode('V', 'IREL', 'IRELAND'),<br> tCode('V', 'MEXI', 'MEXICO'),<br> tCode('V', 'UNST', 'UNITED STATES'),<br> tCode('V', 'VIRU', 'US VIRGIN ISLANDS'),<br> tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br> -- **** CONTACTROLE ****<br> tCode('L', 'CONTROLE', 'Contact Role'),<br> tCode('V', 'EMERGENCY', 'EMERGENCY'),<br> tCode('V', 'GUARANTOR', 'GUARANTOR'),<br> tCode('V', 'NEXT_OF_KIN', 'NEXT OF KIN'),<br> tCode('V', 'OTHER', 'OTHER'),<br> tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br><br> -- **** INSURANCERELATIONSHIP ****<br> tCode('L', 'INSREL', 'Insurance Relationship'),<br> tCode('V', 'SELF', 'SELF'),<br> tCode('V', 'SPOUSE', 'SPOUSE'),<br> tCode('V', 'CHILD', 'CHILD'),<br> tCode('V', 'FAMILY_MEMBER', 'FAMILY_MEMBER'),<br> tCode('V', 'DOMESTIC_PARTNER', 'DOMESTIC PARTNER'),<br> tCode('V', 'GUARDIAN', 'GUARDIAN'),<br> tCode('V', 'OTHER', 'OTHER'),<br> tCode('V', 'UNKNOWN', 'UNKNOWN')<br> <br><br></pre>
 <h2>User Codes</h2>
-When the user-code is selected in the MIDM GUI then the
-coresponding format, input_mask and value_mask are used. The
-input_mask shows the characters that can be typed.<br>
+When the user-code is selected in the MIDM GUI then the corresponding&nbsp;format, input_mask and value_mask are used. The
+input_mask shows the characters that can be typed.correspondingcorresponding<br>
 <br>
 For the input_mask and value_mask:<br>
 <div style="margin-left: 40px;">A = an alphanumeric
 character [A-Za-z0-9]<br>
-D = a decimal number [0-9]<br>
+D = a &nbsp;decimal number [0-9]<br>
 L = an alphabetic character [A-Za-z]<br>
 </div>
 <br>
