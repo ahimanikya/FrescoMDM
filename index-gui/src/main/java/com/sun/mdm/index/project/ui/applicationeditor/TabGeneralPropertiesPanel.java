@@ -52,6 +52,12 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
                     if (type.equals("char") || type.equals("boolean")) {
                         setDataSize(1);
                         spFieldSize.setEnabled(false);
+                    } else if (type.equals("date")) {
+                        // if type is date, the field must be greater or equal to 10.
+                        if (Integer.valueOf(spFieldSize.getValue().toString()) < 10) {
+                            setDataSize(10);
+                        }
+                        spFieldSize.setEnabled(true);
                     } else {
                         spFieldSize.setEnabled(true);
                     }
@@ -176,6 +182,10 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
         
         this.spFieldSize.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent e) {
+                String type = (String) cbDataType.getSelectedItem();
+                if (type.equals("date") && Integer.valueOf(getDataSize()) < 10) {
+                    setDataSize(10);
+                }
                 if (!mOriginalDataSize.equals(getDataSize())) {
                     enableSaveAction();
                 }
