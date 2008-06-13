@@ -8,8 +8,10 @@
 <%@ page import="javax.faces.context.FacesContext"  %>
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 
 <%
+   Operations operations=new Operations();
    ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP,FacesContext.getCurrentInstance().getViewRoot().getLocale());
    String summaryText = bundle.getString("dashboard_summary_table_text");
    String lookupText = bundle.getString("dashboard_lookup_euid_table_text");
@@ -42,7 +44,7 @@
         
 	 //Summary
    %>
-   <%if(dashboardHandler.showSubscreenTab(summaryText)) {%>
+   <%if(dashboardHandler.showSubscreenTab(summaryText) && (operations.isPotDup_SearchView() || operations.isAssumedMatch_SearchView())) {%>
    <td>
     <div class="dashboardHeadMessage"> <h:outputLabel for="#{msgs.dashboard_summary_table_text}" value="#{msgs.dashboard_summary_table_text}"/> </div>
          <div id="dashboardSummary" class="dashboardSummary"> 
@@ -50,8 +52,11 @@
             <table border="0" cellspacing="10" cellpadding="4">
                 <!--Caption included-->                
                 <!--caption class="euidHeadMessage">Summary</caption-->
-                <tr><td> <h:commandLink  title="#{msgs.dashboard_summary_table_link1}" action="#{NavigationHandler.toDuplicateRecords}"> <h:outputText value="#{msgs.dashboard_summary_table_link1}"/></h:commandLink> : <b><h:commandLink  title="#{DashboardHandler.countPotentialDuplicates}" action="#{NavigationHandler.toDuplicateRecords}"><h:outputText value="#{DashboardHandler.countPotentialDuplicates} " /> </h:commandLink> </b></td></tr>
-                <tr><td> <h:commandLink  title="#{msgs.dashboard_summary_table_link4}" action="#{NavigationHandler.toAssumedMatches}"> <h:outputText value="#{msgs.dashboard_summary_table_link4}"/></h:commandLink> : <b><h:commandLink  title="#{DashboardHandler.countAssumedMatches}" action="#{NavigationHandler.toAssumedMatches}"> <h:outputText value="#{DashboardHandler.countAssumedMatches} " /> </h:commandLink></b></td></tr>
+                <tr><td> <h:commandLink  title="#{msgs.dashboard_summary_table_link1}"  rendered="#{Operations.potDup_SearchView}"
+				action="#{NavigationHandler.toDuplicateRecords}"> <h:outputText value="#{msgs.dashboard_summary_table_link1}"/></h:commandLink> <h:outputText rendered="#{Operations.potDup_SearchView}"  value=":"/> <b><h:commandLink  title="#{DashboardHandler.countPotentialDuplicates}"  rendered="#{Operations.potDup_SearchView}" action="#{NavigationHandler.toDuplicateRecords}"><h:outputText value="#{DashboardHandler.countPotentialDuplicates} " /> </h:commandLink> </b></td></tr>
+                <tr><td> <h:commandLink  title="#{msgs.dashboard_summary_table_link4}" 
+				rendered="#{Operations.assumedMatch_SearchView}"
+				action="#{NavigationHandler.toAssumedMatches}"> <h:outputText value="#{msgs.dashboard_summary_table_link4}"/></h:commandLink> <h:outputText rendered="#{Operations.assumedMatch_SearchView}"  value=":"/> <b><h:commandLink  title="#{DashboardHandler.countAssumedMatches}" rendered="#{Operations.assumedMatch_SearchView}" action="#{NavigationHandler.toAssumedMatches}"> <h:outputText value="#{DashboardHandler.countAssumedMatches} " /> </h:commandLink></b></td></tr>
             </table>
           </h:form>
          </div>
@@ -118,14 +123,12 @@
         }%>
    
    
-   
-   
-  
-      
-   
-     
 
-   <%if(dashboardHandler.showSubscreenTab(reportsText)) {%>
+   <%if(dashboardHandler.showSubscreenTab(reportsText) && ((operations.isReports_MergedRecords() || 
+                operations.isReports_DeactivatedEUIDs() ||
+                operations.isReports_UnmergedRecords() ||
+                operations.isAuditLog_SearchView()
+                ))) {%>
    <td>
     <div class="dashboardHeadMessage"><h:outputLabel for="#{msgs.dashboard_reports_table_text}" value="#{msgs.dashboard_reports_table_text}"/></div>
         <div id="dashboardSummary" class="dashboardSummary">
@@ -139,8 +142,9 @@
                      String mergeTab = "MERGE_RECORDS";
                      ValueExpression mergeValueExpression = ExpressionFactory.newInstance().createValueExpression(mergeTab, mergeTab.getClass());
                    %>
-                 <h:commandLink title="#{msgs.dashboard_reports_table_link1}" action="#{NavigationHandler.toReports}"
-                            actionListener="#{ReportHandler.setReportsTabName}" > 
+                   <h:commandLink title="#{msgs.dashboard_reports_table_link1}" action="#{NavigationHandler.toReports}"  
+                                  rendered="#{Operations.reports_MergedRecords}" 
+                                  actionListener="#{ReportHandler.setReportsTabName}" > 
                             
                    <f:attribute name="tabName" value="<%=mergeValueExpression%>"/>
                     <h:outputText value="#{msgs.dashboard_reports_table_link1}"/>
@@ -153,7 +157,8 @@
                     %>
               <tr>
                   <td>
-                      <h:commandLink   title="#{msgs.dashboard_reports_table_link2}" action="#{NavigationHandler.toReports}"
+                      <h:commandLink   title="#{msgs.dashboard_reports_table_link2}" action="#{NavigationHandler.toReports}" 
+                                    rendered="#{Operations.reports_DeactivatedEUIDs}"
                                     actionListener="#{ReportHandler.setReportsTabName}" >  
                         <f:attribute name="tabName" value="<%=deactValueExpression%>"/>
                         <h:outputText value="#{msgs.dashboard_reports_table_link2}"/>
@@ -169,13 +174,16 @@
                     <td>
                     <h:commandLink title="#{msgs.dashboard_reports_table_link3}" 
                            action="#{NavigationHandler.toReports}"
+                           rendered="#{Operations.reports_UnmergedRecords}"
                            actionListener="#{ReportHandler.setReportsTabName}" >  
                           <f:attribute name="tabName" value="<%=unmergedValueExpression%>"/>
                          <h:outputText value="#{msgs.dashboard_reports_table_link3}"/>
                     </h:commandLink>
                     </td>
                 </tr>
-            <tr><td><h:commandLink  title="#{msgs.dashboard_reports_table_link4}" action="#{NavigationHandler.toAuditLog}"><h:outputText value="#{msgs.dashboard_reports_table_link4}"/></h:commandLink></td></tr>
+            <tr><td><h:commandLink  title="#{msgs.dashboard_reports_table_link4}" action="#{NavigationHandler.toAuditLog}" 
+									rendered="#{Operations.auditLog_SearchView}">
+									<h:outputText value="#{msgs.dashboard_reports_table_link4}"/></h:commandLink></td></tr>
             </table>
            </h:form>
         </div>
