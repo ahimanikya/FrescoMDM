@@ -287,14 +287,14 @@ public class SourceMergeHandler {
                     //display the message if the user is searching for either inactive/merged system objects
                     if ("merged".equalsIgnoreCase(systemObjectLID.getStatus()) || "inactive".equalsIgnoreCase(systemObjectLID.getStatus())) {
                         FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid1() + " is " + systemObjectLID.getStatus(), this.getLid4() + "/" + this.getLid4() + " is " + systemObjectLID.getStatus()));
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid1() + " is " + systemObjectLID.getStatus(), sourceHandler.getSystemCodeDescription(this.source)  + "/" + this.getLid1() + " is " + systemObjectLID.getStatus()));
                     }
                     //get the status if the EO
                     eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
                     
                     if("inactive".equalsIgnoreCase(eoStatus) ) {
                            FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid1() + " is " + eoStatus, "Enterprise Object for " + this.getLid4() + "/" + this.getLid4() + " is " + eoStatus));
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid1() + " is " + eoStatus, "Enterprise Object for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid1() + " is " + eoStatus));
                     } 
                     //Add only active system objects to the array list
                     if("active".equalsIgnoreCase(eoStatus) && "active".equalsIgnoreCase(systemObjectLID.getStatus())) { 
@@ -313,13 +313,13 @@ public class SourceMergeHandler {
                     //display the message if the user is searching for either inactive/merged system objects
                     if ("merged".equalsIgnoreCase(systemObjectLID.getStatus()) || "inactive".equalsIgnoreCase(systemObjectLID.getStatus())) {
                         FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + systemObjectLID.getStatus(), this.getLid4() + "/" + this.getLid4() + " is " + systemObjectLID.getStatus()));
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + systemObjectLID.getStatus(), sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + systemObjectLID.getStatus()));
                     }
                     //get the status of the EO
                     eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
                     if("inactive".equalsIgnoreCase(eoStatus) ) {
                            FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + eoStatus, "Enterprise Object for " + this.getLid2() + "/" + this.getLid2() + " is " + eoStatus));
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + eoStatus, "Enterprise Object for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid2() + " is " + eoStatus));
                     }
                     //Add only active system objects to the array list
                     if("active".equalsIgnoreCase(eoStatus) && "active".equalsIgnoreCase(systemObjectLID.getStatus())) {
@@ -338,12 +338,15 @@ public class SourceMergeHandler {
                     //display the message if the user is searching for either inactive/merged system objects
                     if ("merged".equalsIgnoreCase(systemObjectLID.getStatus()) || "inactive".equalsIgnoreCase(systemObjectLID.getStatus())) {
                         FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid3() + " is " + systemObjectLID.getStatus(), this.getLid3() + "/" + this.getLid3() + " is " + systemObjectLID.getStatus()));
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid3() + " is " + systemObjectLID.getStatus(), sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid3() + " is " + systemObjectLID.getStatus()));
                     }
+                     //get the status if the EO
+                    eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
+             
                      //get the status of the EO
                     if("inactive".equalsIgnoreCase(eoStatus) ) {
                            FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid3() + " is " + eoStatus, "Enterprise Object for " + this.getLid3() + "/" + this.getLid3() + " is " + eoStatus));
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid3() + " is " + eoStatus, "Enterprise Object for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid3() + " is " + eoStatus));
                     }
                     //Add only active system objects to the array list
                     if("active".equalsIgnoreCase(eoStatus) && "active".equalsIgnoreCase(systemObjectLID.getStatus())) {
@@ -362,12 +365,14 @@ public class SourceMergeHandler {
                     //display the message if the user is searching for either inactive/merged system objects
                     if ("merged".equalsIgnoreCase(systemObjectLID.getStatus()) || "inactive".equalsIgnoreCase(systemObjectLID.getStatus())) {
                         FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid4() + " is " + systemObjectLID.getStatus(), this.getLid4() + "/" + this.getLid4() + " is " + systemObjectLID.getStatus()));
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid4() + " is " + systemObjectLID.getStatus(), sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid4() + " is " + systemObjectLID.getStatus()));
                     }
+                     //get the status if the EO
+                    eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(systemObjectLID);
                     //get the status of the EO
                     if("inactive".equalsIgnoreCase(eoStatus) ) {
                            FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid1() + " is " + eoStatus, "Enterprise Object for " + this.getLid4() + "/" + this.getLid4() + " is " + eoStatus));
+                                new FacesMessage(FacesMessage.SEVERITY_WARN, "EO for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid4() + " is " + eoStatus, "Enterprise Object for " + sourceHandler.getSystemCodeDescription(this.source) + "/" + this.getLid4() + " is " + eoStatus));
                     }
                     //Add only active system objects to the array list
                     if("active".equalsIgnoreCase(eoStatus) && "active".equalsIgnoreCase(systemObjectLID.getStatus())) {
