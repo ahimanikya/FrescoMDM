@@ -93,7 +93,7 @@
                 setEditIndex("-1");
 				document.getElementById(thisDiv).style.visibility = 'hidden';
 				document.getElementById(thisDiv).style.display  = 'none';
-                document.getElementById(minorObject+'buttonspan').innerHTML = 'Save '+ minorObject;
+                document.getElementById(minorObject+'buttonspan').innerHTML = '<h:outputText value="{msgs.source_rec_save_but}"/> '+ minorObject;
 		   }
 	
 	       function accumilateMinorObjectFieldsOnBlurLocal(objectType,field,fullFieldName,mask,valueType) {
@@ -664,14 +664,14 @@
 																					  <td colspan="2">
                                                                                            <nobr>
                                                                                                 <a title=" <h:outputText value="#{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/>"  href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>InnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/editminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<%=singleSystemObjectLID.getLID()%>&SYS=<%=singleSystemObjectLID.getSystemCode()%>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>NewDiv',event)">
-                                                                                                     <span id="<h:outputText value='#{childNodesName}'/>buttonspan">Save <h:outputText value='#{childNodesName}'/> </span>
+                                                                                                     <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/> </span>
                                                                                                  </a>     
                                                                                                   <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('#{childNodesName}InnerForm');setEditIndex('-1')">
                                                                                                        <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                                                                                                    </h:outputLink> 
                                                                                                    <div style="visibility:hidden;display:none;" id="<h:outputText value='#{childNodesName}'/>cancelEdit">
                                                                                                       <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/>  <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>InnerForm', '<h:outputText value='#{childNodesName}'/>cancelEdit', '<h:outputText value='#{childNodesName}'/>')">
-                                                                                                          <span>Cancel <h:outputText value='#{childNodesName}'/></span>
+                                                                                                          <span><h:outputText value="{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/></span>
                                                                                                        </a>     
                                                                                                     </div>
 											                                                 </nobr>																		    
@@ -988,7 +988,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                             </h:column>
                                                                 
                                                             <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6}" >
-                                                                <nobr>sss
+                                                                <nobr>
                                                                     <input type="text" 
                                                                            id = "<h:outputText value="#{feildConfig.name}"/>"  
                                                                            value="<h:outputText value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"/>"
@@ -1005,12 +1005,13 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                 
                                                             <f:facet name="footer">
                                                                 <h:column>
-                                                                    <a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>"  class="button" href="javascript:ClearContents('basicViewformData')">
-                                                                        <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
-                                                                    </a>
+                                                                   
                                                                     <h:commandLink title="#{msgs.patdetails_search_button2}" styleClass="button" action="#{SourceHandler.performSubmit}" >  
                                                                         <span><h:outputText value="#{msgs.patdetails_search_button2}"/></span>
                                                                     </h:commandLink>                                     
+																	<a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>"  class="button" href="javascript:ClearContents('basicViewformData')">
+                                                                        <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
+                                                                    </a>
                                                                 </h:column>
                                                                     
                                                             </f:facet>
@@ -1306,7 +1307,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 					  <td>
                             <nobr>
                                 <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp; <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
-                                        <span id="<h:outputText value='#{childNodesName}'/>buttonspan">Save <h:outputText value='#{childNodesName}'/> </span>
+                                        <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/> </span>
                                  </a>     
                                   <h:outputLink  title ="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('#{childNodesName}AddNewSOInnerForm');setEditIndex('-1')">
                                           <span><h:outputText value="#{msgs.clear_button_label}"/></span>
@@ -1314,7 +1315,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 
                                     <div style="visibility:hidden;display:none;" id="<h:outputText value='#{childNodesName}'/>cancelSOEdit">
                                          <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp; <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm', '<h:outputText value='#{childNodesName}'/>cancelSOEdit', '<h:outputText value='#{childNodesName}'/>')">
-                                          <span>Cancel <h:outputText value='#{childNodesName}'/></span>
+                                          <span><h:outputText value="{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/></span>
                                          </a>     
                                    </div>
                              </nobr>
@@ -1354,11 +1355,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 													<div id="validateButtons" style="visibility:visible;display:block">
                                                     <table>
                                                         <tr>
-                                                            <td>
-                                                                <a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>" class="button" href="javascript:ClearContents('basicValidateAddformData');">
-                                                                    <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
-                                                                </a>
-                                                            </td>
+
                                                             <td>
                                                                 </nobr>
                                                                 <nobr>
@@ -1369,6 +1366,11 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                          <span><h:outputText value="#{msgs.validate_button_text}"/></span>
                                                                     </a>                                     
                                                                 </nobr>
+                                                            </td>
+                                                            <td>
+                                                                <a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>" class="button" href="javascript:ClearContents('basicValidateAddformData');">
+                                                                    <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
+                                                                </a>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -1426,7 +1428,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                             <tr>
                                                 <td>
                                                    <h:form id="basicMergeformData">
-                                                     <table border="0" cellpadding="1" cellspacing="0">
+                                                     <table border="0" cellpadding="4" cellspacing="4">
                                                            <tr>
                                                                <td>
                                                                    <h:outputLabel style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
@@ -1482,13 +1484,19 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                                 onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
-                                                               <td><nobr>
+ </tr>
+  <tr>
+                                                               <td colspan="6">
+															   <nobr>
                                                                        <h:commandLink title="#{msgs.source_merge_button}" styleClass="button" rendered="#{Operations.SO_SearchView}"
                                                                                        action="#{SourceMergeHandler.performLidMergeSearch}">
                                                                            <span><h:outputText value="#{msgs.source_merge_button}"/></span>
                                                                        </h:commandLink>                                     
                                                                    </nobr>  
                                                                </td>
+															   <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('basicMergeformData')" >
+                                                               <span><h:outputText value="#{msgs.clear_button_label}"/></span>
+                                                               </h:outputLink>
                                                            </tr>
                                                 
                                                     </table>
