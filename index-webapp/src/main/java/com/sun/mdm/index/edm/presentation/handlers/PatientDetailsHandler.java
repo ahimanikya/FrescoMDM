@@ -337,11 +337,11 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     String rootNode = objectFieldConfig.getRootObj();
 
                     //Get the Field Value as per the field config range type
-                    //if (objectFieldConfig.isRange()) {
-                   //     feildValue = (String) super.getUpdateableFeildsMap().get(objectFieldConfig.getDisplayName());
-                    //} else {
+                    if (objectFieldConfig.isRange()) {
+                        feildValue = (String) super.getUpdateableFeildsMap().get(objectFieldConfig.getDisplayName());
+                    } else {
                         feildValue = (String) super.getUpdateableFeildsMap().get(objectFieldConfig.getName());
-                    //}
+                    }
                     if (feildValue != null && feildValue.trim().length() > 0) {
                         //Remove all masking fields from the field valued if any like SSN,LID...etc
                         feildValue = feildValue.replaceAll("-", "");
@@ -1555,6 +1555,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
 
    
+
 
 
 
