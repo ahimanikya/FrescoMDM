@@ -173,7 +173,7 @@ function align(thisevent,divID) {
 												     <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
  												</h:outputText>
                                                 <h:outputText value="#{feildConfig.displayName}" />
-                                            </nobr>
+                                             </nobr>
                                         </h:column>
                                         <!--Rendering HTML Select Menu List-->
                                         <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
@@ -199,13 +199,22 @@ function align(thisevent,divID) {
                                         <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6 }" >
                                             <nobr>
                                                 <h:inputText   required="#{feildConfig.required}" 
+												               title='#{feildConfig.displayName}'
+                                                               label="#{feildConfig.displayName}" 
+                                                               onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
+                                                               onkeyup="javascript:qws_field_on_key_up(this)"
+                                                               maxlength="#{feildConfig.maxLength}" 
+															   value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"
+                                                               rendered="#{feildConfig.range && feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
+
+												<h:inputText   required="#{feildConfig.required}" 
 												               title='#{feildConfig.name}'
                                                                label="#{feildConfig.displayName}" 
                                                                onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
                                                                maxlength="#{feildConfig.maxLength}" 
 															   value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"
-                                                               rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
+                                                               rendered="#{!feildConfig.range && feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
                                                 
                                                 <h:inputText   required="#{feildConfig.required}" 
 												               id="LID"
@@ -216,7 +225,7 @@ function align(thisevent,divID) {
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
                                                                onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
 															   value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"
-                                                               rendered="#{feildConfig.name eq 'LID'}"/>
+                                                               rendered="#{!feildConfig.range && feildConfig.name eq 'LID'}"/>
                                                                
                                                 <h:inputText   required="#{feildConfig.required}" 
                                                                label="#{feildConfig.displayName}" 
@@ -225,7 +234,7 @@ function align(thisevent,divID) {
                                                                onkeyup="javascript:qws_field_on_key_up(this)"
                                                                maxlength="#{SourceHandler.euidLength}" 
 															   value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"
-                                                               rendered="#{feildConfig.name eq 'EUID'}"/>
+                                                               rendered="#{!feildConfig.range && feildConfig.name eq 'EUID'}"/>
                                                                    
                                                                
                                             </nobr>
@@ -239,7 +248,7 @@ function align(thisevent,divID) {
                                             </nobr>
                                         </h:column>
                                         
-                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6}" >
+                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6  && !feildConfig.range}" >
                                           <nobr>
                                             <input type="text" 
                                                    id = "<h:outputText value="#{feildConfig.name}"/>"  
@@ -251,7 +260,23 @@ function align(thisevent,divID) {
                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                    onblur="javascript:validate_date(this,'MM/dd/yyyy')">
                                                   <a title="<h:outputText value="#{feildConfig.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.name}"/>')" > 
-                                                     <h:graphicImage  id="calImgDateFrom"  alt="#{feildConfig.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                     <h:graphicImage     alt="#{feildConfig.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
+                                                 </a>
+                                          </nobr>
+                                        </h:column>
+										<h:column rendered="#{ feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6  &&  feildConfig.range}" >
+                                          <nobr>
+                                            <input type="text" 
+                                                   id = "<h:outputText value="#{feildConfig.displayName}"/>"  
+												   title="<h:outputText value="#{feildConfig.displayName}"/>"  
+                                                   value="<h:outputText value="#{PatientDetailsHandler.updateableFeildsMap[feildConfig.name]}"/>"
+                                                   required="<h:outputText value="#{feildConfig.required}"/>" 
+                                                   maxlength="<h:outputText value="#{feildConfig.maxLength}"/>"
+                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
+                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                   onblur="javascript:validate_date(this,'MM/dd/yyyy')">
+                                                  <a title="<h:outputText value="#{feildConfig.displayName}"/>" HREF="javascript:void(0);" onclick="g_Calendar.show(event,'<h:outputText value="#{feildConfig.displayName}"/>')" > 
+                                                     <h:graphicImage    alt="#{feildConfig.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                                                  </a>
                                           </nobr>
                                         </h:column>
