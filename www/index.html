@@ -1,17 +1,25 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head><title>Project Home Page</title><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><style type="text/css">
-#colortable, #colortable {
-  border: 2px solid #a3b8cb;
-}
+<html><head>
+<link rel="stylesheet" href="https://mural.dev.java.net/css/Mural.css" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-</style></head>
+
+<title>Master Index Project</title><script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-1277259-2");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script></head>
+
 <body style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
 <hr style="width: 100%; height: 2px;">
 <table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
 <tbody>
 <tr>
 <td style="width: 75%;"><img src="images/MiBanner.gif" alt="Open Master Index Banner"></td>
-<td style="vertical-align: bottom; width: 25%">
+<td style="vertical-align: bottom; width: 25%;">
 <table style="text-align: left; margin-left: auto; margin-right: auto;" id="colortable" border="1" bordercolor="#a3b8cb" cellpadding="4" cellspacing="0">
 <tbody>
 <tr>
@@ -31,7 +39,7 @@
 <a href="https://open-dm-mi.dev.java.net/servlets/ProjectNewsList">News</a>
 </td>
 </tr>
-</tr>
+
 </tbody>
 </table>
 </td>
@@ -48,7 +56,7 @@
 <tr>
 <td style="text-align: left; vertical-align: top; width: 31px;">
 <span style="color: rgb(238, 107, 0);"><span style="color: black;"><img style="border: 0px solid ; width: 60px; height: 60px;" alt="About" src="images/AboutNormal.gif"><a name="info"></a>
-</td>
+</span></span></td>
 <td style="width: 95%;">The <span style="font-weight: bold; color: rgb(238, 107, 0);">
 Open Master Index</span> project provides the capability to create any&nbsp;<span style=""></span>domain-specific master index through the matching, deduplication, merging, and cleansing of data from various data sources.<br>
 <br>
@@ -71,8 +79,7 @@ that allows the creation of any domain specific master index.</li>
 </ul>
 </td>
 </tr>
-<tr>
-</tr>
+
 <tr>
 <td style="text-align: left; vertical-align: top; width: 31px;"><a href="https://open-dm-mi.dev.java.net/servlets/ProjectMembershipRequest"><img style="border: 0px solid ; width: 60px; height: 60px;" src="images/Community.gif" alt=""></a></td>
 <td style="width: 95%;"><span style="font-weight: bold;"><span style="color: rgb(238, 107, 0);">Join our community!</span>
@@ -96,10 +103,9 @@ Governance</a></td>
 <td style="text-align: left; vertical-align: top; width: 31px;"><a href="https://open-dm-mi.dev.java.net/DocumentsByTitle.html"><img style="border: 0px solid ; width: 60px; height: 60px;" src="images/Documents.gif" alt=""></a></td>
 <td style="text-align: left; vertical-align: top; width: 95%;"><span style="font-weight: bold; color: rgb(238, 107, 0);"><br>
 Documentation!</span>
-  Learn about open master index, how to access and build the files, and how to work with Master Index Studio <a href="https://open-dm-mi.dev.java.net/DocumentsByTitle.html">here</a>. For instructions on working with the source files and building your projects, click <a href="https://open-dm-mi.dev.java.net/docs/dev_tools/BuildInstructions.html">here<a/>.</td>
+  Learn about open master index, how to access and build the files, and how to work with Master Index Studio <a href="https://open-dm-mi.dev.java.net/DocumentsByTitle.html">here</a>. For instructions on working with the source files and building your projects, click <a href="https://open-dm-mi.dev.java.net/docs/dev_tools/BuildInstructions.html">here</a><a>.</a></td>
 </tr>
 <tr>
-</tr><tr>
 <td style="text-align: left; vertical-align: top; width: 31px;"><a href="https://open-dm-mi.dev.java.net/servlets/ProjectNewsList"><img style="border: 0px solid ; width: 60px; height: 60px;" src="images/News.gif" alt=""></a></td>
 <td style="text-align: left; vertical-align: top; width: 95%;"><span style="font-weight: bold; color: rgb(238, 107, 0);"><br>
 News!</span>
@@ -115,20 +121,29 @@ your community <a href="https://open-dm-mi.dev.java.net/servlets/ProjectNewsList
 <tr style="font-weight: bold; text-decoration: underline;">
 <td colspan="3" rowspan="1"><big>Architecture:</big></td>
 </tr>
-</tr>
+
 <tr>
-<td colspan="3" rowspan="1">The diagrams below illustrate the architecture of the runtime and design environments for Master Index Studio. In the design environment, the user defines the data structure of business objects to be stored and cross referenced and also defines the logic that determines how data is updated, standardized, weighted, and matched in the master index. After the master index framework is configured, Master Index Studio creates a master index application (EJB) that can be deployed in the application server.<br />
-<br />
-In the runtime environment, information enters the master index system from the Enterprise Data Manager (a web-based user interface) or from external systems. The master index application uses the configured and predefined logic to determine how the new information is handled.
+<td colspan="3" rowspan="1">The diagrams below illustrate the
+architecture of the runtime and design environments for Master Index
+Studio. In the design environment, the user defines the data structure
+of business objects to be stored and cross referenced and also defines
+the logic that determines how data is updated, standardized, weighted,
+and matched in the master index. After the master index framework is
+configured, Master Index Studio creates a master index application
+(EJB) that can be deployed in the application server.<br>
+<br>
+In the runtime environment, information enters the master index system
+from the Enterprise Data Manager (a web-based user interface) or from
+external systems. The master index application uses the configured and
+predefined logic to determine how the new information is handled.
 </td>
 </tr>
 <tr>
 <td></td>
-<td colspan="2" rowspan="1"><img width="500px" alt="Design Time Architecture" src="images/Master-Index-Diagram-Design.gif"></td></tr>
+<td colspan="2" rowspan="1"><img alt="Design Time Architecture" src="images/Master-Index-Diagram-Design.gif" width="500"></td></tr>
 <tr>
 <td></td>
-<td colspan="2" rowspan="1"><img width="500px" alt="Runtime Architecture" src="images/Master-Index-Diagram-Runtime.gif"></td></tr>
+<td colspan="2" rowspan="1"><img alt="Runtime Architecture" src="images/Master-Index-Diagram-Runtime.gif" width="500"></td></tr>
 </tbody>
 </table>
-</body>
-</html>
+</body></html>
