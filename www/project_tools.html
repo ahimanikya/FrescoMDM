@@ -1,0 +1,101 @@
+</dd>
+</dl>
+
+<style type="text/css">
+    @import "https://mural.dev.java.net/css/Mural.css";
+</style>
+
+<script type="text/javascript" src="https://mural.dev.java.net/jsp/mural_functions.js"> </script>
+
+<script>
+    removeJNetLeftBars();
+</script>
+
+
+<dl id="projecttools_override" class="navgroup">
+
+    <dt><strong>Project</strong></dt>
+   <dd>
+       <ul>
+            <li><a href="/servlets/ProjectDocumentList">Documents &amp; files</a></li>
+            <li><a href="/source/browse/">Subversion</a></li>
+            <li><a href="/servlets/ProjectMembershipRequest">Membership</a></li>
+      </ul>
+   </dd>
+   
+<dd>
+  <ul>
+      <li><a href="/servlets/ProjectIssues">Issue Tracker</a></li>
+      <li><a href="https://www.dev.java.net/nonav/scdocs/issuewritinghelp.html" target="_blank">Writing Issues</a><br></li>
+      <li><a href="https://www.dev.java.net/nonav/scdocs/ProjectIssues.html" target="_blank">Help</a><br></li>
+      <li><a href="https://www.dev.java.net/nonav/scdocs/issuezilla_tipsandtricks.html" target="_blank">Tips and Tricks</a><br><br></li>
+      <li>
+        <form method="get" action="/issues/show_bug.cgi">
+        <input type="submit" value="Go to"/> Issue # <input name="id" size="3"/>
+        </form>
+      </li>
+  </ul>
+</dd>
+
+
+    <dt><strong>Community Focus Areas</strong></dt>
+    <dd>
+        <ul>
+            <li><a href="https://mural.dev.java.net/users/index.html">End Users</a></li>
+            <li><a href="https://mural.dev.java.net/developers/index.html">Developers</a></li>
+            <li><a href="https://mural.dev.java.net/edu/index.html">EDU</a></li>
+            <li><a href="https://mural.dev.java.net/partners/index.html">Partners</a></li>
+            <li><a href="https://mural.dev.java.net/training/index.html">Training</a></li>
+            <li><a href="https://mural.dev.java.net/guerilla/index.html">Guerilla</a></li>
+        </ul>
+    </dd>
+    <dd>
+        <ul>
+            <li><a href="https://mural.dev.java.net/Downloads.html">Get Started</a></li>
+        </ul>
+    </dd>
+    <dt><strong>Community</strong></dt>
+   <dd>
+       <ul>
+            <li><a href="https://mural.dev.java.net/servlets/ProjectHome">Home</a></li>
+            <li><a href="https://mural.dev.java.net/AboutMural.html">About</a></li>
+            <li><a href="https://mural.dev.java.net/servlets/ProjectMembershipRequest">Membership</a></li>
+            <li><a href="https://mural.dev.java.net/governance.html">Governance</a></li>
+            <li><a href="https://mural.dev.java.net/CDDL.html">Licensing (CDDL)</a></li>
+            <li><a href="mailto:owner@mural.dev.java.net">Community contact</a></li>
+       </ul>
+   </dd>
+   <dd>
+       <ul>
+            <li><a href="https://mural.dev.java.net/servlets/ProjectNewsList">Announcements</a></li>
+            <li><a href="https://mural.dev.java.net/forums/index.html">Forums</a></li>
+            <li><a href="https://mural.dev.java.net/servlets/ProjectMailingListList">Mailing lists</a></li>
+            <li><a href="https://mural.dev.java.net/servlets/ProjectDocumentList">Documents &amp; files</a></li>
+       </ul>
+   </dd>
+   <dd>
+       <ul>
+           <li><a href="https://mural.dev.java.net/Administration.html">Administration</a></li>
+       </ul>
+   </dd>
+
+<form action="/servlets/Search" method="get">
+<dt>Search</dt>
+  <dd>
+   <div>
+    <select name="scope">
+           <option value="project" selected="selected">This project</option>
+           <option value="myprojects">My projects</option>
+           <option value="domain" >All projects</option>
+    </select>
+      </div>
+   <div>
+    <input type="hidden" name="resultsPerPage" value="40" /> 
+    <input type="text" name="query" size="10" maxlength="99" /> 
+    <input type="submit" name="Button" value="Go" />
+   </div>
+   <div><a href="/servlets/Search?mode=advanced">Advanced search</a>   </div>
+  </dd>
+</form>
+
+</dl>
