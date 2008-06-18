@@ -549,7 +549,7 @@ public class UpdateReportHandler    {
 
         
         urConfig.setMaxResultSize(getMaxResultsSize());
-        urConfig.setMaxResultSize(getPageSize());
+        urConfig.setPageSize(getPageSize());
         
         if (errorMessage != null && errorMessage.length() != 0) {
             throw new ValidationException(mLocalizer.t("RPT504: Encountered the ValidationException: {0}",errorMessage));

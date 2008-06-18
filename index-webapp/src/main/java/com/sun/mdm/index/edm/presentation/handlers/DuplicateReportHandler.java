@@ -540,18 +540,6 @@ public class DuplicateReportHandler    {
              pdrConfig.setStatus(getDuplicateStatus());
          }
          
-         if (this.getReportSize() != null && this.getReportSize().length() > 0)    {
-            String message = edmValidation.validateNumber(this.getReportSize());
-            pdrConfig.setMaxResultSize(new Integer(this.getReportSize()));        
-            if (!"success".equalsIgnoreCase(message)) {
-                errorMessage = (errorMessage != null && errorMessage.length() > 0?message:message);
-                 String msg3 = bundle.getString("ReportSize");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg3 + errorMessage, errorMessage));
-                //java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
-                mLogger.info(mLocalizer.x("RPT024: {0}",message));
-                return null;
-            }
-        } 
                
        // From and to date hardcoded here
         pdrConfig.addTransactionField(PotentialDuplicateReport.EUID1, "EUID1", 20);

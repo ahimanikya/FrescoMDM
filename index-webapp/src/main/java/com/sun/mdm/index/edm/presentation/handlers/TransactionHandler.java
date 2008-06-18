@@ -273,7 +273,7 @@ public class TransactionHandler extends ScreenConfiguration {
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"EUID2", ts.getTransactionObject().getEUID2());
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"LID", ts.getTransactionObject().getLID());
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"LID2", ts.getTransactionObject().getLID2());
-                    resultsMap.put(screenObject.getRootObj().getName()+"."+"Function", ts.getTransactionObject().getFunction());
+                    resultsMap.put(screenObject.getRootObj().getName()+"."+"Function", ValidationService.getInstance().getDescription(ValidationService.CONFIG_MODULE_FUNCTION, ts.getTransactionObject().getFunction()) );
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"SystemCode", ValidationService.getInstance().getSystemDescription(ts.getTransactionObject().getSystemCode()));
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"SystemUser", ts.getTransactionObject().getSystemUser());
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"TimeStamp", ts.getTransactionObject().getTimeStamp());
@@ -471,7 +471,7 @@ public class TransactionHandler extends ScreenConfiguration {
                             ", EUID1: " + "\"" + ((ts.getTransactionObject().getEUID() != null) ? ts.getTransactionObject().getEUID() : "") + "\"" +
                             ", EUID2: " + "\"" + ((ts.getTransactionObject().getEUID2() != null) ? ts.getTransactionObject().getEUID2() : "") + "\"" +
                             ", LID: " + "\"" + ((ts.getTransactionObject().getLID() != null) ? ts.getTransactionObject().getLID() : "") + "\"" +
-                            ", Function: " + "\"" + ((ts.getTransactionObject().getFunction() != null) ? ts.getTransactionObject().getFunction() : "") + "\"" +
+                            ", Function: " + "\"" + ((ts.getTransactionObject().getFunction() != null) ? ValidationService.getInstance().getDescription(ValidationService.CONFIG_MODULE_FUNCTION, ts.getTransactionObject().getFunction()) : "") + "\"" +
                             ", SystemCode: " + "\"" + ((ts.getTransactionObject().getSystemCode() != null) ? masterControllerService.getSystemDescription(ts.getTransactionObject().getSystemCode()): "") + "\"" +
                             ", SystemUser: " + "\"" + ((ts.getTransactionObject().getSystemUser() != null) ? ts.getTransactionObject().getSystemUser() : "") + "\"" +
                             ", TimeStamp: " + "\"" + ((ts.getTransactionObject().getTimeStamp() != null) ? ts.getTransactionObject().getTimeStamp() : "") + "\"" + "}";

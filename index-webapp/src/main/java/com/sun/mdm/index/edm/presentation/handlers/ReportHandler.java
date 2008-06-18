@@ -62,6 +62,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -208,6 +209,17 @@ public class ReportHandler {
      * Value Object to hold the Activity Reports
      */
     private ActivityRecords[] activityRecordsVO = null;
+    
+    /**
+     * Validation helper class
+     */
+    EDMValidation edmValidation = new EDMValidation();         
+    
+    /**
+     * HashMap of Field Display Name
+     */
+    private HashMap keyDescriptionsMap = new HashMap();
+    
     private ArrayList<SelectItem> activityReportTypes = new ArrayList();
 
     private ArrayList searchScreenConfigArray;
@@ -228,6 +240,7 @@ public class ReportHandler {
     public ReportHandler() {
 
     }
+        
 
     public ArrayList deactivatedReport() {        
         request.setAttribute("reportTabName", Deactivated_Record_Report_Label);
@@ -236,7 +249,10 @@ public class ReportHandler {
              
             //check one of many condition here
             if(!checkOneOfManyCondition()) return null;
-             
+            
+            //Check Valid report Size
+            if(!validateReportSize()) return null;
+            
             //Check if all the required values in the group are entered by the user
             HashMap oneOfErrors = checkOneOfGroupCondition(Deactivated_Record_Report_Label);
             if (oneOfErrors.size() > 0 ) {
@@ -309,6 +325,8 @@ public class ReportHandler {
         try {
             //check one of many condition here
             if(!checkOneOfManyCondition()) return null;
+            //Check Valid report Size
+            if(!validateReportSize()) return null;
 
             //Check if all the required values in the group are entered by the user
             HashMap oneOfErrors = checkOneOfGroupCondition(Merged_Transaction_Report_Label);
@@ -381,6 +399,10 @@ public class ReportHandler {
             getActivityReport().setCreateEndTime((String) reportParameters.get("EndTime"));
             getActivityReport().setCreateStartDate((String) reportParameters.get("StartDate"));
             getActivityReport().setCreateEndDate((String) reportParameters.get("EndDate"));
+            //check one of many condition here
+            if(!checkOneOfManyCondition()) return null;
+            //Check Valid report Size
+            if(!validateReportSize()) return null;
 
             if (reportParameters.get("MaxResultSize") != null && ((String) reportParameters.get("MaxResultSize")).trim().length() > 0) {
                 getActivityReport().setMaxResultsSize(new Integer((String) reportParameters.get("MaxResultSize")));
@@ -391,8 +413,6 @@ public class ReportHandler {
 
             getActivityReport().setFrequency((String) reportParameters.get("activityType"));
             
-            //check one of many condition here
-            if(!checkOneOfManyCondition()) return null;
 
             //Check if all the required values in the group are entered by the user
             HashMap oneOfErrors = checkOneOfGroupCondition(Activity_Report_Label);
@@ -454,6 +474,10 @@ public class ReportHandler {
             getUnmergedRecordsHandler().setCreateEndTime((String) reportParameters.get("EndTime"));
             getUnmergedRecordsHandler().setCreateStartDate((String) reportParameters.get("StartDate"));
             getUnmergedRecordsHandler().setCreateEndDate((String) reportParameters.get("EndDate"));
+            //check one of many condition here
+            if(!checkOneOfManyCondition()) return null;
+            //Check Valid report Size
+            if(!validateReportSize()) return null;
 
             if (reportParameters.get("MaxResultSize") != null && ((String) reportParameters.get("MaxResultSize")).trim().length() > 0) {
                 getUnmergedRecordsHandler().setMaxResultsSize(new Integer((String) reportParameters.get("MaxResultSize")));
@@ -462,8 +486,6 @@ public class ReportHandler {
             }
             getUnmergedRecordsHandler().setPageSize(getRecordsPerPage(Unmerged_Transaction_Report_Label));
 
-            //check one of many condition here
-            if(!checkOneOfManyCondition()) return null;
             
             //Check if all the required values in the group are entered by the user
             HashMap oneOfErrors = checkOneOfGroupCondition(Unmerged_Transaction_Report_Label);
@@ -526,6 +548,10 @@ public class ReportHandler {
             getUpdateReport().setCreateEndTime((String) reportParameters.get("EndTime"));
             getUpdateReport().setCreateStartDate((String) reportParameters.get("StartDate"));
             getUpdateReport().setCreateEndDate((String) reportParameters.get("EndDate"));
+            //check one of many condition here
+            if(!checkOneOfManyCondition()) return null;
+            //Check Valid report Size
+            if(!validateReportSize()) return null;
 
             if (reportParameters.get("MaxResultSize") != null && ((String) reportParameters.get("MaxResultSize")).trim().length() > 0) {
                 getUpdateReport().setMaxResultsSize(new Integer((String) reportParameters.get("MaxResultSize")));
@@ -534,8 +560,6 @@ public class ReportHandler {
             }
             getUpdateReport().setPageSize(getRecordsPerPage(Updated_Record_Report_Label));
             
-            //check one of many condition here
-            if(!checkOneOfManyCondition()) return null;
             
             //Check if all the required values in the group are entered by the user
             HashMap oneOfErrors = checkOneOfGroupCondition(Updated_Record_Report_Label);
@@ -598,6 +622,11 @@ public class ReportHandler {
             getDuplicateReport().setCreateEndDate((String) reportParameters.get("EndDate"));
             getDuplicateReport().setDuplicateStatus((String) reportParameters.get("Status"));
             
+            //check one of many condition here
+            if(!checkOneOfManyCondition()) return null;
+            //Check Valid report Size
+            if(!validateReportSize()) return null;
+            
             if (reportParameters.get("MaxResultSize") != null && ((String) reportParameters.get("MaxResultSize")).trim().length() > 0) {
                 getDuplicateReport().setMaxResultsSize(new Integer((String) reportParameters.get("MaxResultSize")));
             } else {
@@ -605,8 +634,6 @@ public class ReportHandler {
             }
             getDuplicateReport().setPageSize(getRecordsPerPage(Potential_Duplicate_Report_Label));
             
-            //check one of many condition here
-            if(!checkOneOfManyCondition()) return null;
 
             //Check if all the required values in the group are entered by the user
             HashMap oneOfErrors = checkOneOfGroupCondition(Potential_Duplicate_Report_Label);
@@ -666,6 +693,11 @@ public class ReportHandler {
         request.setAttribute("reportTabName", Assumed_Matches_Report_Label);
         try {
 
+            //check one of many condition here
+            if(!checkOneOfManyCondition()) return null;
+            //Check Valid report Size
+            if(!validateReportSize()) return null;
+            
             //Set paramaters for the search
             getAssumeMatchReport().setCreateStartTime((String) reportParameters.get("StartTime"));
             getAssumeMatchReport().setCreateEndTime((String) reportParameters.get("EndTime"));
@@ -678,9 +710,6 @@ public class ReportHandler {
                 getAssumeMatchReport().setMaxResultsSize(getMaxReportSize(Assumed_Matches_Report_Label));
             }
             getAssumeMatchReport().setPageSize(getRecordsPerPage(Assumed_Matches_Report_Label));
-            
-            //check one of many condition here
-            if(!checkOneOfManyCondition()) return null;
             
             //Check if all the required values in the group are entered by the user
             HashMap oneOfErrors = checkOneOfGroupCondition(Assumed_Matches_Report_Label);
@@ -733,6 +762,43 @@ public class ReportHandler {
         }
     }
 
+    /**
+     *  Validate Report Size and Page Size
+     *  Create by Sridhar Narsingh
+     *  Create Date: 06/13/2008
+     *  Validates for a valid Report Size
+     */
+    private boolean validateReportSize()   {
+        String thisReportSize = (String) reportParameters.get("MaxResultSize");
+        //Report Size should be validated here,, not in the specific handler
+        if (thisReportSize != null && thisReportSize.length() > 0) {
+            String message = edmValidation.validateNumber(thisReportSize);
+             
+            if (!"success".equalsIgnoreCase(message)) {
+                errorMessage = (errorMessage != null && errorMessage.length() > 0 ? message : message);
+                String msg3 = bundle.getString("reports_reportsize_text") + " ";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg3 + errorMessage, errorMessage));
+                 mLogger.info(mLocalizer.x("RPT024: {0}", msg3 + errorMessage));
+                return false;
+            } 
+            
+                
+            if (Integer.parseInt(thisReportSize) < 1) {  //if its a valid number, check for negative value                
+                errorMessage = bundle.getString("REPORT_SIZE_MINIMUM_VALUE");
+                String msg3 = bundle.getString("reports_reportsize_text") + " ";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg3 +errorMessage, msg3 + errorMessage));
+                //java.util.logging.Logger.getLogger(SearchDuplicatesHandler.class.getName()).log(Level.WARNING, errorMessage, errorMessage);
+                mLogger.info(mLocalizer.x("RPT024: {0}", msg3  +errorMessage));
+                return false;
+            }
+        }
+        return true;
+    }
+                
+    
+      
+   
+     
     /**
      * @return createStartDate
      */
@@ -1454,7 +1520,7 @@ public class ReportHandler {
  * @author Sridhar Narsingh
  * modified date:05/28/2008
  * This method checks if the screen has required fields
- * @return true if the oneOfGroup exists in the screen configuration
+ * @return true if required field exists in the screen configuration
  */
     public boolean isRequiredExists(String reportTypeArg) {
          boolean requiredExists = false;
@@ -1478,33 +1544,53 @@ public class ReportHandler {
  * @author Sridhar Narsingh
  * modified date:05/28/2008
  * This method checks if the screen has required fields
- * @return true if the oneOfGroup exists in the screen configuration
+ * @return false if the user has not entered any values 
  */
-  public boolean checkOneOfManyCondition() {
-        Object[] keySet = getReportParameters().keySet().toArray();
-       
-        int count = 0;
+  public boolean checkOneOfManyCondition() {       
+        HashMap oneOfMap = getReportParameters();
+        Object[] keySet = oneOfMap.keySet().toArray();
         for (int i = 0; i < keySet.length; i++) {
             String key = (String) keySet[i];
-            if (getReportParameters().get(key) == null) {
-                count++;
-            } else if (getReportParameters().get(key) != null) {
-                String value = ((String) getReportParameters().get(key)).trim();
-                if (value.length() == 0) {
-                    count++;
-                }
+            if (key.equalsIgnoreCase("MaxResultSize")) {
+                continue;
+            }
+            if ((oneOfMap.get(key) != null && ((String) oneOfMap.get(key)).trim().length() > 0) || oneOfMap.get(key) == null) {
+                return true;
             }
         }
-       
-        if (count == keySet.length) {
-            String errorMessage = bundle.getString("ERROR_one_of_many");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,  errorMessage));
-            //mLogger.error("Validation failed. Message displayed to the user: " + "One of Many :: " + errorMessage);
-            mLogger.info(mLocalizer.x("AUD009: Validation failed : {0}" , errorMessage));            
-            return false;            
-        } else {
-            return true;
-        }
-
+        String errorMessage = bundle.getString("ERROR_one_of_many");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+        //mLogger.error("Validation failed. Message displayed to the user: " + "One of Many :: " + errorMessage);
+        mLogger.info(mLocalizer.x("AUD009: Validation failed : {0}", errorMessage));
+        return false;
     }
+/**
+ * 
+ * @return HashMap of Display Names
+ */
+    public HashMap getKeyDescriptionsMap() {        
+        HashMap newHashMap = new HashMap();
+        //get the field config groups here
+        ArrayList fgGroups = getSearchScreenFieldGroupArray(getSearchScreenConfigArray());
+        for (int fg = 0; fg < fgGroups.size(); fg++) {
+            FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) fgGroups.get(fg);
+            ArrayList fieldConfigs = basicSearchFieldGroup.getFieldConfigs();
+            for (int fc = 0; fc < fieldConfigs.size(); fc++) {
+                FieldConfig basicFieldConfig = (FieldConfig) fieldConfigs.get(fc);
+                if (!basicFieldConfig.isRange()) {
+                    newHashMap.put(basicFieldConfig.getName(), basicFieldConfig.getDisplayName());
+                }
+
+            } // Field config loop
+
+        } // Field group loop
+
+        keyDescriptionsMap = newHashMap;
+        return keyDescriptionsMap;
+    }
+
+    public void setKeyDescriptionsMap(HashMap keyDescriptionsMap) {
+        this.keyDescriptionsMap = keyDescriptionsMap;
+    }
+  
 }

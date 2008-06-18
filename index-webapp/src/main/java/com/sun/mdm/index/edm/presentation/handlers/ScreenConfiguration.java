@@ -169,6 +169,11 @@ public class ScreenConfiguration {
      * is Required condition exists in the screen
      */
     private boolean requiredExists = false;
+
+    /**
+     * Hashmap for descriptions and keys
+     */
+    private HashMap keyDescriptionsMap = new HashMap();
     
     /** Creates a new instance of ScreenConfiguration */
     public ScreenConfiguration() {
@@ -1033,6 +1038,23 @@ public class ScreenConfiguration {
 
     public void setRequiredExists(boolean requiredExists) {
         this.requiredExists = requiredExists;
+    }
+
+    public HashMap getKeyDescriptionsMap() {
+        ArrayList screenConfigArrayLocal = getScreenConfigArray();
+        HashMap newHashMap = new HashMap();
+        for (Iterator it = screenConfigArrayLocal.iterator(); it.hasNext();) {
+            FieldConfig fieldConfig = (FieldConfig) it.next();
+            if(!fieldConfig.isRange()) {
+                newHashMap.put(fieldConfig.getName(), fieldConfig.getDisplayName());
+            }
+           }
+        keyDescriptionsMap = newHashMap;
+        return keyDescriptionsMap;
+    }
+
+    public void setKeyDescriptionsMap(HashMap keyDescriptionsMap) {
+        this.keyDescriptionsMap = keyDescriptionsMap;
     }
  
 }

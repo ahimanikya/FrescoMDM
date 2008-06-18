@@ -31,6 +31,7 @@
 package com.sun.mdm.index.edm.presentation.handlers;
 
 import com.sun.mdm.index.edm.presentation.valueobjects.AssumeMatchesRecords;
+import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.page.PageException;
 import com.sun.mdm.index.report.ReportException;
 import java.rmi.RemoteException;
@@ -78,6 +79,7 @@ import javax.servlet.http.HttpSession;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.objects.SystemObject;
 import net.java.hulp.i18n.LocalizationSupport;
 
 public class AssumeMatchReportHandler  {
@@ -148,14 +150,47 @@ public class AssumeMatchReportHandler  {
     private Integer maxResultsSize;  
     private Integer pageSize;  
    
-    /* This method populates the Assume Match Reports using the Service Layer call and handles exceptions*/
+    /**
+     * This method populates the Assume Match Reports using the Service Layer call and handles exceptions
+     * 
+     * 
+     * @return  ArrayList of assumed match report hashmap values.
+     * 
+     * @throws EPathException 
+     * @throws PageException
+     * @throws RemoteException
+     * @throws ReportException
+     * @throws Exception
+     * 
+     * @see populateValuesMap, buildHashMapValues
+     * 
+     **/
     public ArrayList assumeMatchReport() throws ValidationException, EPathException, ReportException, PageException, RemoteException, Exception {
         request.setAttribute("tabName", "ASSUME_MATCH");
         amrConfig = getAssumedMatchReportSearchObject();
         if (amrConfig != null) {
             amri = QwsController.getReportGenerator().execAssumedMatchReportIterator(amrConfig);
             // Code to retrieve the data rows of report records.
-            ReportDataRow[] rdr = getAMRRows();
+            //ReportDataRow[] rdr = getAMRRows();
+            String prevEuid = "";
+            int index = 0;
+            ArrayList summaryList = new ArrayList();
+            amri.sortBy("EUID", false);
+            while (amri.hasNext()) {
+                AssumedMatchReportRow assumedMatchReportRow = new AssumedMatchReportRow(amri.next(), amrConfig);
+
+                /*if (index == 0) {
+                    prevEuid = assumedMatchReportRow.getEUID();
+                }*/
+                if (index != 0 && !prevEuid.equalsIgnoreCase(assumedMatchReportRow.getEUID())) {
+                    populateValuesMap(summaryList);
+                    summaryList = new ArrayList();
+                 }
+                summaryList.add(assumedMatchReportRow);
+                prevEuid = assumedMatchReportRow.getEUID();
+                index++;
+            }
+            populateValuesMap(summaryList);
             return resultsArrayList;
         } else {
             return null;
@@ -163,27 +198,27 @@ public class AssumeMatchReportHandler  {
     }
    
    //getter method to retrieve the data rows of report records.
-   private ReportDataRow[] getAMRRows() throws Exception {
+    private ReportDataRow[] getAMRRows() throws Exception {
         ArrayList dataRowList = new ArrayList();
-        ArrayList resultArrayList = new ArrayList();
         String prevEuid = "";
         int index = 0;
         ArrayList summaryList = new ArrayList();
-        amri.sortBy("EUID",false);
-        while (amri.hasNext()) {
-            AssumedMatchReportRow reportRow = new AssumedMatchReportRow(amri.next(), amrConfig);
-           
-            if (index ==0 ) prevEuid = reportRow.getEUID();
-            if (!prevEuid.equalsIgnoreCase(reportRow.getEUID()) || index +1 == amri.count())   {
-                vOList.add(summaryList);
+        amri.sortBy("EUID", false);
+        
+		while (amri.hasNext()) {
+            AssumedMatchReportRow assumedMatchReportRow = new AssumedMatchReportRow(amri.next(), amrConfig);
+
+            if (index == 0) {
+                prevEuid = assumedMatchReportRow.getEUID();
+            }
+            if (!prevEuid.equalsIgnoreCase(assumedMatchReportRow.getEUID()) || index + 1 == amri.count()) {
+                populateValuesMap(summaryList);
                 summaryList = new ArrayList();
             }
-            summaryList.add(reportRow);
-            prevEuid = reportRow.getEUID();
+            summaryList.add(assumedMatchReportRow);
+            prevEuid = assumedMatchReportRow.getEUID();
             index++;
-            //resultArrayList.add(getOutPutValuesMap(amrConfig, reportRow));
         }
-        populateVO();
         return dataRowList2Array(dataRowList);
     }
    
@@ -225,7 +260,7 @@ public class AssumeMatchReportHandler  {
             MasterControllerService masterControllerService = new MasterControllerService();
 
             while (iter.hasNext()) {
-                String field = (String) iter.next();
+                String field = (String) iter.next();                
                 String val = reportRow.getValue(field).toString();
                 if (field.equalsIgnoreCase("EUID")) {
                     newValuesMap.put("EUID", val);
@@ -262,18 +297,13 @@ public class AssumeMatchReportHandler  {
                             }
                         }
                     }                    
-                } else if (field.equalsIgnoreCase("SystemCode")) {
-                    if (groupIndex == 0) {
-                        newValuesMap.put(field, val);
-                    } else {
-                        newValuesMap.put(field, "");
-                    }
                 } else  {
-                    if (groupIndex == 0) {
+                    newValuesMap.put(field, val);
+                    /*if (groupIndex == 0) {
                         newValuesMap.put(field, val);
                     } else {
                         newValuesMap.put(field, "");
-                    }
+                    }*/
                 }
             }
         }
@@ -346,7 +376,115 @@ public class AssumeMatchReportHandler  {
         }
         return newValuesMap;
     }
+   private void populateValuesMap(ArrayList assumedMatchReportRowList) throws Exception {
+        MasterControllerService masterControllerService = new MasterControllerService();
+         
+        AssumedMatchReportRow assumedMatchReportCompare = (AssumedMatchReportRow) assumedMatchReportRowList.get(0);
+        Object[] systemObjectsArrayObjCompare = masterControllerService.getEnterpriseObject(assumedMatchReportCompare.getEUID()).getSystemObjects().toArray();
+       HashMap compareMap = new HashMap();
+       for (int i = 0; i < systemObjectsArrayObjCompare.length; i++) {
+           SystemObject objectCompare = (SystemObject) systemObjectsArrayObjCompare[i];
+           compareMap.put(objectCompare.getLID() + "/" + objectCompare.getSystemCode(), objectCompare);
+       }
+
+       HashMap amSystemCodesMap = new HashMap();
+       for (int r = 0; r < assumedMatchReportRowList.size(); r++) {
+           AssumedMatchReportRow assumedMatchReportRow = (AssumedMatchReportRow) assumedMatchReportRowList.get(r);
+           amSystemCodesMap.put(assumedMatchReportRow.getLID() + "/" + assumedMatchReportRow.getSystemCode(), "");
+
+       }
+       Object array[] = amSystemCodesMap.keySet().toArray();
+       for (int i = 0; i < array.length; i++) {
+           String thisLidShystem = (String)array[i];           
+           compareMap.remove(thisLidShystem);
+       }
+              
+        
+       array =  compareMap.keySet().toArray();
+       for (int i = 0; i < array.length; i++) {
+           HashMap newValuesMap = new HashMap();           
+           String thisLidShystem = (String)array[i];                      
+           SystemObject  systemObject = (SystemObject)compareMap.get(thisLidShystem);
+           newValuesMap = buildHashMapValues(systemObject);
+           newValuesMap.put("EUID", assumedMatchReportCompare.getEUID());
+           newValuesMap.put("LID", systemObject.getLID());
+           newValuesMap.put("SystemCode", ValidationService.getInstance().getSystemDescription(systemObject.getSystemCode()));
+           newValuesMap.put("Weight", assumedMatchReportCompare.getWeight());
+           resultsArrayList.add(newValuesMap);           
+       }
+       
+        for (int r = 0; r < assumedMatchReportRowList.size(); r++) {
+           AssumedMatchReportRow assumedMatchReportRow = (AssumedMatchReportRow) assumedMatchReportRowList.get(r);
+           HashMap newValuesMap = new HashMap();
+           SystemObject systemObject = masterControllerService.getSystemObject(assumedMatchReportRow.getSystemCode(), assumedMatchReportRow.getLID());
+           newValuesMap = buildHashMapValues(systemObject);
+           newValuesMap.put("LID", assumedMatchReportRow.getLID());
+           newValuesMap.put("EUID", assumedMatchReportRow.getEUID());
+           newValuesMap.put("SystemCode", ValidationService.getInstance().getSystemDescription(assumedMatchReportRow.getSystemCode()));
+           newValuesMap.put("Weight", assumedMatchReportRow.getWeight());
+           resultsArrayList.add(newValuesMap);
+           newValuesMap = new HashMap();
+            
+       }
+
+    }
    
+   private HashMap buildHashMapValues(SystemObject systemObject) throws ObjectException, EPathException {
+       ArrayList fcArrayList = getResultsConfigArrayList();
+       SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("MM/dd/yyyy");
+       String strVal;
+       String epathValue;
+       HashMap newValuesMap = new HashMap();
+       for (int i = 0; i < fcArrayList.size(); i++) {
+           FieldConfig fieldConfig = (FieldConfig) fcArrayList.get(i);
+           if (fieldConfig.getFullFieldName().startsWith(screenObject.getRootObj().getName())) {
+               epathValue = fieldConfig.getFullFieldName();
+           } else {
+               epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
+           }
+
+           if (fieldConfig.getValueType() == 6) { // For date related fields
+
+               if (fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
+
+                   newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
+               } else {
+                   newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, systemObject.getObject())));
+               }
+           } else {
+               Object value = EPathAPI.getFieldValue(epathValue, systemObject.getObject());
+               if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                   if (value != null) {
+                       //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                       if (fieldConfig.getUserCode() != null) { //If user code exists then get the user defined descriptions
+
+                           strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                       } else { //if  value list then get the descrption for the codes
+
+                           strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                       }
+
+                       if (fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
+
+                           newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
+                       } else {
+                           newValuesMap.put(fieldConfig.getFullFieldName(), strVal);
+                       }
+                   }
+               } else {
+                   if (fieldConfig.isSensitive()) { // Mask the sensitive fields accordingly
+
+                       newValuesMap.put(fieldConfig.getFullFieldName(), bundle.getString("SENSITIVE_FIELD_MASKING"));
+                   } else {
+                       newValuesMap.put(fieldConfig.getFullFieldName(), value);
+                   }
+               }
+           }
+       }
+       
+       return newValuesMap;
+       
+   }
    public AssumedMatchReportConfig getAssumedMatchReportSearchObject()  throws ValidationException, EPathException {
          String errorMessage = null;
          EDMValidation edmValidation = new EDMValidation();         

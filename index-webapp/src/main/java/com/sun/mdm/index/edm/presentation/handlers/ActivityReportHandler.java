@@ -399,7 +399,13 @@ public class ActivityReportHandler {
                 }
             }
         }
-
+        //From Date is required for the Activity report.
+        if (this.getCreateStartDate() == null || (this.getCreateStartDate() != null && this.getCreateStartDate().trim().length() ==0 )) {
+           String message = bundle.getString("patdetails_search_date1") + bundle.getString("ERROR_ONE_OF_GROUP_TEXT2");
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
+           return null;
+        }
+        
         //Form Validation of End Time
         if (this.getCreateEndTime() != null && this.getCreateEndTime().trim().length() > 0) {
             String message = edmValidation.validateTime(this.getCreateEndTime());
