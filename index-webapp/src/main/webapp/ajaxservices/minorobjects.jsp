@@ -9,6 +9,7 @@
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ValidationService"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"%>
 
 <%@ page import="java.util.Enumeration"%>
 <%@ page import="javax.faces.context.FacesContext" %>
@@ -118,6 +119,7 @@ boolean isValidate = (null == validate?false:true);
 String validateLID = request.getParameter("LID");
 String validateSystemCode  = request.getParameter("SystemCode");
 
+String localIdDesignation =	 ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
 //HashMap for the root node fields
 HashMap rootNodesHashMap = new HashMap();
 
@@ -959,6 +961,7 @@ if(isSave) {
    <%
 	 if( (validateLID != null && validateLID.trim().length() == 0 )
 		 && (validateSystemCode != null && validateSystemCode.trim().length() > 0 )) {
+	    String lidmsg =  bundle.getString("LID_SysCode") + " " + localIdDesignation ;
 	%>
 	<div class="ajaxalert">
 	   	  <table>
@@ -966,7 +969,7 @@ if(isSave) {
 				<td>
 				      <ul>
 				             <li>
-							  Please enter LID value.
+							  <%= lidmsg %>
 				             </li>
 				      </ul>
 				<td>

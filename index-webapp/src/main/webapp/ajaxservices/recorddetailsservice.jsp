@@ -21,6 +21,7 @@
 <%@ page import="com.sun.mdm.index.edm.services.masterController.MasterControllerService" %>
 <%@ page import="com.sun.mdm.index.objects.SystemObject"%>
 <%@ page import="com.sun.mdm.index.objects.EnterpriseObject"%>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"%>
 
 <%@ page import="java.util.Enumeration"%>
 <%@ page import="javax.faces.context.FacesContext" %>
@@ -98,6 +99,7 @@ boolean iscollectEuids = (null == collectEuids?false:true);
 String collectedEuids = request.getParameter("collecteuid");
 
 ArrayList collectedEuidsList = new ArrayList();
+String localIdDesignation =	 ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
 %>
 
 <%
@@ -212,7 +214,8 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 	     <td>
      <%
 	  
-		 String messages =  sourceHandler.getSystemCodeDescription(systemCode) + "/"+ (String) patientDetailsHandler.getParametersMap().get("LID") +  " Not Found. Please check the entered values.";
+         String messages =  bundle.getString("LID_SysCode") + " "+ localIdDesignation ;
+		// String messages =  sourceHandler.getSystemCodeDescription(systemCode) + "/"+ (String) //patientDetailsHandler.getParametersMap().get("LID") +  " Not Found. Please check the entered values.";
      %>     	 
 
 	 <script>
