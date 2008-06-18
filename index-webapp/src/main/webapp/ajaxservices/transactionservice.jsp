@@ -140,16 +140,15 @@ if (results != null)   {
 
      <table border="0" cellpadding="0" cellspacing="0"> 
          <tr>
-            <td style="width:90%;text-align:right">
+            <td style="width:87%;text-align:right">
                          <h:outputText value="#{msgs.total_records_text}"/>&nbsp;<%=results.size()%>&nbsp;
 			</td>
 			<td>
 				<% if (results.size() > 0)   {%>
-                         <h:outputLink styleClass="button" title="#{msgs.print_text}"
-                                       rendered="#{Operations.transLog_Print}"  
-                                       value="JavaScript:window.print();">
-                             <span><h:outputText value="#{msgs.print_text}"/>  </span>
-                         </h:outputLink>             
+                    <h:panelGrid rendered="#{Operations.transLog_Print}"  >
+                        <a title="<%=print_text%>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');openPrintWindow('/<%=URI%>/printservices/transactions.jsf?random='+rand+'&'+queryStr)"><span><%=print_text%></span></a>
+					</h:panelGrid>             
+
 				<% } %>
             </td>
          </tr>

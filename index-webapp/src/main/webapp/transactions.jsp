@@ -12,6 +12,7 @@
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.SearchResultsConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
 <%@ page import="java.util.ArrayList"  %>
@@ -65,6 +66,7 @@ function setRand(thisrand)  {
    double rand = java.lang.Math.random();
    String URI = request.getRequestURI();
    URI = URI.substring(1, URI.lastIndexOf("/"));
+   Operations operations=new Operations();
  %>  
     <title><h:outputText value="#{msgs.application_heading}"/></title> 
     <%@include file="./templates/header.jsp"%>
@@ -201,18 +203,20 @@ function setRand(thisrand)  {
                                         <tr>
                                             <td>
                                                     <nobr>
-                                                        <h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
-                                                            <span><h:outputText value="#{msgs.clear_button_label}"/></span>
-                                                        </h:outputLink>
-                                                    </nobr>
-                                                    <nobr>
+													<% if(operations.isTransLog_SearchView()){%>	
                                                         <a title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:getFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/transactionservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
                                                             <span>
                                                                 <h:outputText value="#{msgs.search_button_label}"/>
                                                             </span>
                                                         </a>                                     
+													 <% } %>
+                                                    </nobr>                                                
+                                                    <nobr>
+                                                        <h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
+                                                            <span><h:outputText value="#{msgs.clear_button_label}"/></span>
+                                                        </h:outputLink>
                                                     </nobr>
-                                                
+
                                             </td>
                                         </tr>
                                     </table>

@@ -66,9 +66,9 @@
         <body>
             <%@include file="./templates/header.jsp"%>
             <div id="mainContent" style="overflow:hidden;">
-                <div id="basicSearch" class="basicSearch" style="visibility:visible;display:block;">
+                <div id="basicSearch" class="basicSearch">
                     <h:form id="potentialDupBasicForm">
-                        <table border="0" cellpadding="0" cellspacing="0" width="90%" align="left"> 
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%"> 
                             <tr>
                                 <td align="left">
                                     <h:outputText value="#{msgs.datatable_euid_text}"/>
@@ -104,11 +104,11 @@
                 </div>
              <br>        
                 <div id="mainDupSource" class="compareResults">
-                    <table cellspacing="5" cellpadding="0" border="0">
+                    <table cellspacing="0" cellpadding="0" border="0">
                         <tr>
                             <td>
                                 <div style="height:500px;overflow:auto;">
-                                    <table cellspacing="5" cellpadding="0" border="0">
+                                    <table cellspacing="0" cellpadding="0" border="0">
                                         <tr>
                                             
                                             <%
@@ -220,7 +220,7 @@
  
                                           <%if (countEnt == 0) {%>
                                             <td  valign="top" align="left">
-                                                <div id="outerMainContentDivid" style="visibility:visible;display:block;">
+                                                <div id="outerMainContentDivid" >
                                                     <div style="width:170px;overflow:auto">
                                                         <div id="mainEuidContent" class="yellow">
                                                             <table border="0" cellspacing="0" cellpadding="0" width="100%">
@@ -1165,7 +1165,7 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                               <td><img src="images/spacer.gif" width="169px" height="1px" border="0"></td>
                                             <%}%>										 
                                             <td align="left">
-											<div id="dynamicMainEuidButtonContent<%=countEnt%>" style="visibility:visible;display:block;">
+											<div id="dynamicMainEuidButtonContent<%=countEnt%>" style="padding-left:0px;visibility:visible;display:block;">
                                               <table border="0" cellspacing="0" cellpadding="0" border="0">
                                                <% if (session.getAttribute("eocomparision") == null  && countEnt > 0 ) { %>
                                                 <tr> 
@@ -1193,7 +1193,7 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                                             </a>   
 							                             <%}%>
 													<%}%>
-											    </td>
+											    </td>												
 										  	 </tr>
 											<%}%>
                                              <tr> 
@@ -1268,7 +1268,7 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                             </div>  
                                            <%}%>       
                                         </td>
-                                        
+                                        <td><img src="images/spacer.gif" width="169px" height="1px" border="0"></td>
                                         <%}%>
 
 										 <%}%>

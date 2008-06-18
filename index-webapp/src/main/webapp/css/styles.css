@@ -5,7 +5,6 @@ INPUT{
            font-size:12px;
            padding-top:2px;
            padding-bottom:2px;
-           color:#837F74;           
 }
 
 INPUT.READONLY{
@@ -111,6 +110,81 @@ INPUT.READONLY{
     position : relative; /* A must for resizable columns */
 }
 
+/***Print Style**/
+
+.printresults   {
+  width:100%;
+  text-align:left;
+  border-left: 1px solid #6B757B;           
+  border-right: 1px solid #6B757B;           
+  position:relative;
+}
+
+.printresults  table  {
+  padding-left:1px;
+  padding-top:1px;
+  padding-right:1px;
+  padding-bottom:1px;
+  text-align:left;
+  width:100%
+}
+
+.printresultssearch table {
+  padding-left:1px;
+  padding-top:1px;
+  padding-right:1px;
+  padding-bottom:1px;
+  text-align:left;
+  width:100%
+}
+
+.printresultssearch span {
+  padding-left:1px;
+  padding-top:1px;
+  padding-right:1px;
+  padding-bottom:1px;
+  background-color:#efefef;
+  text-align:left;
+}
+
+.printresultssummary {
+  align:bottom;
+  text-align:right;
+  width:100%
+}
+
+
+.printresults em {
+  border:none;
+  text-align:right;
+}
+
+
+.printresults  table th {
+   border-top: 1px solid #6B757B;
+   font-family: sans-serif,Arial, Helvetica, ;
+   font-size:12px;
+   color:#a4a39e;
+   text-align:center;
+   background: url(../images/results_head.gif) repeat-x;
+   color:#000;
+   text-decoration:none;		                      
+   border-bottom: 1px solid #6B757B;           
+}
+
+.printresults  td {
+   padding-left:1px;
+   padding-top:1px;
+   padding-right:1px;
+   padding-bottom:1px;
+   font-family: sans-serif,Arial, Helvetica;
+   font-size:12px;
+   text-align:left;
+   text-decoration:none;		                               
+   border-bottom: 1px solid #6B757B;           
+}
+
+/** End Print Style */
 
 #reportYUISearch table td input {
 background-image:url(../images/none.gif); /*fake it*/
@@ -526,12 +600,8 @@ width:25px;
 
 .duplicaterecords  input {
            font-family: Arial, Helvetica, sans-serif;
-           font-size:12px;
-           color:#837F74;
+		   font-weight:normal;
            vertical-align:middle;             
-           padding-bottom:3px;   
-           padding-left:0px; 
-
 }
 .duplicaterecords  p {
            font-family: Arial, Helvetica, sans-serif;
@@ -574,10 +644,16 @@ width:25px;
            border-right-width:12px;
            border-right-color:black;
            border-left-color:black;
-	   padding-left:18px; 
-	   padding-right:18px;
-	   padding-top:3px; 
-	   padding-bottom:3px;   
+	   padding-left:1px; 
+	   padding-right:1px;
+	   padding-top:1px; 
+	   padding-bottom:1px;   
+}
+
+.basicSearch input {
+           font-family: Arial, Helvetica, sans-serif;
+		   font-weight:normal;
+           vertical-align:middle;             
 }
 
 .basicSearch  th a {
@@ -2649,8 +2725,8 @@ div.w114 table td.fntdup5nou    {height: 25px; border-top: 1px solid #F7F3D6;  b
 
 
 .actionbuton  {vertical-align:top;}
-.actionbuton table {width:169px;background-color:#F7FBD6;padding-left:5px; padding-right:5px;}
-.actionbuton table td { width:169px;height:25px;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:0px; padding-right:5px;padding-left:5px;}
+.actionbuton table {width:169px;vertical-align:top;background-color:#F7FBD6;padding-left:0px; padding-right:0px;}
+.actionbuton table td { width:169px;height:25px;vertical-align:top;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 11px; text-align: left; padding-top:0px; padding-right:0px;padding-left:0px;}
 .actionbuton #previewActionButton {visibility:hidden;display:none;background-color:#cecff9;}
 
 a.navbutton {

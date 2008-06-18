@@ -173,7 +173,7 @@ function align(thisevent,divID) {
 												     <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
  												</h:outputText>
                                                 <h:outputText value="#{feildConfig.displayName}" />
-                                             </nobr>
+                                            </nobr>
                                         </h:column>
                                         <!--Rendering HTML Select Menu List-->
                                         <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
@@ -287,11 +287,6 @@ function align(thisevent,divID) {
                             <table  cellpadding="0" cellspacing="0" style="	border:0px red solid;padding-left:20px">
                                 <tr>
                                     <td align="left">
-									    <nobr>
-										    <h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
-                                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
-                                            </h:outputLink>
-                                        </nobr>
                                         <nobr>
 										<% if(operations.isEO_SearchViewSBR()){%>	
                                            <a  title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
@@ -301,7 +296,11 @@ function align(thisevent,divID) {
                                            </a>
 										 <%}%>
                                         </nobr>
-                                        
+									    <nobr>
+										    <h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
+                                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
+                                            </h:outputLink>
+                                        </nobr>                                        
                                     </td>
                                 </tr>
                             </table>
@@ -423,6 +422,7 @@ function align(thisevent,divID) {
      
 </html>
 </f:view>
+
 
 
 

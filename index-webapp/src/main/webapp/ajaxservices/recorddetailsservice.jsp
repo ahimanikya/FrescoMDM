@@ -104,7 +104,7 @@ ArrayList collectedEuidsList = new ArrayList();
   boolean isValidationErrorOccured = false;
   //HashMap valiadtions = new HashMap();
    ArrayList requiredValuesArray = new ArrayList();
-
+   Operations operations=new Operations();
 %>
 
 <% //Build the request Map 
@@ -270,7 +270,7 @@ if (results != null)   {
      <table border="0" cellpadding="0" cellspacing="0"> 
          <tr>
              <td width="30%">
-			   <% if (results.size() > 1)   {%>
+			   <% if (operations.isEO_Compare() && results.size() > 1)   {%>
  					  <a class="button" title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>"
 					     href="javascript:ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?collectEuids=true','messages','')" >
                          <span>
@@ -284,11 +284,9 @@ if (results != null)   {
 			</td>
 			<td >
 				<% if (results.size() > 0)   {%>
-                         <h:outputLink styleClass="button" title="#{msgs.print_text}"
-                                       rendered="#{Operations.transLog_Print}"  
-                                       value="JavaScript:window.print();">
-                             <span><h:outputText value="#{msgs.print_text}"/>  </span>
-                         </h:outputLink>             
+                    <h:panelGrid rendered="#{Operations.EO_PrintSBR}" >
+                        <a title="<%=print_text%>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');openPrintWindow('/<%=URI%>/printservices/recorddetails.jsf?random='+rand+'&'+queryStr)"><span><%=print_text%></span></a>
+					</h:panelGrid>             
 				<% } %>
             </td>
 		 </tr>
@@ -319,10 +317,12 @@ if (results != null)   {
 				              %>
                                    <td>
 								      <%if(keyValue.equalsIgnoreCase("EUID")) {%>
+									  <%if(operations.isEO_Compare() ) {%>
 									  <%if("active".equalsIgnoreCase( (String)valueMap.get("EOStatus") ) ) {%>
                                         <input type="checkbox" onclick="javascript:getCheckedValues(this,'<%=valueMap.get(fullFieldNamesList.toArray()[kc])%>')"/>&nbsp;
 									  <%} else {%>
                                         <input type="checkbox" title="<%=valueMap.get("EOStatus")%> EO " readonly="true" disabled="true" />&nbsp;
+									  <%}%>
 									  <%}%>
 									    <a href="euiddetails.jsf?euid=<%=valueMap.get(fullFieldNamesList.toArray()[kc])%>">
                                            <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))%> 

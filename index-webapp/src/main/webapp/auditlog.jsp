@@ -11,7 +11,7 @@
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.SearchResultsConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
-
+<%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 <%@ page import="java.text.SimpleDateFormat"  %>
 <%@ page import="java.util.Date"  %>
 <%@ page import="java.util.ArrayList"  %>
@@ -26,6 +26,7 @@
    ArrayList labelsList  = new ArrayList();
    ArrayList fullFieldNamesList  = new ArrayList();
    StringBuffer myColumnDefs = new StringBuffer();
+   Operations operations=new Operations();
 %>
 
 <f:view>
@@ -74,7 +75,7 @@ function setRand(thisrand)  {
 		  <td>
              <div id="mainContent">     
               <div id ="auditlog " class="basicSearch">
-                        <table border="0" cellpadding="0" cellspacing="0" align="right">
+                        <table border="0" cellpadding="0" cellspacing="0" >
                       <h:form id="searchTypeForm" >
                             <tr>
                                 <td>
@@ -120,7 +121,7 @@ function setRand(thisrand)  {
 												     <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
  												</h:outputText>
                                                 <h:outputText value="#{feildConfig.displayName}" />
-                                            </nobr>
+                                             </nobr>
                                         </h:column>
                                         <!--Rendering HTML Select Menu List-->
                                         <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
@@ -207,22 +208,23 @@ function setRand(thisrand)  {
                                     </h:column>
                                         
                                     </h:dataTable>
-                                   <table  cellpadding="0" cellspacing="0" style="	border:0px red solid;padding-left:20px">
+                                   <table>
                                         <tr>
                                             <td>
                                                 <nobr>
-                                                    <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
-                                                        <span><h:outputText value="#{msgs.clear_button_label}"/></span>
-                                                    </h:outputLink>
-                                                </nobr>
-                                                <nobr>
+												<% if(operations.isAuditLog_SearchView()){%>	
                                                         <a  class="button" title="<h:outputText value="#{msgs.search_button_label}"/>" href="javascript:void(0)" onclick="javascript:getFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/auditlogservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
                                                             <span>
                                                                 <h:outputText value="#{msgs.search_button_label}"/>
                                                             </span>
                                                         </a>                                     
+												<% } %>
                                                 </nobr>
-                                                
+                                                <nobr>
+                                                    <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
+                                                        <span><h:outputText value="#{msgs.clear_button_label}"/></span>
+                                                    </h:outputLink>
+                                                </nobr>                                                
                                             </td>
                                         </tr>
                                     </table>
@@ -289,6 +291,7 @@ function setRand(thisrand)  {
     </script>
     </html>
 </f:view>
+
 
 
 

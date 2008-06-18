@@ -57,7 +57,7 @@ boolean isSessionActive = true;
 ReportHandler reportHandler = new ReportHandler();
 
 String reportName = request.getParameter("tabName");
-
+String formName = request.getParameter("form");
 String divId = request.getParameter("layer");
 
 Enumeration parameterNames = request.getParameterNames();
@@ -115,8 +115,9 @@ ArrayList fcArrayList  = new ArrayList();
        if ( !("tabName".equalsIgnoreCase(attributeName)) && 
 		    !("editThisID".equalsIgnoreCase(attributeName)) && 
 			!("random".equalsIgnoreCase(attributeName)) && 
+			!("form".equalsIgnoreCase(attributeName)) && 
 			!("layer".equalsIgnoreCase(attributeName))  ) {
-		     reportHandler.getReportParameters().put(attributeName,attributeValue);			
+ 		     reportHandler.getReportParameters().put(attributeName,attributeValue);			
       }
    } 
 %>
@@ -151,7 +152,7 @@ ArrayList fcArrayList  = new ArrayList();
 		 fcArrayList  = reportHandler.getDuplicateReport().getResultsConfigArrayList();
 
 	 }
-%> 
+ %> 
 
 <% if (results != null && results.size() > 0 )  { 
 	if (activityText.equalsIgnoreCase(reportName))   {
@@ -162,7 +163,21 @@ ArrayList fcArrayList  = new ArrayList();
 	     keys.add("EUID");
 	     labelsList.add("EUID");
 	     fullFieldNamesList.add("EUID");
-     	
+	    
+		if (assumedText.equalsIgnoreCase(reportName))  {     	
+	        keys.add("LID");
+    	    labelsList.add("LID");
+	        fullFieldNamesList.add("LID");
+
+	        keys.add("SystemCode");
+	        labelsList.add("SystemCode");
+	        fullFieldNamesList.add("SystemCode");
+
+	        keys.add("Weight");
+	        labelsList.add("Weight");
+	        fullFieldNamesList.add("Weight");
+		}
+
 	    for(int ii=0;ii<fcArrayList.size();ii++) {
 		     FieldConfig fieldConfig = (FieldConfig)fcArrayList.get(ii);
 		     keys.add(fieldConfig.getName());
@@ -213,7 +228,7 @@ ArrayList fcArrayList  = new ArrayList();
 <table>
 <%if(results != null) {%>
 <tr>
-                     <td style="width:93%">
+                     <td style="width:90%">
                          <h:outputText value="#{msgs.total_records_text}"/>
 						 <%if (potDupText.equalsIgnoreCase(reportName))  {%>
 						   <%=results.size()/2%>&nbsp;&nbsp;
@@ -223,11 +238,10 @@ ArrayList fcArrayList  = new ArrayList();
 
 				     </td>
 					 <td>
-                         <h:outputLink styleClass="button" title="#{msgs.print_text}"
-                                       rendered="#{Operations.EO_PrintSBR }"  
-                                       value="JavaScript:window.print();">
-                             <span><h:outputText value="#{msgs.print_text}"/>  </span>
-                         </h:outputLink>              
+
+                    <h:panelGrid>
+                        <a title="<%=print_text%>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('<%=formName%>');openPrintWindow('/<%=URI%>/printservices/reportsprint.jsf?random='+rand+'&'+queryStr)"><span><%=print_text%></span></a>
+					</h:panelGrid>             
                          
                      </td>
 </tr>

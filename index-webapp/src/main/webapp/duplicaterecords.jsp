@@ -247,11 +247,6 @@ function align(thisevent,divID) {
                             <table  cellpadding="0" cellspacing="0" style="	border:0px none solid;padding-left:20px">
                                 <tr>
                                     <td align="left">
-					<nobr>
-					   <h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
-                                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
-                                            </h:outputLink>
-                                        </nobr>
                                         <nobr>
                                            <a  class="button" title="<h:outputText value="#{msgs.search_button_label}"/>"
 										       href="javascript:void(0)"
@@ -261,7 +256,10 @@ function align(thisevent,divID) {
                                                </span>
                                            </a>
                                         </nobr>
-                                        
+                                        <nobr>
+                                          <h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
+                                           <span><h:outputText value="#{msgs.clear_button_label}"/></span></h:outputLink>
+                                      </nobr>
                                     </td>
 				              </tr>
                             </table>

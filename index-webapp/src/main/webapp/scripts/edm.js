@@ -606,29 +606,21 @@ function getDateFieldName(formName,idName)  {
 } 
 
 
-/*
-function ClearContents(thisForm)  { 
-	thisFrm = document.forms[thisForm];
-	for(i=0; i< thisFrm.elements.length; i++)   {      		
-		var fieldName = thisFrm.elements[i].name;
-        if(thisFrm.elements[i].name != 'lidmask') {
-             if(thisFrm.elements[i].name !=  'javax.faces.ViewState')   {
-				 if ( fieldName.indexOf("selectedSearchType") == -1 ) {
-				     thisFrm.elements[i].value = "";
-			     }
-			 }
-	    }
-    }
-    return;
-} 
-*/
 function ClearContents(thisForm)  { 
  thisFrm = document.forms[thisForm];
  for(i=0; i< thisFrm.elements.length; i++)   {        
     var fieldName = thisFrm.elements[i].name;
     if(thisFrm.elements[i].name != 'lidmask') {
-        if(thisFrm.elements[i].name !=  'javax.faces.ViewState' && thisFrm.elements[i].id !=  'selectedSearchType')   {
-          thisFrm.elements[i].value = "";
+        if(thisFrm.elements[i].name !=  'javax.faces.ViewState' && 
+		   thisFrm.elements[i].name !=  'reportName' && 
+		   thisFrm.elements[i].id !=  'selectedSearchType' &&
+		   thisFrm.elements[i].name !=  'layer')   {
+		   var elemType = thisFrm.elements[i].type.toUpperCase();
+		   if (elemType.indexOf("SELECT") != -1)  {
+              thisFrm.elements[i].selectedIndex = "0";
+		   }  else {
+              thisFrm.elements[i].value = "";
+		   }
         }
     }
  }
@@ -1782,8 +1774,6 @@ function ClearMinorObjectContents(divElement)  {
 
 function getFormValues(formName)   {
   var thisFrm = document.getElementById(formName);
-  
-
   var query = "";
    for(i=0; i< thisFrm.elements.length; i++)   {      
 			if(thisFrm.elements[i].title.length != 0 ) {
@@ -1793,6 +1783,7 @@ function getFormValues(formName)   {
 
 	query +="&editThisID="+ editIndexid;
     queryStr  = query;
+
 }
 
 function getDuplicateFormValues(formName1,formName2)   {
@@ -1959,3 +1950,9 @@ function getRecordDetailsFormValues(formName)   {
 	 
     queryStr  = query;
  }
+
+ /* Opens a new window for the print*/
+function openPrintWindow(url)    {
+   var newwindow=window.open(url,"_blank","toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes");
+   newwindow.focus();
+}
