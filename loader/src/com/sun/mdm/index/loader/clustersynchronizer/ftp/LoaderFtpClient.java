@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTP;
 
 /**
  * 
@@ -79,6 +80,12 @@ public class LoaderFtpClient {
 			connect();
 
 			ftp.changeWorkingDirectory(remoteDir);
+			/*
+			 * match stage directory has Match File that are of type binary
+			 */
+			if (localDir.contains("match") && !localDir.contains("sbr")) {
+			   ftp.setFileType(FTP.IMAGE_FILE_TYPE );
+			}
 
 			FileInputStream fis = new FileInputStream(localDir + filename);
 
