@@ -10,7 +10,7 @@
     <artifactId>index-gui</artifactId>
     <name>Master Index GUI</name>
     <packaging>nbm</packaging>
-    <url>http://maven.apache.org</url>
+    <url>http://mural.dev.java.net</url>
     <build>
         <finalName>open-dm-mi</finalName>
         <plugins>

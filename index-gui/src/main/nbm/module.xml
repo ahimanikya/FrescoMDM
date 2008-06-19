@@ -27,9 +27,9 @@
    <codeNameBase>com.sun.mdm.index.project</codeNameBase>
    <cluster>soa2</cluster>
    <manifest>src/main/nbm/manifest.mf</manifest>
-   <!--distributionUrl>http://mevenide.codehaus.org/nbm_release2</distributionUrl-->
-   <!--licenseName>Apache License, Version 2.0</licenseName-->
-   <!--licenseFile>license.txt</licenseFile-->
+   <distributionUrl>http://download.java.net/mural</distributionUrl>
+   <licenseName>COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL)</licenseName>
+   <licenseFile>../bootstrap/legal/license.txt</licenseFile>
    <libraries>
        <!-- these dependencies get copied to modules/ext directory in the mevenide cluster and
             get referenced from the module's jar usign the Class-Path manifest entry. 
