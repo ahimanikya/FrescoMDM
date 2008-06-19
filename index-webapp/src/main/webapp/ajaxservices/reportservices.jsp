@@ -228,7 +228,7 @@ ArrayList fcArrayList  = new ArrayList();
 <table>
 <%if(results != null) {%>
 <tr>
-                     <td style="width:90%">
+                     <td style="width:85%">
                          <h:outputText value="#{msgs.total_records_text}"/>
 						 <%if (potDupText.equalsIgnoreCase(reportName))  {%>
 						   <%=results.size()/2%>&nbsp;&nbsp;
