@@ -134,13 +134,15 @@ ArrayList collectedEuidsList = new ArrayList();
             patientDetailsHandler.getParametersMap().put(attributeName,attributeValue);
 			newHashMap.put(attributeName,attributeValue);
  %>
- <% if (attributeValue.length() != 0) { %>
- <% } %>
-<%
-      }
+<%   }
    } 
+  
 %>
-<%if(patientDetailsHandler.getParametersMap().get("selectedSearchType") != null) {%>
+<%
+  if(patientDetailsHandler.getParametersMap().get("selectedSearchType") != null) {
+	//set the selected search type here....
+	 patientDetailsHandler.setSelectedSearchType(request.getParameter("selectedSearchType"));
+%>
 <td>
 	  <span><%=bundle.getString("search_Type")%>:&nbsp;<b><%=patientDetailsHandler.getParametersMap().get("selectedSearchType")%></b></span>
 </td>
