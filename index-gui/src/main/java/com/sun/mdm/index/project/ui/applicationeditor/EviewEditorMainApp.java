@@ -280,10 +280,16 @@ public class EviewEditorMainApp {
     /**
      *@return xml string for object.xml
      */
-    public String getObjectXmlString() {
+    public String getObjectXmlString() throws Exception {
         String data = null;
         try {
             EntityNode primaryNode = (EntityNode) mRootNode.getChildAt(0);
+            String validationStr = ConfigValidation.validateObject(primaryNode);
+            if (!validationStr.equals("Success")) {
+                NotifyDescriptor desc = new NotifyDescriptor.Message(validationStr);
+                DialogDisplayer.getDefault().notify(desc);
+                throw new Exception(validationStr);
+            }
             String viewName = this.mEviewApplication.getApplicationName();
             String matchEngine = this.getPropertiesDeploymentPanel().getMatchEngine();
             String database = this.getPropertiesDeploymentPanel().getDatabase();
@@ -296,6 +302,7 @@ public class EviewEditorMainApp {
             candidateFields = objectWriter.getCandidateFields();
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
+             throw ex;
         }
         return data;
     }
