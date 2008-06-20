@@ -86,6 +86,9 @@ declare
         tCode('V', 'LVN',  'LICENSED VOCATIONAL NURSE'),
         tCode('V', 'REV',  'REVERAND'),
         tCode('V', 'LORD', 'LORD'),
+        tCode('V', 'MR', 'MR'),
+        tCode('V', 'MRS', 'MRS'),
+        tCode('V', 'MISS', 'MISS'),
 
         -- ****     SUFFIX   ****
         tCode('L', 'SUFFIX', 'Suffix'),
