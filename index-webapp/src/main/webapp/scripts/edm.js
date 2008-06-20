@@ -1043,6 +1043,8 @@ document.getElementById('linkedDisplayValueDiv').innerHTML = displayName;
 
 //store the full field name here
 document.linkForm.sbrfullfieldname.value = fieldName;
+document.linkForm.fieldDisplayName.value = displayName;
+
 
 }
 
@@ -1096,6 +1098,8 @@ document.getElementById('unLinkedFullFieldDiv').innerHTML = fullFieldName;
 
 //store the full field name here
 document.unlinkForm.sbrfullfieldname.value = fieldName;
+document.unlinkForm.fieldDisplayName.value = displayName;
+
 }
 
 var unLinkValues="";
