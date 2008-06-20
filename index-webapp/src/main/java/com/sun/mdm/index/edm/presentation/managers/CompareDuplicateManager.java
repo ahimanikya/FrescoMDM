@@ -358,10 +358,10 @@ public class CompareDuplicateManager {
 
             for (int i = 0; i < rootFieldConfigs.length; i++) {
                 FieldConfig fieldConfig = rootFieldConfigs[i];
+                Object value = editSystemObjectHashMap.get(fieldConfig.getFullFieldName());
                 //set the menu list values here
-                if(fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                    Object value  = editSystemObjectHashMap.get(fieldConfig.getFullFieldName());
-                    if(value != null) {
+                if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                    if (value != null) {
                         //SET THE VALUES WITH USER CODES AND VALUE LIST
                         if (fieldConfig.getUserCode() != null) {
                             strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
@@ -369,13 +369,19 @@ public class CompareDuplicateManager {
                             strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                         }
 
-                        
-                       //strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
-                       editSystemObjectHashMap.put(fieldConfig.getFullFieldName(),strVal);
+
+                        //strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
+                        editSystemObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
                     }
-                    
+
+                } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                    if (value != null) {
+                        //Mask the value as per the masking 
+                         value = fieldConfig.mask(value.toString());
+                         editSystemObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                    }
                 }
-            
+
             }
 
             //add SystemCode and LID value to the new Hash Map
@@ -416,9 +422,9 @@ public class CompareDuplicateManager {
                     HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
                     for (int m = 0; m < minorFiledConfigs.length; m++) {
                         FieldConfig fieldConfig = minorFiledConfigs[m];
+                        Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
                         //set the menu list values here
                         if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                            Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
                             if (value != null) {
                                 //SET THE VALUES WITH USER CODES AND VALUE LIST
                                 if (fieldConfig.getUserCode() != null) {
@@ -427,11 +433,17 @@ public class CompareDuplicateManager {
                                     strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                                 }
 
-                                  
+
                                 //strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                                 minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
                             }
-                            
+
+                        } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                            if (value != null) {
+                                //Mask the value as per the masking 
+                                 value = fieldConfig.mask(value.toString());
+                                 minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                            }
                         }
 
                     }
@@ -460,8 +472,7 @@ public class CompareDuplicateManager {
             HashMap enterpriseObjectHashMap = new HashMap();
             SourceHandler sourceHandler = new SourceHandler();
             String rootNodeName = screenObject.getRootObj().getName();
-
-        try {
+         try {
 
             //add SystemCode and LID value to the new Hash Map
             HashMap editEnterpriseObjectHashMap = masterControllerService.getEnterpriseObjectAsHashMap(enterpriseObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
@@ -472,10 +483,10 @@ public class CompareDuplicateManager {
             String strVal = new String();
 
             for (int i = 0; i < rootFieldConfigs.length; i++) {
-                FieldConfig fieldConfig = rootFieldConfigs[i];
+                 FieldConfig fieldConfig = rootFieldConfigs[i];
+                Object value  = editEnterpriseObjectHashMap.get(fieldConfig.getFullFieldName());
                 //set the menu list values here
                 if(fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                    Object value  = editEnterpriseObjectHashMap.get(fieldConfig.getFullFieldName());
                     if(value != null) {
                         //SET THE VALUES WITH USER CODES AND VALUE LIST 
                         if (fieldConfig.getUserCode() != null) {
@@ -483,15 +494,22 @@ public class CompareDuplicateManager {
                         } else {
                             strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                         }
-
+                                  
                        // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
                         editEnterpriseObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
                     }
                     
+                } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                     if (value != null) {
+                        //Mask the value as per the masking 
+                         value = fieldConfig.mask(value.toString());
+                         editEnterpriseObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                     }
+
                 }
             
             }
-
+ 
             HashMap newLinkedHashMap = new HashMap();
             HashMap eoWithLinkedHashMap = masterControllerService.getLinkedFields(enterpriseObject);
             Object[] keySet = editEnterpriseObjectHashMap.keySet().toArray();
@@ -550,9 +568,9 @@ public class CompareDuplicateManager {
 
                     for (int m = 0; m < minorFiledConfigs.length; m++) {
                         FieldConfig fieldConfig = minorFiledConfigs[m];
+                       Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
                         //set the menu list values here
                         if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                            Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
                             if (value != null) {
                                 //SET THE VALUES WITH USER CODES AND VALUE LIST
                                 if (fieldConfig.getUserCode() != null) {
@@ -564,7 +582,12 @@ public class CompareDuplicateManager {
                                 //strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                                 minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
                             }
-                            
+                        } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                            if (value != null) {
+                                //Mask the value as per the masking 
+                                 value = fieldConfig.mask(value.toString());
+                                 minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                            }
                         }
 
                     }
@@ -657,12 +680,18 @@ public class CompareDuplicateManager {
                    
                     for (int r = 0; r < rootFieldConfigs.length; r++) {
                         FieldConfig fieldConfig = rootFieldConfigs[r];
+                        Object value = editEnterpriseObjectHashMap.get(fieldConfig.getFullFieldName());
                         //set the menu list values here
                         if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                            Object value = editEnterpriseObjectHashMap.get(fieldConfig.getFullFieldName());
                             if (value != null) {
                                 strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                                 editEnterpriseObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
+                            }
+                        } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                            if (value != null) {
+                                //Mask the value as per the masking 
+                                 value = fieldConfig.mask(value.toString());
+                                 editEnterpriseObjectHashMap.put(fieldConfig.getFullFieldName(), value);
                             }
                         }
 
@@ -694,9 +723,9 @@ public class CompareDuplicateManager {
 
                             for (int m = 0; m < minorFiledConfigs.length; m++) {
                                 FieldConfig fieldConfig = minorFiledConfigs[m];
+                                Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
                                 //set the menu list values here
                                 if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                                    Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
                                     if (value != null) {
                                         //SET THE VALUES WITH USER CODES AND VALUE LIST 
                                         if (fieldConfig.getUserCode() != null) {
@@ -709,7 +738,13 @@ public class CompareDuplicateManager {
                                         minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
                                     }
                                     
-                                }
+                                }  else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                                    if (value != null) {
+                                        //Mask the value as per the masking 
+                                         value = fieldConfig.mask(value.toString());
+                                         minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                                    }
+                                 }
 
                             }
                         }
@@ -765,25 +800,31 @@ public class CompareDuplicateManager {
 
                 systemObjectHashMap.put("SYSTEM_OBJECT_EDIT", editSystemObjectHashMap); // Set the edit EnterpriseObject here
                 
-                    for (int r = 0; r < rootFieldConfigs.length; r++) {
-                        FieldConfig fieldConfig = rootFieldConfigs[r];
-                        //set the menu list values here
-                        if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                            Object value = editSystemObjectHashMap.get(fieldConfig.getFullFieldName());
-                            if (value != null) {
-                                //SET THE VALUES WITH USER CODES AND VALUE LIST 
-                                if (fieldConfig.getUserCode() != null) {
-                                    strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
-                                } else {
-                                    strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
-                                }
-                                
-                               //strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
-                                editSystemObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
+                for (int r = 0; r < rootFieldConfigs.length; r++) {
+                    FieldConfig fieldConfig = rootFieldConfigs[r];
+                    Object value = editSystemObjectHashMap.get(fieldConfig.getFullFieldName());
+                    //set the menu list values here
+                    if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                        if (value != null) {
+                            //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                            if (fieldConfig.getUserCode() != null) {
+                                strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                            } else {
+                                strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                             }
-                        }
 
+                            //strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                            editSystemObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
+                        }
+                    } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                        if (value != null) {
+                            //Mask the value as per the masking 
+                             value = fieldConfig.mask(value.toString());
+                             editSystemObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                        }
                     }
+
+                }
                 
                 
                 
@@ -814,19 +855,25 @@ public class CompareDuplicateManager {
                         
                         for (int m = 0; m < minorFiledConfigs.length; m++) {
                             FieldConfig fieldConfig = minorFiledConfigs[m];
+                            Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
                             //set the menu list values here
                             if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                                Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
                                 minorObjectHashMapEdit.put(fieldConfig.getFullFieldName(), value);
                                 if (value != null) {
-                                //SET THE VALUES WITH USER CODES AND VALUE LIST 
-                                if (fieldConfig.getUserCode() != null) {
-                                    strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
-                                } else {
-                                    strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
-                                }
-                                //strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                    //SET THE VALUES WITH USER CODES AND VALUE LIST 
+                                    if (fieldConfig.getUserCode() != null) {
+                                        strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
+                                    } else {
+                                        strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                    }
+                                    //strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                                     minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
+                                }
+                            } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                                if (value != null) {
+                                    //Mask the value as per the masking 
+                                     value = fieldConfig.mask(value.toString());
+                                     minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
                                 }
                             }
 
@@ -980,22 +1027,36 @@ public class CompareDuplicateManager {
     }
     
     // Method added by Anil to get Merged euid.
-    public String getMergedEuid(String euid) throws ProcessingException, UserException {
-
+    public String getMergedEuid(String euid)  {
         String mergedEuid = null;
-        EnterpriseObject enterpriseObject = null;
+        try {
 
-        enterpriseObject = masterControllerService.getEnterpriseObject(euid);
+            EnterpriseObject enterpriseObject = null;
 
-        if (enterpriseObject != null) {
-            mergedEuid = null;
-        } else {
-            MergeHistoryNode mhn = masterControllerService.getMergeHistory(euid);
-            mergedEuid = mhn.getEUID();
+            enterpriseObject = masterControllerService.getEnterpriseObject(euid);
+
+            if (enterpriseObject != null) {
+                mergedEuid = null;
+            } else {
+                MergeHistoryNode mhn = masterControllerService.getMergeHistory(euid);
+                //if the merge history is found return the merged EUID else return "invalid euid" String
+                if(mhn != null ) { 
+                    mergedEuid = mhn.getEUID();
+                } else { 
+                    return "Invalid EUID";
+                }
+            }
+        } catch (ProcessingException ex) {
+            mLogger.severe(mLocalizer.x("CPD020: Could not retrieve an EnterpriseObject: {0}", ex.getMessage()));
+            return "Invalid EUID";
+        } catch (UserException ex) {
+            mLogger.severe(mLocalizer.x("CPD020: Could not retrieve an EnterpriseObject: {0}", ex.getMessage()));
+            return "Invalid EUID";
         }
         return mergedEuid;
     }
-      public String  getEnterpriseObjectStatusForSO(SystemObject so) {
+
+    public String  getEnterpriseObjectStatusForSO(SystemObject so) {
         String eoStatus = null;
         EnterpriseObject enterpriseObject = null;
         try {
@@ -1003,13 +1064,15 @@ public class CompareDuplicateManager {
             systemObjectPK.lID = so.getLID();
             systemObjectPK.systemCode = so.getSystemCode();
             enterpriseObject = QwsController.getMasterController().getEnterpriseObject(systemObjectPK);
-            eoStatus=enterpriseObject.getStatus();
+            eoStatus = enterpriseObject.getStatus();
         } catch (ProcessingException ex) {
-            mLogger.severe(mLocalizer.x("CPD020: Could not retrieve an EnterpriseObject: {0}", ex.getMessage()));
+            mLogger.severe(mLocalizer.x("CPD021: Could not retrieve an EnterpriseObject Status for SystemObject : {0}", ex.getMessage()));
         } catch (UserException ex) {
-            mLogger.severe(mLocalizer.x("CPD021: Could not retrieve an EnterpriseObject: {0}", ex.getMessage()));
-        }
+            mLogger.severe(mLocalizer.x("CPD021: Could not retrieve an EnterpriseObject: Status for SystemObject : {0}", ex.getMessage()));
+        } 
         return eoStatus;
 
     } 
+    
+    
 }
