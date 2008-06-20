@@ -121,9 +121,11 @@ How to use the solution.
 
 Examples of what you might try
 ------------------------------
-   o Add the same person but give them different dates of birth.
+   o Add the same person but give them different dates of birth. Be sure to select "MYSQL" as the System for the
+     second record.
    o Add different people.
-   o Add the same person but give them different Health ID data.
+   o Add the same person but give them different Health ID data. Be sure to select "MYSQL" as the System for the
+     second record.
    o Check for duplicates.
    o Look at the various tabs and try different queries or actions once you have some 
      duplicates.		
