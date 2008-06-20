@@ -45,6 +45,9 @@ declare
         tCode('V', 'CNA', 'CERTIFIED NURSES AID'),
         tCode('V', 'LVN', 'LICENSED VOCATIONAL NURSE'),
         tCode('V', 'REV', 'REVERAND'),
+        tCode('V', 'MR', 'MR'),
+	tCode('V', 'MRS', 'MRS'),
+        tCode('V', 'MISS', 'MISS'),
 
         -- ****     GENDER   ****
         tCode('L', 'GENDER', 'Gender'),
