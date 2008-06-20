@@ -60,10 +60,10 @@
             <key-type>false</key-type>
         </field>
         <field>
-            <name>TFN</name>
-            <display-name>TFN</display-name>
+            <name>MedicareNo</name>
+            <display-name>Medicare Card</display-name>
             <display-order>7</display-order>
-            <max-length>16</max-length>
+            <max-length>30</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
             <key-type>false</key-type>
@@ -107,29 +107,19 @@
             <key-type>false</key-type>
         </field>
         <field>
-            <name>Race</name>
-            <display-name>Race</display-name>
+            <name>IndigStatus</name>
+            <display-name>Indigenous Status</display-name>
             <display-order>12</display-order>
-            <max-length>8</max-length>
+            <max-length>50</max-length>
             <gui-type>MenuList</gui-type>
-            <value-list>RACE</value-list>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>Ethnic</name>
-            <display-name>Ethnic</display-name>
-            <display-order>13</display-order>
-            <max-length>8</max-length>
-            <gui-type>MenuList</gui-type>
-            <value-list>ETHNIC</value-list>
+            <value-list>INDIGST</value-list>
             <value-type>string</value-type>
             <key-type>false</key-type>
         </field>
         <field>
             <name>Religion</name>
             <display-name>Religion</display-name>
-            <display-order>14</display-order>
+            <display-order>13</display-order>
             <max-length>8</max-length>
             <gui-type>MenuList</gui-type>
             <value-list>RELIGION</value-list>
@@ -139,7 +129,7 @@
         <field>
             <name>Language</name>
             <display-name>Language</display-name>
-            <display-order>15</display-order>
+            <display-order>14</display-order>
             <max-length>8</max-length>
             <gui-type>MenuList</gui-type>
             <value-list>LANGUAGE</value-list>
@@ -147,73 +137,18 @@
             <key-type>false</key-type>
         </field>
         <field>
-            <name>SpouseName</name>
-            <display-name>Spouse Name</display-name>
-            <display-order>16</display-order>
-            <max-length>100</max-length>
-            <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>MotherName</name>
-            <display-name>Mother Name</display-name>
-            <display-order>17</display-order>
-            <max-length>100</max-length>
-            <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>MotherMN</name>
-            <display-name>Mother Maiden Name</display-name>
-            <display-order>18</display-order>
-            <max-length>40</max-length>
-            <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>FatherName</name>
-            <display-name>Father Name</display-name>
-            <display-order>19</display-order>
-            <max-length>100</max-length>
-            <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
             <name>Maiden</name>
-            <display-name>Maiden</display-name>
-            <display-order>20</display-order>
+            <display-name>Maiden Name</display-name>
+            <display-order>15</display-order>
             <max-length>40</max-length>
             <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>PobCity</name>
-            <display-name>Pob City</display-name>
-            <display-order>21</display-order>
-            <max-length>30</max-length>
-            <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>PobState</name>
-            <display-name>Pob State</display-name>
-            <display-order>22</display-order>
-            <max-length>30</max-length>
-            <gui-type>MenuList</gui-type>
-            <value-list>STATE</value-list>
             <value-type>string</value-type>
             <key-type>false</key-type>
         </field>
         <field>
             <name>PobCountry</name>
             <display-name>Pob Country</display-name>
-            <display-order>23</display-order>
+            <display-order>16</display-order>
             <max-length>20</max-length>
             <gui-type>MenuList</gui-type>
             <value-list>COUNTRY</value-list>
@@ -221,46 +156,20 @@
             <key-type>false</key-type>
         </field>
         <field>
-            <name>VIPFlag</name>
-            <display-name>VIP Flag</display-name>
-            <display-order>24</display-order>
+            <name>DVAColour</name>
+            <display-name>DVA Card Colour</display-name>
+            <display-order>17</display-order>
             <max-length>8</max-length>
-            <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>VetStatus</name>
-            <display-name>Veteran Status</display-name>
-            <display-order>25</display-order>
-            <max-length>8</max-length>
-            <gui-type>TextBox</gui-type>
+            <gui-type>MenuList</gui-type>
+            <value-list>DVACOLOR</value-list>
             <value-type>string</value-type>
             <key-type>false</key-type>
         </field>
         <field>
             <name>Status</name>
             <display-name>Status</display-name>
-            <display-order>26</display-order>
+            <display-order>18</display-order>
             <max-length>8</max-length>
-            <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>DriverLicense</name>
-            <display-name>Driver License</display-name>
-            <display-order>27</display-order>
-            <max-length>20</max-length>
-            <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>DriverLicenseSt</name>
-            <display-name>Driver License St.</display-name>
-            <display-order>28</display-order>
-            <max-length>10</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
             <key-type>false</key-type>
@@ -268,7 +177,7 @@
         <field>
             <name>Dod</name>
             <display-name>Date of Death</display-name>
-            <display-order>29</display-order>
+            <display-order>19</display-order>
             <max-length>12</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>date</value-type>
@@ -277,63 +186,16 @@
         <field>
             <name>DeathCertificate</name>
             <display-name>Death Certificate</display-name>
-            <display-order>30</display-order>
+            <display-order>20</display-order>
             <max-length>10</max-length>
             <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>Nationality</name>
-            <display-name>Nationality</display-name>
-            <display-order>31</display-order>
-            <max-length>8</max-length>
-            <gui-type>MenuList</gui-type>
-            <value-list>NATIONAL</value-list>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>Citizenship</name>
-            <display-name>Citizenship</display-name>
-            <display-order>32</display-order>
-            <max-length>8</max-length>
-            <gui-type>MenuList</gui-type>
-            <value-list>CITIZEN</value-list>
             <value-type>string</value-type>
             <key-type>false</key-type>
         </field>
         <field>
             <name>RepatriationNo</name>
             <display-name>Repatriation No</display-name>
-            <display-order>33</display-order>
-            <max-length>10</max-length>
-            <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>MilitaryBranch</name>
-            <display-name>Military Branch</display-name>
-            <display-order>34</display-order>
-            <max-length>10</max-length>
-            <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>MilitaryRank</name>
-            <display-name>Military Rank</display-name>
-            <display-order>35</display-order>
-            <max-length>10</max-length>
-            <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>MilitaryStatus</name>
-            <display-name>Military Status</display-name>
-            <display-order>36</display-order>
+            <display-order>21</display-order>
             <max-length>10</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
@@ -342,7 +204,7 @@
         <field>
             <name>PensionNo</name>
             <display-name>Pension No</display-name>
-            <display-order>37</display-order>
+            <display-order>22</display-order>
             <max-length>8</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
@@ -351,7 +213,7 @@
         <field>
             <name>PensionExpDate</name>
             <display-name>Pension Exp Date</display-name>
-            <display-order>38</display-order>
+            <display-order>23</display-order>
             <max-length>8</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>date</value-type>
@@ -360,17 +222,8 @@
         <field>
             <name>LgaCode</name>
             <display-name>LGA Code</display-name>
-            <display-order>39</display-order>
+            <display-order>24</display-order>
             <max-length>30</max-length>
-            <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>ProvOfResidence</name>
-            <display-name>Province Of Residence</display-name>
-            <display-order>40</display-order>
-            <max-length>8</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
             <key-type>false</key-type>
@@ -466,27 +319,9 @@
             <key-type>false</key-type>
         </field>
         <field>
-            <name>PostalCodeExt</name>
-            <display-name>Postal Code Ext.</display-name>
-            <display-order>7</display-order>
-            <max-length>4</max-length>
-            <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
-            <name>County</name>
-            <display-name>County</display-name>
-            <display-order>8</display-order>
-            <max-length>20</max-length>
-            <gui-type>TextBox</gui-type>
-            <value-type>string</value-type>
-            <key-type>false</key-type>
-        </field>
-        <field>
             <name>CountryCode</name>
             <display-name>Country Code</display-name>
-            <display-order>9</display-order>
+            <display-order>7</display-order>
             <max-length>20</max-length>
             <gui-type>TextBox</gui-type>
             <value-type>string</value-type>
@@ -913,8 +748,8 @@
             <key-type>false</key-type>
         </field>
         <field>
-            <name>Cellphone</name>
-            <display-name>Cellphone</display-name>
+            <name>Mobilephone</name>
+            <display-name>Mobilephone</display-name>
             <display-order>11</display-order>
             <max-length>20</max-length>
             <gui-type>TextBox</gui-type>
@@ -1027,38 +862,539 @@
         <children>Comment</children>
         <children>AuxId</children>
     </relationships>
-    <impl-details>        <master-controller-jndi-name>ejb/AUSPatientMasterController</master-controller-jndi-name>        <validation-service-jndi-name>ejb/AUSPatientCodeLookup</validation-service-jndi-name>        <usercode-jndi-name>ejb/AUSPatientUserCodeLookup</usercode-jndi-name>        <reportgenerator-jndi-name>ejb/AUSPatientReportGenerator</reportgenerator-jndi-name>        <debug-flag>true</debug-flag>        <debug-dest>console</debug-dest>        <enable-security>false</enable-security>        <object-sensitive-plug-in-class></object-sensitive-plug-in-class>    </impl-details>    <gui-definition>        <page-definition>            <local-id></local-id>            <initial-screen-id>1</initial-screen-id>            <dashboard>                <root-object>AUSPatient</root-object>                <tab-name>Dashboard</tab-name>                <screen-id>8</screen-id>                <display-order>0</display-order>                <search-pages/>
+    <impl-details>
+        <master-controller-jndi-name>ejb/AUSPatientMasterController</master-controller-jndi-name>
+        <validation-service-jndi-name>ejb/AUSPatientCodeLookup</validation-service-jndi-name>
+        <usercode-jndi-name>ejb/AUSPatientUserCodeLookup</usercode-jndi-name>
+        <reportgenerator-jndi-name>ejb/AUSPatientReportGenerator</reportgenerator-jndi-name>
+        <debug-flag>true</debug-flag>
+        <debug-dest>console</debug-dest>
+        <enable-security>false</enable-security>
+        <object-sensitive-plug-in-class></object-sensitive-plug-in-class>
+    </impl-details>
+    <gui-definition>
+        <page-definition>
+            <local-id></local-id>
+            <initial-screen-id>1</initial-screen-id>
+            <dashboard>
+                <root-object>AUSPatient</root-object>
+                <tab-name>Dashboard</tab-name>
+                <screen-id>8</screen-id>
+                <display-order>0</display-order>
+                <search-pages/>
                 <search-result-pages/>
-                <subscreen-configurations>                    <subscreen>                        <enable>true</enable>                        <root-object>AUSPatient</root-object>                        <tab-name>Summary</tab-name>                        <screen-id>0</screen-id>                        <display-order>0</display-order>                        <search-pages/>
+                <subscreen-configurations>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>AUSPatient</root-object>
+                        <tab-name>Summary</tab-name>
+                        <screen-id>0</screen-id>
+                        <display-order>0</display-order>
+                        <search-pages/>
                         <search-result-pages/>
-                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>AUSPatient</root-object>                        <tab-name>Reports</tab-name>                        <screen-id>1</screen-id>                        <display-order>1</display-order>                        <search-pages/>
+                    </subscreen>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>AUSPatient</root-object>
+                        <tab-name>Reports</tab-name>
+                        <screen-id>1</screen-id>
+                        <display-order>1</display-order>
+                        <search-pages/>
                         <search-result-pages/>
-                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>AUSPatient</root-object>                        <tab-name>Compare EUIDs</tab-name>                        <screen-id>2</screen-id>                        <display-order>2</display-order>                        <search-pages/>
+                    </subscreen>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>AUSPatient</root-object>
+                        <tab-name>Compare EUIDs</tab-name>
+                        <screen-id>2</screen-id>
+                        <display-order>2</display-order>
+                        <search-pages/>
                         <search-result-pages/>
-                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>AUSPatient</root-object>                        <tab-name>Lookup EUID</tab-name>                        <screen-id>3</screen-id>                        <display-order>3</display-order>                        <search-pages/>
+                    </subscreen>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>AUSPatient</root-object>
+                        <tab-name>Lookup EUID</tab-name>
+                        <screen-id>3</screen-id>
+                        <display-order>3</display-order>
+                        <search-pages/>
                         <search-result-pages/>
-                    </subscreen>                </subscreen-configurations>            </dashboard>            <record-details>                <root-object>AUSPatient</root-object>                <tab-name>Record Details</tab-name>                <screen-id>1</screen-id>                <display-order>2</display-order>                <search-pages>                    <simple-search-page>                        <screen-title>AUSPatient Search</screen-title>                        <search-result-id>1</search-result-id>                        <search-screen-order>1</search-screen-order>                        <show-euid>false</show-euid>                        <show-lid>false</show-lid>                        <instruction></instruction>                        <field-group>                            <description>AUSPatient</description>                            <field-ref>AUSPatient.FirstName</field-ref>                            <field-ref>AUSPatient.LastName</field-ref>                            <field-ref>AUSPatient.TFN</field-ref>                        </field-group>                        <field-group>                            <description>Address</description>                            <field-ref>AUSPatient.Address.AddressLine1</field-ref>                            <field-ref>AUSPatient.Address.City</field-ref>                        </field-group>                        <field-group>                            <description>AuxId</description>                            <field-ref>AUSPatient.AuxId.Id</field-ref>                        </field-group>                        <field-group/>
-                        <search-option>                            <display-name>Phonetic Search</display-name>                            <query-builder>BLOCKER-SEARCH2</query-builder>                            <weighted>true</weighted>                            <parameter>                                <name>UseWildcard</name>                                <value>false</value>                            </parameter>                        </search-option>                    </simple-search-page>                    <simple-search-page>                        <screen-title>AUSPatient Lookup</screen-title>                        <search-result-id>1</search-result-id>                        <search-screen-order>2</search-screen-order>                        <show-euid>true</show-euid>                        <show-lid>true</show-lid>                        <instruction></instruction>                        <field-group/>
-                        <search-option>                            <display-name>Alpha Search</display-name>                            <query-builder>ALPHA-SEARCH</query-builder>                            <weighted>false</weighted>                            <parameter>                                <name>UseWildcard</name>                                <value>true</value>                            </parameter>                        </search-option>                    </simple-search-page>                </search-pages>                <search-result-pages>                    <search-result-list-page>                        <search-result-id>1</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                        <field-group>                            <description></description>                            <field-ref>AUSPatient.FirstName</field-ref>                            <field-ref>AUSPatient.MiddleName</field-ref>                            <field-ref>AUSPatient.LastName</field-ref>                            <field-ref>AUSPatient.TFN</field-ref>                            <field-ref>AUSPatient.DOB</field-ref>                            <field-ref>AUSPatient.Gender</field-ref>                            <field-ref>AUSPatient.Address.AddressLine1</field-ref>                            <field-ref>AUSPatient.Address.AddressLine2</field-ref>                            <field-ref>AUSPatient.Address.City</field-ref>                            <field-ref>AUSPatient.AuxId.Id</field-ref>                        </field-group>                    </search-result-list-page>                </search-result-pages>            </record-details>            <transactions>                <root-object>AUSPatient</root-object>                <tab-name>Transactions</tab-name>                <screen-id>2</screen-id>                <display-order>4</display-order>                <search-pages>                    <simple-search-page>                        <show-euid>true</show-euid>                        <show-lid>true</show-lid>                    </simple-search-page>                </search-pages>                <search-result-pages>                    <search-result-list-page>                        <search-result-id>0</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                        <field-group/>
-                    </search-result-list-page>                </search-result-pages>            </transactions>            <duplicate-records>                <root-object>AUSPatient</root-object>                <tab-name>Duplicate Records</tab-name>                <screen-id>3</screen-id>                <display-order>1</display-order>                <search-pages>                    <simple-search-page>                        <screen-title>Basic Search</screen-title>                        <search-result-id>0</search-result-id>                        <search-screen-order>0</search-screen-order>                        <show-euid>false</show-euid>                        <show-lid>false</show-lid>                        <show-status>false</show-status>                        <show-create-date>true</show-create-date>                        <show-create-time>false</show-create-time>                        <instruction></instruction>                        <field-group/>
-                    </simple-search-page>                    <simple-search-page>                        <screen-title>Advanced Search</screen-title>                        <search-result-id>0</search-result-id>                        <search-screen-order>1</search-screen-order>                        <show-euid>true</show-euid>                        <show-lid>true</show-lid>                        <show-status>true</show-status>                        <show-create-date>true</show-create-date>                        <show-create-time>true</show-create-time>                        <instruction></instruction>                        <field-group/>
-                    </simple-search-page>                </search-pages>                <search-result-pages>                    <search-result-list-page>                        <search-result-id>0</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                        <field-group>                            <description></description>                            <field-ref>AUSPatient.FirstName</field-ref>                            <field-ref>AUSPatient.LastName</field-ref>                            <field-ref>AUSPatient.TFN</field-ref>                            <field-ref>AUSPatient.DOB</field-ref>                            <field-ref>AUSPatient.Address.AddressLine1</field-ref>                            <field-ref>AUSPatient.Address.AddressLine2</field-ref>                            <field-ref>AUSPatient.Phone.Phone</field-ref>                        </field-group>                    </search-result-list-page>                </search-result-pages>            </duplicate-records>            <assumed-matches>                <root-object>AUSPatient</root-object>                <tab-name>Assumed Matches</tab-name>                <screen-id>4</screen-id>                <display-order>3</display-order>                <search-pages>                    <simple-search-page>                    </simple-search-page>                </search-pages>                <search-result-pages>                    <search-result-list-page>                        <search-result-id>0</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                        <field-group>                            <description></description>                            <field-ref>AUSPatient.FirstName</field-ref>                            <field-ref>AUSPatient.LastName</field-ref>                            <field-ref>AUSPatient.TFN</field-ref>                            <field-ref>AUSPatient.DOB</field-ref>                            <field-ref>AUSPatient.Address.AddressLine1</field-ref>                            <field-ref>AUSPatient.Address.AddressLine2</field-ref>                            <field-ref>AUSPatient.Phone.Phone</field-ref>                        </field-group>                    </search-result-list-page>                </search-result-pages>            </assumed-matches>            <source-record>                <root-object>AUSPatient</root-object>                <tab-name>Source Record</tab-name>                <screen-id>5</screen-id>                <display-order>6</display-order>                <search-pages/>
+                    </subscreen>
+                </subscreen-configurations>
+            </dashboard>
+            <record-details>
+                <root-object>AUSPatient</root-object>
+                <tab-name>Record Details</tab-name>
+                <screen-id>1</screen-id>
+                <display-order>2</display-order>
+                <search-pages>
+                    <simple-search-page>
+                        <screen-title>AUSPatient Search</screen-title>
+                        <search-result-id>1</search-result-id>
+                        <search-screen-order>1</search-screen-order>
+                        <show-euid>false</show-euid>
+                        <show-lid>false</show-lid>
+                        <instruction></instruction>
+                        <field-group>
+                            <description>AUSPatient</description>
+                            <field-ref>AUSPatient.FirstName</field-ref>
+                            <field-ref>AUSPatient.MiddleName</field-ref>
+                            <field-ref>AUSPatient.LastName</field-ref>
+                            <field-ref>AUSPatient.MedicareNo</field-ref>
+                        
+                        </field-group>
+                        <field-group>
+                            <description>Address</description>
+                            <field-ref>AUSPatient.Address.AddressLine1</field-ref>
+                            <field-ref>AUSPatient.Address.City</field-ref>
+                        </field-group>
+                        <field-group>
+                            <description>AuxId</description>
+                            <field-ref>AUSPatient.AuxId.Id</field-ref>
+                        </field-group>
+                        <field-group/>
+                        <search-option>
+                            <display-name>Phonetic Search</display-name>
+                            <query-builder>BLOCKER-SEARCH2</query-builder>
+                            <weighted>true</weighted>
+                            <parameter>
+                                <name>UseWildcard</name>
+                                <value>false</value>
+                            </parameter>
+                        </search-option>
+                    </simple-search-page>
+                    <simple-search-page>
+                        <screen-title>AUSPatient Lookup</screen-title>
+                        <search-result-id>1</search-result-id>
+                        <search-screen-order>2</search-screen-order>
+                        <show-euid>true</show-euid>
+                        <show-lid>true</show-lid>
+                        <instruction></instruction>
+                        <field-group/>
+                        <search-option>
+                            <display-name>Alpha Search</display-name>
+                            <query-builder>ALPHA-SEARCH</query-builder>
+                            <weighted>false</weighted>
+                            <parameter>
+                                <name>UseWildcard</name>
+                                <value>true</value>
+                            </parameter>
+                        </search-option>
+                    </simple-search-page>
+                </search-pages>
+                <search-result-pages>
+                    <search-result-list-page>
+                        <search-result-id>1</search-result-id>
+                        <item-per-page>10</item-per-page>
+                        <max-result-size>100</max-result-size>
+                        <field-group>
+                            <description></description>
+                            <field-ref>AUSPatient.FirstName</field-ref>
+                            <field-ref>AUSPatient.MiddleName</field-ref>
+                            <field-ref>AUSPatient.LastName</field-ref>
+                            <field-ref>AUSPatient.MedicareNo</field-ref>
+                            <field-ref>AUSPatient.DOB</field-ref>
+                            <field-ref>AUSPatient.Gender</field-ref>
+                            <field-ref>AUSPatient.Address.AddressLine1</field-ref>
+                            <field-ref>AUSPatient.Address.AddressLine2</field-ref>
+                            <field-ref>AUSPatient.Address.City</field-ref>
+                            <field-ref>AUSPatient.AuxId.Id</field-ref>
+                        </field-group>
+                    </search-result-list-page>
+                </search-result-pages>
+            </record-details>
+            <transactions>
+                <root-object>AUSPatient</root-object>
+                <tab-name>Transactions</tab-name>
+                <screen-id>2</screen-id>
+                <display-order>4</display-order>
+                <search-pages>
+                    <simple-search-page>
+                        <show-euid>true</show-euid>
+                        <show-lid>true</show-lid>
+                    </simple-search-page>
+                </search-pages>
+                <search-result-pages>
+                    <search-result-list-page>
+                        <search-result-id>0</search-result-id>
+                        <item-per-page>10</item-per-page>
+                        <max-result-size>100</max-result-size>
+                        <field-group/>
+                    </search-result-list-page>
+                </search-result-pages>
+            </transactions>
+            <duplicate-records>
+                <root-object>AUSPatient</root-object>
+                <tab-name>Duplicate Records</tab-name>
+                <screen-id>3</screen-id>
+                <display-order>1</display-order>
+                <search-pages>
+                    <simple-search-page>
+                        <screen-title>Basic Search</screen-title>
+                        <search-result-id>0</search-result-id>
+                        <search-screen-order>0</search-screen-order>
+                        <show-euid>false</show-euid>
+                        <show-lid>false</show-lid>
+                        <show-status>false</show-status>
+                        <show-create-date>true</show-create-date>
+                        <show-create-time>false</show-create-time>
+                        <instruction></instruction>
+                        <field-group/>
+                    </simple-search-page>
+                    <simple-search-page>
+                        <screen-title>Advanced Search</screen-title>
+                        <search-result-id>0</search-result-id>
+                        <search-screen-order>1</search-screen-order>
+                        <show-euid>true</show-euid>
+                        <show-lid>true</show-lid>
+                        <show-status>true</show-status>
+                        <show-create-date>true</show-create-date>
+                        <show-create-time>true</show-create-time>
+                        <instruction></instruction>
+                        <field-group/>
+                    </simple-search-page>
+                </search-pages>
+                <search-result-pages>
+                    <search-result-list-page>
+                        <search-result-id>0</search-result-id>
+                        <item-per-page>10</item-per-page>
+                        <max-result-size>100</max-result-size>
+                        <field-group>
+                            <description></description>
+                            <field-ref>AUSPatient.FirstName</field-ref>
+                            <field-ref>AUSPatient.MiddleName</field-ref>
+                            <field-ref>AUSPatient.LastName</field-ref>
+                            <field-ref>AUSPatient.MedicareNo</field-ref>
+                            <field-ref>AUSPatient.DOB</field-ref>
+                            <field-ref>AUSPatient.Address.AddressLine1</field-ref>
+                            <field-ref>AUSPatient.Address.AddressLine2</field-ref>
+                            <field-ref>AUSPatient.Phone.Phone</field-ref>
+                        </field-group>
+                    </search-result-list-page>
+                </search-result-pages>
+            </duplicate-records>
+            <assumed-matches>
+                <root-object>AUSPatient</root-object>
+                <tab-name>Assumed Matches</tab-name>
+                <screen-id>4</screen-id>
+                <display-order>3</display-order>
+                <search-pages>
+                    <simple-search-page>
+                    </simple-search-page>
+                </search-pages>
+                <search-result-pages>
+                    <search-result-list-page>
+                        <search-result-id>0</search-result-id>
+                        <item-per-page>10</item-per-page>
+                        <max-result-size>100</max-result-size>
+                        <field-group>
+                            <description></description>
+                            <field-ref>AUSPatient.FirstName</field-ref>
+                            <field-ref>AUSPatient.MiddleName</field-ref>
+                            <field-ref>AUSPatient.LastName</field-ref>
+                            <field-ref>AUSPatient.MedicareNo</field-ref>
+                            <field-ref>AUSPatient.DOB</field-ref>
+                            <field-ref>AUSPatient.Address.AddressLine1</field-ref>
+                            <field-ref>AUSPatient.Address.AddressLine2</field-ref>
+                            <field-ref>AUSPatient.Phone.Phone</field-ref>
+                        </field-group>
+                    </search-result-list-page>
+                </search-result-pages>
+            </assumed-matches>
+            <source-record>
+                <root-object>AUSPatient</root-object>
+                <tab-name>Source Record</tab-name>
+                <screen-id>5</screen-id>
+                <display-order>6</display-order>
+                <search-pages/>
                 <search-result-pages/>
-                <subscreen-configurations>                    <subscreen>                        <enable>true</enable>                        <root-object>AUSPatient</root-object>                        <tab-name>View/Edit</tab-name>                        <report-name>null</report-name>                        <screen-id>0</screen-id>                        <display-order>0</display-order>                        <search-pages>                            <simple-search-page>                                <screen-title>Basic Search</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>0</search-screen-order>                                <show-euid>false</show-euid>                                <show-lid>true</show-lid>                                <instruction></instruction>                                <field-group/>
-                            </simple-search-page>                            <simple-search-page>                                <screen-title>Advanced Search</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>0</search-screen-order>                                <show-euid>true</show-euid>                                <show-lid>false</show-lid>                                <instruction>Enter search criteria</instruction>                                <field-group>                                    <description></description>                                </field-group>                            </simple-search-page>                        </search-pages>                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <field-group>                                    <description></description>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>AUSPatient</root-object>                        <tab-name>Add</tab-name>                        <report-name>null</report-name>                        <screen-id>1</screen-id>                        <display-order>1</display-order>                        <search-pages>                            <simple-search-page>                                <screen-title>Basic Search</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>0</search-screen-order>                                <show-euid>false</show-euid>                                <show-lid>true</show-lid>                                <instruction></instruction>                                <field-group/>
-                            </simple-search-page>                        </search-pages>                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <field-group/>
-                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>AUSPatient</root-object>                        <tab-name>Merge</tab-name>                        <report-name>null</report-name>                        <screen-id>2</screen-id>                        <display-order>2</display-order>                        <search-pages>                            <simple-search-page>                                <screen-title>LID Search</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>0</search-screen-order>                                <show-euid>false</show-euid>                                <show-lid>true</show-lid>                                <instruction></instruction>                                <field-group/>
-                            </simple-search-page>                        </search-pages>                        <search-result-pages/>
-                    </subscreen>                </subscreen-configurations>            </source-record>            <reports>                <root-object>AUSPatient</root-object>                <tab-name>Reports</tab-name>                <screen-id>6</screen-id>                <display-order>5</display-order>                <search-pages/>
+                <subscreen-configurations>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>AUSPatient</root-object>
+                        <tab-name>View/Edit</tab-name>
+                        <report-name>null</report-name>
+                        <screen-id>0</screen-id>
+                        <display-order>0</display-order>
+                        <search-pages>
+                            <simple-search-page>
+                                <screen-title>Basic Search</screen-title>
+                                <search-result-id>0</search-result-id>
+                                <search-screen-order>0</search-screen-order>
+                                <show-euid>false</show-euid>
+                                <show-lid>true</show-lid>
+                                <instruction></instruction>
+                                <field-group/>
+                            </simple-search-page>
+                            <simple-search-page>
+                                <screen-title>Advanced Search</screen-title>
+                                <search-result-id>0</search-result-id>
+                                <search-screen-order>0</search-screen-order>
+                                <show-euid>true</show-euid>
+                                <show-lid>false</show-lid>
+                                <instruction>Enter search criteria</instruction>
+                                <field-group>
+                                    <description></description>
+                                </field-group>
+                            </simple-search-page>
+                        </search-pages>
+                        <search-result-pages>
+                            <search-result-list-page>
+                                <search-result-id>0</search-result-id>
+                                <item-per-page>10</item-per-page>
+                                <max-result-size>100</max-result-size>
+                                <field-group>
+                                    <description></description>
+                                </field-group>
+                            </search-result-list-page>
+                        </search-result-pages>
+                    </subscreen>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>AUSPatient</root-object>
+                        <tab-name>Add</tab-name>
+                        <report-name>null</report-name>
+                        <screen-id>1</screen-id>
+                        <display-order>1</display-order>
+                        <search-pages>
+                            <simple-search-page>
+                                <screen-title>Basic Search</screen-title>
+                                <search-result-id>0</search-result-id>
+                                <search-screen-order>0</search-screen-order>
+                                <show-euid>false</show-euid>
+                                <show-lid>true</show-lid>
+                                <instruction></instruction>
+                                <field-group/>
+                            </simple-search-page>
+                        </search-pages>
+                        <search-result-pages>
+                            <search-result-list-page>
+                                <search-result-id>0</search-result-id>
+                                <item-per-page>10</item-per-page>
+                                <max-result-size>100</max-result-size>
+                                <field-group/>
+                            </search-result-list-page>
+                        </search-result-pages>
+                    </subscreen>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>AUSPatient</root-object>
+                        <tab-name>Merge</tab-name>
+                        <report-name>null</report-name>
+                        <screen-id>2</screen-id>
+                        <display-order>2</display-order>
+                        <search-pages>
+                            <simple-search-page>
+                                <screen-title>LID Search</screen-title>
+                                <search-result-id>0</search-result-id>
+                                <search-screen-order>0</search-screen-order>
+                                <show-euid>false</show-euid>
+                                <show-lid>true</show-lid>
+                                <instruction></instruction>
+                                <field-group/>
+                            </simple-search-page>
+                        </search-pages>
+                        <search-result-pages/>
+                    </subscreen>
+                </subscreen-configurations>
+            </source-record>
+            <reports>
+                <root-object>AUSPatient</root-object>
+                <tab-name>Reports</tab-name>
+                <screen-id>6</screen-id>
+                <display-order>5</display-order>
+                <search-pages/>
                 <search-result-pages/>
-                <subscreen-configurations>                    <subscreen>                        <enable>true</enable>                        <root-object>AUSPatient</root-object>                        <tab-name>Potential Duplicate Report</tab-name>                        <report-name>Potential Duplicate</report-name>                        <screen-id>0</screen-id>                        <display-order>5</display-order>                        <search-pages/>
-                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>2000</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>AUSPatient.FirstName</field-ref>                                    <field-ref>AUSPatient.LastName</field-ref>                                    <field-ref>AUSPatient.TFN</field-ref>                                    <field-ref>AUSPatient.DOB</field-ref>                                    <field-ref>AUSPatient.Address.AddressLine1</field-ref>                                    <field-ref>AUSPatient.Address.AddressLine2</field-ref>                                    <field-ref>AUSPatient.Phone.Phone</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>AUSPatient</root-object>                        <tab-name>Deactivated Record Report</tab-name>                        <report-name>Deactivated</report-name>                        <screen-id>1</screen-id>                        <display-order>1</display-order>                        <search-pages/>
-                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>2000</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>AUSPatient.FirstName</field-ref>                                    <field-ref>AUSPatient.LastName</field-ref>                                    <field-ref>AUSPatient.TFN</field-ref>                                    <field-ref>AUSPatient.DOB</field-ref>                                    <field-ref>AUSPatient.Address.AddressLine1</field-ref>                                    <field-ref>AUSPatient.Address.AddressLine2</field-ref>                                    <field-ref>AUSPatient.Phone.Phone</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>AUSPatient</root-object>                        <tab-name>Merged Transaction Report</tab-name>                        <report-name>Merged</report-name>                        <screen-id>2</screen-id>                        <display-order>0</display-order>                        <search-pages/>
-                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>2000</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>AUSPatient.FirstName</field-ref>                                    <field-ref>AUSPatient.LastName</field-ref>                                    <field-ref>AUSPatient.TFN</field-ref>                                    <field-ref>AUSPatient.DOB</field-ref>                                    <field-ref>AUSPatient.Address.AddressLine1</field-ref>                                    <field-ref>AUSPatient.Address.AddressLine2</field-ref>                                    <field-ref>AUSPatient.Phone.Phone</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>AUSPatient</root-object>                        <tab-name>Unmerged Transaction Report</tab-name>                        <report-name>Unmerged</report-name>                        <screen-id>3</screen-id>                        <display-order>2</display-order>                        <search-pages/>
-                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>2000</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>AUSPatient.FirstName</field-ref>                                    <field-ref>AUSPatient.LastName</field-ref>                                    <field-ref>AUSPatient.TFN</field-ref>                                    <field-ref>AUSPatient.DOB</field-ref>                                    <field-ref>AUSPatient.Address.AddressLine1</field-ref>                                    <field-ref>AUSPatient.Address.AddressLine2</field-ref>                                    <field-ref>AUSPatient.Phone.Phone</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>AUSPatient</root-object>                        <tab-name>Updated Record Report</tab-name>                        <report-name>Update</report-name>                        <screen-id>4</screen-id>                        <display-order>3</display-order>                        <search-pages/>
-                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>2000</max-result-size>                                <field-group>                                    <description></description>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>AUSPatient</root-object>                        <tab-name>Activity Report</tab-name>                        <report-name>Transaction Summary</report-name>                        <screen-id>5</screen-id>                        <display-order>4</display-order>                        <search-pages>                            <simple-search-page>                                <screen-title>Weekly Activity</screen-title>                                <report-name>Weekly Transaction Summary Report</report-name>                                <search-result-id>0</search-result-id>                                <search-screen-order>1</search-screen-order>                                <field-group/>
-                            </simple-search-page>                            <simple-search-page>                                <screen-title>Monthly Activity</screen-title>                                <report-name>Monthly Transaction Summary Report</report-name>                                <search-result-id>0</search-result-id>                                <search-screen-order>2</search-screen-order>                                <field-group/>
-                            </simple-search-page>                            <simple-search-page>                                <screen-title>Yearly Activity</screen-title>                                <report-name>Yearly Transaction Summary Report</report-name>                                <search-result-id>0</search-result-id>                                <search-screen-order>3</search-screen-order>                                <field-group/>
-                            </simple-search-page>                        </search-pages>                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>2000</max-result-size>                                <field-group/>
-                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                </subscreen-configurations>            </reports>            <audit-log>                <allow-insert>false</allow-insert>                <root-object>AUSPatient</root-object>                <tab-name>Audit Log</tab-name>                <screen-id>7</screen-id>                <display-order>7</display-order>                <search-pages>                    <simple-search-page>                        <show-euid>true</show-euid>                        <show-lid>true</show-lid>                    </simple-search-page>                </search-pages>                <search-result-pages>                    <search-result-list-page>                        <search-result-id>0</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                        <field-group/>
-                    </search-result-list-page>                </search-result-pages>            </audit-log>        </page-definition>    </gui-definition></midm>
+                <subscreen-configurations>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>AUSPatient</root-object>
+                        <tab-name>Potential Duplicate Report</tab-name>
+                        <report-name>Potential Duplicate</report-name>
+                        <screen-id>0</screen-id>
+                        <display-order>5</display-order>
+                        <search-pages/>
+                        <search-result-pages>
+                            <search-result-list-page>
+                                <search-result-id>0</search-result-id>
+                                <item-per-page>10</item-per-page>
+                                <max-result-size>2000</max-result-size>
+                                <field-group>
+                                    <description></description>
+                                    <field-ref>AUSPatient.FirstName</field-ref>
+                                    <field-ref>AUSPatient.MiddleName</field-ref>
+                                    <field-ref>AUSPatient.LastName</field-ref>
+                                    <field-ref>AUSPatient.MedicareNo</field-ref>
+                                    <field-ref>AUSPatient.DOB</field-ref>
+                                    <field-ref>AUSPatient.Address.AddressLine1</field-ref>
+                                    <field-ref>AUSPatient.Address.AddressLine2</field-ref>
+                                    <field-ref>AUSPatient.Phone.Phone</field-ref>
+                                </field-group>
+                            </search-result-list-page>
+                        </search-result-pages>
+                    </subscreen>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>AUSPatient</root-object>
+                        <tab-name>Deactivated Record Report</tab-name>
+                        <report-name>Deactivated</report-name>
+                        <screen-id>1</screen-id>
+                        <display-order>1</display-order>
+                        <search-pages/>
+                        <search-result-pages>
+                            <search-result-list-page>
+                                <search-result-id>0</search-result-id>
+                                <item-per-page>10</item-per-page>
+                                <max-result-size>2000</max-result-size>
+                                <field-group>
+                                    <description></description>
+                                    <field-ref>AUSPatient.FirstName</field-ref>
+                                    <field-ref>AUSPatient.MiddleName</field-ref>
+                                    <field-ref>AUSPatient.LastName</field-ref>
+                                    <field-ref>AUSPatient.MedicareNo</field-ref>
+                                    <field-ref>AUSPatient.DOB</field-ref>
+                                    <field-ref>AUSPatient.Address.AddressLine1</field-ref>
+                                    <field-ref>AUSPatient.Address.AddressLine2</field-ref>
+                                    <field-ref>AUSPatient.Phone.Phone</field-ref>
+                                </field-group>
+                            </search-result-list-page>
+                        </search-result-pages>
+                    </subscreen>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>AUSPatient</root-object>
+                        <tab-name>Merged Transaction Report</tab-name>
+                        <report-name>Merged</report-name>
+                        <screen-id>2</screen-id>
+                        <display-order>0</display-order>
+                        <search-pages/>
+                        <search-result-pages>
+                            <search-result-list-page>
+                                <search-result-id>0</search-result-id>
+                                <item-per-page>10</item-per-page>
+                                <max-result-size>2000</max-result-size>
+                                <field-group>
+                                    <description></description>
+                                    <field-ref>AUSPatient.FirstName</field-ref>
+                                    <field-ref>AUSPatient.MiddleName</field-ref>
+                                    <field-ref>AUSPatient.LastName</field-ref>
+                                    <field-ref>AUSPatient.MedicareNo</field-ref>
+                                    <field-ref>AUSPatient.DOB</field-ref>
+                                    <field-ref>AUSPatient.Address.AddressLine1</field-ref>
+                                    <field-ref>AUSPatient.Address.AddressLine2</field-ref>
+                                    <field-ref>AUSPatient.Phone.Phone</field-ref>
+                                </field-group>
+                            </search-result-list-page>
+                        </search-result-pages>
+                    </subscreen>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>AUSPatient</root-object>
+                        <tab-name>Unmerged Transaction Report</tab-name>
+                        <report-name>Unmerged</report-name>
+                        <screen-id>3</screen-id>
+                        <display-order>2</display-order>
+                        <search-pages/>
+                        <search-result-pages>
+                            <search-result-list-page>
+                                <search-result-id>0</search-result-id>
+                                <item-per-page>10</item-per-page>
+                                <max-result-size>2000</max-result-size>
+                                <field-group>
+                                    <description></description>
+                                    <field-ref>AUSPatient.FirstName</field-ref>
+                                    <field-ref>AUSPatient.MiddleName</field-ref>
+                                    <field-ref>AUSPatient.LastName</field-ref>
+                                    <field-ref>AUSPatient.MedicareNo</field-ref>
+                                    <field-ref>AUSPatient.DOB</field-ref>
+                                    <field-ref>AUSPatient.Address.AddressLine1</field-ref>
+                                    <field-ref>AUSPatient.Address.AddressLine2</field-ref>
+                                    <field-ref>AUSPatient.Phone.Phone</field-ref>
+                                </field-group>
+                            </search-result-list-page>
+                        </search-result-pages>
+                    </subscreen>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>AUSPatient</root-object>
+                        <tab-name>Updated Record Report</tab-name>
+                        <report-name>Update</report-name>
+                        <screen-id>4</screen-id>
+                        <display-order>3</display-order>
+                        <search-pages/>
+                        <search-result-pages>
+                            <search-result-list-page>
+                                <search-result-id>0</search-result-id>
+                                <item-per-page>10</item-per-page>
+                                <max-result-size>2000</max-result-size>
+                                <field-group>
+                                    <description></description>
+                                </field-group>
+                            </search-result-list-page>
+                        </search-result-pages>
+                    </subscreen>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>AUSPatient</root-object>
+                        <tab-name>Activity Report</tab-name>
+                        <report-name>Transaction Summary</report-name>
+                        <screen-id>5</screen-id>
+                        <display-order>4</display-order>
+                        <search-pages>
+                            <simple-search-page>
+                                <screen-title>Weekly Activity</screen-title>
+                                <report-name>Weekly Transaction Summary Report</report-name>
+                                <search-result-id>0</search-result-id>
+                                <search-screen-order>1</search-screen-order>
+                                <field-group/>
+                            </simple-search-page>
+                            <simple-search-page>
+                                <screen-title>Monthly Activity</screen-title>
+                                <report-name>Monthly Transaction Summary Report</report-name>
+                                <search-result-id>0</search-result-id>
+                                <search-screen-order>2</search-screen-order>
+                                <field-group/>
+                            </simple-search-page>
+                            <simple-search-page>
+                                <screen-title>Yearly Activity</screen-title>
+                                <report-name>Yearly Transaction Summary Report</report-name>
+                                <search-result-id>0</search-result-id>
+                                <search-screen-order>3</search-screen-order>
+                                <field-group/>
+                            </simple-search-page>
+                        </search-pages>
+                        <search-result-pages>
+                            <search-result-list-page>
+                                <search-result-id>0</search-result-id>
+                                <item-per-page>10</item-per-page>
+                                <max-result-size>2000</max-result-size>
+                                <field-group/>
+                            </search-result-list-page>
+                        </search-result-pages>
+                    </subscreen>
+                </subscreen-configurations>
+            </reports>
+            <audit-log>
+                <allow-insert>false</allow-insert>
+                <root-object>AUSPatient</root-object>
+                <tab-name>Audit Log</tab-name>
+                <screen-id>7</screen-id>
+                <display-order>7</display-order>
+                <search-pages>
+                    <simple-search-page>
+                        <show-euid>true</show-euid>
+                        <show-lid>true</show-lid>
+                    </simple-search-page>
+                </search-pages>
+                <search-result-pages>
+                    <search-result-list-page>
+                        <search-result-id>0</search-result-id>
+                        <item-per-page>10</item-per-page>
+                        <max-result-size>100</max-result-size>
+                        <field-group/>
+                    </search-result-list-page>
+                </search-result-pages>
+            </audit-log>
+        </page-definition>
+    </gui-definition>
+</midm>

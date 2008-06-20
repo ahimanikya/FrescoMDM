@@ -56,6 +56,26 @@
             <key-type>false</key-type>
         </fields>
         <fields>
+            <field-name>MiddleName_Std</field-name>
+            <field-type>string</field-type>
+            <size>40</size>
+            <updateable>true</updateable>
+            <required>false</required>
+            <code-module></code-module>
+            <pattern></pattern>
+            <key-type>false</key-type>
+        </fields>
+        <fields>
+            <field-name>MiddleName_Phon</field-name>
+            <field-type>string</field-type>
+            <size>8</size>
+            <updateable>true</updateable>
+            <required>false</required>
+            <code-module></code-module>
+            <pattern></pattern>
+            <key-type>false</key-type>
+        </fields>
+        <fields>
             <field-name>LastName</field-name>
             <field-type>string</field-type>
             <size>40</size>
@@ -106,13 +126,13 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>TFN</field-name>
+            <field-name>MedicareNo</field-name>
             <field-type>string</field-type>
-            <size>16</size>
+            <size>30</size>
             <updateable>true</updateable>
             <required>true</required>
             <code-module></code-module>
-            <pattern>[0-9]{9}</pattern>
+            <pattern></pattern>
             <key-type>false</key-type>
         </fields>
         <fields>
@@ -156,22 +176,12 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>Race</field-name>
+            <field-name>IndigStatus</field-name>
             <field-type>string</field-type>
-            <size>8</size>
+            <size>50</size>
             <updateable>true</updateable>
             <required>false</required>
-            <code-module>RACE</code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>Ethnic</field-name>
-            <field-type>string</field-type>
-            <size>8</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module>ETHNIC</code-module>
+            <code-module>INDIGST</code-module>
             <pattern></pattern>
             <key-type>false</key-type>
         </fields>
@@ -196,72 +206,12 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>SpouseName</field-name>
-            <field-type>string</field-type>
-            <size>100</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>MotherName</field-name>
-            <field-type>string</field-type>
-            <size>100</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>MotherMN</field-name>
-            <field-type>string</field-type>
-            <size>40</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>FatherName</field-name>
-            <field-type>string</field-type>
-            <size>100</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
             <field-name>Maiden</field-name>
             <field-type>string</field-type>
             <size>40</size>
             <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>PobCity</field-name>
-            <field-type>string</field-type>
-            <size>30</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>PobState</field-name>
-            <field-type>string</field-type>
-            <size>30</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module>STATE</code-module>
             <pattern></pattern>
             <key-type>false</key-type>
         </fields>
@@ -276,22 +226,12 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>VIPFlag</field-name>
+            <field-name>DVAColour</field-name>
             <field-type>string</field-type>
             <size>8</size>
             <updateable>true</updateable>
             <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>VetStatus</field-name>
-            <field-type>string</field-type>
-            <size>8</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
+            <code-module>DVACOLOR</code-module>
             <pattern></pattern>
             <key-type>false</key-type>
         </fields>
@@ -299,26 +239,6 @@
             <field-name>Status</field-name>
             <field-type>string</field-type>
             <size>8</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>DriverLicense</field-name>
-            <field-type>string</field-type>
-            <size>20</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>DriverLicenseSt</field-name>
-            <field-type>string</field-type>
-            <size>10</size>
             <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
@@ -346,57 +266,7 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>Nationality</field-name>
-            <field-type>string</field-type>
-            <size>8</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module>NATIONAL</code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>Citizenship</field-name>
-            <field-type>string</field-type>
-            <size>8</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module>CITIZEN</code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
             <field-name>RepatriationNo</field-name>
-            <field-type>string</field-type>
-            <size>10</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>MilitaryBranch</field-name>
-            <field-type>string</field-type>
-            <size>10</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>MilitaryRank</field-name>
-            <field-type>string</field-type>
-            <size>10</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>MilitaryStatus</field-name>
             <field-type>string</field-type>
             <size>10</size>
             <updateable>true</updateable>
@@ -429,16 +299,6 @@
             <field-name>LgaCode</field-name>
             <field-type>string</field-type>
             <size>30</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>ProvOfResidence</field-name>
-            <field-type>string</field-type>
-            <size>8</size>
             <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
@@ -585,26 +445,6 @@
             <field-name>PostalCode</field-name>
             <field-type>string</field-type>
             <size>8</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>PostalCodeExt</field-name>
-            <field-type>string</field-type>
-            <size>4</size>
-            <updateable>true</updateable>
-            <required>false</required>
-            <code-module></code-module>
-            <pattern></pattern>
-            <key-type>false</key-type>
-        </fields>
-        <fields>
-            <field-name>County</field-name>
-            <field-type>string</field-type>
-            <size>20</size>
             <updateable>true</updateable>
             <required>false</required>
             <code-module></code-module>
@@ -1081,7 +921,7 @@
             <key-type>false</key-type>
         </fields>
         <fields>
-            <field-name>Cellphone</field-name>
+            <field-name>Mobilephone</field-name>
             <field-type>string</field-type>
             <size>20</size>
             <updateable>true</updateable>

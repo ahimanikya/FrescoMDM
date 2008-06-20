@@ -9,7 +9,7 @@ demonstrates the capabilities of the Master Index portion of the suite.
 
 
 This solution uses a patient definition geared towards Australia.  Since this is an
-Australian Patient, fields such as the Tax File Number (TFN) are used for both block-search
+Australian Patient, fields such as the Medicare Number (MedicareNum) are used for both block-search
 definitions and matches.
 
 Loading and examining the various files provided with this solution will give a good
@@ -25,9 +25,6 @@ o https://open-dm-mi.dev.java.net/docs/solutions/aus-patient.html
 o MDM-Solutions-AUSPatient.zip
   - The Netbeans Master Index project
 
-
- 
-
 How to use the solution.
 -----------------------
 	1. Unzip  MDM-Solutions-AUSPatient.zip.
@@ -39,7 +36,6 @@ How to use the solution.
 		AUSPatient
 		AUSPatient-ejb
 		AUSPatient-war
-           
 
         3. Create the database.
 	 	The example creates a user called 'aus'. To create a different user,
@@ -125,9 +121,11 @@ How to use the solution.
 
 Examples of what you might try
 ------------------------------
-   o Add the same person but give them different dates of birth.
+   o Add the same person but give them different dates of birth. Be sure to select "MYSQL" as the System for the
+     second record.
    o Add different people.
-   o Add the same person but give them a different TFN.
+   o Add the same person but give them a different Medicare Numbers. Be sure to select "MYSQL" as the System for the
+     second record. Additionally the Medicare number should differ in the first 8 digits.
    o Check for duplicates.
    o Look at the various tabs and try different queries or actions once you have some 
      duplicates.		

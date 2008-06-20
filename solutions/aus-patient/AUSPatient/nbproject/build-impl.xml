@@ -140,6 +140,9 @@ is divided into following sections:
             <fileset dir="${module.install.dir}/ext/mdm/loader">
                 <include name="*.jar"/>
             </fileset>
+            <fileset dir="${module.install.dir}/ext/mdm/bulkloader">
+                <include name="*.jar"/>
+            </fileset>
         </copy>
         <copy todir="loader-generated/loader">
             <fileset dir="${module.install.dir}/ext/mdm/bulkloader"/>

@@ -45,6 +45,9 @@ declare
         tCode('V', 'CNA', 'CERTIFIED NURSES AID'),
         tCode('V', 'LVN', 'LICENSED VOCATIONAL NURSE'),
         tCode('V', 'REV', 'REVERAND'),
+        tCode('V', 'MR', 'MR'),
+        tCode('V', 'MRS', 'MRS'),
+        tCode('V', 'MISS', 'MISS'),
 
         -- ****     GENDER   ****
         tCode('L', 'GENDER', 'Gender'),
@@ -52,7 +55,6 @@ declare
         tCode('V', 'F', 'FEMALE'),
         tCode('V', 'O', 'OTHER'),
         tCode('V', 'U', 'UNKNOWN'),
-
 
         -- ****     MSTATUS   ****
         tCode('L', 'MSTATUS', 'Marital Status'),
@@ -64,66 +66,13 @@ declare
         tCode('V', 'U', 'UNKNOWN'),
         tCode('V', 'W', 'WIDOWED'),
 
-        -- ****     RACE   ****
-        tCode('L', 'RACE', 'Race'),
-        tCode('V', 'I', 'AMERICAN INDIAN'),
-        tCode('V', 'A', 'ASIAN'),
-        tCode('V', 'B', 'BLACK'),
-        tCode('V', 'H', 'HISPANIC'),
-        tCode('V', 'O', 'OTHER'),
-        tCode('V', 'R', 'REFUSED'),
-        tCode('V', 'U', 'UNKNOWN'),
-        tCode('V', 'W', 'WHITE'),
-
         -- ****     ETHNIC   ****
-        tCode('L', 'ETHNIC', 'Ethnicity'),
-        tCode('V', '1', 'PUERTO RICAN'),
-        tCode('V', '10', 'FILIPINO'),
-        tCode('V', '11', 'KOREAN'),
-        tCode('V', '12', 'VIETNAMESE'),
-        tCode('V', '13', 'CAMBODIAN'),
-        tCode('V', '14', 'LAOTIAN'),
-        tCode('V', '15', 'THAI'),
-        tCode('V', '16', 'HAWAIIAN'),
-        tCode('V', '17', 'OTHER ASIAN/PACIFIC'),
-        tCode('V', '19', 'PAKISTANI'),
-        tCode('V', '2', 'CUBAN'),
-        tCode('V', '22', 'HAITIAN'),
-        tCode('V', '23', 'JAMAICAN'),
-        tCode('V', '24', 'BARBADIAN'),
-        tCode('V', '25', 'WEST INDIAN'),
-        tCode('V', '26', 'ARMENIAN'),
-        tCode('V', '27', 'AUSTRIAN'),
-        tCode('V', '28', 'ENGLISH'),
-        tCode('V', '29', 'EGYPTIAN'),
-        tCode('V', '3', 'DOMINICAN'),
-        tCode('V', '30', 'FRENCH'),
-        tCode('V', '31', 'CANADIAN'),
-        tCode('V', '32', 'GERMAN'),
-        tCode('V', '33', 'GREEK'),
-        tCode('V', '34', 'IRANIAN'),
-        tCode('V', '35', 'IRISH'),
-        tCode('V', '36', 'LEBANESE'),
-        tCode('V', '37', 'LITHUANIAN'),
-        tCode('V', '38', 'POLISH'),
-        tCode('V', '39', 'RUSSIAN'),
-        tCode('V', '4',  'MEXICAN'),
-        tCode('V', '40', 'SCOTTISH'),
-        tCode('V', '42', 'OTHER'),
-        tCode('V', '43', 'EUROPEAN'),
-        tCode('V', '44', 'COLOMBIAN'),
-        tCode('V', '45', 'SALVADORAN'),
-        tCode('V', '46', 'AFRICAN AMERICAN'),
-        tCode('V', '47', 'NIGERIAN'),
-        tCode('V', '48', 'OTHER AFRICAN'),
-        tCode('V', '50', 'ISRAELI'),
-        tCode('V', '51', 'OTHER MIDDLE EASTERN'),
-        tCode('V', '52', 'NATIVE AMERICAN'),
-        tCode('V', '6', 'OTHER HISPANIC'),
-        tCode('V', '7', 'AUSTRALIAN'),
-        tCode('V', '8', 'JAPANESE'),
-        tCode('V', '9', 'CHINESE'),
-
+        tCode('L', 'INDIGST', 'Indigenous Status'),
+        tCode('V', 'A', 'Aboriginal'),
+        tCode('V', 'T', 'Torres Strait Islander'),
+        tCode('V', 'B', 'Aboriginal and Torres Strait Islander'),
+        tCode('V', 'N', 'Neither Aboriginal nor Torres Strait Islander'),
+        
         -- ****     RELIGION   ****
         tCode('L', 'RELIGION', 'Religion'),
         tCode('V', 'AG', 'AGNOSTIC'),
@@ -184,20 +133,6 @@ declare
         tCode('V', 'UNKN', 'UNKNOWN'),
         tCode('V', 'YDSH', 'YIDDISH'),
 
-        -- ****     NATIONAL   ****
-        tCode('L', 'NATIONAL', 'Nationality'),
-        tCode('V', 'AUS', 'AUSTRALIAN'),
-        tCode('V', 'USA', 'AMERICAN'),
-        tCode('V', 'CAN', 'CANADIAN'),
-        tCode('V', 'MEX', 'MEXICAN'),
-
-        -- ****     CITIZEN   ****
-       tCode('L', 'CITIZEN', 'Citizenship'),
-       tCode('V', 'AUS', 'AUSTRALIA'),
-       tCode('V', 'USA', 'UNITED STATES'),
-       tCode('V', 'CAN', 'CANADA'),
-       tCode('V', 'MEX', 'MEXICO'),
-
         -- ****     ADDRTYPE   ****
         tCode('L', 'ADDRTYPE', 'Address Type'),
         tCode('V', 'O', 'OFFICE'),
@@ -255,6 +190,14 @@ declare
         tCode('V', 'UNST', 'UNITED STATES'),
         tCode('V', 'VIRU', 'US VIRGIN ISLANDS'),
         tCode('V', 'UNKNOWN', 'UNKNOWN'),
+
+        -- ****     DVACOLOUR   ****
+        tCode('L', 'DVACOLOR', 'DVA Card Colour'),
+        tCode('V', 'WHITE', 'WHITE'),
+        tCode('V', 'ORANGE', 'ORANGE'),
+        tCode('V', 'GOLD', 'GOLD'),
+        tCode('V', 'NONE', 'NONE'),
+
 
         -- ****     CONTACTROLE  ****
         tCode('L', 'CONROLE', 'Contact Role'),
