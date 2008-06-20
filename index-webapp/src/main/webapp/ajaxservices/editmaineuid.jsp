@@ -141,7 +141,7 @@ boolean isSessionActive = true;
                                 </tr>
                                 <tr>
                                     <td align="left" colspan="2">
-					                 <a title="<h:outputText  value="#{msgs.back_button_text}"/>" class="button" href="javascript:void()" onclick="history.go(-1)">
+					                 <a title="<h:outputText  value="#{msgs.back_button_text}"/>" class="button" href="javascript:void(0)" onclick="history.go(-1)">
 						               <span><h:outputText  value="#{msgs.back_button_text}"/></span>
 					                 </a>
                                     </td>
@@ -151,6 +151,13 @@ boolean isSessionActive = true;
                                         <h:outputText value="#{msgs.edit_main_euid_label_text}" /> <%=euidValue%> &nbsp;&nbsp;
                                     </td>
                                 </tr>
+								<tr>
+ 								<td style="font-size:10px;">
+								     <nobr>
+ 										 <span style="font-size:12px;color:red;verticle-align:top; FONT-WEIGHT: normal; FONT-FAMILY: Arial, Helvetica,sans-serif">*&nbsp;</span>Required Fields
+ 									</nobr>
+ 								</td>
+ 							  </tr> 
                            </table>						   
                             <table valign="top" border="0" cellpadding='0' cellspacing="0">
                                 <tr>
@@ -183,8 +190,13 @@ boolean isSessionActive = true;
                                                            value="#{SourceHandler.rootNodeFieldConfigs}">                                                    
                                                  <h:column>
                                                      <nobr>
-													  <h:outputText value="#{fieldConfigPer.displayName}" />
-                                                      <h:outputText value="*" rendered="#{fieldConfigPer.required}" />
+                                                <h:outputText rendered="#{fieldConfigPer.required}">
+                                                    <span style="font-size:12px;color:red;verticle-align:top">*</span>
+                                                </h:outputText>													  
+                                                <h:outputText rendered="#{!fieldConfigPer.required}">
+                                                    <span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
+                                                </h:outputText>													  
+												<h:outputText value="#{fieldConfigPer.displayName}" />
                                                       <h:outputText value=":"/>
 													 </nobr>
                                                  </h:column>                                                        
@@ -193,37 +205,29 @@ boolean isSessionActive = true;
 													  <tr>
 													   <td valign="center">
                                                      <div id='linkSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'  style="valign:top;">
-                                                     <h:outputLink        rendered="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"   
-                                                                    value="javascript:void(0)" >
-                                                            <img alt="link" border="0"src="images/link.PNG"/>               
-                                                      </h:outputLink>
+                                                     <h:outputLink        rendered="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]
+													 || EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"   
+                                                                    value="javascript:void(0)" ><img alt="link" height="14px" width="14px" border="0" src="images/spacer.gif"/><img alt="link" height="1px" width="4px" border="0" src="images/spacer.gif"/></h:outputLink>
 													 <h:outputLink  rendered="#{!EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] &&!EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"   
-                                                                    value="javascript:void(0)" onclick="javascript:showExtraLinkDivs(event,'#{fieldConfigPer.name}','#{fieldConfigPer.fullFieldName}')">
-                                                                <img alt="link" styleClass="imgClass" border="0" src="images/link.PNG"/>               
-                                                      </h:outputLink>
+                                                                    value="javascript:void(0)" onclick="javascript:showExtraLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}')"><img alt="link" styleClass="imgClass" border="0" src="images/link.PNG"/><img alt="link" height="1px" width="1px" border="0" src="images/spacer.gif"/></h:outputLink>
                                                      </div> 
                                                      <div id='linkSourceDivData:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>'             style='visibility:hidden;display:none;'>
-                                                           <h:outputLink  value="javascript:void(0)" onclick="javascript:showExtraLinkDivs(event,'#{fieldConfigPer.name}','#{fieldConfigPer.fullFieldName}')">
-                                                               <img alt="link" border="0" src="images/link.PNG"/>               
-                                                            </h:outputLink>
+                                                           <h:outputLink  value="javascript:void(0)" onclick="javascript:showExtraLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}')"><img alt="link" height="14px" width="14px" border="0" src="images/link.PNG"/></h:outputLink>
                                                      </div> 
+
                                                    </td>                              
 												   <td valign="center">												 
                                                      <div id='unlockSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>' style="valign:top;">
 													 <h:panelGrid rendered="#{EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }">
 													 <h:panelGroup><a href ="javascript:void(0)" 
-                                                     onclick="document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';getFormValues('unLockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlocking=true','euidFinalErrorMessages','')"><img alt="unlock" border="0" height="13px" width="13px" src="images/unlock.PNG"/></a></h:panelGroup></h:panelGrid>
+                                                     onclick="document.getElementById('hiddenUnLockFields').value = '<h:outputText value="#{fieldConfigPer.fullFieldName}"/>';getFormValues('unLockFieldsForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlocking=true','euidFinalErrorMessages','')"><img alt="unlock" border="0" height="14px" width="14px" src="images/unlock.PNG"/></a></h:panelGroup></h:panelGrid>
                                                      </div> 
                                                      <div id="lockSourceDiv" style="valign:top;">
                                                      <h:outputLink  rendered="#{!EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName] }"   
-                                                                    value="javascript:void(0)" >
-                                                            <img   alt="lock" border="0" height="13px" width="13px" src="images/lock.PNG"/>               
-                                                      </h:outputLink>
+                                                                    value="javascript:void(0)" ><img   alt="lock" height="14px" width="14px" border="0" src="images/lock.PNG"/></h:outputLink>
                                                      </div> 
                                                      <div id='lockSourceDiv:<h:outputText value="#{fieldConfigPer.fullFieldName}"/>' style='visibility:hidden;display:none'>
-                                                     <h:outputLink  value="javascript:void(0)" >
-                                                            <img alt="lock" border="0" height="13px" width="13px" src="images/lock.PNG"/>               
-                                                      </h:outputLink>
+                                                         <h:outputLink  value="javascript:void(0)" ><img alt="lock" height="14px" width="14px" border="0" src="images/lock.PNG"/></h:outputLink>
                                                      </div> 
 													  </td>
 													  </tr>
@@ -315,7 +319,7 @@ boolean isSessionActive = true;
 											</tr>
                     <tr>
 					  <td><nobr>
-                          <a title="<h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('EORootNodeForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&saveSbr=save','EUIDRootDiv','Updating SBR...please wait')">
+                          <a title="<h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('EORootNodeForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&saveSbr=save','EUIDRootDiv','Updating SBR...please wait')"> 
                                <span id="EObuttonspan"><h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%></span>
                            </a>    
                            <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('EORootNodeForm');setEOEditIndex('-1')">
@@ -383,8 +387,14 @@ boolean isSessionActive = true;
                                                       style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;background-color:#efefef"                                                      value="#{allNodeFieldConfigsMapAdd[childNodesName]}">
                                             
                                             <h:column>
+                                               <h:outputText rendered="#{childFieldConfigAdd.required}">
+                                                 <span style="font-size:12px;color:red;verticle-align:top">*</span>
+                                                </h:outputText>
+                                                <h:outputText rendered="#{!childFieldConfigAdd.required}">
+                                                    <span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
+                                                </h:outputText>													  
+
                                                 <h:outputText value="#{childFieldConfigAdd.displayName}"  />
-                                                <h:outputText value="*" rendered="#{childFieldConfigAdd.required}" />
                                                 <h:outputText value=":"/>
                                             </h:column>
                                             <!--Rendering HTML Select Menu List-->
@@ -566,11 +576,14 @@ boolean isSessionActive = true;
                                                                         </td>
                                                                  </tr>
                                                                   <tr>
-                                                                        <td style="width:50%;padding-left:5px; font-size: 12px; text-align: left;">  <%=localIdDesignation%></td>
-                                                                        <td style="width:50%;padding-left:5px; font-size: 12px; text-align: left;">  
+                                                                    <td style="width:50%;padding-left:5px; font-size: 12px; text-align: left;">  
+                                                                      <h:outputText>
+                                                                        <span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
+                                                                     </h:outputText><%=localIdDesignation%>
+																	 </td>
+                                                                     <td style="width:50%;padding-left:5px; font-size: 12px; text-align: left;">  
 																		    <b><%=valueMap.get("LID")%></b>
-                                                                                <!--input type="text" style="background-color:#cddcb1" readonly="true" value='<%=valueMap.get("LID")%>'/--> 	
-                                                                        </td>
+                                                                      </td>
                                                                  </tr>
                                                         </table>
 
@@ -592,23 +605,30 @@ boolean isSessionActive = true;
                                                                                   value="#{SourceHandler.rootNodeFieldConfigs}">     
                                                 <h:column>
                                                      <nobr>
+                                                      <h:outputText rendered="#{fieldConfigPer.required}">
+                                                        <span style="font-size:12px;color:red;verticle-align:top">*</span>
+                                                      </h:outputText>                                  
+                                                      <h:outputText rendered="#{!fieldConfigPer.required}">
+                                                       <span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
+                                                     </h:outputText>													  
+													  
 													  <h:outputText value="#{fieldConfigPer.displayName}" />
-                                                      <h:outputText value="*" rendered="#{fieldConfigPer.required}" />
                                                       <h:outputText value=":"/>
+
 													 </nobr>
                                                  </h:column>                                                        
                              
                                                                         <h:column>
                                                                             <div id='<h:outputText value="#{fieldConfigPer.fullFieldName}"/>:<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT']['LINK_KEY']}"/>'
                                                                                  style="visibility:hidden;display:none;">
-                                                                                <h:outputLink  value="javascript:void(0)" onclick="javascript:showExtraUnLinkDivs(event,'#{fieldConfigPer.name}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}')">
-                                                                                    <h:graphicImage  alt="link" styleClass="imgClass" url="./images/link.PNG"/>               
+                                                                                <h:outputLink  value="javascript:void(0)" onclick="javascript:showExtraUnLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}')">
+                                                                                    <h:graphicImage  alt="unlink" styleClass="imgClass" url="./images/unlink.PNG"/>               
                                                                                 </h:outputLink>
                                                                             </div> 
                                                                             <h:outputLink  rendered="#{EditMainEuidHandler.linkedSOFieldsHashMapFromDB[fieldConfigPer.fullFieldName] eq eoSystemObjectMap['SYSTEM_OBJECT']['LINK_KEY'] }"   
-                                                                                           value="javascript:void(0)" onclick="javascript:showExtraUnLinkDivs(event,'#{fieldConfigPer.name}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}')">
-                                                                                <h:graphicImage  alt="link" styleClass="imgClass"
-                                                                                                 url="./images/link.PNG"/>               
+                                                                                           value="javascript:void(0)" onclick="javascript:showExtraUnLinkDivs(event,'#{fieldConfigPer.displayName}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}')">
+                                                                                <h:graphicImage  alt="unlink" styleClass="imgClass"
+                                                                                                 url="./images/unlink.PNG"/>               
                                                                             </h:outputLink>
                                                                         </h:column>                                                        
                                                                         
@@ -692,25 +712,17 @@ boolean isSessionActive = true;
                                                                                   value="#{SourceHandler.rootNodeFieldConfigs}">     
                                                 <h:column>
                                                      <nobr>
+                                                      <h:outputText rendered="#{fieldConfigPer.required}">
+                                                       <span style="font-size:12px;color:red;verticle-align:top">*</span>
+                                                      </h:outputText>													 
+                                                      <h:outputText rendered="#{!fieldConfigPer.required}">
+                                                       <span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
+                                                     </h:outputText>													  
 													  <h:outputText value="#{fieldConfigPer.displayName}" />
-                                                      <h:outputText value="*" rendered="#{fieldConfigPer.required}" />
-                                                      <h:outputText value=":"/>
+                                                        <h:outputText value=":"/>
 													 </nobr>
                                                  </h:column>                                                        
                              
-                                                                        <h:column>
-                                                                            <div id='<h:outputText value="#{fieldConfigPer.fullFieldName}"/>:<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT']['LINK_KEY']}"/>'
-                                                                                 style="visibility:hidden;display:none;">
-                                                                                <h:outputLink  value="javascript:void(0)" onclick="javascript:showExtraUnLinkDivs(event,'#{fieldConfigPer.name}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}')">
-                                                                                    <h:graphicImage  alt="link" styleClass="imgClass" url="./images/link.PNG"/>               
-                                                                                </h:outputLink>
-                                                                            </div> 
-                                                                            <h:outputLink  rendered="#{EditMainEuidHandler.linkedSOFieldsHashMapFromDB[fieldConfigPer.fullFieldName] eq eoSystemObjectMap['SYSTEM_OBJECT']['LINK_KEY'] }"   
-                                                                                           value="javascript:void(0)" onclick="javascript:showExtraUnLinkDivs(event,'#{fieldConfigPer.name}','#{fieldConfigPer.fullFieldName}>>#{eoSystemObjectMap['SYSTEM_CODE']}:#{eoSystemObjectMap['LID']}','#{fieldConfigPer.fullFieldName}')">
-                                                                                <h:graphicImage  alt="link" styleClass="imgClass"
-                                                                                                 url="./images/link.PNG"/>               
-                                                                            </h:outputLink>
-                                                                        </h:column>                                                        
                                                                         
                                                                         <!--Rendering HTML Select Menu List-->
                                                                         <h:column rendered="#{fieldConfigPer.guiType eq 'MenuList' &&  fieldConfigPer.valueType ne 6}" >
@@ -778,7 +790,7 @@ boolean isSessionActive = true;
                           
                                <span id="EObuttonspan"><h:outputText value="#{msgs.edit_euid}"/> <%=rootNodeName%></span>
                            </a>
-                           <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents(<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SORootNodeInnerForm);setEOEditIndex('-1')">
+                           <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SORootNodeInnerForm');">
                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
 						   </a>
 						 <%}else{%>
@@ -816,7 +828,7 @@ boolean isSessionActive = true;
 																	<a href="javascript:void(0)" title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"  onclick="javascript:showMinorObjectsDiv('extra<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&load=load&rand=<%=rand%>','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event)" class="button">
 																	<span>
 																	<img src="./images/down-chevron-button.png" border="0" alt="title="<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/>" />
-																	View &nbsp;<h:outputText value="#{childNodesName}"/>&nbsp;
+																	<h:outputText value="#{msgs.source_rec_view}"/>&nbsp;<h:outputText value="#{childNodesName}"/>&nbsp;
 																	<img src="./images/down-chevron-button.png" border="0" alt="Add <h:outputText value="#{childNodesName}"/>" />
 																	</span>
                                                                     </a>
@@ -843,10 +855,16 @@ boolean isSessionActive = true;
                                                       var="soChildFieldConfigAdd" 
                                                       style="font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"                                                      value="#{allNodeFieldConfigsMapAdd[childNodesName]}">
                                                  <h:column>
-                                                     <nobr>
+
+													 <nobr>
+                                                      <h:outputText rendered="#{soChildFieldConfigAdd.required}">
+                                                       <span style="font-size:12px;color:red;verticle-align:top">*</span>
+                                                      </h:outputText>
+                                                      <h:outputText rendered="#{!soChildFieldConfigAdd.required}">
+                                                       <span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
+                                                     </h:outputText>								
 													  <h:outputText value="#{soChildFieldConfigAdd.displayName}" />
-                                                      <h:outputText value="*" rendered="#{soChildFieldConfigAdd.required}" />
-                                                      <h:outputText value=":"/>
+                                                       <h:outputText value=":"/>
                                 					 </nobr>
                                                  </h:column>                                                        
                                           <%if("active".equalsIgnoreCase(soStatus)) {%>
@@ -982,7 +1000,7 @@ boolean isSessionActive = true;
 					      <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp;<h:outputText value="#{childNodesName}"/>"  href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText  value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&SOLID=<h:outputText value="#{eoSystemObjectMap['LID']}"/>&SOSYS=<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOMinorDiv',event)">
                                <span id="<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>buttonspan">Save <h:outputText value='#{childNodesName}'/> </span>
                             </a>
-						    <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm');setEOEditIndex('-1')">
+						    <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText  value="#{childNodesName}"/><h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/>:<h:outputText value="#{eoSystemObjectMap['LID']}"/>SOInnerForm');setEOEditIndex('-1')">
                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                           </a>
                         <%}else{%>
@@ -1088,10 +1106,11 @@ boolean isSessionActive = true;
                     </div>         
                 </div>         
     <!-- END Extra divs for NEW  SO-->
-            <div id="linkSoDiv"  class="alert" style="TOP:620px;LEFT:450px;HEIGHT:100px;WIDTH:350px;overflow:auto;VISIBILITY:hidden;">
+            <div id="linkSoDiv"  class="alert" style="TOP:620px;LEFT:450px;HEIGHT:100px;WIDTH:450px;overflow:auto;VISIBILITY:hidden;">
                 <form name="linkForm">
 				<input type="hidden" name="sbrfullfieldname" title="sbrfullfieldname">
-                <table valign="center" style="padding-top:20px">
+				<input type="hidden" name="fieldDisplayName" title="fieldDisplayName">
+                <table valign="center">
                     <tr>
                         <td>
                             <div id="linkedValueDiv" style="visibility:hidden"></div>
@@ -1121,6 +1140,7 @@ boolean isSessionActive = true;
            <div id="unLinkSoDiv" class="alert" style="TOP:620px;LEFT:450px;HEIGHT:120px;WIDTH:350px;VISIBILITY:hidden;">
                <form name="unlinkForm">
 				<input type="hidden" name="sbrfullfieldname" title="sbrfullfieldname">
+				<input type="hidden" name="fieldDisplayName" title="fieldDisplayName">
                 <table valign="center" style="padding-top:20px">
                     <tr>
                         <td>

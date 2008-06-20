@@ -105,9 +105,17 @@ boolean isSessionActive = true;
 <form id="RootNodeInnerForm" name="RootNodeInnerForm" method="post" enctype="application/x-www-form-urlencoded">
 <table valign="top" border="0" cellpadding="0" cellspacing="0" style="width:100%;background-color:#c4c8e1;;border-top:1px solid #efefef;border-left:1px solid #efefef;border-right:1px solid #efefef;border-bottom:1px solid #efefef;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;">
     <input type="hidden" title="lidmask" name="lidmask" value="DDD-DDD-DDDD" />
+	 <tr>
+ 			 <td style="font-size:10px;">
+					 <nobr>
+ 					   <span style="font-size:12px;color:red;verticle-align:top; FONT-WEIGHT: normal; FONT-FAMILY: Arial, Helvetica,sans-serif">*&nbsp;</span><h:outputText value="#{msgs.REQUIRED_FIELDS}"/>
+ 					  </nobr>
+ 			 </td>
+ 	</tr> 
+
      <tr height="22px" valign="top">
          <td align="left">
-		     System:
+		     <h:outputText value="#{msgs.transaction_source}"/>:
          </td>
     	  <td align="left">
              <h:selectOneMenu id="SystemCode" title="SystemCode"
@@ -149,9 +157,11 @@ boolean isSessionActive = true;
                       value="#{SourceHandler.rootNodeFieldConfigs}">
         <h:column>
            <nobr>
-			 <h:outputText value="#{fieldConfigPerAdd.displayName}" />
-              <h:outputText value="*" rendered="#{fieldConfigPerAdd.required}" />
-              <h:outputText value=":"/>
+		    <h:outputText rendered="#{fieldConfigPerAdd.required}">
+                <span style="font-size:12px;color:red;verticle-align:top">*</span>
+             </h:outputText>													  
+ 			 <h:outputText value="#{fieldConfigPerAdd.displayName}" />
+             <h:outputText value=":"/>
 			</nobr>
          </h:column>                                                        
             <!--Rendering HTML Select Menu List-->
@@ -188,9 +198,7 @@ boolean isSessionActive = true;
                         <h:graphicImage  id="calImgDateFrom"  alt="#{fieldConfigPerAdd.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
                     </a>
                 </nobr>
-                
-                
-            </h:column>
+             </h:column>
             <!--Rendering Updateable HTML Text Area-->
             <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextArea' &&  fieldConfigPerAdd.valueType ne 6}" >
                 <h:inputTextarea label="#{fieldConfigPerAdd.displayName}"  
@@ -255,13 +263,15 @@ boolean isSessionActive = true;
                                                                   id="childFieldConfigsAdd" 
                                                                   var="childFieldConfigAdd" 
                                				      style="width:100%;background-color:#c4c8e1;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left;"                                      value="#{allNodeFieldConfigsMapAdd[childNodesName]}">
-       <h:column>
-           <nobr>
-			 <h:outputText value="#{childFieldConfigAdd.displayName}" />
-              <h:outputText value="*" rendered="#{childFieldConfigAdd.required}" />
-              <h:outputText value=":"/>
-			</nobr>
-         </h:column>                                                        
+                                           <h:column>
+                                              <nobr>
+                                          		 <h:outputText rendered="#{childFieldConfigAdd.required}">
+                                                    <span style="font-size:12px;color:red;verticle-align:top">*</span>
+                                                 </h:outputText>													  
+                                          		 <h:outputText value="#{childFieldConfigAdd.displayName}" />
+                                                 <h:outputText value=":"/>
+                                          	 </nobr>
+                                           </h:column>                                                        
                                                         <!--Rendering HTML Select Menu List-->
                   
 

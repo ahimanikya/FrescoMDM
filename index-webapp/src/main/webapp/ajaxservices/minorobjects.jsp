@@ -171,7 +171,7 @@ if(isSave) {
                              isValidationErrorOccured = true;
 							 //build array of required values here
                              requiredValuesArray.add(fcArray[k].getDisplayName());
-							 valiadtions.put(fcArray[k].getDisplayName(),": is Required");
+							 valiadtions.put(fcArray[k].getDisplayName(),": "+bundle.getString("ERROR_ONE_OF_GROUP_TEXT2"));
 						  }							 
 						  //check for numberic fields here
                          //--------------------------Is Numeric Validations -------------------------------------
@@ -183,11 +183,25 @@ if(isSave) {
 							    fcArray[k].getValueType() == 7))   {
 							 //Check numeric values
 							 if (!sourceHandler.isNumber(attributeValue,fcArray[k].getValueType()))   {
-                                  valiadtions.put(fcArray[k].getDisplayName(),": is not a Number");
+                                  valiadtions.put(fcArray[k].getDisplayName(),": "+bundle.getString("number_validation_text"));
 								  isValidationErrorOccured = true;
 							 }
 						 }
                          //--------------------------End Is Numeric Validation -------------------------------------
+
+						 //--------------------------Start Check field maskings  -------------------------------------
+						 if (fcArray[k].getName().equalsIgnoreCase("EUID")) {continue; } // Ignore validation of EUID
+				         if (attributeValue.equalsIgnoreCase("")) { continue; }	   
+						 if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0 && fcArray[k].getFullFieldName().equalsIgnoreCase(attributeName))   {
+							 //Check numeric values
+							 System.out.println("ADD MINOR OBJECTS value --> :: " + attributeValue + "Masking --> :: " + fcArray[k].getInputMask());
+							 if (!sourceHandler.checkMasking(attributeValue,fcArray[k].getInputMask()))   {
+                                  valiadtions.put(fcArray[k].getDisplayName(),bundle.getString("lid_format_error_text") + " " +fcArray[k].getInputMask());								  
+								  isValidationErrorOccured = true;
+							 }
+						 }
+                         //--------------------------End field maskings -------------------------------------
+						 //        	boolean isMaskingCorrect = sourceHandler.checkMasking(validateLID,request.getParameter("lidmask"));
                      }
                       if (valiadtions.isEmpty() && !("rand".equalsIgnoreCase(attributeName)) && 
 						  !("save".equalsIgnoreCase(attributeName)) && 
@@ -211,7 +225,7 @@ if(isSave) {
                                  isValidationErrorOccured = true;
 			                     //build array of required values here
                                  requiredValuesArray.add(fcArray[k].getDisplayName());
-			                     valiadtions.put(fcArray[k].getDisplayName()," is Required");
+			                     valiadtions.put(fcArray[k].getDisplayName(),": "+bundle.getString("ERROR_ONE_OF_GROUP_TEXT2"));
                              }            
                          //--------------------------Is Numeric Validations -------------------------------------
 						 if (fcArray[k].getName().equalsIgnoreCase("EUID"))   {continue;}  // Ignore validation of EUID
@@ -223,11 +237,25 @@ if(isSave) {
 							       fcArray[k].getValueType() == 7))   {
 							 //Check numeric values
 							 if (!sourceHandler.isNumber(attributeValue,fcArray[k].getValueType()))   {
-                                  valiadtions.put(fcArray[k].getDisplayName(),": is not a Number");
+                                  valiadtions.put(fcArray[k].getDisplayName(),": "+bundle.getString("number_validation_text"));
 								  isValidationErrorOccured = true;
 							 }
 						 }
                          //--------------------------End Is Numeric Validation -------------------------------------			
+
+						 //--------------------------Start Check field maskings  -------------------------------------
+						 if (fcArray[k].getName().equalsIgnoreCase("EUID")) {continue; } // Ignore validation of EUID
+				         if (attributeValue.equalsIgnoreCase("")) { continue; }	   
+						 if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0 && fcArray[k].getFullFieldName().equalsIgnoreCase(attributeName))   {
+							 System.out.println("SSAVEEE value --> :: " + attributeValue + "Masking --> :: " + fcArray[k].getInputMask());
+							 //Check numeric values
+							 if (!sourceHandler.checkMasking(attributeValue,fcArray[k].getInputMask()))   {
+                                  valiadtions.put(fcArray[k].getDisplayName(),bundle.getString("lid_format_error_text") + " " +fcArray[k].getInputMask());								  
+								  isValidationErrorOccured = true;
+							 }
+						 }
+                         //--------------------------End field maskings -------------------------------------
+						 //        	boolean isMaskingCorrect = sourceHandler.checkMasking(validateLID,request.getParameter("lidmask"));
 				      }
 
 				      if (!isValidationErrorOccured  && !("rand".equalsIgnoreCase(attributeName)) && 
@@ -248,12 +276,17 @@ if(isSave) {
 <!--Validate all the mandatory fields in root node fields-->
 <%if (!valiadtions.isEmpty()) {
 	Object[] keysValidations = valiadtions.keySet().toArray();
+       if (isSave) {   //Final Save hence add Root fields to the Hashmap
 	%>
+    <script>
+		window.location = "#top";
+	</script>
+	<%}%>
 	<div class="ajaxalert">
    	   	  <table>
 			<tr>
 				<td>  
-				   Validation  Error:
+				   <%=bundle.getString("validation_error_text")%>
 				</td>  
 			</tr>
 			<tr>
@@ -269,7 +302,7 @@ if(isSave) {
 			<tr>
 		</table>
    </div>
-<%}%>
+ <%}%>
 
 <%  if (!isValidationErrorOccured && isSave) { %>  <!-- Save System Object and ignore all other conditions  -->
 
@@ -363,7 +396,15 @@ if(isSave) {
             sourceAddHandler.getNewSOMinorObjectsHashMapArrayList().clear();
 
 			  } %>
-	<div class="ajaxsuccess">
+	<!-- Navigate the user to the top of the page to see the messages-->
+    <script>
+		window.location = "#top";
+	</script>
+    <%	if ("success".equalsIgnoreCase(isSuccess))  { %>
+	   <div class="ajaxsuccess">
+    <%}else {%>
+         <div class="ajaxalert">
+     <%}%>
 	  <table>
 			<tr>
 				<td>
@@ -384,6 +425,7 @@ if(isSave) {
     document.getElementById('<%=request.getParameter("MOT")%>buttonspan').innerHTML = 'Save '+ '<%=request.getParameter("MOT")%>';
 	document.getElementById('<%=request.getParameter("MOT")%>cancelSOEdit').style.visibility = 'hidden';
     document.getElementById('<%=request.getParameter("MOT")%>cancelSOEdit').style.display = 'none';
+    setEditIndex('-1');
 
     </script>
 		   <%  thisMinorObject = (HashMap)sourceAddHandler.getNewSOMinorObjectsHashMapArrayList().remove(new Integer(deleteIndex).intValue());%>
@@ -459,7 +501,16 @@ if(isSave) {
                                                 <%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
 										     <%}%>
 										   <%} else {%> <!-minorObjectMap- In other cases-->
-                                             <%=minorObjectMap.get(fcArray[k].getFullFieldName())%>
+										   <%
+											String value = minorObjectMap.get(fcArray[k].getFullFieldName()).toString();   
+                                            if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
+                                              if (value != null) {
+                                                 //Mask the value as per the masking 
+                                                 value = fcArray[k].mask(value.toString());
+                                               }
+                                            } 
+											%> 
+										     <%=value%>
 										   <%}%>
 									  <%} else {%> <!-- else print &nbsp-->
 									    &nbsp;
@@ -491,7 +542,7 @@ if(isSave) {
                              isValidationErrorOccured = true;
 							 //build array of required values here
                              requiredValuesArray.add(fcArray[k].getDisplayName());
-							 valiadtions.put(fcArray[k].getDisplayName(),": is Required");
+							 valiadtions.put(fcArray[k].getDisplayName(),": "+bundle.getString("ERROR_ONE_OF_GROUP_TEXT2"));
 						  }							 
                          //--------------------------Is Numeric Validations -------------------------------------
 						 if (fcArray[k].getName().equalsIgnoreCase("EUID"))   {continue;}  // Ignore validation of EUID
@@ -503,11 +554,24 @@ if(isSave) {
 							       fcArray[k].getValueType() == 7))   {
 							 //Check numeric values
 							 if (!sourceHandler.isNumber(attributeValue,fcArray[k].getValueType()))   {
-                                  valiadtions.put(fcArray[k].getDisplayName(),": is not a Number");
+                                  valiadtions.put(fcArray[k].getDisplayName(),": "+bundle.getString("number_validation_text"));
 								  isValidationErrorOccured = true;
 							 }
 						 }
-                         //--------------------------End Is Numeric Validation -------------------------------------			
+                         //--------------------------End Is Numeric Validation -------------------------------------	
+						 //--------------------------Start Check field maskings  -------------------------------------
+						 if (fcArray[k].getName().equalsIgnoreCase("EUID")) {continue; } // Ignore validation of EUID
+				         if (attributeValue.equalsIgnoreCase("")) { continue; }	   
+						 if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0 && fcArray[k].getFullFieldName().equalsIgnoreCase(attributeName))   {
+							 //Check numeric values
+							 System.out.println("EDIT MINOR OBJECTS value --> :: " + attributeValue + "Masking --> :: " + fcArray[k].getInputMask());
+							 if (!sourceHandler.checkMasking(attributeValue,fcArray[k].getInputMask()))   {
+                                  valiadtions.put(fcArray[k].getDisplayName(),bundle.getString("lid_format_error_text") + " " +fcArray[k].getInputMask());								  
+								  isValidationErrorOccured = true;
+							 }
+						 }
+                         //--------------------------End field maskings -------------------------------------
+						 
 			         }
 			     /*if (attributeValue.equalsIgnoreCase("")) continue;
 			     if (attributeValue.equalsIgnoreCase("rand")) continue;
@@ -552,7 +616,7 @@ if(isSave) {
    	   	  <table>
 			<tr>
 				<td>  
-				   Validation  Error:
+				   <%=bundle.getString("validation_error_text")%>
 				</td>  
 			</tr>
 			<tr>
@@ -607,13 +671,13 @@ if(isSave) {
    	   	  <table>
 			<tr>
 				<td>  
-				   Validation  Error:
+				   <%=bundle.getString("validation_error_text")%>
 				</td>  
 			</tr>
 			<tr>
 				<td>  
 				      <ul>
-							  Cannot add <%=keyType%> <b>'<%=keyTypeValues%>'</b> again.
+							  <%=keyType%> <b>'<%=keyTypeValues%>'</b> <%=bundle.getString("duplicate_minor_object_message_text")%>
 				      </ul>
 				<td>
 			<tr>
@@ -703,7 +767,16 @@ if(isSave) {
                                                 <%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
 										     <%}%>
 										   <%} else {%> <!-- In other cases-->
-                                             <%=minorObjectMap.get(fcArray[k].getFullFieldName())%>
+										   <%
+											String value = minorObjectMap.get(fcArray[k].getFullFieldName()).toString();   
+                                            if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
+                                              if (value != null) {
+                                                 //Mask the value as per the masking 
+                                                 value = fcArray[k].mask(value.toString());
+                                               }
+                                            } 
+											%> 
+										     <%=value%>
 										   <%}%>
 									  <%} else {%> <!-- else print &nbsp-->
 									    &nbsp;
@@ -722,7 +795,7 @@ if(isSave) {
 <!-- reset the Edit index -->
 <!-- reset the Edit index -->
 <script>
-    document.getElementById('<%=request.getParameter("MOT")%>buttonspan').innerHTML = 'Save '+ '<%=request.getParameter("MOT")%>';
+    document.getElementById('<%=request.getParameter("MOT")%>buttonspan').innerHTML = '<%=bundle.getString("source_rec_save_but")%> '+ '<%=request.getParameter("MOT")%>';
 	document.getElementById('<%=request.getParameter("MOT")%>cancelSOEdit').style.visibility = 'hidden';
     document.getElementById('<%=request.getParameter("MOT")%>cancelSOEdit').style.display = 'none';
 </script>
@@ -738,7 +811,7 @@ if(isSave) {
 
 <% } else if (!isValidationErrorOccured && !isSaveEditedValues && isminorObjSave)  { %>
     <script>
-    document.getElementById('<%=request.getParameter("MOT")%>buttonspan').innerHTML = 'Save '+ '<%=request.getParameter("MOT")%>';
+    document.getElementById('<%=request.getParameter("MOT")%>buttonspan').innerHTML = '<%=bundle.getString("source_rec_save_but")%> '+ '<%=request.getParameter("MOT")%>';
 	document.getElementById('<%=request.getParameter("MOT")%>cancelSOEdit').style.visibility = 'hidden';
     document.getElementById('<%=request.getParameter("MOT")%>cancelSOEdit').style.display = 'none';
 
@@ -787,13 +860,13 @@ if(isSave) {
    	   <table>
 			<tr>
 				<td>  
-				   Validation  Error:
+				   <%=bundle.getString("validation_error_text")%>
 				</td>  
 			</tr>
 			<tr>
 				<td>  
 				      <ul>
-							  <li>Cannot add <%=keyType%> <b>'<%=keyTypeValues%>'</b> again.</li>
+							  <li><%=keyType%> <b>'<%=keyTypeValues%>'</b> <%=bundle.getString("duplicate_minor_object_message_text")%> </li>
 				      </ul>
 				<td>
 			<tr>
@@ -874,7 +947,16 @@ if(isSave) {
                                                 <%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
 										     <%}%>
 										   <%} else {%> <!-- In other cases-->
-                                             <%=minorObjectMap.get(fcArray[k].getFullFieldName())%>
+										   <%
+											String value = minorObjectMap.get(fcArray[k].getFullFieldName()).toString();   
+                                            if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
+                                              if (value != null) {
+                                                 //Mask the value as per the masking 
+                                                 value = fcArray[k].mask(value.toString());
+                                               }
+                                            } 
+											%> 
+										     <%=value%>
 										   <%}%>
 									  <%} else {%> <!-- else print &nbsp-->
 									    &nbsp;
@@ -899,7 +981,7 @@ if(isSave) {
 
 <% } else if (isEdit) { %>  <!-- Edit Minor Object -->
     <script>
-    document.getElementById('<%=request.getParameter("MOT")%>buttonspan').innerHTML = 'Update '+ '<%=request.getParameter("MOT")%>';
+    document.getElementById('<%=request.getParameter("MOT")%>buttonspan').innerHTML = '<%=bundle.getString("edit_euid")%> '+ '<%=request.getParameter("MOT")%>';
 	document.getElementById('<%=request.getParameter("MOT")%>cancelSOEdit').style.visibility = 'visible';
     document.getElementById('<%=request.getParameter("MOT")%>cancelSOEdit').style.display = 'block';
     </script>
@@ -930,6 +1012,16 @@ if(isSave) {
 			   <script>
 			       <% for(int k=0;k<fcArray.length;k++) {					     
 				   %>
+                  
+				   <%
+						String value = (minorObjectMap.get(fcArray[k].getFullFieldName())) != null ?minorObjectMap.get(fcArray[k].getFullFieldName()).toString():null;   
+                        if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0) {
+                          if (value != null) {
+                              //Mask the value as per the masking 
+                              value = fcArray[k].mask(value.toString());
+                          }
+                        } 
+					%> 
   					    var thisFrm = document.getElementById('<%=formName%>');
                         elemType = thisFrm.elements[<%=k%>].type.toUpperCase()
 					   <%  if(minorObjectMap.get(fcArray[k].getFullFieldName()) != null ) {
@@ -938,7 +1030,7 @@ if(isSave) {
                            if(elemType != 'HIDDEN') {
 						  
 							for (var i=0; i< thisFrm.elements[<%=k%>].options.length; i++)  {
-								if ( (thisFrm.elements[<%=k%>].options[i].value) ==  '<%=minorObjectMap.get(fcArray[k].getFullFieldName())%>')   {
+								if ( (thisFrm.elements[<%=k%>].options[i].value) ==  '<%=value%>')   {
 									thisFrm.elements[<%=k%>].options.selectedIndex = i
 								}
 						     }
@@ -946,7 +1038,7 @@ if(isSave) {
 
 						<%} else {%>
 							if(elemType != 'HIDDEN') {
-                              thisFrm.elements[<%=k%>].value = '<%=minorObjectMap.get(fcArray[k].getFullFieldName())%>'
+                              thisFrm.elements[<%=k%>].value = '<%=value%>'
 						    }
 						<%}%>
 					<%}%>
@@ -986,7 +1078,7 @@ if(isSave) {
 				<td>
 				      <ul>
 				             <li>
-							  Please enter System and LID values.
+							  <%=bundle.getString("enter_lid_and_systemcode_text")%> <%=localIdDesignation%>							  
 				             </li>
 				      </ul>
 				<td>
@@ -1003,7 +1095,7 @@ if(isSave) {
 		    		<td>
 			    	      <ul>
 				                <li>
-					    		  LID is not in the format <%=request.getParameter("lidmask")%>.
+					    		  <%=localIdDesignation%> <%=bundle.getString("lid_format_error_text")%> <%=request.getParameter("lidmask")%>.
 				               </li>
 				         </ul>
 				    <td>
@@ -1054,7 +1146,7 @@ if(isSave) {
 								<td>
 									  <ul>
 											 <li>
-											  <%=sysDesc%>/<%=tempValidateLid%> is already found.
+											  <%=sysDesc%>/<%=tempValidateLid%> <%=bundle.getString("already_found_error_text")%>
 											 </li>
 									  </ul>
 								<td>
