@@ -10,6 +10,7 @@
 
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.PatientDetailsHandler"  %>
+<%@ page import="com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
@@ -17,11 +18,12 @@
 <%@ page import="com.sun.mdm.index.edm.services.configuration.SearchResultsConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ValidationService"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
+
 <%@ page import="com.sun.mdm.index.edm.presentation.validations.EDMValidation"  %>
 <%@ page import="com.sun.mdm.index.edm.services.masterController.MasterControllerService" %>
 <%@ page import="com.sun.mdm.index.objects.SystemObject"%>
 <%@ page import="com.sun.mdm.index.objects.EnterpriseObject"%>
-<%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"%>
 
 <%@ page import="java.util.Enumeration"%>
 <%@ page import="javax.faces.context.FacesContext" %>
@@ -60,11 +62,13 @@ boolean isSessionActive = true;
 SourceHandler sourceHandler = new SourceHandler();
 ScreenObject screenObject = (ScreenObject) session.getAttribute("ScreenObject");
 MasterControllerService masterControllerService = new MasterControllerService();
-
+Operations operations  = new Operations();
 PatientDetailsHandler patientDetailsHandler = new PatientDetailsHandler();
 
-Enumeration parameterNames = request.getParameterNames();
+String localIdDesignation = ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
 
+Enumeration parameterNames = request.getParameterNames();
+CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
 
 //Map to hold the validation Errors
 HashMap valiadtions = new HashMap();
@@ -87,7 +91,7 @@ ArrayList results = new ArrayList();
 
 String print_text = bundle.getString("print_text");
 String total_records_text = bundle.getString("total_records_text");
-
+String active_euid_text = bundle.getString("active_euid_text") ;
 ArrayList fullFieldNamesList  = new ArrayList();
 
 
@@ -99,14 +103,13 @@ boolean iscollectEuids = (null == collectEuids?false:true);
 String collectedEuids = request.getParameter("collecteuid");
 
 ArrayList collectedEuidsList = new ArrayList();
-String localIdDesignation =	 ConfigManager.getInstance().getConfigurableQwsValue(ConfigManager.LID, "Local ID");
 %>
 
 <%
   boolean isValidationErrorOccured = false;
   //HashMap valiadtions = new HashMap();
    ArrayList requiredValuesArray = new ArrayList();
-   Operations operations=new Operations();
+
 %>
 
 <% //Build the request Map 
@@ -128,6 +131,8 @@ String localIdDesignation =	 ConfigManager.getInstance().getConfigurableQwsValue
 
 <% 
 String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID");
+ String lid = (String) patientDetailsHandler.getParametersMap().get("LID");
+  String systemCode = (String) patientDetailsHandler.getParametersMap().get("SystemCode");
 %>
 
 <%if(iscollectEuids) {%> <!-- if compare euids case -->
@@ -154,8 +159,9 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 <%}else if( euidValue != null && euidValue.length() > 0) {
 	 //results = patientDetailsHandler.performSubmit();
 	 EnterpriseObject eo = masterControllerService.getEnterpriseObject(euidValue);
+     String megredEuid  = compareDuplicateManager.getMergedEuid(euidValue);
 	%> <!-- if only EUID is entered by the user is entered by the user-->
-	<%if(eo != null) {%>
+	<%if(megredEuid == null) {%>
 <table>
   <tr><td>
   <script>
@@ -164,38 +170,48 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
   </td>
   </tr>
   </table>
-  <%}else{%>
-      <div class="ajaxalert">
-    <table>
-	   <tr>
-	     <td>
-     <%
-		 String messages = "EUID " + euidValue + " Not Found. Please check the EUID value";
-     %>     	 
+  <%}else if(megredEuid != null){%>
+       <%if("Invalid EUID".equalsIgnoreCase(megredEuid)) {%>
+       <div class="ajaxalert">
+           <table>
+       	   <tr>
+       	     <td>
+              <% String messages = "EUID " + euidValue + " Not Found. Please check the EUID value"; %>     	 
+ 	            <script>
+       		      var messages = document.getElementById("messages");
+       	          messages.innerHTML= "<%=messages%>";
+       		      messages.style.visibility="visible";
+       	      </script>
+       	   </td>
+       	   </tr>
+       	 <table>
+       	 </div>
+     <%}else{%>
+       <table>
+         <tr><td>
+         <script>
+      	     alert("'<%=megredEuid%>'  <%=active_euid_text%>  '<%=euidValue%>'.");			   
+             window.location = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>';
+         </script>
+         </td>
+         </tr>
+         </table>
+     <%}%>
+<%}%>
 
-	 <script>
-		 var messages = document.getElementById("messages");
-	     messages.innerHTML= "<%=messages%>";
-		 messages.style.visibility="visible";
-	 </script>
-	   </td>
-	   </tr>
-	 <table>
-	 </div>
-  <%}%>
-<%
-  } else if (patientDetailsHandler.getParametersMap().get("LID") != null && patientDetailsHandler.getParametersMap().get("SystemCode") != null) {%><!-- if only System Code/LID is entered by the user is entered by the user-->
+<% } else if (patientDetailsHandler.getParametersMap().get("LID") != null && patientDetailsHandler.getParametersMap().get("SystemCode") != null) {%><!-- if only System Code/LID is entered by the user is entered by the user-->
 
+ 
 <%
-  String lid = (String) patientDetailsHandler.getParametersMap().get("LID");
+ // String lid = (String) patientDetailsHandler.getParametersMap().get("LID");
+ // String systemCode = (String) patientDetailsHandler.getParametersMap().get("SystemCode");
   lid = lid.replaceAll("-", "");
   EnterpriseObject eo = null;
-  String systemCode = (String) patientDetailsHandler.getParametersMap().get("SystemCode");
+  
   SystemObject so = masterControllerService.getSystemObject(systemCode, lid);
   if(so != null ) {
      eo = masterControllerService.getEnterpriseObjectForSO(so);
   }
-	
 %>
 
 <%if(eo != null) {%>
@@ -212,11 +228,19 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
     <table>
 	   <tr>
 	     <td>
-     <%
-	  
-         String messages =  bundle.getString("LID_SysCode") + " "+ localIdDesignation ;
-		// String messages =  sourceHandler.getSystemCodeDescription(systemCode) + "/"+ (String) //patientDetailsHandler.getParametersMap().get("LID") +  " Not Found. Please check the entered values.";
-     %>     	 
+  <%
+   String messages = "";
+  if(lid.trim().length() == 0 && systemCode.trim().length() == 0 && euidValue.length()== 0 ){
+         messages ="Please enter EUID or both System and" + " "+ localIdDesignation ;
+  }
+  if(systemCode.trim().length() != 0 && lid.trim().length() == 0 ){
+  messages = bundle.getString("LID_SysCode") + " "+ localIdDesignation ;
+  }
+
+  if(systemCode.trim().length() != 0 && lid.trim().length() != 0 && eo == null ){
+  messages = sourceHandler.getSystemCodeDescription(systemCode) + "/"+ (String) patientDetailsHandler.getParametersMap().get("LID") +  " Not Found. Please check the entered values.";
+  }
+ %>     	 
 
 	 <script>
 		 var messages = document.getElementById("messages");
@@ -228,11 +252,30 @@ String euidValue  = (String) patientDetailsHandler.getParametersMap().get("EUID"
 	 <table>
 	 </div>
   <%}%>
+ <%} else {%>
 
+<% if(request.getParameter("pageName") != null) { %> <!-- From the euid details page-->
+   <%if(request.getParameter("EUID") == null && request.getParameter("EUID").trim().length() == 0
+	&& lid  == null && systemCode == null ) 
+   
+    {%>
+        <div class="ajaxalert">
+           <table>
+       	   <tr>
+       	     <td>
+              <% String messages = "Please enter the EUID value"; %>     	 
+ 	            <script>
+       		      var messages = document.getElementById("messages");
+                  messages.innerHTML= "<%=messages%>";
+       		      messages.style.visibility="visible";
+       	      </script>
+       	   </td>
+       	   </tr>
+       	 <table>
+       	 </div>
+   <%}%>
 
 <%} else {%>
-
-
 <%
  results = patientDetailsHandler.performSubmit();
 
@@ -414,6 +457,8 @@ if (results != null)   {
 	 </div>
 
 <% } %>
+
+<%}%>
 
 <%}%> <!-- if not euid or systemcode/lid values entered -->
 
