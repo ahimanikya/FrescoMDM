@@ -568,6 +568,11 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                                             strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                                             afterMap.put(fieldConfig.getFullFieldName(), strVal);
                                         }
+                                    } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                                        if (value != null) {
+                                            strVal = fieldConfig.mask(value.toString());
+                                            afterMap.put(fieldConfig.getFullFieldName(), strVal);
+                                        }
                                     } else {
                                         afterMap.put(fieldConfig.getFullFieldName(), value);
                                     }
@@ -607,7 +612,7 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                                    }
                             } else if ("SystemCode".equalsIgnoreCase(fieldConfig.getName())) {
                                 
-                                   if(eoSystemObjectSelectedAfter != null) {
+                                if(eoSystemObjectSelectedAfter != null) {
                                  afterMap.put(fieldConfig.getFullFieldName(), masterControllerService.getSystemDescription(eoSystemObjectSelectedAfter.getSystemCode()));
                                 } else {
                                  afterMap.put(fieldConfig.getFullFieldName(), masterControllerService.getSystemDescription(ams.getSystemCode()));
@@ -647,6 +652,11 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                                     if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                                         if (value != null) {
                                             strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                            afterMap.put(fieldConfig.getFullFieldName(), strVal);
+                                        }
+                                    } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                                        if (value != null) {
+                                            strVal = fieldConfig.mask(value.toString());
                                             afterMap.put(fieldConfig.getFullFieldName(), strVal);
                                         }
                                     } else {
@@ -704,6 +714,11 @@ public class AssumeMatchHandler extends ScreenConfiguration {
                                 if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                                     if (value != null) {
                                         strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
+                                        afterMap.put(fieldConfig.getFullFieldName(), strVal);
+                                    }
+                                } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                                    if (value != null) {
+                                        strVal = fieldConfig.mask(value.toString());
                                         afterMap.put(fieldConfig.getFullFieldName(), strVal);
                                     }
                                 } else {

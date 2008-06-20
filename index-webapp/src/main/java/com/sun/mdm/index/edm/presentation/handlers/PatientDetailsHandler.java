@@ -413,10 +413,15 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                                        //value for the fields with VALUE LIST
                                        strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                                        fieldvalues.put(fieldConfig.getFullFieldName(), strVal);
+                                   } else if ((fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) && value != null) {
+                                       //Mask the field values accordingly
+                                       strVal = fieldConfig.mask(value.toString());
+                                       fieldvalues.put(fieldConfig.getFullFieldName(), strVal);
                                    } else if ((fieldConfig.getUserCode() != null && fieldConfig.getUserCode().length() > 0) && value != null) {
                                        //get the value if the user code is present for the fields
                                        strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
                                        fieldvalues.put(fieldConfig.getFullFieldName(), strVal);
+                                       
                                    } else {
                                        fieldvalues.put(fieldConfig.getFullFieldName(), value);
                                    }
@@ -1555,6 +1560,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
 
    
+
 
 
 

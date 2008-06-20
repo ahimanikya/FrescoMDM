@@ -29,10 +29,7 @@
  */
 package com.sun.mdm.index.edm.presentation.handlers;
 
-import com.sun.mdm.index.edm.services.configuration.ConfigManager;
-import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.FieldConfigGroup;
-import com.sun.mdm.index.edm.services.configuration.ObjectNodeConfig;
 import com.sun.mdm.index.edm.services.configuration.ScreenObject;
 import com.sun.mdm.index.edm.services.configuration.SearchScreenConfig;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
@@ -41,14 +38,11 @@ import com.sun.mdm.index.master.UserException;
 import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.epath.EPathArrayList;
-import com.sun.mdm.index.objects.epath.EPathException;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.logging.Level;
-//import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -58,49 +52,20 @@ import javax.servlet.http.HttpSession;
 import com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager;
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
+import com.sun.mdm.index.edm.util.QwsUtil;
 import java.util.ResourceBundle;
-import net.java.hulp.i18n.LocalizationSupport;
 
 public class SourceAddHandler {
 
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.SourceAddHandler");
     private static transient final Localizer mLocalizer = Localizer.get();
-    //Array list for all person fields
-    private ArrayList personFieldConfigs;
-    //Array list for all address fields
-    private ArrayList addressFieldConfigs;
-    //Array list for all person fields
-    private ArrayList phoneFieldConfigs;
-    //Array list for all person fields
-    private ArrayList aliasFieldConfigs;
-    //Array list for all person fields
-    
-    
+     
     private HashMap newSOHashMap = new HashMap();
 
     // Create fields for non updateable fields as per screen config array like LID, SYSTEM CODE and person fields
     private HashMap updateableFeildsMap =  new HashMap();    
     
-    private HashMap addressFeildsMap =  new HashMap();    
-    private HashMap phoneFeildsMap =  new HashMap();    
-    private HashMap aliasFeildsMap =  new HashMap();    
-    
-    private HashMap addressFeildsMapExtra =  new HashMap();    
-    private HashMap phoneFeildsMapExtra =  new HashMap();    
-    private HashMap aliasFeildsMapExtra =  new HashMap();    
-
-    //Hash map arraylist for single SO 
-    private ArrayList singleAddressHashMapArrayList = new ArrayList();
-    
-    //Hash map arraylist for single SO Address
-    private ArrayList singleAliasHashMapArrayList = new ArrayList();
-    
-    //Hash map arraylist for single SO Phone
-    private ArrayList singlePhoneHashMapArrayList = new ArrayList();
-    
-
-    
-    //Arraylist to display EDM driven search criteria Add screen.
+     //Arraylist to display EDM driven search criteria Add screen.
     private ArrayList addScreenConfigArray;
     
     
@@ -145,7 +110,7 @@ public class SourceAddHandler {
      * ResourceBundle
      */
     ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
-    String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
+    String exceptionMessaage = bundle.getString("EXCEPTION_MSG");
     
     /**
      * all system codes
@@ -165,14 +130,7 @@ public class SourceAddHandler {
     public String addNewSO() {
         //set the tab name to be "Add"
         session.setAttribute("tabName", "Add");
-
-//        ArrayList fieldConfigArrayList  = getAddScreenConfigArray();
-//        Iterator fieldConfigArrayIter =  fieldConfigArrayList.iterator();
-//        int totalFields = fieldConfigArrayList.size();
-//        
-           
-        //setNewSOHashMap(newFieldValuesMap); //set the root node values here
-        
+         
         //convert the masked value here to 10 digit number
         String lid = getLID().replaceAll("-", ""); 
         setLID(lid);
@@ -190,11 +148,7 @@ public class SourceAddHandler {
             //add new SO to the arraylist
             getNewSOHashMapArrayList().add(newSOHashMap);
 
-            //check the field values
-            //checkMapValues(addressFeildsMap);
-            //checkMapValues(aliasFeildsMap);
-
-
+   
             masterControllerService.setRootNodeName(screenObject.getRootObj().getName());
             //set Update user name her
             masterControllerService.setUpdateUserName((String) session.getAttribute("user"));
@@ -211,8 +165,7 @@ public class SourceAddHandler {
             String summaryInfo = masterControllerService.getSummaryInfo();
 
                         
-            //masterControllerService.createEnterpriseObject(createSystemObject);
-            //finished creating SO and EO
+             //finished creating SO and EO
             
             SystemObject newSystemObject = masterControllerService.getSystemObject(getSystemCode(), getLID());
             eoFinal  = masterControllerService.getEnterpriseObjectForSO(newSystemObject);
@@ -222,26 +175,17 @@ public class SourceAddHandler {
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,summaryInfo,summaryInfo));
         
         } catch (UserException ex) {   
-           // errorMessage = "Service Layer User Exception occurred";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
-            //Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
-            mLogger.error(mLocalizer.x("SRC001: Service Layer User Exception has occurred"),ex);
-            //session.removeAttribute("validation");
-            return this.SERVICE_LAYER_ERROR;
+             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),exceptionMessaage));
+             mLogger.error(mLocalizer.x("SRC001: Service Layer User Exception has occurred"),ex);
+             return SourceAddHandler.SERVICE_LAYER_ERROR;
         } catch (ObjectException ex) {
-            //errorMessage = "Service Layer Object Exception occurred";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
-            //Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
-            mLogger.error(mLocalizer.x("SRC002: Service Layer Object Exception occurred"),ex);
-            //session.removeAttribute("validation");
-            return this.SERVICE_LAYER_ERROR;
+             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),exceptionMessaage));
+             mLogger.error(mLocalizer.x("SRC002: Service Layer Object Exception occurred"),ex);
+             return SourceAddHandler.SERVICE_LAYER_ERROR;
         } catch (Exception ex) {
-            //errorMessage = "Service Layer Exception occurred";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
-            //Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
-            mLogger.error(mLocalizer.x("SRC003: Service Layer Exception occurred"),ex);
-            //session.removeAttribute("validation");
-            return this.SERVICE_LAYER_ERROR;
+             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),exceptionMessaage));
+             mLogger.error(mLocalizer.x("SRC003: Service Layer Exception occurred"),ex);
+             return SourceAddHandler.SERVICE_LAYER_ERROR;
         }
       
        //Insert Audit logs after adding the new System Object
@@ -254,120 +198,25 @@ public class SourceAddHandler {
                                                new Integer(screenObject.getID()).intValue(),
                                                masterControllerService.getAuditMsg());
         } catch (UserException ex) {   
-           // errorMessage = "Service Layer User Exception occurred while inserting audit log";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
-            //Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
-            mLogger.error(mLocalizer.x("SRC004: Service Layer User Exception occurred while inserting audit log"),ex);
-            return this.SERVICE_LAYER_ERROR;
+             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),exceptionMessaage));
+             mLogger.error(mLocalizer.x("SRC004: Service Layer User Exception occurred while inserting audit log"),ex);
+            return SourceAddHandler.SERVICE_LAYER_ERROR;
         } catch (ObjectException ex) {
-            //errorMessage = "Service Layer Object Exception occurred while inserting audit log";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
-            //Logger.getLogger(SourceAddHandler.class.getName()).log(Level.SEVERE, null, ex);
+             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),exceptionMessaage));
              mLogger.error(mLocalizer.x("SRC005: Service Layer Object Exception occurred while inserting audit log"),ex);
-            return this.SERVICE_LAYER_ERROR;
+            return SourceAddHandler.SERVICE_LAYER_ERROR;
         } catch (Exception ex) {
-          //  errorMessage = "Service Layer Exception occurred while inserting audit log";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
+             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),exceptionMessaage));
              mLogger.error(mLocalizer.x("SRC006: Service Layer Exception occurred while inserting audit log"),ex);
-            return this.SERVICE_LAYER_ERROR;
+             return SourceAddHandler.SERVICE_LAYER_ERROR;
         }
         session.removeAttribute("validation");
       
-        return this.ADD_SOURCE_SUCCESS;
+        return SourceAddHandler.ADD_SOURCE_SUCCESS;
     }
     
     
-    /**
-     * 
-     * @param event
-     */
-    public void addSOAddress(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "Add");
-        
-        //build array of address field hashmap and the keys for adding the new address objects
-        addressFeildsMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_BRAND_NEW);
-        addressFeildsMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Address");
-
-        //set the address arraylist for displaying in the jsp page
-        getSingleAddressHashMapArrayList().add(addressFeildsMap);
-        
-        //set the new hash map for so again for persiting
-        setNewSOHashMap(newSOHashMap);
-    }
-
-    
-    /**
-     * 
-     * @param event
-     */
-    public void removeSOAddress(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "Add");
-
-        HashMap remAddressMap = (HashMap) event.getComponent().getAttributes().get("remAddressMap");
-        //set the search type as per the form
-        this.singleAddressHashMapArrayList.remove(remAddressMap);
-    }
-
-    
-    /**
-     * 
-     * @param event
-     */
-    public void addSOPhone(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "Add");
-
-        //build array of phone field hashmap
-        phoneFeildsMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_BRAND_NEW);
-        phoneFeildsMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Phone");
-
-        //set the hashmap for SL
-        getNewSOMinorObjectsHashMapArrayList().add(phoneFeildsMap);
-        
-        //set the hashmap for displaying
-        this.singlePhoneHashMapArrayList.add(getPhoneFieldConfigs());
-    }
-    
-    public void removeSOPhone(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "Add");
-        HashMap remPhoneMap = (HashMap) event.getComponent().getAttributes().get("remPhoneMap");
-
-        //set the search type as per the form
-        this.singlePhoneHashMapArrayList.remove(remPhoneMap);
-    }
-    
-    /**
-     * 
-     * @param event
-     */
-    public void addSOAlias(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "Add");
-
-        //build array of alias field hashmap and the keys for adding the new alias objects
-        aliasFeildsMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_BRAND_NEW);
-        aliasFeildsMap.put(MasterControllerService.MINOR_OBJECT_TYPE, "Alias");
-
-        //set the alias hash map for SL
-        getNewSOMinorObjectsHashMapArrayList().add(aliasFeildsMap);
-        
-        //set the alias hash map for displaying
-        this.singleAliasHashMapArrayList.add(getAliasFeildsMap());
-    }
-
-    public void removeSOAlias(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "Add");
-        HashMap remAliasMap = (HashMap) event.getComponent().getAttributes().get("remAliasMap");
-
-        //set the search type as per the form
-        this.singleAliasHashMapArrayList.remove(remAliasMap);
-    }
-    
-    /**
+     /**
      * 
      * @return 
      */
@@ -393,16 +242,16 @@ public class SourceAddHandler {
            
         } catch (ProcessingException ex) {
            // errorMessage = "Processing Exception occurred";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),exceptionMessaage));
            mLogger.error(mLocalizer.x("SRC007: Processing Exception occurred :{0}",ex.getMessage()),ex);
-            return this.SERVICE_LAYER_ERROR;
+            return SourceAddHandler.SERVICE_LAYER_ERROR;
         } catch (UserException ex) {
             //errorMessage = "UserException Exception occurred";
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),exceptionMessaage));
             mLogger.error(mLocalizer.x("SRC008: UserException Exception occurred:{0}",ex.getMessage()),ex);
-            return this.SERVICE_LAYER_ERROR;
+            return SourceAddHandler.SERVICE_LAYER_ERROR;
         }
-        return this.VALIDATE_SOURCE_SUCCESS;
+        return SourceAddHandler.VALIDATE_SOURCE_SUCCESS;
    }
 public boolean validateSystemCodeLID(String LID,String systemCode){
         boolean validated = false;
@@ -424,119 +273,16 @@ public boolean validateSystemCodeLID(String LID,String systemCode){
            
         } catch (ProcessingException ex) {
             
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),exceptionMessaage));
             mLogger.error(mLocalizer.x("SRC071: ProcessingException has occurred:{0}",ex.getMessage()),ex);
         } catch (UserException ex) {
             
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,exceptionMessaage,exceptionMessaage));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),exceptionMessaage));
            mLogger.error(mLocalizer.x("SRC072: UserException  has occurred:{0}",ex.getMessage()),ex);
         }
         return validated;
    }    
-    public ArrayList getAddressFieldConfigs() {
-        ArrayList newArrayList = new ArrayList();
-        try {
-            ConfigManager.init();
-            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig("Address");
-            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
-
-            //Build Person Epath Arraylist
-            for (int i = 0; i < allFeildConfigs.length; i++) {
-                FieldConfig fieldConfig = allFeildConfigs[i];
-                newArrayList.add(fieldConfig);
-            }
-
-        } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC009: Failed to get Field Config:{0}",ex.getMessage()),ex);
-        }
-
-        addressFieldConfigs = newArrayList;//store all the fields in the arraylist
-
-        return addressFieldConfigs;
-    }
-
-    public void setAddressFieldConfigs(ArrayList addressFieldConfigs) {
-        this.addressFieldConfigs = addressFieldConfigs;
-    }
-
-    public ArrayList getPhoneFieldConfigs() {
-        ArrayList newArrayList = new ArrayList();
-        try {
-            ConfigManager.init();
-            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig("Phone");
-            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
-
-            //Build Person Epath Arraylist
-            for (int i = 0; i < allFeildConfigs.length; i++) {
-                FieldConfig fieldConfig = allFeildConfigs[i];
-                newArrayList.add(fieldConfig);
-            }
-
-        } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC010: Failed to get Field Config :{0}",ex.getMessage()),ex);
-        }
-
-        phoneFieldConfigs = newArrayList;//store all the fields in the arraylist
-        return phoneFieldConfigs;
-    }
-
-    public void setPhoneFieldConfigs(ArrayList phoneFieldConfigs) {
-        this.phoneFieldConfigs = phoneFieldConfigs;
-    }
-
-    public ArrayList getAliasFieldConfigs() {
-        ArrayList newArrayList = new ArrayList();
-        try {
-            ConfigManager.init();
-            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig("Alias");
-            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
-
-            //Build Person Epath Arraylist
-            for (int i = 0; i < allFeildConfigs.length; i++) {
-                FieldConfig fieldConfig = allFeildConfigs[i];
-                newArrayList.add(fieldConfig);
-            }
-
-        } catch (Exception ex) {
-            mLogger.error(mLocalizer.x("SRC011: Failed to get Field Config:{0}",ex.getMessage()),ex);
-        }
-
-        aliasFieldConfigs = newArrayList;//store all the fields in the arraylist
-        return aliasFieldConfigs;
-    }
-
-    public void setAliasFieldConfigs(ArrayList aliasFieldConfigs) {
-        this.aliasFieldConfigs = aliasFieldConfigs;
-    }
-
-    public ArrayList getPersonFieldConfigs() {
-        ArrayList newArrayList = new ArrayList();
-        try {
-            ConfigManager.init();
-            ObjectNodeConfig personObjectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig("Person");
-            FieldConfig[] allFeildConfigs = personObjectNodeConfig.getFieldConfigs();
-
-            //Build Person Epath Arraylist
-            for (int i = 0; i < allFeildConfigs.length; i++) {
-                FieldConfig fieldConfig = allFeildConfigs[i];
-                if (!"Person.EUID".equalsIgnoreCase(fieldConfig.getFullFieldName())) {
-                    newArrayList.add(fieldConfig);
-                }
-            }
-
-        } catch (Exception ex) {
-             mLogger.error(mLocalizer.x("SRC012: Failed to get Field Config :{0}",ex.getMessage()),ex);
-        }
-
-        personFieldConfigs = newArrayList;//store all the fields in the arraylist
-        return personFieldConfigs;
-    }
-
-    public void setPersonFieldConfigs(ArrayList personFieldConfigs) {
-        this.personFieldConfigs = personFieldConfigs;
-    }
-
-    public HashMap getNewSOHashMap() {
+   public HashMap getNewSOHashMap() {
         return newSOHashMap;
     }
 
@@ -603,31 +349,7 @@ public boolean validateSystemCodeLID(String LID,String systemCode){
         this.addScreenConfigArray = addScreenConfigArray;
     }
 
-    public HashMap getAddressFeildsMap() {
-        return addressFeildsMap;
-    }
-
-    public void setAddressFeildsMap(HashMap addressFeildsMap) {
-        this.addressFeildsMap = addressFeildsMap;
-    }
-
-    public HashMap getPhoneFeildsMap() {
-        return phoneFeildsMap;
-    }
-
-    public void setPhoneFeildsMap(HashMap phoneFeildsMap) {
-        this.phoneFeildsMap = phoneFeildsMap;
-    }
-
-    public HashMap getAliasFeildsMap() {
-        return aliasFeildsMap;
-    }
-
-    public void setAliasFeildsMap(HashMap aliasFeildsMap) {
-        this.aliasFeildsMap = aliasFeildsMap;
-    }
-
-    public ArrayList getNewSOHashMapArrayList() {
+     public ArrayList getNewSOHashMapArrayList() {
         return newSOHashMapArrayList;
     }
 
@@ -699,56 +421,7 @@ public boolean validateSystemCodeLID(String LID,String systemCode){
         this.SystemCode = SystemCode;
     }
 
-    public HashMap getAddressFeildsMapExtra() {
-        return addressFeildsMapExtra;
-    }
-
-    public void setAddressFeildsMapExtra(HashMap addressFeildsMapExtra) {
-        this.addressFeildsMapExtra = addressFeildsMapExtra;
-    }
-
-    public HashMap getPhoneFeildsMapExtra() {
-        return phoneFeildsMapExtra;
-    }
-
-    public void setPhoneFeildsMapExtra(HashMap phoneFeildsMapExtra) {
-        this.phoneFeildsMapExtra = phoneFeildsMapExtra;
-    }
-
-    public HashMap getAliasFeildsMapExtra() {
-        return aliasFeildsMapExtra;
-    }
-
-    public void setAliasFeildsMapExtra(HashMap aliasFeildsMapExtra) {
-        this.aliasFeildsMapExtra = aliasFeildsMapExtra;
-    }
-
-
-    public ArrayList getSingleAddressHashMapArrayList() {
-        return singleAddressHashMapArrayList;
-    }
-
-    public void setSingleAddressHashMapArrayList(ArrayList singleAddressHashMapArrayList) {
-        this.singleAddressHashMapArrayList = singleAddressHashMapArrayList;
-    }
-
-    public ArrayList getSingleAliasHashMapArrayList() {
-        return singleAliasHashMapArrayList;
-    }
-
-    public void setSingleAliasHashMapArrayList(ArrayList singleAliasHashMapArrayList) {
-        this.singleAliasHashMapArrayList = singleAliasHashMapArrayList;
-    }
-
-    public ArrayList getSinglePhoneHashMapArrayList() {
-        return singlePhoneHashMapArrayList;
-    }
-
-    public void setSinglePhoneHashMapArrayList(ArrayList singlePhoneHashMapArrayList) {
-        this.singlePhoneHashMapArrayList = singlePhoneHashMapArrayList;
-    }
-
-    
+     
     private void setLidAndSystemCodes(ArrayList minorArrayList) {
 
         for (int i = 0; i < minorArrayList.size(); i++) {
@@ -875,11 +548,7 @@ public boolean validateSystemCodeLID(String LID,String systemCode){
         session.setAttribute("keyFunction", "editSO");
    }
     
-    public void setEditSingleSOHashMap(HashMap editSingleSOHashMap) {
-        editSingleSOHashMap = editSingleSOHashMap;
-    }    
-    
-   public String updateSO(){
+    public String updateSO(){
         // set the tab name to be view/edit
         session.setAttribute("tabName", "View/Edit");
 
@@ -932,8 +601,9 @@ public boolean validateSystemCodeLID(String LID,String systemCode){
             session.setAttribute("singleSystemObjectLID", updatedSystemObject);
             session.setAttribute("keyFunction", "editSO");
         } catch (Exception ex) {
-           // Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
             mLogger.error(mLocalizer.x("SRC073: Exception has occurred:{0}",ex.getMessage()),ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,ex.getMessage(),QwsUtil.getRootCause(ex).getMessage()));
+            return SERVICE_LAYER_ERROR;
         }
         
         return UPDATE_SUCCESS;

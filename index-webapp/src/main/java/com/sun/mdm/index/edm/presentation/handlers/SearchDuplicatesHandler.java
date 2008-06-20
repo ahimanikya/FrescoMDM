@@ -1251,6 +1251,12 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
                          // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
                         //value
                         resultHashMap.put(fieldConfig.getFullFieldName(), strVal);
+                    } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                        if (value != null) {
+                            //Mask the value as per the masking 
+                            value = fieldConfig.mask(value.toString());
+                            resultHashMap.put(fieldConfig.getFullFieldName(), value);
+                        }
                     } else {
                         resultHashMap.put(fieldConfig.getFullFieldName(), value);
                     }
@@ -1459,5 +1465,6 @@ public EPathArrayList retrieveEPathsResultsFields(ArrayList arlResultsConfig) th
 }        
 
 }
+
 
 

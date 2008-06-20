@@ -74,27 +74,8 @@ public class SourceEditHandler {
     //Hash map for single SO  for view
     private ArrayList singleSOHashMapArrayList = new ArrayList();
 
-    //Hash map arraylist for single SO 
-    private ArrayList singleAddressHashMapArrayList = new ArrayList();
-    
-    //Hash map arraylist for single SO Address
-    private ArrayList singleAliasHashMapArrayList = new ArrayList();
-    
-    //Hash map arraylist for single SO Phone
-    private ArrayList singlePhoneHashMapArrayList = new ArrayList();
-    
-    
-    //Hash map for singl SO  for EDITING
+     //Hash map for singl SO  for EDITING
     private HashMap editSingleSOHashMap = new HashMap();
-
-    //Hash map for single SO Address  for EDITING
-    private HashMap editSoAddressHashMap = new HashMap();
-    
-    //Hash map for SO Phone  for EDITING
-    private HashMap editSoPhoneHashMap = new HashMap();
-
-    //Hash map for SO Alias  for EDITING
-    private HashMap editSoAliasHashMap = new HashMap();
     
     public static final String UPDATE_SUCCESS = "UPDATE SUCCESS";
     
@@ -169,16 +150,13 @@ public class SourceEditHandler {
                 
             //set address array list of hasmap for editing
             ArrayList addressMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, sourceHandler.buildSystemObjectEpaths("Address"), "Address",masterControllerService.MINOR_OBJECT_UPDATE);
-            this.setSingleAddressHashMapArrayList(addressMapArrayList);
-
+             
             //set phone array list of hasmap for editing
             ArrayList phoneMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, sourceHandler.buildSystemObjectEpaths("Phone"), "Phone",masterControllerService.MINOR_OBJECT_UPDATE);
-            this.setSinglePhoneHashMapArrayList(phoneMapArrayList);
-           
+             
             //set alias array list of hasmap for editing
             ArrayList aliasMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(singleSystemObjectEdit, sourceHandler.buildSystemObjectEpaths("Alias"), "Alias",masterControllerService.MINOR_OBJECT_UPDATE);
-            this.setSingleAliasHashMapArrayList(aliasMapArrayList);
-           
+             
             session.setAttribute("keyFunction", "editSO");
         } catch (ObjectException ex) {
             //Logger.getLogger(SourceHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -189,79 +167,6 @@ public class SourceEditHandler {
         }
    }
 
-    /**
-     * 
-     * @param event
-     */
-    public void addSOAddress(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "View/Edit");
-        //set the search type as per the form
-        this.singleAddressHashMapArrayList.add(this.getEditSoAddressHashMap());
-    }
-    
-    /**
-     * 
-     * @param event
-     */
-    public void removeSOAddress(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "View/Edit");
-        HashMap remAddressMap = (HashMap) event.getComponent().getAttributes().get("remAddressMap");
-
-        //set the search type as per the form
-        this.singleAddressHashMapArrayList.remove(remAddressMap);
-    }
-
-    
-    /**
-     * 
-     * @param event
-     */
-    public void addSOPhone(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "View/Edit");
-        //set the search type as per the form
-        this.singlePhoneHashMapArrayList.add(this.getEditSoPhoneHashMap());
-    }
-    
-    
-    /**
-     * 
-     * @param event
-     */
-    public void removeSOPhone(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "View/Edit");
-        HashMap remPhoneMap = (HashMap) event.getComponent().getAttributes().get("remPhoneMap");
-        //set the search type as per the form
-        this.singlePhoneHashMapArrayList.remove(remPhoneMap);
-    }
-    
-    /**
-     * 
-     * @param event
-     */
-    public void addSOAlias(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "View/Edit");
-        //set the search type as per the form
-        this.singleAliasHashMapArrayList.add(this.getEditSoAliasHashMap());
-    }
-
-    /**
-     * 
-     * @param event
-     */
-    public void removeSOAlias(ActionEvent event) {
-        //set the tab name to be "Add"
-        session.setAttribute("tabName", "View/Edit");
-        HashMap remAliasMap = (HashMap) event.getComponent().getAttributes().get("remAliasMap");
-
-        //set the search type as per the form
-        this.singleAliasHashMapArrayList.remove(remAliasMap);
-    }
-    
     
     public ArrayList getSingleSOHashMapArrayList() {
         return singleSOHashMapArrayList;
@@ -270,31 +175,7 @@ public class SourceEditHandler {
     public void setSingleSOHashMapArrayList(ArrayList singleSOHashMapArrayList) {
         this.singleSOHashMapArrayList = singleSOHashMapArrayList;
     }
-
-    public ArrayList getSingleAddressHashMapArrayList() {
-        return singleAddressHashMapArrayList;
-    }
-
-    public void setSingleAddressHashMapArrayList(ArrayList singleAddressHashMapArrayList) {
-        this.singleAddressHashMapArrayList = singleAddressHashMapArrayList;
-    }
-
-    public ArrayList getSingleAliasHashMapArrayList() {
-        return singleAliasHashMapArrayList;
-    }
-
-    public void setSingleAliasHashMapArrayList(ArrayList singleAliasHashMapArrayList) {
-        this.singleAliasHashMapArrayList = singleAliasHashMapArrayList;
-    }
-
-    public ArrayList getSinglePhoneHashMapArrayList() {
-        return singlePhoneHashMapArrayList;
-    }
-
-    public void setSinglePhoneHashMapArrayList(ArrayList singlePhoneHashMapArrayList) {
-        this.singlePhoneHashMapArrayList = singlePhoneHashMapArrayList;
-    }
-
+ 
 
     public HashMap getEditSingleSOHashMap() {
         return editSingleSOHashMap;
@@ -303,29 +184,5 @@ public class SourceEditHandler {
     public void setEditSingleSOHashMap(HashMap editSingleSOHashMap) {
         this.editSingleSOHashMap = editSingleSOHashMap;
     }
-
-    public HashMap getEditSoAddressHashMap() {
-        return editSoAddressHashMap;
-    }
-
-    public void setEditSoAddressHashMap(HashMap editSoAddressHashMap) {
-        this.editSoAddressHashMap = editSoAddressHashMap;
-    }
-
-    public HashMap getEditSoPhoneHashMap() {
-        return editSoPhoneHashMap;
-    }
-
-    public void setEditSoPhoneHashMap(HashMap editSoPhoneHashMap) {
-        this.editSoPhoneHashMap = editSoPhoneHashMap;
-    }
-
-    public HashMap getEditSoAliasHashMap() {
-        return editSoAliasHashMap;
-    }
-
-    public void setEditSoAliasHashMap(HashMap editSoAliasHashMap) {
-        this.editSoAliasHashMap = editSoAliasHashMap;
-    }
-
+ 
 }
