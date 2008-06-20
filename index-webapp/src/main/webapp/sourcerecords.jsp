@@ -93,7 +93,7 @@
                 setEditIndex("-1");
 				document.getElementById(thisDiv).style.visibility = 'hidden';
 				document.getElementById(thisDiv).style.display  = 'none';
-                document.getElementById(minorObject+'buttonspan').innerHTML = '<h:outputText value="{msgs.source_rec_save_but}"/> '+ minorObject;
+                document.getElementById(minorObject+'buttonspan').innerHTML = '<h:outputText value="#{msgs.source_rec_save_but}"/> '+ minorObject;
 		   }
 	
 	       function accumilateMinorObjectFieldsOnBlurLocal(objectType,field,fullFieldName,mask,valueType) {
@@ -664,7 +664,7 @@
 																					  <td colspan="2">
                                                                                            <nobr>
                                                                                                 <a title=" <h:outputText value="#{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/>"  href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>InnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/editminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<%=singleSystemObjectLID.getLID()%>&SYS=<%=singleSystemObjectLID.getSystemCode()%>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>NewDiv',event)">
-                                                                                                     <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/> </span>
+                                                                                                     <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/> </span>
                                                                                                  </a>     
                                                                                                   <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('#{childNodesName}InnerForm');setEditIndex('-1')">
                                                                                                        <span><h:outputText value="#{msgs.clear_button_label}"/></span>
@@ -1307,7 +1307,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 					  <td>
                             <nobr>
                                 <a title="<h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp; <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:getFormValues('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<h:outputText value="#{sourceAddHandler.LID}"/>&SYS=<h:outputText value="#{sourceAddHandler.SystemCode}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>AddNewSODiv',event)">
-                                        <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/> </span>
+                                        <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/> </span>
                                  </a>     
                                   <h:outputLink  title ="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('#{childNodesName}AddNewSOInnerForm');setEditIndex('-1')">
                                           <span><h:outputText value="#{msgs.clear_button_label}"/></span>

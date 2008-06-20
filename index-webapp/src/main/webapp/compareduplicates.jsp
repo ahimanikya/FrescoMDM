@@ -35,6 +35,11 @@
 <%@ page import="java.util.Iterator"  %>
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
+<%
+ double rand = java.lang.Math.random();
+ String URI = request.getRequestURI();
+  URI = URI.substring(1, URI.lastIndexOf("/"));
+ %>
 
 <f:view>
    
@@ -60,15 +65,24 @@
         <script type="text/javascript" src="./scripts/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
         <script type="text/javascript" src="./scripts/yui/element/element-beta.js"></script>
         <script type="text/javascript" src="./scripts/yui/tabview/tabview.js"></script>
-            
+		<script type="text/javascript" >
+           var rand = "";
+           function setRand(thisrand)  {
+ 	        rand = thisrand;
+           }
+           var editIndexid = "-1";
+           function setEOEditIndex(editIndex)   {
+				editIndexid = editIndex;
+	   	   }
+         </script>
         </head>
         <title><h:outputText value="#{msgs.application_heading}" /></title>
         <body>
             <%@include file="./templates/header.jsp"%>
             <div id="mainContent" style="overflow:hidden;">
-                <div id="basicSearch" class="basicSearch">
+                <div id="basicSearch" class="basicSearch" style="visibility:visible;display:block;">
                     <h:form id="potentialDupBasicForm">
-                        <table border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                        <table border="0" cellpadding="0" cellspacing="0" width="90%" align="left"> 
                             <tr>
                                 <td align="left">
                                     <h:outputText value="#{msgs.datatable_euid_text}"/>
@@ -76,14 +90,14 @@
                                    <td align="left">
                                     <h:inputText   
                                         id="euidField"
-                                        title="euidField"
+                                        title="EUID"
                                         value="#{PatientDetailsHandler.singleEUID}" 
-                                        maxlength="10"/>
+								        maxlength="#{SourceHandler.euidLength}" 
+										/>
                                 </td>
                                 <td>                                    
-                                    <h:commandLink title="#{msgs.search_button_label}" styleClass="button" action="#{PatientDetailsHandler.singleEuidSearch}">  
-                                        <span><h:outputText  value="#{msgs.search_button_label}"/> </span>
-                                    </h:commandLink>                                     
+                                     <a  title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('potentialDupBasicForm');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?pageName=euiddetails&random='+rand+'&'+queryStr,'outputdiv','')"><span><h:outputText value="#{msgs.search_button_label}"/></span></a>
+
                                     <h:commandLink  title="#{msgs.Advanced_search_text}"  styleClass="button" action="#{NavigationHandler.toDuplicateRecords}">  
                                         <span>
                                             <img src="./images/down-chevron-button.png" border="0" alt="<h:outputText  value="#{msgs.Advanced_search_text}"/>"/>
@@ -98,6 +112,12 @@
                                            <h:messages  warnClass="warningMessages" infoClass="infoMessages" errorClass="errorMessages"  fatalClass="errorMessages" layout="list" /> 
                                 </td>
                             </tr>
+                             <tr>
+                              <td colspan="2"><div style="color:red;" id="messages"></div></td>
+                             </tr> 
+				             <tr>
+                                <td colspan="2"><div id="outputdiv"></div></td>
+                             </tr> 
                         </table>
                     </h:form>
 

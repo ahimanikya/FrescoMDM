@@ -18,7 +18,7 @@
    String reportsText = bundle.getString("dashboard_reports_table_text");
    String compareText = bundle.getString("dashboard_compareeuid_table_text");
 %>
-    
+     
 <%@ page import="javax.el.*"  %>
 <%@ page import="javax.el.ValueExpression" %>
 
@@ -34,7 +34,14 @@
        <%@include file="./templates/header.jsp"%>
        
 <div id="mainContent">  <!-- Main content -->
-<table border="0" cellpadding="3" cellspacing="1">
+<table border="0" cellpadding="5" cellspacing="5">
+ <tr>
+    <td valign="top">&nbsp;</td>
+    <td valign="top" align="left" > 
+       <h:messages warnClass="warningMessages" infoClass="infoMessages" errorClass="errorMessages"  fatalClass="errorMessages" layout="list" /> 
+ 	</td>
+  </tr>
+
   <tr>
     
    <%HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -76,36 +83,35 @@
        <td>
        <div class="dashboardHeadMessage"><h:outputLabel for="#{msgs.dashboard_quicksearch_table_text}" value="#{msgs.dashboard_quicksearch_table_text}"/></div> 
         <div id="qs" class="dashboardSummaryQS"> 
-            <table border="0" cellspacing="0" cellpadding="4">
+            <table border="0" cellspacing="4" cellpadding="4" width="100%">
                 <!--Caption included-->
                 <!--Caption class = "euidHeadMessage">Quick Search</Caption-->
                 <h:form id="QuickSearchForm">
-                <tr><td> &nbsp;</td></tr>
+                <tr><td colspan="2"> &nbsp;</td></tr>
 
                 <tr>
                     <td> 
-                        <span><h:outputText value="#{msgs.dashboard_quick_search_text}" /></span>
+                        <h:outputText value="#{msgs.dashboard_quick_search_text}" />
                     </td>
-                    <td> <h:inputText id="euidField" value="#{DashboardHandler.euid1}"  maxlength="#{SourceHandler.euidLength}" /> </td>
+                    <td> <h:inputText id="euidField" value="#{DashboardHandler.singleEuid}"  maxlength="#{SourceHandler.euidLength}" /> </td>
                 </tr>
                 <tr>
                     <td colspan="2">&nbsp;</td>
                 </tr>
-
                 <tr>
                       <td>
-                          <h:commandLink title="#{msgs.dashboard_search_but_text}" action="#{DashboardHandler.lookupEuid1}">
-                              <h:outputText value="#{msgs.dashboard_search_but_text}" />
-                          </h:commandLink> 
-                      </td>
-                      <td align="right">
-                       <h:commandLink  id="patlink" 
+                       <h:commandLink  id="patlink"
 					                   title="#{msgs.dashboard_advsearch_but_text}"
                                        rendered="#{Operations.EO_SearchViewSBR}"  
                                        action="#{NavigationHandler.toPatientDetails}">
                              <h:outputText value="#{msgs.dashboard_advsearch_but_text}" />
                        </h:commandLink>                               
 
+                      </td>
+                      <td>
+                          <h:commandLink title="#{msgs.dashboard_search_but_text}" styleClass="button" action="#{DashboardHandler.singleEuidSearch}">
+                              <span><h:outputText value="#{msgs.dashboard_search_but_text}" /></span>
+                          </h:commandLink> 
                       </td>
                 </tr>
                </h:form>                
@@ -123,6 +129,12 @@
         }%>
    
    
+   
+   
+  
+      
+   
+     
 
    <%if(dashboardHandler.showSubscreenTab(reportsText) && ((operations.isReports_MergedRecords() || 
                 operations.isReports_DeactivatedEUIDs() ||
@@ -133,7 +145,7 @@
     <div class="dashboardHeadMessage"><h:outputLabel for="#{msgs.dashboard_reports_table_text}" value="#{msgs.dashboard_reports_table_text}"/></div>
         <div id="dashboardSummary" class="dashboardSummary">
             <h:form>
-            <table border="0" cellspacing="0" cellpadding="4"> 
+            <table border="0" cellspacing="4" cellpadding="4"> 
             <!--Caption Included-->            
                 <!--Caption class = "euidHeadMessage"> Reports </caption-->
            <tr>
@@ -206,71 +218,43 @@
         
         <div id="qs" class="dashboardSummaryQS"> 
             <h:form id="compareform">
-            <table border="0" cellspacing="0" cellpadding="4"> 
+            <table border="0" cellspacing="4" cellpadding="4" width="100%"> 
             <!--Caption included-->
                 <!--Caption class = "euidHeadMessage"> Compare EUID's </caption-->                
                 <tr>
-                    <td><h:inputText  id="euid1Field" value="#{DashboardHandler.euid1}" maxlength="#{SourceHandler.euidLength}" /></td>
-                    <td>
-                        <nobr>
-                            <h:commandLink title="#{msgs.dashboard_lookup_euid1}" action="#{DashboardHandler.lookupEuid1}">  
-                                 <h:outputText value="#{msgs.dashboard_lookup_euid1}"/> 
-                            </h:commandLink>                        
-                        </nobr>
-                    </td>
-                </tr>
-                <tr><td><h:inputText  id="euid2Field" value="#{DashboardHandler.euid2}" maxlength="#{SourceHandler.euidLength}" />
-                    <td>
-                        <nobr>
-                            <h:commandLink  title="#{msgs.dashboard_lookup_euid2}" action="#{DashboardHandler.lookupEuid2}">  
-                                <h:outputText value="#{msgs.dashboard_lookup_euid2}"/> 
-                            </h:commandLink>                        
-                        </nobr>
-                    </td>
-                </tr>
-                <tr><td><h:inputText  id="euid3Field" value="#{DashboardHandler.euid3}" maxlength="#{SourceHandler.euidLength}" /></td>
-                    <td>
-                        <nobr>
-                            <h:commandLink  title="#{msgs.dashboard_lookup_euid3}" action="#{DashboardHandler.lookupEuid3}">  
-                                 <h:outputText value="#{msgs.dashboard_lookup_euid3}"/> 
-                            </h:commandLink>                        
-                        </nobr>
-                    </td>
+                     <td><h:outputText value="#{msgs.EUID1}"/></td>
+                    <td><h:inputText  id="euid1Field" title="EUID 1" value="#{DashboardHandler.euid1}" maxlength="#{SourceHandler.euidLength}" /></td>
+                     <td>&nbsp;</td>
+               </tr>
+                <tr>
+                     <td><h:outputText value="#{msgs.EUID2}"/></td>
+				    <td><h:inputText  id="euid2Field" title="EUID 2" value="#{DashboardHandler.euid2}" maxlength="#{SourceHandler.euidLength}" />
+                    <td>&nbsp;</td>
                 </tr>
                 <tr>
-                    <td><h:inputText  id="euid4Field" value="#{DashboardHandler.euid4}" maxlength="#{SourceHandler.euidLength}" /></td>
-                    <td align="right" width="66px">
-                        <nobr>
-                            <h:commandLink title="#{msgs.dashboard_lookup_euid4}" action="#{DashboardHandler.lookupEuid4}">  
-                                  <h:outputText value="#{msgs.dashboard_lookup_euid4}"/> 
-                            </h:commandLink>
-                        </nobr>
-                    </td>
-                    <td align="right" width="70px">
-                        <nobr>
-                            <h:commandLink  title="#{msgs.dashboard_compare_but_text}" action="#{DashboardHandler.compareEuidSearch}">  
-                                <h:outputText value="#{msgs.dashboard_compare_but_text}"/>
+                    <td><h:outputText value="#{msgs.EUID3}"/></td>
+				    <td><h:inputText  id="euid3Field" title="EUID 3" value="#{DashboardHandler.euid3}" maxlength="#{SourceHandler.euidLength}" /></td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td><h:outputText value="#{msgs.EUID4}"/></td>
+                    <td><h:inputText  id="euid4Field"  title="EUID 4"  value="#{DashboardHandler.euid4}" maxlength="#{SourceHandler.euidLength}" /></td>
+                    <td align="left">
+                             <h:commandLink  title="#{msgs.dashboard_compare_but_text}" action="#{DashboardHandler.compareEuidSearch}" styleClass="button">  
+                                <span><h:outputText value="#{msgs.dashboard_compare_but_text}"/></span>
                            </h:commandLink>
-                        </nobr>
                     </td>
                 </tr>
             </table>
-                        <table>
-                            <tr>
-                                <td valign="top" align="left" width="50%">
-                                    <h:messages  warnClass="warningMessages" infoClass="infoMessages" errorClass="errorMessages"  fatalClass="errorMessages" layout="list" />    
-                                </td>
-                            </tr>
-                        </table>   
             
             </h:form>
         </div>
 	<%}%>
    </td>
   </tr>
-  
 </table>
 </div> <!-- End Main Content -->
+
 <script>
     function setFocusOnFirstField(formName) {
          if( formName.elements[0]!=null) {
@@ -287,6 +271,7 @@
       }         
     }
 </script>                
-        </body>
+
+    </body>
     </html>
 </f:view>

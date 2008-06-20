@@ -68,6 +68,10 @@
             <script type="text/javascript" src="scripts/yui4jsf/animation/animation-min.js"></script>                        
 
 		   <script type="text/javascript" >
+           var rand = "";
+           function setRand(thisrand)  {
+ 	        rand = thisrand;
+           }
   			 var editIndexid = "-1";
              function closeTree()    {                            
                     document.getElementById('tree').style.visibility='hidden';
@@ -96,25 +100,34 @@
             <%@include file="./templates/header.jsp"%>
             <div id="mainContent1">
             <div id="ajaxContent">
-                <div id="basicSearch" class="basicSearch" style="visibility:visible;display:block;">
-                        <table border="0" cellpadding="0" cellspacing="0" width="90%" align="left"> 
+                <div id="basicSearch" class="basicSearch" >
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%"> 
                             <tr>
                               <h:form id="potentialDupBasicForm">
-                                <td align="left">
+                                <td>
                                     <h:outputText value="#{msgs.datatable_euid_text}"/>
                                 </td>
-                                   <td align="left">
+                                <td>
+								<%
+								        ValueExpression requestEuidVE = null ;
+										if( request.getParameter("euid") != null )  {
+											String euidString  = request.getParameter("euid");
+											System.out.println("11111" + euidString);
+											requestEuidVE = ExpressionFactory.newInstance().createValueExpression(euidString, euidString.getClass());
+										}
+
+								%>
                                          <h:inputText    id="euidField"
                                                          label="EUID"  
 														 title="EUID"
 												         maxlength="#{SourceHandler.euidLength}" 
-                                                         value="#{PatientDetailsHandler.singleEUID}" />
+                                                         value="<%=requestEuidVE%>" /> 
                                 </td>
                                 <td>                                    
-                                    <h:commandLink title="#{msgs.search_button_label}" styleClass="button" action="#{PatientDetailsHandler.singleEuidSearch}">  
-                                        <span><h:outputText  value="#{msgs.search_button_label}"/> </span>
-                                    </h:commandLink>                                     
-                                    <h:commandLink  title="#{msgs.Advanced_search_text}" styleClass="button" action="#{NavigationHandler.toPatientDetails}">  
+                                    <a  title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('potentialDupBasicForm');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?pageName=euiddetails&random='+rand+'&'+queryStr,'outputdiv','')"><span><h:outputText value="#{msgs.search_button_label}"/></span></a>
+							    </td>
+                                <td>                                    
+                                     <h:commandLink  title="#{msgs.Advanced_search_text}" styleClass="button" action="#{NavigationHandler.toPatientDetails}">  
                                         <span>
                                             <img src="./images/down-chevron-button.png" border="0" alt="Advanced search"/>
                                             <h:outputText  value="#{msgs.Advanced_search_text}"/>
@@ -131,19 +144,21 @@
   				              </FORM>
 							 </td>
                             </tr>
-                        </table>
-                </div>
-				<table>
-				             <tr>
-                                <td>
+ 				             <tr>
+                                <td colspan="5">
                                     <h:messages styleClass="errorMessages"  layout="list" />
                                 </td>
                             </tr>
+                            <tr>
+                              <td colspan="5"><div style="color:red;" id="messages"></div></td>
+                             </tr> 
+				             <tr>
+                                <td colspan="5"><div id="outputdiv"></div></td>
+                             </tr> 
 				</table>
-
-                <br>       
-				                                            <%
-            ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
+               </div>
+ 		 <%
+			ScreenObject objScreenObject = (ScreenObject) session.getAttribute("ScreenObject");
             CompareDuplicateManager compareDuplicateManager = new CompareDuplicateManager();
 
             //EPathArrayList ePathArrayList = compareDuplicateManager.retrieveEPathArrayList(objScreenObject);
