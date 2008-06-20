@@ -1050,7 +1050,7 @@ public class CompareDuplicateManager {
             mLogger.severe(mLocalizer.x("CPD020: Could not retrieve an EnterpriseObject: {0}", ex.getMessage()));
             return "Invalid EUID";
         } catch (UserException ex) {
-            mLogger.severe(mLocalizer.x("CPD020: Could not retrieve an EnterpriseObject: {0}", ex.getMessage()));
+            mLogger.severe(mLocalizer.x("CPD021: Could not retrieve an EnterpriseObject: {0}", ex.getMessage()));
             return "Invalid EUID";
         }
         return mergedEuid;
@@ -1066,9 +1066,9 @@ public class CompareDuplicateManager {
             enterpriseObject = QwsController.getMasterController().getEnterpriseObject(systemObjectPK);
             eoStatus = enterpriseObject.getStatus();
         } catch (ProcessingException ex) {
-            mLogger.severe(mLocalizer.x("CPD021: Could not retrieve an EnterpriseObject Status for SystemObject : {0}", ex.getMessage()));
+            mLogger.severe(mLocalizer.x("CPD022: Could not retrieve an EnterpriseObject Status for SystemObject : {0}", ex.getMessage()));
         } catch (UserException ex) {
-            mLogger.severe(mLocalizer.x("CPD021: Could not retrieve an EnterpriseObject: Status for SystemObject : {0}", ex.getMessage()));
+            mLogger.severe(mLocalizer.x("CPD023: Could not retrieve an EnterpriseObject: Status for SystemObject : {0}", ex.getMessage()));
         } 
         return eoStatus;
 
