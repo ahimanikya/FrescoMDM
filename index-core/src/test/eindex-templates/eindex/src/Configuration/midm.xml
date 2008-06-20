@@ -469,8 +469,6 @@
         <validation-service-jndi-name>ejb/PersonCodeLookup</validation-service-jndi-name>
         <usercode-jndi-name>ejb/PersonUserCodeLookup</usercode-jndi-name>
         <reportgenerator-jndi-name>ejb/PersonReportGenerator</reportgenerator-jndi-name>
-        <debug-flag>true</debug-flag>
-        <debug-dest>console</debug-dest>
         <enable-security>true</enable-security>
         <object-sensitive-plug-in-class></object-sensitive-plug-in-class>
     </impl-details>
