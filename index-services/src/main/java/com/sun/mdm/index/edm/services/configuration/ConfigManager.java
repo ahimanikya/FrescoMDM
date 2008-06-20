@@ -171,8 +171,6 @@ public class ConfigManager implements java.io.Serializable {
     private String userCodeLookupJndi;
     private String reportGeneratorJndi;
     private boolean hasReportGeneratorJndi = false;
-    private String debugFlag;
-    private String debugDest;
     private ObjectSensitivePlugIn security = null;
     
     
@@ -1662,8 +1660,6 @@ public class ConfigManager implements java.io.Serializable {
                     reportGeneratorJndi = reportGeneratorJndiString;
                     hasReportGeneratorJndi = true;
                 }
-                debugFlag = NodeUtil.getChildNodeText(element, "debug-flag");
-                debugDest = NodeUtil.getChildNodeText(element,"debug-dest");
 
                 // load the security class if any
                 String securityClassName = null;
@@ -1720,25 +1716,6 @@ public class ConfigManager implements java.io.Serializable {
         return userCodeLookupJndi;
     }
     
-    /**
-     * @return the debug flag
-     */
-    public String getDebugFlag() {
-        return debugFlag;
-    }
-    /**
-     * @return the debug flag
-     */
-    public boolean getDebug() {
-        return Boolean.valueOf(debugFlag).booleanValue();
-    }
-    /**
-     * @return the debug destination string
-     */
-    public String getDebugDest() {
-        return debugDest;
-    }
-
 
     /**
      * @return the handle to the security plug-in object
