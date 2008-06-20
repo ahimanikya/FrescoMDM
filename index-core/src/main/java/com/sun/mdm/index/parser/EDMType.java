@@ -1719,6 +1719,7 @@ public class EDMType {
                         mImplDetails.reportgeneratorJndiName + 
                         Utils.endTag(mTagReportgeneratorJndiName));
         
+        /**
         buffer.append(Utils.TAB2 + Utils.startTagNoLine(mTagDebugFlag) + 
                         mImplDetails.debugFlag + 
                         Utils.endTag(mTagDebugFlag));
@@ -1726,7 +1727,7 @@ public class EDMType {
         buffer.append(Utils.TAB2 + Utils.startTagNoLine(mTagDebugDest) + 
                         mImplDetails.debugDest + 
                         Utils.endTag(mTagDebugDest));
-        
+        */
         if (mImplDetails.enableSecurity != null) {
             buffer.append(Utils.TAB2 + Utils.startTagNoLine(mTagEnableSecurity) + 
                           mImplDetails.enableSecurity + 
@@ -1758,8 +1759,10 @@ public class EDMType {
         String validationServiceJndiName = "ejb/PrisonerCodeLookup";
         String usercodeJndiName = "ejb/PrisonerMasterController";
         String reportgeneratorJndiName = "ejb/PrisonerReportGenerator";
+        /**
         String debugFlag = "true";
         String debugDest = "console";
+         */
         String enableSecurity = null;
         String objectSensitivePlugInClass = null;
         
@@ -1779,13 +1782,20 @@ public class EDMType {
             return reportgeneratorJndiName;
         }
         
+        /** This field is no longer used.
         String getDebugFlag() {
             return debugFlag;
         }
+         */
         
+        /**
+         * This field is no longer used.
+         * @return
+         
         String getDebugDest() {
             return debugDest;
         }
+         */
         
         String getEnableSecurity() {
             return enableSecurity;
@@ -1807,10 +1817,6 @@ public class EDMType {
                         mImplDetails.usercodeJndiName = value;
                     } else if (name.equals(mTagReportgeneratorJndiName)) {
                         mImplDetails.reportgeneratorJndiName = value;
-                    } else if (name.equals(mTagDebugFlag)) {
-                        mImplDetails.debugFlag = value;
-                    } else if (name.equals(mTagDebugDest)) {
-                        mImplDetails.debugDest = value;
                     } else if (name.equals(mTagEnableSecurity)) {
                         mImplDetails.enableSecurity = value;
                     } else if (name.equals(mTagObjectSensitivePlugInClass)) {
