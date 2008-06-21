@@ -3,7 +3,6 @@
 <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>AUS-Patient Solution</title>
 
 <link rel="stylesheet" href="https://mural.dev.java.net/css/Mural.css" type="text/css">
-
 </head>
 <body>
 <table style="font-weight: bold; width: 100%; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="0" cellspacing="0">
@@ -39,8 +38,11 @@ Kendall<span style="font-family: Arial;"></span><span style="font-size: 6pt; fon
 <span style="font-weight: bold;">Credits: </span>Thanks
 go to Graeme Williams, <a href="mailto:Graeme.Williams@Sun.COM">Graeme.Williams@Sun.COM.</a>
 Graeme lives in Australia and was kind enough to share his knowledge of
-the Australian health care system with me. &nbsp;This solution benifits
-from Graeme's real world experience implementating&nbsp; a&nbsp;Master Data Management (MDM) solution in Australia.&nbsp;
+the Australian health care system with me. &nbsp;This solution
+benifits
+from Graeme's real world experience implementating&nbsp;
+a&nbsp;Master Data Management (MDM) solution in
+Australia.&nbsp;
 </p>
 <hr style="width: 100%; height: 2px;">
 <h1>Description</h1>
@@ -99,13 +101,18 @@ database definitions that are used with the solution.<i><br>
 </i></p>
 <h2>Matching</h2>
 <span style="font-style: italic;">Note:</span> _Std
-indicates that a field is standardized.<br><br>When
+indicates that a field is standardized.<br>
+<br>
+When
 matching only the first eight digits of the Medicare Card Number
-(MedicareNo) are used. &nbsp;This is because the Medicare Card Number
-represents a family. &nbsp;The actual values on the card change as the
+(MedicareNo) are used. &nbsp;This is because the Medicare Card
+Number
+represents a family. &nbsp;The actual values on the card change as
+the
 family changes. &nbsp; Thie wieghting for this field is also
 appropriately adjusted since a match on the first eight digits can at
-best represent a family and not a specific person.<br><br>
+best represent a family and not a specific person.<br>
+<br>
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
 <tbody>
 <tr class="soltableheader">
@@ -118,11 +125,31 @@ Type</td>
 <td align="undefined" valign="undefined">AUSPatient.FirstName_Std</td>
 <td align="undefined" valign="undefined">FirstName</td>
 </tr>
-<tr><td align="undefined" valign="undefined">AUSPatient.MiddleName_Std</td><td align="undefined" valign="undefined">MiddleName</td></tr><tr>
+<tr>
+<td align="undefined" valign="undefined">AUSPatient.MiddleName_Std</td>
+<td align="undefined" valign="undefined">MiddleName</td>
+</tr>
+<tr>
 <td align="undefined" valign="undefined">AUSPatient.LastName_Std</td>
 <td align="undefined" valign="undefined">LastName</td>
 </tr>
-<tr><td align="undefined" valign="undefined">AUSPatient.FirstName_Phon</td><td align="undefined" valign="undefined">FNamePhonetic</td></tr><tr><td align="undefined" valign="undefined">AUSPatient.MiddleName_Phon</td><td align="undefined" valign="undefined">MNamePhonetic</td></tr><tr><td align="undefined" valign="undefined">AUSPatient.LastName_Phon</td><td align="undefined" valign="undefined">LNamePhonetic</td></tr><tr><td align="undefined" valign="undefined">AUSPatient.Gender</td><td align="undefined" valign="undefined">Gender</td></tr><tr>
+<tr>
+<td align="undefined" valign="undefined">AUSPatient.FirstName_Phon</td>
+<td align="undefined" valign="undefined">FNamePhonetic</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">AUSPatient.MiddleName_Phon</td>
+<td align="undefined" valign="undefined">MNamePhonetic</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">AUSPatient.LastName_Phon</td>
+<td align="undefined" valign="undefined">LNamePhonetic</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">AUSPatient.Gender</td>
+<td align="undefined" valign="undefined">Gender</td>
+</tr>
+<tr>
 <td align="undefined" valign="undefined">AUSPatient.MedicareNo</td>
 <td align="undefined" valign="undefined">Medicare</td>
 </tr>
@@ -227,13 +254,34 @@ and ( AUSPatient.LastName_Phon
 == AUSPatient.LastName_Phon)&nbsp;
 </td>
 </tr>
-
 <tr>
 <td align="undefined" valign="undefined">FirstNameDOBGender</td>
 <td align="undefined" valign="undefined">(AUSPatient.FirstName_Phon
-== AUSPatient.FirstName_Phon) and (AUSPatient.DOB == AUSPatient.DOB) and (AUSPatient.Gender == AUSPatient.Gender)</td>
-</tr><tr><td align="undefined" valign="undefined">Medicare</td><td align="undefined" valign="undefined">(AUSPatient.MedicareNo == AUSPatient.MedicareNo)</td></tr><tr><td align="undefined" valign="undefined">LastNameDob</td><td align="undefined" valign="undefined">(AUSPatient.LastName_Phon == AUSPatient.LastName_Phon) and&nbsp; (AUSPatient.DOB == AUSPatient.DOB)</td></tr><tr><td align="undefined" valign="undefined">MiddleNameLastName</td><td align="undefined" valign="undefined">(AUSPatient.MiddleName_Phon == AUSPatient.MiddleName_Phon) and&nbsp;( AUSPatient.LastName_Phon
-== AUSPatient.LastName_Phon)</td></tr><tr><td align="undefined" valign="undefined">MiddleNameDob</td><td align="undefined" valign="undefined">(AUSPatient.MiddleName_Phon == AUSPatient.MiddleName_Phon) and (AUSPatient.DOB == AUSPatient.DOB)</td></tr>
+== AUSPatient.FirstName_Phon) and (AUSPatient.DOB == AUSPatient.DOB)
+and (AUSPatient.Gender == AUSPatient.Gender)</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">Medicare</td>
+<td align="undefined" valign="undefined">(AUSPatient.MedicareNo
+== AUSPatient.MedicareNo)</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">LastNameDob</td>
+<td align="undefined" valign="undefined">(AUSPatient.LastName_Phon
+== AUSPatient.LastName_Phon) and&nbsp; (AUSPatient.DOB ==
+AUSPatient.DOB)</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">MiddleNameLastName</td>
+<td align="undefined" valign="undefined">(AUSPatient.MiddleName_Phon
+== AUSPatient.MiddleName_Phon) and&nbsp;( AUSPatient.LastName_Phon
+== AUSPatient.LastName_Phon)</td>
+</tr>
+<tr>
+<td align="undefined" valign="undefined">MiddleNameDob</td>
+<td align="undefined" valign="undefined">(AUSPatient.MiddleName_Phon
+== AUSPatient.MiddleName_Phon) and (AUSPatient.DOB == AUSPatient.DOB)</td>
+</tr>
 </tbody>
 </table>
 <h2>Standardization</h2>
@@ -270,7 +318,12 @@ Destination</td>
 <td align="undefined" valign="undefined">AUSPatient.FirstName</td>
 <td align="undefined" valign="undefined">AUSPatient.FirstName_Std</td>
 </tr>
-<tr><td align="undefined" valign="undefined">PersonName</td><td align="undefined" valign="undefined">AUSPatient.MiddleName</td><td align="undefined" valign="undefined">AUSPatient.MiddleName</td></tr><tr>
+<tr>
+<td align="undefined" valign="undefined">PersonName</td>
+<td align="undefined" valign="undefined">AUSPatient.MiddleName</td>
+<td align="undefined" valign="undefined">AUSPatient.MiddleName</td>
+</tr>
+<tr>
 <td align="undefined" valign="undefined">PersonName</td>
 <td align="undefined" valign="undefined">AUSPatient.LastName</td>
 <td align="undefined" valign="undefined">AUSPatient.LastName_Std</td>
@@ -294,7 +347,12 @@ Target<br>
 <td align="undefined" valign="undefined">AUSPatient.FirstName_Phon</td>
 <td align="undefined" valign="undefined">Soundex</td>
 </tr>
-<tr><td align="undefined" valign="undefined">AUSPatientMiddleName_Std</td><td align="undefined" valign="undefined">AUSPatientMiddleName_Phon</td><td align="undefined" valign="undefined">Soundex</td></tr><tr>
+<tr>
+<td align="undefined" valign="undefined">AUSPatientMiddleName_Std</td>
+<td align="undefined" valign="undefined">AUSPatientMiddleName_Phon</td>
+<td align="undefined" valign="undefined">Soundex</td>
+</tr>
+<tr>
 <td align="undefined" valign="undefined">AUSPatient.LastName_Std</td>
 <td align="undefined" valign="undefined">AUSPatient.LastName_Phon</td>
 <td align="undefined" valign="undefined">NYSIIS</td>
@@ -308,8 +366,7 @@ Target<br>
 </table>
 <h1>Enumerations</h1>
 <h2>Code Modules</h2>
-
-<pre>tCode(type,code,description)<br><br>'L' entries go into the sbyn_common_header table.<br>'V' entries go into the sbyn_common_detail table.<br><br>-- ****     CATEGORY   ****<br>tCode('L', 'CATEGORY', 'Category'),<br>tCode('V', 'PERSON', 'PERSON'),<br><br>-- ****     SUFFIX   ****<br>tCode('L', 'SUFFIX', 'Suffix'),<br>tCode('V', '2ND', '2ND'),<br>tCode('V', '3RD', '3RD'),<br>tCode('V', 'DDS', 'DDS'),<br>tCode('V', 'ESQ', 'ESQ'),<br>tCode('V', 'II', 'II'),<br>tCode('V', 'III', 'III'),<br>tCode('V', 'IV', 'IV'),<br>tCode('V', 'JR', 'JR'),<br>tCode('V', 'MD', 'MD'),<br>tCode('V', 'RN', 'RN'),<br>tCode('V', 'SR', 'SR'),<br>tCode('V', 'PHD', 'PHD'),<br>tCode('V', 'MA', 'MA'),<br><br>-- ****     TITLE   ****<br>tCode('L', 'TITLE', 'Title'),<br>tCode('V', 'MD', 'MEDICAL DOCTOR'),<br>tCode('V', 'PHD', 'DOCTOR'),<br>tCode('V', 'RN', 'REGISTERED NURSE'),<br>tCode('V', 'CNA', 'CERTIFIED NURSES AID'),<br>tCode('V', 'LVN', 'LICENSED VOCATIONAL NURSE'),<br>tCode('V', 'REV', 'REVERAND'),<br>tCode('V', 'MR', 'MR'),<br>tCode('V', 'MRS', 'MRS'),<br>tCode('V', 'MISS', 'MISS'),<br><br>-- ****     GENDER   ****<br>tCode('L', 'GENDER', 'Gender'),<br>tCode('V', 'M', 'MALE'),<br>tCode('V', 'F', 'FEMALE'),<br>tCode('V', 'O', 'OTHER'),<br>tCode('V', 'U', 'UNKNOWN'),<br><br>-- ****     MSTATUS   ****<br>tCode('L', 'MSTATUS', 'Marital Status'),<br>tCode('V', 'D', 'DIVORCED'),<br>tCode('V', 'L', 'LEGALLY SEPARATED'),<br>tCode('V', 'M', 'MARRIED'),<br>tCode('V', 'P', 'PARTNER'),<br>tCode('V', 'S', 'SINGLE'),<br>tCode('V', 'U', 'UNKNOWN'),<br>tCode('V', 'W', 'WIDOWED'),<br><br>-- ****     ETHNIC   ****<br>tCode('L', 'INDIGST', 'Indigenous Status'),<br>tCode('V', 'A', 'Aboriginal'),<br>tCode('V', 'T', 'Torres Strait Islander'),<br>tCode('V', 'B', 'Aboriginal and Torres Strait Islander'),<br>tCode('V', 'N', 'Neither Aboriginal nor Torres Strait Islander'),<br><br>-- ****     RELIGION   ****<br>tCode('L', 'RELIGION', 'Religion'),<br>tCode('V', 'AG', 'AGNOSTIC'),<br>tCode('V', 'AN', 'ANGLICAN'),<br>tCode('V', 'AT', 'ATHEIST'),<br>tCode('V', 'BP', 'BAPTIST'),<br>tCode('V', 'BU', 'BUDHIST'),<br>tCode('V', 'CH', 'CHRISTIAN'),<br>tCode('V', 'CO', 'CONGREGATIONAL'),<br>tCode('V', 'CS', 'CHRISTIAN SCIENTIST'),<br>tCode('V', 'DE', 'DEFERRED'),<br>tCode('V', 'EP', 'EPISCOPAL'),<br>tCode('V', 'GO', 'GREEK ORTHODOX'),<br>tCode('V', 'HI', 'HINDU'),<br>tCode('V', 'JW', 'JEHOVAHS WITNESS'),<br>tCode('V', 'JH', 'JEWISH'),<br>tCode('V', 'LU', 'LUTHERAN'),<br>tCode('V', 'ME', 'METHODIST'),<br>tCode('V', 'MO', 'MORMON'),<br>tCode('V', 'MU', 'MUSLIM'),<br>tCode('V', 'NO', 'NONE'),<br>tCode('V', 'OR', 'ORTHODOX'),<br>tCode('V', 'OT', 'OTHER'),<br>tCode('V', 'PS', 'PRESBYTERIAN'),<br>tCode('V', 'QU', 'QUAKER'),<br>tCode('V', 'RC', 'ROMAN CATHOLIC'),<br>tCode('V', 'SD', 'SEVENTH DAY ADVENTI'),<br>tCode('V', 'UA', 'UNAFFILIATED'),<br>tCode('V', 'UN', 'UNKNOWN'),<br>tCode('V', 'UU', 'UNITARIAN'),<br><br>-- ****     LANGUAGE   ****<br>tCode('L', 'LANGUAGE', 'Language'),<br>tCode('V', 'ARAB', 'ARABIC'),<br>tCode('V', 'CHIN', 'CHINESE'),<br>tCode('V', 'CZEK', 'CZECH'),<br>tCode('V', 'CREO', 'CREOLE FRENCH'),<br>tCode('V', 'DANE', 'DANISH'),<br>tCode('V', 'ENGL', 'ENGLISH'),<br>tCode('V', 'FRN', 'FRENCH'),<br>tCode('V', 'GERM', 'GERMAN'),<br>tCode('V', 'GREK', 'GREEK'),<br>tCode('V', 'HATI', 'HATIAN'),<br>tCode('V', 'HEBR', 'HEBREW'),<br>tCode('V', 'HNDI', 'HINDI'),<br>tCode('V', 'ITAL', 'ITALIAN'),<br>tCode('V', 'JAPA', 'JAPANESE'),<br>tCode('V', 'KORE', 'KOREAN'),<br>tCode('V', 'OTHE', 'OTHER'),<br>tCode('V', 'PORT', 'PORTUGUESE'),<br>tCode('V', 'PRCI', 'PERSIAN/FARSI'),<br>tCode('V', 'RUSS', 'RUSSIAN'),<br>tCode('V', 'SIGN', 'SIGN LANGUAGE'),<br>tCode('V', 'SPAN', 'SPANISH'),<br>tCode('V', 'SWED', 'SWEDISH'),<br>tCode('V', 'THAI', 'THAI'),<br>tCode('V', 'TURK', 'TURKISH'),<br>tCode('V', 'UNKN', 'UNKNOWN'),<br>tCode('V', 'YDSH', 'YIDDISH'),<br><br>-- ****     ADDRTYPE   ****<br>tCode('L', 'ADDRTYPE', 'Address Type'),<br>tCode('V', 'O', 'OFFICE'),<br>tCode('V', 'H', 'HOME'),<br>tCode('V', 'V', 'VACATION'),<br>tCode('V', 'H2','HOME 2'),<br>tCode('V', 'M', 'MAILING'),<br>tCode('V', 'W', 'WORK'),<br>tCode('V', 'W2', 'WORK 2'),<br>tCode('V', 'T', 'TEMPORARY'),<br><br>-- ****     PHONTYPE   ****<br>tCode('L', 'PHONTYPE', 'Phone Type'),<br>tCode('V', 'CH', 'HOME'),<br>tCode('V', 'CO', 'OFFICE'),<br>tCode('V', 'CF', 'FAX'),<br>tCode('V', 'CB', 'BUSINESS'),<br>tCode('V', 'CBD', 'BUSINESS DIRECT'),<br>tCode('V', 'CBA', 'BUSINESS ALTERNATE'),<br>tCode('V', 'CP', 'PAGER'),<br>tCode('V', 'CC', 'CELLULAR'),<br><br>-- ****     RELATIONSHIP   ****<br>tCode('L', 'RELATION', 'Relationship'),<br>tCode('V', 'PARENT', 'PARENT'),<br>tCode('V', 'CHILD', 'CHILD'),<br>tCode('V', 'SPOUSE', 'SPOUSE'),<br>tCode('V', 'FAMILY_MEMBER', 'FAMILY_MEMBER'),<br>tCode('V', 'OTHER', 'OTHER'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>-- ****    STATE   ****<br>tCode('L', 'STATE', 'State'),<br>tCode('V', 'ACT', 'Australian Capital Territory'),<br>tCode('V', 'NSW', 'New South Wales'),<br>tCode('V', 'NT', 'Northern Territory'),<br>tCode('V', 'QLD', 'Queensland'),<br>tCode('V', 'SA', 'South Australia'),<br>tCode('V', 'TAS', 'Tasmania'),<br>tCode('V', 'VIC', 'Victoria'),<br>tCode('V', 'WA', 'Western Australia'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>-- ****     COUNTRY   ****<br>tCode('L', 'COUNTRY', 'Country'),<br>tCode('V', 'AUST', 'AUSTRALIA'),<br>tCode('V', 'BAHA', 'BAHAMAS'),<br>tCode('V', 'BERM', 'BERMUDA'),<br>tCode('V', 'CANA', 'CANADA'),<br>tCode('V', 'ENGL', 'ENGLAND'),<br>tCode('V', 'FRAN', 'FRANCE'),<br>tCode('V', 'GRBR', 'GREAT BRITAIN'),<br>tCode('V', 'IREL', 'IRELAND'),<br>tCode('V', 'MEXI', 'MEXICO'),<br>tCode('V', 'UNST', 'UNITED STATES'),<br>tCode('V', 'VIRU', 'US VIRGIN ISLANDS'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>-- ****     DVACOLOUR   ****<br>tCode('L', 'DVACOLOR', 'DVA Card Colour'),<br>tCode('V', 'WHITE', 'WHITE'),<br>tCode('V', 'ORANGE', 'ORANGE'),<br>tCode('V', 'GOLD', 'GOLD'),<br>tCode('V', 'NONE', 'NONE'),<br><br>-- ****     CONTACTROLE  ****<br>tCode('L', 'CONROLE', 'Contact Role'),<br>tCode('V', 'EMERGENCY', 'EMERGENCY'),<br>tCode('V', 'GUARANTOR', 'GUARANTOR'),<br>tCode('V', 'NEXT_OF_KIN', 'NEXT OF KIN'),<br>tCode('V', 'OTHER', 'OTHER'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>-- ****     INSURANCERELATIONSHIP   ****<br>tCode('L', 'INSREL', 'Insurance Relationship'),<br>tCode('V', 'SELF', 'SELF'),<br>tCode('V', 'SPOUSE', 'SPOUSE'),<br>tCode('V', 'CHILD', 'CHILD'),<br>tCode('V', 'FAMILY_MEMBER', 'FAMILY_MEMBER'),<br>tCode('V', 'DOMESTIC_PARTNER', 'DOMESTIC PARTNER'),<br>tCode('V', 'GUARDIAN', 'GUARDIAN'),<br>tCode('V', 'OTHER', 'OTHER'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN')<br>&nbsp;<br></pre>
+<pre>tCode(type,code,description)<br> 'L' entries go into the sbyn_common_header table.<br> 'V' entries go into the sbyn_common_detail table.<br><br>-- **** CATEGORY ****<br>tCode('L', 'CATEGORY', 'Category'),<br>tCode('V', 'PERSON', 'PERSON'),<br><br>-- **** SUFFIX ****<br>tCode('L', 'SUFFIX', 'Suffix'),<br>tCode('V', '2ND', '2ND'),<br>tCode('V', '3RD', '3RD'),<br>tCode('V', 'DDS', 'DDS'),<br>tCode('V', 'ESQ', 'ESQ'),<br>tCode('V', 'II', 'II'),<br>tCode('V', 'III', 'III'),<br>tCode('V', 'IV', 'IV'),<br>tCode('V', 'JR', 'JR'),<br>tCode('V', 'MD', 'MD'),<br>tCode('V', 'RN', 'RN'),<br>tCode('V', 'SR', 'SR'),<br>tCode('V', 'PHD', 'PHD'),<br>tCode('V', 'MA', 'MA'),<br><br>-- **** TITLE ****<br>tCode('L', 'TITLE', 'Title'),<br>tCode('V', 'MD', 'MEDICAL DOCTOR'),<br>tCode('V', 'PHD', 'DOCTOR'),<br>tCode('V', 'RN', 'REGISTERED NURSE'),<br>tCode('V', 'CNA', 'CERTIFIED NURSES AID'),<br>tCode('V', 'LVN', 'LICENSED VOCATIONAL NURSE'),<br>tCode('V', 'REV', 'REVERAND'),<br>tCode('V', 'MR', 'MR'),<br>tCode('V', 'MRS', 'MRS'),<br>tCode('V', 'MISS', 'MISS'),<br><br>-- **** GENDER ****<br>tCode('L', 'GENDER', 'Gender'),<br>tCode('V', 'M', 'MALE'),<br>tCode('V', 'F', 'FEMALE'),<br>tCode('V', 'O', 'OTHER'),<br>tCode('V', 'U', 'UNKNOWN'),<br><br>-- **** MSTATUS ****<br>tCode('L', 'MSTATUS', 'Marital Status'),<br>tCode('V', 'D', 'DIVORCED'),<br>tCode('V', 'L', 'LEGALLY SEPARATED'),<br>tCode('V', 'M', 'MARRIED'),<br>tCode('V', 'P', 'PARTNER'),<br>tCode('V', 'S', 'SINGLE'),<br>tCode('V', 'U', 'UNKNOWN'),<br>tCode('V', 'W', 'WIDOWED'),<br><br>-- **** ETHNIC ****<br>tCode('L', 'INDIGST', 'Indigenous Status'),<br>tCode('V', 'A', 'Aboriginal'),<br>tCode('V', 'T', 'Torres Strait Islander'),<br>tCode('V', 'B', 'Aboriginal and Torres Strait Islander'),<br>tCode('V', 'N', 'Neither Aboriginal nor Torres Strait Islander'),<br><br>-- **** RELIGION ****<br>tCode('L', 'RELIGION', 'Religion'),<br>tCode('V', 'AG', 'AGNOSTIC'),<br>tCode('V', 'AN', 'ANGLICAN'),<br>tCode('V', 'AT', 'ATHEIST'),<br>tCode('V', 'BP', 'BAPTIST'),<br>tCode('V', 'BU', 'BUDHIST'),<br>tCode('V', 'CH', 'CHRISTIAN'),<br>tCode('V', 'CO', 'CONGREGATIONAL'),<br>tCode('V', 'CS', 'CHRISTIAN SCIENTIST'),<br>tCode('V', 'DE', 'DEFERRED'),<br>tCode('V', 'EP', 'EPISCOPAL'),<br>tCode('V', 'GO', 'GREEK ORTHODOX'),<br>tCode('V', 'HI', 'HINDU'),<br>tCode('V', 'JW', 'JEHOVAHS WITNESS'),<br>tCode('V', 'JH', 'JEWISH'),<br>tCode('V', 'LU', 'LUTHERAN'),<br>tCode('V', 'ME', 'METHODIST'),<br>tCode('V', 'MO', 'MORMON'),<br>tCode('V', 'MU', 'MUSLIM'),<br>tCode('V', 'NO', 'NONE'),<br>tCode('V', 'OR', 'ORTHODOX'),<br>tCode('V', 'OT', 'OTHER'),<br>tCode('V', 'PS', 'PRESBYTERIAN'),<br>tCode('V', 'QU', 'QUAKER'),<br>tCode('V', 'RC', 'ROMAN CATHOLIC'),<br>tCode('V', 'SD', 'SEVENTH DAY ADVENTI'),<br>tCode('V', 'UA', 'UNAFFILIATED'),<br>tCode('V', 'UN', 'UNKNOWN'),<br>tCode('V', 'UU', 'UNITARIAN'),<br><br>-- **** LANGUAGE ****<br>tCode('L', 'LANGUAGE', 'Language'),<br>tCode('V', 'ARAB', 'ARABIC'),<br>tCode('V', 'CHIN', 'CHINESE'),<br>tCode('V', 'CZEK', 'CZECH'),<br>tCode('V', 'CREO', 'CREOLE FRENCH'),<br>tCode('V', 'DANE', 'DANISH'),<br>tCode('V', 'ENGL', 'ENGLISH'),<br>tCode('V', 'FRN', 'FRENCH'),<br>tCode('V', 'GERM', 'GERMAN'),<br>tCode('V', 'GREK', 'GREEK'),<br>tCode('V', 'HATI', 'HATIAN'),<br>tCode('V', 'HEBR', 'HEBREW'),<br>tCode('V', 'HNDI', 'HINDI'),<br>tCode('V', 'ITAL', 'ITALIAN'),<br>tCode('V', 'JAPA', 'JAPANESE'),<br>tCode('V', 'KORE', 'KOREAN'),<br>tCode('V', 'OTHE', 'OTHER'),<br>tCode('V', 'PORT', 'PORTUGUESE'),<br>tCode('V', 'PRCI', 'PERSIAN/FARSI'),<br>tCode('V', 'RUSS', 'RUSSIAN'),<br>tCode('V', 'SIGN', 'SIGN LANGUAGE'),<br>tCode('V', 'SPAN', 'SPANISH'),<br>tCode('V', 'SWED', 'SWEDISH'),<br>tCode('V', 'THAI', 'THAI'),<br>tCode('V', 'TURK', 'TURKISH'),<br>tCode('V', 'UNKN', 'UNKNOWN'),<br>tCode('V', 'YDSH', 'YIDDISH'),<br><br>-- **** ADDRTYPE ****<br>tCode('L', 'ADDRTYPE', 'Address Type'),<br>tCode('V', 'O', 'OFFICE'),<br>tCode('V', 'H', 'HOME'),<br>tCode('V', 'V', 'VACATION'),<br>tCode('V', 'H2','HOME 2'),<br>tCode('V', 'M', 'MAILING'),<br>tCode('V', 'W', 'WORK'),<br>tCode('V', 'W2', 'WORK 2'),<br>tCode('V', 'T', 'TEMPORARY'),<br><br>-- **** PHONTYPE ****<br>tCode('L', 'PHONTYPE', 'Phone Type'),<br>tCode('V', 'CH', 'HOME'),<br>tCode('V', 'CO', 'OFFICE'),<br>tCode('V', 'CF', 'FAX'),<br>tCode('V', 'CB', 'BUSINESS'),<br>tCode('V', 'CBD', 'BUSINESS DIRECT'),<br>tCode('V', 'CBA', 'BUSINESS ALTERNATE'),<br>tCode('V', 'CP', 'PAGER'),<br>tCode('V', 'CC', 'CELLULAR'),<br><br>-- **** RELATIONSHIP ****<br>tCode('L', 'RELATION', 'Relationship'),<br>tCode('V', 'PARENT', 'PARENT'),<br>tCode('V', 'CHILD', 'CHILD'),<br>tCode('V', 'SPOUSE', 'SPOUSE'),<br>tCode('V', 'FAMILY_MEMBER', 'FAMILY_MEMBER'),<br>tCode('V', 'OTHER', 'OTHER'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>-- **** STATE ****<br>tCode('L', 'STATE', 'State'),<br>tCode('V', 'ACT', 'Australian Capital Territory'),<br>tCode('V', 'NSW', 'New South Wales'),<br>tCode('V', 'NT', 'Northern Territory'),<br>tCode('V', 'QLD', 'Queensland'),<br>tCode('V', 'SA', 'South Australia'),<br>tCode('V', 'TAS', 'Tasmania'),<br>tCode('V', 'VIC', 'Victoria'),<br>tCode('V', 'WA', 'Western Australia'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>-- **** COUNTRY ****<br>tCode('L', 'COUNTRY', 'Country'),<br>tCode('V', 'AUST', 'AUSTRALIA'),<br>tCode('V', 'BAHA', 'BAHAMAS'),<br>tCode('V', 'BERM', 'BERMUDA'),<br>tCode('V', 'CANA', 'CANADA'),<br>tCode('V', 'ENGL', 'ENGLAND'),<br>tCode('V', 'FRAN', 'FRANCE'),<br>tCode('V', 'GRBR', 'GREAT BRITAIN'),<br>tCode('V', 'IREL', 'IRELAND'),<br>tCode('V', 'MEXI', 'MEXICO'),<br>tCode('V', 'UNST', 'UNITED STATES'),<br>tCode('V', 'VIRU', 'US VIRGIN ISLANDS'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>-- **** DVACOLOUR ****<br>tCode('L', 'DVACOLOR', 'DVA Card Colour'),<br>tCode('V', 'WHITE', 'WHITE'),<br>tCode('V', 'ORANGE', 'ORANGE'),<br>tCode('V', 'GOLD', 'GOLD'),<br>tCode('V', 'NONE', 'NONE'),<br><br>-- **** CONTACTROLE ****<br>tCode('L', 'CONROLE', 'Contact Role'),<br>tCode('V', 'EMERGENCY', 'EMERGENCY'),<br>tCode('V', 'GUARANTOR', 'GUARANTOR'),<br>tCode('V', 'NEXT_OF_KIN', 'NEXT OF KIN'),<br>tCode('V', 'OTHER', 'OTHER'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN'),<br><br>-- **** INSURANCERELATIONSHIP ****<br>tCode('L', 'INSREL', 'Insurance Relationship'),<br>tCode('V', 'SELF', 'SELF'),<br>tCode('V', 'SPOUSE', 'SPOUSE'),<br>tCode('V', 'CHILD', 'CHILD'),<br>tCode('V', 'FAMILY_MEMBER', 'FAMILY_MEMBER'),<br>tCode('V', 'DOMESTIC_PARTNER', 'DOMESTIC PARTNER'),<br>tCode('V', 'GUARDIAN', 'GUARDIAN'),<br>tCode('V', 'OTHER', 'OTHER'),<br>tCode('V', 'UNKNOWN', 'UNKNOWN')<br>&nbsp;<br></pre>
 <h2>User Codes</h2>
 When the user-code is selected in the MIDM GUI then the corresponding
 format, input_mask and value_mask are used. The
