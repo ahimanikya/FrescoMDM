@@ -867,8 +867,6 @@
         <validation-service-jndi-name>ejb/AUSPatientCodeLookup</validation-service-jndi-name>
         <usercode-jndi-name>ejb/AUSPatientUserCodeLookup</usercode-jndi-name>
         <reportgenerator-jndi-name>ejb/AUSPatientReportGenerator</reportgenerator-jndi-name>
-        <debug-flag>true</debug-flag>
-        <debug-dest>console</debug-dest>
         <enable-security>false</enable-security>
         <object-sensitive-plug-in-class></object-sensitive-plug-in-class>
     </impl-details>
@@ -934,14 +932,13 @@
                         <search-screen-order>1</search-screen-order>
                         <show-euid>false</show-euid>
                         <show-lid>false</show-lid>
-                        <instruction></instruction>
+                        <instruction>Alpha Search</instruction>
                         <field-group>
                             <description>AUSPatient</description>
                             <field-ref>AUSPatient.FirstName</field-ref>
                             <field-ref>AUSPatient.MiddleName</field-ref>
                             <field-ref>AUSPatient.LastName</field-ref>
                             <field-ref>AUSPatient.MedicareNo</field-ref>
-                        
                         </field-group>
                         <field-group>
                             <description>Address</description>
@@ -950,16 +947,16 @@
                         </field-group>
                         <field-group>
                             <description>AuxId</description>
-                            <field-ref>AUSPatient.AuxId.Id</field-ref>
+                            <field-ref required="false">AUSPatient.AuxId.Id</field-ref>
                         </field-group>
                         <field-group/>
                         <search-option>
-                            <display-name>Phonetic Search</display-name>
-                            <query-builder>BLOCKER-SEARCH2</query-builder>
-                            <weighted>true</weighted>
+                            <display-name>Alpha Search</display-name>
+                            <query-builder>ALPHA-SEARCH</query-builder>
+                            <weighted>false</weighted>
                             <parameter>
                                 <name>UseWildcard</name>
-                                <value>false</value>
+                                <value>true</value>
                             </parameter>
                         </search-option>
                     </simple-search-page>
