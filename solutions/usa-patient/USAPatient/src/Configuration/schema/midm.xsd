@@ -239,8 +239,8 @@
             <xs:element name="validation-service-jndi-name" type="xs:string"/>
             <xs:element name="usercode-jndi-name" type="xs:string"/>
             <xs:element name="reportgenerator-jndi-name" type="xs:string"/>
-            <xs:element name="debug-flag" type="xs:boolean"/>
-            <xs:element name="debug-dest" type="xs:string"/>
+            <xs:element name="debug-flag" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="debug-dest" type="xs:string" minOccurs="0"/>
             <xs:element name="enable-security" type="xs:boolean" default="true" minOccurs="0"/>
             <xs:element name="object-sensitive-plug-in-class" type="xs:string"/>
         </xs:sequence>

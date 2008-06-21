@@ -1195,8 +1195,6 @@
         <validation-service-jndi-name>ejb/USAPatientCodeLookup</validation-service-jndi-name>
         <usercode-jndi-name>ejb/USAPatientUserCodeLookup</usercode-jndi-name>
         <reportgenerator-jndi-name>ejb/USAPatientReportGenerator</reportgenerator-jndi-name>
-        <debug-flag>true</debug-flag>
-        <debug-dest>console</debug-dest>
         <enable-security>false</enable-security>
         <object-sensitive-plug-in-class></object-sensitive-plug-in-class>
     </impl-details>
