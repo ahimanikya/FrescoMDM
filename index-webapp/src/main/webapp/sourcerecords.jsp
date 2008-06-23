@@ -242,10 +242,12 @@
 
                                         String mainDOB;
                                         SystemObject singleSystemObjectLID = (SystemObject) session.getAttribute("singleSystemObjectLID");
+										HashMap systyemObjectAsHashMap  = new HashMap();
+										
                                         HashMap systemObjectMap = (HashMap) session.getAttribute("systemObjectMap");
                                         String keyFunction = (String) session.getAttribute("keyFunction");
                                         SourceHandler sourceHandler = new SourceHandler();
-                                        Object[] personConfigFeilds = sourceHandler.getRootNodeFieldConfigs().toArray();
+                                        Object[] roorNodeFieldConfigs = sourceHandler.getRootNodeFieldConfigs().toArray();
                                         SourceEditHandler sourceEditHandler = (SourceEditHandler)session.getAttribute("SourceEditHandler");
                                         SourceAddHandler  sourceAddHandler   = new SourceAddHandler();
 
@@ -273,93 +275,133 @@
                                 <div id=viewEditTab">
                             
                                     <%if (singleSystemObjectLID != null) {
-										eoStatus= compareDuplicateManager.getEnterpriseObjectStatusForSO(singleSystemObjectLID);%>
+										eoStatus = compareDuplicateManager.getEnterpriseObjectStatusForSO(singleSystemObjectLID);
+                                         
+										systyemObjectAsHashMap = compareDuplicateManager.getSystemObjectAsHashMap(singleSystemObjectLID,objScreenObject);
+										%>
                                     <%if ("viewSO".equalsIgnoreCase(keyFunction)) {%>
                                     <h:form>
                                         <div  id="sourceViewBasicSearch">                                            
                                             <table border="0" width="100%">
+
                                                     <tr>
-                                                        <td>
+                                                        <td> 
                                                             <h:commandLink title="#{msgs.source_rec_viewrecordslist_but}"  styleClass="button" rendered="#{Operations.SO_SearchView}"
                                                                             action="#{NavigationHandler.toSourceRecords}" 
                                                                             actionListener="#{SourceHandler.removeSingleLID}" >  
                                                                 <span><h:outputText value="#{msgs.source_rec_viewrecordslist_but}"/></span>
-                                                            </h:commandLink>                                                                                                 
-                                                        </td>
-                                                        <td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><b><h:outputText value="#{msgs.source_rec_status_but}"/></b>:</td>
-                                                        <td>
-														   <%=singleSystemObjectLID.getStatus()%> 
+                                                            </h:commandLink>                                                                     
 														</td>
-                                                        <td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><b><h:outputText value="#{msgs.source_rec_sourcename_text}"/></b>:</td>
-                                                        <td><%=sourceHandler.getSystemCodeDescription(singleSystemObjectLID.getSystemCode())%></td>
-                                                        <td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><b><%=localIdDesignation%></b>:</td>
-                                                        <td><%=singleSystemObjectLID.getLID()%> </td>
+                                                        <th><b><h:outputText value="#{msgs.source_rec_status_but}"/></b>&nbsp;:&nbsp;<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;">
+														   <%=compareDuplicateManager.getStatus(singleSystemObjectLID.getStatus())%> </font>
+														</th>
+                                                        <th><b><h:outputText value="#{msgs.transaction_source}"/></b>:	<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><%=sourceHandler.getSystemCodeDescription(singleSystemObjectLID.getSystemCode())%></font></th>
+                                                        <th> <b><%=localIdDesignation%></b>:<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><%=singleSystemObjectLID.getLID()%></font></th>
                                                     </tr>
-                                            </table>
+                                             </table>
                                             
                                             <!--Start Displaying the root node fields -->                                        
                                             <div class="minorobjects">                                                    
-											   <table>
-											     <tr>
+											   <table border="0" cellpadding="1" cellspacing="1" width="100%">
+                                                 <tr><td class="tablehead" width="100%"><b><%=objScreenObject.getRootObj().getName()%></b> &nbsp; </td></tr>
+ 												 <tr>
 												   <td>
-												   <p><%=objScreenObject.getRootObj().getName()%>&nbsp;Info</p>
-												   <table>
-												 <tr>
-												   <td>
-                                                    <h:dataTable  
-                                                        id="hashId" 
-                                                        var="fieldConfig" 
-                                                        value="#{SourceHandler.rootNodeFieldConfigs}">
-                                                            <h:column>
-                                                                <h:outputText value="#{fieldConfig.displayName}"  />
-                                                            </h:column>
-                                                            <h:column>
-                                                                <h:outputText value="#{SourceHandler.singleSOHashMap['SYSTEM_OBJECT'][fieldConfig.fullFieldName]}"  />
-                                                            </h:column>
-                                                    </h:dataTable>               
+												    <table border="0" cellpadding="1" cellspacing="1" >
+                                                   <%  HashMap rootFieldValuesMap  = (HashMap) systyemObjectAsHashMap.get("SYSTEM_OBJECT");
+                                                        for (int ifc = 0; ifc < roorNodeFieldConfigs.length; ifc++) {
+                                                            FieldConfig fieldConfigMap = (FieldConfig) roorNodeFieldConfigs[ifc];
+                                                                        %>  
+                                                      <tr>
+                                                        <th align="left">
+                                                          <%=fieldConfigMap.getDisplayName()%>
+                                                        </th>
+                                                        <td>
+                                                          <%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : "&nbsp"%>
+														</td>
+                                                     </tr>
+                                                   <%}%>
+												   </table>
 												</td>
 												</tr>
-                                                </table>
-												   </td>
-												 </tr>
-												</table>
-                                            </div>
+                                                <!-- STARTDisplaying the minor object fields -->    
+                                                <% String epathValue = new String();
+                                                  for (int io = 0; io < arrObjectNodeConfig.length; io++) {
+                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[io];
+                                                     ArrayList  minorObjectMapList =  (ArrayList) systyemObjectAsHashMap.get("SOEDIT" + childObjectNodeConfig.getName() + "ArrayList");
+								                %>
+                                                <tr><td>&nbsp;</td></tr>
+                                                <tr><td class="tablehead" width="100%"><b><%=childObjectNodeConfig.getName()%></b> &nbsp; </td></tr>
+  											    <tr>
+												  <td> 
+												     <div style="BORDER-RIGHT: #91bedb 1px solid; BORDER-TOP: #91bedb 1px solid; PADDING-LEFT: 1px;BORDER-LEFT: #91bedb 1px solid; PADDING-TOP: 0px; width:100%;BORDER-BOTTOM: #91bedb 1px solid; BACKGROUND-REPEAT: no-repeat; POSITION: relative;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left; overflow:auto">
+													 <table border="0" width="100%" cellpadding="0">
+                                                     <%
+                                                      FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
+                                                       HashMap minorObjectMap = new HashMap();
+													   %>
+                                                        <%if(minorObjectMapList.size() == 0) {%>
+                                                        <tr class="odd">
+														  <td><%=bundle.getString("source_rec_nodetails_text")%></td>
+														</tr>
+                                                       <%}%>
+													   <%
+			 					                       for(int ar = 0; ar < minorObjectMapList.size() ;ar ++) {
+                                                         minorObjectMap = (HashMap) minorObjectMapList.get(ar);
+														 String styleClass = ((ar%2==0)?"even":"odd");
+                                                     %>
+
+													   <%if(ar == 0) {%>
+                                                        <tr>			   
+                                                           <% for(int k=0;k<fieldConfigArrayMinor.length;k++) {%>
+ 			                                                  <td class="tablehead">
+				                                                 <%=fieldConfigArrayMinor[k].getDisplayName()%>
+                                                               </td>
+		                                                  <%}%>
+														</tr> 
+                                                      <%}%>
+
+													 <tr class="<%=styleClass%>">
+                                                        <% for(int k=0;k<fieldConfigArrayMinor.length;k++) {%>
+                                                          <td>
+														  <%if(minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()) != null ) {%>  <!--if has value-->
+															   <%if(fieldConfigArrayMinor[k].getValueList() != null) {%> <!-- if the field config has value list-->
+																  <%if (fieldConfigArrayMinor[k].getUserCode() != null){%> <!-- if it has user defined value list-->
+																	 <%=ValidationService.getInstance().getUserCodeDescription(fieldConfigArrayMinor[k].getUserCode(), (String) minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()))%>
+																  <%}else{%>
+																	<%=ValidationService.getInstance().getDescription(fieldConfigArrayMinor[k].getValueList(), (String) minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()))%>
+																 <%}%>
+															   <%} else {%> <!-minorObjectMap- In other cases-->
+															   <%
+																String value = minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()).toString();   
+																if (fieldConfigArrayMinor[k].getInputMask() != null && fieldConfigArrayMinor[k].getInputMask().length() > 0) {
+																  if (value != null) {
+																	 //Mask the value as per the masking 
+																	 value = fieldConfigArrayMinor[k].mask(value.toString());
+																   }
+																} 
+																%> 
+																 <%=value%>
+															   <%}%>
+														  <%} else {%> <!-- else print &nbsp-->
+															&nbsp;
+														  <%}%>
+ 								                          </td>
+							                          <% } %>
+													</tr>
+														  
+													 <%}%>
+
+ 													 </table>
+													 </div>
+												  </td>
+												</tr>
+												<%}%>
+                                            <!--End Displaying the minor object fields -->    
+ 										</table>
+
+                                       </div>
 
                                      <!--End Displaying the root node fields -->    
-                                     
-                                    <!--End Displaying the minor object fields -->    
-									<div class="minorobjects">
-                                     <h:dataTable  headerClass="tablehead" 
-                                                          id="allChildNodesNamesSoEdit" 
-                                                          var="childNodesName" 
-                                                          value="#{SourceHandler.allSOChildNodesLists}">
-                                       <h:column>
-                                              <p><h:outputText value="#{childNodesName['NAME']}"  /></p>
-                                              <h:dataTable  headerClass="tablehead" 
-                                                                  width="100%"
-                                                                  id="sofieldConfigDPId" 
-                                                                  var="childMapArrayList" 
-                                                                  value="#{SourceHandler.singleSOHashMap[childNodesName['KEYLIST']]}">
-                                                        <h:column>
-                                                            <h:dataTable 
-                                                                id="minorHashId" 
-                                                                var="childFieldConfig" 
-                                                                value="#{childNodesName['FIELDCONFIGS']}">
-                                                                <h:column>
-                                                                    <h:outputText value="#{childFieldConfig.displayName}"  />
-                                                                </h:column>
-                                                                <h:column>
-                                                                    <h:outputText value="#{childMapArrayList[childFieldConfig.fullFieldName]}" rendered="#{!childFieldConfig.sensitive}" />
-                                                                    <h:outputText value="#{msgs.SENSITIVE_FIELD_MASKING}" rendered ="#{childFieldConfig.sensitive}"   />
-                                                                </h:column>
-                                                            </h:dataTable>               
-                                                        </h:column>
-                                                    </h:dataTable>                                                             
-                                       </h:column>
-                                   </h:dataTable>
-								   </div>
-
-                                    <!--End Displaying the minor object fields -->    
 
                                     
                                             <table>
@@ -371,8 +413,7 @@
                                                     %>
                                                     
                                                     <td>
-                                                    <%if(eoStatus.equalsIgnoreCase("active")){ %>
-													    <!--Display edit link only when the system object-->
+ 													    <!--Display edit link only when the system object-->
                                                         <h:commandLink  title= "#{msgs.source_rec_edit_but}" styleClass="button" 
                                                                         action="#{NavigationHandler.toSourceRecords}" 
                                                                         rendered="#{Operations.SO_Edit}"
@@ -380,12 +421,6 @@
                                                             <f:attribute name="soValueExpression" value="<%=soValueExpression%>"/>                
                                                             <span><h:outputText value="#{msgs.source_rec_edit_but}"/></span>
                                                         </h:commandLink>   
-													 <% } else {%>
-													        <input type="button" title="<h:outputText value="#{msgs.source_rec_edit_but}"/>"  disabled="true" readonly="true"  value="<h:outputText value="#{msgs.source_rec_edit_but}"/>"
-                                                                             />
-                                             
-                                                
-													 <%}%>
                                                     </td>
 													
                                                     <td>
@@ -416,32 +451,22 @@
                                                     <td>
                                                         <h:form>
                                                             <table border="0" cellpadding="1" cellspacing="1" width="100%">
-                                                                <tr>
-                                                                    <td colspan="2">
-                                                                        <nobr>
-                                                                            <h:commandLink title="#{msgs.source_rec_viewrecordslist_but}" styleClass="button" 
-                                                                                            action="#{NavigationHandler.toSourceRecords}" 
-                                                                                            actionListener="#{SourceHandler.removeSingleLID}" >  
-                                                                                <span><h:outputText value="#{msgs.source_rec_viewrecordslist_but}"/></span>
-                                                                            </h:commandLink>                                                                
-                                                                        </nobr>
-                                                                    </td>
-                                                                </tr>  
-                                                                <tr>
-                                                                    <td><nobr><h:outputText value="Status"/> </nobr></td>
-                                                                    <td><nobr>
-																	   <%=singleSystemObjectLID.getStatus()%> 
-																	   </nobr>
-																	</td>
-                                                                </tr>                                                    
-                                                                <tr>
-                                                                    <td><nobr><h:outputText value="System Code"/></nobr></td>
-                                                                    <td><nobr><%=sourceHandler.getSystemCodeDescription(singleSystemObjectLID.getSystemCode())%> </nobr></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><nobr><%=localIdDesignation%></nobr></td>
-                                                                    <td><nobr><%=singleSystemObjectLID.getLID()%> </nobr></td>
-                                                                </tr>
+
+                                                    <tr>
+                                                        <td> 
+                                                            <h:commandLink title="#{msgs.source_rec_viewrecordslist_but}"  styleClass="button" rendered="#{Operations.SO_SearchView}"
+                                                                            action="#{NavigationHandler.toSourceRecords}" 
+                                                                            actionListener="#{SourceHandler.removeSingleLID}" >  
+                                                                <span><h:outputText value="#{msgs.source_rec_viewrecordslist_but}"/></span>
+                                                            </h:commandLink>                                                                     
+														</td>
+                                                        <th><b><h:outputText value="#{msgs.source_rec_status_but}"/></b>&nbsp;:&nbsp;<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;">
+														   <%=compareDuplicateManager.getStatus(singleSystemObjectLID.getStatus())%> </font>
+														</th>
+                                                        <th><b><h:outputText value="#{msgs.transaction_source}"/></b>:	<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><%=sourceHandler.getSystemCodeDescription(singleSystemObjectLID.getSystemCode())%></font></th>
+                                                        <th> <b><%=localIdDesignation%></b>:<font style="font-family: Arial, Helvetica, sans-serif;font-size:12px;color:blue;text-align:left;vertical-align:middle;	   font-weight:bold;padding-left:18px;"><%=singleSystemObjectLID.getLID()%></font></th>
+                                                    </tr>
+																
                                                             </table>    
                                                         </h:form>
                                                     </td>
@@ -451,13 +476,16 @@
                                             </table>
                                         </div>
                                         <!-- Status div-->
-                                            <table width="100%">
+                                                                                                 
+											   <table border="0" " width="100%" >
+                                                <%if ("active".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>
                                                 <tr>
                                                     <td class="tablehead" colspan="2">
-                                                        <%=objScreenObject.getRootObj().getName()%>&nbsp;Info                      
+                                                        <%=objScreenObject.getRootObj().getName()%>                    
                                                     </td>
                                                 </tr>
-                                                    
+                                                <%}%>
+                                                                 
                                                 <tr>
                                                     <td align="left">
                                                         <% if ("View/Edit".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
@@ -472,9 +500,7 @@
                                                           <!-- Start EDIT Fields-->
                                                           <!--Start Displaying the person fields -->                                        
                                                         <form id="<%=objScreenObject.getRootObj().getName()%>EditSOInnerForm" name="<%=objScreenObject.getRootObj().getName()%>EditSOInnerForm" method="post" enctype="application/x-www-form-urlencoded">
-                                                            <h:dataTable  headerClass="tablehead"  
-                                                                          id="hashIdEdit" 
-                                                                          width="100%"                                                                  
+                                                            <h:dataTable  id="hashIdEdit" 
                                                                           var="fieldConfigPerAdd" 
                                                                           value="#{SourceHandler.rootNodeFieldConfigs}">
                                                                 <h:column>
@@ -537,12 +563,11 @@
                                                             
                                                         <!--End Displaying the person fields -->    
                                                         <!--Minor Object fields here -->     
-                                                        <h:dataTable  headerClass="tablehead" 
-                                                                                          id="allChildNodesNamesAdd" 
-                                                                                          width="100%"
-                                                                                          var="childNodesName" 
-                                                                                          value="#{SourceHandler.allChildNodesNames}">
-                                                                                <h:column>
+                                                        <h:dataTable  id="allChildNodesNamesAdd" 
+                                                                      width="100%"
+                                                                      var="childNodesName" 
+                                                                      value="#{SourceHandler.allChildNodesNames}">
+                                                             <h:column>
                                                                 <table width="100%">
                                                                     <tr>
                                                                         <td class="tablehead" colspan="2">
@@ -671,7 +696,7 @@
                                                                                                    </h:outputLink> 
                                                                                                    <div style="visibility:hidden;display:none;" id="<h:outputText value='#{childNodesName}'/>cancelEdit">
                                                                                                       <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/>  <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>InnerForm', '<h:outputText value='#{childNodesName}'/>cancelEdit', '<h:outputText value='#{childNodesName}'/>')">
-                                                                                                          <span><h:outputText value="{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/></span>
+                                                                                                          <span><h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/></span>
                                                                                                        </a>     
                                                                                                     </div>
 											                                                 </nobr>																		    
@@ -710,140 +735,120 @@
                                                          <%} else if ("inactive".equalsIgnoreCase(singleSystemObjectLID.getStatus()) || "merged".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>          
                                                                    <!-- Start READ ONY Fields-->
                                                                    <!--Start Displaying the root node fields -->                                        
-							
-							   <h:dataTable  headerClass="tablehead"  
-                                             id="hashIdEditDeactive" 
-                                             width="100%"                                                                  
-                                             var="fieldConfigPerAdd" 
-                                             value="#{SourceHandler.rootNodeFieldConfigs}">
-                                                                <h:column>
-                                                                    <h:outputText value="#{fieldConfigPerAdd.displayName}"  />
-                                                                    <h:outputText value="*" rendered="#{fieldConfigPerAdd.required}" />
-                                                                </h:column>
-                                                                <!--Rendering HTML Select Menu List-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'MenuList' &&  fieldConfigPerAdd.valueType ne 6}" >
-                                                                    <h:selectOneMenu title="#{fieldConfigPerAdd.fullFieldName}" readonly="true" disabled="true"
-                                                                    value="#{SourceHandler.deactivatedSOHashMap['SYSTEM_OBJECT_EDIT'][fieldConfigPerAdd.fullFieldName]}">
-                                                                        <f:selectItem itemLabel="" itemValue="" />
-                                                                        <f:selectItems  value="#{fieldConfigPerAdd.selectOptions}"  />
-                                                                    </h:selectOneMenu>
-                                                                </h:column>
-                                                                <!--Rendering Updateable HTML Text boxes-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType ne 6}" >
-                                                                    <h:inputText label="#{fieldConfigPerAdd.displayName}"  
-                                                                                 id="fieldConfigIdTextbox"  
-																				 readonly="true" disabled="true"
-                                                                                 value="#{SourceHandler.deactivatedSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
-                                                                                 title="#{fieldConfigPerAdd.fullFieldName}"
-																				 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}')"
-                                                                                 onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
-                                                                                 maxlength="#{fieldConfigPerAdd.maxLength}"
-																				 onfocus="javascript:clear_masking_on_focus()"
-                                                                                 onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                 required="#{fieldConfigPerAdd.required}"/>
-                                                                </h:column>                     
-                                                                <!--Rendering Updateable HTML Text boxes date fields-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6}">
-                                                                    
-                                                                    <nobr><!--Sridhar -->
-                                                                        <input type="text" 
-																		       readonly="true" disabled="true"
-                                                                               title="<h:outputText value="#{fieldConfigPerAdd.fullFieldName}"/>"
-                                                                               value="<h:outputText value="#{SourceHandler.deactivatedSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"/>"
-                                                                               id = "<h:outputText value="#{fieldConfigPerAdd.name}"/>"  
-                                                                               required="<h:outputText value="#{fieldConfigPerAdd.required}"/>" 
-                                                                               maxlength="<h:outputText value="#{fieldConfigPerAdd.maxLength}"/>"
-                                                                               onblur="javascript:validate_date(this,'MM/dd/yyyy');"
-                                                                               onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPerAdd.inputMask}"/>')"
-                                                                               onkeyup="javascript:qws_field_on_key_up(this)" >
-                                                                            <h:graphicImage  id="calImgDateFrom"  alt="calendar Image"  styleClass="imgClass" url="./images/cal.gif"/>               
-                                                                    </nobr>
-                                                                        
-                                                                        
-                                                                </h:column>
-                                                                <!--Rendering Updateable HTML Text Area-->
-                                                                <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextArea' &&  fieldConfigPerAdd.valueType ne 6}" >
-                                                                    <h:inputTextarea label="#{fieldConfigPerAdd.displayName}"  
-																	                 readonly="true" disabled="true"
-                                                                                     title="#{fieldConfigPerAdd.fullFieldName}"
-                                                                                     value="#{SourceHandler.deactivatedSOHashMap['SYSTEM_OBJECT'][fieldConfigPerAdd.fullFieldName]}"
-                                                                                     id="fieldConfigIdTextArea"   
-                                                                                     required="#{fieldConfigPerAdd.required}"
-                                                                                     />
-                                                                </h:column>
-                                                        </h:dataTable>
-                                                         <!-- Start Display minor objects fields --> 
-                                                        <h:dataTable  headerClass="tablehead" 
-                                                                      id="allChildNodesNameDeactive" 
-                                                                      width="100%"
-                                                                      var="childNodesName" 
-                                                                      value="#{SourceHandler.allSOChildNodesLists}">
-                                                                 <h:column>
-                                                                <table width="100%">
-                                                                    <tr>
-                                                                        <td class="tablehead" colspan="2">
-                                                                            <h:outputText value="#{childNodesName['NAME']}"/>
-                                                                        </td>
-                                                                    </tr>
-																 </table>
-                                                                 <h:dataTable id="childFieldDeactive" 
-                                                                              var="minorojectsMapArrayList" 
-                                                                              width="100%"
-                                                                              value="#{SourceHandler.deactivatedSOHashMap[childNodesName['EDITKEYLIST']]}">
-                                                                  <h:column>
-                                                                     <h:dataTable id="childFieldDeactive" 
-                                                                              var="childFieldConfigAdd" 
-                                                                              width="100%"
-                                                                              value="#{childNodesName['FIELDCONFIGS']}">
-                                                                                <h:column>
-                                                                                   <h:outputText value="#{childFieldConfigAdd.displayName}"  />
-                                                                                    <h:outputText value="*" rendered="#{childFieldConfigAdd.required}" />
-                                                                                 </h:column>
-                                                                <!--Rendering HTML Select Menu List-->
-                                                                <h:column rendered="#{childFieldConfigAdd.guiType eq 'MenuList' &&  childFieldConfigAdd.valueType ne 6}" >
-                                                                    <h:selectOneMenu readonly="true" disabled="true" value="#{minorojectsMapArrayList[childFieldConfigAdd.fullFieldName]}" >
-                                                                        <f:selectItem itemLabel="" itemValue="" />
-                                                                        <f:selectItems  value="#{childFieldConfigAdd.selectOptions}"  />
-                                                                    </h:selectOneMenu>
-                                                                </h:column>
-                                                                
-                                                                <!--Rendering Updateable HTML Text boxes-->
-                                                                <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox' &&  childFieldConfigAdd.valueType ne 6}" >
-                                                                    <h:inputText readonly="true" disabled="true" 
-								                 label="#{childFieldConfigAdd.displayName}"  
-                                                                                 id="fieldConfigIdTextbox"   
-                                                                                 maxlength="#{childFieldConfigAdd.maxLength}"
-										 value="#{minorojectsMapArrayList[childFieldConfigAdd.fullFieldName]}" 
+                                            <!--Start Displaying the root node fields -->                                        
+                                            <div class="minorobjects">                                                    
+											   <table border="0" cellpadding="1" cellspacing="1" width="100%">
+                                                 <tr><td class="tablehead" width="100%"><b><%=objScreenObject.getRootObj().getName()%></b> &nbsp; </td></tr>
+ 												 <tr>
+												   <td>
+												    <table border="0" cellpadding="1" cellspacing="1" >
+                                                   <%  HashMap rootFieldValuesMap  = (HashMap) systyemObjectAsHashMap.get("SYSTEM_OBJECT");
+                                                        for (int ifc = 0; ifc < roorNodeFieldConfigs.length; ifc++) {
+                                                            FieldConfig fieldConfigMap = (FieldConfig) roorNodeFieldConfigs[ifc];
+                                                                        %>  
+                                                      <tr>
+                                                        <th align="left">
+                                                          <%=fieldConfigMap.getDisplayName()%>
+                                                        </th>
+                                                        <td>
+														<%if(fieldConfigMap.getGuiType().equalsIgnoreCase("TextBox")) {%>
+                                                          <input type="text" title="<%=fieldConfigMap.getDisplayName()%>" style="background:#efefef;border: 1px inset;" value="<%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : " "%>"  readonly="true" disabled="true"/>
+														<%}else if(fieldConfigMap.getGuiType().equalsIgnoreCase("TextArea")) {%>
+ 														   <textarea title="<%=fieldConfigMap.getDisplayName()%>" disabled="true" readonly="true" style="background:#efefef;border: 1px inset;" >
+														      <%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : " "%>
+                                                           </textarea>
+														<%}else if(fieldConfigMap.getGuiType().equalsIgnoreCase("MenuList")) {%>
+														  <select readonly="true" disabled="true" style="background:#efefef;border: 1px inset;"  title="<%=fieldConfigMap.getDisplayName()%>"> 
+														    <option value="<%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : "&nbsp"%>"><%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : " "%></option>
+														   </select>                                              
+														 <%} else {%>
+                                                          <input type="text" title="<%=fieldConfigMap.getDisplayName()%>" value="<%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : " "%>"  readonly="true" disabled="true" style="background:#efefef;border: 1px inset;" />
+														<%}%>
+														</td>
+                                                     </tr>
+                                                   <%}%>
+												   </table>
+												</td>
+												</tr>
+                                                <!-- STARTDisplaying the minor object fields -->    
+                                                <% String epathValue = new String();
+                                                  for (int io = 0; io < arrObjectNodeConfig.length; io++) {
+                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[io];
+                                                     ArrayList  minorObjectMapList =  (ArrayList) systyemObjectAsHashMap.get("SOEDIT" + childObjectNodeConfig.getName() + "ArrayList");
+								                %>
+                                                <tr><td>&nbsp;</td></tr>
+                                                <tr><td class="tablehead" width="100%"><b><%=childObjectNodeConfig.getName()%></b> &nbsp; </td></tr>
+  											    <tr>
+												  <td> 
+												     <div style="BORDER-RIGHT: #91bedb 1px solid; BORDER-TOP: #91bedb 1px solid; PADDING-LEFT: 1px;BORDER-LEFT: #91bedb 1px solid; PADDING-TOP: 0px; width:100%;BORDER-BOTTOM: #91bedb 1px solid; BACKGROUND-REPEAT: no-repeat; POSITION: relative;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 12px; text-align: left; overflow:auto">
+													 <table border="0" width="100%" cellpadding="0">
+                                                     <%
+                                                      FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
+                                                       HashMap minorObjectMap = new HashMap();
+													   %>
+                                                        <%if(minorObjectMapList.size() == 0) {%>
+                                                        <tr class="odd">
+														  <td><%=bundle.getString("source_rec_nodetails_text")%></td>
+														</tr>
+                                                       <%}%>
+													   <%
+			 					                       for(int ar = 0; ar < minorObjectMapList.size() ;ar ++) {
+                                                         minorObjectMap = (HashMap) minorObjectMapList.get(ar);
+														 String styleClass = ((ar%2==0)?"even":"odd");
+                                                     %>
 
-                                                                                 required="#{childFieldConfigAdd.required}"/>
-                                                                </h:column>
-                                                                
-                                                                <!--Rendering Updateable HTML Text boxes date fields-->
-                                                                <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextBox' &&  childFieldConfigAdd.valueType eq 6}">
-                                                                    <h:inputText label="#{childFieldConfigAdd.displayName}"   
-                                                                                 maxlength="#{childFieldConfigAdd.maxLength}"
-						                                 readonly="true" disabled="true"
-										 value="#{minorojectsMapArrayList[childFieldConfigAdd.fullFieldName]}"  
-                                                                                 id="date" />
-                                                                                 <h:graphicImage  id="calImgStartDate" 
-                                                                                         alt="#{childFieldConfigAdd.displayName}" styleClass="imgClass"
-                                                                                         url="./images/cal.gif"/>               
-                                                                    </a>
-                                                                </h:column>
-                                                                
-                                                                <!--Rendering Updateable HTML Text Area-->
-                                                                <h:column rendered="#{childFieldConfigAdd.guiType eq 'TextArea' &&  childFieldConfigAdd.valueType ne 6}" >
-                                                                    <h:inputTextarea label="#{childFieldConfigAdd.displayName}"  
-                                                                                     id="fieldConfigIdTextArea"  
-										     readonly="true" disabled="true"
-                                                                                     value="#{minorojectsMapArrayList[childFieldConfigAdd.fullFieldName]}" 
-                                                                                     required="#{childFieldConfigAdd.required}"/>
-                                                                </h:column>
-                                                                      </h:dataTable> <!--all child node values datatable-->
-                                                                   </h:column>
-                                                                 </h:dataTable><!--all child node Names values datatable-->
-                                                                 </h:column>
-                                                          </h:dataTable><!--all child node Names values datatable-->
+													   <%if(ar == 0) {%>
+                                                        <tr>			   
+                                                           <% for(int k=0;k<fieldConfigArrayMinor.length;k++) {%>
+ 			                                                  <td class="tablehead">
+				                                                 <%=fieldConfigArrayMinor[k].getDisplayName()%>
+                                                               </td>
+		                                                  <%}%>
+														</tr> 
+                                                      <%}%>
+
+													 <tr style="background:#efefef;" >
+                                                        <% for(int k=0;k<fieldConfigArrayMinor.length;k++) {%>
+                                                          <td>
+														  <%if(minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()) != null ) {%>  <!--if has value-->
+															   <%if(fieldConfigArrayMinor[k].getValueList() != null) {%> <!-- if the field config has value list-->
+																  <%if (fieldConfigArrayMinor[k].getUserCode() != null){%> <!-- if it has user defined value list-->
+																	 <%=ValidationService.getInstance().getUserCodeDescription(fieldConfigArrayMinor[k].getUserCode(), (String) minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()))%>
+																  <%}else{%>
+																	<%=ValidationService.getInstance().getDescription(fieldConfigArrayMinor[k].getValueList(), (String) minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()))%>
+																 <%}%>
+															   <%} else {%> <!--minorObjectMap- In other cases-->
+															   <%
+																String value = minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()).toString();   
+																if (fieldConfigArrayMinor[k].getInputMask() != null && fieldConfigArrayMinor[k].getInputMask().length() > 0) {
+																  if (value != null) {
+																	 //Mask the value as per the masking 
+																	 value = fieldConfigArrayMinor[k].mask(value.toString());
+																   }
+																} 
+																%> 
+																 <%=value%>
+															   <%}%>
+														  <%} else {%> <!-- else print &nbsp-->
+															&nbsp;
+														  <%}%>
+ 								                          </td>
+							                          <% } %>
+													</tr>
+														  
+													 <%}%>
+
+ 													 </table>
+													 </div>
+												  </td>
+												</tr>
+												<%}%>
+                                            <!--End Displaying the minor object fields -->    
+ 										</table>
+
+                                       </div>
+
+                                     <!--End Displaying the root node fields -->    
                                                            <!-- End Display minor objects fields --> 
                                                            <!-- End READ ONLY Fields-->
                                                           <%}%>
@@ -878,7 +883,7 @@
                                                                         <span><h:outputText value="#{msgs.source_rec_vieweuid_but}"/></span>
                                                                     </h:commandLink>                                     
                                                                 </td>
-                                                                <td>
+                                                                <td> 
                                                                     <%if ("active".equalsIgnoreCase(singleSystemObjectLID.getStatus())) {%>
                                                                     <h:commandLink title="#{msgs.source_rec_deactivate_but}"  styleClass="button" rendered="#{Operations.SO_Deactivate}"
                                                                                     action="#{NavigationHandler.toSourceRecords}" 
@@ -1315,7 +1320,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 
                                     <div style="visibility:hidden;display:none;" id="<h:outputText value='#{childNodesName}'/>cancelSOEdit">
                                          <a title="<h:outputText value="#{msgs.source_rec_cancel_but}"/>&nbsp; <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" onclick="javascript:cancelEdit('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm', '<h:outputText value='#{childNodesName}'/>cancelSOEdit', '<h:outputText value='#{childNodesName}'/>')">
-                                          <span><h:outputText value="{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/></span>
+                                          <span><h:outputText value="#{msgs.source_rec_cancel_but}"/> <h:outputText value='#{childNodesName}'/></span>
                                          </a>     
                                    </div>
                              </nobr>
@@ -1484,19 +1489,20 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
                                                                                 onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
- </tr>
-  <tr>
-                                                               <td colspan="6">
+                                                            </tr>
+                                                            <tr>
+                                                               <td colspan="2">
 															   <nobr>
                                                                        <h:commandLink title="#{msgs.source_merge_button}" styleClass="button" rendered="#{Operations.SO_SearchView}"
                                                                                        action="#{SourceMergeHandler.performLidMergeSearch}">
                                                                            <span><h:outputText value="#{msgs.source_merge_button}"/></span>
                                                                        </h:commandLink>                                     
                                                                    </nobr>  
-                                                               </td>
 															   <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('basicMergeformData')" >
                                                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                                                                </h:outputLink>
+														      </td>
+														      <td colspan="4">&nbsp;</td>
                                                            </tr>
                                                 
                                                     </table>
@@ -1548,8 +1554,8 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                              <div id="labelpersonEuidDataContent" class="yellow">
                                                                                 <table border="0" cellspacing="0" cellpadding="0" id="buttoncontent<%=soHashMap.get("LID")%>">
                                                                         <%
-                                                        for (int ifc = 0; ifc < personConfigFeilds.length; ifc++) {
-                                                            FieldConfig fieldConfigMap = (FieldConfig) personConfigFeilds[ifc];
+                                                        for (int ifc = 0; ifc < roorNodeFieldConfigs.length; ifc++) {
+                                                            FieldConfig fieldConfigMap = (FieldConfig) roorNodeFieldConfigs[ifc];
                                                                         %>  
                                                                                     <tr>
                                                                                       <td>
@@ -1627,8 +1633,8 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                         HashMap personfieldValuesMapEO = (HashMap) soHashMap.get("SYSTEM_OBJECT");
                                                         HashMap codesValuesMapEO = (HashMap) soHashMap.get("SYSTEM_OBJECT_EDIT");
                                                         String epathValue = new String();
-                                                        for (int ifc = 0; ifc < personConfigFeilds.length; ifc++) {
-                                                            FieldConfig fieldConfigMap = (FieldConfig) personConfigFeilds[ifc];
+                                                        for (int ifc = 0; ifc < roorNodeFieldConfigs.length; ifc++) {
+                                                            FieldConfig fieldConfigMap = (FieldConfig) roorNodeFieldConfigs[ifc];
                                                             if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
                                                                 epathValue = fieldConfigMap.getFullFieldName();
                                                             } else {
@@ -1777,8 +1783,8 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                         <%
 
                                                         String previewepathValue = new String();
-                                                        for (int ifcp = 0; ifcp < personConfigFeilds.length; ifcp++) {
-                                                            FieldConfig fieldConfigMap = (FieldConfig) personConfigFeilds[ifcp];
+                                                        for (int ifcp = 0; ifcp < roorNodeFieldConfigs.length; ifcp++) {
+                                                            FieldConfig fieldConfigMap = (FieldConfig) roorNodeFieldConfigs[ifcp];
                                                             if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
                                                                 previewepathValue = fieldConfigMap.getFullFieldName();
                                                             } else {
