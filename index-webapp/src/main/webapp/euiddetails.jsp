@@ -112,8 +112,7 @@
 								        ValueExpression requestEuidVE = null ;
 										if( request.getParameter("euid") != null )  {
 											String euidString  = request.getParameter("euid");
-											System.out.println("11111" + euidString);
-											requestEuidVE = ExpressionFactory.newInstance().createValueExpression(euidString, euidString.getClass());
+ 											requestEuidVE = ExpressionFactory.newInstance().createValueExpression(euidString, euidString.getClass());
 										}
 
 								%>
@@ -867,8 +866,179 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                               <%                                                
                                                 }
                                               }%>                                            
+                 
+                                              <!--END displaying the History-->
 
-                                            <!--END displaying the History-->
+											 <!--Start displaying merged records -->
+                                         <% 
+                                               ArrayList eoMergeRecords = (ArrayList) request.getAttribute("mergeEOList"+mainEUID);
+                                               if(request.getAttribute("mergeEOList"+mainEUID) != null && eoMergeRecords.size() > 0) {
+                                                 for(int i=0;i<eoMergeRecords.size();i++) {
+                                                    HashMap mergedValuesMap = (HashMap) eoMergeRecords.get(i);
+                                                    HashMap eoValuesMap = (HashMap) mergedValuesMap.get("ENTERPRISE_OBJECT");
+					                                String eoMergedStatus = (String) mergedValuesMap.get("EO_STATUS");
+                                            %>
+                                               <td  valign="top">
+                                                <div id="mainDupHistory<%=countEnt%><%=i%>">
+                                                  <div style="width:170px;overflow:hidden">
+                                                    <div id="mainEuidContent<%=eoValuesMap.get("EUID")%>" class="transaction" >
+                                                        <table border="0" cellspacing="0" cellpadding="0" >
+                                                            <tr>
+                                                                <td class="<%=menuClass%>">
+																  <%if(i==0) {%>
+																    <h:outputText value="#{msgs.main_euid_label_text}"/>
+																  <%}else {%>
+																    <h:outputText value="#{msgs.merged_euid_label}"/>
+																  <%}%>
+																</td>
+                                                            </tr> 
+                                                            <h:form>
+                                                                <tr>
+                                                                    <td valign="top" class="dupfirst">
+                                                                            <%=eoValuesMap.get("EUID")%>
+                                                                    </td>
+                                                                </tr>
+                                                            </h:form>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                                  <div id="mainEuidContentButtonDiv<%=countEnt%>">
+                                                        <div id="assEuidDataContent<%=countEnt%>" >
+                                                            <div id="personEuidDataContent<%=mergedValuesMap.get("EUID")%>" class="transaction">
+                                                                <table border="0" cellspacing="0" cellpadding="0">
+                                                                <tr><td><font style="color:blue;font-size:12px;font-weight:bold;"><%=compareDuplicateManager.getStatus(eoMergedStatus)%></font></td></tr>
+                                                                     <%
+                                    for (int ifc = 0; ifc < rootFieldConfigArray.length; ifc++) {
+                                        FieldConfig fieldConfigMap =  rootFieldConfigArray[ifc];
+                                        if(!(objScreenObject.getRootObj().getName()+".EUID").equalsIgnoreCase(fieldConfigMap.getFullFieldName())) {
+                                            
+                                        if (fieldConfigMap.getFullFieldName().startsWith(objScreenObject.getRootObj().getName())) {
+                                            epathValue = fieldConfigMap.getFullFieldName();
+                                        } else {
+                                            epathValue = objScreenObject.getRootObj().getName() + "." + fieldConfigMap.getFullFieldName();
+                                        }
+                                                                    %>  
+                                                                        <tr>
+                                                                            <td>
+                                                                                <%if (eoValuesMap.get(epathValue) != null) {%>
+                                                                                
+                                                                                     <%if (fieldConfigMap.isSensitive()){%>
+                                                                                        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                     <%}else {%>
+                                                                                        <%=eoValuesMap.get(epathValue)%>
+                                                                                     <%}%>
+                                                                                <%} else {%>
+                                                                                &nbsp;
+                                                                                <%}%>
+                                                                                
+                                                                            </td>
+                                                                        </tr>
+                                                                    <%
+                                        }
+                                        }
+                                                                    %>
+
+                                                                   <%
+                                                                   
+                                                                   for (int io = 0; io < arrObjectNodeConfig.length; io++) {
+                                                                    ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[io];
+
+int  maxMinorObjectsMinorDB =  ((Integer) mergedValuesMap.get("EO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
+
+maxMinorObjectsMAX  = compareDuplicateManager.getMinorObjectsMaxSize(eoArrayList,objScreenObject,childObjectNodeConfig.getName());
+
+int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
+
+
+																	ArrayList  minorObjectMapList =  (ArrayList) mergedValuesMap.get("EO" + childObjectNodeConfig.getName() + "ArrayList");
+                                                                    HashMap minorObjectHashMap = new HashMap();
+                                                                     //if(minorObjectMapList.size() >0) {
+                                                                       //minorObjectHashMap = (HashMap) minorObjectMapList.get(0);
+                                                                     //}  
+                                                                     FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
+                                                                    
+
+                                                                   %>
+                                                                     <tr>
+																	   <td>
+																	        <%if(minorObjectMapList.size() == 0) {%>
+																			  No <%=childObjectNodeConfig.getName()%>.
+																			<%} else {%>
+																	         &nbsp;
+																			<%}%>
+																	   </td>
+																	</tr>
+																	<%for(int ar = 0 ; ar <minorObjectMapList.size() ; ar++ ) {
+																	  minorObjectHashMap = (HashMap) minorObjectMapList.get(ar);
+                                                                     for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
+                                                                         FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
+                                                                         epathValue = fieldConfigMap.getFullFieldName();
+                                                                    %>  
+                                                                       <tr>
+                                                                          <td>
+                                                                                <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
+                                                                                 <%if(fieldConfigMap.isKeyType()) {%>
+                                                                                   <b>
+                                                                                    <%if (fieldConfigMap.isSensitive()){%> <!-- if sensitive fields-->
+                                                                                      <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                    <%}else {%>
+                                                                                      <%=minorObjectHashMap.get(epathValue)%>
+                                                                                    <%}%>
+                                                                                   </b>
+                                                                                  <%}else{%>
+                                                                                    <%if (fieldConfigMap.isSensitive()){%>
+                                                                                      <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+                                                                                    <%}else {%>
+                                                                                      <%=minorObjectHashMap.get(epathValue)%>
+                                                                                    <%}%>
+ 																				  <%}%>                                                           
+																				  <%} else {%>
+                                                                                &nbsp;
+                                                                                <%}%>
+                                                                          </td>
+                                                                      </tr>
+                                                                    <%
+                                                                      } //FIELD CONFIG LOOP
+																	%>
+                                                                     <tr><td>&nbsp;</td></tr>
+
+																	<%
+																     }  //MINOR OBJECTS LOOP 
+                                                                     %>
+
+                                                                  <%
+								                                  for (int iex = 0; iex < maxMinorObjectsDiff; iex++) {							
+								                                  %>
+
+								                                  <%
+                                                                    for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
+                                                                     FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
+													                 %>  
+                                                                    <tr><td>&nbsp;</td></tr>
+                                                                    <%                                                                                     }//field config loop
+																	 %>
+                                                                     <tr><td>&nbsp;</td></tr>
+
+																	 <%
+                                                                        }//Extra minor objects loop
+								                                    %>
+
+																	  
+                                                                    <%} // TOTAL CHILD OBJECTS LOOP
+                                                                    %>
+
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                              <%                                                
+                                                }
+                                              }%>                                            
+
+                                              <!--End displaying merged records-->
                                            <%}%>
                                            <td valign="top"><div id="previewPane"></div></td>
                                         </tr>
@@ -1019,6 +1189,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                         <h:outputText  value="#{msgs.View_Merge_Records_but_text}"/>                                                            
                                                                     </h:commandLink>
                                                                 </h:form>
+																
                                                             </td> 
                                                         </tr>
                                                    <%}%>
