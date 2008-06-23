@@ -712,8 +712,5 @@ function isFloat(s)
    }
 
 
-function clear_masking_on_focus() {
-    global_field="";
-    global_old_value= "";
-}
+
 

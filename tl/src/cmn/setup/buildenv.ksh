@@ -154,14 +154,14 @@ export CODELINE
 if [ x$IIS_CODELINE != x ]; then
     CODELINE=$IIS_CODELINE
 else
-    CODELINE=main
+    CODELINE=sierra
 fi
 
 ####
 #CVS BRANCH NAMES.  Use IIS_BRANCH_NAME to override "main" when bootstraping a branch.
 ####
 export JBI_BRANCH_NAME CVS_BRANCH_NAME
-JBI_BRANCH_NAME=main
+JBI_BRANCH_NAME=sierra
 if [ x$IIS_BRANCH_NAME != x ]; then
     JBI_BRANCH_NAME="$IIS_BRANCH_NAME"
 fi
@@ -434,4 +434,4 @@ CVSIGNORE="Makefile bld target"
 
 #finally, set the current release tag:
 export REV
-REV="SM09"
+REV="SM10"

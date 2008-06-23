@@ -67,15 +67,11 @@ import java.util.Set;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
-import com.sun.mdm.index.master.search.merge.MergeHistoryNode;
-import com.sun.mdm.index.objects.SBR;
-import com.sun.mdm.index.objects.SBROverWrite;
 import net.java.hulp.i18n.LocalizationSupport;
 
 public class CompareDuplicateManager {
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.managers.CompareDuplicateManager");
     private static transient final Localizer mLocalizer = Localizer.get();
-    public static final String MINOR_OBJECT_TYPE = "MINOR_OBJECT_TYPE";
     private MasterControllerService masterControllerService = new MasterControllerService();
     /** Creates a new instance of CompareDuplicateManager*/
     public CompareDuplicateManager() {
@@ -949,48 +945,5 @@ public class CompareDuplicateManager {
             name = String.valueOf(strStatus.charAt(0)).toUpperCase() + strStatus.substring(1);
         }
         return name;
-    }
-    public boolean checkOverWrites(String editEuid, HashMap hm) throws ObjectException, ProcessingException, UserException {
-        boolean ovwerWriteFound = false;
-        SBR sbr = masterControllerService.getEnterpriseObject(editEuid).getSBR();
-
-        if (sbr != null) {
-            for (Object obj : hm.keySet()) {
-                // Object value = hm.get(obj);
-                String key = obj.toString();
-                if (!obj.equals(MasterControllerService.SYSTEM_CODE) && !obj.equals(MasterControllerService.LID) && !obj.equals(MasterControllerService.HASH_MAP_TYPE) && !obj.equals(MINOR_OBJECT_TYPE)) {
-                    // setObjectNodeFieldValue(minorObject, (String) obj, (String) value);
-                    ArrayList overWrites = sbr.getOverWrites();
-                    if (overWrites != null) {
-                        
-                        for (Object overWriteObj : overWrites) {
-                            SBROverWrite overWrite = (SBROverWrite) overWriteObj;
-                            if (overWrite.getEPath().indexOf(key) != -1) {
-                                ovwerWriteFound = true;
-                            }
-                        }
-
-                    }
-                }
-            }
-        }
-        return ovwerWriteFound;
-    }
-    
-    // Method added by Anil to get Merged euid.
-    public String getMergedEuid(String euid) throws ProcessingException, UserException {
-
-        String mergedEuid = null;
-        EnterpriseObject enterpriseObject = null;
-
-        enterpriseObject = masterControllerService.getEnterpriseObject(euid);
-
-        if (enterpriseObject != null) {
-            mergedEuid = null;
-        } else {
-            MergeHistoryNode mhn = masterControllerService.getMergeHistory(euid);
-            mergedEuid = mhn.getEUID();
-        }
-        return mergedEuid;
     }
 }

@@ -20,7 +20,7 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
- 
+
      
 /*
  * TransactionHandler.java 
@@ -645,11 +645,6 @@ public class TransactionHandler extends ScreenConfiguration {
                                 //eoArrayList.add(viewMergehist.getAfterEO2());
                                 HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(viewMergehist.getAfterEO2(), screenObject);
                                 eoArrayList.add(eoMap);
-                            }
-                            if (ts.getEnterpriseObjectHistory().getAfterEO() != null) {
-                            //eoArrayList.add(ts.getEnterpriseObjectHistory().getAfterEO());
-                            HashMap eoMap = compareDuplicateManager.getEnterpriseObjectAsHashMap(ts.getEnterpriseObjectHistory().getAfterEO(), screenObject);
-                            eoArrayList.add(eoMap);
                             }
                         }
 

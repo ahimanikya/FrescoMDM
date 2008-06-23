@@ -487,7 +487,7 @@
                                                                                  onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
                                                                                  maxlength="#{fieldConfigPerAdd.maxLength}"
                                                                                  onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                onfocus="javascript:clear_masking_on_focus()" required="#{fieldConfigPerAdd.required}"/>
+                                                                                 required="#{fieldConfigPerAdd.required}"/>
                                                                 </h:column>                     
                                                                 <!--Rendering Updateable HTML Text boxes date fields-->
                                                                 <h:column rendered="#{fieldConfigPerAdd.guiType eq 'TextBox' &&  fieldConfigPerAdd.valueType eq 6}">
@@ -599,7 +599,7 @@
                                                                          title="#{childFieldConfigAdd.fullFieldName}"
                                                                          onkeydown="javascript:qws_field_on_key_down(this, userDefinedInputMask)"
 																		  maxlength="#{childFieldConfigAdd.maxLength}"
-																		onfocus="javascript:clear_masking_on_focus()" onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
                                                                          onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                          required="#{childFieldConfigAdd.required}"
 																		 rendered="#{childFieldConfigAdd.constraintBy ne null}"
@@ -609,7 +609,7 @@
                                                                          title="#{childFieldConfigAdd.fullFieldName}"
                                                                          onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')"
 																		  maxlength="#{childFieldConfigAdd.maxLength}"
-																		onfocus="javascript:clear_masking_on_focus()" onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
                                                                          onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                          required="#{childFieldConfigAdd.required}"
 																		 rendered="#{childFieldConfigAdd.constraintBy eq null}"
@@ -726,7 +726,6 @@
 																				 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}')"
                                                                                  onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPerAdd.inputMask}')"
                                                                                  maxlength="#{fieldConfigPerAdd.maxLength}"
-																				 onfocus="javascript:clear_masking_on_focus()"
                                                                                  onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                                  required="#{fieldConfigPerAdd.required}"/>
                                                                 </h:column>                     
@@ -935,8 +934,7 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                     <h:inputText   required="#{feildConfig.required}" 
                                                                                    label="#{feildConfig.displayName}" 
                                                                                    onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
-																				   onfocus="javascript:clear_masking_on_focus()"
+                                                                                   onkeyup="javascript:qws_field_on_key_up(this)"
                                                                                    onblur="javascript:accumilateFormFieldsOnBlur(this,'#{feildConfig.name}','#{feildConfig.inputMask}','#{feildConfig.valueType}','basicViewformData')"
                                                                                    maxlength="#{feildConfig.maxLength}" 
                                                                                    rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
@@ -947,7 +945,6 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                                    readonly="true"
                                                                                    onkeydown="javascript:qws_field_on_key_down(this, document.basicViewformData.lidmask.value)"
                                                                                    onkeyup="javascript:qws_field_on_key_up(this)"
-																				   onfocus="javascript:clear_masking_on_focus()"
                                                                                    onblur="javascript:accumilateFormFieldsOnBlur(this,'#{feildConfig.name}',document.basicViewformData.lidmask.value,'#{feildConfig.valueType}','basicViewformData')"
                                                                                    rendered="#{feildConfig.name eq 'LID'}"/>
                                                                                        
@@ -955,7 +952,6 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                                    label="#{feildConfig.displayName}" 
                                                                                    onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
                                                                                    onkeyup="javascript:qws_field_on_key_up(this)"
-																				   onfocus="javascript:clear_masking_on_focus()"
                                                                                    onblur="accumilateFormFieldsOnBlur(this,'#{feildConfig.name}','#{feildConfig.inputMask}','#{feildConfig.valueType}','basicViewformData')"
                                                                                    maxlength="#{SourceHandler.euidLength}" 
                                                                                    rendered="#{feildConfig.name eq 'EUID'}"/>
@@ -1080,7 +1076,6 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 																						   maxlength="#{feildConfig.maxLength}"    onkeydown="javascript:qws_field_on_key_down(this, document.basicValidateAddformData.lidmask.value)"
                                                                                            onblur="javascript:qws_field_on_key_down(this, document.basicValidateAddformData.lidmask.value);"
                                                                                            onkeyup="javascript:qws_field_on_key_up(this)"
-																						   onfocus="javascript:clear_masking_on_focus()"
                                                                                            />
                                                                                            
                                                                         </nobr>
@@ -1130,7 +1125,6 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 																		  maxlength="#{fieldConfigPerAdd.maxLength}"
 																		 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPerAdd.displayName}','#{fieldConfigPerAdd.valueType}')"
                                                                          onkeyup="javascript:qws_field_on_key_up(this)" 
-																		 onfocus="javascript:clear_masking_on_focus()"
                                                                          required="#{fieldConfigPerAdd.required}"/>
                                                         </h:column>                     
                                                         <!--Rendering Updateable HTML Text boxes date fields-->
@@ -1239,7 +1233,6 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
 																		  maxlength="#{childFieldConfigAdd.maxLength}"
 																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
                                                                          onkeyup="javascript:qws_field_on_key_up(this)" 
-																		 onfocus="javascript:clear_masking_on_focus()"
                                                                          required="#{childFieldConfigAdd.required}"
 																		 rendered="#{childFieldConfigAdd.constraintBy ne null}"
 																		 />     
@@ -1248,9 +1241,8 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                          title="#{childFieldConfigAdd.fullFieldName}"
                                                                          onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')"
 																		  maxlength="#{childFieldConfigAdd.maxLength}"
-																		  onfocus="javascript:clear_masking_on_focus()"
-																		  onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
-																		 onkeyup="javascript:qws_field_on_key_up(this)" 
+																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                          required="#{childFieldConfigAdd.required}"
 																		 rendered="#{childFieldConfigAdd.constraintBy eq null}"
 																		 />
@@ -1574,21 +1566,15 @@ onchange="javascript:setLidMaskValue(this,'basicViewformData')">
                                                                     <tr>
                                                                         <td class="menutop"><b> LID&nbsp;<%=countEnt + 1%></b> </td>
                                                                     </tr> 
-                                                                     <tr>
-                                                                    <script> alllidsArray.push('<%=soHashMap.get("LID")%>')</script>
-                                                                    <td valign="top" name="sri" id="curve<%=soHashMap.get("LID")%>">
-                                                                   <% if(request.getAttribute("mergedSOMap") != null ) { %>
-                                                                     <span title ="<%=soHashMap.get("LID")%>" class="dupbtn" >
-                                                                     <%=soHashMap.get("LID")%>
-                                                                     </span>
-                                                                     <%} else {%>
-                                                                     <a title ="<%=soHashMap.get("LID")%>" class="dupbtn" id="button<%=soHashMap.get("LID")%>" href="javascript:void(0)" onclick="javascript:collectLid('<%=soHashMap.get("LID")%>','<%=bundle.getString("source_keep_btn") + " " + localIdDesignation%>')">
-                                                                     <%=soHashMap.get("LID")%>
-                                                                     <script> var thisText = document.getElementById('curve<%=soHashMap.get("LID")%>').innerHTML; alllidsactionText.push(thisText);</script>
-                                                                      </a>
-                                                                  <%}%>
-                                                                 </td>
-                                                                 </tr>
+                                                                    <tr>
+                                                                        <script> alllidsArray.push('<%=soHashMap.get("LID")%>')</script>
+                                                                            <td valign="top" name="sri" id="curve<%=soHashMap.get("LID")%>">
+                                                                            <a title ="<%=soHashMap.get("LID")%>" class="dupbtn" id="button<%=soHashMap.get("LID")%>" href="javascript:void(0)" onclick="javascript:collectLid('<%=soHashMap.get("LID")%>')">
+                                                                                <%=soHashMap.get("LID")%>
+                                                                            </a> 
+                                                                            </td>
+                                                                           <script> var thisText = document.getElementById('curve<%=soHashMap.get("LID")%>').innerHTML; alllidsactionText.push(thisText);</script> 
+                                                                        </tr>
                                                                 </table>
                                                             </div>
                                                                 <div id="personEuidDataContent<%=soHashMap.get("LID")%>" class="yellow">

@@ -75,7 +75,7 @@
                                         <include name="EviewApplicationTemplateProject.zip"></include>
                                     </fileset>
                                     <fileset dir="${basedir}/../index-core/src/main/resources/matchengine/config/runtime">
-                                        <exclude name="stand/**"></exclude>
+                                        <exclude name="match/**"></exclude>
                                     </fileset>
                                 </copy>
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/repository/schema">

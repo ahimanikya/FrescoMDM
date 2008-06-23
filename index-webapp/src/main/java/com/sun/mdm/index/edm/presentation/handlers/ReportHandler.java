@@ -62,11 +62,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.TreeSet;
 import net.java.hulp.i18n.LocalizationSupport;
 
 public class ReportHandler {
@@ -781,7 +777,7 @@ public class ReportHandler {
 
     }
 
-/*    public ArrayList<SelectItem> getSelectOptions() {
+    public ArrayList<SelectItem> getSelectOptions() {
         MasterControllerService masterControllerService = new MasterControllerService();
         String[][] systemCodes = masterControllerService.getSystemCodes();
         String[] pullDownListItems = systemCodes[0];
@@ -795,7 +791,7 @@ public class ReportHandler {
         selectOptions = newArrayList;
         return selectOptions;
     }
-*/
+
     public void setSelectOptions(ArrayList<SelectItem> selectOptions) {
         this.selectOptions = selectOptions;
     }
@@ -1079,54 +1075,4 @@ public class ReportHandler {
     public void setDuplicateReport(DuplicateReportHandler duplicateReport) {
         this.duplicateReport = duplicateReport;
     }
-    
-     public ArrayList<SelectItem> getSelectOptions() {
-        MasterControllerService masterControllerService  = new MasterControllerService();
-        String[][] systemCodesArray = masterControllerService.getSystemCodes();
-        
-        HashMap  SystemCodeDesc = new HashMap ();
-        
-        String[] pullDownListItems = systemCodesArray[0];
-        ArrayList newArrayList = new ArrayList();
-        for (int i = 0; i < pullDownListItems.length; i++) {
-            String sysDesc = masterControllerService.getSystemDescription(pullDownListItems[i]);
-            String  sysCode  = pullDownListItems[i];
-            SystemCodeDesc.put(sysCode, sysDesc);
-            }
-            HashMap  sortedSyscode = getSortedMap(SystemCodeDesc);
-            Set  sysCodeSet =  sortedSyscode.keySet();
-            Iterator it = sysCodeSet.iterator();
-            while(it.hasNext()){
-            SelectItem selectItem = new SelectItem();
-            String  sysCode  = (String)it.next();
-            String sysDesc = masterControllerService.getSystemDescription(sysCode);
-            selectItem.setLabel(sysDesc);
-            selectItem.setValue(sysCode);
-            newArrayList.add(selectItem);
-        }
-       
-           selectOptions = newArrayList;
-           return selectOptions; 
-  
-    }
-
-    
-    public HashMap getSortedMap(HashMap hmap)
-	 {
-		HashMap map = new LinkedHashMap();
-		List mapKeys = new ArrayList(hmap.keySet());
-		List mapValues = new ArrayList(hmap.values());
-		hmap.clear();
-		TreeSet sortedSet = new TreeSet(mapValues);
-		Object[] sortedArray = sortedSet.toArray();
-		int size = sortedArray.length;
- 		for (int i=0; i<size; i++){
- 		map.put(mapKeys.get(mapValues.indexOf(sortedArray[i])), sortedArray[i]);
-     	}
-		return map;
-	}
-
-
-
-
 }

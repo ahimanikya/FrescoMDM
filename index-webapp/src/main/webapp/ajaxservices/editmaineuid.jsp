@@ -249,7 +249,7 @@ boolean isSessionActive = true;
                                                                       maxlength="#{fieldConfigPer.maxLength}"
 																	  disabled="#{!fieldConfigPer.updateable || EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}"
                                                                      readonly="#{!fieldConfigPer.updateable || EditMainEuidHandler.lockedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]  ||  EditMainEuidHandler.linkedFieldsHashMapFromDB[fieldConfigPer.fullFieldName]}" 
-                                                                     onfocus="javascript:clear_masking_on_focus()"  onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
+                                                                      onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
 																	 onkeydown="javascript:qws_field_on_key_down(this, '#{fieldConfigPer.inputMask}')"
                                                                      onkeyup="javascript:qws_field_on_key_up(this)"                    
                                                                  />
@@ -280,7 +280,6 @@ boolean isSessionActive = true;
                                                         <nobr>
                                                             <input type="text" 
                                                                    id = "<h:outputText value="#{fieldConfigPer.name}"/>"  
-																    onfocus="javascript:clear_masking_on_focus()" 
                                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
                                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                    value = "<h:outputText value="#{EditMainEuidHandler.editSingleEOHashMap['ENTERPRISE_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
@@ -408,7 +407,7 @@ boolean isSessionActive = true;
                                                                          title="#{childFieldConfigAdd.fullFieldName}"
                                                                          onkeydown="javascript:qws_field_on_key_down(this, userDefinedInputMask)"
 																		  maxlength="#{childFieldConfigAdd.maxLength}"
-																		 onfocus="javascript:clear_masking_on_focus()"  onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
                                                                          onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                          required="#{childFieldConfigAdd.required}"
 																		 rendered="#{childFieldConfigAdd.constraintBy ne null}"
@@ -418,7 +417,7 @@ boolean isSessionActive = true;
                                                                          title="#{childFieldConfigAdd.fullFieldName}"
                                                                          onkeydown="javascript:qws_field_on_key_down(this, '#{childFieldConfigAdd.inputMask}')"
 																		  maxlength="#{childFieldConfigAdd.maxLength}"
-																		 onfocus="javascript:clear_masking_on_focus()"  onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
+																		 onblur="javascript:validate_Integer_fields(this,'#{childFieldConfigAdd.displayName}','#{childFieldConfigAdd.valueType}')"
                                                                          onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                          required="#{childFieldConfigAdd.required}"
 																		 rendered="#{childFieldConfigAdd.constraintBy eq null}"
@@ -633,7 +632,7 @@ boolean isSessionActive = true;
 																			             readonly="#{!fieldConfigPer.updateable}"
 																						 onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
                                                                                value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
-                                                                                onfocus="javascript:clear_masking_on_focus()"           required="#{fieldConfigPer.required}"
+                                                                                         required="#{fieldConfigPer.required}"
                                                                                          />
                                                                         </h:column>
                                                                         <!--Rendering Updateable HTML Text boxes date fields-->
@@ -647,7 +646,7 @@ boolean isSessionActive = true;
                                                                                    onblur="javascript:validate_date(this,'MM/dd/yyyy');"
                                                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
                                                                                    onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                                                   value = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"/>"   onfocus="javascript:clear_masking_on_focus()" 
+                                                                                   value = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
                                                                                    />
                                                                                       
                                                                                 <h:graphicImage alt="#{fieldConfigPer.displayName}"  styleClass="imgClass" url="./images/cal.gif"/>               
@@ -733,7 +732,7 @@ boolean isSessionActive = true;
 																			             readonly="true"
                                                                                value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}" 
                                                                                onblur="javascript:validate_Integer_fields(this,'#{fieldConfigPer.displayName}','#{fieldConfigPer.valueType}')"
-                                                                                onfocus="javascript:clear_masking_on_focus()"           required="#{fieldConfigPer.required}"
+                                                                                         required="#{fieldConfigPer.required}"
                                                                                          />
                                                                         </h:column>
                                                                         <!--Rendering Updateable HTML Text boxes date fields-->
@@ -746,7 +745,7 @@ boolean isSessionActive = true;
                                                                                    id = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_CODE']}"/><h:outputText value="#{eoSystemObjectMap['LID']}" /><h:outputText value="#{fieldConfigPer.name}"/>"  
                                                                                    onblur="javascript:validate_date(this,'MM/dd/yyyy');"
                                                                                    onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{fieldConfigPer.inputMask}"/>')"
-                                                                                   onfocus="javascript:clear_masking_on_focus()"  onkeyup="javascript:qws_field_on_key_up(this)" 
+                                                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                                    value = "<h:outputText value="#{eoSystemObjectMap['SYSTEM_OBJECT'][fieldConfigPer.fullFieldName]}"/>"  
                                                                                    />
                                                                                        
@@ -872,7 +871,7 @@ boolean isSessionActive = true;
                                                                          onkeydown="javascript:qws_field_on_key_down(this, userDefinedInputMask)"
 																		  maxlength="#{soChildFieldConfigAdd.maxLength}"
 																		 onblur="javascript:validate_Integer_fields(this,'#{soChildFieldConfigAdd.displayName}','#{soChildFieldConfigAdd.valueType}')"
-                                                                          onfocus="javascript:clear_masking_on_focus()" 
+                                                                         onkeyup="javascript:qws_field_on_key_up(this)" 
                                                                          required="#{soChildFieldConfigAdd.required}"
 																		 rendered="#{soChildFieldConfigAdd.constraintBy ne null}"
 																		 />     
@@ -934,7 +933,6 @@ boolean isSessionActive = true;
                                                                  readonly="true"
                                                                   onkeydown="javascript:qws_field_on_key_down(this, '#{soChildFieldConfigAdd.inputMask}')" 
 																	 onkeyup="javascript:qws_field_on_key_up(this)"
-																	  onfocus="javascript:clear_masking_on_focus()" 
 																	 required="#{soChildFieldConfigAdd.required}"  
 																	 />
 

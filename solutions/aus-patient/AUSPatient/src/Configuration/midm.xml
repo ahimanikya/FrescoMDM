@@ -1373,8 +1373,11 @@
                         <tab-name>Potential Duplicate Report</tab-name>
                         <report-name>Potential Duplicate</report-name>
                         <screen-id>0</screen-id>
-                        <display-order>5</display-order> 
-                        <search-pages/>
+                        <display-order>5</display-order>
+                        <search-pages>
+                            <simple-search-page>
+                            </simple-search-page>
+                        </search-pages>
                         <search-result-pages>
                             <search-result-list-page>
                                 <search-result-id>0</search-result-id>
@@ -1399,8 +1402,11 @@
                         <tab-name>Deactivated Record Report</tab-name>
                         <report-name>Deactivated</report-name>
                         <screen-id>1</screen-id>
-                        <display-order>1</display-order> 
-                        <search-pages/>
+                        <display-order>1</display-order>
+                        <search-pages>
+                            <simple-search-page>
+                            </simple-search-page>
+                        </search-pages>
                         <search-result-pages>
                             <search-result-list-page>
                                 <search-result-id>0</search-result-id>
@@ -1425,8 +1431,11 @@
                         <tab-name>Merged Transaction Report</tab-name>
                         <report-name>Merged</report-name>
                         <screen-id>2</screen-id>
-                        <display-order>0</display-order> 
-                        <search-pages/>
+                        <display-order>0</display-order>
+                        <search-pages>
+                            <simple-search-page>
+                            </simple-search-page>
+                        </search-pages>
                         <search-result-pages>
                             <search-result-list-page>
                                 <search-result-id>0</search-result-id>
@@ -1451,8 +1460,11 @@
                         <tab-name>Unmerged Transaction Report</tab-name>
                         <report-name>Unmerged</report-name>
                         <screen-id>3</screen-id>
-                        <display-order>2</display-order> 
-                        <search-pages/>
+                        <display-order>2</display-order>
+                        <search-pages>
+                            <simple-search-page>
+                            </simple-search-page>
+                        </search-pages>
                         <search-result-pages>
                             <search-result-list-page>
                                 <search-result-id>0</search-result-id>
@@ -1477,8 +1489,11 @@
                         <tab-name>Updated Record Report</tab-name>
                         <report-name>Update</report-name>
                         <screen-id>4</screen-id>
-                        <display-order>3</display-order> 
-                        <search-pages/>
+                        <display-order>3</display-order>
+                        <search-pages>
+                            <simple-search-page>
+                            </simple-search-page>
+                        </search-pages>
                         <search-result-pages>
                             <search-result-list-page>
                                 <search-result-id>0</search-result-id>
@@ -1494,27 +1509,30 @@
                         <enable>true</enable>
                         <root-object>AUSPatient</root-object>
                         <tab-name>Activity Report</tab-name>
-                        <report-name>Transaction Summary</report-name>
-                        <screen-id>5</screen-id>
-                        <display-order>4</display-order>
+                        <report-name>Transaction Summary Report</report-name>
+                        <screen-id>4</screen-id>
+                        <display-order>3</display-order>
                         <search-pages>
                             <simple-search-page>
+                                <screen-title>Daily Activity</screen-title>
+                                <search-result-id>0</search-result-id>
+                                <search-screen-order>0</search-screen-order>
+                                <field-group/>
+                            </simple-search-page>
+                            <simple-search-page>
                                 <screen-title>Weekly Activity</screen-title>
-                                <report-name>Weekly Transaction Summary Report</report-name>
                                 <search-result-id>0</search-result-id>
                                 <search-screen-order>1</search-screen-order>
                                 <field-group/>
                             </simple-search-page>
                             <simple-search-page>
                                 <screen-title>Monthly Activity</screen-title>
-                                <report-name>Monthly Transaction Summary Report</report-name>
                                 <search-result-id>0</search-result-id>
                                 <search-screen-order>2</search-screen-order>
                                 <field-group/>
                             </simple-search-page>
                             <simple-search-page>
                                 <screen-title>Yearly Activity</screen-title>
-                                <report-name>Yearly Transaction Summary Report</report-name>
                                 <search-result-id>0</search-result-id>
                                 <search-screen-order>3</search-screen-order>
                                 <field-group/>

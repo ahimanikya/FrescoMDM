@@ -222,21 +222,16 @@ public class DataObjectAdapter {
     
     
      private static int getTypeAsInt(String fieldType) {
-    	 
          int type = -1;
          ArrayList types = new ArrayList();
          if( fieldType == null || "".equalsIgnoreCase(fieldType) ) {
              type = ObjectField.OBJECTMETA_UNDEFINED_TYPE;
          } else {
-        	 if (fieldType.equalsIgnoreCase("int")) {
-        		 fieldType = ObjectField.OBJECTMETA_INT_STRING;
-        	 }
              for(int i=0; i< typeStrings.length;i++) {
-            	 
-                if(typeStrings[i].equalsIgnoreCase(fieldType)) {
+                if( typeStrings[i].equalsIgnoreCase(fieldType)) {
                     type = i-1;
                     break;
-                } 
+                }
              }
          }
          return type;

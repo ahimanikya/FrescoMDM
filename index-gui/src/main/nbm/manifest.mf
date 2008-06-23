@@ -10,6 +10,7 @@ OpenIDE-Module-Specification-Version: 1.0
 OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
 Class-Path: ext/mdm/index-core.jar 
     ext/mdm/net.java.hulp.i18n.jar 
+    ext/mdm/net.java.hulp.i18ntask.jar 
     ext/mdm/matcher.jar 
     ext/mdm/standardizer/lib/inti-components-1.0.jar 
     ext/mdm/standardizer/lib/inti-container-1.0.jar 

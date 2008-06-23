@@ -872,707 +872,35 @@
         <children>HeightWeight</children>
         <children>HealthID</children>
     </relationships>
-    <impl-details>
-        <master-controller-jndi-name>ejb/UKPatientMasterController</master-controller-jndi-name>
-        <validation-service-jndi-name>ejb/UKPatientCodeLookup</validation-service-jndi-name>
-        <usercode-jndi-name>ejb/UKPatientUserCodeLookup</usercode-jndi-name>
-        <reportgenerator-jndi-name>ejb/UKPatientReportGenerator</reportgenerator-jndi-name>
-        <debug-flag>true</debug-flag>
-        <debug-dest>console</debug-dest>
-        <enable-security>false</enable-security>
-        <object-sensitive-plug-in-class></object-sensitive-plug-in-class>
-    </impl-details>
-    <gui-definition>
-        <page-definition>
-            <local-id></local-id>
-            <initial-screen-id>1</initial-screen-id>
-            <dashboard>
-                <root-object>UKPatient</root-object>
-                <tab-name>Dashboard</tab-name>
-                <screen-id>8</screen-id>
-                <display-order>0</display-order>
-                <search-pages/>
+    <impl-details>        <master-controller-jndi-name>ejb/UKPatientMasterController</master-controller-jndi-name>        <validation-service-jndi-name>ejb/UKPatientCodeLookup</validation-service-jndi-name>        <usercode-jndi-name>ejb/UKPatientUserCodeLookup</usercode-jndi-name>        <reportgenerator-jndi-name>ejb/UKPatientReportGenerator</reportgenerator-jndi-name>        <debug-flag>true</debug-flag>        <debug-dest>console</debug-dest>        <enable-security>false</enable-security>        <object-sensitive-plug-in-class></object-sensitive-plug-in-class>    </impl-details>    <gui-definition>        <page-definition>            <local-id></local-id>            <initial-screen-id>1</initial-screen-id>            <dashboard>                <root-object>UKPatient</root-object>                <tab-name>Dashboard</tab-name>                <screen-id>8</screen-id>                <display-order>0</display-order>                <search-pages/>
                 <search-result-pages/>
-                <subscreen-configurations>
-                    <subscreen>
-                        <enable>true</enable>
-                        <root-object>UKPatient</root-object>
-                        <tab-name>Summary</tab-name>
-                        <screen-id>0</screen-id>
-                        <display-order>0</display-order>
-                        <search-pages/>
+                <subscreen-configurations>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Summary</tab-name>                        <screen-id>0</screen-id>                        <display-order>0</display-order>                        <search-pages/>
                         <search-result-pages/>
-                    </subscreen>
-                    <subscreen>
-                        <enable>true</enable>
-                        <root-object>UKPatient</root-object>
-                        <tab-name>Reports</tab-name>
-                        <screen-id>1</screen-id>
-                        <display-order>1</display-order>
-                        <search-pages/>
+                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Reports</tab-name>                        <screen-id>1</screen-id>                        <display-order>1</display-order>                        <search-pages/>
                         <search-result-pages/>
-                    </subscreen>
-                    <subscreen>
-                        <enable>true</enable>
-                        <root-object>UKPatient</root-object>
-                        <tab-name>Compare EUIDs</tab-name>
-                        <screen-id>2</screen-id>
-                        <display-order>2</display-order>
-                        <search-pages/>
+                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Compare EUIDs</tab-name>                        <screen-id>2</screen-id>                        <display-order>2</display-order>                        <search-pages/>
                         <search-result-pages/>
-                    </subscreen>
-                    <subscreen>
-                        <enable>true</enable>
-                        <root-object>UKPatient</root-object>
-                        <tab-name>Lookup EUID</tab-name>
-                        <screen-id>3</screen-id>
-                        <display-order>3</display-order>
-                        <search-pages/>
+                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Lookup EUID</tab-name>                        <screen-id>3</screen-id>                        <display-order>3</display-order>                        <search-pages/>
                         <search-result-pages/>
-                    </subscreen>
-                </subscreen-configurations>
-            </dashboard>
-            <record-details>
-                <root-object>UKPatient</root-object>
-                <tab-name>Record Details</tab-name>
-                <screen-id>1</screen-id>
-                <display-order>2</display-order>
-                <search-pages>
-                    <simple-search-page>
-                        <screen-title>UKPatient Search (Phonetic Search)</screen-title>
-                        <search-result-id>1</search-result-id>
-                        <search-screen-order>0</search-screen-order>
-                        <field-group>
-                            <description>UKPatient</description>
-                        </field-group>
-                        <field-group>
-                            <description>Name</description>
-                            <field-ref>UKPatient.Name.FamilyName</field-ref>
-                            <field-ref>UKPatient.Name.GivenName</field-ref>
-                        </field-group>
-                        <field-group>
-                            <description>Address</description>
-                            <field-ref>UKPatient.Address.AddressLine1</field-ref>
-                            <field-ref>UKPatient.Address.PafKey</field-ref>
-                        </field-group>
-                        <field-group>
-                            <description>AuxID</description>
-                            <field-ref>UKPatient.AuxID.AuxID</field-ref>
-                        </field-group>
-                        <search-option>
-                            <display-name>Phonetic Search</display-name>
-                            <query-builder>PHONETIC-SEARCH</query-builder>
-                            <weighted>true</weighted>
-                            <parameter>
-                                <name>UseWildCard</name>
-                                <value>false</value>
-                            </parameter>
-                        </search-option>
-                    </simple-search-page>
-                    <simple-search-page>
-                        <screen-title>UKPatient Search (Alpha Search)</screen-title>
-                        <search-result-id>1</search-result-id>
-                        <search-screen-order>1</search-screen-order>
-                        <field-group>
-                            <description>UKPatient</description>
-                        </field-group>
-                        <field-group>
-                            <description>Name</description>
-                            <field-ref>UKPatient.Name.FamilyName</field-ref>
-                            <field-ref>UKPatient.Name.GivenName</field-ref>
-                        </field-group>
-                        <field-group>
-                            <description>Address</description>
-                            <field-ref>UKPatient.Address.AddressLine1</field-ref>
-                            <field-ref>UKPatient.Address.PafKey</field-ref>
-                        </field-group>
-                        <field-group>
-                            <description>AuxID</description>
-                            <field-ref>UKPatient.AuxID.AuxID</field-ref>
-                        </field-group>
-                        <search-option>
-                            <display-name>Alpha Search</display-name>
-                            <query-builder>ALPHA-SEARCH</query-builder>
-                            <weighted>false</weighted>
-                            <parameter>
-                                <name>UseWildCard</name>
-                                <value>true</value>
-                            </parameter>
-                        </search-option>
-                    </simple-search-page>
-                    <simple-search-page>
-                        <screen-title>UKPatient Search (Blocker Search)</screen-title>
-                        <search-result-id>1</search-result-id>
-                        <search-screen-order>2</search-screen-order>
-                        <field-group>
-                            <description>UKPatient</description>
-                        </field-group>
-                        <field-group>
-                            <description>Name</description>
-                            <field-ref>UKPatient.Name.FamilyName</field-ref>
-                            <field-ref>UKPatient.Name.GivenName</field-ref>
-                        </field-group>
-                        <field-group>
-                            <description>Address</description>
-                            <field-ref>UKPatient.Address.AddressLine1</field-ref>
-                            <field-ref>UKPatient.Address.PafKey</field-ref>
-                        </field-group>
-                        <field-group>
-                            <description>AuxID</description>
-                            <field-ref>UKPatient.AuxID.AuxID</field-ref>
-                        </field-group>
-                        <search-option>
-                            <display-name>Blocker Search</display-name>
-                            <query-builder>BLOCKER-SEARCH</query-builder>
-                            <weighted>true</weighted>
-                            <parameter>
-                                <name>UseWildCard</name>
-                                <value>false</value>
-                            </parameter>
-                        </search-option>
-                    </simple-search-page>
-                    <simple-search-page>
-                        <screen-title>UKPatient Lookup</screen-title>
-                        <search-result-id>1</search-result-id>
-                        <search-screen-order>1</search-screen-order>
-                        <show-euid>true</show-euid>
-                        <show-lid>true</show-lid>
-                        <search-option>
-                            <display-name>Alpha Search</display-name>
-                            <query-builder>ALPHA-SEARCH</query-builder>
-                            <weighted>false</weighted>
-                            <parameter>
-                                <name>UseWildCard</name>
-                                <value>true</value>
-                            </parameter>
-                        </search-option>
-                    </simple-search-page>
-                </search-pages>
-                <search-result-pages>
-                    <search-result-list-page>
-                        <search-result-id>0</search-result-id>
-                        <item-per-page>10</item-per-page>
-                        <max-result-size>100</max-result-size>
-                        <field-group>
-                            <description></description>
-                            <field-ref>UKPatient.Gender</field-ref>
-                            <field-ref>UKPatient.DOB</field-ref>
-                        </field-group>
-                        <field-group>
-                            <description></description>
-                            <field-ref>UKPatient.Name.FamilyName</field-ref>
-                            <field-ref>UKPatient.Name.GivenName</field-ref>
-                            <field-ref>UKPatient.Name.OtherGivenName</field-ref>
-                        </field-group>
-                        <field-group>
-                            <description></description>
-                            <field-ref>UKPatient.Address.AddressLine1</field-ref>
-                            <field-ref>UKPatient.Address.AddressHouseNo</field-ref>
-                            <field-ref>UKPatient.Address.AddressStreet</field-ref>
-                            <field-ref>UKPatient.Address.Postcode</field-ref>
-                        </field-group>
-                        <field-group>
-                            <description></description>
-                            <field-ref>UKPatient.Telecom.Root</field-ref>
-                            <field-ref>UKPatient.Telecom.Extension</field-ref>
-                            <field-ref>UKPatient.Telecom.Code</field-ref>
-                        </field-group>
-                    </search-result-list-page>
-                </search-result-pages>
-            </record-details>
-            <transactions>
-                <root-object>UKPatient</root-object>
-                <tab-name>Transactions</tab-name>
-                <screen-id>2</screen-id>
-                <display-order>4</display-order>
-                <search-pages>
-                    <simple-search-page>
-                        <show-euid>true</show-euid>
-                        <show-lid>true</show-lid>
-                    </simple-search-page>
-                </search-pages>
-                <search-result-pages>
-                    <search-result-list-page>
-                        <search-result-id>0</search-result-id>
-                        <item-per-page>10</item-per-page>
-                        <max-result-size>100</max-result-size>
-                    </search-result-list-page>
-                </search-result-pages>
-            </transactions>
-            <duplicate-records>
-                <root-object>UKPatient</root-object>
-                <tab-name>Duplicate Records</tab-name>
-                <screen-id>3</screen-id>
-                <display-order>1</display-order>
-                <search-pages>
-                    <simple-search-page>
-                        <screen-title>Basic Search</screen-title>
-                        <search-result-id>0</search-result-id>
-                        <search-screen-order>0</search-screen-order>
-                        <show-euid>false</show-euid>
-                        <show-lid>false</show-lid>
-                        <show-status>false</show-status>
-                        <show-create-date>true</show-create-date>
-                        <show-create-time>false</show-create-time>
-                    </simple-search-page>
-                    <simple-search-page>
-                        <screen-title>Advanced Search</screen-title>
-                        <search-result-id>0</search-result-id>
-                        <search-screen-order>1</search-screen-order>
-                        <show-euid>true</show-euid>
-                        <show-lid>true</show-lid>
-                        <show-status>true</show-status>
-                        <show-create-date>true</show-create-date>
-                        <show-create-time>true</show-create-time>
-                    </simple-search-page>
-                </search-pages>
-                <search-result-pages>
-                    <search-result-list-page>
-                        <search-result-id>0</search-result-id>
-                        <item-per-page>10</item-per-page>
-                        <max-result-size>100</max-result-size>
-                        <field-group>
-                            <description></description>
-                            <field-ref>UKPatient.Gender</field-ref>
-                            <field-ref>UKPatient.DOB</field-ref>
-                        </field-group>
-                        <field-group>
-                            <description></description>
-                            <field-ref>UKPatient.Name.FamilyName</field-ref>
-                            <field-ref>UKPatient.Name.GivenName</field-ref>
-                            <field-ref>UKPatient.Name.OtherGivenName</field-ref>
-                        </field-group>
-                        <field-group>
-                            <description></description>
-                            <field-ref>UKPatient.Address.AddressLine1</field-ref>
-                            <field-ref>UKPatient.Address.AddressHouseNo</field-ref>
-                            <field-ref>UKPatient.Address.AddressStreet</field-ref>
-                            <field-ref>UKPatient.Address.Postcode</field-ref>
-                        </field-group>
-                        <field-group>
-                            <description></description>
-                            <field-ref>UKPatient.Telecom.Root</field-ref>
-                            <field-ref>UKPatient.Telecom.Extension</field-ref>
-                            <field-ref>UKPatient.Telecom.Code</field-ref>
-                        </field-group>
-                    </search-result-list-page>
-                </search-result-pages>
-            </duplicate-records>
-            <assumed-matches>
-                <root-object>UKPatient</root-object>
-                <tab-name>Assumed Matches</tab-name>
-                <screen-id>4</screen-id>
-                <display-order>3</display-order>
-                <search-pages/>
-                <search-result-pages>
-                    <search-result-list-page>
-                        <search-result-id>0</search-result-id>
-                        <item-per-page>10</item-per-page>
-                        <max-result-size>100</max-result-size>
-                        <field-group>
-                            <description></description>
-                            <field-ref>UKPatient.Gender</field-ref>
-                            <field-ref>UKPatient.DOB</field-ref>
-                        </field-group>
-                        <field-group>
-                            <description></description>
-                            <field-ref>UKPatient.Name.FamilyName</field-ref>
-                            <field-ref>UKPatient.Name.GivenName</field-ref>
-                            <field-ref>UKPatient.Name.OtherGivenName</field-ref>
-                        </field-group>
-                        <field-group>
-                            <description></description>
-                            <field-ref>UKPatient.Address.AddressLine1</field-ref>
-                            <field-ref>UKPatient.Address.AddressHouseNo</field-ref>
-                            <field-ref>UKPatient.Address.AddressStreet</field-ref>
-                            <field-ref>UKPatient.Address.Postcode</field-ref>
-                        </field-group>
-                        <field-group>
-                            <description></description>
-                            <field-ref>UKPatient.Telecom.Root</field-ref>
-                            <field-ref>UKPatient.Telecom.Extension</field-ref>
-                            <field-ref>UKPatient.Telecom.Code</field-ref>
-                        </field-group>
-                    </search-result-list-page>
-                </search-result-pages>
-            </assumed-matches>
-            <source-record>
-                <root-object>UKPatient</root-object>
-                <tab-name>Source Record</tab-name>
-                <screen-id>5</screen-id>
-                <display-order>6</display-order>
-                <search-pages/>
+                    </subscreen>                </subscreen-configurations>            </dashboard>            <record-details>                <root-object>UKPatient</root-object>                <tab-name>Record Details</tab-name>                <screen-id>1</screen-id>                <display-order>2</display-order>                <search-pages>                    <simple-search-page>                        <screen-title>UKPatient Search (Phonetic Search)</screen-title>                        <search-result-id>1</search-result-id>                        <search-screen-order>0</search-screen-order>                        <field-group>                            <description>UKPatient</description>                        </field-group>                        <field-group>                            <description>Name</description>                            <field-ref>UKPatient.Name.FamilyName</field-ref>                            <field-ref>UKPatient.Name.GivenName</field-ref>                        </field-group>                        <field-group>                            <description>Address</description>                            <field-ref>UKPatient.Address.AddressLine1</field-ref>                            <field-ref>UKPatient.Address.PafKey</field-ref>                        </field-group>                        <field-group>                            <description>AuxID</description>                            <field-ref>UKPatient.AuxID.AuxID</field-ref>                        </field-group>                        <search-option>                            <display-name>Phonetic Search</display-name>                            <query-builder>PHONETIC-SEARCH</query-builder>                            <weighted>true</weighted>                            <parameter>                                <name>UseWildCard</name>                                <value>false</value>                            </parameter>                        </search-option>                    </simple-search-page>                    <simple-search-page>                        <screen-title>UKPatient Search (Alpha Search)</screen-title>                        <search-result-id>1</search-result-id>                        <search-screen-order>1</search-screen-order>                        <field-group>                            <description>UKPatient</description>                        </field-group>                        <field-group>                            <description>Name</description>                            <field-ref>UKPatient.Name.FamilyName</field-ref>                            <field-ref>UKPatient.Name.GivenName</field-ref>                        </field-group>                        <field-group>                            <description>Address</description>                            <field-ref>UKPatient.Address.AddressLine1</field-ref>                            <field-ref>UKPatient.Address.PafKey</field-ref>                        </field-group>                        <field-group>                            <description>AuxID</description>                            <field-ref>UKPatient.AuxID.AuxID</field-ref>                        </field-group>                        <search-option>                            <display-name>Alpha Search</display-name>                            <query-builder>ALPHA-SEARCH</query-builder>                            <weighted>false</weighted>                            <parameter>                                <name>UseWildCard</name>                                <value>true</value>                            </parameter>                        </search-option>                    </simple-search-page>                    <simple-search-page>                        <screen-title>UKPatient Search (Blocker Search)</screen-title>                        <search-result-id>1</search-result-id>                        <search-screen-order>2</search-screen-order>                        <field-group>                            <description>UKPatient</description>                        </field-group>                        <field-group>                            <description>Name</description>                            <field-ref>UKPatient.Name.FamilyName</field-ref>                            <field-ref>UKPatient.Name.GivenName</field-ref>                        </field-group>                        <field-group>                            <description>Address</description>                            <field-ref>UKPatient.Address.AddressLine1</field-ref>                            <field-ref>UKPatient.Address.PafKey</field-ref>                        </field-group>                        <field-group>                            <description>AuxID</description>                            <field-ref>UKPatient.AuxID.AuxID</field-ref>                        </field-group>                        <search-option>                            <display-name>Blocker Search</display-name>                            <query-builder>BLOCKER-SEARCH</query-builder>                            <weighted>true</weighted>                            <parameter>                                <name>UseWildCard</name>                                <value>false</value>                            </parameter>                        </search-option>                    </simple-search-page>                    <simple-search-page>                        <screen-title>UKPatient Lookup</screen-title>                        <search-result-id>1</search-result-id>                        <search-screen-order>1</search-screen-order>                        <show-euid>true</show-euid>                        <show-lid>true</show-lid>                        <search-option>                            <display-name>Alpha Search</display-name>                            <query-builder>ALPHA-SEARCH</query-builder>                            <weighted>false</weighted>                            <parameter>                                <name>UseWildCard</name>                                <value>true</value>                            </parameter>                        </search-option>                    </simple-search-page>                </search-pages>                <search-result-pages>                    <search-result-list-page>                        <search-result-id>0</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Gender</field-ref>                            <field-ref>UKPatient.DOB</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Name.FamilyName</field-ref>                            <field-ref>UKPatient.Name.GivenName</field-ref>                            <field-ref>UKPatient.Name.OtherGivenName</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Address.AddressLine1</field-ref>                            <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                            <field-ref>UKPatient.Address.AddressStreet</field-ref>                            <field-ref>UKPatient.Address.Postcode</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Telecom.Root</field-ref>                            <field-ref>UKPatient.Telecom.Extension</field-ref>                            <field-ref>UKPatient.Telecom.Code</field-ref>                        </field-group>                    </search-result-list-page>                </search-result-pages>            </record-details>            <transactions>                <root-object>UKPatient</root-object>                <tab-name>Transactions</tab-name>                <screen-id>2</screen-id>                <display-order>4</display-order>                <search-pages>                    <simple-search-page>                        <show-euid>true</show-euid>                        <show-lid>true</show-lid>                    </simple-search-page>                </search-pages>                <search-result-pages>                    <search-result-list-page>                        <search-result-id>0</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                    </search-result-list-page>                </search-result-pages>            </transactions>            <duplicate-records>                <root-object>UKPatient</root-object>                <tab-name>Duplicate Records</tab-name>                <screen-id>3</screen-id>                <display-order>1</display-order>                <search-pages>                    <simple-search-page>                        <screen-title>Basic Search</screen-title>                        <search-result-id>0</search-result-id>                        <search-screen-order>0</search-screen-order>                        <show-euid>false</show-euid>                        <show-lid>false</show-lid>                        <show-status>false</show-status>                        <show-create-date>true</show-create-date>                        <show-create-time>false</show-create-time>                    </simple-search-page>                    <simple-search-page>                        <screen-title>Advanced Search</screen-title>                        <search-result-id>0</search-result-id>                        <search-screen-order>1</search-screen-order>                        <show-euid>true</show-euid>                        <show-lid>true</show-lid>                        <show-status>true</show-status>                        <show-create-date>true</show-create-date>                        <show-create-time>true</show-create-time>                    </simple-search-page>                </search-pages>                <search-result-pages>                    <search-result-list-page>                        <search-result-id>0</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Gender</field-ref>                            <field-ref>UKPatient.DOB</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Name.FamilyName</field-ref>                            <field-ref>UKPatient.Name.GivenName</field-ref>                            <field-ref>UKPatient.Name.OtherGivenName</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Address.AddressLine1</field-ref>                            <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                            <field-ref>UKPatient.Address.AddressStreet</field-ref>                            <field-ref>UKPatient.Address.Postcode</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Telecom.Root</field-ref>                            <field-ref>UKPatient.Telecom.Extension</field-ref>                            <field-ref>UKPatient.Telecom.Code</field-ref>                        </field-group>                    </search-result-list-page>                </search-result-pages>            </duplicate-records>            <assumed-matches>                <root-object>UKPatient</root-object>                <tab-name>Assumed Matches</tab-name>                <screen-id>4</screen-id>                <display-order>3</display-order>                <search-pages/>
+                <search-result-pages>                    <search-result-list-page>                        <search-result-id>0</search-result-id>                        <item-per-page>10</item-per-page>                        <max-result-size>100</max-result-size>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Gender</field-ref>                            <field-ref>UKPatient.DOB</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Name.FamilyName</field-ref>                            <field-ref>UKPatient.Name.GivenName</field-ref>                            <field-ref>UKPatient.Name.OtherGivenName</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Address.AddressLine1</field-ref>                            <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                            <field-ref>UKPatient.Address.AddressStreet</field-ref>                            <field-ref>UKPatient.Address.Postcode</field-ref>                        </field-group>                        <field-group>                            <description></description>                            <field-ref>UKPatient.Telecom.Root</field-ref>                            <field-ref>UKPatient.Telecom.Extension</field-ref>                            <field-ref>UKPatient.Telecom.Code</field-ref>                        </field-group>                    </search-result-list-page>                </search-result-pages>            </assumed-matches>            <source-record>                <root-object>UKPatient</root-object>                <tab-name>Source Record</tab-name>                <screen-id>5</screen-id>                <display-order>6</display-order>                <search-pages/>
                 <search-result-pages/>
-                <subscreen-configurations>
-                    <subscreen>
-                        <enable>true</enable>
-                        <root-object>UKPatient</root-object>
-                        <tab-name>View/Edit</tab-name>
-                        <screen-id>0</screen-id>
-                        <display-order>0</display-order>
-                        <search-pages>
-                            <simple-search-page>
-                                <screen-title>Basic Search</screen-title>
-                                <search-result-id>0</search-result-id>
-                                <search-screen-order>0</search-screen-order>
-                                <show-euid>false</show-euid>
-                                <show-lid>true</show-lid>
-                                <show-status>false</show-status>
-                                <show-create-date>false</show-create-date>
-                                <show-create-time>false</show-create-time>
-                            </simple-search-page>
-                        </search-pages>
-                        <search-result-pages>
-                            <search-result-list-page>
-                                <search-result-id>0</search-result-id>
-                                <item-per-page>10</item-per-page>
-                                <max-result-size>100</max-result-size>
-                                <show-euid>true</show-euid>
-                                <show-lid>true</show-lid>
-                                <show-status>false</show-status>
-                                <show-create-date>false</show-create-date>
-                                <show-create-time>false</show-create-time>
-                                <show-timestamp>true</show-timestamp>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Gender</field-ref>
-                                    <field-ref>UKPatient.DOB</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Name.FamilyName</field-ref>
-                                    <field-ref>UKPatient.Name.GivenName</field-ref>
-                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>
-                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>
-                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>
-                                    <field-ref>UKPatient.Address.Postcode</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Telecom.Root</field-ref>
-                                    <field-ref>UKPatient.Telecom.Extension</field-ref>
-                                    <field-ref>UKPatient.Telecom.Code</field-ref>
-                                </field-group>
-                            </search-result-list-page>
-                        </search-result-pages>
-                    </subscreen>
-                    <subscreen>
-                        <enable>true</enable>
-                        <root-object>UKPatient</root-object>
-                        <tab-name>Add</tab-name>
-                        <screen-id>1</screen-id>
-                        <display-order>1</display-order>
-                        <search-pages>
-                            <simple-search-page>
-                                <screen-title>Basic Search</screen-title>
-                                <search-result-id>0</search-result-id>
-                                <search-screen-order>0</search-screen-order>
-                                <show-euid>false</show-euid>
-                                <show-lid>true</show-lid>
-                                <show-status>false</show-status>
-                                <show-create-date>false</show-create-date>
-                                <show-create-time>false</show-create-time>
-                            </simple-search-page>
-                        </search-pages>
-                        <search-result-pages>
-                            <search-result-list-page>
-                                <search-result-id>0</search-result-id>
-                                <item-per-page>10</item-per-page>
-                                <max-result-size>100</max-result-size>
-                            </search-result-list-page>
-                        </search-result-pages>
-                    </subscreen>
-                    <subscreen>
-                        <enable>true</enable>
-                        <root-object>UKPatient</root-object>
-                        <tab-name>Merge</tab-name>
-                        <screen-id>2</screen-id>
-                        <display-order>2</display-order>
-                        <search-pages>
-                            <simple-search-page>
-                                <screen-title>LID Search</screen-title>
-                                <search-result-id>0</search-result-id>
-                                <search-screen-order>0</search-screen-order>
-                                <show-euid>false</show-euid>
-                                <show-lid>true</show-lid>
-                                <show-status>false</show-status>
-                                <show-create-date>false</show-create-date>
-                                <show-create-time>false</show-create-time>
-                            </simple-search-page>
-                        </search-pages>
-                        <search-result-pages>
-                            <search-result-list-page>
-                                <search-result-id>0</search-result-id>
-                                <item-per-page>10</item-per-page>
-                                <max-result-size>100</max-result-size>
-                            </search-result-list-page>
-                        </search-result-pages>
-                    </subscreen>
-                </subscreen-configurations>
-            </source-record>
-            <reports>
-                <root-object>UKPatient</root-object>
-                <tab-name>Reports</tab-name>
-                <screen-id>6</screen-id>
-                <display-order>5</display-order>
-                <search-pages/>
+                <subscreen-configurations>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>View/Edit</tab-name>                        <screen-id>0</screen-id>                        <display-order>0</display-order>                        <search-pages>                            <simple-search-page>                                <screen-title>Basic Search</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>0</search-screen-order>                                <show-euid>false</show-euid>                                <show-lid>true</show-lid>                                <show-status>false</show-status>                                <show-create-date>false</show-create-date>                                <show-create-time>false</show-create-time>                            </simple-search-page>                        </search-pages>                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <show-euid>true</show-euid>                                <show-lid>true</show-lid>                                <show-status>false</show-status>                                <show-create-date>false</show-create-date>                                <show-create-time>false</show-create-time>                                <show-timestamp>true</show-timestamp>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Gender</field-ref>                                    <field-ref>UKPatient.DOB</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Name.FamilyName</field-ref>                                    <field-ref>UKPatient.Name.GivenName</field-ref>                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>                                    <field-ref>UKPatient.Address.Postcode</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Telecom.Root</field-ref>                                    <field-ref>UKPatient.Telecom.Extension</field-ref>                                    <field-ref>UKPatient.Telecom.Code</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Add</tab-name>                        <screen-id>1</screen-id>                        <display-order>1</display-order>                        <search-pages>                            <simple-search-page>                                <screen-title>Basic Search</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>0</search-screen-order>                                <show-euid>false</show-euid>                                <show-lid>true</show-lid>                                <show-status>false</show-status>                                <show-create-date>false</show-create-date>                                <show-create-time>false</show-create-time>                            </simple-search-page>                        </search-pages>                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Merge</tab-name>                        <screen-id>2</screen-id>                        <display-order>2</display-order>                        <search-pages>                            <simple-search-page>                                <screen-title>LID Search</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>0</search-screen-order>                                <show-euid>false</show-euid>                                <show-lid>true</show-lid>                                <show-status>false</show-status>                                <show-create-date>false</show-create-date>                                <show-create-time>false</show-create-time>                            </simple-search-page>                        </search-pages>                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                </subscreen-configurations>            </source-record>            <reports>                <root-object>UKPatient</root-object>                <tab-name>Reports</tab-name>                <screen-id>6</screen-id>                <display-order>5</display-order>                <search-pages/>
                 <search-result-pages/>
-                <subscreen-configurations>
-                    <subscreen>
-                        <enable>true</enable>
-                        <root-object>UKPatient</root-object>
-                        <tab-name>Potential Duplicate Report</tab-name>
-                        <report-name>Potential Duplicate</report-name>
-                        <screen-id>0</screen-id>
-                        <display-order>5</display-order>
-                        <search-pages/>
-                        <search-result-pages>
-                            <search-result-list-page>
-                                <search-result-id>0</search-result-id>
-                                <item-per-page>10</item-per-page>
-                                <max-result-size>100</max-result-size>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Gender</field-ref>
-                                    <field-ref>UKPatient.DOB</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Name.FamilyName</field-ref>
-                                    <field-ref>UKPatient.Name.GivenName</field-ref>
-                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>
-                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>
-                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>
-                                    <field-ref>UKPatient.Address.Postcode</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Telecom.Root</field-ref>
-                                    <field-ref>UKPatient.Telecom.Extension</field-ref>
-                                    <field-ref>UKPatient.Telecom.Code</field-ref>
-                                </field-group>
-                            </search-result-list-page>
-                        </search-result-pages>
-                    </subscreen>
-                    <subscreen>
-                        <enable>true</enable>
-                        <root-object>UKPatient</root-object>
-                        <tab-name>Deactivated Record Report</tab-name>
-                        <report-name>Deactivated</report-name>
-                        <screen-id>1</screen-id>
-                        <display-order>1</display-order>
-                        <search-pages/>
-                        <search-result-pages>
-                            <search-result-list-page>
-                                <search-result-id>0</search-result-id>
-                                <item-per-page>10</item-per-page>
-                                <max-result-size>100</max-result-size>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Gender</field-ref>
-                                    <field-ref>UKPatient.DOB</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Name.FamilyName</field-ref>
-                                    <field-ref>UKPatient.Name.GivenName</field-ref>
-                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>
-                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>
-                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>
-                                    <field-ref>UKPatient.Address.Postcode</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Telecom.Root</field-ref>
-                                    <field-ref>UKPatient.Telecom.Extension</field-ref>
-                                    <field-ref>UKPatient.Telecom.Code</field-ref>
-                                </field-group>
-                            </search-result-list-page>
-                        </search-result-pages>
-                    </subscreen>
-                    <subscreen>
-                        <enable>true</enable>
-                        <root-object>UKPatient</root-object>
-                        <tab-name>Merged Transaction Report</tab-name>
-                        <report-name>Merged</report-name>
-                        <screen-id>2</screen-id>
-                        <display-order>0</display-order>
-                        <search-pages/>
-                        <search-result-pages>
-                            <search-result-list-page>
-                                <search-result-id>0</search-result-id>
-                                <item-per-page>10</item-per-page>
-                                <max-result-size>100</max-result-size>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Gender</field-ref>
-                                    <field-ref>UKPatient.DOB</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Name.FamilyName</field-ref>
-                                    <field-ref>UKPatient.Name.GivenName</field-ref>
-                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>
-                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>
-                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>
-                                    <field-ref>UKPatient.Address.Postcode</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Telecom.Root</field-ref>
-                                    <field-ref>UKPatient.Telecom.Extension</field-ref>
-                                    <field-ref>UKPatient.Telecom.Code</field-ref>
-                                </field-group>
-                            </search-result-list-page>
-                        </search-result-pages>
-                    </subscreen>
-                    <subscreen>
-                        <enable>true</enable>
-                        <root-object>UKPatient</root-object>
-                        <tab-name>Unmerged Transaction Report</tab-name>
-                        <report-name>Unmerged</report-name>
-                        <screen-id>3</screen-id>
-                        <display-order>2</display-order>
-                        <search-pages/>
-                        <search-result-pages>
-                            <search-result-list-page>
-                                <search-result-id>0</search-result-id>
-                                <item-per-page>10</item-per-page>
-                                <max-result-size>100</max-result-size>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Gender</field-ref>
-                                    <field-ref>UKPatient.DOB</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Name.FamilyName</field-ref>
-                                    <field-ref>UKPatient.Name.GivenName</field-ref>
-                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>
-                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>
-                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>
-                                    <field-ref>UKPatient.Address.Postcode</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Telecom.Root</field-ref>
-                                    <field-ref>UKPatient.Telecom.Extension</field-ref>
-                                    <field-ref>UKPatient.Telecom.Code</field-ref>
-                                </field-group>
-                            </search-result-list-page>
-                        </search-result-pages>
-                    </subscreen>
-                    <subscreen>
-                        <enable>true</enable>
-                        <root-object>UKPatient</root-object>
-                        <tab-name>Updated Record Report</tab-name>
-                        <report-name>Update</report-name>
-                        <screen-id>4</screen-id>
-                        <display-order>3</display-order>
-                        <search-pages/>
-                        <search-result-pages>
-                            <search-result-list-page>
-                                <search-result-id>0</search-result-id>
-                                <item-per-page>10</item-per-page>
-                                <max-result-size>100</max-result-size>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Gender</field-ref>
-                                    <field-ref>UKPatient.DOB</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Name.FamilyName</field-ref>
-                                    <field-ref>UKPatient.Name.GivenName</field-ref>
-                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>
-                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>
-                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>
-                                    <field-ref>UKPatient.Address.Postcode</field-ref>
-                                </field-group>
-                                <field-group>
-                                    <description></description>
-                                    <field-ref>UKPatient.Telecom.Root</field-ref>
-                                    <field-ref>UKPatient.Telecom.Extension</field-ref>
-                                    <field-ref>UKPatient.Telecom.Code</field-ref>
-                                </field-group>
-                            </search-result-list-page>
-                        </search-result-pages>
-                    </subscreen>
-                    <subscreen>
-                        <enable>true</enable>
-                        <root-object>UKPatient</root-object>
-                        <tab-name>Activity Report</tab-name>
-                        <report-name>Transaction Summary</report-name>
-                        <screen-id>5</screen-id>
-                        <display-order>4</display-order>
-                        <search-pages>
-                            <simple-search-page>
-                                <screen-title>Weekly Activity</screen-title>
-                                <report-name>Weekly Transaction Summary Report</report-name>
-                                <search-result-id>0</search-result-id>
-                                <search-screen-order>1</search-screen-order>
-                                <field-group/>
-                            </simple-search-page>
-                            <simple-search-page>
-                                <screen-title>Monthly Activity</screen-title>
-                                <report-name>Monthly Transaction Summary Report</report-name>
-                                <search-result-id>0</search-result-id>
-                                <search-screen-order>2</search-screen-order>
-                                <field-group/>
-                            </simple-search-page>
-                            <simple-search-page>
-                                <screen-title>Yearly Activity</screen-title>
-                                <report-name>Yearly Transaction Summary Report</report-name>
-                                <search-result-id>0</search-result-id>
-                                <search-screen-order>3</search-screen-order>
-                                <field-group/>
-                            </simple-search-page>
-                        </search-pages>
-                        <search-result-pages>
-                            <search-result-list-page>
-                                <search-result-id>0</search-result-id>
-                                <item-per-page>10</item-per-page>
-                                <max-result-size>2000</max-result-size>
-                                <field-group/>
-                            </search-result-list-page>
-                        </search-result-pages>
-                    </subscreen>
-                   
-                </subscreen-configurations>
-            </reports>
-            <audit-log>
-                <allow-insert>false</allow-insert>
-                <root-object>UKPatient</root-object>
-                <tab-name>Audit Log</tab-name>
-                <screen-id>7</screen-id>
-                <display-order>7</display-order>
-                <search-pages/>
+                <subscreen-configurations>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Assumed Match Report</tab-name>                        <report-name>Assumed Match</report-name>                        <screen-id>0</screen-id>                        <display-order>1</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Gender</field-ref>                                    <field-ref>UKPatient.DOB</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Name.FamilyName</field-ref>                                    <field-ref>UKPatient.Name.GivenName</field-ref>                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>                                    <field-ref>UKPatient.Address.Postcode</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Telecom.Root</field-ref>                                    <field-ref>UKPatient.Telecom.Extension</field-ref>                                    <field-ref>UKPatient.Telecom.Code</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Potential Duplicate Report</tab-name>                        <report-name>Potential Duplicate</report-name>                        <screen-id>1</screen-id>                        <display-order>2</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Gender</field-ref>                                    <field-ref>UKPatient.DOB</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Name.FamilyName</field-ref>                                    <field-ref>UKPatient.Name.GivenName</field-ref>                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>                                    <field-ref>UKPatient.Address.Postcode</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Telecom.Root</field-ref>                                    <field-ref>UKPatient.Telecom.Extension</field-ref>                                    <field-ref>UKPatient.Telecom.Code</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Deactivated Record Report</tab-name>                        <report-name>Deactivated</report-name>                        <screen-id>2</screen-id>                        <display-order>3</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Gender</field-ref>                                    <field-ref>UKPatient.DOB</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Name.FamilyName</field-ref>                                    <field-ref>UKPatient.Name.GivenName</field-ref>                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>                                    <field-ref>UKPatient.Address.Postcode</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Telecom.Root</field-ref>                                    <field-ref>UKPatient.Telecom.Extension</field-ref>                                    <field-ref>UKPatient.Telecom.Code</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Merged Transaction Report</tab-name>                        <report-name>Merged</report-name>                        <screen-id>3</screen-id>                        <display-order>4</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Gender</field-ref>                                    <field-ref>UKPatient.DOB</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Name.FamilyName</field-ref>                                    <field-ref>UKPatient.Name.GivenName</field-ref>                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>                                    <field-ref>UKPatient.Address.Postcode</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Telecom.Root</field-ref>                                    <field-ref>UKPatient.Telecom.Extension</field-ref>                                    <field-ref>UKPatient.Telecom.Code</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Unmerged Transaction Report</tab-name>                        <report-name>Unmerged</report-name>                        <screen-id>4</screen-id>                        <display-order>5</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Gender</field-ref>                                    <field-ref>UKPatient.DOB</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Name.FamilyName</field-ref>                                    <field-ref>UKPatient.Name.GivenName</field-ref>                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>                                    <field-ref>UKPatient.Address.Postcode</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Telecom.Root</field-ref>                                    <field-ref>UKPatient.Telecom.Extension</field-ref>                                    <field-ref>UKPatient.Telecom.Code</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Updated Record Report</tab-name>                        <report-name>Update</report-name>                        <screen-id>5</screen-id>                        <display-order>6</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Gender</field-ref>                                    <field-ref>UKPatient.DOB</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Name.FamilyName</field-ref>                                    <field-ref>UKPatient.Name.GivenName</field-ref>                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>                                    <field-ref>UKPatient.Address.Postcode</field-ref>                                </field-group>                                <field-group>                                    <description></description>                                    <field-ref>UKPatient.Telecom.Root</field-ref>                                    <field-ref>UKPatient.Telecom.Extension</field-ref>                                    <field-ref>UKPatient.Telecom.Code</field-ref>                                </field-group>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Transaction Audit Report</tab-name>                        <report-name>Weekly Activity</report-name>                        <screen-id>6</screen-id>                        <display-order>7</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Transaction Summary Report</tab-name>                        <report-name>Monthly Activity</report-name>                        <screen-id>7</screen-id>                        <display-order>8</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Transaction Summary Report</tab-name>                        <report-name>Yearly Activity</report-name>                        <screen-id>8</screen-id>                        <display-order>9</display-order>                        <search-pages/>
+                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>100</max-result-size>                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                    <subscreen>                        <enable>true</enable>                        <root-object>UKPatient</root-object>                        <tab-name>Activity Report</tab-name>                        <report-name>Transaction Summary Report</report-name>                        <screen-id>10</screen-id>                        <display-order>11</display-order>                        <search-pages>                            <simple-search-page>                                <screen-title>Daily Activity</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>0</search-screen-order>                                <field-group/>
+                            </simple-search-page>                            <simple-search-page>                                <screen-title>Weekly Activity</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>1</search-screen-order>                                <field-group/>
+                            </simple-search-page>                            <simple-search-page>                                <screen-title>Monthly Activity</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>2</search-screen-order>                                <field-group/>
+                            </simple-search-page>                            <simple-search-page>                                <screen-title>Yearly Activity</screen-title>                                <search-result-id>0</search-result-id>                                <search-screen-order>3</search-screen-order>                                <field-group/>
+                            </simple-search-page>                        </search-pages>                        <search-result-pages>                            <search-result-list-page>                                <search-result-id>0</search-result-id>                                <item-per-page>10</item-per-page>                                <max-result-size>2000</max-result-size>                                <field-group/>
+                            </search-result-list-page>                        </search-result-pages>                    </subscreen>                </subscreen-configurations>            </reports>            <audit-log>                <allow-insert>false</allow-insert>                <root-object>UKPatient</root-object>                <tab-name>Audit Log</tab-name>                <screen-id>7</screen-id>                <display-order>7</display-order>                <search-pages/>
                 <search-result-pages/>
-            </audit-log>
-        </page-definition>
-    </gui-definition>
-</midm>
+            </audit-log>        </page-definition>    </gui-definition></midm>
