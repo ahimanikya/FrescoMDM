@@ -318,6 +318,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                 
                 if(weightedSearch) {
                    eoSearchOptions.setWeighted(weightedSearch);
+                   
                 }
               
 
@@ -344,8 +345,9 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                     }
                     if (feildValue != null && feildValue.trim().length() > 0) {
                         //Remove all masking fields from the field valued if any like SSN,LID...etc
-                        feildValue = feildValue.replaceAll("-", "");
-                        if (objectFieldConfig.isRange() && objectFieldConfig.getDisplayName().endsWith("From")) {
+                        feildValue = objectFieldConfig.demask(feildValue);
+                        
+                         if (objectFieldConfig.isRange() && objectFieldConfig.getDisplayName().endsWith("From")) {
                             gSearchCriteriaFromDOB.put(objectFieldConfig.getFullFieldName(), feildValue);
                         } else if (objectFieldConfig.isRange() && objectFieldConfig.getDisplayName().endsWith("To")) {
                             gSearchCriteriaToDOB.put(objectFieldConfig.getFullFieldName(), feildValue);
@@ -355,16 +357,19 @@ public class PatientDetailsHandler extends ScreenConfiguration {
 
                     }
 
-                }
+                }               
                 String objRef = objectRef;
                 // following code is from buildObjectNodeFromSearchCriteria()
                 //ObjectNode topNode = SimpleFactory.create(objRef);
 
                 SystemObject sysobj = buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteria);
                 SystemObject sysobj2 = null;
-                SystemObject sysobj3 = null;
+                SystemObject sysobj3 = null;              
+                
                 if (!gSearchCriteriaFromDOB.isEmpty()) {
                     sysobj2 = buildObjectNodeFromSearchCriteria(objectRef, gSearchCriteriaFromDOB);
+                    
+                     
                     eoSearchCriteria.setSystemObject2(sysobj2); // for dob from
                 }
                 if (!gSearchCriteriaToDOB.isEmpty()) {
@@ -1087,6 +1092,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
         for (Iterator i = gSearchCriteria.keySet().iterator(); i.hasNext();) {
             String key = (String) i.next();
             String value = (String) gSearchCriteria.get(key);
+            
             if ((value != null) && (value.trim().length() > 0)) {
                 int index = key.indexOf(".");
 
@@ -1106,6 +1112,7 @@ public class PatientDetailsHandler extends ScreenConfiguration {
                         } else {
                             node = (ObjectNode) childNodes.get(0);
                         }
+                        
                         QwsUtil.setObjectNodeFieldValue(node, fieldName, value);
                     }
                 }
