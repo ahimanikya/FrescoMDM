@@ -194,7 +194,7 @@ if(isSave) {
 				         if (attributeValue.equalsIgnoreCase("")) { continue; }	   
 						 if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0 && fcArray[k].getFullFieldName().equalsIgnoreCase(attributeName))   {
 							 //Check numeric values
-							 System.out.println("ADD MINOR OBJECTS value --> :: " + attributeValue + "Masking --> :: " + fcArray[k].getInputMask());
+							 
 							 if (!sourceHandler.checkMasking(attributeValue,fcArray[k].getInputMask()))   {
                                   valiadtions.put(fcArray[k].getDisplayName(),bundle.getString("lid_format_error_text") + " " +fcArray[k].getInputMask());								  
 								  isValidationErrorOccured = true;
@@ -247,7 +247,7 @@ if(isSave) {
 						 if (fcArray[k].getName().equalsIgnoreCase("EUID")) {continue; } // Ignore validation of EUID
 				         if (attributeValue.equalsIgnoreCase("")) { continue; }	   
 						 if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0 && fcArray[k].getFullFieldName().equalsIgnoreCase(attributeName))   {
-							 System.out.println("SSAVEEE value --> :: " + attributeValue + "Masking --> :: " + fcArray[k].getInputMask());
+							 
 							 //Check numeric values
 							 if (!sourceHandler.checkMasking(attributeValue,fcArray[k].getInputMask()))   {
                                   valiadtions.put(fcArray[k].getDisplayName(),bundle.getString("lid_format_error_text") + " " +fcArray[k].getInputMask());								  
@@ -564,7 +564,7 @@ if(isSave) {
 				         if (attributeValue.equalsIgnoreCase("")) { continue; }	   
 						 if (fcArray[k].getInputMask() != null && fcArray[k].getInputMask().length() > 0 && fcArray[k].getFullFieldName().equalsIgnoreCase(attributeName))   {
 							 //Check numeric values
-							 System.out.println("EDIT MINOR OBJECTS value --> :: " + attributeValue + "Masking --> :: " + fcArray[k].getInputMask());
+							 
 							 if (!sourceHandler.checkMasking(attributeValue,fcArray[k].getInputMask()))   {
                                   valiadtions.put(fcArray[k].getDisplayName(),bundle.getString("lid_format_error_text") + " " +fcArray[k].getInputMask());								  
 								  isValidationErrorOccured = true;

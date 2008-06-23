@@ -173,7 +173,7 @@ if (results != null)   {
                                    <td style="text-align:right">
 						          <%  if ((screenObject.getRootObj().getName()+"."+"TransactionNumber").equalsIgnoreCase((String)fullFieldNamesList.toArray()[kc])) { %>
 
-                                        <a href="transeuiddetails.jsf?transactionId=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"TransactionNumber"))%>&function=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"Function"))%>" >										
+                                        <a href="transeuiddetails.jsf?transactionId=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"TransactionNumber"))%>&function=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"FunctionCode"))%>" >										
 										<%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))  %> 
 										</a>
 								   <%  }  else { %>
