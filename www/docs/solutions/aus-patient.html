@@ -29,20 +29,22 @@ Kendall<span style="font-family: Arial;"></span><span style="font-size: 6pt; fon
 </tr>
 <tr>
 <td align="undefined" valign="undefined"><span style="font-weight: bold;">Last Updated:</span></td>
-<td align="undefined" valign="undefined">June 20th, 2008</td>
+<td align="undefined" valign="undefined">June
+20th, 2008</td>
 </tr>
 </tbody>
 </table>
 <p>
-<span style="font-weight: bold;">Credits: </span>Thanks
+<span style="font-weight: bold;">Credits</span></p>
+<p><span style="font-weight: bold;"></span>hanks
 go to Graeme Williams, <a href="mailto:Graeme.Williams@Sun.COM">Graeme.Williams@Sun.COM.</a>
 Graeme lives in Australia and was kind enough to share his knowledge of
 the Australian health care system with me. &nbsp;This solution
 benifits
 from Graeme's real world experience implementating&nbsp;
 a&nbsp;Master Data Management (MDM) solution in
-Australia.&nbsp;
-</p>
+Australia.&nbsp;</p>
+<span style="font-weight: bold;"></span>
 <hr style="width: 100%; height: 2px;">
 <h1>Description</h1>
 <p>The
@@ -58,7 +60,7 @@ fields
 such as the First Name, Last Name, Date of Birth and the Medicare Card
 Number (MedicareNo) are used for both blocker-search definitions and
 matches.</p>
-<h1>Data Model Overview<span style="font-style: italic;">.</span></h1>
+<h1>Data Model Overview<span style="font-style: italic;"></span></h1>
 <p>
 This overview of the data model shows each Sub Object Node of the
 AUSPatient. It highlights the main sections of the Australian
@@ -384,6 +386,7 @@ corresponding character from the input string when storing in the data.<br>
 </div>
 <br>
 <br>
+<br>
 Example:
 The AUXIDDEF shows three values in the MIDM GUI, "CREDIT CARD
 ID", "Medical License ID" and "Household ID". If the user
@@ -394,4 +397,11 @@ deciimal
 numbers (example: 1111 2222 3333 4444). This will be converted
 to 1111222233334444 and stored in the database. <span style="font-family: monospace;"></span>
 <pre style="margin-left: 40px; overflow: scroll;">insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'CCID', 'CREDIT CARD ID', '[0-9]{16}', 'DDDD DDDD DDDD DDDD', 'DDDD^DDDD^DDDD^DDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'MEDID', 'Medical License ID', '[A-Za-z]{3}[0-9]{6}', 'LLL-DDDDDD', 'LLL^DDDDDD');<br><br>insert into sbyn_user_code (code_list, code, descr, format, input_mask, value_mask)<br> values ('AUXIDDEF', 'HHID', 'Household ID', '[A-Za-z0-9]{3}[0-9]{4}', 'AAADDDD', 'AAADDDD');</pre>
+<h2>References</h2>
+The following references may be useful to those implementing
+an Australian patient solution:<br>
+<ul>
+<li>&nbsp;
+National Health Data Dictionary (NHDD) browser&nbsp;</li>
+</ul><div style="margin-left: 40px;"><a moz-do-not-send="true" class="moz-txt-link-freetext" href="http://meteor.aihw.gov.au/content/index.phtml/itemId/268110">http://meteor.aihw.gov.au/content/index.phtml/itemId/268110</a></div>
 </body></html>
